@@ -1,7 +1,7 @@
 
 
-NEB Visualization
-=================
+# Exploring Canada's Energy Future Visualization
+
 
 ## Prerequisites
 You need Node.js, NPM and Git installed, and basic familiarity with a command line interface for your OS (CMD or PowerShell on Windows, Terminal on OSX, Konsole or equivalent on GNU/Linux).
