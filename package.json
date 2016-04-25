@@ -26,7 +26,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://StartideSolutions@bitbucket.org/StartideSolutions/d3-neb.git"
+    "url": "git@github.com:EnergyFuturesVisualization/energy-futures-visualization.git"
   },
   "author": "Stephanie Sachrajda",
   "devDependencies": {
@@ -42,5 +42,6 @@
     "mustache-express": "^1.2.2",
     "uglifyify": "^3.0.1",
     "zip-folder": "^1.0.0"
-  }
+  },
+  "license": "SEE LICENSE IN LICENSE.txt"
 }
