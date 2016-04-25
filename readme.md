@@ -58,6 +58,8 @@ The app is written almost entirely in [Coffeescript](http://coffeescript.org), a
 
 Our build system is driven by [Browserify](http://browserify.org), which is built on the [NPM implementation of CommonJS](https://docs.npmjs.com/how-npm-works/packages). A basic understanding of the NPM package system is necessary to understand how our code is modularized, and how we're working with dependencies installed via NPM. 
 
+To create the visualizations we used [D3](http://d3js.org), a javascript library for manipulating documents based on data. We recommend that you familiarize yourself with [D3 Selections](http://github.com/mbostock/d3/wiki/Selections) and [data joins](http://bost.ocks.org/mike/join/).
+
 ## Contact Us
 We're the development team with Startide Solutions who put this project together for the NEB. We aren't able to provide extensive support for this project, but you're welcome to reach out with questions and thoughts!
 
