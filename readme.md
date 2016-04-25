@@ -7,16 +7,16 @@ NEB Visualization
 You need Node.js, NPM and Git installed, and basic familiarity with a command line interface for your OS (CMD or PowerShell on Windows, Terminal on OSX, Konsole or equivalent on GNU/Linux).
 
 On Windows: 
-1 Download the latest [stable installer for Node and NPM on Windows](https://nodejs.org/en/download/).
-2 Download the latest [Git for Windows installer](https://git-scm.com/download/win).
-3 *Optional* [Download Tortoise Git](https://tortoisegit.org/), a GUI for Git with Windows Explorer integration.
+1. Download the latest [stable installer for Node and NPM on Windows](https://nodejs.org/en/download/).
+2. Download the latest [Git for Windows installer](https://git-scm.com/download/win).
+3. *Optional* [Download Tortoise Git](https://tortoisegit.org/), a GUI for Git with Windows Explorer integration.
 
 On other platforms: look for Node.js, NPM, and Git in your platform's package manager (such as homebrew on OSX, apt-get on GNU/Linux).
 
 ## Checking Out the Code
 The project is divided into two repositories: 
-1 `energy-future-visualization`, which includes the publicly released source code and assets. 
-2 `nebv-private`, which includes a small number of non-free font assets.
+1. `energy-future-visualization`, which includes the publicly released source code and assets. 
+2. `nebv-private`, which includes a small number of non-free font assets.
 
 Users working with the project from within the NEB will want to check out both repositories side by side, so that the font files are included when building the project. Others will not have access to the private repository, but the app works just fine without it: we've included a substitute Google font. 
 
@@ -59,9 +59,9 @@ Our build system is driven by [Browserify](http://browserify.org), which is buil
 ## Contact Us
 We're the development team with Startide Solutions who put this project together for the NEB. We aren't able to provide extensive support for this project, but you're welcome to reach out with questions and thoughts!
 
-Steph Sachrajda - stephanie.sachrajda@startidesolutions.com
-Patrick King - patrick.king@startidesolutions.com
-Ben Cousins - ben.cousins@startidesolutions.com
+* Stephanie Sachrajda - stephanie.sachrajda@startidesolutions.com
+* Patrick King - patrick.king@startidesolutions.com
+* Ben Cousins - ben.cousins@startidesolutions.com
 
 ## Known Issues
 * 'Download Image' functionality on Internet Explorer ~11 doesn't apply the correct font. This appears to be fixed in Edge ~13.
