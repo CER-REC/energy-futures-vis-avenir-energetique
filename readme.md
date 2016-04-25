@@ -7,6 +7,7 @@
 You need Node.js, NPM and Git installed, and basic familiarity with a command line interface for your OS (CMD or PowerShell on Windows, Terminal on OSX, Konsole or equivalent on GNU/Linux).
 
 On Windows: 
+
 1. Download the latest [stable installer for Node and NPM on Windows](https://nodejs.org/en/download/).
 2. Download the latest [Git for Windows installer](https://git-scm.com/download/win).
 3. *Optional* [Download Tortoise Git](https://tortoisegit.org/), a GUI for Git with Windows Explorer integration.
@@ -15,6 +16,7 @@ On other platforms: look for Node.js, NPM, and Git in your platform's package ma
 
 ## Checking Out the Code
 The project is divided into two repositories: 
+
 1. `energy-future-visualization`, which includes the publicly released source code and assets. 
 2. `nebv-private`, which includes a small number of non-free font assets.
 
