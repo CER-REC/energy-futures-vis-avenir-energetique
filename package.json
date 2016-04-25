@@ -1,0 +1,46 @@
+{
+  "name": "d3-neb",
+  "version": "1.0.8",
+  "description": "NEB project",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "browserify JS/App.coffee -t coffeeify --extension='.coffee' -g uglifyify -o dist/public/bundle.js",
+    "watch": "watchify JS/App.coffee -t coffeeify --extension='.coffee' -o public/bundle.js --debug --verbose",
+    "distribute": "node distribute.js",
+    "start": "node ./bin/www"
+  },
+  "dependencies": {
+    "array-includes": "^3.0.2",
+    "browserify": "^10.2.1",
+    "coffeeify": "^1.1.0",
+    "d3": "https://github.com/PatrickKing/d3.git#jsdom",
+    "debug": "~2.2.0",
+    "domready": "^1.0.8",
+    "grunt": "^0.4.5",
+    "lodash": "^4.5.1",
+    "mold-source-map": "^0.4.0",
+    "node-bitlyapi": "^0.4.0",
+    "query-string": "^4.0.2",
+    "mustache": "^2.2.1",
+    "watchify": "^3.2.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://StartideSolutions@bitbucket.org/StartideSolutions/d3-neb.git"
+  },
+  "author": "Stephanie Sachrajda",
+  "devDependencies": {
+    "convert-source-map": "^1.2.0",
+    "express": "^4.13.4",
+    "express-generator": "^4.13.1",
+    "fs-extra": "^0.28.0",
+    "grunt-browserify": "^4.0.1",
+    "grunt-jasmine-bundle": "^0.3.0",
+    "grunt-karma": "^0.12.1",
+    "jasmine-core": "^2.4.1",
+    "markdown-styles": "^3.1.5",
+    "mustache-express": "^1.2.2",
+    "uglifyify": "^3.0.1",
+    "zip-folder": "^1.0.0"
+  }
+}

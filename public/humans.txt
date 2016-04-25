@@ -1,0 +1,60 @@
+/* TEAM */
+  Designer: Lindsay Macdonald
+  Location: Calgary, Canada
+
+  Designer: Charles Perin
+  Location: Calgary, Canada
+
+  Designer: Jo Vermeulen 
+  Location: Calgary, Canada
+
+  Designer: Doris Kosminsky
+  Location: Rio de Janeiro, Brazil
+
+  Software Developer: Stephanie Sachrajda
+  Location: Calgary, Canada
+
+  Software Developer: Patrick King
+  Location: Calgary, Canada
+
+  Software Project Manager: Ben Cousins
+  Location: Calgary, Canada
+
+  SEO and Analytics: Gerald McNulty
+  Location: Calgary, Canada
+
+  Software Consultant: Claudio Esperança
+  Location: Rio de Janeiro, Brazil
+
+
+/* THANKS */
+  Data Source Director: Abha Bhargava
+  Location: Calgary, Canada
+
+  Data Source Market Analyst: Matthew Hansen
+  Location: Calgary, Canada
+
+  Data Source Market Analyst: Bryce VanSluys
+  Location: Calgary, Canada
+
+  Project Conept and Coordination: Annette Hester
+  Location: Calgary, Canada
+
+  Project Manager: Katherine Murphy
+  Location: Calgary, Canada
+
+  Data Coordination: Stephen Chow
+  Location: Calgary, Canada
+
+  Web Lead: Garth Rowe
+  Location: Calgary, Canada
+
+  Information Management and Technology: Jim Chisolm
+  Location: Calgary, Canada
+
+
+/* SITE */
+  Last update: 2016/04/25
+  Language: English / Français
+  Doctype: HTML5
+  Components: D3.js, canvg.js, Coffeescript, Browserify
