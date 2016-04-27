@@ -174,7 +174,7 @@
   width: 100%;
   height: 130px;
   /* The current set of thumbnails have drop shadow baked in */
-  /*box-shadow: inset 0px 0px 5px 4px #cccccc;*/
+  box-shadow: inset 0px 0px 4px 2px rgba(68, 68, 68, 0.8);
 }
 
 #canadasEnergyFutureVisualization .thumbnailContainer img {
@@ -231,21 +231,26 @@
 
 #canadasEnergyFutureVisualization .viz1Img {
   background-image: url("../IMG/landingPageThumb/vis1_202.png");
-  background-size: 100% 100%;
+  background-size: cover;
+  background-position:50% 50%;  /* Sets reference point to scale from */
 }
+
 #canadasEnergyFutureVisualization .viz2Img {
+  background-size: cover;
   background-image: url("../IMG/landingPageThumb/vis2_202.png");
-  background-size: 100% 100%;
+  background-position:50% 50%;  /* Sets reference point to scale from */
 
 }
 #canadasEnergyFutureVisualization .viz3Img {
   background-image: url("../IMG/landingPageThumb/vis3_202.png");
-  background-size: 100% 100%;
+  background-position:50% 50%;  /* Sets reference point to scale from */
+  background-size: cover;
 
 }
 #canadasEnergyFutureVisualization .viz4Img {
   background-image: url("../IMG/landingPageThumb/vis4_202.png");
-  background-size: 100% 100%;
+  background-position:50% 50%;  /* Sets reference point to scale from */
+  background-size:cover;  
 
 }
 
@@ -256,22 +261,23 @@
 
   #canadasEnergyFutureVisualization .viz1Img {
     background-image: url("../IMG/landingPageThumb/vis1_808.png");
-    background-size: 100% 100%;
+    background-size: cover;
+    background-position:50% 50%;  /* Sets reference point to scale from */
   }
   #canadasEnergyFutureVisualization .viz2Img {
     background-image: url("../IMG/landingPageThumb/vis2_808.png");
-    background-size: 100% 100%;
-
+    background-size: cover;
+    background-position:50% 50%;  /* Sets reference point to scale from */
   }
   #canadasEnergyFutureVisualization .viz3Img {
     background-image: url("../IMG/landingPageThumb/vis3_808.png");
-    background-size: 100% 100%;
-
+    background-size: cover;
+    background-position:50% 50%;  /* Sets reference point to scale from */
   }
   #canadasEnergyFutureVisualization .viz4Img {
     background-image: url("../IMG/landingPageThumb/vis4_808.png");
-    background-size: 100% 100%;
-
+    background-size: cover;
+    background-position:50% 50%;  /* Sets reference point to scale from */
   }
 
 }
