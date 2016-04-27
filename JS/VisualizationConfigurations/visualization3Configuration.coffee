@@ -7,7 +7,7 @@ Constants = require '../Constants.coffee'
 class Visualization3Configuration
   defaultOptions: 
     viewBy: 'province'
-    unit: 'petajoules'
+    unit: 'gigawattHours'
     scenario: 'reference'
     year: 2005
     sources:[ 

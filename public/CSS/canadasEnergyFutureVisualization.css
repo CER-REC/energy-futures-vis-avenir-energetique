@@ -969,6 +969,8 @@
   padding-left: 0;
 }
 
+/* In certain IE browsers the axis was drawing outside of the svg */
+svg { overflow: hidden; }
 
 
 

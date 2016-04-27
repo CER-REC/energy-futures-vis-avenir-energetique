@@ -90,9 +90,9 @@ class GasProductionProvider
         item.scenario == viz1config.scenario
     
     # Finally, convert units
-    return filteredProvinceData if viz1config.unit == 'cubicFeet'
+    return filteredProvinceData if viz1config.unit == 'millionCubicMetres'
 
-    if viz1config.unit == 'millionCubicMetres' 
+    if viz1config.unit == 'cubicFeet' 
       unitConvertedProvinceData = {}
       for province in Object.keys filteredProvinceData
         unitConvertedProvinceData[province] = []
@@ -104,7 +104,7 @@ class GasProductionProvider
             source: item.source
             scenario: item.scenario
             year: item.year
-            value: item.value * UnitTransformation.transformUnits('cubicFeet', 'millionCubicMetres')
+            value: item.value * UnitTransformation.transformUnits('millionCubicMetres', 'cubicFeet')
       return unitConvertedProvinceData
 
 
@@ -130,9 +130,9 @@ class GasProductionProvider
 
     
     # Finally, convert units
-    return filteredScenarioData if viz4config.unit == 'cubicFeet'
+    return filteredScenarioData if viz4config.unit == 'millionCubicMetres'
 
-    if viz4config.unit == 'millionCubicMetres' 
+    if viz4config.unit == 'cubicFeet' 
       unitConvertedScenarioData = {}
       for scenario in Object.keys filteredScenarioData
         unitConvertedScenarioData[scenario] = []
@@ -144,7 +144,7 @@ class GasProductionProvider
             source: item.source
             scenario: item.scenario
             year: item.year
-            value: item.value * UnitTransformation.transformUnits('cubicFeet', 'millionCubicMetres')
+            value: item.value * UnitTransformation.transformUnits('millionCubicMetres', 'cubicFeet')
       return unitConvertedScenarioData
 
     # TODO: if we get to here something has gone horribly wrong, and we should do something else

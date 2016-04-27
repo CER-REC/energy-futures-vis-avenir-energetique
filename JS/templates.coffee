@@ -9,7 +9,7 @@ module.exports =
     <div id="landingPagePanel"> 
       <div id="panelLeft">
         <h1> {{ contentHeader }} </h1>
-        <p> {{ content }} </p>
+        <p> {{{ content }}} </p>
       </div>
       <div id="panelRight">
         <img src='IMG/landingPageThumb/carousel3.png' class='mainImageCarousel'>

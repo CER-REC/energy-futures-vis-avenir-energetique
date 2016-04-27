@@ -163,7 +163,7 @@ class visualization
             if @buildYAxis? then @buildYAxis()
 
       unitsSelectors.html (d) ->
-        "<button class='#{d.class}'>#{d.label}</button>"
+        "<button class='#{d.class}' type='button'>#{d.label}</button>"
 
       unitsSelectors.exit().remove()
 
@@ -187,7 +187,7 @@ class visualization
 
 
       scenariosSelectors.html (d) ->
-        "<button class='#{d.class}'>#{d.label}</button>"
+        "<button class='#{d.class}' type='button'>#{d.label}</button>"
 
       scenariosSelectors.exit().remove()
   
@@ -213,7 +213,7 @@ class visualization
 
       sectorsSelectors.html (d) ->
         if d.sectorName == 'total'
-          "<button class='#{d.buttonClass}'>#{d.label}</button>"          
+          "<button class='#{d.buttonClass}' type='button'>#{d.label}</button>"          
         else
           "<img src=#{d.image}>"
 

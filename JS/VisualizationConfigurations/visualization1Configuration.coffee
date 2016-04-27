@@ -72,6 +72,9 @@ class Visualization1Configuration
   setMainSelection: (selection) ->
     if Constants.mainSelections.includes selection
       @mainSelection = selection
+      if @mainSelection == 'electricityGeneration' 
+        #we want this to be the default unit when changing to electricity generation
+        @unit = 'gigawattHours'
     else
       @mainSelection = 'energyDemand'
 
@@ -86,7 +89,7 @@ class Visualization1Configuration
       when 'energyDemand'
         allowableUnits = ['petajoules', 'kilobarrelEquivalents']
       when 'electricityGeneration'
-        allowableUnits = ['petajoules', 'gigawattHours', 'kilobarrelEquivalents']
+        allowableUnits = ['gigawattHours', 'petajoules', 'kilobarrelEquivalents']
       when 'oilProduction'
         allowableUnits = ['kilobarrels', 'thousandCubicMetres']
       when 'gasProduction'

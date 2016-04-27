@@ -10,8 +10,8 @@ conversionTable =
   thousandCubicMetres: 
     kilobarrels: (1/0.159)
 
-  cubicFeet: 
-    millionCubicMetres: 0.0283
+  millionCubicMetres: 
+    cubicFeet: 35.3147
 
 
 module.exports = 

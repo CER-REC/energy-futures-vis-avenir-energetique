@@ -8,11 +8,14 @@ module.exports =
       en: "What is Canada's energy future?"
       fr: 'Quel est l’avenir énergétique du Canada?'
     content1:
-      en: "Energy is important to Canada. It heats our homes, fuels our vehicles, and is a key aspect of Canada’s economy. Canada is a vast nation with an incredibly diverse energy mix.  An important part of our country’s future will be determined by how energy is produced and used. 
-Based on data from our recent outlook, Canada’s Energy Future 2016, this interactive tool allows you to explore recent energy production and consumption trends and forecast them into the future."
-      fr: 'L’énergie est une composante importante au Canada. Elle sert à chauffer nos foyers et à propulser nos véhicules, et elle représente un élément de premier plan dans l’économie canadienne. Le Canada est un pays immense, qui dispose d’un fabuleux bouquet énergétique. La façon dont nous produirons et utiliserons cette énergie jouera un rôle déterminant dans l’avenir de notre pays. 
-Mettant à profit les données de notre plus récente perspective énergétique, le Rapport sur l’avenir énergétique du Canada en 2016, cet outil interactif vous permet d’explorer l’évolution récente de la production et de la consommation d’énergie, et de faire des prévisions pour l’avenir.'
-
+      en: """
+        Energy is important to Canada. It heats our homes, fuels our vehicles, and is a key aspect of Canada’s economy. Canada is a vast nation with an incredibly diverse energy mix.  An important part of our country’s future will be determined by how energy is produced and used. 
+        Based on data from our recent outlook, <a href='http://www.neb-one.gc.ca/nrg/ntgrtd/ftr/index-eng.html'>Canada’s Energy Future 2016</a>, this interactive tool allows you to explore recent energy production and consumption trends and forecast them into the future.
+      """
+      fr: """
+      L’énergie est une composante importante au Canada. Elle sert à chauffer nos foyers et à propulser nos véhicules, et elle représente un élément de premier plan dans l’économie canadienne. Le Canada est un pays immense, qui dispose d’un fabuleux bouquet énergétique. La façon dont nous produirons et utiliserons cette énergie jouera un rôle déterminant dans l’avenir de notre pays. 
+      Mettant à profit les données de notre plus récente perspective énergétique, <a href='http://www.neb-one.gc.ca/nrg/ntgrtd/ftr/index-fra.html'>le Rapport sur l’avenir énergétique du Canada en 2016</a>, cet outil interactif vous permet d’explorer l’évolution récente de la production et de la consommation d’énergie, et de faire des prévisions pour l’avenir.'
+      """
 
     visualization1Link:
       en: 'EXPLORE BY REGION'
@@ -92,7 +95,7 @@ Mettant à profit les données de notre plus récente perspective énergétique,
     aboutContent:
       en: """
         <p> 
-          The National Energy Board (NEB) worked together with leading data visualization experts in both academia and industry to create the Exploring Canada’s Energy Future interactive online tool. This pilot concept, based on our flagship publication – Canada’s Energy Future 2016: Energy Supply and Demand Projections to 2040, will give Canadians a taste of the exciting new way the NEB will share data going forward.
+          The National Energy Board (NEB) worked together with leading data visualization experts in both academia and industry to create the Exploring Canada’s Energy Future interactive online tool. This pilot concept, based on our flagship publication – <a href="http://www.neb-one.gc.ca/nrg/ntgrtd/ftr/index-eng.html">Canada’s Energy Future 2016: Energy Supply and Demand Projections to 2040</a>, will give Canadians a taste of the exciting new way the NEB will share data going forward.
         </p>
         <p>
           Our objective is to present quality data from our most recent energy outlook in an interactive graphic format that is user-friendly and clarifies complex information into “visualizations” that are easily understood,  so you can explore Canada’s energy future right from your own computer. In the months and years to come, we will use this innovative format to share our pipeline safety data, energy data series, energy infrastructure information, and a host of other topical data.
@@ -124,7 +127,7 @@ Mettant à profit les données de notre plus récente perspective énergétique,
       """
       fr: """
         <p> 
-          Pour créer l’outil interactif Explorer l’avenir énergétique du Canada, l’Office national de l’énergie s’est associé à des experts de la visualisation des données du milieu universitaire et de l’industrie. Fondé sur la publication phare Avenir énergétique du Canada en 2016 – Offre et demande énergétiques à l’horizon 2040, ce projet pilote donnera aux Canadiens un avant-goût du nouveau et fabuleux moyen qu’utilisera désormais l’Office pour diffuser ses données.
+          Pour créer l’outil interactif Explorer l’avenir énergétique du Canada, l’Office national de l’énergie s’est associé à des experts de la visualisation des données du milieu universitaire et de l’industrie. Fondé sur la publication phare <a href="http://www.neb-one.gc.ca/nrg/ntgrtd/ftr/index-fra.html">Avenir énergétique du Canada en 2016 – Offre et demande énergétiques à l’horizon 2040</a>, ce projet pilote donnera aux Canadiens un avant-goût du nouveau et fabuleux moyen qu’utilisera désormais l’Office pour diffuser ses données.
         </p>
         <p>
           Notre objectif consiste à présenter des données de qualité provenant de notre plus récente perspective énergétique dans un format interactif visuel qui est convivial et qui clarifie une information complexe grâce à des visualisations faciles à comprendre, afin que vous puissiez explorer par vous-même l’avenir énergétique du Canada à partir de votre propre ordinateur. Au cours des mois et des années à venir, l’Office utilisera ce format innovateur pour diffuser ses données sur la sécurité des pipelines et sur l’énergie, ses renseignements sur l’infrastructure énergétique et une foule d’autres données spécialisées.
@@ -188,7 +191,7 @@ Mettant à profit les données de notre plus récente perspective énergétique,
         <div class="columnRight">
           <div class="sectionHeader"> OIL PRODUCTION </div>
             <p> 
-              The amount of crude oil produced in Canada. Crude oil is produced from various areas using different technologies. This includes mined and in situ bitumen from the oil sands, conventional light and heavy oil produced in the Western Canadian Sedimentary Basin, condensate, and oil produced from off-shore platforms on the east coast.
+              The amount of crude oil produced in Canada. Crude oil is produced from various areas using different technologies. This includes mined and in situ bitumen from the oil sands, conventional light and heavy oil produced in the Western Canada Sedimentary Basin, condensate, and oil produced from off-shore platforms on the east coast.
             </p>
           <div class="sectionHeader"> NATURAL GAS PRODUCTION </div>
             <p> 
@@ -210,7 +213,7 @@ Mettant à profit les données de notre plus récente perspective énergétique,
         <div class="columnRight">
           <div class="sectionHeader"> PRODUCTION DE PÉTROLE </div>
             <p> 
-             Il s’agit de la quantité de pétrole brut produit au Canada. Plusieurs régions produisent du pétrole brut à partir de diverses techniques. La production de pétrole comprend celle de bitume (à ciel ouvert et in situ); les sables bitumineux, le pétrole léger et le pétrole brut classiques dans le bassin sédimentaire de l’Ouest canadien; les condensats; et le pétrole produit à partir des plateformes de forage au large de la côte est.
+             Il s’agit de la quantité de pétrole brut produit au Canada. Plusieurs régions produisent du pétrole brut à partir de diverses techniques. La production de pétrole comprend celle de bitume (à ciel ouvert et in situ); les sables bitumineux, le pétrole léger et le pétrole brut classiques dans le bassin sédimentaire de l’Ouest Canada; les condensats; et le pétrole produit à partir des plateformes de forage au large de la côte est.
             </p>
           <div class="sectionHeader"> PRODUCTION DE GAZ NATUREL </div>
             <p> 
@@ -438,10 +441,25 @@ Mettant à profit les données de notre plus récente perspective énergétique,
             <p>
               Number of cubic metres of natural gas produced per day. One cubic foot of natural gas is equal to 0.0283 cubic metres.
             </p>
-          <div class="sectionHeader"> NOTE </div>
-            <p>
-              k = 1000 
-            </p>
+        </div>
+        <div class="clearfix"></div>
+        <hr>
+        <div class="sectionHeader"> Y-AXIS SCALING NOTES </div>
+        <div class="columnLeft"> 
+          <p>
+            Depending on the value, the y-axis may be scaled with a multiplier k, m or µ.
+          </p>  
+          <p>  
+            k=1000. For example, 15.0k Mcf/d equals 15.0 billion cubic feet per day, or 6.0k kB/d equals 6 million barrels per day.
+          </p>
+        </div>
+        <div class="columnRight">    
+          <p>  
+            m=0.001. For example, 900m petajoules equals 900 terajoules, or 0.9 petajoules.
+          </p>
+          <p>  
+            µ=0.000001. For example, 300µ petajoules equals 300 gigajoules, or 0.0003 petajoules.
+          </p>
         </div>
       """
       fr: """
@@ -478,10 +496,25 @@ Mettant à profit les données de notre plus récente perspective énergétique,
             <p>
               Nombre de mètres cubes de gaz naturel produits par jour. Un pied cube de gaz naturel équivaut à 0,0283 mètre cube.
             </p>
-          <div class="sectionHeader"> REMARQUE </div>
-            <p>
-              k = 1000
-            </p>
+        </div>
+        <div class="clearfix"></div>
+        <hr>
+        <div class="sectionHeader"> REMARQUE AU SUJET DE LA GRADUATION DE L’AXE Y </div>
+        <div class="columnLeft"> 
+          <p>
+            Selon la valeur, un multiplicateur k, m ou µ peut être appliqué à l’axe y.
+          </p>  
+          <p>  
+            k=1000. Par exemple, 15,0k Mpi³/j équivaut à 15,0 milliards de pieds cubes par jour, ou 6,0k kb/j est égal à 6 millions de barils par jour.
+          </p>
+        </div>
+        <div class="columnRight">    
+          <p>  
+            m=0,001. Par exemple, 900m pétajoules est égal à 900 térajoules, ou 0,9 pétajoule.
+          </p>
+          <p>  
+            µ=0,000001. Par exemple, 300µ pétajoules est égal à 300 gigajoules, ou 0,0003 pétajoule.
+          </p>
         </div>
       """
 
@@ -784,62 +817,84 @@ Mettant à profit les données de notre plus récente perspective énergétique,
   visualization1NavbarHelp: 
     en: """
           <h4 class="viz1HelpTitle"> EXPLORE BY REGION </h4>
-          Compare historical and projected energy supply and demand data from across Canada’s provinces and territories. 
-          <br>
-          <br>
-          Select total demand, electricity generation, crude oil production or natural gas production, and then compare, add or remove, or re-arrange the provinces and territories to explore different possible outcomes. 
+          <p>  
+            Compare historical and projected energy supply and demand data from across Canada’s provinces and territories. 
+          </p>
+          <p>
+            Select total demand, electricity generation, crude oil production or natural gas production, and then compare, add or remove, or re-arrange the provinces and territories to explore different possible outcomes. 
+          </p>
         """
     fr: """
       <h4 class="viz1HelpTitle"> EXPLORATION PAR RÉGION </h4>
-      Comparez les données passées et faites des projections de l’offre et de la demande d’énergie pour les provinces et les territoires au Canada. 
-      <br>
-      <br>
-      Sélectionnez la demande totale, la production d’électricité, la production de pétrole brut ou la production de gaz naturel, puis comparez, ajoutez, retirez ou réorganisez les données selon les provinces et les territoires pour analyser divers résultats possibles.
+      <p>  
+        Comparez les données passées et faites des projections de l’offre et de la demande d’énergie pour les provinces et les territoires au Canada. 
+      </p>
+      <p>
+        Sélectionnez la demande totale, la production d’électricité, la production de pétrole brut ou la production de gaz naturel, puis comparez, ajoutez, retirez ou réorganisez les données selon les provinces et les territoires pour analyser divers résultats possibles.
+      </p>
     """
   visualization2NavbarHelp: 
     en: """
       <h4 class="viz2HelpTitle"> EXPLORE BY SECTOR </h4>
-      Explore how energy source mixes from different sectors have evolved in recent history, and how they are projected to evolve in the EF 2016 scenarios. 
-      <br>
-      <br>
-      Select a province or territory, and choose between residential, commercial, transportation, industrial or total energy use. 
+      <p>  
+        Explore how energy source mixes from different sectors have evolved in recent history, and how they are projected to evolve in the EF 2016 scenarios. 
+      </p>
+      <p>
+        Select a province or territory, and choose between residential, commercial, transportation, industrial or total energy use. 
+      </p>
     """
     fr: """
       <h4 class="viz2HelpTitle"> EXPLORATION PAR SECTEUR </h4>
-      Examinez l’évolution de la consommation des divers produits énergétiques par différents secteurs depuis quelques années, et découvrez l’évolution que proposent les scénarios du rapport AE 2016. 
-      <br>
-      <br>
-      Sélectionnez une province ou un territoire, puis consultez la consommation énergétique des secteurs résidentiel, commercial, industriel ou des transports, ou encore la consommation totale d’énergie. 
+      <p>  
+        Examinez l’évolution de la consommation des divers produits énergétiques par différents secteurs depuis quelques années, et découvrez l’évolution que proposent les scénarios du rapport AE 2016. 
+      </p>
+      <p>
+        Sélectionnez une province ou un territoire, puis consultez la consommation énergétique des secteurs résidentiel, commercial, industriel ou des transports, ou encore la consommation totale d’énergie. 
+      </p>
     """
   visualization3NavbarHelp: 
     en: """
       <h4 class="viz3HelpTitle"> EXPLORE ELECTRICITY </h4>
-      Compare the relative amount of electricity generated by various energy sources across the provinces and territories for a given year. 
-      <br>
-      <br>
-      Switch between two views: one that compares the amount of electricity generated by each source for each region, and one that compares the amount of electricity generated by each region for each source. 
+      <p>
+        Compare the relative amount of electricity generated by various energy sources across the provinces and territories for a given year. 
+      </p>
+      <p>
+        Switch between two views: one that compares the amount of electricity generated by each source for each region, and one that compares the amount of electricity generated by each region for each source. 
+      </p>
+      <p>
+        Note:   the outer circles are for labelling purposes and do not precisely reflect the relative total generation by region or source.
+      </p>
     """
     fr: """
       <h4 class="viz3HelpTitle">  EXPLORATION DE LA COMPOSANTE ÉLECTRICITÉ </h4>
-      Comparez la quantité relative d’électricité produite à partir de diverses sources dans les provinces et les territoires au cours d’une année donnée. 
-      <br> 
-      <br>
-      Passez d’une visualisation à l’autre, de la quantité d’électricité produite par chaque source dans chaque région, à la quantité d’électricité produite dans chaque région par chaque source. 
+      <p>
+        Comparez la quantité relative d’électricité produite à partir de diverses sources dans les provinces et les territoires au cours d’une année donnée. 
+      </p> 
+      <p>
+        Passez d’une visualisation à l’autre, de la quantité d’électricité produite par chaque source dans chaque région, à la quantité d’électricité produite dans chaque région par chaque source. 
+      </p>
+      <p> 
+        Remarque : Les cercles extérieurs n’ont d’autres utilités que l’identification; ils ne reproduisent pas avec précision la production totale relative selon la région ou la source d’énergie. 
+      </p>
     """
   visualization4NavbarHelp: 
     en: """
       <h4 class="viz4HelpTitle">  EXPLORE SCENARIOS </h4>
-      Directly compare the scenarios. 
-      <br>
-      <br>
-      Explore the impact of key uncertainties on future energy trends, such as higher or lower energy prices, higher LNG exports or No LNG exports, or not building crude oil export pipelines.
+      <p>  
+        Directly compare the scenarios. 
+      </p>
+      <p>
+        Explore the impact of key uncertainties on future energy trends, such as higher or lower energy prices, higher LNG exports or No LNG exports, or not building crude oil export pipelines.
+      </p>
     """
     fr: """
       <h4 class="viz4HelpTitle"> EXPLORATION DES SCÉNARIOS </h4>
-      Comparez directement les scénarios. 
-      <br>
-      <br>
-      Analysez l’incidence des principales incertitudes sur l’évolution future de l’énergie, par exemple en fonction de prix plus élevés ou plus bas, d’exportations plus élevées de GNL, ou l’absence d’exportations de GNL, ou encore l’absence de nouveaux de pipelines d’exportation de pétrole brut.
+      <p>
+        Comparez directement les scénarios. 
+      </p>
+      <p>
+        Analysez l’incidence des principales incertitudes sur l’évolution future de l’énergie, par exemple en fonction de prix plus élevés ou plus bas, d’exportations plus élevées de GNL, ou l’absence d’exportations de GNL, ou encore l’absence de nouveaux de pipelines d’exportation de pétrole brut.
+      </p>
     """
 
 

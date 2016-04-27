@@ -567,7 +567,7 @@ class Visualization4
         @renderYAxis()
 
     unitsSelectors.html (d) ->
-      "<button class='#{d.class}'>#{d.label}</button>"
+      "<button class='#{d.class}' type='button'>#{d.label}</button>"
 
     unitsSelectors.exit()
       .on 'click', null
@@ -596,7 +596,7 @@ class Visualization4
         @renderGraph()
 
     scenariosSelectors.html (d) ->
-      "<button class='#{d.class}'>#{d.label}</button>"
+      "<button class='#{d.class}' type='button'>#{d.label}</button>"
 
     scenariosSelectors.exit()
       .on 'click', null

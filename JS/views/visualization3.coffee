@@ -181,7 +181,7 @@ class visualization3  extends visualization
             @toggleViz()
 
       viewBySelectors.html (d) ->
-        "<button class='#{d.class}'>#{d.label}</button>"
+        "<button class='#{d.class}' type='button'>#{d.label}</button>"
 
       viewBySelectors.exit().remove()
   
