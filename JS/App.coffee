@@ -101,10 +101,11 @@ class App
           @app.currentView.redraw() if @app.currentView?
 
     #humans.txt
-    d3.select('head').append('link')
-      .attr
-        rel: "author" 
-        href: "humans.txt"
+    if d3.selectAll('head link[rel="author"][href="humans.txt"]').empty()
+      d3.select('head').append('link')
+        .attr
+          rel: "author" 
+          href: "humans.txt"
 
     # Configuration Objects
     @visualization1Configuration = new Visualization1Configuration()
