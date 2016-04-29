@@ -101,7 +101,7 @@ module.exports =
           Our objective is to present quality data from our most recent energy outlook in an interactive graphic format that is user-friendly and clarifies complex information into “visualizations” that are easily understood,  so you can explore Canada’s energy future right from your own computer. In the months and years to come, we will use this innovative format to share our pipeline safety data, energy data series, energy infrastructure information, and a host of other topical data.
         </p>
         <p>
-          If you want to use the data for research and undertake your own review, all the data is downloadable and sharable. The chart images are also downloadable, and if you are interested in the source code for the visualizations, it will be available on the government’s Open Government portal: <a href="open.canada.ca">open.canada.ca</a>. 
+          If you want to use the data for research and undertake your own review, all the data is downloadable and sharable. The chart images are also downloadable, and if you are interested in the source code for the visualizations, it will be available on the government’s Open Government portal: <a href="http://open.canada.ca">open.canada.ca</a>. 
         </p>
         <p>
           We hope we are hitting the mark. Your feedback is essential. 
@@ -112,11 +112,11 @@ module.exports =
         <h5> CONTRIBUTORS </h5>
         <h6> DATA SOURCE: </h6>
         <p>
-          Abha Bhargava (Director), Matthew Hansen (Market Analyst), Bryce VanSluys (Market Analyst) 
+          Abha Bhargava (Director), Matthew Hansen (Market Analyst), Bryce van Sluys (Market Analyst) 
         </p>
         <h6> COORDINATION: </h6>
         <p>
-          Annette Hester (Concept and Coordination); Katherine Murphy (Project Manager); Stephen Chow (Data Coordination); Garth Rowe (Web Lead); Jim Chisolm (Information Management and Technology)
+          Annette Hester (Concept and Coordination); Katherine Murphy (Project Manager); Stephen Chow (Data Coordination); Garth Rowe (Web Lead); Jim Chisholm (Information Management and Technology)
         </p>
         <h6> DATA VISUALIZATION: </h6>
         <p>
@@ -144,7 +144,7 @@ module.exports =
         <h5> COLLABORATEURS </h5>
         <h6> SOURCE DES DONNÉES </h6>
         <p> 
-          Abha Bhargava (Directrice), Matt Hansen (Analyste de Marchés), Bryce Van Slys (Analyste de Marchés) 
+          Abha Bhargava (Directrice), Matt Hansen (Analyste de Marchés), Bryce van Sluys (Analyste de Marchés) 
         </p>
         <h6> COORDINATION </h6>
         <p> 
