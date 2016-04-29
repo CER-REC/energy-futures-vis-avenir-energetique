@@ -116,7 +116,7 @@ module.exports =
         </p>
         <h6> COORDINATION: </h6>
         <p>
-          Annette Hester (Concept and Coordination); Katherine Murphy (Project Manager); Stephen Chow (Data Coordination); Garth Rowe (Web Lead); Jim Chisolm (Information Management and Technology)
+          Annette Hester (Concept and Coordination); Katherine Murphy (Project Manager); Stephen Chow (Data Coordination); Garth Rowe (Web Lead); Jim Chisholm (Information Management and Technology)
         </p>
         <h6> DATA VISUALIZATION: </h6>
         <p>
