@@ -985,6 +985,11 @@
   padding: 0;
   border: 0;
   float: left;
+  cursor: pointer;
+}
+
+#canadasEnergyFutureVisualization .howToNavigation button[disabled] {
+  cursor: default;
 }
 
 
