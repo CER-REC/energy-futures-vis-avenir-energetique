@@ -973,6 +973,22 @@
 
 
 
+#canadasEnergyFutureVisualization .howToImageContainer img {
+  max-width: 100%
+}
+
+#canadasEnergyFutureVisualization .howToNavigation button {
+  width : 50%;
+  background-color: white;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  float: left;
+}
+
+
+
 
 #mainPanel h6{
   margin-top: 10px;

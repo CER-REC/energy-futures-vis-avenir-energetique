@@ -606,22 +606,20 @@ module.exports =
   howToPopoverContent: """
     <div class="modalContent">
 
-      <div class="howToImageContainer">
+      <div class="howToImageContainer imageAContainer">
         <img src="{{ imageAUrl }}">
       </div> 
 
-      <div class="howToImageContainer hidden">
+      <div class="howToImageContainer imageBContainer hidden">
         <img src="{{ imageBUrl }}">
       </div> 
     
       <div class="howToNavigation">
-        <button class="howToBackButton" type="button"> 
-          <p> Placeholder </p>
-          <img>
+        <button class="howToBackButton" type="button" disabled> 
+          <img src="IMG/howto/light-left-arrow.png">
         </button>
-        <button class="howToForwardButton" type="button" disabled> 
-          <p> Placeholder </p>
-          <img>
+        <button class="howToForwardButton" type="button"> 
+          <img src="IMG/howto/dark-right-arrow.png">
         </button>
       </div>
 

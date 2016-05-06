@@ -179,6 +179,33 @@ class Navbar
           imageAUrl: d.imageAUrl
           imageBUrl: d.imageBUrl
 
+        # Set up event handlers to swap between the two help images
+        d3.select('.howToBackButton').on 'click', ->
+          d3.select('.imageAContainer').classed 'hidden', false
+          d3.select('.imageBContainer').classed 'hidden', true
+          
+          d3.select('.howToBackButton').attr 'disabled', 'disabled'
+          d3.select('.howToBackButton').html """
+            <img src="IMG/howto/light-left-arrow.png">
+          """
+          d3.select('.howToForwardButton').attr 'disabled', null
+          d3.select('.howToForwardButton').html """
+            <img src="IMG/howto/dark-right-arrow.png">
+          """
+
+
+        d3.select('.howToForwardButton').on 'click', ->
+          d3.select('.imageAContainer').classed 'hidden', true
+          d3.select('.imageBContainer').classed 'hidden', false
+
+          d3.select('.howToBackButton').attr 'disabled', null
+          d3.select('.howToBackButton').html """
+            <img src="IMG/howto/dark-left-arrow.png">
+          """
+          d3.select('.howToForwardButton').attr 'disabled', 'disabled'
+          d3.select('.howToForwardButton').html """
+            <img src="IMG/howto/light-right-arrow.png">
+          """
 
         # Set up the help icon: depending on selection
         d3.select('.navbarHelpIcon').classed('selected', !(d3.select('.navbarHelpIcon').classed('selected')))
