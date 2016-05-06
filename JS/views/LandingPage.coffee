@@ -9,7 +9,6 @@ class LandingPage
     document.getElementById('landingPageHeading').innerHTML = Tr.landingPage.mainHeader[app.language]
 
     document.getElementById('visualizationContent').innerHTML = Mustache.render Templates.landingPageTemplate, 
-        contentHeader: Tr.landingPage.contentHeader1[app.language]
         content: Tr.landingPage.content1[app.language]
         visualization1Link: Tr.landingPage.visualization1Link[app.language]
         visualization2Link: Tr.landingPage.visualization2Link[app.language]

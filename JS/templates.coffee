@@ -8,7 +8,6 @@ module.exports =
   landingPageTemplate: """
     <div id="landingPagePanel"> 
       <div id="panelLeft">
-        <h1> {{ contentHeader }} </h1>
         <p> {{{ content }}} </p>
       </div>
       <div id="panelRight">
@@ -603,4 +602,30 @@ module.exports =
       font-size: 16px;
     } 
   """
+
+  howToPopoverContent: """
+    <div class="modalContent">
+
+      <div class="howToImageContainer imageAContainer">
+        <img src="{{ imageAUrl }}">
+      </div> 
+
+      <div class="howToImageContainer imageBContainer hidden">
+        <img src="{{ imageBUrl }}">
+      </div> 
+    
+      <div class="howToNavigation">
+        <button class="howToBackButton" type="button" disabled> 
+          <img src="IMG/howto/light-left-arrow.png">
+        </button>
+        <button class="howToForwardButton" type="button"> 
+          <img src="IMG/howto/dark-right-arrow.png">
+        </button>
+      </div>
+
+    </div>
+  """
+
+
+
 

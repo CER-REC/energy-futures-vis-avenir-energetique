@@ -4,9 +4,9 @@ module.exports =
     mainHeader: 
       en: "EXPLORING CANADA'S ENERGY FUTURE"
       fr: 'EXPLORER L’AVENIR ÉNERGÉTIQUE DU CANADA'
-    contentHeader1: 
-      en: "What is Canada's energy future?"
-      fr: 'Quel est l’avenir énergétique du Canada?'
+    # contentHeader1: 
+    #   en: "What is Canada's energy future?"
+    #   fr: 'Quel est l’avenir énergétique du Canada?'
     content1:
       en: """
         Energy is important to Canada. It heats our homes, fuels our vehicles, and is a key aspect of Canada’s economy. Canada is a vast nation with an incredibly diverse energy mix.  An important part of our country’s future will be determined by how energy is produced and used. 
@@ -811,9 +811,6 @@ module.exports =
 
 
 
-  globalNavbarHelp: 
-    en: '<todo> Coming Soon'
-    fr: '<todo> Arrive bientôt'
   visualization1NavbarHelp: 
     en: """
           <h4 class="viz1HelpTitle"> EXPLORE BY REGION </h4>
@@ -1002,6 +999,34 @@ module.exports =
         # • Crude Oil:
         # • Électricité
         # • Pétrole brut
+
+  howToImages: 
+    viz1A:
+      en: 'IMG/howto/Visualization_HowTo_1A-EN.png'
+      fr: 'IMG/howto/Visualization_HowTo_1A-FR.png'
+    viz1B:
+      en: 'IMG/howto/Visualization_HowTo_1B-EN.png'
+      fr: 'IMG/howto/Visualization_HowTo_1B-FR.png'
+    viz2A:
+      en: 'IMG/howto/Visualization_HowTo_2A-EN.png'
+      fr: 'IMG/howto/Visualization_HowTo_2A-FR.png'
+    viz2B:
+      en: 'IMG/howto/Visualization_HowTo_2B-EN.png'
+      fr: 'IMG/howto/Visualization_HowTo_2B-FR.png'
+    viz3A:
+      en: 'IMG/howto/Visualization_HowTo_3A-EN.png'
+      fr: 'IMG/howto/Visualization_HowTo_3A-FR.png'
+    viz3B:
+      en: 'IMG/howto/Visualization_HowTo_3B-EN.png'
+      fr: 'IMG/howto/Visualization_HowTo_3B-FR.png'
+    viz4A:
+      en: 'IMG/howto/Visualization_HowTo_4A-EN.png'
+      fr: 'IMG/howto/Visualization_HowTo_4A-FR.png'
+    viz4B:
+      en: 'IMG/howto/Visualization_HowTo_4B-EN.png'
+      fr: 'IMG/howto/Visualization_HowTo_4B-FR.png'
+
+
 
 
 
