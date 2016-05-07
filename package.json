@@ -1,6 +1,6 @@
 {
   "name": "d3-neb",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "NEB project",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -23,10 +23,6 @@
     "query-string": "^4.0.2",
     "mustache": "^2.2.1",
     "watchify": "^3.2.1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git@github.com:EnergyFuturesVisualization/energy-futures-visualization.git"
   },
   "author": "Stephanie Sachrajda",
   "devDependencies": {
