@@ -11,7 +11,11 @@ module.exports =
         <p> {{{ content }}} </p>
       </div>
       <div id="panelRight">
-        <img src='IMG/landingPageThumb/carousel3.png' class='mainImageCarousel'>
+        <figure class="wb-mltmd">
+          <video title="Canada's Energy Future" controls autoplay>
+            <source type="video/mp4" src="/MP4/DataVis_SplashVid_Proof1.mp4" />
+          </video>
+        </figure>
       </div>
     </div>
 
