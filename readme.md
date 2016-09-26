@@ -65,7 +65,7 @@ We used [git-flow](https://github.com/nvie/gitflow) to manage our branching stra
 In the `energy-futures-visualization` folder:
 
 * `npm install` - Fetch all of the Javascript dependencies
-* `npm run start` - Run the development server
+* `npm run start` - Run the development server (`localhost:3000`)
 * `npm run watch` - Transpile the app's code and dependencies, and watch for changes
 * The app is contained in the WET 4.0.20 frame
 
