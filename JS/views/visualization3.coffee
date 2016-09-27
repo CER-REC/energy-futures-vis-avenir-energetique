@@ -8,7 +8,7 @@ templates = require '../templates.coffee'
 Mustache = require 'mustache'
 Tr = require '../TranslationTable.coffee'
 
-class visualization3  extends visualization
+class Visualization3 extends visualization
   height = 700 
   width = 1000
 
@@ -280,7 +280,7 @@ class visualization3  extends visualization
           colour: '#339947'
         coal:
           key: 'coal' 
-          img: if @config.source ==  'coal' then 'IMG/sources/coal_selectedR.svg' else 'IMG/sources/coal_unselectedR.svg'
+          img: if @config.source == 'coal' then 'IMG/sources/coal_selectedR.svg' else 'IMG/sources/coal_unselectedR.svg'
           present: true
           colour: '#996733'
         naturalGas:
@@ -1043,7 +1043,6 @@ class visualization3  extends visualization
       if @config.viewBy == 'province' then images = @colouredSourceIconsDictionary() else images = @sourcesBlackDictionary()
       #Grab the provinces in order for the string
       contentString = ""
-      # console.log Tr.regionSelector.names, @provinceMenuData()
       for key, source of @sourceMenuData()
         contentString = """
           <div class="#{if @config.viewBy == "source" then 'sourceLabel'  else 'sourceLabel sourceLabel' + key}"> 
@@ -1080,7 +1079,6 @@ class visualization3  extends visualization
       
       #Grab the provinces in order for the string
       contentString = ""
-      # console.log Tr.regionSelector.names, @provinceMenuData()
       for province of @provinceMenuData()
         contentString = """<div class="#{if @config.viewBy == 'province' then 'provinceLabel' else 'provinceLabel provinceLabel' + province}"> <h6> #{Tr.regionSelector.names[province][app.language]} </h6> </div>""" + contentString
 
@@ -1101,8 +1099,8 @@ class visualization3  extends visualization
     else
       d3.selectAll('.floatingPopover.provinceHelp').remove()
 
-visualization3.resourcesLoaded = ->
+Visualization3.resourcesLoaded = ->
   app.loadedStatus.electricityProductionProvider
 
 
-module.exports = visualization3
+module.exports = Visualization3

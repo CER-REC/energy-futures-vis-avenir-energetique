@@ -254,7 +254,6 @@ class Visualization4
       
       #Grab the provinces in order for the string
       contentString = ""
-      # console.log Tr.regionSelector.names, @provinceMenuData()
       for province in @dataForProvinceMenu()
         contentString = """<div class="provinceLabel"> <h6> #{Tr.regionSelector.names[province.key][app.language]} </h6> </div>""" + contentString
 

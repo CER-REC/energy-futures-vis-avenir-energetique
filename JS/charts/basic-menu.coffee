@@ -29,7 +29,6 @@ class basicMenu extends chart
 
   # Unused! 
   # redraw: ->
-  #   console.log 'for srs?'
   #   @_group.selectAll('.menuItem').remove()
   #   @_group.selectAll('.menuCircle').remove()
   #   @_group.selectAll('.menuItem').data(@_data).enter().append('g').attr

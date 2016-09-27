@@ -18,15 +18,15 @@ class bubbleChart extends chart
     @menu = new squareMenu(@options.menuParent, @options.menuOptions)
     @redraw()
 
-  data: (d, key) ->
+  data: (d) ->
     if !arguments.length
       return @_data
     @_data = d
-    @_key = key
     @redraw()
 
-  mappingAsObject: ->
-    @_mapping
+  # unused
+  # mappingAsObject: ->
+  #   @_mapping
 
   mapping: (mapping) ->
     if !arguments.length
@@ -120,7 +120,7 @@ class bubbleChart extends chart
 
     node.select('g').select('image')  
       .attr(
-        "xlink:href":   (d) -> if d.img then d.img
+        "xlink:href": (d) -> if d.img then d.img
         x: 0
         width: 25
         height: 25)

@@ -8,7 +8,7 @@ Constants = require '../Constants.coffee'
 Mustache = require 'mustache'
 Tr = require '../TranslationTable.coffee'
 
-class view1 extends visualization
+class Visualization1 extends visualization
   #basic svg set up 
   
   height = 700 
@@ -101,7 +101,6 @@ class view1 extends visualization
       left: 9 #necessary for the labels at the bottom
       right: 60
     @_barMargin = 2
-    @_menu = null #TODO: this should not be necessary
     @svgSize()
     @addMainSelector()
     @addUnitToggle()
@@ -131,7 +130,10 @@ class view1 extends visualization
 
   #arg so we want this menu to line up with the bottom of the x axis TICKS so those must be built before we can set this.
   provinceMenuHeight: ->
-    @height() - d3.select('span.titleLabel').node().getBoundingClientRect().height + d3.select('#xAxis').node().getBoundingClientRect().height + (d3.select('#xAxisForLabels text').node().getBoundingClientRect().height /2)
+    @height() - 
+    d3.select('span.titleLabel').node().getBoundingClientRect().height + 
+    d3.select('#xAxis').node().getBoundingClientRect().height + 
+    (d3.select('#xAxisForLabels text').node().getBoundingClientRect().height /2)
 
   #the graph's width
   width: ->
@@ -281,7 +283,7 @@ class view1 extends visualization
     }
 
   #csv parsing within method
-  getData: ()->
+  getData: ->
     switch @config.mainSelection
       when 'gasProduction'  
         @seriesData = app.gasProductionProvider.dataForViz1 @config
@@ -428,7 +430,7 @@ class view1 extends visualization
           y2: @height() + @_margin.top + d3.select('#xAxisForLabels text').node().getBoundingClientRect().height + d3.select('#xAxis').node().getBoundingClientRect().height
 
   #build viz: run the first time only: adds the bottom axis, assigns the chart 
-  buildViz:() ->  
+  buildViz: ->  
     @buildYAxis()
     @buildXAxis()    
     
@@ -477,7 +479,7 @@ class view1 extends visualization
     @_chart = new stackedBarChart("#graphSVG", @xScale(), @yScale(), stackedOptions)   
 
   #called for adjustments: basically to avoid rebuilding the x axis and the chart object
-  adjustViz: () ->
+  adjustViz: ->
     @_chart.menu.allSelected @getSelectionState().allSelected
     @_chart.menu.someSelected @getSelectionState().someSelected
     @_chart.mapping @provinceMenuData()
@@ -511,7 +513,6 @@ class view1 extends visualization
       
       #Grab the provinces in order for the string
       contentString = ""
-      # console.log Tr.regionSelector.names, @provinceMenuData()
       for province in @provinceMenuData()
         contentString = """<div class="provinceLabel provinceLabel#{province.key}"> <h6> #{Tr.regionSelector.names[province.key][app.language]} </h6> </div>""" + contentString
 
@@ -533,7 +534,7 @@ class view1 extends visualization
       d3.selectAll('.floatingPopover.provinceHelp').remove()
 
 
-view1.resourcesLoaded = ->
+Visualization1.resourcesLoaded = ->
   app.loadedStatus.energyConsumptionProvider and
   app.loadedStatus.oilProductionProvider and
   app.loadedStatus.gasProductionProvider and
@@ -541,4 +542,4 @@ view1.resourcesLoaded = ->
 
 
 
-module.exports = view1
+module.exports = Visualization1
