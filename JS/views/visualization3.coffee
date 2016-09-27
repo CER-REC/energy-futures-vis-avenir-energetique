@@ -1,7 +1,6 @@
 d3 = require 'd3'
 visualization = require './visualization.coffee'
 unitUtilities = require '../unit-transformation.coffee'
-arrayUtilities = require '../array-utilities.coffee'
 bubbleChart = require '../charts/bubble-chart.coffee'
 Constants = require '../Constants.coffee'
 squareMenu = require '../charts/square-menu.coffee'

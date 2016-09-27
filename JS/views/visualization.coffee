@@ -1,5 +1,4 @@
 d3 = require 'd3'
-arrayUtilities = require '../array-utilities.coffee'
 squareMenu = require '../charts/square-menu.coffee'
 Tr = require '../TranslationTable.coffee'
 
