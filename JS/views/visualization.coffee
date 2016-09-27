@@ -188,10 +188,7 @@ class visualization
 
       scenariosSelectors.exit().remove()
 
-  # unused  
-  # enableOptions: () ->
-  #   d3.selectAll('.sectorButton, .scenarioButton')
-  #     .classed("disabled", false)
+
 
   addSectors: ->
     if @config.sector?  

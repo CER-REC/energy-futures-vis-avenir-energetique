@@ -346,7 +346,7 @@ class Visualization2 extends visualization
       @buildViz()
 
   #Gets the total of all the maximums (since we are stacking the data)
-  graphDataTotal: (data) ->
+  graphDataMaximum: (data) ->
     totalMax = 0
     for key in Object.keys data
       totalMax+= d3.max(data[key], (d) -> d.value)
@@ -356,7 +356,7 @@ class Visualization2 extends visualization
     d3.scale.linear()
       .domain([
         0 
-        @graphDataTotal(@seriesData)
+        @graphDataMaximum(@seriesData)
       ])
       .range [@height(), 0]
       .nice()

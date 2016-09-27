@@ -410,22 +410,22 @@ class Visualization4
 
 
   graphScenarioData: ->
-    reference=
+    reference =
       key: 'reference'
       colour: '#999999'
-    high=
+    high =
       key: 'high'
       colour: '#0C2C84'
-    highLng=
+    highLng =
       key: 'highLng'
       colour: '#225EA8'
-    constrained=
+    constrained =
       key: 'constrained'
       colour: '#41B6C4'
-    low=
+    low =
       key: 'low'
       colour: '#7FCDBB'
-    noLng=
+    noLng =
       key: 'noLng'
       colour: '#C7E9B4'
 

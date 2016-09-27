@@ -99,7 +99,7 @@ class EnergyConsumptionProvider
     @loadedCallback()
     
     
-  # accessors note: this is never needed for viz 2!!
+  # accessors note: this is never needed for viz 3!!
   dataForViz1: (viz1config) ->
     filteredProvinceData = {}    
 
