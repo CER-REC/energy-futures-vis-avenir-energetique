@@ -70,7 +70,10 @@ class OilProductionProvider
     
 
 
-  # accessors note: this is never needed for viz 2 or 3!!
+  # accessors note: OilProductionProvider is never needed for viz 2 or 3!!
+
+
+  
   dataForViz1: (viz1config) ->
     filteredProvinceData = {}    
 
@@ -110,6 +113,14 @@ class OilProductionProvider
 
 
 
+  # Returns an object keyed by scenario name (e.g. 'reference')
+  # Each entry has an array of objects in ascending order by year, like:
+  # province: 'all'
+  # scenario: 'constrained'
+  # sector: undefined
+  # source: 'total'
+  # value: 2161.98
+  # year: 2005
   dataForViz4: (viz4config) ->
     filteredScenarioData = {}    
 

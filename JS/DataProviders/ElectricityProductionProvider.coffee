@@ -128,7 +128,17 @@ class ElectricityProductionProvider
 
 
 
-  # accessors note: this is never needed for viz 2!!
+  # accessors note: ElectricityProductionProvider is never needed for viz 2!!
+
+
+  # Returns an object keyed by province short code (like "AB")
+  # Each entry has an array of objects in ascending order by year, like:
+  # province: 'AB'
+  # scenario: 'reference'
+  # sector: undefined
+  # source: 'total'
+  # value: 234.929
+  # year: 2005
   dataForViz1: (viz1config) ->
     filteredProvinceData = {}    
 
@@ -161,6 +171,24 @@ class ElectricityProductionProvider
       return unitConvertedProvinceData
 
 
+
+
+  # Returns an object like
+  # name: 'Total'
+  # viewBy: 'province'
+  # children: []
+
+  # Each of the child objects at depth 1 are like: 
+  # name: 'BC'
+  # children: []
+
+  # each of the child objects at depth 2 are like: 
+  # id: 'hydroBC'
+  # name: "HYDRO BC"
+  # size: 63631.55
+  # source: "hydro"
+
+  # bubble-chart and the D3 bubble packing system add numerous other properties to these objects
   dataForViz3: (viz3config) ->
     filteredData = {} #this is filtered by the viewBy
 
@@ -241,8 +269,14 @@ class ElectricityProductionProvider
 
 
 
-
-
+  # Returns an object keyed by scenario name (e.g. 'reference')
+  # Each entry has an array of objects in ascending order by year, like:
+  # province: 'all'
+  # scenario: 'constrained'
+  # sector: undefined
+  # source: 'total'
+  # value: 2161.98
+  # year: 2005
   dataForViz4: (viz4config) ->
     filteredScenarioData = {}    
 
