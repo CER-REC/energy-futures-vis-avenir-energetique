@@ -83,17 +83,17 @@ class EnergyConsumptionProvider
       electricity: []
       total: []
 
-    @dataBySector = 
-      total: []
-      residential: []
-      commercial: []
-      industrial: []
-      transportation: []
+    # @dataBySector = 
+    #   total: []
+    #   residential: []
+    #   commercial: []
+    #   industrial: []
+    #   transportation: []
 
     for item in @data
       @dataByScenario[item.scenario].push item
       @dataByProvince[item.province].push item
-      @dataBySector[item.sector].push item
+      # @dataBySector[item.sector].push item
       @dataBySource[item.source].push item
 
     @loadedCallback()

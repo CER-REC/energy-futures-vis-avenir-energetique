@@ -1,4 +1,4 @@
-basicMenu = require ('./basic-menu.coffee')
+basicMenu = require './basic-menu.coffee'
 _ = require 'lodash'
 d3 = require 'd3'
 Tr = require '../TranslationTable.coffee'
