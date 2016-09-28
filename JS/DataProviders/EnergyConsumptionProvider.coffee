@@ -155,15 +155,12 @@ class EnergyConsumptionProvider
       return unitConvertedProvinceData
 
 
-  # Returns an object keyed by energy source (like 'solarWindGeothermal')
-  # Each entry has an array of objects in ascending order by year, like:
-  #   province: 'all'
-  #   scenario: 'reference'
-  #   sector: 'total'
-  #   source: 'coal'
-  #   value: 244.4053
-  #   year: 2005
-  dataForViz2: (viz2config) ->
+
+  # Returns a set of data corresponding to the given config object, except that 
+  # it has not been filtered by scenario. In order to show a y-axis which does not change
+  # when the user switches the scenario, we need to take the maximum of all of the data 
+  # across scenarios for a given configuration.
+  dataForAllViz2Scenarios: (viz2config) ->
     filteredSourceData = {}
 
     # Exclude data from sources that aren't in the set
@@ -171,12 +168,11 @@ class EnergyConsumptionProvider
       if viz2config.sources.includes sourceName
         filteredSourceData[sourceName] = @dataBySource[sourceName]
 
-    # Include only data for the current province
+    # Include only data for the province and sector
     for sourceName in Object.keys filteredSourceData
       filteredSourceData[sourceName] = filteredSourceData[sourceName].filter (item) ->
         item.province == viz2config.province and
-        item.sector == viz2config.sector and
-        item.scenario == viz2config.scenario
+        item.sector == viz2config.sector
 
     # Finally, convert units
     return filteredSourceData if viz2config.unit == 'petajoules'
@@ -195,6 +191,25 @@ class EnergyConsumptionProvider
             year: item.year
             value: item.value * UnitTransformation.transformUnits('petajoules', 'kilobarrelEquivalents')
       return unitConvertedSourceData
+
+
+  # Returns an object keyed by energy source (like 'solarWindGeothermal')
+  # Each entry has an array of objects in ascending order by year, like:
+  #   province: 'all'
+  #   scenario: 'reference'
+  #   sector: 'total'
+  #   source: 'coal'
+  #   value: 244.4053
+  #   year: 2005
+  dataForViz2: (viz2config) ->
+    unfilteredData = @dataForAllViz2Scenarios viz2config
+    filteredData = {}
+
+    for sourceName in Object.keys unfilteredData
+      filteredData[sourceName] = unfilteredData[sourceName].filter (item) ->
+        item.scenario == viz2config.scenario
+
+    filteredData
 
 
   # Returns an object keyed by scenario name (e.g. 'reference')

@@ -340,6 +340,7 @@ class Visualization2 extends visualization
   #csv parsing within method
   getData: ()->
     @seriesData = app.energyConsumptionProvider.dataForViz2 @config
+    @yAxisData = app.energyConsumptionProvider.dataForAllViz2Scenarios @config
     if @_chart?
       @adjustViz()
     else
@@ -356,7 +357,7 @@ class Visualization2 extends visualization
     d3.scale.linear()
       .domain([
         0 
-        @graphDataMaximum(@seriesData)
+        @graphDataMaximum(@yAxisData)
       ])
       .range [@height(), 0]
       .nice()
