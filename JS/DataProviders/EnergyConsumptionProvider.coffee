@@ -116,13 +116,10 @@ class EnergyConsumptionProvider
         filteredProvinceData[provinceName] = @dataByProvince[provinceName]
 
     # We aren't interested in breakdowns by source, only the totals
-    for provinceName in Object.keys filteredProvinceData
-      filteredProvinceData[provinceName] = filteredProvinceData[provinceName].filter (item) ->
-        item.source == 'total'
-
     # We aren't interested in breakdowns by sector, only the totals
     for provinceName in Object.keys filteredProvinceData
       filteredProvinceData[provinceName] = filteredProvinceData[provinceName].filter (item) ->
+        item.source == 'total' and 
         item.sector == 'total'
 
     # Finally, convert units
