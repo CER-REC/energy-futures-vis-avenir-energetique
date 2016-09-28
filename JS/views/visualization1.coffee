@@ -287,12 +287,16 @@ class Visualization1 extends visualization
     switch @config.mainSelection
       when 'gasProduction'  
         @seriesData = app.gasProductionProvider.dataForViz1 @config
+        @yAxisData = app.gasProductionProvider.dataForAllViz1Scenarios @config
       when 'electricityGeneration'
         @seriesData = app.electricityProductionProvider.dataForViz1 @config
+        @yAxisData = app.electricityProductionProvider.dataForAllViz1Scenarios @config
       when 'energyDemand'
         @seriesData = app.energyConsumptionProvider.dataForViz1 @config
+        @yAxisData = app.energyConsumptionProvider.dataForAllViz1Scenarios @config
       when 'oilProduction'
         @seriesData = app.oilProductionProvider.dataForViz1 @config
+        @yAxisData = app.oilProductionProvider.dataForAllViz1Scenarios @config
     if @_chart?
       @adjustViz()
     else
@@ -313,7 +317,7 @@ class Visualization1 extends visualization
     d3.scale.linear()
       .domain([
         0 
-        @graphDataMaximum(@seriesData)
+        @graphDataMaximum(@yAxisData)
       ])
       .range [@height(), 0]
 

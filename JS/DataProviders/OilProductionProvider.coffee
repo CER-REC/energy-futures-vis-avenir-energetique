@@ -73,19 +73,11 @@ class OilProductionProvider
   # accessors note: OilProductionProvider is never needed for viz 2 or 3!!
 
 
-
-  # Returns an object keyed by province short code (like "AB")
-  # Each entry has an array of objects in ascending order by year, like:
-  #   province: 'AB'
-  #   scenario: 'reference'
-  #   type: 'Total', or absent
-  #   sector: 'total', undefined, or absent
-  #   source: 'total', undefined, or absent
-  #   value: 234.929
-  #   year: 2005
-  # The attributes available vary from dataset to dataset, which is why some of them may 
-  # or may not be present. 
-  dataForViz1: (viz1config) ->
+  # Returns a set of data corresponding to the given config object, except that 
+  # it has not been filtered by scenario. In order to show a y-axis which does not change
+  # when the user switches the scenario, we need to take the maximum of all of the data 
+  # across scenarios for a give configuration.
+  dataForAllViz1Scenarios: (viz1config) ->
     filteredProvinceData = {}    
 
     # Exclude data from provinces that aren't in the set
@@ -97,11 +89,6 @@ class OilProductionProvider
     for provinceName in Object.keys filteredProvinceData
       filteredProvinceData[provinceName] = filteredProvinceData[provinceName].filter (item) ->
         item.type == 'Total'
-
-    # Include only data for the current scenario
-    for provinceName in Object.keys filteredProvinceData
-      filteredProvinceData[provinceName] = filteredProvinceData[provinceName].filter (item) ->
-        item.scenario == viz1config.scenario
     
     # Finally, convert units
     return filteredProvinceData if viz1config.unit == 'thousandCubicMetres'
@@ -120,6 +107,31 @@ class OilProductionProvider
             year: item.year
             value: item.value * UnitTransformation.transformUnits('thousandCubicMetres', 'kilobarrels')
       return unitConvertedProvinceData
+
+
+
+
+
+  # Returns an object keyed by province short code (like "AB")
+  # Each entry has an array of objects in ascending order by year, like:
+  #   province: 'AB'
+  #   scenario: 'reference'
+  #   type: 'Total', or absent
+  #   sector: 'total', undefined, or absent
+  #   source: 'total', undefined, or absent
+  #   value: 234.929
+  #   year: 2005
+  # The attributes available vary from dataset to dataset, which is why some of them may 
+  # or may not be present. 
+  dataForViz1: (viz1config) ->
+    unfilteredData = @dataForAllViz1Scenarios viz1config
+    filteredData = {}
+
+    for sourceName in Object.keys unfilteredData
+      filteredData[sourceName] = unfilteredData[sourceName].filter (item) ->
+        item.scenario == viz1config.scenario
+
+    filteredData
 
 
 
