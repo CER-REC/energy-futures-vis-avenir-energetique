@@ -133,12 +133,15 @@ class ElectricityProductionProvider
 
   # Returns an object keyed by province short code (like "AB")
   # Each entry has an array of objects in ascending order by year, like:
-  # province: 'AB'
-  # scenario: 'reference'
-  # sector: undefined
-  # source: 'total'
-  # value: 234.929
-  # year: 2005
+  #   province: 'AB'
+  #   scenario: 'reference'
+  #   type: 'Total', or absent
+  #   sector: 'total', undefined, or absent
+  #   source: 'total', undefined, or absent
+  #   value: 234.929
+  #   year: 2005
+  # The attributes available vary from dataset to dataset, which is why some of them may 
+  # or may not be present. 
   dataForViz1: (viz1config) ->
     filteredProvinceData = {}    
 
@@ -188,7 +191,8 @@ class ElectricityProductionProvider
   # size: 63631.55
   # source: "hydro"
 
-  # bubble-chart and the D3 bubble packing system add numerous other properties to these objects
+  # bubble-chart and the D3 bubble packing system add numerous other properties to these 
+  # objects after we return them here.
   dataForViz3: (viz3config) ->
     filteredData = {} #this is filtered by the viewBy
 
@@ -271,12 +275,14 @@ class ElectricityProductionProvider
 
   # Returns an object keyed by scenario name (e.g. 'reference')
   # Each entry has an array of objects in ascending order by year, like:
-  # province: 'all'
-  # scenario: 'constrained'
-  # sector: undefined
-  # source: 'total'
-  # value: 2161.98
-  # year: 2005
+  #   province: 'all'
+  #   scenario: 'constrained'
+  #   sector: 'total' or undefined
+  #   source: 'total' or undefined, or the attribute may be absent
+  #   value: 2161.98
+  #   year: 2005
+  # The attributes available vary from dataset to dataset, which is why some of them may 
+  # or may not be present. 
   dataForViz4: (viz4config) ->
     filteredScenarioData = {}    
 
