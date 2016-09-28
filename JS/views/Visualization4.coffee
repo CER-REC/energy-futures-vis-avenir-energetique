@@ -408,6 +408,17 @@ class Visualization4
       when 'gasProduction'
         app.gasProductionProvider.dataForViz4 @config
 
+  yAxisData: ->
+    switch @config.mainSelection
+      when 'energyDemand'
+        app.energyConsumptionProvider.dataForAllViz4Scenarios @config
+      when 'electricityGeneration'
+        app.electricityProductionProvider.dataForAllViz4Scenarios @config
+      when 'oilProduction'
+        app.oilProductionProvider.dataForAllViz4Scenarios @config
+      when 'gasProduction'
+        app.gasProductionProvider.dataForAllViz4Scenarios @config
+
 
   graphScenarioData: ->
     reference =
@@ -449,7 +460,7 @@ class Visualization4
   # We have one series of data for each scenario to graph simultaneously, so we need
   # to know what the maximum among all of them is for the y axis
   graphDataMaximum: ->
-    data = @graphData()
+    data = @yAxisData()
     maximums = []
     for key in Object.keys data
       maximums.push d3.max(data[key], (d) -> d.value)
@@ -574,6 +585,7 @@ class Visualization4
         # TODO: For efficiency, only rerender what's necessary.
         @renderUnitsSelector()
         @renderYAxis()
+        @renderGraph()
 
     unitsSelectors.html (d) ->
       "<button class='#{d.class}' type='button'>#{d.label}</button>"
