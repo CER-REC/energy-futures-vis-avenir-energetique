@@ -1,4 +1,6 @@
 
+_ = require 'lodash'
+
 require './ArrayIncludes.coffee'
 Router = require './Router.coffee'
 Domready = require 'domready'
@@ -22,6 +24,11 @@ ImageExporter = require './ImageExporter.coffee'
 class App
 
   setup: ->
+
+    # The app loads within an iframe, but it needs to interact with some features of the containing window
+
+    @containingWindow = window.parent
+
 
     @loadFonts()
 
@@ -92,13 +99,17 @@ class App
         name: 'keywords'
         content: ''
 
-    d3.select(window).on 'resize', ->
+
+    # Debounce, to redraw just once after the user has resized the display
+    # At small screen sizes the visualization would be resized/redrawn repeatedly, otherwise
+    @debouncedResizeHandler = _.debounce =>
       newWidth = d3.select('#canadasEnergyFutureVisualization').node().getBoundingClientRect().width
       if newWidth != @screenWidth 
         @screenWidth = newWidth
-        # don't redraw once we are on phone size to avoid redrawing every pixel
-        if @screenWidth >= 720  
-          @app.currentView.redraw() if @app.currentView?
+        @currentView.redraw() if @currentView?
+    , 100 # delay, in ms  
+
+    d3.select(@containingWindow).on 'resize', @debouncedResizeHandler
 
     #humans.txt
     if d3.selectAll('head link[rel="author"][href="humans.txt"]').empty()

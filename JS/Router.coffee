@@ -23,7 +23,7 @@ class Router
   constructor: (app) ->
     @app = app
     @navbar = new Navbar()
-    window.onpopstate = @onHistoryPopState
+    @app.containingWindow.onpopstate = @onHistoryPopState
     
     params = Router.parseQueryParams()
     @setInitialParamConfiguration params
@@ -133,64 +133,64 @@ class Router
   landingPageHandler: (options) ->
     if not @app.currentView?
       @app.currentView = new LandingPage()
-      history.replaceState {page: 'landingPage'}, '', "?page=landingPage" if options.shouldUpdateHistory
+      @app.containingWindow.history.replaceState {page: 'landingPage'}, '', "?page=landingPage" if options.shouldUpdateHistory
     else if not (@app.currentView instanceof LandingPage)
       @app.currentView.tearDown()
       @app.currentView = new LandingPage()
-      history.pushState {page: 'landingPage'}, '', "?page=landingPage" if options.shouldUpdateHistory
+      @app.containingWindow.history.pushState {page: 'landingPage'}, '', "?page=landingPage" if options.shouldUpdateHistory
 
 
   viz1Handler: (params, options) ->
     if not @app.currentView?
       @app.currentView = new Visualization1 @app.visualization1Configuration
-      history.replaceState params, '', @paramsToUrlString(params) if options.shouldUpdateHistory
+      @app.containingWindow.history.replaceState params, '', @paramsToUrlString(params) if options.shouldUpdateHistory
     else if not (@app.currentView instanceof Visualization1)
       @app.currentView.tearDown()
       @app.currentView = new Visualization1 @app.visualization1Configuration
-      history.pushState params, '', @paramsToUrlString(params) if options.shouldUpdateHistory
+      @app.containingWindow.history.pushState params, '', @paramsToUrlString(params) if options.shouldUpdateHistory
       @updateKeyWordsTagViz1()
     else if options.shouldUpdateHistory
-      history.replaceState params, '', @paramsToUrlString(params)
+      @app.containingWindow.history.replaceState params, '', @paramsToUrlString(params)
       @updateKeyWordsTagViz1()
 
 
   viz2Handler: (params, options) ->
     if not @app.currentView?
       @app.currentView = new Visualization2 @app.visualization2Configuration
-      history.replaceState params, '', @paramsToUrlString(params) if options.shouldUpdateHistory
+      @app.containingWindow.history.replaceState params, '', @paramsToUrlString(params) if options.shouldUpdateHistory
     else if not (@app.currentView instanceof Visualization2)
       @app.currentView.tearDown()
       @app.currentView = new Visualization2 @app.visualization2Configuration
-      history.pushState params, '', @paramsToUrlString(params) if options.shouldUpdateHistory
+      @app.containingWindow.history.pushState params, '', @paramsToUrlString(params) if options.shouldUpdateHistory
       @updateKeyWordsTagViz2()
     else if options.shouldUpdateHistory
-      history.replaceState params, '', @paramsToUrlString(params)
+      @app.containingWindow.history.replaceState params, '', @paramsToUrlString(params)
       @updateKeyWordsTagViz2()
 
   viz3Handler: (params, options) ->
     if not @app.currentView?
       @app.currentView = new Visualization3 @app.visualization3Configuration
-      history.replaceState params, '', @paramsToUrlString(params) if options.shouldUpdateHistory
+      @app.containingWindow.history.replaceState params, '', @paramsToUrlString(params) if options.shouldUpdateHistory
     else if not (@app.currentView instanceof Visualization3)
       @app.currentView.tearDown()
       @app.currentView = new Visualization3 @app.visualization3Configuration
-      history.pushState params, '', @paramsToUrlString(params) if options.shouldUpdateHistory
+      @app.containingWindow.history.pushState params, '', @paramsToUrlString(params) if options.shouldUpdateHistory
       @updateKeyWordsTagViz3()
     else if options.shouldUpdateHistory
-      history.replaceState params, '', @paramsToUrlString(params)
+      @app.containingWindow.history.replaceState params, '', @paramsToUrlString(params)
       @updateKeyWordsTagViz3()
   
   viz4Handler: (params, options) ->
     if not @app.currentView?
       @app.currentView = new Visualization4 @app.visualization4Configuration
-      history.replaceState params, '', @paramsToUrlString(params) if options.shouldUpdateHistory
+      @app.containingWindow.history.replaceState params, '', @paramsToUrlString(params) if options.shouldUpdateHistory
     else if not (@app.currentView instanceof Visualization4)
       @app.currentView.tearDown()
       @app.currentView = new Visualization4 @app.visualization4Configuration
-      history.pushState params, '', @paramsToUrlString(params) if options.shouldUpdateHistory
+      @app.containingWindow.history.pushState params, '', @paramsToUrlString(params) if options.shouldUpdateHistory
       @updateKeyWordsTagViz4()
     else if options.shouldUpdateHistory
-      history.replaceState params, '', @paramsToUrlString(params)
+      @app.containingWindow.history.replaceState params, '', @paramsToUrlString(params)
       @updateKeyWordsTagViz4()
 
 
@@ -258,7 +258,8 @@ class Router
 
 
 Router.parseQueryParams = ->
-  params = QueryString.parse document.location.search
+  # TODO: would be nice if I could read this from app... but it may not be initialized yet here ... 
+  params = QueryString.parse window.parent.document.location.search
   if params.scenarios?
     params.scenarios = params.scenarios.split ','
   if params.provinces?

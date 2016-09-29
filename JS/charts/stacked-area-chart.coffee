@@ -1,3 +1,4 @@
+_ = require 'lodash'
 stackedBarChart = require './stacked-bar-chart.coffee'
 
 class stackedAreaChart extends stackedBarChart

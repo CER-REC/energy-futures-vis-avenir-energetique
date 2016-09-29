@@ -1,0 +1,30 @@
+
+/* 
+
+This slightly mysterious CSS allows us to position the iframe inline with the content of the page and have it resize appropriately. If the aspect ratio of the visualization content changes, the padding-bottom values may need to change also. 
+
+TODO: Currently, the padding-bottom values are clibrated for the height needed on a mobile device, in tests they could be as low as 75% with the site in desktop mode. Create responsive cutoffs for padding-bottom?
+
+*/
+
+#energy-future-outer-container {
+  position: relative;
+  width: 100%;
+  padding-bottom: 125%;
+}
+
+#energy-future-iframe-container {
+  padding-bottom: 125%;
+  width: 100%;
+  position: absolute;
+}
+
+#energy-future-iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+
+  position: absolute;
+  top: 0;
+  left: 0;
+}
