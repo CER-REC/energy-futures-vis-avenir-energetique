@@ -34,6 +34,7 @@ class App
 
     @currentView = null
     @router = null
+    # NB: This now refers to the iframe width
     @screenWidth = (window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth)
 
     # Global URL params, these are initialized by the router
@@ -153,7 +154,7 @@ class App
       @setupRouter()
 
 
-    @imageExporter = new ImageExporter()
+    @imageExporter = new ImageExporter @
 
     @setupRouter()
 

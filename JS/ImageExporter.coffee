@@ -11,7 +11,7 @@ d3 = require 'd3'
 
 class ImageExporter
 
-  constructor: ->
+  constructor: (@app) ->
     self = @
     # TODO: 
     # Safari is currently experiencing a bug where the SVGs drawn into it do not rescale
@@ -426,12 +426,12 @@ class ImageExporter
 
     # Stub for bitly link generation code. 
     # Uncomment to see a bitly link included in the exported image.
-    # ShortLinkBitly = (__, callback) ->
+    # @app.containingWindow.ShortLinkBitly = (__, callback) ->
     #   callback 'http://bit.ly/1KFQCvu' # NEB homepage <3
 
     # Draw Bitly Link, if the Bitly module is available on the global scope
-    if ShortLinkBitly?
-      ShortLinkBitly false, (url) ->
+    if @app.containingWindow.ShortLinkBitly?
+      @app.containingWindow.ShortLinkBitly false, (url) ->
 
 
         context.font = "#{ImageConstants.infoFontSize}px Avenir Next Demi Condensed, PT Sans Narrow"

@@ -71,48 +71,48 @@ class Router
       when 'viz2' then @viz2Handler params, options
       when 'viz3' then @viz3Handler params, options
       when 'viz4' then @viz4Handler params, options
-	      
+
 
     # Google analytics reporting integration, tailored for the NEB.
-    if ga?
-      ga('set', 'page', document.URL)        
+    if @app.containingWindow.ga?
+      @app.containingWindowga('set', 'page', document.URL)        
       
-      ga('send', {
+      @app.containingWindowga('send', {
         hitType: 'pageview',      
         page: document.URL,
         title: params.mainSelection,
         location: params.page
       })
         
-      ga('send', {
+      @app.containingWindowga('send', {
         hitType: 'event',      
         eventCategory: 'Selection'
         eventAction: params.mainSelection,
         eventLabel: params.page
       })
       
-      ga('send', {
+      @app.containingWindowga('send', {
         hitType: 'event',      
         eventCategory: 'Provinces'
         eventAction: params.provinces,
         eventLabel: params.page
       })
       
-      ga('send', {
+      @app.containingWindowga('send', {
         hitType: 'event',      
         eventCategory: 'Scenarios'
         eventAction: params.scenario,
         eventLabel: params.page
       })
       
-      ga('send', {
+      @app.containingWindowga('send', {
         hitType: 'event',      
         eventCategory: 'Year'
         eventAction: params.year,
         eventLabel: params.page
       })
       
-      ga('send', {
+      @app.containingWindowga('send', {
         hitType: 'event',      
         eventCategory: 'Unit'
         eventAction: params.unit,
@@ -258,7 +258,7 @@ class Router
 
 
 Router.parseQueryParams = ->
-  # TODO: would be nice if I could read this from app... but it may not be initialized yet here ... 
+  # TODO: would be nice if I could use @app.containingWindow... but it may not be initialized yet here ... 
   params = QueryString.parse window.parent.document.location.search
   if params.scenarios?
     params.scenarios = params.scenarios.split ','
