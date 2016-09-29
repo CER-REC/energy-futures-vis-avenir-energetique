@@ -22,6 +22,7 @@ fs.copySync("public/CSV", "dist/public/CSV");
 fs.copySync("public/IMG", "dist/public/IMG");
 fs.copySync("public/PDF", "dist/public/PDF");
 fs.copySync("views/app_fragment.mustache", "dist/public/app_fragment.html");
+fs.copySync("views/app_iframe.mustache", "dist/public/app_iframe.html");
 
 // The paid-up fonts are optional, the build is fine to continue without them.
 try {

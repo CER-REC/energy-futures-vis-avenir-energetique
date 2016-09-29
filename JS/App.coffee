@@ -45,7 +45,7 @@ class App
     # Language detection: we inspect the text in the change language link at the top of
     # the page. NB: the current language of the page is the *opposite* of the lanauge
     # that the link indicates, as the link is used to change the current language! 
-    languageLink = document.getElementById 'LangID'
+    languageLink = @containingWindow.document.getElementById 'LangID'
     unless languageLink?
       @language = 'en'
     else if languageLink.getAttribute('lang') == 'fr'

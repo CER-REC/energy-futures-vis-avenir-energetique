@@ -29,10 +29,11 @@ public
 ├── Font
 │   └── ...
 ├── bundle.js
-└── app_fragment.html
+├── app_fragment.html
+└── app_iframe.html
 ```
 
-`app_fragment.html` is a fragment of an HTML document, containing exactly the tags necessary to host the application. In development, we included this fragment in content templates for both WET 3.1.12 and WET 4.0.20 to ensure that it rendered well in both. We haven't included the the WET templates we used in development with the files we've distributed. 
+`app_fragment.html` is a fragment of an HTML document, containing exactly the tags necessary to host the application. The fragment is a minimal shell that links to `app_iframe.html`, a separate document which contains the application itself. (This iframe approach is necessary to work around a display issue with gradients in certain browsers.) In development, we included this fragment in content templates for both WET 3.1.12 and WET 4.0.20 to ensure that it rendered well in both. We haven't included the the WET templates we used in development with the files we've distributed. 
 
 `bundle.js` includes all of the Javascript necessary to run the app, and the other CSS, CSV, image, and font files are just the app's assets. All of the contents of `public` need to be deployed. 
 
@@ -41,10 +42,10 @@ You can view the app without an enclosing template by serving from the `public/`
 
 ## Dependencies
 * CSS - The app is designed to exist within a WET 3 or WET 4 content page, but should render acceptably outside of one. 
-* HTML Content - The application script depends on the HTML elements in `app_fragment.html`.
+* HTML Content - The application script depends on the HTML elements in `app_fragment.html` and `app_iframe.html`. 
 
 ## Installation 
-1. Place the contents of `app_fragment.html` into your site template. 
+1. Place the contents of `app_fragment.html` into your site template. Ensure that `app_iframe.html` is available from the server as well. 
 2. Serve the other files in `public/` with the same relative path as the HTML. E.g., if you are serving the application's HTML from `www.neb-one.gc.ca/visualization/app`, then the CSS should be available from `www.neb-one.gc.ca/visualization/app/CSS/canadasEnergyFutureVisualization.css`, etc. 
 
 
