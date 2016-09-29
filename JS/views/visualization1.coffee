@@ -150,7 +150,7 @@ class Visualization1 extends visualization
         height: height - @_margin.top
 
   provinceMenuData: ->
-    provinceColours= {  
+    provinceColours = {  
       'BC' :
         present: if @config.provinces.includes 'BC' then true else false
         colour: '#AEC7E8'
