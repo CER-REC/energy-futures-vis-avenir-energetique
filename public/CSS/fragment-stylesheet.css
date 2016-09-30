@@ -5,22 +5,18 @@ This slightly mysterious CSS allows us to position the iframe inline with the co
 
 Inspired by: https://benmarshall.me/responsive-iframes/
 
-TODO: Currently, the padding-bottom values are clibrated for the height needed on a mobile device, in tests they could be as low as 75% with the site in desktop mode. Create responsive cutoffs for padding-bottom?
-
-In fact, at extremely narrow displays the bottom padding needs to be even higher, due to the stretched out aspect ratio that the visualization takes on... 
-
 */
 
 #energy-future-outer-container {
   position: relative;
   width: 100%;
-  padding-bottom: 125%;
+  padding-bottom: 900px;
 }
 
 #energy-future-iframe-container {
   position: absolute;
   width: 100%;
-  padding-bottom: 125%;
+  padding-bottom: 900px;
 }
 
 #energy-future-iframe {
@@ -31,7 +27,4 @@ In fact, at extremely narrow displays the bottom padding needs to be even higher
   position: absolute;
   top: 0;
   left: 0;
-
-/*not sure if want ... */
-  overflow: hidden;
 }
