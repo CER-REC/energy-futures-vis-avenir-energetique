@@ -1,5 +1,6 @@
 
 _ = require 'lodash'
+d3 = require 'd3'
 
 require './ArrayIncludes.coffee'
 Router = require './Router.coffee'

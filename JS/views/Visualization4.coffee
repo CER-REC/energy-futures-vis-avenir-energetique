@@ -419,6 +419,34 @@ class Visualization4
       when 'gasProduction'
         app.gasProductionProvider.dataForAllViz4Scenarios @config
 
+  gradientData: ->
+    [
+      {
+        key: 'reference'
+        colour: '#999999'
+      }
+      {
+        key: 'high'
+        colour: '#0C2C84'
+      }
+      {
+        key: 'highLng'
+        colour: '#225EA8'
+      }
+      {
+        key: 'constrained'
+        colour: '#41B6C4'
+      }
+      {
+        key: 'low'
+        colour: '#7FCDBB'
+      }
+      {
+        key: 'noLng'
+        colour: '#C7E9B4'
+      }
+    ]
+    
 
   graphScenarioData: ->
     reference =
@@ -782,13 +810,11 @@ class Visualization4
         .y (d) => 
           yAxisScale d.value
 
-    graphScenarioData = @graphScenarioData()
-
     grads = d3.select('#graphGroup').select("defs").selectAll(".presentLinearGradient")
-        .data(graphScenarioData, (d) -> d.key)
+        .data(@gradientData(), (d) -> d.key)
     
     futureGrads = d3.select('#graphGroup').select("defs").selectAll(".futureLinearGradient")
-        .data(graphScenarioData, (d) -> d.key)
+        .data(@gradientData(), (d) -> d.key)
 
     enterGrads = grads.enter().append("linearGradient")
         .attr
@@ -843,14 +869,8 @@ class Visualization4
           "stop-color": (d) -> d.colour
           "stop-opacity": 0.4 * 0.2
 
-    grads.exit()
-      .transition()
-        .delay 1000
-      .remove()
-    futureGrads.exit()
-      .transition()
-        .delay 1000
-      .remove()
+
+    graphScenarioData = @graphScenarioData()
 
     graphAreaGroups = d3.select '#areasAndLinesGroup'
       .selectAll '.graphGroup' 
