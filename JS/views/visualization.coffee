@@ -1,11 +1,8 @@
 d3 = require 'd3'
-arrayUtilities = require '../array-utilities.coffee'
 squareMenu = require '../charts/square-menu.coffee'
 Tr = require '../TranslationTable.coffee'
 
 class visualization
-  height = 600 
-  # width = 1000
 
   constructor: (config) ->
     @config = config
@@ -144,7 +141,7 @@ class visualization
       }
     ]
 
-  addUnitToggle:()->
+  addUnitToggle: ->
     if @config.unit?  
       unitsSelectors = d3.select('#unitsSelector')
         .selectAll('.unitSelectorButton')
@@ -167,7 +164,7 @@ class visualization
 
       unitsSelectors.exit().remove()
 
-  addScenarios:() ->
+  addScenarios: ->
     if @config.scenario?  
       scenariosSelectors = d3.select('#scenariosSelector')
         .selectAll('.scenarioSelectorButton')
@@ -190,12 +187,10 @@ class visualization
         "<button class='#{d.class}' type='button'>#{d.label}</button>"
 
       scenariosSelectors.exit().remove()
-  
-  enableOptions: () ->
-    d3.selectAll('.sectorButton, .scenarioButton')
-      .classed("disabled", false)
 
-  addSectors: () ->
+
+
+  addSectors: ->
     if @config.sector?  
       sectorsSelectors = d3.select('#sectorsSelector')
         .selectAll('.sectorSelectorButton')

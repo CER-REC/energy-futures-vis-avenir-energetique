@@ -226,6 +226,8 @@ class ImageExporter
 
     nextYCoordinate = 15
 
+    # We slice the provinces to create a copy in memory, so that we don't mutate the 
+    # original when we reverse it.
     for province in config.provincesInOrder.slice().reverse()
       data = @provinceData[province]
       continue unless data.present config
@@ -257,6 +259,8 @@ class ImageExporter
     
     nextYCoordinate = ImageConstants.legendYPadding
 
+    # We slice the provinces to create a copy in memory, so that we don't mutate the 
+    # original when we reverse it.
     for source in config.sourcesInOrder.slice().reverse()
       data = @sourceData[source]
       continue unless data.present config

@@ -54,11 +54,11 @@ module.exports =
     'High': 'high'
     'Low': 'low'
     'HighLNG': 'highLng'
-    'HighLNG ': 'highLng' # NB: The source data column in some of the CSVS has a trailing space in the string 'HighLNG ', this is NOT A TYPO
+    'HighLNG ': 'highLng' # NB: The source data column in some of the CSVs has a trailing space in the string 'HighLNG ', this is NOT A TYPO
     'NoLNG': 'noLng'
-    'NoLNG ': 'noLng' # NB: The source data column in some of the CSVS has a trailing space in the string 'LowLNG ', this is NOT A TYPO
+    'NoLNG ': 'noLng' # NB: The source data column in some of the CSVs has a trailing space in the string 'LowLNG ', this is NOT A TYPO
     'Constrained': 'constrained' 
-    'Constrained ': 'constrained' # NB: The source data column in some of the CSVS has a trailing space in the string 'Constrained ', this is NOT A TYPO
+    'Constrained ': 'constrained' # NB: The source data column in some of the CSVs has a trailing space in the string 'Constrained ', this is NOT A TYPO
 
   scenarios: [
     'reference'

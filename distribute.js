@@ -1,7 +1,7 @@
 var execSync = require('child_process').execSync;
 var pjson = require('./package.json');
 var fs = require('fs-extra');
-var zip = require('zip-folder')
+var zip = require('zip-folder');
 
 // We exclusively use the Node fs API here, to maintain portability with Windows
 
@@ -25,11 +25,11 @@ fs.copySync("views/app_fragment.mustache", "dist/public/app_fragment.html");
 
 // The paid-up fonts are optional, the build is fine to continue without them.
 try {
-  fs.copySync("../NEBV-private/Fonts", "dist/public/Fonts");
-  fs.copySync("../NEBV-private/CSS/avenirFonts.css", "dist/public/CSS/avenirFonts.css");
+  fs.copySync("../energy-futures-private-resources/Fonts", "dist/public/Fonts");
+  fs.copySync("../energy-futures-private-resources/CSS/avenirFonts.css", "dist/public/CSS/avenirFonts.css");
 }
 catch (error) {
-  console.warn("Avenir font not included in deployment package.")
+  console.warn("Avenir font not included in deployment package.");
 }
 
 
@@ -39,9 +39,9 @@ fs.removeSync(filename);
 
 zip('dist', filename, function(err) {
   if(err) {
-    console.log("There was a problem creating the zip archive.")
+    console.log("There was a problem creating the zip archive.");
   } else {
-    console.log("Done!")
+    console.log("Done!");
   }
 });
 

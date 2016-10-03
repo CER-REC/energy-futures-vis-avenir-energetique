@@ -1,7 +1,6 @@
 d3 = require 'd3'
 visualization = require './visualization.coffee'
 unitUtilities = require '../unit-transformation.coffee'
-arrayUtilities = require '../array-utilities.coffee'
 stackedAreaChart = require '../charts/stacked-area-chart.coffee'
 squareMenu = require '../charts/square-menu.coffee'
 templates = require '../templates.coffee'
@@ -9,7 +8,7 @@ Constants = require '../Constants.coffee'
 Mustache = require 'mustache'
 Tr = require '../TranslationTable.coffee'
 
-class visualization2  extends visualization
+class Visualization2 extends visualization
   height = 700 
   width = 1000
 
@@ -135,7 +134,10 @@ class visualization2  extends visualization
 
   #arg so we want this menu to line up with the bottom of the x axis TICKS so those must be built before we can set this.
   sourceMenuHeight: ->
-    @height() - d3.select('#powerSourcePanel span.titleLabel').node().getBoundingClientRect().height + d3.select('#xAxis').node().getBoundingClientRect().height + (d3.select('#xAxisForLabels text').node().getBoundingClientRect().height / 2)
+    @height() - 
+    d3.select('#powerSourcePanel span.titleLabel').node().getBoundingClientRect().height +
+    d3.select('#xAxis').node().getBoundingClientRect().height +
+    (d3.select('#xAxisForLabels text').node().getBoundingClientRect().height / 2)
 
   #the graph's width
   width: ->
@@ -338,13 +340,14 @@ class visualization2  extends visualization
   #csv parsing within method
   getData: ()->
     @seriesData = app.energyConsumptionProvider.dataForViz2 @config
+    @yAxisData = app.energyConsumptionProvider.dataForAllViz2Scenarios @config
     if @_chart?
       @adjustViz()
     else
       @buildViz()
 
   #Gets the total of all the maximums (since we are stacking the data)
-  graphDataTotal: (data) ->
+  graphDataMaximum: (data) ->
     totalMax = 0
     for key in Object.keys data
       totalMax+= d3.max(data[key], (d) -> d.value)
@@ -354,7 +357,7 @@ class visualization2  extends visualization
     d3.scale.linear()
       .domain([
         0 
-        @graphDataTotal(@seriesData)
+        @graphDataMaximum(@yAxisData)
       ])
       .range [@height(), 0]
       .nice()
@@ -623,7 +626,6 @@ class visualization2  extends visualization
       
       #Grab the provinces in order for the string
       contentString = ""
-      # console.log Tr.regionSelector.names, @provinceMenuData()
       for source in @sourceMenuData()
         contentString = """
           <div class="sourceLabel sourceLabel#{source.key}"> 
@@ -695,7 +697,6 @@ class visualization2  extends visualization
       
       #Grab the provinces in order for the string
       contentString = ""
-      # console.log Tr.regionSelector.names, @provinceMenuData()
       for province in @dataForProvinceMenu()
         contentString = """<div class="provinceLabel"> <h6> #{Tr.regionSelector.names[province.key][app.language]} </h6> </div>""" + contentString
 
@@ -718,8 +719,8 @@ class visualization2  extends visualization
       d3.selectAll('.floatingPopover.provinceHelp').remove()
 
 
-visualization2.resourcesLoaded = ->
+Visualization2.resourcesLoaded = ->
   app.loadedStatus.energyConsumptionProvider
 
 
-module.exports = visualization2
+module.exports = Visualization2

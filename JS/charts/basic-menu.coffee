@@ -1,3 +1,4 @@
+_ = require 'lodash'
 chart = require './chart.coffee'
 
 class basicMenu extends chart
@@ -12,10 +13,11 @@ class basicMenu extends chart
     @_onSelected = @options.onSelected
     @redraw()
 
-  onSelected: (selectFunction) ->
-    if !arguments.length
-      return @_onSelected
-    @_onSelected = selectFunction
+  # Unused!
+  # onSelected: (selectFunction) ->
+  #   if !arguments.length
+  #     return @_onSelected
+  #   @_onSelected = selectFunction
 
   selection: (key, index) ->
     if !arguments.length
@@ -26,18 +28,19 @@ class basicMenu extends chart
       @_onSelected(key, index)
     @redraw()
 
-  redraw: ->
-    @_group.selectAll('.menuItem').remove()
-    @_group.selectAll('.menuCircle').remove()
-    @_group.selectAll('.menuItem').data(@_data).enter().append('g').attr
-      class: 'menuItem'
-      transform: (d, i) =>
-        'translate(' +  (@_position.x + (i * @_size.w / @data().length)) + ',' + @_position.y + ')'
-    @_group.selectAll('.menuItem').append('circle').attr(
-      class: (d, i) =>
-        if i == @_selectedMenuIndex then 'menuCircle selected' else 'menuCircle'
-      r: 20).on 'click', (d, i) =>
-        @selection d.value, i
+  # Unused! 
+  # redraw: ->
+  #   @_group.selectAll('.menuItem').remove()
+  #   @_group.selectAll('.menuCircle').remove()
+  #   @_group.selectAll('.menuItem').data(@_data).enter().append('g').attr
+  #     class: 'menuItem'
+  #     transform: (d, i) =>
+  #       'translate(' +  (@_position.x + (i * @_size.w / @data().length)) + ',' + @_position.y + ')'
+  #   @_group.selectAll('.menuItem').append('circle').attr(
+  #     class: (d, i) =>
+  #       if i == @_selectedMenuIndex then 'menuCircle selected' else 'menuCircle'
+  #     r: 20).on 'click', (d, i) =>
+  #       @selection d.value, i
 
 
 module.exports = basicMenu

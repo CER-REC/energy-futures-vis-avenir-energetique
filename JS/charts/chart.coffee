@@ -62,11 +62,10 @@ class chart
       y: pos.y
     @redraw()
 
-  data: (d, key) ->
+  data: (d) ->
     if !arguments.length
       return @_data
     @_data = d
-    @_key = key
     @redraw()
 
   resize: ->

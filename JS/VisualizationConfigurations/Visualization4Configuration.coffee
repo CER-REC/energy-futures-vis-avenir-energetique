@@ -1,3 +1,4 @@
+_ = require 'lodash'
 Constants = require '../Constants.coffee'
 Tr = require '../TranslationTable.coffee'
 
@@ -113,7 +114,7 @@ class Visualization4Configuration
       when 'energyDemand'
         Tr.mainSelector.totalDemandButton[app.language]
       when 'electricityGeneration'
-        Tr.mainSelector.electricityGenerationButton/[app.language]
+        Tr.mainSelector.electricityGenerationButton[app.language]
       when 'oilProduction'
         Tr.mainSelector.oilProductionButton[app.language]
       when 'gasProduction'

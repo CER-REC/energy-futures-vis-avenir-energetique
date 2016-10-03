@@ -3,14 +3,13 @@ visualization = require './visualization.coffee'
 stackedBarChart = require '../charts/stacked-bar-chart.coffee'
 squareMenu = require '../charts/square-menu.coffee'
 unitUtilities = require '../unit-transformation.coffee'
-arrayUtilities = require '../array-utilities.coffee'
 templates = require '../templates.coffee'
 Constants = require '../Constants.coffee'
 Mustache = require 'mustache'
 Tr = require '../TranslationTable.coffee'
 
-class view1 extends visualization
-  #basic svg set up 
+class Visualization1 extends visualization
+
   
   height = 700 
   
@@ -102,7 +101,6 @@ class view1 extends visualization
       left: 9 #necessary for the labels at the bottom
       right: 60
     @_barMargin = 2
-    @_menu = null #TODO: this should not be necessary
     @svgSize()
     @addMainSelector()
     @addUnitToggle()
@@ -132,7 +130,10 @@ class view1 extends visualization
 
   #arg so we want this menu to line up with the bottom of the x axis TICKS so those must be built before we can set this.
   provinceMenuHeight: ->
-    @height() - d3.select('span.titleLabel').node().getBoundingClientRect().height + d3.select('#xAxis').node().getBoundingClientRect().height + (d3.select('#xAxisForLabels text').node().getBoundingClientRect().height /2)
+    @height() - 
+    d3.select('span.titleLabel').node().getBoundingClientRect().height + 
+    d3.select('#xAxis').node().getBoundingClientRect().height + 
+    (d3.select('#xAxisForLabels text').node().getBoundingClientRect().height /2)
 
   #the graph's width
   width: ->
@@ -149,7 +150,7 @@ class view1 extends visualization
         height: height - @_margin.top
 
   provinceMenuData: ->
-    provinceColours= {  
+    provinceColours = {  
       'BC' :
         present: if @config.provinces.includes 'BC' then true else false
         colour: '#AEC7E8'
@@ -282,23 +283,27 @@ class view1 extends visualization
     }
 
   #csv parsing within method
-  getData: ()->
+  getData: ->
     switch @config.mainSelection
       when 'gasProduction'  
         @seriesData = app.gasProductionProvider.dataForViz1 @config
+        @yAxisData = app.gasProductionProvider.dataForAllViz1Scenarios @config
       when 'electricityGeneration'
         @seriesData = app.electricityProductionProvider.dataForViz1 @config
+        @yAxisData = app.electricityProductionProvider.dataForAllViz1Scenarios @config
       when 'energyDemand'
         @seriesData = app.energyConsumptionProvider.dataForViz1 @config
+        @yAxisData = app.energyConsumptionProvider.dataForAllViz1Scenarios @config
       when 'oilProduction'
         @seriesData = app.oilProductionProvider.dataForViz1 @config
+        @yAxisData = app.oilProductionProvider.dataForAllViz1Scenarios @config
     if @_chart?
       @adjustViz()
     else
       @buildViz()
 
   #Gets the total of all the maximums (since we are stacking the data)
-  graphDataTotal: (data) ->
+  graphDataMaximum: (data) ->
     totalMax = 0
     for key in Object.keys data
       totalMax+= d3.max(data[key], (d) -> d.value)
@@ -312,7 +317,7 @@ class view1 extends visualization
     d3.scale.linear()
       .domain([
         0 
-        @graphDataTotal(@seriesData)
+        @graphDataMaximum(@yAxisData)
       ])
       .range [@height(), 0]
 
@@ -429,7 +434,7 @@ class view1 extends visualization
           y2: @height() + @_margin.top + d3.select('#xAxisForLabels text').node().getBoundingClientRect().height + d3.select('#xAxis').node().getBoundingClientRect().height
 
   #build viz: run the first time only: adds the bottom axis, assigns the chart 
-  buildViz:() ->  
+  buildViz: ->  
     @buildYAxis()
     @buildXAxis()    
     
@@ -478,7 +483,7 @@ class view1 extends visualization
     @_chart = new stackedBarChart("#graphSVG", @xScale(), @yScale(), stackedOptions)   
 
   #called for adjustments: basically to avoid rebuilding the x axis and the chart object
-  adjustViz: () ->
+  adjustViz: ->
     @_chart.menu.allSelected @getSelectionState().allSelected
     @_chart.menu.someSelected @getSelectionState().someSelected
     @_chart.mapping @provinceMenuData()
@@ -512,7 +517,6 @@ class view1 extends visualization
       
       #Grab the provinces in order for the string
       contentString = ""
-      # console.log Tr.regionSelector.names, @provinceMenuData()
       for province in @provinceMenuData()
         contentString = """<div class="provinceLabel provinceLabel#{province.key}"> <h6> #{Tr.regionSelector.names[province.key][app.language]} </h6> </div>""" + contentString
 
@@ -534,7 +538,7 @@ class view1 extends visualization
       d3.selectAll('.floatingPopover.provinceHelp').remove()
 
 
-view1.resourcesLoaded = ->
+Visualization1.resourcesLoaded = ->
   app.loadedStatus.energyConsumptionProvider and
   app.loadedStatus.oilProductionProvider and
   app.loadedStatus.gasProductionProvider and
@@ -542,4 +546,4 @@ view1.resourcesLoaded = ->
 
 
 
-module.exports = view1
+module.exports = Visualization1

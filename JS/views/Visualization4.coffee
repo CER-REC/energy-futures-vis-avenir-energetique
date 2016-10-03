@@ -254,7 +254,6 @@ class Visualization4
       
       #Grab the provinces in order for the string
       contentString = ""
-      # console.log Tr.regionSelector.names, @provinceMenuData()
       for province in @dataForProvinceMenu()
         contentString = """<div class="provinceLabel"> <h6> #{Tr.regionSelector.names[province.key][app.language]} </h6> </div>""" + contentString
 
@@ -409,24 +408,35 @@ class Visualization4
       when 'gasProduction'
         app.gasProductionProvider.dataForViz4 @config
 
+  yAxisData: ->
+    switch @config.mainSelection
+      when 'energyDemand'
+        app.energyConsumptionProvider.dataForAllViz4Scenarios @config
+      when 'electricityGeneration'
+        app.electricityProductionProvider.dataForAllViz4Scenarios @config
+      when 'oilProduction'
+        app.oilProductionProvider.dataForAllViz4Scenarios @config
+      when 'gasProduction'
+        app.gasProductionProvider.dataForAllViz4Scenarios @config
+
 
   graphScenarioData: ->
-    reference=
+    reference =
       key: 'reference'
       colour: '#999999'
-    high=
+    high =
       key: 'high'
       colour: '#0C2C84'
-    highLng=
+    highLng =
       key: 'highLng'
       colour: '#225EA8'
-    constrained=
+    constrained =
       key: 'constrained'
       colour: '#41B6C4'
-    low=
+    low =
       key: 'low'
       colour: '#7FCDBB'
-    noLng=
+    noLng =
       key: 'noLng'
       colour: '#C7E9B4'
 
@@ -450,7 +460,7 @@ class Visualization4
   # We have one series of data for each scenario to graph simultaneously, so we need
   # to know what the maximum among all of them is for the y axis
   graphDataMaximum: ->
-    data = @graphData()
+    data = @yAxisData()
     maximums = []
     for key in Object.keys data
       maximums.push d3.max(data[key], (d) -> d.value)
@@ -575,6 +585,7 @@ class Visualization4
         # TODO: For efficiency, only rerender what's necessary.
         @renderUnitsSelector()
         @renderYAxis()
+        @renderGraph()
 
     unitsSelectors.html (d) ->
       "<button class='#{d.class}' type='button'>#{d.label}</button>"

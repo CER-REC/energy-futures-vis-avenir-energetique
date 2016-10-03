@@ -128,8 +128,15 @@ class ElectricityProductionProvider
 
 
 
-  # accessors note: this is never needed for viz 2!!
-  dataForViz1: (viz1config) ->
+  # accessors note: ElectricityProductionProvider is never needed for viz 2!!
+
+
+
+  # Returns a set of data corresponding to the given config object, except that 
+  # it has not been filtered by scenario. In order to show a y-axis which does not change
+  # when the user switches the scenario, we need to take the maximum of all of the data 
+  # across scenarios for a given configuration.
+  dataForAllViz1Scenarios: (viz1config) ->
     filteredProvinceData = {}    
 
     # Exclude data from provinces that aren't in the set
@@ -137,10 +144,10 @@ class ElectricityProductionProvider
       if viz1config.provinces.includes provinceName
         filteredProvinceData[provinceName] = @dataByProvince[provinceName]
 
-    # We aren't interested in breakdowns by source, only the totals and only the correct scenario
+    # We aren't interested in breakdowns by source, only the totals
     for provinceName in Object.keys filteredProvinceData
       filteredProvinceData[provinceName] = filteredProvinceData[provinceName].filter (item) ->
-        item.source == 'total' and item.scenario == viz1config.scenario
+        item.source == 'total'
 
     # Finally, convert units
     return filteredProvinceData if viz1config.unit == 'gigawattHours'
@@ -161,6 +168,51 @@ class ElectricityProductionProvider
       return unitConvertedProvinceData
 
 
+
+
+
+
+  # Returns an object keyed by province short code (like "AB")
+  # Each entry has an array of objects in ascending order by year, like:
+  #   province: 'AB'
+  #   scenario: 'reference'
+  #   type: 'Total', or absent
+  #   sector: 'total', undefined, or absent
+  #   source: 'total', undefined, or absent
+  #   value: 234.929
+  #   year: 2005
+  # The attributes available vary from dataset to dataset, which is why some of them may 
+  # or may not be present. 
+  dataForViz1: (viz1config) ->
+    unfilteredData = @dataForAllViz1Scenarios viz1config
+    filteredData = {}
+
+    for sourceName in Object.keys unfilteredData
+      filteredData[sourceName] = unfilteredData[sourceName].filter (item) ->
+        item.scenario == viz1config.scenario
+
+    filteredData
+
+
+
+
+  # Returns an object like
+  # name: 'Total'
+  # viewBy: 'province'
+  # children: []
+
+  # Each of the child objects at depth 1 are like: 
+  # name: 'BC'
+  # children: []
+
+  # each of the child objects at depth 2 are like: 
+  # id: 'hydroBC'
+  # name: "HYDRO BC"
+  # size: 63631.55
+  # source: "hydro"
+
+  # bubble-chart and the D3 bubble packing system add numerous other properties to these 
+  # objects after we return them here.
   dataForViz3: (viz3config) ->
     filteredData = {} #this is filtered by the viewBy
 
@@ -242,14 +294,16 @@ class ElectricityProductionProvider
 
 
 
-
-  dataForViz4: (viz4config) ->
+  # Returns a set of data corresponding to the given config object, except that 
+  # it has not been filtered by scenario. In order to show a y-axis which does not change
+  # when the user switches the scenario, we need to take the maximum of all of the data 
+  # across scenarios for a given configuration.
+  dataForAllViz4Scenarios: (viz4config) ->
     filteredScenarioData = {}    
 
-    # Exclude data from scenarios that aren't in the set
+    # Group data by scenario
     for scenarioName in Object.keys @dataByScenario
-      if viz4config.scenarios.includes scenarioName
-        filteredScenarioData[scenarioName] = @dataByScenario[scenarioName]
+      filteredScenarioData[scenarioName] = @dataByScenario[scenarioName]
 
     # We aren't interested in breakdowns by source, only the totals
     # TODO: Since this will always be the case for viz4, cache the data with this filter applied?
@@ -283,6 +337,30 @@ class ElectricityProductionProvider
 
     # TODO: if we get to here something has gone horribly wrong, and we should do something else
     console.warn 'something has gone wrong'
+
+
+
+
+  # Returns an object keyed by scenario name (e.g. 'reference')
+  # Each entry has an array of objects in ascending order by year, like:
+  #   province: 'all'
+  #   scenario: 'constrained'
+  #   sector: 'total' or undefined
+  #   source: 'total' or undefined, or the attribute may be absent
+  #   value: 2161.98
+  #   year: 2005
+  # The attributes available vary from dataset to dataset, which is why some of them may 
+  # or may not be present. 
+  dataForViz4: (viz4config) ->
+    unfilteredData = @dataForAllViz4Scenarios viz4config
+    filteredData = {}
+
+    # Exclude data from scenarios that aren't in the set
+    for scenarioName in Object.keys unfilteredData
+      if viz4config.scenarios.includes scenarioName
+        filteredData[scenarioName] = unfilteredData[scenarioName]
+
+    filteredData
 
 
 
