@@ -22,7 +22,19 @@
 #canadasEnergyFutureVisualization .videoContainer {
   /* Seems to be necessary to correct the position of the overlaid 'play' button, in WET3.*/
   position: relative;
+  margin: 0px;
 }
+
+
+/* The WET3 video and play button require some additional positioning. */
+#canadasEnergyFutureVisualization .videoContainer video {
+  height: 355px;
+}
+#canadasEnergyFutureVisualization .videoContainer button.wb-mm-overlay {
+  height: 355px;
+}
+
+
 
 #canadasEnergyFutureVisualization #mainPanel {
   position: relative;
@@ -51,7 +63,7 @@
   box-sizing: border-box;
   width: 75%;
   float: right;
-  padding-left: 7px; /* Necessary for precise alignment with link boxes */
+  padding-left: 4px; /* Necessary for precise alignment with link boxes */
 }
 
 @media (max-width: 1023px) {
@@ -63,6 +75,7 @@
   #canadasEnergyFutureVisualization #panelRight {
     float: none;
     width: 100%;
+    padding-left: 0;
   }
 }
 
