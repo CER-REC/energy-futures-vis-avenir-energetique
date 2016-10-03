@@ -1,6 +1,7 @@
 Tr = require '../TranslationTable.coffee'
-Templates = require '../templates.coffee'
 Mustache = require 'mustache'
+
+LandingPageTemplate = require '../templates/LandingPage.mustache'
 
 
 class LandingPage
@@ -8,7 +9,7 @@ class LandingPage
   constructor: ->
     document.getElementById('landingPageHeading').innerHTML = Tr.landingPage.mainHeader[app.language]
 
-    document.getElementById('visualizationContent').innerHTML = Mustache.render Templates.landingPageTemplate, 
+    document.getElementById('visualizationContent').innerHTML = Mustache.render LandingPageTemplate, 
         content: Tr.landingPage.content1[app.language]
         visualization1Link: Tr.landingPage.visualization1Link[app.language]
         visualization2Link: Tr.landingPage.visualization2Link[app.language]

@@ -3,23 +3,27 @@ visualization = require './visualization.coffee'
 unitUtilities = require '../unit-transformation.coffee'
 stackedAreaChart = require '../charts/stacked-area-chart.coffee'
 squareMenu = require '../charts/square-menu.coffee'
-templates = require '../templates.coffee'
 Constants = require '../Constants.coffee'
 Mustache = require 'mustache'
 Tr = require '../TranslationTable.coffee'
+
+Visualization2Template = require '../templates/Visualization2.mustache'
+SvgStylesheetTemplate = require '../templates/SvgStylesheet.css'
+QuestionmarkPopoverTemplate = require '../templates/QuestionmarkPopover.mustache'
+
 
 class Visualization2 extends visualization
   height = 700 
   width = 1000
 
   constructor: (config) ->
-    document.getElementById('visualizationContent').innerHTML = Mustache.render templates.visualization2Template, 
+    document.getElementById('visualizationContent').innerHTML = Mustache.render Visualization2Template, 
       selectSectorLabel: Tr.sectorSelector.selectSectorLabel[app.language]
       selectUnitLabel: Tr.unitSelector.selectUnitLabel[app.language]
       selectScenarioLabel: Tr.scenarioSelector.selectScenarioLabel[app.language]
       selectRegionLabel: Tr.regionSelector.selectRegionLabel[app.language]
       selectSourceLabel: Tr.sourceSelector.selectSourceLabel[app.language]
-      svgStylesheet: templates.svgStylesheet
+      svgStylesheet: SvgStylesheetTemplate
 
     d3.select '.sectorSelectorHelpButton'
       .on 'click', ->
@@ -31,7 +35,7 @@ class Visualization2 extends visualization
           # Build the popover
           newEl = document.createElement 'div'
           newEl.className = 'vizModal floatingPopover sectorHelp'
-          newEl.innerHTML = Mustache.render templates.questionMarkPopoverTemplate, 
+          newEl.innerHTML = Mustache.render QuestionmarkPopoverTemplate, 
                 visClass: 'viz2HelpTitle'
                 popUpTitle: Tr.sectorSelector.sectorSelectorHelpTitle[app.language]
                 popUpContent: Tr.sectorSelector.sectorSelectorHelp[app.language]
@@ -56,7 +60,7 @@ class Visualization2 extends visualization
           # Build the popover
           newEl = document.createElement 'div'
           newEl.className = 'vizModal floatingPopover unitSelectorHelp'
-          newEl.innerHTML = Mustache.render templates.questionMarkPopoverTemplate, 
+          newEl.innerHTML = Mustache.render QuestionmarkPopoverTemplate, 
                 visClass: 'viz2HelpTitle'
                 popUpTitle: Tr.unitSelector.unitSelectorHelpTitle[app.language]
                 popUpContent: Tr.unitSelector.unitSelectorHelp[app.language]
@@ -81,7 +85,7 @@ class Visualization2 extends visualization
           # Build the popover
           newEl = document.createElement 'div'
           newEl.className = 'vizModal floatingPopover scenarioSelectorHelp'
-          newEl.innerHTML = Mustache.render templates.questionMarkPopoverTemplate, 
+          newEl.innerHTML = Mustache.render QuestionmarkPopoverTemplate, 
                 visClass: 'viz2HelpTitle'
                 popUpTitle: Tr.scenarioSelector.scenarioSelectorHelpTitle[app.language]
                 popUpContent: Tr.scenarioSelector.scenarioSelectorHelp[app.language]
@@ -640,7 +644,7 @@ class Visualization2 extends visualization
       # Build the popover
       newEl = document.createElement 'div'
       newEl.className = 'vizModal floatingPopover popOverLg sourceSelectorHelp'
-      newEl.innerHTML = Mustache.render templates.questionMarkPopoverTemplate, 
+      newEl.innerHTML = Mustache.render QuestionmarkPopoverTemplate, 
             visClass: 'localHelpTitle'
             popUpTitle: Tr.sourceSelector.selectSourceLabel[app.language]
             popUpContent: contentString
@@ -704,7 +708,7 @@ class Visualization2 extends visualization
       # Build the popover
       newEl = document.createElement 'div'
       newEl.className = 'vizModal floatingPopover popOverSm provinceHelp'
-      newEl.innerHTML = Mustache.render templates.questionMarkPopoverTemplate, 
+      newEl.innerHTML = Mustache.render QuestionmarkPopoverTemplate, 
             visClass: 'localHelpTitle'
             popUpTitle: Tr.regionSelector.selectRegionLabel[app.language]
             popUpContent: contentString

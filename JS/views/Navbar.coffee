@@ -1,6 +1,8 @@
 d3 = require 'd3'
 Tr = require '../TranslationTable.coffee'
-Templates = require '../templates.coffee'
+
+HowToPopoverTemplate = require '../templates/HowToPopover.mustache'
+
 Mustache = require 'mustache'
 
 
@@ -175,7 +177,7 @@ class Navbar
     vizNavbar.select('.navbarHelpIcon')
       .on 'click', (d) ->
         # Set the content of the pop up        
-        d3.select('.navbarHelpSection').html (e) => Mustache.render Templates.howToPopoverContent, 
+        d3.select('.navbarHelpSection').html (e) => Mustache.render HowToPopoverTemplate, 
           imageAUrl: d.imageAUrl
           imageBUrl: d.imageBUrl
 

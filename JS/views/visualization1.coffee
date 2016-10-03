@@ -3,10 +3,13 @@ visualization = require './visualization.coffee'
 stackedBarChart = require '../charts/stacked-bar-chart.coffee'
 squareMenu = require '../charts/square-menu.coffee'
 unitUtilities = require '../unit-transformation.coffee'
-templates = require '../templates.coffee'
 Constants = require '../Constants.coffee'
 Mustache = require 'mustache'
 Tr = require '../TranslationTable.coffee'
+
+Visualization1Template = require '../templates/Visualization1.mustache'
+SvgStylesheetTemplate = require '../templates/SvgStylesheet.css'
+QuestionmarkPopoverTemplate = require '../templates/QuestionmarkPopover.mustache'
 
 class Visualization1 extends visualization
 
@@ -14,12 +17,12 @@ class Visualization1 extends visualization
   height = 700 
   
   constructor: (config)  ->   
-    document.getElementById('visualizationContent').innerHTML = Mustache.render templates.visualization1Template, 
+    document.getElementById('visualizationContent').innerHTML = Mustache.render Visualization1Template, 
         selectOneLabel: Tr.mainSelector.selectOneLabel[app.language]
         selectUnitLabel: Tr.unitSelector.selectUnitLabel[app.language]
         selectScenarioLabel: Tr.scenarioSelector.selectScenarioLabel[app.language]
         selectRegionLabel: Tr.regionSelector.selectRegionLabel[app.language]
-        svgStylesheet: templates.svgStylesheet
+        svgStylesheet: SvgStylesheetTemplate
 
     d3.select '.mainSelectorHelpButton'
       .on 'click', ->
@@ -31,7 +34,7 @@ class Visualization1 extends visualization
           # Build the popover
           newEl = document.createElement 'div'
           newEl.className = 'vizModal floatingPopover mainSelectorHelp'
-          newEl.innerHTML = Mustache.render templates.questionMarkPopoverTemplate, 
+          newEl.innerHTML = Mustache.render QuestionmarkPopoverTemplate, 
                 visClass: 'viz1HelpTitle'
                 popUpTitle: Tr.mainSelector.selectOneLabel[app.language]
                 popUpContent: Tr.mainSelector.mainSelectorHelp[app.language]
@@ -55,7 +58,7 @@ class Visualization1 extends visualization
           # Build the popover
           newEl = document.createElement 'div'
           newEl.className = 'vizModal floatingPopover unitSelectorHelp'
-          newEl.innerHTML = Mustache.render templates.questionMarkPopoverTemplate, 
+          newEl.innerHTML = Mustache.render QuestionmarkPopoverTemplate, 
                 visClass: 'viz1HelpTitle'
                 popUpTitle: Tr.unitSelector.unitSelectorHelpTitle[app.language]
                 popUpContent: Tr.unitSelector.unitSelectorHelp[app.language]
@@ -80,7 +83,7 @@ class Visualization1 extends visualization
           # Build the popover
           newEl = document.createElement 'div'
           newEl.className = 'vizModal floatingPopover scenarioSelectorHelp'
-          newEl.innerHTML = Mustache.render templates.questionMarkPopoverTemplate, 
+          newEl.innerHTML = Mustache.render QuestionmarkPopoverTemplate, 
                 visClass: 'viz1HelpTitle'
                 popUpTitle: Tr.scenarioSelector.scenarioSelectorHelpTitle[app.language]
                 popUpContent: Tr.scenarioSelector.scenarioSelectorHelp[app.language]
@@ -523,7 +526,7 @@ class Visualization1 extends visualization
       # Build the popover
       newEl = document.createElement 'div'
       newEl.className = 'vizModal floatingPopover popOverSm provinceHelp'
-      newEl.innerHTML = Mustache.render templates.questionMarkPopoverTemplate, 
+      newEl.innerHTML = Mustache.render QuestionmarkPopoverTemplate, 
             visClass: 'localHelpTitle'
             popUpTitle: Tr.regionSelector.selectRegionLabel[app.language]
             popUpContent: contentString
