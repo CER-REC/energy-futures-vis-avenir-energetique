@@ -122,6 +122,12 @@ We're the development team with Startide Solutions who put this project together
 * Firefox and Chrome (and Safari?) Have a problem related to SVG gradients:  gradients are identified within an SVG by a URL. When the URL for the enclosing HTML document changes (such as when we use `history.pushState` to update the URL bar with the current configuration of the visualization) these SVG internal URLs break, and the gradient is no longer available. 
 * Opera is unique among browsers we've tested in having severe usability issues with this approach, especially with regard to downloading all of the images needed to populate menus. 
 
+## Changelog
+
+* 2016-10-03 - Refactored the app to break each Mustache template into its own file, rather than storing them all together in `templates.coffee`. 
+* 2016-10-03 - Worked around a browser bug in Firefox, Chrome and Safari causing certain gradients to disappear from the visualization with interacting with it. This change introduces an iframe to contain the application, and which has some consequences for how the app integrates into the containing page.
+* 2016-09-29 - Adjusted the y-axes so that they no longer re-scale when the user changes the scenario(s) in the first, second, and fourth visualizations. This way, it's easier to compare data across scenarios
+
 
 # Visualisation d’Explorer l’avenir énergétique du Canada
 

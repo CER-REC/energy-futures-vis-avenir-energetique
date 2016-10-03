@@ -19,9 +19,9 @@
 } 
 
 
-#canadasEnergyFutureVisualization .mainImageCarousel {
-  height: 400px;
-  float: right;
+#canadasEnergyFutureVisualization .videoContainer {
+  /* Seems to be necessary to correct the position of the overlaid 'play' button, in WET3.*/
+  position: relative;
 }
 
 #canadasEnergyFutureVisualization #mainPanel {
@@ -44,15 +44,29 @@
 #canadasEnergyFutureVisualization #panelLeft {
   box-sizing: border-box;
   width: 25%;
-  float: left;
+  float: right;
 }
 
 #canadasEnergyFutureVisualization #panelRight {
   box-sizing: border-box;
   width: 75%;
-  float: left;
+  float: right;
   padding-left: 7px; /* Necessary for precise alignment with link boxes */
 }
+
+@media (max-width: 1023px) {
+  #canadasEnergyFutureVisualization #panelLeft {
+    float: none;
+    width: 100%;
+  }
+
+  #canadasEnergyFutureVisualization #panelRight {
+    float: none;
+    width: 100%;
+  }
+}
+
+
 #canadasEnergyFutureVisualization #panelRight img {
   max-width: 100%;
   width: auto;
@@ -65,26 +79,6 @@
   line-height: 1.3em;
 }
 
-@media (max-width: 1199px) {
-  #canadasEnergyFutureVisualization #panelLeft {
-    width: 45%; 
-  }
-  #canadasEnergyFutureVisualization #panelLeft h1 {
-    line-height: 1em;
-  }
-  #canadasEnergyFutureVisualization #panelRight {
-    width: 55%;
-  }
-}
-
-@media (max-width: 959px) {
-  #canadasEnergyFutureVisualization #panelLeft {
-    width: 50%;
-  }
-  #canadasEnergyFutureVisualization #panelRight {
-    width: 50%;
-  }
-}
 
 #canadasEnergyFutureVisualization .hidden {
   display: none;
