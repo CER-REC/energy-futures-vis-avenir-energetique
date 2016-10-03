@@ -75,44 +75,44 @@ class Router
 
     # Google analytics reporting integration, tailored for the NEB.
     if @app.containingWindow.ga?
-      @app.containingWindowga('set', 'page', document.URL)        
+      @app.containingWindow.ga('set', 'page', document.URL)
       
-      @app.containingWindowga('send', {
+      @app.containingWindow.ga('send', {
         hitType: 'pageview',      
         page: document.URL,
         title: params.mainSelection,
         location: params.page
       })
         
-      @app.containingWindowga('send', {
+      @app.containingWindow.ga('send', {
         hitType: 'event',      
         eventCategory: 'Selection'
         eventAction: params.mainSelection,
         eventLabel: params.page
       })
       
-      @app.containingWindowga('send', {
+      @app.containingWindow.ga('send', {
         hitType: 'event',      
         eventCategory: 'Provinces'
         eventAction: params.provinces,
         eventLabel: params.page
       })
       
-      @app.containingWindowga('send', {
+      @app.containingWindow.ga('send', {
         hitType: 'event',      
         eventCategory: 'Scenarios'
         eventAction: params.scenario,
         eventLabel: params.page
       })
       
-      @app.containingWindowga('send', {
+      @app.containingWindow.ga('send', {
         hitType: 'event',      
         eventCategory: 'Year'
         eventAction: params.year,
         eventLabel: params.page
       })
       
-      @app.containingWindowga('send', {
+      @app.containingWindow.ga('send', {
         hitType: 'event',      
         eventCategory: 'Unit'
         eventAction: params.unit,

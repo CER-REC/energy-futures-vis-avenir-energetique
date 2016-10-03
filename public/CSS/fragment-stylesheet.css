@@ -1,7 +1,7 @@
 
 /* 
 
-This slightly mysterious CSS allows us to position the iframe inline with the content of the page and have it resize appropriately. If the aspect ratio of the visualization content changes, the padding-bottom values may need to change also. 
+This slightly mysterious CSS allows us to position the iframe inline with the content of the page and have it resize appropriately.
 
 NB: if the height of the page content changes, the padding here should be bumped up too.
 
