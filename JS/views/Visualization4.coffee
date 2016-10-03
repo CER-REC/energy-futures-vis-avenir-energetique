@@ -505,12 +505,15 @@ class Visualization4
     @outerHeight - @margin.top - @margin.bottom
 
 
-  xAxisScale: ->
+  # NB: See 'render' for width discussion, IE specific issue.
+  xAxisScale: (width) ->
     #TODO should the domain come from the data? 
+
+    width = width || @width()
 
     d3.scale.linear()
       .domain [2005, 2040]
-      .range [0, @width()]
+      .range [0, width]
 
   yAxisScale: ->
     d3.scale.linear()
@@ -553,6 +556,16 @@ class Visualization4
   # Render helpers here
 
   render: ->
+
+    # NB: This is a workaround to a problem in Internet Explorer.
+    # For some reason, during page load, width reports a slightly wider width at the very 
+    # end. This results in a graph that overflows onto the y axis. 
+    # To work around it, we save the width as measured at the beginning of the render 
+    # call and use it later.
+    # This problem only occurred after the switch to using an iframe, and seems limited to 
+    # IE.
+    width = @width()
+
     d3.select '#graphSVG'
       .attr
         width: @outerWidth()
@@ -567,7 +580,7 @@ class Visualization4
     @renderYAxis()
     if !@provinceMenu #We only need to build once, but we need to build after the axis are built for alignment
       @provinceMenu = @buildProvinceMenu()
-    @renderGraph()
+    @renderGraph(0, width)
 
   renderMainSelector: ->
     mainSelectors = d3.select('#mainSelector')
@@ -782,8 +795,8 @@ class Visualization4
         'shape-rendering': 'crispEdges'
 
 
-  renderGraph: (duration = 1000) ->
-    xAxisScale = @xAxisScale()
+  renderGraph: (duration = 1000, width) ->
+    xAxisScale = @xAxisScale(width)
     yAxisScale = @yAxisScale()
 
     area = d3.svg.area()
