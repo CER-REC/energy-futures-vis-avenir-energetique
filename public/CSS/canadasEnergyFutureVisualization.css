@@ -29,11 +29,16 @@
 /* The WET3 video and play button require some additional positioning. */
 #canadasEnergyFutureVisualization .videoContainer video {
   height: 355px;
+
 }
 #canadasEnergyFutureVisualization .videoContainer button.wb-mm-overlay {
   height: 355px;
 }
 
+#canadasEnergyFutureVisualization .videoContainer {
+  /* WET4 Uses a glyphicon play button, instead of the SVG button in WET3. It gets positioned incorrectly due to our change to the document's line height, we try to reset it to the correct position here. */
+  line-height: 1.4375; 
+}
 
 
 #canadasEnergyFutureVisualization #mainPanel {
