@@ -199,7 +199,8 @@ class Router
     mainSelection: configuration.mainSelection
     unit: configuration.unit
     scenario: configuration.scenario
-    provinces: configuration.provincesInOrder
+    provinces: configuration.provinces
+    provincesInOrder: configuration.provincesInOrder
 
   paramsToUrlString: (params) ->
     urlParts = Object.keys(params).map (key) ->
@@ -271,6 +272,8 @@ Router.parseQueryParams = ->
     params.scenarios = params.scenarios.split ','
   if params.provinces?
     params.provinces = params.provinces.split ','
+  if params.provincesInOrder?
+    params.provincesInOrder = params.provincesInOrder.split ','
   if params.sources?
     params.sources = params.sources.split ','
   if params.year?
