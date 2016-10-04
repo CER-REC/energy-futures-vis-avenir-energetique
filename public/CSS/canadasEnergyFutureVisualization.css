@@ -28,8 +28,9 @@
 #canadasEnergyFutureVisualization .videoIframeContainer {
   position: relative;
   /* Approximate height of the video player elements. */
-  /* On WET4, at mobile resolutions, this may need to be adjusted to use a percentage or otherwise reduced, as the height of the video element falls with the width. */
-  padding-bottom: 470px; 
+  /* In WET3: in my tests the video player was always exactly 404px tall. Reducing the screen width only shrank the width of the element. */
+  padding-bottom: 430px; 
+  /* In WET4: in my tests the width and height shrank with reduced screen width. Above 600px width or so, the length:width ratio was always above 1.6, we could use a percentage padding-bottom to work with this. Below 600px this aspect ratio fell as low as 1.2, so we will need media queries to get the padding right in WET4. */
 }
 
 #canadasEnergyFutureVisualization .videoIframe {
