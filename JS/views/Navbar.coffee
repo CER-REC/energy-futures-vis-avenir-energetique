@@ -3,6 +3,8 @@ Tr = require '../TranslationTable.coffee'
 
 HowToPopoverTemplate = require '../templates/HowToPopover.mustache'
 
+NavbarInfoPopover = require '../popovers/NavbarInfoPopover.coffee'
+
 Mustache = require 'mustache'
 
 
@@ -11,6 +13,8 @@ class Navbar
   constructor: ->
     # navbarState can be one of: landingPage, viz1, viz2, viz3, viz4
     @navbarState = null
+
+    @navbarInfoPopover = new NavbarInfoPopover()
 
 
   # NB: This data is in REVERSE order on purpose
@@ -223,24 +227,35 @@ class Navbar
         # Determine whether to hide or show the element
         d3.select('.navbarHelpSection').classed('hidden', !(d3.select('.navbarHelpIcon').classed('selected')))
 
+
     vizNavbar.select('.navbarMenuIcon')
-      .on 'click', (d) ->
-        # Set the content of the pop up
-        d3.select('.navbarHelpSection').html (e) => d.navbarInfoText
-        
-        # Set up the info icon: depending on selection
-        d3.select('.navbarMenuIcon').classed('selected', !(d3.select('.navbarMenuIcon').classed('selected')))
-        if d3.select('.navbarMenuIcon').classed('selected') 
-          d3.select('.navbarMenuIcon').html "<img src='#{d.navbarInfoImageSelected}'>"
+      .on 'click', (d) =>
+
+        if app.popoverManager.current_popover == @navbarInfoPopover
+          app.popoverManager.close_popover()
         else
-          d3.select('.navbarMenuIcon').html "<img src='IMG/navbar_Icons/explanationIcon_ColourBG.svg'>"
+          app.popoverManager.show_popover @navbarInfoPopover, 
+            navbarInfoText: d.navbarInfoText
+            navbarInfoImageSelected: d.navbarInfoImageSelected
+
+
+
+        # # Set the content of the pop up
+        # d3.select('.navbarHelpSection').html (e) => d.navbarInfoText
         
-        # Either way the explanation help should be unselected
-        d3.select('.navbarHelpIcon').classed('selected', false)
-        d3.select('.navbarHelpIcon').html "<img src='IMG/navbar_Icons/questionMark_ColourBG.svg'>"
+        # # Set up the info icon: depending on selection
+        # d3.select('.navbarMenuIcon').classed('selected', !(d3.select('.navbarMenuIcon').classed('selected')))
+        # if d3.select('.navbarMenuIcon').classed('selected') 
+        #   d3.select('.navbarMenuIcon').html "<img src='#{d.navbarInfoImageSelected}'>"
+        # else
+        #   d3.select('.navbarMenuIcon').html "<img src='IMG/navbar_Icons/explanationIcon_ColourBG.svg'>"
         
-        # Determine whether to hide or show the element
-        d3.select('.navbarHelpSection').classed('hidden', !(d3.select('.navbarMenuIcon').classed('selected')))
+        # # Either way the explanation help should be unselected
+        # d3.select('.navbarHelpIcon').classed('selected', false)
+        # d3.select('.navbarHelpIcon').html "<img src='IMG/navbar_Icons/questionMark_ColourBG.svg'>"
+        
+        # # Determine whether to hide or show the element
+        # d3.select('.navbarHelpSection').classed('hidden', !(d3.select('.navbarMenuIcon').classed('selected')))
 
 
 

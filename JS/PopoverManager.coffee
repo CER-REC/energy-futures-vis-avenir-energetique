@@ -6,12 +6,12 @@ class PopoverManager
     @current_popover = null
 
 
-  show_popover: (popover) ->
+  show_popover: (popover, options) ->
     if @current_popover?
       @close_popover @current_popover
 
     @current_popover = popover
-    @current_popover.show()
+    @current_popover.show(options)
 
 
   close_popover: ->
