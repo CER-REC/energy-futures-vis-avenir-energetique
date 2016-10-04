@@ -23,4 +23,9 @@ router.get('/Wet4Video', function(req, res, next) {
   res.render('Wet4Video');
 });
 
+router.get('/app_iframe.html', function(req, res, next) {
+  res.render('app_iframe', { title: "Canada's Energy Future Visualization" });
+});
+
+
 module.exports = router;
