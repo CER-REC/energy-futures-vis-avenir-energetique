@@ -14,7 +14,7 @@ class ControlsHelpPopover
     newEl = document.createElement 'div'
     newEl.className = options.outerClasses
     newEl.innerHTML = Mustache.render QuestionmarkPopoverTemplate, 
-          visClass: options.innerClasses
+          classes: options.innerClasses
           title: options.title
           content: options.content
     
