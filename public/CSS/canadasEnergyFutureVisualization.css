@@ -25,19 +25,20 @@
   margin: 0px;
 }
 
-
-/* The WET3 video and play button require some additional positioning. */
-#canadasEnergyFutureVisualization .videoContainer video {
-  height: 355px;
-
-}
-#canadasEnergyFutureVisualization .videoContainer button.wb-mm-overlay {
-  height: 355px;
+#canadasEnergyFutureVisualization .videoIframeContainer {
+  position: relative;
+  /* Approximate height of the video player elements. */
+  /* On WET4, at mobile resolutions, this may need to be adjusted to use a percentage or otherwise reduced, as the height of the video element falls with the width. */
+  padding-bottom: 470px; 
 }
 
-#canadasEnergyFutureVisualization .videoContainer {
-  /* WET4 Uses a glyphicon play button, instead of the SVG button in WET3. It gets positioned incorrectly due to our change to the document's line height, we try to reset it to the correct position here. */
-  line-height: 1.4375; 
+#canadasEnergyFutureVisualization .videoIframe {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  border: none;
 }
 
 
@@ -62,13 +63,14 @@
   box-sizing: border-box;
   width: 25%;
   float: right;
+  padding-right: 10px; /* For precise alignment with link boxes */
 }
 
 #canadasEnergyFutureVisualization #panelRight {
   box-sizing: border-box;
   width: 75%;
   float: right;
-  padding-left: 4px; /* Necessary for precise alignment with link boxes */
+  padding-left: 4px; /* For precise alignment with link boxes */
 }
 
 @media (max-width: 1023px) {
