@@ -123,6 +123,7 @@ We're the development team with Startide Solutions who put this project together
 
 ## Changelog
 
+* 2016-10-04 - Added the NEB's introductory video to the landing page of the visualization. NB: Currently the templates which include the video depend heavily on the WET assets included in the development environment! That will need to change before we can deploy this version. See: `views/Wet3VideoIframe.mustache` and `views/Wet4VideoIframe.mustache` Also: it was necessary to use iframes to load the video each time we visit the landing page, as the player only initializes properly on page load.
 * 2016-10-03 - Refactored the app to break each Mustache template into its own file, rather than storing them all together in `templates.coffee`. 
 * 2016-10-03 - Worked around a browser bug in Firefox, Chrome and Safari causing certain gradients to disappear from the visualization with interacting with it. This change introduces an iframe to contain the application, and which has some consequences for how the app integrates into the containing page.
 * 2016-09-29 - Adjusted the y-axes so that they no longer re-scale when the user changes the scenario(s) in the first, second, and fourth visualizations. This way, it's easier to compare data across scenarios

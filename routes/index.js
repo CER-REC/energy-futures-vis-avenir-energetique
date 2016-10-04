@@ -15,12 +15,12 @@ router.get('/WET4', function(req, res, next) {
   res.render('WET4', { title: 'WET 4.0.20' });
 });
 
-router.get('/Wet3Video', function(req, res, next) {
-  res.render('Wet3Video');
+router.get('/Wet3VideoIframe', function(req, res, next) {
+  res.render('Wet3VideoIframe');
 });
 
-router.get('/Wet4Video', function(req, res, next) {
-  res.render('Wet4Video');
+router.get('/Wet4VideoIframe', function(req, res, next) {
+  res.render('Wet4VideoIframe');
 });
 
 router.get('/app_iframe.html', function(req, res, next) {

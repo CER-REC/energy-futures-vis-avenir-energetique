@@ -17,13 +17,6 @@
   font-weight: 400;
 } 
 
-
-#canadasEnergyFutureVisualization .videoContainer {
-  /* Seems to be necessary to correct the position of the overlaid 'play' button, in WET3.*/
-  position: relative;
-  margin: 0px;
-}
-
 #canadasEnergyFutureVisualization .videoIframeContainer {
   position: relative;
   /* Approximate height of the video player elements. */
