@@ -6,7 +6,6 @@
   line-height: 1em;
   font-weight: 400;
   color: #333333;
-  margin-bottom: 20px;
 }
 
 #canadasEnergyFutureVisualization h1, 
@@ -523,7 +522,7 @@
   font-weight: 400;
 }
 
-@media (max-width: 1200px) {
+@media (max-width: 1000px) {
   #canadasEnergyFutureVisualization .navbarSelectedItem span {
     font-size: 26px;
     margin-top: 12px;
@@ -668,14 +667,14 @@
   cursor: pointer;
 }
 
-@media (max-width: 1199px) {
+@media (max-width: 1000px) {
   #canadasEnergyFutureVisualization .mainSelectorButton {
     font-size: 82%;
     line-height: 1em;
   }
 }
 
-@media (max-width: 959px) {
+@media (max-width: 1000px) {
   #canadasEnergyFutureVisualization .mainSelectorButton {
     font-size: 70%;
   }

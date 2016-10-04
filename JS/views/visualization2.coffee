@@ -1,3 +1,4 @@
+_ = require 'lodash'
 d3 = require 'd3'
 visualization = require './visualization.coffee'
 unitUtilities = require '../unit-transformation.coffee'

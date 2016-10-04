@@ -13,7 +13,7 @@
     "array-includes": "^3.0.2",
     "browserify": "^10.2.1",
     "coffeeify": "^1.1.0",
-    "d3": "https://github.com/PatrickKing/d3.git#jsdom",
+    "d3": "^3.4.0",
     "debug": "~2.2.0",
     "domready": "^1.0.8",
     "grunt": "^0.4.5",

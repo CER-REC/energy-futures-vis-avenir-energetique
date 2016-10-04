@@ -419,6 +419,34 @@ class Visualization4
       when 'gasProduction'
         app.gasProductionProvider.dataForAllViz4Scenarios @config
 
+  gradientData: ->
+    [
+      {
+        key: 'reference'
+        colour: '#999999'
+      }
+      {
+        key: 'high'
+        colour: '#0C2C84'
+      }
+      {
+        key: 'highLng'
+        colour: '#225EA8'
+      }
+      {
+        key: 'constrained'
+        colour: '#41B6C4'
+      }
+      {
+        key: 'low'
+        colour: '#7FCDBB'
+      }
+      {
+        key: 'noLng'
+        colour: '#C7E9B4'
+      }
+    ]
+    
 
   graphScenarioData: ->
     reference =
@@ -477,12 +505,15 @@ class Visualization4
     @outerHeight - @margin.top - @margin.bottom
 
 
-  xAxisScale: ->
+  # NB: See 'render' for width discussion, IE specific issue.
+  xAxisScale: (width) ->
     #TODO should the domain come from the data? 
+
+    width = width || @width()
 
     d3.scale.linear()
       .domain [2005, 2040]
-      .range [0, @width()]
+      .range [0, width]
 
   yAxisScale: ->
     d3.scale.linear()
@@ -525,6 +556,16 @@ class Visualization4
   # Render helpers here
 
   render: ->
+
+    # NB: This is a workaround to a problem in Internet Explorer.
+    # For some reason, during page load, width reports a slightly wider width at the very 
+    # end. This results in a graph that overflows onto the y axis. 
+    # To work around it, we save the width as measured at the beginning of the render 
+    # call and use it later.
+    # This problem only occurred after the switch to using an iframe, and seems limited to 
+    # IE.
+    width = @width()
+
     d3.select '#graphSVG'
       .attr
         width: @outerWidth()
@@ -539,7 +580,7 @@ class Visualization4
     @renderYAxis()
     if !@provinceMenu #We only need to build once, but we need to build after the axis are built for alignment
       @provinceMenu = @buildProvinceMenu()
-    @renderGraph()
+    @renderGraph(0, width)
 
   renderMainSelector: ->
     mainSelectors = d3.select('#mainSelector')
@@ -754,8 +795,8 @@ class Visualization4
         'shape-rendering': 'crispEdges'
 
 
-  renderGraph: (duration = 1000) ->
-    xAxisScale = @xAxisScale()
+  renderGraph: (duration = 1000, width) ->
+    xAxisScale = @xAxisScale(width)
     yAxisScale = @yAxisScale()
 
     area = d3.svg.area()
@@ -782,13 +823,11 @@ class Visualization4
         .y (d) => 
           yAxisScale d.value
 
-    graphScenarioData = @graphScenarioData()
-
     grads = d3.select('#graphGroup').select("defs").selectAll(".presentLinearGradient")
-        .data(graphScenarioData, (d) -> d.key)
+        .data(@gradientData(), (d) -> d.key)
     
     futureGrads = d3.select('#graphGroup').select("defs").selectAll(".futureLinearGradient")
-        .data(graphScenarioData, (d) -> d.key)
+        .data(@gradientData(), (d) -> d.key)
 
     enterGrads = grads.enter().append("linearGradient")
         .attr
@@ -843,14 +882,8 @@ class Visualization4
           "stop-color": (d) -> d.colour
           "stop-opacity": 0.4 * 0.2
 
-    grads.exit()
-      .transition()
-        .delay 1000
-      .remove()
-    futureGrads.exit()
-      .transition()
-        .delay 1000
-      .remove()
+
+    graphScenarioData = @graphScenarioData()
 
     graphAreaGroups = d3.select '#areasAndLinesGroup'
       .selectAll '.graphGroup' 
