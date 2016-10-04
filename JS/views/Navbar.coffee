@@ -177,20 +177,20 @@ class Navbar
     
     vizNavbar.select('.navbarHelpIcon')
       .on 'click', (d) =>
-        if app.popoverManager.current_popover == @navbarHelpPopover
-          app.popoverManager.close_popover()
+        if app.popoverManager.currentPopover == @navbarHelpPopover
+          app.popoverManager.closePopover()
         else
-          app.popoverManager.show_popover @navbarHelpPopover, 
+          app.popoverManager.showPopover @navbarHelpPopover, 
             imageAUrl: d.imageAUrl
             imageBUrl: d.imageBUrl
             navbarHelpImageSelected: d.navbarHelpImageSelected
 
     vizNavbar.select('.navbarMenuIcon')
       .on 'click', (d) =>
-        if app.popoverManager.current_popover == @navbarInfoPopover
-          app.popoverManager.close_popover()
+        if app.popoverManager.currentPopover == @navbarInfoPopover
+          app.popoverManager.closePopover()
         else
-          app.popoverManager.show_popover @navbarInfoPopover, 
+          app.popoverManager.showPopover @navbarInfoPopover, 
             navbarInfoText: d.navbarInfoText
             navbarInfoImageSelected: d.navbarInfoImageSelected
 

@@ -132,7 +132,7 @@ class Router
       @app.currentView = new LandingPage()
       @app.containingWindow.history.replaceState {page: 'landingPage'}, '', "?page=landingPage" if options.shouldUpdateHistory
     else if not (@app.currentView instanceof LandingPage)
-      @app.popoverManager.close_popover()
+      @app.popoverManager.closePopover()
       @app.currentView.tearDown()
       @app.currentView = new LandingPage()
       @app.containingWindow.history.pushState {page: 'landingPage'}, '', "?page=landingPage" if options.shouldUpdateHistory
@@ -143,7 +143,7 @@ class Router
       @app.currentView = new Visualization1 @app.visualization1Configuration
       @app.containingWindow.history.replaceState params, '', @paramsToUrlString(params) if options.shouldUpdateHistory
     else if not (@app.currentView instanceof Visualization1)
-      @app.popoverManager.close_popover()
+      @app.popoverManager.closePopover()
       @app.currentView.tearDown()
       @app.currentView = new Visualization1 @app.visualization1Configuration
       @app.containingWindow.history.pushState params, '', @paramsToUrlString(params) if options.shouldUpdateHistory
@@ -158,7 +158,7 @@ class Router
       @app.currentView = new Visualization2 @app.visualization2Configuration
       @app.containingWindow.history.replaceState params, '', @paramsToUrlString(params) if options.shouldUpdateHistory
     else if not (@app.currentView instanceof Visualization2)
-      @app.popoverManager.close_popover()
+      @app.popoverManager.closePopover()
       @app.currentView.tearDown()
       @app.currentView = new Visualization2 @app.visualization2Configuration
       @app.containingWindow.history.pushState params, '', @paramsToUrlString(params) if options.shouldUpdateHistory
@@ -172,7 +172,7 @@ class Router
       @app.currentView = new Visualization3 @app.visualization3Configuration
       @app.containingWindow.history.replaceState params, '', @paramsToUrlString(params) if options.shouldUpdateHistory
     else if not (@app.currentView instanceof Visualization3)
-      @app.popoverManager.close_popover()
+      @app.popoverManager.closePopover()
       @app.currentView.tearDown()
       @app.currentView = new Visualization3 @app.visualization3Configuration
       @app.containingWindow.history.pushState params, '', @paramsToUrlString(params) if options.shouldUpdateHistory
@@ -186,7 +186,7 @@ class Router
       @app.currentView = new Visualization4 @app.visualization4Configuration
       @app.containingWindow.history.replaceState params, '', @paramsToUrlString(params) if options.shouldUpdateHistory
     else if not (@app.currentView instanceof Visualization4)
-      @app.popoverManager.close_popover()
+      @app.popoverManager.closePopover()
       @app.currentView.tearDown()
       @app.currentView = new Visualization4 @app.visualization4Configuration
       @app.containingWindow.history.pushState params, '', @paramsToUrlString(params) if options.shouldUpdateHistory

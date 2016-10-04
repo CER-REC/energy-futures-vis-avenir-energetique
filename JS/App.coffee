@@ -86,11 +86,11 @@ class App
 
     d3.select('#aboutLink').on 'click', =>
       d3.event.preventDefault()
-      @popoverManager.show_popover @aboutThisProjectPopover
+      @popoverManager.showPopover @aboutThisProjectPopover
 
     d3.select('#aboutModal .closeButton').on 'click', =>
       d3.event.preventDefault()
-      @popoverManager.close_popover()
+      @popoverManager.closePopover()
 
     d3.select('#imageDownloadLink').on 'click', ->
       d3.event.preventDefault()
@@ -98,7 +98,7 @@ class App
 
     d3.select('#imageDownloadModal .closeButton').on 'click', ->
       d3.event.preventDefault()
-      self.popoverManager.close_popover()
+      self.popoverManager.closePopover()
 
 
 

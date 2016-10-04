@@ -22,7 +22,7 @@ class ControlsHelpPopover
     d3.select(options.attachmentSelector).node().appendChild newEl
 
     d3.select '.floatingPopover .closeButton'
-      .on 'click', -> app.popoverManager.close_popover()
+      .on 'click', -> app.popoverManager.closePopover()
 
   close: ->
     d3.selectAll('.floatingPopover').remove()

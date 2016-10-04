@@ -3,21 +3,21 @@ class PopoverManager
 
 
   constructor: ->
-    @current_popover = null
+    @currentPopover = null
 
 
-  show_popover: (popover, options) ->
-    if @current_popover?
-      @close_popover()
+  showPopover: (popover, options) ->
+    if @currentPopover?
+      @closePopover()
 
-    @current_popover = popover
-    @current_popover.show(options)
+    @currentPopover = popover
+    @currentPopover.show(options)
 
 
-  close_popover: ->
-    if @current_popover?
-      @current_popover.close() 
-      @current_popover = null
+  closePopover: ->
+    if @currentPopover?
+      @currentPopover.close() 
+      @currentPopover = null
 
 
 

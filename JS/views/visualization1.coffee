@@ -34,10 +34,10 @@ class Visualization1 extends visualization
 
     d3.select '.mainSelectorHelpButton'
       .on 'click', =>
-        if app.popoverManager.current_popover == @mainSelectorHelpPopover
-          app.popoverManager.close_popover()
+        if app.popoverManager.currentPopover == @mainSelectorHelpPopover
+          app.popoverManager.closePopover()
         else
-          app.popoverManager.show_popover @mainSelectorHelpPopover, 
+          app.popoverManager.showPopover @mainSelectorHelpPopover, 
             outerClasses: 'vizModal floatingPopover mainSelectorHelp'
             innerClasses: 'viz1HelpTitle'
             title: Tr.mainSelector.selectOneLabel[app.language]
@@ -46,10 +46,10 @@ class Visualization1 extends visualization
           
     d3.select '.unitSelectorHelpButton'
       .on 'click', =>
-        if app.popoverManager.current_popover == @unitsHelpPopover
-          app.popoverManager.close_popover()
+        if app.popoverManager.currentPopover == @unitsHelpPopover
+          app.popoverManager.closePopover()
         else
-          app.popoverManager.show_popover @unitsHelpPopover, 
+          app.popoverManager.showPopover @unitsHelpPopover, 
             outerClasses: 'vizModal floatingPopover unitSelectorHelp'
             innerClasses: 'viz1HelpTitle'
             title: Tr.unitSelector.unitSelectorHelpTitle[app.language]
@@ -58,10 +58,10 @@ class Visualization1 extends visualization
     
     d3.select '.scenarioSelectorHelpButton'
       .on 'click', =>
-        if app.popoverManager.current_popover == @scenariosHelpPopover
-          app.popoverManager.close_popover()
+        if app.popoverManager.currentPopover == @scenariosHelpPopover
+          app.popoverManager.closePopover()
         else
-          app.popoverManager.show_popover @scenariosHelpPopover, 
+          app.popoverManager.showPopover @scenariosHelpPopover, 
             outerClasses: 'vizModal floatingPopover scenarioSelectorHelp'
             innerClasses: 'viz1HelpTitle'
             title: Tr.scenarioSelector.scenarioSelectorHelpTitle[app.language]
@@ -485,23 +485,20 @@ class Visualization1 extends visualization
     @getData()
 
   showProvinceNames: =>
-
-    if app.popoverManager.current_popover == @provincesHelpPopover
-      app.popoverManager.close_popover()
+    if app.popoverManager.currentPopover == @provincesHelpPopover
+      app.popoverManager.closePopover()
     else
       #Grab the provinces in order for the string
       contentString = ""
       for province in @provinceMenuData()
         contentString = """<div class="provinceLabel provinceLabel#{province.key}"> <h6> #{Tr.regionSelector.names[province.key][app.language]} </h6> </div>""" + contentString
 
-      app.popoverManager.show_popover @provincesHelpPopover, 
+      app.popoverManager.showPopover @provincesHelpPopover, 
         outerClasses: 'vizModal floatingPopover popOverSm provinceHelp'
         innerClasses: 'localHelpTitle'
         title: Tr.regionSelector.selectRegionLabel[app.language]
         content: contentString
         attachmentSelector: '#provincesSelector'
-
-
 
 
 Visualization1.resourcesLoaded = ->

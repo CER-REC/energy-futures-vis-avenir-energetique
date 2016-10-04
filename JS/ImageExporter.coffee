@@ -194,7 +194,7 @@ class ImageExporter
           document.getElementById('renderedImageContainer').innerHTML = ""
           document.getElementById('renderedImageContainer').appendChild imgElement
           
-          app.popoverManager.show_popover app.imageDownloadPopover
+          app.popoverManager.showPopover app.imageDownloadPopover
 
 
 
