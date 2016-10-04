@@ -119,7 +119,7 @@ class Router
 
   # Navigation handlers
 
-  updateBottomNavBar: (options) ->
+  updateBottomNavBar: ->
     if @app.page == 'landingPage'
       d3.select('#dataDownloadLink').classed('hidden', true)
       d3.select('#imageDownloadLink').classed('hidden', true)
@@ -127,7 +127,7 @@ class Router
       d3.select('#dataDownloadLink').classed('hidden', false)
       d3.select('#imageDownloadLink').classed('hidden', false)
 
-
+  landingPageHandler: (options) ->
     if not @app.currentView?
       @app.currentView = new LandingPage()
       @app.containingWindow.history.replaceState {page: 'landingPage'}, '', "?page=landingPage" if options.shouldUpdateHistory
