@@ -1,16 +1,14 @@
 d3 = require 'd3'
 Domready = require 'domready'
 Mustache = require 'mustache'
-
 _ = require 'lodash'
-d3 = require 'd3'
+
 
 require './ArrayIncludes.coffee'
 Router = require './Router.coffee'
 Tr = require './TranslationTable.coffee'
 
 BottomNavBarTemplate = require './templates/BottomNavBar.mustache'
-AboutThisProjectTemplate = require './templates/AboutThisProject.mustache'
 ImageDownloadTemplate = require './templates/ImageDownload.mustache'
 
 Visualization1Configuration = require './VisualizationConfigurations/visualization1Configuration.coffee'
@@ -25,6 +23,9 @@ ElectricityProductionProvider = require './DataProviders/ElectricityProductionPr
 
 ImageExporter = require './ImageExporter.coffee'
 
+PopoverManager = require './PopoverManager.coffee'
+
+AboutThisProjectPopover = require './popovers/AboutThisProjectPopover'
 
 class App
 
@@ -62,6 +63,10 @@ class App
       @language = 'en'
 
 
+    @popoverManager = new PopoverManager()
+    @aboutThisProjectPopover = new AboutThisProjectPopover()
+
+
     # TODO: Navbar and modal setup is getting weighty, might want to break it out into a separate class
 
     document.getElementById('bottomNavBar').innerHTML = Mustache.render BottomNavBarTemplate,
@@ -73,17 +78,14 @@ class App
         imageDownloadLink: Tr.allPages.imageDownloadLink[app.language]
         # downloadsLabel: Tr.allPages.downloadsLabel[app.language]
 
-    document.getElementById('aboutModal').innerHTML = Mustache.render AboutThisProjectTemplate,
-        aboutTitle: Tr.aboutThisProject.aboutTitle[app.language]
-        aboutContent: Tr.aboutThisProject.aboutContent[app.language]
 
-    d3.select('#aboutLink').on 'click', (d) ->
+    d3.select('#aboutLink').on 'click', (d) =>
       d3.event.preventDefault()
-      d3.select('#aboutModal').classed('hidden', false)
+      @popoverManager.show_popover @aboutThisProjectPopover
 
-    d3.select('#aboutModal .closeButton').on 'click', (d) ->
+    d3.select('#aboutModal .closeButton').on 'click', (d) =>
       d3.event.preventDefault()
-      d3.select('#aboutModal').classed('hidden', true)
+      @popoverManager.close_popover()
 
 
     document.getElementById('imageDownloadModal').innerHTML = Mustache.render ImageDownloadTemplate, 
