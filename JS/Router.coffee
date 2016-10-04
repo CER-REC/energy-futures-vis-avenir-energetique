@@ -147,6 +147,7 @@ class Router
     else if not (@app.currentView instanceof Visualization1)
       @app.currentView.tearDown()
       @app.currentView = new Visualization1 @app.visualization1Configuration
+      params = @setupRouterParams(@app.visualization1Configuration, params)
       @app.containingWindow.history.pushState params, '', @paramsToUrlString(params) if options.shouldUpdateHistory
       @updateKeyWordsTagViz1()
     else if options.shouldUpdateHistory
@@ -193,6 +194,12 @@ class Router
       @app.containingWindow.history.replaceState params, '', @paramsToUrlString(params)
       @updateKeyWordsTagViz4()
 
+  setupRouterParams: (configuration, params)->
+    page: params.page
+    mainSelection: configuration.mainSelection
+    unit: configuration.unit
+    scenario: configuration.scenario
+    provinces: configuration.provincesInOrder
 
   paramsToUrlString: (params) ->
     urlParts = Object.keys(params).map (key) ->
@@ -287,6 +294,5 @@ Router.viewClassForPage = (page) ->
     when 'viz2' then Visualization2
     when 'viz3' then Visualization3
     when 'viz4' then Visualization4
-
 
 module.exports = Router
