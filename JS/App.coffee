@@ -9,7 +9,6 @@ Router = require './Router.coffee'
 Tr = require './TranslationTable.coffee'
 
 BottomNavBarTemplate = require './templates/BottomNavBar.mustache'
-ImageDownloadTemplate = require './templates/ImageDownload.mustache'
 
 Visualization1Configuration = require './VisualizationConfigurations/visualization1Configuration.coffee'
 Visualization2Configuration = require './VisualizationConfigurations/visualization2Configuration.coffee'
@@ -24,8 +23,9 @@ ElectricityProductionProvider = require './DataProviders/ElectricityProductionPr
 ImageExporter = require './ImageExporter.coffee'
 
 PopoverManager = require './PopoverManager.coffee'
-
 AboutThisProjectPopover = require './popovers/AboutThisProjectPopover'
+ImageDownloadPopover = require './popovers/ImageDownloadPopover'
+
 
 class App
 
@@ -65,6 +65,9 @@ class App
 
     @popoverManager = new PopoverManager()
     @aboutThisProjectPopover = new AboutThisProjectPopover()
+    @imageDownloadPopover = new ImageDownloadPopover()
+
+    @imageExporter = new ImageExporter @
 
 
     # TODO: Navbar and modal setup is getting weighty, might want to break it out into a separate class
@@ -79,21 +82,25 @@ class App
         # downloadsLabel: Tr.allPages.downloadsLabel[app.language]
 
 
-    d3.select('#aboutLink').on 'click', (d) =>
+    self = this
+
+    d3.select('#aboutLink').on 'click', =>
       d3.event.preventDefault()
       @popoverManager.show_popover @aboutThisProjectPopover
 
-    d3.select('#aboutModal .closeButton').on 'click', (d) =>
+    d3.select('#aboutModal .closeButton').on 'click', =>
       d3.event.preventDefault()
       @popoverManager.close_popover()
 
+    d3.select('#imageDownloadLink').on 'click', ->
+      d3.event.preventDefault()
+      self.imageExporter.createImage d3.event, @
 
-    document.getElementById('imageDownloadModal').innerHTML = Mustache.render ImageDownloadTemplate, 
-        imageDownloadHeader: Tr.allPages.imageDownloadHeader[app.language]
-        imageDownloadInstructions: Tr.allPages.imageDownloadInstructions[app.language]
+    d3.select('#imageDownloadModal .closeButton').on 'click', ->
+      d3.event.preventDefault()
+      self.popoverManager.close_popover()
 
-    d3.select('#imageDownloadModal .closeButton').on 'click', (d) ->
-      d3.select('#imageDownloadModal').classed('hidden', true)
+
 
     metaTag = if d3.selectAll('meta[name="description"]').empty() then d3.select('head').append('meta') else d3.select('meta[name="description"]')
     metaTag
@@ -161,7 +168,6 @@ class App
       @setupRouter()
 
 
-    @imageExporter = new ImageExporter @
 
     @setupRouter()
 

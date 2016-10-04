@@ -26,9 +26,6 @@ class ImageExporter
     # Uncomment me if we go back to using SVGs
     # @checkDataUrlStrictSecurity()
 
-    document.getElementById('imageDownloadLink').addEventListener 'click', (event) ->
-      self.createImage event, @
-
     @provinceData = 
       BC:
         present: (config) -> config.provinces.includes 'BC' 
@@ -196,8 +193,8 @@ class ImageExporter
           imgElement.setAttribute 'src', dataurl
           document.getElementById('renderedImageContainer').innerHTML = ""
           document.getElementById('renderedImageContainer').appendChild imgElement
-          d3.select('#imageDownloadModal').classed 'hidden', false
           
+          app.popoverManager.show_popover app.imageDownloadPopover          
 
 
 

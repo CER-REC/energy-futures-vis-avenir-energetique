@@ -59,10 +59,9 @@ class Router
     # Guard against navigating unless resources for the destination page are loaded up
     return unless Router.viewClassForPage(params.page).resourcesLoaded()
 
-    d3.select('#imageDownloadModal').classed('hidden', true)
     @app.page = params.page
     @navbar.setNavBarState params.page
-    @updateBottomNavBar()
+    @updateBottomNavBar options
 
     switch params.page
       when 'landingPage' then @landingPageHandler options
@@ -120,7 +119,7 @@ class Router
 
   # Navigation handlers
 
-  updateBottomNavBar: ->
+  updateBottomNavBar: (options) ->
     if @app.page == 'landingPage'
       d3.select('#dataDownloadLink').classed('hidden', true)
       d3.select('#imageDownloadLink').classed('hidden', true)
@@ -129,7 +128,6 @@ class Router
       d3.select('#imageDownloadLink').classed('hidden', false)
 
 
-  landingPageHandler: (options) ->
     if not @app.currentView?
       @app.currentView = new LandingPage()
       @app.containingWindow.history.replaceState {page: 'landingPage'}, '', "?page=landingPage" if options.shouldUpdateHistory

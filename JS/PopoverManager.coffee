@@ -8,7 +8,7 @@ class PopoverManager
 
   show_popover: (popover) ->
     if @current_popover?
-      close_popover @current_popover
+      @close_popover @current_popover
 
     @current_popover = popover
     @current_popover.show()
