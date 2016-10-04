@@ -64,7 +64,7 @@ class Visualization1Configuration
       @addProvince province
 
     # Used to manage the order of the provinces in a reorderable menu
-    @provincesInOrder = @defaultOptions.provincesInOrder
+    @provincesInOrder = @options.provinces
 
 
   # Setters
@@ -156,7 +156,7 @@ class Visualization1Configuration
   setProvincesInOrder: (provincesInOrder) ->
     # NB: We aren't currently tracking provinces in order in the URL bar
     @provincesInOrder = provincesInOrder
-
+    @updateRouter()
   # Router integration
 
   routerParams: ->
@@ -164,7 +164,7 @@ class Visualization1Configuration
     mainSelection: @mainSelection
     unit: @unit
     scenario: @scenario
-    provinces: @provinces
+    provinces: @provincesInOrder
     
   updateRouter: ->
     return unless app? and app.router?
