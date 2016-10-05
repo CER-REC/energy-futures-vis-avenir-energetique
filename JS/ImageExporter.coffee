@@ -150,7 +150,7 @@ class ImageExporter
     svg.src = 'IMG/provinces/colour/BC_Selected.svg'
 
 
-  createImage: (event, anchorElement) ->
+  createImage: (event) ->
     event.preventDefault()
 
     # A left to right list of canvas elements to be combined together

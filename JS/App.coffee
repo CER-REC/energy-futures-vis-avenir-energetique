@@ -82,7 +82,6 @@ class App
         # downloadsLabel: Tr.allPages.downloadsLabel[app.language]
 
 
-    self = this
 
     d3.select('#aboutLink').on 'click', =>
       d3.event.preventDefault()
@@ -94,15 +93,15 @@ class App
       d3.event.stopPropagation()
       @popoverManager.closePopover()
 
-    d3.select('#imageDownloadLink').on 'click', ->
+    d3.select('#imageDownloadLink').on 'click', =>
       d3.event.preventDefault()
       d3.event.stopPropagation()
-      self.imageExporter.createImage d3.event, @
+      @imageExporter.createImage d3.event
 
-    d3.select('#imageDownloadModal .closeButton').on 'click', ->
+    d3.select('#imageDownloadModal .closeButton').on 'click', =>
       d3.event.preventDefault()
       d3.event.stopPropagation()
-      self.popoverManager.closePopover()
+      @popoverManager.closePopover()
 
     d3.select('body').on 'click', =>
       if @popoverManager.currentPopover?
