@@ -123,6 +123,9 @@ We're the development team with Startide Solutions who put this project together
 
 ## Changelog
 
+* 2016-10-05 - The query url is now kept consistent as users navigate back and forth between the different visualizations as well as when the order of the provinces (in visualization 1) and the sources (in visualization 2) change.
+* 2016-10-05 - Modified the timeline slider to use an svg image instead of the previously used png image.
+* 2016-10-05 - Changed the height and font size of the title bar on the landing page to match the navigation bar for the visualization pages.
 * 2016-10-05 - You can only have one popover open at once, and clicking outside of a popover will close it.
 * 2016-10-04 - Added the NEB's introductory video to the landing page of the visualization. NB: Currently the templates which include the video depend heavily on the WET assets included in the development environment! That will need to change before we can deploy this version. See: `views/Wet3VideoIframe.mustache` and `views/Wet4VideoIframe.mustache` Also: it was necessary to use iframes to load the video each time we visit the landing page, as the player only initializes properly on page load.
 * 2016-10-03 - Refactored the app to break each Mustache template into its own file, rather than storing them all together in `templates.coffee`. 
