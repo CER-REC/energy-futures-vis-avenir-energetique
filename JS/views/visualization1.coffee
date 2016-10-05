@@ -34,6 +34,7 @@ class Visualization1 extends visualization
 
     d3.select '.mainSelectorHelpButton'
       .on 'click', =>
+        d3.event.stopPropagation()
         if app.popoverManager.currentPopover == @mainSelectorHelpPopover
           app.popoverManager.closePopover()
         else
@@ -46,6 +47,7 @@ class Visualization1 extends visualization
           
     d3.select '.unitSelectorHelpButton'
       .on 'click', =>
+        d3.event.stopPropagation()
         if app.popoverManager.currentPopover == @unitsHelpPopover
           app.popoverManager.closePopover()
         else
@@ -58,6 +60,7 @@ class Visualization1 extends visualization
     
     d3.select '.scenarioSelectorHelpButton'
       .on 'click', =>
+        d3.event.stopPropagation()
         if app.popoverManager.currentPopover == @scenariosHelpPopover
           app.popoverManager.closePopover()
         else
@@ -485,6 +488,7 @@ class Visualization1 extends visualization
     @getData()
 
   showProvinceNames: =>
+    d3.event.stopPropagation()
     if app.popoverManager.currentPopover == @provincesHelpPopover
       app.popoverManager.closePopover()
     else

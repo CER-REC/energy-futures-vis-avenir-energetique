@@ -34,6 +34,7 @@ class Visualization3 extends visualization
 
     d3.select '.viewBySelectorHelpButton'
       .on 'click', =>
+        d3.event.stopPropagation()
         if app.popoverManager.currentPopover == @viewByHelpPopover
           app.popoverManager.closePopover()
         else
@@ -46,6 +47,7 @@ class Visualization3 extends visualization
 
     d3.select '.unitSelectorHelpButton'
       .on 'click', =>
+        d3.event.stopPropagation()
         if app.popoverManager.currentPopover == @unitsHelpPopover
           app.popoverManager.closePopover()
         else
@@ -58,6 +60,7 @@ class Visualization3 extends visualization
     
     d3.select '.scenarioSelectorHelpButton'
       .on 'click', =>
+        d3.event.stopPropagation()
         if app.popoverManager.currentPopover == @scenariosHelpPopover
           app.popoverManager.closePopover()
         else
@@ -929,7 +932,7 @@ class Visualization3 extends visualization
 
   # When swapping between views (province and type) we need to regenerate the menus
   toggleViz: ->
-    d3.selectAll('.floatingPopover').remove()
+    app.popoverManager.closePopover()
 
     # Filters should not apply between them as the display options change
     @config.setProvince 'all'
@@ -1010,6 +1013,7 @@ class Visualization3 extends visualization
     @getData()
 
   showSourceNames: =>
+    d3.event.stopPropagation()
     if app.popoverManager.currentPopover == @sourcesHelpPopover
       app.popoverManager.closePopover()
     else
@@ -1035,6 +1039,7 @@ class Visualization3 extends visualization
         attachmentSelector: '#powerSourceSelector'
 
   showProvinceNames: =>
+    d3.event.stopPropagation()
     if app.popoverManager.currentPopover == @provincesHelpPopover
       app.popoverManager.closePopover()
     else

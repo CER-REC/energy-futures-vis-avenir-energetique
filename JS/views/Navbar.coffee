@@ -177,6 +177,7 @@ class Navbar
     
     vizNavbar.select('.navbarHelpIcon')
       .on 'click', (d) =>
+        d3.event.stopPropagation()
         if app.popoverManager.currentPopover == @navbarHelpPopover
           app.popoverManager.closePopover()
         else
@@ -187,6 +188,7 @@ class Navbar
 
     vizNavbar.select('.navbarMenuIcon')
       .on 'click', (d) =>
+        d3.event.stopPropagation()
         if app.popoverManager.currentPopover == @navbarInfoPopover
           app.popoverManager.closePopover()
         else

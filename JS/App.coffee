@@ -86,19 +86,31 @@ class App
 
     d3.select('#aboutLink').on 'click', =>
       d3.event.preventDefault()
+      d3.event.stopPropagation()
       @popoverManager.showPopover @aboutThisProjectPopover
 
     d3.select('#aboutModal .closeButton').on 'click', =>
       d3.event.preventDefault()
+      d3.event.stopPropagation()
       @popoverManager.closePopover()
 
     d3.select('#imageDownloadLink').on 'click', ->
       d3.event.preventDefault()
+      d3.event.stopPropagation()
       self.imageExporter.createImage d3.event, @
 
     d3.select('#imageDownloadModal .closeButton').on 'click', ->
       d3.event.preventDefault()
+      d3.event.stopPropagation()
       self.popoverManager.closePopover()
+
+    d3.select('body').on 'click', =>
+      if @popoverManager.currentPopover?
+        @popoverManager.closePopover()
+
+    d3.select(@containingWindow).on 'click', =>
+      if @popoverManager.currentPopover?
+        @popoverManager.closePopover()
 
 
 
