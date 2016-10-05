@@ -64,8 +64,11 @@ class Visualization1Configuration
       @addProvince province
 
     # Used to manage the order of the provinces in a reorderable menu
-    @provincesInOrder = @options.provincesInOrder
-
+    @provincesInOrder = []
+    if(@isValidProvincesInOrder(@options.provincesInOrder))
+      @provincesInOrder = @options.provincesInOrder
+    else
+      @provincesInOrder = @defaultOptions.provincesInOrder
 
   # Setters
 
@@ -222,6 +225,17 @@ class Visualization1Configuration
 
     description
 
+  isValidProvincesInOrder: (newOrder) ->
+    # Check if the set of provinces is valid
+    if(newOrder.length != @defaultOptions.provincesInOrder.length)
+      return false
+    for newOrderedProvince in newOrder
+      if(!(@defaultOptions.provincesInOrder.includes newOrderedProvince))
+        return false
+    for currentOrderedProvince in @defaultOptions.provincesInOrder
+      if(!(newOrder.includes currentOrderedProvince))
+        return false
+    return true
 
 
 
