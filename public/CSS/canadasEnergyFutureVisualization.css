@@ -17,11 +17,23 @@
   font-weight: 400;
 } 
 
-
-#canadasEnergyFutureVisualization .mainImageCarousel {
-  height: 400px;
-  float: right;
+#canadasEnergyFutureVisualization .videoIframeContainer {
+  position: relative;
+  /* Approximate height of the video player elements. */
+  /* In WET3: in my tests the video player was always exactly 404px tall. Reducing the screen width only shrank the width of the element. */
+  padding-bottom: 430px; 
+  /* In WET4: in my tests the width and height shrank with reduced screen width. Above 600px width or so, the length:width ratio was always above 1.6, we could use a percentage padding-bottom to work with this. Below 600px this aspect ratio fell as low as 1.2, so we will need media queries to get the padding right in WET4. */
 }
+
+#canadasEnergyFutureVisualization .videoIframe {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  border: none;
+}
+
 
 #canadasEnergyFutureVisualization #mainPanel {
   position: relative;
@@ -43,15 +55,31 @@
 #canadasEnergyFutureVisualization #panelLeft {
   box-sizing: border-box;
   width: 25%;
-  float: left;
+  float: right;
+  padding-right: 10px; /* For precise alignment with link boxes */
 }
 
 #canadasEnergyFutureVisualization #panelRight {
   box-sizing: border-box;
   width: 75%;
-  float: left;
-  padding-left: 7px; /* Necessary for precise alignment with link boxes */
+  float: right;
+  padding-left: 4px; /* For precise alignment with link boxes */
 }
+
+@media (max-width: 1023px) {
+  #canadasEnergyFutureVisualization #panelLeft {
+    float: none;
+    width: 100%;
+  }
+
+  #canadasEnergyFutureVisualization #panelRight {
+    float: none;
+    width: 100%;
+    padding-left: 0;
+  }
+}
+
+
 #canadasEnergyFutureVisualization #panelRight img {
   max-width: 100%;
   width: auto;
@@ -64,26 +92,6 @@
   line-height: 1.3em;
 }
 
-@media (max-width: 1199px) {
-  #canadasEnergyFutureVisualization #panelLeft {
-    width: 45%; 
-  }
-  #canadasEnergyFutureVisualization #panelLeft h1 {
-    line-height: 1em;
-  }
-  #canadasEnergyFutureVisualization #panelRight {
-    width: 55%;
-  }
-}
-
-@media (max-width: 959px) {
-  #canadasEnergyFutureVisualization #panelLeft {
-    width: 50%;
-  }
-  #canadasEnergyFutureVisualization #panelRight {
-    width: 50%;
-  }
-}
 
 #canadasEnergyFutureVisualization .hidden {
   display: none;

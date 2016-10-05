@@ -1,0 +1,69 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+
+  <style type="text/css">
+    /* Remove the gray background that comes with WET*/
+    body .ui-body-c {
+      background-color: white;
+      background-image: none;
+    }
+
+    .videoContainer {
+      /* Seems to be necessary to correct the position of the overlaid 'play' button, in WET3.*/
+      position: relative;
+      margin: 0px;
+    }
+
+    .videoContainer video {
+      height: 355px;
+    }
+    .videoContainer button.wb-mm-overlay {
+      height: 355px;
+    }
+  </style>
+
+</head>
+<body>
+
+  {{> Wet3VideoFragment }}
+
+
+  <!--[if lte IE 8]>
+  <link rel="shortcut icon" href="wet_NEB/dist/theme-gcwu-fegc/images/favicon.ico" />
+  <script src="wet_NEB/dist/js/jquery-ie.min.js"></script>
+  <script src="wet_NEB/dist/js/polyfills/html5shiv-min.js"></script>
+  <link rel="stylesheet" href="wet_NEB/dist/grids/css/util-ie-min.css" />
+  <link rel="stylesheet" href="wet_NEB/dist/js/css/pe-ap-ie-min.css" />
+  <link rel="stylesheet" href="wet_NEB/dist/theme-gcwu-fegc/css/theme-ie-min.css" />
+  <noscript><link rel="stylesheet" href="wet_NEB/dist/theme-gcwu-fegc/css/theme-ns-ie-min.css" /></noscript>
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="icon" type="image/x-icon" href="wet_NEB/dist/theme-gcwu-fegc/images/favicon.ico" />
+  <script src="wet_NEB/dist/js/jquery.min.js"></script>
+  <link rel="stylesheet" href="wet_NEB/dist/grids/css/util-min.css" />
+  <link rel="stylesheet" href="wet_NEB/dist/js/css/pe-ap-min.css" />
+  <link rel="stylesheet" href="wet_NEB/dist/theme-gcwu-fegc/css/theme-min.css" />
+  <noscript><link rel="stylesheet" href="wet_NEB/dist/theme-gcwu-fegc/css/theme-ns-min.css" /></noscript>
+  <!--<![endif]-->
+
+
+  <!-- ScriptsStart -->
+  <script src="wet_NEB/dist/js/settings.js"></script>
+  <!--[if lte IE 8]>
+  <script src="wet_NEB/dist/theme-gcwu-fegc/js/theme-ie-min.js"></script>
+  <script src="wet_NEB/dist/js/pe-ap-ie-min.js"></script>
+  <script src="wet_NEB/dist/js/jquerymobile/jquery.mobile-ie.min.js"></script>
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <script src="wet_NEB/dist/theme-gcwu-fegc/js/theme-min.js"></script>
+  <script src="wet_NEB/dist/js/pe-ap-min.js"></script>
+  <script src="wet_NEB/dist/js/jquerymobile/jquery.mobile.min.js"></script>
+  <!--<![endif]-->
+  <!-- ScriptsEnd -->
+
+</body>
+</html>
+

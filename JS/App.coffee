@@ -1,13 +1,17 @@
+d3 = require 'd3'
+Domready = require 'domready'
+Mustache = require 'mustache'
 
 _ = require 'lodash'
 d3 = require 'd3'
 
 require './ArrayIncludes.coffee'
 Router = require './Router.coffee'
-Domready = require 'domready'
-Mustache = require 'mustache'
-Templates = require './templates.coffee'
 Tr = require './TranslationTable.coffee'
+
+BottomNavBarTemplate = require './templates/BottomNavBar.mustache'
+AboutThisProjectTemplate = require './templates/AboutThisProject.mustache'
+ImageDownloadTemplate = require './templates/ImageDownload.mustache'
 
 Visualization1Configuration = require './VisualizationConfigurations/visualization1Configuration.coffee'
 Visualization2Configuration = require './VisualizationConfigurations/visualization2Configuration.coffee'
@@ -60,7 +64,7 @@ class App
 
     # TODO: Navbar and modal setup is getting weighty, might want to break it out into a separate class
 
-    document.getElementById('bottomNavBar').innerHTML = Mustache.render Templates.bottomNavBarTemplate,
+    document.getElementById('bottomNavBar').innerHTML = Mustache.render BottomNavBarTemplate,
         aboutLink: Tr.allPages.aboutLink[app.language]
         methodologyLinkText: Tr.allPages.methodologyLinkText[app.language]
         methodologyLinkUrl: Tr.allPages.methodologyLinkUrl[app.language]
@@ -69,7 +73,7 @@ class App
         imageDownloadLink: Tr.allPages.imageDownloadLink[app.language]
         # downloadsLabel: Tr.allPages.downloadsLabel[app.language]
 
-    document.getElementById('aboutModal').innerHTML = Mustache.render Templates.aboutThisProjectTemplate,
+    document.getElementById('aboutModal').innerHTML = Mustache.render AboutThisProjectTemplate,
         aboutTitle: Tr.aboutThisProject.aboutTitle[app.language]
         aboutContent: Tr.aboutThisProject.aboutContent[app.language]
 
@@ -82,7 +86,7 @@ class App
       d3.select('#aboutModal').classed('hidden', true)
 
 
-    document.getElementById('imageDownloadModal').innerHTML = Mustache.render Templates.imageDownloadTemplate, 
+    document.getElementById('imageDownloadModal').innerHTML = Mustache.render ImageDownloadTemplate, 
         imageDownloadHeader: Tr.allPages.imageDownloadHeader[app.language]
         imageDownloadInstructions: Tr.allPages.imageDownloadInstructions[app.language]
 
