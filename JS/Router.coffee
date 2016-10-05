@@ -146,6 +146,7 @@ class Router
       @app.popoverManager.closePopover()
       @app.currentView.tearDown()
       @app.currentView = new Visualization1 @app.visualization1Configuration
+      params = @setupVis1RouterParams(@app.visualization1Configuration, params)
       @app.containingWindow.history.pushState params, '', @paramsToUrlString(params) if options.shouldUpdateHistory
       @updateKeyWordsTagViz1()
     else if options.shouldUpdateHistory
@@ -161,6 +162,7 @@ class Router
       @app.popoverManager.closePopover()
       @app.currentView.tearDown()
       @app.currentView = new Visualization2 @app.visualization2Configuration
+      params = @setupVis2RouterParams(@app.visualization2Configuration, params)
       @app.containingWindow.history.pushState params, '', @paramsToUrlString(params) if options.shouldUpdateHistory
       @updateKeyWordsTagViz2()
     else if options.shouldUpdateHistory
@@ -175,6 +177,7 @@ class Router
       @app.popoverManager.closePopover()
       @app.currentView.tearDown()
       @app.currentView = new Visualization3 @app.visualization3Configuration
+      params = @setupVis3RouterParams(@app.visualization3Configuration, params)
       @app.containingWindow.history.pushState params, '', @paramsToUrlString(params) if options.shouldUpdateHistory
       @updateKeyWordsTagViz3()
     else if options.shouldUpdateHistory
@@ -189,12 +192,45 @@ class Router
       @app.popoverManager.closePopover()
       @app.currentView.tearDown()
       @app.currentView = new Visualization4 @app.visualization4Configuration
+      params = @setupVis4RouterParams(@app.visualization4Configuration, params)
       @app.containingWindow.history.pushState params, '', @paramsToUrlString(params) if options.shouldUpdateHistory
       @updateKeyWordsTagViz4()
     else if options.shouldUpdateHistory
       @app.containingWindow.history.replaceState params, '', @paramsToUrlString(params)
       @updateKeyWordsTagViz4()
 
+  setupVis1RouterParams: (configuration, params)->
+    page: params.page
+    mainSelection: configuration.mainSelection
+    unit: configuration.unit
+    scenario: configuration.scenario
+    provinces: configuration.provinces
+    provincesInOrder: configuration.provincesInOrder
+
+  setupVis2RouterParams: (configuration, params)->
+    page: params.page
+    sector: configuration.sector
+    unit: configuration.unit
+    scenario: configuration.scenario
+    sources: configuration.sources
+    province: configuration.province
+    sourcesInOrder: configuration.sourcesInOrder
+
+  setupVis3RouterParams: (configuration, params)->
+    page: params.page
+    viewBy: configuration.viewBy
+    unit: configuration.unit
+    scenario: configuration.scenario
+    year: configuration.year
+    province: configuration.province
+    sources: configuration.sources
+
+  setupVis4RouterParams: (configuration, params)->
+    page: params.page
+    mainSelection: configuration.mainSelection
+    unit: configuration.unit
+    scenarios: configuration.scenarios
+    province: configuration.province
 
   paramsToUrlString: (params) ->
     urlParts = Object.keys(params).map (key) ->
@@ -266,8 +302,12 @@ Router.parseQueryParams = ->
     params.scenarios = params.scenarios.split ','
   if params.provinces?
     params.provinces = params.provinces.split ','
+  if params.provincesInOrder?
+    params.provincesInOrder = params.provincesInOrder.split ','
   if params.sources?
     params.sources = params.sources.split ','
+  if params.sourcesInOrder?
+    params.sourcesInOrder = params.sourcesInOrder.split ','
   if params.year?
     params.year = parseInt(params.year)
 
@@ -289,6 +329,5 @@ Router.viewClassForPage = (page) ->
     when 'viz2' then Visualization2
     when 'viz3' then Visualization3
     when 'viz4' then Visualization4
-
 
 module.exports = Router

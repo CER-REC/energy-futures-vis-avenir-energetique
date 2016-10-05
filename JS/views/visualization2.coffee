@@ -585,7 +585,7 @@ class Visualization2 extends visualization
     if currentLocation < newLocation 
       temp_data = _.concat(@config.sourcesInOrder[0...currentLocation], @config.sourcesInOrder[(currentLocation+1)..newLocation], @config.sourcesInOrder[currentLocation], @config.sourcesInOrder[(newLocation+1)..])
     if temp_data?  
-      @config.sourcesInOrder = temp_data
+      @config.setSourcesInOrder temp_data
       @_chart.mapping(@sourceMenuData())
     
   menuSelect: (key, regionIndex) =>
