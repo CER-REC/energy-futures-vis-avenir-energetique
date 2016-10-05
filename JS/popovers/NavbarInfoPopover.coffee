@@ -5,6 +5,11 @@ class NavbarInfoPopover
   constructor: ->
 
   show: (options) ->
+    # Prevent clicks on the popover from propagating up to the body element, which would
+    # cause the popover to be closed.
+    d3.select('.navbarHelpSection').on 'click', ->
+      d3.event.stopPropagation()
+
     # Set the content of the pop up
     d3.select('.navbarHelpSection').html (e) => options.navbarInfoText
 

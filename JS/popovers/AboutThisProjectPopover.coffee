@@ -11,6 +11,11 @@ class AboutThisProjectPopover
         aboutTitle: Tr.aboutThisProject.aboutTitle[app.language]
         aboutContent: Tr.aboutThisProject.aboutContent[app.language]
 
+    # Prevent clicks on the popover from propagating up to the body element, which would
+    # cause the popover to be closed.
+    d3.select('#aboutModal').on 'click', ->
+      d3.event.stopPropagation()
+
   show: ->
     d3.select('#aboutModal').classed('hidden', false)
 
