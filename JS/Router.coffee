@@ -176,6 +176,7 @@ class Router
     else if not (@app.currentView instanceof Visualization3)
       @app.currentView.tearDown()
       @app.currentView = new Visualization3 @app.visualization3Configuration
+      params = @setupVis3RouterParams(@app.visualization3Configuration, params)
       @app.containingWindow.history.pushState params, '', @paramsToUrlString(params) if options.shouldUpdateHistory
       @updateKeyWordsTagViz3()
     else if options.shouldUpdateHistory
@@ -189,6 +190,7 @@ class Router
     else if not (@app.currentView instanceof Visualization4)
       @app.currentView.tearDown()
       @app.currentView = new Visualization4 @app.visualization4Configuration
+      params = @setupVis4RouterParams(@app.visualization4Configuration, params)
       @app.containingWindow.history.pushState params, '', @paramsToUrlString(params) if options.shouldUpdateHistory
       @updateKeyWordsTagViz4()
     else if options.shouldUpdateHistory
@@ -211,6 +213,22 @@ class Router
     sources: configuration.sources
     province: configuration.province
     sourcesInOrder: configuration.sourcesInOrder
+
+  setupVis3RouterParams: (configuration, params)->
+    page: params.page
+    viewBy: configuration.viewBy
+    unit: configuration.unit
+    scenario: configuration.scenario
+    year: configuration.year
+    province: configuration.province
+    sources: configuration.sources
+
+  setupVis4RouterParams: (configuration, params)->
+    page: params.page
+    mainSelection: configuration.mainSelection
+    unit: configuration.unit
+    scenarios: configuration.scenarios
+    province: configuration.province
 
   paramsToUrlString: (params) ->
     urlParts = Object.keys(params).map (key) ->
