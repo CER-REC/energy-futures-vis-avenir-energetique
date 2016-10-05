@@ -147,7 +147,7 @@ class Router
     else if not (@app.currentView instanceof Visualization1)
       @app.currentView.tearDown()
       @app.currentView = new Visualization1 @app.visualization1Configuration
-      params = @setupRouterParams(@app.visualization1Configuration, params)
+      params = @setupVis1RouterParams(@app.visualization1Configuration, params)
       @app.containingWindow.history.pushState params, '', @paramsToUrlString(params) if options.shouldUpdateHistory
       @updateKeyWordsTagViz1()
     else if options.shouldUpdateHistory
@@ -162,6 +162,7 @@ class Router
     else if not (@app.currentView instanceof Visualization2)
       @app.currentView.tearDown()
       @app.currentView = new Visualization2 @app.visualization2Configuration
+      params = @setupVis2RouterParams(@app.visualization2Configuration, params)
       @app.containingWindow.history.pushState params, '', @paramsToUrlString(params) if options.shouldUpdateHistory
       @updateKeyWordsTagViz2()
     else if options.shouldUpdateHistory
@@ -194,13 +195,22 @@ class Router
       @app.containingWindow.history.replaceState params, '', @paramsToUrlString(params)
       @updateKeyWordsTagViz4()
 
-  setupRouterParams: (configuration, params)->
+  setupVis1RouterParams: (configuration, params)->
     page: params.page
     mainSelection: configuration.mainSelection
     unit: configuration.unit
     scenario: configuration.scenario
     provinces: configuration.provinces
     provincesInOrder: configuration.provincesInOrder
+
+  setupVis2RouterParams: (configuration, params)->
+    page: params.page
+    sector: configuration.sector
+    unit: configuration.unit
+    scenario: configuration.scenario
+    sources: configuration.sources
+    province: configuration.province
+    sourcesInOrder: configuration.sourcesInOrder
 
   paramsToUrlString: (params) ->
     urlParts = Object.keys(params).map (key) ->
@@ -276,6 +286,8 @@ Router.parseQueryParams = ->
     params.provincesInOrder = params.provincesInOrder.split ','
   if params.sources?
     params.sources = params.sources.split ','
+  if params.sourcesInOrder?
+    params.sourcesInOrder = params.sourcesInOrder.split ','
   if params.year?
     params.year = parseInt(params.year)
 

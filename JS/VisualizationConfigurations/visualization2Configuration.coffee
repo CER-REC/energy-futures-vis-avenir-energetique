@@ -52,7 +52,11 @@ class Visualization2Configuration
     # BC AB SK MB ON QC NB NS NL PE YT NT NU all
     @setProvince @options.province
 
-    @sourcesInOrder = @options.sourcesInOrder
+    @sourcesInOrder = []
+    if(@isValidSourcesInOrder(@options.sourcesInOrder))
+      @sourcesInOrder = @options.sourcesInOrder
+    else
+      @sourcesInOrder = @defaultOptions.sourcesInOrder
 
   # Setters
 
@@ -80,6 +84,10 @@ class Visualization2Configuration
   addSource: (source) ->  
     return unless Constants.viz2Sources.includes source
     @sources.push source unless @sources.includes source
+    @updateRouter()
+
+  setSourcesInOrder: (sourcesInOrder) ->
+    @sourcesInOrder = sourcesInOrder
     @updateRouter()
 
   removeSource: (source) ->
@@ -123,6 +131,7 @@ class Visualization2Configuration
     unit: @unit
     scenario: @scenario
     sources: @sources
+    sourcesInOrder: @sourcesInOrder
     province: @province
 
   updateRouter: ->
@@ -170,6 +179,16 @@ class Visualization2Configuration
 
     description
 
-
+  isValidSourcesInOrder: (newOrder) ->
+    # Check if the set of provinces is valid
+    if(newOrder.length != @defaultOptions.sourcesInOrder.length)
+      return false
+    for newOrderedSource in newOrder
+      if(!(@defaultOptions.sourcesInOrder.includes newOrderedSource))
+        return false
+    for currentOrderedSource in @defaultOptions.sourcesInOrder
+      if(!(newOrder.includes currentOrderedSource))
+        return false
+    return true
 
 module.exports = Visualization2Configuration
