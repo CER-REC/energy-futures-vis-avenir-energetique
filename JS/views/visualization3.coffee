@@ -793,7 +793,7 @@ class Visualization3 extends visualization
     sliderLabel.append "image"
       .attr
         class: "tLTriangle"
-        "xlink:href": 'IMG/yearslider.png'
+        "xlink:href": 'IMG/yearslider.svg'
         x: -(sliderWidth / 2)
         y: 0
         width: sliderWidth
