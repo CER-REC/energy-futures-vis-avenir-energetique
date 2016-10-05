@@ -10,7 +10,9 @@ Tr = require '../TranslationTable.coffee'
 
 Visualization1Template = require '../templates/Visualization1.mustache'
 SvgStylesheetTemplate = require '../templates/SvgStylesheet.css'
-QuestionmarkPopoverTemplate = require '../templates/QuestionmarkPopover.mustache'
+
+ControlsHelpPopover = require '../popovers/ControlsHelpPopover.coffee'
+
 
 class Visualization1 extends visualization
 
@@ -25,78 +27,50 @@ class Visualization1 extends visualization
         selectRegionLabel: Tr.regionSelector.selectRegionLabel[app.language]
         svgStylesheet: SvgStylesheetTemplate
 
+    @mainSelectorHelpPopover = new ControlsHelpPopover()
+    @unitsHelpPopover = new ControlsHelpPopover()
+    @scenariosHelpPopover = new ControlsHelpPopover()
+    @provincesHelpPopover = new ControlsHelpPopover()
+
     d3.select '.mainSelectorHelpButton'
-      .on 'click', ->
-        d3.event.preventDefault()
-        if d3.selectAll('.floatingPopover.mainSelectorHelp').empty()        
-          # Clear any other open popovers
-          d3.selectAll('.floatingPopover').remove()
-
-          # Build the popover
-          newEl = document.createElement 'div'
-          newEl.className = 'vizModal floatingPopover mainSelectorHelp'
-          newEl.innerHTML = Mustache.render QuestionmarkPopoverTemplate, 
-                visClass: 'viz1HelpTitle'
-                popUpTitle: Tr.mainSelector.selectOneLabel[app.language]
-                popUpContent: Tr.mainSelector.mainSelectorHelp[app.language]
+      .on 'click', =>
+        d3.event.stopPropagation()
+        if app.popoverManager.currentPopover == @mainSelectorHelpPopover
+          app.popoverManager.closePopover()
+        else
+          app.popoverManager.showPopover @mainSelectorHelpPopover, 
+            outerClasses: 'vizModal floatingPopover mainSelectorHelp'
+            innerClasses: 'viz1HelpTitle'
+            title: Tr.mainSelector.selectOneLabel[app.language]
+            content: Tr.mainSelector.mainSelectorHelp[app.language]
+            attachmentSelector: '.mainSelectorSection'
           
-          # attach to correct element
-          d3.select('.mainSelectorSection').node().appendChild newEl
-
-          d3.select '.floatingPopover .closeButton'
-            .on 'click', ->
-              d3.selectAll('.floatingPopover').remove()
-        else 
-          d3.selectAll('.floatingPopover.mainSelectorHelp').remove()
-    
     d3.select '.unitSelectorHelpButton'
-      .on 'click', ->
-        d3.event.preventDefault()
-        if d3.selectAll('.floatingPopover.unitSelectorHelp').empty()        
-          # Clear any other open popovers
-          d3.selectAll('.floatingPopover').remove()
-          
-          # Build the popover
-          newEl = document.createElement 'div'
-          newEl.className = 'vizModal floatingPopover unitSelectorHelp'
-          newEl.innerHTML = Mustache.render QuestionmarkPopoverTemplate, 
-                visClass: 'viz1HelpTitle'
-                popUpTitle: Tr.unitSelector.unitSelectorHelpTitle[app.language]
-                popUpContent: Tr.unitSelector.unitSelectorHelp[app.language]
-          
-          # attach to correct element
-          d3.select('.unitsSelectorGroup').node().appendChild newEl
-
-          d3.select '.floatingPopover .closeButton'
-            .on 'click', ->
-              d3.selectAll('.floatingPopover').remove()
-        else 
-          d3.selectAll('.floatingPopover.unitSelectorHelp').remove()
+      .on 'click', =>
+        d3.event.stopPropagation()
+        if app.popoverManager.currentPopover == @unitsHelpPopover
+          app.popoverManager.closePopover()
+        else
+          app.popoverManager.showPopover @unitsHelpPopover, 
+            outerClasses: 'vizModal floatingPopover unitSelectorHelp'
+            innerClasses: 'viz1HelpTitle'
+            title: Tr.unitSelector.unitSelectorHelpTitle[app.language]
+            content: Tr.unitSelector.unitSelectorHelp[app.language]
+            attachmentSelector: '.unitsSelectorGroup'
     
     d3.select '.scenarioSelectorHelpButton'
-      .on 'click', ->
-        
-        d3.event.preventDefault()
-        if d3.selectAll('.floatingPopover.scenarioSelectorHelp').empty()        
-          # Clear any other open popovers
-          d3.selectAll('.floatingPopover').remove()
-          
-          # Build the popover
-          newEl = document.createElement 'div'
-          newEl.className = 'vizModal floatingPopover scenarioSelectorHelp'
-          newEl.innerHTML = Mustache.render QuestionmarkPopoverTemplate, 
-                visClass: 'viz1HelpTitle'
-                popUpTitle: Tr.scenarioSelector.scenarioSelectorHelpTitle[app.language]
-                popUpContent: Tr.scenarioSelector.scenarioSelectorHelp[app.language]
-          
-          # attach to correct element
-          d3.select('.scenarioSelectorGroup').node().appendChild newEl
+      .on 'click', =>
+        d3.event.stopPropagation()
+        if app.popoverManager.currentPopover == @scenariosHelpPopover
+          app.popoverManager.closePopover()
+        else
+          app.popoverManager.showPopover @scenariosHelpPopover, 
+            outerClasses: 'vizModal floatingPopover scenarioSelectorHelp'
+            innerClasses: 'viz1HelpTitle'
+            title: Tr.scenarioSelector.scenarioSelectorHelpTitle[app.language]
+            content: Tr.scenarioSelector.scenarioSelectorHelp[app.language]
+            attachmentSelector: '.scenarioSelectorGroup'
 
-          d3.select '.floatingPopover .closeButton'
-            .on 'click', ->
-              d3.selectAll('.floatingPopover').remove()
-        else 
-          d3.selectAll('.floatingPopover.scenarioSelectorHelp').remove()
 
     super(config)
     @_margin = 
@@ -514,32 +488,21 @@ class Visualization1 extends visualization
     @getData()
 
   showProvinceNames: =>
-    d3.event.preventDefault()
-    if d3.selectAll('.floatingPopover.provinceHelp').empty()
-      # Clear any other open popovers
-      d3.selectAll('.floatingPopover').remove()
-      
+    d3.event.stopPropagation()
+    if app.popoverManager.currentPopover == @provincesHelpPopover
+      app.popoverManager.closePopover()
+    else
       #Grab the provinces in order for the string
       contentString = ""
       for province in @provinceMenuData()
         contentString = """<div class="provinceLabel provinceLabel#{province.key}"> <h6> #{Tr.regionSelector.names[province.key][app.language]} </h6> </div>""" + contentString
 
-      # Build the popover
-      newEl = document.createElement 'div'
-      newEl.className = 'vizModal floatingPopover popOverSm provinceHelp'
-      newEl.innerHTML = Mustache.render QuestionmarkPopoverTemplate, 
-            visClass: 'localHelpTitle'
-            popUpTitle: Tr.regionSelector.selectRegionLabel[app.language]
-            popUpContent: contentString
-      
-      # attach to correct element
-      d3.select('#provincesSelector').node().appendChild newEl
-
-      d3.select '.floatingPopover .closeButton'
-        .on 'click', ->
-          d3.selectAll('.floatingPopover').remove()
-    else 
-      d3.selectAll('.floatingPopover.provinceHelp').remove()
+      app.popoverManager.showPopover @provincesHelpPopover, 
+        outerClasses: 'vizModal floatingPopover popOverSm provinceHelp'
+        innerClasses: 'localHelpTitle'
+        title: Tr.regionSelector.selectRegionLabel[app.language]
+        content: contentString
+        attachmentSelector: '#provincesSelector'
 
 
 Visualization1.resourcesLoaded = ->

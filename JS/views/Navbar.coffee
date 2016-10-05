@@ -1,9 +1,8 @@
 d3 = require 'd3'
 Tr = require '../TranslationTable.coffee'
 
-HowToPopoverTemplate = require '../templates/HowToPopover.mustache'
-
-Mustache = require 'mustache'
+NavbarInfoPopover = require '../popovers/NavbarInfoPopover.coffee'
+NavbarHelpPopover = require '../popovers/NavbarHelpPopover.coffee'
 
 
 class Navbar 
@@ -12,6 +11,8 @@ class Navbar
     # navbarState can be one of: landingPage, viz1, viz2, viz3, viz4
     @navbarState = null
 
+    @navbarInfoPopover = new NavbarInfoPopover()
+    @navbarHelpPopover = new NavbarHelpPopover()
 
   # NB: This data is in REVERSE order on purpose
   # We float the resulting divs to the right, which means they appear in the reverse
@@ -175,72 +176,25 @@ class Navbar
 
     
     vizNavbar.select('.navbarHelpIcon')
-      .on 'click', (d) ->
-        # Set the content of the pop up        
-        d3.select('.navbarHelpSection').html (e) => Mustache.render HowToPopoverTemplate, 
-          imageAUrl: d.imageAUrl
-          imageBUrl: d.imageBUrl
-
-        # Set up event handlers to swap between the two help images
-        d3.select('.howToBackButton').on 'click', ->
-          d3.select('.imageAContainer').classed 'hidden', false
-          d3.select('.imageBContainer').classed 'hidden', true
-          
-          d3.select('.howToBackButton').attr 'disabled', 'disabled'
-          d3.select('.howToBackButton').html """
-            <img src="IMG/howto/light-left-arrow.png">
-          """
-          d3.select('.howToForwardButton').attr 'disabled', null
-          d3.select('.howToForwardButton').html """
-            <img src="IMG/howto/dark-right-arrow.png">
-          """
-
-
-        d3.select('.howToForwardButton').on 'click', ->
-          d3.select('.imageAContainer').classed 'hidden', true
-          d3.select('.imageBContainer').classed 'hidden', false
-
-          d3.select('.howToBackButton').attr 'disabled', null
-          d3.select('.howToBackButton').html """
-            <img src="IMG/howto/dark-left-arrow.png">
-          """
-          d3.select('.howToForwardButton').attr 'disabled', 'disabled'
-          d3.select('.howToForwardButton').html """
-            <img src="IMG/howto/light-right-arrow.png">
-          """
-
-        # Set up the help icon: depending on selection
-        d3.select('.navbarHelpIcon').classed('selected', !(d3.select('.navbarHelpIcon').classed('selected')))
-        if d3.select('.navbarHelpIcon').classed('selected') 
-          d3.select('.navbarHelpIcon').html "<img src='#{d.navbarHelpImageSelected}'>"
+      .on 'click', (d) =>
+        d3.event.stopPropagation()
+        if app.popoverManager.currentPopover == @navbarHelpPopover
+          app.popoverManager.closePopover()
         else
-          d3.select('.navbarHelpIcon').html "<img src='IMG/navbar_Icons/questionMark_ColourBG.svg'>"
-        
-        # Either way the explanation icon should be unselected
-        d3.select('.navbarMenuIcon').classed('selected', false)
-        d3.select('.navbarMenuIcon').html "<img src='IMG/navbar_Icons/explanationIcon_ColourBG.svg'>"
-        
-        # Determine whether to hide or show the element
-        d3.select('.navbarHelpSection').classed('hidden', !(d3.select('.navbarHelpIcon').classed('selected')))
+          app.popoverManager.showPopover @navbarHelpPopover, 
+            imageAUrl: d.imageAUrl
+            imageBUrl: d.imageBUrl
+            navbarHelpImageSelected: d.navbarHelpImageSelected
 
     vizNavbar.select('.navbarMenuIcon')
-      .on 'click', (d) ->
-        # Set the content of the pop up
-        d3.select('.navbarHelpSection').html (e) => d.navbarInfoText
-        
-        # Set up the info icon: depending on selection
-        d3.select('.navbarMenuIcon').classed('selected', !(d3.select('.navbarMenuIcon').classed('selected')))
-        if d3.select('.navbarMenuIcon').classed('selected') 
-          d3.select('.navbarMenuIcon').html "<img src='#{d.navbarInfoImageSelected}'>"
+      .on 'click', (d) =>
+        d3.event.stopPropagation()
+        if app.popoverManager.currentPopover == @navbarInfoPopover
+          app.popoverManager.closePopover()
         else
-          d3.select('.navbarMenuIcon').html "<img src='IMG/navbar_Icons/explanationIcon_ColourBG.svg'>"
-        
-        # Either way the explanation help should be unselected
-        d3.select('.navbarHelpIcon').classed('selected', false)
-        d3.select('.navbarHelpIcon').html "<img src='IMG/navbar_Icons/questionMark_ColourBG.svg'>"
-        
-        # Determine whether to hide or show the element
-        d3.select('.navbarHelpSection').classed('hidden', !(d3.select('.navbarMenuIcon').classed('selected')))
+          app.popoverManager.showPopover @navbarInfoPopover, 
+            navbarInfoText: d.navbarInfoText
+            navbarInfoImageSelected: d.navbarInfoImageSelected
 
 
 

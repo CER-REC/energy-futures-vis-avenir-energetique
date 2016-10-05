@@ -1,17 +1,14 @@
 d3 = require 'd3'
 Domready = require 'domready'
 Mustache = require 'mustache'
-
 _ = require 'lodash'
-d3 = require 'd3'
+
 
 require './ArrayIncludes.coffee'
 Router = require './Router.coffee'
 Tr = require './TranslationTable.coffee'
 
 BottomNavBarTemplate = require './templates/BottomNavBar.mustache'
-AboutThisProjectTemplate = require './templates/AboutThisProject.mustache'
-ImageDownloadTemplate = require './templates/ImageDownload.mustache'
 
 Visualization1Configuration = require './VisualizationConfigurations/visualization1Configuration.coffee'
 Visualization2Configuration = require './VisualizationConfigurations/visualization2Configuration.coffee'
@@ -24,6 +21,10 @@ GasProductionProvider = require './DataProviders/GasProductionProvider.coffee'
 ElectricityProductionProvider = require './DataProviders/ElectricityProductionProvider.coffee'
 
 ImageExporter = require './ImageExporter.coffee'
+
+PopoverManager = require './PopoverManager.coffee'
+AboutThisProjectPopover = require './popovers/AboutThisProjectPopover'
+ImageDownloadPopover = require './popovers/ImageDownloadPopover'
 
 
 class App
@@ -62,6 +63,13 @@ class App
       @language = 'en'
 
 
+    @popoverManager = new PopoverManager()
+    @aboutThisProjectPopover = new AboutThisProjectPopover()
+    @imageDownloadPopover = new ImageDownloadPopover()
+
+    @imageExporter = new ImageExporter @
+
+
     # TODO: Navbar and modal setup is getting weighty, might want to break it out into a separate class
 
     document.getElementById('bottomNavBar').innerHTML = Mustache.render BottomNavBarTemplate,
@@ -73,25 +81,37 @@ class App
         imageDownloadLink: Tr.allPages.imageDownloadLink[app.language]
         # downloadsLabel: Tr.allPages.downloadsLabel[app.language]
 
-    document.getElementById('aboutModal').innerHTML = Mustache.render AboutThisProjectTemplate,
-        aboutTitle: Tr.aboutThisProject.aboutTitle[app.language]
-        aboutContent: Tr.aboutThisProject.aboutContent[app.language]
 
-    d3.select('#aboutLink').on 'click', (d) ->
+
+    d3.select('#aboutLink').on 'click', =>
       d3.event.preventDefault()
-      d3.select('#aboutModal').classed('hidden', false)
+      d3.event.stopPropagation()
+      @popoverManager.showPopover @aboutThisProjectPopover
 
-    d3.select('#aboutModal .closeButton').on 'click', (d) ->
+    d3.select('#aboutModal .closeButton').on 'click', =>
       d3.event.preventDefault()
-      d3.select('#aboutModal').classed('hidden', true)
+      d3.event.stopPropagation()
+      @popoverManager.closePopover()
+
+    d3.select('#imageDownloadLink').on 'click', =>
+      d3.event.preventDefault()
+      d3.event.stopPropagation()
+      @imageExporter.createImage d3.event
+
+    d3.select('#imageDownloadModal .closeButton').on 'click', =>
+      d3.event.preventDefault()
+      d3.event.stopPropagation()
+      @popoverManager.closePopover()
+
+    d3.select('body').on 'click', =>
+      if @popoverManager.currentPopover?
+        @popoverManager.closePopover()
+
+    d3.select(@containingWindow).on 'click', =>
+      if @popoverManager.currentPopover?
+        @popoverManager.closePopover()
 
 
-    document.getElementById('imageDownloadModal').innerHTML = Mustache.render ImageDownloadTemplate, 
-        imageDownloadHeader: Tr.allPages.imageDownloadHeader[app.language]
-        imageDownloadInstructions: Tr.allPages.imageDownloadInstructions[app.language]
-
-    d3.select('#imageDownloadModal .closeButton').on 'click', (d) ->
-      d3.select('#imageDownloadModal').classed('hidden', true)
 
     metaTag = if d3.selectAll('meta[name="description"]').empty() then d3.select('head').append('meta') else d3.select('meta[name="description"]')
     metaTag
@@ -159,7 +179,6 @@ class App
       @setupRouter()
 
 
-    @imageExporter = new ImageExporter @
 
     @setupRouter()
 
