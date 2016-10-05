@@ -24,6 +24,12 @@ fs.copySync("public/PDF", "dist/public/PDF");
 fs.copySync("views/app_fragment.mustache", "dist/public/app_fragment.html");
 fs.copySync("views/app_iframe.mustache", "dist/public/app_iframe.html");
 
+fs.copySync("views/Wet3VideoFragment.mustache", "dist/public/Wet3VideoFragment.html");
+fs.copySync("views/Wet4VideoFragment.mustache", "dist/public/Wet4VideoFragment.html");
+
+fs.copySync("views/Wet3VideoIframe.mustache", "dist/public/Wet3VideoIframeExample.mustache");
+fs.copySync("views/Wet4VideoIframe.mustache", "dist/public/Wet4VideoIframeExample.mustache");
+
 // The paid-up fonts are optional, the build is fine to continue without them.
 try {
   fs.copySync("../energy-futures-private-resources/Fonts", "dist/public/Fonts");
