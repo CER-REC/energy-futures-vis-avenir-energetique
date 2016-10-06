@@ -225,10 +225,10 @@ module.exports =
         fr: 'Le rapport AE 2016 prend aussi en considération des incertitudes relatives à l’infrastructure d’exportation du pétrole et propose un scénario dans lequel aucun pipeline d’envergure n’est construit durant la période de projection.'
       noLngButton:
         en: 'No liquefied natural gas (LNG) exports.'
-        fr: 'To be translated.'
+        fr: 'Aucun export de gaz naturel liquéfié (GNL)'
       highLngButton:
         en: 'High liquefied natural gas (LNG) exports.'
-        fr: 'To be translated.'
+        fr: 'Exports de gaz naturel liquéfié (GNL) élevés'
 
 
 

@@ -247,21 +247,25 @@ class Visualization4
   mainSelectionData: ->
     [
       {
+        title: Tr.selectorTooltip.mainSelector.totalDemandButton[app.language]
         label: Tr.mainSelector.totalDemandButton[app.language]
         image: if @config.mainSelection == 'energyDemand' then 'IMG/main_selection/totalDemand_selected.png' else 'IMG/main_selection/totalDemand_unselected.png'
         selectorName: 'energyDemand'
       }
       {
+        title: Tr.selectorTooltip.mainSelector.electricityGenerationButton[app.language]
         label: Tr.mainSelector.electricityGenerationButton[app.language]
         image: if @config.mainSelection == 'electricityGeneration' then 'IMG/main_selection/electricity_selected.png' else 'IMG/main_selection/electricity_unselected.png'
         selectorName: 'electricityGeneration'
       }
       {
+        title: Tr.selectorTooltip.mainSelector.oilProductionButton[app.language]
         label: Tr.mainSelector.oilProductionButton[app.language]
         image: if @config.mainSelection == 'oilProduction' then 'IMG/main_selection/oil_selected.png' else 'IMG/main_selection/oil_unselected.png'
         selectorName: 'oilProduction'
       }
       {
+        title: Tr.selectorTooltip.mainSelector.gasProductionButton[app.language]
         label: Tr.mainSelector.gasProductionButton[app.language]
         image: if @config.mainSelection == 'gasProduction' then 'IMG/main_selection/gas_selected.png' else 'IMG/main_selection/gas_unselected.png'
         selectorName: 'gasProduction'
@@ -271,30 +275,37 @@ class Visualization4
 
   unitSelectionData: ->
     petajoules = 
+      title: Tr.selectorTooltip.unitSelector.petajoulesButton[app.language]
       label: Tr.unitSelector.petajoulesButton[app.language]
       unitName: 'petajoules'
       class: if @config.unit == 'petajoules' then 'vizButton selected' else 'vizButton'
     kilobarrelEquivalents = 
+      title: Tr.selectorTooltip.unitSelector.kilobarrelEquivalentsButton[app.language]
       label: Tr.unitSelector.kilobarrelEquivalentsButton[app.language]
       unitName: 'kilobarrelEquivalents'
       class: if @config.unit == 'kilobarrelEquivalents' then 'vizButton selected' else 'vizButton'
     gigawattHours = 
+      title: Tr.selectorTooltip.unitSelector.gigawattHourButton[app.language]
       label: Tr.unitSelector.gigawattHourButton[app.language]
       unitName: 'gigawattHours'
       class: if @config.unit == 'gigawattHours' then 'vizButton selected' else 'vizButton'
     thousandCubicMetres = 
+      title: Tr.selectorTooltip.unitSelector.thousandCubicMetresButton[app.language]
       label: Tr.unitSelector.thousandCubicMetresButton[app.language]
       unitName: 'thousandCubicMetres'
       class: if @config.unit == 'thousandCubicMetres' then 'vizButton selected' else 'vizButton'
     millionCubicMetres = 
+      title: Tr.selectorTooltip.unitSelector.millionCubicMetresButton[app.language]
       label: Tr.unitSelector.millionCubicMetresButton[app.language]
       unitName: 'millionCubicMetres'
       class: if @config.unit == 'millionCubicMetres' then 'vizButton selected' else 'vizButton'
     kilobarrels = 
+      title: Tr.selectorTooltip.unitSelector.kilobarrelsButton[app.language]
       label: Tr.unitSelector.kilobarrelsButton[app.language]
       unitName: 'kilobarrels'
       class: if @config.unit == 'kilobarrels' then 'vizButton selected' else 'vizButton'
     cubicFeet  = 
+      title: Tr.selectorTooltip.unitSelector.cubicFeetButton[app.language]
       label: Tr.unitSelector.cubicFeetButton[app.language]
       unitName: 'cubicFeet'
       class: if @config.unit == 'cubicFeet' then 'vizButton selected' else 'vizButton'
@@ -313,31 +324,37 @@ class Visualization4
 
   scenariosSelectionData: ->
     reference = 
+      title: Tr.selectorTooltip.scenarioSelector.referenceButton[app.language]
       label: Tr.scenarioSelector.referenceButton[app.language]
       scenarioName: 'reference'
       class: if @config.scenarios.includes 'reference' then 'vizButton selected reference' else 'vizButton reference'
       colour: '#999999'
     high = 
+      title: Tr.selectorTooltip.scenarioSelector.highPriceButton[app.language]
       label: Tr.scenarioSelector.highPriceButton[app.language]
       scenarioName: 'high'
       class: if @config.scenarios.includes 'high' then 'vizButton selected high' else 'vizButton high'
       colour: '#0C2C84'
     highLng = 
+      title: Tr.selectorTooltip.scenarioSelector.highLngButton[app.language]
       label: Tr.scenarioSelector.highLngButton[app.language]
       scenarioName: 'highLng'
       class: if @config.scenarios.includes 'highLng' then 'vizButton selected highLng' else 'vizButton highLng'
       colour: '#225EA8'
     constrained = 
+      title: Tr.selectorTooltip.scenarioSelector.constrainedButton[app.language]
       label: Tr.scenarioSelector.constrainedButton[app.language]
       scenarioName: 'constrained'
       class: if @config.scenarios.includes 'constrained' then 'vizButton selected constrained' else 'vizButton constrained'
       colour: '#41B6C4'
     low = 
+      title: Tr.selectorTooltip.scenarioSelector.lowPriceButton[app.language]
       label: Tr.scenarioSelector.lowPriceButton[app.language]
       scenarioName: 'low'
       class: if @config.scenarios.includes 'low' then 'vizButton selected low' else 'vizButton low'
       colour: '#7FCDBB'
     noLng = 
+      title: Tr.selectorTooltip.scenarioSelector.noLngButton[app.language]
       label: Tr.scenarioSelector.noLngButton[app.language]
       scenarioName: 'noLng'
       class: if @config.scenarios.includes 'noLng' then 'vizButton selected noLng' else 'vizButton noLng'
@@ -560,8 +577,8 @@ class Visualization4
         @renderGraph()
 
     mainSelectors.html (d) ->
-      "<img src=#{d.image} class='mainSelectorImage'>
-       <span class='mainSelectorLabel'>#{d.label}</span>"
+      "<img src=#{d.image} class='mainSelectorImage' title='#{d.title}'>
+       <span class='mainSelectorLabel' title='#{d.title}'>#{d.label}</span>"
 
 
 
@@ -587,7 +604,7 @@ class Visualization4
         @renderGraph()
 
     unitsSelectors.html (d) ->
-      "<button class='#{d.class}' type='button'>#{d.label}</button>"
+      "<button class='#{d.class}' type='button' title='#{d.title}'>#{d.label}</button>"
 
     unitsSelectors.exit()
       .on 'click', null
@@ -616,7 +633,7 @@ class Visualization4
         @renderGraph()
 
     scenariosSelectors.html (d) ->
-      "<button class='#{d.class}' type='button'>#{d.label}</button>"
+      "<button class='#{d.class}' type='button' title='#{d.title}'>#{d.label}</button>"
 
     scenariosSelectors.exit()
       .on 'click', null
