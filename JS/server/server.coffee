@@ -3,6 +3,10 @@ path = require 'path'
 phantomjs = require 'phantomjs-prebuilt'
 webdriverio = require 'webdriverio'
 
+d3 = require 'd3'
+jsdom = require 'jsdom'
+
+htmlStub = '<html><head></head><body><div id="dataviz-container"></div></body></html>' # html file skull with a container div for the d3 dataviz
 
 
 wdOpts = { desiredCapabilities: { browserName: 'phantomjs' } }
@@ -53,8 +57,36 @@ app.get '/', (req, res) ->
 
 app.get '/image', (req, res) ->
   
-  res.write('erro')
-  res.end()
+
+  # pass the html stub to jsdom
+  jsdom.env
+    features: 
+      QuerySelector: true
+    html: htmlStub
+    done: (errors, window) -> 
+      # process the html document, like if we were at client side
+      # code to generate the dataviz and process the resulting html file to be added here
+
+      el = window.document.querySelector('#dataviz-container')
+      body = window.document.querySelector('body')
+
+      d3.select el
+        .append 'svg:svg'
+          .attr 'width', 600
+          .attr 'height', 300
+          .append 'circle'
+            .attr 'cx', 300
+            .attr 'cy', 150
+            .attr 'r', 30
+            .attr 'fill', '#26963c'
+
+      source = window.document.querySelector('body').innerHTML
+      res.write source
+      res.end()
+
+  # res.write('erro')
+  # res.end()
+
 
 
 
