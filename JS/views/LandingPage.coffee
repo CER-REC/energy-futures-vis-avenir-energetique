@@ -27,19 +27,19 @@ class LandingPage
         # panelRightContent: Mustache.render(Wet4VideoTemplate)
 
 
-    document.getElementById("viz1Anchor").addEventListener 'click', (event) -> 
+    document.getElementById("viz1Anchor").addEventListener 'click', (event) => 
       event.preventDefault()  
       @app.router.navigate 
         page: 'viz1'
-    document.getElementById("viz2Anchor").addEventListener 'click', (event) -> 
+    document.getElementById("viz2Anchor").addEventListener 'click', (event) => 
       event.preventDefault()  
       @app.router.navigate 
         page: 'viz2'
-    document.getElementById("viz3Anchor").addEventListener 'click', (event) -> 
+    document.getElementById("viz3Anchor").addEventListener 'click', (event) => 
       event.preventDefault()  
       @app.router.navigate 
         page: 'viz3'
-    document.getElementById("viz4Anchor").addEventListener 'click', (event) -> 
+    document.getElementById("viz4Anchor").addEventListener 'click', (event) => 
       event.preventDefault()  
       @app.router.navigate 
         page: 'viz4'

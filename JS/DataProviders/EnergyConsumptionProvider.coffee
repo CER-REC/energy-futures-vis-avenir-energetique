@@ -4,16 +4,15 @@ UnitTransformation = require '../unit-transformation.coffee'
 
 class EnergyConsumptionProvider
 
-
-
-  constructor: (loadedCallback) ->
-
+  constructor: ->
     @data = null
-    @loadedCallback = loadedCallback
 
+  loadViaAjax: (loadedCallback) ->
+    @loadedCallback = loadedCallback
     d3.csv "CSV/energy demand.csv", @csvMapping, @parseData
   
-
+  loadFromString: (data) ->
+    d3.csv.parse data, @csvMapping, @parseData
 
 
 

@@ -4,11 +4,11 @@ phantomjs = require 'phantomjs-prebuilt'
 webdriverio = require 'webdriverio'
 d3 = require 'd3'
 jsdom = require 'jsdom'
-
+fs = require 'fs'
 
 ServerApp = require './ServerApp.coffee'
-Visualization1 = require '../views/visualization1.coffee'
-Visualization1Configuration = require '../VisualizationConfigurations/visualization1Configuration.coffee'
+# Visualization1 = require '../views/visualization1.coffee'
+# Visualization1Configuration = require '../VisualizationConfigurations/visualization1Configuration.coffee'
 
 
 
@@ -32,7 +32,7 @@ phantomjs.run('--webdriver=4444').then (program) =>
 
 # Jsdom Setup
 
-# htmlStub = '<html><head></head><body><div id="dataviz-container"></div></body></html>' # html file skull with a container div for the d3 dataviz
+htmlStub = '<html><head></head><body><div id="dataviz-container"></div></body></html>' # html file skull with a container div for the d3 dataviz
 
 
 # Render setup
@@ -43,20 +43,28 @@ GasProductionProvider = require '../DataProviders/GasProductionProvider.coffee'
 ElectricityProductionProvider = require '../DataProviders/ElectricityProductionProvider.coffee'
 
 
-# TODO: This is obivously bad.
-loadedCallback = ->
-  console.log 'something loaded!'
+energyConsumptionProvider = new EnergyConsumptionProvider # this requires an @app... 
+oilProductionProvider = new OilProductionProvider 
+gasProductionProvider = new GasProductionProvider 
+electricityProductionProvider = new ElectricityProductionProvider
 
+# TODO: arrange some mechanism of waiting on these to complete reading. Promises, probably.
 
-# TODO: obviously, paramaterize these URLs! 
-# TODO: in fact, we should find a way to configure these to not use AJAX at all. No need
-# when we can simply pull the CSVs into memory.
-energyConsumptionProvider = new EnergyConsumptionProvider loadedCallback, 'http://localhost:3000/CSV/energy demand.csv'
-oilProductionProvider = new OilProductionProvider loadedCallback, 'http://localhost:3000/CSV/crude oil production VIZ.csv'
-gasProductionProvider = new GasProductionProvider loadedCallback, 'http://localhost:3000/CSV/Natural gas production VIZ.csv'
-electricityProductionProvider = new ElectricityProductionProvider loadedCallback, 'http://localhost:3000/CSV/ElectricityGeneration_VIZ.csv'
+fs.readFile './public/CSV/crude oil production VIZ.csv', (err, data) ->
+  throw err if err 
+  oilProductionProvider.loadFromString data.toString()
 
+fs.readFile './public/CSV/Natural gas production VIZ.csv', (err, data) ->
+  throw err if err 
+  gasProductionProvider.loadFromString data.toString()
 
+fs.readFile './public/CSV/energy demand.csv', (err, data) ->
+  throw err if err 
+  energyConsumptionProvider.loadFromString data.toString()
+
+fs.readFile './public/CSV/ElectricityGeneration_VIZ.csv', (err, data) ->
+  throw err if err 
+  electricityProductionProvider.loadFromString data.toString()
 
 
 
@@ -116,19 +124,22 @@ app.get '/image', (req, res) ->
       # work on viz1 to start.
       # TODO: parameterize all the things! 
 
-      config = new Visualization1Configuration()
-      
+      # config = new Visualization1Configuration()
 
-      serverApp = new ServerApp
-        energyConsumptionProvider: energyConsumptionProvider
-        oilProductionProvider: oilProductionProvider
-        gasProductionProvider: gasProductionProvider
-        electricityProductionProvider: electricityProductionProvider
+
+      # serverApp = new ServerApp
+      #   energyConsumptionProvider: energyConsumptionProvider
+      #   oilProductionProvider: oilProductionProvider
+      #   gasProductionProvider: gasProductionProvider
+      #   electricityProductionProvider: electricityProductionProvider
 
 
 
       d3.select el
         .append 'svg:svg'
+
+      d3.select el
+        .select 'svg'
           .attr 'width', 600
           .attr 'height', 300
           .append 'circle'

@@ -5,15 +5,15 @@ Tr = require '../TranslationTable.coffee'
 
 class ElectricityProductionProvider
 
-
-
-  constructor: (loadedCallback, @app) ->
-
+  constructor: (@app) ->
     @data = null
-    @loadedCallback = loadedCallback
 
+  loadViaAjax: (loadedCallback) ->
+    @loadedCallback = loadedCallback
     d3.csv "CSV/ElectricityGeneration_VIZ.csv", @csvMapping, @parseData
-  
+
+  loadFromString: (data) ->
+    d3.csv.parse data, @csvMapping, @parseData
 
 
 

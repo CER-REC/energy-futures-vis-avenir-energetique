@@ -165,17 +165,23 @@ class App
     # two depend on all four. Also, viz2 depends on the largest file by far, which tends
     # to dominate its startup performance. But viz3 loads up a few seconds faster at least!
 
-    @electricityProductionProvider = new ElectricityProductionProvider =>
+    @electricityProductionProvider = new ElectricityProductionProvider @
+    @electricityProductionProvider.loadViaAjax =>
       @loadedStatus.electricityProductionProvider = true
       @setupRouter()
-    , @
-    @energyConsumptionProvider = new EnergyConsumptionProvider =>
+
+    @energyConsumptionProvider = new EnergyConsumptionProvider()
+    @energyConsumptionProvider.loadViaAjax =>
       @loadedStatus.energyConsumptionProvider = true
       @setupRouter()
-    @oilProductionProvider = new OilProductionProvider =>
+
+    @oilProductionProvider = new OilProductionProvider()
+    @oilProductionProvider.loadViaAjax =>
       @loadedStatus.oilProductionProvider = true
       @setupRouter()
-    @gasProductionProvider = new GasProductionProvider =>
+
+    @gasProductionProvider = new GasProductionProvider()
+    @gasProductionProvider.loadViaAjax =>
       @loadedStatus.gasProductionProvider = true
       @setupRouter()
 

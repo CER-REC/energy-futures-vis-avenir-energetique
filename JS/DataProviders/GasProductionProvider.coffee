@@ -2,19 +2,17 @@ d3 = require 'd3'
 Constants = require '../Constants.coffee'
 UnitTransformation = require '../unit-transformation.coffee'
 
-
 class GasProductionProvider
 
-
-
-  constructor: (loadedCallback) ->
-
+  constructor: ->
     @data = null
-    @loadedCallback = loadedCallback
 
+  loadViaAjax: (loadedCallback) ->
+    @loadedCallback = loadedCallback
     d3.csv "CSV/Natural gas production VIZ.csv", @csvMapping, @parseData
   
-
+  loadFromString: (data) ->
+    d3.csv.parse data, @csvMapping, @parseData
 
 
 
