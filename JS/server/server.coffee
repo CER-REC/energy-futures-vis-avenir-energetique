@@ -6,7 +6,9 @@ d3 = require 'd3'
 jsdom = require 'jsdom'
 
 
-ServerApp = require './ServerApp'
+ServerApp = require './ServerApp.coffee'
+Visualization1 = require '../views/visualization1.coffee'
+Visualization1Configuration = require '../VisualizationConfigurations/visualization1Configuration.coffee'
 
 
 
@@ -30,7 +32,7 @@ phantomjs.run('--webdriver=4444').then (program) =>
 
 # Jsdom Setup
 
-htmlStub = '<html><head></head><body><div id="dataviz-container"></div></body></html>' # html file skull with a container div for the d3 dataviz
+# htmlStub = '<html><head></head><body><div id="dataviz-container"></div></body></html>' # html file skull with a container div for the d3 dataviz
 
 
 # Render setup
@@ -109,6 +111,13 @@ app.get '/image', (req, res) ->
 
       el = window.document.querySelector('#dataviz-container')
       body = window.document.querySelector('body')
+
+      # To prove out server side rendering of our d3 visualizations, we're only going to 
+      # work on viz1 to start.
+      # TODO: parameterize all the things! 
+
+      config = new Visualization1Configuration()
+      
 
       serverApp = new ServerApp
         energyConsumptionProvider: energyConsumptionProvider

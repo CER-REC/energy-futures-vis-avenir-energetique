@@ -17,13 +17,13 @@ class Visualization3 extends visualization
   height = 700 
   width = 1000
 
-  constructor: (config) ->
+  constructor: (@app, config) ->
     document.getElementById('visualizationContent').innerHTML = Mustache.render Visualization3Template,
-      selectViewByLabel: Tr.viewBySelector.selectViewByLabel[app.language]
-      selectUnitLabel: Tr.unitSelector.selectUnitLabel[app.language]
-      selectScenarioLabel: Tr.scenarioSelector.selectScenarioLabel[app.language]
-      selectRegionLabel: Tr.regionSelector.selectRegionLabel[app.language]
-      selectSourceLabel: Tr.sourceSelector.selectSourceLabel[app.language]
+      selectViewByLabel: Tr.viewBySelector.selectViewByLabel[@app.language]
+      selectUnitLabel: Tr.unitSelector.selectUnitLabel[@app.language]
+      selectScenarioLabel: Tr.scenarioSelector.selectScenarioLabel[@app.language]
+      selectRegionLabel: Tr.regionSelector.selectRegionLabel[@app.language]
+      selectSourceLabel: Tr.sourceSelector.selectSourceLabel[@app.language]
       svgStylesheet: SvgStylesheetTemplate
 
     @viewByHelpPopover = new ControlsHelpPopover()
@@ -35,40 +35,40 @@ class Visualization3 extends visualization
     d3.select '.viewBySelectorHelpButton'
       .on 'click', =>
         d3.event.stopPropagation()
-        if app.popoverManager.currentPopover == @viewByHelpPopover
-          app.popoverManager.closePopover()
+        if @app.popoverManager.currentPopover == @viewByHelpPopover
+          @app.popoverManager.closePopover()
         else
-          app.popoverManager.showPopover @viewByHelpPopover, 
+          @app.popoverManager.showPopover @viewByHelpPopover, 
             outerClasses: 'vizModal floatingPopover viewBySelectorHelp'
             innerClasses: 'viz3HelpTitle'
-            title: Tr.viewBySelector.viewBySelectorHelpTitle[app.language]
-            content: Tr.viewBySelector.viewBySelectorHelp[app.language]
+            title: Tr.viewBySelector.viewBySelectorHelpTitle[@app.language]
+            content: Tr.viewBySelector.viewBySelectorHelp[@app.language]
             attachmentSelector: '.viewBySelectorGroup'
 
     d3.select '.unitSelectorHelpButton'
       .on 'click', =>
         d3.event.stopPropagation()
-        if app.popoverManager.currentPopover == @unitsHelpPopover
-          app.popoverManager.closePopover()
+        if @app.popoverManager.currentPopover == @unitsHelpPopover
+          @app.popoverManager.closePopover()
         else
-          app.popoverManager.showPopover @unitsHelpPopover, 
+          @app.popoverManager.showPopover @unitsHelpPopover, 
             outerClasses: 'vizModal floatingPopover unitSelectorHelp'
             innerClasses: 'viz3HelpTitle'
-            title: Tr.unitSelector.unitSelectorHelpTitle[app.language]
-            content: Tr.unitSelector.unitSelectorHelp[app.language]
+            title: Tr.unitSelector.unitSelectorHelpTitle[@app.language]
+            content: Tr.unitSelector.unitSelectorHelp[@app.language]
             attachmentSelector: '.unitsSelectorGroup'
     
     d3.select '.scenarioSelectorHelpButton'
       .on 'click', =>
         d3.event.stopPropagation()
-        if app.popoverManager.currentPopover == @scenariosHelpPopover
-          app.popoverManager.closePopover()
+        if @app.popoverManager.currentPopover == @scenariosHelpPopover
+          @app.popoverManager.closePopover()
         else
-          app.popoverManager.showPopover @scenariosHelpPopover, 
+          @app.popoverManager.showPopover @scenariosHelpPopover, 
             outerClasses: 'vizModal floatingPopover scenarioSelectorHelp'
             innerClasses: 'viz3HelpTitle'
-            title: Tr.scenarioSelector.scenarioSelectorHelpTitle[app.language]
-            content: Tr.scenarioSelector.scenarioSelectorHelp[app.language]
+            title: Tr.scenarioSelector.scenarioSelectorHelpTitle[@app.language]
+            content: Tr.scenarioSelector.scenarioSelectorHelp[@app.language]
             attachmentSelector: '.scenarioSelectorGroup'
 
     @_margin = 
@@ -139,12 +139,12 @@ class Visualization3 extends visualization
   viewByData: ->
     [
       {
-        label: Tr.viewBySelector.viewByProvinceButton[app.language]
+        label: Tr.viewBySelector.viewByProvinceButton[@app.language]
         viewByName: 'province'
         class: if @config.viewBy == 'province' then 'vizButton selected' else 'vizButton'
       }
       {
-        label: Tr.viewBySelector.viewBySourceButton[app.language]
+        label: Tr.viewBySelector.viewBySourceButton[@app.language]
         viewByName: 'source'
         class: if @config.viewBy == 'source' then 'vizButton selected' else 'vizButton'
       }
@@ -874,7 +874,7 @@ class Visualization3 extends visualization
       @_singleSelectMenu.setIconSpacing(@_chart.menu.getIconSpacing())
 
   getData: ->
-    @seriesData = @addLabelsToData(app.electricityProductionProvider.dataForViz3(@config))
+    @seriesData = @addLabelsToData(@app.electricityProductionProvider.dataForViz3(@config))
     if @_chart?
       @adjustViz()
     else
@@ -920,7 +920,7 @@ class Visualization3 extends visualization
           false
         groupId:
           'stackMenu'
-    @_chart = new bubbleChart("#graphSVG", bubbleOptions)
+    @_chart = new bubbleChart(@app, "#graphSVG", bubbleOptions)
     @setIconSpacing()
 
 
@@ -932,7 +932,7 @@ class Visualization3 extends visualization
 
   # When swapping between views (province and type) we need to regenerate the menus
   toggleViz: ->
-    app.popoverManager.closePopover()
+    @app.popoverManager.closePopover()
 
     # Filters should not apply between them as the display options change
     @config.setProvince 'all'
@@ -940,7 +940,7 @@ class Visualization3 extends visualization
     @config.resetSources(true) 
     @config.resetProvinces(true)
 
-    @seriesData = @addLabelsToData(app.electricityProductionProvider.dataForViz3(@config))
+    @seriesData = @addLabelsToData(@app.electricityProductionProvider.dataForViz3(@config))
     @_chart.mapping(@dataForStackMenu())
     @_chart.menu.someSelected(@getSelectionState().someSelected)
     @_chart.menu.allSelected(@getSelectionState().allSelected)
@@ -994,7 +994,7 @@ class Visualization3 extends visualization
         if @config.viewBy == "province" then @showProvinceNames else @showSourceNames
       groupId:
         'singleSelectMenu'
-    new squareMenu(parent, provinceOptions) 
+    new squareMenu(@app, parent, provinceOptions) 
 
   selectAllSingleSelect: (selecting) =>
     if @config.viewBy == 'province' then @config.setProvince 'all' else @config.setSource 'total'
@@ -1014,8 +1014,8 @@ class Visualization3 extends visualization
 
   showSourceNames: =>
     d3.event.stopPropagation()
-    if app.popoverManager.currentPopover == @sourcesHelpPopover
-      app.popoverManager.closePopover()
+    if @app.popoverManager.currentPopover == @sourcesHelpPopover
+      @app.popoverManager.closePopover()
     else
       if @config.viewBy == 'province' then images = @colouredSourceIconsDictionary() else images = @sourcesBlackDictionary()
       #Grab the provinces in order for the string
@@ -1024,38 +1024,38 @@ class Visualization3 extends visualization
         contentString = """
           <div class="#{if @config.viewBy == "source" then 'sourceLabel'  else 'sourceLabel sourceLabel' + key}"> 
             <img class="sourceIcon" src="#{images[key].img}">
-            <h6> #{Tr.sourceSelector.sources[key][app.language]} </h6> 
+            <h6> #{Tr.sourceSelector.sources[key][@app.language]} </h6> 
             <div class="clearfix"> </div>
-            <p> #{Tr.sourceSelector.sourceSelectorHelp[key][app.language]} </p>
+            <p> #{Tr.sourceSelector.sourceSelectorHelp[key][@app.language]} </p>
           </div>
           """ + contentString
-      contentString = Tr.sourceSelector.sourceSelectorHelp.generalHelp[app.language] + contentString
+      contentString = Tr.sourceSelector.sourceSelectorHelp.generalHelp[@app.language] + contentString
 
-      app.popoverManager.showPopover @sourcesHelpPopover, 
+      @app.popoverManager.showPopover @sourcesHelpPopover, 
         outerClasses: 'vizModal floatingPopover popOverLg sourceSelectorHelp'
         innerClasses: 'localHelpTitle'
-        title: Tr.sourceSelector.selectSourceLabel[app.language]
+        title: Tr.sourceSelector.selectSourceLabel[@app.language]
         content: contentString
         attachmentSelector: '#powerSourceSelector'
 
   showProvinceNames: =>
     d3.event.stopPropagation()
-    if app.popoverManager.currentPopover == @provincesHelpPopover
-      app.popoverManager.closePopover()
+    if @app.popoverManager.currentPopover == @provincesHelpPopover
+      @app.popoverManager.closePopover()
     else
       #Grab the provinces in order for the string
       contentString = ""
       for province of @provinceMenuData()
-        contentString = """<div class="#{if @config.viewBy == 'province' then 'provinceLabel' else 'provinceLabel provinceLabel' + province}"> <h6> #{Tr.regionSelector.names[province][app.language]} </h6> </div>""" + contentString
+        contentString = """<div class="#{if @config.viewBy == 'province' then 'provinceLabel' else 'provinceLabel provinceLabel' + province}"> <h6> #{Tr.regionSelector.names[province][@app.language]} </h6> </div>""" + contentString
 
-      app.popoverManager.showPopover @provincesHelpPopover, 
+      @app.popoverManager.showPopover @provincesHelpPopover, 
         outerClasses: 'vizModal floatingPopover popOverSm provinceHelp'
         innerClasses: 'localHelpTitle'
-        title: Tr.regionSelector.selectRegionLabel[app.language]
+        title: Tr.regionSelector.selectRegionLabel[@app.language]
         content: contentString
         attachmentSelector: '#provincesSelector'
 
-Visualization3.resourcesLoaded = ->
+Visualization3.resourcesLoaded = (app) ->
   app.loadedStatus.electricityProductionProvider
 
 

@@ -7,7 +7,7 @@ NavbarHelpPopover = require '../popovers/NavbarHelpPopover.coffee'
 
 class Navbar 
 
-  constructor: ->
+  constructor: (@app) ->
     # navbarState can be one of: landingPage, viz1, viz2, viz3, viz4
     @navbarState = null
 
@@ -24,48 +24,48 @@ class Navbar
     else
       [
         {
-          unselectedLabel: Tr.allPages.visualization4NavbarLink[app.language]
-          selectedLabel: Tr.visualization4Titles[app.visualization4Configuration.mainSelection][app.language]
+          unselectedLabel: Tr.allPages.visualization4NavbarLink[@app.language]
+          selectedLabel: Tr.visualization4Titles[@app.visualization4Configuration.mainSelection][@app.language]
           navbarHelpImageSelected: 'IMG/navbar_Icons/questionMark_ScenarioHighlighted.svg'
-          navbarInfoText: Tr.visualization4NavbarHelp[app.language]
+          navbarInfoText: Tr.visualization4NavbarHelp[@app.language]
           navbarInfoImageSelected: 'IMG/navbar_Icons/explanationIcon_ScenarioHighlighted.svg'
           colour: 'rgb(202, 152, 48)'
           page: 'viz4'
-          imageAUrl: Tr.howToImages.viz4A[app.language]
-          imageBUrl: Tr.howToImages.viz4B[app.language]
+          imageAUrl: Tr.howToImages.viz4A[@app.language]
+          imageBUrl: Tr.howToImages.viz4B[@app.language]
         }
         {
-          unselectedLabel: Tr.allPages.visualization3NavbarLink[app.language]
-          selectedLabel: Tr.visualization3Title[app.language]
-          navbarInfoText: Tr.visualization3NavbarHelp[app.language]
+          unselectedLabel: Tr.allPages.visualization3NavbarLink[@app.language]
+          selectedLabel: Tr.visualization3Title[@app.language]
+          navbarInfoText: Tr.visualization3NavbarHelp[@app.language]
           navbarHelpImageSelected: 'IMG/navbar_Icons/questionMark_ElectricityHighlighted.svg'
           navbarInfoImageSelected: 'IMG/navbar_Icons/explanationIcon_ElectricityHighlighted.svg'
           colour: 'rgb(54, 55, 150)'
           page: 'viz3'
-          imageAUrl: Tr.howToImages.viz3A[app.language]
-          imageBUrl: Tr.howToImages.viz3B[app.language]
+          imageAUrl: Tr.howToImages.viz3A[@app.language]
+          imageBUrl: Tr.howToImages.viz3B[@app.language]
         }
         {
-          unselectedLabel: Tr.allPages.visualization2NavbarLink[app.language]
-          selectedLabel: Tr.visualization2Title[app.language]
-          navbarInfoText: Tr.visualization2NavbarHelp[app.language]
+          unselectedLabel: Tr.allPages.visualization2NavbarLink[@app.language]
+          selectedLabel: Tr.visualization2Title[@app.language]
+          navbarInfoText: Tr.visualization2NavbarHelp[@app.language]
           navbarHelpImageSelected: 'IMG/navbar_Icons/questionMark_SectorHighlighted.svg'
           navbarInfoImageSelected: 'IMG/navbar_Icons/explanationIcon_SectorHighlighted.svg'
           colour: 'rgb(52, 153, 153)'
           page: 'viz2'
-          imageAUrl: Tr.howToImages.viz2A[app.language]
-          imageBUrl: Tr.howToImages.viz2B[app.language]
+          imageAUrl: Tr.howToImages.viz2A[@app.language]
+          imageBUrl: Tr.howToImages.viz2B[@app.language]
         }
         {
-          unselectedLabel: Tr.allPages.visualization1NavbarLink[app.language]
-          selectedLabel: Tr.visualization1Titles[app.visualization1Configuration.mainSelection][app.language]
-          navbarInfoText: Tr.visualization1NavbarHelp[app.language]
+          unselectedLabel: Tr.allPages.visualization1NavbarLink[@app.language]
+          selectedLabel: Tr.visualization1Titles[@app.visualization1Configuration.mainSelection][@app.language]
+          navbarInfoText: Tr.visualization1NavbarHelp[@app.language]
           navbarHelpImageSelected: 'IMG/navbar_Icons/questionMark_RegionHighlighted.svg'
           navbarInfoImageSelected: 'IMG/navbar_Icons/explanationIcon_RegionHighlighted.svg'
           colour: 'rgb(103, 153, 204)'
           page: 'viz1'
-          imageAUrl: Tr.howToImages.viz1A[app.language]
-          imageBUrl: Tr.howToImages.viz1B[app.language]
+          imageAUrl: Tr.howToImages.viz1A[@app.language]
+          imageBUrl: Tr.howToImages.viz1B[@app.language]
         }
         {
           img: 'IMG/home.svg'
@@ -137,7 +137,7 @@ class Navbar
       .on 'click', (d) =>
         d3.event.preventDefault()
         if d.page != @navbarState
-          app.router.navigate
+          @app.router.navigate
             page: d.page
       .style 
         'background-color': (d) -> d.colour
@@ -178,10 +178,10 @@ class Navbar
     vizNavbar.select('.navbarHelpIcon')
       .on 'click', (d) =>
         d3.event.stopPropagation()
-        if app.popoverManager.currentPopover == @navbarHelpPopover
-          app.popoverManager.closePopover()
+        if @app.popoverManager.currentPopover == @navbarHelpPopover
+          @app.popoverManager.closePopover()
         else
-          app.popoverManager.showPopover @navbarHelpPopover, 
+          @app.popoverManager.showPopover @navbarHelpPopover, 
             imageAUrl: d.imageAUrl
             imageBUrl: d.imageBUrl
             navbarHelpImageSelected: d.navbarHelpImageSelected
@@ -189,10 +189,10 @@ class Navbar
     vizNavbar.select('.navbarMenuIcon')
       .on 'click', (d) =>
         d3.event.stopPropagation()
-        if app.popoverManager.currentPopover == @navbarInfoPopover
-          app.popoverManager.closePopover()
+        if @app.popoverManager.currentPopover == @navbarInfoPopover
+          @app.popoverManager.closePopover()
         else
-          app.popoverManager.showPopover @navbarInfoPopover, 
+          @app.popoverManager.showPopover @navbarInfoPopover, 
             navbarInfoText: d.navbarInfoText
             navbarInfoImageSelected: d.navbarInfoImageSelected
 

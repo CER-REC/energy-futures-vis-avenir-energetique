@@ -13,7 +13,7 @@ ControlsHelpPopover = require '../popovers/ControlsHelpPopover.coffee'
 class Visualization4
 
 
-  constructor: (config) ->
+  constructor: (@app, config) ->
 
     @config = config
     
@@ -25,10 +25,10 @@ class Visualization4
       left: 10
 
     document.getElementById('visualizationContent').innerHTML = Mustache.render Visualization4Template,
-      selectOneLabel: Tr.mainSelector.selectOneLabel[app.language]
-      selectUnitLabel: Tr.unitSelector.selectUnitLabel[app.language]
-      selectScenarioLabel: Tr.scenarioSelector.selectScenarioLabel[app.language]
-      selectRegionLabel: Tr.regionSelector.selectRegionLabel[app.language]
+      selectOneLabel: Tr.mainSelector.selectOneLabel[@app.language]
+      selectUnitLabel: Tr.unitSelector.selectUnitLabel[@app.language]
+      selectScenarioLabel: Tr.scenarioSelector.selectScenarioLabel[@app.language]
+      selectRegionLabel: Tr.regionSelector.selectRegionLabel[@app.language]
       svgStylesheet: SvgStylesheetTemplate
 
     @mainSelectorHelpPopover = new ControlsHelpPopover()
@@ -40,40 +40,40 @@ class Visualization4
     d3.select '.mainSelectorHelpButton'
       .on 'click', =>
         d3.event.stopPropagation()
-        if app.popoverManager.currentPopover == @mainSelectorHelpPopover
-          app.popoverManager.closePopover()
+        if @app.popoverManager.currentPopover == @mainSelectorHelpPopover
+          @app.popoverManager.closePopover()
         else
-          app.popoverManager.showPopover @mainSelectorHelpPopover, 
+          @app.popoverManager.showPopover @mainSelectorHelpPopover, 
             outerClasses: 'vizModal floatingPopover mainSelectorHelp'
             innerClasses: 'viz4HelpTitle'
-            title: Tr.mainSelector.selectOneLabel[app.language]
-            content: Tr.mainSelector.mainSelectorHelp[app.language]
+            title: Tr.mainSelector.selectOneLabel[@app.language]
+            content: Tr.mainSelector.mainSelectorHelp[@app.language]
             attachmentSelector: '.mainSelectorSection'
     
     d3.select '.unitSelectorHelpButton'
       .on 'click', =>
         d3.event.stopPropagation()
-        if app.popoverManager.currentPopover == @unitsHelpPopover
-          app.popoverManager.closePopover()
+        if @app.popoverManager.currentPopover == @unitsHelpPopover
+          @app.popoverManager.closePopover()
         else
-          app.popoverManager.showPopover @unitsHelpPopover, 
+          @app.popoverManager.showPopover @unitsHelpPopover, 
             outerClasses: 'vizModal floatingPopover unitSelectorHelp'
             innerClasses: 'viz4HelpTitle'
-            title: Tr.unitSelector.unitSelectorHelpTitle[app.language]
-            content: Tr.unitSelector.unitSelectorHelp[app.language]
+            title: Tr.unitSelector.unitSelectorHelpTitle[@app.language]
+            content: Tr.unitSelector.unitSelectorHelp[@app.language]
             attachmentSelector: '.unitsSelectorGroup'
 
     d3.select '.scenarioSelectorHelpButton'
       .on 'click', =>
         d3.event.stopPropagation()
-        if app.popoverManager.currentPopover == @scenariosHelpPopover
-          app.popoverManager.closePopover()
+        if @app.popoverManager.currentPopover == @scenariosHelpPopover
+          @app.popoverManager.closePopover()
         else
-          app.popoverManager.showPopover @scenariosHelpPopover, 
+          @app.popoverManager.showPopover @scenariosHelpPopover, 
             outerClasses: 'vizModal floatingPopover scenarioSelectorHelp'
             innerClasses: 'viz4HelpTitle'
-            title: Tr.scenarioSelector.scenarioSelectorHelpTitle[app.language]
-            content: Tr.scenarioSelector.scenarioSelectorHelp[app.language]
+            title: Tr.scenarioSelector.scenarioSelectorHelpTitle[@app.language]
+            content: Tr.scenarioSelector.scenarioSelectorHelp[@app.language]
             attachmentSelector: '.scenarioSelectorGroup'
 
 
@@ -206,7 +206,7 @@ class Visualization4
       allSquareHandler: @selectAllProvince
       showHelpHandler: @showProvinceNames
       groupId: 'provinceMenu'
-    new squareMenu('#provinceMenuSVG', provinceOptions) 
+    new squareMenu(@app, '#provinceMenuSVG', provinceOptions) 
 
   selectAllProvince: (selecting) =>
     @config.setProvince 'all'
@@ -225,18 +225,18 @@ class Visualization4
 
   showProvinceNames: =>
     d3.event.stopPropagation()
-    if app.popoverManager.currentPopover == @provincesHelpPopover
-      app.popoverManager.closePopover()
+    if @app.popoverManager.currentPopover == @provincesHelpPopover
+      @app.popoverManager.closePopover()
     else
       #Grab the provinces in order for the string
       contentString = ""
       for province in @dataForProvinceMenu()
-        contentString = """<div class="provinceLabel"> <h6> #{Tr.regionSelector.names[province.key][app.language]} </h6> </div>""" + contentString
+        contentString = """<div class="provinceLabel"> <h6> #{Tr.regionSelector.names[province.key][@app.language]} </h6> </div>""" + contentString
 
-      app.popoverManager.showPopover @provincesHelpPopover, 
+      @app.popoverManager.showPopover @provincesHelpPopover, 
         outerClasses: 'vizModal floatingPopover popOverSm provinceHelp'
         innerClasses: 'localHelpTitle'
-        title: Tr.regionSelector.selectRegionLabel[app.language]
+        title: Tr.regionSelector.selectRegionLabel[@app.language]
         content: contentString
         attachmentSelector: '#provincesSelector'
 
@@ -247,22 +247,22 @@ class Visualization4
   mainSelectionData: ->
     [
       {
-        label: Tr.mainSelector.totalDemandButton[app.language]
+        label: Tr.mainSelector.totalDemandButton[@app.language]
         image: if @config.mainSelection == 'energyDemand' then 'IMG/main_selection/totalDemand_selected.png' else 'IMG/main_selection/totalDemand_unselected.png'
         selectorName: 'energyDemand'
       }
       {
-        label: Tr.mainSelector.electricityGenerationButton[app.language]
+        label: Tr.mainSelector.electricityGenerationButton[@app.language]
         image: if @config.mainSelection == 'electricityGeneration' then 'IMG/main_selection/electricity_selected.png' else 'IMG/main_selection/electricity_unselected.png'
         selectorName: 'electricityGeneration'
       }
       {
-        label: Tr.mainSelector.oilProductionButton[app.language]
+        label: Tr.mainSelector.oilProductionButton[@app.language]
         image: if @config.mainSelection == 'oilProduction' then 'IMG/main_selection/oil_selected.png' else 'IMG/main_selection/oil_unselected.png'
         selectorName: 'oilProduction'
       }
       {
-        label: Tr.mainSelector.gasProductionButton[app.language]
+        label: Tr.mainSelector.gasProductionButton[@app.language]
         image: if @config.mainSelection == 'gasProduction' then 'IMG/main_selection/gas_selected.png' else 'IMG/main_selection/gas_unselected.png'
         selectorName: 'gasProduction'
       }
@@ -271,31 +271,31 @@ class Visualization4
 
   unitSelectionData: ->
     petajoules = 
-      label: Tr.unitSelector.petajoulesButton[app.language]
+      label: Tr.unitSelector.petajoulesButton[@app.language]
       unitName: 'petajoules'
       class: if @config.unit == 'petajoules' then 'vizButton selected' else 'vizButton'
     kilobarrelEquivalents = 
-      label: Tr.unitSelector.kilobarrelEquivalentsButton[app.language]
+      label: Tr.unitSelector.kilobarrelEquivalentsButton[@app.language]
       unitName: 'kilobarrelEquivalents'
       class: if @config.unit == 'kilobarrelEquivalents' then 'vizButton selected' else 'vizButton'
     gigawattHours = 
-      label: Tr.unitSelector.gigawattHourButton[app.language]
+      label: Tr.unitSelector.gigawattHourButton[@app.language]
       unitName: 'gigawattHours'
       class: if @config.unit == 'gigawattHours' then 'vizButton selected' else 'vizButton'
     thousandCubicMetres = 
-      label: Tr.unitSelector.thousandCubicMetresButton[app.language]
+      label: Tr.unitSelector.thousandCubicMetresButton[@app.language]
       unitName: 'thousandCubicMetres'
       class: if @config.unit == 'thousandCubicMetres' then 'vizButton selected' else 'vizButton'
     millionCubicMetres = 
-      label: Tr.unitSelector.millionCubicMetresButton[app.language]
+      label: Tr.unitSelector.millionCubicMetresButton[@app.language]
       unitName: 'millionCubicMetres'
       class: if @config.unit == 'millionCubicMetres' then 'vizButton selected' else 'vizButton'
     kilobarrels = 
-      label: Tr.unitSelector.kilobarrelsButton[app.language]
+      label: Tr.unitSelector.kilobarrelsButton[@app.language]
       unitName: 'kilobarrels'
       class: if @config.unit == 'kilobarrels' then 'vizButton selected' else 'vizButton'
     cubicFeet  = 
-      label: Tr.unitSelector.cubicFeetButton[app.language]
+      label: Tr.unitSelector.cubicFeetButton[@app.language]
       unitName: 'cubicFeet'
       class: if @config.unit == 'cubicFeet' then 'vizButton selected' else 'vizButton'
 
@@ -313,32 +313,32 @@ class Visualization4
 
   scenariosSelectionData: ->
     reference = 
-      label: Tr.scenarioSelector.referenceButton[app.language]
+      label: Tr.scenarioSelector.referenceButton[@app.language]
       scenarioName: 'reference'
       class: if @config.scenarios.includes 'reference' then 'vizButton selected reference' else 'vizButton reference'
       colour: '#999999'
     high = 
-      label: Tr.scenarioSelector.highPriceButton[app.language]
+      label: Tr.scenarioSelector.highPriceButton[@app.language]
       scenarioName: 'high'
       class: if @config.scenarios.includes 'high' then 'vizButton selected high' else 'vizButton high'
       colour: '#0C2C84'
     highLng = 
-      label: Tr.scenarioSelector.highLngButton[app.language]
+      label: Tr.scenarioSelector.highLngButton[@app.language]
       scenarioName: 'highLng'
       class: if @config.scenarios.includes 'highLng' then 'vizButton selected highLng' else 'vizButton highLng'
       colour: '#225EA8'
     constrained = 
-      label: Tr.scenarioSelector.constrainedButton[app.language]
+      label: Tr.scenarioSelector.constrainedButton[@app.language]
       scenarioName: 'constrained'
       class: if @config.scenarios.includes 'constrained' then 'vizButton selected constrained' else 'vizButton constrained'
       colour: '#41B6C4'
     low = 
-      label: Tr.scenarioSelector.lowPriceButton[app.language]
+      label: Tr.scenarioSelector.lowPriceButton[@app.language]
       scenarioName: 'low'
       class: if @config.scenarios.includes 'low' then 'vizButton selected low' else 'vizButton low'
       colour: '#7FCDBB'
     noLng = 
-      label: Tr.scenarioSelector.noLngButton[app.language]
+      label: Tr.scenarioSelector.noLngButton[@app.language]
       scenarioName: 'noLng'
       class: if @config.scenarios.includes 'noLng' then 'vizButton selected noLng' else 'vizButton noLng'
       colour: '#C7E9B4'
@@ -358,24 +358,24 @@ class Visualization4
   graphData: ->
     switch @config.mainSelection
       when 'energyDemand'
-        app.energyConsumptionProvider.dataForViz4 @config
+        @app.energyConsumptionProvider.dataForViz4 @config
       when 'electricityGeneration'
-        app.electricityProductionProvider.dataForViz4 @config
+        @app.electricityProductionProvider.dataForViz4 @config
       when 'oilProduction'
-        app.oilProductionProvider.dataForViz4 @config
+        @app.oilProductionProvider.dataForViz4 @config
       when 'gasProduction'
-        app.gasProductionProvider.dataForViz4 @config
+        @app.gasProductionProvider.dataForViz4 @config
 
   yAxisData: ->
     switch @config.mainSelection
       when 'energyDemand'
-        app.energyConsumptionProvider.dataForAllViz4Scenarios @config
+        @app.energyConsumptionProvider.dataForAllViz4Scenarios @config
       when 'electricityGeneration'
-        app.electricityProductionProvider.dataForAllViz4Scenarios @config
+        @app.electricityProductionProvider.dataForAllViz4Scenarios @config
       when 'oilProduction'
-        app.oilProductionProvider.dataForAllViz4Scenarios @config
+        @app.oilProductionProvider.dataForAllViz4Scenarios @config
       when 'gasProduction'
-        app.gasProductionProvider.dataForAllViz4Scenarios @config
+        @app.gasProductionProvider.dataForAllViz4Scenarios @config
 
   gradientData: ->
     [
@@ -680,7 +680,7 @@ class Visualization4
           transform: "translate(#{@xAxisScale()(2015)},#{@height() + d3.select('#xAxis').node().getBoundingClientRect().height + d3.select('#xAxis text').node().getBoundingClientRect().height})" 
           fill: '#999'
         .style("text-anchor", "start")
-        .text(Tr.forecastLabel[app.language])
+        .text(Tr.forecastLabel[@app.language])
     d3.select '#graphGroup'
       .append("image")
         .attr
@@ -960,7 +960,7 @@ class Visualization4
     # garbage collection of event handled dom nodes goes smoothly
     document.getElementById('visualizationContent').innerHTML = ''
 
-Visualization4.resourcesLoaded = ->
+Visualization4.resourcesLoaded = (app) ->
   app.loadedStatus.energyConsumptionProvider and
   app.loadedStatus.oilProductionProvider and
   app.loadedStatus.gasProductionProvider and

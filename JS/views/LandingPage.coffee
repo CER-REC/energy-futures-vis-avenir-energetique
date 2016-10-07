@@ -14,34 +14,34 @@ Wet3VideoTemplate = require '../templates/Wet3Video.mustache'
 
 class LandingPage
 
-  constructor: ->
-    document.getElementById('landingPageHeading').innerHTML = Tr.landingPage.mainHeader[app.language]
+  constructor: (@app) ->
+    document.getElementById('landingPageHeading').innerHTML = Tr.landingPage.mainHeader[@app.language]
 
     document.getElementById('visualizationContent').innerHTML = Mustache.render LandingPageTemplate, 
-        content: Tr.landingPage.content1[app.language]
-        visualization1Link: Tr.landingPage.visualization1Link[app.language]
-        visualization2Link: Tr.landingPage.visualization2Link[app.language]
-        visualization3Link: Tr.landingPage.visualization3Link[app.language]
-        visualization4Link: Tr.landingPage.visualization4Link[app.language]
+        content: Tr.landingPage.content1[@app.language]
+        visualization1Link: Tr.landingPage.visualization1Link[@app.language]
+        visualization2Link: Tr.landingPage.visualization2Link[@app.language]
+        visualization3Link: Tr.landingPage.visualization3Link[@app.language]
+        visualization4Link: Tr.landingPage.visualization4Link[@app.language]
         panelRightContent: Mustache.render(Wet3VideoTemplate)
         # panelRightContent: Mustache.render(Wet4VideoTemplate)
 
 
     document.getElementById("viz1Anchor").addEventListener 'click', (event) -> 
       event.preventDefault()  
-      app.router.navigate 
+      @app.router.navigate 
         page: 'viz1'
     document.getElementById("viz2Anchor").addEventListener 'click', (event) -> 
       event.preventDefault()  
-      app.router.navigate 
+      @app.router.navigate 
         page: 'viz2'
     document.getElementById("viz3Anchor").addEventListener 'click', (event) -> 
       event.preventDefault()  
-      app.router.navigate 
+      @app.router.navigate 
         page: 'viz3'
     document.getElementById("viz4Anchor").addEventListener 'click', (event) -> 
       event.preventDefault()  
-      app.router.navigate 
+      @app.router.navigate 
         page: 'viz4'
 
     

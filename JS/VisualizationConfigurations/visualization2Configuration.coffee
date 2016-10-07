@@ -25,7 +25,7 @@ class Visualization2Configuration
     ]
     province: 'all'
 
-  constructor: (options) ->
+  constructor: (@app, options) ->
     @options = _.extend {}, @defaultOptions, options
 
     @mainSelection = 'energyDemand' # this isn't an option for viz 2
@@ -135,46 +135,46 @@ class Visualization2Configuration
     province: @province
 
   updateRouter: ->
-    return unless app? and app.router?
-    window.app.router.navigate @routerParams()
+    return unless @app? and @app.router?
+    @app.router.navigate @routerParams()
 
 
   # Description for PNG export
 
   imageExportDescription: ->
 
-    sectorText = Tr.imageExportText.sectors[@sector][app.language]
+    sectorText = Tr.imageExportText.sectors[@sector][@app.language]
  
     unitText = switch @unit
       when 'petajoules'
-        Tr.unitSelector.petajoulesButton[app.language]
+        Tr.unitSelector.petajoulesButton[@app.language]
       when 'kilobarrelEquivalents'
-        Tr.unitSelector.kilobarrelEquivalentsButton[app.language]
+        Tr.unitSelector.kilobarrelEquivalentsButton[@app.language]
 
     scenarioText = switch @scenario
       when 'reference'
-        Tr.scenarioSelector.referenceButton[app.language]
+        Tr.scenarioSelector.referenceButton[@app.language]
       when 'constrained'
-        Tr.scenarioSelector.constrainedButton[app.language]
+        Tr.scenarioSelector.constrainedButton[@app.language]
       when 'high'
-        Tr.scenarioSelector.highPriceButton[app.language]
+        Tr.scenarioSelector.highPriceButton[@app.language]
       when 'low'
-        Tr.scenarioSelector.lowPriceButton[app.language]
+        Tr.scenarioSelector.lowPriceButton[@app.language]
       when 'highLng'
-        Tr.scenarioSelector.highLngButton[app.language]
+        Tr.scenarioSelector.highLngButton[@app.language]
       when 'noLng'
-        Tr.scenarioSelector.noLngButton[app.language]
+        Tr.scenarioSelector.noLngButton[@app.language]
 
     regionText = if @province == 'all'
       "CANADA"
     else
-      "#{Tr.viewBySelector.viewByProvinceButton[app.language]}: #{@province}"
+      "#{Tr.viewBySelector.viewByProvinceButton[@app.language]}: #{@province}"
    
     description = ''
-    description += "#{Tr.mainSelector.totalDemandButton[app.language]} - "
-    description += "#{Tr.imageExportText.sector[app.language]}: #{sectorText} - "
-    description += "#{Tr.imageExportText.unit[app.language]}: #{unitText} - "
-    description += "#{Tr.imageExportText.scenario[app.language]}: #{scenarioText} - "
+    description += "#{Tr.mainSelector.totalDemandButton[@app.language]} - "
+    description += "#{Tr.imageExportText.sector[@app.language]}: #{sectorText} - "
+    description += "#{Tr.imageExportText.unit[@app.language]}: #{unitText} - "
+    description += "#{Tr.imageExportText.scenario[@app.language]}: #{scenarioText} - "
     description += "#{regionText}"
 
     description

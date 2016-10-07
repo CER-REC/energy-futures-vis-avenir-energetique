@@ -64,8 +64,8 @@ class App
 
 
     @popoverManager = new PopoverManager()
-    @aboutThisProjectPopover = new AboutThisProjectPopover()
-    @imageDownloadPopover = new ImageDownloadPopover()
+    @aboutThisProjectPopover = new AboutThisProjectPopover @
+    @imageDownloadPopover = new ImageDownloadPopover @
 
     @imageExporter = new ImageExporter @
 
@@ -73,13 +73,13 @@ class App
     # TODO: Navbar and modal setup is getting weighty, might want to break it out into a separate class
 
     document.getElementById('bottomNavBar').innerHTML = Mustache.render BottomNavBarTemplate,
-        aboutLink: Tr.allPages.aboutLink[app.language]
-        methodologyLinkText: Tr.allPages.methodologyLinkText[app.language]
-        methodologyLinkUrl: Tr.allPages.methodologyLinkUrl[app.language]
-        shareLabel: Tr.allPages.shareLabel[app.language]
-        dataDownloadLink: Tr.allPages.dataDownloadLink[app.language]
-        imageDownloadLink: Tr.allPages.imageDownloadLink[app.language]
-        # downloadsLabel: Tr.allPages.downloadsLabel[app.language]
+        aboutLink: Tr.allPages.aboutLink[@language]
+        methodologyLinkText: Tr.allPages.methodologyLinkText[@language]
+        methodologyLinkUrl: Tr.allPages.methodologyLinkUrl[@language]
+        shareLabel: Tr.allPages.shareLabel[@language]
+        dataDownloadLink: Tr.allPages.dataDownloadLink[@language]
+        imageDownloadLink: Tr.allPages.imageDownloadLink[@language]
+        # downloadsLabel: Tr.allPages.downloadsLabel[@language]
 
 
 
@@ -117,7 +117,7 @@ class App
     metaTag
       .attr
         name: 'description'
-        content: Tr.allPages.metaDescription[app.language]
+        content: Tr.allPages.metaDescription[@language]
 
     keyWordsTag = if d3.selectAll('meta[name="keywords"]').empty() then d3.select('head').append('meta') else d3.select('meta[name="keywords"]')
     keyWordsTag
@@ -145,10 +145,10 @@ class App
           href: "humans.txt"
 
     # Configuration Objects
-    @visualization1Configuration = new Visualization1Configuration()
-    @visualization2Configuration = new Visualization2Configuration()
-    @visualization3Configuration = new Visualization3Configuration()
-    @visualization4Configuration = new Visualization4Configuration()
+    @visualization1Configuration = new Visualization1Configuration @
+    @visualization2Configuration = new Visualization2Configuration @
+    @visualization3Configuration = new Visualization3Configuration @
+    @visualization4Configuration = new Visualization4Configuration @
 
     # Data Providers
 
@@ -168,6 +168,7 @@ class App
     @electricityProductionProvider = new ElectricityProductionProvider =>
       @loadedStatus.electricityProductionProvider = true
       @setupRouter()
+    , @
     @energyConsumptionProvider = new EnergyConsumptionProvider =>
       @loadedStatus.energyConsumptionProvider = true
       @setupRouter()

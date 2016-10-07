@@ -157,26 +157,26 @@ class ImageExporter
     components = []
     config = null
 
-    switch app.page
+    switch @app.page
       when 'landingPage'
         event.preventDefault()
         return
       when 'viz1'
-        config = app.visualization1Configuration
-        components.push @buildProvincesCanvas(app.visualization1Configuration)
+        config = @app.visualization1Configuration
+        components.push @buildProvincesCanvas(@app.visualization1Configuration)
       when 'viz2'
-        config = app.visualization2Configuration
-        components.push @buildSourcesCanvas(app.visualization2Configuration)
+        config = @app.visualization2Configuration
+        components.push @buildSourcesCanvas(@app.visualization2Configuration)
       when 'viz3'
-        config = app.visualization3Configuration
+        config = @app.visualization3Configuration
         # Which legend we need depends on the visualization's configuration
-        if app.visualization3Configuration.viewBy == 'province'
-          components.push @buildSourcesCanvas(app.visualization3Configuration)
-        else if app.visualization3Configuration.viewBy == 'source'
-          components.push @buildProvincesCanvas(app.visualization3Configuration)
+        if @app.visualization3Configuration.viewBy == 'province'
+          components.push @buildSourcesCanvas(@app.visualization3Configuration)
+        else if @app.visualization3Configuration.viewBy == 'source'
+          components.push @buildProvincesCanvas(@app.visualization3Configuration)
       when 'viz4'
-        config = app.visualization4Configuration
-        components.push @buildScenariosCanvas(app.visualization4Configuration)
+        config = @app.visualization4Configuration
+        components.push @buildScenariosCanvas(@app.visualization4Configuration)
         
 
     graphCanvas = document.createElement 'canvas'
@@ -194,7 +194,7 @@ class ImageExporter
           document.getElementById('renderedImageContainer').innerHTML = ""
           document.getElementById('renderedImageContainer').appendChild imgElement
           
-          app.popoverManager.showPopover app.imageDownloadPopover
+          @app.popoverManager.showPopover @app.imageDownloadPopover
 
 
 
@@ -279,22 +279,22 @@ class ImageExporter
 
     scenarioData = 
       reference:
-        label: Tr.scenarioSelector.referenceButton[app.language]
+        label: Tr.scenarioSelector.referenceButton[@app.language]
         colour: '#999999'
       high:
-        label: Tr.scenarioSelector.highPriceButton[app.language]
+        label: Tr.scenarioSelector.highPriceButton[@app.language]
         colour: '#0C2C84'
       highLng:
-        label: Tr.scenarioSelector.highLngButton[app.language]
+        label: Tr.scenarioSelector.highLngButton[@app.language]
         colour: '#225EA8'
       constrained:
-        label: Tr.scenarioSelector.constrainedButton[app.language]
+        label: Tr.scenarioSelector.constrainedButton[@app.language]
         colour: '#41B6C4'
       low:
-        label: Tr.scenarioSelector.lowPriceButton[app.language]
+        label: Tr.scenarioSelector.lowPriceButton[@app.language]
         colour: '#7FCDBB'
       noLng:
-        label: Tr.scenarioSelector.noLngButton[app.language]
+        label: Tr.scenarioSelector.noLngButton[@app.language]
         colour: '#C7E9B4'
 
     potentialScenarios = switch config.mainSelection
@@ -347,10 +347,10 @@ class ImageExporter
       yDimension = component.height if component.height > yDimension
 
     titleData = 
-      viz1: Tr.visualization1Titles[config.mainSelection][app.language]
-      viz2: Tr.visualization2Title[app.language]
-      viz3: Tr.visualization3Title[app.language]
-      viz4: Tr.visualization4Titles[config.mainSelection][app.language]
+      viz1: Tr.visualization1Titles[config.mainSelection][@app.language]
+      viz2: Tr.visualization2Title[@app.language]
+      viz3: Tr.visualization3Title[@app.language]
+      viz4: Tr.visualization4Titles[config.mainSelection][@app.language]
 
     # Additional height to allow for titles and supplementary text
     yDimension += ImageConstants.infoTopSpacer +
@@ -383,7 +383,7 @@ class ImageExporter
 
     # Draw Title
     context.font = "#{ImageConstants.headerFontSize}px Avenir Next Demi Condensed, PT Sans Narrow"
-    text = titleData[app.page]
+    text = titleData[@app.page]
     textWidth = context.measureText text
     context.fillStyle = '#333333'
     context.fillText text, 
@@ -408,7 +408,7 @@ class ImageExporter
 
     # Draw Source
     context.font = "#{ImageConstants.infoFontSize}px Avenir Next Demi Condensed, PT Sans Narrow"
-    text = Tr.allPages.imageDownloadSource[app.language]
+    text = Tr.allPages.imageDownloadSource[@app.language]
     textWidth = context.measureText text
     
     # We want it to be on the same line as info unless they are too long then add a line

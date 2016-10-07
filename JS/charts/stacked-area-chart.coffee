@@ -6,10 +6,10 @@ class stackedAreaChart extends stackedBarChart
   stackedAreaDefaults:
     strokeWidth: 1
 
-  constructor:(parent, x, y, options = {}) ->
+  constructor: (@app, parent, x, y, options = {}) ->
     @options = _.extend {}, @stackedAreaDefaults, options
     @_strokeWidth = @options.strokeWidth
-    super(parent, x, y, @options)
+    super(@app, parent, x, y, @options)
     @redraw()
 
   # When dragging we want a shorter duration

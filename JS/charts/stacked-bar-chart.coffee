@@ -7,14 +7,14 @@ class stackedBarChart extends barChart
   stackedChartDefaults: 
     menuOptions: {}
 
-  constructor:(parent, x, y, options = {}) ->
+  constructor: (@app, parent, x, y, options = {}) ->
     @options = _.extend {}, @stackedChartDefaults, options
     @_stackData = []
     @_stackDictionary = {}
     @_mapping = if @options.mapping then @options.mapping else null # Maybe this is required?
     super(parent, x, y, @options)
     @options.menuOptions.chart = this
-    @menu = new squareMenu(@options.menuOptions.selector, @options.menuOptions)
+    @menu = new squareMenu(@app, @options.menuOptions.selector, @options.menuOptions)
     @menu.data(@_mapping)
     @redraw()
 

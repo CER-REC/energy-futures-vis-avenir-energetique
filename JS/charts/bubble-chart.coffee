@@ -10,12 +10,12 @@ class bubbleChart extends chart
     menuOptions: 
       canDrag: false
 
-  constructor: (parent, options = {}) ->
+  constructor: (@app, parent, options = {}) ->
     @options = _.extend {}, @bubbleChartDefaults, options
     @_mapping = @options.mapping
     super(parent, @options)
     @options.menuOptions.chart = this
-    @menu = new squareMenu(@options.menuParent, @options.menuOptions)
+    @menu = new squareMenu(@app, @options.menuParent, @options.menuOptions)
     @redraw()
 
   data: (d) ->

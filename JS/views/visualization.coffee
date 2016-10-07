@@ -1,5 +1,4 @@
 d3 = require 'd3'
-squareMenu = require '../charts/square-menu.coffee'
 Tr = require '../TranslationTable.coffee'
 
 class visualization
@@ -15,31 +14,31 @@ class visualization
 
   unitSelectionData: ->
     petajoules = 
-      label: Tr.unitSelector.petajoulesButton[app.language]
+      label: Tr.unitSelector.petajoulesButton[@app.language]
       unitName: 'petajoules'
       class: if @config.unit == 'petajoules' then 'vizButton selected' else 'vizButton'
     kilobarrelEquivalents = 
-      label: Tr.unitSelector.kilobarrelEquivalentsButton[app.language]
+      label: Tr.unitSelector.kilobarrelEquivalentsButton[@app.language]
       unitName: 'kilobarrelEquivalents'
       class: if @config.unit == 'kilobarrelEquivalents' then 'vizButton selected' else 'vizButton'
     gigawattHours = 
-      label: Tr.unitSelector.gigawattHourButton[app.language]
+      label: Tr.unitSelector.gigawattHourButton[@app.language]
       unitName: 'gigawattHours'
       class: if @config.unit == 'gigawattHours' then 'vizButton selected' else 'vizButton'
     thousandCubicMetres = 
-      label: Tr.unitSelector.thousandCubicMetresButton[app.language]
+      label: Tr.unitSelector.thousandCubicMetresButton[@app.language]
       unitName: 'thousandCubicMetres'
       class: if @config.unit == 'thousandCubicMetres' then 'vizButton selected' else 'vizButton'
     millionCubicMetres = 
-      label: Tr.unitSelector.millionCubicMetresButton[app.language]
+      label: Tr.unitSelector.millionCubicMetresButton[@app.language]
       unitName: 'millionCubicMetres'
       class: if @config.unit == 'millionCubicMetres' then 'vizButton selected' else 'vizButton'
     kilobarrels = 
-      label: Tr.unitSelector.kilobarrelsButton[app.language]
+      label: Tr.unitSelector.kilobarrelsButton[@app.language]
       unitName: 'kilobarrels'
       class: if @config.unit == 'kilobarrels' then 'vizButton selected' else 'vizButton'
     cubicFeet  = 
-      label: Tr.unitSelector.cubicFeetButton[app.language]
+      label: Tr.unitSelector.cubicFeetButton[@app.language]
       unitName: 'cubicFeet'
       class: if @config.unit == 'cubicFeet' then 'vizButton selected' else 'vizButton'
 
@@ -55,27 +54,27 @@ class visualization
 
   scenariosSelectionData: ->
     reference = 
-      label: Tr.scenarioSelector.referenceButton[app.language]
+      label: Tr.scenarioSelector.referenceButton[@app.language]
       scenarioName: 'reference'
       class: if @config.scenario == 'reference' then 'vizButton selected' else 'vizButton'
     constrained = 
-      label: Tr.scenarioSelector.constrainedButton[app.language]
+      label: Tr.scenarioSelector.constrainedButton[@app.language]
       scenarioName: 'constrained'
       class: if @config.scenario == 'constrained' then 'vizButton selected' else 'vizButton'
     high = 
-      label: Tr.scenarioSelector.highPriceButton[app.language]
+      label: Tr.scenarioSelector.highPriceButton[@app.language]
       scenarioName: 'high'
       class: if @config.scenario == 'high' then 'vizButton selected' else 'vizButton'
     low = 
-      label: Tr.scenarioSelector.lowPriceButton[app.language]
+      label: Tr.scenarioSelector.lowPriceButton[@app.language]
       scenarioName: 'low'
       class: if @config.scenario == 'low' then 'vizButton selected' else 'vizButton'
     highLng = 
-      label: Tr.scenarioSelector.highLngButton[app.language]
+      label: Tr.scenarioSelector.highLngButton[@app.language]
       scenarioName: 'highLng'
       class: if @config.scenario == 'highLng' then 'vizButton selected' else 'vizButton'
     noLng = 
-      label: Tr.scenarioSelector.noLngButton[app.language]
+      label: Tr.scenarioSelector.noLngButton[@app.language]
       scenarioName: 'noLng'
       class: if @config.scenario == 'noLng' then 'vizButton selected' else 'vizButton'
 
@@ -90,7 +89,7 @@ class visualization
   sectorSelectionData: ->
     [  
       {  
-        label: Tr.sectorSelector.totalSectorDemandButton[app.language]
+        label: Tr.sectorSelector.totalSectorDemandButton[@app.language]
         sectorName: 'total'
         wrapperClass: 'sectorSelectorButton totalSectorButton'
         buttonClass: if @config.sector == 'total' then 'vizButton selected' else 'vizButton'
@@ -120,22 +119,22 @@ class visualization
   mainSelectionData: ->
     [
       {
-        label: Tr.mainSelector.totalDemandButton[app.language]
+        label: Tr.mainSelector.totalDemandButton[@app.language]
         image: if @config.mainSelection == 'energyDemand' then 'IMG/main_selection/totalDemand_selected.png' else 'IMG/main_selection/totalDemand_unselected.png'
         selectorName: 'energyDemand'
       }
       {
-        label: Tr.mainSelector.electricityGenerationButton[app.language]
+        label: Tr.mainSelector.electricityGenerationButton[@app.language]
         image: if @config.mainSelection == 'electricityGeneration' then 'IMG/main_selection/electricity_selected.png' else 'IMG/main_selection/electricity_unselected.png'
         selectorName: 'electricityGeneration'
       }
       {
-        label: Tr.mainSelector.oilProductionButton[app.language]
+        label: Tr.mainSelector.oilProductionButton[@app.language]
         image: if @config.mainSelection == 'oilProduction' then 'IMG/main_selection/oil_selected.png' else 'IMG/main_selection/oil_unselected.png'
         selectorName: 'oilProduction'
       }
       {
-        label: Tr.mainSelector.gasProductionButton[app.language]
+        label: Tr.mainSelector.gasProductionButton[@app.language]
         image: if @config.mainSelection == 'gasProduction' then 'IMG/main_selection/gas_selected.png' else 'IMG/main_selection/gas_unselected.png'
         selectorName: 'gasProduction'
       }

@@ -2,7 +2,6 @@ _ = require 'lodash'
 d3 = require 'd3'
 visualization = require './visualization.coffee'
 stackedBarChart = require '../charts/stacked-bar-chart.coffee'
-squareMenu = require '../charts/square-menu.coffee'
 unitUtilities = require '../unit-transformation.coffee'
 Constants = require '../Constants.coffee'
 Mustache = require 'mustache'
@@ -458,7 +457,7 @@ class Visualization1 extends visualization
           @showProvinceNames
         groupId:
           'stackMenu'
-    @_chart = new stackedBarChart("#graphSVG", @xScale(), @yScale(), stackedOptions)   
+    @_chart = new stackedBarChart(@app, "#graphSVG", @xScale(), @yScale(), stackedOptions)   
 
   #called for adjustments: basically to avoid rebuilding the x axis and the chart object
   adjustViz: ->

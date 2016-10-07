@@ -17,7 +17,7 @@ class Visualization4Configuration
     province: 'all'
 
 
-  constructor: (options) ->
+  constructor: (@app, options) ->
     @options = _.extend {}, @defaultOptions, options
 
     # mainSelection, one of energyDemand, oilProduction, electricityGeneration, or gasProduction
@@ -102,8 +102,8 @@ class Visualization4Configuration
     province: @province
 
   updateRouter: ->
-    return unless app? and app.router?
-    window.app.router.navigate @routerParams()
+    return unless app? and @app.router?
+    @app.router.navigate @routerParams()
 
 
   # Description for PNG export
@@ -112,39 +112,39 @@ class Visualization4Configuration
 
     mainSelectionText = switch @mainSelection
       when 'energyDemand'
-        Tr.mainSelector.totalDemandButton[app.language]
+        Tr.mainSelector.totalDemandButton[@app.language]
       when 'electricityGeneration'
-        Tr.mainSelector.electricityGenerationButton[app.language]
+        Tr.mainSelector.electricityGenerationButton[@app.language]
       when 'oilProduction'
-        Tr.mainSelector.oilProductionButton[app.language]
+        Tr.mainSelector.oilProductionButton[@app.language]
       when 'gasProduction'
-        Tr.mainSelector.gasProductionButton[app.language]
+        Tr.mainSelector.gasProductionButton[@app.language]
     
     unitText = switch @unit
       when 'petajoules'
-        Tr.unitSelector.petajoulesButton[app.language]
+        Tr.unitSelector.petajoulesButton[@app.language]
       when 'kilobarrelEquivalents'
-        Tr.unitSelector.kilobarrelEquivalentsButton[app.language]
+        Tr.unitSelector.kilobarrelEquivalentsButton[@app.language]
       when 'gigawattHours'
-        Tr.unitSelector.gigawattHourButton[app.language]
+        Tr.unitSelector.gigawattHourButton[@app.language]
       when 'thousandCubicMetres'
-        Tr.unitSelector.thousandCubicMetresButton[app.language]
+        Tr.unitSelector.thousandCubicMetresButton[@app.language]
       when 'millionCubicMetres'
-        Tr.unitSelector.millionCubicMetresButton[app.language]
+        Tr.unitSelector.millionCubicMetresButton[@app.language]
       when 'kilobarrels'
-        Tr.unitSelector.kilobarrelsButton[app.language]
+        Tr.unitSelector.kilobarrelsButton[@app.language]
       when 'cubicFeet'
-        Tr.unitSelector.cubicFeetButton[app.language]
+        Tr.unitSelector.cubicFeetButton[@app.language]
 
     provinceText = if @province == 'all'
       "CANADA"
     else
-      "#{Tr.viewBySelector.viewByProvinceButton[app.language]}: #{Tr.regionSelector.names[@province][app.language]}"
+      "#{Tr.viewBySelector.viewByProvinceButton[@app.language]}: #{Tr.regionSelector.names[@province][@app.language]}"
 
 
     description = ''
     description += "#{mainSelectionText} - "
-    description += "#{Tr.imageExportText.unit[app.language]}: #{unitText} - "
+    description += "#{Tr.imageExportText.unit[@app.language]}: #{unitText} - "
     description += "#{provinceText}"
 
     description

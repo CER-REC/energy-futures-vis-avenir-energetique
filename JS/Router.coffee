@@ -22,7 +22,7 @@ class Router
 
   constructor: (app) ->
     @app = app
-    @navbar = new Navbar()
+    @navbar = new Navbar @app
     @app.containingWindow.onpopstate = @onHistoryPopState
     
     params = Router.parseQueryParams()
@@ -42,13 +42,13 @@ class Router
     # Initialize the application based on the queryparams
     switch params.page
       when 'viz1'
-        @app.visualization1Configuration = new Visualization1Configuration params
+        @app.visualization1Configuration = new Visualization1Configuration @app, params
       when 'viz2'
-        @app.visualization2Configuration = new Visualization2Configuration params
+        @app.visualization2Configuration = new Visualization2Configuration @app, params
       when 'viz3'
-        @app.visualization3Configuration = new Visualization3Configuration params
+        @app.visualization3Configuration = new Visualization3Configuration @app, params
       when 'viz4'
-        @app.visualization4Configuration = new Visualization4Configuration params
+        @app.visualization4Configuration = new Visualization4Configuration @app, params
     
 
   navigate: (params, options = {}) ->
@@ -129,12 +129,12 @@ class Router
 
   landingPageHandler: (options) ->
     if not @app.currentView?
-      @app.currentView = new LandingPage()
+      @app.currentView = new LandingPage @app
       @app.containingWindow.history.replaceState {page: 'landingPage'}, '', "?page=landingPage" if options.shouldUpdateHistory
     else if not (@app.currentView instanceof LandingPage)
       @app.popoverManager.closePopover()
       @app.currentView.tearDown()
-      @app.currentView = new LandingPage()
+      @app.currentView = new LandingPage @app
       @app.containingWindow.history.pushState {page: 'landingPage'}, '', "?page=landingPage" if options.shouldUpdateHistory
 
 
@@ -148,56 +148,48 @@ class Router
       @app.currentView = new Visualization1 @app, @app.visualization1Configuration
       params = @setupVis1RouterParams(@app.visualization1Configuration, params)
       @app.containingWindow.history.pushState params, '', @paramsToUrlString(params) if options.shouldUpdateHistory
-      @updateKeyWordsTagViz1()
     else if options.shouldUpdateHistory
       @app.containingWindow.history.replaceState params, '', @paramsToUrlString(params)
-      @updateKeyWordsTagViz1()
 
 
   viz2Handler: (params, options) ->
     if not @app.currentView?
-      @app.currentView = new Visualization2 @app.visualization2Configuration
+      @app.currentView = new Visualization2 @app, @app.visualization2Configuration
       @app.containingWindow.history.replaceState params, '', @paramsToUrlString(params) if options.shouldUpdateHistory
     else if not (@app.currentView instanceof Visualization2)
       @app.popoverManager.closePopover()
       @app.currentView.tearDown()
-      @app.currentView = new Visualization2 @app.visualization2Configuration
+      @app.currentView = new Visualization2 @app, @app.visualization2Configuration
       params = @setupVis2RouterParams(@app.visualization2Configuration, params)
       @app.containingWindow.history.pushState params, '', @paramsToUrlString(params) if options.shouldUpdateHistory
-      @updateKeyWordsTagViz2()
     else if options.shouldUpdateHistory
       @app.containingWindow.history.replaceState params, '', @paramsToUrlString(params)
-      @updateKeyWordsTagViz2()
 
   viz3Handler: (params, options) ->
     if not @app.currentView?
-      @app.currentView = new Visualization3 @app.visualization3Configuration
+      @app.currentView = new Visualization3 @app, @app.visualization3Configuration
       @app.containingWindow.history.replaceState params, '', @paramsToUrlString(params) if options.shouldUpdateHistory
     else if not (@app.currentView instanceof Visualization3)
       @app.popoverManager.closePopover()
       @app.currentView.tearDown()
-      @app.currentView = new Visualization3 @app.visualization3Configuration
+      @app.currentView = new Visualization3 @app, @app.visualization3Configuration
       params = @setupVis3RouterParams(@app.visualization3Configuration, params)
       @app.containingWindow.history.pushState params, '', @paramsToUrlString(params) if options.shouldUpdateHistory
-      @updateKeyWordsTagViz3()
     else if options.shouldUpdateHistory
       @app.containingWindow.history.replaceState params, '', @paramsToUrlString(params)
-      @updateKeyWordsTagViz3()
   
   viz4Handler: (params, options) ->
     if not @app.currentView?
-      @app.currentView = new Visualization4 @app.visualization4Configuration
+      @app.currentView = new Visualization4 @app, @app.visualization4Configuration
       @app.containingWindow.history.replaceState params, '', @paramsToUrlString(params) if options.shouldUpdateHistory
     else if not (@app.currentView instanceof Visualization4)
       @app.popoverManager.closePopover()
       @app.currentView.tearDown()
-      @app.currentView = new Visualization4 @app.visualization4Configuration
+      @app.currentView = new Visualization4 @app, @app.visualization4Configuration
       params = @setupVis4RouterParams(@app.visualization4Configuration, params)
       @app.containingWindow.history.pushState params, '', @paramsToUrlString(params) if options.shouldUpdateHistory
-      @updateKeyWordsTagViz4()
     else if options.shouldUpdateHistory
       @app.containingWindow.history.replaceState params, '', @paramsToUrlString(params)
-      @updateKeyWordsTagViz4()
 
   setupVis1RouterParams: (configuration, params)->
     page: params.page
@@ -237,62 +229,37 @@ class Router
       "#{key}=#{params[key]}"
     '?' + urlParts.join '&'
    
-  updateKeyWordsTagViz1: ->
-    d3.select('meta[name="keywords"]')
-      .attr
-        content: => 
-          provincesFullNames = @app.visualization1Configuration.provinces.map (item) -> Tr.regionSelector.names[item][app.language]
-          description = "#{@app.visualization1Configuration.imageExportDescription().split " - "},#{provincesFullNames}"
 
-  updateKeyWordsTagViz2: ->
-    d3.select('meta[name="keywords"]')
-      .attr
-        content: => 
-          sourceFullNames = @app.visualization2Configuration.sources.map (item) -> Tr.sourceSelector.sources[item][app.language]
-          description = "#{@app.visualization2Configuration.imageExportDescription().split " - "},#{sourceFullNames}"
 
-  updateKeyWordsTagViz3: ->
-    d3.select('meta[name="keywords"]')
-      .attr
-        content: => 
-          multiSelect = if @app.visualization3Configuration.viewBy == 'province' then @app.visualization3Configuration.sources.map (item) -> Tr.sourceSelector.sources[item][app.language] else @app.visualization3Configuration.provinces.map (item) -> Tr.regionSelector.names[item][app.language]
-          description = "#{@app.visualization3Configuration.imageExportDescription().split " - "},#{multiSelect}"
-
-  updateKeyWordsTagViz4: ->
-    d3.select('meta[name="keywords"]')
-      .attr
-        content: => 
-          scenarios = @app.visualization4Configuration.scenarios.map (item) -> Tr.scenarioSelector.names[item][app.language]
-          description = "#{@app.visualization4Configuration.imageExportDescription().split " - "},#{scenarios}"
 
   updateMetaTagViz1: ->
     d3.select('meta[name="description"]')
       .attr
         content: => 
-          provincesFullNames = @app.visualization1Configuration.provinces.map (item) -> Tr.regionSelector.names[item][app.language]
-          description = "#{Tr.allPages.metaDescription[app.language]} #{@app.visualization1Configuration.imageExportDescription().toLowerCase()}. #{Tr.regionSelector.selectRegionLabel[app.language]}: #{provincesFullNames}"
+          provincesFullNames = @app.visualization1Configuration.provinces.map (item) -> Tr.regionSelector.names[item][@app.language]
+          description = "#{Tr.allPages.metaDescription[@app.language]} #{@app.visualization1Configuration.imageExportDescription().toLowerCase()}. #{Tr.regionSelector.selectRegionLabel[@app.language]}: #{provincesFullNames}"
 
   updateMetaTagViz2: ->
     d3.select('meta[name="description"]')
       .attr
         content: => 
-          sourceFullNames = @app.visualization2Configuration.sources.map (item) -> Tr.sourceSelector.sources[item][app.language]
-          description = "#{Tr.allPages.metaDescription[app.language]} #{@app.visualization2Configuration.imageExportDescription()}. #{Tr.sourceSelector.selectSourceLabel[app.language]}: #{sourceFullNames}"
+          sourceFullNames = @app.visualization2Configuration.sources.map (item) -> Tr.sourceSelector.sources[item][@app.language]
+          description = "#{Tr.allPages.metaDescription[@app.language]} #{@app.visualization2Configuration.imageExportDescription()}. #{Tr.sourceSelector.selectSourceLabel[@app.language]}: #{sourceFullNames}"
 
   updateMetaTagViz3: ->
     d3.select('meta[name="description"]')
       .attr
         content: => 
-          multiSelect = if @app.visualization3Configuration.viewBy == 'province' then @app.visualization3Configuration.sources.map (item) -> Tr.sourceSelector.sources[item][app.language] else @app.visualization3Configuration.provinces.map (item) -> Tr.regionSelector.names[item][app.language]
-          multiSelectLabel = if @app.visualization3Configuration.viewBy == 'province' then Tr.sourceSelector.selectSourceLabel[app.language] else Tr.regionSelector.selectRegionLabel[app.language]
-          description = "#{Tr.allPages.metaDescription[app.language]} #{@app.visualization3Configuration.imageExportDescription()}. #{multiSelectLabel}: #{multiSelect}"
+          multiSelect = if @app.visualization3Configuration.viewBy == 'province' then @app.visualization3Configuration.sources.map (item) -> Tr.sourceSelector.sources[item][@app.language] else @app.visualization3Configuration.provinces.map (item) -> Tr.regionSelector.names[item][@app.language]
+          multiSelectLabel = if @app.visualization3Configuration.viewBy == 'province' then Tr.sourceSelector.selectSourceLabel[@app.language] else Tr.regionSelector.selectRegionLabel[@app.language]
+          description = "#{Tr.allPages.metaDescription[@app.language]} #{@app.visualization3Configuration.imageExportDescription()}. #{multiSelectLabel}: #{multiSelect}"
 
   updateMetaTagViz4: ->
     d3.select('meta[name="description"]')
       .attr
         content: => 
-          scenarios = @app.visualization4Configuration.scenarios.map (item) -> Tr.scenarioSelector.names[item][app.language]
-          description = "#{Tr.allPages.metaDescription[app.language]} #{@app.visualization4Configuration.imageExportDescription()}. #{Tr.scenarioSelector.scenarioSelectorHelpTitle[app.language]}: #{scenarios}"
+          scenarios = @app.visualization4Configuration.scenarios.map (item) -> Tr.scenarioSelector.names[item][@app.language]
+          description = "#{Tr.allPages.metaDescription[@app.language]} #{@app.visualization4Configuration.imageExportDescription()}. #{Tr.scenarioSelector.scenarioSelectorHelpTitle[@app.language]}: #{scenarios}"
 
 
 Router.parseQueryParams = ->
