@@ -7,7 +7,8 @@
     "build": "browserify JS/App.coffee -t coffeeify --extension='.coffee' -g uglifyify -o dist/public/bundle.js",
     "watch": "watchify JS/App.coffee -t coffeeify --extension='.coffee' -t [ stringify --extensions [.mustache .css] ] -o public/bundle.js --debug --verbose",
     "distribute": "node distribute.js",
-    "start": "node ./bin/www"
+    "start": "node ./bin/www",
+    "start-image-server": "node JS/server/server.js"
   },
   "dependencies": {
     "array-includes": "^3.0.2",
@@ -19,9 +20,11 @@
     "grunt": "^0.4.5",
     "lodash": "^4.5.1",
     "mustache": "^2.2.1",
+    "phantomjs-prebuilt": "^2.1.13",
     "query-string": "^4.0.2",
     "stringify": "^5.1.0",
-    "watchify": "^3.2.1"
+    "watchify": "^3.2.1",
+    "webdriverio": "^4.2.16"
   },
   "author": "Stephanie Sachrajda",
   "devDependencies": {
