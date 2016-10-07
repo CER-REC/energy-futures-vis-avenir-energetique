@@ -27,7 +27,7 @@
     "watchify": "^3.2.1",
     "webdriverio": "^4.2.16"
   },
-  "author": "Stephanie Sachrajda",
+  "author": "Stephanie Sachrajda, Patrick King, Alaa Azazi",
   "devDependencies": {
     "convert-source-map": "^1.2.0",
     "express": "^4.13.4",

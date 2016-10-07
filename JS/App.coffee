@@ -211,15 +211,15 @@ class App
   setupRouter: ->
     return if @router?
 
-    if Router.currentViewClass().resourcesLoaded()
+    if Router.currentViewClass().resourcesLoaded(@)
       @router = new Router @ 
 
 
 
 
 Domready ->
-  window.app = new App()
-  window.app.setup()
+  app = new App()
+  app.setup()
   
 
   

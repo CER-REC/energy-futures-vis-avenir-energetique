@@ -19,12 +19,12 @@ class Visualization1 extends visualization
   
   height = 700 
   
-  constructor: (config)  ->   
+  constructor: (@app, config)  ->   
     document.getElementById('visualizationContent').innerHTML = Mustache.render Visualization1Template, 
-        selectOneLabel: Tr.mainSelector.selectOneLabel[app.language]
-        selectUnitLabel: Tr.unitSelector.selectUnitLabel[app.language]
-        selectScenarioLabel: Tr.scenarioSelector.selectScenarioLabel[app.language]
-        selectRegionLabel: Tr.regionSelector.selectRegionLabel[app.language]
+        selectOneLabel: Tr.mainSelector.selectOneLabel[@app.language]
+        selectUnitLabel: Tr.unitSelector.selectUnitLabel[@app.language]
+        selectScenarioLabel: Tr.scenarioSelector.selectScenarioLabel[@app.language]
+        selectRegionLabel: Tr.regionSelector.selectRegionLabel[@app.language]
         svgStylesheet: SvgStylesheetTemplate
 
     @mainSelectorHelpPopover = new ControlsHelpPopover()
@@ -35,40 +35,40 @@ class Visualization1 extends visualization
     d3.select '.mainSelectorHelpButton'
       .on 'click', =>
         d3.event.stopPropagation()
-        if app.popoverManager.currentPopover == @mainSelectorHelpPopover
-          app.popoverManager.closePopover()
+        if @app.popoverManager.currentPopover == @mainSelectorHelpPopover
+          @app.popoverManager.closePopover()
         else
-          app.popoverManager.showPopover @mainSelectorHelpPopover, 
+          @app.popoverManager.showPopover @mainSelectorHelpPopover, 
             outerClasses: 'vizModal floatingPopover mainSelectorHelp'
             innerClasses: 'viz1HelpTitle'
-            title: Tr.mainSelector.selectOneLabel[app.language]
-            content: Tr.mainSelector.mainSelectorHelp[app.language]
+            title: Tr.mainSelector.selectOneLabel[@app.language]
+            content: Tr.mainSelector.mainSelectorHelp[@app.language]
             attachmentSelector: '.mainSelectorSection'
           
     d3.select '.unitSelectorHelpButton'
       .on 'click', =>
         d3.event.stopPropagation()
-        if app.popoverManager.currentPopover == @unitsHelpPopover
-          app.popoverManager.closePopover()
+        if @app.popoverManager.currentPopover == @unitsHelpPopover
+          @app.popoverManager.closePopover()
         else
-          app.popoverManager.showPopover @unitsHelpPopover, 
+          @app.popoverManager.showPopover @unitsHelpPopover, 
             outerClasses: 'vizModal floatingPopover unitSelectorHelp'
             innerClasses: 'viz1HelpTitle'
-            title: Tr.unitSelector.unitSelectorHelpTitle[app.language]
-            content: Tr.unitSelector.unitSelectorHelp[app.language]
+            title: Tr.unitSelector.unitSelectorHelpTitle[@app.language]
+            content: Tr.unitSelector.unitSelectorHelp[@app.language]
             attachmentSelector: '.unitsSelectorGroup'
     
     d3.select '.scenarioSelectorHelpButton'
       .on 'click', =>
         d3.event.stopPropagation()
-        if app.popoverManager.currentPopover == @scenariosHelpPopover
-          app.popoverManager.closePopover()
+        if @app.popoverManager.currentPopover == @scenariosHelpPopover
+          @app.popoverManager.closePopover()
         else
-          app.popoverManager.showPopover @scenariosHelpPopover, 
+          @app.popoverManager.showPopover @scenariosHelpPopover, 
             outerClasses: 'vizModal floatingPopover scenarioSelectorHelp'
             innerClasses: 'viz1HelpTitle'
-            title: Tr.scenarioSelector.scenarioSelectorHelpTitle[app.language]
-            content: Tr.scenarioSelector.scenarioSelectorHelp[app.language]
+            title: Tr.scenarioSelector.scenarioSelectorHelpTitle[@app.language]
+            content: Tr.scenarioSelector.scenarioSelectorHelp[@app.language]
             attachmentSelector: '.scenarioSelectorGroup'
 
 
@@ -264,17 +264,17 @@ class Visualization1 extends visualization
   getData: ->
     switch @config.mainSelection
       when 'gasProduction'  
-        @seriesData = app.gasProductionProvider.dataForViz1 @config
-        @yAxisData = app.gasProductionProvider.dataForAllViz1Scenarios @config
+        @seriesData = @app.gasProductionProvider.dataForViz1 @config
+        @yAxisData = @app.gasProductionProvider.dataForAllViz1Scenarios @config
       when 'electricityGeneration'
-        @seriesData = app.electricityProductionProvider.dataForViz1 @config
-        @yAxisData = app.electricityProductionProvider.dataForAllViz1Scenarios @config
+        @seriesData = @app.electricityProductionProvider.dataForViz1 @config
+        @yAxisData = @app.electricityProductionProvider.dataForAllViz1Scenarios @config
       when 'energyDemand'
-        @seriesData = app.energyConsumptionProvider.dataForViz1 @config
-        @yAxisData = app.energyConsumptionProvider.dataForAllViz1Scenarios @config
+        @seriesData = @app.energyConsumptionProvider.dataForViz1 @config
+        @yAxisData = @app.energyConsumptionProvider.dataForAllViz1Scenarios @config
       when 'oilProduction'
-        @seriesData = app.oilProductionProvider.dataForViz1 @config
-        @yAxisData = app.oilProductionProvider.dataForAllViz1Scenarios @config
+        @seriesData = @app.oilProductionProvider.dataForViz1 @config
+        @yAxisData = @app.oilProductionProvider.dataForAllViz1Scenarios @config
     if @_chart?
       @adjustViz()
     else
@@ -391,7 +391,7 @@ class Visualization1 extends visualization
           fill: '#999'
         .style
           'text-anchor': "start"
-        .text Tr.forecastLabel[app.language]
+        .text Tr.forecastLabel[@app.language]
     d3.select '#graphSVG'
       .append "image"
         .attr
@@ -489,23 +489,23 @@ class Visualization1 extends visualization
 
   showProvinceNames: =>
     d3.event.stopPropagation()
-    if app.popoverManager.currentPopover == @provincesHelpPopover
-      app.popoverManager.closePopover()
+    if @app.popoverManager.currentPopover == @provincesHelpPopover
+      @app.popoverManager.closePopover()
     else
       #Grab the provinces in order for the string
       contentString = ""
       for province in @provinceMenuData()
-        contentString = """<div class="provinceLabel provinceLabel#{province.key}"> <h6> #{Tr.regionSelector.names[province.key][app.language]} </h6> </div>""" + contentString
+        contentString = """<div class="provinceLabel provinceLabel#{province.key}"> <h6> #{Tr.regionSelector.names[province.key][@app.language]} </h6> </div>""" + contentString
 
-      app.popoverManager.showPopover @provincesHelpPopover, 
+      @app.popoverManager.showPopover @provincesHelpPopover, 
         outerClasses: 'vizModal floatingPopover popOverSm provinceHelp'
         innerClasses: 'localHelpTitle'
-        title: Tr.regionSelector.selectRegionLabel[app.language]
+        title: Tr.regionSelector.selectRegionLabel[@app.language]
         content: contentString
         attachmentSelector: '#provincesSelector'
 
 
-Visualization1.resourcesLoaded = ->
+Visualization1.resourcesLoaded = (app) ->
   app.loadedStatus.energyConsumptionProvider and
   app.loadedStatus.oilProductionProvider and
   app.loadedStatus.gasProductionProvider and

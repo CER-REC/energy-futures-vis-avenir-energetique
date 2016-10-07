@@ -57,7 +57,7 @@ class Router
 
     return unless params? and params.page?
     # Guard against navigating unless resources for the destination page are loaded up
-    return unless Router.viewClassForPage(params.page).resourcesLoaded()
+    return unless Router.viewClassForPage(params.page).resourcesLoaded(@app)
 
     @app.page = params.page
     @navbar.setNavBarState params.page
@@ -140,12 +140,12 @@ class Router
 
   viz1Handler: (params, options) ->
     if not @app.currentView?
-      @app.currentView = new Visualization1 @app.visualization1Configuration
+      @app.currentView = new Visualization1 @app, @app.visualization1Configuration
       @app.containingWindow.history.replaceState params, '', @paramsToUrlString(params) if options.shouldUpdateHistory
     else if not (@app.currentView instanceof Visualization1)
       @app.popoverManager.closePopover()
       @app.currentView.tearDown()
-      @app.currentView = new Visualization1 @app.visualization1Configuration
+      @app.currentView = new Visualization1 @app, @app.visualization1Configuration
       params = @setupVis1RouterParams(@app.visualization1Configuration, params)
       @app.containingWindow.history.pushState params, '', @paramsToUrlString(params) if options.shouldUpdateHistory
       @updateKeyWordsTagViz1()
