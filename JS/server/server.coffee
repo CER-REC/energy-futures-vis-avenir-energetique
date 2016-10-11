@@ -8,7 +8,10 @@ fs = require 'fs'
 
 ServerApp = require './ServerApp.coffee'
 # Visualization1 = require '../views/visualization1.coffee'
-# Visualization1Configuration = require '../VisualizationConfigurations/visualization1Configuration.coffee'
+Visualization1Configuration = require '../VisualizationConfigurations/visualization1Configuration.coffee'
+
+# TODO: I can't believe I have to include this shim in a node app... what's going on?
+require '../ArrayIncludes.coffee'
 
 
 
@@ -124,14 +127,14 @@ app.get '/image', (req, res) ->
       # work on viz1 to start.
       # TODO: parameterize all the things! 
 
-      # config = new Visualization1Configuration()
+      config = new Visualization1Configuration()
 
 
-      # serverApp = new ServerApp
-      #   energyConsumptionProvider: energyConsumptionProvider
-      #   oilProductionProvider: oilProductionProvider
-      #   gasProductionProvider: gasProductionProvider
-      #   electricityProductionProvider: electricityProductionProvider
+      serverApp = new ServerApp window,
+        energyConsumptionProvider: energyConsumptionProvider
+        oilProductionProvider: oilProductionProvider
+        gasProductionProvider: gasProductionProvider
+        electricityProductionProvider: electricityProductionProvider
 
 
 

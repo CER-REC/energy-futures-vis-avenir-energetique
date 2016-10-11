@@ -214,12 +214,12 @@ class Navbar
           opacity: 
             if self.navbarState == d.page then 0 else 1
     vizNavbar.selectAll('span').transition()
-      .duration 1000
+      .duration @app.animationDuration
       .style
         opacity: 1
 
     vizNavbar.transition()
-      .duration 1000
+      .duration @app.animationDuration
       .styleTween 'width', (d, i, a) ->
         return if d.page == 'landingPage'
         if self.navbarState == d.page

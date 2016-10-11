@@ -653,7 +653,7 @@ class Visualization4
     if transition  
       gridLines.transition()
         .ease "linear"
-        .duration 1000 
+        .duration @app.animationDuration 
           .call @xAxisGridLines()   
     else
       gridLines.call @xAxisGridLines()
@@ -707,7 +707,7 @@ class Visualization4
         transform: "translate(#{@width()},0)" 
     
     axis.transition()
-      .duration 1000
+      .duration @app.animationDuration
       .ease "linear"  
       .call @yAxis()
 
@@ -733,7 +733,7 @@ class Visualization4
     if transition  
       gridLines.transition()
         .ease "linear"
-        .duration 1000  
+        .duration @app.animationDuration  
         .call @yAxisGridLines()   
     else 
       gridLines.call @yAxisGridLines()
@@ -753,7 +753,7 @@ class Visualization4
         'shape-rendering': 'crispEdges'
 
 
-  renderGraph: (duration = 1000, width) ->
+  renderGraph: (duration = @app.animationDuration, width) ->
     xAxisScale = @xAxisScale(width)
     yAxisScale = @yAxisScale()
 

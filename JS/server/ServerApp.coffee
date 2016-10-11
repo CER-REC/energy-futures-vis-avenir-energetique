@@ -8,7 +8,7 @@
 
 class ServerApp
 
-  constructor: (providers) ->
+  constructor: (@window, providers) ->
 
     @energyConsumptionProvider = providers.energyConsumptionProvider
     @oilProductionProvider = providers.oilProductionProvider
@@ -19,6 +19,8 @@ class ServerApp
     # TODO: Language needs to be sent from client as a url parameter, and parsed by us
     @language = 'en'
 
+    # Set animation duration to zero, so that we do not spend time animating
+    @animationDuration = 0
 
     # TODO: Since no click events will be emitted from the visualization in jsdom, this
     # should never be referenced, let alone its members. Stubbing it out of an abundance
@@ -28,7 +30,7 @@ class ServerApp
       showPopover: ->
       closePopover: ->
 
-
+module.exports = ServerApp
 
 
 

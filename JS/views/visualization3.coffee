@@ -98,7 +98,7 @@ class Visualization3 extends visualization
       @_chart.size
         w: @width()
         h: @height()
-      @_chart._duration = 1000 
+      @_chart._duration = @app.animationDuration 
       @_chart.menu.size
         w: d3.select('#powerSourcePanel').node().getBoundingClientRect().width
         h: @leftHandMenuHeight()
@@ -898,7 +898,7 @@ class Visualization3 extends visualization
       mapping:
         @dataForStackMenu()
       duration:
-        1000
+        @app.animationDuration
       menuParent: 
         parent
       menuOptions:

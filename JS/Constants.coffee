@@ -216,6 +216,7 @@ module.exports =
     sourceTopMargin: 10
 
 
+  animationDuration: 1000 # in ms
 
 
 

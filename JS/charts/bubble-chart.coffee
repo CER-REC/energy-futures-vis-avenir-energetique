@@ -208,7 +208,7 @@ class bubbleChart extends chart
             .ease "linear"
 
         node.transition()
-          .duration 10000 * e.alpha
+          .duration e.alpha * 10000
           .attr
             transform: (d) ->
               if d.depth == 0 then return "translate(#{d.x},#{d.y})" 

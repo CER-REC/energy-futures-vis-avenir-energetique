@@ -97,7 +97,7 @@ class Visualization2 extends visualization
         h: @height()
       @_chart.x(@xScale()) 
       @_chart.y(@yScale())
-      @_chart._duration = 1000 
+      @_chart._duration = @app.animationDuration
       @_chart.menu.size
         w: d3.select('#powerSourcePanel').node().getBoundingClientRect().width
         h: @sourceMenuHeight()
@@ -365,7 +365,7 @@ class Visualization2 extends visualization
         transform: "translate(#{@width() + @_margin.left}, #{@_margin.top})"
     
     axis.transition()
-        .duration 1000
+        .duration @app.animationDuration
         .ease "linear" 
         .call(@yAxis())
     
@@ -389,7 +389,7 @@ class Visualization2 extends visualization
       
     if transition  
       gridLines.transition()
-          .duration 1000
+          .duration @app.animationDuration
           .ease "linear" 
           .call(@yAxisGridLines())
     else
@@ -467,7 +467,7 @@ class Visualization2 extends visualization
     if transition  
       gridLines.transition()
         .ease "linear"
-        .duration 1000 
+        .duration @app.animationDuration
           .call @xAxisGridLines()  
     else
       gridLines.call @xAxisGridLines()
@@ -544,7 +544,7 @@ class Visualization2 extends visualization
       mapping:
         @sourceMenuData()
       duration:
-        1000
+        @app.animationDuration
       groupId:
         'graphGroup'
       menuOptions: 

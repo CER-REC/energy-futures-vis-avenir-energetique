@@ -23,8 +23,10 @@ ElectricityProductionProvider = require './DataProviders/ElectricityProductionPr
 ImageExporter = require './ImageExporter.coffee'
 
 PopoverManager = require './PopoverManager.coffee'
-AboutThisProjectPopover = require './popovers/AboutThisProjectPopover'
-ImageDownloadPopover = require './popovers/ImageDownloadPopover'
+AboutThisProjectPopover = require './popovers/AboutThisProjectPopover.coffee'
+ImageDownloadPopover = require './popovers/ImageDownloadPopover.coffee'
+
+Constants = require './Constants.coffee'
 
 
 class App
@@ -35,6 +37,13 @@ class App
 
     @containingWindow = window.parent
 
+    # We need to specify the window where the visualization classes should do their work.
+    # On the client, this is just the browser window object. On the server, this becomes
+    # a jsdom window object.
+    @window = window
+
+    @animationDuration = 0
+    # @animationDuration = Constants.animationDuration
 
     @loadFonts()
 
