@@ -42,8 +42,7 @@ class App
     # a jsdom window object.
     @window = window
 
-    @animationDuration = 0
-    # @animationDuration = Constants.animationDuration
+    @animationDuration = Constants.animationDuration
 
     @loadFonts()
 

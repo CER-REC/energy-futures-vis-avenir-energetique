@@ -219,6 +219,16 @@ class bubbleChart extends chart
               "translate(#{d.x + dx},#{d.y + dy})"  
           .ease "linear"  
 
+
+    # For server side rendering, we set animation duration to 0. We still need to produce 
+    # an acceptable bubble graph layout, without actually running the animation. 
+    # Run 100 'ticks' worth of force iterations, all at once.
+    if @app.animationDuration == 0
+      for i in [0..100]
+        @force.tick
+          alpha: 0.05
+      @force.stop()
+
     this
 
 

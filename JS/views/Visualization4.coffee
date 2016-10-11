@@ -538,7 +538,7 @@ class Visualization4
     @renderYAxis()
     if !@provinceMenu #We only need to build once, but we need to build after the axis are built for alignment
       @provinceMenu = @buildProvinceMenu()
-    @renderGraph(0, width)
+    @renderGraph(@app.animationDuration, width)
 
   renderMainSelector: ->
     mainSelectors = d3.select('#mainSelector')
