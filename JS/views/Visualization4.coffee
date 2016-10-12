@@ -438,21 +438,27 @@ class Visualization4
 
   graphScenarioData: ->
     reference =
+      tooltip: Tr.selectorTooltip.scenarioSelector.referenceButton[app.language]
       key: 'reference'
       colour: '#999999'
     high =
+      tooltip: Tr.selectorTooltip.scenarioSelector.highPriceButton[app.language]
       key: 'high'
       colour: '#0C2C84'
     highLng =
+      tooltip: Tr.selectorTooltip.scenarioSelector.highLngButton[app.language]
       key: 'highLng'
       colour: '#225EA8'
     constrained =
+      tooltip: Tr.selectorTooltip.scenarioSelector.constrainedButton[app.language]
       key: 'constrained'
       colour: '#41B6C4'
     low =
+      tooltip: Tr.selectorTooltip.scenarioSelector.lowPriceButton[app.language]
       key: 'low'
       colour: '#7FCDBB'
     noLng =
+      tooltip: Tr.selectorTooltip.scenarioSelector.noLngButton[app.language]
       key: 'noLng'
       colour: '#C7E9B4'
 
@@ -893,7 +899,8 @@ class Visualization4
           area(d.data.map((val) -> {year: val.year, value: 0}))
       .style  
         fill: (d) -> colour = d3.rgb(d.colour); "url(#viz4gradPresent#{d.key}) rgba(#{colour.r}, #{colour.g}, #{colour.b}, 0.5)"
-   
+      .append('title').text (d) ->
+        d.tooltip
     graphAreaSelectors.transition()
       .duration duration
       .attr
@@ -908,7 +915,8 @@ class Visualization4
         d: (d) -> 
           areaFuture(d.data.map((val) -> {year: val.year, value: 0}))
         fill: (d) -> colour = d3.rgb(d.colour); "url(#viz4gradFuture#{d.key}) rgba(#{colour.r}, #{colour.g}, #{colour.b}, 0.2)"
-
+      .append('title').text (d) ->
+        d.tooltip
     graphAreaGroups.order() #Keeps the order!!!
    
     graphFutureAreaSelectors.transition()
