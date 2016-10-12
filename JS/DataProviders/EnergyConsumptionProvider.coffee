@@ -12,7 +12,7 @@ class EnergyConsumptionProvider
     d3.csv "CSV/energy demand.csv", @csvMapping, @parseData
   
   loadFromString: (data) ->
-    d3.csv.parse data, @csvMapping, @parseData
+    @parseData null, d3.csv.parse(data, @csvMapping) 
 
 
 
@@ -27,7 +27,7 @@ class EnergyConsumptionProvider
   parseData: (error, data) =>
     console.warn error if error?
     @data = data
-    
+
     # Normalize some of the data in the CSV, to make life easier later
     # TODO: precompute some of these changes?
 
@@ -95,7 +95,7 @@ class EnergyConsumptionProvider
       # @dataBySector[item.sector].push item
       @dataBySource[item.source].push item
 
-    @loadedCallback()
+    @loadedCallback() if @loadedCallback
     
     
   # accessors note: EnergyConsumptionProvider is never needed for viz 3!!

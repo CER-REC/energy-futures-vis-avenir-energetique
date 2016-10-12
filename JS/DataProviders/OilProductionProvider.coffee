@@ -12,7 +12,7 @@ class OilProductionProvider
     d3.csv "CSV/crude oil production VIZ.csv", @csvMapping, @parseData
 
   loadFromString: (data) ->
-    d3.csv.parse data, @csvMapping, @parseData
+    @parseData null, d3.csv.parse(data, @csvMapping) 
 
 
 
@@ -65,7 +65,7 @@ class OilProductionProvider
       @dataByScenario[item.scenario].push item
       @dataByProvince[item.province].push item
 
-    @loadedCallback()
+    @loadedCallback() if @loadedCallback
     
 
 

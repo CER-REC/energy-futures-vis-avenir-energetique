@@ -13,7 +13,7 @@ class ElectricityProductionProvider
     d3.csv "CSV/ElectricityGeneration_VIZ.csv", @csvMapping, @parseData
 
   loadFromString: (data) ->
-    d3.csv.parse data, @csvMapping, @parseData
+    @parseData null, d3.csv.parse(data, @csvMapping) 
 
 
 
@@ -87,7 +87,7 @@ class ElectricityProductionProvider
       @dataByProvince[item.province].push item
       @dataBySource[item.source].push item
 
-    @loadedCallback()
+    @loadedCallback() if @loadedCallback
 
     
 

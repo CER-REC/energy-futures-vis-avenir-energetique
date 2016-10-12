@@ -12,7 +12,7 @@ class GasProductionProvider
     d3.csv "CSV/Natural gas production VIZ.csv", @csvMapping, @parseData
   
   loadFromString: (data) ->
-    d3.csv.parse data, @csvMapping, @parseData
+    @parseData null, d3.csv.parse(data, @csvMapping) 
 
 
 
@@ -65,7 +65,7 @@ class GasProductionProvider
       @dataByScenario[item.scenario].push item
       @dataByProvince[item.province].push item
     
-    @loadedCallback()
+    @loadedCallback() if @loadedCallback
 
 
   # accessors note: GasProductionProvider is never needed for viz 2 or 3!!
