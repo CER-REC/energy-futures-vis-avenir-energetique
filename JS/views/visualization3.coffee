@@ -175,6 +175,7 @@ class Visualization3 extends visualization
     {  
         hydro:  
           key: 'hydro'
+          tooltip: Tr.sourceSelector.sourceSelectorHelp.hydro[app.language]
           img: 
             if @zeroedOut('hydro') 
               'IMG/sources/unavailable/hydro_unavailable.svg'
@@ -184,6 +185,7 @@ class Visualization3 extends visualization
           colour: '#4167b1'
         solarWindGeothermal:
           key: 'solarWindGeothermal'
+          tooltip: Tr.sourceSelector.sourceSelectorHelp.solarWindGeothermal[app.language]
           img: 
             if @zeroedOut('solarWindGeothermal') 
               'IMG/sources/unavailable/solarWindGeo_unavailable.svg'
@@ -193,6 +195,7 @@ class Visualization3 extends visualization
           colour: '#339947'
         coal:
           key: 'coal' 
+          tooltip: Tr.sourceSelector.sourceSelectorHelp.coal[app.language]
           img: 
             if @zeroedOut('coal') 
               'IMG/sources/unavailable/coal_unavailable.svg'
@@ -202,6 +205,7 @@ class Visualization3 extends visualization
           colour: '#996733'
         naturalGas:
           key: 'naturalGas' 
+          tooltip: Tr.sourceSelector.sourceSelectorHelp.naturalGas[app.language]
           img: 
             if @zeroedOut('naturalGas') 
               'IMG/sources/unavailable/naturalGas_unavailable.svg'
@@ -211,6 +215,7 @@ class Visualization3 extends visualization
           colour: '#f16739'
         bio:
           key: 'bio' 
+          tooltip: Tr.sourceSelector.sourceSelectorHelp.bio[app.language]
           img: 
             if @zeroedOut('bio') 
               'IMG/sources/unavailable/biomass_unavailable.svg'
@@ -220,6 +225,7 @@ class Visualization3 extends visualization
           colour: '#8d68ac'
         oilProducts:
           key: 'oilProducts' 
+          tooltip: Tr.sourceSelector.sourceSelectorHelp.oilProducts[app.language]
           img: 
             if @zeroedOut('oilProducts') 
               'IMG/sources/unavailable/oil_products_unavailable.svg'
@@ -229,6 +235,7 @@ class Visualization3 extends visualization
           colour: '#cc6699'
         nuclear: 
           key: 'nuclear' 
+          tooltip: Tr.sourceSelector.sourceSelectorHelp.nuclear[app.language]
           img: 
             if @zeroedOut('nuclear') 
               'IMG/sources/unavailable/nuclear_unavailable.svg'
@@ -330,78 +337,91 @@ class Visualization3 extends visualization
     {
       AB: {
         key: 'AB'
+        tooltip: Tr.regionSelector.names.AB[app.language]
         present: true
         colour: if @config.province == 'AB' then '#333' else '#fff'
         img: if @config.province == 'AB' then 'IMG/provinces/radio/AB_SelectedR.svg' else 'IMG/provinces/radio/AB_UnselectedR.svg'
       }
       BC: {
         key: 'BC'
+        tooltip: Tr.regionSelector.names.BC[app.language]
         present: true
         colour: if @config.province == 'BC' then '#333' else '#fff'
         img: if @config.province == 'BC' then 'IMG/provinces/radio/BC_SelectedR.svg' else 'IMG/provinces/radio/BC_UnselectedR.svg'
       }
       MB: {
         key: 'MB'
+        tooltip: Tr.regionSelector.names.MB[app.language]
         present: true
         colour: if @config.province == 'MB' then '#333' else '#fff'
         img: if @config.province == 'MB' then 'IMG/provinces/radio/MB_SelectedR.svg' else 'IMG/provinces/radio/MB_UnselectedR.svg'
       }     
       NB: {
         key: 'NB'
+        tooltip: Tr.regionSelector.names.NB[app.language]
         present: true
         colour: if @config.province == 'NB' then '#333' else '#fff'
         img: if @config.province == 'NB' then 'IMG/provinces/radio/NB_SelectedR.svg' else 'IMG/provinces/radio/NB_UnselectedR.svg'
       }
       NL: {
         key : 'NL'
+        tooltip: Tr.regionSelector.names.NL[app.language]
         present: true
         colour: if @config.province == 'NL' then '#333' else '#fff'
         img: if @config.province == 'NL' then 'IMG/provinces/radio/NL_SelectedR.svg' else 'IMG/provinces/radio/NL_UnselectedR.svg'
       }
       NS: {
         key: 'NS'
+        tooltip: Tr.regionSelector.names.NS[app.language]
         present: true
         colour: if @config.province == 'NS' then '#333' else '#fff'
         img: if @config.province == 'NS' then 'IMG/provinces/radio/NS_SelectedR.svg' else 'IMG/provinces/radio/NS_UnselectedR.svg'
       }
       NT: {
         key: 'NT'
+        tooltip: Tr.regionSelector.names.NT[app.language]
         present: true
         colour: if @config.province == 'NT' then '#333' else '#fff'
         img: if @config.province == 'NT' then 'IMG/provinces/radio/NT_SelectedR.svg' else 'IMG/provinces/radio/NT_UnselectedR.svg'
       }
       NU: { 
         key: 'NU'
+        tooltip: Tr.regionSelector.names.NU[app.language]
         present: true
         colour: if @config.province == 'NU' then '#333' else '#fff'
         img: if @config.province == 'NU' then 'IMG/provinces/radio/NU_SelectedR.svg' else 'IMG/provinces/radio/NU_UnselectedR.svg'
       }
       ON: { 
         key: 'ON'
+        tooltip: Tr.regionSelector.names.ON[app.language]
         present: true
         colour: if @config.province == 'ON' then '#333' else '#fff'
         img: if @config.province == 'ON' then 'IMG/provinces/radio/ON_SelectedR.svg' else 'IMG/provinces/radio/ON_UnselectedR.svg'
       }
       PE: {
         key: 'PE'
+        tooltip: Tr.regionSelector.names.PE[app.language]
         present: true
         colour: if @config.province == 'PE' then '#333' else '#fff'
         img: if @config.province == 'PE' then 'IMG/provinces/radio/PEI_SelectedR.svg' else 'IMG/provinces/radio/PEI_UnselectedR.svg'
       }
       QC: { 
         key: 'QC'
+        tooltip: Tr.regionSelector.names.QC[app.language]
         present: true
         colour: if @config.province == 'QC' then '#333' else '#fff'
         img: if @config.province == 'QC' then 'IMG/provinces/radio/QC_SelectedR.svg' else 'IMG/provinces/radio/QC_UnselectedR.svg'
       }
       SK: {
         key: 'SK'
+        tooltip: Tr.regionSelector.names.SK[app.language]
         present: true
         colour: if @config.province == 'SK' then '#333' else '#fff'
         img: if @config.province == 'SK' then 'IMG/provinces/radio/Sask_SelectedR.svg' else 'IMG/provinces/radio/Sask_UnselectedR.svg'
       }
       YT: {
         key: 'YT'
+        tooltip: Tr.regionSelector.names.YT[app.language]
         present: true
         colour: if @config.province == 'YT' then '#333' else '#fff'
         img: if @config.province == 'YT' then 'IMG/provinces/radio/Yukon_SelectedR.svg' else 'IMG/provinces/radio/Yukon_UnselectedR.svg'
