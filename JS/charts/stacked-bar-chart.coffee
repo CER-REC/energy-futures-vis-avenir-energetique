@@ -48,7 +48,7 @@ class stackedBarChart extends barChart
     @_stackDictionary = {}
     stack = d3.layout.stack()
       .values((d) -> d.values)
-    if @_mapping? and @_data != {} 
+    if @_mapping? and @_data != {}
       for province in @_mapping
         provinceData = 
           name: province.key
@@ -75,8 +75,6 @@ class stackedBarChart extends barChart
           .attr("class", "layer")
           .style("fill", (d, i) =>
             if @_mapping then d.colour else '#333333')
-          .append('title').text (d) ->
-            d.tooltip
       rect = layer.selectAll(".bar")
           .data(((d, i) =>  @_stackDictionary[d.key].values.map((yearData) -> {name: d.key, data: yearData})))
       rect.enter().append("rect")
@@ -90,6 +88,17 @@ class stackedBarChart extends barChart
               if d.data.x > 2014
                 1 - i/(@_x.domain().length + 5)
             )
+          # Tooltip
+          .append('title')
+            .attr(
+              id: (d) =>
+                # We add a unique id to access the title whenever
+                # it is modified. The id takes the format:
+                # provinceName + Year (e.g. ON2015)
+                d.name + d.data.x
+            )
+            .text (d) =>
+                d.name + ": "+ d.data.y.toFixed(2)
       rect.attr
         x: (d, i) =>
           @_x(d.data.x) 
@@ -101,6 +110,8 @@ class stackedBarChart extends barChart
           if @_duration then @_duration else 0)
         .attr(
           y: (d) =>
+            # Update the tooltip text
+            document.getElementById(d.name+d.data.x).innerHTML = d.name + ": "+ d.data.y.toFixed(2)
             @_y(d.data.y + d.data.y0)
           height: (d) =>
             @_y(d.data.y0) - @_y(d.data.y0 + d.data.y)
