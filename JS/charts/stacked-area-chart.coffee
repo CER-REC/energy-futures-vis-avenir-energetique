@@ -60,7 +60,7 @@ class stackedAreaChart extends stackedBarChart
       current = pixelMap.find((entry) -> root.mousePos.x >= entry.pixelStart && root.mousePos.x <entry.pixelEnd)
       if current?
         titletobe = @_stackDictionary[root.activeSource].values.find((value) -> value.x == current.year)
-        document.getElementById(root.activeArea).innerHTML = Tr.sourceSelector.sources[root.activeSource][app.language] + ": " + titletobe.y.toFixed(2)
+        document.getElementById(root.activeArea).innerHTML = Tr.sourceSelector.sources[root.activeSource][app.language] + " (" + current.year + "): " + titletobe.y.toFixed(2)
 
   # When dragging we want a shorter duration
   dragStart: ->

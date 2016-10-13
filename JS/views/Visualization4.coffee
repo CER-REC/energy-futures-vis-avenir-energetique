@@ -124,7 +124,7 @@ class Visualization4
       current = pixelMap.find((entry) -> root.mousePos.x >= entry.pixelStart && root.mousePos.x <entry.pixelEnd)
       if current?
         titletobe = root.data.find((value) -> value.year == current.year)
-        document.getElementById(root.activeArea).innerHTML = Tr.scenarioSelector.names[root.activeScenario][app.language] + ": " + titletobe.value.toFixed(2)
+        document.getElementById(root.activeArea).innerHTML = Tr.scenarioSelector.names[root.activeScenario][app.language] + " (" + current.year + "): " + titletobe.value.toFixed(2)
 
 
   redraw: ->
