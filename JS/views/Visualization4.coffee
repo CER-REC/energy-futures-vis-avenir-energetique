@@ -30,7 +30,7 @@ class Visualization4
     @margin = 
       top: 20
       right: 70
-      bottom: 70
+      bottom: 50
       left: 10
 
     @app.window.document.getElementById('visualizationContent').innerHTML = Mustache.render Visualization4Template,
@@ -682,22 +682,31 @@ class Visualization4
         'shape-rendering': 'crispEdges'
 
     #render the future line
+
+
+
+    textX = @margin.left + @xAxisScale()(2015)
+    textY = @outerHeight - 16    
     d3.select(@app.window.document).select '#graphGroup' 
       .append("text")
         .attr
           class: 'forecast forecastLabel'
-          transform: "translate(#{@xAxisScale()(2015)},#{@height() + d3.select(@app.window.document).select('#xAxis').node().getBoundingClientRect().height + d3.select(@app.window.document).select('#xAxis text').node().getBoundingClientRect().height})" 
+          transform: "translate(#{textX},#{textY})" 
           fill: '#999'
         .style("text-anchor", "start")
         .text(Tr.forecastLabel[@app.language])
+
+    arrowX = @margin.left + @xAxisScale()(2015) + 65
+    arrowY = @outerHeight - 27
     d3.select(@app.window.document).select '#graphGroup'
       .append("image")
         .attr
           class: 'forecast'
-          transform: "translate(#{@xAxisScale()(2015) + d3.select(@app.window.document).select('#graphGroup .forecastLabel').node().getBoundingClientRect().width},#{@height() + d3.select(@app.window.document).select('#xAxis').node().getBoundingClientRect().height + (d3.select(@app.window.document).select('#xAxis text').node().getBoundingClientRect().height / 2)})" 
-          "xlink:href":  'IMG/forecast_arrow.svg'
+          transform: "translate(#{arrowX},#{arrowY})" 
+          "xlink:xlink:href":  'IMG/forecast_arrow.svg'
           height: 9
           width: 200
+
     d3.select(@app.window.document).select '#graphGroup'
       .append("line")
         .attr
@@ -707,7 +716,7 @@ class Visualization4
           x1: @xAxisScale()(2014)
           y1: @height()
           x2: @xAxisScale()(2014)
-          y2: @height() + d3.select(@app.window.document).select('#xAxis').node().getBoundingClientRect().height + d3.select(@app.window.document).select('#xAxis text').node().getBoundingClientRect().height
+          y2: @outerHeight - 16
   
   renderYAxis: (transition = true) ->
     # Render the axis

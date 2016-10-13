@@ -505,22 +505,29 @@ class Visualization2 extends visualization
 
   buildForecast: ->
     d3.select(@app.window.document).selectAll('.forecast').remove()
+
+    textX = @_margin.left + @xScale()(2015)
+    textY = height - 16    
     d3.select(@app.window.document).select('#graphSVG')
       .append("text")
         .attr
           class: 'forecast forecastLabel'
-          transform: "translate(#{@_margin.left + @xScale()(2015)},#{@height() + @_margin.top + d3.select(@app.window.document).select('#xAxis').node().getBoundingClientRect().height + d3.select(@app.window.document).select('#xAxisForLabels text').node().getBoundingClientRect().height})"
+          transform: "translate(#{textX},#{textY})" 
           fill: '#999'
         .style("text-anchor", "start")
         .text(Tr.forecastLabel[@app.language])
+
+    arrowX = @_margin.left + @xScale()(2015) + 65
+    arrowY = height - 27
     d3.select(@app.window.document).select('#graphSVG')
       .append("image")
         .attr
           class: 'forecast'
-          transform: "translate(#{@_margin.left + @xScale()(2015) + d3.select(@app.window.document).select('#graphSVG .forecastLabel').node().getBoundingClientRect().width},#{@height() + @_margin.top + d3.select(@app.window.document).select('#xAxis').node().getBoundingClientRect().height + (d3.select(@app.window.document).select('#xAxisForLabels text').node().getBoundingClientRect().height /2)})" 
-          "xlink:href":  'IMG/forecast_arrow.svg'
+          transform: "translate(#{arrowX},#{arrowY})" 
+          "xlink:xlink:href": 'IMG/forecast_arrow.svg'
           height: 9
           width: 200
+
     d3.select(@app.window.document).select('#graphSVG')
       .append("line")
         .attr
@@ -530,7 +537,7 @@ class Visualization2 extends visualization
           x1: @_margin.left + @xScale()(2014) #We want the line in the middle of the years
           y1: @height() + @_margin.top 
           x2: @_margin.left + @xScale()(2014)  #We want the line in the middle of the years
-          y2: @height() + @_margin.top + d3.select(@app.window.document).select('#xAxis').node().getBoundingClientRect().height + d3.select(@app.window.document).select('#xAxis text').node().getBoundingClientRect().height
+          y2: height - 16
 
   buildViz:  ->
     @buildYAxis()
