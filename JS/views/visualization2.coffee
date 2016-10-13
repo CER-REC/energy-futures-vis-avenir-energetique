@@ -36,7 +36,7 @@ class Visualization2 extends visualization
     @provincesHelpPopover = new ControlsHelpPopover()
 
 
-    d3.select '.sectorSelectorHelpButton'
+    d3.select(@app.window.document).select '.sectorSelectorHelpButton'
       .on 'click', =>
         d3.event.stopPropagation()
         if @app.popoverManager.currentPopover == @sectorsSelectorHelpPopover
@@ -49,7 +49,7 @@ class Visualization2 extends visualization
             content: Tr.sectorSelector.sectorSelectorHelp[@app.language]
             attachmentSelector: '.sectorSelectorGroup'
 
-    d3.select '.unitSelectorHelpButton'
+    d3.select(@app.window.document).select '.unitSelectorHelpButton'
       .on 'click', =>
         d3.event.stopPropagation()
         if @app.popoverManager.currentPopover == @unitsHelpPopover
@@ -62,7 +62,7 @@ class Visualization2 extends visualization
             content: Tr.unitSelector.unitSelectorHelp[@app.language]
             attachmentSelector: '.unitsSelectorGroup'
 
-    d3.select '.scenarioSelectorHelpButton'
+    d3.select(@app.window.document).select '.scenarioSelectorHelpButton'
       .on 'click', =>
         d3.event.stopPropagation()
         if @app.popoverManager.currentPopover == @scenariosHelpPopover
@@ -101,11 +101,11 @@ class Visualization2 extends visualization
       @_chart.y(@yScale())
       @_chart._duration = @app.animationDuration
       @_chart.menu.size
-        w: d3.select('#powerSourcePanel').node().getBoundingClientRect().width
+        w: d3.select(@app.window.document).select('#powerSourcePanel').node().getBoundingClientRect().width
         h: @sourceMenuHeight()
     if @_provinceMenu
       @_provinceMenu.size
-        w: d3.select('#provincePanel').node().getBoundingClientRect().width
+        w: d3.select(@app.window.document).select('#provincePanel').node().getBoundingClientRect().width
         h: @sourceMenuHeight()
 
    #the graph's height
@@ -115,26 +115,26 @@ class Visualization2 extends visualization
   #arg so we want this menu to line up with the bottom of the x axis TICKS so those must be built before we can set this.
   sourceMenuHeight: ->
     @height() - 
-    d3.select('#powerSourcePanel span.titleLabel').node().getBoundingClientRect().height +
-    d3.select('#xAxis').node().getBoundingClientRect().height +
-    (d3.select('#xAxisForLabels text').node().getBoundingClientRect().height / 2)
+    d3.select(@app.window.document).select('#powerSourcePanel span.titleLabel').node().getBoundingClientRect().height +
+    d3.select(@app.window.document).select('#xAxis').node().getBoundingClientRect().height +
+    (d3.select(@app.window.document).select('#xAxisForLabels text').node().getBoundingClientRect().height / 2)
 
   #the graph's width
   width: ->
-    d3.select('#graphPanel').node().getBoundingClientRect().width - @_margin.left - @_margin.right
+    d3.select(@app.window.document).select('#graphPanel').node().getBoundingClientRect().width - @_margin.left - @_margin.right
 
   svgSize: ->
-    d3.select '#graphSVG'
+    d3.select(@app.window.document).select '#graphSVG'
       .attr
-        width: d3.select('#graphPanel').node().getBoundingClientRect().width
+        width: d3.select(@app.window.document).select('#graphPanel').node().getBoundingClientRect().width
         height: height
-    d3.select '#provinceMenuSVG'
+    d3.select(@app.window.document).select '#provinceMenuSVG'
       .attr
-        width: d3.select('#provincePanel').node().getBoundingClientRect().width
+        width: d3.select(@app.window.document).select('#provincePanel').node().getBoundingClientRect().width
         height: height - @_margin.top
-    d3.select "#powerSourceMenuSVG" 
+    d3.select(@app.window.document).select "#powerSourceMenuSVG" 
      .attr
-        width: d3.select('#powerSourcePanel').node().getBoundingClientRect().width
+        width: d3.select(@app.window.document).select('#powerSourcePanel').node().getBoundingClientRect().width
         height: height - @_margin.top
 
   sourceMenuData: ->
@@ -362,7 +362,7 @@ class Visualization2 extends visualization
 
   #Redraws the Y axis
   buildYAxis: (transition = true) ->
-    axis = d3.select("#yAxis")
+    axis = d3.select(@app.window.document).select("#yAxis")
       .attr
         transform: "translate(#{@width() + @_margin.left}, #{@_margin.top})"
     
@@ -385,7 +385,7 @@ class Visualization2 extends visualization
         'stroke-width': "1"
         'shape-rendering': 'crispEdges'
 
-    gridLines = d3.select("#yAxisGrid")
+    gridLines = d3.select(@app.window.document).select("#yAxisGrid")
       .attr
         transform: "translate(#{@width() + @_margin.left}, #{@_margin.top})"
       
@@ -443,7 +443,7 @@ class Visualization2 extends visualization
 
   buildXAxis: (transition= true) ->
     # Add axis which use the chart's height
-    axis = d3.select("#xAxisForTicks")
+    axis = d3.select(@app.window.document).select("#xAxisForTicks")
       .attr
         transform: "translate(#{@_margin.left}, #{@height() + @_margin.top})"
       .call(@xAxisForTicks())   
@@ -462,7 +462,7 @@ class Visualization2 extends visualization
         'stroke-width': "1"
         'shape-rendering': 'crispEdges'
 
-    gridLines = d3.select '#xAxisGrid'
+    gridLines = d3.select(@app.window.document).select '#xAxisGrid'
       .attr
         transform: "translate(#{@_margin.left}, #{@height() + @_margin.top})"
       
@@ -488,7 +488,7 @@ class Visualization2 extends visualization
         'stroke-width': "1"
         'shape-rendering': 'crispEdges'
 
-    axisForLabels = d3.select("#xAxisForLabels")
+    axisForLabels = d3.select(@app.window.document).select("#xAxisForLabels")
         .attr
           transform: "translate(#{@_margin.left}, #{@height() + @_margin.top})"
         .call(@xAxisForLabels())
@@ -499,24 +499,24 @@ class Visualization2 extends visualization
             dy: "1.5em"
 
   buildForecast: ->
-    d3.selectAll('.forecast').remove()
-    d3.select('#graphSVG')
+    d3.select(@app.window.document).selectAll('.forecast').remove()
+    d3.select(@app.window.document).select('#graphSVG')
       .append("text")
         .attr
           class: 'forecast forecastLabel'
-          transform: "translate(#{@_margin.left + @xScale()(2015)},#{@height() + @_margin.top + d3.select('#xAxis').node().getBoundingClientRect().height + d3.select('#xAxisForLabels text').node().getBoundingClientRect().height})"
+          transform: "translate(#{@_margin.left + @xScale()(2015)},#{@height() + @_margin.top + d3.select(@app.window.document).select('#xAxis').node().getBoundingClientRect().height + d3.select(@app.window.document).select('#xAxisForLabels text').node().getBoundingClientRect().height})"
           fill: '#999'
         .style("text-anchor", "start")
         .text(Tr.forecastLabel[@app.language])
-    d3.select('#graphSVG')
+    d3.select(@app.window.document).select('#graphSVG')
       .append("image")
         .attr
           class: 'forecast'
-          transform: "translate(#{@_margin.left + @xScale()(2015) + d3.select('#graphSVG .forecastLabel').node().getBoundingClientRect().width},#{@height() + @_margin.top + d3.select('#xAxis').node().getBoundingClientRect().height + (d3.select('#xAxisForLabels text').node().getBoundingClientRect().height /2)})" 
+          transform: "translate(#{@_margin.left + @xScale()(2015) + d3.select(@app.window.document).select('#graphSVG .forecastLabel').node().getBoundingClientRect().width},#{@height() + @_margin.top + d3.select(@app.window.document).select('#xAxis').node().getBoundingClientRect().height + (d3.select(@app.window.document).select('#xAxisForLabels text').node().getBoundingClientRect().height /2)})" 
           "xlink:href":  'IMG/forecast_arrow.svg'
           height: 9
           width: 200
-    d3.select('#graphSVG')
+    d3.select(@app.window.document).select('#graphSVG')
       .append("line")
         .attr
           class: 'forecast'
@@ -525,7 +525,7 @@ class Visualization2 extends visualization
           x1: @_margin.left + @xScale()(2014) #We want the line in the middle of the years
           y1: @height() + @_margin.top 
           x2: @_margin.left + @xScale()(2014)  #We want the line in the middle of the years
-          y2: @height() + @_margin.top + d3.select('#xAxis').node().getBoundingClientRect().height + d3.select('#xAxis text').node().getBoundingClientRect().height
+          y2: @height() + @_margin.top + d3.select(@app.window.document).select('#xAxis').node().getBoundingClientRect().height + d3.select(@app.window.document).select('#xAxis text').node().getBoundingClientRect().height
 
   buildViz:  ->
     @buildYAxis()
@@ -553,7 +553,7 @@ class Visualization2 extends visualization
         selector: '#powerSourceMenuSVG'
         boxSize: 37.5
         size: 
-          w: d3.select('#powerSourcePanel').node().getBoundingClientRect().width
+          w: d3.select(@app.window.document).select('#powerSourcePanel').node().getBoundingClientRect().width
           h: @sourceMenuHeight()
         onSelected:
           @menuSelect
@@ -628,7 +628,7 @@ class Visualization2 extends visualization
   buildProvinceMenu: ->
     provinceOptions=
       size: 
-          w: d3.select('#provinceMenuSVG').node().getBoundingClientRect().width
+          w: d3.select(@app.window.document).select('#provinceMenuSVG').node().getBoundingClientRect().width
           h: @sourceMenuHeight()
       canDrag: false
       hasChart: false

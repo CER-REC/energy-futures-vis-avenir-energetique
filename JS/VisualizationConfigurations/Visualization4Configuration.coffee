@@ -102,7 +102,7 @@ class Visualization4Configuration
     province: @province
 
   updateRouter: ->
-    return unless app? and @app.router?
+    return unless @app? and @app.router?
     @app.router.navigate @routerParams()
 
 

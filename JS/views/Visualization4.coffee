@@ -39,7 +39,7 @@ class Visualization4
     @provincesHelpPopover = new ControlsHelpPopover()
 
 
-    d3.select '.mainSelectorHelpButton'
+    d3.select(@app.window.document).select '.mainSelectorHelpButton'
       .on 'click', =>
         d3.event.stopPropagation()
         if @app.popoverManager.currentPopover == @mainSelectorHelpPopover
@@ -52,7 +52,7 @@ class Visualization4
             content: Tr.mainSelector.mainSelectorHelp[@app.language]
             attachmentSelector: '.mainSelectorSection'
     
-    d3.select '.unitSelectorHelpButton'
+    d3.select(@app.window.document).select '.unitSelectorHelpButton'
       .on 'click', =>
         d3.event.stopPropagation()
         if @app.popoverManager.currentPopover == @unitsHelpPopover
@@ -65,7 +65,7 @@ class Visualization4
             content: Tr.unitSelector.unitSelectorHelp[@app.language]
             attachmentSelector: '.unitsSelectorGroup'
 
-    d3.select '.scenarioSelectorHelpButton'
+    d3.select(@app.window.document).select '.scenarioSelectorHelpButton'
       .on 'click', =>
         d3.event.stopPropagation()
         if @app.popoverManager.currentPopover == @scenariosHelpPopover
@@ -84,7 +84,7 @@ class Visualization4
 
 
   redraw: ->
-    d3.select '#graphSVG'
+    d3.select(@app.window.document).select '#graphSVG'
       .attr
         width: @outerWidth()
         height: @outerHeight
@@ -92,8 +92,8 @@ class Visualization4
     @renderYAxis(false)
     @renderGraph(0)
     @provinceMenu.size
-      w: d3.select('#provincesSelector').node().getBoundingClientRect().width
-      h: @height() - d3.select('span.titleLabel').node().getBoundingClientRect().height + d3.select('#xAxis').node().getBoundingClientRect().height
+      w: d3.select(@app.window.document).select('#provincesSelector').node().getBoundingClientRect().width
+      h: @height() - d3.select(@app.window.document).select('span.titleLabel').node().getBoundingClientRect().height + d3.select(@app.window.document).select('#xAxis').node().getBoundingClientRect().height
 
 
 
@@ -184,15 +184,15 @@ class Visualization4
 
   # Black and white non multi select menu.
   buildProvinceMenu: ->
-    d3.select '#provinceMenuSVG'
+    d3.select(@app.window.document).select '#provinceMenuSVG'
       .attr
-        width: d3.select('#provincesSelector').node().getBoundingClientRect().width
+        width: d3.select(@app.window.document).select('#provincesSelector').node().getBoundingClientRect().width
         height: @outerHeight        
 
     provinceOptions =
       size: 
-          w: d3.select('#provincesSelector').node().getBoundingClientRect().width
-          h: @height() - d3.select('span.titleLabel').node().getBoundingClientRect().height + d3.select('#xAxis').node().getBoundingClientRect().height
+          w: d3.select(@app.window.document).select('#provincesSelector').node().getBoundingClientRect().width
+          h: @height() - d3.select(@app.window.document).select('span.titleLabel').node().getBoundingClientRect().height + d3.select(@app.window.document).select('#xAxis').node().getBoundingClientRect().height
       margin:
         left: 0
         right: 0
@@ -456,7 +456,7 @@ class Visualization4
 
 
   outerWidth: ->
-    d3.select('#graphPanel').node().getBoundingClientRect().width
+    d3.select(@app.window.document).select('#graphPanel').node().getBoundingClientRect().width
 
   width: ->
     @outerWidth() - @margin.left - @margin.right
@@ -526,11 +526,11 @@ class Visualization4
     # IE.
     width = @width()
 
-    d3.select '#graphSVG'
+    d3.select(@app.window.document).select '#graphSVG'
       .attr
         width: @outerWidth()
         height: @outerHeight
-    d3.select '#graphGroup'
+    d3.select(@app.window.document).select '#graphGroup'
       .attr 'transform', "translate(#{@margin.top},#{@margin.left})"
         
     @renderMainSelector()
@@ -543,7 +543,7 @@ class Visualization4
     @renderGraph(@app.animationDuration, width)
 
   renderMainSelector: ->
-    mainSelectors = d3.select('#mainSelector')
+    mainSelectors = d3.select(@app.window.document).select('#mainSelector')
       .selectAll('.mainSelectorButton')
       .data(@mainSelectionData())
 
@@ -573,7 +573,7 @@ class Visualization4
 
 
   renderUnitsSelector: ->
-    unitsSelectors = d3.select('#unitsSelector')
+    unitsSelectors = d3.select(@app.window.document).select('#unitsSelector')
       .selectAll('.unitSelectorButton')
       .data(@unitSelectionData())
     
@@ -597,7 +597,7 @@ class Visualization4
 
 
   renderScenariosSelector: ->
-    scenariosSelectors = d3.select('#scenariosSelector')
+    scenariosSelectors = d3.select(@app.window.document).select('#scenariosSelector')
       .selectAll('.scenarioSelectorButton')
       .data(@scenariosSelectionData())
     
@@ -625,10 +625,10 @@ class Visualization4
       .remove()
 
   renderXAxis: (transition = true) ->
-    d3.selectAll('.forecast').remove()
+    d3.select(@app.window.document).selectAll('.forecast').remove()
 
     #Render the axis with the labels
-    axis = d3.select '#xAxis'
+    axis = d3.select(@app.window.document).select '#xAxis'
       .attr 
         transform: "translate(#{0},#{@height()})" 
       .call @xAxis() 
@@ -648,7 +648,7 @@ class Visualization4
         'shape-rendering': 'crispEdges'
 
     #render the gridLines
-    gridLines = d3.select '#xAxisGrid'
+    gridLines = d3.select(@app.window.document).select '#xAxisGrid'
       .attr 
         transform: "translate(#{0},#{@height()})" 
       
@@ -675,23 +675,23 @@ class Visualization4
         'shape-rendering': 'crispEdges'
 
     #render the future line
-    d3.select '#graphGroup' 
+    d3.select(@app.window.document).select '#graphGroup' 
       .append("text")
         .attr
           class: 'forecast forecastLabel'
-          transform: "translate(#{@xAxisScale()(2015)},#{@height() + d3.select('#xAxis').node().getBoundingClientRect().height + d3.select('#xAxis text').node().getBoundingClientRect().height})" 
+          transform: "translate(#{@xAxisScale()(2015)},#{@height() + d3.select(@app.window.document).select('#xAxis').node().getBoundingClientRect().height + d3.select(@app.window.document).select('#xAxis text').node().getBoundingClientRect().height})" 
           fill: '#999'
         .style("text-anchor", "start")
         .text(Tr.forecastLabel[@app.language])
-    d3.select '#graphGroup'
+    d3.select(@app.window.document).select '#graphGroup'
       .append("image")
         .attr
           class: 'forecast'
-          transform: "translate(#{@xAxisScale()(2015) + d3.select('#graphGroup .forecastLabel').node().getBoundingClientRect().width},#{@height() + d3.select('#xAxis').node().getBoundingClientRect().height + (d3.select('#xAxis text').node().getBoundingClientRect().height / 2)})" 
+          transform: "translate(#{@xAxisScale()(2015) + d3.select(@app.window.document).select('#graphGroup .forecastLabel').node().getBoundingClientRect().width},#{@height() + d3.select(@app.window.document).select('#xAxis').node().getBoundingClientRect().height + (d3.select(@app.window.document).select('#xAxis text').node().getBoundingClientRect().height / 2)})" 
           "xlink:href":  'IMG/forecast_arrow.svg'
           height: 9
           width: 200
-    d3.select '#graphGroup'
+    d3.select(@app.window.document).select '#graphGroup'
       .append("line")
         .attr
           class: 'forecast'
@@ -700,11 +700,11 @@ class Visualization4
           x1: @xAxisScale()(2014)
           y1: @height()
           x2: @xAxisScale()(2014)
-          y2: @height() + d3.select('#xAxis').node().getBoundingClientRect().height + d3.select('#xAxis text').node().getBoundingClientRect().height
+          y2: @height() + d3.select(@app.window.document).select('#xAxis').node().getBoundingClientRect().height + d3.select(@app.window.document).select('#xAxis text').node().getBoundingClientRect().height
   
   renderYAxis: (transition = true) ->
     # Render the axis
-    axis = d3.select '#yAxis'
+    axis = d3.select(@app.window.document).select '#yAxis'
       .attr 
         transform: "translate(#{@width()},0)" 
     
@@ -728,7 +728,7 @@ class Visualization4
         'shape-rendering': 'crispEdges'
 
     #render the gridLines
-    gridLines = d3.select '#yAxisGrid'
+    gridLines = d3.select(@app.window.document).select '#yAxisGrid'
       .attr 
         transform: "translate(#{@width()},0)"  
 
@@ -783,10 +783,10 @@ class Visualization4
         .y (d) => 
           yAxisScale d.value
 
-    grads = d3.select('#graphGroup').select("defs").selectAll(".presentLinearGradient")
+    grads = d3.select(@app.window.document).select('#graphGroup').select("defs").selectAll(".presentLinearGradient")
         .data(@gradientData(), (d) -> d.key)
     
-    futureGrads = d3.select('#graphGroup').select("defs").selectAll(".futureLinearGradient")
+    futureGrads = d3.select(@app.window.document).select('#graphGroup').select("defs").selectAll(".futureLinearGradient")
         .data(@gradientData(), (d) -> d.key)
 
     enterGrads = grads.enter().append("linearGradient")
@@ -845,7 +845,7 @@ class Visualization4
 
     graphScenarioData = @graphScenarioData()
 
-    graphAreaGroups = d3.select '#areasAndLinesGroup'
+    graphAreaGroups = d3.select(@app.window.document).select '#areasAndLinesGroup'
       .selectAll '.graphGroup' 
       .data(graphScenarioData, (d) -> d.key)
 
@@ -936,7 +936,7 @@ class Visualization4
     #Add the reference case in front
     #Since these cannot be reordered. Ref case is first if its present.
     if @config.scenarios.includes('reference') && graphScenarioData.length > 0
-      refCaseLine = d3.select('#referenceCaseLineGroup').selectAll('#refCaseLine')
+      refCaseLine = d3.select(@app.window.document).select('#referenceCaseLineGroup').selectAll('#refCaseLine')
           .data([graphScenarioData[0]])     
       refCaseLine.enter().append('path')    
           .attr
@@ -951,7 +951,7 @@ class Visualization4
         .attr
           d: (d) -> line(d.data)
     else
-      d3.select('#refCaseLine').transition()
+      d3.select(@app.window.document).select('#refCaseLine').transition()
         .duration duration
         .attr
           d: (d) -> line(d.data.map((val) -> {year: val.year, value: 0}))

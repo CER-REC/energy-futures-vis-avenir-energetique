@@ -34,7 +34,7 @@ class Visualization3 extends visualization
     @sourcesHelpPopover = new ControlsHelpPopover()
     @provincesHelpPopover = new ControlsHelpPopover()
 
-    d3.select '.viewBySelectorHelpButton'
+    d3.select(@app.window.document).select '.viewBySelectorHelpButton'
       .on 'click', =>
         d3.event.stopPropagation()
         if @app.popoverManager.currentPopover == @viewByHelpPopover
@@ -47,7 +47,7 @@ class Visualization3 extends visualization
             content: Tr.viewBySelector.viewBySelectorHelp[@app.language]
             attachmentSelector: '.viewBySelectorGroup'
 
-    d3.select '.unitSelectorHelpButton'
+    d3.select(@app.window.document).select '.unitSelectorHelpButton'
       .on 'click', =>
         d3.event.stopPropagation()
         if @app.popoverManager.currentPopover == @unitsHelpPopover
@@ -60,7 +60,7 @@ class Visualization3 extends visualization
             content: Tr.unitSelector.unitSelectorHelp[@app.language]
             attachmentSelector: '.unitsSelectorGroup'
     
-    d3.select '.scenarioSelectorHelpButton'
+    d3.select(@app.window.document).select '.scenarioSelectorHelpButton'
       .on 'click', =>
         d3.event.stopPropagation()
         if @app.popoverManager.currentPopover == @scenariosHelpPopover
@@ -102,11 +102,11 @@ class Visualization3 extends visualization
         h: @height()
       @_chart._duration = @app.animationDuration 
       @_chart.menu.size
-        w: d3.select('#powerSourcePanel').node().getBoundingClientRect().width
+        w: d3.select(@app.window.document).select('#powerSourcePanel').node().getBoundingClientRect().width
         h: @leftHandMenuHeight()
     if @_singleSelectMenu
       @_singleSelectMenu.size
-        w: d3.select('#powerSourcePanel').node().getBoundingClientRect().width
+        w: d3.select(@app.window.document).select('#powerSourcePanel').node().getBoundingClientRect().width
         h: @leftHandMenuHeight()
 
   #the graph's height
@@ -115,27 +115,27 @@ class Visualization3 extends visualization
 
   #arg so we want this menu to line up with the bottom of the x axis TICKS so those must be built before we can set this.
   leftHandMenuHeight: ->
-    @height() + d3.select('#timelineAxis').node().getBoundingClientRect().height
+    @height() + d3.select(@app.window.document).select('#timelineAxis').node().getBoundingClientRect().height
 
   #the graph's width
   width: ->
-    d3.select('#graphPanel').node().getBoundingClientRect().width - @_margin.left - @_margin.right
+    d3.select(@app.window.document).select('#graphPanel').node().getBoundingClientRect().width - @_margin.left - @_margin.right
 
   timelineRightEnd: ->
-    d3.select('#graphSVG').node().getBoundingClientRect().width - @timelineMargin
+    d3.select(@app.window.document).select('#graphSVG').node().getBoundingClientRect().width - @timelineMargin
 
   svgSize: ->
-    d3.select '#graphSVG'
+    d3.select(@app.window.document).select '#graphSVG'
       .attr
-        width: d3.select('#graphPanel').node().getBoundingClientRect().width,
+        width: d3.select(@app.window.document).select('#graphPanel').node().getBoundingClientRect().width,
         height: height
-    d3.select '#provinceMenuSVG'
+    d3.select(@app.window.document).select '#provinceMenuSVG'
       .attr
-        width: d3.select('#provincePanel').node().getBoundingClientRect().width
+        width: d3.select(@app.window.document).select('#provincePanel').node().getBoundingClientRect().width
         height: height - @_margin.top
-    d3.select "#powerSourceMenuSVG" 
+    d3.select(@app.window.document).select "#powerSourceMenuSVG" 
      .attr
-        width: d3.select('#powerSourcePanel').node().getBoundingClientRect().width
+        width: d3.select(@app.window.document).select('#powerSourcePanel').node().getBoundingClientRect().width
         height: height - @_margin.top - @_margin.bottom
 
   viewByData: ->
@@ -154,7 +154,7 @@ class Visualization3 extends visualization
 
   buildProvinceVsSourceToggle: ->
     if @config.viewBy?  
-      viewBySelectors = d3.select('#viewBySelector')
+      viewBySelectors = d3.select(@app.window.document).select('#viewBySelector')
         .selectAll('.viewBySelectorButton')
         .data(@viewByData())
       
@@ -669,14 +669,14 @@ class Visualization3 extends visualization
       .orient("bottom")
 
   buildYearAxis: ->
-    axis = d3.select("#timelineAxis")
+    axis = d3.select(@app.window.document).select("#timelineAxis")
       .attr
         fill: '#333'
         transform: "translate( 0, #{@height() + @_margin.top + @sliderLabelHeight})" 
       .call(@yearAxis())
       
     #We need a wider target for the click so we use a separate group
-    d3.select('#timeLineTouch')
+    d3.select(@app.window.document).select('#timeLineTouch')
       .attr
         class: 'pointerCursor'
         'pointer-events': "visible"
@@ -687,17 +687,17 @@ class Visualization3 extends visualization
       .style
         fill: 'none'
       .on "click", =>
-        element = d3.select('#timelineAxis').node()
+        element = d3.select(@app.window.document).select('#timelineAxis').node()
         newX = d3.mouse(element)[0]
         if newX < @timelineMargin then newX = @timelineMargin
         if newX > @timelineRightEnd() then newX = @timelineRightEnd()
         year = Math.round(@yearScale().invert(newX))
         if year != @config.year
           @config.setYear year
-          d3.select('#sliderLabel').attr(
+          d3.select(@app.window.document).select('#sliderLabel').attr(
             transform: "translate(#{newX}, #{@height() + @_margin.top - 5})"
           )
-          d3.select('#labelBox').text((d) =>
+          d3.select(@app.window.document).select('#labelBox').text((d) =>
             @config.year
           )
           @getData()
@@ -725,14 +725,14 @@ class Visualization3 extends visualization
         'shape-rendering': 'crispEdges'
   
   buildSliderLabel: ->
-    d3.select('.sliderLabel').remove()
+    d3.select(@app.window.document).select('.sliderLabel').remove()
     year = @config.year
 
     #Drag Behaviour
     drag = d3.behavior.drag()
     drag.on("drag", (d,i) =>
       newX = d3.event.x
-      d3.select('#sliderLabel').attr("transform", (d,i) =>
+      d3.select(@app.window.document).select('#sliderLabel').attr("transform", (d,i) =>
         if newX < @timelineMargin then newX = @timelineMargin
         if newX > @timelineRightEnd() then newX = @timelineRightEnd()
         "translate(#{newX}, #{@height() + @_margin.top - 5})"
@@ -740,7 +740,7 @@ class Visualization3 extends visualization
       year = Math.round(@yearScale().invert(newX))
       if year != @config.year
         @config.setYear year
-        d3.select('#labelBox').text((d) =>
+        d3.select(@app.window.document).select('#labelBox').text((d) =>
           @config.year
         )
         @getData()
@@ -748,10 +748,10 @@ class Visualization3 extends visualization
     drag.on("dragend", (d, i) =>
       if year != @config.year
         newX = @yearScale()(year)
-        d3.select('#sliderLabel').attr(
+        d3.select(@app.window.document).select('#sliderLabel').attr(
           transform: "translate(#{newX}, #{@height() + @_margin.top - 5})"
         )
-        d3.select('#labelBox').selectAll('text').text((d) =>
+        d3.select(@app.window.document).select('#labelBox').selectAll('text').text((d) =>
           @config.year
         )
         @config.setYear year
@@ -759,7 +759,7 @@ class Visualization3 extends visualization
     )
     sliderWidth= 70
 
-    sliderLabel = d3.select('#graphSVG')
+    sliderLabel = d3.select(@app.window.document).select('#graphSVG')
       .append('g')
       .attr
         id: 'sliderLabel'
@@ -790,8 +790,8 @@ class Visualization3 extends visualization
 
   # I'm adding them to the left hand side for simplicity, we can move them later
   buildSliderButtons: ->
-    d3.select('#powerSourcePanel .mediaButtons').remove()
-    div = d3.select("#powerSourcePanel")
+    d3.select(@app.window.document).select('#powerSourcePanel .mediaButtons').remove()
+    div = d3.select(@app.window.document).select("#powerSourcePanel")
       .append("div")
         .attr
           class: 'mediaButtons'
@@ -801,8 +801,8 @@ class Visualization3 extends visualization
         class: 'playPauseButton selected'
         id: 'vizPauseButton'
       .on 'click', =>
-        d3.select('#vizPauseButton').html("<img src='IMG/play_pause/pausebutton_selectedR.svg'/>")
-        d3.select('#vizPlayButton').html("<img src='IMG/play_pause/playbutton_unselectedR.svg'/>")
+        d3.select(@app.window.document).select('#vizPauseButton').html("<img src='IMG/play_pause/pausebutton_selectedR.svg'/>")
+        d3.select(@app.window.document).select('#vizPlayButton').html("<img src='IMG/play_pause/playbutton_unselectedR.svg'/>")
         if @yearTimeout then window.clearTimeout(@yearTimeout)
       .html("<img src='IMG/play_pause/pausebutton_selectedR.svg'/>")
     
@@ -811,8 +811,8 @@ class Visualization3 extends visualization
         id: 'vizPlayButton'
         class: 'playPauseButton'
       .on 'click', (d) =>
-        d3.select('#vizPlayButton').html("<img src='IMG/play_pause/playbutton_selectedR.svg'/>")
-        d3.select('#vizPauseButton').html("<img src='IMG/play_pause/pausebutton_unselectedR.svg'/>")
+        d3.select(@app.window.document).select('#vizPlayButton').html("<img src='IMG/play_pause/playbutton_selectedR.svg'/>")
+        d3.select(@app.window.document).select('#vizPauseButton').html("<img src='IMG/play_pause/pausebutton_unselectedR.svg'/>")
         if @yearTimeout then window.clearTimeout(@yearTimeout)
         timeoutComplete= => 
           if @_chart
@@ -820,19 +820,19 @@ class Visualization3 extends visualization
               @config.setYear @config.year + 1
               @yearTimeout = window.setTimeout(timeoutComplete, @_chart._duration)
               @getData()
-              d3.select('#sliderLabel')
+              d3.select(@app.window.document).select('#sliderLabel')
                 .transition()
                   .attr(
                     transform: "translate(#{@yearScale()(@config.year)}, #{@height() + @_margin.top  - 5})"
                   )
                 .duration(@_chart._duration)
                 .ease('linear')
-              d3.select('#labelBox').text((d) =>
+              d3.select(@app.window.document).select('#labelBox').text((d) =>
                 @config.year
               )
             else
-              d3.select('#vizPauseButton').html("<img src='IMG/play_pause/pausebutton_selectedR.svg'/>")
-              d3.select('#vizPlayButton').html("<img src='IMG/play_pause/playbutton_unselectedR.svg'/>")
+              d3.select(@app.window.document).select('#vizPauseButton').html("<img src='IMG/play_pause/pausebutton_selectedR.svg'/>")
+              d3.select(@app.window.document).select('#vizPlayButton').html("<img src='IMG/play_pause/playbutton_unselectedR.svg'/>")
         @yearTimeout = window.setTimeout(timeoutComplete, 0)
       .html("<img src='IMG/play_pause/playbutton_unselectedR.svg'/>")
 
