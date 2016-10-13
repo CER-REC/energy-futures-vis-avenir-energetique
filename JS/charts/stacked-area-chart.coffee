@@ -33,7 +33,6 @@ class stackedAreaChart extends stackedBarChart
             cy: 0
             r: "100%"
             id: (d) -> "viz2gradPresent" + d.key
-
       enterPresentGrads.append("stop")
           .attr
             offset: "0"
@@ -110,6 +109,8 @@ class stackedAreaChart extends stackedBarChart
             area(@_stackDictionary[d.key].values.map((data) -> {x: data.x, y:0, y0:0}))
         .style  
           fill: (d) -> colour = d3.rgb(d.colour); "url(#viz2gradPresent#{d.key}) rgba(#{colour.r}, #{colour.g}, #{colour.b}, 0.6)"
+        .append('title').text (d) ->
+          d.tooltip
       presentArea.exit().remove()
 
       futureArea = @_group.selectAll(".futureArea")
@@ -121,6 +122,8 @@ class stackedAreaChart extends stackedBarChart
             areaFuture(@_stackDictionary[d.key].values.map((data) -> {x: data.x, y:0, y0:0}))
         .style  
           fill: (d) -> colour = d3.rgb(d.colour); "url(#viz2gradFuture#{d.key}) rgba(#{colour.r}, #{colour.g}, #{colour.b}, 0.4)"
+        .append('title').text (d) ->
+          d.tooltip
       futureArea.exit().remove()
 
       presentLine = @_group.selectAll(".presentLine")

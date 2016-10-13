@@ -130,6 +130,7 @@ class Visualization1 extends visualization
   provinceMenuData: ->
     provinceColours = {  
       'BC' :
+        tooltip: Tr.regionSelector.names.BC[app.language]
         present: if @config.provinces.includes 'BC' then true else false
         colour: '#AEC7E8'
         img: 
@@ -138,6 +139,7 @@ class Visualization1 extends visualization
           else
             if @config.provinces.includes 'BC' then 'IMG/provinces/colour/BC_Selected.svg' else 'IMG/provinces/colour/BC_Unselected.svg'
       'AB' :
+        tooltip: Tr.regionSelector.names.AB[app.language]
         present: if @config.provinces.includes 'AB' then true else false
         colour: '#2278b5'
         img: 
@@ -146,6 +148,7 @@ class Visualization1 extends visualization
           else
             if @config.provinces.includes 'AB' then 'IMG/provinces/colour/AB_Selected.svg' else 'IMG/provinces/colour/AB_Unselected.svg'
       'SK' : 
+        tooltip: Tr.regionSelector.names.SK[app.language]
         present: if @config.provinces.includes 'SK' then true else false
         colour: '#d77ab1'
         img: 
@@ -154,6 +157,7 @@ class Visualization1 extends visualization
           else
             if @config.provinces.includes 'SK' then 'IMG/provinces/colour/Sask_Selected.svg' else 'IMG/provinces/colour/Sask_Unselected.svg'
       'MB' : 
+        tooltip: Tr.regionSelector.names.MB[app.language]
         present: if @config.provinces.includes 'MB' then true else false
         colour: '#FCBB78'
         img: 
@@ -162,6 +166,7 @@ class Visualization1 extends visualization
           else
             if @config.provinces.includes 'MB' then 'IMG/provinces/colour/MB_Selected.svg' else 'IMG/provinces/colour/MB_Unselected.svg'
       'ON' : 
+        tooltip: Tr.regionSelector.names.ON[app.language]
         present: if @config.provinces.includes 'ON' then true else false
         colour: '#C5B1D6'
         img: 
@@ -170,6 +175,7 @@ class Visualization1 extends visualization
           else
             if @config.provinces.includes 'ON' then 'IMG/provinces/colour/ON_Selected.svg' else 'IMG/provinces/colour/ON_Unselected.svg'
       'QC' : 
+        tooltip: Tr.regionSelector.names.QC[app.language]
         present: if @config.provinces.includes 'QC' then true else false
         colour: '#c49c94'
         img: 
@@ -178,6 +184,7 @@ class Visualization1 extends visualization
           else
             if @config.provinces.includes 'QC' then 'IMG/provinces/colour/QC_Selected.svg' else 'IMG/provinces/colour/QC_Unselected.svg'
       'NB' :
+        tooltip: Tr.regionSelector.names.NB[app.language]
         present: if @config.provinces.includes 'NB' then true else false
         colour: '#2FA148'
         img: 
@@ -186,6 +193,7 @@ class Visualization1 extends visualization
           else
             if @config.provinces.includes 'NB' then 'IMG/provinces/colour/NB_Selected.svg' else 'IMG/provinces/colour/NB_Unselected.svg'
       'NS' :
+        tooltip: Tr.regionSelector.names.NS[app.language]
         present: if @config.provinces.includes 'NS' then true else false
         colour: '#F69797'
         img: 
@@ -194,6 +202,7 @@ class Visualization1 extends visualization
           else
             if @config.provinces.includes 'NS' then 'IMG/provinces/colour/NS_Selected.svg' else 'IMG/provinces/colour/NS_Unselected.svg'
       'NL' :
+        tooltip: Tr.regionSelector.names.NL[app.language]
         present: if @config.provinces.includes 'NL' then true else false
         colour: '#9ED089'
         img: 
@@ -202,6 +211,7 @@ class Visualization1 extends visualization
           else
             if @config.provinces.includes 'NL' then 'IMG/provinces/colour/NL_Selected.svg' else 'IMG/provinces/colour/NL_Unselected.svg'
       'PE' :
+        tooltip: Tr.regionSelector.names.PE[app.language]
         present: if @config.provinces.includes 'PE' then true else false
         colour: '#8D574C'
         img: 
@@ -210,6 +220,7 @@ class Visualization1 extends visualization
           else
             if @config.provinces.includes 'PE' then 'IMG/provinces/colour/PEI_Selected.svg' else 'IMG/provinces/colour/PEI_Unselected.svg'
       'YT' :
+        tooltip: Tr.regionSelector.names.YT[app.language]
         present: if @config.provinces.includes 'YT' then true else false
         colour: '#F5B6D1'
         img: 
@@ -218,6 +229,7 @@ class Visualization1 extends visualization
           else
             if @config.provinces.includes 'YT' then 'IMG/provinces/colour/Yukon_Selected.svg' else 'IMG/provinces/colour/Yukon_Unselected.svg'
       'NT' :
+        tooltip: Tr.regionSelector.names.NT[app.language]
         present: if @config.provinces.includes 'NT' then true else false
         colour: '#D62A28'
         img: 
@@ -226,6 +238,7 @@ class Visualization1 extends visualization
           else
             if @config.provinces.includes 'NT' then 'IMG/provinces/colour/NT_Selected.svg' else 'IMG/provinces/colour/NT_Unselected.svg'
       'NU' : 
+        tooltip: Tr.regionSelector.names.NU[app.language]
         present: if @config.provinces.includes 'NU' then true else false
         colour: '#9268ac'
         img: 

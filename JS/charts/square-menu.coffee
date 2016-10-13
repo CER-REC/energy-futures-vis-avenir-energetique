@@ -188,6 +188,8 @@ class squareMenu extends basicMenu
             return
           @selection d.key, i
         .call @_drag
+        .append('title').text (d, i) ->
+          d.tooltip
       
     if @_addAllSquare
       squareGroup = @_group.append 'g'

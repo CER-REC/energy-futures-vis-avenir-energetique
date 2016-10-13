@@ -75,6 +75,8 @@ class stackedBarChart extends barChart
           .attr("class", "layer")
           .style("fill", (d, i) =>
             if @_mapping then d.colour else '#333333')
+          .append('title').text (d) ->
+            d.tooltip
       rect = layer.selectAll(".bar")
           .data(((d, i) =>  @_stackDictionary[d.key].values.map((yearData) -> {name: d.key, data: yearData})))
       rect.enter().append("rect")

@@ -158,6 +158,79 @@ module.exports =
         </p>
         """
 
+  selectorTooltip:
+    mainSelector:
+      totalDemandButton:
+        en: 'The total energy used in the four sectors of Canada’s economy: residential, commercial, industrial and transportation.  Includes the use of electricity, natural gas, petroleum products such as gasoline, coal, and renewable fuels. Also referred to as end-use or secondary demand, it does not include the energy used to generate electricity.'
+        fr: 'Il s’agit de la consommation totale d’énergie dans les quatre grands secteurs de l’économie canadienne : résidentiel, commercial, industriel et transports. Elle comprend la consommation d’électricité, de gaz naturel, de produits pétroliers comme l’essence, de charbon, et de carburants renouvelables. Aussi appelée demande pour utilisation finale ou demande secondaire, la demande totale ne tient pas compte de l’énergie utilisée pour produire de l’électricité.'
+      electricityGenerationButton:
+        en: 'The amount of electric energy produced by transforming other forms of energy. In Canada, electricity is generated from hydro, other renewables like wind and solar, thermal sources like natural gas and coal, and nuclear power.'
+        fr: 'Il s’agit de la quantité d’énergie électrique produite pour transformer d’autres formes d’énergie. Au Canada, l’électricité provient des sources suivantes : l’hydroélectricité; les énergies renouvelables, comme l’énergie éolienne et l’énergie solaire; les sources thermiques, comme le gaz naturel et le charbon; et l’énergie nucléaire.'
+      oilProductionButton:
+        en: 'The amount of crude oil produced in Canada. Crude oil is produced from various areas using different technologies. This includes mined and in situ bitumen from the oil sands, conventional light and heavy oil produced in the Western Canada Sedimentary Basin, condensate, and oil produced from off-shore platforms on the east coast.'
+        fr: 'Il s’agit de la quantité de pétrole brut produit au Canada. Plusieurs régions produisent du pétrole brut à partir de diverses techniques. La production de pétrole comprend celle de bitume (à ciel ouvert et in situ); les sables bitumineux, le pétrole léger et le pétrole brut classiques dans le bassin sédimentaire de l’Ouest Canada; les condensats; et le pétrole produit à partir des plateformes de forage au large de la côte est.'
+      gasProductionButton:
+        en: 'The amount of marketable natural gas produced in Canada. Natural gas is produced from various areas using different technologies. This includes tight, shale, coal bed methane, conventional, and natural gas produced along with oil from oil wells (also called associated or solution gas).'
+        fr: 'Elle désigne la quantité de gaz naturel commercialisable produit au Canada. Plusieurs régions produisent du gaz naturel à partir de diverses techniques. La production de gaz naturel comprend le gaz de réservoirs étanches, le gaz de schiste, le méthane de houille, le gaz classique et le gaz tiré de l’exploitation des puits de pétrole (aussi appelé gaz associé ou gaz dissous).'
+
+    sectorSelector:
+      residentialSectorButton:
+        en: 'This is the energy consumed by Canadian households. It includes energy used for space and water heating, air conditioning, lighting, large appliances, and other energy-using devices like televisions and computers.'
+        fr: 'Consommation résidentielle d’énergie par les ménages canadiens, notamment pour le chauffage des bâtiments et de l’eau, la climatisation, l’éclairage et le fonctionnement des gros appareils ménagers et d’autres appareils comme les téléviseurs et les ordinateurs.'
+      commercialSectorButton:
+        en: 'A broad category  including offices, stores, warehouses, government and institutional buildings, utilities, communications, and other service industries. It also includes energy consumed by street lighting and pipelines. Buildings use energy for space and water heating, air conditioning, lighting, appliances and other devices. Pipelines use energy to power pumps or compressors that move oil and natural gas through pipelines.'
+        fr: 'Vaste catégorie qui englobe les bureaux, les commerces, les entrepôts, les immeubles gouvernementaux et institutionnels, les services publics, les entreprises de communications et d’autres industries du secteur tertiaire. On y prend en compte la consommation d’énergie pour l’éclairage des voies publiques, ainsi que le fonctionnement des pipelines. Dans les bâtiments, l’énergie sert pour le chauffage des locaux et de l’eau, la climatisation, l’éclairage et le fonctionnement des appareils ménagers et autres. Dans le cas des pipelines, elle alimente les pompes et les compresseurs qui permettent le transport du pétrole et du gaz naturel.'
+      industrialSectorButton:
+        en: 'This sector includes manufacturing, forestry, fisheries, agriculture, construction, mining, and oil and natural gas extraction. In 2013, 81 per cent of industrial energy was consumed by a number of energy-intensive industries like iron and steel, aluminum, cement, chemicals and fertilizers, pulp and paper, petroleum refining, mining, and oil and natural gas extraction.'
+        fr: 'Ce secteur englobe la consommation énergétique des industries manufacturière et forestière, des pêches, de l’agriculture, de la construction et des mines. En 2013, quelques industries à forte densité énergétique consommaient 81 % de l’énergie destinée au secteur industriel, soit l’industrie sidérurgique, les alumineries, les cimenteries, les usines pétrochimiques et d’engrais et les raffineries de pétrole, ainsi que l’extraction minière, pétrolière et gazière.'
+      transportSectorButton:
+        en: 'Includes passenger and freight on-road transportation, as well as air, rail, marine, and non-industrial off-road travel, such as recreational all-terrain vehicles and snowmobiles. Demand in the transportation sector includes foreign energy used on Canadian soil, airspace and waters.'
+        fr: 'Le secteur des transports comprend le transport de personnes et de fret par véhicules routiers, le transport par air, rail et mer ainsi que le transport non industriel hors route, comme les véhicules tout terrain et les motoneiges. La demande de ce secteur englobe l’énergie provenant de l’étranger qui est consommée sur le territoire canadien (sol, air et eaux).'
+
+    unitSelector:
+      petajoulesButton:
+        en: 'A measure of energy that is a quadrillion (e+15) joules. According to Statistics Canada, a petajoule is the approximate amount of energy it takes to run the Montreal Metro for one year.'
+        fr: 'Mesure d’énergie correspondant à un quadrillion (e+15) de joules. Selon Statistique Canada, un pétajoule représente l’énergie requise pour faire fonctionner le métro de Montréal pendant un an.'
+      gigawattHourButton:
+        en: 'A measure of electric energy that is a billion (e+9) watt hours of electric energy per year. One GW.h is equal to 0.0036 petajoules and 0.0016 kBOE/d.'
+        fr: 'Mesure de puissance énergétique correspondant à un milliard (e+9) de wattheures d’énergie électrique par année. Un gigawatt équivaut à 0,0036 pétajoule et à 0,0016 kbep/j.'
+      kilobarrelEquivalentsButton:
+        en: 'A measure of energy normalized to the equivalent energy content of a barrel of light crude oil. One barrel of oil equivalent is equal to 6.811 joules , while one petajoule is equal to 0.4475 kBOE/d.'
+        fr: 'Mesure d’énergie normalisée à l’équivalent de la teneur en énergie d’un baril de pétrole brut léger. Un baril d’équivalent pétrole équivaut à 6,811 joules ; et un pétajoule est égal à 0,4475 kbep/j.'
+      thousandCubicMetresButton:
+        en: 'Number of cubic metres of crude oil produced per day. One barrel of oil is equal to 0.159 cubic metres.'
+        fr: 'Nombre de mètres cubes de pétrole brut produits par jour. Un baril de pétrole équivaut à 0,159 mètre cube.'
+      millionCubicMetresButton:
+        en: 'Number of cubic metres of natural gas produced per day. One cubic foot of natural gas is equal to 0.0283 cubic metres.'
+        fr: 'Nombre de mètres cubes de gaz naturel produits par jour. Un pied cube de gaz naturel équivaut à 0,0283 mètre cube.'
+      kilobarrelsButton:
+        en: 'Number of barrels of crude oil produced per day.'
+        fr: 'Nombre de barils de pétrole brut produits par jour.'
+      cubicFeetButton:
+        en: 'Number of cubic feet of natural gas produced per day.'
+        fr: 'Nombre de pieds cubes de gaz naturel produits par jour.'
+
+    scenarioSelector:
+      referenceButton:
+        en: 'The Reference Case provides a baseline outlook, based on a moderate view of future energy prices and economic growth.'
+        fr: 'Le scénario de référence offre une perspective de base et mise sur une projection modérée des prix de l’énergie et de la croissance de l’économie dans les années à venir.'
+      lowPriceButton:
+        en: 'A price case with lower oil and natural gas prices capture some of the uncertainty related to future energy prices.'
+        fr: 'Un second scénario lié aux prix table sur des prix du pétrole et du gaz naturel moins élevés et intègre certaines incertitudes concernant les prix futurs de l’énergie.'
+      highPriceButton:
+        en: 'A price case with higher oil and natural gas prices capture some of the uncertainty related to future energy prices.'
+        fr: 'Un premier scénario lié aux prix prévoit des prix du pétrole et du gaz naturel plus élevés et prend en compte certaines incertitudes qui ont trait aux prix futurs de l’énergie.'
+      constrainedButton:
+        en: 'The EF 2016 report considers a case where no new major oil pipelines are built over the projection period to address uncertainties related to future oil export infrastructure.'
+        fr: 'Le rapport AE 2016 prend aussi en considération des incertitudes relatives à l’infrastructure d’exportation du pétrole et propose un scénario dans lequel aucun pipeline d’envergure n’est construit durant la période de projection.'
+      noLngButton:
+        en: 'No liquefied natural gas (LNG) exports.'
+        fr: 'Aucun export de gaz naturel liquéfié (GNL)'
+      highLngButton:
+        en: 'High liquefied natural gas (LNG) exports.'
+        fr: 'Exports de gaz naturel liquéfié (GNL) élevés'
+
+
 
 
   mainSelector:
