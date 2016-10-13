@@ -111,7 +111,7 @@ class stackedBarChart extends barChart
         .attr(
           y: (d) =>
             # Update the tooltip text
-            document.getElementById(d.name+d.data.x).innerHTML = d.name + ": "+ d.data.y.toFixed(2)
+            document.getElementById(d.name+d.data.x).innerHTML = d.name + " (" + d.data.x + "): "+ d.data.y.toFixed(2)
             @_y(d.data.y + d.data.y0)
           height: (d) =>
             @_y(d.data.y0) - @_y(d.data.y0 + d.data.y)
