@@ -7,7 +7,7 @@ ImageDownloadTemplate = require '../templates/ImageDownload.mustache'
 class ImageDownloadPopover
 
   constructor: (@app) ->
-    document.getElementById('imageDownloadModal').innerHTML = Mustache.render ImageDownloadTemplate, 
+    @app.window.document.getElementById('imageDownloadModal').innerHTML = Mustache.render ImageDownloadTemplate, 
         imageDownloadHeader: Tr.allPages.imageDownloadHeader[@app.language]
         imageDownloadInstructions: Tr.allPages.imageDownloadInstructions[@app.language]
 

@@ -1,12 +1,14 @@
 _ = require 'lodash'
 d3 = require 'd3'
+Mustache = require 'mustache'
+
 visualization = require './visualization.coffee'
 unitUtilities = require '../unit-transformation.coffee'
 stackedAreaChart = require '../charts/stacked-area-chart.coffee'
 squareMenu = require '../charts/square-menu.coffee'
 Constants = require '../Constants.coffee'
-Mustache = require 'mustache'
 Tr = require '../TranslationTable.coffee'
+Platform = require '../Platform.coffee'
 
 Visualization2Template = require '../templates/Visualization2.mustache'
 SvgStylesheetTemplate = require '../templates/SvgStylesheet.css'
@@ -19,7 +21,7 @@ class Visualization2 extends visualization
   width = 1000
 
   constructor: (@app, config) ->
-    document.getElementById('visualizationContent').innerHTML = Mustache.render Visualization2Template, 
+    @app.window.document.getElementById('visualizationContent').innerHTML = Mustache.render Visualization2Template, 
       selectSectorLabel: Tr.sectorSelector.selectSectorLabel[@app.language]
       selectUnitLabel: Tr.unitSelector.selectUnitLabel[@app.language]
       selectScenarioLabel: Tr.scenarioSelector.selectScenarioLabel[@app.language]

@@ -32,8 +32,8 @@ class chart
   #getters and setters (return chart object for chaining)
   parent: (prnt, groupClass) ->
     if arguments.length
-      @_parent = if typeof prnt == 'string' or prnt instanceof String then d3.select(prnt) else prnt
-      @_group = if !(d3.select("##{groupClass}").empty()) then d3.select("##{groupClass}") else @_parent.append('svg:g').attr(id: groupClass)
+      @_parent = if typeof prnt == 'string' or prnt instanceof String then d3.select(@app.window.document).select(prnt) else prnt
+      @_group = if !(d3.select(@app.window.document).select("##{groupClass}").empty()) then d3.select(@app.window.document).select("##{groupClass}") else @_parent.append('svg:g').attr(id: groupClass)
       this
     else
       @_parent.node()

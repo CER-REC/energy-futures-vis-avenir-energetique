@@ -142,7 +142,7 @@ class visualization
 
   addUnitToggle: ->
     if @config.unit?  
-      unitsSelectors = d3.select('#unitsSelector')
+      unitsSelectors = d3.select(@app.window.document).select('#unitsSelector')
         .selectAll('.unitSelectorButton')
         .data(@unitSelectionData())
       
@@ -165,7 +165,7 @@ class visualization
 
   addScenarios: ->
     if @config.scenario?  
-      scenariosSelectors = d3.select('#scenariosSelector')
+      scenariosSelectors = d3.select(@app.window.document).select('#scenariosSelector')
         .selectAll('.scenarioSelectorButton')
         .data(@scenariosSelectionData())
       
@@ -191,7 +191,7 @@ class visualization
 
   addSectors: ->
     if @config.sector?  
-      sectorsSelectors = d3.select('#sectorsSelector')
+      sectorsSelectors = d3.select(@app.window.document).select('#sectorsSelector')
         .selectAll('.sectorSelectorButton')
         .data(@sectorSelectionData())
       
@@ -214,7 +214,7 @@ class visualization
       sectorsSelectors.exit().remove()
   
   addMainSelector: ->
-    mainSelectors = d3.select('#mainSelector')
+    mainSelectors = d3.select(@app.window.document).select('#mainSelector')
       .selectAll('.mainSelectorButton')
       .data(@mainSelectionData())
 

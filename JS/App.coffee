@@ -80,7 +80,7 @@ class App
 
     # TODO: Navbar and modal setup is getting weighty, might want to break it out into a separate class
 
-    document.getElementById('bottomNavBar').innerHTML = Mustache.render BottomNavBarTemplate,
+    @window.document.getElementById('bottomNavBar').innerHTML = Mustache.render BottomNavBarTemplate,
         aboutLink: Tr.allPages.aboutLink[@language]
         methodologyLinkText: Tr.allPages.methodologyLinkText[@language]
         methodologyLinkUrl: Tr.allPages.methodologyLinkUrl[@language]

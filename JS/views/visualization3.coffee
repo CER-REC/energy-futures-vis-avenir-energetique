@@ -1,11 +1,13 @@
 d3 = require 'd3'
+Mustache = require 'mustache'
+
 visualization = require './visualization.coffee'
 unitUtilities = require '../unit-transformation.coffee'
 bubbleChart = require '../charts/bubble-chart.coffee'
 Constants = require '../Constants.coffee'
 squareMenu = require '../charts/square-menu.coffee'
-Mustache = require 'mustache'
 Tr = require '../TranslationTable.coffee'
+Platform = require '../Platform.coffee'
 
 Visualization3Template = require '../templates/Visualization3.mustache'
 SvgStylesheetTemplate = require '../templates/SvgStylesheet.css'
@@ -18,7 +20,7 @@ class Visualization3 extends visualization
   width = 1000
 
   constructor: (@app, config) ->
-    document.getElementById('visualizationContent').innerHTML = Mustache.render Visualization3Template,
+    @app.window.document.getElementById('visualizationContent').innerHTML = Mustache.render Visualization3Template,
       selectViewByLabel: Tr.viewBySelector.selectViewByLabel[@app.language]
       selectUnitLabel: Tr.unitSelector.selectUnitLabel[@app.language]
       selectScenarioLabel: Tr.scenarioSelector.selectScenarioLabel[@app.language]

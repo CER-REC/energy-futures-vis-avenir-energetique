@@ -7,7 +7,7 @@ AboutThisProjectTemplate = require '../templates/AboutThisProject.mustache'
 class AboutThisProjectPopover
 
   constructor: (@app) ->
-    document.getElementById('aboutModal').innerHTML = Mustache.render AboutThisProjectTemplate,
+    @app.window.document.getElementById('aboutModal').innerHTML = Mustache.render AboutThisProjectTemplate,
         aboutTitle: Tr.aboutThisProject.aboutTitle[@app.language]
         aboutContent: Tr.aboutThisProject.aboutContent[@app.language]
 

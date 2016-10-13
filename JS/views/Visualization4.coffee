@@ -1,8 +1,10 @@
 d3 = require 'd3'
+Mustache = require 'mustache'
+
 Constants = require '../Constants.coffee'
 squareMenu = require '../charts/square-menu.coffee'
-Mustache = require 'mustache'
 Tr = require '../TranslationTable.coffee'
+Platform = require '../Platform.coffee'
 
 Visualization4Template = require '../templates/Visualization4.mustache'
 SvgStylesheetTemplate = require '../templates/SvgStylesheet.css'
@@ -24,7 +26,7 @@ class Visualization4
       bottom: 70
       left: 10
 
-    document.getElementById('visualizationContent').innerHTML = Mustache.render Visualization4Template,
+    @app.window.document.getElementById('visualizationContent').innerHTML = Mustache.render Visualization4Template,
       selectOneLabel: Tr.mainSelector.selectOneLabel[@app.language]
       selectUnitLabel: Tr.unitSelector.selectUnitLabel[@app.language]
       selectScenarioLabel: Tr.scenarioSelector.selectScenarioLabel[@app.language]

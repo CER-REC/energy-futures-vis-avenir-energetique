@@ -15,9 +15,9 @@ Wet3VideoTemplate = require '../templates/Wet3Video.mustache'
 class LandingPage
 
   constructor: (@app) ->
-    document.getElementById('landingPageHeading').innerHTML = Tr.landingPage.mainHeader[@app.language]
+    @app.window.document.getElementById('landingPageHeading').innerHTML = Tr.landingPage.mainHeader[@app.language]
 
-    document.getElementById('visualizationContent').innerHTML = Mustache.render LandingPageTemplate, 
+    @app.window.document.getElementById('visualizationContent').innerHTML = Mustache.render LandingPageTemplate, 
         content: Tr.landingPage.content1[@app.language]
         visualization1Link: Tr.landingPage.visualization1Link[@app.language]
         visualization2Link: Tr.landingPage.visualization2Link[@app.language]
@@ -27,26 +27,26 @@ class LandingPage
         # panelRightContent: Mustache.render(Wet4VideoTemplate)
 
 
-    document.getElementById("viz1Anchor").addEventListener 'click', (event) => 
+    @app.window.document.getElementById("viz1Anchor").addEventListener 'click', (event) => 
       event.preventDefault()  
       @app.router.navigate 
         page: 'viz1'
-    document.getElementById("viz2Anchor").addEventListener 'click', (event) => 
+    @app.window.document.getElementById("viz2Anchor").addEventListener 'click', (event) => 
       event.preventDefault()  
       @app.router.navigate 
         page: 'viz2'
-    document.getElementById("viz3Anchor").addEventListener 'click', (event) => 
+    @app.window.document.getElementById("viz3Anchor").addEventListener 'click', (event) => 
       event.preventDefault()  
       @app.router.navigate 
         page: 'viz3'
-    document.getElementById("viz4Anchor").addEventListener 'click', (event) => 
+    @app.window.document.getElementById("viz4Anchor").addEventListener 'click', (event) => 
       event.preventDefault()  
       @app.router.navigate 
         page: 'viz4'
 
     
   tearDown: ->
-    document.getElementById('visualizationContent').innerHTML = '' 
+    @app.window.document.getElementById('visualizationContent').innerHTML = '' 
 
   # for resizing
   redraw: ->
