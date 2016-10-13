@@ -3,22 +3,27 @@ d3 = require 'd3'
 Mustache = require 'mustache'
 
 visualization = require './visualization.coffee'
-unitUtilities = require '../unit-transformation.coffee'
 stackedAreaChart = require '../charts/stacked-area-chart.coffee'
 squareMenu = require '../charts/square-menu.coffee'
 Constants = require '../Constants.coffee'
 Tr = require '../TranslationTable.coffee'
 Platform = require '../Platform.coffee'
 
-Visualization2Template = require '../templates/Visualization2.mustache'
-SvgStylesheetTemplate = require '../templates/SvgStylesheet.css'
+
+if Platform.name == "browser"
+  Visualization2Template = require '../templates/Visualization2.mustache'
+  SvgStylesheetTemplate = require '../templates/SvgStylesheet.css'
+else if Platform.name == "server"
+  fs = require 'fs'
+  Visualization2Template = fs.readFileSync('JS/templates/Visualization2Server.mustache').toString()
+  SvgStylesheetTemplate = fs.readFileSync('JS/templates/SvgStylesheet.css').toString()
 
 ControlsHelpPopover = require '../popovers/ControlsHelpPopover.coffee'
 
 
 class Visualization2 extends visualization
   height = 700 
-  width = 1000
+
 
   constructor: (@app, config) ->
     @app.window.document.getElementById('visualizationContent').innerHTML = Mustache.render Visualization2Template, 

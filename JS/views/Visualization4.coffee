@@ -6,8 +6,15 @@ squareMenu = require '../charts/square-menu.coffee'
 Tr = require '../TranslationTable.coffee'
 Platform = require '../Platform.coffee'
 
-Visualization4Template = require '../templates/Visualization4.mustache'
-SvgStylesheetTemplate = require '../templates/SvgStylesheet.css'
+
+if Platform.name == "browser"
+  Visualization4Template = require '../templates/Visualization4.mustache'
+  SvgStylesheetTemplate = require '../templates/SvgStylesheet.css'
+else if Platform.name == "server"
+  fs = require 'fs'
+  Visualization4Template = fs.readFileSync('JS/templates/Visualization4Server.mustache').toString()
+  SvgStylesheetTemplate = fs.readFileSync('JS/templates/SvgStylesheet.css').toString()
+
 
 ControlsHelpPopover = require '../popovers/ControlsHelpPopover.coffee'
 
