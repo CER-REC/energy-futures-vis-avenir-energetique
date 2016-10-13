@@ -9,11 +9,50 @@ SvgStylesheetTemplate = require '../templates/SvgStylesheet.css'
 
 ControlsHelpPopover = require '../popovers/ControlsHelpPopover.coffee'
 
+pixelMap = [{pixelStart:260, pixelEnd:280, year:2005}
+            {pixelStart:281, pixelEnd:303, year:2006}
+            {pixelStart:304, pixelEnd:325, year:2007}
+            {pixelStart:326, pixelEnd:349, year:2008}
+            {pixelStart:350, pixelEnd:373, year:2009}
+            {pixelStart:374, pixelEnd:396, year:2010}
+            {pixelStart:397, pixelEnd:420, year:2011}
+            {pixelStart:421, pixelEnd:442, year:2012}
+            {pixelStart:443, pixelEnd:465, year:2013}
+            {pixelStart:466, pixelEnd:487, year:2014}
+            {pixelStart:488, pixelEnd:512, year:2015}
+            {pixelStart:513, pixelEnd:533, year:2016}
+            {pixelStart:534, pixelEnd:526, year:2017}
+            {pixelStart:527, pixelEnd:578, year:2018}
+            {pixelStart:579, pixelEnd:601, year:2019}
+            {pixelStart:602, pixelEnd:624, year:2020}
+            {pixelStart:625, pixelEnd:647, year:2021}
+            {pixelStart:648, pixelEnd:670, year:2022}
+            {pixelStart:671, pixelEnd:692, year:2023}
+            {pixelStart:693, pixelEnd:717, year:2024}
+            {pixelStart:718, pixelEnd:740, year:2025}
+            {pixelStart:741, pixelEnd:762, year:2026}
+            {pixelStart:763, pixelEnd:785, year:2027}
+            {pixelStart:786, pixelEnd:808, year:2028}
+            {pixelStart:809, pixelEnd:832, year:2029}
+            {pixelStart:833, pixelEnd:855, year:2030}
+            {pixelStart:856, pixelEnd:879, year:2031}
+            {pixelStart:880, pixelEnd:901, year:2032}
+            {pixelStart:902, pixelEnd:924, year:2033}
+            {pixelStart:925, pixelEnd:947, year:2034}
+            {pixelStart:948, pixelEnd:968, year:2035}
+            {pixelStart:969, pixelEnd:992, year:2036}
+            {pixelStart:993, pixelEnd:1014, year:2037}
+            {pixelStart:1015, pixelEnd:1035, year:2038}
+            {pixelStart:1036, pixelEnd:1060, year:2039}]
+
+root = exports ? this
 
 class Visualization4
 
 
   constructor: (config) ->
+
+    document.onmousemove = @handleMouseMove
 
     @config = config
     
@@ -35,7 +74,6 @@ class Visualization4
     @unitsHelpPopover = new ControlsHelpPopover()
     @scenariosHelpPopover = new ControlsHelpPopover()
     @provincesHelpPopover = new ControlsHelpPopover()
-
 
     d3.select '.mainSelectorHelpButton'
       .on 'click', =>
@@ -78,7 +116,15 @@ class Visualization4
 
 
     @render()
+    @redraw()
 
+  handleMouseMove: (event) =>
+    root.mousePos = {x: event.pageX, y: event.pageY}
+    if root.activeScenario?
+      current = pixelMap.find((entry) -> root.mousePos.x >= entry.pixelStart && root.mousePos.x <entry.pixelEnd)
+      if current?
+        titletobe = root.data.find((value) -> value.year == current.year)
+        document.getElementById(root.activeArea).innerHTML = Tr.scenarioSelector.names[root.activeScenario][app.language] + ": " + titletobe.value.toFixed(2)
 
 
   redraw: ->
@@ -891,7 +937,15 @@ class Visualization4
 
     graphAreaSelectors =  graphAreaGroups.selectAll('.graphAreaPresent')
       .data(((d) -> [d]), ((d) -> d.key))
-      
+      .on "mouseover", (d) =>
+        root.activeArea = "present"+d.data[0].scenario
+        root.activeScenario = d.data[0].scenario
+        root.data = d.data
+      .on "mouseout", (d) =>
+        root.activeArea = null
+        root.activeScenario = null
+        root.data = null
+
     graphAreaSelectors.enter().append "path"
       .attr
         class: "graphAreaPresent"
@@ -899,8 +953,16 @@ class Visualization4
           area(d.data.map((val) -> {year: val.year, value: 0}))
       .style  
         fill: (d) -> colour = d3.rgb(d.colour); "url(#viz4gradPresent#{d.key}) rgba(#{colour.r}, #{colour.g}, #{colour.b}, 0.5)"
-      .append('title').text (d) ->
-        d.tooltip
+      .append('title')
+        .attr(
+          id: (d) =>
+            # We add a unique id to access the title whenever
+            # it is modified. The id takes the format:
+            # provinceName + Year (e.g. ON2015)
+            "present" + d.data[0].scenario
+        )
+        .text (d) =>
+            ""
     graphAreaSelectors.transition()
       .duration duration
       .attr
@@ -908,15 +970,31 @@ class Visualization4
 
     graphFutureAreaSelectors =  graphAreaGroups.selectAll('.graphAreaFuture')
       .data(((d) -> [d]), ((d) -> d.key))
-      
+      .on "mouseover", (d) =>
+        root.activeArea = "future"+d.data[0].scenario
+        root.activeScenario = d.data[0].scenario
+        root.data = d.data
+      .on "mouseout", (d) =>
+        root.activeArea = null
+        root.activeScenario = null
+        root.data = null
+
     graphFutureAreaSelectors.enter().append "path"
       .attr
         class: "graphAreaFuture"
         d: (d) -> 
           areaFuture(d.data.map((val) -> {year: val.year, value: 0}))
         fill: (d) -> colour = d3.rgb(d.colour); "url(#viz4gradFuture#{d.key}) rgba(#{colour.r}, #{colour.g}, #{colour.b}, 0.2)"
-      .append('title').text (d) ->
-        d.tooltip
+      .append('title')
+        .attr(
+          id: (d) =>
+            # We add a unique id to access the title whenever
+            # it is modified. The id takes the format:
+            # provinceName + Year (e.g. ON2015)
+            "future"+d.data[0].scenario
+        )
+        .text (d) =>
+            ""
     graphAreaGroups.order() #Keeps the order!!!
    
     graphFutureAreaSelectors.transition()
