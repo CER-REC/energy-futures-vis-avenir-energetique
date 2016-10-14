@@ -203,63 +203,61 @@ class bubbleChart extends chart
         q.visit(collide(regionNodes[i]))
         i++
 
+
+
+
+      circle_radius_function = (d) =>
+        if (@_mapping[d.source] and !(@_mapping[d.source].present)) then 0 else d.r
+
+      group_transform_function = (d) ->
+        dst = d.r * 0.807 + 5;
+        "translate(#{dst},#{(-dst)})"
+
+      node_transform_function = (d) ->
+        if d.depth == 0 then return "translate(#{d.x},#{d.y})" 
+        if d.children then return "translate(#{d.x},#{d.y})" 
+        parent = d.parent
+        dx = parent.x - parent.x0
+        dy = parent.y - parent.y0
+        "translate(#{d.x + dx},#{d.y + dy})"  
+
       if Platform.name == 'server'
         # On server, we need to avoid scheduling bubble animations entirely for 
         # compatibility with jsdom. D3 uses a part of the SVG spec that is not implemented 
         # in jsdom, which results in a crash when we try to run animations of any length on 
         # the server.
-        # TODO: it might be nice to find a way to express these just once... DRY this up
-
+        
         node.select('circle')
           .attr
-            r: (d) =>
-              if (@_mapping[d.source] and !(@_mapping[d.source].present)) then 0 else d.r
+            r: circle_radius_function
 
         node.select('g')
           .attr
-            transform: (d) ->
-              dst = d.r * 0.807 + 5;
-              "translate(#{dst},#{(-dst)})"
+            transform: group_transform_function
 
         node.attr
-          transform: (d) ->
-            if d.depth == 0 then return "translate(#{d.x},#{d.y})" 
-            if d.children then return "translate(#{d.x},#{d.y})" 
-            parent = d.parent
-            dx = parent.x - parent.x0
-            dy = parent.y - parent.y0
-            "translate(#{d.x + dx},#{d.y + dy})"  
+          transform: node_transform_function
       
       else if Platform.name == 'browser'
         node.select('circle')
           .transition()
-            .attr
-              r: (d) =>
-                if (@_mapping[d.source] and !(@_mapping[d.source].present)) then 0 else d.r
             .duration e.alpha * 10000 #this makes the transitions more linear
             .ease "linear"
+            .attr
+              r: circle_radius_function
 
         node.select('g')
           .transition()  
-            .attr
-              transform: (d) ->
-                dst = d.r * 0.807 + 5;
-                "translate(#{dst},#{(-dst)})"
             .duration e.alpha * 10000
             .ease "linear"
+            .attr
+              transform: group_transform_function
 
         node.transition()
           .duration e.alpha * 10000
-          .attr
-            transform: (d) ->
-              if d.depth == 0 then return "translate(#{d.x},#{d.y})" 
-              if d.children then return "translate(#{d.x},#{d.y})" 
-              parent = d.parent
-              dx = parent.x - parent.x0
-              dy = parent.y - parent.y0
-              "translate(#{d.x + dx},#{d.y + dy})"  
           .ease "linear"  
-
+          .attr
+            transform: node_transform_function
 
     # For server side rendering, we set animation duration to 0. We still need to produce 
     # an acceptable bubble graph layout, without actually running the animation. 

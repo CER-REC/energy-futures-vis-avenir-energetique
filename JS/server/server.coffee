@@ -173,20 +173,15 @@ app.get '/image', (req, res) ->
   
   time = Date.now()
 
-  # pass the html stub to jsdom
   jsdom.env
     features: 
       QuerySelector: true
     html: htmlStub
     done: (errors, window) -> 
-      # process the html document, like if we were at client side
-      # code to generate the dataviz and process the resulting html file to be added here
 
       el = window.document.querySelector('#dataviz-container')
       body = window.document.querySelector('body')
 
-      # To prove out server side rendering of our d3 visualizations, we're only going to 
-      # work on viz1 to start.
       # TODO: parameterize all the things! 
       
 
@@ -225,6 +220,6 @@ app.get '/image', (req, res) ->
 
 
 
-app.listen process.env.PORT
+app.listen 4747 # process.env.PORT
 console.log 'Ready.'
 
