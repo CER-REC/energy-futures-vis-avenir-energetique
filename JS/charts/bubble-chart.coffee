@@ -2,6 +2,7 @@ d3 = require 'd3'
 chart =  require './chart.coffee'
 squareMenu = require './square-menu.coffee'
 _ = require 'lodash'
+Platform = require '../Platform.coffee'
 
 class bubbleChart extends chart
   bubbleChartDefaults:
@@ -13,7 +14,21 @@ class bubbleChart extends chart
   constructor: (@app, parent, options = {}) ->
     @options = _.extend {}, @bubbleChartDefaults, options
     @_mapping = @options.mapping
-    super(parent, @options)
+
+    # super(parent, @options)
+    @chart_options = _.extend {}, @chart_defaults, @options
+    @_duration = @chart_options.duration
+    @parent(parent, @chart_options.groupId)
+    @_size = 
+      w : @chart_options.size.w
+      h : @chart_options.size.h
+    @_position = 
+      x : @chart_options.position.x
+      y : @chart_options.position.y
+    @_data = @options.data
+    @resize()
+
+
     @options.menuOptions.chart = this
     @menu = new squareMenu(@app, @options.menuParent, @options.menuOptions)
     @redraw()
@@ -23,10 +38,6 @@ class bubbleChart extends chart
       return @_data
     @_data = d
     @redraw()
-
-  # unused
-  # mappingAsObject: ->
-  #   @_mapping
 
   mapping: (mapping) ->
     if !arguments.length
@@ -119,11 +130,13 @@ class bubbleChart extends chart
 
 
     node.select('g').select('image')  
-      .attr(
-        "xlink:href": (d) -> if d.img then d.img
+      .attr
+        # TODO: The extra 'xlink:' is a workaround to an issue with JSDOM. Remove when resolved.
+        # https://github.com/tmpvar/jsdom/issues/1624
+        "xlink:xlink:href": (d) -> if d.img then d.img
         x: 0
         width: 25
-        height: 25)
+        height: 25
 
     exitSelection = node.exit()
 
@@ -148,48 +161,76 @@ class bubbleChart extends chart
     @force.nodes(regionNodes)
     @force.start()
     @force.on "tick", (e) =>
-        #  The collision relaxation procedure
-        collide = (node) ->
-          r = node.r + 16
-          nx1 = node.x - r
-          nx2 = node.x + r
-          ny1 = node.y - r
-          ny2 = node.y + r
-          (quad, x1, y1, x2, y2) ->
-            if (quad.point and (quad.point != node))
-              x = node.x - quad.point.x
-              y = node.y - quad.point.y
-              l = Math.sqrt(x * x + y * y)
-              r = node.r + quad.point.r + 32
-              if (l < r)
-                l = (l - r) / l * .5
-                x *= l
-                y *= l
-                node.x -= x 
-                node.y -= y 
-                quad.point.x += x
-                quad.point.y += y
-            x1 > nx2 or x2 < nx1 or y1 > ny2 or y2 < ny1
+      #  The collision relaxation procedure
+      collide = (node) ->
+        r = node.r + 16
+        nx1 = node.x - r
+        nx2 = node.x + r
+        ny1 = node.y - r
+        ny2 = node.y + r
+        (quad, x1, y1, x2, y2) ->
+          if (quad.point and (quad.point != node))
+            x = node.x - quad.point.x
+            y = node.y - quad.point.y
+            l = Math.sqrt(x * x + y * y)
+            r = node.r + quad.point.r + 32
+            if (l < r)
+              l = (l - r) / l * .5
+              x *= l
+              y *= l
+              node.x -= x 
+              node.y -= y 
+              quad.point.x += x
+              quad.point.y += y
+          x1 > nx2 or x2 < nx1 or y1 > ny2 or y2 < ny1
 
-        # Push nodes away from the borders include the size of the image/rectangle
-        k = 6 * e.alpha
+      # Push nodes away from the borders include the size of the image/rectangle
+      k = 6 * e.alpha
 
-        regionNodes.forEach (o, i) =>
-          f = k 
-          dx = if o.x < o.r then (o.r-o.x) else (if o.x + o.r > @_size.w - 30 then ((@_size.w - 30) - (o.x+o.r)) else 0)
-          dy = if o.y < o.r then (o.r-o.y) else (if o.y + o.r > @_size.h then (@_size.h - (o.y+o.r)) else 0)
-          o.y += dy*f
-          o.x += dx*f
+      regionNodes.forEach (o, i) =>
+        f = k 
+        dx = if o.x < o.r then (o.r-o.x) else (if o.x + o.r > @_size.w - 30 then ((@_size.w - 30) - (o.x+o.r)) else 0)
+        dy = if o.y < o.r then (o.r-o.y) else (if o.y + o.r > @_size.h then (@_size.h - (o.y+o.r)) else 0)
+        o.y += dy*f
+        o.x += dx*f
 
-        #Do collision detection
-        q = d3.geom.quadtree(regionNodes)
-        i = 0
-        n = regionNodes.length
+      #Do collision detection
+      q = d3.geom.quadtree(regionNodes)
+      i = 0
+      n = regionNodes.length
 
-        while (i < n) 
-          q.visit(collide(regionNodes[i]))
-          i++
+      while (i < n) 
+        q.visit(collide(regionNodes[i]))
+        i++
 
+      if Platform.name == 'server'
+        # On server, we need to avoid scheduling bubble animations entirely for 
+        # compatibility with jsdom. D3 uses a part of the SVG spec that is not implemented 
+        # in jsdom, which results in a crash when we try to run animations of any length on 
+        # the server.
+        # TODO: it might be nice to find a way to express these just once... DRY this up
+
+        node.select('circle')
+          .attr
+            r: (d) =>
+              if (@_mapping[d.source] and !(@_mapping[d.source].present)) then 0 else d.r
+
+        node.select('g')
+          .attr
+            transform: (d) ->
+              dst = d.r * 0.807 + 5;
+              "translate(#{dst},#{(-dst)})"
+
+        node.attr
+          transform: (d) ->
+            if d.depth == 0 then return "translate(#{d.x},#{d.y})" 
+            if d.children then return "translate(#{d.x},#{d.y})" 
+            parent = d.parent
+            dx = parent.x - parent.x0
+            dy = parent.y - parent.y0
+            "translate(#{d.x + dx},#{d.y + dy})"  
+      
+      else if Platform.name == 'browser'
         node.select('circle')
           .transition()
             .attr
@@ -223,7 +264,7 @@ class bubbleChart extends chart
     # For server side rendering, we set animation duration to 0. We still need to produce 
     # an acceptable bubble graph layout, without actually running the animation. 
     # Run 100 'ticks' worth of force iterations, all at once.
-    if @app.animationDuration == 0
+    if Platform.name == 'server'
       for i in [0..100]
         @force.tick
           alpha: 0.05

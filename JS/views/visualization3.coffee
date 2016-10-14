@@ -125,15 +125,29 @@ class Visualization3 extends visualization
 
   #the graph's width
   width: ->
-    d3.select(@app.window.document).select('#graphPanel').node().getBoundingClientRect().width - @_margin.left - @_margin.right
+    # getBoundingClientRect is not implemented in JSDOM, use fixed width on server
+    if Platform.name == 'browser'
+      d3.select(@app.window.document).select('#graphPanel').node().getBoundingClientRect().width - @_margin.left - @_margin.right
+    else if Platform.name == 'server'
+      Constants.serverSideGraphWidth - @_margin.left - @_margin.right
+
 
   timelineRightEnd: ->
-    d3.select(@app.window.document).select('#graphSVG').node().getBoundingClientRect().width - @timelineMargin
+    @getSvgWidth() - @timelineMargin
+
+  getSvgWidth: ->
+    # getBoundingClientRect is not implemented in JSDOM, use fixed width on server
+    if Platform.name == 'browser'
+      svgWidth = d3.select(@app.window.document).select('#graphPanel').node().getBoundingClientRect().width
+    else if Platform.name == 'server'
+      svgWidth = Constants.serverSideGraphWidth
+
+    svgWidth
 
   svgSize: ->
     d3.select(@app.window.document).select '#graphSVG'
       .attr
-        width: d3.select(@app.window.document).select('#graphPanel').node().getBoundingClientRect().width,
+        width: @getSvgWidth()
         height: height
     d3.select(@app.window.document).select '#provinceMenuSVG'
       .attr
@@ -292,7 +306,8 @@ class Visualization3 extends visualization
       }
 
   sourcesBlackDictionary: ->
-    {  
+    if Platform.name == 'browser'
+      {  
         hydro:  
           img: 'IMG/sources/hydro_selectedR.png'
         solarWindGeothermal:
@@ -307,6 +322,23 @@ class Visualization3 extends visualization
           img: 'IMG/sources/nuclear_selectedR.png'
         oilProducts:
           img: 'IMG/sources/oil_products_selectedR.png'
+      }
+    else if Platform.name == 'server'
+      {  
+        hydro:  
+          img: 'IMG/sources/hydro_selectedR.svg'
+        solarWindGeothermal:
+          img: 'IMG/sources/solarWindGeo_selectedR.svg'
+        coal:
+          img: 'IMG/sources/coal_selectedR.svg'
+        naturalGas:
+          img: 'IMG/sources/naturalGas_selectedR.svg'
+        bio:
+          img: 'IMG/sources/biomass_selectedR.svg'
+        nuclear: 
+          img: 'IMG/sources/nuclear_selectedR.svg'
+        oilProducts:
+          img: 'IMG/sources/oil_products_selectedR.svg'
       }
 
   colouredSourceIconsDictionary: ->
@@ -417,6 +449,8 @@ class Visualization3 extends visualization
     }
 
   provincesBlackDictionary: ->
+
+    data = 
     {
       AB: {
         key: 'AB'
@@ -497,6 +531,23 @@ class Visualization3 extends visualization
         img: 'IMG/provinces/radio/Yukon_SelectedR.png'
       }
     }
+
+    if Platform.name == 'server'
+      data.AB.img = 'IMG/provinces/radio/AB_SelectedR.svg' 
+      data.BC.img = 'IMG/provinces/radio/BC_SelectedR.svg' 
+      data.MB.img = 'IMG/provinces/radio/MB_SelectedR.svg'
+      data.NB.img = 'IMG/provinces/radio/NB_SelectedR.svg'
+      data.NL.img = 'IMG/provinces/radio/NL_SelectedR.svg'
+      data.NS.img = 'IMG/provinces/radio/NS_SelectedR.svg'
+      data.NT.img = 'IMG/provinces/radio/NT_SelectedR.svg'
+      data.NU.img = 'IMG/provinces/radio/NU_SelectedR.svg'
+      data.ON.img = 'IMG/provinces/radio/ON_SelectedR.svg'
+      data.PE.img = 'IMG/provinces/radio/PEI_SelectedR.svg'
+      data.QC.img = 'IMG/provinces/radio/QC_SelectedR.svg'
+      data.SK.img = 'IMG/provinces/radio/Sask_SelectedR.svg'
+      data.YT.img = 'IMG/provinces/radio/Yukon_SelectedR.svg'
+
+    data
   
   provincesDictionary: ->
     provinceColours= {  
@@ -763,7 +814,7 @@ class Visualization3 extends visualization
         @config.setYear year
         @getData()
     )
-    sliderWidth= 70
+    sliderWidth = 70
 
     sliderLabel = d3.select(@app.window.document).select('#graphSVG')
       .append('g')
@@ -776,7 +827,7 @@ class Visualization3 extends visualization
     sliderLabel.append "image"
       .attr
         class: "tLTriangle"
-        "xlink:href": 'IMG/yearslider.svg'
+        "xlink:xlink:href": 'IMG/yearslider.svg'
         x: -(sliderWidth / 2)
         y: 0
         width: sliderWidth
@@ -820,7 +871,7 @@ class Visualization3 extends visualization
         d3.select(@app.window.document).select('#vizPlayButton').html("<img src='IMG/play_pause/playbutton_selectedR.svg'/>")
         d3.select(@app.window.document).select('#vizPauseButton').html("<img src='IMG/play_pause/pausebutton_unselectedR.svg'/>")
         if @yearTimeout then window.clearTimeout(@yearTimeout)
-        timeoutComplete= => 
+        timeoutComplete = => 
           if @_chart
             if @config.year < 2040
               @config.setYear @config.year + 1
@@ -911,7 +962,7 @@ class Visualization3 extends visualization
         parent
       menuOptions:
         size: 
-          w: d3.select(parent).node().getBoundingClientRect().width
+          w: d3.select(@app.window.document).select(parent).node().getBoundingClientRect().width
           h: @leftHandMenuHeight()
         boxSize: 37.5
         onSelected:
@@ -985,7 +1036,7 @@ class Visualization3 extends visualization
     parent = if @config.viewBy == 'province' then '#provinceMenuSVG' else '#powerSourceMenuSVG'
     provinceOptions=
       size: 
-          w: d3.select(parent).node().getBoundingClientRect().width
+          w: d3.select(@app.window.document).select(parent).node().getBoundingClientRect().width
           h: @leftHandMenuHeight()
       canDrag: false
       hasChart: false

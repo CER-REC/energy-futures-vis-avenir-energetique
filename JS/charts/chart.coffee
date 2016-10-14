@@ -3,7 +3,7 @@ _ = require 'lodash'
 
 class chart
   #local variables
-  defaults:
+  chart_defaults:
     size:  
       w: 200
       h: 300
@@ -15,19 +15,22 @@ class chart
     group: 0
     groupId: 'sChart' 
 
-  constructor: (parent, op = {}) ->
-    @options = _.extend {}, @defaults, op
-    @_duration = @options.duration
-    @parent(parent, @options.groupId)
-    @_size = 
-      w : @options.size.w
-      h : @options.size.h
-    @_position = 
-      x : @options.position.x
-      y : @options.position.y
-    @data(@options.data)
-    @resize()
-    @redraw()
+  # Need more precise control over the order of execution, in particular for the bubble
+  # graph. 
+  # constructor: (parent, op = {}) ->
+  #   @options = _.extend {}, @defaults, op
+  #   @_duration = @options.duration
+  #   @parent(parent, @options.groupId)
+  #   @_size = 
+  #     w : @options.size.w
+  #     h : @options.size.h
+  #   @_position = 
+  #     x : @options.position.x
+  #     y : @options.position.y
+  #   # @_data = @options.data
+  #   @data(@options.data)
+  #   @resize()
+
 
   #getters and setters (return chart object for chaining)
   parent: (prnt, groupClass) ->
@@ -69,8 +72,6 @@ class chart
     @redraw()
 
   resize: ->
-    @size(@size())
-    @position(@position())
     @_group.attr
         transform: "translate(" + @_position.x + "," + @_position.y + ")"
     this

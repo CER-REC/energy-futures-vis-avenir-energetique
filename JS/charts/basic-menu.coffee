@@ -9,7 +9,21 @@ class basicMenu extends chart
     @options = _.extend {}, @menuDefaults, options
     @_selectedKey = 'Canada'
     @_selectedMenuIndex = -1
-    super(parent, @options)
+
+    # super(parent, @options)
+    @chart_options = _.extend {}, @chart_defaults, @options
+    @_duration = @chart_options.duration
+    @parent(parent, @chart_options.groupId)
+    @_size = 
+      w : @chart_options.size.w
+      h : @chart_options.size.h
+    @_position = 
+      x : @chart_options.position.x
+      y : @chart_options.position.y
+    @data(@chart_options.data)
+    @resize()
+
+
     @_onSelected = @options.onSelected
     @redraw()
 

@@ -126,12 +126,23 @@ class Visualization2 extends visualization
 
   #the graph's width
   width: ->
-    d3.select(@app.window.document).select('#graphPanel').node().getBoundingClientRect().width - @_margin.left - @_margin.right
+    # getBoundingClientRect is not implemented in JSDOM, use fixed width on server
+    if Platform.name == 'browser'
+      d3.select(@app.window.document).select('#graphPanel').node().getBoundingClientRect().width - @_margin.left - @_margin.right
+    else if Platform.name == 'server'
+      Constants.serverSideGraphWidth - @_margin.left - @_margin.right
+
 
   svgSize: ->
+    # getBoundingClientRect is not implemented in JSDOM, use fixed width on server
+    if Platform.name == 'browser'
+      svgWidth = d3.select(@app.window.document).select('#graphPanel').node().getBoundingClientRect().width
+    else if Platform.name == 'server'
+      svgWidth = Constants.serverSideGraphWidth
+
     d3.select(@app.window.document).select '#graphSVG'
       .attr
-        width: d3.select(@app.window.document).select('#graphPanel').node().getBoundingClientRect().width
+        width: svgWidth
         height: height
     d3.select(@app.window.document).select '#provinceMenuSVG'
       .attr

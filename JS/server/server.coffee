@@ -13,7 +13,15 @@ Platform.name = "server"
 
 ServerApp = require './ServerApp.coffee'
 Visualization1 = require '../views/visualization1.coffee'
+Visualization2 = require '../views/visualization2.coffee'
+Visualization3 = require '../views/visualization3.coffee'
+Visualization4 = require '../views/visualization4.coffee'
+
+
 Visualization1Configuration = require '../VisualizationConfigurations/visualization1Configuration.coffee'
+Visualization2Configuration = require '../VisualizationConfigurations/visualization2Configuration.coffee'
+Visualization3Configuration = require '../VisualizationConfigurations/visualization3Configuration.coffee'
+Visualization4Configuration = require '../VisualizationConfigurations/visualization4Configuration.coffee'
 
 
 
@@ -44,7 +52,7 @@ phantomjs.run('--webdriver=4444').then (program) =>
 
 # Jsdom Setup
 
-# TODO: include me! 
+# TODO: put me in a file and include me!  
 # TODO: fonts here are auto included. on server, we will always have access to them, but for public consumption we need to parameterize this somehow ... 
 
 htmlStub = """
@@ -89,8 +97,6 @@ htmlStub = """
 
 """
   
-  # <link rel="stylesheet" href="CSS/canadasEnergyFutureVisualization.css">
-  # <script type="text/javascript" src="bundle.js"> </script>
 
 # Render setup
 
@@ -100,32 +106,25 @@ GasProductionProvider = require '../DataProviders/GasProductionProvider.coffee'
 ElectricityProductionProvider = require '../DataProviders/ElectricityProductionProvider.coffee'
 
 
-energyConsumptionProvider = new EnergyConsumptionProvider # this requires an @app... 
+energyConsumptionProvider = new EnergyConsumptionProvider 
 oilProductionProvider = new OilProductionProvider 
 gasProductionProvider = new GasProductionProvider 
-electricityProductionProvider = new ElectricityProductionProvider
+# The electricity production provider requires access to the app object, but only for
+# putting string content in popovers. We pass an empty object to avoid crashes.
+# TODO: Should we rethink this mechanism? Might be nicer to store language in the config, along with everything else.
+electricityProductionProvider = new ElectricityProductionProvider {language: 'en'}
 
-# TODO: arrange some mechanism of waiting on these to complete reading. Promises, probably.
+data = fs.readFileSync './public/CSV/crude oil production VIZ.csv'
+oilProductionProvider.loadFromString data.toString()
 
-fs.readFile './public/CSV/crude oil production VIZ.csv', (err, data) ->
-  throw err if err 
-  console.log 'oil done'
-  oilProductionProvider.loadFromString data.toString()
+data = fs.readFileSync './public/CSV/Natural gas production VIZ.csv'
+gasProductionProvider.loadFromString data.toString()
 
-fs.readFile './public/CSV/Natural gas production VIZ.csv', (err, data) ->
-  throw err if err 
-  console.log 'gas done'
-  gasProductionProvider.loadFromString data.toString()
+data = fs.readFileSync './public/CSV/energy demand.csv'
+energyConsumptionProvider.loadFromString data.toString()
 
-fs.readFile './public/CSV/energy demand.csv', (err, data) ->
-  throw err if err 
-  console.log 'energy done'
-  energyConsumptionProvider.loadFromString data.toString()
-
-fs.readFile './public/CSV/ElectricityGeneration_VIZ.csv', (err, data) ->
-  throw err if err 
-  console.log 'elec done'
-  electricityProductionProvider.loadFromString data.toString()
+data = fs.readFileSync './public/CSV/ElectricityGeneration_VIZ.csv'
+electricityProductionProvider.loadFromString data.toString()
 
 
 
@@ -148,14 +147,13 @@ app.use(express.static(path.join(__dirname, '../../../energy-futures-private-res
 
 
 
-
 app.get '/', (req, res) ->
   time = Date.now()
   console.log "******** new request"
 
 
   # TODO: add in all the visualization params here
-  session = webdriverSession.url('http://localhost:9006/image')
+  session = webdriverSession.url('http://localhost:4747/image')
   session.then ->
     result = session.saveScreenshot()
 
@@ -188,7 +186,7 @@ app.get '/image', (req, res) ->
       # To prove out server side rendering of our d3 visualizations, we're only going to 
       # work on viz1 to start.
       # TODO: parameterize all the things! 
-      config = new Visualization1Configuration()
+      
 
 
       serverApp = new ServerApp window,
@@ -197,13 +195,19 @@ app.get '/image', (req, res) ->
         gasProductionProvider: gasProductionProvider
         electricityProductionProvider: electricityProductionProvider
 
-      viz1 = new Visualization1(serverApp, config)
+      # config = new Visualization1Configuration()
+      # viz = new Visualization1(serverApp, config)
+
+      # config = new Visualization2Configuration()
+      # viz = new Visualization2(serverApp, config)
+
+      config = new Visualization3Configuration()
+      viz = new Visualization3(serverApp, config)
+
 
 
       # we need to wait a tick for the zero duration animations to be scheduled and run
       setTimeout ->
-        # source = window.document.body.firstChild.outerHTML
-        console.log window.document.querySelector('image.forecast').outerHTML
         source = window.document.querySelector('html').outerHTML
         res.write source
         res.end()
@@ -217,5 +221,6 @@ app.get '/image', (req, res) ->
 
 
 
-app.listen 9006
+app.listen 4747
+console.log 'Ready.'
 
