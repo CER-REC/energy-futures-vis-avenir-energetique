@@ -2,13 +2,14 @@ d3 = require 'd3'
 Mustache = require 'mustache'
 
 Platform = require '../Platform.coffee'
+ApplicationRoot = require '../../ApplicationRoot.coffee'
 
 
 if Platform.name == "browser"
   QuestionmarkPopoverTemplate = require '../templates/QuestionmarkPopover.mustache'
 else if Platform.name == "server"
   fs = require 'fs'
-  QuestionmarkPopoverTemplate = fs.readFileSync 'JS/templates/QuestionmarkPopover.mustache'
+  QuestionmarkPopoverTemplate = fs.readFileSync "#{ApplicationRoot}/JS/templates/QuestionmarkPopover.mustache"
 
 
 

@@ -7,6 +7,7 @@ Constants = require '../Constants.coffee'
 squareMenu = require '../charts/square-menu.coffee'
 Tr = require '../TranslationTable.coffee'
 Platform = require '../Platform.coffee'
+ApplicationRoot = require '../../ApplicationRoot.coffee'
 
 
 if Platform.name == "browser"
@@ -14,8 +15,8 @@ if Platform.name == "browser"
   SvgStylesheetTemplate = require '../templates/SvgStylesheet.css'
 else if Platform.name == "server"
   fs = require 'fs'
-  Visualization3Template = fs.readFileSync('JS/templates/Visualization3Server.mustache').toString()
-  SvgStylesheetTemplate = fs.readFileSync('JS/templates/SvgStylesheet.css').toString()
+  Visualization3Template = fs.readFileSync("#{ApplicationRoot}/JS/templates/Visualization3Server.mustache").toString()
+  SvgStylesheetTemplate = fs.readFileSync("#{ApplicationRoot}/JS/templates/SvgStylesheet.css").toString()
 
 
 ControlsHelpPopover = require '../popovers/ControlsHelpPopover.coffee'
