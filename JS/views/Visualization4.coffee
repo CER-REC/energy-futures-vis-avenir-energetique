@@ -463,7 +463,11 @@ class Visualization4
 
 
   outerWidth: ->
-    d3.select(@app.window.document).select('#graphPanel').node().getBoundingClientRect().width
+    # getBoundingClientRect is not implemented in JSDOM, use fixed width on server
+    if Platform.name == 'browser'
+      d3.select(@app.window.document).select('#graphPanel').node().getBoundingClientRect().width
+    else if Platform.name == 'server'
+      Constants.serverSideGraphWidth
 
   width: ->
     @outerWidth() - @margin.left - @margin.right

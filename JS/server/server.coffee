@@ -201,9 +201,11 @@ app.get '/image', (req, res) ->
       # config = new Visualization2Configuration()
       # viz = new Visualization2(serverApp, config)
 
-      config = new Visualization3Configuration()
-      viz = new Visualization3(serverApp, config)
+      # config = new Visualization3Configuration()
+      # viz = new Visualization3(serverApp, config)
 
+      config = new Visualization4Configuration()
+      viz = new Visualization4(serverApp, config)
 
 
       # we need to wait a tick for the zero duration animations to be scheduled and run
