@@ -17,6 +17,8 @@ Constants = require './Constants.coffee'
 d3 = require 'd3'
 Tr = require './TranslationTable.coffee'
 
+PrepareQueryParams = require './PrepareQueryParams.coffee'
+
 
 class Router
 
@@ -25,6 +27,7 @@ class Router
     @navbar = new Navbar @app
     @app.containingWindow.onpopstate = @onHistoryPopState
     
+    # TODO: would be nice if I could use @app.containingWindow... but it may not be initialized yet here ... 
     params = Router.parseQueryParams()
     @setInitialParamConfiguration params
     @navigate params
@@ -263,28 +266,7 @@ class Router
 
 
 Router.parseQueryParams = ->
-  # TODO: would be nice if I could use @app.containingWindow... but it may not be initialized yet here ... 
-  params = QueryString.parse window.parent.document.location.search
-  if params.scenarios?
-    params.scenarios = params.scenarios.split ','
-  if params.provinces?
-    params.provinces = params.provinces.split ','
-  if params.provincesInOrder?
-    params.provincesInOrder = params.provincesInOrder.split ','
-  if params.sources?
-    params.sources = params.sources.split ','
-  if params.sourcesInOrder?
-    params.sourcesInOrder = params.sourcesInOrder.split ','
-  if params.year?
-    params.year = parseInt(params.year)
-
-  # The 'page' parameter is validated in the router
-  # The other parameters are validated in the visualization config classes, in setters
-  params.page = 'landingPage' unless Constants.pages.includes params.page  
-  params = _.extend {page: 'landingPage'}, params
-
-  params
-
+  PrepareQueryParams QueryString.parse(window.parent.document.location.search)
 
 Router.currentViewClass = ->
   Router.viewClassForPage Router.parseQueryParams().page

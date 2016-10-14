@@ -429,7 +429,7 @@ class Visualization1 extends visualization
           transform: "translate(#{arrowX},#{arrowY})" 
           # TODO: The extra 'xlink:' is a workaround to an issue with JSDOM. Remove when resolved.
           # https://github.com/tmpvar/jsdom/issues/1624
-          "xlink:xlink:href":  'IMG/forecast_arrow.svg'
+          "xlink:xlink:href": '/IMG/forecast_arrow.svg'
           height: 9
           width: 200
 

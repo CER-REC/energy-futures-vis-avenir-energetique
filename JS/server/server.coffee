@@ -6,6 +6,8 @@ d3 = require 'd3'
 jsdom = require 'jsdom'
 fs = require 'fs'
 path = require 'path'
+url = require 'url'
+queryString = require 'query-string'
 
 
 Platform = require '../Platform.coffee'
@@ -25,6 +27,7 @@ Visualization2Configuration = require '../VisualizationConfigurations/visualizat
 Visualization3Configuration = require '../VisualizationConfigurations/visualization3Configuration.coffee'
 Visualization4Configuration = require '../VisualizationConfigurations/visualization4Configuration.coffee'
 
+PrepareQueryParams = require '../PrepareQueryParams.coffee'
 
 
 
@@ -61,8 +64,8 @@ htmlStub = """
 <!DOCTYPE html>
   <meta charset="utf-8" />
 
-  <link rel="stylesheet" href="CSS/serverSideRenderingStyles.css">
-  <link rel="stylesheet" href="CSS/avenirFonts.css">
+  <link rel="stylesheet" href="/CSS/serverSideRenderingStyles.css">
+  <link rel="stylesheet" href="/CSS/avenirFonts.css">
 
 
 
@@ -144,8 +147,8 @@ electricityProductionProvider.loadFromString data.toString()
 app = express()
 
 
-app.use(express.static(path.join(__dirname, '../../public')))
-app.use(express.static(path.join(__dirname, '../../../energy-futures-private-resources')))
+app.use('/', express.static(path.join(__dirname, '../../public')))
+app.use('/',express.static(path.join(__dirname, '../../../energy-futures-private-resources')))
 
 
 
@@ -153,9 +156,10 @@ app.get '/', (req, res) ->
   time = Date.now()
   console.log "******** new request"
 
-
-  # TODO: add in all the visualization params here
-  session = webdriverSession.url("http://localhost:4747/image")
+  # Extract the query parameters, and pass them through to the request we will have 
+  # Phantom make of our image page building endpoint.
+  query = url.parse(req.url).search
+  session = webdriverSession.url("http://localhost:4747/image/" + query)
   session.then ->
     result = session.saveScreenshot()
 
@@ -169,9 +173,17 @@ app.get '/', (req, res) ->
         messages.value.map (m) -> 
           console.log m.message if typeof m.message == 'string'
 
+
+
+
 app.get '/image', (req, res) ->
   
   time = Date.now()
+
+
+
+  query = url.parse(req.url).search
+
 
   jsdom.env
     features: 
@@ -181,28 +193,35 @@ app.get '/image', (req, res) ->
 
       el = window.document.querySelector('#dataviz-container')
       body = window.document.querySelector('body')
-
-      # TODO: parameterize all the things! 
-      
-
-
+        
       serverApp = new ServerApp window,
         energyConsumptionProvider: energyConsumptionProvider
         oilProductionProvider: oilProductionProvider
         gasProductionProvider: gasProductionProvider
         electricityProductionProvider: electricityProductionProvider
 
-      # config = new Visualization1Configuration()
-      # viz = new Visualization1(serverApp, config)
+      params = PrepareQueryParams queryString.parse(query)
 
-      # config = new Visualization2Configuration()
-      # viz = new Visualization2(serverApp, config)
 
-      config = new Visualization3Configuration()
-      viz = new Visualization3(serverApp, config)
+      switch req.query.page
+        when 'viz1'
+          config = new Visualization1Configuration(serverApp, params)
+          viz = new Visualization1(serverApp, config)
 
-      # config = new Visualization4Configuration()
-      # viz = new Visualization4(serverApp, config)
+        when 'viz2'
+          config = new Visualization2Configuration(serverApp, params)
+          viz = new Visualization2(serverApp, config)
+
+        when 'viz3'
+          config = new Visualization3Configuration(serverApp, params)
+          viz = new Visualization3(serverApp, config)
+
+        when 'viz4'
+          config = new Visualization4Configuration(serverApp, params)
+          viz = new Visualization4(serverApp, config)
+
+
+
 
 
       # we need to wait a tick for the zero duration animations to be scheduled and run

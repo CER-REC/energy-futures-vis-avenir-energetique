@@ -536,7 +536,7 @@ class Visualization2 extends visualization
         .attr
           class: 'forecast'
           transform: "translate(#{arrowX},#{arrowY})" 
-          "xlink:xlink:href": 'IMG/forecast_arrow.svg'
+          "xlink:xlink:href": '/IMG/forecast_arrow.svg'
           height: 9
           width: 200
 
