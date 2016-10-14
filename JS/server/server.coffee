@@ -11,6 +11,8 @@ path = require 'path'
 Platform = require '../Platform.coffee'
 Platform.name = "server"
 
+ApplicationRoot = require '../../ApplicationRoot.coffee'
+
 ServerApp = require './ServerApp.coffee'
 Visualization1 = require '../views/visualization1.coffee'
 Visualization2 = require '../views/visualization2.coffee'
@@ -114,16 +116,16 @@ gasProductionProvider = new GasProductionProvider
 # TODO: Should we rethink this mechanism? Might be nicer to store language in the config, along with everything else.
 electricityProductionProvider = new ElectricityProductionProvider {language: 'en'}
 
-data = fs.readFileSync './public/CSV/crude oil production VIZ.csv'
+data = fs.readFileSync "#{ApplicationRoot}/public/CSV/crude oil production VIZ.csv"
 oilProductionProvider.loadFromString data.toString()
 
-data = fs.readFileSync './public/CSV/Natural gas production VIZ.csv'
+data = fs.readFileSync "#{ApplicationRoot}/public/CSV/Natural gas production VIZ.csv"
 gasProductionProvider.loadFromString data.toString()
 
-data = fs.readFileSync './public/CSV/energy demand.csv'
+data = fs.readFileSync "#{ApplicationRoot}/public/CSV/energy demand.csv"
 energyConsumptionProvider.loadFromString data.toString()
 
-data = fs.readFileSync './public/CSV/ElectricityGeneration_VIZ.csv'
+data = fs.readFileSync "#{ApplicationRoot}/public/CSV/ElectricityGeneration_VIZ.csv"
 electricityProductionProvider.loadFromString data.toString()
 
 
@@ -153,7 +155,7 @@ app.get '/', (req, res) ->
 
 
   # TODO: add in all the visualization params here
-  session = webdriverSession.url('http://localhost:4747/image')
+  session = webdriverSession.url("http://localhost:4747/image")
   session.then ->
     result = session.saveScreenshot()
 
@@ -201,11 +203,11 @@ app.get '/image', (req, res) ->
       # config = new Visualization2Configuration()
       # viz = new Visualization2(serverApp, config)
 
-      # config = new Visualization3Configuration()
-      # viz = new Visualization3(serverApp, config)
+      config = new Visualization3Configuration()
+      viz = new Visualization3(serverApp, config)
 
-      config = new Visualization4Configuration()
-      viz = new Visualization4(serverApp, config)
+      # config = new Visualization4Configuration()
+      # viz = new Visualization4(serverApp, config)
 
 
       # we need to wait a tick for the zero duration animations to be scheduled and run
@@ -223,6 +225,6 @@ app.get '/image', (req, res) ->
 
 
 
-app.listen 4747
+app.listen process.env.PORT
 console.log 'Ready.'
 
