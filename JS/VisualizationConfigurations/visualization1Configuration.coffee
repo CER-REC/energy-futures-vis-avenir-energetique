@@ -70,6 +70,8 @@ class Visualization1Configuration
     else
       @provincesInOrder = @defaultOptions.provincesInOrder
 
+    @setLanguage @app.language || 'en'
+
   # Setters
 
   setMainSelection: (selection) ->
@@ -160,6 +162,12 @@ class Visualization1Configuration
     # NB: We aren't currently tracking provinces in order in the URL bar
     @provincesInOrder = provincesInOrder
     @updateRouter()
+
+
+  setLanguage: (language) ->
+    @language = language if language == 'en' or language == 'fr'
+
+
   # Router integration
 
   routerParams: ->

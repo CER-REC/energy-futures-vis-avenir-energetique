@@ -109,6 +109,8 @@ class Visualization3Configuration
     # Used to manage the order of the sources in a reorderable menu
     @sourcesInOrder = @options.sourcesInOrder
 
+    @setLanguage @app.language || 'en'
+
   # Setters
 
   setViewBy: (viewBy) ->
@@ -227,6 +229,9 @@ class Visualization3Configuration
     else
       @provinces = []
     @updateRouter()
+
+  setLanguage: (language) ->
+    @language = language if language == 'en' or language == 'fr'
 
 
   # Router integration

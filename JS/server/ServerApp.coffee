@@ -15,8 +15,6 @@ class ServerApp
     @gasProductionProvider = providers.gasProductionProvider
     @electricityProductionProvider = providers.electricityProductionProvider
 
-
-    # TODO: Language needs to be sent from client as a url parameter, and parsed by us
     @language = 'en'
 
     # Set animation duration to zero, so that we do not waste time animating
@@ -29,6 +27,10 @@ class ServerApp
       currentPopover: null
       showPopover: ->
       closePopover: ->
+
+
+  setLanguage: (language) ->
+    @language = language if language == 'en' or language == 'fr'
 
 module.exports = ServerApp
 

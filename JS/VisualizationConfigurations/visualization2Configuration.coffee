@@ -58,6 +58,8 @@ class Visualization2Configuration
     else
       @sourcesInOrder = @defaultOptions.sourcesInOrder
 
+    @setLanguage @app.language || 'en'
+
   # Setters
 
   setSector: (sector) ->
@@ -122,6 +124,10 @@ class Visualization2Configuration
     else 
       @sources.push source
     @updateRouter()
+
+  setLanguage: (language) ->
+    @language = language if language == 'en' or language == 'fr'
+
 
   # Router integration
 

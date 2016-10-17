@@ -44,6 +44,7 @@ class Visualization4Configuration
     # BC AB SK MB ON QC NB NS NL PE YT NT NU all
     @setProvince @options.province
 
+    @setLanguage @app.language || 'en'
 
 
   # Setters
@@ -90,6 +91,9 @@ class Visualization4Configuration
   removeScenario: (scenario) ->
     @scenarios = @scenarios.filter (s) -> s != scenario
     @updateRouter()
+
+  setLanguage: (language) ->
+    @language = language if language == 'en' or language == 'fr'
 
 
   # Router integration

@@ -114,10 +114,7 @@ ElectricityProductionProvider = require '../DataProviders/ElectricityProductionP
 energyConsumptionProvider = new EnergyConsumptionProvider 
 oilProductionProvider = new OilProductionProvider 
 gasProductionProvider = new GasProductionProvider 
-# The electricity production provider requires access to the app object, but only for
-# putting string content in popovers. We pass an empty object to avoid crashes.
-# TODO: Should we rethink this mechanism? Might be nicer to store language in the config, along with everything else.
-electricityProductionProvider = new ElectricityProductionProvider {language: 'en'}
+electricityProductionProvider = new ElectricityProductionProvider
 
 data = fs.readFileSync "#{ApplicationRoot}/public/CSV/crude oil production VIZ.csv"
 oilProductionProvider.loadFromString data.toString()
@@ -147,8 +144,8 @@ electricityProductionProvider.loadFromString data.toString()
 app = express()
 
 
-app.use('/', express.static(path.join(__dirname, '../../public')))
-app.use('/',express.static(path.join(__dirname, '../../../energy-futures-private-resources')))
+app.use(express.static(path.join(__dirname, '../../public')))
+app.use(express.static(path.join(__dirname, '../../../energy-futures-private-resources')))
 
 
 
@@ -199,6 +196,7 @@ app.get '/image', (req, res) ->
         oilProductionProvider: oilProductionProvider
         gasProductionProvider: gasProductionProvider
         electricityProductionProvider: electricityProductionProvider
+      serverApp.setLanguage req.query.language
 
       params = PrepareQueryParams queryString.parse(query)
 
