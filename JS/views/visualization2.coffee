@@ -82,7 +82,7 @@ class Visualization2 extends visualization
 
 
   renderServerTemplate: ->
-    @app.window.document.getElementById('visualizationContent').innerHTML = Mustache.render Visualization2Template, 
+    @app.window.document.getElementById('visualizationContent').innerHTML = Mustache.render Visualization2ServerTemplate, 
       selectSectorLabel: Tr.sectorSelector.selectSectorLabel[@app.language]
       selectUnitLabel: Tr.unitSelector.selectUnitLabel[@app.language]
       selectScenarioLabel: Tr.scenarioSelector.selectScenarioLabel[@app.language]

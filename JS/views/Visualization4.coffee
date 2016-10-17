@@ -78,7 +78,7 @@ class Visualization4
 
 
   renderServerTemplate: ->
-    @app.window.document.getElementById('visualizationContent').innerHTML = Mustache.render Visualization4Template,
+    @app.window.document.getElementById('visualizationContent').innerHTML = Mustache.render Visualization4ServerTemplate,
       selectOneLabel: Tr.mainSelector.selectOneLabel[@app.language]
       selectUnitLabel: Tr.unitSelector.selectUnitLabel[@app.language]
       selectScenarioLabel: Tr.scenarioSelector.selectScenarioLabel[@app.language]

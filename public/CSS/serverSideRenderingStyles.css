@@ -2,9 +2,36 @@
 
 body {
   background-color: white;
+
+  font-family: Avenir Next Demi Condensed, 'PT Sans Narrow', Arial Narrow, Arial, Verdana, sans-serif !important;
+  font-size: 16px;
+  line-height: 1em;
+  font-weight: 400;
+  color: #333333;
+
+  width: 1200px;
+}
+
+.legendColumn {
+  width: 100px;
+  float: left;
+}
+
+.graphColumn {
+  width: 1100px;
+  float: left;
 }
 
 
 .hidden {
   display: none;
+}
+
+.centreText {
+  text-align: center;
+}
+
+.clearfix {
+  clear: both;
+  padding: 0;
 }

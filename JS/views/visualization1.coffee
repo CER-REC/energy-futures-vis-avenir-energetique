@@ -80,13 +80,14 @@ class Visualization1 extends visualization
             attachmentSelector: '.scenarioSelectorGroup'
 
 
-  renderServerTemplate: ->
+  renderServerTemplate: (config) ->
     @app.window.document.getElementById('visualizationContent').innerHTML = Mustache.render Visualization1ServerTemplate, 
-        selectOneLabel: Tr.mainSelector.selectOneLabel[@app.language]
-        selectUnitLabel: Tr.unitSelector.selectUnitLabel[@app.language]
-        selectScenarioLabel: Tr.scenarioSelector.selectScenarioLabel[@app.language]
-        selectRegionLabel: Tr.regionSelector.selectRegionLabel[@app.language]
         svgStylesheet: SvgStylesheetTemplate
+        title: Tr.visualization1Titles[config.mainSelection][@app.language]
+        description: config.imageExportDescription()
+        energyFuturesSource: Tr.allPages.imageDownloadSource[@app.language]
+        bitlyLink: 'foo/bar'
+        legendContent: []
 
 
 
@@ -96,7 +97,7 @@ class Visualization1 extends visualization
     if Platform.name == 'browser'
       @renderBrowserTemplate()
     else if Platform.name == 'server'
-      @renderServerTemplate()
+      @renderServerTemplate(config)
 
     super(config)
     @_margin = 

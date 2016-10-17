@@ -82,7 +82,7 @@ class Visualization3 extends visualization
             attachmentSelector: '.scenarioSelectorGroup'
 
   renderServerTemplate: ->
-    @app.window.document.getElementById('visualizationContent').innerHTML = Mustache.render Visualization3Template,
+    @app.window.document.getElementById('visualizationContent').innerHTML = Mustache.render Visualization3ServerTemplate,
       selectViewByLabel: Tr.viewBySelector.selectViewByLabel[@app.language]
       selectUnitLabel: Tr.unitSelector.selectUnitLabel[@app.language]
       selectScenarioLabel: Tr.scenarioSelector.selectScenarioLabel[@app.language]

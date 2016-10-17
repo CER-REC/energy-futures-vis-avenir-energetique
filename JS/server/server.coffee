@@ -49,8 +49,13 @@ wdOpts = { desiredCapabilities: { browserName: 'phantomjs' } }
 webdriverSession = null
 phantomjs.run('--webdriver=4444').then (program) => 
   webdriverSession = webdriverio.remote(wdOpts).init()
+  # NB: Page width is set in three locations: 
+  # - Here, which determines screenshot size 
+  # - in Constants, determines the size of the rendered SVG
+  # - in serverSideRenderingStyles.css, which controls page layout
+  # TODO: Would be nice to store this in just *ONE PLACE*. 
   webdriverSession.setViewportSize
-    width: 1100
+    width: 1200
     height: 1000
 
 
@@ -60,47 +65,6 @@ phantomjs.run('--webdriver=4444').then (program) =>
 # TODO: put me in a file and include me!  
 # TODO: fonts here are auto included. on server, we will always have access to them, but for public consumption we need to parameterize this somehow ... 
 
-htmlStub = """
-<!DOCTYPE html>
-  <meta charset="utf-8" />
-
-  <link rel="stylesheet" href="/CSS/serverSideRenderingStyles.css">
-  <link rel="stylesheet" href="/CSS/avenirFonts.css">
-
-
-
-<div id="canadasEnergyFutureVisualization"> 
-
-  <nav id="vizNavbar">
-  </nav>
-
-  <div role="heading" id='landingPageHeading' class='hidden'></div>
-  <div class="clearfix"> </div>
-
-  <div id="mainPanel">
-
-    <div id="aboutModal" class="vizModal hidden"> </div>
-    <div id="imageDownloadModal" class="vizModal hidden"> </div>
-
-    <div id="visualizationContent"> </div>
-
-    <!-- Both landingPagePanel and bottomNavBar contents are laid out with floats, so
-          this clearfix element is necessary to keep them from interfering with each other. -->
-
-    <div class="clearfix"> </div>
-
-  </div>
-
-
-
-  <nav id='bottomNavBar' class="hidden"> </nav>
-
-
-
-
-</div>
-
-"""
   
 
 # Render setup
@@ -128,7 +92,7 @@ energyConsumptionProvider.loadFromString data.toString()
 data = fs.readFileSync "#{ApplicationRoot}/public/CSV/ElectricityGeneration_VIZ.csv"
 electricityProductionProvider.loadFromString data.toString()
 
-
+ImageHtml = fs.readFileSync("#{ApplicationRoot}/JS/server/image.html").toString()
 
 
 
@@ -177,15 +141,13 @@ app.get '/image', (req, res) ->
   
   time = Date.now()
 
-
-
   query = url.parse(req.url).search
 
 
   jsdom.env
     features: 
       QuerySelector: true
-    html: htmlStub
+    html: ImageHtml
     done: (errors, window) -> 
 
       el = window.document.querySelector('#dataviz-container')

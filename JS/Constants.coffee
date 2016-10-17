@@ -218,7 +218,7 @@ module.exports =
 
   animationDuration: 1000 # in ms
 
-  serverSideGraphWidth: 1200 # px
+  serverSideGraphWidth: 1100 # px
 
 
 
