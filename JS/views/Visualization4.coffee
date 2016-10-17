@@ -13,7 +13,7 @@ if Platform.name == "browser"
   SvgStylesheetTemplate = require '../templates/SvgStylesheet.css'
 else if Platform.name == "server"
   fs = require 'fs'
-  Visualization4Template = fs.readFileSync("#{ApplicationRoot}/JS/templates/Visualization4Server.mustache").toString()
+  Visualization4ServerTemplate = fs.readFileSync("#{ApplicationRoot}/JS/templates/Visualization4Server.mustache").toString()
   SvgStylesheetTemplate = fs.readFileSync("#{ApplicationRoot}/JS/templates/SvgStylesheet.css").toString()
 
 
@@ -23,17 +23,7 @@ ControlsHelpPopover = require '../popovers/ControlsHelpPopover.coffee'
 class Visualization4
 
 
-  constructor: (@app, config) ->
-
-    @config = config
-    
-    @outerHeight = 700 
-    @margin = 
-      top: 20
-      right: 70
-      bottom: 50
-      left: 10
-
+  renderBrowserTemplate: ->
     @app.window.document.getElementById('visualizationContent').innerHTML = Mustache.render Visualization4Template,
       selectOneLabel: Tr.mainSelector.selectOneLabel[@app.language]
       selectUnitLabel: Tr.unitSelector.selectUnitLabel[@app.language]
@@ -85,6 +75,33 @@ class Visualization4
             title: Tr.scenarioSelector.scenarioSelectorHelpTitle[@app.language]
             content: Tr.scenarioSelector.scenarioSelectorHelp[@app.language]
             attachmentSelector: '.scenarioSelectorGroup'
+
+
+  renderServerTemplate: ->
+    @app.window.document.getElementById('visualizationContent').innerHTML = Mustache.render Visualization4Template,
+      selectOneLabel: Tr.mainSelector.selectOneLabel[@app.language]
+      selectUnitLabel: Tr.unitSelector.selectUnitLabel[@app.language]
+      selectScenarioLabel: Tr.scenarioSelector.selectScenarioLabel[@app.language]
+      selectRegionLabel: Tr.regionSelector.selectRegionLabel[@app.language]
+      svgStylesheet: SvgStylesheetTemplate
+
+
+  constructor: (@app, config) ->
+
+    @config = config
+    
+    @outerHeight = 700 
+    @margin = 
+      top: 20
+      right: 70
+      bottom: 50
+      left: 10
+
+    if Platform.name == 'browser'
+      @renderBrowserTemplate()
+    else if Platform.name == 'server'
+      @renderServerTemplate()
+
 
 
     @render()

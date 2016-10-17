@@ -16,7 +16,7 @@ if Platform.name == "browser"
   SvgStylesheetTemplate = require '../templates/SvgStylesheet.css'
 else if Platform.name == "server"
   fs = require 'fs'
-  Visualization2Template = fs.readFileSync("#{ApplicationRoot}/JS/templates/Visualization2Server.mustache").toString()
+  Visualization2ServerTemplate = fs.readFileSync("#{ApplicationRoot}/JS/templates/Visualization2Server.mustache").toString()
   SvgStylesheetTemplate = fs.readFileSync("#{ApplicationRoot}/JS/templates/SvgStylesheet.css").toString()
 
 ControlsHelpPopover = require '../popovers/ControlsHelpPopover.coffee'
@@ -25,8 +25,7 @@ ControlsHelpPopover = require '../popovers/ControlsHelpPopover.coffee'
 class Visualization2 extends visualization
   height = 700 
 
-
-  constructor: (@app, config) ->
+  renderBrowserTemplate: ->
     @app.window.document.getElementById('visualizationContent').innerHTML = Mustache.render Visualization2Template, 
       selectSectorLabel: Tr.sectorSelector.selectSectorLabel[@app.language]
       selectUnitLabel: Tr.unitSelector.selectUnitLabel[@app.language]
@@ -80,6 +79,27 @@ class Visualization2 extends visualization
             title: Tr.scenarioSelector.scenarioSelectorHelpTitle[@app.language]
             content: Tr.scenarioSelector.scenarioSelectorHelp[@app.language]
             attachmentSelector: '.scenarioSelectorGroup'
+
+
+  renderServerTemplate: ->
+    @app.window.document.getElementById('visualizationContent').innerHTML = Mustache.render Visualization2Template, 
+      selectSectorLabel: Tr.sectorSelector.selectSectorLabel[@app.language]
+      selectUnitLabel: Tr.unitSelector.selectUnitLabel[@app.language]
+      selectScenarioLabel: Tr.scenarioSelector.selectScenarioLabel[@app.language]
+      selectRegionLabel: Tr.regionSelector.selectRegionLabel[@app.language]
+      selectSourceLabel: Tr.sourceSelector.selectSourceLabel[@app.language]
+      svgStylesheet: SvgStylesheetTemplate
+
+
+
+  constructor: (@app, config) ->
+
+    if Platform.name == 'browser'
+      @renderBrowserTemplate()
+    else if Platform.name == 'server'
+      @renderServerTemplate()
+
+
 
     super(config)
     @_margin = 

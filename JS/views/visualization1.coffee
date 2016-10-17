@@ -4,7 +4,6 @@ Mustache = require 'mustache'
 
 visualization = require './visualization.coffee'
 stackedBarChart = require '../charts/stacked-bar-chart.coffee'
-unitUtilities = require '../unit-transformation.coffee'
 Constants = require '../Constants.coffee'
 Tr = require '../TranslationTable.coffee'
 Platform = require '../Platform.coffee'
@@ -16,7 +15,7 @@ if Platform.name == "browser"
   SvgStylesheetTemplate = require '../templates/SvgStylesheet.css'
 else if Platform.name == "server"
   fs = require 'fs'
-  Visualization1Template = fs.readFileSync("#{ApplicationRoot}/JS/templates/Visualization1Server.mustache").toString()
+  Visualization1ServerTemplate = fs.readFileSync("#{ApplicationRoot}/JS/templates/Visualization1Server.mustache").toString()
   SvgStylesheetTemplate = fs.readFileSync("#{ApplicationRoot}/JS/templates/SvgStylesheet.css").toString()
 
 ControlsHelpPopover = require '../popovers/ControlsHelpPopover.coffee'
@@ -27,8 +26,8 @@ class Visualization1 extends visualization
   
   height = 700 
   
-  constructor: (@app, config)  ->   
 
+  renderBrowserTemplate: ->
     @app.window.document.getElementById('visualizationContent').innerHTML = Mustache.render Visualization1Template, 
         selectOneLabel: Tr.mainSelector.selectOneLabel[@app.language]
         selectUnitLabel: Tr.unitSelector.selectUnitLabel[@app.language]
@@ -80,6 +79,24 @@ class Visualization1 extends visualization
             content: Tr.scenarioSelector.scenarioSelectorHelp[@app.language]
             attachmentSelector: '.scenarioSelectorGroup'
 
+
+  renderServerTemplate: ->
+    @app.window.document.getElementById('visualizationContent').innerHTML = Mustache.render Visualization1ServerTemplate, 
+        selectOneLabel: Tr.mainSelector.selectOneLabel[@app.language]
+        selectUnitLabel: Tr.unitSelector.selectUnitLabel[@app.language]
+        selectScenarioLabel: Tr.scenarioSelector.selectScenarioLabel[@app.language]
+        selectRegionLabel: Tr.regionSelector.selectRegionLabel[@app.language]
+        svgStylesheet: SvgStylesheetTemplate
+
+
+
+
+  constructor: (@app, config)  ->   
+
+    if Platform.name == 'browser'
+      @renderBrowserTemplate()
+    else if Platform.name == 'server'
+      @renderServerTemplate()
 
     super(config)
     @_margin = 

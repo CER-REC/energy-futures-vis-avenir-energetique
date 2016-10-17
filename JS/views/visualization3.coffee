@@ -15,7 +15,7 @@ if Platform.name == "browser"
   SvgStylesheetTemplate = require '../templates/SvgStylesheet.css'
 else if Platform.name == "server"
   fs = require 'fs'
-  Visualization3Template = fs.readFileSync("#{ApplicationRoot}/JS/templates/Visualization3Server.mustache").toString()
+  Visualization3ServerTemplate = fs.readFileSync("#{ApplicationRoot}/JS/templates/Visualization3Server.mustache").toString()
   SvgStylesheetTemplate = fs.readFileSync("#{ApplicationRoot}/JS/templates/SvgStylesheet.css").toString()
 
 
@@ -26,7 +26,8 @@ class Visualization3 extends visualization
   height = 700 
 
 
-  constructor: (@app, config) ->
+
+  renderBrowserTemplate: ->
     @app.window.document.getElementById('visualizationContent').innerHTML = Mustache.render Visualization3Template,
       selectViewByLabel: Tr.viewBySelector.selectViewByLabel[@app.language]
       selectUnitLabel: Tr.unitSelector.selectUnitLabel[@app.language]
@@ -79,6 +80,25 @@ class Visualization3 extends visualization
             title: Tr.scenarioSelector.scenarioSelectorHelpTitle[@app.language]
             content: Tr.scenarioSelector.scenarioSelectorHelp[@app.language]
             attachmentSelector: '.scenarioSelectorGroup'
+
+  renderServerTemplate: ->
+    @app.window.document.getElementById('visualizationContent').innerHTML = Mustache.render Visualization3Template,
+      selectViewByLabel: Tr.viewBySelector.selectViewByLabel[@app.language]
+      selectUnitLabel: Tr.unitSelector.selectUnitLabel[@app.language]
+      selectScenarioLabel: Tr.scenarioSelector.selectScenarioLabel[@app.language]
+      selectRegionLabel: Tr.regionSelector.selectRegionLabel[@app.language]
+      selectSourceLabel: Tr.sourceSelector.selectSourceLabel[@app.language]
+      svgStylesheet: SvgStylesheetTemplate
+
+
+
+  constructor: (@app, config) ->
+
+    if Platform.name == 'browser'
+      @renderBrowserTemplate()
+    else if Platform.name == 'server'
+      @renderServerTemplate()
+
 
     @_margin = 
       top: 20
