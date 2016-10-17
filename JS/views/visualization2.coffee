@@ -111,7 +111,7 @@ class Visualization2 extends visualization
     @addUnitToggle()
     @addSectors()
     @addScenarios()
-    @getData()
+    @getDataAndRender()
 
   redraw: ->
     @svgSize()   
@@ -354,8 +354,7 @@ class Visualization2 extends visualization
       }
     ]
 
-  #csv parsing within method
-  getData: ()->
+  getDataAndRender: ()->
     @seriesData = @app.energyConsumptionProvider.dataForViz2 @config
     @yAxisData = @app.energyConsumptionProvider.dataForAllViz2Scenarios @config
     if @_chart?
@@ -636,11 +635,11 @@ class Visualization2 extends visualization
     
   menuSelect: (key, regionIndex) =>
     @config.flipSource(key)
-    @getData()
+    @getDataAndRender()
 
   selectAllStacked: (selecting) =>
     @config.resetSources selecting 
-    @getData()
+    @getDataAndRender()
 
   showSourceNames: =>
     d3.event.stopPropagation()
@@ -694,14 +693,14 @@ class Visualization2 extends visualization
     @config.setProvince 'all'
     @_provinceMenu.allSelected(true)
     @_provinceMenu.data(@dataForProvinceMenu())
-    @getData()
+    @getDataAndRender()
 
   provinceSelected: (key, regionIndex)=>
     @_provinceMenu.allSelected(false)
     @config.setProvince key
     @_provinceMenu.data(@dataForProvinceMenu())
     @_provinceMenu.redraw()
-    @getData()
+    @getDataAndRender()
 
   showProvinceNames: =>
     d3.event.stopPropagation()

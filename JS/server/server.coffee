@@ -56,7 +56,7 @@ phantomjs.run('--webdriver=4444').then (program) =>
   # TODO: Would be nice to store this in just *ONE PLACE*. 
   webdriverSession.setViewportSize
     width: 1200
-    height: 1000
+    height: 900
 
 
 

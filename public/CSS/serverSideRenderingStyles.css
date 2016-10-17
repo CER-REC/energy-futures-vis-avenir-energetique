@@ -35,3 +35,12 @@ body {
   clear: both;
   padding: 0;
 }
+
+.legendItem {
+  margin: 0px auto 20px auto;
+  display: block;
+}
+
+h1 {
+  margin-top: 15px;
+}

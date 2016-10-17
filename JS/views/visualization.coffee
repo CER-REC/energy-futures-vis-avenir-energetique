@@ -155,7 +155,7 @@ class visualization
             @config.setUnit d.unitName
             # TODO: For efficiency, only rerender what's necessary.
             @addUnitToggle(@unitSelectionData())
-            @getData()
+            @getDataAndRender()
             if @buildYAxis? then @buildYAxis()
 
       unitsSelectors.html (d) ->
@@ -179,7 +179,7 @@ class visualization
 
             # TODO: For efficiency, only rerender what's necessary.
             @addScenarios()
-            @getData()
+            @getDataAndRender()
 
 
       scenariosSelectors.html (d) ->
@@ -203,7 +203,7 @@ class visualization
           if @config.sector != d.sectorName  
             @config.setSector d.sectorName
             @addSectors()
-            @getData()
+            @getDataAndRender()
 
       sectorsSelectors.html (d) ->
         if d.sectorName == 'total'
@@ -229,7 +229,7 @@ class visualization
           @addMainSelector()
           @addUnitToggle()
           @addScenarios()
-          @getData()
+          @getDataAndRender()
 
     mainSelectors.html (d) ->
       "<img src=#{d.image} class='mainSelectorImage'>

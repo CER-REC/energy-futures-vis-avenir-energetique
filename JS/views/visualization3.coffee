@@ -113,7 +113,7 @@ class Visualization3 extends visualization
     @buildProvinceVsSourceToggle()
     @addUnitToggle()
     @addScenarios()
-    @getData()
+    @getDataAndRender()
 
   tearDown: ->
     if @yearTimeout then window.clearTimeout(@yearTimeout)
@@ -778,7 +778,7 @@ class Visualization3 extends visualization
           d3.select(@app.window.document).select('#labelBox').text((d) =>
             @config.year
           )
-          @getData()
+          @getDataAndRender()
       
     axis.selectAll("text") 
         .style 
@@ -821,7 +821,7 @@ class Visualization3 extends visualization
         d3.select(@app.window.document).select('#labelBox').text((d) =>
           @config.year
         )
-        @getData()
+        @getDataAndRender()
     )
     drag.on("dragend", (d, i) =>
       if year != @config.year
@@ -833,7 +833,7 @@ class Visualization3 extends visualization
           @config.year
         )
         @config.setYear year
-        @getData()
+        @getDataAndRender()
     )
     sliderWidth = 70
 
@@ -897,7 +897,7 @@ class Visualization3 extends visualization
             if @config.year < 2040
               @config.setYear @config.year + 1
               @yearTimeout = window.setTimeout(timeoutComplete, @_chart._duration)
-              @getData()
+              @getDataAndRender()
               d3.select(@app.window.document).select('#sliderLabel')
                 .transition()
                   .attr(
@@ -953,7 +953,7 @@ class Visualization3 extends visualization
     else
       @_singleSelectMenu.setIconSpacing(@_chart.menu.getIconSpacing())
 
-  getData: ->
+  getDataAndRender: ->
     @seriesData = @addLabelsToData(@app.electricityProductionProvider.dataForViz3(@config))
     if @_chart?
       @adjustViz()
@@ -1044,12 +1044,12 @@ class Visualization3 extends visualization
 
   selectAllBubbles:(selecting)=>
     if @config.viewBy == 'province' then @config.resetSources(selecting) else @config.resetProvinces(selecting)
-    @getData()
+    @getDataAndRender()
 
   # Select one callback for the current multiselect
   menuSelect: (key, index) =>
     @config.flip(key)
-    @getData()
+    @getDataAndRender()
 
   # Black and white non multi select menu.
   buildSingleSelectMenu: ->
@@ -1080,7 +1080,7 @@ class Visualization3 extends visualization
     if @config.viewBy == 'province' then @config.setProvince 'all' else @config.setSource 'total'
     @_singleSelectMenu._allSelected = true
     @_singleSelectMenu.data(@dataForSingleSelectMenu())
-    @getData()
+    @getDataAndRender()
 
   singleSelectSelected: (key, index)=>
     @_singleSelectMenu._allSelected = false
@@ -1090,7 +1090,7 @@ class Visualization3 extends visualization
     else if @config.viewBy == 'source'
       @config.setSource item.key
     @_singleSelectMenu.data(@dataForSingleSelectMenu())
-    @getData()
+    @getDataAndRender()
 
   showSourceNames: =>
     d3.event.stopPropagation()

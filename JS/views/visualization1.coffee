@@ -8,6 +8,7 @@ Constants = require '../Constants.coffee'
 Tr = require '../TranslationTable.coffee'
 Platform = require '../Platform.coffee'
 ApplicationRoot = require '../../ApplicationRoot.coffee'
+LegendData = require '../server/LegendData.coffee'
 
 
 if Platform.name == "browser"
@@ -81,25 +82,28 @@ class Visualization1 extends visualization
 
 
   renderServerTemplate: (config) ->
+
     @app.window.document.getElementById('visualizationContent').innerHTML = Mustache.render Visualization1ServerTemplate, 
         svgStylesheet: SvgStylesheetTemplate
         title: Tr.visualization1Titles[config.mainSelection][@app.language]
         description: config.imageExportDescription()
         energyFuturesSource: Tr.allPages.imageDownloadSource[@app.language]
-        bitlyLink: 'foo/bar'
-        legendContent: []
+        bitlyLink: '' # TODO: Integrate with bitly
+        legendContent: @provinceLegendData()
 
 
 
 
   constructor: (@app, config)  ->   
+    super(config)
+
+    @getData()
 
     if Platform.name == 'browser'
       @renderBrowserTemplate()
     else if Platform.name == 'server'
       @renderServerTemplate(config)
 
-    super(config)
     @_margin = 
       top: 20
       bottom: 70
@@ -110,8 +114,7 @@ class Visualization1 extends visualization
     @addMainSelector()
     @addUnitToggle()
     @addScenarios()
-    @getData()
-
+    @render()
 
 
   redraw: ->
@@ -279,6 +282,59 @@ class Visualization1 extends visualization
       data.push provinceColours[province] 
     data
 
+  provinceLegendData: ->
+    baseData = 
+      BC:
+        present: @config.provinces.includes('BC') and not @zeroedOut('BC')
+        img: '/IMG/provinces/colour/BC_Selected.svg' 
+      AB:
+        present: @config.provinces.includes('AB') and not @zeroedOut('AB')
+        img: '/IMG/provinces/colour/AB_Selected.svg' 
+      SK: 
+        present: @config.provinces.includes('SK') and not @zeroedOut('SK')
+        img: '/IMG/provinces/colour/Sask_Selected.svg' 
+      MB: 
+        present: @config.provinces.includes('MB') and not @zeroedOut('MB')
+        img: '/IMG/provinces/colour/MB_Selected.svg' 
+      ON: 
+        present: @config.provinces.includes('ON') and not @zeroedOut('ON')
+        img: '/IMG/provinces/colour/ON_Selected.svg' 
+      QC: 
+        present: @config.provinces.includes('QC') and not @zeroedOut('QC')
+        img: '/IMG/provinces/colour/QC_Selected.svg' 
+      NB:
+        present: @config.provinces.includes('NB') and not @zeroedOut('NB')
+        img: '/IMG/provinces/colour/NB_Selected.svg' 
+      NS:
+        present: @config.provinces.includes('NS') and not @zeroedOut('NS')
+        img: '/IMG/provinces/colour/NS_Selected.svg' 
+      NL:
+        present: @config.provinces.includes('NL') and not @zeroedOut('NL')
+        img: '/IMG/provinces/colour/NL_Selected.svg' 
+      PE:
+        present: @config.provinces.includes('PE') and not @zeroedOut('PE')
+        img: '/IMG/provinces/colour/PEI_Selected.svg' 
+      YT:
+        present: @config.provinces.includes('YT') and not @zeroedOut('YT')
+        img: '/IMG/provinces/colour/Yukon_Selected.svg'
+      NT:
+        present: @config.provinces.includes('NT') and not @zeroedOut('NT')
+        img: '/IMG/provinces/colour/NT_Selected.svg' 
+      NU: 
+        present: @config.provinces.includes('NU') and not @zeroedOut('NU')
+        img: '/IMG/provinces/colour/NU_Selected.svg' 
+    
+    data = []
+    for province in @config.provincesInOrder
+      data.push baseData[province] if baseData[province].present
+
+    # Legend content is reversed because graph elements are built bottom to top
+    # but html elements will be laid out top to bottom. 
+    data.reverse()
+    data
+
+
+
   zeroedOut: (key) ->
     if !(@seriesData) or !(@seriesData[key]) then return false
     nonZeroVals = @seriesData[key].filter (item) -> item.value != 0
@@ -299,7 +355,10 @@ class Visualization1 extends visualization
       someSelected: someSelected
     }
 
-  #csv parsing within method
+  getDataAndRender: ->
+    @getData()
+    @render()
+
   getData: ->
     switch @config.mainSelection
       when 'gasProduction'  
@@ -314,6 +373,8 @@ class Visualization1 extends visualization
       when 'oilProduction'
         @seriesData = @app.oilProductionProvider.dataForViz1 @config
         @yAxisData = @app.oilProductionProvider.dataForAllViz1Scenarios @config
+
+  render: ->
     if @_chart?
       @adjustViz()
     else
@@ -524,7 +585,7 @@ class Visualization1 extends visualization
 
   selectAllStacked: (selecting) =>
     @config.resetProvinces selecting 
-    @getData()
+    @getDataAndRender()
 
   orderChanged: (newLocation, currentLocation) =>
     if currentLocation > newLocation
@@ -537,7 +598,7 @@ class Visualization1 extends visualization
 
   menuSelect: (key, regionIndex) =>
     @config.flipProvince key
-    @getData()
+    @getDataAndRender()
 
   showProvinceNames: =>
     d3.event.stopPropagation()
