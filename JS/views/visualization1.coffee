@@ -8,7 +8,6 @@ Constants = require '../Constants.coffee'
 Tr = require '../TranslationTable.coffee'
 Platform = require '../Platform.coffee'
 ApplicationRoot = require '../../ApplicationRoot.coffee'
-LegendData = require '../server/LegendData.coffee'
 
 
 if Platform.name == "browser"
@@ -328,7 +327,7 @@ class Visualization1 extends visualization
     for province in @config.provincesInOrder
       data.push baseData[province] if baseData[province].present
 
-    # Legend content is reversed because graph elements are built bottom to top
+    # Legend content is reversed because graph elements are built bottom to top,
     # but html elements will be laid out top to bottom. 
     data.reverse()
     data

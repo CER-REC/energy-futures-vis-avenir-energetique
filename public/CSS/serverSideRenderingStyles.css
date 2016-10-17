@@ -18,8 +18,9 @@ body {
 }
 
 .graphColumn {
-  width: 1100px;
+  width: 1065px;
   float: left;
+  margin-right: 35px;
 }
 
 
@@ -42,5 +43,5 @@ body {
 }
 
 h1 {
-  margin-top: 15px;
+  margin-top: 30px;
 }

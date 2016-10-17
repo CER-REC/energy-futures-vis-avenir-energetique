@@ -53,7 +53,9 @@ phantomjs.run('--webdriver=4444').then (program) =>
   # - Here, which determines screenshot size 
   # - in Constants, determines the size of the rendered SVG
   # - in serverSideRenderingStyles.css, which controls page layout
-  # TODO: Would be nice to store this in just *ONE PLACE*. 
+
+  # Horizontal spacing: 30px wide legend icons with 35px left-right margins, for 100px.
+  # 1065px wide graph with 35px right margin, for 1100px. 1200px total.
   webdriverSession.setViewportSize
     width: 1200
     height: 900
