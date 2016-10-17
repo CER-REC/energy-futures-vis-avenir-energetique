@@ -81,27 +81,26 @@ class Visualization2 extends visualization
             attachmentSelector: '.scenarioSelectorGroup'
 
 
-  renderServerTemplate: ->
+  renderServerTemplate: (config) ->
     @app.window.document.getElementById('visualizationContent').innerHTML = Mustache.render Visualization2ServerTemplate, 
-      selectSectorLabel: Tr.sectorSelector.selectSectorLabel[@app.language]
-      selectUnitLabel: Tr.unitSelector.selectUnitLabel[@app.language]
-      selectScenarioLabel: Tr.scenarioSelector.selectScenarioLabel[@app.language]
-      selectRegionLabel: Tr.regionSelector.selectRegionLabel[@app.language]
-      selectSourceLabel: Tr.sourceSelector.selectSourceLabel[@app.language]
-      svgStylesheet: SvgStylesheetTemplate
-
+        svgStylesheet: SvgStylesheetTemplate
+        title: Tr.visualization2Title[@app.language]
+        description: config.imageExportDescription()
+        energyFuturesSource: Tr.allPages.imageDownloadSource[@app.language]
+        bitlyLink: '' # TODO: Integrate with bitly
+        legendContent: @sourceLegendData()
 
 
   constructor: (@app, config) ->
+    super(config)
+
+    @getData()
 
     if Platform.name == 'browser'
       @renderBrowserTemplate()
     else if Platform.name == 'server'
-      @renderServerTemplate()
+      @renderServerTemplate(config)
 
-
-
-    super(config)
     @_margin = 
       top: 20
       right: 60
@@ -111,7 +110,7 @@ class Visualization2 extends visualization
     @addUnitToggle()
     @addSectors()
     @addScenarios()
-    @getDataAndRender()
+    @render()
 
   redraw: ->
     @svgSize()   
@@ -236,6 +235,40 @@ class Visualization2 extends visualization
       data.push(sourcesWithColours[source])
     data
 
+
+
+  sourceLegendData: ->
+    baseData = 
+      solarWindGeothermal:
+        img: '/IMG/sources/solarWindGeo_selected.svg' 
+        present: @config.sources.includes('solarWindGeothermal') and not @zeroedOut('solarWindGeothermal')
+      coal:
+        img: '/IMG/sources/coal_selected.svg' 
+        present: @config.sources.includes('coal') and not @zeroedOut('coal')
+      naturalGas:
+        img: '/IMG/sources/naturalGas_selected.svg' 
+        present: @config.sources.includes('naturalGas') and not @zeroedOut('naturalGas')
+      bio:
+        img: '/IMG/sources/biomass_selected.svg' 
+        present: @config.sources.includes('bio') and not @zeroedOut('bio')
+      oilProducts:
+        img: '/IMG/sources/oil_products_selected.svg' 
+        present: @config.sources.includes('oilProducts') and not @zeroedOut('oilProducts')
+      electricity:  
+        img: '/IMG/sources/electricity_selected.svg' 
+        present: @config.sources.includes('electricity') and not @zeroedOut('electricity')
+
+    data = []
+    for source in @config.sourcesInOrder
+      data.push baseData[source] if baseData[source].present
+
+    # Legend content is reversed because graph elements are built bottom to top,
+    # but html elements will be laid out top to bottom. 
+    data.reverse()
+    data
+
+
+
   colouredSourceIconsDictionary: ->
     sourcesWithColours = {  
         solarWindGeothermal:
@@ -354,9 +387,15 @@ class Visualization2 extends visualization
       }
     ]
 
-  getDataAndRender: ()->
+  getDataAndRender: ->
+    @getData()
+    @render()
+    
+  getData: ->
     @seriesData = @app.energyConsumptionProvider.dataForViz2 @config
     @yAxisData = @app.energyConsumptionProvider.dataForAllViz2Scenarios @config
+
+  render: ->
     if @_chart?
       @adjustViz()
     else

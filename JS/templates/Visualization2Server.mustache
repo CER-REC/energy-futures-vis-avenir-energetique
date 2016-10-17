@@ -1,4 +1,16 @@
-<div id="wideVisualizationPanel"> 
+<div> 
+
+  <div class="centreText"> 
+    <h1>
+      {{title}}
+    </h1>
+  </div>
+
+  <div class='legendColumn'>
+    {{#legendContent}}
+      <img src={{img}} class='legendItem'></img>
+    {{/legendContent}}
+  </div>
 
   <div id="graphPanel" class="narrowVisualizationColumn">
     <svg id="graphSVG" xmlns="http://www.w3.org/2000/svg" xmlns:xlink='http://www.w3.org/1999/xlink'>
@@ -15,40 +27,24 @@
     </svg>
   </div>
 
+  <div class="clearfix"> </div>  
+
+  <div class="centreText"> 
+    <p>
+      {{description}}
+    </p>
+    <p>
+      {{energyFuturesSource}}
+    </p>
+    <p>
+      {{bitlyLink}}
+    </p>
+  </div>
+
 </div>
 
-<div class="hidden"> 
 
-  <div id="buttonPanel" class="selectorColumn">
-    <div class="sectorSelectorGroup">  
-      <span class="floatedTitleLabel">{{selectSectorLabel}}</span>
-      <a href='#'> 
-        <img src="IMG/large_qmark.svg" class="helpIconButton sectorSelectorHelpButton pointerCursor"> 
-      </a>
-      <div class="selectorGroup">
-        <div id="sectorsSelector"> </div>
-        <div class="clearfix"> </div>
-      </div>
-    </div>
-    <div class="unitsSelectorGroup">    
-      <span class="floatedTitleLabel">{{selectUnitLabel}}</span>
-      <a href='#'> 
-        <img src="IMG/large_qmark.svg" class="helpIconButton unitSelectorHelpButton pointerCursor"> 
-      </a>
-      <div class="selectorGroup">
-        <div id="unitsSelector"> </div>
-      </div>
-    </div>
-    <div class="scenarioSelectorGroup">    
-      <span class="floatedTitleLabel">{{selectScenarioLabel}}</span>
-      <a href='#'> 
-        <img src="IMG/large_qmark.svg" class="helpIconButton  scenarioSelectorHelpButton pointerCursor"> 
-      </a>
-      <div class="selectorGroup">
-        <div id="scenariosSelector"> </div>
-      </div>
-    </div>
-  </div>
+<div class="hidden"> 
 
   <div id="provincePanel" class="smallSelectorColumn">
     <span class="titleLabel textCentre">{{selectRegionLabel}}</span>
