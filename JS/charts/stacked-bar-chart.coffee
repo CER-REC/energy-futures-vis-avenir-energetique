@@ -98,7 +98,7 @@ class stackedBarChart extends barChart
                 d.name + d.data.x
             )
             .text (d) =>
-                d.name + ": "+ d.data.y.toFixed(2)
+                d.name + " (" + d.data.x + "): "+ d.data.y.toFixed(2)
       rect.attr
         x: (d, i) =>
           @_x(d.data.x) 
