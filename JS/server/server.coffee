@@ -36,7 +36,7 @@ PrepareQueryParams = require '../PrepareQueryParams.coffee'
 require '../ArrayIncludes.coffee'
 
 
-
+ 
 # Phantom setup
 
 wdOpts = { desiredCapabilities: { browserName: 'phantomjs' } }
@@ -124,17 +124,25 @@ app.get '/', (req, res) ->
   query = url.parse(req.url).search
   session = webdriverSession.url("http://localhost:4747/image/" + query)
   session.then ->
-    result = session.saveScreenshot()
 
-    result.then (screenshotBuffer) ->
-      res.setHeader "content-type", "image/png"
-      res.write(screenshotBuffer)
-      res.end()
-      console.log "Time: #{Date.now() - time}"
+    # We've seen an issue where the font has not loaded in time for the screenshot, and
+    # so none of the text is rendered. The 50ms timeout is intended to compensate for this.
+    # This is not an ideal solution, but detecting font loading is hard, and this is simple.
+    # The issue occurred in maybe 1 request in 20.
+    # Other options: include the font as a data URI, try the CSS3 document.fontloader API
+    setTimeout ->
+      result = session.saveScreenshot()
 
-      result.log('browser').then (messages) ->
-        messages.value.map (m) -> 
-          console.log m.message if typeof m.message == 'string'
+      result.then (screenshotBuffer) ->
+        res.setHeader "content-type", "image/png"
+        res.write(screenshotBuffer)
+        res.end()
+        console.log "Time: #{Date.now() - time}"
+
+        result.log('browser').then (messages) ->
+          messages.value.map (m) -> 
+            console.log m.message if typeof m.message == 'string'
+    , 50
 
 
 
@@ -196,7 +204,7 @@ app.get '/image', (req, res) ->
 
 
 
-
+# IIS-Node passes in a handle to listen to in process.env.PORT
 app.listen process.env.PORT || 4747
 console.log 'Ready.'
 
