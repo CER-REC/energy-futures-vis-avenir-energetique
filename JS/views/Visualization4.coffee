@@ -78,12 +78,15 @@ class Visualization4
 
 
   renderServerTemplate: ->
-    @app.window.document.getElementById('visualizationContent').innerHTML = Mustache.render Visualization4ServerTemplate,
-      selectOneLabel: Tr.mainSelector.selectOneLabel[@app.language]
-      selectUnitLabel: Tr.unitSelector.selectUnitLabel[@app.language]
-      selectScenarioLabel: Tr.scenarioSelector.selectScenarioLabel[@app.language]
-      selectRegionLabel: Tr.regionSelector.selectRegionLabel[@app.language]
-      svgStylesheet: SvgStylesheetTemplate
+    @app.window.document.getElementById('visualizationContent').innerHTML = Mustache.render Visualization4ServerTemplate, 
+        svgStylesheet: SvgStylesheetTemplate
+        title: Tr.visualization4Titles[@config.mainSelection][@app.language]
+        description: @config.imageExportDescription()
+        energyFuturesSource: Tr.allPages.imageDownloadSource[@app.language]
+        bitlyLink: '' # TODO: Integrate with bitly
+        legendContent: @scenarioLegendData()
+
+
 
 
   constructor: (@app, config) ->
@@ -379,8 +382,49 @@ class Visualization4
       when 'gasProduction'
         [reference, high, highLng, low, noLng]
 
-
     # TODO: merge graphdata and graphscenario data, its dumb =/
+
+
+
+  scenarioLegendData: ->
+    baseData = 
+      reference: 
+        label: Tr.scenarioSelector.referenceButton[@app.language]
+        class: 'reference'
+      high: 
+        label: Tr.scenarioSelector.highPriceButton[@app.language]
+        class: 'high'
+      highLng: 
+        label: Tr.scenarioSelector.highLngButton[@app.language]
+        class: 'highLng'
+      constrained: 
+        label: Tr.scenarioSelector.constrainedButton[@app.language]
+        class: 'constrained'
+      low: 
+        label: Tr.scenarioSelector.lowPriceButton[@app.language]
+        class: 'low'
+      noLng: 
+        label: Tr.scenarioSelector.noLngButton[@app.language]
+        class: 'noLng'
+
+
+    availableScenarios = switch @config.mainSelection
+      when 'energyDemand', 'electricityGeneration'
+        ['reference', 'high', 'highLng', 'constrained', 'low', 'noLng']
+      when 'oilProduction'
+        ['reference', 'high', 'constrained', 'low']
+      when 'gasProduction'
+        ['reference', 'high', 'highLng', 'low', 'noLng']
+
+    data = []
+
+    for scenarioName in availableScenarios
+      data.push baseData[scenarioName] if @config.scenarios.includes scenarioName
+    data
+
+
+
+
 
   graphData: ->
     switch @config.mainSelection
@@ -485,7 +529,7 @@ class Visualization4
     if Platform.name == 'browser'
       d3.select(@app.window.document).select('#graphPanel').node().getBoundingClientRect().width
     else if Platform.name == 'server'
-      Constants.serverSideGraphWidth
+      Constants.viz4ServerSideGraphWidth
 
   width: ->
     @outerWidth() - @margin.left - @margin.right

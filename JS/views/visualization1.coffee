@@ -80,12 +80,12 @@ class Visualization1 extends visualization
             attachmentSelector: '.scenarioSelectorGroup'
 
 
-  renderServerTemplate: (config) ->
+  renderServerTemplate: () ->
 
     @app.window.document.getElementById('visualizationContent').innerHTML = Mustache.render Visualization1ServerTemplate, 
         svgStylesheet: SvgStylesheetTemplate
-        title: Tr.visualization1Titles[config.mainSelection][@app.language]
-        description: config.imageExportDescription()
+        title: Tr.visualization1Titles[@config.mainSelection][@app.language]
+        description: @config.imageExportDescription()
         energyFuturesSource: Tr.allPages.imageDownloadSource[@app.language]
         bitlyLink: '' # TODO: Integrate with bitly
         legendContent: @provinceLegendData()
@@ -101,7 +101,7 @@ class Visualization1 extends visualization
     if Platform.name == 'browser'
       @renderBrowserTemplate()
     else if Platform.name == 'server'
-      @renderServerTemplate(config)
+      @renderServerTemplate()
 
     @_margin = 
       top: 20

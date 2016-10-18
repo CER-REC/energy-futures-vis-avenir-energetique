@@ -81,7 +81,7 @@ class Visualization3 extends visualization
             content: Tr.scenarioSelector.scenarioSelectorHelp[@app.language]
             attachmentSelector: '.scenarioSelectorGroup'
 
-  renderServerTemplate: (config) ->
+  renderServerTemplate: ->
     if config.viewBy == 'province'
       legendContent = @sourceLegendData()
     else if config.viewBy == 'source'
@@ -90,7 +90,7 @@ class Visualization3 extends visualization
     @app.window.document.getElementById('visualizationContent').innerHTML = Mustache.render Visualization3ServerTemplate, 
         svgStylesheet: SvgStylesheetTemplate
         title: Tr.visualization3Title[@app.language]
-        description: config.imageExportDescription()
+        description: @config.imageExportDescription()
         energyFuturesSource: Tr.allPages.imageDownloadSource[@app.language]
         bitlyLink: '' # TODO: Integrate with bitly
         legendContent: legendContent
@@ -105,7 +105,7 @@ class Visualization3 extends visualization
     if Platform.name == 'browser'
       @renderBrowserTemplate()
     else if Platform.name == 'server'
-      @renderServerTemplate(config)
+      @renderServerTemplate()
 
     @_margin = 
       top: 20

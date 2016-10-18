@@ -219,6 +219,7 @@ module.exports =
   animationDuration: 1000 # in ms
 
   serverSideGraphWidth: 1065 # px
+  viz4ServerSideGraphWidth: 995 # 1065 - 70 extra pixels of width for viz4's wider legend
 
 
 
