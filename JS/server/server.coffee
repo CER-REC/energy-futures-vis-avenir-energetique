@@ -197,10 +197,6 @@ app.get '/image', (req, res) ->
 
 
 
-
-
-
-
-app.listen 4747 # process.env.PORT
+app.listen process.env.PORT || 4747
 console.log 'Ready.'
 

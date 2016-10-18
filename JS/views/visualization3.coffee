@@ -82,9 +82,9 @@ class Visualization3 extends visualization
             attachmentSelector: '.scenarioSelectorGroup'
 
   renderServerTemplate: ->
-    if config.viewBy == 'province'
+    if @config.viewBy == 'province'
       legendContent = @sourceLegendData()
-    else if config.viewBy == 'source'
+    else if @config.viewBy == 'source'
       legendContent = @provinceLegendData()
 
     @app.window.document.getElementById('visualizationContent').innerHTML = Mustache.render Visualization3ServerTemplate, 
