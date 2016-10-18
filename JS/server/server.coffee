@@ -143,6 +143,8 @@ processNextRequest = ->
         #   messages.value.map (m) -> 
         #     console.log m.message if typeof m.message == 'string'
 
+        console.log "Time: #{Date.now() - request.time}"
+
         if requestQueue.length > 0
           processNextRequest() 
         else
