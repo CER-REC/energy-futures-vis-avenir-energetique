@@ -62,10 +62,6 @@ phantomjs.run('--webdriver=4444').then (program) =>
 
 
 
-# Jsdom Setup
-
-# TODO: put me in a file and include me!  
-# TODO: fonts here are auto included. on server, we will always have access to them, but for public consumption we need to parameterize this somehow ... 
 
   
 
@@ -94,6 +90,8 @@ energyConsumptionProvider.loadFromString data.toString()
 data = fs.readFileSync "#{ApplicationRoot}/public/CSV/ElectricityGeneration_VIZ.csv"
 electricityProductionProvider.loadFromString data.toString()
 
+
+# TODO: fonts here are auto included. on server, we will always have access to them, but for public consumption we need to parameterize this somehow ... 
 ImageHtml = fs.readFileSync("#{ApplicationRoot}/JS/server/image.html").toString()
 
 
@@ -114,14 +112,17 @@ app.use(express.static(path.join(__dirname, '../../public')))
 app.use(express.static(path.join(__dirname, '../../../energy-futures-private-resources')))
 
 
+requestQueue = []
+processingRequests = false
 
-app.get '/', (req, res) ->
-  time = Date.now()
-  console.log "******** new request"
+processNextRequest = ->
+  return if requestQueue.length == 0
+
+  request = requestQueue.shift()
 
   # Extract the query parameters, and pass them through to the request we will have 
   # Phantom make of our image page building endpoint.
-  query = url.parse(req.url).search
+  query = url.parse(request.req.url).search
   session = webdriverSession.url("http://localhost:4747/image/" + query)
   session.then ->
 
@@ -134,15 +135,34 @@ app.get '/', (req, res) ->
       result = session.saveScreenshot()
 
       result.then (screenshotBuffer) ->
-        res.setHeader "content-type", "image/png"
-        res.write(screenshotBuffer)
-        res.end()
-        console.log "Time: #{Date.now() - time}"
+        request.res.setHeader "content-type", "image/png"
+        request.res.write(screenshotBuffer)
+        request.res.end()
 
-        result.log('browser').then (messages) ->
-          messages.value.map (m) -> 
-            console.log m.message if typeof m.message == 'string'
+        # result.log('browser').then (messages) ->
+        #   messages.value.map (m) -> 
+        #     console.log m.message if typeof m.message == 'string'
+
+        if requestQueue.length > 0
+          processNextRequest() 
+        else
+          processingRequests = false
+
     , 50
+
+
+
+app.get '/', (req, res) ->
+  console.log "******** enqueuing request"
+
+  requestQueue.push
+    req: req
+    res: res
+    time: Date.now()
+
+  if processingRequests == false
+    processingRequests = true
+    processNextRequest() 
 
 
 
