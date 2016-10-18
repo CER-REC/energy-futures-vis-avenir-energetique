@@ -57,9 +57,12 @@ class stackedAreaChart extends stackedBarChart
   handleMouseMove: (event) =>
     root.mousePos = {x: event.pageX, y: event.pageY}
     if root.activeSource?
-      current = pixelMap.find((entry) -> root.mousePos.x >= entry.pixelStart && root.mousePos.x <entry.pixelEnd)
+      #array.find() is not supported in IE so we resort to array.filter() instead
+      current = pixelMap.filter((entry) -> root.mousePos.x >= entry.pixelStart && root.mousePos.x <entry.pixelEnd)
+      current = current[0]
       if current?
-        titletobe = @_stackDictionary[root.activeSource].values.find((value) -> value.x == current.year)
+        titletobe = @_stackDictionary[root.activeSource].values.filter((value) -> value.x == current.year)
+        titletobe = titletobe[0]
         document.getElementById(root.activeArea).innerHTML = Tr.sourceSelector.sources[root.activeSource][app.language] + " (" + current.year + "): " + titletobe.y.toFixed(2)
 
   # When dragging we want a shorter duration
