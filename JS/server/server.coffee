@@ -8,6 +8,7 @@ fs = require 'fs'
 path = require 'path'
 url = require 'url'
 queryString = require 'query-string'
+Promise = require 'bluebird'
 
 
 Platform = require '../Platform.coffee'
@@ -39,27 +40,38 @@ require '../ArrayIncludes.coffee'
  
 # Phantom setup
 
-wdOpts = { desiredCapabilities: { browserName: 'phantomjs' } }
 
 # Start an instance of Phantom, and store a reference to the session. We'll re-use the 
 # Phantom instance over the lifetime of the server.
 # TODO: Phantom takes up to 5s to start up, and IIS triggers a server restart if the .js
 # file has changed when a request comes in. In other words, this is almost guaranteed to
 # fail on first request, so we should put the phantom init in a promise... 
+
+phantomPromise = phantomjs.run '--webdriver=4444'
+
 webdriverSession = null
-phantomjs.run('--webdriver=4444').then (program) => 
-  webdriverSession = webdriverio.remote(wdOpts).init()
-  # NB: Page width is set in three locations: 
-  # - Here, which determines screenshot size 
-  # - in Constants, determines the size of the rendered SVG
-  # - in serverSideRenderingStyles.css, which controls page layout
 
-  # Horizontal spacing: 30px wide legend icons with 35px left-right margins, for 100px.
-  # 1065px wide graph with 35px right margin, for 1100px. 1200px total.
-  webdriverSession.setViewportSize
-    width: 1200
-    height: 900
+# NB: Before you're tempted to refactor this to use promises throughout, webdriver is NOT
+# A+ promise compatible! Trying to use its objects with promises will break in all
+# sorts of weird and wonderful ways.
+# https://github.com/webdriverio/webdriverio/issues/1431
+webdriverPromise = phantomPromise.then => 
+  new Promise (resolve, reject) ->
+    wdOpts = { desiredCapabilities: { browserName: 'phantomjs' } }
+    webdriverSession = webdriverio.remote(wdOpts).init()
 
+    # NB: Page width is set in three locations: 
+    # - Here, which determines screenshot size 
+    # - in Constants, determines the size of the rendered SVG
+    # - in serverSideRenderingStyles.css, which controls page layout
+
+    # Horizontal spacing: 30px wide legend icons with 35px left-right margins, for 100px.
+    # 1065px wide graph with 35px right margin, for 1100px. 1200px total.
+    webdriverSession.setViewportSize
+      width: 1200
+      height: 900
+
+    resolve()
 
 
 
@@ -123,54 +135,93 @@ processNextRequest = ->
   # Extract the query parameters, and pass them through to the request we will have 
   # Phantom make of our image page building endpoint.
   query = url.parse(request.req.url).search
-  session = webdriverSession.url("http://localhost:4747/image/" + query)
-  session.then ->
 
-    # We've seen an issue where the font has not loaded in time for the screenshot, and
-    # so none of the text is rendered. The 50ms timeout is intended to compensate for this.
-    # This is not an ideal solution, but detecting font loading is hard, and this is simple.
-    # The issue occurred in maybe 1 request in 20.
-    # Other options: include the font as a data URI, try the CSS3 document.fontloader API
-    setTimeout ->
-      result = session.saveScreenshot()
+  try
 
-      result.then (screenshotBuffer) ->
-        request.res.setHeader "content-type", "image/png"
-        request.res.write(screenshotBuffer)
-        request.res.end()
+    webdriverUrlRequest = webdriverSession.url("http://localhost:4747/image/" + query)
 
-        # result.log('browser').then (messages) ->
-        #   messages.value.map (m) -> 
-        #     console.log m.message if typeof m.message == 'string'
+    webdriverUrlRequest.then ->
 
-        console.log "Time: #{Date.now() - request.time}"
+      # We've seen an issue where the font has not loaded in time for the screenshot, and
+      # so none of the text is rendered. The 50ms timeout is intended to compensate for this.
+      # This is not an ideal solution, but detecting font loading is hard, and this is simple.
+      # The issue occurred in maybe 1 request in 20.
+      # Other options: include the font as a data URI, try the CSS3 document.fontloader API
+      setTimeout ->
 
-        if requestQueue.length > 0
-          processNextRequest() 
-        else
-          processingRequests = false
+        try
+          buffer = webdriverUrlRequest.saveScreenshot()
 
-    , 50
+          buffer.then (screenshotBuffer) ->
+            try            
+              request.res.setHeader "content-type", "image/png"
+              request.res.write(screenshotBuffer)
+              request.res.end()
+
+              # result.log('browser').then (messages) ->
+              #   messages.value.map (m) -> 
+              #     console.log m.message if typeof m.message == 'string'
+
+              console.log "Time: #{Date.now() - request.time}"
+
+              if requestQueue.length > 0
+                processNextRequest() 
+              else
+                processingRequests = false
+
+            catch error
+              errorHandler(error, request)
+
+        catch error
+          errorHandler(error, request)
+
+      , 50
+  catch error
+    errorHandler(error, request)
+
+
+
+# TODO: Best name ever! fixme ... 
+errorHandler = (error, request) ->
+
+  console.error "Error completing request: #{request.req.url}"
+  console.error error
+
+  # In the event of an error, we still need to set the server up to process later requests
+  if requestQueue.length > 0
+    processNextRequest() 
+  else
+    processingRequests = false
+  # TODO: Attempt to respond with the error if the response hasn't been finished?
+
+
+
+
+
+
 
 
 
 app.get '/', (req, res) ->
-  console.log "******** enqueuing request"
 
-  requestQueue.push
-    req: req
-    res: res
-    time: Date.now()
+  # Ensure webdriver and phantom are ready before use
+  console.log '******** received request... '
+  webdriverPromise.then ->
+    console.log "******** enqueuing request"
 
-  if processingRequests == false
-    processingRequests = true
-    processNextRequest() 
+    requestQueue.push
+      req: req
+      res: res
+      time: Date.now()
+
+    if processingRequests == false
+      processingRequests = true
+      processNextRequest() 
 
 
 
 
 app.get '/image', (req, res) ->
-  
   time = Date.now()
 
   query = url.parse(req.url).search
@@ -218,6 +269,7 @@ app.get '/image', (req, res) ->
 
       # we need to wait a tick for the zero duration animations to be scheduled and run
       setTimeout ->
+
         source = window.document.querySelector('html').outerHTML
         res.write source
         res.end()
