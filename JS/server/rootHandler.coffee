@@ -1,21 +1,16 @@
+processRequest = require './processRequest.coffee'
 
+rootHandler = (req, res, serverState) ->
+  console.log "******** enqueuing request"
 
+  serverState.requestQueue.push
+    req: req
+    res: res
+    time: Date.now()
 
-rootHandler = ->
-
-  # Ensure webdriver and phantom are ready before use
-  console.log '******** received request... '
-  webdriverPromise.then ->
-    console.log "******** enqueuing request"
-
-    requestQueue.push
-      req: req
-      res: res
-      time: Date.now()
-
-    if processingRequests == false
-      processingRequests = true
-      processNextRequest() 
+  if serverState.processingRequests == false
+    serverState.processingRequests = true
+    processRequest serverState 
 
 
 

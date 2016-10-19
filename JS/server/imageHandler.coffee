@@ -83,6 +83,7 @@ imageHandler = (req, res) ->
       html: html
       done: (errors, window) -> 
 
+        # TODO: Check errors
         el = window.document.querySelector('#dataviz-container')
         body = window.document.querySelector('body')
           
