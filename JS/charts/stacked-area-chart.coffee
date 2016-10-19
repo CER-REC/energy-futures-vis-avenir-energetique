@@ -54,6 +54,14 @@ class stackedAreaChart extends stackedBarChart
     super(parent, x, y, @options)
     @redraw()
 
+    root.tooltip = d3.select("body")
+      .append("div")
+      .attr(
+        id: "tooltiptest"
+        class: "chartTooltip"
+      )
+      .text("")
+
   handleMouseMove: (event) =>
     root.mousePos = {x: event.pageX, y: event.pageY}
     if root.activeSource?
@@ -63,7 +71,7 @@ class stackedAreaChart extends stackedBarChart
       if current?
         titletobe = @_stackDictionary[root.activeSource].values.filter((value) -> value.x == current.year)
         titletobe = titletobe[0]
-        document.getElementById(root.activeArea).innerHTML = Tr.sourceSelector.sources[root.activeSource][app.language] + " (" + current.year + "): " + titletobe.y.toFixed(2)
+        document.getElementById("tooltiptest").innerHTML = Tr.sourceSelector.sources[root.activeSource][app.language] + " (" + current.year + "): " + titletobe.y.toFixed(2)
 
   # When dragging we want a shorter duration
   dragStart: ->
@@ -156,9 +164,16 @@ class stackedAreaChart extends stackedBarChart
       presentArea = @_group.selectAll(".presentArea")
           .data(@_mapping, (d) -> d.key)
           .on "mouseover", (d) =>
+            document.getElementById("tooltiptest").style.visibility = "visible"
+            document.getElementById("tooltiptest").style.top = (d3.event.pageY-10) + "px"
+            document.getElementById("tooltiptest").style.left = (d3.event.pageX+10) + "px"
             root.activeArea = "present"+d.key
             root.activeSource = d.key
+          .on "mousemove", (d) =>
+            document.getElementById("tooltiptest").style.top = (d3.event.pageY-10) + "px"
+            document.getElementById("tooltiptest").style.left = (d3.event.pageX+10) + "px"
           .on "mouseout", (d) =>
+            document.getElementById("tooltiptest").style.visibility = "hidden"
             root.activeArea = null
             root.activeSource = null
 
@@ -169,26 +184,22 @@ class stackedAreaChart extends stackedBarChart
             area(@_stackDictionary[d.key].values.map((data) -> {x: data.x, y:0, y0:0}))
         .style  
           fill: (d) -> colour = d3.rgb(d.colour); "url(#viz2gradPresent#{d.key}) rgba(#{colour.r}, #{colour.g}, #{colour.b}, 0.6)"
-        # Tooltip
-        .append('title')
-          .attr(
-            id: (d) =>
-              # We add a unique id to access the title whenever
-              # it is modified. The id takes the format:
-              # provinceName + Year (e.g. ON2015)
-              "present"+d.key
-          )
-          .text (d) =>
-              ""
 
       presentArea.exit().remove()
 
       futureArea = @_group.selectAll(".futureArea")
           .data(@_mapping, (d) -> d.key)
           .on "mouseover", (d) =>
+            document.getElementById("tooltiptest").style.visibility = "visible"
+            document.getElementById("tooltiptest").style.top = (d3.event.pageY-10) + "px"
+            document.getElementById("tooltiptest").style.left = (d3.event.pageX+10) + "px"
             root.activeArea = "future"+d.key
             root.activeSource = d.key
+          .on "mousemove", (d) =>
+            document.getElementById("tooltiptest").style.top = (d3.event.pageY-10) + "px"
+            document.getElementById("tooltiptest").style.left = (d3.event.pageX+10) + "px"
           .on "mouseout", (d) =>
+            document.getElementById("tooltiptest").style.visibility = "hidden"
             root.activeArea = null
             root.activeSource = null
 
@@ -199,17 +210,6 @@ class stackedAreaChart extends stackedBarChart
             areaFuture(@_stackDictionary[d.key].values.map((data) -> {x: data.x, y:0, y0:0}))
         .style  
           fill: (d) -> colour = d3.rgb(d.colour); "url(#viz2gradFuture#{d.key}) rgba(#{colour.r}, #{colour.g}, #{colour.b}, 0.4)"
-        # Tooltip
-        .append('title')
-          .attr(
-            id: (d) =>
-              # We add a unique id to access the title whenever
-              # it is modified. The id takes the format:
-              # provinceName + Year (e.g. ON2015)
-              "future"+d.key
-          )
-          .text (d) =>
-              ""
 
       futureArea.exit().remove()
 
