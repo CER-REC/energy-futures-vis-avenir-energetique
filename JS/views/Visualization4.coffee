@@ -56,7 +56,7 @@ class Visualization4
     root.tooltip = d3.select("body")
       .append("div")
       .attr(
-        id: "tooltiptest"
+        id: "tooltip"
         class: "chartTooltip"
       )
       .text("")
@@ -133,7 +133,7 @@ class Visualization4
       if current?
         titletobe = root.data.filter((value) -> value.year == current.year)
         titletobe = titletobe[0]
-        document.getElementById("tooltiptest").innerHTML = Tr.scenarioSelector.names[root.activeScenario][app.language] + " (" + current.year + "): " + titletobe.value.toFixed(2)
+        document.getElementById("tooltip").innerHTML = Tr.scenarioSelector.names[root.activeScenario][app.language] + " (" + current.year + "): " + titletobe.value.toFixed(2)
 
 
   redraw: ->
@@ -947,17 +947,17 @@ class Visualization4
     graphAreaSelectors =  graphAreaGroups.selectAll('.graphAreaPresent')
       .data(((d) -> [d]), ((d) -> d.key))
       .on "mouseover", (d) =>
-        document.getElementById("tooltiptest").style.visibility = "visible"
-        document.getElementById("tooltiptest").style.top = (d3.event.pageY-10) + "px"
-        document.getElementById("tooltiptest").style.left = (d3.event.pageX+10) + "px"
+        document.getElementById("tooltip").style.visibility = "visible"
+        document.getElementById("tooltip").style.top = (d3.event.pageY-10) + "px"
+        document.getElementById("tooltip").style.left = (d3.event.pageX+10) + "px"
         root.activeArea = "present"+d.data[0].scenario
         root.activeScenario = d.data[0].scenario
         root.data = d.data
       .on "mousemove", (d) =>
-        document.getElementById("tooltiptest").style.top = (d3.event.pageY-10) + "px"
-        document.getElementById("tooltiptest").style.left = (d3.event.pageX+10) + "px"
+        document.getElementById("tooltip").style.top = (d3.event.pageY-10) + "px"
+        document.getElementById("tooltip").style.left = (d3.event.pageX+10) + "px"
       .on "mouseout", (d) =>
-        document.getElementById("tooltiptest").style.visibility = "hidden"
+        document.getElementById("tooltip").style.visibility = "hidden"
         root.activeArea = null
         root.activeScenario = null
         root.data = null
@@ -978,17 +978,17 @@ class Visualization4
     graphFutureAreaSelectors =  graphAreaGroups.selectAll('.graphAreaFuture')
       .data(((d) -> [d]), ((d) -> d.key))
       .on "mouseover", (d) =>
-        document.getElementById("tooltiptest").style.visibility = "visible"
-        document.getElementById("tooltiptest").style.top = (d3.event.pageY-10) + "px"
-        document.getElementById("tooltiptest").style.left = (d3.event.pageX+10) + "px"
+        document.getElementById("tooltip").style.visibility = "visible"
+        document.getElementById("tooltip").style.top = (d3.event.pageY-10) + "px"
+        document.getElementById("tooltip").style.left = (d3.event.pageX+10) + "px"
         root.activeArea = "future"+d.data[0].scenario
         root.activeScenario = d.data[0].scenario
         root.data = d.data
       .on "mousemove", (d) =>
-        document.getElementById("tooltiptest").style.top = (d3.event.pageY-10) + "px"
-        document.getElementById("tooltiptest").style.left = (d3.event.pageX+10) + "px"
+        document.getElementById("tooltip").style.top = (d3.event.pageY-10) + "px"
+        document.getElementById("tooltip").style.left = (d3.event.pageX+10) + "px"
       .on "mouseout", (d) =>
-        document.getElementById("tooltiptest").style.visibility = "hidden"
+        document.getElementById("tooltip").style.visibility = "hidden"
         root.activeArea = null
         root.activeScenario = null
         root.data = null
