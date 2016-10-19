@@ -128,6 +128,7 @@ requestQueue = []
 processingRequests = false
 
 processNextRequest = ->
+  console.log('request')
   return if requestQueue.length == 0
 
   request = requestQueue.shift()
@@ -138,44 +139,49 @@ processNextRequest = ->
 
   try
 
-    webdriverUrlRequest = webdriverSession.url("http://localhost:4747/image/" + query)
+    webdriverSession.then ->
+    
+      webdriverUrlRequest = webdriverSession.url("http://localhost:4747/image/" + query)
 
-    webdriverUrlRequest.then ->
+      webdriverUrlRequest.then ->
 
-      # We've seen an issue where the font has not loaded in time for the screenshot, and
-      # so none of the text is rendered. The 50ms timeout is intended to compensate for this.
-      # This is not an ideal solution, but detecting font loading is hard, and this is simple.
-      # The issue occurred in maybe 1 request in 20.
-      # Other options: include the font as a data URI, try the CSS3 document.fontloader API
-      setTimeout ->
+        console.log('after url')
 
-        try
-          buffer = webdriverUrlRequest.saveScreenshot()
+      
+        # We've seen an issue where the font has not loaded in time for the screenshot, and
+        # so none of the text is rendered. The 50ms timeout is intended to compensate for this.
+        # This is not an ideal solution, but detecting font loading is hard, and this is simple.
+        # The issue occurred in maybe 1 request in 20.
+        # Other options: include the font as a data URI, try the CSS3 document.fontloader API
+        setTimeout ->
 
-          buffer.then (screenshotBuffer) ->
-            try            
-              request.res.setHeader "content-type", "image/png"
-              request.res.write(screenshotBuffer)
-              request.res.end()
+          try
+            buffer = webdriverUrlRequest.saveScreenshot()
 
-              # result.log('browser').then (messages) ->
-              #   messages.value.map (m) -> 
-              #     console.log m.message if typeof m.message == 'string'
+            buffer.then (screenshotBuffer) ->
+              try            
+                request.res.setHeader "content-type", "image/png"
+                request.res.write(screenshotBuffer)
+                request.res.end()
 
-              console.log "Time: #{Date.now() - request.time}"
+                # result.log('browser').then (messages) ->
+                #   messages.value.map (m) -> 
+                #     console.log m.message if typeof m.message == 'string'
 
-              if requestQueue.length > 0
-                processNextRequest() 
-              else
-                processingRequests = false
+                console.log "Time: #{Date.now() - request.time}"
 
-            catch error
-              errorHandler(error, request)
+                if requestQueue.length > 0
+                  processNextRequest() 
+                else
+                  processingRequests = false
 
-        catch error
-          errorHandler(error, request)
+              catch error
+                errorHandler(error, request)
 
-      , 50
+          catch error
+            errorHandler(error, request)
+
+        , 50
   catch error
     errorHandler(error, request)
 
