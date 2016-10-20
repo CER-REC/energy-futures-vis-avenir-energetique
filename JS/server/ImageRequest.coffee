@@ -19,11 +19,34 @@ class ImageRequest
 
 
 
+  # handleRequest starts the sequence of calls to take care of the request
+  
+  # Only Phantom implements true promises, which is why this is structured as a set of
+  # callbacks rather than a promise chain.
 
-  loadUrl: (webdriverSession) ->
-    @webdriverSession = webdriverSession
+  # No matter what, we need to call done() when we are done.
 
-    @webdriverUrlRequest = @webdriverSession.url("http://localhost:4747/image/#{@query}")
+  handleRequest: (browserTools, done) ->
+    @browserTools = browserTools
+    @done = done
+
+    @awaitPhantom()
+
+
+  awaitPhantom: ->
+    @browserTools.phantomPromise.then @awaitWebdriver
+
+    .catch @errorHandler
+
+
+  awaitWebdriver: =>
+    @browserTools.webdriverSession.then @loadUrl
+    
+    .catch @errorHandler
+
+
+  loadUrl: =>
+    @webdriverUrlRequest = @browserTools.webdriverSession.url("http://localhost:4747/html_image/#{@query}")
 
     @webdriverUrlRequest.then =>
 
@@ -34,12 +57,14 @@ class ImageRequest
       # Other options: include the font as a data URI, try the CSS3 document.fontloader API
       setTimeout @saveScreenshot, 50
 
-
+    .catch @errorHandler
 
 
   saveScreenshot: =>
     @webdriverScreenshotRequest = @webdriverUrlRequest.saveScreenshot()
     @webdriverScreenshotRequest.then @writeResponse
+    
+    .catch @errorHandler
 
 
   writeResponse: (screenshotBuffer) =>
@@ -47,8 +72,18 @@ class ImageRequest
     @res.write(screenshotBuffer)
     @res.end()
 
+    @done()
+
     console.log "Time: #{Date.now() - @time}"
 
+
+
+  errorHandler: (error) =>
+    console.log "That's an error: "
+    console.log error.message
+    # TODO: write to response? 
+
+    @done()
 
 
 

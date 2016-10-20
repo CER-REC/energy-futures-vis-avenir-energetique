@@ -1,4 +1,4 @@
-processRequest = require './processRequest.coffee'
+processImageRequest = require './processImageRequest.coffee'
 ImageRequest = require './ImageRequest.coffee'
 
 rootHandler = (req, res, serverState) ->
@@ -11,7 +11,7 @@ rootHandler = (req, res, serverState) ->
 
   if serverState.processingRequests == false
     serverState.processingRequests = true
-    processRequest serverState 
+    processImageRequest serverState 
 
 
 

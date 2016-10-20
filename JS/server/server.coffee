@@ -18,7 +18,6 @@ serverState =
   processingRequests: false
 
 
-
 app = express()
 
 # TODO: Should these use paths derived from ApplicationRoot?
@@ -26,11 +25,11 @@ app.use(express.static(path.join(__dirname, '../../public')))
 app.use(express.static(path.join(__dirname, '../../../energy-futures-private-resources')))
 
 # Endpoint for PNG generation
-app.get '/', (req, res) ->
+app.get '/png_image', (req, res) ->
   rootHandler req, res, serverState
 
 # Endpoint for HTML generation, for consumption by Phantom to become the PNG
-app.get '/image', imageHandler
+app.get '/html_image', imageHandler
 
 
 
