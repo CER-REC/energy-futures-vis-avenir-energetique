@@ -1,4 +1,4 @@
-La version française suit.
+La version Française suit.
 
 # Exploring Canada's Energy Future Visualization
 

@@ -11,7 +11,7 @@ class OilProductionProvider
     @data = null
     @loadedCallback = loadedCallback
 
-    d3.csv "CSV/crude oil production VIZ.csv", @csvMapping, @parseData
+    d3.csv "CSV/2016-01_CrudeOilProduction.csv", @csvMapping, @parseData
   
 
 

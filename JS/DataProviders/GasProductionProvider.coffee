@@ -12,7 +12,7 @@ class GasProductionProvider
     @data = null
     @loadedCallback = loadedCallback
 
-    d3.csv "CSV/Natural gas production VIZ.csv", @csvMapping, @parseData
+    d3.csv "CSV/2016-01_NaturalGasProduction.csv", @csvMapping, @parseData
   
 
 
