@@ -40,59 +40,27 @@ phantomPromise.then =>
 
 
 
-
 processRequest = (serverState) ->
-
   return if serverState.requestQueue.length == 0
-
-  request = serverState.requestQueue.shift()
-
-  # Extract the query parameters, and pass them through to the request we will have 
-  # Phantom make of our image page building endpoint.
-  query = url.parse(request.req.url).search
+  imageRequest = serverState.requestQueue.shift()
 
   try
-    webdriverSession.then ->
-      webdriverUrlRequest = webdriverSession.url("http://localhost:4747/image/" + query)
+    imageRequest.loadUrl()
+    imageRequest.saveScreenshot()
+    imageRequest.writeResponse()
 
-      webdriverUrlRequest.then ->
+    if serverState.requestQueue.length > 0
+      processRequest serverState
+    else
+      serverState.processingRequests = false
 
-        # We've seen an issue where the font has not loaded in time for the screenshot, and
-        # so none of the text is rendered. The 50ms timeout is intended to compensate for this.
-        # This is not an ideal solution, but detecting font loading is hard, and this is simple.
-        # The issue occurred in maybe 1 request in 20.
-        # Other options: include the font as a data URI, try the CSS3 document.fontloader API
-        setTimeout ->
-
-          try
-            buffer = webdriverUrlRequest.saveScreenshot()
-
-            buffer.then (screenshotBuffer) ->
-              try            
-                request.res.setHeader "content-type", "image/png"
-                request.res.write(screenshotBuffer)
-                request.res.end()
-
-                # result.log('browser').then (messages) ->
-                #   messages.value.map (m) -> 
-                #     console.log m.message if typeof m.message == 'string'
-
-                console.log "Time: #{Date.now() - request.time}"
-
-                if serverState.requestQueue.length > 0
-                  processRequest(serverState) 
-                else
-                  serverState.processingRequests = false
-
-              catch error
-                errorHandler(error, request, serverState)
-
-          catch error
-            errorHandler(error, request, serverState)
-
-        , 50
   catch error
-    errorHandler(error, request, serverState)
+    errorHandler error, request, serverState
+
+
+
+
+
 
 
 # TODO: Best name ever! fixme ... 

@@ -96,7 +96,8 @@ imageHandler = (req, res) ->
 
         params = PrepareQueryParams queryString.parse(query)
 
-
+        # Parse the parameters with a configuration object, and then hand them off to a
+        # visualization object. The visualizations render the graphs in their constructors.
         switch req.query.page
           when 'viz1'
             config = new Visualization1Configuration(serverApp, params)
@@ -113,7 +114,7 @@ imageHandler = (req, res) ->
           when 'viz4'
             config = new Visualization4Configuration(serverApp, params)
             viz = new Visualization4(serverApp, config)
-
+          # TODO: handle error case where page is not specified?
 
 
 
