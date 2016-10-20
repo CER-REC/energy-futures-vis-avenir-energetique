@@ -22,7 +22,12 @@ public
 │   ├── 2016-01_ElectricityGeneration.csv
 │   ├── 2016-01_NaturalGasProduction.csv
 │   ├── 2016-01_CrudeOilProduction.csv
-│   └── 2016-01_EnergyDemand.csv
+│   ├── 2016-01_EnergyDemand.csv
+│   ├── 2016-10-18_CanadasEnergyFutureVisualizationData.zip
+│   ├── 2016-10-19_ElectricityGeneration.csv
+│   ├── 2016-10-18_NaturalGasProduction.csv
+│   ├── 2016-10-18_CrudeOilProduction.csv
+│   └── 2016-10-18_EnergyDemand.csv
 ├── IMG
 │   └── ...
 ├── PDF
