@@ -64,9 +64,9 @@ module.exports =
     'reference'
     'high'
     'low'
-    'highLng'
-    'noLng'
-    'constrained' 
+    # 'highLng'
+    # 'noLng'
+    # 'constrained' 
   ]
 
   years: [

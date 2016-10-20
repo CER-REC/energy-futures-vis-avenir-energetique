@@ -365,35 +365,38 @@ class Visualization4
       scenarioName: 'high'
       class: if @config.scenarios.includes 'high' then 'vizButton selected high' else 'vizButton high'
       colour: '#0C2C84'
-    highLng = 
-      label: Tr.scenarioSelector.highLngButton[app.language]
-      scenarioName: 'highLng'
-      class: if @config.scenarios.includes 'highLng' then 'vizButton selected highLng' else 'vizButton highLng'
-      colour: '#225EA8'
-    constrained = 
-      label: Tr.scenarioSelector.constrainedButton[app.language]
-      scenarioName: 'constrained'
-      class: if @config.scenarios.includes 'constrained' then 'vizButton selected constrained' else 'vizButton constrained'
-      colour: '#41B6C4'
+    # highLng = 
+    #   label: Tr.scenarioSelector.highLngButton[app.language]
+    #   scenarioName: 'highLng'
+    #   class: if @config.scenarios.includes 'highLng' then 'vizButton selected highLng' else 'vizButton highLng'
+    #   colour: '#225EA8'
+    # constrained = 
+    #   label: Tr.scenarioSelector.constrainedButton[app.language]
+    #   scenarioName: 'constrained'
+    #   class: if @config.scenarios.includes 'constrained' then 'vizButton selected constrained' else 'vizButton constrained'
+    #   colour: '#41B6C4'
     low = 
       label: Tr.scenarioSelector.lowPriceButton[app.language]
       scenarioName: 'low'
       class: if @config.scenarios.includes 'low' then 'vizButton selected low' else 'vizButton low'
       colour: '#7FCDBB'
-    noLng = 
-      label: Tr.scenarioSelector.noLngButton[app.language]
-      scenarioName: 'noLng'
-      class: if @config.scenarios.includes 'noLng' then 'vizButton selected noLng' else 'vizButton noLng'
-      colour: '#C7E9B4'
+    # noLng = 
+    #   label: Tr.scenarioSelector.noLngButton[app.language]
+    #   scenarioName: 'noLng'
+    #   class: if @config.scenarios.includes 'noLng' then 'vizButton selected noLng' else 'vizButton noLng'
+    #   colour: '#C7E9B4'
 
 
-    switch @config.mainSelection
-      when 'energyDemand', 'electricityGeneration'
-        [reference, high, highLng, constrained, low, noLng]
-      when 'oilProduction'
-        [reference, high, constrained, low]
-      when 'gasProduction'
-        [reference, high, highLng, low, noLng]
+    [reference, high, low]
+    # The original data had six scenarios, the revised data currently only has three.
+    # We expect this state of affairs to be temporary! 
+    # switch @config.mainSelection
+    #   when 'energyDemand', 'electricityGeneration'
+    #     [reference, high, highLng, constrained, low, noLng]
+    #   when 'oilProduction'
+    #     [reference, high, constrained, low]
+    #   when 'gasProduction'
+    #     [reference, high, highLng, low, noLng]
 
 
     # TODO: merge graphdata and graphscenario data, its dumb =/
@@ -417,26 +420,30 @@ class Visualization4
     high=
       key: 'high'
       colour: '#0C2C84'
-    highLng=
-      key: 'highLng'
-      colour: '#225EA8'
-    constrained=
-      key: 'constrained'
-      colour: '#41B6C4'
+    # highLng=
+    #   key: 'highLng'
+    #   colour: '#225EA8'
+    # constrained=
+    #   key: 'constrained'
+    #   colour: '#41B6C4'
     low=
       key: 'low'
       colour: '#7FCDBB'
-    noLng=
-      key: 'noLng'
-      colour: '#C7E9B4'
+    # noLng=
+    #   key: 'noLng'
+    #   colour: '#C7E9B4'
 
-    switch @config.mainSelection
-      when 'energyDemand', 'electricityGeneration'
-        scenariosInOrder = [reference, high, highLng, constrained, low, noLng]
-      when 'oilProduction'
-        scenariosInOrder = [reference, high, constrained, low]
-      when 'gasProduction'
-        scenariosInOrder = [reference, high, highLng, low, noLng]
+
+    scenariosInOrder = [reference, high, low]
+    # The original data had six scenarios, the revised data currently only has three.
+    # We expect this state of affairs to be temporary! 
+    # switch @config.mainSelection
+    #   when 'energyDemand', 'electricityGeneration'
+    #     scenariosInOrder = [reference, high, highLng, constrained, low, noLng]
+    #   when 'oilProduction'
+    #     scenariosInOrder = [reference, high, constrained, low]
+    #   when 'gasProduction'
+    #     scenariosInOrder = [reference, high, highLng, low, noLng]
 
     graphData = @graphData()
     currentGraphScenarioData = []

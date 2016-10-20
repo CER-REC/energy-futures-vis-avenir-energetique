@@ -12,7 +12,8 @@ class ElectricityProductionProvider
     @data = null
     @loadedCallback = loadedCallback
 
-    d3.csv "CSV/ElectricityGeneration_VIZ.csv", @csvMapping, @parseData
+    d3.csv "CSV/2016-10-19_ElectricityGeneration.csv", @csvMapping, @parseData
+    # d3.csv "CSV/2016-01_ElectricityGeneration.csv", @csvMapping, @parseData
   
 
 

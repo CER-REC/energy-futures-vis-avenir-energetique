@@ -101,14 +101,19 @@ class Visualization1Configuration
     @updateRouter()
 
   setScenario: (scenario) ->
-    allowableScenarios = []
-    switch @mainSelection
-      when 'energyDemand', 'electricityGeneration'
-        allowableScenarios = Constants.scenarios
-      when 'oilProduction'
-        allowableScenarios = ['reference', 'constrained', 'high', 'low']
-      when 'gasProduction'
-        allowableScenarios = ['reference', 'high', 'low', 'highLng', 'noLng']
+    allowableScenarios = ['reference', 'high', 'low']
+
+    # The original data had six scenarios, the revised data currently only has three.
+    # We expect this state of affairs to be temporary! 
+    # allowableScenarios = []
+    # switch @mainSelection
+    #   when 'energyDemand', 'electricityGeneration'
+    #     allowableScenarios = Constants.scenarios
+    #   when 'oilProduction'
+    #     allowableScenarios = ['reference', 'constrained', 'high', 'low']
+    #   when 'gasProduction'
+    #     allowableScenarios = ['reference', 'high', 'low', 'highLng', 'noLng']
+    
     if allowableScenarios.includes scenario
       @scenario = scenario
     else
