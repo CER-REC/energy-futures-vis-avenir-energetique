@@ -46,7 +46,7 @@ processImageRequest = (serverState) ->
 
   imageRequest.handleRequest browserTools, ->
     if serverState.requestQueue.length > 0
-      processRequest serverState
+      processImageRequest serverState
     else
       serverState.processingRequests = false
 
