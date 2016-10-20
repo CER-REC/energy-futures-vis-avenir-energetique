@@ -548,72 +548,112 @@ module.exports =
       en: 'SCENARIOS'
       fr: 'SCÉNARIOS'
 
-  # The original data had six scenarios, the revised data currently only has three.
-  # We expect this state of affairs to be temporary! 
-  # TODO: The scenario selector help section still needs to be cut down. 
 
     scenarioSelectorHelp:
       en: """
         <p> 
-          The projections in EF 2016 include a Reference Case, two price sensitivity cases and three supplemental sensitivity cases:
+          The projections include three supplemental sensitivity cases:
         </p>
-        <div class="columnLeft">  
-          <div class="sectionHeader"> REFERENCE </div>  
-            <p>
-              The Reference Case provides a baseline outlook, based on a moderate view of future energy prices and economic growth.
-            </p>
-          <div class="sectionHeader"> HIGH PRICE </div>  
-            <p>  
-              A price case with higher oil and natural gas prices capture some of the uncertainty related to future energy prices.
-            </p>
-          <div class="sectionHeader"> LOW PRICE </div>  
-            <p>  
-              A price case with lower oil and natural gas prices capture some of the uncertainty related to future energy prices.
-            </p>
-        </div>
-        <div class="columnRight">  
-          <div class="sectionHeader"> CONSTRAINED </div>  
-            <p>
-              The EF 2016 report considers a case where no new major oil pipelines are built over the projection period to address uncertainties related to future oil export infrastructure. 
-            </p>
-          <div class="sectionHeader"> LNG </div>  
-            <p>
-              The uncertainty related to eventual volumes of liquefied natural gas (LNG) exports is explored in two additional cases.
-            </p>
-        </div>
+        <div class="sectionHeader"> REFERENCE </div>  
+        <p>
+          The Reference Case provides a baseline outlook, based on a moderate view of future energy prices and economic growth.
+        </p>
+        <div class="sectionHeader"> HIGH PRICE </div>  
+        <p>  
+          A price case with higher oil and natural gas prices capture some of the uncertainty related to future energy prices.
+        </p>
+        <div class="sectionHeader"> LOW PRICE </div>  
+        <p>  
+          A price case with lower oil and natural gas prices capture some of the uncertainty related to future energy prices.
+        </p>
       """
       fr: """
         <p>
-          Le rapport AE 2016 renferme une projection de l’évolution de l’offre et de la demande énergétiques future au Canada. Pour prendre en compte les multiples incertitudes et facteurs pouvant influer sur cette évolution, le rapport AE 2016 explore six scénarios prévisionnels bâtis à partir de diverses hypothèses. Cette analyse démontre les incidences des divers facteurs sur l’évolution de la filière énergétique, ainsi que les répercussions possibles des incertitudes actuelles sur les résultats à long terme.
+          Les projections comprennent trois scénarios :
         </p>
+        <div class="sectionHeader"> RÉFÉRENCE </div>  
         <p>
-          Les projections du rapport AE comprennent un scénario de référence, cinq scénarios de sensibilité, dont deux liés au prix :
+          Le scénario de référence offre une perspective de base et mise sur une projection modérée des prix de l’énergie et de la croissance de l’économie dans les années à venir.
         </p>
-        <div class="columnLeft">  
-          <div class="sectionHeader"> RÉFÉRENCE </div>  
-            <p>
-              Le scénario de référence offre une perspective de base et mise sur une projection modérée des prix de l’énergie et de la croissance de l’économie dans les années à venir.
-            </p>
-          <div class="sectionHeader"> PRIX ÉLEVÉ </div>  
-            <p>  
-              Un premier scénario lié aux prix prévoit des prix du pétrole et du gaz naturel plus élevés et prend en compte certaines incertitudes qui ont trait aux prix futurs de l’énergie.
-            </p>
-          <div class="sectionHeader"> PRIX BAS </div>  
-            <p>  
-              Un second scénario lié aux prix table sur des prix du pétrole et du gaz naturel moins élevés et intègre certaines incertitudes concernant les prix futurs de l’énergie.
-            </p>
-        </div>
-        <div class="columnRight">  
-          <div class="sectionHeader"> CAPACITÉ LIMITÉE </div>  
-            <p>
-              Le rapport AE 2016 prend aussi en considération des incertitudes relatives à l’infrastructure d’exportation du pétrole et propose un scénario dans lequel aucun pipeline d’envergure n’est construit durant la période de projection. 
-            </p>
-          <div class="sectionHeader"> GNL </div>  
-            <p>
-              Deux autres scénarios explorent les incertitudes entourant les éventuelles exportations de gaz naturel liquéfié (GNL).
-            </p>
-        </div>
+        <div class="sectionHeader"> PRIX ÉLEVÉ </div>  
+        <p>  
+          Un premier scénario lié aux prix prévoit des prix du pétrole et du gaz naturel plus élevés et prend en compte certaines incertitudes qui ont trait aux prix futurs de l’énergie.
+        </p>
+        <div class="sectionHeader"> PRIX BAS </div>  
+        <p>  
+          Un second scénario lié aux prix table sur des prix du pétrole et du gaz naturel moins élevés et intègre certaines incertitudes concernant les prix futurs de l’énergie.
+        </p>
       """
+
+    # The original data had six scenarios, the revised data currently only has three.
+    # We expect this state of affairs to be temporary! 
+    # The original content below should be restored when the data for the other three 
+    # scenarios is finished
+
+    # scenarioSelectorHelp:
+    #   en: """
+    #     <p> 
+    #       The projections in EF 2016 include a Reference Case, two price sensitivity cases and three supplemental sensitivity cases:
+    #     </p>
+    #     <div class="columnLeft">  
+    #       <div class="sectionHeader"> REFERENCE </div>  
+    #         <p>
+    #           The Reference Case provides a baseline outlook, based on a moderate view of future energy prices and economic growth.
+    #         </p>
+    #       <div class="sectionHeader"> HIGH PRICE </div>  
+    #         <p>  
+    #           A price case with higher oil and natural gas prices capture some of the uncertainty related to future energy prices.
+    #         </p>
+    #       <div class="sectionHeader"> LOW PRICE </div>  
+    #         <p>  
+    #           A price case with lower oil and natural gas prices capture some of the uncertainty related to future energy prices.
+    #         </p>
+    #     </div>
+    #     <div class="columnRight">  
+    #       <div class="sectionHeader"> CONSTRAINED </div>  
+    #         <p>
+    #           The EF 2016 report considers a case where no new major oil pipelines are built over the projection period to address uncertainties related to future oil export infrastructure. 
+    #         </p>
+    #       <div class="sectionHeader"> LNG </div>  
+    #         <p>
+    #           The uncertainty related to eventual volumes of liquefied natural gas (LNG) exports is explored in two additional cases.
+    #         </p>
+    #     </div>
+    #   """
+    #   fr: """
+    #     <p>
+    #       Le rapport AE 2016 renferme une projection de l’évolution de l’offre et de la demande énergétiques future au Canada. Pour prendre en compte les multiples incertitudes et facteurs pouvant influer sur cette évolution, le rapport AE 2016 explore six scénarios prévisionnels bâtis à partir de diverses hypothèses. Cette analyse démontre les incidences des divers facteurs sur l’évolution de la filière énergétique, ainsi que les répercussions possibles des incertitudes actuelles sur les résultats à long terme.
+    #     </p>
+    #     <p>
+    #       Les projections du rapport AE comprennent un scénario de référence, cinq scénarios de sensibilité, dont deux liés au prix :
+    #     </p>
+    #     <div class="columnLeft">  
+    #       <div class="sectionHeader"> RÉFÉRENCE </div>  
+    #         <p>
+    #           Le scénario de référence offre une perspective de base et mise sur une projection modérée des prix de l’énergie et de la croissance de l’économie dans les années à venir.
+    #         </p>
+    #       <div class="sectionHeader"> PRIX ÉLEVÉ </div>  
+    #         <p>  
+    #           Un premier scénario lié aux prix prévoit des prix du pétrole et du gaz naturel plus élevés et prend en compte certaines incertitudes qui ont trait aux prix futurs de l’énergie.
+    #         </p>
+    #       <div class="sectionHeader"> PRIX BAS </div>  
+    #         <p>  
+    #           Un second scénario lié aux prix table sur des prix du pétrole et du gaz naturel moins élevés et intègre certaines incertitudes concernant les prix futurs de l’énergie.
+    #         </p>
+    #     </div>
+    #     <div class="columnRight">  
+    #       <div class="sectionHeader"> CAPACITÉ LIMITÉE </div>  
+    #         <p>
+    #           Le rapport AE 2016 prend aussi en considération des incertitudes relatives à l’infrastructure d’exportation du pétrole et propose un scénario dans lequel aucun pipeline d’envergure n’est construit durant la période de projection. 
+    #         </p>
+    #       <div class="sectionHeader"> GNL </div>  
+    #         <p>
+    #           Deux autres scénarios explorent les incertitudes entourant les éventuelles exportations de gaz naturel liquéfié (GNL).
+    #         </p>
+    #     </div>
+    #   """
+
+
     names:
       reference:
         en: 'REFERENCE'
