@@ -547,6 +547,11 @@ module.exports =
     scenarioSelectorHelpTitle:
       en: 'SCENARIOS'
       fr: 'SCÉNARIOS'
+
+  # The original data had six scenarios, the revised data currently only has three.
+  # We expect this state of affairs to be temporary! 
+  # TODO: The scenario selector help section still needs to be cut down. 
+
     scenarioSelectorHelp:
       en: """
         <p> 
@@ -881,7 +886,7 @@ module.exports =
         Directly compare the scenarios. 
       </p>
       <p>
-        Explore the impact of key uncertainties on future energy trends, such as higher or lower energy prices, higher LNG exports or No LNG exports, or not building crude oil export pipelines.
+        Explore the impact of key uncertainties on future energy trends, such as higher or lower energy prices.
       </p>
     """
     fr: """
@@ -890,9 +895,31 @@ module.exports =
         Comparez directement les scénarios. 
       </p>
       <p>
-        Analysez l’incidence des principales incertitudes sur l’évolution future de l’énergie, par exemple en fonction de prix plus élevés ou plus bas, d’exportations plus élevées de GNL, ou l’absence d’exportations de GNL, ou encore l’absence de nouveaux de pipelines d’exportation de pétrole brut.
+        Analysez l’incidence des principales incertitudes sur l’évolution future de l’énergie, par exemple en fonction de prix plus élevés ou plus bas.
       </p>
     """
+
+    # The original data had six scenarios, the revised data currently only has three.
+    # We expect this state of affairs to be temporary! 
+    # Content below is for the six scenario version. 
+    # en: """
+    #   <h4 class="viz4HelpTitle">  EXPLORE SCENARIOS </h4>
+    #   <p>  
+    #     Directly compare the scenarios. 
+    #   </p>
+    #   <p>
+    #     Explore the impact of key uncertainties on future energy trends, such as higher or lower energy prices, higher LNG exports or No LNG exports, or not building crude oil export pipelines.
+    #   </p>
+    # """
+    # fr: """
+    #   <h4 class="viz4HelpTitle"> EXPLORATION DES SCÉNARIOS </h4>
+    #   <p>
+    #     Comparez directement les scénarios. 
+    #   </p>
+    #   <p>
+    #     Analysez l’incidence des principales incertitudes sur l’évolution future de l’énergie, par exemple en fonction de prix plus élevés ou plus bas, d’exportations plus élevées de GNL, ou l’absence d’exportations de GNL, ou encore l’absence de nouveaux de pipelines d’exportation de pétrole brut.
+    #   </p>
+    # """
 
 
 
