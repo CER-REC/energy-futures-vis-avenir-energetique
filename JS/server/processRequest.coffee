@@ -8,6 +8,8 @@ url = require 'url'
 # Start an instance of Phantom, and store a reference to the session. We'll re-use the 
 # Phantom instance over the lifetime of the server.
 
+console.log 'mkay'
+
 phantomPromise = phantomjs.run '--webdriver=4444'
 
 webdriverSession = null
@@ -18,6 +20,8 @@ webdriverSession = null
 # https://github.com/webdriverio/webdriverio/issues/1431
 
 phantomPromise.then => 
+
+  console.log 'phantom setup ... '
 
   wdOpts = { desiredCapabilities: { browserName: 'phantomjs' } }
   webdriverSession = webdriverio.remote(wdOpts).init()
@@ -32,6 +36,7 @@ phantomPromise.then =>
   webdriverSession.setViewportSize
     width: 1200
     height: 900
+  console.log 'WDIO setup ... '
 
 # TODO: Handle this case?
 # phantomPromise.catch (err) ->
@@ -44,18 +49,19 @@ processRequest = (serverState) ->
   return if serverState.requestQueue.length == 0
   imageRequest = serverState.requestQueue.shift()
 
-  try
-    imageRequest.loadUrl()
-    imageRequest.saveScreenshot()
-    imageRequest.writeResponse()
+  webdriverSession.then ->
+    try
+      imageRequest.loadUrl(webdriverSession)
+      # imageRequest.saveScreenshot()
+      # imageRequest.writeResponse()
 
-    if serverState.requestQueue.length > 0
-      processRequest serverState
-    else
-      serverState.processingRequests = false
+      if serverState.requestQueue.length > 0
+        processRequest serverState
+      else
+        serverState.processingRequests = false
 
-  catch error
-    errorHandler error, request, serverState
+    catch error
+      errorHandler error, imageRequest, serverState
 
 
 
@@ -64,9 +70,9 @@ processRequest = (serverState) ->
 
 
 # TODO: Best name ever! fixme ... 
-errorHandler = (error, request, serverState) ->
+errorHandler = (error, imageRequest, serverState) ->
 
-  console.error "Error completing request: #{request.req.url}"
+  console.error "Error completing request: #{imageRequest.req.url}"
   console.error error
 
   # In the event of an error, we still need to set the server up to process later requests
