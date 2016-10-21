@@ -1,4 +1,6 @@
 d3 = require 'd3'
+_ = require 'lodash'
+
 visualization = require './visualization.coffee'
 stackedBarChart = require '../charts/stacked-bar-chart.coffee'
 squareMenu = require '../charts/square-menu.coffee'

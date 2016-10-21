@@ -1,4 +1,6 @@
 d3 = require 'd3'
+_ = require 'lodash'
+
 visualization = require './visualization.coffee'
 unitUtilities = require '../unit-transformation.coffee'
 arrayUtilities = require '../array-utilities.coffee'
