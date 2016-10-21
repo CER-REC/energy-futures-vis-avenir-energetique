@@ -3,11 +3,22 @@ squareMenu = require './square-menu.coffee'
 _ = require 'lodash'
 barChart = require './bar-chart.coffee'
 
+root = exports ? this
+
 class stackedBarChart extends barChart
   stackedChartDefaults: 
     menuOptions: {}
 
   constructor:(parent, x, y, options = {}) ->
+
+    root.tooltip = d3.select("body")
+      .append("div")
+      .attr(
+        id: "tooltip"
+        class: "chartTooltip"
+      )
+      .text("")
+
     @options = _.extend {}, @stackedChartDefaults, options
     @_stackData = []
     @_stackDictionary = {}
@@ -48,7 +59,7 @@ class stackedBarChart extends barChart
     @_stackDictionary = {}
     stack = d3.layout.stack()
       .values((d) -> d.values)
-    if @_mapping? and @_data != {} 
+    if @_mapping? and @_data != {}
       for province in @_mapping
         provinceData = 
           name: province.key
@@ -75,10 +86,22 @@ class stackedBarChart extends barChart
           .attr("class", "layer")
           .style("fill", (d, i) =>
             if @_mapping then d.colour else '#333333')
-          .append('title').text (d) ->
-            d.tooltip
       rect = layer.selectAll(".bar")
           .data(((d, i) =>  @_stackDictionary[d.key].values.map((yearData) -> {name: d.key, data: yearData})))
+          .on "mouseover", (d) =>
+            document.getElementById("tooltip").style.visibility = "visible"
+            document.getElementById("tooltip").style.top = (d3.event.pageY-10) + "px"
+            document.getElementById("tooltip").style.left = (d3.event.pageX+10) + "px"
+            document.getElementById("tooltip").innerHTML = d.name + " (" + d.data.x + "): "+ d.data.y.toFixed(2)
+
+          .on "mousemove", (d) =>
+            document.getElementById("tooltip").style.top = (d3.event.pageY-10) + "px"
+            document.getElementById("tooltip").style.left = (d3.event.pageX+10) + "px"
+            document.getElementById("tooltip").innerHTML = d.name + " (" + d.data.x + "): "+ d.data.y.toFixed(2)
+
+          .on "mouseout", (d) =>
+            document.getElementById("tooltip").style.visibility = "hidden"
+
       rect.enter().append("rect")
           .attr(
             y: (d, i, j) =>
@@ -90,6 +113,7 @@ class stackedBarChart extends barChart
               if d.data.x > 2014
                 1 - i/(@_x.domain().length + 5)
             )
+
       rect.attr
         x: (d, i) =>
           @_x(d.data.x) 

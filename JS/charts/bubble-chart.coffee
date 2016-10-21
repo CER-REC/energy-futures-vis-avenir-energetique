@@ -3,6 +3,8 @@ chart =  require './chart.coffee'
 squareMenu = require './square-menu.coffee'
 _ = require 'lodash'
 
+root = exports ? this
+
 class bubbleChart extends chart
   bubbleChartDefaults:
     mapping: []
@@ -11,12 +13,27 @@ class bubbleChart extends chart
       canDrag: false
 
   constructor: (parent, options = {}) ->
+
+    root.tooltip = d3.select("body")
+      .append("div")
+      .attr(
+        id: "tooltip"
+        class: "chartTooltip"
+      )
+      .text("")
+
     @options = _.extend {}, @bubbleChartDefaults, options
     @_mapping = @options.mapping
+    @_year = @options.year
     super(parent, @options)
     @options.menuOptions.chart = this
     @menu = new squareMenu(@options.menuParent, @options.menuOptions)
     @redraw()
+
+  year: (d) ->
+    if !arguments.length
+      return @_year
+    @_year = d
 
   data: (d) ->
     if !arguments.length
@@ -56,7 +73,22 @@ class bubbleChart extends chart
 
     node = @_group.selectAll('.node')
       .data(@bubble().nodes(@_data), (d) -> d.name)
-    
+      .on "mouseover", (d) =>
+        if(d.depth == 2)
+          document.getElementById("tooltip").style.visibility = "visible"
+          document.getElementById("tooltip").style.top = (d3.event.pageY-10) + "px"
+          document.getElementById("tooltip").style.left = (d3.event.pageX+10) + "px"
+          document.getElementById("tooltip").innerHTML = d.name + " (" + @_year + "): "+ d.size.toFixed(2)
+
+      .on "mousemove", (d) =>
+        if(d.depth == 2)
+          document.getElementById("tooltip").style.top = (d3.event.pageY-10) + "px"
+          document.getElementById("tooltip").style.left = (d3.event.pageX+10) + "px"
+          document.getElementById("tooltip").innerHTML = d.name + " (" + @_year + "): "+ d.size.toFixed(2)
+
+      .on "mouseout", (d) =>
+        document.getElementById("tooltip").style.visibility = "hidden"
+
     enterSelection = node.enter().append('g')
       .attr
         class: 'node'
@@ -82,10 +114,7 @@ class bubbleChart extends chart
 
     enterSelection.filter((d) -> d.depth == 1 ).append('g')
           
-    enterSelection.select('g').append('image')  
-
-    node.filter((d) -> d.depth == 2 ).select('circle').append('title')
-      .text((d) -> d.name + ": " + d3.format('.3f')(d.size))
+    enterSelection.select('g').append('image')
 
     node.filter((d) -> d.depth == 2 ).select('circle').on 'click', (d, i) ->
       if d3.selectAll(".toolTip#{d.id}").empty() 
