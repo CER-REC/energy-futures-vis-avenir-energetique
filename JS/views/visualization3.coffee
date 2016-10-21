@@ -915,6 +915,8 @@ class Visualization3 extends visualization
         y: @_margin.top
       data:
         @seriesData
+      year:
+        @config.year
       groupId:
         'graphGroup'
       mapping:
@@ -950,6 +952,7 @@ class Visualization3 extends visualization
     @_chart.menu.someSelected(@getSelectionState().someSelected)
     @_chart.menu.allSelected(@getSelectionState().allSelected)
     @_chart.mapping(@dataForStackMenu())
+    @_chart.year(@config.year)
     @_chart.data(@seriesData)
 
   # When swapping between views (province and type) we need to regenerate the menus

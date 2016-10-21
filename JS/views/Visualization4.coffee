@@ -705,6 +705,8 @@ class Visualization4
         @renderScenariosSelector()
         @renderYAxis()
         @renderGraph()
+        @renderScenariosSelector()
+        @renderGraph()
 
     scenariosSelectors.html (d) ->
       "<button class='#{d.class}' type='button' title='#{d.title}'>#{d.label}</button>"
