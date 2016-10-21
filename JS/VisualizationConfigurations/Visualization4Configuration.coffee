@@ -6,13 +6,16 @@ class Visualization4Configuration
   defaultOptions: 
     mainSelection: 'gasProduction'
     unit: 'petajoules'
+
+    # The original data had six scenarios, the revised data currently only has three.
+    # We expect this state of affairs to be temporary! 
     scenarios: [
       'reference'
-      'constrained'
+      # 'constrained'
       'high'
       'low'
-      'highLng'
-      'noLng'
+      # 'highLng'
+      # 'noLng'
     ]
     province: 'all'
 

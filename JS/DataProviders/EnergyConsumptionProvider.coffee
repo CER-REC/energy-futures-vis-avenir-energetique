@@ -11,7 +11,8 @@ class EnergyConsumptionProvider
     @data = null
     @loadedCallback = loadedCallback
 
-    d3.csv "CSV/energy demand.csv", @csvMapping, @parseData
+    d3.csv "CSV/2016-10-18_EnergyDemand.csv", @csvMapping, @parseData
+    # d3.csv "CSV/2016-01_EnergyDemand.csv", @csvMapping, @parseData
   
 
 

@@ -66,11 +66,11 @@ class visualization
       label: Tr.scenarioSelector.referenceButton[app.language]
       scenarioName: 'reference'
       class: if @config.scenario == 'reference' then 'vizButton selected' else 'vizButton'
-    constrained = 
-      title: Tr.selectorTooltip.scenarioSelector.constrainedButton[app.language]
-      label: Tr.scenarioSelector.constrainedButton[app.language]
-      scenarioName: 'constrained'
-      class: if @config.scenario == 'constrained' then 'vizButton selected' else 'vizButton'
+    # constrained = 
+    #   title: Tr.selectorTooltip.scenarioSelector.constrainedButton[app.language]
+    #   label: Tr.scenarioSelector.constrainedButton[app.language]
+    #   scenarioName: 'constrained'
+    #   class: if @config.scenario == 'constrained' then 'vizButton selected' else 'vizButton'
     high = 
       title: Tr.selectorTooltip.scenarioSelector.highPriceButton[app.language]
       label: Tr.scenarioSelector.highPriceButton[app.language]
@@ -81,24 +81,29 @@ class visualization
       label: Tr.scenarioSelector.lowPriceButton[app.language]
       scenarioName: 'low'
       class: if @config.scenario == 'low' then 'vizButton selected' else 'vizButton'
-    highLng = 
-      title: Tr.selectorTooltip.scenarioSelector.highLngButton[app.language]
-      label: Tr.scenarioSelector.highLngButton[app.language]
-      scenarioName: 'highLng'
-      class: if @config.scenario == 'highLng' then 'vizButton selected' else 'vizButton'
-    noLng = 
-      title: Tr.selectorTooltip.scenarioSelector.noLngButton[app.language]
-      label: Tr.scenarioSelector.noLngButton[app.language]
-      scenarioName: 'noLng'
-      class: if @config.scenario == 'noLng' then 'vizButton selected' else 'vizButton'
+    # highLng = 
+    #   title: Tr.selectorTooltip.scenarioSelector.highLngButton[app.language]
+    #   label: Tr.scenarioSelector.highLngButton[app.language]
+    #   scenarioName: 'highLng'
+    #   class: if @config.scenario == 'highLng' then 'vizButton selected' else 'vizButton'
+    # noLng = 
+    #   title: Tr.selectorTooltip.scenarioSelector.noLngButton[app.language]
+    #   label: Tr.scenarioSelector.noLngButton[app.language]
+    #   scenarioName: 'noLng'
+    #   class: if @config.scenario == 'noLng' then 'vizButton selected' else 'vizButton'
 
-    switch @config.mainSelection
-      when 'energyDemand', 'electricityGeneration'
-        [reference, constrained, high, low, highLng, noLng]
-      when 'oilProduction'
-        [reference, constrained, high, low]
-      when 'gasProduction'
-        [reference, high, low, highLng, noLng]
+
+
+    [reference, high, low]
+    # The original data had six scenarios, the revised data currently only has three.
+    # We expect this state of affairs to be temporary! 
+    # switch @config.mainSelection
+    #   when 'energyDemand', 'electricityGeneration'
+    #     [reference, constrained, high, low, highLng, noLng]
+    #   when 'oilProduction'
+    #     [reference, constrained, high, low]
+    #   when 'gasProduction'
+    #     [reference, high, low, highLng, noLng]
 
   sectorSelectionData: ->
     [  
