@@ -28,7 +28,6 @@ public
 │   ├── 2016-10-18_NaturalGasProduction.csv
 │   ├── 2016-10-18_CrudeOilProduction.csv
 │   └── 2016-10-18_EnergyDemand.csv
-temporarily absent.
 ├── IMG
 │   └── ...
 ├── PDF

@@ -461,7 +461,12 @@ class Visualization4
     maximums = []
     for key in Object.keys data
       maximums.push d3.max(data[key], (d) -> d.value)
-    d3.max maximums
+
+    if maximums.length > 0 
+      d3.max maximums
+    else
+      0
+
 
 
   outerWidth: ->
