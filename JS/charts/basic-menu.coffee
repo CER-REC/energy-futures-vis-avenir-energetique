@@ -1,3 +1,5 @@
+_ = require 'lodash'
+
 chart = require './chart.coffee'
 
 class basicMenu extends chart
