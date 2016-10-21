@@ -9,12 +9,26 @@ module.exports =
     #   fr: 'Quel est l’avenir énergétique du Canada?'
     content1:
       en: """
-        Energy is important to Canada. It heats our homes, fuels our vehicles, and is a key aspect of Canada’s economy. Canada is a vast nation with an incredibly diverse energy mix.  An important part of our country’s future will be determined by how energy is produced and used. 
-        Based on data from our recent outlook, <a href='http://www.neb-one.gc.ca/nrg/ntgrtd/ftr/index-eng.html'>Canada’s Energy Future 2016</a>, this interactive tool allows you to explore recent energy production and consumption trends and forecast them into the future.
+      <p>
+      Energy is important to Canada. It heats our homes, fuels our vehicles, and is a key aspect of Canada’s economy. Based on data from our outlook, this interactive tool allows you to explore energy production and consumption trends and forecast them into the future.
+      </p>
+      <p>
+      Building on the <a href='http://www.neb-one.gc.ca/nrg/ntgrtd/ftr/index-eng.html'>Energy Futures 2016 report</a> released January 2016, the tool aligns with our recent report: Update 2016, and presents reference and high and low prices cases. In the Reference Case, the crude oil price assumption is revised lower to US$90 per barrel by 2040, US$17 per barrel less compared to the January report.
+      </p>
+      <p>
+      In addition to policies which were included in the January edition, such as Quebec’s cap and trade system and the carbon tax in B.C., most of the Alberta Climate Leadership Plan and the Ontario cap and trade program have been integrated into the forecast.
+      </p>
       """
       fr: """
-      L’énergie est une composante importante au Canada. Elle sert à chauffer nos foyers et à propulser nos véhicules, et elle représente un élément de premier plan dans l’économie canadienne. Le Canada est un pays immense, qui dispose d’un fabuleux bouquet énergétique. La façon dont nous produirons et utiliserons cette énergie jouera un rôle déterminant dans l’avenir de notre pays. 
-      Mettant à profit les données de notre plus récente perspective énergétique, <a href='http://www.neb-one.gc.ca/nrg/ntgrtd/ftr/index-fra.html'>le Rapport sur l’avenir énergétique du Canada en 2016</a>, cet outil interactif vous permet d’explorer l’évolution récente de la production et de la consommation d’énergie, et de faire des prévisions pour l’avenir.'
+      <p>
+      L’énergie est une composante importante au Canada. Elle sert à chauffer nos foyers et à propulser nos véhicules en plus de représenter un élément de premier plan dans l’économie canadienne. Mettant à profit les données associées à notre perspective énergétique, cet outil interactif vous permet d’explorer l’évolution de la production et de la consommation d’énergie, même de faire des prévisions pour l’avenir.
+      </p>
+      <p>
+      Après avoir dépouillé le <a href='http://www.neb-one.gc.ca/nrg/ntgrtd/ftr/index-fra.html'>rapport sur l’avenir énergétique</a> publié en janvier 2016, l’outil intègre maintenant les données de notre récente mise à jour de ce rapport et présente des scénarios de prix, bas et élevés, ainsi qu’un scénario de référence. Dans ce dernier cas, l’hypothèse de prix du pétrole brut a été revue à la baisse, à 90 $ US le baril en 2040, soit 17 $ de moins que ce qui avait été évoqué dans le rapport d’origine.
+      </p>
+      <p>
+      En plus des politiques déjà incluses précédemment, notamment le système de plafonnement et d’échange de droits d’émission au Québec et la taxe sur le carbone en Colombie-Britannique, les nouvelles prévisions tiennent compte, dans sa plus grande partie, du plan de leadership de l’Alberta en matière de changement climatique de même que du programme de plafonnement et d’échange de droits de l’Ontario.
+      </p>
       """
 
     visualization1Link:
@@ -95,7 +109,7 @@ module.exports =
     aboutContent:
       en: """
         <p> 
-          The National Energy Board (NEB) worked together with leading data visualization experts in both academia and industry to create the Exploring Canada’s Energy Future interactive online tool. This pilot concept, based on our flagship publication – <a href="http://www.neb-one.gc.ca/nrg/ntgrtd/ftr/index-eng.html">Canada’s Energy Future 2016: Energy Supply and Demand Projections to 2040</a>, will give Canadians a taste of the exciting new way the NEB will share data going forward.
+          The National Energy Board (NEB) worked together with leading data visualization experts in both academia and industry to create the Exploring Canada’s Energy Future interactive online tool. This pilot concept, based on our flagship publication – <a href="http://www.neb-one.gc.ca/nrg/ntgrtd/ftr/index-eng.html">Canada’s Energy Future</a>, will give Canadians a taste of the exciting new way the NEB will share data going forward.
         </p>
         <p>
           Our objective is to present quality data from our most recent energy outlook in an interactive graphic format that is user-friendly and clarifies complex information into “visualizations” that are easily understood,  so you can explore Canada’s energy future right from your own computer. In the months and years to come, we will use this innovative format to share our pipeline safety data, energy data series, energy infrastructure information, and a host of other topical data.
@@ -112,7 +126,7 @@ module.exports =
         <h5> CONTRIBUTORS </h5>
         <h6> DATA SOURCE: </h6>
         <p>
-          Abha Bhargava (Director), Matthew Hansen (Market Analyst), Bryce van Sluys (Market Analyst) 
+          Abha Bhargava (Director), Matthew Hansen (Market Analyst), Bryce van Sluys (Market Analyst), Chris Doleman (Market Analyst), Michael Nadew (Market Analyst)
         </p>
         <h6> COORDINATION: </h6>
         <p>
@@ -120,23 +134,23 @@ module.exports =
         </p>
         <h6> DATA VISUALIZATION: </h6>
         <p>
-          Design: Lindsay MacDonald, Charles Perin, Jo Vermeulen and Doris Kosminsky
+          Design: Lindsay MacDonald, Charles Perin and Jo Vermeulen (students with InnoVis which is led by Dr. Sheelagh Carpendale) as well as Doris Kosminsky 
           <br>
-          Technical: Stephanie Sachrajda, Patrick King, Ben Cousins, Gerald McNulty and Claudio Esperança
+          Technical: Stephanie Sachrajda, Patrick King, Alaa Azazi, Ben Cousins, Gerald McNulty and Claudio Esperança
         </p>
       """
       fr: """
         <p> 
-          Pour créer l’outil interactif Explorer l’avenir énergétique du Canada, l’Office national de l’énergie s’est associé à des experts de la visualisation des données du milieu universitaire et de l’industrie. Fondé sur la publication phare <a href="http://www.neb-one.gc.ca/nrg/ntgrtd/ftr/index-fra.html">Avenir énergétique du Canada en 2016 – Offre et demande énergétiques à l’horizon 2040</a>, ce projet pilote donnera aux Canadiens un avant-goût du nouveau et fabuleux moyen qu’utilisera désormais l’Office pour diffuser ses données.
+          Pour créer l’outil interactif Explorer l’avenir énergétique du Canada, l’Office national de l’énergie s’est associé à des experts de la visualisation des données du milieu universitaire et de l’industrie. Fondé sur la publication phare qu’est le <a href="http://www.neb-one.gc.ca/nrg/ntgrtd/ftr/index-fra.html">Rapport sur l’avenir énergétique du Canada</a>, cet outil avant-gardiste donne aux Canadiens une bonne idée du nouveau mode emballant de diffusion des données qu’utilisera désormais l’Office. 
         </p>
         <p>
-          Notre objectif consiste à présenter des données de qualité provenant de notre plus récente perspective énergétique dans un format interactif visuel qui est convivial et qui clarifie une information complexe grâce à des visualisations faciles à comprendre, afin que vous puissiez explorer par vous-même l’avenir énergétique du Canada à partir de votre propre ordinateur. Au cours des mois et des années à venir, l’Office utilisera ce format innovateur pour diffuser ses données sur la sécurité des pipelines et sur l’énergie, ses renseignements sur l’infrastructure énergétique et une foule d’autres données spécialisées.
+          Notre objectif consiste à présenter des données de qualité provenant de notre plus récente perspective énergétique dans un format interactif visuel qui est convivial et qui clarifie une information complexe grâce à des visualisations faciles à comprendre, afin que vous puissiez explorer par vous-même l’avenir énergétique du Canada à partir de votre propre ordinateur. Au cours des mois et des années à venir, l’Office utilisera ce format novateur pour diffuser ses données sur la sécurité des pipelines et sur l’énergie, l’information qu’il possède sur l’infrastructure énergétique et une foule d’autres renseignements spécialisés. 
         </p>
         <p>
-          Si vous désirez utiliser les données pour vos recherches ou pour en faire votre propre analyse, vous pouvez les télécharger et les partager. Les graphiques peuvent aussi être téléchargés; quant au code source des visualisations, il sera accessible sur le portail du « gouvernement ouvert » à l’adresse : <a href="ouvert.canada.ca">ouvert.canada.ca</a>.
+          Si vous souhaitez utiliser les données pour vos recherches ou pour en faire votre propre analyse, vous pouvez les télécharger et les partager. Les graphiques peuvent aussi être téléchargés. Quant au code source des visualisations, il sera accessible sur le portail du « gouvernement ouvert » à l’adresse : <a href="http://ouvert.canada.ca">ouvert.canada.ca</a>.
         </p>
         <p>
-          Nous espérons avoir atteint notre objectif. Vos commentaires sont essentiels. 
+          Nous espérons avoir atteint notre objectif. Vos rétroaction sont essentiels. 
         </p>
         <p>
           Vous pouvez nous les faire parvenir, ainsi que vos suggestions, à l’adresse <a href="mailto:conceptionenergie@neb-one.gc.ca">conceptionenergie@neb-one.gc.ca</a>. Votre opinion compte.
@@ -144,7 +158,7 @@ module.exports =
         <h5> COLLABORATEURS </h5>
         <h6> SOURCE DES DONNÉES </h6>
         <p> 
-          Abha Bhargava (Directrice), Matt Hansen (Analyste de Marchés), Bryce van Sluys (Analyste de Marchés) 
+          Abha Bhargava (Directrice), Matt Hansen (Analyste de Marchés), Bryce van Sluys (Analyste de Marchés), Chris Doleman et Michael Nadew (analystes de marchés)
         </p>
         <h6> COORDINATION </h6>
         <p> 
@@ -152,9 +166,9 @@ module.exports =
         </p>
         <h6> VISUALISATION DES DONNÉES </h6>
         <p> 
-          Conception : Lindsay MacDonald, Charles Perin, Jo Vermeulen et Doris Kosminsky
+          Conception : Lindsay MacDonald, Charles Perin et Jo Vermeulen (étudiants à InnoVis, sous la direction de Sheelagh Carpendale) ainsi que Doris Kosminsky
           <br>
-          Aspect technique : Stephanie Sachrajda, Patrick King, Ben Cousins, Gerald McNulty et Claudio Esperança 
+          Aspect technique : Stephanie Sachrajda, Patrick King, Alaa Azazi,  Ben Cousins, Gerald McNulty et Claudio Esperança 
         </p>
         """
 
