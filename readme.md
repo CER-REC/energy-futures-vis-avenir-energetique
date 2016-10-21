@@ -123,6 +123,7 @@ We're the development team with Startide Solutions who put this project together
 
 ## Changelog
 
+* 2016-10-20 - Installed an updated set of Canada's Energy Future 2016 data. This is an early release of the new update, which does not include the LNG and Constrained scenarios. The user interface for these scenarios has been temporarily hidden. The previous generation data remains available in the repository, but is not integrated into the app right now.
 * 2016-10-05 - The query url is now kept consistent as users navigate back and forth between the different visualizations as well as when the order of the provinces (in visualization 1) and the sources (in visualization 2) change.
 * 2016-10-05 - Modified the timeline slider to use an svg image instead of the previously used png image.
 * 2016-10-05 - Changed the height and font size of the title bar on the landing page to match the navigation bar for the visualization pages.
