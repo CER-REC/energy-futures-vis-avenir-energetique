@@ -107,7 +107,8 @@ class visualization
 
   sectorSelectionData: ->
     [  
-      {  
+      {
+        title: Tr.selectorTooltip.sectorSelector.totalDemandButton[app.language]
         label: Tr.sectorSelector.totalSectorDemandButton[app.language]
         sectorName: 'total'
         wrapperClass: 'sectorSelectorButton totalSectorButton'

@@ -139,11 +139,13 @@ class Visualization3 extends visualization
   viewByData: ->
     [
       {
+        title: Tr.selectorTooltip.viewBySelector.viewByProvinceButton[app.language]
         label: Tr.viewBySelector.viewByProvinceButton[app.language]
         viewByName: 'province'
         class: if @config.viewBy == 'province' then 'vizButton selected' else 'vizButton'
       }
       {
+        title: Tr.selectorTooltip.viewBySelector.viewBySourceButton[app.language]
         label: Tr.viewBySelector.viewBySourceButton[app.language]
         viewByName: 'source'
         class: if @config.viewBy == 'source' then 'vizButton selected' else 'vizButton'
@@ -167,7 +169,7 @@ class Visualization3 extends visualization
             @toggleViz()
 
       viewBySelectors.html (d) ->
-        "<button class='#{d.class}' type='button'>#{d.label}</button>"
+        "<button class='#{d.class}' type='button' title='#{d.title}'>#{d.label}</button>"
 
       viewBySelectors.exit().remove()
   
@@ -913,6 +915,8 @@ class Visualization3 extends visualization
         y: @_margin.top
       data:
         @seriesData
+      year:
+        @config.year
       groupId:
         'graphGroup'
       mapping:
@@ -948,6 +952,7 @@ class Visualization3 extends visualization
     @_chart.menu.someSelected(@getSelectionState().someSelected)
     @_chart.menu.allSelected(@getSelectionState().allSelected)
     @_chart.mapping(@dataForStackMenu())
+    @_chart.year(@config.year)
     @_chart.data(@seriesData)
 
   # When swapping between views (province and type) we need to regenerate the menus
