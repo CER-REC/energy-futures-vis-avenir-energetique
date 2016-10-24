@@ -98,6 +98,17 @@ h1 {
 }
 
 
-.information-container {
+.informationContainer {
   margin-left: 35px;
+  float: left;
+  width: 50%;
+  box-sizing: border-box;
 }
+
+.logoImage {
+  margin-right: 35px;
+  float: right;
+  width: 25%;
+  box-sizing: border-box;
+}
+
