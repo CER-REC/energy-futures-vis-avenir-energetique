@@ -7,8 +7,8 @@ Platform.name = "server"
 # TODO: I can't believe I have to include this shim in a node app... what's going on?
 require '../ArrayIncludes.coffee'
 
-rootHandler = require './rootHandler.coffee'
-imageHandler = require './imageHandler.coffee'
+pngImageHandler = require './pngImageHandler.coffee'
+htmlImageHandler = require './htmlImageHandler.coffee'
 
 
 
@@ -26,10 +26,10 @@ app.use(express.static(path.join(__dirname, '../../../energy-futures-private-res
 
 # Endpoint for PNG generation
 app.get '/png_image', (req, res) ->
-  rootHandler req, res, serverState
+  pngImageHandler req, res, serverState
 
 # Endpoint for HTML generation, for consumption by Phantom to become the PNG
-app.get '/html_image', imageHandler
+app.get '/html_image', htmlImageHandler
 
 
 
