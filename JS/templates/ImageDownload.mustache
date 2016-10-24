@@ -8,6 +8,11 @@
 </div>
 
 <div class="modalContent">
-  <div id="renderedImageContainer"> </div>
-  <p> {{ imageDownloadInstructions }} </p>
+  <img id="imageDownloadSpinner" src='/IMG/spinner.gif'/>
+  <div id="renderedImageContainer">
+  </div>
+
+  <div id="modalImageDownloadButtonContainer">
+    <a id="modalImageDownloadButton" download="EnergyFutureImage.png" href="#">{{ imageDownloadButton }}</a>
+  </div>
 </div>

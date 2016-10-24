@@ -2,7 +2,6 @@ url = require 'url'
 
 
 
-
 class ImageRequest
 
   constructor: (@options) ->

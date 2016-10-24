@@ -104,7 +104,7 @@ class App
     d3.select('#imageDownloadLink').on 'click', =>
       d3.event.preventDefault()
       d3.event.stopPropagation()
-      @imageExporter.createImage d3.event
+      @imageExporter.createImage()
 
     d3.select('#imageDownloadModal .closeButton').on 'click', =>
       d3.event.preventDefault()

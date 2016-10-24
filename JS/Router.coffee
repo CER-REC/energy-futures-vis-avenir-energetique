@@ -18,7 +18,7 @@ d3 = require 'd3'
 Tr = require './TranslationTable.coffee'
 
 PrepareQueryParams = require './PrepareQueryParams.coffee'
-
+ParamsToUrlString = require './ParamsToUrlString.coffee'
 
 class Router
 
@@ -144,55 +144,55 @@ class Router
   viz1Handler: (params, options) ->
     if not @app.currentView?
       @app.currentView = new Visualization1 @app, @app.visualization1Configuration
-      @app.containingWindow.history.replaceState params, '', @paramsToUrlString(params) if options.shouldUpdateHistory
+      @app.containingWindow.history.replaceState params, '', ParamsToUrlString(params) if options.shouldUpdateHistory
     else if not (@app.currentView instanceof Visualization1)
       @app.popoverManager.closePopover()
       @app.currentView.tearDown()
       @app.currentView = new Visualization1 @app, @app.visualization1Configuration
       params = @setupVis1RouterParams(@app.visualization1Configuration, params)
-      @app.containingWindow.history.pushState params, '', @paramsToUrlString(params) if options.shouldUpdateHistory
+      @app.containingWindow.history.pushState params, '', ParamsToUrlString(params) if options.shouldUpdateHistory
     else if options.shouldUpdateHistory
-      @app.containingWindow.history.replaceState params, '', @paramsToUrlString(params)
+      @app.containingWindow.history.replaceState params, '', ParamsToUrlString(params)
 
 
   viz2Handler: (params, options) ->
     if not @app.currentView?
       @app.currentView = new Visualization2 @app, @app.visualization2Configuration
-      @app.containingWindow.history.replaceState params, '', @paramsToUrlString(params) if options.shouldUpdateHistory
+      @app.containingWindow.history.replaceState params, '', ParamsToUrlString(params) if options.shouldUpdateHistory
     else if not (@app.currentView instanceof Visualization2)
       @app.popoverManager.closePopover()
       @app.currentView.tearDown()
       @app.currentView = new Visualization2 @app, @app.visualization2Configuration
       params = @setupVis2RouterParams(@app.visualization2Configuration, params)
-      @app.containingWindow.history.pushState params, '', @paramsToUrlString(params) if options.shouldUpdateHistory
+      @app.containingWindow.history.pushState params, '', ParamsToUrlString(params) if options.shouldUpdateHistory
     else if options.shouldUpdateHistory
-      @app.containingWindow.history.replaceState params, '', @paramsToUrlString(params)
+      @app.containingWindow.history.replaceState params, '', ParamsToUrlString(params)
 
   viz3Handler: (params, options) ->
     if not @app.currentView?
       @app.currentView = new Visualization3 @app, @app.visualization3Configuration
-      @app.containingWindow.history.replaceState params, '', @paramsToUrlString(params) if options.shouldUpdateHistory
+      @app.containingWindow.history.replaceState params, '', ParamsToUrlString(params) if options.shouldUpdateHistory
     else if not (@app.currentView instanceof Visualization3)
       @app.popoverManager.closePopover()
       @app.currentView.tearDown()
       @app.currentView = new Visualization3 @app, @app.visualization3Configuration
       params = @setupVis3RouterParams(@app.visualization3Configuration, params)
-      @app.containingWindow.history.pushState params, '', @paramsToUrlString(params) if options.shouldUpdateHistory
+      @app.containingWindow.history.pushState params, '', ParamsToUrlString(params) if options.shouldUpdateHistory
     else if options.shouldUpdateHistory
-      @app.containingWindow.history.replaceState params, '', @paramsToUrlString(params)
+      @app.containingWindow.history.replaceState params, '', ParamsToUrlString(params)
   
   viz4Handler: (params, options) ->
     if not @app.currentView?
       @app.currentView = new Visualization4 @app, @app.visualization4Configuration
-      @app.containingWindow.history.replaceState params, '', @paramsToUrlString(params) if options.shouldUpdateHistory
+      @app.containingWindow.history.replaceState params, '', ParamsToUrlString(params) if options.shouldUpdateHistory
     else if not (@app.currentView instanceof Visualization4)
       @app.popoverManager.closePopover()
       @app.currentView.tearDown()
       @app.currentView = new Visualization4 @app, @app.visualization4Configuration
       params = @setupVis4RouterParams(@app.visualization4Configuration, params)
-      @app.containingWindow.history.pushState params, '', @paramsToUrlString(params) if options.shouldUpdateHistory
+      @app.containingWindow.history.pushState params, '', ParamsToUrlString(params) if options.shouldUpdateHistory
     else if options.shouldUpdateHistory
-      @app.containingWindow.history.replaceState params, '', @paramsToUrlString(params)
+      @app.containingWindow.history.replaceState params, '', ParamsToUrlString(params)
 
   setupVis1RouterParams: (configuration, params)->
     page: params.page
@@ -227,10 +227,6 @@ class Router
     scenarios: configuration.scenarios
     province: configuration.province
 
-  paramsToUrlString: (params) ->
-    urlParts = Object.keys(params).map (key) ->
-      "#{key}=#{params[key]}"
-    '?' + urlParts.join '&'
    
 
 
