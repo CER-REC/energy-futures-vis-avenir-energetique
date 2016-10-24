@@ -54,6 +54,11 @@ class ImageRequest
 
 
   loadUrl: =>
+
+    unless @query?
+      @errorHandler new Error("No visualization parameters specified.")
+      return
+
     @webdriverUrlRequest = @browserTools.webdriverSession.url("http://localhost:#{@port}/html_image/#{@query}")
 
     @webdriverUrlRequest.then =>
@@ -87,9 +92,12 @@ class ImageRequest
 
 
   errorHandler: (error) =>
-    console.log "That's an error: "
-    console.log error.message
-    # TODO: write to response? 
+    # console.log "That's an error: "
+    # console.log error.message
+    # console.log (new Error()).stack
+
+    @res.writeHead 500
+    @res.end "HTTP 500 #{error.message}"
 
     @done()
 

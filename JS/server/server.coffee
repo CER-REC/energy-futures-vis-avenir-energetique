@@ -33,7 +33,7 @@ app.get '/html_image', htmlImageHandler
 
 
 
-# IIS-Node passes in a handle to listen to in process.env.PORT
+# IIS-Node passes in a named pipe to listen to in process.env.PORT
 app.listen process.env.PORT || 4747
 console.log 'Ready.'
 

@@ -114,9 +114,10 @@ imageHandler = (req, res) ->
           when 'viz4'
             config = new Visualization4Configuration(serverApp, params)
             viz = new Visualization4(serverApp, config)
-          # TODO: handle error case where page is not specified?
 
-
+          else 
+            errorHandler req, res, new Error("Visualization 'page' parameter not specified or not recognized."), 500
+            return
 
 
         # we need to wait a tick for the zero duration animations to be scheduled and run
@@ -126,6 +127,15 @@ imageHandler = (req, res) ->
           res.write source
           res.end()
           console.log "D3 Time: #{Date.now() - time}"
+
+
+
+errorHandler = (req, res, error, code) ->
+  code ||= 500
+
+  res.writeHead code
+  res.end "HTTP #{code} #{error.message}"
+
 
 module.exports = imageHandler
 
