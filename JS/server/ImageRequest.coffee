@@ -17,6 +17,14 @@ class ImageRequest
     @webdriverUrlRequest = null
     @webdriverScreenshotRequest = null
 
+    # IIS-Node stores a named pipe in the PORT environment property, so when running under
+    # IIS we can't know what port the server is listening to.
+    # If process.env.PORT is set, we will assume that the server is on port 80.
+    # Otherwise, we will use our development port.
+    if process.env.PORT?
+      @port = 80
+    else 
+      @port = 4747
 
 
   # handleRequest starts the sequence of calls to take care of the request
@@ -46,7 +54,7 @@ class ImageRequest
 
 
   loadUrl: =>
-    @webdriverUrlRequest = @browserTools.webdriverSession.url("http://localhost:4747/html_image/#{@query}")
+    @webdriverUrlRequest = @browserTools.webdriverSession.url("http://localhost:#{@port}/html_image/#{@query}")
 
     @webdriverUrlRequest.then =>
 
