@@ -11,7 +11,7 @@ module.exports =
         <p> {{{ content }}} </p>
       </div>
       <div id="panelRight">
-        <img src='IMG/landingPageThumb/carousel3.png' class='mainImageCarousel'>
+        <img src='IMG/landingPageThumb/carousel3_NEW.png' class='mainImageCarousel'>
       </div>
     </div>
 

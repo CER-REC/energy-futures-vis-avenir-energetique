@@ -58,7 +58,7 @@
 }
 #canadasEnergyFutureVisualization #panelRight img {
   max-width: 100%;
-  width: auto;
+  width: 100%;
   height: auto;
   margin: 0;
   border: 1px solid #cccccc;
@@ -235,7 +235,7 @@
 
 
 #canadasEnergyFutureVisualization .viz1Img {
-  background-image: url("../IMG/landingPageThumb/vis1_808.png");
+  background-image: url("../IMG/landingPageThumb/vis1_808_NEW.png");
   background-size: cover;
   background-position:50% 50%;  /* Sets reference point to scale from */
 }
