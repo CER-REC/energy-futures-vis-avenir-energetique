@@ -84,6 +84,7 @@ class ImageRequest
     # content-disposition=attachment prompts the browser to start a file download rather
     # than navigate to the image.
     @res.setHeader "content-disposition", "attachment; filename=EnergyFutureImage.png;"
+    @res.setHeader 'cache-control', "max-age=600" 
     @res.write(screenshotBuffer)
     @res.end()
 
