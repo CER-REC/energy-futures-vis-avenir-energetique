@@ -10,24 +10,18 @@ module.exports =
     content1:
       en: """
       <p>
-      Energy is important to Canada. It heats our homes, fuels our vehicles, and is a key aspect of Canada’s economy. Based on data from our outlook, this interactive tool allows you to explore energy production and consumption trends and forecast them into the future.
+      Energy is important to Canada. It heats our homes, fuels our vehicles, and is a key aspect of Canada’s economy. Based on data from our recent report, <a href='http://www.neb-one.gc.ca/nrg/ntgrtd/ftr/index-eng.html'>Energy Futures Update 2016</a>, this interactive tool allows you to explore energy production and consumption trends and forecast them into the future.
       </p>
       <p>
-      Building on the <a href='http://www.neb-one.gc.ca/nrg/ntgrtd/ftr/index-eng.html'>Energy Futures 2016 report</a> released January 2016, the tool aligns with our recent report: Update 2016, and presents reference and high and low prices cases. In the Reference Case, the crude oil price assumption is revised lower to US$90 per barrel by 2040, US$17 per barrel less compared to the January report.
-      </p>
-      <p>
-      In addition to policies which were included in the January edition, such as Quebec’s cap and trade system and the carbon tax in B.C., most of the Alberta Climate Leadership Plan and the Ontario cap and trade program have been integrated into the forecast.
+      We present reference and high and low prices cases. In the Reference Case, the crude oil price assumption is revised lower to US$90 per barrel by 2040. In addition to policies which were included in the January edition, such as Quebec’s cap and trade system and the carbon tax in B.C., most of the Alberta Climate Leadership Plan and the Ontario cap and trade program have been integrated into the forecast.
       </p>
       """
       fr: """
       <p>
-      L’énergie est une composante importante au Canada. Elle sert à chauffer nos foyers et à propulser nos véhicules en plus de représenter un élément de premier plan dans l’économie canadienne. Mettant à profit les données associées à notre perspective énergétique, cet outil interactif vous permet d’explorer l’évolution de la production et de la consommation d’énergie, même de faire des prévisions pour l’avenir.
+      L’énergie est une composante importante au Canada. Elle sert à chauffer nos foyers et à propulser nos véhicules en plus de représenter un élément de premier plan dans l’économie canadienne. L’outil interactif intègre les données de notre tout récent rapport intitulé <a href='http://www.neb-one.gc.ca/nrg/ntgrtd/ftr/index-eng.html'>Avenir énergétique 2016 –Mise à jour</a>, pour vous permettre d’explorer l’évolution de la production et de la consommation d’énergie et même de faire des prévisions pour l’avenir.
       </p>
       <p>
-      Après avoir dépouillé le <a href='http://www.neb-one.gc.ca/nrg/ntgrtd/ftr/index-fra.html'>rapport sur l’avenir énergétique</a> publié en janvier 2016, l’outil intègre maintenant les données de notre récente mise à jour de ce rapport et présente des scénarios de prix, bas et élevés, ainsi qu’un scénario de référence. Dans ce dernier cas, l’hypothèse de prix du pétrole brut a été revue à la baisse, à 90 $ US le baril en 2040, soit 17 $ de moins que ce qui avait été évoqué dans le rapport d’origine.
-      </p>
-      <p>
-      En plus des politiques déjà incluses précédemment, notamment le système de plafonnement et d’échange de droits d’émission au Québec et la taxe sur le carbone en Colombie-Britannique, les nouvelles prévisions tiennent compte, dans sa plus grande partie, du plan de leadership de l’Alberta en matière de changement climatique de même que du programme de plafonnement et d’échange de droits de l’Ontario.
+      Nous présentons des scénarios de prix, bas et élevés, ainsi qu’un scénario de référence. Dans ce dernier cas, l’hypothèse de prix du pétrole brut a été revue à la baisse, à 90 $ US le baril en 2040. En plus des politiques déjà incluses dans l’édition de janvier dernier, notamment le système de plafonnement et d’échange de droits d’émission au Québec et la taxe sur le carbone en Colombie-Britannique, les nouvelles prévisions tiennent compte de la plus grande partie du plan de leadership de l’Alberta en matière de changement climatique, de même que du programme de plafonnement et d’échange de droits de l’Ontario.
       </p>
       """
 
