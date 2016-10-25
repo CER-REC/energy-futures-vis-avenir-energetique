@@ -546,7 +546,7 @@ module.exports =
     <div class="rightItem spacer"></div>
 
     <div class="rightItem" id="dataDownloadLinkAnchor">  
-      <a id='dataDownloadLink' data-ajax="false" download='2016-10-18_CanadasEnergyFutureVisualizationData.zip' href='CSV/2016-10-18_CanadasEnergyFutureVisualizationData.zip'>
+      <a id='dataDownloadLink' data-ajax="false" download='2016-10-24_CanadasEnergyFutureVisualizationData.zip' href='CSV/2016-10-24_CanadasEnergyFutureVisualizationData.zip'>
         {{ dataDownloadLink }}
       </a>
     </div>
