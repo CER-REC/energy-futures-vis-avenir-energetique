@@ -42,14 +42,17 @@
 
 
 #canadasEnergyFutureVisualization #panelLeft {
+  column-count: 2;
+  -webkit-column-count: 2;
+  -moz-column-count: 2;
   box-sizing: border-box;
-  width: 25%;
+  width: 50%;
   float: left;
 }
 
 #canadasEnergyFutureVisualization #panelRight {
   box-sizing: border-box;
-  width: 75%;
+  width: 50%;
   float: left;
   padding-left: 7px; /* Necessary for precise alignment with link boxes */
 }
