@@ -333,58 +333,36 @@ class Visualization3 extends visualization
       }
 
   sourcesBlackDictionary: ->
-    if Platform.name == 'browser'
-      {  
-        hydro:  
-          img: 'IMG/sources/hydro_selectedR.png'
-        solarWindGeothermal:
-          img: 'IMG/sources/solarWindGeo_selectedR.png'
-        coal:
-          img: 'IMG/sources/coal_selectedR.png'
-        naturalGas:
-          img: 'IMG/sources/naturalGas_selectedR.png'
-        bio:
-          img: 'IMG/sources/biomass_selectedR.png'
-        nuclear: 
-          img: 'IMG/sources/nuclear_selectedR.png'
-        oilProducts:
-          img: 'IMG/sources/oil_products_selectedR.png'
-      }
-    else if Platform.name == 'server'
-      {  
-        hydro:  
-          img: '/IMG/sources/hydro_selectedR.svg'
-        solarWindGeothermal:
-          img: '/IMG/sources/solarWindGeo_selectedR.svg'
-        coal:
-          img: '/IMG/sources/coal_selectedR.svg'
-        naturalGas:
-          img: '/IMG/sources/naturalGas_selectedR.svg'
-        bio:
-          img: '/IMG/sources/biomass_selectedR.svg'
-        nuclear: 
-          img: '/IMG/sources/nuclear_selectedR.svg'
-        oilProducts:
-          img: '/IMG/sources/oil_products_selectedR.svg'
-      }
+    hydro:  
+      img: 'IMG/sources/hydro_selectedR.svg'
+    solarWindGeothermal:
+      img: 'IMG/sources/solarWindGeo_selectedR.svg'
+    coal:
+      img: 'IMG/sources/coal_selectedR.svg'
+    naturalGas:
+      img: 'IMG/sources/naturalGas_selectedR.svg'
+    bio:
+      img: 'IMG/sources/biomass_selectedR.svg'
+    nuclear: 
+      img: 'IMG/sources/nuclear_selectedR.svg'
+    oilProducts:
+      img: 'IMG/sources/oil_products_selectedR.svg'
 
   colouredSourceIconsDictionary: ->
-      { 
-        hydro:
-          img: 'IMG/sources/hydro_selected.svg' 
-        solarWindGeothermal:
-          img: 'IMG/sources/solarWindGeo_selected.svg'
-        coal:
-          img: 'IMG/sources/coal_selected.svg'
-        naturalGas:
-          img: 'IMG/sources/naturalGas_selected.svg'
-        bio:
-          img: 'IMG/sources/biomass_selected.svg'
-        oilProducts:
-          img: 'IMG/sources/oil_products_selected.svg'
-        nuclear:  
-          img: 'IMG/sources/nuclear_selected.svg'
-      }
+    hydro:
+      img: 'IMG/sources/hydro_selected.svg' 
+    solarWindGeothermal:
+      img: 'IMG/sources/solarWindGeo_selected.svg'
+    coal:
+      img: 'IMG/sources/coal_selected.svg'
+    naturalGas:
+      img: 'IMG/sources/naturalGas_selected.svg'
+    bio:
+      img: 'IMG/sources/biomass_selected.svg'
+    oilProducts:
+      img: 'IMG/sources/oil_products_selected.svg'
+    nuclear:  
+      img: 'IMG/sources/nuclear_selected.svg'
 
 
   sourceMenuData: ->
@@ -517,98 +495,81 @@ class Visualization3 extends visualization
         key: 'AB'
         present: true
         colour: if @config.province == 'AB' then '#333' else '#fff'
-        img: '/IMG/provinces/radio/AB_SelectedR.png' 
+        img: '/IMG/provinces/radio/AB_SelectedR.svg' 
       }
       BC: {
         key: 'BC'
         present: true
         colour: if @config.province == 'BC' then '#333' else '#fff'
-        img: '/IMG/provinces/radio/BC_SelectedR.png' 
+        img: '/IMG/provinces/radio/BC_SelectedR.svg' 
       }
       MB: {
         key: 'MB'
         present: true
         colour: if @config.province == 'MB' then '#333' else '#fff'
-        img: '/IMG/provinces/radio/MB_SelectedR.png'
+        img: '/IMG/provinces/radio/MB_SelectedR.svg'
       }     
       NB: {
         key: 'NB'
         present: true
         colour: if @config.province == 'NB' then '#333' else '#fff'
-        img: '/IMG/provinces/radio/NB_SelectedR.png'
+        img: '/IMG/provinces/radio/NB_SelectedR.svg'
       }
       NL: {
         key : 'NL'
         present: true
         colour: if @config.province == 'NL' then '#333' else '#fff'
-        img: '/IMG/provinces/radio/NL_SelectedR.png'
+        img: '/IMG/provinces/radio/NL_SelectedR.svg'
       }
       NS: {
         key: 'NS'
         present: true
         colour: if @config.province == 'NS' then '#333' else '#fff'
-        img: '/IMG/provinces/radio/NS_SelectedR.png'
+        img: '/IMG/provinces/radio/NS_SelectedR.svg'
       }
       NT: {
         key: 'NT'
         present: true
         colour: if @config.province == 'NT' then '#333' else '#fff'
-        img: '/IMG/provinces/radio/NT_SelectedR.png'
+        img: '/IMG/provinces/radio/NT_SelectedR.svg'
       }
       NU: { 
         key: 'NU'
         present: true
         colour: if @config.province == 'NU' then '#333' else '#fff'
-        img: '/IMG/provinces/radio/NU_SelectedR.png'
+        img: '/IMG/provinces/radio/NU_SelectedR.svg'
       }
       ON: { 
         key: 'ON'
         present: true
         colour: if @config.province == 'ON' then '#333' else '#fff'
-        img: '/IMG/provinces/radio/ON_SelectedR.png'
+        img: '/IMG/provinces/radio/ON_SelectedR.svg'
       }
       PE: {
         key: 'PE'
         present: true
         colour: if @config.province == 'PE' then '#333' else '#fff'
-        img: '/IMG/provinces/radio/PEI_SelectedR.png'
+        img: '/IMG/provinces/radio/PEI_SelectedR.svg'
       }
       QC: { 
         key: 'QC'
         present: true
         colour: if @config.province == 'QC' then '#333' else '#fff'
-        img:'/IMG/provinces/radio/QC_SelectedR.png'
+        img:'/IMG/provinces/radio/QC_SelectedR.svg'
       }
       SK: {
         key: 'SK'
         present: true
         colour: if @config.province == 'SK' then '#333' else '#fff'
-        img: '/IMG/provinces/radio/Sask_SelectedR.png'
+        img: '/IMG/provinces/radio/Sask_SelectedR.svg'
       }
       YT: {
         key: 'YT'
         present: true
         colour: if @config.province == 'YT' then '#333' else '#fff'
-        img: '/IMG/provinces/radio/Yukon_SelectedR.png'
+        img: '/IMG/provinces/radio/Yukon_SelectedR.svg'
       }
     }
-
-    if Platform.name == 'server'
-      data.AB.img = '/IMG/provinces/radio/AB_SelectedR.svg' 
-      data.BC.img = '/IMG/provinces/radio/BC_SelectedR.svg' 
-      data.MB.img = '/IMG/provinces/radio/MB_SelectedR.svg'
-      data.NB.img = '/IMG/provinces/radio/NB_SelectedR.svg'
-      data.NL.img = '/IMG/provinces/radio/NL_SelectedR.svg'
-      data.NS.img = '/IMG/provinces/radio/NS_SelectedR.svg'
-      data.NT.img = '/IMG/provinces/radio/NT_SelectedR.svg'
-      data.NU.img = '/IMG/provinces/radio/NU_SelectedR.svg'
-      data.ON.img = '/IMG/provinces/radio/ON_SelectedR.svg'
-      data.PE.img = '/IMG/provinces/radio/PEI_SelectedR.svg'
-      data.QC.img = '/IMG/provinces/radio/QC_SelectedR.svg'
-      data.SK.img = '/IMG/provinces/radio/Sask_SelectedR.svg'
-      data.YT.img = '/IMG/provinces/radio/Yukon_SelectedR.svg'
-
-    data
   
   provincesDictionary: ->
     provinceColours= {  

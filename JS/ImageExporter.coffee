@@ -28,7 +28,7 @@ class ImageExporter
     params.language = @app.language
 
     # TODO: Parameterize this URL
-    imageUrl = "http://localhost:4747/png_image/#{ParamsToUrlString params}"
+    imageUrl = "http://172.16.148.27:4747/png_image/#{ParamsToUrlString params}"
 
 
 
