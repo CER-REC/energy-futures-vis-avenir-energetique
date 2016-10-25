@@ -87,7 +87,6 @@ class App
         shareLabel: Tr.allPages.shareLabel[@language]
         dataDownloadLink: Tr.allPages.dataDownloadLink[@language]
         imageDownloadLink: Tr.allPages.imageDownloadLink[@language]
-        # downloadsLabel: Tr.allPages.downloadsLabel[@language]
 
 
 

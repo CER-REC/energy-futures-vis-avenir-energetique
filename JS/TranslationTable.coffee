@@ -60,9 +60,6 @@ module.exports =
       en: 'SCENARIOS'
       fr: 'SCÉNARIOS'
 
-    # downloadsLabel:
-    #   en: 'DOWNLOADS:'
-    #   fr: 'TÉLÉCHARGEMENTS:'
     imageDownloadLink:
       en: 'DOWNLOAD IMAGE'
       fr: "TÉLÉCHARGEMENT D'IMAGE"

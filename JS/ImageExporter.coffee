@@ -32,10 +32,12 @@ class ImageExporter
 
 
 
+
     button = @app.window.document.getElementById 'modalImageDownloadButton'
     button.setAttribute 'href', imageUrl
 
     container = @app.window.document.getElementById 'renderedImageContainer'
+    # Remove the previous image, if any.
     container.innerHTML = ""
 
     spinner = @app.window.document.getElementById 'imageDownloadSpinner'
@@ -44,6 +46,9 @@ class ImageExporter
     image = new Image()
     image.onload = =>
       spinner.setAttribute 'class', 'hidden'
+      # It's important to remove the image prior to appending it again, in case the user 
+      # has clicked the download image navbar link several times.
+      container.innerHTML = ""
       container.appendChild image
       
     image.setAttribute 'src', imageUrl

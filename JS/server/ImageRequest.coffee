@@ -81,6 +81,9 @@ class ImageRequest
 
   writeResponse: (screenshotBuffer) =>
     @res.setHeader "content-type", "image/png"
+    # content-disposition=attachment prompts the browser to start a file download rather
+    # than navigate to the image.
+    @res.setHeader "content-disposition", "attachment; filename=EnergyFutureImage.png;"
     @res.write(screenshotBuffer)
     @res.end()
 
@@ -91,9 +94,9 @@ class ImageRequest
 
 
   errorHandler: (error) =>
-    # console.log "That's an error: "
-    # console.log error.message
-    # console.log (new Error()).stack
+    console.log "That's an error: "
+    console.log error.message
+    console.log (new Error()).stack
 
     @res.writeHead 500
     @res.end "HTTP 500 #{error.message}"
