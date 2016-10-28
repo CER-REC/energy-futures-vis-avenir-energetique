@@ -24,7 +24,7 @@ class ElectricityProductionProvider
     source: d.Source
     scenario: d.Case
     year: parseInt(d.Year)
-    value: parseFloat(d.Data)
+    value: parseFloat(d.Data.replace(',',''))
 
   parseData: (error, data) =>
     console.warn error if error?
