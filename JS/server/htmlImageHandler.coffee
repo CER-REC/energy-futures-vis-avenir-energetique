@@ -42,19 +42,19 @@ electricityProductionProvider = new ElectricityProductionProvider
 
 # File loading
 
-oilFilePromise = readFile "#{ApplicationRoot}/public/CSV/crude oil production VIZ.csv"
+oilFilePromise = readFile "#{ApplicationRoot}/public/CSV/2016-10-18_CrudeOilProduction.csv"
 oilPromise = oilFilePromise.then (data) ->
   oilProductionProvider.loadFromString data.toString()
 
-gasFilePromise = readFile "#{ApplicationRoot}/public/CSV/Natural gas production VIZ.csv"
+gasFilePromise = readFile "#{ApplicationRoot}/public/CSV/2016-10-18_NaturalGasProduction.csv"
 gasPromise = gasFilePromise.then (data) ->
   gasProductionProvider.loadFromString data.toString()
 
-energyDemandFilePromise = readFile "#{ApplicationRoot}/public/CSV/energy demand.csv"
+energyDemandFilePromise = readFile "#{ApplicationRoot}/public/CSV/2016-10-18_EnergyDemand.csv"
 energyPromise = energyDemandFilePromise.then (data) ->
   energyConsumptionProvider.loadFromString data.toString()
 
-electricityFilePromise = readFile "#{ApplicationRoot}/public/CSV/ElectricityGeneration_VIZ.csv"
+electricityFilePromise = readFile "#{ApplicationRoot}/public/CSV/2016-10-27_ElectricityGeneration.csv"
 electricityPromise = electricityFilePromise.then (data) ->
   electricityProductionProvider.loadFromString data.toString()
 

@@ -129,14 +129,6 @@ class Visualization4
 
   constructor: (@app, config) ->
 
-    document.onmousemove = @handleMouseMove
-    root.tooltip = d3.select("body")
-      .append("div")
-      .attr(
-        id: "tooltip"
-        class: "chartTooltip"
-      )
-      .text("")
 
     @config = config
     
@@ -149,6 +141,7 @@ class Visualization4
 
     if Platform.name == 'browser'
       @renderBrowserTemplate()
+      document.onmousemove = @handleMouseMove
     else if Platform.name == 'server'
       @renderServerTemplate()
 
