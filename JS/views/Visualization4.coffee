@@ -75,6 +75,7 @@ class Visualization4
     d3.select(@app.window.document).select '.mainSelectorHelpButton'
       .on 'click', =>
         d3.event.stopPropagation()
+        d3.event.preventDefault()
         if @app.popoverManager.currentPopover == @mainSelectorHelpPopover
           @app.popoverManager.closePopover()
         else
@@ -88,6 +89,7 @@ class Visualization4
     d3.select(@app.window.document).select '.unitSelectorHelpButton'
       .on 'click', =>
         d3.event.stopPropagation()
+        d3.event.preventDefault()
         if @app.popoverManager.currentPopover == @unitsHelpPopover
           @app.popoverManager.closePopover()
         else
@@ -101,6 +103,7 @@ class Visualization4
     d3.select(@app.window.document).select '.scenarioSelectorHelpButton'
       .on 'click', =>
         d3.event.stopPropagation()
+        d3.event.preventDefault()
         if @app.popoverManager.currentPopover == @scenariosHelpPopover
           @app.popoverManager.closePopover()
         else
@@ -322,6 +325,7 @@ class Visualization4
 
   showProvinceNames: =>
     d3.event.stopPropagation()
+    d3.event.preventDefault()
     if @app.popoverManager.currentPopover == @provincesHelpPopover
       @app.popoverManager.closePopover()
     else

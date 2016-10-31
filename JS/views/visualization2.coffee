@@ -35,16 +35,17 @@ class Visualization2 extends visualization
       selectSourceLabel: Tr.sourceSelector.selectSourceLabel[@app.language]
       svgStylesheet: SvgStylesheetTemplate
 
-    @sectorsSelectorHelpPopover = new ControlsHelpPopover()
-    @unitsHelpPopover = new ControlsHelpPopover()
-    @scenariosHelpPopover = new ControlsHelpPopover()
-    @sourcesHelpPopover = new ControlsHelpPopover()
-    @provincesHelpPopover = new ControlsHelpPopover()
+    @sectorsSelectorHelpPopover = new ControlsHelpPopover(@app)
+    @unitsHelpPopover = new ControlsHelpPopover(@app)
+    @scenariosHelpPopover = new ControlsHelpPopover(@app)
+    @sourcesHelpPopover = new ControlsHelpPopover(@app)
+    @provincesHelpPopover = new ControlsHelpPopover(@app)
 
 
     d3.select(@app.window.document).select '.sectorSelectorHelpButton'
       .on 'click', =>
         d3.event.stopPropagation()
+        d3.event.preventDefault()
         if @app.popoverManager.currentPopover == @sectorsSelectorHelpPopover
           @app.popoverManager.closePopover()
         else
@@ -58,6 +59,7 @@ class Visualization2 extends visualization
     d3.select(@app.window.document).select '.unitSelectorHelpButton'
       .on 'click', =>
         d3.event.stopPropagation()
+        d3.event.preventDefault()
         if @app.popoverManager.currentPopover == @unitsHelpPopover
           @app.popoverManager.closePopover()
         else
@@ -71,6 +73,7 @@ class Visualization2 extends visualization
     d3.select(@app.window.document).select '.scenarioSelectorHelpButton'
       .on 'click', =>
         d3.event.stopPropagation()
+        d3.event.preventDefault()
         if @app.popoverManager.currentPopover == @scenariosHelpPopover
           @app.popoverManager.closePopover()
         else
@@ -702,6 +705,7 @@ class Visualization2 extends visualization
 
   showSourceNames: =>
     d3.event.stopPropagation()
+    d3.event.preventDefault()
     if @app.popoverManager.currentPopover == @sourcesHelpPopover
       @app.popoverManager.closePopover()
     else
@@ -763,6 +767,7 @@ class Visualization2 extends visualization
 
   showProvinceNames: =>
     d3.event.stopPropagation()
+    d3.event.preventDefault()
     if @app.popoverManager.currentPopover == @provincesHelpPopover
       @app.popoverManager.closePopover()
     else

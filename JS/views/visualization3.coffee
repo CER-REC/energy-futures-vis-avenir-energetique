@@ -36,11 +36,11 @@ class Visualization3 extends visualization
       selectSourceLabel: Tr.sourceSelector.selectSourceLabel[@app.language]
       svgStylesheet: SvgStylesheetTemplate
 
-    @viewByHelpPopover = new ControlsHelpPopover()
-    @unitsHelpPopover = new ControlsHelpPopover()
-    @scenariosHelpPopover = new ControlsHelpPopover()
-    @sourcesHelpPopover = new ControlsHelpPopover()
-    @provincesHelpPopover = new ControlsHelpPopover()
+    @viewByHelpPopover = new ControlsHelpPopover(@app)
+    @unitsHelpPopover = new ControlsHelpPopover(@app)
+    @scenariosHelpPopover = new ControlsHelpPopover(@app)
+    @sourcesHelpPopover = new ControlsHelpPopover(@app)
+    @provincesHelpPopover = new ControlsHelpPopover(@app)
 
     d3.select(@app.window.document).select '.viewBySelectorHelpButton'
       .on 'click', =>
@@ -59,6 +59,7 @@ class Visualization3 extends visualization
     d3.select(@app.window.document).select '.unitSelectorHelpButton'
       .on 'click', =>
         d3.event.stopPropagation()
+        d3.event.preventDefault()
         if @app.popoverManager.currentPopover == @unitsHelpPopover
           @app.popoverManager.closePopover()
         else
@@ -72,6 +73,7 @@ class Visualization3 extends visualization
     d3.select(@app.window.document).select '.scenarioSelectorHelpButton'
       .on 'click', =>
         d3.event.stopPropagation()
+        d3.event.preventDefault()
         if @app.popoverManager.currentPopover == @scenariosHelpPopover
           @app.popoverManager.closePopover()
         else
@@ -1180,6 +1182,7 @@ class Visualization3 extends visualization
 
   showSourceNames: =>
     d3.event.stopPropagation()
+    d3.event.preventDefault()
     if @app.popoverManager.currentPopover == @sourcesHelpPopover
       @app.popoverManager.closePopover()
     else
@@ -1206,6 +1209,7 @@ class Visualization3 extends visualization
 
   showProvinceNames: =>
     d3.event.stopPropagation()
+    d3.event.preventDefault()
     if @app.popoverManager.currentPopover == @provincesHelpPopover
       @app.popoverManager.closePopover()
     else

@@ -36,14 +36,15 @@ class Visualization1 extends visualization
         selectRegionLabel: Tr.regionSelector.selectRegionLabel[@app.language]
         svgStylesheet: SvgStylesheetTemplate
 
-    @mainSelectorHelpPopover = new ControlsHelpPopover()
-    @unitsHelpPopover = new ControlsHelpPopover()
-    @scenariosHelpPopover = new ControlsHelpPopover()
-    @provincesHelpPopover = new ControlsHelpPopover()
+    @mainSelectorHelpPopover = new ControlsHelpPopover(@app)
+    @unitsHelpPopover = new ControlsHelpPopover(@app)
+    @scenariosHelpPopover = new ControlsHelpPopover(@app)
+    @provincesHelpPopover = new ControlsHelpPopover(@app)
 
     d3.select(@app.window.document).select '.mainSelectorHelpButton'
       .on 'click', =>
         d3.event.stopPropagation()
+        d3.event.preventDefault()
         if @app.popoverManager.currentPopover == @mainSelectorHelpPopover
           @app.popoverManager.closePopover()
         else
@@ -57,6 +58,7 @@ class Visualization1 extends visualization
     d3.select(@app.window.document).select '.unitSelectorHelpButton'
       .on 'click', =>
         d3.event.stopPropagation()
+        d3.event.preventDefault()
         if @app.popoverManager.currentPopover == @unitsHelpPopover
           @app.popoverManager.closePopover()
         else
@@ -70,6 +72,7 @@ class Visualization1 extends visualization
     d3.select(@app.window.document).select '.scenarioSelectorHelpButton'
       .on 'click', =>
         d3.event.stopPropagation()
+        d3.event.preventDefault()
         if @app.popoverManager.currentPopover == @scenariosHelpPopover
           @app.popoverManager.closePopover()
         else
@@ -615,6 +618,7 @@ class Visualization1 extends visualization
 
   showProvinceNames: =>
     d3.event.stopPropagation()
+    d3.event.preventDefault()
     if @app.popoverManager.currentPopover == @provincesHelpPopover
       @app.popoverManager.closePopover()
     else
