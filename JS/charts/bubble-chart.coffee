@@ -16,14 +16,6 @@ class bubbleChart extends chart
 
   constructor: (@app, parent, options = {}) ->
 
-    root.tooltip = d3.select("body")
-      .append("div")
-      .attr(
-        id: "tooltip"
-        class: "chartTooltip"
-      )
-      .text("")
-
     @options = _.extend {}, @bubbleChartDefaults, options
     @_mapping = @options.mapping
     @_year = @options.year
