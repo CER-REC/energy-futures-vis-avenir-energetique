@@ -346,19 +346,19 @@ class Visualization3 extends visualization
 
   sourcesBlackDictionary: ->
     hydro:  
-      img: 'IMG/sources/hydro_selectedR.svg'
+      img: '/IMG/sources/hydro_selectedR.svg'
     solarWindGeothermal:
-      img: 'IMG/sources/solarWindGeo_selectedR.svg'
+      img: '/IMG/sources/solarWindGeo_selectedR.svg'
     coal:
-      img: 'IMG/sources/coal_selectedR.svg'
+      img: '/IMG/sources/coal_selectedR.svg'
     naturalGas:
-      img: 'IMG/sources/naturalGas_selectedR.svg'
+      img: '/IMG/sources/naturalGas_selectedR.svg'
     bio:
-      img: 'IMG/sources/biomass_selectedR.svg'
+      img: '/IMG/sources/biomass_selectedR.svg'
     nuclear: 
-      img: 'IMG/sources/nuclear_selectedR.svg'
+      img: '/IMG/sources/nuclear_selectedR.svg'
     oilProducts:
-      img: 'IMG/sources/oil_products_selectedR.svg'
+      img: '/IMG/sources/oil_products_selectedR.svg'
 
   colouredSourceIconsDictionary: ->
     hydro:
