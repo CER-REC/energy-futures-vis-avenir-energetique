@@ -76,6 +76,7 @@ imageHandler = (req, res) ->
     time = Date.now()
 
     query = url.parse(req.url).search
+    console.log query
 
     try
       jsdom.env
