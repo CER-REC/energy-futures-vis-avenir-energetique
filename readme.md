@@ -109,9 +109,10 @@ To create the visualizations we used [D3](http://d3js.org), a Javascript library
 ## Contact Us
 We're the development team with Startide Solutions who put this project together for the NEB. We aren't able to provide extensive support for this project, but you're welcome to reach out with questions and thoughts!
 
-* Stephanie Sachrajda - stephanie.sachrajda@startidesolutions.com
-* Patrick King - patrick.king@startidesolutions.com
-* Ben Cousins - ben.cousins@startidesolutions.com
+* Patrick King - patrick.king@vizworx.com
+* Alaa Azazi - alaa.azazi@vizworx.com
+* Ben Cousins - ben.cousins@vizworx.com
+* Stephanie Sachrajda
 
 ## Known Issues
 
@@ -243,9 +244,10 @@ Pour générer les visualisations, nous avons utilisé [D3](http://d3js.org), un
 ## Contactez-nous
 L’équipe de développement de Startide Solutions a réalisé ce projet pour le compte de l’Office. Nous ne sommes pas en mesure d’assurer un soutien complet pour ce projet, mais vos questions et vos suggestions sont les bienvenues!
 
-* Stephanie Sachrajda - stephanie.sachrajda@startidesolutions.com
-* Patrick King - patrick.king@startidesolutions.com
-* Ben Cousins - ben.cousins@startidesolutions.com
+* Patrick King - patrick.king@vizworx.com
+* Alaa Azazi - alaa.azazi@vizworx.com
+* Ben Cousins - ben.cousins@vizworx.com
+* Stephanie Sachrajda
 
 ## Problèmes connus
 
