@@ -41,7 +41,7 @@ catch (error) {
 
 
 // zip it up!
-filename = "Startide_NEB_Visualization_" + pjson.version + ".zip";
+filename = "Vizworx_NEB_Visualization_" + pjson.version + ".zip";
 fs.removeSync(filename);
 
 zip('dist', filename, function(err) {

@@ -1,4 +1,5 @@
 _ = require 'lodash'
+
 Tr = require '../TranslationTable.coffee'
 Constants = require '../Constants.coffee'
 

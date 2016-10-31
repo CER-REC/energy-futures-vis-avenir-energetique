@@ -1,5 +1,6 @@
 d3 = require 'd3'
 _ = require 'lodash'
+
 stackedBarChart = require './stacked-bar-chart.coffee'
 Tr = require '../TranslationTable.coffee'
 
@@ -66,7 +67,7 @@ class stackedAreaChart extends stackedBarChart
     root.mousePos = {x: event.pageX, y: event.pageY}
     if root.activeSource?
       #array.find() is not supported in IE so we resort to array.filter() instead
-      current = pixelMap.filter((entry) -> root.mousePos.x >= entry.pixelStart && root.mousePos.x <entry.pixelEnd)
+      current = pixelMap.filter((entry) -> root.mousePos.x >= entry.pixelStart && root.mousePos.x < entry.pixelEnd)
       current = current[0]
       if current?
         titletobe = @_stackDictionary[root.activeSource].values.filter((value) -> value.x == current.year)

@@ -1,5 +1,7 @@
 _ = require 'lodash'
 d3 = require 'd3'
+_ = require 'lodash'
+
 visualization = require './visualization.coffee'
 unitUtilities = require '../unit-transformation.coffee'
 stackedAreaChart = require '../charts/stacked-area-chart.coffee'

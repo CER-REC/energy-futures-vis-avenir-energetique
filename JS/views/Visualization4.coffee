@@ -410,7 +410,9 @@ class Visualization4
     #   class: if @config.scenarios.includes 'highLng' then 'vizButton selected highLng' else 'vizButton highLng'
     #   colour: '#225EA8'
     # constrained = 
+
     #   title: Tr.selectorTooltip.scenarioSelector.constrainedButton[app.language]
+
     #   label: Tr.scenarioSelector.constrainedButton[app.language]
     #   scenarioName: 'constrained'
     #   class: if @config.scenarios.includes 'constrained' then 'vizButton selected constrained' else 'vizButton constrained'
@@ -422,6 +424,7 @@ class Visualization4
       class: if @config.scenarios.includes 'low' then 'vizButton selected low' else 'vizButton low'
       colour: '#7FCDBB'
     # noLng = 
+
     #   title: Tr.selectorTooltip.scenarioSelector.noLngButton[app.language]
     #   label: Tr.scenarioSelector.noLngButton[app.language]
     #   scenarioName: 'noLng'
@@ -520,6 +523,7 @@ class Visualization4
     #   key: 'noLng'
     #   colour: '#C7E9B4'
 
+
     scenariosInOrder = [reference, high, low]
     # The original data had six scenarios, the revised data currently only has three.
     # We expect this state of affairs to be temporary! 
@@ -547,7 +551,12 @@ class Visualization4
     maximums = []
     for key in Object.keys data
       maximums.push d3.max(data[key], (d) -> d.value)
-    d3.max maximums
+
+    if maximums.length > 0 
+      d3.max maximums
+    else
+      0
+
 
 
   outerWidth: ->
