@@ -11,7 +11,7 @@ module.exports =
         <p> {{{ content }}} </p>
       </div>
       <div id="panelRight">
-        <img src='IMG/landingPageThumb/carousel3.png' class='mainImageCarousel'>
+        <img src='IMG/landingPageThumb/carousel3_NEW.png' class='mainImageCarousel'>
       </div>
     </div>
 
@@ -546,7 +546,7 @@ module.exports =
     <div class="rightItem spacer"></div>
 
     <div class="rightItem" id="dataDownloadLinkAnchor">  
-      <a id='dataDownloadLink' data-ajax="false" download='vizData.zip' href='CSV/vizData.zip'>
+      <a id='dataDownloadLink' data-ajax="false" download='2016-10-27_CanadasEnergyFutureVisualizationData.zip' href='CSV/2016-10-27_CanadasEnergyFutureVisualizationData.zip'>
         {{ dataDownloadLink }}
       </a>
     </div>

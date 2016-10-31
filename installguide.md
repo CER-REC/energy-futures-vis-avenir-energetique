@@ -18,10 +18,16 @@ public
 ├── CSS
 │   └── canadasEnergyFutureVisualization.css
 ├── CSV
-│   ├── ElectricityGeneration_VIZ.csv
-│   ├── Natural gas production VIZ.csv
-│   ├── crude oil production VIZ.csv
-│   └── energy demand.csv
+│   ├── 2016-01_CanadasEnergyFutureVisualizationData.zip
+│   ├── 2016-01_ElectricityGeneration.csv
+│   ├── 2016-01_NaturalGasProduction.csv
+│   ├── 2016-01_CrudeOilProduction.csv
+│   ├── 2016-01_EnergyDemand.csv
+│   ├── 2016-10-18_CanadasEnergyFutureVisualizationData.zip
+│   ├── 2016-10-19_ElectricityGeneration.csv
+│   ├── 2016-10-18_NaturalGasProduction.csv
+│   ├── 2016-10-18_CrudeOilProduction.csv
+│   └── 2016-10-18_EnergyDemand.csv
 ├── IMG
 │   └── ...
 ├── PDF

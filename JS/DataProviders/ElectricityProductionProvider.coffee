@@ -12,7 +12,8 @@ class ElectricityProductionProvider
     @data = null
     @loadedCallback = loadedCallback
 
-    d3.csv "CSV/ElectricityGeneration_VIZ.csv", @csvMapping, @parseData
+    d3.csv "CSV/2016-10-27_ElectricityGeneration.csv", @csvMapping, @parseData
+    # d3.csv "CSV/2016-01_ElectricityGeneration.csv", @csvMapping, @parseData
   
 
 
@@ -23,7 +24,7 @@ class ElectricityProductionProvider
     source: d.Source
     scenario: d.Case
     year: parseInt(d.Year)
-    value: parseFloat(d.Data)
+    value: parseFloat(d.Data.replace(',',''))
 
   parseData: (error, data) =>
     console.warn error if error?

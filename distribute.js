@@ -25,8 +25,8 @@ fs.copySync("views/app_fragment.mustache", "dist/public/app_fragment.html");
 
 // The paid-up fonts are optional, the build is fine to continue without them.
 try {
-  fs.copySync("../NEBV-private/Fonts", "dist/public/Fonts");
-  fs.copySync("../NEBV-private/CSS/avenirFonts.css", "dist/public/CSS/avenirFonts.css");
+  fs.copySync("../energy-futures-private-resources/Fonts", "dist/public/Fonts");
+  fs.copySync("../energy-futures-private-resources/CSS/avenirFonts.css", "dist/public/CSS/avenirFonts.css");
 }
 catch (error) {
   console.warn("Avenir font not included in deployment package.")
@@ -34,7 +34,7 @@ catch (error) {
 
 
 // zip it up!
-filename = "Startide_NEB_Visualization_" + pjson.version + ".zip";
+filename = "Vizworx_NEB_Visualization_" + pjson.version + ".zip";
 fs.removeSync(filename);
 
 zip('dist', filename, function(err) {
