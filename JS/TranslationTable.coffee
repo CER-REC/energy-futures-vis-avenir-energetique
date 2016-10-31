@@ -68,9 +68,6 @@ module.exports =
       en: 'SCENARIOS'
       fr: 'SCÉNARIOS'
 
-    # downloadsLabel:
-    #   en: 'DOWNLOADS:'
-    #   fr: 'TÉLÉCHARGEMENTS:'
     imageDownloadLink:
       en: 'DOWNLOAD IMAGE'
       fr: "TÉLÉCHARGEMENT D'IMAGE"
@@ -81,9 +78,6 @@ module.exports =
     imageDownloadHeader: 
       en: "IMAGE DOWNLOAD"
       fr: "TÉLÉCHARGEMENT D'IMAGE"
-    imageDownloadInstructions: 
-      en: "You can save this image and share it with others. (Right click, save image as...)"
-      fr: "Vous pouvez télécharger et partager cette image. (Appuyez sur le bouton droite, enregistrer l'image sous...)"
     bitlyLinkInstructions:
       en: "To interact with this visualization, visit: "
       fr: "Pour manipuler cette visualisation, visitez: "

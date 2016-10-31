@@ -46,13 +46,12 @@ class stackedAreaChart extends stackedBarChart
   stackedAreaDefaults:
     strokeWidth: 1
 
-  constructor:(parent, x, y, options = {}) ->
-
+  constructor: (@app, parent, x, y, options = {}) ->
     document.onmousemove = @handleMouseMove
 
     @options = _.extend {}, @stackedAreaDefaults, options
     @_strokeWidth = @options.strokeWidth
-    super(parent, x, y, @options)
+    super(@app, parent, x, y, @options)
     @redraw()
 
     root.tooltip = d3.select("body")
@@ -72,7 +71,7 @@ class stackedAreaChart extends stackedBarChart
       if current?
         titletobe = @_stackDictionary[root.activeSource].values.filter((value) -> value.x == current.year)
         titletobe = titletobe[0]
-        document.getElementById("tooltip").innerHTML = Tr.sourceSelector.sources[root.activeSource][app.language] + " (" + current.year + "): " + titletobe.y.toFixed(2)
+        document.getElementById("tooltip").innerHTML = Tr.sourceSelector.sources[root.activeSource][@app.language] + " (" + current.year + "): " + titletobe.y.toFixed(2)
 
   # When dragging we want a shorter duration
   dragStart: ->

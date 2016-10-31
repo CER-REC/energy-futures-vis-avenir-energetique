@@ -5,17 +5,17 @@ Tr = require '../TranslationTable.coffee'
 
 class ElectricityProductionProvider
 
-
-
-  constructor: (loadedCallback) ->
-
+  constructor: ->
     @data = null
-    @loadedCallback = loadedCallback
 
+  loadViaAjax: (loadedCallback) ->
+    @loadedCallback = loadedCallback
     d3.csv "CSV/2016-10-27_ElectricityGeneration.csv", @csvMapping, @parseData
     # d3.csv "CSV/2016-10-19_ElectricityGeneration.csv", @csvMapping, @parseData
     # d3.csv "CSV/2016-01_ElectricityGeneration.csv", @csvMapping, @parseData
-  
+
+  loadFromString: (data) ->
+    @parseData null, d3.csv.parse(data, @csvMapping) 
 
 
 
@@ -89,7 +89,7 @@ class ElectricityProductionProvider
       @dataByProvince[item.province].push item
       @dataBySource[item.source].push item
 
-    @loadedCallback()
+    @loadedCallback() if @loadedCallback
 
     
 
@@ -286,7 +286,7 @@ class ElectricityProductionProvider
             children: []
           )
         bubbleObj.children[childrenKeys[source]].children.push(
-          name: if viz3config.viewBy == 'province' then "#{Tr.sourceSelector.sources[item[nameField]][app.language]} #{source}" else "#{item[nameField]} #{Tr.sourceSelector.sources[source][app.language]}"  #for titles
+          name: if viz3config.viewBy == 'province' then "#{Tr.sourceSelector.sources[item[nameField]][viz3config.language]} #{source}" else "#{item[nameField]} #{Tr.sourceSelector.sources[source][viz3config.language]}"  #for titles
           id: "#{item[nameField]}#{source}" #to distinguish
           source: item[nameField]
           size: if viz3config[stackedFilterName].includes item[nameField] then item.value else 0.001

@@ -63,7 +63,7 @@ class Visualization3Configuration
     province: 'all'
     source: 'total'
 
-  constructor: (options) ->
+  constructor: (@app, options) ->
     @options = _.extend {}, @defaultOptions, options
 
     @mainSelection = 'electricityGeneration' # this isn't an option for viz 3
@@ -109,6 +109,8 @@ class Visualization3Configuration
 
     # Used to manage the order of the sources in a reorderable menu
     @sourcesInOrder = @options.sourcesInOrder
+
+    @setLanguage @app.language || 'en'
 
   # Setters
 
@@ -229,6 +231,9 @@ class Visualization3Configuration
       @provinces = []
     @updateRouter()
 
+  setLanguage: (language) ->
+    @language = language if language == 'en' or language == 'fr'
+
 
   # Router integration
 
@@ -249,8 +254,8 @@ class Visualization3Configuration
     params
 
   updateRouter: ->
-    return unless app? and app.router?
-    window.app.router.navigate @routerParams()
+    return unless @app? and @app.router?
+    @app.router.navigate @routerParams()
 
 
   # Description for PNG export
@@ -262,43 +267,43 @@ class Visualization3Configuration
 
     # unitText = switch @unit
     #   when 'petajoules'
-    #     Tr.unitSelector.petajoulesButton[app.language]
+    #     Tr.unitSelector.petajoulesButton[@app.language]
     #   when 'kilobarrelEquivalents'
-    #     Tr.unitSelector.kilobarrelEquivalentsButton[app.language]
+    #     Tr.unitSelector.kilobarrelEquivalentsButton[@app.language]
     #   when 'gigawattHours'
-    #     Tr.unitSelector.gigawattHourButton[app.language]
+    #     Tr.unitSelector.gigawattHourButton[@app.language]
 
 
     scenarioText = switch @scenario
       when 'reference'
-        Tr.scenarioSelector.referenceButton[app.language]
+        Tr.scenarioSelector.referenceButton[@app.language]
       when 'constrained'
-        Tr.scenarioSelector.constrainedButton[app.language]
+        Tr.scenarioSelector.constrainedButton[@app.language]
       when 'high'
-        Tr.scenarioSelector.highPriceButton[app.language]
+        Tr.scenarioSelector.highPriceButton[@app.language]
       when 'low'
-        Tr.scenarioSelector.lowPriceButton[app.language]
+        Tr.scenarioSelector.lowPriceButton[@app.language]
       when 'highLng'
-        Tr.scenarioSelector.highLngButton[app.language]
+        Tr.scenarioSelector.highLngButton[@app.language]
       when 'noLng'
-        Tr.scenarioSelector.noLngButton[app.language]
+        Tr.scenarioSelector.noLngButton[@app.language]
 
     sourceOrProvinceText = if @viewBy == 'province'
       if @province == 'all'
         "CANADA"
       else
-        "#{Tr.viewBySelector.viewByProvinceButton[app.language]}: #{Tr.regionSelector.names[@province][app.language]}"
+        "#{Tr.viewBySelector.viewByProvinceButton[@app.language]}: #{Tr.regionSelector.names[@province][@app.language]}"
     else if @viewBy == 'source'
       if @source == 'total'
-        "#{Tr.imageExportText.all[app.language]} SOURCES"
+        "#{Tr.imageExportText.all[@app.language]} SOURCES"
       else
-        "SOURCE: #{Tr.imageExportText.sources[@source][app.language]}"
+        "SOURCE: #{Tr.imageExportText.sources[@source][@app.language]}"
 
    
     description = ''
-    description += "#{Tr.mainSelector.electricityGenerationButton[app.language]} - "
-    # description += "#{Tr.imageExportText.unit[app.language]}: #{unitText} - "
-    description += "#{Tr.imageExportText.scenario[app.language]}: #{scenarioText} - "
+    description += "#{Tr.mainSelector.electricityGenerationButton[@app.language]} - "
+    # description += "#{Tr.imageExportText.unit[@app.language]}: #{unitText} - "
+    description += "#{Tr.imageExportText.scenario[@app.language]}: #{scenarioText} - "
     description += "#{sourceOrProvinceText}"
 
     description

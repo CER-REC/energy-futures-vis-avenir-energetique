@@ -4,17 +4,16 @@ UnitTransformation = require '../unit-transformation.coffee'
 
 class OilProductionProvider
 
-
-
-  constructor: (loadedCallback) ->
-
+  constructor: ->
     @data = null
-    @loadedCallback = loadedCallback
 
+  loadViaAjax: (loadedCallback) ->
+    @loadedCallback = loadedCallback
     d3.csv "CSV/2016-10-18_CrudeOilProduction.csv", @csvMapping, @parseData
     # d3.csv "CSV/2016-01_CrudeOilProduction.csv", @csvMapping, @parseData
-  
 
+  loadFromString: (data) ->
+    @parseData null, d3.csv.parse(data, @csvMapping) 
 
 
 
@@ -67,7 +66,7 @@ class OilProductionProvider
       @dataByScenario[item.scenario].push item
       @dataByProvince[item.province].push item
 
-    @loadedCallback()
+    @loadedCallback() if @loadedCallback
     
 
 

@@ -4,17 +4,16 @@ UnitTransformation = require '../unit-transformation.coffee'
 
 class EnergyConsumptionProvider
 
-
-
-  constructor: (loadedCallback) ->
-
+  constructor: ->
     @data = null
-    @loadedCallback = loadedCallback
 
+  loadViaAjax: (loadedCallback) ->
+    @loadedCallback = loadedCallback
     d3.csv "CSV/2016-10-18_EnergyDemand.csv", @csvMapping, @parseData
     # d3.csv "CSV/2016-01_EnergyDemand.csv", @csvMapping, @parseData
   
-
+  loadFromString: (data) ->
+    @parseData null, d3.csv.parse(data, @csvMapping) 
 
 
 
@@ -29,7 +28,7 @@ class EnergyConsumptionProvider
   parseData: (error, data) =>
     console.warn error if error?
     @data = data
-    
+
     # Normalize some of the data in the CSV, to make life easier later
     # TODO: precompute some of these changes?
 
@@ -97,7 +96,7 @@ class EnergyConsumptionProvider
       # @dataBySector[item.sector].push item
       @dataBySource[item.source].push item
 
-    @loadedCallback()
+    @loadedCallback() if @loadedCallback
     
     
   # accessors note: EnergyConsumptionProvider is never needed for viz 3!!

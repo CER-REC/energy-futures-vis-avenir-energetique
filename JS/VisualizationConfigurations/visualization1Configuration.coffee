@@ -38,7 +38,7 @@ class Visualization1Configuration
       'YT' 
     ]
 
-  constructor: (options) ->
+  constructor: (@app, options) ->
     @options = _.extend {}, @defaultOptions, options
 
     # mainSelection, one of energyDemand, oilProduction, electricityGeneration, or gasProduction
@@ -69,6 +69,8 @@ class Visualization1Configuration
       @provincesInOrder = @options.provincesInOrder
     else
       @provincesInOrder = @defaultOptions.provincesInOrder
+
+    @setLanguage @app.language || 'en'
 
   # Setters
 
@@ -165,6 +167,12 @@ class Visualization1Configuration
     # NB: We aren't currently tracking provinces in order in the URL bar
     @provincesInOrder = provincesInOrder
     @updateRouter()
+
+
+  setLanguage: (language) ->
+    @language = language if language == 'en' or language == 'fr'
+
+
   # Router integration
 
   routerParams: ->
@@ -176,8 +184,8 @@ class Visualization1Configuration
     provincesInOrder: @provincesInOrder
     
   updateRouter: ->
-    return unless app? and app.router?
-    window.app.router.navigate @routerParams()
+    return unless @app? and @app.router?
+    @app.router.navigate @routerParams()
 
 
   # Description for PNG export
@@ -185,48 +193,48 @@ class Visualization1Configuration
 
     mainSelectionText = switch @mainSelection
       when 'energyDemand'
-        Tr.mainSelector.totalDemandButton[app.language]
+        Tr.mainSelector.totalDemandButton[@app.language]
       when 'electricityGeneration'
-        Tr.mainSelector.electricityGenerationButton[app.language]
+        Tr.mainSelector.electricityGenerationButton[@app.language]
       when 'oilProduction'
-        Tr.mainSelector.oilProductionButton[app.language]
+        Tr.mainSelector.oilProductionButton[@app.language]
       when 'gasProduction'
-        Tr.mainSelector.gasProductionButton[app.language]
+        Tr.mainSelector.gasProductionButton[@app.language]
 
     unitText = switch @unit
       when 'petajoules'
-        Tr.unitSelector.petajoulesButton[app.language]
+        Tr.unitSelector.petajoulesButton[@app.language]
       when 'kilobarrelEquivalents'
-        Tr.unitSelector.kilobarrelEquivalentsButton[app.language]
+        Tr.unitSelector.kilobarrelEquivalentsButton[@app.language]
       when 'gigawattHours'
-        Tr.unitSelector.gigawattHourButton[app.language]
+        Tr.unitSelector.gigawattHourButton[@app.language]
       when 'thousandCubicMetres'
-        Tr.unitSelector.thousandCubicMetresButton[app.language]
+        Tr.unitSelector.thousandCubicMetresButton[@app.language]
       when 'millionCubicMetres'
-        Tr.unitSelector.millionCubicMetresButton[app.language]
+        Tr.unitSelector.millionCubicMetresButton[@app.language]
       when 'kilobarrels'
-        Tr.unitSelector.kilobarrelsButton[app.language]
+        Tr.unitSelector.kilobarrelsButton[@app.language]
       when 'cubicFeet'
-        Tr.unitSelector.cubicFeetButton[app.language]
+        Tr.unitSelector.cubicFeetButton[@app.language]
 
     scenarioText = switch @scenario
       when 'reference'
-        Tr.scenarioSelector.referenceButton[app.language]
+        Tr.scenarioSelector.referenceButton[@app.language]
       when 'constrained'
-        Tr.scenarioSelector.constrainedButton[app.language]
+        Tr.scenarioSelector.constrainedButton[@app.language]
       when 'high'
-        Tr.scenarioSelector.highPriceButton[app.language]
+        Tr.scenarioSelector.highPriceButton[@app.language]
       when 'low'
-        Tr.scenarioSelector.lowPriceButton[app.language]
+        Tr.scenarioSelector.lowPriceButton[@app.language]
       when 'highLng'
-        Tr.scenarioSelector.highLngButton[app.language]
+        Tr.scenarioSelector.highLngButton[@app.language]
       when 'noLng'
-        Tr.scenarioSelector.noLngButton[app.language]
+        Tr.scenarioSelector.noLngButton[@app.language]
 
     description = ''
     description += "#{mainSelectionText} - "
-    description += "#{Tr.imageExportText.unit[app.language]}: #{unitText} - "
-    description += "#{Tr.imageExportText.scenario[app.language]}: #{scenarioText}"
+    description += "#{Tr.imageExportText.unit[@app.language]}: #{unitText} - "
+    description += "#{Tr.imageExportText.scenario[@app.language]}: #{scenarioText}"
 
     description
 

@@ -4,7 +4,7 @@ var router = express.Router();
 
 // Direct the root to the newer template
 router.get('/', function(req, res, next) {
-  res.render('WET4', { title: 'WET 3.1.12' });
+  res.render('WET4', { title: 'WET 4.0.20' });
 });
 
 router.get('/WET3', function(req, res, next) {

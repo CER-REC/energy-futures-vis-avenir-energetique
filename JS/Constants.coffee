@@ -185,39 +185,11 @@ module.exports =
     'viz4'
   ]
 
-  imageExport:
-    iconHeight: 30
-    iconWidth: 30
 
-    legendWidth: 80
-    legendHeight: 680
+  animationDuration: 1000 # in ms
 
-    scenarioLegendWidth: 145
-    scenarioLegendHeight: 680
-    scenarioLegendItemWidth: 115 # 145 - 25*2
-    scenarioLegendItemHeight: 35
-    scenarioLegendFontSize: 15
-    scenarioLegendTextTopMargin: 10
-    scenarioLegendXPadding: 15
-
-    legendXPadding: 25
-    legendYPadding: 15
-
-    headerFontSize: 20
-    headerTopBottomMargin: 15
-
-    infoTopSpacer: 40
-
-    infoFontSize: 15
-    infoTopBottomMargin: 5
-    infoLeftMargin: 25
-
-    sourceRightMargin: 25
-    sourceTopMargin: 10
-
-
-
-
+  serverSideGraphWidth: 1065 # px
+  viz4ServerSideGraphWidth: 995 # 1065 - 70 extra pixels of width for viz4's wider legend
 
 
 

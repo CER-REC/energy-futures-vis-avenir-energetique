@@ -2,20 +2,18 @@ d3 = require 'd3'
 Constants = require '../Constants.coffee'
 UnitTransformation = require '../unit-transformation.coffee'
 
-
 class GasProductionProvider
 
-
-
-  constructor: (loadedCallback) ->
-
+  constructor: ->
     @data = null
-    @loadedCallback = loadedCallback
 
+  loadViaAjax: (loadedCallback) ->
+    @loadedCallback = loadedCallback
     d3.csv "CSV/2016-10-18_NaturalGasProduction.csv", @csvMapping, @parseData
     # d3.csv "CSV/2016-01_NaturalGasProduction.csv", @csvMapping, @parseData
   
-
+  loadFromString: (data) ->
+    @parseData null, d3.csv.parse(data, @csvMapping) 
 
 
 
@@ -68,7 +66,7 @@ class GasProductionProvider
       @dataByScenario[item.scenario].push item
       @dataByProvince[item.province].push item
     
-    @loadedCallback()
+    @loadedCallback() if @loadedCallback
 
 
   # accessors note: GasProductionProvider is never needed for viz 2 or 3!!
