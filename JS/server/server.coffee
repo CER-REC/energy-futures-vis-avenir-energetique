@@ -1,6 +1,16 @@
 express = require 'express'
 path = require 'path'
 
+
+# NB: The working directory will be the project root when the 'start-image-server' command
+# in package.json is run, but it will be JS/server when the app is run under IIS-Node.
+# The config module loads files from a folder named config in the working directory.
+# So, we change the working directory to be the one this file is in.
+# We need to do this *before* we require the config module for the first time!
+process.chdir __dirname
+config = require 'config'
+
+
 Platform = require '../Platform.coffee'
 Platform.name = "server"
 
@@ -36,8 +46,3 @@ app.get '/html_image', htmlImageHandler
 # IIS-Node passes in a named pipe to listen to in process.env.PORT
 app.listen process.env.PORT || 4747
 console.log 'Ready.'
-
-config = require 'config'
-
-console.log config.Client.Port
-console.log config.Client.Host
