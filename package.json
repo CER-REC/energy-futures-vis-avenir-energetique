@@ -3,12 +3,11 @@
   "version": "1.0.13.4",
   "description": "NEB project",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "browserify JS/App.coffee -t coffeeify --extension='.coffee' -t [ stringify --extensions [.mustache .css] -g uglifyify -o dist/public/bundle.js",
-    "watch": "watchify JS/App.coffee -t coffeeify --extension='.coffee' -t [ stringify --extensions [.mustache .css] ] -o public/bundle.js --debug --verbose",
-    "distribute": "node distribute.js",
-    "start": "node ./bin/www",
-    "start-image-server": "node JS/server/server.js"
+    "build": "NODE_ENV=production browserify JS/App.coffee -t coffeeify --extension='.coffee' -t [ stringify --extensions [.mustache .css .json] -t envify -g uglifyify -o dist/public/bundle.js",
+    "watch": "NODE_ENV=development watchify JS/App.coffee -t coffeeify --extension='.coffee' -t [ stringify --extensions [.mustache .css .json] ] -t envify -o public/bundle.js --debug --verbose",
+    "distribute": "NODE_ENV=production node distribute.js",
+    "start": "NODE_ENV=development node ./bin/www",
+    "start-image-server": "NODE_ENV=development node JS/server/server.js"
   },
   "dependencies": {
     "array-includes": "^3.0.2",
@@ -16,10 +15,10 @@
     "browserify": "^10.2.1",
     "coffeeify": "^1.1.0",
     "config": "^1.21.0",
-    "config-browserify": "^1.0.5",
     "d3": "^3.4.0",
     "debug": "~2.2.0",
     "domready": "^1.0.8",
+    "envify": "^3.4.1",
     "grunt": "^0.4.5",
     "jsdom": "^9.6.0",
     "lodash": "^4.5.1",
