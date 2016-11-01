@@ -37,3 +37,7 @@ app.get '/html_image', htmlImageHandler
 app.listen process.env.PORT || 4747
 console.log 'Ready.'
 
+config = require 'config'
+
+console.log config.Client.Port
+console.log config.Client.Host

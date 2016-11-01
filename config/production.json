@@ -1,0 +1,6 @@
+{
+  "Client": {
+    "Port": 80,
+    "Host": "http://localhost"
+  }
+}
