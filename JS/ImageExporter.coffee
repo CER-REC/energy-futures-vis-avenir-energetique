@@ -2,6 +2,8 @@ QueryString = require 'query-string'
 
 Tr = require './TranslationTable.coffee'
 ParamsToUrlString = require './ParamsToUrlString.coffee'
+ClientConfig = require('./ClientConfig.coffee');
+
 
 class ImageExporter
 
@@ -27,8 +29,8 @@ class ImageExporter
     params.page = @app.page
     params.language = @app.language
 
-    # TODO: Parameterize this URL
-    imageUrl = "http://172.16.148.27:4747/png_image/#{ParamsToUrlString params}"
+
+    imageUrl = "#{ClientConfig.Server.Host}:#{ClientConfig.Server.Port}/png_image/#{ParamsToUrlString params}"
 
 
 
