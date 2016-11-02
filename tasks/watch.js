@@ -1,1 +1,0 @@
-"NODE_ENV=development watchify JS/App.coffee -t coffeeify --extension='.coffee' -t [ stringify --extensions [.mustache .css .json] ] -t envify -o public/bundle.js --debug --verbose",
