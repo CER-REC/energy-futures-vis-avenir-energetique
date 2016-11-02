@@ -14,3 +14,5 @@ d3-neb.sublime-workspace
 public/bundle.js
 
 /JS/server/iisnode
+.env
+

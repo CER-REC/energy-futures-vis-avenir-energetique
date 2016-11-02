@@ -3,8 +3,8 @@
   "version": "1.0.13.4",
   "description": "NEB project",
   "scripts": {
-    "build": "browserify JS/App.coffee -t coffeeify --extension='.coffee' -t [ stringify --extensions [.mustache .css .json] -t envify -g uglifyify -o dist/public/bundle.js",
-    "watch": "watchify JS/App.coffee -t coffeeify --extension='.coffee' -t [ stringify --extensions [.mustache .css .json] ] -t envify -o public/bundle.js --debug --verbose",
+    "build": "browserify JS/App.coffee -p ./tasks/dotenv-browserify-plugin.js -t coffeeify --extension='.coffee' -t [ stringify --extensions [.mustache .css] -t envify -g uglifyify -o dist/public/bundle.js",
+    "watch": "watchify JS/App.coffee -p ./tasks/dotenv-browserify-plugin.js -t coffeeify --extension='.coffee' -t [ stringify --extensions [.mustache .css] ] -t envify -o public/bundle.js --debug --verbose",
     "distribute": "node ./tasks/distribute.js",
     "start": "node ./tasks/start.js",
     "start-image-server": "node JS/server/server.js"
@@ -14,10 +14,10 @@
     "bluebird": "^3.4.6",
     "browserify": "^10.2.1",
     "coffeeify": "^1.1.0",
-    "config": "^1.21.0",
     "d3": "^3.4.0",
     "debug": "~2.2.0",
     "domready": "^1.0.8",
+    "dotenv": "^2.0.0",
     "envify": "^3.4.1",
     "grunt": "^0.4.5",
     "jsdom": "^9.6.0",

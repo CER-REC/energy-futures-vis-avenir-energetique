@@ -1,5 +1,4 @@
 url = require 'url'
-config = require 'config'
 
 
 class ImageRequest
@@ -50,7 +49,7 @@ class ImageRequest
       @errorHandler new Error("No visualization parameters specified.")
       return
 
-    @webdriverUrlRequest = @browserTools.webdriverSession.url("#{config.Server.Host}:#{config.Server.Port}/html_image/#{@query}")
+    @webdriverUrlRequest = @browserTools.webdriverSession.url("#{process.env.HOST}:#{process.env.PORT_NUMBER}/html_image/#{@query}")
 
     @webdriverUrlRequest.then =>
 

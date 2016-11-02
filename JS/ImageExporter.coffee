@@ -2,7 +2,6 @@ QueryString = require 'query-string'
 
 Tr = require './TranslationTable.coffee'
 ParamsToUrlString = require './ParamsToUrlString.coffee'
-ClientConfig = require('./ClientConfig.coffee');
 
 
 class ImageExporter
@@ -30,7 +29,7 @@ class ImageExporter
     params.language = @app.language
 
 
-    imageUrl = "#{ClientConfig.Server.Host}:#{ClientConfig.Server.Port}/png_image/#{ParamsToUrlString params}"
+    imageUrl = "#{process.env.HOST}:#{process.env.PORT_NUMBER}/png_image/#{ParamsToUrlString params}"
 
 
 

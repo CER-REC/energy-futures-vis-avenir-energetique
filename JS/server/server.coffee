@@ -1,3 +1,4 @@
+require('dotenv').config();
 express = require 'express'
 path = require 'path'
 
@@ -9,7 +10,6 @@ path = require 'path'
 # We need to do this *before* we require the config module for the first time!
 ApplicationRoot = require '../../ApplicationRoot.coffee'
 process.chdir ApplicationRoot
-config = require 'config'
 
 
 Platform = require '../Platform.coffee'
@@ -45,5 +45,5 @@ app.get '/html_image', htmlImageHandler
 
 
 # IIS-Node passes in a named pipe to listen to in process.env.PORT
-app.listen process.env.PORT || config.Server.Port
-console.log 'Ready.'
+app.listen process.env.PORT || process.env.PORT_NUMBER
+console.log "Ready: #{process.env.HOST}:#{process.env.PORT_NUMBER}"

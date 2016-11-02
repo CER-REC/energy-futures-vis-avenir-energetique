@@ -1,1 +1,0 @@
-"NODE_ENV=production browserify JS/App.coffee -t coffeeify --extension='.coffee' -t [ stringify --extensions [.mustache .css .json] -t envify -g uglifyify -o dist/public/bundle.js",
