@@ -1,15 +1,14 @@
-require('dotenv').config();
-express = require 'express'
-path = require 'path'
-
-
 # NB: The working directory will be the project root when the 'start-image-server' command
 # in package.json is run, but it will be JS/server when the app is run under IIS-Node.
-# The config module loads files from a folder named config in the working directory.
+# The dotenv module loads the .env file in the working directory.
 # So, we change the working directory to be the app root.
-# We need to do this *before* we require the config module for the first time!
+# We need to do this *before* we require dotenv!
 ApplicationRoot = require '../../ApplicationRoot.coffee'
 process.chdir ApplicationRoot
+require('dotenv').config()
+
+express = require 'express'
+path = require 'path'
 
 
 Platform = require '../Platform.coffee'
