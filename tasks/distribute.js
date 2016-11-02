@@ -3,6 +3,8 @@ var pjson = require('./package.json');
 var fs = require('fs-extra');
 var zip = require('zip-folder');
 
+// "NODE_ENV=production node ./tasks/distribute.js",
+
 // We exclusively use the Node fs API here, to maintain portability with Windows
 
 // Clean up any existing distribution

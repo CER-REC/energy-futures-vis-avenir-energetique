@@ -3,11 +3,11 @@
   "version": "1.0.13.4",
   "description": "NEB project",
   "scripts": {
-    "build": "NODE_ENV=production browserify JS/App.coffee -t coffeeify --extension='.coffee' -t [ stringify --extensions [.mustache .css .json] -t envify -g uglifyify -o dist/public/bundle.js",
-    "watch": "NODE_ENV=development watchify JS/App.coffee -t coffeeify --extension='.coffee' -t [ stringify --extensions [.mustache .css .json] ] -t envify -o public/bundle.js --debug --verbose",
-    "distribute": "NODE_ENV=production node distribute.js",
-    "start": "NODE_ENV=development node ./bin/www",
-    "start-image-server": "NODE_ENV=development node JS/server/server.js"
+    "build": "browserify JS/App.coffee -t coffeeify --extension='.coffee' -t [ stringify --extensions [.mustache .css .json] -t envify -g uglifyify -o dist/public/bundle.js",
+    "watch": "watchify JS/App.coffee -t coffeeify --extension='.coffee' -t [ stringify --extensions [.mustache .css .json] ] -t envify -o public/bundle.js --debug --verbose",
+    "distribute": "node ./tasks/distribute.js",
+    "start": "node ./tasks/start.js",
+    "start-image-server": "node JS/server/server.js"
   },
   "dependencies": {
     "array-includes": "^3.0.2",
