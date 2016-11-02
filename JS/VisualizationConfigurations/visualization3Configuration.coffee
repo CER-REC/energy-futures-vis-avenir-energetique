@@ -309,6 +309,29 @@ class Visualization3Configuration
     description
 
 
+  pngFileName: ->
+
+    if @viewBy == 'source'
+      viewByItem = Tr.sourceSelector.sources[@source][@app.language]
+    else if @viewBy == 'province'
+      viewByItem = if @province == 'all'
+        "CANADA"
+      else
+        @province
+
+    components = [
+      Tr.landingPage.mainHeader[@app.language]
+      Tr.visualization3Title[@app.language]
+      Tr.scenarioSelector.names[@scenario][@app.language]
+      Tr.imageExportText.viewBy[@viewBy][@app.language]
+      viewByItem
+      @year
+    ]
+
+    filename = components.join(' - ')
+    filename += '.png'
+    filename
+
 
 
 module.exports = Visualization3Configuration

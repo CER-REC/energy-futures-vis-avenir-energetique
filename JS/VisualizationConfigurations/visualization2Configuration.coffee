@@ -186,6 +186,27 @@ class Visualization2Configuration
 
     description
 
+
+  pngFileName: ->
+
+    region = if @province == 'all'
+      "CANADA"
+    else
+      @province
+
+    components = [
+      Tr.landingPage.mainHeader[@app.language]
+      Tr.visualization2Title[@app.language]
+      Tr.imageExportText.sectors[@sector][@app.language]
+      Tr.scenarioSelector.names[@scenario][@app.language]
+      region
+    ]
+
+    filename = components.join(' - ')
+    filename += '.png'
+    filename
+
+
   isValidSourcesInOrder: (newOrder) ->
     # Check if the set of provinces is valid
     if(newOrder.length != @defaultOptions.sourcesInOrder.length)

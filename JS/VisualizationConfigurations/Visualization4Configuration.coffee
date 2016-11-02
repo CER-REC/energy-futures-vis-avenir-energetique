@@ -157,6 +157,20 @@ class Visualization4Configuration
 
     description
 
+  pngFileName: ->
+    
+    scenarios = @scenarios.map (scenario) ->
+      Tr.scenarioSelector.names[scenario][@app.language]
+
+    components = [
+      Tr.landingPage.mainHeader[@app.language]
+      Tr.visualization4Titles[@mainSelection][@app.language]
+      scenarios.join(',')
+    ]
+
+    filename = components.join(' - ')
+    filename += '.png'
+    filename
 
 
 module.exports = Visualization4Configuration

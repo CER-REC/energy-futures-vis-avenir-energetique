@@ -238,6 +238,20 @@ class Visualization1Configuration
 
     description
 
+
+  pngFileName: ->
+
+    components = [
+      Tr.landingPage.mainHeader[@app.language]
+      Tr.visualization1Titles[@mainSelection][@app.language]
+      Tr.scenarioSelector.names[@scenario][@app.language]
+    ]
+
+    filename = components.join(' - ')
+    filename += '.png'
+    filename
+
+
   isValidProvincesInOrder: (newOrder) ->
     # Check if the set of provinces is valid
     if(newOrder.length != @defaultOptions.provincesInOrder.length)
