@@ -8,7 +8,7 @@
 
 class ServerApp
 
-  constructor: (@window, providers) ->
+  constructor: (@window, providers={}) ->
 
     @energyConsumptionProvider = providers.energyConsumptionProvider
     @oilProductionProvider = providers.oilProductionProvider

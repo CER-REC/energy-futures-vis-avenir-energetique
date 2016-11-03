@@ -159,7 +159,7 @@ class Visualization4Configuration
 
   pngFileName: ->
     
-    scenarios = @scenarios.map (scenario) ->
+    scenarios = @scenarios.map (scenario) =>
       Tr.scenarioSelector.names[scenario][@app.language]
 
     components = [
