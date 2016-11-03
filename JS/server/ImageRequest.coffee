@@ -84,7 +84,8 @@ class ImageRequest
     @res.setHeader "content-type", "image/png"
     # content-disposition=attachment prompts the browser to start a file download rather
     # than navigate to the image.
-    @res.setHeader "content-disposition", "attachment; filename=\"#{@pngFileName()}\";"
+    @res.setHeader "content-disposition", "attachment"
+    # @res.setHeader "content-disposition", "attachment; filename=\"#{@pngFileName()}\";"
     @res.setHeader 'cache-control', "max-age=600" 
     @res.write(screenshotBuffer)
     @res.end()

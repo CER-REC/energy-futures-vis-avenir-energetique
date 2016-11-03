@@ -28,7 +28,7 @@ class ImageExporter
     params.language = @app.language
 
 
-    imageUrl = "#{process.env.HOST}:#{process.env.PORT_NUMBER}/png_image/#{ParamsToUrlString params}"
+    imageUrl = "#{process.env.HOST}:#{process.env.PORT_NUMBER}/png_image/#{config.pngFileName()}#{ParamsToUrlString params}"
 
 
 

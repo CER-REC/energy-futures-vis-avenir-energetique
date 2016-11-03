@@ -35,7 +35,7 @@ app.use(express.static(path.join(__dirname, '../../public')))
 app.use(express.static(path.join(__dirname, '../../../energy-futures-private-resources')))
 
 # Endpoint for PNG generation
-app.get '/png_image', (req, res) ->
+app.get '/png_image/*', (req, res) ->
   pngImageHandler req, res, serverState
 
 # Endpoint for HTML generation, for consumption by Phantom to become the PNG
