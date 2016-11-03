@@ -918,6 +918,11 @@ module.exports =
           'HYDRO'
         fr:
           'HYDROÉLECTRICITÉ'
+      total:
+        en: 
+          'ALL SOURCES'
+        fr: 
+          'TOUTES LES SOURCES'
 
 
 
@@ -1149,6 +1154,14 @@ module.exports =
         # • Crude Oil:
         # • Électricité
         # • Pétrole brut
+    viewBy:
+      province:
+        en: 'REGION'
+        fr: 'RÉGION'
+      source:
+        en: 'SOURCE'
+        fr: 'SOURCE'
+
 
   howToImages: 
     viz1A:

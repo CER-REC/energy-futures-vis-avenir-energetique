@@ -294,10 +294,7 @@ class Visualization3Configuration
       else
         "#{Tr.viewBySelector.viewByProvinceButton[@app.language]}: #{Tr.regionSelector.names[@province][@app.language]}"
     else if @viewBy == 'source'
-      if @source == 'total'
-        "#{Tr.imageExportText.all[@app.language]} SOURCES"
-      else
-        "SOURCE: #{Tr.imageExportText.sources[@source][@app.language]}"
+      Tr.sourceSelector.sources[@source][@app.language]
 
    
     description = ''
@@ -323,7 +320,6 @@ class Visualization3Configuration
       Tr.landingPage.mainHeader[@app.language]
       Tr.visualization3Title[@app.language]
       Tr.scenarioSelector.names[@scenario][@app.language]
-      Tr.imageExportText.viewBy[@viewBy][@app.language]
       viewByItem
       @year
     ]

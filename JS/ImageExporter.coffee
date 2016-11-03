@@ -25,7 +25,6 @@ class ImageExporter
         config = @app.visualization4Configuration
         
     params = config.routerParams()
-    params.page = @app.page
     params.language = @app.language
 
 

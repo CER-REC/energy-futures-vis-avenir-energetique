@@ -27,7 +27,6 @@ class Router
     @navbar = new Navbar @app
     @app.containingWindow.onpopstate = @onHistoryPopState
     
-    # TODO: would be nice if I could use @app.containingWindow... but it may not be initialized yet here ... 
     params = Router.parseQueryParams()
     @setInitialParamConfiguration params
     @navigate params

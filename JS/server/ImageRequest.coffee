@@ -98,7 +98,8 @@ class ImageRequest
   errorHandler: (error) =>
     console.log "That's an error: "
     console.log error.message
-    console.log (new Error()).stack
+    console.log error.stack
+    # console.log (new Error()).stack
 
     @res.writeHead 500
     @res.end "HTTP 500 #{error.message}"
@@ -110,7 +111,7 @@ class ImageRequest
     params = PrepareQueryParams queryString.parse(@query)
 
     serverApp = new ServerApp()
-    serverApp.setLanguage @query.language
+    serverApp.setLanguage params.language
 
 
     # Parse the parameters with a configuration object, and then hand them off to a
