@@ -7,11 +7,9 @@ ApplicationRoot = require '../ApplicationRoot'
 
 
 winston.emitErrs = true
-logDirectory = path.join ApplicationRoot, "logs"
+logDirectory = path.join ApplicationRoot, "log"
 fs.existsSync(logDirectory) || fs.mkdirSync(logDirectory)
-logfileName = 'log_file.log'
-
-
+logfileName =  "#{process.env.LOG_FILENAME}.log" 
 
 
 logger = new winston.Logger
@@ -37,7 +35,5 @@ logger = new winston.Logger
   ]
 
 module.exports = logger
-module.exports.stream = 
-  write: (message, encoding) ->
-    logger.info message
+
   

@@ -1,5 +1,7 @@
 url = require 'url'
 
+Logger = require '../Logger.coffee'
+
 
 class ImageRequest
 
@@ -81,14 +83,13 @@ class ImageRequest
 
     @done()
 
-    console.log "Time: #{Date.now() - @time}"
+    Logger.debug "Time: #{Date.now() - @time}"
 
 
 
   errorHandler: (error) =>
-    console.log "That's an error: "
-    console.log error.message
-    console.log error.stack
+    Logger.error "ImageRequest handled error: #{error.message}"
+    Logger.error error.stack
 
     @res.writeHead 500
     @res.end "HTTP 500 #{error.message}"

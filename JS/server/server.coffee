@@ -17,6 +17,7 @@ Platform.name = "server"
 # TODO: I can't believe I have to include this shim in a node app... what's going on?
 require '../ArrayIncludes.coffee'
 
+Logger = require '../Logger.coffee'
 pngImageHandler = require './pngImageHandler.coffee'
 htmlImageHandler = require './htmlImageHandler.coffee'
 
@@ -47,4 +48,4 @@ app.use (req, res, next) ->
 
 # IIS-Node passes in a named pipe to listen to in process.env.PORT
 app.listen process.env.PORT || process.env.PORT_NUMBER
-console.log "Ready: #{process.env.HOST}:#{process.env.PORT_NUMBER}"
+Logger.info "Ready: #{process.env.HOST}:#{process.env.PORT_NUMBER}"

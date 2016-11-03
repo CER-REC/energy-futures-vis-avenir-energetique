@@ -7,7 +7,7 @@ queryString = require 'query-string'
 PrepareQueryParams = require '../PrepareQueryParams.coffee'
 readFile = Promise.promisify fs.readFile
 ApplicationRoot = require '../../ApplicationRoot.coffee'
-
+Logger = require '../Logger.coffee'
 
 # Visualization classes
 
@@ -76,7 +76,7 @@ imageHandler = (req, res) ->
     time = Date.now()
 
     query = url.parse(req.url).search
-    console.log query
+    Logger.info "HTML Image Handler: #{query}"
 
     try
       jsdom.env
@@ -131,7 +131,7 @@ imageHandler = (req, res) ->
             source = window.document.querySelector('html').outerHTML
             res.write source
             res.end()
-            console.log "D3 Time: #{Date.now() - time}"
+            Logger.debug "D3 Time: #{Date.now() - time}"
 
     catch error
       errorHandler req, res, error, 500

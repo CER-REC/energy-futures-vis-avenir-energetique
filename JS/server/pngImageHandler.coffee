@@ -1,8 +1,10 @@
 processImageRequest = require './processImageRequest.coffee'
 ImageRequest = require './ImageRequest.coffee'
+Logger = require '../Logger.coffee'
+
 
 rootHandler = (req, res, serverState) ->
-  console.log "******** enqueuing request"
+  Logger.debug "Enqueuing request"
 
   serverState.requestQueue.push new ImageRequest
     req: req
