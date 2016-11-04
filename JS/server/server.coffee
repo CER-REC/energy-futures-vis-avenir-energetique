@@ -19,8 +19,8 @@ Platform.name = "server"
 require '../ArrayIncludes.coffee'
 
 Logger = require '../Logger.coffee'
-pngImageHandler = require './pngImageHandler.coffee'
-htmlImageHandler = require './htmlImageHandler.coffee'
+PngImageHandler = require './PngImageHandler.coffee'
+HtmlImageHandler = require './HtmlImageHandler.coffee'
 
 
 app = express()
@@ -30,10 +30,10 @@ app.use(express.static(path.join(ApplicationRoot, 'public')))
 app.use(express.static(path.join(ApplicationRoot, '../energy-futures-private-resources')))
 
 # Endpoint for PNG generation
-app.get '/png_image/*', pngImageHandler
+app.get '/png_image/*', PngImageHandler
 
 # Endpoint for HTML generation, for consumption by Phantom to become the PNG
-app.get '/html_image', htmlImageHandler
+app.get '/html_image', HtmlImageHandler
 
 app.use (req, res, next) ->
   res.status(404).send('404: Not Found.')
