@@ -58,7 +58,7 @@ electricityFilePromise = readFile "#{ApplicationRoot}/public/CSV/2016-10-27_Elec
 electricityPromise = electricityFilePromise.then (data) ->
   electricityProductionProvider.loadFromString data.toString()
 
-htmlFilePromise = readFile "#{ApplicationRoot}/JS/server/image.html" 
+htmlFilePromise = readFile "#{ApplicationRoot}/JS/imageServer/image.html" 
 htmlPromise = htmlFilePromise.then (data) ->
   data.toString()
 
