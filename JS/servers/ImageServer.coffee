@@ -7,39 +7,27 @@ ApplicationRoot = require '../../ApplicationRoot.coffee'
 process.chdir ApplicationRoot
 require('dotenv').config()
 
-express = require 'express'
-# path = require 'path'
-
-
 Platform = require '../Platform.coffee'
 Platform.name = 'server'
-
 # Array.includes is supported with a command line switch, but for maximum robustness
 # we'll continue to use this polyfill.
 require '../ArrayIncludes.coffee'
 
-Logger = require '../Logger.coffee'
 
-# PngImageHandler = require './PngImageHandler.coffee'
-# HtmlImageHandler = require './HtmlImageHandler.coffee'
+express = require 'express'
+
+Logger = require '../Logger.coffee'
+PublicFilesMiddleware = require '../middleware/PublicFilesMiddleware'
+ImageGenerationMiddleware = require '../middleware/ImageGenerationMiddleware'
 
 
 app = express()
 
+app.use PublicFilesMiddleware()
+app.use ImageGenerationMiddleware()
 
-# TODO put the static file server middleware in
-# app.use(express.static(path.join(ApplicationRoot, 'public')))
-# app.use(express.static(path.join(ApplicationRoot, '../energy-futures-private-resources')))
-
-# # Endpoint for PNG generation
-# app.get '/png_image/*', PngImageHandler
-
-# # Endpoint for HTML generation, for consumption by Phantom to become the PNG
-# app.get '/html_image', HtmlImageHandler
-
-# app.use (req, res, next) ->
-#   res.status(404).send('404: Not Found.')
-
+app.use (req, res) ->
+  res.status(404).send('404: Not Found.')
 
 # IIS-Node passes in a named pipe to listen to in process.env.PORT
 app.listen process.env.PORT || process.env.PORT_NUMBER
