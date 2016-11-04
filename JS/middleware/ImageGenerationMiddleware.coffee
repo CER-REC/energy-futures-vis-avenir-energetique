@@ -3,7 +3,7 @@ express = require 'express'
 PngImageHandler = require '../imageServer/PngImageHandler.coffee'
 HtmlImageHandler = require '../imageServer/HtmlImageHandler.coffee'
 
-# Middlware for generating PNG images of visualizations
+# Middleware for generating PNG images of visualizations
 
 ImageGenerationMiddleware = ->
   app = express()

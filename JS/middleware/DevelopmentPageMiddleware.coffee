@@ -7,7 +7,7 @@ routes = require '../../routes/index.js'
 
 # Middleware to serve up the web app, for use in development.
 
-DevelopmentPageMiddlware = ->
+DevelopmentPageMiddleware = ->
   app = express()
 
   # view engine setup
@@ -24,4 +24,4 @@ DevelopmentPageMiddlware = ->
   app
 
 
-module.exports = DevelopmentPageMiddlware
+module.exports = DevelopmentPageMiddleware
