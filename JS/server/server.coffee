@@ -14,7 +14,8 @@ path = require 'path'
 Platform = require '../Platform.coffee'
 Platform.name = "server"
 
-# TODO: I can't believe I have to include this shim in a node app... what's going on?
+# Array.includes is supported with a command line switch, but for maximum robustness
+# we'll continue to use this polyfill.
 require '../ArrayIncludes.coffee'
 
 Logger = require '../Logger.coffee'
@@ -24,9 +25,9 @@ htmlImageHandler = require './htmlImageHandler.coffee'
 
 app = express()
 
-# TODO: Should these use paths derived from ApplicationRoot?
-app.use(express.static(path.join(__dirname, '../../public')))
-app.use(express.static(path.join(__dirname, '../../../energy-futures-private-resources')))
+
+app.use(express.static(path.join(ApplicationRoot, 'public')))
+app.use(express.static(path.join(ApplicationRoot, '../energy-futures-private-resources')))
 
 # Endpoint for PNG generation
 app.get '/png_image/*', pngImageHandler

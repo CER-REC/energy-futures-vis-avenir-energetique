@@ -58,7 +58,6 @@ electricityFilePromise = readFile "#{ApplicationRoot}/public/CSV/2016-10-27_Elec
 electricityPromise = electricityFilePromise.then (data) ->
   electricityProductionProvider.loadFromString data.toString()
 
-# TODO: fonts here are auto included. on server, we will always have access to them, but for public consumption we need to parameterize this somehow ... 
 htmlFilePromise = readFile "#{ApplicationRoot}/JS/server/image.html" 
 htmlPromise = htmlFilePromise.then (data) ->
   data.toString()
