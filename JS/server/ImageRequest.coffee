@@ -9,6 +9,7 @@ class ImageRequest
     @req = @options.req
     @res = @options.res
     @time = @options.time || Date.now()
+    @counter = @options.counter
 
     # Extract the query parameters, and pass them through to the request we will have 
     # Phantom make of our image page building endpoint.
@@ -83,12 +84,12 @@ class ImageRequest
 
     @done()
 
-    Logger.debug "Time: #{Date.now() - @time}"
+    Logger.debug "png_image (request P#{@counter}) Time: #{Date.now() - @time}"
 
 
 
   errorHandler: (error) =>
-    Logger.error "ImageRequest handled error: #{error.message}"
+    Logger.error "png_image (request P#{@counter}) error: #{error.message}"
     Logger.error error.stack
 
     @res.writeHead 500
