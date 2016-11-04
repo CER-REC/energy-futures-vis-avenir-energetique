@@ -2,7 +2,13 @@ phantomjs = require 'phantomjs-prebuilt'
 webdriverio = require 'webdriverio'
 url = require 'url'
 
- 
+ImageRequest = require './ImageRequest.coffee'
+Logger = require '../Logger.coffee'
+
+
+
+
+
 # Phantom setup
 
 # Start an instance of Phantom, and store a reference to the session. We'll re-use the 
@@ -35,26 +41,46 @@ browserTools.phantomPromise.then =>
 
 
 
+# Handler state
+
+requestQueue = []
+processingRequests = false
+requestCounter = 0
 
 
-processImageRequest = (serverState) ->
-  if serverState.requestQueue.length == 0
-    serverState.processingRequests = false
+PngImageHandler = (req, res) ->
+  requestCounter++
+
+  Logger.info "png_image (request P#{requestCounter}): #{url.parse(req.url).search}"
+
+
+  requestQueue.push new ImageRequest
+    req: req
+    res: res
+    time: Date.now()
+    counter: requestCounter
+
+  if processingRequests == false
+    processingRequests = true
+    processImageRequest() 
+
+
+
+
+
+processImageRequest = ->
+  if requestQueue.length == 0
+    processingRequests = false
     return
 
-  imageRequest = serverState.requestQueue.shift()
+  imageRequest = requestQueue.shift()
 
   imageRequest.handleRequest browserTools, ->
-    if serverState.requestQueue.length > 0
-      processImageRequest serverState
+    if requestQueue.length > 0
+      processImageRequest()
     else
-      serverState.processingRequests = false
+      processingRequests = false
 
 
 
-
-
-module.exports = processImageRequest
-
-
-
+module.exports = PngImageHandler

@@ -58,26 +58,25 @@ electricityFilePromise = readFile "#{ApplicationRoot}/public/CSV/2016-10-27_Elec
 electricityPromise = electricityFilePromise.then (data) ->
   electricityProductionProvider.loadFromString data.toString()
 
-# TODO: fonts here are auto included. on server, we will always have access to them, but for public consumption we need to parameterize this somehow ... 
-htmlFilePromise = readFile "#{ApplicationRoot}/JS/server/image.html" 
+htmlFilePromise = readFile "#{ApplicationRoot}/JS/imageServer/image.html" 
 htmlPromise = htmlFilePromise.then (data) ->
   data.toString()
 
 
 
 
-request_counter = 0
+requestCounter = 0
 
 
-imageHandler = (req, res) ->
+HtmlImageHandler = (req, res) ->
 
   Promise.join htmlPromise, oilPromise, gasPromise, energyPromise, electricityPromise, (html) ->
 
     time = Date.now()
 
     query = url.parse(req.url).search
-    request_counter++
-    counter = request_counter
+    requestCounter++
+    counter = requestCounter
     Logger.info "html_image (request H#{counter}): #{query}"
 
     try
@@ -148,5 +147,5 @@ errorHandler = (req, res, error, code, counter) ->
   res.end "HTTP #{code} #{error.message}"
 
 
-module.exports = imageHandler
+module.exports = HtmlImageHandler
 

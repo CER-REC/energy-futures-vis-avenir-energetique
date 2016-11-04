@@ -20,14 +20,6 @@ class ServerApp
     # Set animation duration to zero, so that we do not waste time animating
     @animationDuration = 0
 
-    # TODO: Since no click events will be emitted from the visualization in jsdom, this
-    # should never be referenced, let alone its members. Stubbing it out of an abundance
-    # of caution, probably safe to delete
-    @popoverManager = 
-      currentPopover: null
-      showPopover: ->
-      closePopover: ->
-
 
   setLanguage: (language) ->
     @language = language if language == 'en' or language == 'fr'

@@ -7,36 +7,27 @@ ApplicationRoot = require '../../ApplicationRoot.coffee'
 process.chdir ApplicationRoot
 require('dotenv').config()
 
-express = require 'express'
-path = require 'path'
-
-
 Platform = require '../Platform.coffee'
-Platform.name = "server"
-
-# TODO: I can't believe I have to include this shim in a node app... what's going on?
+Platform.name = 'server'
+# Array.includes is supported with a command line switch, but for maximum robustness
+# we'll continue to use this polyfill.
 require '../ArrayIncludes.coffee'
 
+
+express = require 'express'
+
 Logger = require '../Logger.coffee'
-pngImageHandler = require './pngImageHandler.coffee'
-htmlImageHandler = require './htmlImageHandler.coffee'
+PublicFilesMiddleware = require '../middleware/PublicFilesMiddleware'
+ImageGenerationMiddleware = require '../middleware/ImageGenerationMiddleware'
 
 
 app = express()
 
-# TODO: Should these use paths derived from ApplicationRoot?
-app.use(express.static(path.join(__dirname, '../../public')))
-app.use(express.static(path.join(__dirname, '../../../energy-futures-private-resources')))
+app.use PublicFilesMiddleware()
+app.use ImageGenerationMiddleware()
 
-# Endpoint for PNG generation
-app.get '/png_image/*', pngImageHandler
-
-# Endpoint for HTML generation, for consumption by Phantom to become the PNG
-app.get '/html_image', htmlImageHandler
-
-app.use (req, res, next) ->
+app.use (req, res) ->
   res.status(404).send('404: Not Found.')
-
 
 # IIS-Node passes in a named pipe to listen to in process.env.PORT
 app.listen process.env.PORT || process.env.PORT_NUMBER
