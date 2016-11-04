@@ -90,7 +90,6 @@ HtmlImageHandler = (req, res) ->
             errorHandler req, res, error, 500
             return
 
-          el = window.document.querySelector('#dataviz-container')
           body = window.document.querySelector('body')
             
           serverApp = new ServerApp window,

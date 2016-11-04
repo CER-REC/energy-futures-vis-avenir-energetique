@@ -42,6 +42,8 @@ browserTools.phantomPromise.then =>
 
 
 # Handler state
+# We only have one instance of Phantom for doing image rendering, so we can only process
+# one request at a time. We queue the requests.
 
 requestQueue = []
 processingRequests = false

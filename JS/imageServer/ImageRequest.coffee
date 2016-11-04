@@ -25,7 +25,8 @@ class ImageRequest
   # Only Phantom implements true promises, which is why this is structured as a set of
   # callbacks rather than a promise chain.
 
-  # No matter what, we need to call done() when we are done.
+  # No matter what, we need to call done() when we are done, so that quueed requests 
+  # continue to be handled. 
 
   handleRequest: (browserTools, done) ->
     @browserTools = browserTools
@@ -78,6 +79,9 @@ class ImageRequest
     # content-disposition=attachment prompts the browser to start a file download rather
     # than navigate to the image.
     @res.setHeader "content-disposition", "attachment"
+    # The expected use case for image generation is the user previews the image, and then
+    # clicks the download image link. Caching the image in the browser will save us from
+    # handling a second request.
     @res.setHeader 'cache-control', "max-age=600" 
     @res.write(screenshotBuffer)
     @res.end()
