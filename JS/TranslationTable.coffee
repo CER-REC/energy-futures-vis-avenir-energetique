@@ -74,6 +74,9 @@ module.exports =
     dataDownloadLink:
       en: 'DOWNLOAD DATA'
       fr: 'TÉLÉCHARGEMENT DES DONNÉES'
+    download:
+      en: 'DOWNLOAD'
+      fr: 'TÉLÉCHARGER'
 
     imageDownloadHeader: 
       en: "IMAGE DOWNLOAD"
