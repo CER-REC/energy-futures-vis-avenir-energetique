@@ -7,7 +7,7 @@ queryString = require 'query-string'
 PrepareQueryParams = require '../PrepareQueryParams.coffee'
 readFile = Promise.promisify fs.readFile
 ApplicationRoot = require '../../ApplicationRoot.coffee'
-
+Logger = require '../Logger.coffee'
 
 # Visualization classes
 
@@ -66,7 +66,7 @@ htmlPromise = htmlFilePromise.then (data) ->
 
 
 
-
+request_counter = 0
 
 
 imageHandler = (req, res) ->
@@ -76,7 +76,9 @@ imageHandler = (req, res) ->
     time = Date.now()
 
     query = url.parse(req.url).search
-    console.log query
+    request_counter++
+    counter = request_counter
+    Logger.info "html_image (request H#{counter}): #{query}"
 
     try
       jsdom.env
@@ -121,7 +123,7 @@ imageHandler = (req, res) ->
               viz = new Visualization4(serverApp, config)
 
             else 
-              errorHandler req, res, new Error("Visualization 'page' parameter not specified or not recognized."), 500
+              errorHandler req, res, new Error("Visualization 'page' parameter not specified or not recognized."), 400, counter
               return
 
 
@@ -131,14 +133,16 @@ imageHandler = (req, res) ->
             source = window.document.querySelector('html').outerHTML
             res.write source
             res.end()
-            console.log "D3 Time: #{Date.now() - time}"
+            Logger.debug "html_image (request H#{counter}) Time: #{Date.now() - time}"
 
     catch error
-      errorHandler req, res, error, 500
+      errorHandler req, res, error, 500, counter
 
 
-errorHandler = (req, res, error, code) ->
-  code ||= 500
+errorHandler = (req, res, error, code, counter) ->
+
+  Logger.error "html_image (request H#{counter}) error: #{error.message}"
+  Logger.error error.stack
 
   res.writeHead code
   res.end "HTTP #{code} #{error.message}"

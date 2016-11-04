@@ -15,4 +15,4 @@ public/bundle.js
 
 /JS/server/iisnode
 .env
-
+/log

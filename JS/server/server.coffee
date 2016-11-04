@@ -17,15 +17,9 @@ Platform.name = "server"
 # TODO: I can't believe I have to include this shim in a node app... what's going on?
 require '../ArrayIncludes.coffee'
 
+Logger = require '../Logger.coffee'
 pngImageHandler = require './pngImageHandler.coffee'
 htmlImageHandler = require './htmlImageHandler.coffee'
-
-
-
-# TODO: might be more effective to make this a global... rather than inject it?
-serverState = 
-  requestQueue: []
-  processingRequests: false
 
 
 app = express()
@@ -35,14 +29,15 @@ app.use(express.static(path.join(__dirname, '../../public')))
 app.use(express.static(path.join(__dirname, '../../../energy-futures-private-resources')))
 
 # Endpoint for PNG generation
-app.get '/png_image/*', (req, res) ->
-  pngImageHandler req, res, serverState
+app.get '/png_image/*', pngImageHandler
 
 # Endpoint for HTML generation, for consumption by Phantom to become the PNG
 app.get '/html_image', htmlImageHandler
 
+app.use (req, res, next) ->
+  res.status(404).send('404: Not Found.')
 
 
 # IIS-Node passes in a named pipe to listen to in process.env.PORT
 app.listen process.env.PORT || process.env.PORT_NUMBER
-console.log "Ready: #{process.env.HOST}:#{process.env.PORT_NUMBER}"
+Logger.info "Ready: #{process.env.HOST}:#{process.env.PORT_NUMBER}"
