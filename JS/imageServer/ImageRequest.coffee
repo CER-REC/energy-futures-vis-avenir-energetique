@@ -25,7 +25,7 @@ class ImageRequest
   # Only Phantom implements true promises, which is why this is structured as a set of
   # callbacks rather than a promise chain.
 
-  # No matter what, we need to call done() when we are done, so that quueed requests 
+  # No matter what, we need to call done() when we are done, so that queued requests 
   # continue to be handled. 
 
   handleRequest: (browserTools, done) ->
