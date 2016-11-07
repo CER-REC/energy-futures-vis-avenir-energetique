@@ -4,7 +4,7 @@
   "description": "NEB project",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "browserify JS/App.coffee -t coffeeify --extension='.coffee' -g uglifyify -o dist/public/bundle.js",
+    "build": "browserify JS/App.coffee -t coffeeify --extension='.coffee' -t [ stringify --extensions [.mustache .css] ] -g uglifyify -o dist/public/bundle.js",
     "watch": "watchify JS/App.coffee -t coffeeify --extension='.coffee' -t [ stringify --extensions [.mustache .css] ] -o public/bundle.js --debug --verbose",
     "distribute": "node distribute.js",
     "start": "node ./bin/www"
