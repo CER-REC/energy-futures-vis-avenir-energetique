@@ -117,13 +117,11 @@ We're the development team with Startide Solutions who put this project together
 ## Known Issues
 
 * This application was *not* designed to work resolutions much smaller than 1024*768, it won't look very good on your smartphone. We have attempted to apply responsive design principles throughout, but mobiles were out of scope, the high concept designs just need a minimum screen size to function. 
-* 'Download Image' functionality on Internet Explorer ~11 doesn't apply the correct font. This appears to be fixed in Edge ~13.
-* All versions of Internet Explorer/Edge prohibit data URLs from being used in `<a>` elements. This prevents us from offering the exported image for download when the user clicks the link, instead we have a workaround: a modal appears with the exported PNG data url in an `<img>` element. A solution for download on link click would either require flash, or some server side support. 
-* Safari ~8 has a bug with rendering SVGs in canvas, if the SVG has appeared elsewhere in the document the drawImage size parameters are ignored. We have worked around this by using only PNGs for image export/download, for now. 
 * Opera is unique among browsers we've tested in having severe usability issues with this approach, especially with regard to downloading all of the images needed to populate menus. 
 
 ## Changelog
 
+* 2016-11-07 - Created a server side component for image rendering, which eliminates any possibility of browser-side rendering bugs and addresses several known issues.
 * 2016-10-20 - Installed an updated set of Canada's Energy Future 2016 data. This is an early release of the new update, which does not include the LNG and Constrained scenarios. The user interface for these scenarios has been temporarily hidden. The previous generation data remains available in the repository, but is not integrated into the app right now.
 * 2016-10-05 - The query url is now kept consistent as users navigate back and forth between the different visualizations as well as when the order of the provinces (in visualization 1) and the sources (in visualization 2) change.
 * 2016-10-05 - Modified the timeline slider to use an svg image instead of the previously used png image.
