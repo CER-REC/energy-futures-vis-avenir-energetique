@@ -54,7 +54,7 @@ class bubbleChart extends chart
   bubble: (data) ->
     d3.layout.pack()
       .size([@size().w, @_size.h])
-      .padding(5)
+      .padding(1)
       .value((d) -> d.size)
       .sort(null) #We need this since default sort is ascending... but null sort is tree
 
