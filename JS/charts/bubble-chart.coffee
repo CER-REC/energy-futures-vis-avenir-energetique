@@ -28,7 +28,15 @@ class bubbleChart extends chart
     super(parent, @options)
     @options.menuOptions.chart = this
     @menu = new squareMenu(@options.menuParent, @options.menuOptions)
+
     @redraw()
+
+  filteredData: (currentData) ->
+    for i in [0...currentData.children.length]
+      if currentData.children[i].children?
+        if currentData.children[i].children.filter((d) -> d.size != 1).length > 0
+          currentData.children[i].children = currentData.children[i].children.filter((d) -> d.size != 1)
+    currentData
 
   year: (d) ->
     if !arguments.length
@@ -72,22 +80,7 @@ class bubbleChart extends chart
     @_group.selectAll(".toolTip").remove()
 
     node = @_group.selectAll('.node')
-      .data(@bubble().nodes(@_data), (d) -> d.name)
-      .on "mouseover", (d) =>
-        if(d.depth == 2)
-          document.getElementById("tooltip").style.visibility = "visible"
-          document.getElementById("tooltip").style.top = (d3.event.pageY-10) + "px"
-          document.getElementById("tooltip").style.left = (d3.event.pageX+10) + "px"
-          document.getElementById("tooltip").innerHTML = d.name + " (" + @_year + "): "+ d.size.toFixed(2)
-
-      .on "mousemove", (d) =>
-        if(d.depth == 2)
-          document.getElementById("tooltip").style.top = (d3.event.pageY-10) + "px"
-          document.getElementById("tooltip").style.left = (d3.event.pageX+10) + "px"
-          document.getElementById("tooltip").innerHTML = d.name + " (" + @_year + "): "+ d.size.toFixed(2)
-
-      .on "mouseout", (d) =>
-        document.getElementById("tooltip").style.visibility = "hidden"
+      .data(@bubble().nodes(@filteredData(@_data)), (d) -> d.name)
 
     enterSelection = node.enter().append('g')
       .attr
@@ -111,6 +104,22 @@ class bubbleChart extends chart
           if @_mapping[d.source] or d.depth == 0  or (d.depth ==1 and !(d.children)) then 0 else 1
         )
 
+    @_group.selectAll('.node')
+      .on "mouseover", (d) =>
+        if(d.depth == 2)
+          document.getElementById("tooltip").style.visibility = "visible"
+          document.getElementById("tooltip").style.top = (d3.event.pageY-10) + "px"
+          document.getElementById("tooltip").style.left = (d3.event.pageX+10) + "px"
+          document.getElementById("tooltip").innerHTML = d.name + " (" + @_year + "): "+ d.size.toFixed(2)
+
+      .on "mousemove", (d) =>
+        if(d.depth == 2)
+          document.getElementById("tooltip").style.top = (d3.event.pageY-10) + "px"
+          document.getElementById("tooltip").style.left = (d3.event.pageX+10) + "px"
+          document.getElementById("tooltip").innerHTML = d.name + " (" + @_year + "): "+ d.size.toFixed(2)
+
+      .on "mouseout", (d) =>
+        document.getElementById("tooltip").style.visibility = "hidden"
 
     enterSelection.filter((d) -> d.depth == 1 ).append('g')
           
@@ -247,7 +256,6 @@ class bubbleChart extends chart
               dy = parent.y - parent.y0
               "translate(#{d.x + dx},#{d.y + dy})"  
           .ease "linear"  
-
     this
 
 
