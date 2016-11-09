@@ -1174,7 +1174,7 @@ class Visualization4
   tearDown: ->
     # TODO: We might want to render with empty lists for buttons, so that
     # garbage collection of event handled dom nodes goes smoothly
-    document.getElementById('visualizationContent').innerHTML = ''
+    @app.window.document.getElementById('visualizationContent').innerHTML = ''
 
 Visualization4.resourcesLoaded = (app) ->
   app.loadedStatus.energyConsumptionProvider and

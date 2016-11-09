@@ -10,7 +10,7 @@ class visualization
 
   tearDown: ->
     # TODO: Consider garbage collection and event listeners
-    document.getElementById('visualizationContent').innerHTML = ''
+    @app.window.document.getElementById('visualizationContent').innerHTML = ''
 
   unitSelectionData: ->
     petajoules = 
