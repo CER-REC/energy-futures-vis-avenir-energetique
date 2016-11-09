@@ -23,8 +23,8 @@ ElectricityProductionProvider = require './DataProviders/ElectricityProductionPr
 ImageExporter = require './ImageExporter.coffee'
 
 PopoverManager = require './PopoverManager.coffee'
-AboutThisProjectPopover = require './popovers/AboutThisProjectPopover'
-ImageDownloadPopover = require './popovers/ImageDownloadPopover'
+AboutThisProjectPopover = require './popovers/AboutThisProjectPopover.coffee'
+ImageDownloadPopover = require './popovers/ImageDownloadPopover.coffee'
 
 
 class App
