@@ -7,7 +7,8 @@
     "watch": "watchify JS/App.coffee -p ./tasks/dotenv-browserify-plugin.js -t coffeeify --extension='.coffee' -t [ stringify --extensions [.mustache .css] ] -t envify -o public/bundle.js --debug --verbose",
     "distribute": "node ./tasks/distribute.js",
     "start": "node ./JS/servers/DevelopmentServer.js",
-    "start-image-server": "node ./JS/servers/ImageServer.js"
+    "start-image-server": "node ./JS/servers/ImageServer.js",
+    "validate": "node ./JS/validation/DataValidator.js"
   },
   "dependencies": {
     "array-includes": "^3.0.2",
