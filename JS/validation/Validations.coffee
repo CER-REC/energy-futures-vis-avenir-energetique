@@ -41,7 +41,7 @@ module.exports =
         lineNumber: i
 
   unit: (item, rawItem, i, errors, unit) ->
-    unless item.value != unit
+    unless item.unit == unit
       errors.push
         message: "Invalid unit (CSV field name: Unit). Parsed value was #{item.unit}. Expected #{unit}."
         line: rawItem
