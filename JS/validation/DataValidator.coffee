@@ -12,7 +12,7 @@ OilProductionProvider = require '../DataProviders/OilProductionProvider.coffee'
 GasProductionProvider = require '../DataProviders/GasProductionProvider.coffee'
 ElectricityProductionProvider = require '../DataProviders/ElectricityProductionProvider.coffee'
 
-
+Validations = require './Validations.coffee'
 
 
 
@@ -70,7 +70,7 @@ validate = (files) ->
 
 validateOil = (file) ->
 
-  oilData = fs.readFileSync(path.join(ApplicationRoot, "public/CSV", file.name)).toString()
+  oilData = fs.readFileSync(path.join(ApplicationRoot, "public/rawCSV", file.name)).toString()
   oilProductionProvider = new OilProductionProvider 
   oilProductionProvider.loadFromString oilData
 
@@ -79,7 +79,7 @@ validateOil = (file) ->
     
   if unmappedData.length != oilProductionProvider.data.length
     errors.push
-      error: "ERROR: Sanity check failed, unmapped CSV data (length #{unmappedData.length}) and mapped+processed CSV data (length #{oilProductionProvider.data.length}) had different lengths in #{file.name}"
+      message: "ERROR: Sanity check failed, unmapped CSV data (length #{unmappedData.length}) and mapped+processed CSV data (length #{oilProductionProvider.data.length}) had different lengths in #{file.name}"
       line: null
       lineNumber: null
     return errors
@@ -88,37 +88,46 @@ validateOil = (file) ->
 
   for i in [0...unmappedData.length]
     
-    unless Constants.provinceRadioSelectionOptions.includes data[i].province
-      errors.push
-        error: "Invalid province (CSV field name: Area). Parsed value was #{data[i].province}"
-        line: unmappedData[i]
-        lineNumber: i
+    # Validations.sector data[i], unmappedData[i], i, errors
+    # Validations.source data[i], unmappedData[i], i, errors
+    Validations.province data[i], unmappedData[i], i, errors
+    Validations.scenarios data[i], unmappedData[i], i, errors
+    Validations.years data[i], unmappedData[i], i, errors
+    Validations.value data[i], unmappedData[i], i, errors
+    Validations.unit data[i], unmappedData[i], i, errors, 'Thousand cubic metres'
 
     # TODO: validate type?
+    
+    # unless Constants.provinceRadioSelectionOptions.includes data[i].province
+    #   errors.push
+    #     message: "Invalid province (CSV field name: Area). Parsed value was #{data[i].province}"
+    #     line: unmappedData[i]
+    #     lineNumber: i
 
-    unless Constants.scenarios.includes data[i].scenario
-      errors.push
-        error: "Invalid scenario (CSV field name: Case). Parsed value was #{data[i].scenario}"
-        line: unmappedData[i]
-        lineNumber: i
 
-    unless Constants.years.includes data[i].year
-      errors.push
-        error: "Invalid year (CSV field name: Year). Parsed value was #{data[i].year}"
-        line: unmappedData[i]
-        lineNumber: i
+    # unless Constants.scenarios.includes data[i].scenario
+    #   errors.push
+    #     message: "Invalid scenario (CSV field name: Case). Parsed value was #{data[i].scenario}"
+    #     line: unmappedData[i]
+    #     lineNumber: i
 
-    if typeof data[i].value != 'number' or Number.isNaN(data[i].value) or data[i].value < 0
-      errors.push
-        error: "Invalid value (CSV field name: Data). Parsed value was #{data[i].value}"
-        line: unmappedData[i]
-        lineNumber: i
+    # unless Constants.years.includes data[i].year
+    #   errors.push
+    #     message: "Invalid year (CSV field name: Year). Parsed value was #{data[i].year}"
+    #     line: unmappedData[i]
+    #     lineNumber: i
 
-    unless data[i].value != 'Thousand cubic metres'
-      errors.push
-        error: "Invalid unit (CSV field name: Unit). Parsed value was #{data[i].unit}"
-        line: unmappedData[i]
-        lineNumber: i
+    # if typeof data[i].value != 'number' or Number.isNaN(data[i].value) or data[i].value < 0
+    #   errors.push
+    #     message: "Invalid value (CSV field name: Data). Parsed value was #{data[i].value}"
+    #     line: unmappedData[i]
+    #     lineNumber: i
+
+    # unless data[i].value != 'Thousand cubic metres'
+    #   errors.push
+    #     message: "Invalid unit (CSV field name: Unit). Parsed value was #{data[i].unit}"
+    #     line: unmappedData[i]
+    #     lineNumber: i
 
 
   errors
@@ -126,7 +135,7 @@ validateOil = (file) ->
 
 validateGas = (file) ->
 
-  gasData = fs.readFileSync(path.join(ApplicationRoot, "public/CSV", file.name)).toString()
+  gasData = fs.readFileSync(path.join(ApplicationRoot, "public/rawCSV", file.name)).toString()
   gasProductionProvider = new GasProductionProvider 
   gasProductionProvider.loadFromString gasData
 
@@ -135,7 +144,7 @@ validateGas = (file) ->
 
   if unmappedData.length != gasProductionProvider.data.length
     errors.push
-      error: "ERROR: Sanity check failed, unmapped CSV data (length #{unmappedData.length}) and mapped+processed CSV data (length #{gasProductionProvider.data.length}) had different lengths in #{file.name}"
+      message: "ERROR: Sanity check failed, unmapped CSV data (length #{unmappedData.length}) and mapped+processed CSV data (length #{gasProductionProvider.data.length}) had different lengths in #{file.name}"
       line: null
       lineNumber: null
     return errors
@@ -144,37 +153,45 @@ validateGas = (file) ->
 
   for i in [0...unmappedData.length]
     
-    unless Constants.provinceRadioSelectionOptions.includes data[i].province
-      errors.push
-        error: "Invalid province (CSV field name: Area). Parsed value was #{data[i].province}"
-        line: unmappedData[i]
-        lineNumber: i
+    Validations.province data[i], unmappedData[i], i, errors
+    Validations.scenarios data[i], unmappedData[i], i, errors
+    Validations.years data[i], unmappedData[i], i, errors
+    Validations.value data[i], unmappedData[i], i, errors
+    Validations.unit data[i], unmappedData[i], i, errors, 'Million cubic metres Per Day'
 
     # TODO: validate type?
 
-    unless Constants.scenarios.includes data[i].scenario
-      errors.push
-        error: "Invalid scenario (CSV field name: Case). Parsed value was #{data[i].scenario}"
-        line: unmappedData[i]
-        lineNumber: i
 
-    unless Constants.years.includes data[i].year
-      errors.push
-        error: "Invalid year (CSV field name: Year). Parsed value was #{data[i].year}"
-        line: unmappedData[i]
-        lineNumber: i
+    # unless Constants.provinceRadioSelectionOptions.includes data[i].province
+    #   errors.push
+    #     message: "Invalid province (CSV field name: Area). Parsed value was #{data[i].province}"
+    #     line: unmappedData[i]
+    #     lineNumber: i
 
-    if typeof data[i].value != 'number' or Number.isNaN(data[i].value) or data[i].value < 0
-      errors.push
-        error: "Invalid value (CSV field name: Data). Parsed value was #{data[i].value}"
-        line: unmappedData[i]
-        lineNumber: i
 
-    unless data[i].value != 'Million cubic metres Per Day'
-      errors.push
-        error: "Invalid unit (CSV field name: Unit). Parsed value was #{data[i].unit}"
-        line: unmappedData[i]
-        lineNumber: i
+    # unless Constants.scenarios.includes data[i].scenario
+    #   errors.push
+    #     message: "Invalid scenario (CSV field name: Case). Parsed value was #{data[i].scenario}"
+    #     line: unmappedData[i]
+    #     lineNumber: i
+
+    # unless Constants.years.includes data[i].year
+    #   errors.push
+    #     message: "Invalid year (CSV field name: Year). Parsed value was #{data[i].year}"
+    #     line: unmappedData[i]
+    #     lineNumber: i
+
+    # if typeof data[i].value != 'number' or Number.isNaN(data[i].value) or data[i].value < 0
+    #   errors.push
+    #     message: "Invalid value (CSV field name: Data). Parsed value was #{data[i].value}"
+    #     line: unmappedData[i]
+    #     lineNumber: i
+
+    # unless data[i].value != 'Million cubic metres Per Day'
+    #   errors.push
+    #     message: "Invalid unit (CSV field name: Unit). Parsed value was #{data[i].unit}"
+    #     line: unmappedData[i]
+    #     lineNumber: i
 
 
   errors
@@ -182,7 +199,7 @@ validateGas = (file) ->
 
 validateDemand = (file) ->
 
-  energyConsumptionData = fs.readFileSync(path.join(ApplicationRoot, "public/CSV", file.name)).toString()
+  energyConsumptionData = fs.readFileSync(path.join(ApplicationRoot, "public/rawCSV", file.name)).toString()
   energyConsumptionProvider = new EnergyConsumptionProvider
   energyConsumptionProvider.loadFromString energyConsumptionData
 
@@ -191,7 +208,7 @@ validateDemand = (file) ->
 
   if unmappedData.length != energyConsumptionProvider.data.length
     errors.push
-      error: "ERROR: Sanity check failed, unmapped CSV data (length #{unmappedData.length}) and mapped+processed CSV data (length #{energyConsumptionProvider.data.length}) had different lengths in #{file.name}"
+      message: "ERROR: Sanity check failed, unmapped CSV data (length #{unmappedData.length}) and mapped+processed CSV data (length #{energyConsumptionProvider.data.length}) had different lengths in #{file.name}"
       line: null
       lineNumber: null
     return errors
@@ -199,50 +216,59 @@ validateDemand = (file) ->
   data = energyConsumptionProvider.data
 
   for i in [0...unmappedData.length]
+
+    Validations.sector data[i], unmappedData[i], i, errors
+    Validations.source data[i], unmappedData[i], i, errors
+    Validations.province data[i], unmappedData[i], i, errors
+    Validations.scenarios data[i], unmappedData[i], i, errors
+    Validations.years data[i], unmappedData[i], i, errors
+    Validations.value data[i], unmappedData[i], i, errors
+    Validations.unit data[i], unmappedData[i], i, errors, 'Petajoules'
+
     
-    unless Constants.sectors.includes data[i].sector
-      errors.push
-        error: "Invalid sector (CSV field name: Sector). Parsed value was #{data[i].sector}"
-        line: unmappedData[i]
-        lineNumber: i
+    # unless Constants.sectors.includes data[i].sector
+    #   errors.push
+    #     message: "Invalid sector (CSV field name: Sector). Parsed value was #{data[i].sector}"
+    #     line: unmappedData[i]
+    #     lineNumber: i
 
-    # TODO: filter extra sources? 
-    unless Constants.sources.includes data[i].source
-      errors.push
-        error: "Invalid source (CSV field name: Source). Parsed value was #{data[i].source}"
-        line: unmappedData[i]
-        lineNumber: i
+    # # TODO: filter extra sources? 
+    # unless Constants.sources.includes data[i].source
+    #   errors.push
+    #     message: "Invalid source (CSV field name: Source). Parsed value was #{data[i].source}"
+    #     line: unmappedData[i]
+    #     lineNumber: i
 
 
-    unless Constants.provinceRadioSelectionOptions.includes data[i].province
-      errors.push
-        error: "Invalid province (CSV field name: Area). Parsed value was #{data[i].province}"
-        line: unmappedData[i]
-        lineNumber: i
+    # unless Constants.provinceRadioSelectionOptions.includes data[i].province
+    #   errors.push
+    #     message: "Invalid province (CSV field name: Area). Parsed value was #{data[i].province}"
+    #     line: unmappedData[i]
+    #     lineNumber: i
 
-    unless Constants.scenarios.includes data[i].scenario
-      errors.push
-        error: "Invalid scenario (CSV field name: Case). Parsed value was #{data[i].scenario}"
-        line: unmappedData[i]
-        lineNumber: i
+    # unless Constants.scenarios.includes data[i].scenario
+    #   errors.push
+    #     message: "Invalid scenario (CSV field name: Case). Parsed value was #{data[i].scenario}"
+    #     line: unmappedData[i]
+    #     lineNumber: i
 
-    unless Constants.years.includes data[i].year
-      errors.push
-        error: "Invalid year (CSV field name: Year). Parsed value was #{data[i].year}"
-        line: unmappedData[i]
-        lineNumber: i
+    # unless Constants.years.includes data[i].year
+    #   errors.push
+    #     message: "Invalid year (CSV field name: Year). Parsed value was #{data[i].year}"
+    #     line: unmappedData[i]
+    #     lineNumber: i
 
-    if typeof data[i].value != 'number' or Number.isNaN(data[i].value) or data[i].value < 0
-      errors.push
-        error: "Invalid value (CSV field name: Data). Parsed value was #{data[i].value}"
-        line: unmappedData[i]
-        lineNumber: i
+    # if typeof data[i].value != 'number' or Number.isNaN(data[i].value) or data[i].value < 0
+    #   errors.push
+    #     message: "Invalid value (CSV field name: Data). Parsed value was #{data[i].value}"
+    #     line: unmappedData[i]
+    #     lineNumber: i
 
-    unless data[i].value != 'Petajoules'
-      errors.push
-        error: "Invalid unit (CSV field name: Unit). Parsed value was #{data[i].unit}"
-        line: unmappedData[i]
-        lineNumber: i
+    # unless data[i].value != 'Petajoules'
+    #   errors.push
+    #     message: "Invalid unit (CSV field name: Unit). Parsed value was #{data[i].unit}"
+    #     line: unmappedData[i]
+    #     lineNumber: i
 
 
   errors
@@ -252,7 +278,7 @@ validateDemand = (file) ->
 
 validateElectricity = (file) ->
 
-  electricityData = fs.readFileSync(path.join(ApplicationRoot, "public/CSV", file.name)).toString()
+  electricityData = fs.readFileSync(path.join(ApplicationRoot, "public/rawCSV", file.name)).toString()
   electricityProductionProvider = new ElectricityProductionProvider
   electricityProductionProvider.loadFromString electricityData
 
@@ -267,7 +293,7 @@ validateElectricity = (file) ->
 
   # if unmappedData.length != electricityProductionProvider.data.length
   #   errors.push
-  #     error: "ERROR: Sanity check failed, unmapped CSV data (length #{unmappedData.length}) and mapped+processed CSV data (length #{electricityProductionProvider.data.length}) had different lengths in #{file.name}"
+  #     message: "ERROR: Sanity check failed, unmapped CSV data (length #{unmappedData.length}) and mapped+processed CSV data (length #{electricityProductionProvider.data.length}) had different lengths in #{file.name}"
   #     line: null
   #     lineNumber: null
   #   return errors
@@ -275,43 +301,51 @@ validateElectricity = (file) ->
   data = electricityProductionProvider.data
 
   for i in [0...data.length]
-    
+
+    # TODO: swap out data[i] for unmappedData[i], once we are free of the provider parsing
+    Validations.source data[i], data[i], i, errors
+    Validations.province data[i], data[i], i, errors
+    Validations.scenarios data[i], data[i], i, errors
+    Validations.years data[i], data[i], i, errors
+    Validations.value data[i], data[i], i, errors
+    Validations.unit data[i], data[i], i, errors, 'GW.h'
+
     # TODO: filter extra sources? 
-    unless Constants.sources.includes data[i].source
-      errors.push
-        error: "Invalid source (CSV field name: Source). Parsed value was #{data[i].source}"
-        line: data[i]
-        lineNumber: i
+    # unless Constants.sources.includes data[i].source
+    #   errors.push
+    #     message: "Invalid source (CSV field name: Source). Parsed value was #{data[i].source}"
+    #     line: data[i]
+    #     lineNumber: i
 
-    unless Constants.provinceRadioSelectionOptions.includes data[i].province
-      errors.push
-        error: "Invalid province (CSV field name: Area). Parsed value was #{data[i].province}"
-        line: data[i]
-        lineNumber: i
+    # unless Constants.provinceRadioSelectionOptions.includes data[i].province
+    #   errors.push
+    #     message: "Invalid province (CSV field name: Area). Parsed value was #{data[i].province}"
+    #     line: data[i]
+    #     lineNumber: i
 
-    unless Constants.scenarios.includes data[i].scenario
-      errors.push
-        error: "Invalid scenario (CSV field name: Case). Parsed value was #{data[i].scenario}"
-        line: data[i]
-        lineNumber: i
+    # unless Constants.scenarios.includes data[i].scenario
+    #   errors.push
+    #     message: "Invalid scenario (CSV field name: Case). Parsed value was #{data[i].scenario}"
+    #     line: data[i]
+    #     lineNumber: i
 
-    unless Constants.years.includes data[i].year
-      errors.push
-        error: "Invalid year (CSV field name: Year). Parsed value was #{data[i].year}"
-        line: data[i]
-        lineNumber: i
+    # unless Constants.years.includes data[i].year
+    #   errors.push
+    #     message: "Invalid year (CSV field name: Year). Parsed value was #{data[i].year}"
+    #     line: data[i]
+    #     lineNumber: i
 
-    if typeof data[i].value != 'number' or Number.isNaN(data[i].value) or data[i].value < 0
-      errors.push
-        error: "Invalid value (CSV field name: Data). Parsed value was #{data[i].value}"
-        line: data[i]
-        lineNumber: i
+    # if typeof data[i].value != 'number' or Number.isNaN(data[i].value) or data[i].value < 0
+    #   errors.push
+    #     message: "Invalid value (CSV field name: Data). Parsed value was #{data[i].value}"
+    #     line: data[i]
+    #     lineNumber: i
 
-    unless data[i].value != 'GW.h'
-      errors.push
-        error: "Invalid unit (CSV field name: Unit). Parsed value was #{data[i].unit}"
-        line: data[i]
-        lineNumber: i
+    # unless data[i].value != 'GW.h'
+    #   errors.push
+    #     message: "Invalid unit (CSV field name: Unit). Parsed value was #{data[i].unit}"
+    #     line: data[i]
+    #     lineNumber: i
 
 
   errors
