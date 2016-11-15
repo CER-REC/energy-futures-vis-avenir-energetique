@@ -19,15 +19,6 @@ class GasProductionProvider
     console.warn error if error?
     @data = data
     
-    # Normalize some of the data in the CSV, to make life easier later
-    # TODO: precompute some of these changes?
-
-    for item in @data
-      item.scenario = Constants.csvScenarioToScenarioNameMapping[item.scenario]
-
-    for item in @data
-      item.province = Constants.csvProvinceToProvinceCodeMapping[item.province]
-
     @dataByProvince = 
       'BC' : []
       'AB' : []

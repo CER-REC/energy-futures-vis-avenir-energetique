@@ -19,23 +19,6 @@ class EnergyConsumptionProvider
     console.warn error if error?
     @data = data
 
-    # Normalize some of the data in the CSV, to make life easier later
-    # TODO: precompute some of these changes?
-
-    for item in @data
-      item.scenario = Constants.csvScenarioToScenarioNameMapping[item.scenario]
-
-    for item in @data
-      item.source = Constants.csvSourceToSourceNameMapping[item.source]
-
-    for item in @data
-      item.sector = Constants.csvSectorToSectorNameMapping[item.sector]
-
-    for item in @data
-      item.province = Constants.csvProvinceToProvinceCodeMapping[item.province]
-
-    @data.filter (item) ->
-      item.source not in ['crudeOil', 'nuclear', 'hydro']
 
     @dataByProvince = 
       'BC' : []

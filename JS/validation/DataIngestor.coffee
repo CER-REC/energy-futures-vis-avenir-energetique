@@ -1,10 +1,7 @@
-fs = require 'fs'
 path = require 'path'
-d3 = require 'd3'
 
 ApplicationRoot = require '../../ApplicationRoot.coffee'
 require '../ArrayIncludes.coffee'
-
 
 EnergyConsumptionIngestor = require './EnergyConsumptionIngestor.coffee'
 OilProductionIngestor = require './OilProductionIngestor.coffee'
@@ -16,6 +13,9 @@ ElectricityProductionIngestor = require './ElectricityProductionIngestor.coffee'
 
 
 october2016Files = -> 
+  # TODO: even more portable than passing filenames in would be to pass stream objects
+  # in, this would let us use the ingestor offline and also seamlessly as part of a server.
+
   [
     {
       type: 'oil'
@@ -23,14 +23,18 @@ october2016Files = ->
       processedFilename: path.join(ApplicationRoot, "public/CSV/2016-10-18_CrudeOilProduction.csv")
       logFilename: path.join(ApplicationRoot, "public/rawCSV/2016-10-18_CrudeOilProduction.csv_ingestion_errors.log")
     }
-    # {
-    #   type: 'gas'
-    #   name: "2016-10-18_NaturalGasProduction.csv"
-    # }
-    # {
-    #   type: 'demand'
-    #   name: "2016-10-18_EnergyDemand.csv"
-    # }
+    {
+      type: 'gas'
+      dataFilename: path.join(ApplicationRoot, "public/rawCSV/2016-10-18_NaturalGasProduction.csv")
+      processedFilename: path.join(ApplicationRoot, "public/CSV/2016-10-18_NaturalGasProduction.csv")
+      logFilename: path.join(ApplicationRoot, "public/rawCSV/2016-10-18_NaturalGasProduction.csv_ingestion_errors.log")
+    }
+    {
+      type: 'demand'
+      dataFilename: path.join(ApplicationRoot, "public/rawCSV/2016-10-18_EnergyDemand.csv")
+      processedFilename: path.join(ApplicationRoot, "public/CSV/2016-10-18_EnergyDemand.csv")
+      logFilename: path.join(ApplicationRoot, "public/rawCSV/2016-10-18_EnergyDemand.csv_ingestion_errors.log")
+    }
     # {  
     #   type: 'electricity'
     #   name: "2016-10-27_ElectricityGeneration.csv"
@@ -58,7 +62,7 @@ validate = (optionsList) ->
           console.warn options
 
     catch e
-      console.warn "Exception while ingesting data."
+      console.warn "Exception while ingesting data. Options:"
       console.warn options
       console.warn e.error
       console.warn e.stack
