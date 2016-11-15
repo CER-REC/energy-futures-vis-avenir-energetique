@@ -1,27 +1,30 @@
 fs = require 'fs'
-path = require 'path'
 d3 = require 'd3'
-_ = require 'lodash'
 
-ApplicationRoot = require '../../ApplicationRoot.coffee'
 Constants = require '../Constants.coffee'
-
 Validations = require './Validations.coffee'
-OilProductionProvider = require '../DataProviders/OilProductionProvider.coffee'
-
-
-
 
 
 class OilProductionIngestor
 
   constructor: (options) ->
-    # TODO: Reconsider building the file path here. More portable in the future to build it 
-    # externally, call this with the full filename.
-    @dataFilename = path.join ApplicationRoot, "public/rawCSV", options.name
-    # TODO: Generate these externally and pass them in, too.
-    @processedFilename = path.join ApplicationRoot, "public/CSV", options.name
-    @logFilename = path.join ApplicationRoot, "public/rawCSV", "#{options.name}_ingestion_errors.log"
+
+    if not options.dataFilename
+      console.log "Missing required option dataFilename"
+      console.log options
+      return
+    if not options.processedFilename
+      console.log "Missing required option processedFilename"
+      console.log options
+      return
+    if not options.logFilename
+      console.log "Missing required option logFilename"
+      console.log options
+      return
+
+    @dataFilename = options.dataFilename
+    @processedFilename = options.processedFilename
+    @logFilename = options.logFilename
 
     @logMessages = []
     oilData = fs.readFileSync(@dataFilename).toString()
@@ -52,12 +55,8 @@ class OilProductionIngestor
 
   validateLineByLine: ->
     if @unmappedData.length != @mappedData.length
-      @logMessages.push
-        message: "Error: Sanity check failed, unmapped CSV data (length #{@unmappedData.length}) and mapped CSV data (length #{@mappedData.length}) had different lengths."
-        line: null
-        lineNumber: null
-      # TODO: We should actually fail the entire process here... throw? 
-      return
+      throw "Error: Sanity check failed, unmapped CSV data (length #{@unmappedData.length}) and mapped CSV data (length #{@mappedData.length}) had different lengths for #{@dataFilename}"
+
 
     for i in [0...@unmappedData.length]
       Validations.province @mappedData[i], @unmappedData[i], i, @logMessages
@@ -133,12 +132,18 @@ class OilProductionIngestor
       @logFile.write "No errors"
 
     for error in @logMessages
-      fs.writeSync @logFile, "Error:\n"
-      fs.writeSync @logFile, "  #{error.message}\n"
-      fs.writeSync @logFile, "  #{error.line.toString()}\n" if error.line?
-      fs.writeSync @logFile, "  #{error.lineNumber}\n" if error.lineNumber?
+      fs.writeSync @logFile, "#{error.message}\n"
+      fs.writeSync @logFile, "#{error.line.toString()}\n" if error.line?
+      fs.writeSync @logFile, "#{error.lineNumber}\n" if error.lineNumber?
+      fs.writeSync @logFile, "\n"
 
     fs.closeSync @logFile
+
+    if @logMessages.length > 0
+      console.log "#{@logMessages.length} logged events for file #{@dataFilename}."
+    else
+      console.log "No logged events for #{@dataFilename}."
+
 
 
 OilProductionIngestor.csvMapping = (d) ->
@@ -151,4 +156,16 @@ OilProductionIngestor.csvMapping = (d) ->
 
 
 
-module.exports = OilProductionIngestor
+module.exports = (options) ->
+
+  ingestor = new OilProductionIngestor options
+
+  return {
+    logMessages: ingestor.logMessages
+  }
+
+
+
+
+
+

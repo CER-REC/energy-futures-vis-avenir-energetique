@@ -13,13 +13,15 @@ ElectricityProductionIngestor = require './ElectricityProductionIngestor.coffee'
 
 
 
-# TODO: How to handle specifying input files? 
+
 
 october2016Files = -> 
   [
     {
       type: 'oil'
-      name: "2016-10-18_CrudeOilProduction.csv"
+      dataFilename: path.join(ApplicationRoot, "public/rawCSV/2016-10-18_CrudeOilProduction.csv")
+      processedFilename: path.join(ApplicationRoot, "public/CSV/2016-10-18_CrudeOilProduction.csv")
+      logFilename: path.join(ApplicationRoot, "public/rawCSV/2016-10-18_CrudeOilProduction.csv_ingestion_errors.log")
     }
     # {
     #   type: 'gas'
@@ -36,27 +38,30 @@ october2016Files = ->
   ]
 
 
-validate = (files) ->
 
-  for file in files
-    ingestor = switch file.type
-      when 'oil'
-        new OilProductionIngestor file
-      when 'gas'
-        new GasProductionIngestor file
-      when 'demand'
-        new EnergyConsumptionIngestor file
-      when 'electricity'
-        new ElectricityProductionIngestor file
-      else
-        console.warn "Couldn't read file: #{file.name}. Unknown type #{file.type}."
+validate = (optionsList) ->
 
-    # if result.length > 0
-    #   console.log "#{result.length} errors in file #{file.name}:"
-    #   # console.log result
-    # else
-    #   console.log "No errors in #{file.name}"
+  for options in optionsList
 
+    try
+      switch options.type
+        when 'oil'
+          OilProductionIngestor options
+        when 'gas'
+          GasProductionIngestor options
+        when 'demand'
+          EnergyConsumptionIngestor options
+        when 'electricity'
+          ElectricityProductionIngestor options
+        else
+          console.warn "Unknown type #{options.type}."
+          console.warn options
+
+    catch e
+      console.warn "Exception while ingesting data."
+      console.warn options
+      console.warn e.error
+      console.warn e.stack
 
 
 
