@@ -9,11 +9,11 @@ class EnergyConsumptionProvider
 
   loadViaAjax: (loadedCallback) ->
     @loadedCallback = loadedCallback
-    d3.csv "CSV/2016-10-18_EnergyDemand.csv", EnergyConsumptionProvider.csvMapping, @parseData
-    # d3.csv "CSV/2016-01_EnergyDemand.csv", EnergyConsumptionProvider.csvMapping, @parseData
+    d3.csv "CSV/2016-10-18_EnergyDemand.csv", @parseData
+    # d3.csv "CSV/2016-01_EnergyDemand.csv", @parseData
   
   loadFromString: (data) ->
-    @parseData null, d3.csv.parse(data, EnergyConsumptionProvider.csvMapping) 
+    @parseData null, d3.csv.parse(data) 
 
   parseData: (error, data) =>
     console.warn error if error?
@@ -281,14 +281,6 @@ class EnergyConsumptionProvider
 
 
 
-EnergyConsumptionProvider.csvMapping = (d) ->
-  province: d.Area
-  sector: d.Sector
-  source: d.Source
-  scenario: d.Case
-  year: parseInt(d.Year)
-  value: parseFloat(d.Data)
-  unit: d.Unit
 
 
 module.exports = EnergyConsumptionProvider

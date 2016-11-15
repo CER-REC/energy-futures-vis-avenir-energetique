@@ -10,12 +10,12 @@ class ElectricityProductionProvider
 
   loadViaAjax: (loadedCallback) ->
     @loadedCallback = loadedCallback
-    d3.csv "CSV/2016-10-27_ElectricityGeneration.csv", ElectricityProductionProvider.csvMapping, @parseData
-    # d3.csv "CSV/2016-10-19_ElectricityGeneration.csv", ElectricityProductionProvider.csvMapping, @parseData
-    # d3.csv "CSV/2016-01_ElectricityGeneration.csv", ElectricityProductionProvider.csvMapping, @parseData
+    d3.csv "CSV/2016-10-27_ElectricityGeneration.csv",  @parseData
+    # d3.csv "CSV/2016-10-19_ElectricityGeneration.csv", @parseData
+    # d3.csv "CSV/2016-01_ElectricityGeneration.csv", @parseData
 
   loadFromString: (data) ->
-    @parseData null, d3.csv.parse(data, ElectricityProductionProvider.csvMapping) 
+    @parseData null, d3.csv.parse(data) 
 
   parseData: (error, data) =>
     console.warn error if error?
@@ -355,13 +355,6 @@ class ElectricityProductionProvider
     filteredData
 
 
-ElectricityProductionProvider.csvMapping = (d) ->
-  province: d.Area
-  source: d.Source
-  scenario: d.Case
-  year: parseInt(d.Year)
-  value: parseFloat(d.Data.replace(',',''))
-  unit: d.Unit
 
 
 module.exports = ElectricityProductionProvider

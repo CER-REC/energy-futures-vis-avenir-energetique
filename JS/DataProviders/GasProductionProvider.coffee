@@ -9,11 +9,11 @@ class GasProductionProvider
 
   loadViaAjax: (loadedCallback) ->
     @loadedCallback = loadedCallback
-    d3.csv "CSV/2016-10-18_NaturalGasProduction.csv", GasProductionProvider.csvMapping, @parseData
-    # d3.csv "CSV/2016-01_NaturalGasProduction.csv", GasProductionProvider.csvMapping, @parseData
+    d3.csv "CSV/2016-10-18_NaturalGasProduction.csv", @parseData
+    # d3.csv "CSV/2016-01_NaturalGasProduction.csv", @parseData
   
   loadFromString: (data) ->
-    @parseData null, d3.csv.parse(data, GasProductionProvider.csvMapping) 
+    @parseData null, d3.csv.parse(data) 
 
   parseData: (error, data) =>
     console.warn error if error?
@@ -189,17 +189,6 @@ class GasProductionProvider
     filteredData
 
 
-
-
-
-
-GasProductionProvider.csvMapping = (d) ->
-  province: d.Area
-  type: d.Type
-  scenario: d.Case
-  year: parseInt(d.Year)
-  value: parseFloat(d.Data)
-  unit: d.Unit
 
 
 

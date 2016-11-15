@@ -25,7 +25,7 @@ class OilProductionIngestor
 
     @logMessages = []
     oilData = fs.readFileSync(@dataFilename).toString()
-    @mappedData = d3.csv.parse oilData, OilProductionProvider.csvMapping
+    @mappedData = d3.csv.parse oilData, OilProductionIngestor.csvMapping
     @unmappedData = d3.csv.parse oilData
     @groupedData = {}
     @extraData = []
@@ -106,7 +106,6 @@ class OilProductionIngestor
               line: null
               lineNumber: null
 
-    console.log "#{count} #{@extraData.length}    #{@mappedData.length}"
     if count + @extraData.length != @mappedData.length
       @logMessages.push
         message: "Error: Sanity check failed, the number of items in required data (#{count}) and extra data (#{@extraData.length}) don't sum up to the number of items in mapped data (#{@mappedData.length})"
@@ -141,6 +140,14 @@ class OilProductionIngestor
 
     fs.closeSync @logFile
 
+
+OilProductionIngestor.csvMapping = (d) ->
+  province: d.Area
+  type: d.Type
+  scenario: d.Case
+  year: parseInt(d.Year)
+  value: parseFloat(d.Data)
+  unit: d.Unit
 
 
 

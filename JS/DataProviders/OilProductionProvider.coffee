@@ -9,11 +9,11 @@ class OilProductionProvider
 
   loadViaAjax: (loadedCallback) ->
     @loadedCallback = loadedCallback
-    d3.csv "CSV/2016-10-18_CrudeOilProduction.csv", OilProductionProvider.csvMapping, @parseData
+    d3.csv "CSV/2016-10-18_CrudeOilProduction.csv", @parseData
     # d3.csv "CSV/2016-01_CrudeOilProduction.csv", OilProductionProvider.csvMapping, @parseData
 
   loadFromString: (data) ->
-    @parseData null, d3.csv.parse(data, OilProductionProvider.csvMapping) 
+    @parseData null, d3.csv.parse(data)
 
   parseData: (error, data) =>
     console.warn error if error?
@@ -21,20 +21,20 @@ class OilProductionProvider
     
 
     @dataByProvince = 
-      'BC' : []
-      'AB' : []
-      'SK' : []
-      'MB' : []
-      'ON' : []
-      'QC' : []
-      'NB' : []
-      'NS' : []
-      'NL' : []
-      'PE' : []
-      'YT' : []
-      'NT' : []
-      'NU' : []
-      'all': []
+      BC: []
+      AB: []
+      SK: []
+      MB: []
+      ON: []
+      QC: []
+      NB: []
+      NS: []
+      NL: []
+      PE: []
+      YT: []
+      NT: []
+      NU: []
+      all: []
 
 
     @dataByScenario = 
@@ -189,13 +189,6 @@ class OilProductionProvider
 
     filteredData
 
-OilProductionProvider.csvMapping = (d) ->
-  province: d.Area
-  type: d.Type
-  scenario: d.Case
-  year: parseInt(d.Year)
-  value: parseFloat(d.Data)
-  unit: d.Unit
 
 
 module.exports = OilProductionProvider
