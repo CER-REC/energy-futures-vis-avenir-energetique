@@ -1,4 +1,5 @@
 d3 = require 'd3'
+
 Constants = require '../Constants.coffee'
 UnitTransformation = require '../unit-transformation.coffee'
 
@@ -9,11 +10,21 @@ class EnergyConsumptionProvider
 
   loadViaAjax: (loadedCallback) ->
     @loadedCallback = loadedCallback
-    d3.csv "CSV/2016-10-18_EnergyDemand.csv", @parseData
-    # d3.csv "CSV/2016-01_EnergyDemand.csv", @parseData
+    d3.csv "CSV/2016-10-18_EnergyDemand.csv", @mapping, @parseData
+    # d3.csv "CSV/2016-01_EnergyDemand.csv", @mapping, @parseData
   
   loadFromString: (data) ->
-    @parseData null, d3.csv.parse(data) 
+    @parseData null, d3.csv.parse(data, @mapping) 
+
+
+  mapping: (d) ->
+    province: d.province
+    sector: d.sector
+    source: d.source
+    scenario: d.scenario
+    year: parseInt(d.year)
+    value: parseFloat(d.value)
+    unit: d.unit
 
   parseData: (error, data) =>
     console.warn error if error?

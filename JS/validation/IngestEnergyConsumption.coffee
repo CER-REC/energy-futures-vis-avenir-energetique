@@ -3,35 +3,18 @@ d3 = require 'd3'
 
 Constants = require '../Constants.coffee'
 Validations = require './Validations.coffee'
-
-
-
+IngestionMethods = require './IngestionMethods.coffee'
 
 class EnergyConsumptionIngestor
 
   process: (options) ->
 
-    if not options.dataFilename
-      console.log "Missing required option dataFilename"
-      console.log options
-      return
-    if not options.processedFilename
-      console.log "Missing required option processedFilename"
-      console.log options
-      return
-    if not options.logFilename
-      console.log "Missing required option logFilename"
-      console.log options
-      return
-
-    @dataFilename = options.dataFilename
-    @processedFilename = options.processedFilename
-    @logFilename = options.logFilename
+    @setupFilenames options
 
     @logMessages = []
-    energyData = fs.readFileSync(@dataFilename).toString()
-    @mappedData = d3.csv.parse energyData, EnergyConsumptionIngestor.csvMapping
-    @unmappedData = d3.csv.parse energyData
+    rawData = fs.readFileSync(@dataFilename).toString()
+    @mappedData = d3.csv.parse rawData, EnergyConsumptionIngestor.csvMapping
+    @unmappedData = d3.csv.parse rawData
     @summarizedGroupedData = {}
     @detailedGroupedData = {}
     @extraData = []
@@ -63,10 +46,6 @@ class EnergyConsumptionIngestor
 
     for item in @mappedData
       item.province = Constants.csvProvinceToProvinceCodeMapping[item.province]
-
-    # TODO: this, effectively... 
-    # @data.filter (item) ->
-    #   item.source not in ['crudeOil', 'nuclear', 'hydro']
 
 
 
@@ -191,37 +170,8 @@ class EnergyConsumptionIngestor
 
 
 
-  writeLog: ->
-    @logFile = fs.openSync @logFilename, 'w'
-
-    if @logMessages.length == 0
-      @logFile.write "No errors"
-
-    for error in @logMessages
-      fs.writeSync @logFile, "#{error.message}\n"
-      fs.writeSync @logFile, "#{error.line.toString()}\n" if error.line?
-      fs.writeSync @logFile, "#{error.lineNumber}\n" if error.lineNumber?
-      fs.writeSync @logFile, "\n"
-
-    fs.closeSync @logFile
-
-    if @logMessages.length > 0
-      console.log "#{@logMessages.length} logged events for file #{@dataFilename}."
-    else
-      console.log "No logged events for #{@dataFilename}."
-
 
   ##### 
-
-  summarizedAddAndDetectDuplicate: (item) ->
-    
-    if @summarizedGroupedData[item.scenario][item.year][item.province]?
-      @logMessages.push
-        message: "Duplicate item detected"
-        line: item
-        lineNumber: null
-    else
-      @summarizedGroupedData[item.scenario][item.year][item.province] = item
 
   detailedAddAndDetectDuplicate: (item) ->
     if @detailedGroupedData[item.sector][item.source][item.scenario][item.year][item.province]?
@@ -244,6 +194,7 @@ EnergyConsumptionIngestor.csvMapping = (d) ->
   unit: d.Unit
 
 
+Object.assign EnergyConsumptionIngestor.prototype, IngestionMethods
 
 
 module.exports = (options) ->

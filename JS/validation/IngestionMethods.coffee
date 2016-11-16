@@ -1,7 +1,37 @@
 fs = require 'fs'
 
+# A small set of methods that are completely in common between the ingestors.
+
 IngestionMethods = 
 
+  setupFilenames: (options) ->
+    if not options.dataFilename
+      console.log "Missing required option dataFilename"
+      console.log options
+      return
+    if not options.processedFilename
+      console.log "Missing required option processedFilename"
+      console.log options
+      return
+    if not options.logFilename
+      console.log "Missing required option logFilename"
+      console.log options
+      return
+
+    @dataFilename = options.dataFilename
+    @processedFilename = options.processedFilename
+    @logFilename = options.logFilename
+
+
+
+  summarizedAddAndDetectDuplicate: (item) ->
+    if @summarizedGroupedData[item.scenario][item.year][item.province]?
+      @logMessages.push
+        message: "Duplicate item detected"
+        line: item
+        lineNumber: null
+    else
+      @summarizedGroupedData[item.scenario][item.year][item.province] = item
 
 
   writeLog: ->

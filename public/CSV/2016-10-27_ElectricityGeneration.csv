@@ -1,5 +1,5 @@
 province,source,scenario,year,value,unit
-all,total,reference,2005,607006.5700000001,
+all,total,reference,2005,607006.5700000001,GW.h
 AB,total,reference,2005,68435.34,GW.h
 BC,total,reference,2005,67108.36,GW.h
 MB,total,reference,2005,37057.17,GW.h
@@ -13,7 +13,7 @@ PE,total,reference,2005,42.22,GW.h
 QC,total,reference,2005,179303.77,GW.h
 SK,total,reference,2005,19766.16,GW.h
 YT,total,reference,2005,353.13,GW.h
-all,total,reference,2006,603034.92,
+all,total,reference,2006,603034.92,GW.h
 AB,total,reference,2006,71776.34,GW.h
 BC,total,reference,2006,60875.36,GW.h
 MB,total,reference,2006,34540.17,GW.h
@@ -27,7 +27,7 @@ PE,total,reference,2006,38.22,GW.h
 QC,total,reference,2006,182904.73,GW.h
 SK,total,reference,2006,19616.16,GW.h
 YT,total,reference,2006,353.13,GW.h
-all,total,reference,2007,620671.93,
+all,total,reference,2007,620671.93,GW.h
 AB,total,reference,2007,72535.54,GW.h
 BC,total,reference,2007,70223.36,GW.h
 MB,total,reference,2007,34402.17,GW.h
@@ -41,7 +41,7 @@ PE,total,reference,2007,42.22,GW.h
 QC,total,reference,2007,191611.73,GW.h
 SK,total,reference,2007,20614.16,GW.h
 YT,total,reference,2007,353.13,GW.h
-all,total,reference,2008,624661.99,
+all,total,reference,2008,624661.99,GW.h
 AB,total,reference,2008,71650.65,GW.h
 BC,total,reference,2008,64553.12,GW.h
 MB,total,reference,2008,35563.78,GW.h
@@ -55,7 +55,7 @@ PE,total,reference,2008,148.37,GW.h
 QC,total,reference,2008,194321.17,GW.h
 SK,total,reference,2008,21765.58,GW.h
 YT,total,reference,2008,371.06,GW.h
-all,total,reference,2009,598166.7899999999,
+all,total,reference,2009,598166.7899999999,GW.h
 AB,total,reference,2009,72171.5,GW.h
 BC,total,reference,2009,61964.53,GW.h
 MB,total,reference,2009,34096.94,GW.h
@@ -69,7 +69,7 @@ PE,total,reference,2009,359.54,GW.h
 QC,total,reference,2009,196499.71,GW.h
 SK,total,reference,2009,20768.48,GW.h
 YT,total,reference,2009,397.83,GW.h
-all,total,reference,2010,590547.74,
+all,total,reference,2010,590547.74,GW.h
 AB,total,reference,2010,73568.78,GW.h
 BC,total,reference,2010,61549.79,GW.h
 MB,total,reference,2010,33777.8,GW.h
@@ -83,7 +83,7 @@ PE,total,reference,2010,463.77,GW.h
 QC,total,reference,2010,183926.68,GW.h
 SK,total,reference,2010,20408.5,GW.h
 YT,total,reference,2010,405.3,GW.h
-all,total,reference,2011,615163.1599999999,
+all,total,reference,2011,615163.1599999999,GW.h
 AB,total,reference,2011,73054.19,GW.h
 BC,total,reference,2011,67964.79,GW.h
 MB,total,reference,2011,35139.84,GW.h
@@ -97,7 +97,7 @@ PE,total,reference,2011,494.04,GW.h
 QC,total,reference,2011,196296.13,GW.h
 SK,total,reference,2011,21194.82,GW.h
 YT,total,reference,2011,425.34,GW.h
-all,total,reference,2012,623343.09,
+all,total,reference,2012,623343.09,GW.h
 AB,total,reference,2012,75077.12,GW.h
 BC,total,reference,2012,71951.28,GW.h
 MB,total,reference,2012,33203.4,GW.h
@@ -111,7 +111,7 @@ PE,total,reference,2012,481.96,GW.h
 QC,total,reference,2012,200559.4,GW.h
 SK,total,reference,2012,21249.88,GW.h
 YT,total,reference,2012,455,GW.h
-all,total,reference,2013,645823.23,
+all,total,reference,2013,645823.23,GW.h
 AB,total,reference,2013,78052.1,GW.h
 BC,total,reference,2013,65994.23,GW.h
 MB,total,reference,2013,36346.72,GW.h
@@ -125,7 +125,7 @@ PE,total,reference,2013,507.23,GW.h
 QC,total,reference,2013,209467.74,GW.h
 SK,total,reference,2013,23167.46,GW.h
 YT,total,reference,2013,370.76,GW.h
-all,total,reference,2014,645834.32,
+all,total,reference,2014,645834.32,GW.h
 AB,total,reference,2014,82823.15,GW.h
 BC,total,reference,2014,64642.39,GW.h
 MB,total,reference,2014,35636.08,GW.h
@@ -139,7 +139,7 @@ PE,total,reference,2014,604.29,GW.h
 QC,total,reference,2014,206677.28,GW.h
 SK,total,reference,2014,22207.5,GW.h
 YT,total,reference,2014,414.44,GW.h
-all,total,reference,2015,653183.0199999999,
+all,total,reference,2015,653183.0199999999,GW.h
 AB,total,reference,2015,82517.17,GW.h
 BC,total,reference,2015,66317.79,GW.h
 MB,total,reference,2015,37927.9,GW.h
@@ -153,7 +153,7 @@ PE,total,reference,2015,592.24,GW.h
 QC,total,reference,2015,207400.34,GW.h
 SK,total,reference,2015,24340.38,GW.h
 YT,total,reference,2015,425.57,GW.h
-all,total,reference,2016,664228.6499999998,
+all,total,reference,2016,664228.6499999998,GW.h
 AB,total,reference,2016,84427.42,GW.h
 BC,total,reference,2016,68133,GW.h
 MB,total,reference,2016,37820.49,GW.h
@@ -167,7 +167,7 @@ PE,total,reference,2016,550.36,GW.h
 QC,total,reference,2016,211008.32,GW.h
 SK,total,reference,2016,24042.57,GW.h
 YT,total,reference,2016,412.47,GW.h
-all,total,reference,2017,639225.8799999999,
+all,total,reference,2017,639225.8799999999,GW.h
 AB,total,reference,2017,85728.84,GW.h
 BC,total,reference,2017,68616.36,GW.h
 MB,total,reference,2017,37703.9,GW.h
@@ -181,7 +181,7 @@ PE,total,reference,2017,553.48,GW.h
 QC,total,reference,2017,206662.09,GW.h
 SK,total,reference,2017,24115.94,GW.h
 YT,total,reference,2017,390,GW.h
-all,total,reference,2018,643187.19,
+all,total,reference,2018,643187.19,GW.h
 AB,total,reference,2018,87797.29,GW.h
 BC,total,reference,2018,68754.18,GW.h
 MB,total,reference,2018,37955.49,GW.h
@@ -195,7 +195,7 @@ PE,total,reference,2018,557.74,GW.h
 QC,total,reference,2018,208124.18,GW.h
 SK,total,reference,2018,24098.19,GW.h
 YT,total,reference,2018,451.75,GW.h
-all,total,reference,2019,650632.1799999999,
+all,total,reference,2019,650632.1799999999,GW.h
 AB,total,reference,2019,89385.39,GW.h
 BC,total,reference,2019,69909.04,GW.h
 MB,total,reference,2019,37745.32,GW.h
@@ -209,7 +209,7 @@ PE,total,reference,2019,562.83,GW.h
 QC,total,reference,2019,211394.78,GW.h
 SK,total,reference,2019,23201.23,GW.h
 YT,total,reference,2019,647.96,GW.h
-all,total,reference,2020,654430.7000000001,
+all,total,reference,2020,654430.7000000001,GW.h
 AB,total,reference,2020,89270.48,GW.h
 BC,total,reference,2020,70119.12,GW.h
 MB,total,reference,2020,38962.2,GW.h
@@ -223,7 +223,7 @@ PE,total,reference,2020,652.73,GW.h
 QC,total,reference,2020,212865.16,GW.h
 SK,total,reference,2020,24951.8,GW.h
 YT,total,reference,2020,653.05,GW.h
-all,total,reference,2021,661566.09,
+all,total,reference,2021,661566.09,GW.h
 AB,total,reference,2021,90102.02,GW.h
 BC,total,reference,2021,70847.69,GW.h
 MB,total,reference,2021,42362.12,GW.h
@@ -237,7 +237,7 @@ PE,total,reference,2021,657.99,GW.h
 QC,total,reference,2021,214238.45,GW.h
 SK,total,reference,2021,24966.72,GW.h
 YT,total,reference,2021,647.96,GW.h
-all,total,reference,2022,665605.0700000001,
+all,total,reference,2022,665605.0700000001,GW.h
 AB,total,reference,2022,91776.98,GW.h
 BC,total,reference,2022,71359.73,GW.h
 MB,total,reference,2022,42426.51,GW.h
@@ -251,7 +251,7 @@ PE,total,reference,2022,660.57,GW.h
 QC,total,reference,2022,215511.64,GW.h
 SK,total,reference,2022,24705.41,GW.h
 YT,total,reference,2022,700.83,GW.h
-all,total,reference,2023,670460.5599999999,
+all,total,reference,2023,670460.5599999999,GW.h
 AB,total,reference,2023,93447.43,GW.h
 BC,total,reference,2023,72044.86,GW.h
 MB,total,reference,2023,42498.81,GW.h
@@ -265,7 +265,7 @@ PE,total,reference,2023,666.92,GW.h
 QC,total,reference,2023,216695.07,GW.h
 SK,total,reference,2023,24915.61,GW.h
 YT,total,reference,2023,537.42,GW.h
-all,total,reference,2024,675345.1799999999,
+all,total,reference,2024,675345.1799999999,GW.h
 AB,total,reference,2024,94830.06,GW.h
 BC,total,reference,2024,72702.44,GW.h
 MB,total,reference,2024,42584.54,GW.h
@@ -279,7 +279,7 @@ PE,total,reference,2024,671.63,GW.h
 QC,total,reference,2024,217941.36,GW.h
 SK,total,reference,2024,25159.11,GW.h
 YT,total,reference,2024,521.83,GW.h
-all,total,reference,2025,684441.81,
+all,total,reference,2025,684441.81,GW.h
 AB,total,reference,2025,96334.52,GW.h
 BC,total,reference,2025,73504.61,GW.h
 MB,total,reference,2025,46675.97,GW.h
@@ -293,7 +293,7 @@ PE,total,reference,2025,760.48,GW.h
 QC,total,reference,2025,219110.66,GW.h
 SK,total,reference,2025,25353.42,GW.h
 YT,total,reference,2025,507.72,GW.h
-all,total,reference,2026,689292.51,
+all,total,reference,2026,689292.51,GW.h
 AB,total,reference,2026,97962.05,GW.h
 BC,total,reference,2026,73936.52,GW.h
 MB,total,reference,2026,46916.29,GW.h
@@ -307,7 +307,7 @@ PE,total,reference,2026,766.38,GW.h
 QC,total,reference,2026,220202.53,GW.h
 SK,total,reference,2026,25699.26,GW.h
 YT,total,reference,2026,490.2,GW.h
-all,total,reference,2027,696292.12,
+all,total,reference,2027,696292.12,GW.h
 AB,total,reference,2027,99101.91,GW.h
 BC,total,reference,2027,74231.47,GW.h
 MB,total,reference,2027,49014.15,GW.h
@@ -321,7 +321,7 @@ PE,total,reference,2027,767.95,GW.h
 QC,total,reference,2027,218390.34,GW.h
 SK,total,reference,2027,26160.71,GW.h
 YT,total,reference,2027,488.58,GW.h
-all,total,reference,2028,701602.42,
+all,total,reference,2028,701602.42,GW.h
 AB,total,reference,2028,100328.45,GW.h
 BC,total,reference,2028,74474.25,GW.h
 MB,total,reference,2028,49035.23,GW.h
@@ -335,7 +335,7 @@ PE,total,reference,2028,773.31,GW.h
 QC,total,reference,2028,221211.23,GW.h
 SK,total,reference,2028,26242.34,GW.h
 YT,total,reference,2028,480.87,GW.h
-all,total,reference,2029,710422.3700000001,
+all,total,reference,2029,710422.3700000001,GW.h
 AB,total,reference,2029,99067.26,GW.h
 BC,total,reference,2029,77411.81,GW.h
 MB,total,reference,2029,52131.91,GW.h
@@ -349,7 +349,7 @@ PE,total,reference,2029,775.88,GW.h
 QC,total,reference,2029,222167.15,GW.h
 SK,total,reference,2029,26302.3,GW.h
 YT,total,reference,2029,474.51,GW.h
-all,total,reference,2030,715599.7100000001,
+all,total,reference,2030,715599.7100000001,GW.h
 AB,total,reference,2030,100460.4,GW.h
 BC,total,reference,2030,77719.55,GW.h
 MB,total,reference,2030,52192.83,GW.h
@@ -363,7 +363,7 @@ PE,total,reference,2030,867.37,GW.h
 QC,total,reference,2030,224019.71,GW.h
 SK,total,reference,2030,26364.17,GW.h
 YT,total,reference,2030,474.47,GW.h
-all,total,reference,2031,720740.8500000001,
+all,total,reference,2031,720740.8500000001,GW.h
 AB,total,reference,2031,101894.9,GW.h
 BC,total,reference,2031,78065.98,GW.h
 MB,total,reference,2031,52279.73,GW.h
@@ -377,7 +377,7 @@ PE,total,reference,2031,869.03,GW.h
 QC,total,reference,2031,226277.89,GW.h
 SK,total,reference,2031,26409.93,GW.h
 YT,total,reference,2031,477.85,GW.h
-all,total,reference,2032,724583.93,
+all,total,reference,2032,724583.93,GW.h
 AB,total,reference,2032,102839.9,GW.h
 BC,total,reference,2032,78398.94,GW.h
 MB,total,reference,2032,52341.63,GW.h
@@ -391,7 +391,7 @@ PE,total,reference,2032,873.84,GW.h
 QC,total,reference,2032,227309.57,GW.h
 SK,total,reference,2032,26452.55,GW.h
 YT,total,reference,2032,480.87,GW.h
-all,total,reference,2033,728500.59,
+all,total,reference,2033,728500.59,GW.h
 AB,total,reference,2033,103758.8,GW.h
 BC,total,reference,2033,78748.7,GW.h
 MB,total,reference,2033,52432.4,GW.h
@@ -405,7 +405,7 @@ PE,total,reference,2033,875.5,GW.h
 QC,total,reference,2033,228419.85,GW.h
 SK,total,reference,2033,26492.71,GW.h
 YT,total,reference,2033,471.37,GW.h
-all,total,reference,2034,732719.1000000002,
+all,total,reference,2034,732719.1000000002,GW.h
 AB,total,reference,2034,104865.1,GW.h
 BC,total,reference,2034,79137.25,GW.h
 MB,total,reference,2034,52496.24,GW.h
@@ -419,7 +419,7 @@ PE,total,reference,2034,880.32,GW.h
 QC,total,reference,2034,230540.83,GW.h
 SK,total,reference,2034,26531.56,GW.h
 YT,total,reference,2034,469.65,GW.h
-all,total,reference,2035,735622.83,
+all,total,reference,2035,735622.83,GW.h
 AB,total,reference,2035,105914.2,GW.h
 BC,total,reference,2035,79487.48,GW.h
 MB,total,reference,2035,52559.09,GW.h
@@ -433,7 +433,7 @@ PE,total,reference,2035,880.39,GW.h
 QC,total,reference,2035,231701.11,GW.h
 SK,total,reference,2035,26609.22,GW.h
 YT,total,reference,2035,471.85,GW.h
-all,total,reference,2036,739703.2200000002,
+all,total,reference,2036,739703.2200000002,GW.h
 AB,total,reference,2036,107111.3,GW.h
 BC,total,reference,2036,79841.6,GW.h
 MB,total,reference,2036,52615.43,GW.h
@@ -447,7 +447,7 @@ PE,total,reference,2036,885.28,GW.h
 QC,total,reference,2036,232828.17,GW.h
 SK,total,reference,2036,26654.31,GW.h
 YT,total,reference,2036,468.6,GW.h
-all,total,reference,2037,743855.32,
+all,total,reference,2037,743855.32,GW.h
 AB,total,reference,2037,108256.4,GW.h
 BC,total,reference,2037,80196.94,GW.h
 MB,total,reference,2037,52675.31,GW.h
@@ -461,7 +461,7 @@ PE,total,reference,2037,887,GW.h
 QC,total,reference,2037,233952.77,GW.h
 SK,total,reference,2037,26702.28,GW.h
 YT,total,reference,2037,450.21,GW.h
-all,total,reference,2038,747614.73,
+all,total,reference,2038,747614.73,GW.h
 AB,total,reference,2038,108862,GW.h
 BC,total,reference,2038,80533,GW.h
 MB,total,reference,2038,52731.23,GW.h
@@ -475,7 +475,7 @@ PE,total,reference,2038,891.27,GW.h
 QC,total,reference,2038,235053.87,GW.h
 SK,total,reference,2038,26757.57,GW.h
 YT,total,reference,2038,451.87,GW.h
-all,total,reference,2039,751507.94,
+all,total,reference,2039,751507.94,GW.h
 AB,total,reference,2039,109859.9,GW.h
 BC,total,reference,2039,80815.48,GW.h
 MB,total,reference,2039,52779.26,GW.h
@@ -489,7 +489,7 @@ PE,total,reference,2039,891.97,GW.h
 QC,total,reference,2039,236137.81,GW.h
 SK,total,reference,2039,26787.57,GW.h
 YT,total,reference,2039,461.33,GW.h
-all,total,reference,2040,755216.34,
+all,total,reference,2040,755216.34,GW.h
 AB,total,reference,2040,110795.5,GW.h
 BC,total,reference,2040,81104.5,GW.h
 MB,total,reference,2040,52830.44,GW.h
@@ -503,7 +503,7 @@ PE,total,reference,2040,892.04,GW.h
 QC,total,reference,2040,237262.23,GW.h
 SK,total,reference,2040,26814.75,GW.h
 YT,total,reference,2040,451.17,GW.h
-all,total,high,2005,607006.5700000001,
+all,total,high,2005,607006.5700000001,GW.h
 AB,total,high,2005,68435.34,GW.h
 BC,total,high,2005,67108.36,GW.h
 MB,total,high,2005,37057.17,GW.h
@@ -517,7 +517,7 @@ PE,total,high,2005,42.22,GW.h
 QC,total,high,2005,179303.77,GW.h
 SK,total,high,2005,19766.16,GW.h
 YT,total,high,2005,353.13,GW.h
-all,total,high,2006,603034.92,
+all,total,high,2006,603034.92,GW.h
 AB,total,high,2006,71776.34,GW.h
 BC,total,high,2006,60875.36,GW.h
 MB,total,high,2006,34540.17,GW.h
@@ -531,7 +531,7 @@ PE,total,high,2006,38.22,GW.h
 QC,total,high,2006,182904.73,GW.h
 SK,total,high,2006,19616.16,GW.h
 YT,total,high,2006,353.13,GW.h
-all,total,high,2007,620671.93,
+all,total,high,2007,620671.93,GW.h
 AB,total,high,2007,72535.54,GW.h
 BC,total,high,2007,70223.36,GW.h
 MB,total,high,2007,34402.17,GW.h
@@ -545,7 +545,7 @@ PE,total,high,2007,42.22,GW.h
 QC,total,high,2007,191611.73,GW.h
 SK,total,high,2007,20614.16,GW.h
 YT,total,high,2007,353.13,GW.h
-all,total,high,2008,624661.99,
+all,total,high,2008,624661.99,GW.h
 AB,total,high,2008,71650.65,GW.h
 BC,total,high,2008,64553.12,GW.h
 MB,total,high,2008,35563.78,GW.h
@@ -559,7 +559,7 @@ PE,total,high,2008,148.37,GW.h
 QC,total,high,2008,194321.17,GW.h
 SK,total,high,2008,21765.58,GW.h
 YT,total,high,2008,371.06,GW.h
-all,total,high,2009,598166.7899999999,
+all,total,high,2009,598166.7899999999,GW.h
 AB,total,high,2009,72171.5,GW.h
 BC,total,high,2009,61964.53,GW.h
 MB,total,high,2009,34096.94,GW.h
@@ -573,7 +573,7 @@ PE,total,high,2009,359.54,GW.h
 QC,total,high,2009,196499.71,GW.h
 SK,total,high,2009,20768.48,GW.h
 YT,total,high,2009,397.83,GW.h
-all,total,high,2010,590547.74,
+all,total,high,2010,590547.74,GW.h
 AB,total,high,2010,73568.78,GW.h
 BC,total,high,2010,61549.79,GW.h
 MB,total,high,2010,33777.8,GW.h
@@ -587,7 +587,7 @@ PE,total,high,2010,463.77,GW.h
 QC,total,high,2010,183926.68,GW.h
 SK,total,high,2010,20408.5,GW.h
 YT,total,high,2010,405.3,GW.h
-all,total,high,2011,615163.1599999999,
+all,total,high,2011,615163.1599999999,GW.h
 AB,total,high,2011,73054.19,GW.h
 BC,total,high,2011,67964.79,GW.h
 MB,total,high,2011,35139.84,GW.h
@@ -601,7 +601,7 @@ PE,total,high,2011,494.04,GW.h
 QC,total,high,2011,196296.13,GW.h
 SK,total,high,2011,21194.82,GW.h
 YT,total,high,2011,425.34,GW.h
-all,total,high,2012,623343.09,
+all,total,high,2012,623343.09,GW.h
 AB,total,high,2012,75077.12,GW.h
 BC,total,high,2012,71951.28,GW.h
 MB,total,high,2012,33203.4,GW.h
@@ -615,7 +615,7 @@ PE,total,high,2012,481.96,GW.h
 QC,total,high,2012,200559.4,GW.h
 SK,total,high,2012,21249.88,GW.h
 YT,total,high,2012,455,GW.h
-all,total,high,2013,645823.23,
+all,total,high,2013,645823.23,GW.h
 AB,total,high,2013,78052.1,GW.h
 BC,total,high,2013,65994.23,GW.h
 MB,total,high,2013,36346.72,GW.h
@@ -629,7 +629,7 @@ PE,total,high,2013,507.23,GW.h
 QC,total,high,2013,209467.74,GW.h
 SK,total,high,2013,23167.46,GW.h
 YT,total,high,2013,370.76,GW.h
-all,total,high,2014,645834.32,
+all,total,high,2014,645834.32,GW.h
 AB,total,high,2014,82823.15,GW.h
 BC,total,high,2014,64642.39,GW.h
 MB,total,high,2014,35636.08,GW.h
@@ -643,7 +643,7 @@ PE,total,high,2014,604.29,GW.h
 QC,total,high,2014,206677.28,GW.h
 SK,total,high,2014,22207.5,GW.h
 YT,total,high,2014,414.44,GW.h
-all,total,high,2015,652917.9299999999,
+all,total,high,2015,652917.9299999999,GW.h
 AB,total,high,2015,82517.17,GW.h
 BC,total,high,2015,66317.79,GW.h
 MB,total,high,2015,37927.9,GW.h
@@ -657,7 +657,7 @@ PE,total,high,2015,592.24,GW.h
 QC,total,high,2015,207400.34,GW.h
 SK,total,high,2015,24340.38,GW.h
 YT,total,high,2015,425.57,GW.h
-all,total,high,2016,666290.35,
+all,total,high,2016,666290.35,GW.h
 AB,total,high,2016,83945.66,GW.h
 BC,total,high,2016,68133,GW.h
 MB,total,high,2016,37816.25,GW.h
@@ -671,7 +671,7 @@ PE,total,high,2016,550.36,GW.h
 QC,total,high,2016,211008.38,GW.h
 SK,total,high,2016,24524.79,GW.h
 YT,total,high,2016,412.47,GW.h
-all,total,high,2017,641056.8,
+all,total,high,2017,641056.8,GW.h
 AB,total,high,2017,86360,GW.h
 BC,total,high,2017,68812.56,GW.h
 MB,total,high,2017,37714.88,GW.h
@@ -685,7 +685,7 @@ PE,total,high,2017,553.06,GW.h
 QC,total,high,2017,206630.56,GW.h
 SK,total,high,2017,24877.01,GW.h
 YT,total,high,2017,390,GW.h
-all,total,high,2018,645419.8399999999,
+all,total,high,2018,645419.8399999999,GW.h
 AB,total,high,2018,89530.55,GW.h
 BC,total,high,2018,69064.47,GW.h
 MB,total,high,2018,37956.99,GW.h
@@ -699,7 +699,7 @@ PE,total,high,2018,556.6,GW.h
 QC,total,high,2018,207873.55,GW.h
 SK,total,high,2018,24465.89,GW.h
 YT,total,high,2018,451.84,GW.h
-all,total,high,2019,653111.6699999999,
+all,total,high,2019,653111.6699999999,GW.h
 AB,total,high,2019,91537.57,GW.h
 BC,total,high,2019,70319.26,GW.h
 MB,total,high,2019,37754.14,GW.h
@@ -713,7 +713,7 @@ PE,total,high,2019,557.74,GW.h
 QC,total,high,2019,211020.21,GW.h
 SK,total,high,2019,23661.95,GW.h
 YT,total,high,2019,647.96,GW.h
-all,total,high,2020,658241.8799999999,
+all,total,high,2020,658241.8799999999,GW.h
 AB,total,high,2020,93040.2,GW.h
 BC,total,high,2020,70649.28,GW.h
 MB,total,high,2020,38965.96,GW.h
@@ -727,7 +727,7 @@ PE,total,high,2020,651.16,GW.h
 QC,total,high,2020,212421.11,GW.h
 SK,total,high,2020,25215.59,GW.h
 YT,total,high,2020,653.05,GW.h
-all,total,high,2021,666114.5599999999,
+all,total,high,2021,666114.5599999999,GW.h
 AB,total,high,2021,94178.67,GW.h
 BC,total,high,2021,71499.42,GW.h
 MB,total,high,2021,42372.33,GW.h
@@ -741,7 +741,7 @@ PE,total,high,2021,652.86,GW.h
 QC,total,high,2021,213833.45,GW.h
 SK,total,high,2021,25478.64,GW.h
 YT,total,high,2021,647.26,GW.h
-all,total,high,2022,671221.06,
+all,total,high,2022,671221.06,GW.h
 AB,total,high,2022,95776.59,GW.h
 BC,total,high,2022,72194.44,GW.h
 MB,total,high,2022,42455.88,GW.h
@@ -755,7 +755,7 @@ PE,total,high,2022,659.63,GW.h
 QC,total,high,2022,215298.28,GW.h
 SK,total,high,2022,25723.18,GW.h
 YT,total,high,2022,700.83,GW.h
-all,total,high,2023,677363.4899999999,
+all,total,high,2023,677363.4899999999,GW.h
 AB,total,high,2023,97791.58,GW.h
 BC,total,high,2023,73067.4,GW.h
 MB,total,high,2023,42567.84,GW.h
@@ -769,7 +769,7 @@ PE,total,high,2023,666.99,GW.h
 QC,total,high,2023,216757.62,GW.h
 SK,total,high,2023,26010.85,GW.h
 YT,total,high,2023,537.5,GW.h
-all,total,high,2024,683362.15,
+all,total,high,2024,683362.15,GW.h
 AB,total,high,2024,99539.47,GW.h
 BC,total,high,2024,73888.27,GW.h
 MB,total,high,2024,42673.9,GW.h
@@ -783,7 +783,7 @@ PE,total,high,2024,669.18,GW.h
 QC,total,high,2024,218213.48,GW.h
 SK,total,high,2024,26285.12,GW.h
 YT,total,high,2024,522.05,GW.h
-all,total,high,2025,694018.6399999999,
+all,total,high,2025,694018.6399999999,GW.h
 AB,total,high,2025,101471.29,GW.h
 BC,total,high,2025,75063.83,GW.h
 MB,total,high,2025,46724.9,GW.h
@@ -797,7 +797,7 @@ PE,total,high,2025,762.2,GW.h
 QC,total,high,2025,219558.89,GW.h
 SK,total,high,2025,26531.05,GW.h
 YT,total,high,2025,507.94,GW.h
-all,total,high,2026,699983.87,
+all,total,high,2026,699983.87,GW.h
 AB,total,high,2026,103861.07,GW.h
 BC,total,high,2026,75663.97,GW.h
 MB,total,high,2026,46975.21,GW.h
@@ -811,7 +811,7 @@ PE,total,high,2026,768.58,GW.h
 QC,total,high,2026,220787.07,GW.h
 SK,total,high,2026,26647.14,GW.h
 YT,total,high,2026,489.9,GW.h
-all,total,high,2027,708145.3599999999,
+all,total,high,2027,708145.3599999999,GW.h
 AB,total,high,2027,105790.56,GW.h
 BC,total,high,2027,76116.17,GW.h
 MB,total,high,2027,49083.14,GW.h
@@ -825,7 +825,7 @@ PE,total,high,2027,770.23,GW.h
 QC,total,high,2027,219083.64,GW.h
 SK,total,high,2027,26768.58,GW.h
 YT,total,high,2027,487,GW.h
-all,total,high,2028,714276.3500000001,
+all,total,high,2028,714276.3500000001,GW.h
 AB,total,high,2028,107570.05,GW.h
 BC,total,high,2028,76490.21,GW.h
 MB,total,high,2028,49114.6,GW.h
@@ -839,7 +839,7 @@ PE,total,high,2028,776.18,GW.h
 QC,total,high,2028,221995.31,GW.h
 SK,total,high,2028,26873.42,GW.h
 YT,total,high,2028,481.14,GW.h
-all,total,high,2029,724397.74,
+all,total,high,2029,724397.74,GW.h
 AB,total,high,2029,106831.43,GW.h
 BC,total,high,2029,79547.88,GW.h
 MB,total,high,2029,52315.39,GW.h
@@ -853,7 +853,7 @@ PE,total,high,2029,779.32,GW.h
 QC,total,high,2029,223032.04,GW.h
 SK,total,high,2029,26960.96,GW.h
 YT,total,high,2029,474.73,GW.h
-all,total,high,2030,730289.79,
+all,total,high,2030,730289.79,GW.h
 AB,total,high,2030,108741.6,GW.h
 BC,total,high,2030,79928.96,GW.h
 MB,total,high,2030,52383.48,GW.h
@@ -867,7 +867,7 @@ PE,total,high,2030,870.89,GW.h
 QC,total,high,2030,224950.51,GW.h
 SK,total,high,2030,27034.73,GW.h
 YT,total,high,2030,474.29,GW.h
-all,total,high,2031,735870.6799999999,
+all,total,high,2031,735870.6799999999,GW.h
 AB,total,high,2031,110574.4,GW.h
 BC,total,high,2031,80366.08,GW.h
 MB,total,high,2031,52487.08,GW.h
@@ -881,7 +881,7 @@ PE,total,high,2031,872.55,GW.h
 QC,total,high,2031,227258.39,GW.h
 SK,total,high,2031,27103.1,GW.h
 YT,total,high,2031,478.07,GW.h
-all,total,high,2032,740274.9,
+all,total,high,2032,740274.9,GW.h
 AB,total,high,2032,112010.5,GW.h
 BC,total,high,2032,80761.71,GW.h
 MB,total,high,2032,52558.76,GW.h
@@ -895,7 +895,7 @@ PE,total,high,2032,877.44,GW.h
 QC,total,high,2032,228329.56,GW.h
 SK,total,high,2032,27154.07,GW.h
 YT,total,high,2032,480.87,GW.h
-all,total,high,2033,744855.0899999999,
+all,total,high,2033,744855.0899999999,GW.h
 AB,total,high,2033,113440.5,GW.h
 BC,total,high,2033,81166.76,GW.h
 MB,total,high,2033,52654.81,GW.h
@@ -909,7 +909,7 @@ PE,total,high,2033,879.16,GW.h
 QC,total,high,2033,229484.37,GW.h
 SK,total,high,2033,27203.35,GW.h
 YT,total,high,2033,469.83,GW.h
-all,total,high,2034,749859.8700000001,
+all,total,high,2034,749859.8700000001,GW.h
 AB,total,high,2034,114947.7,GW.h
 BC,total,high,2034,81582.46,GW.h
 MB,total,high,2034,52725.39,GW.h
@@ -923,7 +923,7 @@ PE,total,high,2034,884.12,GW.h
 QC,total,high,2034,231650.29,GW.h
 SK,total,high,2034,27259.38,GW.h
 YT,total,high,2034,469.65,GW.h
-all,total,high,2035,753103.5099999999,
+all,total,high,2035,753103.5099999999,GW.h
 AB,total,high,2035,116357.8,GW.h
 BC,total,high,2035,81968.01,GW.h
 MB,total,high,2035,52792.47,GW.h
@@ -937,7 +937,7 @@ PE,total,high,2035,884.34,GW.h
 QC,total,high,2035,232836.03,GW.h
 SK,total,high,2035,27303.35,GW.h
 YT,total,high,2035,472.11,GW.h
-all,total,high,2036,757611.01,
+all,total,high,2036,757611.01,GW.h
 AB,total,high,2036,117994.9,GW.h
 BC,total,high,2036,82344.71,GW.h
 MB,total,high,2036,52856.7,GW.h
@@ -951,7 +951,7 @@ PE,total,high,2036,889.23,GW.h
 QC,total,high,2036,233996.34,GW.h
 SK,total,high,2036,27352.66,GW.h
 YT,total,high,2036,465.27,GW.h
-all,total,high,2037,762111.7699999999,
+all,total,high,2037,762111.7699999999,GW.h
 AB,total,high,2037,119534.7,GW.h
 BC,total,high,2037,82708.09,GW.h
 MB,total,high,2037,52922.3,GW.h
@@ -965,7 +965,7 @@ PE,total,high,2037,891.03,GW.h
 QC,total,high,2037,235147.81,GW.h
 SK,total,high,2037,27402.57,GW.h
 YT,total,high,2037,450.25,GW.h
-all,total,high,2038,766120.6699999999,
+all,total,high,2038,766120.6699999999,GW.h
 AB,total,high,2038,120491.4,GW.h
 BC,total,high,2038,83017.62,GW.h
 MB,total,high,2038,52983.2,GW.h
@@ -979,7 +979,7 @@ PE,total,high,2038,894.51,GW.h
 QC,total,high,2038,236279.6,GW.h
 SK,total,high,2038,27458.48,GW.h
 YT,total,high,2038,452,GW.h
-all,total,high,2039,770194.2000000001,
+all,total,high,2039,770194.2000000001,GW.h
 AB,total,high,2039,121843.1,GW.h
 BC,total,high,2039,83278.3,GW.h
 MB,total,high,2039,53037.53,GW.h
@@ -993,7 +993,7 @@ PE,total,high,2039,896.27,GW.h
 QC,total,high,2039,237367.98,GW.h
 SK,total,high,2039,27483.1,GW.h
 YT,total,high,2039,460.8,GW.h
-all,total,high,2040,774194.5399999999,
+all,total,high,2040,774194.5399999999,GW.h
 AB,total,high,2040,123182.5,GW.h
 BC,total,high,2040,83584.49,GW.h
 MB,total,high,2040,53094.02,GW.h
@@ -1007,7 +1007,7 @@ PE,total,high,2040,898.35,GW.h
 QC,total,high,2040,238524.43,GW.h
 SK,total,high,2040,27510.6,GW.h
 YT,total,high,2040,450.24,GW.h
-all,total,low,2005,607006.5700000001,
+all,total,low,2005,607006.5700000001,GW.h
 AB,total,low,2005,68435.34,GW.h
 BC,total,low,2005,67108.36,GW.h
 MB,total,low,2005,37057.17,GW.h
@@ -1021,7 +1021,7 @@ PE,total,low,2005,42.22,GW.h
 QC,total,low,2005,179303.77,GW.h
 SK,total,low,2005,19766.16,GW.h
 YT,total,low,2005,353.13,GW.h
-all,total,low,2006,603034.92,
+all,total,low,2006,603034.92,GW.h
 AB,total,low,2006,71776.34,GW.h
 BC,total,low,2006,60875.36,GW.h
 MB,total,low,2006,34540.17,GW.h
@@ -1035,7 +1035,7 @@ PE,total,low,2006,38.22,GW.h
 QC,total,low,2006,182904.73,GW.h
 SK,total,low,2006,19616.16,GW.h
 YT,total,low,2006,353.13,GW.h
-all,total,low,2007,620671.93,
+all,total,low,2007,620671.93,GW.h
 AB,total,low,2007,72535.54,GW.h
 BC,total,low,2007,70223.36,GW.h
 MB,total,low,2007,34402.17,GW.h
@@ -1049,7 +1049,7 @@ PE,total,low,2007,42.22,GW.h
 QC,total,low,2007,191611.73,GW.h
 SK,total,low,2007,20614.16,GW.h
 YT,total,low,2007,353.13,GW.h
-all,total,low,2008,624661.99,
+all,total,low,2008,624661.99,GW.h
 AB,total,low,2008,71650.65,GW.h
 BC,total,low,2008,64553.12,GW.h
 MB,total,low,2008,35563.78,GW.h
@@ -1063,7 +1063,7 @@ PE,total,low,2008,148.37,GW.h
 QC,total,low,2008,194321.17,GW.h
 SK,total,low,2008,21765.58,GW.h
 YT,total,low,2008,371.06,GW.h
-all,total,low,2009,598166.7899999999,
+all,total,low,2009,598166.7899999999,GW.h
 AB,total,low,2009,72171.5,GW.h
 BC,total,low,2009,61964.53,GW.h
 MB,total,low,2009,34096.94,GW.h
@@ -1077,7 +1077,7 @@ PE,total,low,2009,359.54,GW.h
 QC,total,low,2009,196499.71,GW.h
 SK,total,low,2009,20768.48,GW.h
 YT,total,low,2009,397.83,GW.h
-all,total,low,2010,590547.74,
+all,total,low,2010,590547.74,GW.h
 AB,total,low,2010,73568.78,GW.h
 BC,total,low,2010,61549.79,GW.h
 MB,total,low,2010,33777.8,GW.h
@@ -1091,7 +1091,7 @@ PE,total,low,2010,463.77,GW.h
 QC,total,low,2010,183926.68,GW.h
 SK,total,low,2010,20408.5,GW.h
 YT,total,low,2010,405.3,GW.h
-all,total,low,2011,615163.1599999999,
+all,total,low,2011,615163.1599999999,GW.h
 AB,total,low,2011,73054.19,GW.h
 BC,total,low,2011,67964.79,GW.h
 MB,total,low,2011,35139.84,GW.h
@@ -1105,7 +1105,7 @@ PE,total,low,2011,494.04,GW.h
 QC,total,low,2011,196296.13,GW.h
 SK,total,low,2011,21194.82,GW.h
 YT,total,low,2011,425.34,GW.h
-all,total,low,2012,623343.09,
+all,total,low,2012,623343.09,GW.h
 AB,total,low,2012,75077.12,GW.h
 BC,total,low,2012,71951.28,GW.h
 MB,total,low,2012,33203.4,GW.h
@@ -1119,7 +1119,7 @@ PE,total,low,2012,481.96,GW.h
 QC,total,low,2012,200559.4,GW.h
 SK,total,low,2012,21249.88,GW.h
 YT,total,low,2012,455,GW.h
-all,total,low,2013,645823.23,
+all,total,low,2013,645823.23,GW.h
 AB,total,low,2013,78052.1,GW.h
 BC,total,low,2013,65994.23,GW.h
 MB,total,low,2013,36346.72,GW.h
@@ -1133,7 +1133,7 @@ PE,total,low,2013,507.23,GW.h
 QC,total,low,2013,209467.74,GW.h
 SK,total,low,2013,23167.46,GW.h
 YT,total,low,2013,370.76,GW.h
-all,total,low,2014,645834.5599999999,
+all,total,low,2014,645834.5599999999,GW.h
 AB,total,low,2014,82823.15,GW.h
 BC,total,low,2014,64642.63,GW.h
 MB,total,low,2014,35636.08,GW.h
@@ -1147,7 +1147,7 @@ PE,total,low,2014,604.29,GW.h
 QC,total,low,2014,206677.28,GW.h
 SK,total,low,2014,22207.5,GW.h
 YT,total,low,2014,414.44,GW.h
-all,total,low,2015,653162.6399999999,
+all,total,low,2015,653162.6399999999,GW.h
 AB,total,low,2015,82517.17,GW.h
 BC,total,low,2015,66297.41,GW.h
 MB,total,low,2015,37927.9,GW.h
@@ -1161,7 +1161,7 @@ PE,total,low,2015,592.24,GW.h
 QC,total,low,2015,207400.34,GW.h
 SK,total,low,2015,24340.38,GW.h
 YT,total,low,2015,425.57,GW.h
-all,total,low,2016,648114.9699999999,
+all,total,low,2016,648114.9699999999,GW.h
 AB,total,low,2016,84409.1,GW.h
 BC,total,low,2016,60038.74,GW.h
 MB,total,low,2016,37820.49,GW.h
@@ -1175,7 +1175,7 @@ PE,total,low,2016,550.36,GW.h
 QC,total,low,2016,203617.6,GW.h
 SK,total,low,2016,24042.57,GW.h
 YT,total,low,2016,412.47,GW.h
-all,total,low,2017,619281.4500000001,
+all,total,low,2017,619281.4500000001,GW.h
 AB,total,low,2017,85082.17,GW.h
 BC,total,low,2017,61546.92,GW.h
 MB,total,low,2017,37689.1,GW.h
@@ -1189,7 +1189,7 @@ PE,total,low,2017,553.06,GW.h
 QC,total,low,2017,197985.2,GW.h
 SK,total,low,2017,23964.68,GW.h
 YT,total,low,2017,390,GW.h
-all,total,low,2018,637928.49,
+all,total,low,2018,637928.49,GW.h
 AB,total,low,2018,86620.12,GW.h
 BC,total,low,2018,68510.49,GW.h
 MB,total,low,2018,37928.64,GW.h
@@ -1203,7 +1203,7 @@ PE,total,low,2018,557.74,GW.h
 QC,total,low,2018,207930.67,GW.h
 SK,total,low,2018,23643.5,GW.h
 YT,total,low,2018,451.75,GW.h
-all,total,low,2019,646499.86,
+all,total,low,2019,646499.86,GW.h
 AB,total,low,2019,87935.15,GW.h
 BC,total,low,2019,69570.59,GW.h
 MB,total,low,2019,37700.65,GW.h
@@ -1217,7 +1217,7 @@ PE,total,low,2019,562.41,GW.h
 QC,total,low,2019,211128,GW.h
 SK,total,low,2019,22253.32,GW.h
 YT,total,low,2019,649.02,GW.h
-all,total,low,2020,649811.19,
+all,total,low,2020,649811.19,GW.h
 AB,total,low,2020,87437.05,GW.h
 BC,total,low,2020,69697.63,GW.h
 MB,total,low,2020,38908.44,GW.h
@@ -1231,7 +1231,7 @@ PE,total,low,2020,651.71,GW.h
 QC,total,low,2020,212569.93,GW.h
 SK,total,low,2020,23609.23,GW.h
 YT,total,low,2020,654.1,GW.h
-all,total,low,2021,656254.44,
+all,total,low,2021,656254.44,GW.h
 AB,total,low,2021,87929.21,GW.h
 BC,total,low,2021,70323.16,GW.h
 MB,total,low,2021,42305.69,GW.h
@@ -1245,7 +1245,7 @@ PE,total,low,2021,657.44,GW.h
 QC,total,low,2021,213875.69,GW.h
 SK,total,low,2021,23528.65,GW.h
 YT,total,low,2021,647.96,GW.h
-all,total,low,2022,659459.8899999999,
+all,total,low,2022,659459.8899999999,GW.h
 AB,total,low,2022,89183.54,GW.h
 BC,total,low,2022,70767.75,GW.h
 MB,total,low,2022,42356,GW.h
@@ -1259,7 +1259,7 @@ PE,total,low,2022,659.01,GW.h
 QC,total,low,2022,215079.69,GW.h
 SK,total,low,2022,23108.97,GW.h
 YT,total,low,2022,700.7,GW.h
-all,total,low,2023,663172.23,
+all,total,low,2023,663172.23,GW.h
 AB,total,low,2023,90199.42,GW.h
 BC,total,low,2023,71329.86,GW.h
 MB,total,low,2023,42415.71,GW.h
@@ -1273,7 +1273,7 @@ PE,total,low,2023,665.28,GW.h
 QC,total,low,2023,216239.34,GW.h
 SK,total,low,2023,23226.74,GW.h
 YT,total,low,2023,536.98,GW.h
-all,total,low,2024,667165.68,
+all,total,low,2024,667165.68,GW.h
 AB,total,low,2024,91303.33,GW.h
 BC,total,low,2024,71956.32,GW.h
 MB,total,low,2024,42489.07,GW.h
@@ -1287,7 +1287,7 @@ PE,total,low,2024,669.99,GW.h
 QC,total,low,2024,217386.4,GW.h
 SK,total,low,2024,23287.39,GW.h
 YT,total,low,2024,521.35,GW.h
-all,total,low,2025,675832.7,
+all,total,low,2025,675832.7,GW.h
 AB,total,low,2025,92357.23,GW.h
 BC,total,low,2025,72638.88,GW.h
 MB,total,low,2025,46635.16,GW.h
@@ -1301,7 +1301,7 @@ PE,total,low,2025,758.48,GW.h
 QC,total,low,2025,218569.63,GW.h
 SK,total,low,2025,23643.43,GW.h
 YT,total,low,2025,509.96,GW.h
-all,total,low,2026,679437.58,
+all,total,low,2026,679437.58,GW.h
 AB,total,low,2026,93100.58,GW.h
 BC,total,low,2026,73047.17,GW.h
 MB,total,low,2026,46869.11,GW.h
@@ -1315,7 +1315,7 @@ PE,total,low,2026,763.64,GW.h
 QC,total,low,2026,219588.24,GW.h
 SK,total,low,2026,23966.84,GW.h
 YT,total,low,2026,490.34,GW.h
-all,total,low,2027,685836.6,
+all,total,low,2027,685836.6,GW.h
 AB,total,low,2027,93086.66,GW.h
 BC,total,low,2027,73354.31,GW.h
 MB,total,low,2027,48963.2,GW.h
@@ -1329,7 +1329,7 @@ PE,total,low,2027,765.21,GW.h
 QC,total,low,2027,217595.27,GW.h
 SK,total,low,2027,25202.88,GW.h
 YT,total,low,2027,488.15,GW.h
-all,total,low,2028,690465.63,
+all,total,low,2028,690465.63,GW.h
 AB,total,low,2028,93670.84,GW.h
 BC,total,low,2028,73617.02,GW.h
 MB,total,low,2028,48985.61,GW.h
@@ -1343,7 +1343,7 @@ PE,total,low,2028,770.96,GW.h
 QC,total,low,2028,220475.92,GW.h
 SK,total,low,2028,25769.97,GW.h
 YT,total,low,2028,481.36,GW.h
-all,total,low,2029,699098.2600000001,
+all,total,low,2029,699098.2600000001,GW.h
 AB,total,low,2029,92056.88,GW.h
 BC,total,low,2029,76607.21,GW.h
 MB,total,low,2029,52001.98,GW.h
@@ -1357,7 +1357,7 @@ PE,total,low,2029,773.61,GW.h
 QC,total,low,2029,221412.19,GW.h
 SK,total,low,2029,25910.77,GW.h
 YT,total,low,2029,478.42,GW.h
-all,total,low,2030,703594.32,
+all,total,low,2030,703594.32,GW.h
 AB,total,low,2030,92905.9,GW.h
 BC,total,low,2030,76950.59,GW.h
 MB,total,low,2030,52056.27,GW.h
@@ -1371,7 +1371,7 @@ PE,total,low,2030,864.62,GW.h
 QC,total,low,2030,223243.26,GW.h
 SK,total,low,2030,25977.72,GW.h
 YT,total,low,2030,477.37,GW.h
-all,total,low,2031,708187.5400000002,
+all,total,low,2031,708187.5400000002,GW.h
 AB,total,low,2031,93854.2,GW.h
 BC,total,low,2031,77337.56,GW.h
 MB,total,low,2031,52146.79,GW.h
@@ -1385,7 +1385,7 @@ PE,total,low,2031,865.65,GW.h
 QC,total,low,2031,225492.44,GW.h
 SK,total,low,2031,26043.78,GW.h
 YT,total,low,2031,480.65,GW.h
-all,total,low,2032,712106.27,
+all,total,low,2032,712106.27,GW.h
 AB,total,low,2032,94715,GW.h
 BC,total,low,2032,77721.54,GW.h
 MB,total,low,2032,52204.52,GW.h
@@ -1399,7 +1399,7 @@ PE,total,low,2032,870.89,GW.h
 QC,total,low,2032,226515.35,GW.h
 SK,total,low,2032,26088.92,GW.h
 YT,total,low,2032,481.14,GW.h
-all,total,low,2033,716015.9800000001,
+all,total,low,2033,716015.9800000001,GW.h
 AB,total,low,2033,95515.5,GW.h
 BC,total,low,2033,78116.39,GW.h
 MB,total,low,2033,52290.83,GW.h
@@ -1413,7 +1413,7 @@ PE,total,low,2033,872.05,GW.h
 QC,total,low,2033,227624.21,GW.h
 SK,total,low,2033,26137.92,GW.h
 YT,total,low,2033,471.85,GW.h
-all,total,low,2034,720190.5399999999,
+all,total,low,2034,720190.5399999999,GW.h
 AB,total,low,2034,96478.7,GW.h
 BC,total,low,2034,78555.77,GW.h
 MB,total,low,2034,52358.02,GW.h
@@ -1427,7 +1427,7 @@ PE,total,low,2034,876.87,GW.h
 QC,total,low,2034,229744.29,GW.h
 SK,total,low,2034,26199.72,GW.h
 YT,total,low,2034,471.19,GW.h
-all,total,low,2035,723049.7200000001,
+all,total,low,2035,723049.7200000001,GW.h
 AB,total,low,2035,97400.1,GW.h
 BC,total,low,2035,78953.84,GW.h
 MB,total,low,2035,52418.9,GW.h
@@ -1441,7 +1441,7 @@ PE,total,low,2035,878.52,GW.h
 QC,total,low,2035,230883.69,GW.h
 SK,total,low,2035,26258.98,GW.h
 YT,total,low,2035,475.17,GW.h
-all,total,low,2036,721442.8999999999,
+all,total,low,2036,721442.8999999999,GW.h
 AB,total,low,2036,98354.2,GW.h
 BC,total,low,2036,73591.15,GW.h
 MB,total,low,2036,52472.62,GW.h
@@ -1455,7 +1455,7 @@ PE,total,low,2036,883.27,GW.h
 QC,total,low,2036,232023.91,GW.h
 SK,total,low,2036,26308.35,GW.h
 YT,total,low,2036,471.15,GW.h
-all,total,low,2037,725473.74,
+all,total,low,2037,725473.74,GW.h
 AB,total,low,2037,99362.6,GW.h
 BC,total,low,2037,73989.61,GW.h
 MB,total,low,2037,52533.12,GW.h
@@ -1469,7 +1469,7 @@ PE,total,low,2037,884.36,GW.h
 QC,total,low,2037,233125.14,GW.h
 SK,total,low,2037,26365.71,GW.h
 YT,total,low,2037,452.92,GW.h
-all,total,low,2038,729396.2900000002,
+all,total,low,2038,729396.2900000002,GW.h
 AB,total,low,2038,99940.1,GW.h
 BC,total,low,2038,74380.64,GW.h
 MB,total,low,2038,52591.36,GW.h
@@ -1483,7 +1483,7 @@ PE,total,low,2038,888.15,GW.h
 QC,total,low,2038,234214.69,GW.h
 SK,total,low,2038,26438.29,GW.h
 YT,total,low,2038,458.88,GW.h
-all,total,low,2039,733205.4699999999,
+all,total,low,2039,733205.4699999999,GW.h
 AB,total,low,2039,100892.1,GW.h
 BC,total,low,2039,74701.41,GW.h
 MB,total,low,2039,52635.9,GW.h
@@ -1497,7 +1497,7 @@ PE,total,low,2039,889.61,GW.h
 QC,total,low,2039,235268.26,GW.h
 SK,total,low,2039,26474.45,GW.h
 YT,total,low,2039,463,GW.h
-all,total,low,2040,737104.89,
+all,total,low,2040,737104.89,GW.h
 AB,total,low,2040,101944.4,GW.h
 BC,total,low,2040,75043.08,GW.h
 MB,total,low,2040,52682.61,GW.h

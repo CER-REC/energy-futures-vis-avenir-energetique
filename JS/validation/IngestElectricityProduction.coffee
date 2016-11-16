@@ -3,38 +3,18 @@ d3 = require 'd3'
 
 Constants = require '../Constants.coffee'
 Validations = require './Validations.coffee'
-
-
-
+IngestionMethods = require './IngestionMethods.coffee'
 
 class ElectricityProductionIngestor
 
-
-
-
   process: (options) ->
 
-    if not options.dataFilename
-      console.log "Missing required option dataFilename"
-      console.log options
-      return
-    if not options.processedFilename
-      console.log "Missing required option processedFilename"
-      console.log options
-      return
-    if not options.logFilename
-      console.log "Missing required option logFilename"
-      console.log options
-      return
-
-    @dataFilename = options.dataFilename
-    @processedFilename = options.processedFilename
-    @logFilename = options.logFilename
+    @setupFilenames options
 
     @logMessages = []
-    electrcityData = fs.readFileSync(@dataFilename).toString()
-    @mappedData = d3.csv.parse electrcityData, ElectricityProductionIngestor.csvMapping
-    @unmappedData = d3.csv.parse electrcityData
+    rawData = fs.readFileSync(@dataFilename).toString()
+    @mappedData = d3.csv.parse rawData, ElectricityProductionIngestor.csvMapping
+    @unmappedData = d3.csv.parse rawData
     @summarizedGroupedData = {}
     @detailedGroupedData = {}
     @extraData = []
@@ -115,6 +95,7 @@ class ElectricityProductionIngestor
           scenario: scenario
           year: year
           value: sum
+          unit: 'GW.h'
 
 
 
@@ -200,7 +181,6 @@ class ElectricityProductionIngestor
     
 
   writeResult: ->
-
     results = []
 
     # Viz 1 and 4
@@ -223,36 +203,8 @@ class ElectricityProductionIngestor
 
 
 
-  writeLog: ->
-    @logFile = fs.openSync @logFilename, 'w'
-
-    if @logMessages.length == 0
-      @logFile.write "No errors"
-
-    for error in @logMessages
-      fs.writeSync @logFile, "#{error.message}\n"
-      fs.writeSync @logFile, "#{error.line.toString()}\n" if error.line?
-      fs.writeSync @logFile, "#{error.lineNumber}\n" if error.lineNumber?
-      fs.writeSync @logFile, "\n"
-
-    fs.closeSync @logFile
-
-    if @logMessages.length > 0
-      console.log "#{@logMessages.length} logged events for file #{@dataFilename}."
-    else
-      console.log "No logged events for #{@dataFilename}."
 
   ##### 
-
-  summarizedAddAndDetectDuplicate: (item) ->
-    
-    if @summarizedGroupedData[item.scenario][item.year][item.province]?
-      @logMessages.push
-        message: "Duplicate item detected"
-        line: item
-        lineNumber: null
-    else
-      @summarizedGroupedData[item.scenario][item.year][item.province] = item
 
   detailedAddAndDetectDuplicate: (item) ->
     if @detailedGroupedData[item.source][item.scenario][item.year][item.province]?
@@ -274,6 +226,7 @@ ElectricityProductionIngestor.csvMapping = (d) ->
 
 
 
+Object.assign ElectricityProductionIngestor.prototype, IngestionMethods
 
 
 module.exports = (options) ->

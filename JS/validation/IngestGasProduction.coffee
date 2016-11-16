@@ -3,37 +3,19 @@ d3 = require 'd3'
 
 Constants = require '../Constants.coffee'
 Validations = require './Validations.coffee'
-
-
-
-
+IngestionMethods = require './IngestionMethods.coffee'
 
 class GasProductionIngestor
 
   process: (options) ->
 
-    if not options.dataFilename
-      console.log "Missing required option dataFilename"
-      console.log options
-      return
-    if not options.processedFilename
-      console.log "Missing required option processedFilename"
-      console.log options
-      return
-    if not options.logFilename
-      console.log "Missing required option logFilename"
-      console.log options
-      return
-
-    @dataFilename = options.dataFilename
-    @processedFilename = options.processedFilename
-    @logFilename = options.logFilename
+    @setupFilenames options
 
     @logMessages = []
-    gasData = fs.readFileSync(@dataFilename).toString()
-    @mappedData = d3.csv.parse gasData, GasProductionIngestor.csvMapping
-    @unmappedData = d3.csv.parse gasData
-    @groupedData = {}
+    rawData = fs.readFileSync(@dataFilename).toString()
+    @mappedData = d3.csv.parse rawData, GasProductionIngestor.csvMapping
+    @unmappedData = d3.csv.parse rawData
+    @summarizedGroupedData = {}
     @extraData = []
 
 
@@ -77,16 +59,16 @@ class GasProductionIngestor
     # TODO: How are we going to handle data sets which don't all have the same number of
     # scenarios? 
     for scenario in Constants.scenarios
-      @groupedData[scenario] = {}
+      @summarizedGroupedData[scenario] = {}
       for year in Constants.years
-        @groupedData[scenario][year] = {}
+        @summarizedGroupedData[scenario][year] = {}
 
 
 
   sortData: ->
     for item in @mappedData
       if item.type == 'Total'
-        @addAndDetectDuplicate item
+        @summarizedAddAndDetectDuplicate item
       else
         @extraData.push item
 
@@ -103,7 +85,7 @@ class GasProductionIngestor
     for scenario in Constants.scenarios
       for year in Constants.years
         for province in Constants.provinceRadioSelectionOptions
-          if @groupedData[scenario][year][province]?
+          if @summarizedGroupedData[scenario][year][province]?
             count += 1
           else
             @logMessages.push
@@ -120,47 +102,16 @@ class GasProductionIngestor
 
   writeResult: ->
     results = []
+
     for scenario in Constants.scenarios
       for year in Constants.years
         for province in Constants.provinceRadioSelectionOptions
-          results.push @groupedData[scenario][year][province]
+          results.push @summarizedGroupedData[scenario][year][province]
 
     results = d3.csv.format results
 
     fs.writeFileSync @processedFilename, results
 
-
-
-  writeLog: ->
-    @logFile = fs.openSync @logFilename, 'w'
-
-    if @logMessages.length == 0
-      @logFile.write "No errors"
-
-    for error in @logMessages
-      fs.writeSync @logFile, "#{error.message}\n"
-      fs.writeSync @logFile, "#{error.line.toString()}\n" if error.line?
-      fs.writeSync @logFile, "#{error.lineNumber}\n" if error.lineNumber?
-      fs.writeSync @logFile, "\n"
-
-    fs.closeSync @logFile
-
-    if @logMessages.length > 0
-      console.log "#{@logMessages.length} logged events for file #{@dataFilename}."
-    else
-      console.log "No logged events for #{@dataFilename}."
-
-
-  ##### 
-
-  addAndDetectDuplicate: (item) ->
-    if @groupedData[item.scenario][item.year][item.province]?
-      @logMessages.push
-        message: "Duplicate item detected"
-        line: item
-        lineNumber: null
-    else
-      @groupedData[item.scenario][item.year][item.province] = item
 
 
 GasProductionIngestor.csvMapping = (d) ->
@@ -172,7 +123,7 @@ GasProductionIngestor.csvMapping = (d) ->
   unit: d.Unit
 
 
-
+Object.assign GasProductionIngestor.prototype, IngestionMethods
 
 
 module.exports = (options) ->

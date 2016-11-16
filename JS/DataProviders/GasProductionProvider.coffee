@@ -1,4 +1,5 @@
 d3 = require 'd3'
+
 Constants = require '../Constants.coffee'
 UnitTransformation = require '../unit-transformation.coffee'
 
@@ -9,31 +10,39 @@ class GasProductionProvider
 
   loadViaAjax: (loadedCallback) ->
     @loadedCallback = loadedCallback
-    d3.csv "CSV/2016-10-18_NaturalGasProduction.csv", @parseData
-    # d3.csv "CSV/2016-01_NaturalGasProduction.csv", @parseData
+    d3.csv "CSV/2016-10-18_NaturalGasProduction.csv", @mapping, @parseData
+    # d3.csv "CSV/2016-01_NaturalGasProduction.csv", @mapping, @parseData
   
   loadFromString: (data) ->
-    @parseData null, d3.csv.parse(data) 
+    @parseData null, d3.csv.parse(data, @mapping)
+
+  mapping: (d) ->
+    province: d.province
+    type: d.type
+    scenario: d.scenario
+    year: parseInt(d.year)
+    value: parseFloat(d.value)
+    unit: d.unit
 
   parseData: (error, data) =>
     console.warn error if error?
     @data = data
     
     @dataByProvince = 
-      'BC' : []
-      'AB' : []
-      'SK' : []
-      'MB' : []
-      'ON' :  []
-      'QC' : []
-      'NB' : []
-      'NS' : []
-      'NL' : []
-      'PE' : []
-      'YT' :  []
-      'NT' :  []
-      'NU' :  []
-      'all' : []
+      BC: []
+      AB: []
+      SK: []
+      MB: []
+      ON: []
+      QC: []
+      NB: []
+      NS: []
+      NL: []
+      PE: []
+      YT: []
+      NT: []
+      NU: []
+      all: []
 
 
     @dataByScenario = 
