@@ -73,12 +73,15 @@ class EnergyConsumptionIngestor
 
 
     for i in [0...@unmappedData.length]
+      Validations.sector @mappedData[i], @unmappedData[i], i, @logMessages
+      Validations.source @mappedData[i], @unmappedData[i], i, @logMessages
       Validations.province @mappedData[i], @unmappedData[i], i, @logMessages
       Validations.scenarios @mappedData[i], @unmappedData[i], i, @logMessages
       Validations.years @mappedData[i], @unmappedData[i], i, @logMessages
       Validations.value @mappedData[i], @unmappedData[i], i, @logMessages
-      Validations.unit @mappedData[i], @unmappedData[i], i, @logMessages, 'Thousand cubic metres'
+      Validations.unit @mappedData[i], @unmappedData[i], i, @logMessages, 'Petajoules'
       # TODO: validate type?
+
 
 
   createGroupedDataStructure: ->
@@ -203,39 +206,6 @@ class EnergyConsumptionIngestor
       console.log "#{@logMessages.length} logged events for file #{@dataFilename}."
     else
       console.log "No logged events for #{@dataFilename}."
-
-
-
-  
-  # energyConsumptionData = fs.readFileSync(path.join(ApplicationRoot, "public/rawCSV", file.name)).toString()
-  # energyConsumptionProvider = new EnergyConsumptionProvider
-  # energyConsumptionProvider.loadFromString energyConsumptionData
-
-  # unmappedData = d3.csv.parse energyConsumptionData
-  # errors = []
-
-  # if unmappedData.length != energyConsumptionProvider.data.length
-  #   errors.push
-  #     message: "ERROR: Sanity check failed, unmapped CSV data (length #{unmappedData.length}) and mapped+processed CSV data (length #{energyConsumptionProvider.data.length}) had different lengths in #{file.name}"
-  #     line: null
-  #     lineNumber: null
-  #   return errors
-
-  # data = energyConsumptionProvider.data
-
-  # for i in [0...unmappedData.length]
-
-  #   Validations.sector data[i], unmappedData[i], i, errors
-  #   Validations.source data[i], unmappedData[i], i, errors
-  #   Validations.province data[i], unmappedData[i], i, errors
-  #   Validations.scenarios data[i], unmappedData[i], i, errors
-  #   Validations.years data[i], unmappedData[i], i, errors
-  #   Validations.value data[i], unmappedData[i], i, errors
-  #   Validations.unit data[i], unmappedData[i], i, errors, 'Petajoules'
-
-    
-
-  # errors
 
 
 

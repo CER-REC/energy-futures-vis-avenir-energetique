@@ -21,36 +21,21 @@ class ElectricityProductionProvider
     console.warn error if error?
     @data = data
 
-    # Normalize some of the data in the CSV, to make life easier later
-    # TODO: precompute some of these changes?
-
-    for item in @data
-      item.scenario = Constants.csvScenarioToScenarioNameMapping[item.scenario]
-
-    for item in @data
-      item.source = Constants.csvSourceToSourceNameMapping[item.source]
-
-    for item in @data
-      item.province = Constants.csvProvinceToProvinceCodeMapping[item.province]
-
-    @data = @data.filter (item) ->
-      item.source not in ['crudeOil', 'electricity']
-
     @dataByProvince = 
-      'BC' : []
-      'AB' : []
-      'SK' : []
-      'MB' : []
-      'ON' :  []
-      'QC' : []
-      'NB' : []
-      'NS' : []
-      'NL' : []
-      'PE' : []
-      'YT' :  []
-      'NT' :  []
-      'NU' :  []
-      'all' : []
+      BC: []
+      AB: []
+      SK: []
+      MB: []
+      ON: []
+      QC: []
+      NB: []
+      NS: []
+      NL: []
+      PE: []
+      YT: []
+      NT: []
+      NU: []
+      all: []
 
     @dataBySource = 
       hydro: []
@@ -72,8 +57,6 @@ class ElectricityProductionProvider
       noLng: []
       constrained: []
 
-    @calculateTotalsForCanada()
-
     for item in @data
       @dataByScenario[item.scenario].push item
       @dataByProvince[item.province].push item
@@ -82,41 +65,6 @@ class ElectricityProductionProvider
     @loadedCallback() if @loadedCallback
 
     
-
-  # We need certain totals for viz4 which aren't present in the data.
-  # We compute them, and add them to the existing data in memory
-  # NB: We are only calculating these totals for Total Generation, we are not calculating
-  # them out for each power source!
-  calculateTotalsForCanada: ->
-    # We're only interested in total generation, not individual sources
-    totalGenerationData = @data.filter (item) ->
-      item.source == 'total'
-
-    # Break data out by year and scenario
-    totalGenerationByYearAndScenario = {}
-    for year in Constants.years
-      totalGenerationByYearAndScenario[year] = {}
-      for scenario in Constants.scenarios
-        totalGenerationByYearAndScenario[year][scenario] = []
-
-    for item in totalGenerationData
-      totalGenerationByYearAndScenario[item.year][item.scenario].push item
-
-    # For each set of provincial/territorial data in each year and scenario, 
-    # find the sum of their production, and add it to the raw data for the provider
-
-    for scenario in Constants.scenarios
-      for year in Constants.years
-        sum = totalGenerationByYearAndScenario[year][scenario].reduce (sum, item) ->
-          sum + item.value
-        , 0
-
-        @data.push
-          province: 'all'
-          source: 'total'
-          scenario: scenario
-          year: year
-          value: sum
 
 
 

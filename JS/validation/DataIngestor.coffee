@@ -35,10 +35,12 @@ october2016Files = ->
       processedFilename: path.join(ApplicationRoot, "public/CSV/2016-10-18_EnergyDemand.csv")
       logFilename: path.join(ApplicationRoot, "public/rawCSV/2016-10-18_EnergyDemand.csv_ingestion_errors.log")
     }
-    # {  
-    #   type: 'electricity'
-    #   name: "2016-10-27_ElectricityGeneration.csv"
-    # }
+    {  
+      type: 'electricity'
+      dataFilename: path.join(ApplicationRoot, "public/rawCSV/2016-10-27_ElectricityGeneration.csv")
+      processedFilename: path.join(ApplicationRoot, "public/CSV/2016-10-27_ElectricityGeneration.csv")
+      logFilename: path.join(ApplicationRoot, "public/rawCSV/2016-10-27_ElectricityGeneration.csv_ingestion_errors.log")
+    }
   ]
 
 
