@@ -10,7 +10,7 @@ Validations = require './Validations.coffee'
 
 class GasProductionIngestor
 
-  constructor: (options) ->
+  process: (options) ->
 
     if not options.dataFilename
       console.log "Missing required option dataFilename"
@@ -45,6 +45,9 @@ class GasProductionIngestor
     @writeResult()
     @writeLog()
 
+    return {
+      logMessages: @logMessages
+    }
 
 
 
@@ -174,8 +177,6 @@ GasProductionIngestor.csvMapping = (d) ->
 
 module.exports = (options) ->
 
-  ingestor = new GasProductionIngestor options
+  ingestor = new GasProductionIngestor
+  return ingestor.process options
 
-  return {
-    logMessages: ingestor.logMessages
-  }

@@ -7,12 +7,9 @@ Validations = require './Validations.coffee'
 
 
 
-class ElectricityProductionIngestor
+class EnergyConsumptionIngestor
 
-
-
-
-  constructor: (options) ->
+  process: (options) ->
 
     if not options.dataFilename
       console.log "Missing required option dataFilename"
@@ -32,9 +29,9 @@ class ElectricityProductionIngestor
     @logFilename = options.logFilename
 
     @logMessages = []
-    electrcityData = fs.readFileSync(@dataFilename).toString()
-    @mappedData = d3.csv.parse electrcityData, ElectricityProductionIngestor.csvMapping
-    @unmappedData = d3.csv.parse electrcityData
+    energyData = fs.readFileSync(@dataFilename).toString()
+    @mappedData = d3.csv.parse energyData, EnergyConsumptionIngestor.csvMapping
+    @unmappedData = d3.csv.parse energyData
     @summarizedGroupedData = {}
     @detailedGroupedData = {}
     @extraData = []
@@ -42,13 +39,15 @@ class ElectricityProductionIngestor
 
     @normalize()
     @validateLineByLine()
-    @calculateTotalsForCanada()
     @createGroupedDataStructure()
     @sortData()
     @validateRequiredData()
     @writeResult()
     @writeLog()
 
+    return {
+      logMessages: @logMessages
+    }
 
 
 
@@ -57,10 +56,18 @@ class ElectricityProductionIngestor
       item.scenario = Constants.csvScenarioToScenarioNameMapping[item.scenario]
 
     for item in @mappedData
-      item.province = Constants.csvProvinceToProvinceCodeMapping[item.province]
+      item.source = Constants.csvSourceToSourceNameMapping[item.source]
 
     for item in @mappedData
-      item.source = Constants.csvSourceToSourceNameMapping[item.source]
+      item.sector = Constants.csvSectorToSectorNameMapping[item.sector]
+
+    for item in @mappedData
+      item.province = Constants.csvProvinceToProvinceCodeMapping[item.province]
+
+    # TODO: this, effectively... 
+    # @data.filter (item) ->
+    #   item.source not in ['crudeOil', 'nuclear', 'hydro']
+
 
 
   validateLineByLine: ->
@@ -69,51 +76,14 @@ class ElectricityProductionIngestor
 
 
     for i in [0...@unmappedData.length]
+      Validations.sector @mappedData[i], @unmappedData[i], i, @logMessages
       Validations.source @mappedData[i], @unmappedData[i], i, @logMessages
       Validations.province @mappedData[i], @unmappedData[i], i, @logMessages
       Validations.scenarios @mappedData[i], @unmappedData[i], i, @logMessages
       Validations.years @mappedData[i], @unmappedData[i], i, @logMessages
       Validations.value @mappedData[i], @unmappedData[i], i, @logMessages
-      Validations.unit @mappedData[i], @unmappedData[i], i, @logMessages, 'GW.h'
+      Validations.unit @mappedData[i], @unmappedData[i], i, @logMessages, 'Petajoules'
       # TODO: validate type?
-
-
-  # We need certain totals for viz1 and viz4 which aren't present in the data.
-  # We compute them, and add them to the existing data.
-  # NB: We are only calculating these totals for Total Generation, we are not calculating
-  # them out for each power source!
-  calculateTotalsForCanada: ->
-    # We're only interested in total generation, not individual sources
-    totalGenerationData = @mappedData.filter (item) ->
-      item.source == 'total'
-
-    # Break data out by year and scenario
-    totalGenerationByYearAndScenario = {}
-    for year in Constants.years
-      totalGenerationByYearAndScenario[year] = {}
-      for scenario in Constants.scenarios
-        totalGenerationByYearAndScenario[year][scenario] = []
-
-    for item in totalGenerationData
-      totalGenerationByYearAndScenario[item.year][item.scenario].push item
-
-    # For each set of provincial/territorial data in each year and scenario, 
-    # find the sum of their production, and add it to the raw data for the provider
-
-    for scenario in Constants.scenarios
-      for year in Constants.years
-        sum = totalGenerationByYearAndScenario[year][scenario].reduce (sum, item) ->
-          sum + item.value
-        , 0
-
-        @mappedData.push
-          province: 'all'
-          source: 'total'
-          scenario: scenario
-          year: year
-          value: sum
-
-
 
 
 
@@ -121,11 +91,11 @@ class ElectricityProductionIngestor
     # TODO: How are we going to handle data sets which don't all have the same number of
     # scenarios? 
 
-    # Visualizations 1, 3, and 4 all use this data.
-
+    # Visualizations 1, 2, and 4 all draw on this data set.
+    
     # Viz1 and 4 use exactly the same data subset, which is not broken out by source, (scenarios * years * regions) (6 * 36 * 14) items, for 1512 items total.
 
-    # Viz3 uses a completely disjoint and larger subset of data, which does not include any totals (sources * scenarios * years * regions) (7 * 6 * 36 * 13), 19656 items total.
+    # Viz2 uses a completely disjoint and much larger subset of data, broken out by sector and by source. (sectors * sources * scenarios * years * regions) (5 * 6 * 6 * 36 * 14), 90720 items total.
 
     # Viz 1 and 4
     for scenario in Constants.scenarios
@@ -133,26 +103,26 @@ class ElectricityProductionIngestor
       for year in Constants.years
         @summarizedGroupedData[scenario][year] = {}
 
-    # Viz 3
-    for source in Constants.viz3Sources
-      @detailedGroupedData[source] = {}
-      for scenario in Constants.scenarios
-        @detailedGroupedData[source][scenario] = {}
-        for year in Constants.years
-          @detailedGroupedData[source][scenario][year] = {}
+    # Viz 2
+    for sector in Constants.sectors
+      @detailedGroupedData[sector] = {}
+      for source in Constants.viz2Sources
+        @detailedGroupedData[sector][source] = {}
+        for scenario in Constants.scenarios
+          @detailedGroupedData[sector][source][scenario] = {}
+          for year in Constants.years
+            @detailedGroupedData[sector][source][scenario][year] = {}
 
 
 
   sortData: ->
-
     for item in @mappedData
-      if item.source == 'total'
+      if item.source == 'total' and item.sector == 'total'
         @summarizedAddAndDetectDuplicate item
-      else if Constants.viz3Sources.includes item.source
+      else if Constants.viz2Sources.includes item.source
         @detailedAddAndDetectDuplicate item
       else
         @extraData.push item
-
 
     if @extraData.length > 0
       @logMessages.push
@@ -172,22 +142,24 @@ class ElectricityProductionIngestor
             count += 1
           else
             @logMessages.push
-              message: "Missing data: #{scenario} #{year} #{province}"
+              message: "Missing data: sector:total source:total #{scenario} #{year} #{province}"
               line: null
               lineNumber: null
 
-    # Viz 3
-    for source in Constants.viz3Sources
-      for scenario in Constants.scenarios
-        for year in Constants.years
-          for province in Constants.provinces
-            if @detailedGroupedData[source][scenario][year][province]?
-              count += 1
-            else
-              @logMessages.push
-                message: "Missing data: #{source} #{scenario} #{year} #{province}"
-                line: null
-                lineNumber: null
+    # Viz 2
+    for sector in Constants.sectors
+      for source in Constants.viz2Sources
+        for scenario in Constants.scenarios
+          for year in Constants.years
+            for province in Constants.provinceRadioSelectionOptions
+              if @detailedGroupedData[sector][source][scenario][year][province]?
+                count += 1
+              else
+                @logMessages.push
+                  message: "Missing data: #{sector} #{source} #{scenario} #{year} #{province}"
+                  line: null
+                  lineNumber: null
+
 
     if count + @extraData.length != @mappedData.length
       @logMessages.push
@@ -197,7 +169,6 @@ class ElectricityProductionIngestor
     
 
   writeResult: ->
-
     results = []
 
     # Viz 1 and 4
@@ -206,17 +177,17 @@ class ElectricityProductionIngestor
         for province in Constants.provinceRadioSelectionOptions
           results.push @summarizedGroupedData[scenario][year][province]
     
-    # Viz 3
-    for source in Constants.viz3Sources
-      for scenario in Constants.scenarios
-        for year in Constants.years
-          for province in Constants.provinces
-            results.push @detailedGroupedData[source][scenario][year][province]
+    # Viz 2
+    for sector in Constants.sectors
+      for source in Constants.viz2Sources
+        for scenario in Constants.scenarios
+          for year in Constants.years
+            for province in Constants.provinceRadioSelectionOptions
+              results.push @detailedGroupedData[sector][source][scenario][year][province]
 
     results = d3.csv.format results
 
     fs.writeFileSync @processedFilename, results
-
 
 
 
@@ -239,6 +210,7 @@ class ElectricityProductionIngestor
     else
       console.log "No logged events for #{@dataFilename}."
 
+
   ##### 
 
   summarizedAddAndDetectDuplicate: (item) ->
@@ -252,32 +224,29 @@ class ElectricityProductionIngestor
       @summarizedGroupedData[item.scenario][item.year][item.province] = item
 
   detailedAddAndDetectDuplicate: (item) ->
-    if @detailedGroupedData[item.source][item.scenario][item.year][item.province]?
+    if @detailedGroupedData[item.sector][item.source][item.scenario][item.year][item.province]?
       @logMessages.push
         message: "Duplicate item detected"
         line: item
         lineNumber: null
     else
-      @detailedGroupedData[item.source][item.scenario][item.year][item.province] = item
+      @detailedGroupedData[item.sector][item.source][item.scenario][item.year][item.province] = item
 
 
-ElectricityProductionIngestor.csvMapping = (d) ->
+
+EnergyConsumptionIngestor.csvMapping = (d) ->
   province: d.Area
+  sector: d.Sector
   source: d.Source
   scenario: d.Case
   year: parseInt(d.Year)
-  value: parseFloat(d.Data.replace(',',''))
+  value: parseFloat(d.Data)
   unit: d.Unit
-
 
 
 
 
 module.exports = (options) ->
 
-  ingestor = new ElectricityProductionIngestor options
-
-  return {
-    logMessages: ingestor.logMessages
-  }
-
+  ingestor = new EnergyConsumptionIngestor
+  return ingestor.process options

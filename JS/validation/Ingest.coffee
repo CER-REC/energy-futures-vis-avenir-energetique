@@ -3,10 +3,10 @@ path = require 'path'
 ApplicationRoot = require '../../ApplicationRoot.coffee'
 require '../ArrayIncludes.coffee'
 
-EnergyConsumptionIngestor = require './EnergyConsumptionIngestor.coffee'
-OilProductionIngestor = require './OilProductionIngestor.coffee'
-GasProductionIngestor = require './GasProductionIngestor.coffee'
-ElectricityProductionIngestor = require './ElectricityProductionIngestor.coffee'
+IngestEnergyConsumption = require './IngestEnergyConsumption.coffee'
+IngestOilProduction = require './IngestOilProduction.coffee'
+IngestGasProduction = require './IngestGasProduction.coffee'
+IngestElectricityProduction = require './IngestElectricityProduction.coffee'
 
 
 
@@ -45,20 +45,20 @@ october2016Files = ->
 
 
 
-validate = (optionsList) ->
+ingest = (optionsList) ->
 
   for options in optionsList
 
     try
       switch options.type
         when 'oil'
-          OilProductionIngestor options
+          IngestOilProduction options
         when 'gas'
-          GasProductionIngestor options
+          IngestGasProduction options
         when 'demand'
-          EnergyConsumptionIngestor options
+          IngestEnergyConsumption options
         when 'electricity'
-          ElectricityProductionIngestor options
+          IngestElectricityProduction options
         else
           console.warn "Unknown type #{options.type}."
           console.warn options
@@ -72,8 +72,8 @@ validate = (optionsList) ->
 
 
 
-validate october2016Files()
+ingest october2016Files()
 
 
 
-module.exports = validate
+module.exports = ingest

@@ -8,7 +8,7 @@
     "distribute": "node ./tasks/distribute.js",
     "start": "node ./JS/servers/DevelopmentServer.js",
     "start-image-server": "node ./JS/servers/ImageServer.js",
-    "ingest": "node ./JS/validation/DataIngestor.js"
+    "ingest": "node ./JS/validation/Ingest.js"
   },
   "dependencies": {
     "array-includes": "^3.0.2",

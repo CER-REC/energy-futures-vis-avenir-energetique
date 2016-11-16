@@ -1,2 +1,2 @@
 require('coffee-script').register();
-require('./DataIngestor.coffee');
+require('./Ingest.coffee');
