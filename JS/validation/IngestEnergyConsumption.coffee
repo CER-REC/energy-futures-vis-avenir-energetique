@@ -68,9 +68,6 @@ class EnergyConsumptionIngestor
 
 
   createGroupedDataStructure: ->
-    # TODO: How are we going to handle data sets which don't all have the same number of
-    # scenarios? 
-
     # Visualizations 1, 2, and 4 all draw on this data set.
     
     # Viz1 and 4 use exactly the same data subset, which is not broken out by source, (scenarios * years * regions) (6 * 36 * 14) items, for 1512 items total.

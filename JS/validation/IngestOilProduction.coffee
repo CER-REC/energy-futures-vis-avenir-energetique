@@ -57,8 +57,6 @@ class OilProductionIngestor
 
 
   createGroupedDataStructure: ->
-    # TODO: How are we going to handle data sets which don't all have the same number of
-    # scenarios? 
     for scenario in @scenarios
       @summarizedGroupedData[scenario] = {}
       for year in Constants.years

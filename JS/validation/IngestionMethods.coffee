@@ -1,7 +1,7 @@
 fs = require 'fs'
 path = require 'path'
 
-# A small set of methods that are completely in common between the ingestors.
+# A small set of methods that are completely identical between the ingestors.
 
 IngestionMethods = 
 
