@@ -22,43 +22,9 @@ Visualization2Configuration = require '../VisualizationConfigurations/visualizat
 Visualization3Configuration = require '../VisualizationConfigurations/visualization3Configuration.coffee'
 Visualization4Configuration = require '../VisualizationConfigurations/visualization4Configuration.coffee'
 
+ServerData = require '../server/ServerData.coffee'
 
-
-
-# Data providers
-
-EnergyConsumptionProvider = require '../DataProviders/EnergyConsumptionProvider.coffee'
-OilProductionProvider = require '../DataProviders/OilProductionProvider.coffee'
-GasProductionProvider = require '../DataProviders/GasProductionProvider.coffee'
-ElectricityProductionProvider = require '../DataProviders/ElectricityProductionProvider.coffee'
-
-energyConsumptionProvider = new EnergyConsumptionProvider 
-oilProductionProvider = new OilProductionProvider 
-gasProductionProvider = new GasProductionProvider 
-electricityProductionProvider = new ElectricityProductionProvider
-
-
-
-
-# File loading
-
-oilFilePromise = readFile "#{ApplicationRoot}/public/CSV/2016-10-18_CrudeOilProduction.csv"
-oilPromise = oilFilePromise.then (data) ->
-  oilProductionProvider.loadFromString data.toString()
-
-gasFilePromise = readFile "#{ApplicationRoot}/public/CSV/2016-10-18_NaturalGasProduction.csv"
-gasPromise = gasFilePromise.then (data) ->
-  gasProductionProvider.loadFromString data.toString()
-
-energyDemandFilePromise = readFile "#{ApplicationRoot}/public/CSV/2016-10-18_EnergyDemand.csv"
-energyPromise = energyDemandFilePromise.then (data) ->
-  energyConsumptionProvider.loadFromString data.toString()
-
-electricityFilePromise = readFile "#{ApplicationRoot}/public/CSV/2016-10-27_ElectricityGeneration.csv"
-electricityPromise = electricityFilePromise.then (data) ->
-  electricityProductionProvider.loadFromString data.toString()
-
-htmlFilePromise = readFile "#{ApplicationRoot}/JS/imageServer/image.html" 
+htmlFilePromise = readFile "#{ApplicationRoot}/JS/handlers/image.html" 
 htmlPromise = htmlFilePromise.then (data) ->
   data.toString()
 
@@ -70,7 +36,7 @@ requestCounter = 0
 
 HtmlImageHandler = (req, res) ->
 
-  Promise.join htmlPromise, oilPromise, gasPromise, energyPromise, electricityPromise, (html) ->
+  Promise.join htmlPromise, ServerData.oilPromise, ServerData.gasPromise, ServerData.energyPromise, ServerData.electricityPromise, (html) ->
 
     time = Date.now()
 
@@ -93,10 +59,10 @@ HtmlImageHandler = (req, res) ->
           body = window.document.querySelector('body')
             
           serverApp = new ServerApp window,
-            energyConsumptionProvider: energyConsumptionProvider
-            oilProductionProvider: oilProductionProvider
-            gasProductionProvider: gasProductionProvider
-            electricityProductionProvider: electricityProductionProvider
+            energyConsumptionProvider: ServerData.energyConsumptionProvider
+            oilProductionProvider: ServerData.oilProductionProvider
+            gasProductionProvider: ServerData.gasProductionProvider
+            electricityProductionProvider: ServerData.electricityProductionProvider
           serverApp.setLanguage req.query.language
 
           params = PrepareQueryParams queryString.parse(query)
