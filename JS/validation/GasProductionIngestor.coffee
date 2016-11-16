@@ -83,7 +83,7 @@ class GasProductionIngestor
   sortData: ->
     for item in @mappedData
       if item.type == 'Total'
-        @groupedData[item.scenario][item.year][item.province] = item
+        @addAndDetectDuplicate item
       else
         @extraData.push item
 
@@ -148,6 +148,16 @@ class GasProductionIngestor
       console.log "No logged events for #{@dataFilename}."
 
 
+  ##### 
+
+  addAndDetectDuplicate: (item) ->
+    if @groupedData[item.scenario][item.year][item.province]?
+      @logMessages.push
+        message: "Duplicate item detected"
+        line: item
+        lineNumber: null
+    else
+      @groupedData[item.scenario][item.year][item.province] = item
 
 
 GasProductionIngestor.csvMapping = (d) ->

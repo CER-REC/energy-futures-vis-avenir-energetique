@@ -147,9 +147,9 @@ class ElectricityProductionIngestor
 
     for item in @mappedData
       if item.source == 'total'
-        @summarizedGroupedData[item.scenario][item.year][item.province] = item
+        @summarizedAddAndDetectDuplicate item
       else if Constants.viz3Sources.includes item.source
-        @detailedGroupedData[item.source][item.scenario][item.year][item.province] = item
+        @detailedAddAndDetectDuplicate item
       else
         @extraData.push item
 
@@ -239,6 +239,26 @@ class ElectricityProductionIngestor
     else
       console.log "No logged events for #{@dataFilename}."
 
+  ##### 
+
+  summarizedAddAndDetectDuplicate: (item) ->
+    
+    if @summarizedGroupedData[item.scenario][item.year][item.province]?
+      @logMessages.push
+        message: "Duplicate item detected"
+        line: item
+        lineNumber: null
+    else
+      @summarizedGroupedData[item.scenario][item.year][item.province] = item
+
+  detailedAddAndDetectDuplicate: (item) ->
+    if @detailedGroupedData[item.source][item.scenario][item.year][item.province]?
+      @logMessages.push
+        message: "Duplicate item detected"
+        line: item
+        lineNumber: null
+    else
+      @detailedGroupedData[item.source][item.scenario][item.year][item.province] = item
 
 
 ElectricityProductionIngestor.csvMapping = (d) ->

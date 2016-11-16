@@ -115,9 +115,9 @@ class EnergyConsumptionIngestor
   sortData: ->
     for item in @mappedData
       if item.source == 'total' and item.sector == 'total'
-        @summarizedGroupedData[item.scenario][item.year][item.province] = item
+        @summarizedAddAndDetectDuplicate item
       else if Constants.viz2Sources.includes item.source
-        @detailedGroupedData[item.sector][item.source][item.scenario][item.year][item.province] = item
+        @detailedAddAndDetectDuplicate item
       else
         @extraData.push item
 
@@ -206,6 +206,28 @@ class EnergyConsumptionIngestor
       console.log "#{@logMessages.length} logged events for file #{@dataFilename}."
     else
       console.log "No logged events for #{@dataFilename}."
+
+
+  ##### 
+
+  summarizedAddAndDetectDuplicate: (item) ->
+    
+    if @summarizedGroupedData[item.scenario][item.year][item.province]?
+      @logMessages.push
+        message: "Duplicate item detected"
+        line: item
+        lineNumber: null
+    else
+      @summarizedGroupedData[item.scenario][item.year][item.province] = item
+
+  detailedAddAndDetectDuplicate: (item) ->
+    if @detailedGroupedData[item.sector][item.source][item.scenario][item.year][item.province]?
+      @logMessages.push
+        message: "Duplicate item detected"
+        line: item
+        lineNumber: null
+    else
+      @detailedGroupedData[item.sector][item.source][item.scenario][item.year][item.province] = item
 
 
 
