@@ -19,8 +19,8 @@ module.exports =
         line: rawItem
         lineNumber: i
 
-  scenarios: (item, rawItem, i, errors) ->
-    unless Constants.scenarios.includes item.scenario
+  scenarios: (item, rawItem, i, errors, scenarios) ->
+    unless scenarios.includes item.scenario
       errors.push
         message: "Invalid scenario (CSV field name: Case). Parsed value was #{item.scenario}"
         line: rawItem

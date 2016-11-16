@@ -17,6 +17,7 @@ class GasProductionIngestor
     @unmappedData = d3.csv.parse rawData
     @summarizedGroupedData = {}
     @extraData = []
+    @scenarios = options.scenarios || Constants.scenarios
 
 
     @normalize()
@@ -48,7 +49,7 @@ class GasProductionIngestor
 
     for i in [0...@unmappedData.length]
       Validations.province @mappedData[i], @unmappedData[i], i, @logMessages
-      Validations.scenarios @mappedData[i], @unmappedData[i], i, @logMessages
+      Validations.scenarios @mappedData[i], @unmappedData[i], i, @logMessages, @scenarios
       Validations.years @mappedData[i], @unmappedData[i], i, @logMessages
       Validations.value @mappedData[i], @unmappedData[i], i, @logMessages
       Validations.unit @mappedData[i], @unmappedData[i], i, @logMessages, 'Million cubic metres Per Day'
@@ -58,7 +59,7 @@ class GasProductionIngestor
   createGroupedDataStructure: ->
     # TODO: How are we going to handle data sets which don't all have the same number of
     # scenarios? 
-    for scenario in Constants.scenarios
+    for scenario in @scenarios
       @summarizedGroupedData[scenario] = {}
       for year in Constants.years
         @summarizedGroupedData[scenario][year] = {}
@@ -82,7 +83,7 @@ class GasProductionIngestor
   validateRequiredData: ->
     count = 0
 
-    for scenario in Constants.scenarios
+    for scenario in @scenarios
       for year in Constants.years
         for province in Constants.provinceRadioSelectionOptions
           if @summarizedGroupedData[scenario][year][province]?
@@ -103,7 +104,7 @@ class GasProductionIngestor
   writeResult: ->
     results = []
 
-    for scenario in Constants.scenarios
+    for scenario in @scenarios
       for year in Constants.years
         for province in Constants.provinceRadioSelectionOptions
           results.push @summarizedGroupedData[scenario][year][province]

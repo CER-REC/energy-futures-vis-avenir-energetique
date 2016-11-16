@@ -1,4 +1,5 @@
 fs = require 'fs'
+path = require 'path'
 
 # A small set of methods that are completely in common between the ingestors.
 
@@ -35,7 +36,12 @@ IngestionMethods =
 
 
   writeLog: ->
-    @logFile = fs.openSync @logFilename, 'w'
+
+    logDirectory = path.dirname @logFilename
+    unless fs.existsSync logDirectory
+      fs.mkdirSync logDirectory
+
+    @logFile = fs.openSync @logFilename, 'w+'
 
     if @logMessages.length == 0
       @logFile.write "No errors"

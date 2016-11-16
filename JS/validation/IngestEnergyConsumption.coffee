@@ -18,6 +18,7 @@ class EnergyConsumptionIngestor
     @summarizedGroupedData = {}
     @detailedGroupedData = {}
     @extraData = []
+    @scenarios = options.scenarios || Constants.scenarios
 
 
     @normalize()
@@ -58,7 +59,7 @@ class EnergyConsumptionIngestor
       Validations.sector @mappedData[i], @unmappedData[i], i, @logMessages
       Validations.source @mappedData[i], @unmappedData[i], i, @logMessages
       Validations.province @mappedData[i], @unmappedData[i], i, @logMessages
-      Validations.scenarios @mappedData[i], @unmappedData[i], i, @logMessages
+      Validations.scenarios @mappedData[i], @unmappedData[i], i, @logMessages, @scenarios
       Validations.years @mappedData[i], @unmappedData[i], i, @logMessages
       Validations.value @mappedData[i], @unmappedData[i], i, @logMessages
       Validations.unit @mappedData[i], @unmappedData[i], i, @logMessages, 'Petajoules'
@@ -77,7 +78,7 @@ class EnergyConsumptionIngestor
     # Viz2 uses a completely disjoint and much larger subset of data, broken out by sector and by source. (sectors * sources * scenarios * years * regions) (5 * 6 * 6 * 36 * 14), 90720 items total.
 
     # Viz 1 and 4
-    for scenario in Constants.scenarios
+    for scenario in @scenarios
       @summarizedGroupedData[scenario] = {}
       for year in Constants.years
         @summarizedGroupedData[scenario][year] = {}
@@ -87,7 +88,7 @@ class EnergyConsumptionIngestor
       @detailedGroupedData[sector] = {}
       for source in Constants.viz2Sources
         @detailedGroupedData[sector][source] = {}
-        for scenario in Constants.scenarios
+        for scenario in @scenarios
           @detailedGroupedData[sector][source][scenario] = {}
           for year in Constants.years
             @detailedGroupedData[sector][source][scenario][year] = {}
@@ -114,7 +115,7 @@ class EnergyConsumptionIngestor
     count = 0
 
     # Viz 1 and 4
-    for scenario in Constants.scenarios
+    for scenario in @scenarios
       for year in Constants.years
         for province in Constants.provinceRadioSelectionOptions
           if @summarizedGroupedData[scenario][year][province]?
@@ -128,7 +129,7 @@ class EnergyConsumptionIngestor
     # Viz 2
     for sector in Constants.sectors
       for source in Constants.viz2Sources
-        for scenario in Constants.scenarios
+        for scenario in @scenarios
           for year in Constants.years
             for province in Constants.provinceRadioSelectionOptions
               if @detailedGroupedData[sector][source][scenario][year][province]?
@@ -151,7 +152,7 @@ class EnergyConsumptionIngestor
     results = []
 
     # Viz 1 and 4
-    for scenario in Constants.scenarios
+    for scenario in @scenarios
       for year in Constants.years
         for province in Constants.provinceRadioSelectionOptions
           results.push @summarizedGroupedData[scenario][year][province]
@@ -159,7 +160,7 @@ class EnergyConsumptionIngestor
     # Viz 2
     for sector in Constants.sectors
       for source in Constants.viz2Sources
-        for scenario in Constants.scenarios
+        for scenario in @scenarios
           for year in Constants.years
             for province in Constants.provinceRadioSelectionOptions
               results.push @detailedGroupedData[sector][source][scenario][year][province]

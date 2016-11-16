@@ -18,6 +18,7 @@ class ElectricityProductionIngestor
     @summarizedGroupedData = {}
     @detailedGroupedData = {}
     @extraData = []
+    @scenarios = options.scenarios || Constants.scenarios
 
 
     @normalize()
@@ -54,7 +55,7 @@ class ElectricityProductionIngestor
     for i in [0...@unmappedData.length]
       Validations.source @mappedData[i], @unmappedData[i], i, @logMessages
       Validations.province @mappedData[i], @unmappedData[i], i, @logMessages
-      Validations.scenarios @mappedData[i], @unmappedData[i], i, @logMessages
+      Validations.scenarios @mappedData[i], @unmappedData[i], i, @logMessages, @scenarios
       Validations.years @mappedData[i], @unmappedData[i], i, @logMessages
       Validations.value @mappedData[i], @unmappedData[i], i, @logMessages
       Validations.unit @mappedData[i], @unmappedData[i], i, @logMessages, 'GW.h'
@@ -74,7 +75,7 @@ class ElectricityProductionIngestor
     totalGenerationByYearAndScenario = {}
     for year in Constants.years
       totalGenerationByYearAndScenario[year] = {}
-      for scenario in Constants.scenarios
+      for scenario in @scenarios
         totalGenerationByYearAndScenario[year][scenario] = []
 
     for item in totalGenerationData
@@ -83,7 +84,7 @@ class ElectricityProductionIngestor
     # For each set of provincial/territorial data in each year and scenario, 
     # find the sum of their production, and add it to the raw data for the provider
 
-    for scenario in Constants.scenarios
+    for scenario in @scenarios
       for year in Constants.years
         sum = totalGenerationByYearAndScenario[year][scenario].reduce (sum, item) ->
           sum + item.value
@@ -112,7 +113,7 @@ class ElectricityProductionIngestor
     # Viz3 uses a completely disjoint and larger subset of data, which does not include any totals (sources * scenarios * years * regions) (7 * 6 * 36 * 13), 19656 items total.
 
     # Viz 1 and 4
-    for scenario in Constants.scenarios
+    for scenario in @scenarios
       @summarizedGroupedData[scenario] = {}
       for year in Constants.years
         @summarizedGroupedData[scenario][year] = {}
@@ -120,7 +121,7 @@ class ElectricityProductionIngestor
     # Viz 3
     for source in Constants.viz3Sources
       @detailedGroupedData[source] = {}
-      for scenario in Constants.scenarios
+      for scenario in @scenarios
         @detailedGroupedData[source][scenario] = {}
         for year in Constants.years
           @detailedGroupedData[source][scenario][year] = {}
@@ -149,7 +150,7 @@ class ElectricityProductionIngestor
     count = 0
 
     # Viz 1 and 4
-    for scenario in Constants.scenarios
+    for scenario in @scenarios
       for year in Constants.years
         for province in Constants.provinceRadioSelectionOptions
           if @summarizedGroupedData[scenario][year][province]?
@@ -162,7 +163,7 @@ class ElectricityProductionIngestor
 
     # Viz 3
     for source in Constants.viz3Sources
-      for scenario in Constants.scenarios
+      for scenario in @scenarios
         for year in Constants.years
           for province in Constants.provinces
             if @detailedGroupedData[source][scenario][year][province]?
@@ -184,14 +185,14 @@ class ElectricityProductionIngestor
     results = []
 
     # Viz 1 and 4
-    for scenario in Constants.scenarios
+    for scenario in @scenarios
       for year in Constants.years
         for province in Constants.provinceRadioSelectionOptions
           results.push @summarizedGroupedData[scenario][year][province]
     
     # Viz 3
     for source in Constants.viz3Sources
-      for scenario in Constants.scenarios
+      for scenario in @scenarios
         for year in Constants.years
           for province in Constants.provinces
             results.push @detailedGroupedData[source][scenario][year][province]
