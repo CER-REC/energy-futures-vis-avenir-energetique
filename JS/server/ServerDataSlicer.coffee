@@ -1,7 +1,7 @@
 Promise = require 'bluebird'
 
 ServerData = require './ServerData.coffee'
-Constants = require './Constants.coffee'
+Constants = require '../Constants.coffee'
 
 
 # To avoid downloading all of the data at once for each visualization, we split it up into
@@ -40,7 +40,7 @@ Promise.join ServerData.oilPromise, ServerData.gasPromise, ServerData.energyProm
     for sector in Constants.sectors
       viz2Chunks[sector] = {}
       for province in Constants.provinceRadioSelectionOptions
-      viz2Chunks[sector][province] = []
+        viz2Chunks[sector][province] = []
 
     for scenario in Constants.scenarios
       viz3Chunks[scenario] = []
@@ -54,8 +54,13 @@ Promise.join ServerData.oilPromise, ServerData.gasPromise, ServerData.energyProm
     viz1And4Chunks.gasProduction = ServerData.gasProductionProvider.data
 
     for item in ServerData.energyConsumptionProvider.data
+      if item.source == 'total' and item.sector == 'total'
+        viz1And4Chunks.energyDemand.push item
 
     for item in ServerData.electricityProductionProvider.data
+      if item.source == 'total'
+        viz1And4Chunks.electricityGeneration.push item
+
 
 
 
@@ -72,44 +77,44 @@ Promise.join ServerData.oilPromise, ServerData.gasPromise, ServerData.energyProm
 
 
 
-ServerDataSlicer = 
+# ServerDataSlicer = 
 
-  # The data for visualizations 1 and 4 is small enough that we can transmit all of it 
-  # for each data file / main selection.
+#   # The data for visualizations 1 and 4 is small enough that we can transmit all of it 
+#   # for each data file / main selection.
 
-  visualization1And4Chunks: (mainSelection) ->
-    switch mainSelection
-      when config.mainSelection == 'energyDemand'
-        'this'
-      when config.mainSelection == 'oilProduction'
-        'that'
-      when config.mainSelection == 'electricityGeneration'
-        'the other'
-      when config.mainSelection == 'gasProduction'
-        'bleh'
-
-
-
-  # The data for visualization 2 is the largest by far. We split it into chunks by province
-  # and sector. 
-
-  visualization2Chunks: (province, sector) ->
-    data = []
-    for item in sourcedata
-      if item.province == province and item.sector == sector
-        data.push item
+#   visualization1And4Chunks: (mainSelection) ->
+#     switch mainSelection
+#       when config.mainSelection == 'energyDemand'
+#         'this'
+#       when config.mainSelection == 'oilProduction'
+#         'that'
+#       when config.mainSelection == 'electricityGeneration'
+#         'the other'
+#       when config.mainSelection == 'gasProduction'
+#         'bleh'
 
 
 
-  # The data for visualization 3 is chunked up by scenario. While animating through the
-  # years, the entire data set within one scenario is used, so we can't chunk it up along
-  # any other parameter.
+#   # The data for visualization 2 is the largest by far. We split it into chunks by province
+#   # and sector. 
+
+#   visualization2Chunks: (province, sector) ->
+#     data = []
+#     for item in sourcedata
+#       if item.province == province and item.sector == sector
+#         data.push item
+
+
+
+#   # The data for visualization 3 is chunked up by scenario. While animating through the
+#   # years, the entire data set within one scenario is used, so we can't chunk it up along
+#   # any other parameter.
   
-  visualization3Chunks: (scenario) ->
-    data = []
-    for item in sourcedata
-      if item.province == province and item.sector == sector
-        data.push item
+#   visualization3Chunks: (scenario) ->
+#     data = []
+#     for item in sourcedata
+#       if item.province == province and item.sector == sector
+#         data.push item
 
 
 
@@ -132,5 +137,8 @@ ServerDataSlicer =
 
 
 module.exports =
+  viz1And4Chunks: viz1And4Chunks
+  viz2Chunks: viz2Chunks
+  viz3Chunks: viz3Chunks
 
 

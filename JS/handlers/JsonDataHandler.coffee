@@ -83,6 +83,7 @@ getResponseData = ->
   # init a config and serverapp
 
   # get data from provider
+  # get totals from provider
   # serialize
   # respond
   # profit
