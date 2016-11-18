@@ -12,47 +12,51 @@ requestCounter = 0
 
 module.exports = (req, res) ->
 
+  requestCounter += 1
+  time = Date.now()
+  query = url.parse(req.url).search
+  params = queryString.parse(query)
+
   ServerDataChunksPromise.then (serverDataChunks) ->
-    requestCounter += 1
-    time = Date.now()
-    query = url.parse(req.url).search
-    params = queryString.parse(query)
+    return new Promise (resolve, reject) ->
+      response = {}
+      switch params.page
+        when 'viz1', 'viz4'
+          if Constants.mainSelections.includes params.mainSelection
+            response.data = serverDataChunks.viz1And4Chunks[params.mainSelection]
+            resolve response
+          else
+            reject new Error "Unrecognized mainSelection parameter."
 
-    console.log params
-    console.log Constants.sectors.includes params.sector 
-    console.log Constants.provinceRadioSelectionOptions.includes params.province
+        when 'viz2'
+          if Constants.sectors.includes(params.sector) and Constants.provinceRadioSelectionOptions.includes(params.province)
+            response.data = serverDataChunks.viz2Chunks[params.sector][params.province]
+            resolve response
+          else
+            reject new Error "Unrecognized sector or province parameter."
 
-
-    switch params.page
-      when 'viz1', 'viz4'
-        if Constants.mainSelections.includes params.mainSelection
-          response = serverDataChunks.viz1And4Chunks[params.mainSelection]
+        when 'viz3'
+          # TODO: needs to handle multiple data sets
+          if Constants.scenarios.includes params.scenario
+            response.data = serverDataChunks.viz3Chunks[params.scenario]
+            resolve response
+          else
+            reject new Error "Unrecognized scenario parameter."
         else
-          errorMessage = "Unrecognized mainSelection parameter."
-      when 'viz2'
-        if Constants.sectors.includes(params.sector) and Constants.provinceRadioSelectionOptions.includes(params.province)
-          response = serverDataChunks.viz2Chunks[params.sector][params.province]
-        else
-          errorMessage = "Unrecognized sector or province parameter."
-      when 'viz3'
-        # TODO: needs to handle multiple data sets
-        if Constants.scenarios.includes params.scenario
-          response = serverDataChunks.viz3Chunks[params.scenario]
-        else
-          errorMessage = "Unrecognized scenario parameter."
-      else
-        errorMessage = "Unrecognized page parameter." 
+          reject new Error "Unrecognized page parameter." 
 
 
-
-    if response?
-      res.write JSON.stringify(response)
-      res.end()
-    else
-      res.writeHead 400
-      res.end "HTTP 400: #{errorMessage}"
+  .then (response) ->
+    res.setHeader "content-type", "application/json"
+    # TODO: Cache headers?
+    res.write JSON.stringify(response)
+    res.end()
 
     Logger.info "json_data (request J#{requestCounter}): #{query} Time: #{Date.now() - time}"
 
+  .catch (error) ->
+    Logger.error "json_data (request J#{requestCounter}) error: #{error.message}"
+    Logger.error error.stack
 
-
+    res.writeHead 400
+    res.end "HTTP 400: #{error.message}"
