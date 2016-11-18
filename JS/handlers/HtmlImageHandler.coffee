@@ -36,7 +36,8 @@ requestCounter = 0
 
 HtmlImageHandler = (req, res) ->
 
-  Promise.join htmlPromise, ServerData.oilPromise, ServerData.gasPromise, ServerData.energyPromise, ServerData.electricityPromise, (html) ->
+  # TODO: For now, hard coding to use the most recent data set. Needs parameterization.
+  Promise.join htmlPromise, ServerData['oct2016'].oilPromise, ServerData['oct2016'].gasPromise, ServerData['oct2016'].energyPromise, ServerData['oct2016'].electricityPromise, (html) ->
 
     time = Date.now()
 
@@ -59,10 +60,10 @@ HtmlImageHandler = (req, res) ->
           body = window.document.querySelector('body')
             
           serverApp = new ServerApp window,
-            energyConsumptionProvider: ServerData.energyConsumptionProvider
-            oilProductionProvider: ServerData.oilProductionProvider
-            gasProductionProvider: ServerData.gasProductionProvider
-            electricityProductionProvider: ServerData.electricityProductionProvider
+            energyConsumptionProvider: ServerData['oct2016'].energyConsumptionProvider
+            oilProductionProvider: ServerData['oct2016'].oilProductionProvider
+            gasProductionProvider: ServerData['oct2016'].gasProductionProvider
+            electricityProductionProvider: ServerData['oct2016'].electricityProductionProvider
           serverApp.setLanguage req.query.language
 
           params = PrepareQueryParams queryString.parse(query)

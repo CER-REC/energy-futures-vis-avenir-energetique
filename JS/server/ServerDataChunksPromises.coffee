@@ -3,7 +3,7 @@ Promise = require 'bluebird'
 ServerData = require './ServerData.coffee'
 Constants = require '../Constants.coffee'
 DatasetDefinitions = require '../DatasetDefinitions.coffee'
-Logger = require 'Logger.coffee'
+Logger = require '../Logger.coffee'
 
 # To avoid downloading all of the data at once for each visualization, we split it up into
 # chunks. To ensure reasonable performance and limit complexity, we want the chunks to be 

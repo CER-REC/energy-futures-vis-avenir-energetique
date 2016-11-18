@@ -64,5 +64,6 @@ module.exports = (req, res) ->
     Logger.error "json_data (request J#{requestCounter}) error: #{error.message}"
     Logger.error error.stack
 
+    # TODO: Handle 500 errors
     res.writeHead 400
     res.end "HTTP 400: #{error.message}"
