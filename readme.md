@@ -124,6 +124,7 @@ We're the development team with Startide Solutions who put this project together
 
 ## Changelog
 
+* 2016-11-18 - The province & power source buttons on visualizations 1 & 2 will now animate out of the way as the user drags one of them up or down.
 * 2016-11-07 - Fixed the overlapping bubbles problem in visualization #3, and decreased the inner bubble padding to reduce empty spaces.
 * 2016-10-31 - Adjusted the time slider (on Visualization 3) to use a better quality PNG image that doesn't degrade in quality when zoomed in.
 * 2016-10-20 - Installed an updated set of Canada's Energy Future 2016 data. This is an early release of the new update, which does not include the LNG and Constrained scenarios. The user interface for these scenarios has been temporarily hidden. The previous generation data remains available in the repository, but is not integrated into the app right now.
