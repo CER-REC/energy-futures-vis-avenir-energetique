@@ -3,6 +3,7 @@ Promise = require 'bluebird'
 ServerData = require './ServerData.coffee'
 Constants = require '../Constants.coffee'
 DatasetDefinitions = require '../DatasetDefinitions.coffee'
+Logger = require 'Logger.coffee'
 
 # To avoid downloading all of the data at once for each visualization, we split it up into
 # chunks. To ensure reasonable performance and limit complexity, we want the chunks to be 
@@ -74,7 +75,7 @@ createDatasetPromise = (datasetName, datasetDefinition) ->
 
       for mainSelection in Constants.mainSelections
         if viz1And4Chunks[mainSelection].length != (504 * datasetDefinition.scenarios.length)
-          console.log "viz1/4 energy data length not right for #{mainSelection} #{viz1And4Chunks[mainSelection].length} != #{(504 * datasetDefinition.scenarios.length)}" # TODO logger
+          Logger.error "viz1/4 energy data length not right for #{mainSelection} (#{viz1And4Chunks[mainSelection].length} != #{(504 * datasetDefinition.scenarios.length)})"
         
 
 
@@ -86,7 +87,7 @@ createDatasetPromise = (datasetName, datasetDefinition) ->
       for sector in Constants.sectors
         for province in Constants.provinceRadioSelectionOptions
           if viz2Chunks[sector][province].length != (216 * datasetDefinition.scenarios.length)
-            console.log "viz2 data not right for sector #{sector}, province #{province}  #{viz2Chunks[sector][province].length} != #{(216 * datasetDefinition.scenarios.length)}"
+            Logger.error "viz2 data not right for sector #{sector}, province #{province} (#{viz2Chunks[sector][province].length} != #{(216 * datasetDefinition.scenarios.length)})"
 
 
       # Viz 3
@@ -96,7 +97,7 @@ createDatasetPromise = (datasetName, datasetDefinition) ->
 
       for scenario in datasetDefinition.scenarios
         if viz3Chunks[scenario].length != 3276
-          console.log "viz3 data not right for scenario #{scenario}   #{viz3Chunks[scenario].length} != 3276"
+          Logger.error "viz3 data not right for scenario #{scenario} (#{viz3Chunks[scenario].length} != 3276)"
 
 
       # Write files to disk, in development, to gauge approximate data sizes. 

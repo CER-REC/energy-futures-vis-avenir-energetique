@@ -32,8 +32,6 @@ loadDataset = (datasetName, datasetDefinition) ->
   energyDemandFilePromise = readFile datasetDefinition.dataFiles.energyDemand
   electricityFilePromise = readFile datasetDefinition.dataFiles.electricityGeneration
 
-  console.log "for #{datasetName} reading from electricity file #{datasetDefinition.dataFiles.electricityGeneration}"
-
   dataset.oilPromise = oilFilePromise.then (data) ->
     dataset.oilProductionProvider.loadFromString data.toString()
 

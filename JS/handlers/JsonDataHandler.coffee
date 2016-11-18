@@ -4,8 +4,9 @@ queryString = require 'query-string'
 
 
 Logger = require '../Logger.coffee'
-ServerDataChunksPromise = require '../server/ServerDataChunksPromise.coffee'
+ServerDataChunksPromises = require '../server/ServerDataChunksPromises.coffee'
 Constants = require '../Constants.coffee'
+DatasetDefinitions = require '../DatasetDefinitions.coffee'
 
 
 requestCounter = 0
@@ -17,7 +18,13 @@ module.exports = (req, res) ->
   query = url.parse(req.url).search
   params = queryString.parse(query)
 
-  ServerDataChunksPromise.then (serverDataChunks) ->
+  new Promise (resolve, reject) ->
+    if Constants.datasets.includes params.dataset
+      resolve ServerDataChunksPromises[params.dataset]
+    else
+      reject new Error "Unrecognized dataset parameter."
+
+  .then (serverDataChunks) ->
     return new Promise (resolve, reject) ->
       response = {}
       switch params.page
@@ -36,8 +43,7 @@ module.exports = (req, res) ->
             reject new Error "Unrecognized sector or province parameter."
 
         when 'viz3'
-          # TODO: needs to handle multiple data sets
-          if Constants.scenarios.includes params.scenario
+          if DatasetDefinitions[params.dataset].scenarios.includes params.scenario
             response.data = serverDataChunks.viz3Chunks[params.scenario]
             resolve response
           else
