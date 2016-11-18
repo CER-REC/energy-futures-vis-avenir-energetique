@@ -39,7 +39,7 @@ promises = {}
 createDatasetPromise = (datasetName, datasetDefinition) ->
 
 
-  return Promise.join ServerData[datasetName].oilPromise, ServerData[datasetName].gasPromise, ServerData[datasetName].energyPromise, ServerData[datasetName].energyPromise, ->
+  return Promise.join ServerData[datasetName].oilPromise, ServerData[datasetName].gasPromise, ServerData[datasetName].energyPromise, ServerData[datasetName].electricityPromise, ->
 
       # Setup structs
 

@@ -207,7 +207,7 @@ module.exports =
     'oct2016'
   ]
 
-
+  cacheDuration: 3600 # seconds
 
 
 

@@ -54,7 +54,7 @@ module.exports = (req, res) ->
 
   .then (response) ->
     res.setHeader "content-type", "application/json"
-    # TODO: Cache headers?
+    res.setHeader 'cache-control', "max-age=#{Constants.cacheDuration}" 
     res.write JSON.stringify(response)
     res.end()
 

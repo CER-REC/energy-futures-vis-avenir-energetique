@@ -1,6 +1,7 @@
 url = require 'url'
 
 Logger = require '../Logger.coffee'
+Constants = require '../Constants.coffee'
 
 
 class ImageRequest
@@ -82,7 +83,7 @@ class ImageRequest
     # The expected use case for image generation is the user previews the image, and then
     # clicks the download image link. Caching the image in the browser will save us from
     # handling a second request.
-    @res.setHeader 'cache-control', "max-age=600" 
+    @res.setHeader 'cache-control', "max-age=#{Constants.cacheDuration}" 
     @res.write(screenshotBuffer)
     @res.end()
 
