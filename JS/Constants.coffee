@@ -202,6 +202,10 @@ module.exports =
   viz4ServerSideGraphWidth: 995 # 1065 - 70 extra pixels of width for viz4's wider legend
 
 
+  datasets: [
+    'jan2016'
+    'oct2016'
+  ]
 
 
 

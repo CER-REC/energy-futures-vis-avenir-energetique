@@ -9,30 +9,47 @@ OilProductionProvider = require '../DataProviders/OilProductionProvider.coffee'
 GasProductionProvider = require '../DataProviders/GasProductionProvider.coffee'
 ElectricityProductionProvider = require '../DataProviders/ElectricityProductionProvider.coffee'
 
+DatasetDefinitions = require '../DatasetDefinitions.coffee'
+
+
 # Make singleton instances of the app's data files available on the server
-# TODO: Upgrade this to work with multiple datasets at once.
+
 
 ServerData = {}
 
-ServerData.energyConsumptionProvider = new EnergyConsumptionProvider 
-ServerData.oilProductionProvider = new OilProductionProvider 
-ServerData.gasProductionProvider = new GasProductionProvider 
-ServerData.electricityProductionProvider = new ElectricityProductionProvider
 
-oilFilePromise = readFile "#{ApplicationRoot}/public/CSV/2016-10-18_CrudeOilProduction.csv"
-ServerData.oilPromise = oilFilePromise.then (data) ->
-  ServerData.oilProductionProvider.loadFromString data.toString()
+loadDataset = (datasetName, datasetDefinition) ->
 
-gasFilePromise = readFile "#{ApplicationRoot}/public/CSV/2016-10-18_NaturalGasProduction.csv"
-ServerData.gasPromise = gasFilePromise.then (data) ->
-  ServerData.gasProductionProvider.loadFromString data.toString()
+  dataset = {}
 
-energyDemandFilePromise = readFile "#{ApplicationRoot}/public/CSV/2016-10-18_EnergyDemand.csv"
-ServerData.energyPromise = energyDemandFilePromise.then (data) ->
-  ServerData.energyConsumptionProvider.loadFromString data.toString()
+  dataset.energyConsumptionProvider = new EnergyConsumptionProvider 
+  dataset.oilProductionProvider = new OilProductionProvider 
+  dataset.gasProductionProvider = new GasProductionProvider 
+  dataset.electricityProductionProvider = new ElectricityProductionProvider
 
-electricityFilePromise = readFile "#{ApplicationRoot}/public/CSV/2016-10-27_ElectricityGeneration.csv"
-ServerData.electricityPromise = electricityFilePromise.then (data) ->
-  ServerData.electricityProductionProvider.loadFromString data.toString()
+  oilFilePromise = readFile datasetDefinition.dataFiles.oilProduction
+  gasFilePromise = readFile datasetDefinition.dataFiles.gasProduction
+  energyDemandFilePromise = readFile datasetDefinition.dataFiles.energyDemand
+  electricityFilePromise = readFile datasetDefinition.dataFiles.electricityGeneration
+
+  console.log "for #{datasetName} reading from electricity file #{datasetDefinition.dataFiles.electricityGeneration}"
+
+  dataset.oilPromise = oilFilePromise.then (data) ->
+    dataset.oilProductionProvider.loadFromString data.toString()
+
+  dataset.gasPromise = gasFilePromise.then (data) ->
+    dataset.gasProductionProvider.loadFromString data.toString()
+
+  dataset.energyPromise = energyDemandFilePromise.then (data) ->
+    dataset.energyConsumptionProvider.loadFromString data.toString()
+
+  dataset.electricityPromise = electricityFilePromise.then (data) ->
+    dataset.electricityProductionProvider.loadFromString data.toString()
+
+  ServerData[datasetName] = dataset
+
+
+for datasetName, datasetDefinition of DatasetDefinitions
+  loadDataset datasetName, datasetDefinition
 
 module.exports = ServerData
