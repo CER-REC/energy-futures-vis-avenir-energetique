@@ -80,58 +80,54 @@ HtmlImageHandler = (req, res) ->
     Logger.info "html_image (request H#{counter}): #{query}"
 
     try
-      jsdom.env
-        features: 
-          QuerySelector: true
-        html: html
-        done: (error, window) -> 
+      jsdom.env html, [], (error, window) -> 
 
-          if error?
-            errorHandler req, res, error, 500
+        if error?
+          errorHandler req, res, error, 500
+          return
+
+        body = window.document.querySelector('body')
+          
+        serverApp = new ServerApp window,
+          energyConsumptionProvider: energyConsumptionProvider
+          oilProductionProvider: oilProductionProvider
+          gasProductionProvider: gasProductionProvider
+          electricityProductionProvider: electricityProductionProvider
+        serverApp.setLanguage req.query.language
+
+        params = PrepareQueryParams queryString.parse(query)
+
+        # Parse the parameters with a configuration object, and then hand them off to a
+        # visualization object. The visualizations render the graphs in their constructors.
+        switch req.query.page
+          when 'viz1'
+            config = new Visualization1Configuration(serverApp, params)
+            viz = new Visualization1(serverApp, config)
+
+          when 'viz2'
+            config = new Visualization2Configuration(serverApp, params)
+            viz = new Visualization2(serverApp, config)
+
+          when 'viz3'
+            config = new Visualization3Configuration(serverApp, params)
+            viz = new Visualization3(serverApp, config)
+
+          when 'viz4'
+            config = new Visualization4Configuration(serverApp, params)
+            viz = new Visualization4(serverApp, config)
+
+          else 
+            errorHandler req, res, new Error("Visualization 'page' parameter not specified or not recognized."), 400, counter
             return
 
-          body = window.document.querySelector('body')
-            
-          serverApp = new ServerApp window,
-            energyConsumptionProvider: energyConsumptionProvider
-            oilProductionProvider: oilProductionProvider
-            gasProductionProvider: gasProductionProvider
-            electricityProductionProvider: electricityProductionProvider
-          serverApp.setLanguage req.query.language
 
-          params = PrepareQueryParams queryString.parse(query)
+        # we need to wait a tick for the zero duration animations to be scheduled and run
+        setTimeout ->
 
-          # Parse the parameters with a configuration object, and then hand them off to a
-          # visualization object. The visualizations render the graphs in their constructors.
-          switch req.query.page
-            when 'viz1'
-              config = new Visualization1Configuration(serverApp, params)
-              viz = new Visualization1(serverApp, config)
-
-            when 'viz2'
-              config = new Visualization2Configuration(serverApp, params)
-              viz = new Visualization2(serverApp, config)
-
-            when 'viz3'
-              config = new Visualization3Configuration(serverApp, params)
-              viz = new Visualization3(serverApp, config)
-
-            when 'viz4'
-              config = new Visualization4Configuration(serverApp, params)
-              viz = new Visualization4(serverApp, config)
-
-            else 
-              errorHandler req, res, new Error("Visualization 'page' parameter not specified or not recognized."), 400, counter
-              return
-
-
-          # we need to wait a tick for the zero duration animations to be scheduled and run
-          setTimeout ->
-
-            source = window.document.querySelector('html').outerHTML
-            res.write source
-            res.end()
-            Logger.debug "html_image (request H#{counter}) Time: #{Date.now() - time}"
+          source = window.document.querySelector('html').outerHTML
+          res.write source
+          res.end()
+          Logger.debug "html_image (request H#{counter}) Time: #{Date.now() - time}"
 
     catch error
       errorHandler req, res, error, 500, counter
