@@ -15,6 +15,9 @@ class squareMenu extends basicMenu
     addAllSquare: true
     allSelected: true
     someSelected: false
+    boxCount:
+      "#powerSourceMenuSVG": 7
+      "#provinceMenuSVG": 14
     allSquareHandler: -> #Method that runs on 'All' button clicked
     orderChangedHandler: -> #Method that runs when draggin finished
     showHelpHandler: -> #Method that runs when the questionMark icon is clicked
@@ -61,18 +64,35 @@ class squareMenu extends basicMenu
         @newSpot = i - Math.round((d3.event.y -  (d3.event.y % @yDiff)) / @yDiff)
         if @newSpot < 0 then @newSpot = 0
         if @newSpot > (@_chart.mapping().length) - 1 then @newSpot = (@_chart.mapping().length) - 1
-        if @newSpot != @currentSpot 
+        if @newSpot != @currentSpot
+          if @newSpot > @currentSpot then @direction = 1 else @direction = -1
+
+          newpos = @newSpot
+          n = @squareMenuDefaults.boxCount[@options.selector]
+          offset = ((@options.size.h - 46 - (@options.boxSize*n))/(n - 1) + @options.boxSize) * @direction
+
+          if @_lastDirection? && @_lastDirection != 0 && @_lastDirection != @direction
+            if(newpos - @direction != i)
+              newpos -= @direction
+              offset = 2 * @direction
+            else
+              @_lastDirection = @direction
+          else
+            @_lastDirection = @direction
+
+          @_group.select("#menuRect"+ newpos).attr("transform", (d,i) ->
+              "translate(" + [ 0, offset] + ")"
+          )
+
           @_orderChangedHandler(@newSpot, @currentSpot)
           @currentSpot = @newSpot
+          @_chart.dragEnd()
+
       )
       @_drag.on("dragend", (d, i) =>
+        @_lastDirection = 0
         @_chart.dragEnd()
-        if @newSpot > -1 #Drag end gets called on click thiw just prevents it from rerunning the last move
-          @_orderChangedHandler(@newSpot, @currentSpot)
-          @newSpot = null
-          @redraw()
-          @currentSpot = -1
-          @newSpot = -1
+        @redraw() 
       )
     @redraw()
 
