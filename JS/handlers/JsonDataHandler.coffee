@@ -2,14 +2,14 @@ Promise = require 'bluebird'
 url = require 'url'
 queryString = require 'query-string'
 
-PrepareQueryParams = require '../PrepareQueryParams.coffee'
+# PrepareQueryParams = require '../PrepareQueryParams.coffee'
 Logger = require '../Logger.coffee'
-ServerData = require '../server/ServerData.coffee'
+# ServerData = require '../server/ServerData.coffee'
 
-Visualization1Configuration = require '../VisualizationConfigurations/visualization1Configuration.coffee'
-Visualization2Configuration = require '../VisualizationConfigurations/visualization2Configuration.coffee'
-Visualization3Configuration = require '../VisualizationConfigurations/visualization3Configuration.coffee'
-Visualization4Configuration = require '../VisualizationConfigurations/visualization4Configuration.coffee'
+# Visualization1Configuration = require '../VisualizationConfigurations/visualization1Configuration.coffee'
+# Visualization2Configuration = require '../VisualizationConfigurations/visualization2Configuration.coffee'
+# Visualization3Configuration = require '../VisualizationConfigurations/visualization3Configuration.coffee'
+# Visualization4Configuration = require '../VisualizationConfigurations/visualization4Configuration.coffee'
 
 requestCounter = 0
 
@@ -32,52 +32,55 @@ module.exports = (req, res) ->
 
 getResponseData = ->
 
-  serverApp = new ServerApp null,
-    energyConsumptionProvider: ServerData.energyConsumptionProvider
-    oilProductionProvider: ServerData.oilProductionProvider
-    gasProductionProvider: ServerData.gasProductionProvider
-    electricityProductionProvider: ServerData.electricityProductionProvider
-
-  # Parse the parameters with a configuration object
-  switch req.query.page
-    when 'viz1'
-      config = new Visualization1Configuration(serverApp, params)
-
-      # TODO: Should the configuration know how to get its data?
-      switch
-        when config.mainSelection == 'energyDemand'
-          responseData = ServerData.energyConsumptionProvider.dataForViz1(config)
-        when config.mainSelection == 'oilProduction'
-          responseData = ServerData.oilProductionProvider.dataForViz1(config)
-        when config.mainSelection == 'electricityGeneration'
-          responseData = ServerData.electricityProductionProvider.dataForViz1(config)
-        when config.mainSelection == 'gasProduction'
-          responseData = ServerData.gasProductionProvider.dataForViz1(config)
-
-    when 'viz2'
-      config = new Visualization2Configuration(serverApp, params)
-      responseData = ServerData.energyConsumptionProvider.dataForViz2(config)
-
-    when 'viz3'
-      config = new Visualization3Configuration(serverApp, params)
-      # TODO: We need to respond with data for all years, for the given configuration
-      responseData = ServerData.electricityProductionProvider.dataForViz3(config)
-
-    when 'viz4'
-      config = new Visualization4Configuration(serverApp, params)
   
-      # TODO: Should the configuration know how to get its data?
-      switch
-        when config.mainSelection == 'energyDemand'
-          responseData = ServerData.energyConsumptionProvider.dataForViz4(config)
-        when config.mainSelection == 'oilProduction'
-          responseData = ServerData.oilProductionProvider.dataForViz4(config)
-        when config.mainSelection == 'electricityGeneration'
-          responseData = ServerData.electricityProductionProvider.dataForViz4(config)
-        when config.mainSelection == 'gasProduction'
-          responseData = ServerData.gasProductionProvider.dataForViz4(config)
 
-    responseData
+
+  # serverApp = new ServerApp null,
+  #   energyConsumptionProvider: ServerData.energyConsumptionProvider
+  #   oilProductionProvider: ServerData.oilProductionProvider
+  #   gasProductionProvider: ServerData.gasProductionProvider
+  #   electricityProductionProvider: ServerData.electricityProductionProvider
+
+  # # Parse the parameters with a configuration object
+  # switch req.query.page
+  #   when 'viz1'
+  #     config = new Visualization1Configuration(serverApp, params)
+
+  #     # TODO: Should the configuration know how to get its data?
+  #     switch
+  #       when config.mainSelection == 'energyDemand'
+  #         responseData = ServerData.energyConsumptionProvider.dataForViz1(config)
+  #       when config.mainSelection == 'oilProduction'
+  #         responseData = ServerData.oilProductionProvider.dataForViz1(config)
+  #       when config.mainSelection == 'electricityGeneration'
+  #         responseData = ServerData.electricityProductionProvider.dataForViz1(config)
+  #       when config.mainSelection == 'gasProduction'
+  #         responseData = ServerData.gasProductionProvider.dataForViz1(config)
+
+  #   when 'viz2'
+  #     config = new Visualization2Configuration(serverApp, params)
+  #     responseData = ServerData.energyConsumptionProvider.dataForViz2(config)
+
+  #   when 'viz3'
+  #     config = new Visualization3Configuration(serverApp, params)
+  #     # TODO: We need to respond with data for all years, for the given configuration
+  #     responseData = ServerData.electricityProductionProvider.dataForViz3(config)
+
+  #   when 'viz4'
+  #     config = new Visualization4Configuration(serverApp, params)
+  
+  #     # TODO: Should the configuration know how to get its data?
+  #     switch
+  #       when config.mainSelection == 'energyDemand'
+  #         responseData = ServerData.energyConsumptionProvider.dataForViz4(config)
+  #       when config.mainSelection == 'oilProduction'
+  #         responseData = ServerData.oilProductionProvider.dataForViz4(config)
+  #       when config.mainSelection == 'electricityGeneration'
+  #         responseData = ServerData.electricityProductionProvider.dataForViz4(config)
+  #       when config.mainSelection == 'gasProduction'
+  #         responseData = ServerData.gasProductionProvider.dataForViz4(config)
+
+  #   responseData
 
   # unpack params
   # init a config and serverapp
@@ -87,11 +90,6 @@ getResponseData = ->
   # serialize
   # respond
   # profit
-
-
-getYAxisMaximum = ->
-
-
 
 
 

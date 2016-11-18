@@ -1,4 +1,5 @@
 Promise = require 'bluebird'
+fs = require 'fs'
 
 ServerData = require './ServerData.coffee'
 Constants = require '../Constants.coffee'
@@ -9,10 +10,16 @@ Constants = require '../Constants.coffee'
 # few enough that the user won't encounter too many AJAX loads while navigating around 
 # the app. 
 
-# Viz 1 and 4 have four chunks per dataset, and share the same chunks.
+# Viz 1 and 4 have four chunks per dataset, and share the same chunks. 
+# With 3 scenarios, the chunks are 147-182kb each.
+
 # Viz 2 has the largest amount of data, and is broken into 70 chunks per dataset.
+# With 3 scenarios, the chunks are 80-85kb each.
+
 # Viz 3 requires all the data within a given scenario for the 'play' animation, so it is in
-# 3 or 6 chunks, depending how many scenarios are in the dataset.
+# 3 or 6 chunks, one per scenario, depending how many scenarios are in the dataset.
+# Each chunk is 313-333kb.
+
 
 # One thing we need to ensure for viz 1, 2, and 4: each chunk must include all data across
 # all scenarios for its parameters, because the maximum data point among all scenarios is
@@ -49,7 +56,6 @@ Promise.join ServerData.oilPromise, ServerData.gasPromise, ServerData.energyProm
     # Populate data
 
     # Viz 1 and 4
-
     viz1And4Chunks.oilProduction = ServerData.oilProductionProvider.data
     viz1And4Chunks.gasProduction = ServerData.gasProductionProvider.data
 
@@ -61,8 +67,10 @@ Promise.join ServerData.oilPromise, ServerData.gasPromise, ServerData.energyProm
       if item.source == 'total'
         viz1And4Chunks.electricityGeneration.push item
 
-
-
+    for mainSelection in Constants.mainSelections
+      if viz1And4Chunks[mainSelection].length != 1512
+        console.log "viz1/4 energy data length not right for #{mainSelection}" # TODO logger
+      
 
 
     # Viz 2
@@ -70,10 +78,20 @@ Promise.join ServerData.oilPromise, ServerData.gasPromise, ServerData.energyProm
       continue if item.source == 'total'
       viz2Chunks[item.sector][item.province].push item
 
+    for sector in Constants.sectors
+      for province in Constants.provinceRadioSelectionOptions
+        if viz2Chunks[sector][province].length != 648
+          console.log "viz2 data not right for sector #{sector}, province #{province}"
+
+
     # Viz 3
     for item in ServerData.electricityProductionProvider.data
       continue if item.source == 'total' or item.province == 'all'
       viz3Chunks[item.scenario].push item
+
+    for scenario in Constants.scenarios
+      if viz3Chunks[scenario].length != 3276
+        console.log "viz3 data not right for scenario #{scenario}"
 
 
 
