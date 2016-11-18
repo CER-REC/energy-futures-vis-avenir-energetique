@@ -6,7 +6,7 @@ JsonDataMiddleware = require '../middleware/JsonDataMiddleware.coffee'
 
 Server [
   PublicFilesMiddleware()
-  ImageGenerationMiddleware()
+  # ImageGenerationMiddleware()
   JsonDataMiddleware()
   DevelopmentPageMiddleware()
 ]
