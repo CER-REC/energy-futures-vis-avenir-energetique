@@ -8,7 +8,9 @@
     "distribute": "node ./tasks/distribute.js",
     "start": "node ./JS/servers/DevelopmentServer.js",
     "start-image-server": "node ./JS/servers/ImageServer.js",
-    "ingest": "node ./JS/validation/Ingest.js"
+    "ingest": "node ./JS/validation/Ingest.js",
+    "test": "mocha --recursive JS/test --compilers coffee:coffee-script/register",
+    "test-watch": "mocha --recursive JS/test --compilers coffee:coffee-script/register --watch test"
   },
   "dependencies": {
     "array-includes": "^3.0.2",
@@ -23,9 +25,13 @@
     "grunt": "^0.4.5",
     "jsdom": "^9.6.0",
     "lodash": "^4.5.1",
+    "mocha": "^3.1.2",
     "mustache": "^2.2.1",
     "phantomjs-prebuilt": "^2.1.13",
     "query-string": "^4.0.2",
+    "request": "^2.79.0",
+    "request-promise": "^4.1.1",
+    "should": "^11.1.1",
     "stringify": "^5.1.0",
     "watchify": "^3.2.1",
     "webdriverio": "^4.2.16",
