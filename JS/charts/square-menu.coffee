@@ -18,6 +18,7 @@ class squareMenu extends basicMenu
     boxCount:
       "#powerSourceMenuSVG": 7
       "#provinceMenuSVG": 14
+    boxesOffset: 46
     allSquareHandler: -> #Method that runs on 'All' button clicked
     orderChangedHandler: -> #Method that runs when draggin finished
     showHelpHandler: -> #Method that runs when the questionMark icon is clicked
@@ -69,7 +70,7 @@ class squareMenu extends basicMenu
 
           newpos = @newSpot
           n = @squareMenuDefaults.boxCount[@options.selector]
-          offset = ((@options.size.h - 46 - (@options.boxSize*n))/(n - 1) + @options.boxSize) * @direction
+          offset = ((@options.size.h - @squareMenuDefaults.boxesOffset - (@options.boxSize*n))/(n - 1) + @options.boxSize) * @direction
 
           if @_lastDirection? && @_lastDirection != 0 && @_lastDirection != @direction
             if(newpos - @direction != i)
