@@ -68,21 +68,24 @@ class squareMenu extends basicMenu
         if @newSpot != @currentSpot
           if @newSpot > @currentSpot then @direction = 1 else @direction = -1
 
+          # Computes the index of the button to be dragged, and the movement offset (distance).
           newpos = @newSpot
           n = @squareMenuDefaults.boxCount[@options.selector]
-          offset = ((@options.size.h - @squareMenuDefaults.boxesOffset - (@options.boxSize*n))/(n - 1) + @options.boxSize) * @direction
+          distance = ((@options.size.h - @squareMenuDefaults.boxesOffset - (@options.boxSize*n))/(n - 1) + @options.boxSize) * @direction
 
+          # Check whether or not the current drag event is continuing in the same direction as before. If it is not, 
+          # check if the drag had passed the original starting position, or reverse the direction of movement otherwise. 
           if @_lastDirection? && @_lastDirection != 0 && @_lastDirection != @direction
             if(newpos - @direction != i)
               newpos -= @direction
-              offset = 2 * @direction
+              distance = 2 * @direction
             else
               @_lastDirection = @direction
           else
             @_lastDirection = @direction
 
           @_group.select("#menuRect"+ newpos).attr("transform", (d,i) ->
-              "translate(0, #{offset})"
+              "translate(0, #{distance})"
           )
 
           @_orderChangedHandler(@newSpot, @currentSpot)
