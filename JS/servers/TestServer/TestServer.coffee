@@ -13,9 +13,13 @@ ImageGenerationMiddleware = require '../../middleware/ImageGenerationMiddleware.
 DevelopmentPageMiddleware = require '../../middleware/DevelopmentPageMiddleware.coffee'
 JsonDataMiddleware = require '../../middleware/JsonDataMiddleware.coffee'
 
-Server [
-  PublicFilesMiddleware()
-  ImageGenerationMiddleware()
-  JsonDataMiddleware()
-  DevelopmentPageMiddleware()
-]
+
+# Create the server instance, and return it
+module.exports = ->
+  Server [
+    PublicFilesMiddleware()
+    ImageGenerationMiddleware()
+    JsonDataMiddleware()
+    DevelopmentPageMiddleware()
+  ]
+

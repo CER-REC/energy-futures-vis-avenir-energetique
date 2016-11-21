@@ -20,8 +20,10 @@ Server = (middlewares) ->
     res.status(404).send('404: Not Found.')
 
   # IIS-Node passes in a named pipe to listen to in process.env.PORT
-  app.listen process.env.PORT || process.env.PORT_NUMBER
-  Logger.info "Ready: #{process.env.HOST}:#{process.env.PORT_NUMBER}"
+  app.listen process.env.PORT || process.env.PORT_NUMBER, ->
+
+    Logger.info "Ready: #{process.env.HOST}:#{process.env.PORT_NUMBER}"
+    app.emit 'server-online'
 
   app
 

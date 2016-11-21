@@ -7,5 +7,5 @@ describe "sample", ->
   before EnsureTestServer
 
   it "tests", ->
-    console.log 'wahoo'
+    console.log 'wahoo too!'
 
