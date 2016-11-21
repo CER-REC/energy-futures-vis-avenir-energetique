@@ -15,6 +15,10 @@ class squareMenu extends basicMenu
     addAllSquare: true
     allSelected: true
     someSelected: false
+    boxCount:
+      "#powerSourceMenuSVG": 7
+      "#provinceMenuSVG": 14
+    boxesOffset: 46
     allSquareHandler: -> #Method that runs on 'All' button clicked
     orderChangedHandler: -> #Method that runs when draggin finished
     showHelpHandler: -> #Method that runs when the questionMark icon is clicked
@@ -55,24 +59,44 @@ class squareMenu extends basicMenu
         # bring to front
         @_group.select("#menuRect"+ i).node().parentNode.parentNode.appendChild(@_group.select("#menuRect"+ i).node().parentNode)
         @_group.select("#menuRect"+ i).attr("transform", (d,i) ->
-            "translate(" + [ 0, d3.event.y] + ")"
+            "translate(0, #{d3.event.y})"
         )
         if !(@currentSpot?) or (@currentSpot == -1) then @currentSpot = i
         @newSpot = i - Math.round((d3.event.y -  (d3.event.y % @yDiff)) / @yDiff)
         if @newSpot < 0 then @newSpot = 0
         if @newSpot > (@_chart.mapping().length) - 1 then @newSpot = (@_chart.mapping().length) - 1
-        if @newSpot != @currentSpot 
+        if @newSpot != @currentSpot
+          if @newSpot > @currentSpot then @direction = 1 else @direction = -1
+
+          # Computes the index of the button to be dragged, and the movement offset (distance).
+          newpos = @newSpot
+          n = @squareMenuDefaults.boxCount[@options.selector]
+          distance = ((@options.size.h - @squareMenuDefaults.boxesOffset - (@options.boxSize*n))/(n - 1) + @options.boxSize) * @direction
+
+          # Check whether or not the current drag event is continuing in the same direction as before. If it is not, 
+          # check if the drag had passed the original starting position, or reverse the direction of movement otherwise. 
+          if @_lastDirection? && @_lastDirection != 0 && @_lastDirection != @direction
+            if(newpos - @direction != i)
+              newpos -= @direction
+              distance = 2 * @direction
+            else
+              @_lastDirection = @direction
+          else
+            @_lastDirection = @direction
+
+          @_group.select("#menuRect"+ newpos).attr("transform", (d,i) ->
+              "translate(0, #{distance})"
+          )
+
           @_orderChangedHandler(@newSpot, @currentSpot)
           @currentSpot = @newSpot
+          @_chart.dragEnd()
+
       )
       @_drag.on("dragend", (d, i) =>
+        @_lastDirection = 0
         @_chart.dragEnd()
-        if @newSpot > -1 #Drag end gets called on click thiw just prevents it from rerunning the last move
-          @_orderChangedHandler(@newSpot, @currentSpot)
-          @newSpot = null
-          @redraw()
-          @currentSpot = -1
-          @newSpot = -1
+        @redraw() 
       )
     @redraw()
 
