@@ -59,7 +59,7 @@ class squareMenu extends basicMenu
         # bring to front
         @_group.select("#menuRect"+ i).node().parentNode.parentNode.appendChild(@_group.select("#menuRect"+ i).node().parentNode)
         @_group.select("#menuRect"+ i).attr("transform", (d,i) ->
-            "translate(" + [ 0, d3.event.y] + ")"
+            "translate(0, #{d3.event.y})"
         )
         if !(@currentSpot?) or (@currentSpot == -1) then @currentSpot = i
         @newSpot = i - Math.round((d3.event.y -  (d3.event.y % @yDiff)) / @yDiff)
@@ -82,7 +82,7 @@ class squareMenu extends basicMenu
             @_lastDirection = @direction
 
           @_group.select("#menuRect"+ newpos).attr("transform", (d,i) ->
-              "translate(" + [ 0, offset] + ")"
+              "translate(0, #{offset})"
           )
 
           @_orderChangedHandler(@newSpot, @currentSpot)
