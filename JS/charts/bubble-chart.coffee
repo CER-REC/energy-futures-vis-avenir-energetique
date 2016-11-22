@@ -286,8 +286,6 @@ class bubbleChart extends chart
         node.transition()
           .duration e.alpha * 10000
           .ease "linear"  
-<<<<<<< HEAD
-=======
           .attr
             transform: node_transform_function
 
@@ -300,7 +298,6 @@ class bubbleChart extends chart
           alpha: 0.05
       @force.stop()
 
->>>>>>> future-develop
     this
 
 

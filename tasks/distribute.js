@@ -1,8 +1,8 @@
 var execSync = require('child_process').execSync;
-var pjson = require('./package.json');
+var pjson = require('../package.json');
 var fs = require('fs-extra');
 require('coffee-script').register();
-var zip = require('./bin/zip-folder.coffee');
+var zip = require('./zip-folder.coffee');
 
 // We exclusively use the Node fs API here, to maintain portability with Windows
 

@@ -50,10 +50,10 @@ class squareMenu extends basicMenu
     @yDiff = @getRectY(@mappingLength() - 2) - questionMarkHeight  #The space between the squares 0 and 1 plus the boxes since we want it to go PAST the box
     if @_canDrag
       @_drag.on('dragstart',() => 
-          @_chart.dragStart()
-          @currentSpot = -1
-          @newSpot = -1
-          d3.event.sourceEvent.stopPropagation()
+        @_chart.dragStart()
+        @currentSpot = -1
+        @newSpot = -1
+        d3.event.sourceEvent.stopPropagation()
       )
       @_drag.on("drag", (d,i) =>
         # bring to front
