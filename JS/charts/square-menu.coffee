@@ -23,7 +23,7 @@ class squareMenu extends basicMenu
     orderChangedHandler: -> #Method that runs when draggin finished
     showHelpHandler: -> #Method that runs when the questionMark icon is clicked
 
-  constructor: (parent, options = {}) ->
+  constructor: (@app, parent, options = {}) ->
     @options = _.extend {}, @squareMenuDefaults, options
     
     #defaults
@@ -227,9 +227,9 @@ class squareMenu extends basicMenu
           class: 'pointerCursor'
           "xlink:href":  (d) =>
             if @_someSelected
-              Tr.allSelectorButton.someSelected[app.language]
+              Tr.allSelectorButton.someSelected[@app.language]
             else 
-              if @_allSelected then Tr.allSelectorButton.all[app.language] else Tr.allSelectorButton.none[app.language]
+              if @_allSelected then Tr.allSelectorButton.all[@app.language] else Tr.allSelectorButton.none[@app.language]
           x: '0px'
           width: @_boxSize
           height: @_boxSize

@@ -26,6 +26,8 @@ PopoverManager = require './PopoverManager.coffee'
 AboutThisProjectPopover = require './popovers/AboutThisProjectPopover.coffee'
 ImageDownloadPopover = require './popovers/ImageDownloadPopover.coffee'
 
+Constants = require './Constants.coffee'
+
 
 class App
 
@@ -35,6 +37,12 @@ class App
 
     @containingWindow = window.parent
 
+    # We need to specify the window where the visualization classes should do their work.
+    # On the client, this is just the browser window object. On the server, this becomes
+    # a jsdom window object.
+    @window = window
+
+    @animationDuration = Constants.animationDuration
 
     @loadFonts()
 
@@ -64,22 +72,21 @@ class App
 
 
     @popoverManager = new PopoverManager()
-    @aboutThisProjectPopover = new AboutThisProjectPopover()
-    @imageDownloadPopover = new ImageDownloadPopover()
+    @aboutThisProjectPopover = new AboutThisProjectPopover @
+    @imageDownloadPopover = new ImageDownloadPopover @
 
     @imageExporter = new ImageExporter @
 
 
     # TODO: Navbar and modal setup is getting weighty, might want to break it out into a separate class
 
-    document.getElementById('bottomNavBar').innerHTML = Mustache.render BottomNavBarTemplate,
-        aboutLink: Tr.allPages.aboutLink[app.language]
-        methodologyLinkText: Tr.allPages.methodologyLinkText[app.language]
-        methodologyLinkUrl: Tr.allPages.methodologyLinkUrl[app.language]
-        shareLabel: Tr.allPages.shareLabel[app.language]
-        dataDownloadLink: Tr.allPages.dataDownloadLink[app.language]
-        imageDownloadLink: Tr.allPages.imageDownloadLink[app.language]
-        # downloadsLabel: Tr.allPages.downloadsLabel[app.language]
+    @window.document.getElementById('bottomNavBar').innerHTML = Mustache.render BottomNavBarTemplate,
+        aboutLink: Tr.allPages.aboutLink[@language]
+        methodologyLinkText: Tr.allPages.methodologyLinkText[@language]
+        methodologyLinkUrl: Tr.allPages.methodologyLinkUrl[@language]
+        shareLabel: Tr.allPages.shareLabel[@language]
+        dataDownloadLink: Tr.allPages.dataDownloadLink[@language]
+        imageDownloadLink: Tr.allPages.imageDownloadLink[@language]
 
 
 
@@ -96,7 +103,7 @@ class App
     d3.select('#imageDownloadLink').on 'click', =>
       d3.event.preventDefault()
       d3.event.stopPropagation()
-      @imageExporter.createImage d3.event
+      @imageExporter.createImage()
 
     d3.select('#imageDownloadModal .closeButton').on 'click', =>
       d3.event.preventDefault()
@@ -117,7 +124,7 @@ class App
     metaTag
       .attr
         name: 'description'
-        content: Tr.allPages.metaDescription[app.language]
+        content: Tr.allPages.metaDescription[@language]
 
     keyWordsTag = if d3.selectAll('meta[name="keywords"]').empty() then d3.select('head').append('meta') else d3.select('meta[name="keywords"]')
     keyWordsTag
@@ -145,10 +152,10 @@ class App
           href: "humans.txt"
 
     # Configuration Objects
-    @visualization1Configuration = new Visualization1Configuration()
-    @visualization2Configuration = new Visualization2Configuration()
-    @visualization3Configuration = new Visualization3Configuration()
-    @visualization4Configuration = new Visualization4Configuration()
+    @visualization1Configuration = new Visualization1Configuration @
+    @visualization2Configuration = new Visualization2Configuration @
+    @visualization3Configuration = new Visualization3Configuration @
+    @visualization4Configuration = new Visualization4Configuration @
 
     # Data Providers
 
@@ -165,16 +172,23 @@ class App
     # two depend on all four. Also, viz2 depends on the largest file by far, which tends
     # to dominate its startup performance. But viz3 loads up a few seconds faster at least!
 
-    @electricityProductionProvider = new ElectricityProductionProvider =>
+    @electricityProductionProvider = new ElectricityProductionProvider @
+    @electricityProductionProvider.loadViaAjax =>
       @loadedStatus.electricityProductionProvider = true
       @setupRouter()
-    @energyConsumptionProvider = new EnergyConsumptionProvider =>
+
+    @energyConsumptionProvider = new EnergyConsumptionProvider()
+    @energyConsumptionProvider.loadViaAjax =>
       @loadedStatus.energyConsumptionProvider = true
       @setupRouter()
-    @oilProductionProvider = new OilProductionProvider =>
+
+    @oilProductionProvider = new OilProductionProvider()
+    @oilProductionProvider.loadViaAjax =>
       @loadedStatus.oilProductionProvider = true
       @setupRouter()
-    @gasProductionProvider = new GasProductionProvider =>
+
+    @gasProductionProvider = new GasProductionProvider()
+    @gasProductionProvider.loadViaAjax =>
       @loadedStatus.gasProductionProvider = true
       @setupRouter()
 
@@ -211,15 +225,16 @@ class App
   setupRouter: ->
     return if @router?
 
-    if Router.currentViewClass().resourcesLoaded()
+    if Router.currentViewClass().resourcesLoaded(@)
       @router = new Router @ 
 
 
 
 
 Domready ->
-  window.app = new App()
-  window.app.setup()
+  app = new App()
+  # window.parent.app = app
+  app.setup()
   
 
   

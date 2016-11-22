@@ -1,84 +1,110 @@
 _ = require 'lodash'
 d3 = require 'd3'
-_ = require 'lodash'
+Mustache = require 'mustache'
+
 
 visualization = require './visualization.coffee'
-unitUtilities = require '../unit-transformation.coffee'
 stackedAreaChart = require '../charts/stacked-area-chart.coffee'
 squareMenu = require '../charts/square-menu.coffee'
 Constants = require '../Constants.coffee'
-Mustache = require 'mustache'
 Tr = require '../TranslationTable.coffee'
+Platform = require '../Platform.coffee'
+ApplicationRoot = require '../../ApplicationRoot.coffee'
 
-Visualization2Template = require '../templates/Visualization2.mustache'
-SvgStylesheetTemplate = require '../templates/SvgStylesheet.css'
+
+if Platform.name == "browser"
+  Visualization2Template = require '../templates/Visualization2.mustache'
+  SvgStylesheetTemplate = require '../templates/SvgStylesheet.css'
+else if Platform.name == "server"
+  fs = require 'fs'
+  Visualization2ServerTemplate = fs.readFileSync("#{ApplicationRoot}/JS/templates/Visualization2Server.mustache").toString()
+  SvgStylesheetTemplate = fs.readFileSync("#{ApplicationRoot}/JS/templates/SvgStylesheet.css").toString()
 
 ControlsHelpPopover = require '../popovers/ControlsHelpPopover.coffee'
 
 
 class Visualization2 extends visualization
   height = 700 
-  width = 1000
 
-  constructor: (config) ->
-    document.getElementById('visualizationContent').innerHTML = Mustache.render Visualization2Template, 
-      selectSectorLabel: Tr.sectorSelector.selectSectorLabel[app.language]
-      selectUnitLabel: Tr.unitSelector.selectUnitLabel[app.language]
-      selectScenarioLabel: Tr.scenarioSelector.selectScenarioLabel[app.language]
-      selectRegionLabel: Tr.regionSelector.selectRegionLabel[app.language]
-      selectSourceLabel: Tr.sourceSelector.selectSourceLabel[app.language]
+  renderBrowserTemplate: ->
+    @app.window.document.getElementById('visualizationContent').innerHTML = Mustache.render Visualization2Template, 
+      selectSectorLabel: Tr.sectorSelector.selectSectorLabel[@app.language]
+      selectUnitLabel: Tr.unitSelector.selectUnitLabel[@app.language]
+      selectScenarioLabel: Tr.scenarioSelector.selectScenarioLabel[@app.language]
+      selectRegionLabel: Tr.regionSelector.selectRegionLabel[@app.language]
+      selectSourceLabel: Tr.sourceSelector.selectSourceLabel[@app.language]
       svgStylesheet: SvgStylesheetTemplate
 
-    @sectorsSelectorHelpPopover = new ControlsHelpPopover()
-    @unitsHelpPopover = new ControlsHelpPopover()
-    @scenariosHelpPopover = new ControlsHelpPopover()
-    @sourcesHelpPopover = new ControlsHelpPopover()
-    @provincesHelpPopover = new ControlsHelpPopover()
+    @sectorsSelectorHelpPopover = new ControlsHelpPopover(@app)
+    @unitsHelpPopover = new ControlsHelpPopover(@app)
+    @scenariosHelpPopover = new ControlsHelpPopover(@app)
+    @sourcesHelpPopover = new ControlsHelpPopover(@app)
+    @provincesHelpPopover = new ControlsHelpPopover(@app)
 
 
-    d3.select '.sectorSelectorHelpButton'
+    d3.select(@app.window.document).select '.sectorSelectorHelpButton'
       .on 'click', =>
         d3.event.stopPropagation()
         d3.event.preventDefault()
-        if app.popoverManager.currentPopover == @sectorsSelectorHelpPopover
-          app.popoverManager.closePopover()
+        if @app.popoverManager.currentPopover == @sectorsSelectorHelpPopover
+          @app.popoverManager.closePopover()
         else
-          app.popoverManager.showPopover @sectorsSelectorHelpPopover, 
+          @app.popoverManager.showPopover @sectorsSelectorHelpPopover, 
             outerClasses: 'vizModal floatingPopover sectorHelp'
             innerClasses: 'viz2HelpTitle'
-            title: Tr.sectorSelector.sectorSelectorHelpTitle[app.language]
-            content: Tr.sectorSelector.sectorSelectorHelp[app.language]
+            title: Tr.sectorSelector.sectorSelectorHelpTitle[@app.language]
+            content: Tr.sectorSelector.sectorSelectorHelp[@app.language]
             attachmentSelector: '.sectorSelectorGroup'
 
-    d3.select '.unitSelectorHelpButton'
+    d3.select(@app.window.document).select '.unitSelectorHelpButton'
       .on 'click', =>
         d3.event.stopPropagation()
         d3.event.preventDefault()
-        if app.popoverManager.currentPopover == @unitsHelpPopover
-          app.popoverManager.closePopover()
+        if @app.popoverManager.currentPopover == @unitsHelpPopover
+          @app.popoverManager.closePopover()
         else
-          app.popoverManager.showPopover @unitsHelpPopover, 
+          @app.popoverManager.showPopover @unitsHelpPopover, 
             outerClasses: 'vizModal floatingPopover unitSelectorHelp'
             innerClasses: 'viz2HelpTitle'
-            title: Tr.unitSelector.unitSelectorHelpTitle[app.language]
-            content: Tr.unitSelector.unitSelectorHelp[app.language]
+            title: Tr.unitSelector.unitSelectorHelpTitle[@app.language]
+            content: Tr.unitSelector.unitSelectorHelp[@app.language]
             attachmentSelector: '.unitsSelectorGroup'
 
-    d3.select '.scenarioSelectorHelpButton'
+    d3.select(@app.window.document).select '.scenarioSelectorHelpButton'
       .on 'click', =>
         d3.event.stopPropagation()
         d3.event.preventDefault()
-        if app.popoverManager.currentPopover == @scenariosHelpPopover
-          app.popoverManager.closePopover()
+        if @app.popoverManager.currentPopover == @scenariosHelpPopover
+          @app.popoverManager.closePopover()
         else
-          app.popoverManager.showPopover @scenariosHelpPopover, 
+          @app.popoverManager.showPopover @scenariosHelpPopover, 
             outerClasses: 'vizModal floatingPopover scenarioSelectorHelp'
             innerClasses: 'viz2HelpTitle'
-            title: Tr.scenarioSelector.scenarioSelectorHelpTitle[app.language]
-            content: Tr.scenarioSelector.scenarioSelectorHelp[app.language]
+            title: Tr.scenarioSelector.scenarioSelectorHelpTitle[@app.language]
+            content: Tr.scenarioSelector.scenarioSelectorHelp[@app.language]
             attachmentSelector: '.scenarioSelectorGroup'
 
+
+  renderServerTemplate: ->
+    @app.window.document.getElementById('visualizationContent').innerHTML = Mustache.render Visualization2ServerTemplate, 
+        svgStylesheet: SvgStylesheetTemplate
+        title: Tr.visualization2Title[@app.language]
+        description: @config.imageExportDescription()
+        energyFuturesSource: Tr.allPages.imageDownloadSource[@app.language]
+        bitlyLink: '' # TODO: Integrate with bitly
+        legendContent: @sourceLegendData()
+
+
+  constructor: (@app, config) ->
     super(config)
+
+    @getData()
+
+    if Platform.name == 'browser'
+      @renderBrowserTemplate()
+    else if Platform.name == 'server'
+      @renderServerTemplate()
+
     @_margin = 
       top: 20
       right: 60
@@ -88,7 +114,7 @@ class Visualization2 extends visualization
     @addUnitToggle()
     @addSectors()
     @addScenarios()
-    @getData()
+    @render()
 
   redraw: ->
     @svgSize()   
@@ -102,13 +128,13 @@ class Visualization2 extends visualization
         h: @height()
       @_chart.x(@xScale()) 
       @_chart.y(@yScale())
-      @_chart._duration = 1000 
+      @_chart._duration = @app.animationDuration
       @_chart.menu.size
-        w: d3.select('#powerSourcePanel').node().getBoundingClientRect().width
+        w: d3.select(@app.window.document).select('#powerSourcePanel').node().getBoundingClientRect().width
         h: @sourceMenuHeight()
     if @_provinceMenu
       @_provinceMenu.size
-        w: d3.select('#provincePanel').node().getBoundingClientRect().width
+        w: d3.select(@app.window.document).select('#provincePanel').node().getBoundingClientRect().width
         h: @sourceMenuHeight()
 
    #the graph's height
@@ -118,33 +144,44 @@ class Visualization2 extends visualization
   #arg so we want this menu to line up with the bottom of the x axis TICKS so those must be built before we can set this.
   sourceMenuHeight: ->
     @height() - 
-    d3.select('#powerSourcePanel span.titleLabel').node().getBoundingClientRect().height +
-    d3.select('#xAxis').node().getBoundingClientRect().height +
-    (d3.select('#xAxisForLabels text').node().getBoundingClientRect().height / 2)
+    d3.select(@app.window.document).select('#powerSourcePanel span.titleLabel').node().getBoundingClientRect().height +
+    d3.select(@app.window.document).select('#xAxis').node().getBoundingClientRect().height +
+    (d3.select(@app.window.document).select('#xAxisForLabels text').node().getBoundingClientRect().height / 2)
 
   #the graph's width
   width: ->
-    d3.select('#graphPanel').node().getBoundingClientRect().width - @_margin.left - @_margin.right
+    # getBoundingClientRect is not implemented in JSDOM, use fixed width on server
+    if Platform.name == 'browser'
+      d3.select(@app.window.document).select('#graphPanel').node().getBoundingClientRect().width - @_margin.left - @_margin.right
+    else if Platform.name == 'server'
+      Constants.serverSideGraphWidth - @_margin.left - @_margin.right
+
 
   svgSize: ->
-    d3.select '#graphSVG'
+    # getBoundingClientRect is not implemented in JSDOM, use fixed width on server
+    if Platform.name == 'browser'
+      svgWidth = d3.select(@app.window.document).select('#graphPanel').node().getBoundingClientRect().width
+    else if Platform.name == 'server'
+      svgWidth = Constants.serverSideGraphWidth
+
+    d3.select(@app.window.document).select '#graphSVG'
       .attr
-        width: d3.select('#graphPanel').node().getBoundingClientRect().width
+        width: svgWidth
         height: height
-    d3.select '#provinceMenuSVG'
+    d3.select(@app.window.document).select '#provinceMenuSVG'
       .attr
-        width: d3.select('#provincePanel').node().getBoundingClientRect().width
+        width: d3.select(@app.window.document).select('#provincePanel').node().getBoundingClientRect().width
         height: height - @_margin.top
-    d3.select "#powerSourceMenuSVG" 
+    d3.select(@app.window.document).select "#powerSourceMenuSVG" 
      .attr
-        width: d3.select('#powerSourcePanel').node().getBoundingClientRect().width
+        width: d3.select(@app.window.document).select('#powerSourcePanel').node().getBoundingClientRect().width
         height: height - @_margin.top
 
   sourceMenuData: ->
     sourcesWithColours = {  
         solarWindGeothermal:
           key: 'solarWindGeothermal'
-          tooltip: Tr.sourceSelector.sourceSelectorHelp.solarWindGeothermal[app.language]
+          tooltip: Tr.sourceSelector.sourceSelectorHelp.solarWindGeothermal[@app.language]
           img: 
             if @zeroedOut('solarWindGeothermal') 
               'IMG/sources/unavailable/solarWindGeo_unavailable.svg'
@@ -154,7 +191,7 @@ class Visualization2 extends visualization
           colour: '#339947'
         coal:
           key: 'coal'
-          tooltip: Tr.sourceSelector.sourceSelectorHelp.coal[app.language]
+          tooltip: Tr.sourceSelector.sourceSelectorHelp.coal[@app.language]
           img: 
             if @zeroedOut('coal') 
               'IMG/sources/unavailable/coal_unavailable.svg'
@@ -164,7 +201,7 @@ class Visualization2 extends visualization
           colour: '#996733'
         naturalGas:
           key: 'naturalGas' 
-          tooltip: Tr.sourceSelector.sourceSelectorHelp.naturalGas[app.language]
+          tooltip: Tr.sourceSelector.sourceSelectorHelp.naturalGas[@app.language]
           img: 
             if @zeroedOut('naturalGas') 
               'IMG/sources/unavailable/naturalGas_unavailable.svg'
@@ -174,7 +211,7 @@ class Visualization2 extends visualization
           colour: '#f16739'
         bio:
           key: 'bio' 
-          tooltip: Tr.sourceSelector.sourceSelectorHelp.bio[app.language]
+          tooltip: Tr.sourceSelector.sourceSelectorHelp.bio[@app.language]
           img: 
             if @zeroedOut('bio') 
               'IMG/sources/unavailable/biomass_unavailable.svg'
@@ -184,7 +221,7 @@ class Visualization2 extends visualization
           colour: '#8d68ac'
         oilProducts:
           key: 'oilProducts'
-          tooltip: Tr.sourceSelector.sourceSelectorHelp.oilProducts[app.language]
+          tooltip: Tr.sourceSelector.sourceSelectorHelp.oilProducts[@app.language]
           img: 
             if @zeroedOut('oilProducts') 
               'IMG/sources/unavailable/oil_products_unavailable.svg'
@@ -194,7 +231,7 @@ class Visualization2 extends visualization
           colour: '#cc6699'
         electricity:  
           key: 'electricity' 
-          tooltip: Tr.sourceSelector.sourceSelectorHelp.electricity[app.language]
+          tooltip: Tr.sourceSelector.sourceSelectorHelp.electricity[@app.language]
           img: 
             if @zeroedOut('electricity') 
               'IMG/sources/unavailable/electricity_unavailable.svg'
@@ -207,6 +244,40 @@ class Visualization2 extends visualization
     for source in @config.sourcesInOrder
       data.push(sourcesWithColours[source])
     data
+
+
+
+  sourceLegendData: ->
+    baseData = 
+      solarWindGeothermal:
+        img: '/IMG/sources/solarWindGeo_selected.svg' 
+        present: @config.sources.includes('solarWindGeothermal') and not @zeroedOut('solarWindGeothermal')
+      coal:
+        img: '/IMG/sources/coal_selected.svg' 
+        present: @config.sources.includes('coal') and not @zeroedOut('coal')
+      naturalGas:
+        img: '/IMG/sources/naturalGas_selected.svg' 
+        present: @config.sources.includes('naturalGas') and not @zeroedOut('naturalGas')
+      bio:
+        img: '/IMG/sources/biomass_selected.svg' 
+        present: @config.sources.includes('bio') and not @zeroedOut('bio')
+      oilProducts:
+        img: '/IMG/sources/oil_products_selected.svg' 
+        present: @config.sources.includes('oilProducts') and not @zeroedOut('oilProducts')
+      electricity:  
+        img: '/IMG/sources/electricity_selected.svg' 
+        present: @config.sources.includes('electricity') and not @zeroedOut('electricity')
+
+    data = []
+    for source in @config.sourcesInOrder
+      data.push baseData[source] if baseData[source].present
+
+    # Legend content is reversed because graph elements are built bottom to top,
+    # but html elements will be laid out top to bottom. 
+    data.reverse()
+    data
+
+
 
   colouredSourceIconsDictionary: ->
     sourcesWithColours = {  
@@ -248,101 +319,106 @@ class Visualization2 extends visualization
     [  
       {
         key: 'AB'
-        tooltip: Tr.regionSelector.names.AB[app.language]
+        tooltip: Tr.regionSelector.names.AB[@app.language]
         present: true
         colour: if @config.province == 'AB' then '#333' else '#fff'
         img: if @config.province == 'AB' then 'IMG/provinces/radio/AB_SelectedR.svg' else 'IMG/provinces/radio/AB_UnselectedR.svg'
       }
       {
         key: 'BC'
-        tooltip: Tr.regionSelector.names.BC[app.language]
+        tooltip: Tr.regionSelector.names.BC[@app.language]
         present: true
         colour: if @config.province == 'BC' then '#333' else '#fff'
         img: if @config.province == 'BC' then 'IMG/provinces/radio/BC_SelectedR.svg' else 'IMG/provinces/radio/BC_UnselectedR.svg'
       }
       {
         key: 'MB'
-        tooltip: Tr.regionSelector.names.MB[app.language]
+        tooltip: Tr.regionSelector.names.MB[@app.language]
         present: true
         colour: if @config.province == 'MB' then '#333' else '#fff'
         img: if @config.province == 'MB' then 'IMG/provinces/radio/MB_SelectedR.svg' else 'IMG/provinces/radio/MB_UnselectedR.svg'
       }     
       {
         key: 'NB'
-        tooltip: Tr.regionSelector.names.NB[app.language]
+        tooltip: Tr.regionSelector.names.NB[@app.language]
         present: true
         colour: if @config.province == 'NB' then '#333' else '#fff'
         img: if @config.province == 'NB' then 'IMG/provinces/radio/NB_SelectedR.svg' else 'IMG/provinces/radio/NB_UnselectedR.svg'
       }
       {
         key : 'NL'
-        tooltip: Tr.regionSelector.names.NL[app.language]
+        tooltip: Tr.regionSelector.names.NL[@app.language]
         present: true
         colour: if @config.province == 'NL' then '#333' else '#fff'
         img: if @config.province == 'NL' then 'IMG/provinces/radio/NL_SelectedR.svg' else 'IMG/provinces/radio/NL_UnselectedR.svg'
       }
       {
         key: 'NS'
-        tooltip: Tr.regionSelector.names.NS[app.language]
+        tooltip: Tr.regionSelector.names.NS[@app.language]
         present: true
         colour: if @config.province == 'NS' then '#333' else '#fff'
         img: if @config.province == 'NS' then 'IMG/provinces/radio/NS_SelectedR.svg' else 'IMG/provinces/radio/NS_UnselectedR.svg'
       }
       {
         key: 'NT'
-        tooltip: Tr.regionSelector.names.NT[app.language]
+        tooltip: Tr.regionSelector.names.NT[@app.language]
         present: true
         colour: if @config.province == 'NT' then '#333' else '#fff'
         img: if @config.province == 'NT' then 'IMG/provinces/radio/NT_SelectedR.svg' else 'IMG/provinces/radio/NT_UnselectedR.svg'
       }
       { 
         key: 'NU'
-        tooltip: Tr.regionSelector.names.NU[app.language]
+        tooltip: Tr.regionSelector.names.NU[@app.language]
         present: true
         colour: if @config.province == 'NU' then '#333' else '#fff'
         img: if @config.province == 'NU' then 'IMG/provinces/radio/NU_SelectedR.svg' else 'IMG/provinces/radio/NU_UnselectedR.svg'
       }
       { 
         key: 'ON'
-        tooltip: Tr.regionSelector.names.ON[app.language]
+        tooltip: Tr.regionSelector.names.ON[@app.language]
         present: true
         colour: if @config.province == 'ON' then '#333' else '#fff'
         img: if @config.province == 'ON' then 'IMG/provinces/radio/ON_SelectedR.svg' else 'IMG/provinces/radio/ON_UnselectedR.svg'
       }
       {
         key: 'PE'
-        tooltip: Tr.regionSelector.names.PE[app.language]
+        tooltip: Tr.regionSelector.names.PE[@app.language]
         present: true
         colour: if @config.province == 'PE' then '#333' else '#fff'
         img: if @config.province == 'PE' then 'IMG/provinces/radio/PEI_SelectedR.svg' else 'IMG/provinces/radio/PEI_UnselectedR.svg'
       }
       { 
         key: 'QC'
-        tooltip: Tr.regionSelector.names.QC[app.language]
+        tooltip: Tr.regionSelector.names.QC[@app.language]
         present: true
         colour: if @config.province == 'QC' then '#333' else '#fff'
         img: if @config.province == 'QC' then 'IMG/provinces/radio/QC_SelectedR.svg' else 'IMG/provinces/radio/QC_UnselectedR.svg'
       }
       {
         key: 'SK'
-        tooltip: Tr.regionSelector.names.SK[app.language]
+        tooltip: Tr.regionSelector.names.SK[@app.language]
         present: true
         colour: if @config.province == 'SK' then '#333' else '#fff'
         img: if @config.province == 'SK' then 'IMG/provinces/radio/Sask_SelectedR.svg' else 'IMG/provinces/radio/Sask_UnselectedR.svg'
       }
       {
         key: 'YT'
-        tooltip: Tr.regionSelector.names.YT[app.language]
+        tooltip: Tr.regionSelector.names.YT[@app.language]
         present: true
         colour: if @config.province == 'YT' then '#333' else '#fff'
         img: if @config.province == 'YT' then 'IMG/provinces/radio/Yukon_SelectedR.svg' else 'IMG/provinces/radio/Yukon_UnselectedR.svg'
       }
     ]
 
-  #csv parsing within method
-  getData: ()->
-    @seriesData = app.energyConsumptionProvider.dataForViz2 @config
-    @yAxisData = app.energyConsumptionProvider.dataForAllViz2Scenarios @config
+  getDataAndRender: ->
+    @getData()
+    @render()
+    
+  getData: ->
+    @seriesData = @app.energyConsumptionProvider.dataForViz2 @config
+    @yAxisData = @app.energyConsumptionProvider.dataForAllViz2Scenarios @config
+
+  render: ->
     if @_chart?
       @adjustViz()
     else
@@ -384,12 +460,12 @@ class Visualization2 extends visualization
 
   #Redraws the Y axis
   buildYAxis: (transition = true) ->
-    axis = d3.select("#yAxis")
+    axis = d3.select(@app.window.document).select("#yAxis")
       .attr
         transform: "translate(#{@width() + @_margin.left}, #{@_margin.top})"
     
     axis.transition()
-        .duration 1000
+        .duration @app.animationDuration
         .ease "linear" 
         .call(@yAxis())
     
@@ -407,13 +483,13 @@ class Visualization2 extends visualization
         'stroke-width': "1"
         'shape-rendering': 'crispEdges'
 
-    gridLines = d3.select("#yAxisGrid")
+    gridLines = d3.select(@app.window.document).select("#yAxisGrid")
       .attr
         transform: "translate(#{@width() + @_margin.left}, #{@_margin.top})"
       
     if transition  
       gridLines.transition()
-          .duration 1000
+          .duration @app.animationDuration
           .ease "linear" 
           .call(@yAxisGridLines())
     else
@@ -465,7 +541,7 @@ class Visualization2 extends visualization
 
   buildXAxis: (transition= true) ->
     # Add axis which use the chart's height
-    axis = d3.select("#xAxisForTicks")
+    axis = d3.select(@app.window.document).select("#xAxisForTicks")
       .attr
         transform: "translate(#{@_margin.left}, #{@height() + @_margin.top})"
       .call(@xAxisForTicks())   
@@ -484,14 +560,14 @@ class Visualization2 extends visualization
         'stroke-width': "1"
         'shape-rendering': 'crispEdges'
 
-    gridLines = d3.select '#xAxisGrid'
+    gridLines = d3.select(@app.window.document).select '#xAxisGrid'
       .attr
         transform: "translate(#{@_margin.left}, #{@height() + @_margin.top})"
       
     if transition  
       gridLines.transition()
         .ease "linear"
-        .duration 1000 
+        .duration @app.animationDuration
           .call @xAxisGridLines()  
     else
       gridLines.call @xAxisGridLines()
@@ -510,7 +586,7 @@ class Visualization2 extends visualization
         'stroke-width': "1"
         'shape-rendering': 'crispEdges'
 
-    axisForLabels = d3.select("#xAxisForLabels")
+    axisForLabels = d3.select(@app.window.document).select("#xAxisForLabels")
         .attr
           transform: "translate(#{@_margin.left}, #{@height() + @_margin.top})"
         .call(@xAxisForLabels())
@@ -521,24 +597,31 @@ class Visualization2 extends visualization
             dy: "1.5em"
 
   buildForecast: ->
-    d3.selectAll('.forecast').remove()
-    d3.select('#graphSVG')
+    d3.select(@app.window.document).selectAll('.forecast').remove()
+
+    textX = @_margin.left + @xScale()(2015)
+    textY = height - 16    
+    d3.select(@app.window.document).select('#graphSVG')
       .append("text")
         .attr
           class: 'forecast forecastLabel'
-          transform: "translate(#{@_margin.left + @xScale()(2015)},#{@height() + @_margin.top + d3.select('#xAxis').node().getBoundingClientRect().height + d3.select('#xAxisForLabels text').node().getBoundingClientRect().height})"
+          transform: "translate(#{textX},#{textY})" 
           fill: '#999'
         .style("text-anchor", "start")
-        .text(Tr.forecastLabel[app.language])
-    d3.select('#graphSVG')
+        .text(Tr.forecastLabel[@app.language])
+
+    arrowX = @_margin.left + @xScale()(2015) + 65
+    arrowY = height - 27
+    d3.select(@app.window.document).select('#graphSVG')
       .append("image")
         .attr
           class: 'forecast'
-          transform: "translate(#{@_margin.left + @xScale()(2015) + d3.select('#graphSVG .forecastLabel').node().getBoundingClientRect().width},#{@height() + @_margin.top + d3.select('#xAxis').node().getBoundingClientRect().height + (d3.select('#xAxisForLabels text').node().getBoundingClientRect().height /2)})" 
-          "xlink:href":  'IMG/forecast_arrow.svg'
+          transform: "translate(#{arrowX},#{arrowY})" 
+          "xlink:xlink:href": '/IMG/forecast_arrow.svg'
           height: 9
           width: 200
-    d3.select('#graphSVG')
+
+    d3.select(@app.window.document).select('#graphSVG')
       .append("line")
         .attr
           class: 'forecast'
@@ -547,7 +630,7 @@ class Visualization2 extends visualization
           x1: @_margin.left + @xScale()(2014) #We want the line in the middle of the years
           y1: @height() + @_margin.top 
           x2: @_margin.left + @xScale()(2014)  #We want the line in the middle of the years
-          y2: @height() + @_margin.top + d3.select('#xAxis').node().getBoundingClientRect().height + d3.select('#xAxis text').node().getBoundingClientRect().height
+          y2: height - 16
 
   buildViz:  ->
     @buildYAxis()
@@ -568,14 +651,14 @@ class Visualization2 extends visualization
       mapping:
         @sourceMenuData()
       duration:
-        1000
+        @app.animationDuration
       groupId:
         'graphGroup'
       menuOptions: 
         selector: '#powerSourceMenuSVG'
         boxSize: 37.5
         size: 
-          w: d3.select('#powerSourcePanel').node().getBoundingClientRect().width
+          w: d3.select(@app.window.document).select('#powerSourcePanel').node().getBoundingClientRect().width
           h: @sourceMenuHeight()
         onSelected:
           @menuSelect
@@ -591,7 +674,7 @@ class Visualization2 extends visualization
           @selectAllStacked
         groupId:
           'stackMenu'
-    @_chart = new stackedAreaChart("#graphSVG", @xScale(), @yScale(), stackedOptions)   
+    @_chart = new stackedAreaChart(@app, "#graphSVG", @xScale(), @yScale(), stackedOptions)   
     @_provinceMenu = @buildProvinceMenu()
 
   adjustViz: (data, key, sumBy) ->
@@ -614,17 +697,17 @@ class Visualization2 extends visualization
     
   menuSelect: (key, regionIndex) =>
     @config.flipSource(key)
-    @getData()
+    @getDataAndRender()
 
   selectAllStacked: (selecting) =>
     @config.resetSources selecting 
-    @getData()
+    @getDataAndRender()
 
   showSourceNames: =>
     d3.event.stopPropagation()
     d3.event.preventDefault()
-    if app.popoverManager.currentPopover == @sourcesHelpPopover
-      app.popoverManager.closePopover()
+    if @app.popoverManager.currentPopover == @sourcesHelpPopover
+      @app.popoverManager.closePopover()
     else
       #Grab the provinces in order for the string
       contentString = ""
@@ -632,17 +715,17 @@ class Visualization2 extends visualization
         contentString = """
           <div class="sourceLabel sourceLabel#{source.key}"> 
             <img class="sourceIcon" src="#{@colouredSourceIconsDictionary()[source.key]}">
-            <h6> #{Tr.sourceSelector.sources[source.key][app.language]} </h6> 
+            <h6> #{Tr.sourceSelector.sources[source.key][@app.language]} </h6> 
             <div class="clearfix"> </div>
-            <p> #{Tr.sourceSelector.sourceSelectorHelp[source.key][app.language]} </p>
+            <p> #{Tr.sourceSelector.sourceSelectorHelp[source.key][@app.language]} </p>
           </div>
           """ + contentString
-      contentString = Tr.sourceSelector.sourceSelectorHelp.generalHelp[app.language] + contentString
+      contentString = Tr.sourceSelector.sourceSelectorHelp.generalHelp[@app.language] + contentString
 
-      app.popoverManager.showPopover @sourcesHelpPopover, 
+      @app.popoverManager.showPopover @sourcesHelpPopover, 
         outerClasses: 'vizModal floatingPopover popOverLg sourceSelectorHelp'
         innerClasses: 'localHelpTitle'
-        title: Tr.sourceSelector.selectSourceLabel[app.language]
+        title: Tr.sourceSelector.selectSourceLabel[@app.language]
         content: contentString
         attachmentSelector: '#powerSourceSelector'
 
@@ -651,7 +734,7 @@ class Visualization2 extends visualization
   buildProvinceMenu: ->
     provinceOptions=
       size: 
-          w: d3.select('#provinceMenuSVG').node().getBoundingClientRect().width
+          w: d3.select(@app.window.document).select('#provinceMenuSVG').node().getBoundingClientRect().width
           h: @sourceMenuHeight()
       canDrag: false
       hasChart: false
@@ -667,41 +750,41 @@ class Visualization2 extends visualization
         @showProvinceNames
       groupId:
         'provinceMenu'
-    new squareMenu('#provinceMenuSVG', provinceOptions) 
+    new squareMenu(@app, '#provinceMenuSVG', provinceOptions) 
 
   selectAllProvince: (selecting) =>
     @config.setProvince 'all'
     @_provinceMenu.allSelected(true)
     @_provinceMenu.data(@dataForProvinceMenu())
-    @getData()
+    @getDataAndRender()
 
   provinceSelected: (key, regionIndex)=>
     @_provinceMenu.allSelected(false)
     @config.setProvince key
     @_provinceMenu.data(@dataForProvinceMenu())
     @_provinceMenu.redraw()
-    @getData()
+    @getDataAndRender()
 
   showProvinceNames: =>
     d3.event.stopPropagation()
     d3.event.preventDefault()
-    if app.popoverManager.currentPopover == @provincesHelpPopover
-      app.popoverManager.closePopover()
+    if @app.popoverManager.currentPopover == @provincesHelpPopover
+      @app.popoverManager.closePopover()
     else
       #Grab the provinces in order for the string
       contentString = ""
       for province in @dataForProvinceMenu()
-        contentString = """<div class="provinceLabel"> <h6> #{Tr.regionSelector.names[province.key][app.language]} </h6> </div>""" + contentString
+        contentString = """<div class="provinceLabel"> <h6> #{Tr.regionSelector.names[province.key][@app.language]} </h6> </div>""" + contentString
 
-      app.popoverManager.showPopover @provincesHelpPopover, 
+      @app.popoverManager.showPopover @provincesHelpPopover, 
         outerClasses: 'vizModal floatingPopover popOverSm provinceHelp'
         innerClasses: 'localHelpTitle'
-        title: Tr.regionSelector.selectRegionLabel[app.language]
+        title: Tr.regionSelector.selectRegionLabel[@app.language]
         content: contentString
         attachmentSelector: '#provincesSelector'
 
 
-Visualization2.resourcesLoaded = ->
+Visualization2.resourcesLoaded = (app) ->
   app.loadedStatus.energyConsumptionProvider
 
 

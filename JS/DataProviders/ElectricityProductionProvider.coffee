@@ -1,66 +1,50 @@
 d3 = require 'd3'
+
 Constants = require '../Constants.coffee'
 UnitTransformation = require '../unit-transformation.coffee'
 Tr = require '../TranslationTable.coffee'
 
 class ElectricityProductionProvider
 
-
-
-  constructor: (loadedCallback) ->
-
+  constructor: ->
     @data = null
+
+  loadViaAjax: (loadedCallback) ->
     @loadedCallback = loadedCallback
+    d3.csv "CSV/2016-10-27_ElectricityGeneration.csv", @mapping, @parseData
+    # d3.csv "CSV/2016-10-19_ElectricityGeneration.csv", @mapping, @parseData
+    # d3.csv "CSV/2016-01_ElectricityGeneration.csv", @mapping, @parseData,
 
-    d3.csv "CSV/2016-10-27_ElectricityGeneration.csv", @csvMapping, @parseData
-    # d3.csv "CSV/2016-10-19_ElectricityGeneration.csv", @csvMapping, @parseData
-    # d3.csv "CSV/2016-01_ElectricityGeneration.csv", @csvMapping, @parseData
-  
+  loadFromString: (data) ->
+    @parseData null, d3.csv.parse(data, @mapping)
 
-
-
-
-  csvMapping: (d) ->
-    province: d.Area
-    source: d.Source
-    scenario: d.Case
-    year: parseInt(d.Year)
-    value: parseFloat(d.Data.replace(',',''))
+  mapping: (d) ->
+    province: d.province
+    source: d.source
+    scenario: d.scenario
+    year: parseInt(d.year)
+    value: parseFloat(d.value)
+    unit: d.unit
 
   parseData: (error, data) =>
     console.warn error if error?
     @data = data
 
-    # Normalize some of the data in the CSV, to make life easier later
-    # TODO: precompute some of these changes?
-
-    for item in @data
-      item.scenario = Constants.csvScenarioToScenarioNameMapping[item.scenario]
-
-    for item in @data
-      item.source = Constants.csvSourceToSourceNameMapping[item.source]
-
-    for item in @data
-      item.province = Constants.csvProvinceToProvinceCodeMapping[item.province]
-
-    @data = @data.filter (item) ->
-      item.source not in ['crudeOil', 'electricity']
-
     @dataByProvince = 
-      'BC' : []
-      'AB' : []
-      'SK' : []
-      'MB' : []
-      'ON' :  []
-      'QC' : []
-      'NB' : []
-      'NS' : []
-      'NL' : []
-      'PE' : []
-      'YT' :  []
-      'NT' :  []
-      'NU' :  []
-      'all' : []
+      BC: []
+      AB: []
+      SK: []
+      MB: []
+      ON: []
+      QC: []
+      NB: []
+      NS: []
+      NL: []
+      PE: []
+      YT: []
+      NT: []
+      NU: []
+      all: []
 
     @dataBySource = 
       hydro: []
@@ -82,51 +66,14 @@ class ElectricityProductionProvider
       noLng: []
       constrained: []
 
-    @calculateTotalsForCanada()
-
     for item in @data
       @dataByScenario[item.scenario].push item
       @dataByProvince[item.province].push item
       @dataBySource[item.source].push item
 
-    @loadedCallback()
+    @loadedCallback() if @loadedCallback
 
     
-
-  # We need certain totals for viz4 which aren't present in the data.
-  # We compute them, and add them to the existing data in memory
-  # NB: We are only calculating these totals for Total Generation, we are not calculating
-  # them out for each power source!
-  calculateTotalsForCanada: ->
-    # We're only interested in total generation, not individual sources
-    totalGenerationData = @data.filter (item) ->
-      item.source == 'total'
-
-    # Break data out by year and scenario
-    totalGenerationByYearAndScenario = {}
-    for year in Constants.years
-      totalGenerationByYearAndScenario[year] = {}
-      for scenario in Constants.scenarios
-        totalGenerationByYearAndScenario[year][scenario] = []
-
-    for item in totalGenerationData
-      totalGenerationByYearAndScenario[item.year][item.scenario].push item
-
-    # For each set of provincial/territorial data in each year and scenario, 
-    # find the sum of their production, and add it to the raw data for the provider
-
-    for scenario in Constants.scenarios
-      for year in Constants.years
-        sum = totalGenerationByYearAndScenario[year][scenario].reduce (sum, item) ->
-          sum + item.value
-        , 0
-
-        @data.push
-          province: 'all'
-          source: 'total'
-          scenario: scenario
-          year: year
-          value: sum
 
 
 
@@ -286,7 +233,7 @@ class ElectricityProductionProvider
             children: []
           )
         bubbleObj.children[childrenKeys[source]].children.push(
-          name: if viz3config.viewBy == 'province' then "#{Tr.sourceSelector.sources[item[nameField]][app.language]} #{source}" else "#{item[nameField]} #{Tr.sourceSelector.sources[source][app.language]}"  #for titles
+          name: if viz3config.viewBy == 'province' then "#{Tr.sourceSelector.sources[item[nameField]][viz3config.language]} #{source}" else "#{item[nameField]} #{Tr.sourceSelector.sources[source][viz3config.language]}"  #for titles
           id: "#{item[nameField]}#{source}" #to distinguish
           source: item[nameField]
           size: if viz3config[stackedFilterName].includes item[nameField] then item.value else 1
@@ -363,6 +310,7 @@ class ElectricityProductionProvider
         filteredData[scenarioName] = unfilteredData[scenarioName]
 
     filteredData
+
 
 
 

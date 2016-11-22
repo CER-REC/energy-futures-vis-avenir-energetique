@@ -487,6 +487,24 @@ div.chartTooltip:after {
   padding: 3px;
 }
 
+#canadasEnergyFutureVisualization #imageDownloadSpinner {
+  box-sizing: border-box;
+  margin-left: 45%;
+  margin-right: 45%;
+  width: 10%;
+  margin-top: 10px;
+  border: 1px solid #e5e5e5;
+  padding: 3px;
+}
+
+#canadasEnergyFutureVisualization #modalImageDownloadButtonContainer {
+  margin: 10px 0px 10px 0px;
+}
+
+#canadasEnergyFutureVisualization #modalImageDownloadButton {
+  color: #333333;
+}
+
 #canadasEnergyFutureVisualization #imageDownloadModal p {
   margin: 0;
   padding: 10px 0px 10px 0px;

@@ -46,22 +46,13 @@ class stackedAreaChart extends stackedBarChart
   stackedAreaDefaults:
     strokeWidth: 1
 
-  constructor:(parent, x, y, options = {}) ->
-
-    document.onmousemove = @handleMouseMove
+  constructor: (@app, parent, x, y, options = {}) ->
+    @app.window.document.onmousemove = @handleMouseMove
 
     @options = _.extend {}, @stackedAreaDefaults, options
     @_strokeWidth = @options.strokeWidth
-    super(parent, x, y, @options)
+    super(@app, parent, x, y, @options)
     @redraw()
-
-    root.tooltip = d3.select("body")
-      .append("div")
-      .attr(
-        id: "tooltip"
-        class: "chartTooltip"
-      )
-      .text("")
 
   handleMouseMove: (event) =>
     root.mousePos = {x: event.pageX, y: event.pageY}
@@ -72,7 +63,7 @@ class stackedAreaChart extends stackedBarChart
       if current?
         titletobe = @_stackDictionary[root.activeSource].values.filter((value) -> value.x == current.year)
         titletobe = titletobe[0]
-        document.getElementById("tooltip").innerHTML = Tr.sourceSelector.sources[root.activeSource][app.language] + " (" + current.year + "): " + titletobe.y.toFixed(2)
+        @app.window.document.getElementById("tooltip").innerHTML = Tr.sourceSelector.sources[root.activeSource][@app.language] + " (" + current.year + "): " + titletobe.y.toFixed(2)
 
   # When dragging we want a shorter duration
   dragStart: ->
@@ -165,16 +156,16 @@ class stackedAreaChart extends stackedBarChart
       presentArea = @_group.selectAll(".presentArea")
           .data(@_mapping, (d) -> d.key)
           .on "mouseover", (d) =>
-            document.getElementById("tooltip").style.visibility = "visible"
-            document.getElementById("tooltip").style.top = (d3.event.pageY-10) + "px"
-            document.getElementById("tooltip").style.left = (d3.event.pageX+10) + "px"
+            @app.window.document.getElementById("tooltip").style.visibility = "visible"
+            @app.window.document.getElementById("tooltip").style.top = (d3.event.pageY-10) + "px"
+            @app.window.document.getElementById("tooltip").style.left = (d3.event.pageX+10) + "px"
             root.activeArea = "present"+d.key
             root.activeSource = d.key
           .on "mousemove", (d) =>
-            document.getElementById("tooltip").style.top = (d3.event.pageY-10) + "px"
-            document.getElementById("tooltip").style.left = (d3.event.pageX+10) + "px"
+            @app.window.document.getElementById("tooltip").style.top = (d3.event.pageY-10) + "px"
+            @app.window.document.getElementById("tooltip").style.left = (d3.event.pageX+10) + "px"
           .on "mouseout", (d) =>
-            document.getElementById("tooltip").style.visibility = "hidden"
+            @app.window.document.getElementById("tooltip").style.visibility = "hidden"
             root.activeArea = null
             root.activeSource = null
 
@@ -191,16 +182,16 @@ class stackedAreaChart extends stackedBarChart
       futureArea = @_group.selectAll(".futureArea")
           .data(@_mapping, (d) -> d.key)
           .on "mouseover", (d) =>
-            document.getElementById("tooltip").style.visibility = "visible"
-            document.getElementById("tooltip").style.top = (d3.event.pageY-10) + "px"
-            document.getElementById("tooltip").style.left = (d3.event.pageX+10) + "px"
+            @app.window.document.getElementById("tooltip").style.visibility = "visible"
+            @app.window.document.getElementById("tooltip").style.top = (d3.event.pageY-10) + "px"
+            @app.window.document.getElementById("tooltip").style.left = (d3.event.pageX+10) + "px"
             root.activeArea = "future"+d.key
             root.activeSource = d.key
           .on "mousemove", (d) =>
-            document.getElementById("tooltip").style.top = (d3.event.pageY-10) + "px"
-            document.getElementById("tooltip").style.left = (d3.event.pageX+10) + "px"
+            @app.window.document.getElementById("tooltip").style.top = (d3.event.pageY-10) + "px"
+            @app.window.document.getElementById("tooltip").style.left = (d3.event.pageX+10) + "px"
           .on "mouseout", (d) =>
-            document.getElementById("tooltip").style.visibility = "hidden"
+            @app.window.document.getElementById("tooltip").style.visibility = "hidden"
             root.activeArea = null
             root.activeSource = null
 

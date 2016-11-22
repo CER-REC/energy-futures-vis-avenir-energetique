@@ -68,22 +68,19 @@ module.exports =
       en: 'SCENARIOS'
       fr: 'SCÉNARIOS'
 
-    # downloadsLabel:
-    #   en: 'DOWNLOADS:'
-    #   fr: 'TÉLÉCHARGEMENTS:'
     imageDownloadLink:
       en: 'DOWNLOAD IMAGE'
       fr: "TÉLÉCHARGEMENT D'IMAGE"
     dataDownloadLink:
       en: 'DOWNLOAD DATA'
       fr: 'TÉLÉCHARGEMENT DES DONNÉES'
+    download:
+      en: 'DOWNLOAD'
+      fr: 'TÉLÉCHARGER'
 
     imageDownloadHeader: 
       en: "IMAGE DOWNLOAD"
       fr: "TÉLÉCHARGEMENT D'IMAGE"
-    imageDownloadInstructions: 
-      en: "You can save this image and share it with others. (Right click, save image as...)"
-      fr: "Vous pouvez télécharger et partager cette image. (Appuyez sur le bouton droite, enregistrer l'image sous...)"
     bitlyLinkInstructions:
       en: "To interact with this visualization, visit: "
       fr: "Pour manipuler cette visualisation, visitez: "
@@ -924,6 +921,11 @@ module.exports =
           'HYDRO'
         fr:
           'HYDROÉLECTRICITÉ'
+      total:
+        en: 
+          'ALL SOURCES'
+        fr: 
+          'TOUTES LES SOURCES'
 
 
 
@@ -1155,6 +1157,14 @@ module.exports =
         # • Crude Oil:
         # • Électricité
         # • Pétrole brut
+    viewBy:
+      province:
+        en: 'REGION'
+        fr: 'RÉGION'
+      source:
+        en: 'SOURCE'
+        fr: 'SOURCE'
+
 
   howToImages: 
     viz1A:

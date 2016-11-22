@@ -1,12 +1,21 @@
 d3 = require 'd3'
 Mustache = require 'mustache'
 
-QuestionmarkPopoverTemplate = require '../templates/QuestionmarkPopover.mustache'
+Platform = require '../Platform.coffee'
+ApplicationRoot = require '../../ApplicationRoot.coffee'
+
+
+if Platform.name == "browser"
+  QuestionmarkPopoverTemplate = require '../templates/QuestionmarkPopover.mustache'
+else if Platform.name == "server"
+  fs = require 'fs'
+  QuestionmarkPopoverTemplate = fs.readFileSync "#{ApplicationRoot}/JS/templates/QuestionmarkPopover.mustache"
+
 
 
 class ControlsHelpPopover
 
-  constructor: ->
+  constructor: (@app) ->
 
   show: (options) ->
 
@@ -22,7 +31,7 @@ class ControlsHelpPopover
     d3.select(options.attachmentSelector).node().appendChild newEl
 
     d3.select '.floatingPopover .closeButton'
-      .on 'click', -> app.popoverManager.closePopover()
+      .on 'click', => @app.popoverManager.closePopover()
 
     # Prevent clicks on the popover from propagating up to the body element, which would
     # cause the popover to be closed.

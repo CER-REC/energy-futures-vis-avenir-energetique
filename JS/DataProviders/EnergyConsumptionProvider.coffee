@@ -1,68 +1,51 @@
 d3 = require 'd3'
+
 Constants = require '../Constants.coffee'
 UnitTransformation = require '../unit-transformation.coffee'
 
 class EnergyConsumptionProvider
 
-
-
-  constructor: (loadedCallback) ->
-
+  constructor: ->
     @data = null
+
+  loadViaAjax: (loadedCallback) ->
     @loadedCallback = loadedCallback
-
-    d3.csv "CSV/2016-10-18_EnergyDemand.csv", @csvMapping, @parseData
-    # d3.csv "CSV/2016-01_EnergyDemand.csv", @csvMapping, @parseData
+    d3.csv "CSV/2016-10-18_EnergyDemand.csv", @mapping, @parseData
+    # d3.csv "CSV/2016-01_EnergyDemand.csv", @mapping, @parseData
   
+  loadFromString: (data) ->
+    @parseData null, d3.csv.parse(data, @mapping) 
 
 
-
-
-  csvMapping: (d) ->
-    province: d.Area
-    sector: d.Sector
-    source: d.Source
-    scenario: d.Case
-    year: parseInt(d.Year)
-    value: parseFloat(d.Data)
+  mapping: (d) ->
+    province: d.province
+    sector: d.sector
+    source: d.source
+    scenario: d.scenario
+    year: parseInt(d.year)
+    value: parseFloat(d.value)
+    unit: d.unit
 
   parseData: (error, data) =>
     console.warn error if error?
     @data = data
-    
-    # Normalize some of the data in the CSV, to make life easier later
-    # TODO: precompute some of these changes?
 
-    for item in @data
-      item.scenario = Constants.csvScenarioToScenarioNameMapping[item.scenario]
-
-    for item in @data
-      item.source = Constants.csvSourceToSourceNameMapping[item.source]
-
-    for item in @data
-      item.sector = Constants.csvSectorToSectorNameMapping[item.sector]
-
-    for item in @data
-      item.province = Constants.csvProvinceToProvinceCodeMapping[item.province]
-
-    @data.filter (item) ->
-      item.source not in ['crudeOil', 'nuclear', 'hydro']
 
     @dataByProvince = 
-      'BC' : []
-      'AB' : []
-      'SK' : []
-      'MB' : []
-      'ON' :  []
-      'QC' : []
-      'NB' : []
-      'NS' : []
-      'NL' : []
-      'PE' : []
-      'YT' :  []
-      'NT' :  []
-      'NU' :  []
-      'all' : []
+      BC: []
+      AB: []
+      SK: []
+      MB: []
+      ON: []
+      QC: []
+      NB: []
+      NS: []
+      NL: []
+      PE: []
+      YT: []
+      NT: []
+      NU: []
+      all: []
 
     @dataByScenario = 
       reference: []
@@ -84,20 +67,12 @@ class EnergyConsumptionProvider
       electricity: []
       total: []
 
-    # @dataBySector = 
-    #   total: []
-    #   residential: []
-    #   commercial: []
-    #   industrial: []
-    #   transportation: []
-
     for item in @data
       @dataByScenario[item.scenario].push item
       @dataByProvince[item.province].push item
-      # @dataBySector[item.sector].push item
       @dataBySource[item.source].push item
 
-    @loadedCallback()
+    @loadedCallback() if @loadedCallback
     
     
   # accessors note: EnergyConsumptionProvider is never needed for viz 3!!
@@ -289,6 +264,8 @@ class EnergyConsumptionProvider
         filteredData[scenarioName] = unfilteredData[scenarioName]
 
     filteredData
+
+
 
 
 

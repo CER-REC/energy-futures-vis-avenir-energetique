@@ -9,15 +9,8 @@ class stackedBarChart extends barChart
   stackedChartDefaults: 
     menuOptions: {}
 
-  constructor:(parent, x, y, options = {}) ->
 
-    root.tooltip = d3.select("body")
-      .append("div")
-      .attr(
-        id: "tooltip"
-        class: "chartTooltip"
-      )
-      .text("")
+  constructor: (@app, parent, x, y, options = {}) ->
 
     @options = _.extend {}, @stackedChartDefaults, options
     @_stackData = []
@@ -25,7 +18,7 @@ class stackedBarChart extends barChart
     @_mapping = if @options.mapping then @options.mapping else null # Maybe this is required?
     super(parent, x, y, @options)
     @options.menuOptions.chart = this
-    @menu = new squareMenu(@options.menuOptions.selector, @options.menuOptions)
+    @menu = new squareMenu(@app, @options.menuOptions.selector, @options.menuOptions)
     @menu.data(@_mapping)
     @redraw()
 
@@ -89,18 +82,18 @@ class stackedBarChart extends barChart
       rect = layer.selectAll(".bar")
           .data(((d, i) =>  @_stackDictionary[d.key].values.map((yearData) -> {name: d.key, data: yearData})))
           .on "mouseover", (d) =>
-            document.getElementById("tooltip").style.visibility = "visible"
-            document.getElementById("tooltip").style.top = (d3.event.pageY-10) + "px"
-            document.getElementById("tooltip").style.left = (d3.event.pageX+10) + "px"
-            document.getElementById("tooltip").innerHTML = d.name + " (" + d.data.x + "): "+ d.data.y.toFixed(2)
+            @app.window.document.getElementById("tooltip").style.visibility = "visible"
+            @app.window.document.getElementById("tooltip").style.top = (d3.event.pageY-10) + "px"
+            @app.window.document.getElementById("tooltip").style.left = (d3.event.pageX+10) + "px"
+            @app.window.document.getElementById("tooltip").innerHTML = d.name + " (" + d.data.x + "): "+ d.data.y.toFixed(2)
 
           .on "mousemove", (d) =>
-            document.getElementById("tooltip").style.top = (d3.event.pageY-10) + "px"
-            document.getElementById("tooltip").style.left = (d3.event.pageX+10) + "px"
-            document.getElementById("tooltip").innerHTML = d.name + " (" + d.data.x + "): "+ d.data.y.toFixed(2)
+            @app.window.document.getElementById("tooltip").style.top = (d3.event.pageY-10) + "px"
+            @app.window.document.getElementById("tooltip").style.left = (d3.event.pageX+10) + "px"
+            @app.window.document.getElementById("tooltip").innerHTML = d.name + " (" + d.data.x + "): "+ d.data.y.toFixed(2)
 
           .on "mouseout", (d) =>
-            document.getElementById("tooltip").style.visibility = "hidden"
+            @app.window.document.getElementById("tooltip").style.visibility = "hidden"
 
       rect.enter().append("rect")
           .attr(

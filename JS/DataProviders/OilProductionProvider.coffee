@@ -1,58 +1,49 @@
 d3 = require 'd3'
+
 Constants = require '../Constants.coffee'
 UnitTransformation = require '../unit-transformation.coffee'
 
 class OilProductionProvider
 
-
-
-  constructor: (loadedCallback) ->
-
+  constructor: ->
     @data = null
+
+  loadViaAjax: (loadedCallback) ->
     @loadedCallback = loadedCallback
+    d3.csv "CSV/2016-10-18_CrudeOilProduction.csv", @mapping, @parseData
+    # d3.csv "CSV/2016-01_CrudeOilProduction.csv", @mapping, @parseData
 
-    d3.csv "CSV/2016-10-18_CrudeOilProduction.csv", @csvMapping, @parseData
-    # d3.csv "CSV/2016-01_CrudeOilProduction.csv", @csvMapping, @parseData
-  
+  loadFromString: (data) ->
+    @parseData null, d3.csv.parse(data, @mapping)
 
-
-
-
-  csvMapping: (d) ->
-    province: d.Area
-    type: d.Type
-    scenario: d.Case
-    year: parseInt(d.Year)
-    value: parseFloat(d.Data)
+  mapping: (d) ->
+    province: d.province
+    type: d.type
+    scenario: d.scenario
+    year: parseInt(d.year)
+    value: parseFloat(d.value)
+    unit: d.unit
 
   parseData: (error, data) =>
     console.warn error if error?
     @data = data
     
-    # Normalize some of the data in the CSV, to make life easier later
-    # TODO: precompute some of these changes?
-
-    for item in @data
-      item.scenario = Constants.csvScenarioToScenarioNameMapping[item.scenario]
-
-    for item in @data
-      item.province = Constants.csvProvinceToProvinceCodeMapping[item.province]
 
     @dataByProvince = 
-      'BC' : []
-      'AB' : []
-      'SK' : []
-      'MB' : []
-      'ON' :  []
-      'QC' : []
-      'NB' : []
-      'NS' : []
-      'NL' : []
-      'PE' : []
-      'YT' :  []
-      'NT' :  []
-      'NU' :  []
-      'all' : []
+      BC: []
+      AB: []
+      SK: []
+      MB: []
+      ON: []
+      QC: []
+      NB: []
+      NS: []
+      NL: []
+      PE: []
+      YT: []
+      NT: []
+      NU: []
+      all: []
 
 
     @dataByScenario = 
@@ -67,7 +58,7 @@ class OilProductionProvider
       @dataByScenario[item.scenario].push item
       @dataByProvince[item.province].push item
 
-    @loadedCallback()
+    @loadedCallback() if @loadedCallback
     
 
 

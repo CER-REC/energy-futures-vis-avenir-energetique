@@ -10,15 +10,23 @@ class basicMenu extends chart
     @options = _.extend {}, @menuDefaults, options
     @_selectedKey = 'Canada'
     @_selectedMenuIndex = -1
-    super(parent, @options)
+
+    # super(parent, @options)
+    @chart_options = _.extend {}, @chart_defaults, @options
+    @_duration = @chart_options.duration
+    @parent(parent, @chart_options.groupId)
+    @_size = 
+      w : @chart_options.size.w
+      h : @chart_options.size.h
+    @_position = 
+      x : @chart_options.position.x
+      y : @chart_options.position.y
+    @data(@chart_options.data)
+    @resize()
+
+
     @_onSelected = @options.onSelected
     @redraw()
-
-  # Unused!
-  # onSelected: (selectFunction) ->
-  #   if !arguments.length
-  #     return @_onSelected
-  #   @_onSelected = selectFunction
 
   selection: (key, index) ->
     if !arguments.length
@@ -28,20 +36,6 @@ class basicMenu extends chart
     if @_onSelected
       @_onSelected(key, index)
     @redraw()
-
-  # Unused! 
-  # redraw: ->
-  #   @_group.selectAll('.menuItem').remove()
-  #   @_group.selectAll('.menuCircle').remove()
-  #   @_group.selectAll('.menuItem').data(@_data).enter().append('g').attr
-  #     class: 'menuItem'
-  #     transform: (d, i) =>
-  #       'translate(' +  (@_position.x + (i * @_size.w / @data().length)) + ',' + @_position.y + ')'
-  #   @_group.selectAll('.menuItem').append('circle').attr(
-  #     class: (d, i) =>
-  #       if i == @_selectedMenuIndex then 'menuCircle selected' else 'menuCircle'
-  #     r: 20).on 'click', (d, i) =>
-  #       @selection d.value, i
 
 
 module.exports = basicMenu

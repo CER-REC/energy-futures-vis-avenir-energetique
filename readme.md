@@ -107,7 +107,7 @@ Our build system is driven by [Browserify](http://browserify.org), which is buil
 To create the visualizations we used [D3](http://d3js.org), a Javascript library for manipulating documents based on data. We recommend that you familiarize yourself with [D3 Selections](http://github.com/mbostock/d3/wiki/Selections) and [data joins](http://bost.ocks.org/mike/join/).
 
 ## Contact Us
-We're the development team with Startide Solutions who put this project together for the NEB. We aren't able to provide extensive support for this project, but you're welcome to reach out with questions and thoughts!
+We're the development team with VizworX who put this project together for the NEB. We aren't able to provide extensive support for this project, but you're welcome to reach out with questions and thoughts!
 
 * Patrick King - patrick.king@vizworx.com
 * Alaa Azazi - alaa.azazi@vizworx.com
@@ -117,15 +117,15 @@ We're the development team with Startide Solutions who put this project together
 ## Known Issues
 
 * This application was *not* designed to work resolutions much smaller than 1024*768, it won't look very good on your smartphone. We have attempted to apply responsive design principles throughout, but mobiles were out of scope, the high concept designs just need a minimum screen size to function. 
-* 'Download Image' functionality on Internet Explorer ~11 doesn't apply the correct font. This appears to be fixed in Edge ~13.
-* All versions of Internet Explorer/Edge prohibit data URLs from being used in `<a>` elements. This prevents us from offering the exported image for download when the user clicks the link, instead we have a workaround: a modal appears with the exported PNG data url in an `<img>` element. A solution for download on link click would either require flash, or some server side support. 
-* Safari ~8 has a bug with rendering SVGs in canvas, if the SVG has appeared elsewhere in the document the drawImage size parameters are ignored. We have worked around this by using only PNGs for image export/download, for now. 
 * Opera is unique among browsers we've tested in having severe usability issues with this approach, especially with regard to downloading all of the images needed to populate menus. 
 
 ## Changelog
 
 * 2016-11-18 - The province & power source buttons on visualizations 1 & 2 will now animate out of the way as the user drags one of them up or down.
+* 2016-11-17 - Added a data ingestion and validation routine. Raw data should be placed under `public/rawCSV`, valiated data is written to `public/CSV`, and the tool can be run with `npm run ingest`. See `JS/validation/Ingest.coffee`.
+* 2016-11-17 - Resolved a memory leak related to JSDOM.
 * 2016-11-07 - Fixed the overlapping bubbles problem in visualization #3, and decreased the inner bubble padding to reduce empty spaces.
+* 2016-11-07 - Created a server side component for image rendering, which eliminates any possibility of browser-side rendering bugs and addresses several known issues.
 * 2016-10-31 - Adjusted the time slider (on Visualization 3) to use a better quality PNG image that doesn't degrade in quality when zoomed in.
 * 2016-10-20 - Installed an updated set of Canada's Energy Future 2016 data. This is an early release of the new update, which does not include the LNG and Constrained scenarios. The user interface for these scenarios has been temporarily hidden. The previous generation data remains available in the repository, but is not integrated into the app right now.
 * 2016-10-05 - The query url is now kept consistent as users navigate back and forth between the different visualizations as well as when the order of the provinces (in visualization 1) and the sources (in visualization 2) change.
@@ -245,7 +245,7 @@ Notre système de génération est piloté par [Browserify](http://browserify.or
 Pour générer les visualisations, nous avons utilisé [D3](http://d3js.org), une bibliothèque Javascript permettant de manipuler des documents à partir de données. Nous vous recommandons de vous familiariser avec [D3 Selections](http://github.com/mbostock/d3/wiki/Selections) et [data joins](http://bost.ocks.org/mike/join/).
 
 ## Contactez-nous
-L’équipe de développement de Startide Solutions a réalisé ce projet pour le compte de l’Office. Nous ne sommes pas en mesure d’assurer un soutien complet pour ce projet, mais vos questions et vos suggestions sont les bienvenues!
+L’équipe de développement de VizworX a réalisé ce projet pour le compte de l’Office. Nous ne sommes pas en mesure d’assurer un soutien complet pour ce projet, mais vos questions et vos suggestions sont les bienvenues!
 
 * Patrick King - patrick.king@vizworx.com
 * Alaa Azazi - alaa.azazi@vizworx.com
