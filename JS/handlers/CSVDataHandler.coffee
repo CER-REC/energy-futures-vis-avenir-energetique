@@ -12,10 +12,6 @@ Logger = require '../Logger.coffee'
 # Visualization classes
 
 ServerApp = require '../imageServer/ServerApp.coffee'
-Visualization1 = require '../views/visualization1.coffee'
-Visualization2 = require '../views/visualization2.coffee'
-Visualization3 = require '../views/visualization3.coffee'
-Visualization4 = require '../views/visualization4.coffee'
 
 Visualization1Configuration = require '../VisualizationConfigurations/visualization1Configuration.coffee'
 Visualization2Configuration = require '../VisualizationConfigurations/visualization2Configuration.coffee'
@@ -23,13 +19,6 @@ Visualization3Configuration = require '../VisualizationConfigurations/visualizat
 Visualization4Configuration = require '../VisualizationConfigurations/visualization4Configuration.coffee'
 
 ServerData = require '../server/ServerData.coffee'
-
-htmlFilePromise = readFile "#{ApplicationRoot}/JS/handlers/image.html" 
-htmlPromise = htmlFilePromise.then (data) ->
-  data.toString()
-
-
-
 
 requestCounter = 0
 
