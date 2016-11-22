@@ -199,6 +199,7 @@ class ElectricityProductionProvider
         item.scenario == viz3config.scenario
 
     # THIS IS JUST EXCLUDING CRUDE OIL AND TOTAL SINCE WE DONT HAVE IMAGES FOR IT
+    # TODO: Remove me, once merged with branch where data is pre-filtered
     for name in Object.keys filteredData
       filteredData[name] = filteredData[name].filter (item) ->
         item[nameField] in allValidNames and item.value != 0

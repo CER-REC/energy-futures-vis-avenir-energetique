@@ -55,6 +55,10 @@ PngImageHandler = (req, res) ->
 
   Logger.info "png_image (request P#{requestCounter}): #{url.parse(req.url).search}"
 
+  if not ['viz1', 'viz2', 'viz3', 'viz4'].includes req.query.page
+    res.writeHead 400
+    res.end "HTTP 400 Visualization 'page' parameter not specified or not recognized."
+    return
 
   requestQueue.push new ImageRequest
     req: req

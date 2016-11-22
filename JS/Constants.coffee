@@ -202,8 +202,21 @@ module.exports =
   viz4ServerSideGraphWidth: 995 # 1065 - 70 extra pixels of width for viz4's wider legend
 
 
+  datasets: [
+    'jan2016'
+    'oct2016'
+  ]
 
+  cacheDuration: 3600 # seconds
 
+  # provinces * years, must also be multiplied by scenario count
+  itemsPerViz1Viz4ChunkScenario: 14 * 36
+
+  # sources * years, must also be multiplied by scenario count
+  itemsPerViz2ChunkScenario: 6 * 36
+
+  # provinces * sources * years
+  itemsPerViz3Chunk: 13 * 7 * 36
 
 
 

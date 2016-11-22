@@ -22,43 +22,9 @@ Visualization2Configuration = require '../VisualizationConfigurations/visualizat
 Visualization3Configuration = require '../VisualizationConfigurations/visualization3Configuration.coffee'
 Visualization4Configuration = require '../VisualizationConfigurations/visualization4Configuration.coffee'
 
+ServerData = require '../server/ServerData.coffee'
 
-
-
-# Data providers
-
-EnergyConsumptionProvider = require '../DataProviders/EnergyConsumptionProvider.coffee'
-OilProductionProvider = require '../DataProviders/OilProductionProvider.coffee'
-GasProductionProvider = require '../DataProviders/GasProductionProvider.coffee'
-ElectricityProductionProvider = require '../DataProviders/ElectricityProductionProvider.coffee'
-
-energyConsumptionProvider = new EnergyConsumptionProvider 
-oilProductionProvider = new OilProductionProvider 
-gasProductionProvider = new GasProductionProvider 
-electricityProductionProvider = new ElectricityProductionProvider
-
-
-
-
-# File loading
-
-oilFilePromise = readFile "#{ApplicationRoot}/public/CSV/2016-10-18_CrudeOilProduction.csv"
-oilPromise = oilFilePromise.then (data) ->
-  oilProductionProvider.loadFromString data.toString()
-
-gasFilePromise = readFile "#{ApplicationRoot}/public/CSV/2016-10-18_NaturalGasProduction.csv"
-gasPromise = gasFilePromise.then (data) ->
-  gasProductionProvider.loadFromString data.toString()
-
-energyDemandFilePromise = readFile "#{ApplicationRoot}/public/CSV/2016-10-18_EnergyDemand.csv"
-energyPromise = energyDemandFilePromise.then (data) ->
-  energyConsumptionProvider.loadFromString data.toString()
-
-electricityFilePromise = readFile "#{ApplicationRoot}/public/CSV/2016-10-27_ElectricityGeneration.csv"
-electricityPromise = electricityFilePromise.then (data) ->
-  electricityProductionProvider.loadFromString data.toString()
-
-htmlFilePromise = readFile "#{ApplicationRoot}/JS/imageServer/image.html" 
+htmlFilePromise = readFile "#{ApplicationRoot}/JS/handlers/image.html" 
 htmlPromise = htmlFilePromise.then (data) ->
   data.toString()
 
@@ -70,7 +36,8 @@ requestCounter = 0
 
 HtmlImageHandler = (req, res) ->
 
-  Promise.join htmlPromise, oilPromise, gasPromise, energyPromise, electricityPromise, (html) ->
+  # TODO: For now, hard coding to use the most recent data set. Needs parameterization.
+  Promise.join htmlPromise, ServerData['oct2016'].oilPromise, ServerData['oct2016'].gasPromise, ServerData['oct2016'].energyPromise, ServerData['oct2016'].electricityPromise, (html) ->
 
     time = Date.now()
 
@@ -85,15 +52,6 @@ HtmlImageHandler = (req, res) ->
         if error?
           errorHandler req, res, error, 500
           return
-
-        body = window.document.querySelector('body')
-          
-        serverApp = new ServerApp window,
-          energyConsumptionProvider: energyConsumptionProvider
-          oilProductionProvider: oilProductionProvider
-          gasProductionProvider: gasProductionProvider
-          electricityProductionProvider: electricityProductionProvider
-        serverApp.setLanguage req.query.language
 
         params = PrepareQueryParams queryString.parse(query)
 
@@ -120,6 +78,14 @@ HtmlImageHandler = (req, res) ->
             errorHandler req, res, new Error("Visualization 'page' parameter not specified or not recognized."), 400, counter
             return
 
+        body = window.document.querySelector('body')
+          
+        serverApp = new ServerApp window,
+          energyConsumptionProvider: ServerData['oct2016'].energyConsumptionProvider
+          oilProductionProvider: ServerData['oct2016'].oilProductionProvider
+          gasProductionProvider: ServerData['oct2016'].gasProductionProvider
+          electricityProductionProvider: ServerData['oct2016'].electricityProductionProvider
+        serverApp.setLanguage req.query.language
 
         # we need to wait a tick for the zero duration animations to be scheduled and run
         setTimeout ->

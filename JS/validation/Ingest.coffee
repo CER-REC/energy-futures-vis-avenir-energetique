@@ -114,7 +114,7 @@ ingest = (optionsList) ->
 
 
 ingest january2016Files()
-# ingest october2016Files()
+ingest october2016Files()
 
 
 
