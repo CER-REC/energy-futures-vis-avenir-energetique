@@ -236,7 +236,7 @@ class ElectricityProductionProvider
           name: if viz3config.viewBy == 'province' then "#{Tr.sourceSelector.sources[item[nameField]][viz3config.language]} #{source}" else "#{item[nameField]} #{Tr.sourceSelector.sources[source][viz3config.language]}"  #for titles
           id: "#{item[nameField]}#{source}" #to distinguish
           source: item[nameField]
-          size: if viz3config[stackedFilterName].includes item[nameField] then item.value else 0.001
+          size: if viz3config[stackedFilterName].includes item[nameField] then item.value else 1
         )
     bubbleObj
 
