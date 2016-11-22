@@ -59,7 +59,7 @@ describe "Image Generation Endpoints", ->
       response.statusCode.should.equal 400
 
 
-  it.only "Serves an error for incorrect parameters to the PNG endpoint.", ->
+  it "Serves an error for incorrect parameters to the PNG endpoint.", ->
     parameters = QueryString.stringify
       page: 'some invalid paramter'
 
@@ -69,7 +69,6 @@ describe "Image Generation Endpoints", ->
       should.fail "Shouldn't respond with 200 for an error condition."
 
     .catch (response) ->
-      console.log response
       response.statusCode.should.equal 400
 
 
