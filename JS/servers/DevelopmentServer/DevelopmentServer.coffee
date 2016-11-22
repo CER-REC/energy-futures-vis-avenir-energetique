@@ -1,11 +1,8 @@
-# NB: The working directory will be the project root when a server command
-# in package.json is run, but it will be JS/server when the app is run under IIS-Node.
-# The dotenv module loads the .env file in the working directory.
-# So, we change the working directory to be the server's directory
-# We need to do this *before* we require dotenv!
+ApplicationRoot = require '../../../ApplicationRoot.coffee'
+path = require 'path'
 
-process.chdir __dirname
-require('dotenv').config()
+require('dotenv').config
+  path: path.join(ApplicationRoot, 'JS/servers/DevelopmentServer/.env')
 
 Server = require '../Server.coffee'
 PublicFilesMiddleware = require '../../middleware/PublicFilesMiddleware.coffee'

@@ -1,5 +1,5 @@
 var execSync = require('child_process').execSync;
-var pjson = require('./package.json');
+var pjson = require('../package.json');
 var fs = require('fs-extra');
 var zip = require('zip-folder');
 

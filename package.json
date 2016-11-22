@@ -3,11 +3,11 @@
   "version": "1.0.13.4",
   "description": "NEB project",
   "scripts": {
-    "build": "browserify JS/App.coffee -p ./tasks/dotenv-browserify-plugin.js -t coffeeify --extension='.coffee' -t [ stringify --extensions [.mustache .css] -t envify -g uglifyify -o dist/public/bundle.js",
+    "build": "browserify JS/App.coffee -p ./tasks/dotenv-browserify-plugin.js -t coffeeify --extension='.coffee' -t [ stringify --extensions [.mustache .css] ] -t envify -g uglifyify -o dist/public/bundle.js",
     "watch": "watchify JS/App.coffee -p ./tasks/dotenv-browserify-plugin.js -t coffeeify --extension='.coffee' -t [ stringify --extensions [.mustache .css] ] -t envify -o public/bundle.js --debug --verbose",
     "distribute": "node ./tasks/distribute.js",
     "start": "node ./JS/servers/DevelopmentServer/DevelopmentServer.js",
-    "start-image-server": "node ./JS/servers/ImageServer/ImageServer.js",
+    "start-production": "node ./JS/servers/ProductionServer/ProductionServer.js",
     "ingest": "node ./JS/validation/Ingest.js",
     "test": "mocha --recursive JS/test --compilers coffee:coffee-script/register",
     "test-watch": "mocha --recursive JS/test --compilers coffee:coffee-script/register --watch test"
