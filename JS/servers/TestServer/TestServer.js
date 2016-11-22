@@ -1,2 +1,2 @@
 require('coffee-script').register();
-require('./ImageServer.coffee');
+require('./TestServer.coffee');

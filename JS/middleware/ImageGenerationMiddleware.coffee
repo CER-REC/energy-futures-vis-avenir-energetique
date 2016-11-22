@@ -1,7 +1,7 @@
 express = require 'express'
 
-PngImageHandler = require '../imageServer/PngImageHandler.coffee'
-HtmlImageHandler = require '../imageServer/HtmlImageHandler.coffee'
+PngImageHandler = require '../handlers/PngImageHandler.coffee'
+HtmlImageHandler = require '../handlers/HtmlImageHandler.coffee'
 
 # Middleware for generating PNG images of visualizations
 
