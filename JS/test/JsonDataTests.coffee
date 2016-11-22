@@ -5,7 +5,7 @@ QueryString = require 'query-string'
 EnsureTestServer = require '../testSupport/EnsureTestServer.coffee'
 
 
-describe.only "JSON Data Endpoints", ->
+describe "JSON Data Endpoints", ->
 
   before EnsureTestServer
 
