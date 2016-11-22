@@ -55,6 +55,13 @@ HtmlImageHandler = (req, res) ->
 
         params = PrepareQueryParams queryString.parse(query)
 
+        serverApp = new ServerApp window,
+          energyConsumptionProvider: ServerData['oct2016'].energyConsumptionProvider
+          oilProductionProvider: ServerData['oct2016'].oilProductionProvider
+          gasProductionProvider: ServerData['oct2016'].gasProductionProvider
+          electricityProductionProvider: ServerData['oct2016'].electricityProductionProvider
+        serverApp.setLanguage req.query.language
+
         # Parse the parameters with a configuration object, and then hand them off to a
         # visualization object. The visualizations render the graphs in their constructors.
         switch req.query.page
@@ -80,12 +87,6 @@ HtmlImageHandler = (req, res) ->
 
         body = window.document.querySelector('body')
           
-        serverApp = new ServerApp window,
-          energyConsumptionProvider: ServerData['oct2016'].energyConsumptionProvider
-          oilProductionProvider: ServerData['oct2016'].oilProductionProvider
-          gasProductionProvider: ServerData['oct2016'].gasProductionProvider
-          electricityProductionProvider: ServerData['oct2016'].electricityProductionProvider
-        serverApp.setLanguage req.query.language
 
         # we need to wait a tick for the zero duration animations to be scheduled and run
         setTimeout ->
