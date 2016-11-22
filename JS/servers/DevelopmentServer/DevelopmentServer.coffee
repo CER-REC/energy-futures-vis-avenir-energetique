@@ -9,7 +9,7 @@ PublicFilesMiddleware = require '../../middleware/PublicFilesMiddleware.coffee'
 ImageGenerationMiddleware = require '../../middleware/ImageGenerationMiddleware.coffee'
 DevelopmentPageMiddleware = require '../../middleware/DevelopmentPageMiddleware.coffee'
 JsonDataMiddleware = require '../../middleware/JsonDataMiddleware.coffee'
-CSVDataMiddleware = require '../middleware/CSVDataMiddleware.coffee'
+CSVDataMiddleware = require '../../middleware/CSVDataMiddleware.coffee'
 
 Server [
   PublicFilesMiddleware()

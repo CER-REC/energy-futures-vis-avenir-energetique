@@ -11,7 +11,7 @@ Logger = require '../Logger.coffee'
 
 # Visualization classes
 
-ServerApp = require '../imageServer/ServerApp.coffee'
+ServerApp = require './ServerApp.coffee'
 
 Visualization1Configuration = require '../VisualizationConfigurations/visualization1Configuration.coffee'
 Visualization2Configuration = require '../VisualizationConfigurations/visualization2Configuration.coffee'

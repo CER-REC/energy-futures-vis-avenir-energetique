@@ -7,7 +7,7 @@ CSVDataHandler = require '../handlers/CSVDataHandler.coffee'
 CSVDataMiddleware = ->
   app = express()
 
-  app.get '/csv_data', JsonDataHandler
+  app.get '/csv_data', CSVDataHandler
 
   app
 
