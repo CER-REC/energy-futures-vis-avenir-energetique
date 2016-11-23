@@ -3,6 +3,7 @@ fs = require 'fs'
 Promise = require 'bluebird'
 url = require 'url'
 queryString = require 'query-string'
+d3 = require 'd3'
 
 PrepareQueryParams = require '../PrepareQueryParams.coffee'
 readFile = Promise.promisify fs.readFile
@@ -26,7 +27,7 @@ requestCounter = 0
 CSVDataHandler = (req, res) ->
 
   # TODO: For now, hard coding to use the most recent data set. Needs parameterization.
-  Promise.join htmlPromise, ServerData['oct2016'].oilPromise, ServerData['oct2016'].gasPromise, ServerData['oct2016'].energyPromise, ServerData['oct2016'].electricityPromise, (html) ->
+  Promise.join ServerData['oct2016'].oilPromise, ServerData['oct2016'].gasPromise, ServerData['oct2016'].energyPromise, ServerData['oct2016'].electricityPromise, () ->
 
     time = Date.now()
 
@@ -37,7 +38,7 @@ CSVDataHandler = (req, res) ->
     Logger.info "csv_data (request H#{counter}): #{query}"
     csvData = null
   
-    serverApp = new ServerApp window,
+    serverApp = new ServerApp null,
       energyConsumptionProvider: ServerData['oct2016'].energyConsumptionProvider
       oilProductionProvider: ServerData['oct2016'].oilProductionProvider
       gasProductionProvider: ServerData['oct2016'].gasProductionProvider
@@ -53,13 +54,13 @@ CSVDataHandler = (req, res) ->
         config = new Visualization1Configuration(serverApp, params)
         switch config.mainSelection
           when 'gasProduction'
-            csvData = app.gasProductionProvider.dataForViz1 config
+            csvData = serverApp.gasProductionProvider.dataForViz1 config
           when 'electricityGeneration'
-            csvData = app.electricityProductionProvider.dataForViz1 config
+            csvData = serverApp.electricityProductionProvider.dataForViz1 config
           when 'energyDemand'
-            csvData = app.energyConsumptionProvider.dataForViz1 config
+            csvData = serverApp.energyConsumptionProvider.dataForViz1 config
           when 'oilProduction'
-            csvData = app.oilProductionProvider.dataForViz1 config
+            csvData = serverApp.oilProductionProvider.dataForViz1 config
           else 
             mainSelectionErrorHandler()
             return
@@ -69,7 +70,7 @@ CSVDataHandler = (req, res) ->
         config = new Visualization2Configuration(serverApp, params)
         switch config.mainSelection
           when 'energyDemand'
-            csvData = app.energyConsumptionProvider.dataForViz2 config
+            csvData = serverApp.energyConsumptionProvider.dataForViz2 config
           else 
             mainSelectionErrorHandler()
             return
@@ -79,7 +80,7 @@ CSVDataHandler = (req, res) ->
         config = new Visualization3Configuration(serverApp, params)
         switch config.mainSelection
           when 'electricityGeneration'
-            csvData = app.electricityProductionProvider.dataForViz3 config
+            csvData = serverApp.electricityProductionProvider.dataForViz3 config
           else 
             mainSelectionErrorHandler()
             return
@@ -89,13 +90,13 @@ CSVDataHandler = (req, res) ->
         config = new Visualization4Configuration(serverApp, params)
         switch config.mainSelection
           when 'gasProduction'  
-            csvData = app.gasProductionProvider.dataForViz4 config
+            csvData = serverApp.gasProductionProvider.dataForViz4 config
           when 'electricityGeneration'
-            csvData = app.electricityProductionProvider.dataForViz4 config
+            csvData = serverApp.electricityProductionProvider.dataForViz4 config
           when 'energyDemand'
-            csvData = app.energyConsumptionProvider.dataForViz4 config
+            csvData = serverApp.energyConsumptionProvider.dataForViz4 config
           when 'oilProduction'
-            csvData = app.oilProductionProvider.dataForViz4 config
+            csvData = serverApp.oilProductionProvider.dataForViz4 config
           else 
             mainSelectionErrorHandler()
             return   
@@ -105,19 +106,30 @@ CSVDataHandler = (req, res) ->
         return
       
     #CONVERT DATA TO CSV AND ASSIGN IT TO RESPONSE OBJECT
-    if !csvData?
-      res.write csvData
+    if csvData?
+      convertedDataArray = generateArrayFromHash csvData
+      results = d3.csv.format convertedDataArray
+      res.write results
       res.end()
       Logger.debug "csv data request (request H#{counter}) Time: #{Date.now() - time}"
+    
+    else
+      res.writeHead 204
+      res.end()
       
 mainSelectionErrorHandler = ->
   errorHandler req, res, new Error("Visualization 'mainSelection' parameter not specified or not recognized."), 400, counter
   return
 
+generateArrayFromHash = (csvDataHash) ->
+  hashArray = []
+  for k,v of csvDataHash
+    hashArray = hashArray.concat v
+  return hashArray
 
 errorHandler = (req, res, error, code, counter) ->
 
-  Logger.error "html_image (request H#{counter}) error: #{error.message}"
+  Logger.error "csv data request (request H#{counter}) error: #{error.message}"
   Logger.error error.stack
 
   res.writeHead code
