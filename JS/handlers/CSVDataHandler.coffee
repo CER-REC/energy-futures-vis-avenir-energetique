@@ -31,7 +31,7 @@ CSVDataHandler = (req, res) ->
     requestCounter++
     counter = requestCounter
     mainSelection = req.query.mainSelection
-    Logger.info "csv_data (request H#{counter}): #{query}"
+    Logger.info "csv_data (request C#{counter}): #{query}"
     csvData = null
   
     serverApp = new ServerApp null,
@@ -100,7 +100,7 @@ CSVDataHandler = (req, res) ->
       results = d3.csv.format csvData
       res.write results
       res.end()
-      Logger.debug "csv data request (request H#{counter}) Time: #{Date.now() - time}"
+      Logger.debug "csv data request (request C#{counter}) Time: #{Date.now() - time}"
     
     else
       res.writeHead 204
