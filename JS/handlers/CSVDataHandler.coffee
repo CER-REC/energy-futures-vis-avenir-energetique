@@ -1,13 +1,9 @@
-jsdom = require 'jsdom'
-fs = require 'fs'
 Promise = require 'bluebird'
 url = require 'url'
 queryString = require 'query-string'
 d3 = require 'd3'
 
 PrepareQueryParams = require '../PrepareQueryParams.coffee'
-readFile = Promise.promisify fs.readFile
-ApplicationRoot = require '../../ApplicationRoot.coffee'
 Logger = require '../Logger.coffee'
 
 # Visualization classes
@@ -54,52 +50,46 @@ CSVDataHandler = (req, res) ->
         config = new Visualization1Configuration(serverApp, params)
         switch config.mainSelection
           when 'gasProduction'
-            csvData = serverApp.gasProductionProvider.dataForViz1 config
+            tempData = serverApp.gasProductionProvider.dataForViz1 config
           when 'electricityGeneration'
-            csvData = serverApp.electricityProductionProvider.dataForViz1 config
+            tempData = serverApp.electricityProductionProvider.dataForViz1 config
           when 'energyDemand'
-            csvData = serverApp.energyConsumptionProvider.dataForViz1 config
+            tempData = serverApp.energyConsumptionProvider.dataForViz1 config
           when 'oilProduction'
-            csvData = serverApp.oilProductionProvider.dataForViz1 config
+            tempData = serverApp.oilProductionProvider.dataForViz1 config
           else 
             mainSelectionErrorHandler()
             return
-   
+        csvData = generateArrayFromObject(tempData, "viz1")   
+
         
       when 'viz2'
         config = new Visualization2Configuration(serverApp, params)
-        switch config.mainSelection
-          when 'energyDemand'
-            csvData = serverApp.energyConsumptionProvider.dataForViz2 config
-          else 
-            mainSelectionErrorHandler()
-            return
+        tempData = serverApp.energyConsumptionProvider.dataForViz2 config
+        csvData = generateArrayFromObject(tempData, "viz2")
         #ConsumptionProvider
 
       when 'viz3'
         config = new Visualization3Configuration(serverApp, params)
-        switch config.mainSelection
-          when 'electricityGeneration'
-            csvData = serverApp.electricityProductionProvider.dataForViz3 config
-          else 
-            mainSelectionErrorHandler()
-            return
+        tempData = serverApp.electricityProductionProvider.dataForViz3 config
+        csvData = generateArrayFromObject(tempData, "viz3")
         #electricityProductionProvider
 
       when 'viz4'
         config = new Visualization4Configuration(serverApp, params)
         switch config.mainSelection
           when 'gasProduction'  
-            csvData = serverApp.gasProductionProvider.dataForViz4 config
+            tempData = serverApp.gasProductionProvider.dataForViz4 config
           when 'electricityGeneration'
-            csvData = serverApp.electricityProductionProvider.dataForViz4 config
+            tempData = serverApp.electricityProductionProvider.dataForViz4 config
           when 'energyDemand'
-            csvData = serverApp.energyConsumptionProvider.dataForViz4 config
+            tempData = serverApp.energyConsumptionProvider.dataForViz4 config
           when 'oilProduction'
-            csvData = serverApp.oilProductionProvider.dataForViz4 config
+            tempData = serverApp.oilProductionProvider.dataForViz4 config
           else 
             mainSelectionErrorHandler()
-            return   
+            return
+        csvData = generateArrayFromObject(tempData, "viz4")   
 
       else 
         errorHandler req, res, new Error("Visualization 'page' parameter not specified or not recognized."), 400, counter
@@ -107,8 +97,7 @@ CSVDataHandler = (req, res) ->
       
     #CONVERT DATA TO CSV AND ASSIGN IT TO RESPONSE OBJECT
     if csvData?
-      convertedDataArray = generateArrayFromHash csvData
-      results = d3.csv.format convertedDataArray
+      results = d3.csv.format csvData
       res.write results
       res.end()
       Logger.debug "csv data request (request H#{counter}) Time: #{Date.now() - time}"
@@ -121,15 +110,24 @@ mainSelectionErrorHandler = ->
   errorHandler req, res, new Error("Visualization 'mainSelection' parameter not specified or not recognized."), 400, counter
   return
 
-generateArrayFromHash = (csvDataHash) ->
+generateArrayFromObject = (csvDataObject, viz) ->
   hashArray = []
-  for k,v of csvDataHash
-    hashArray = hashArray.concat v
+  switch viz
+    when "viz1", "viz2", "viz4"
+      for k,v of csvDataObject
+        hashArray = hashArray.concat v
+      break
+    when "viz3"
+      for tempChild in csvDataObject.children
+        hashArray = hashArray.concat tempChild.children
+      break
+  
   return hashArray
+  
 
 errorHandler = (req, res, error, code, counter) ->
 
-  Logger.error "csv data request (request H#{counter}) error: #{error.message}"
+  Logger.error "csv data request (request C#{counter}) error: #{error.message}"
   Logger.error error.stack
 
   res.writeHead code

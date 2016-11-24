@@ -22,3 +22,42 @@ describe "CSV Data Endpoints", ->
       pattern = /^(?:(?:"((?:""|[^"])+)"|([^,]*))(?:$|,))+$/
       output = pattern.exec csvResponse
       output.should.be.ok 
+
+  it "Serves data for Visualization 2", ->
+    parameters = QueryString.stringify
+      dataset: 'oct2016'
+      page: 'viz2'
+      mainSelection: 'energyDemand'
+
+    Request "#{process.env.HOST}:#{process.env.PORT_NUMBER}/csv_data?#{parameters}"
+
+    .then (csvResponse) ->
+      pattern = /^(?:(?:"((?:""|[^"])+)"|([^,]*))(?:$|,))+$/
+      output = pattern.exec csvResponse
+      output.should.be.ok 
+  
+  it "Serves data for Visualization 3", ->
+    parameters = QueryString.stringify
+      dataset: 'oct2016'
+      page: 'viz3'
+      mainSelection: 'electricityGeneration'
+
+    Request "#{process.env.HOST}:#{process.env.PORT_NUMBER}/csv_data?#{parameters}"
+
+    .then (csvResponse) ->
+      pattern = /^(?:(?:"((?:""|[^"])+)"|([^,]*))(?:$|,))+$/
+      output = pattern.exec csvResponse
+      output.should.be.ok 
+  
+  it "Serves data for Visualization 4", ->
+    parameters = QueryString.stringify
+      dataset: 'oct2016'
+      page: 'viz4'
+      mainSelection: 'energyDemand'
+
+    Request "#{process.env.HOST}:#{process.env.PORT_NUMBER}/csv_data?#{parameters}"
+
+    .then (csvResponse) ->
+      pattern = /^(?:(?:"((?:""|[^"])+)"|([^,]*))(?:$|,))+$/
+      output = pattern.exec csvResponse
+      output.should.be.ok 
