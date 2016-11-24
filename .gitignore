@@ -13,6 +13,6 @@ d3-neb.sublime-workspace
 /dist/
 public/bundle.js
 
-/JS/server/iisnode
+iisnode/
 /JS/servers/ProductionServer/.env
 /log
