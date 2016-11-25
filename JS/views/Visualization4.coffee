@@ -128,10 +128,7 @@ class Visualization4
 
 
   constructor: (@app, config) ->
-
-
     @config = config
-    
     @outerHeight = 700 
     @margin = 
       top: 20
@@ -417,55 +414,87 @@ class Visualization4
 
 
   scenariosSelectionData: ->
-    reference = 
+    reference =
       title: Tr.selectorTooltip.scenarioSelector.referenceButton[@app.language]
       label: Tr.scenarioSelector.referenceButton[@app.language]
       scenarioName: 'reference'
-      class: if @config.scenarios.includes 'reference' then 'vizButton selected reference' else 'vizButton reference'
+      class: 
+        if @config.scenarios.includes 'reference'
+          'vizButton selected reference'
+        else if Constants.scenarios[@config.dataset].includes 'reference'
+          'vizButton reference'
+        else 
+          'vizButton reference disabled'
       colour: '#999999'
-    high = 
+    high =
       title: Tr.selectorTooltip.scenarioSelector.highPriceButton[@app.language]
       label: Tr.scenarioSelector.highPriceButton[@app.language]
       scenarioName: 'high'
-      class: if @config.scenarios.includes 'high' then 'vizButton selected high' else 'vizButton high'
+      class: 
+        if @config.scenarios.includes 'high'
+          'vizButton selected high'
+        else if Constants.scenarios[@config.dataset].includes 'high'
+          'vizButton high'
+        else 
+          'vizButton high disabled'
       colour: '#0C2C84'
-    # highLng = 
-    #   title: Tr.selectorTooltip.scenarioSelector.highLngButton[@app.language]
-    #   label: Tr.scenarioSelector.highLngButton[@app.language]
-    #   scenarioName: 'highLng'
-    #   class: if @config.scenarios.includes 'highLng' then 'vizButton selected highLng' else 'vizButton highLng'
-    #   colour: '#225EA8'
-    # constrained = 
-    #   title: Tr.selectorTooltip.scenarioSelector.constrainedButton[@app.language]
+    highLng =
+      title: Tr.selectorTooltip.scenarioSelector.highLngButton[@app.language]
+      label: Tr.scenarioSelector.highLngButton[@app.language]
+      scenarioName: 'highLng'
+      class: 
+        if @config.scenarios.includes 'highLng'
+          'vizButton selected highLng' 
+        else if Constants.scenarios[@config.dataset].includes 'highLng' 
+          'vizButton highLng'
+        else
+          'vizButton highLng disabled'
+      colour: '#225EA8'
+    constrained =
+      title: Tr.selectorTooltip.scenarioSelector.constrainedButton[@app.language]
 
-    #   label: Tr.scenarioSelector.constrainedButton[@app.language]
-    #   scenarioName: 'constrained'
-    #   class: if @config.scenarios.includes 'constrained' then 'vizButton selected constrained' else 'vizButton constrained'
-    #   colour: '#41B6C4'
-    low = 
+      label: Tr.scenarioSelector.constrainedButton[@app.language]
+      scenarioName: 'constrained'
+      class: 
+        if @config.scenarios.includes 'constrained'
+          'vizButton selected constrained'
+        else if Constants.scenarios[@config.dataset].includes 'constrained'
+          'vizButton constrained'
+        else
+          'vizButton constrained disabled'
+      colour: '#41B6C4'
+    low =
       title: Tr.selectorTooltip.scenarioSelector.lowPriceButton[@app.language]
       label: Tr.scenarioSelector.lowPriceButton[@app.language]
       scenarioName: 'low'
-      class: if @config.scenarios.includes 'low' then 'vizButton selected low' else 'vizButton low'
+      class: 
+        if @config.scenarios.includes 'low'
+          'vizButton selected low'
+        else if Constants.scenarios[@config.dataset].includes 'low'
+          'vizButton low'
+        else 
+          'vizButton low disabled'
       colour: '#7FCDBB'
-    # noLng = 
-    #   title: Tr.selectorTooltip.scenarioSelector.noLngButton[@app.language]
-    #   label: Tr.scenarioSelector.noLngButton[@app.language]
-    #   scenarioName: 'noLng'
-    #   class: if @config.scenarios.includes 'noLng' then 'vizButton selected noLng' else 'vizButton noLng'
-    #   colour: '#C7E9B4'
-
-
-    [reference, high, low]
-    # The original data had six scenarios, the revised data currently only has three.
-    # We expect this state of affairs to be temporary! 
-    # switch @config.mainSelection
-    #   when 'energyDemand', 'electricityGeneration'
-    #     [reference, high, highLng, constrained, low, noLng]
-    #   when 'oilProduction'
-    #     [reference, high, constrained, low]
-    #   when 'gasProduction'
-    #     [reference, high, highLng, low, noLng]
+    noLng =
+      title: Tr.selectorTooltip.scenarioSelector.noLngButton[@app.language]
+      label: Tr.scenarioSelector.noLngButton[@app.language]
+      scenarioName: 'noLng'
+      class: 
+        if @config.scenarios.includes 'noLng'
+          'vizButton selected noLng'
+        else if Constants.scenarios[@config.dataset].includes 'noLng'
+          'vizButton noLng'
+        else 
+          'vizButton noLng disabled'
+      colour: '#C7E9B4'
+    
+    switch @config.mainSelection
+      when 'energyDemand', 'electricityGeneration'
+        [reference, high, highLng, constrained, low, noLng]
+      when 'oilProduction'
+        [reference, high, constrained, low]
+      when 'gasProduction'
+        [reference, high, highLng, low, noLng]
 
     # TODO: merge graphdata and graphscenario data, its dumb =/
 
@@ -571,34 +600,34 @@ class Visualization4
       tooltip: Tr.selectorTooltip.scenarioSelector.highPriceButton[@app.language]
       key: 'high'
       colour: '#0C2C84'
-    # highLng =
-    #   tooltip: Tr.selectorTooltip.scenarioSelector.highLngButton[@app.language]
-    #   key: 'highLng'
-    #   colour: '#225EA8'
-    # constrained =
-    #   tooltip: Tr.selectorTooltip.scenarioSelector.constrainedButton[@app.language]
-    #   key: 'constrained'
-    #   colour: '#41B6C4'
+    highLng =
+      tooltip: Tr.selectorTooltip.scenarioSelector.highLngButton[@app.language]
+      key: 'highLng'
+      colour: '#225EA8'
+    constrained =
+      tooltip: Tr.selectorTooltip.scenarioSelector.constrainedButton[@app.language]
+      key: 'constrained'
+      colour: '#41B6C4'
     low =
       tooltip: Tr.selectorTooltip.scenarioSelector.lowPriceButton[@app.language]
       key: 'low'
       colour: '#7FCDBB'
-    # noLng =
-    #   tooltip: Tr.selectorTooltip.scenarioSelector.noLngButton[@app.language]
-    #   key: 'noLng'
-    #   colour: '#C7E9B4'
+    noLng =
+      tooltip: Tr.selectorTooltip.scenarioSelector.noLngButton[@app.language]
+      key: 'noLng'
+      colour: '#C7E9B4'
 
 
-    scenariosInOrder = [reference, high, low]
+    #scenariosInOrder = [reference, high, low]
     # The original data had six scenarios, the revised data currently only has three.
     # We expect this state of affairs to be temporary! 
-    # switch @config.mainSelection
-    #   when 'energyDemand', 'electricityGeneration'
-    #     scenariosInOrder = [reference, high, highLng, constrained, low, noLng]
-    #   when 'oilProduction'
-    #     scenariosInOrder = [reference, high, constrained, low]
-    #   when 'gasProduction'
-    #     scenariosInOrder = [reference, high, highLng, low, noLng]
+    switch @config.mainSelection
+      when 'energyDemand', 'electricityGeneration'
+        scenariosInOrder = [reference, high, highLng, constrained, low, noLng]
+      when 'oilProduction'
+        scenariosInOrder = [reference, high, constrained, low]
+      when 'gasProduction'
+        scenariosInOrder = [reference, high, highLng, low, noLng]
 
     graphData = @graphData()
     currentGraphScenarioData = []
@@ -793,7 +822,7 @@ class Visualization4
         @renderGraph()
 
     scenariosSelectors.html (d) ->
-      "<button class='#{d.class}' type='button' title='#{d.title}'>#{d.label}</button>"
+      "<button class='#{d.class}' type='button' title='#{d.title}'><span class='#{if d.class.includes 'disabled' then 'disabled' else ''}'>#{d.label}</span></button>"
 
     scenariosSelectors.exit()
       .on 'click', null

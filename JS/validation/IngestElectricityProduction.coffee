@@ -10,7 +10,7 @@ class ElectricityProductionIngestor
   process: (options) ->
 
     @setupFilenames options
-
+    
     @logMessages = []
     rawData = fs.readFileSync(@dataFilename).toString()
     @mappedData = d3.csv.parse rawData, ElectricityProductionIngestor.csvMapping
@@ -18,7 +18,7 @@ class ElectricityProductionIngestor
     @summarizedGroupedData = {}
     @detailedGroupedData = {}
     @extraData = []
-    @scenarios = options.scenarios || Constants.scenarios
+    @scenarios = options.scenarios || Constants.scenarios[options.dataset]
 
 
     @normalize()

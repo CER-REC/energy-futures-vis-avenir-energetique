@@ -25,6 +25,7 @@ class Visualization2Configuration
       'electricity'
     ]
     province: 'all'
+    dataset: Constants.generatedInYears[0]
 
   constructor: (@app, options) ->
     @options = _.extend {}, @defaultOptions, options
@@ -61,6 +62,8 @@ class Visualization2Configuration
 
     @setLanguage @app.language || 'en'
 
+    @setDataset @options.dataset
+
   # Setters
 
   setSector: (sector) ->
@@ -78,7 +81,7 @@ class Visualization2Configuration
     @updateRouter()
 
   setScenario: (scenario) ->
-    if Constants.scenarios.includes scenario
+    if Constants.scenarios[@options.dataset].includes scenario
       @scenario = scenario
     else
       @scenario = @defaultOptions.scenario
@@ -129,6 +132,12 @@ class Visualization2Configuration
   setLanguage: (language) ->
     @language = language if language == 'en' or language == 'fr'
 
+  setDataset: (dataset) ->
+    if Constants.generatedInYears.includes dataset
+      @dataset = dataset
+    else 
+      @dataset = @defaultOptions.dataset
+    @updateRouter()
 
   # Router integration
 
@@ -140,6 +149,7 @@ class Visualization2Configuration
     sources: @sources
     sourcesInOrder: @sourcesInOrder
     province: @province
+    dataset: @dataset
 
   updateRouter: ->
     return unless @app? and @app.router?

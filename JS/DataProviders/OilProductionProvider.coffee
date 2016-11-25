@@ -9,9 +9,15 @@ class OilProductionProvider
     @data = null
 
   loadViaAjax: (loadedCallback) ->
+    @dataset = Constants.generatedInYears[0]
     @loadedCallback = loadedCallback
     d3.csv "CSV/2016-10-18_CrudeOilProduction.csv", @mapping, @parseData
     # d3.csv "CSV/2016-01_CrudeOilProduction.csv", @mapping, @parseData
+
+  loadForYear: (dataset) ->
+    if Constants.generatedInYears.includes dataset
+      @dataset = dataset
+      d3.csv Constants.dataFiles[dataset]["CrudeOilProduction"], @mapping, @parseData    
 
   loadFromString: (data) ->
     @parseData null, d3.csv.parse(data, @mapping)
@@ -71,6 +77,9 @@ class OilProductionProvider
   # across scenarios for a give configuration.
   dataForAllViz1Scenarios: (viz1config) ->
     filteredProvinceData = {}    
+
+    if viz1config.dataset != @dataset
+      @loadForYear(viz1config.dataset)
 
     # Exclude data from provinces that aren't in the set
     for provinceName in Object.keys @dataByProvince
@@ -133,6 +142,9 @@ class OilProductionProvider
   # across scenarios for a given configuration.
   dataForAllViz4Scenarios: (viz4config) ->
     filteredScenarioData = {}    
+
+    if viz4config.dataset != @dataset
+      @loadForYear(viz4config.dataset)
 
     # Group data by scenario
     for scenarioName in Object.keys @dataByScenario

@@ -37,6 +37,7 @@ class Visualization1Configuration
       'SK'
       'YT' 
     ]
+    dataset: Constants.generatedInYears[0]
 
   constructor: (@app, options) ->
     @options = _.extend {}, @defaultOptions, options
@@ -72,6 +73,8 @@ class Visualization1Configuration
 
     @setLanguage @app.language || 'en'
 
+    @setDataset @options.dataset
+
   # Setters
 
   setMainSelection: (selection) ->
@@ -106,23 +109,10 @@ class Visualization1Configuration
     @updateRouter()
 
   setScenario: (scenario) ->
-    allowableScenarios = ['reference', 'high', 'low']
-
-    # The original data had six scenarios, the revised data currently only has three.
-    # We expect this state of affairs to be temporary! 
-    # allowableScenarios = []
-    # switch @mainSelection
-    #   when 'energyDemand', 'electricityGeneration'
-    #     allowableScenarios = Constants.scenarios
-    #   when 'oilProduction'
-    #     allowableScenarios = ['reference', 'constrained', 'high', 'low']
-    #   when 'gasProduction'
-    #     allowableScenarios = ['reference', 'high', 'low', 'highLng', 'noLng']
-    
-    if allowableScenarios.includes scenario
+    if Constants.scenarios[@options.dataset].includes scenario
       @scenario = scenario
     else
-      @scenario = allowableScenarios[0]
+      @scenario = @defaultOptions.scenario
     @updateRouter()
 
   addProvince: (province) ->
@@ -172,6 +162,12 @@ class Visualization1Configuration
   setLanguage: (language) ->
     @language = language if language == 'en' or language == 'fr'
 
+  setDataset: (dataset) ->
+    if Constants.generatedInYears.includes dataset
+      @dataset = dataset
+    else 
+      @dataset = @defaultOptions.dataset
+    @updateRouter()
 
   # Router integration
 
@@ -182,6 +178,7 @@ class Visualization1Configuration
     scenario: @scenario
     provinces: @provinces
     provincesInOrder: @provincesInOrder
+    dataset: @dataset
     
   updateRouter: ->
     return unless @app? and @app.router?

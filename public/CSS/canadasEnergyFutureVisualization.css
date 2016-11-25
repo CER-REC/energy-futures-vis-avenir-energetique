@@ -858,6 +858,18 @@ div.chartTooltip:after {
   color: white;
 }
 
+#canadasEnergyFutureVisualization .vizButton.disabled {
+  color: gray;
+  border-color: gray;
+
+  text-shadow: -2px 0 white, 0 2px white, 2px 0 white, 0 -2px white;
+  background: linear-gradient(to top right, transparent 0%, transparent calc(50% - 2px), rgba(155,155,155,1) 50%, transparent calc(50% + 0.8px), transparent 100%);
+}
+
+#canadasEnergyFutureVisualization span.disabled {
+  background-color: white;
+  display: inline-block;
+}
 
 #canadasEnergyFutureVisualization span.textCentre {
   text-align: center;

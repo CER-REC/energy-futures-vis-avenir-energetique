@@ -1,5 +1,6 @@
 d3 = require 'd3'
 Tr = require '../TranslationTable.coffee'
+Constants = require '../Constants.coffee'
 
 class visualization
 
@@ -60,48 +61,80 @@ class visualization
         [cubicFeet, millionCubicMetres]
 
   scenariosSelectionData: ->
-    reference = 
+    reference =
       title: Tr.selectorTooltip.scenarioSelector.referenceButton[@app.language]
       label: Tr.scenarioSelector.referenceButton[@app.language]
       scenarioName: 'reference'
-      class: if @config.scenario == 'reference' then 'vizButton selected' else 'vizButton'
-    # constrained = 
-    #   title: Tr.selectorTooltip.scenarioSelector.constrainedButton[@app.language]
-    #   label: Tr.scenarioSelector.constrainedButton[@app.language]
-    #   scenarioName: 'constrained'
-    #   class: if @config.scenario == 'constrained' then 'vizButton selected' else 'vizButton'
-    high = 
+      class: 
+        if @config.scenario == 'reference'
+          'vizButton selected'
+        else if Constants.scenarios[@config.dataset].includes 'reference'
+          'vizButton'
+        else 
+          'vizButton disabled'
+    constrained =
+      title: Tr.selectorTooltip.scenarioSelector.constrainedButton[@app.language]
+      label: Tr.scenarioSelector.constrainedButton[@app.language]
+      scenarioName: 'constrained'
+      class: 
+        if @config.scenario == 'constrained'
+          'vizButton selected'
+        else if Constants.scenarios[@config.dataset].includes 'constrained'
+          'vizButton'
+        else 
+          'vizButton disabled'
+    high =
       title: Tr.selectorTooltip.scenarioSelector.highPriceButton[@app.language]
       label: Tr.scenarioSelector.highPriceButton[@app.language]
       scenarioName: 'high'
-      class: if @config.scenario == 'high' then 'vizButton selected' else 'vizButton'
-    low = 
+      class: 
+        if @config.scenario == 'high'
+          'vizButton selected'
+        else if Constants.scenarios[@config.dataset].includes 'high'
+          'vizButton'
+        else 
+          'vizButton disabled'
+    low =
       title: Tr.selectorTooltip.scenarioSelector.lowPriceButton[@app.language]
       label: Tr.scenarioSelector.lowPriceButton[@app.language]
       scenarioName: 'low'
-      class: if @config.scenario == 'low' then 'vizButton selected' else 'vizButton'
-    # highLng = 
-    #   title: Tr.selectorTooltip.scenarioSelector.highLngButton[@app.language]
-    #   label: Tr.scenarioSelector.highLngButton[@app.language]
-    #   scenarioName: 'highLng'
-    #   class: if @config.scenario == 'highLng' then 'vizButton selected' else 'vizButton'
-    # noLng = 
-    #   title: Tr.selectorTooltip.scenarioSelector.noLngButton[@app.language]
-    #   label: Tr.scenarioSelector.noLngButton[@app.language]
-    #   scenarioName: 'noLng'
-    #   class: if @config.scenario == 'noLng' then 'vizButton selected' else 'vizButton'
+      class: 
+        if @config.scenario == 'low'
+          'vizButton selected'
+        else if Constants.scenarios[@config.dataset].includes 'low'
+          'vizButton'
+        else 
+          'vizButton disabled'
+    highLng =
+      title: Tr.selectorTooltip.scenarioSelector.highLngButton[@app.language]
+      label: Tr.scenarioSelector.highLngButton[@app.language]
+      scenarioName: 'highLng'
+      class: 
+        if @config.scenario == 'highLng'
+          'vizButton selected'
+        else if Constants.scenarios[@config.dataset].includes 'highLng'
+          'vizButton'
+        else 
+          'vizButton disabled'
+    noLng =
+      title: Tr.selectorTooltip.scenarioSelector.noLngButton[@app.language]
+      label: Tr.scenarioSelector.noLngButton[@app.language]
+      scenarioName: 'noLng'
+      class: 
+        if @config.scenario == 'noLng'
+          'vizButton selected'
+        else if Constants.scenarios[@config.dataset].includes 'noLng'
+          'vizButton'
+        else 
+          'vizButton disabled'
 
-
-    [reference, high, low]
-    # The original data had six scenarios, the revised data currently only has three.
-    # We expect this state of affairs to be temporary! 
-    # switch @config.mainSelection
-    #   when 'energyDemand', 'electricityGeneration'
-    #     [reference, constrained, high, low, highLng, noLng]
-    #   when 'oilProduction'
-    #     [reference, constrained, high, low]
-    #   when 'gasProduction'
-    #     [reference, high, low, highLng, noLng]
+    switch @config.mainSelection
+      when 'energyDemand', 'electricityGeneration'
+        [reference, constrained, high, low, highLng, noLng]
+      when 'oilProduction'
+        [reference, constrained, high, low]
+      when 'gasProduction'
+        [reference, high, low, highLng, noLng]
 
   sectorSelectionData: ->
     [  
@@ -200,7 +233,7 @@ class visualization
         .attr
           class: 'scenarioSelectorButton'
         .on 'click', (d) =>
-          if @config.scenario != d.scenarioName    
+          if @config.scenario != d.scenarioName && Constants.scenarios[@config.dataset].includes d.scenarioName  
             @config.setScenario d.scenarioName
 
             # TODO: For efficiency, only rerender what's necessary.
@@ -209,7 +242,7 @@ class visualization
 
 
       scenariosSelectors.html (d) ->
-        "<button class='#{d.class}' type='button' title='#{d.title}'>#{d.label}</button>"
+        "<button class='#{d.class}' type='button' title='#{d.title}'><span class='#{if d.class.includes 'disabled' then 'disabled' else ''}'>#{d.label}</span></button>"
 
       scenariosSelectors.exit().remove()
 
