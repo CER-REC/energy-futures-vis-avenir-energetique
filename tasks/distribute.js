@@ -22,8 +22,11 @@ fs.copySync("public/CSS", "dist/public/CSS");
 fs.copySync("public/CSV", "dist/public/CSV");
 fs.copySync("public/IMG", "dist/public/IMG");
 fs.copySync("public/PDF", "dist/public/PDF");
-fs.copySync("views/app_fragment.mustache", "dist/public/HTML/app_fragment.html");
-fs.copySync("views/app_iframe.mustache", "dist/public/HTML/app_iframe.html");
+
+fs.copySync("views/app_container_body.mustache", "dist/public/HTML/app_container_body.html");
+fs.copySync("views/app_container_styles.mustache", "dist/public/HTML/app_container_styles.html");
+fs.copySync("views/app_iframe_body.mustache", "dist/public/HTML/app_iframe_body.html");
+fs.copySync("views/app_iframe_styles.mustache", "dist/public/HTML/app_iframe_styles.html");
 
 fs.copySync("views/Wet3VideoFragment.mustache", "dist/public/HTML/Wet3VideoFragment.html");
 fs.copySync("views/Wet4VideoFragment.mustache", "dist/public/HTML/Wet4VideoFragment.html");
