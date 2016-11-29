@@ -28,8 +28,9 @@ fs.copySync("views/app_container_styles.mustache", "dist/public/HTML/app_contain
 fs.copySync("views/app_iframe_body.mustache", "dist/public/HTML/app_iframe_body.html");
 fs.copySync("views/app_iframe_styles.mustache", "dist/public/HTML/app_iframe_styles.html");
 
-fs.copySync("views/Wet3VideoFragment.mustache", "dist/public/HTML/Wet3VideoFragment.html");
-fs.copySync("views/Wet4VideoFragment.mustache", "dist/public/HTML/Wet4VideoFragment.html");
+fs.copySync("views/wet3_video_body.mustache", "dist/public/HTML/wet3_video_body.html");
+fs.copySync("views/wet3_video_styles.mustache", "dist/public/HTML/wet3_video_styles.html");
+fs.copySync("views/wet4_video_body.mustache", "dist/public/HTML/wet4_video_body.html");
 
 // The paid-up fonts are optional, the build is fine to continue without them.
 try {
