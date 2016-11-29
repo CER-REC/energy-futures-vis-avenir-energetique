@@ -10,7 +10,8 @@
     "start-production": "node ./JS/servers/ProductionServer/ProductionServer.js",
     "ingest": "node ./JS/validation/Ingest.js",
     "test": "mocha --recursive JS/test --compilers coffee:coffee-script/register",
-    "test-watch": "mocha --recursive JS/test --compilers coffee:coffee-script/register --watch test"
+    "test-watch": "mocha --recursive JS/test --compilers coffee:coffee-script/register --watch test",
+    "visual-studio-install": "node ./tasks/visual-studio-install.js"
   },
   "dependencies": {
     "array-includes": "^3.0.2",
@@ -19,6 +20,7 @@
     "d3": "^3.5.17",
     "dotenv": "^2.0.0",
     "express": "^4.14.0",
+    "lodash": "^4.16.6",
     "mustache": "^2.2.1",
     "mustache-express": "^1.2.2",
     "phantomjs-prebuilt": "^2.1.13",
@@ -36,7 +38,6 @@
     "debug": "~2.3.0",
     "domready": "^1.0.8",
     "envify": "^3.4.1",
-    "lodash": "^4.16.6",
     "mocha": "^3.1.2",
     "request": "^2.79.0",
     "request-promise": "^4.1.1",

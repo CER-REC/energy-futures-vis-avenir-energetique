@@ -46,7 +46,7 @@ zip('dist', filename, function(err) {
   if(err) {
     console.log("There was a problem creating the zip archive.");
   } else {
-    console.log("Done!");
+    console.log("Distribute done!");
   }
 });
 
