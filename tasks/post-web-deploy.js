@@ -8,5 +8,5 @@ process.chdir(__dirname)
 process.chdir('..')
 // console.log(process.cwd());
 
-execSync('npm install', {stdio: [0,1,2]})
+execSync('npm install --production', {stdio: [0,1,2]})
 
