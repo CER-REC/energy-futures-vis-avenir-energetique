@@ -3,8 +3,8 @@
   "version": "1.0.13.4",
   "description": "NEB project",
   "scripts": {
-    "build": "browserify JS/App.coffee -p ./tasks/dotenv-browserify-plugin.js -t coffeeify --extension='.coffee' -t [ stringify --extensions [.mustache .css] ] -t envify -g uglifyify -o dist/public/bundle.js",
-    "watch": "watchify JS/App.coffee -p ./tasks/dotenv-browserify-plugin.js -t coffeeify --extension='.coffee' -t [ stringify --extensions [.mustache .css] ] -t envify -o public/bundle.js --debug --verbose",
+    "build": "browserify JS/App.coffee -p ./tasks/prod-dotenv-browserify-plugin.js -t coffeeify --extension='.coffee' -t [ stringify --extensions [.mustache .css] ] -t envify -g uglifyify -o dist/public/bundle.js",
+    "watch": "watchify JS/App.coffee -p ./tasks/dev-dotenv-browserify-plugin.js -t coffeeify --extension='.coffee' -t [ stringify --extensions [.mustache .css] ] -t envify -o public/bundle.js --debug --verbose",
     "distribute": "node ./tasks/distribute.js",
     "start": "node ./JS/servers/DevelopmentServer/DevelopmentServer.js",
     "start-production": "node ./JS/servers/ProductionServer/ProductionServer.js",
