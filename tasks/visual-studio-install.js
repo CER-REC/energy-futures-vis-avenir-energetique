@@ -35,7 +35,7 @@ fs.copySync('JS', path.join(iisNodeAppDirectory, 'JS'));
 
 // TODO: Currently, the only files in public that are required by the prod server are the CSVs
 // We could split them out, and avoid copying this directory.
-fs.copySync('public', path.join(iisNodeAppDirectory, 'public'));
+fs.copySync('public/CSV', path.join(iisNodeAppDirectory, 'public/CSV'));
 
 fs.copySync('views', path.join(iisNodeAppDirectory, 'views'));
 fs.copySync('tasks', path.join(iisNodeAppDirectory, 'tasks'));
