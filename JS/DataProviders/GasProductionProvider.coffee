@@ -13,11 +13,11 @@ class GasProductionProvider
   constructor: ->
     @data = null
 
-    d3.csv Constants.dataFiles['2015']["NaturalGasProduction"], @mapping, (data) ->
-      datasets['2015'] = data
-
     d3.csv Constants.dataFiles['2016']["NaturalGasProduction"], @mapping, (data) ->
       datasets['2016'] = data
+
+    d3.csv Constants.dataFiles['2016 Update']["NaturalGasProduction"], @mapping, (data) ->
+      datasets['2016 Update'] = data
 
   loadViaAjax: (loadedCallback) ->
     params = PrepareQueryParams QueryString.parse(window.parent.document.location.search)

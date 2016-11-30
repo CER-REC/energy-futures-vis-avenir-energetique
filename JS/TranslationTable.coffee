@@ -473,121 +473,37 @@ module.exports =
 
   datasetSelector: 
     selectDatasetLabel:
-      en: 'DATA FROM'
-      fr: ''
+      en: 'ENERGY FUTURES'
+      fr: 'AVENIR ÉNERGÉTIQUE'
     datasetSelectorHelpTitle:
       en: 'DATASETS'
-      fr: ''
+      fr: 'DATASETS'
     datasetSelectorHelp:
       en: """
-        <div class="columnLeft">  
-          <h6> ENERGY UNITS </h6> 
-            <div class="sectionHeader"> PETAJOULE </div>
-              <p>
-                A measure of energy that is a quadrillion (10<sup>15</sup>) joules. According to Statistics Canada, a petajoule is the approximate amount of energy it takes to run the Montreal Metro for one year.
-              </p>
-            <div class="sectionHeader"> THOUSAND BARRELS OF OIL EQUIVALENT PER DAY (kBOE/d) </div>
-              <p>
-                A measure of energy normalized to the equivalent energy content of a barrel of light crude oil. One barrel of oil equivalent is equal to 6.811 joules , while one petajoule is equal to 0.4475 kBOE/d.
-              </p>
-            <div class="sectionHeader"> GW.h </div>
-              <p>
-                A measure of electric energy that is a billion (10<sup>9</sup>) watt hours of electric energy per year. One GW.h is equal to 0.0036 petajoules and 0.0016 kBOE/d.
-              </p>
-        </div>
-        <div class="columnRight">
-          <h6> VOLUMETRIC UNITS</h6>
-          <div class="sectionHeader"> THOUSAND BARRELS PER DAY (kb/d) </div>
-            <p>
-               Number of barrels of crude oil produced per day.
-            </p>
-          <div class="sectionHeader"> THOUSAND CUBIC METRES PER DAY (10<sup>3</sup>m<sup>3</sup>/d) </div>  
-            <p>
-              Number of cubic metres of crude oil produced per day. One barrel of oil is equal to 0.159 cubic metres.
-            </p>
-          <div class="sectionHeader"> MILLION CUBIC FEET PER DAY (Mcf/d) </div>
-            <p>
-              Number of cubic feet of natural gas produced per day.
-            </p>
-          <div class="sectionHeader"> MILLION CUBIC METRES PER DAY (10<sup>6</sup>m<sup>3</sup>/d) </div>
-            <p>
-              Number of cubic metres of natural gas produced per day. One cubic foot of natural gas is equal to 0.0283 cubic metres.
-            </p>
-        </div>
-        <div class="clearfix"></div>
-        <hr>
-        <div class="sectionHeader"> Y-AXIS SCALING NOTES </div>
-        <div class="columnLeft"> 
-          <p>
-            Depending on the value, the y-axis may be scaled with a multiplier k, m or µ.
-          </p>  
-          <p>  
-            k=1000. For example, 15.0k Mcf/d equals 15.0 billion cubic feet per day, or 6.0k kB/d equals 6 million barrels per day.
-          </p>
-        </div>
-        <div class="columnRight">    
-          <p>  
-            m=0.001. For example, 900m petajoules equals 900 terajoules, or 0.9 petajoules.
-          </p>
-          <p>  
-            µ=0.000001. For example, 300µ petajoules equals 300 gigajoules, or 0.0003 petajoules.
-          </p>
-        </div>
+        <h6> CANADA'S ENERGY FUTURE 2016 </h6>
+        <div class="sectionHeader"> January 2016 </div>
+        <p> 
+          A continuation of the Energy Futures series. In addition our usual baseline long-term outlook, we explores key uncertainties for Canadian energy such robustness of global LNG markets and availability of crude oil transportation infrastructure.
+        </p>
+
+        <h6> CANADA’S ENERGY FUTURE 2016: UPDATE </h6>
+        <div class="sectionHeader"> October 2016 </div>
+        <p> 
+          Presents reference and high and low prices cases. In the Reference Case, the crude oil price assumption is revised lower to US$90 per barrel by 2040. In addition to policies which were included in the January edition, such as Quebec’s cap and trade system and the carbon tax in B.C., most of the Alberta Climate Leadership Plan and the Ontario cap and trade program have been integrated into the forecast.
+        </p>
       """
       fr: """
-        <div class="columnLeft">  
-          <h6> UNITÉS D’ÉNERGIE </h6>
-          <div class="sectionHeader"> PÉTAJOULE </div> 
-            <p>
-               Mesure d’énergie correspondant à un quadrillion (10<sup>15</sup>) de joules. Selon Statistique Canada, un pétajoule représente l’énergie requise pour faire fonctionner le métro de Montréal pendant un an.
-            </p>
-          <div class="sectionHeader"> MILLIER DE BARILS D’ÉQUIVALENT PÉTROLE PAR JOUR (kbep/j) </div>
-            <p>
-              Mesure d’énergie normalisée à l’équivalent de la teneur en énergie d’un baril de pétrole brut léger. Un baril d’équivalent pétrole équivaut à 6,811 joules ; et un pétajoule est égal à 0,4475 kbep/j.
-            </p>
-          <div class="sectionHeader"> GIGAWATTHEURE (GWh)  </div>
-            <p>
-              Mesure de puissance énergétique correspondant à un milliard (10<sup>9</sup>) de wattheures d’énergie électrique par année. Un gigawatt équivaut à 0,0036 pétajoule et à 0,0016 kbep/j.
-            </p>
-        </div>
-        <div class="columnRight">  
-          <h6> UNITÉS VOLUMÉTRIQUES </h6>
-          <div class="sectionHeader"> MILLIER DE BARILS PAR JOUR (kb/j) </div>
-            <p>  
-              Nombre de barils de pétrole brut produits par jour.
-            </p>
-          <div class="sectionHeader"> MILLIER DE MÈTRES CUBES PAR JOUR (10<sup>3</sup>m<sup>3</sup>/j) </div>
-            <p>
-              Nombre de mètres cubes de pétrole brut produits par jour. Un baril de pétrole équivaut à 0,159 mètre cube.
-            </p>
-          <div class="sectionHeader"> MILLIER DE PIEDS CUBES PAR JOUR (Mpi<sup>3</sup>/j) </div>
-            <p>
-              Nombre de pieds cubes de gaz naturel produits par jour.
-            </p>
-          <div class="sectionHeader"> MILLION DE MÈTRES CUBES PAR JOUR (Mm<sup>3</sup>/j) </div>
-            <p>
-              Nombre de mètres cubes de gaz naturel produits par jour. Un pied cube de gaz naturel équivaut à 0,0283 mètre cube.
-            </p>
-        </div>
-        <div class="clearfix"></div>
-        <hr>
-        <div class="sectionHeader"> REMARQUE AU SUJET DE LA GRADUATION DE L’AXE Y </div>
-        <div class="columnLeft"> 
-          <p>
-            Selon la valeur, un multiplicateur k, m ou µ peut être appliqué à l’axe y.
-          </p>  
-          <p>  
-            k=1000. Par exemple, 15,0k Mpi³/j équivaut à 15,0 milliards de pieds cubes par jour, ou 6,0k kb/j est égal à 6 millions de barils par jour.
-          </p>
-        </div>
-        <div class="columnRight">    
-          <p>  
-            m=0,001. Par exemple, 900m pétajoules est égal à 900 térajoules, ou 0,9 pétajoule.
-          </p>
-          <p>  
-            µ=0,000001. Par exemple, 300µ pétajoules est égal à 300 gigajoules, ou 0,0003 pétajoule.
-          </p>
-        </div>
+        <h6> CANADA'S ENERGY FUTURE 2016 </h6>
+        <div class="sectionHeader"> January 2016 </div>
+        <p> 
+          A continuation of the Energy Futures series. In addition our usual baseline long-term outlook, we explores key uncertainties for Canadian energy such robustness of global LNG markets and availability of crude oil transportation infrastructure.
+        </p>
+
+        <h6> CANADA’S ENERGY FUTURE 2016: UPDATE </h6>
+        <div class="sectionHeader"> October 2016 </div>
+        <p> 
+          Presents reference and high and low prices cases. In the Reference Case, the crude oil price assumption is revised lower to US$90 per barrel by 2040. In addition to policies which were included in the January edition, such as Quebec’s cap and trade system and the carbon tax in B.C., most of the Alberta Climate Leadership Plan and the Ontario cap and trade program have been integrated into the forecast.
+        </p>
       """
 
 
