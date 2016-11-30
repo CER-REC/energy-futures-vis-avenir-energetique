@@ -19,6 +19,7 @@ class LandingPage
 
     @app.window.document.getElementById('visualizationContent').innerHTML = Mustache.render LandingPageTemplate, 
         content: Tr.landingPage.content1[@app.language]
+        panelClass: @app.language
         visualization1Link: Tr.landingPage.visualization1Link[@app.language]
         visualization2Link: Tr.landingPage.visualization2Link[@app.language]
         visualization3Link: Tr.landingPage.visualization3Link[@app.language]
