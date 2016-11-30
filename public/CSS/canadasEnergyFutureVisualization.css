@@ -71,7 +71,7 @@ div.chartTooltip:after {
 }
 
 
-#canadasEnergyFutureVisualization #panelLeft {
+#canadasEnergyFutureVisualization #panelLeft.en {
   /*column-count: 2;
   -webkit-column-count: 2;
   -moz-column-count: 2;*/
@@ -81,9 +81,40 @@ div.chartTooltip:after {
   padding-right: 10px; /* For precise alignment with link boxes */
 }
 
-#canadasEnergyFutureVisualization #panelRight {
+#canadasEnergyFutureVisualization #panelLeft.fr {
+  column-count: 1;
+  -webkit-column-count: 1;
+  -moz-column-count: 1;
+  box-sizing: border-box;
+  width: 50%;
+  float: right;
+  padding-right: 10px; /* For precise alignment with link boxes */
+}
+
+#canadasEnergyFutureVisualization #panelLeft.fr p {
+    margin-top: 0;
+}
+
+#canadasEnergyFutureVisualization .columnLeftLandingPage {
+  width: 50%;
+  float: left;
+}
+
+#canadasEnergyFutureVisualization .columnRightLandingPage {
+  width: 50%;
+  float: right;
+}
+
+#canadasEnergyFutureVisualization #panelRight.en {
   box-sizing: border-box;
   width: 75%;
+  float: right;
+  padding-left: 4px; /* For precise alignment with link boxes */
+}
+
+#canadasEnergyFutureVisualization #panelRight.fr {
+  box-sizing: border-box;
+  width: 50%;
   float: right;
   padding-left: 4px; /* For precise alignment with link boxes */
 }

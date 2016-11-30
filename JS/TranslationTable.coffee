@@ -17,12 +17,23 @@ module.exports =
       </p>
       """
       fr: """
-      <p>
-      L’énergie est une composante importante au Canada. Elle sert à chauffer nos foyers et à propulser nos véhicules en plus de représenter un élément de premier plan dans l’économie canadienne. L’outil interactif intègre les données de notre tout récent rapport intitulé <a href='http://www.neb-one.gc.ca/nrg/ntgrtd/ftr/2016updt/index-fra.html'>Avenir énergétique 2016 –Mise à jour</a>, pour vous permettre d’explorer l’évolution de la production et de la consommation d’énergie et même de faire des prévisions pour l’avenir.
-      </p>
-      <p>
-      Nous présentons des scénarios de prix, bas et élevés, ainsi qu’un scénario de référence. Dans ce dernier cas, l’hypothèse de prix du pétrole brut a été revue à la baisse, à 90 $ US le baril en 2040. En plus des politiques déjà incluses dans l’édition de janvier dernier, notamment le système de plafonnement et d’échange de droits d’émission au Québec et la taxe sur le carbone en Colombie-Britannique, les nouvelles prévisions tiennent compte de la plus grande partie du plan de leadership de l’Alberta en matière de changement climatique, de même que du programme de plafonnement et d’échange de droits de l’Ontario.
-      </p>
+
+      <div class="columnLeftLandingPage">
+        <p>
+          L’énergie est une composante importante au Canada. Elle sert à chauffer nos foyers et à propulser nos véhicules en plus de représenter un élément de premier plan dans l’économie canadienne.
+        </p>
+        <p>
+          L’outil interactif intègre les données de notre tout récent rapport intitulé <a href='http://www.neb-one.gc.ca/nrg/ntgrtd/ftr/2016updt/index-fra.html'>Avenir énergétique 2016 –Mise à jour</a>, pour vous permettre d’explorer l’évolution de la production et de la consommation d’énergie et même de faire des prévisions pour l’avenir.
+        </p>
+        <p>
+          Nous présentons des scénarios de prix, bas et élevés, ainsi qu’un scénario de référence. Dans ce dernier cas, l’hypothèse de prix du pétrole brut a été revue à la baisse, à 90 $ US le baril en 2040.
+        </p>        
+      </div>
+      <div class="columnRightLandingPage">
+        <p>
+           En plus des politiques déjà incluses dans l’édition de janvier dernier, notamment le système de plafonnement et d’échange de droits d’émission au Québec et la taxe sur le carbone en Colombie-Britannique, les nouvelles prévisions tiennent compte de la plus grande partie du plan de leadership de l’Alberta en matière de changement climatique, de même que du programme de plafonnement et d’échange de droits de l’Ontario.
+        </p>
+      </div>
       """
 
     visualization1Link:
