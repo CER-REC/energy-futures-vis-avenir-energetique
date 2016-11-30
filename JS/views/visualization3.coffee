@@ -131,6 +131,7 @@ class Visualization3 extends visualization
       left: 10
       right: 20
       bottom: 70
+    @addDatasetToggle()
     @timelineMargin = 25
     @sliderLabelHeight = 28
     @sourceIconSpacing = 10
