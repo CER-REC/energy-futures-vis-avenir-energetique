@@ -61,11 +61,11 @@ module.exports =
     'Constrained ': 'constrained' # NB: The source data column in some of the CSVs has a trailing space in the string 'Constrained ', this is NOT A TYPO
 
   scenarios: 
-    2016:
+    '2016':
         ['reference',
         'high',
         'low']
-    2015:
+    '2015':
         ['reference',
         'high',
         'low',
@@ -74,17 +74,17 @@ module.exports =
         'constrained']
 
   generatedInYears: [
-    2016,
-    2015
+    '2016',
+    '2015'
   ]
 
   dataFiles:
-    2016: 
+    '2016': 
         "ElectricityGeneration": "CSV/2016-10-27_ElectricityGeneration.csv"
         "EnergyDemand": "CSV/2016-10-18_EnergyDemand.csv"
         "NaturalGasProduction": "CSV/2016-10-18_NaturalGasProduction.csv"
         "CrudeOilProduction": "CSV/2016-10-18_CrudeOilProduction.csv"
-    2015: 
+    '2015': 
         "ElectricityGeneration": "CSV/2016-01_ElectricityGeneration.csv"
         "EnergyDemand": "CSV/2016-01_EnergyDemand.csv"
         "NaturalGasProduction": "CSV/2016-01_NaturalGasProduction.csv"

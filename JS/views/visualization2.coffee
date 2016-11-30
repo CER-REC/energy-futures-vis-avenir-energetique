@@ -27,7 +27,8 @@ class Visualization2 extends visualization
   height = 700 
 
   renderBrowserTemplate: ->
-    @app.window.document.getElementById('visualizationContent').innerHTML = Mustache.render Visualization2Template, 
+    @app.window.document.getElementById('visualizationContent').innerHTML = Mustache.render Visualization2Template,
+      selectDatasetLabel: Tr.datasetSelector.selectDatasetLabel[@app.language] 
       selectSectorLabel: Tr.sectorSelector.selectSectorLabel[@app.language]
       selectUnitLabel: Tr.unitSelector.selectUnitLabel[@app.language]
       selectScenarioLabel: Tr.scenarioSelector.selectScenarioLabel[@app.language]
@@ -35,12 +36,26 @@ class Visualization2 extends visualization
       selectSourceLabel: Tr.sourceSelector.selectSourceLabel[@app.language]
       svgStylesheet: SvgStylesheetTemplate
 
+    @datasetHelpPopover = new ControlsHelpPopover(@app)
     @sectorsSelectorHelpPopover = new ControlsHelpPopover(@app)
     @unitsHelpPopover = new ControlsHelpPopover(@app)
     @scenariosHelpPopover = new ControlsHelpPopover(@app)
     @sourcesHelpPopover = new ControlsHelpPopover(@app)
     @provincesHelpPopover = new ControlsHelpPopover(@app)
 
+    d3.select(@app.window.document).select '.datasetSelectorHelpButton'
+      .on 'click', =>
+        d3.event.stopPropagation()
+        d3.event.preventDefault()
+        if @app.popoverManager.currentPopover == @datasetHelpPopover
+          @app.popoverManager.closePopover()
+        else
+          @app.popoverManager.showPopover @datasetHelpPopover,
+            outerClasses: 'vizModal floatingPopover datasetSelectorHelp'
+            innerClasses: 'viz1HelpTitle'
+            title: Tr.datasetSelector.datasetSelectorHelpTitle[@app.language]
+            content: Tr.datasetSelector.datasetSelectorHelp[@app.language]
+            attachmentSelector: '.datasetSelectorGroup'
 
     d3.select(@app.window.document).select '.sectorSelectorHelpButton'
       .on 'click', =>
@@ -111,6 +126,7 @@ class Visualization2 extends visualization
       bottom: 70
       left: 20
     @svgSize()
+    @addDatasetToggle()
     @addUnitToggle()
     @addSectors()
     @addScenarios()

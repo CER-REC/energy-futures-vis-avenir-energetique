@@ -42,6 +42,8 @@ class Visualization1Configuration
   constructor: (@app, options) ->
     @options = _.extend {}, @defaultOptions, options
 
+    @setDataset @options.dataset
+
     # mainSelection, one of energyDemand, oilProduction, electricityGeneration, or gasProduction
     @setMainSelection @options.mainSelection
 
@@ -73,8 +75,6 @@ class Visualization1Configuration
 
     @setLanguage @app.language || 'en'
 
-    @setDataset @options.dataset
-
   # Setters
 
   setMainSelection: (selection) ->
@@ -88,6 +88,7 @@ class Visualization1Configuration
 
     # When the selection changes, the set of allowable units and scenarios change
     # Calling setUnit and setScenario validates the current choices
+    @setDataset @dataset
     @setUnit @unit
     @setScenario @scenario
 
@@ -109,7 +110,7 @@ class Visualization1Configuration
     @updateRouter()
 
   setScenario: (scenario) ->
-    if Constants.scenarios[@options.dataset].includes scenario
+    if Constants.scenarios[@options.dataset]? && Constants.scenarios[@options.dataset].includes scenario
       @scenario = scenario
     else
       @scenario = @defaultOptions.scenario
@@ -167,6 +168,7 @@ class Visualization1Configuration
       @dataset = dataset
     else 
       @dataset = @defaultOptions.dataset
+    @options.dataset = @dataset
     @updateRouter()
 
   # Router integration

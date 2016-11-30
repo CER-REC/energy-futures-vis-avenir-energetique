@@ -13,6 +13,18 @@ class visualization
     # TODO: Consider garbage collection and event listeners
     @app.window.document.getElementById('visualizationContent').innerHTML = ''
 
+  datasetSelectionData: ->
+    jan2016 =
+      label: '2015'
+      title: Tr.selectorTooltip.datasetSelector.jan2016[@app.language]
+      class: if @config.dataset == '2015' then 'vizButton selected' else 'vizButton'
+    nov2016 =
+      label: '2016'
+      title: Tr.selectorTooltip.datasetSelector.nov2016[@app.language]
+      class: if @config.dataset == '2016' then 'vizButton selected' else 'vizButton'
+
+    [nov2016, jan2016]
+
   unitSelectionData: ->
     petajoules = 
       label: Tr.unitSelector.petajoulesButton[@app.language]
@@ -199,6 +211,35 @@ class visualization
       }
     ]
 
+  addDatasetToggle: ->
+    if @config.dataset?
+      datasetSelectors = d3.select(@app.window.document).select('#datasetSelector')
+        .selectAll('.datasetSelectorButton')
+        .data(@datasetSelectionData())
+
+      datasetSelectors.enter()
+        .append('div')
+        .attr
+          class: 'datasetSelectorButton'
+        .on 'click', (d) =>
+          if @config.dataset != d.label
+            @config.setDataset d.label
+
+            # Check if the current scenario is valid for the new dataset
+            # and update the list of supported scenarios.
+            @config.setScenario @config.scenario
+
+            @addScenarios()
+            @addDatasetToggle(@datasetSelectionData())
+
+            @getDataAndRender()
+            if @buildYAxis? then @buildYAxis()
+
+      datasetSelectors.html (d) ->
+        "<button class='#{d.class}' type='button' title='#{d.title}'>#{d.label}</button>"
+
+      datasetSelectors.exit().remove()
+
   addUnitToggle: ->
     if @config.unit?  
       unitsSelectors = d3.select(@app.window.document).select('#unitsSelector')
@@ -213,6 +254,7 @@ class visualization
           if @config.unit != d.unitName  
             @config.setUnit d.unitName
             # TODO: For efficiency, only rerender what's necessary.
+            @unitSelectionData()
             @addUnitToggle(@unitSelectionData())
             @getDataAndRender()
             if @buildYAxis? then @buildYAxis()
@@ -237,12 +279,16 @@ class visualization
             @config.setScenario d.scenarioName
 
             # TODO: For efficiency, only rerender what's necessary.
+            @addDatasetToggle()
             @addScenarios()
             @getDataAndRender()
 
 
       scenariosSelectors.html (d) ->
-        "<button class='#{d.class}' type='button' title='#{d.title}'><span class='#{if d.class.includes 'disabled' then 'disabled' else ''}'>#{d.label}</span></button>"
+        indexOfDisabled = d.class.indexOf 'disabled'
+        spanClass = 'disabled'
+        if indexOfDisabled < 0 then spanClass = ''
+        "<button class='#{d.class}' type='button' title='#{d.title}'><span class='#{spanClass}'>#{d.label}</span></button>"
 
       scenariosSelectors.exit().remove()
 
@@ -285,6 +331,7 @@ class visualization
         if @config.mainSelection != d.selectorName  
           @config.setMainSelection d.selectorName
           # TODO: For efficiency, only rerender what's necessary.
+          @addDatasetToggle()
           @addMainSelector()
           @addUnitToggle()
           @addScenarios()

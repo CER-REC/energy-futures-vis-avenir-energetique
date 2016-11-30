@@ -29,6 +29,7 @@ class Visualization3 extends visualization
 
   renderBrowserTemplate: ->
     @app.window.document.getElementById('visualizationContent').innerHTML = Mustache.render Visualization3Template,
+      selectDatasetLabel: Tr.datasetSelector.selectDatasetLabel[@app.language]
       selectViewByLabel: Tr.viewBySelector.selectViewByLabel[@app.language]
       selectUnitLabel: Tr.unitSelector.selectUnitLabel[@app.language]
       selectScenarioLabel: Tr.scenarioSelector.selectScenarioLabel[@app.language]
@@ -36,11 +37,26 @@ class Visualization3 extends visualization
       selectSourceLabel: Tr.sourceSelector.selectSourceLabel[@app.language]
       svgStylesheet: SvgStylesheetTemplate
 
+    @datasetHelpPopover = new ControlsHelpPopover(@app)
     @viewByHelpPopover = new ControlsHelpPopover(@app)
     @unitsHelpPopover = new ControlsHelpPopover(@app)
     @scenariosHelpPopover = new ControlsHelpPopover(@app)
     @sourcesHelpPopover = new ControlsHelpPopover(@app)
     @provincesHelpPopover = new ControlsHelpPopover(@app)
+
+    d3.select(@app.window.document).select '.datasetSelectorHelpButton'
+      .on 'click', =>
+        d3.event.stopPropagation()
+        d3.event.preventDefault()
+        if @app.popoverManager.currentPopover == @datasetHelpPopover
+          @app.popoverManager.closePopover()
+        else
+          @app.popoverManager.showPopover @datasetHelpPopover,
+            outerClasses: 'vizModal floatingPopover datasetSelectorHelp'
+            innerClasses: 'viz1HelpTitle'
+            title: Tr.datasetSelector.datasetSelectorHelpTitle[@app.language]
+            content: Tr.datasetSelector.datasetSelectorHelp[@app.language]
+            attachmentSelector: '.datasetSelectorGroup'
 
     d3.select(@app.window.document).select '.viewBySelectorHelpButton'
       .on 'click', =>
@@ -119,6 +135,7 @@ class Visualization3 extends visualization
     @sliderLabelHeight = 28
     @sourceIconSpacing = 10
     @svgSize()
+    @addDatasetToggle()
     @buildProvinceVsSourceToggle()
     @addUnitToggle()
     @addScenarios()

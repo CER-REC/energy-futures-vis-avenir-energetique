@@ -744,6 +744,8 @@ div.chartTooltip:after {
   text-align: center;
 }
 
+#canadasEnergyFutureVisualization .datasetSelectorSection,
+#canadasEnergyFutureVisualization .datasetSelectorGroup,
 #canadasEnergyFutureVisualization .mainSelectorSection,
 #canadasEnergyFutureVisualization .unitsSelectorGroup,
 #canadasEnergyFutureVisualization .scenarioSelectorGroup,
@@ -864,6 +866,8 @@ div.chartTooltip:after {
 
   text-shadow: -2px 0 white, 0 2px white, 2px 0 white, 0 -2px white;
   background: linear-gradient(to top right, transparent 0%, transparent calc(50% - 2px), rgba(155,155,155,1) 50%, transparent calc(50% + 0.8px), transparent 100%);
+  background: linear-gradient(to top right, transparent, transparent 50%, gray 50%, gray 51%, transparent 52%);
+
 }
 
 #canadasEnergyFutureVisualization span.disabled {

@@ -114,6 +114,13 @@ class Router
         eventLabel: params.page
       })
 
+      @app.containingWindow.ga('send', {
+        hitType: 'event',
+        eventCategory: 'Dataset'
+        eventAction: params.dataset,
+        eventLabel: params.page
+      })
+
   # Navigation handlers
 
   updateBottomNavBar: ->

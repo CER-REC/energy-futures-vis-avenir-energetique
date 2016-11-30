@@ -61,16 +61,32 @@ class Visualization4
 
   renderBrowserTemplate: ->
     @app.window.document.getElementById('visualizationContent').innerHTML = Mustache.render Visualization4Template,
+      selectDatasetLabel: Tr.datasetSelector.selectDatasetLabel[@app.language]
       selectOneLabel: Tr.mainSelector.selectOneLabel[@app.language]
       selectUnitLabel: Tr.unitSelector.selectUnitLabel[@app.language]
       selectScenarioLabel: Tr.scenarioSelector.selectScenarioLabel[@app.language]
       selectRegionLabel: Tr.regionSelector.selectRegionLabel[@app.language]
       svgStylesheet: SvgStylesheetTemplate
 
+    @datasetHelpPopover = new ControlsHelpPopover(@app)
     @mainSelectorHelpPopover = new ControlsHelpPopover()
     @unitsHelpPopover = new ControlsHelpPopover()
     @scenariosHelpPopover = new ControlsHelpPopover()
     @provincesHelpPopover = new ControlsHelpPopover()
+
+    d3.select(@app.window.document).select '.datasetSelectorHelpButton'
+      .on 'click', =>
+        d3.event.stopPropagation()
+        d3.event.preventDefault()
+        if @app.popoverManager.currentPopover == @datasetHelpPopover
+          @app.popoverManager.closePopover()
+        else
+          @app.popoverManager.showPopover @datasetHelpPopover,
+            outerClasses: 'vizModal floatingPopover datasetSelectorHelp'
+            innerClasses: 'viz1HelpTitle'
+            title: Tr.datasetSelector.datasetSelectorHelpTitle[@app.language]
+            content: Tr.datasetSelector.datasetSelectorHelp[@app.language]
+            attachmentSelector: '.datasetSelectorGroup'
 
     d3.select(@app.window.document).select '.mainSelectorHelpButton'
       .on 'click', =>
@@ -334,6 +350,17 @@ class Visualization4
 
 
   # Data here
+  datasetSelectionData: ->
+    jan2016 =
+      label: '2015'
+      title: Tr.selectorTooltip.datasetSelector.jan2016[@app.language]
+      class: if @config.dataset == '2015' then 'vizButton selected' else 'vizButton'
+    nov2016 =
+      label: '2016'
+      title: Tr.selectorTooltip.datasetSelector.nov2016[@app.language]
+      class: if @config.dataset == '2016' then 'vizButton selected' else 'vizButton'
+
+    [nov2016, jan2016]
 
   mainSelectionData: ->
     [
@@ -736,6 +763,7 @@ class Visualization4
       .attr 'transform', "translate(#{@margin.top},#{@margin.left})"
         
     @renderMainSelector()
+    @renderDatasetSelector()
     @renderUnitsSelector()
     @renderScenariosSelector()
     @renderXAxis()
@@ -743,6 +771,37 @@ class Visualization4
     if !@provinceMenu #We only need to build once, but we need to build after the axis are built for alignment
       @provinceMenu = @buildProvinceMenu()
     @renderGraph(@app.animationDuration, width)
+
+  renderDatasetSelector: ->
+    if @config.dataset?
+      datasetSelectors = d3.select(@app.window.document).select('#datasetSelector')
+        .selectAll('.datasetSelectorButton')
+        .data(@datasetSelectionData())
+
+      datasetSelectors.enter()
+        .append('div')
+        .attr
+          class: 'datasetSelectorButton'
+        .on 'click', (d) =>
+          if @config.dataset != d.label
+            @config.setDataset d.label
+
+            # Check if the current scenario is valid for the new dataset
+            # and update the list of supported scenarios.
+            for scenario in @config.scenarios
+              @config.removeScenario scenario
+              @config.addScenario scenario
+
+            @renderScenariosSelector()
+            @renderDatasetSelector(@datasetSelectionData())
+
+            @renderYAxis()
+            @renderGraph()
+
+      datasetSelectors.html (d) ->
+        "<button class='#{d.class}' type='button' title='#{d.title}'>#{d.label}</button>"
+
+      datasetSelectors.exit().remove()
 
   renderMainSelector: ->
     mainSelectors = d3.select(@app.window.document).select('#mainSelector')
@@ -758,6 +817,7 @@ class Visualization4
         # TODO: For efficiency, only rerender what's necessary.
         # We could just call render() ... but that would potentially rebuild a bunch of menus... 
         @renderMainSelector()
+        @renderDatasetSelector()
         @renderUnitsSelector()
         @renderScenariosSelector()
         @renderYAxis()
@@ -822,7 +882,10 @@ class Visualization4
         @renderGraph()
 
     scenariosSelectors.html (d) ->
-      "<button class='#{d.class}' type='button' title='#{d.title}'><span class='#{if d.class.includes 'disabled' then 'disabled' else ''}'>#{d.label}</span></button>"
+        indexOfDisabled = d.class.indexOf 'disabled'
+        spanClass = 'disabled'
+        if indexOfDisabled < 0 then spanClass = ''
+        "<button class='#{d.class}' type='button' title='#{d.title}'><span class='#{spanClass}'>#{d.label}</span></button>"
 
     scenariosSelectors.exit()
       .on 'click', null

@@ -67,6 +67,8 @@ class Visualization3Configuration
   constructor: (@app, options) ->
     @options = _.extend {}, @defaultOptions, options
 
+    @setDataset @options.dataset
+
     @mainSelection = 'electricityGeneration' # this isn't an option for viz 3
 
     # viewing method: 'province' or 'source'
@@ -113,8 +115,6 @@ class Visualization3Configuration
 
     @setLanguage @app.language || 'en'
 
-    @setDataset @options.dataset
-
   # Setters
 
   setViewBy: (viewBy) ->
@@ -132,7 +132,7 @@ class Visualization3Configuration
     @updateRouter()
 
   setScenario: (scenario) ->
-    if Constants.scenarios[@options.dataset].includes scenario
+    if Constants.scenarios[@options.dataset]? && Constants.scenarios[@options.dataset].includes scenario
       @scenario = scenario
     else
       @scenario = @defaultOptions.scenario
@@ -242,6 +242,7 @@ class Visualization3Configuration
       @dataset = dataset
     else 
       @dataset = @defaultOptions.dataset
+    @options.dataset = @dataset
     @updateRouter()
 
   # Router integration

@@ -4,22 +4,39 @@ Constants = require '../Constants.coffee'
 UnitTransformation = require '../unit-transformation.coffee'
 Tr = require '../TranslationTable.coffee'
 
+QueryString = require 'query-string'
+PrepareQueryParams = require '../PrepareQueryParams.coffee'
+
+datasets = []
+
 class ElectricityProductionProvider
 
   constructor: ->
     @data = null
 
+    d3.csv Constants.dataFiles['2015']["ElectricityGeneration"], @mapping, (data) ->
+      datasets['2015'] = data
+
+    d3.csv Constants.dataFiles['2016']["ElectricityGeneration"], @mapping, (data) ->
+      datasets['2016'] = data
+
   loadViaAjax: (loadedCallback) ->
-    @dataset = Constants.generatedInYears[0]
+    params = PrepareQueryParams QueryString.parse(window.parent.document.location.search)
+
+    if(Constants.generatedInYears.includes params.dataset)
+      @loadForYear(params.dataset)
+    else
+      @loadForYear(Constants.generatedInYears[0])
+
     @loadedCallback = loadedCallback
-    d3.csv "CSV/2016-10-27_ElectricityGeneration.csv", @mapping, @parseData
-    # d3.csv "CSV/2016-10-19_ElectricityGeneration.csv", @mapping, @parseData
-    # d3.csv "CSV/2016-01_ElectricityGeneration.csv", @mapping, @parseData,
 
   loadForYear: (dataset) ->
     if Constants.generatedInYears.includes dataset
       @dataset = dataset
-      d3.csv Constants.dataFiles[dataset]["ElectricityGeneration"], @mapping, @parseData
+      if datasets.length > 0
+        @parseData null, datasets[dataset] 
+      else
+        d3.csv Constants.dataFiles[dataset]["ElectricityGeneration"], @mapping, @parseData
 
   loadFromString: (data) ->
     @parseData null, d3.csv.parse(data, @mapping)

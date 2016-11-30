@@ -30,6 +30,8 @@ class Visualization2Configuration
   constructor: (@app, options) ->
     @options = _.extend {}, @defaultOptions, options
 
+    @setDataset @options.dataset
+
     @mainSelection = 'energyDemand' # this isn't an option for viz 2
 
     # sector, one of: residential, commercial, industrial, transportation, total
@@ -62,8 +64,6 @@ class Visualization2Configuration
 
     @setLanguage @app.language || 'en'
 
-    @setDataset @options.dataset
-
   # Setters
 
   setSector: (sector) ->
@@ -81,7 +81,7 @@ class Visualization2Configuration
     @updateRouter()
 
   setScenario: (scenario) ->
-    if Constants.scenarios[@options.dataset].includes scenario
+    if Constants.scenarios[@options.dataset]? && Constants.scenarios[@options.dataset].includes scenario
       @scenario = scenario
     else
       @scenario = @defaultOptions.scenario
@@ -137,6 +137,7 @@ class Visualization2Configuration
       @dataset = dataset
     else 
       @dataset = @defaultOptions.dataset
+    @options.dataset = @dataset
     @updateRouter()
 
   # Router integration

@@ -3,25 +3,42 @@ d3 = require 'd3'
 Constants = require '../Constants.coffee'
 UnitTransformation = require '../unit-transformation.coffee'
 
+QueryString = require 'query-string'
+PrepareQueryParams = require '../PrepareQueryParams.coffee'
+
+datasets = []
+
 class EnergyConsumptionProvider
 
   constructor: ->
     @data = null
 
+    d3.csv Constants.dataFiles['2015']["EnergyDemand"], @mapping, (data) ->
+      datasets['2015'] = data
+
+    d3.csv Constants.dataFiles['2016']["EnergyDemand"], @mapping, (data) ->
+      datasets['2016'] = data
+
   loadViaAjax: (loadedCallback) ->
-    @dataset = Constants.generatedInYears[0]
+    params = PrepareQueryParams QueryString.parse(window.parent.document.location.search)
+
+    if(Constants.generatedInYears.includes params.dataset)
+      @loadForYear(params.dataset)
+    else
+      @loadForYear(Constants.generatedInYears[0])
+
     @loadedCallback = loadedCallback
-    d3.csv "CSV/2016-10-18_EnergyDemand.csv", @mapping, @parseData
-    # d3.csv "CSV/2016-01_EnergyDemand.csv", @mapping, @parseData
 
   loadForYear: (dataset) ->
     if Constants.generatedInYears.includes dataset
       @dataset = dataset
-      d3.csv Constants.dataFiles[dataset]["EnergyDemand"], @mapping, @parseData    
+      if datasets.length > 0
+        @parseData null, datasets[dataset] 
+      else
+        d3.csv Constants.dataFiles[dataset]["EnergyDemand"], @mapping, @parseData
   
   loadFromString: (data) ->
     @parseData null, d3.csv.parse(data, @mapping) 
-
 
   mapping: (d) ->
     province: d.province
@@ -94,7 +111,6 @@ class EnergyConsumptionProvider
 
     if viz1config.dataset != @dataset
       @loadForYear(viz1config.dataset)
-
     # Exclude data from provinces that aren't in the set
     for provinceName in Object.keys @dataByProvince
       if viz1config.provinces.includes provinceName

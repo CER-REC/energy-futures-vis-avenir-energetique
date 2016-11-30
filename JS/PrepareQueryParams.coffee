@@ -16,7 +16,7 @@ module.exports = (params) ->
   if params.year?
     params.year = parseInt(params.year)
   if params.dataset?
-    params.dataset = parseInt(params.dataset)
+    params.dataset = params.dataset
 
   # The 'page' parameter is validated in the router
   # The other parameters are validated in the visualization config classes, in setters
