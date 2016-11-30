@@ -16,7 +16,7 @@ iisNodeAppDirectory = path.join(iisRepositoryDirectory, 'node_app');
 
 
 // First, run the distribute script, to prepare the fileserver assets
-// execSync('node tasks/distribute.js', {stdio: [0,1,2]});
+execSync('node tasks/distribute.js', {stdio: [0,1,2]});
 
 
 // Remove the existing deployment
