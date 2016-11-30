@@ -517,12 +517,17 @@ class Visualization4
     
     switch @config.mainSelection
       when 'energyDemand', 'electricityGeneration'
-        [reference, high, highLng, constrained, low, noLng]
+        initialScenarioList = [reference, high, highLng, constrained, low, noLng]
       when 'oilProduction'
-        [reference, high, constrained, low]
+        initialScenarioList = [reference, high, constrained, low]
       when 'gasProduction'
-        [reference, high, highLng, low, noLng]
+        initialScenarioList = [reference, high, highLng, low, noLng]
 
+    finalScenarioList = []
+    for item in initialScenarioList
+      if !item.class.includes 'disabled'
+        finalScenarioList.push item
+    finalScenarioList
     # TODO: merge graphdata and graphscenario data, its dumb =/
 
 

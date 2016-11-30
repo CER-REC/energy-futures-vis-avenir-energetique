@@ -123,6 +123,8 @@ class Visualization1 extends visualization
     else if Platform.name == 'server'
       @renderServerTemplate()
 
+    @addDatasetToggle()
+
     @_margin = 
       top: 20
       bottom: 70
