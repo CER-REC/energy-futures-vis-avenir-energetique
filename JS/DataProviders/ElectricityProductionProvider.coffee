@@ -12,31 +12,6 @@ class ElectricityProductionProvider
   constructor: ->
     @data = []
 
-    # d3.csv Constants.dataFiles['2016']["ElectricityGeneration"], @mapping, (data) ->
-    #   datasets['2016'] = data
-
-    # d3.csv Constants.dataFiles['2016 Update']["ElectricityGeneration"], @mapping, (data) ->
-    #   datasets['2016 Update'] = data
-
-
-  # loadViaAjax: (loadedCallback) ->
-  #   params = PrepareQueryParams QueryString.parse(window.parent.document.location.search)
-
-  #   if(Constants.datasets.includes params.dataset)
-  #     @loadForYear(params.dataset)
-  #   else
-  #     @loadForYear(Constants.datasets[0])
-
-  #   @loadedCallback = loadedCallback
-
-  # loadForYear: (dataset) ->
-  #   if Constants.datasets.includes dataset
-  #     @dataset = dataset
-  #     if datasets.length > 0
-  #       @parseData null, datasets[dataset] 
-  #     else
-  #       d3.csv Constants.dataFiles[dataset]["ElectricityGeneration"], @mapping, @parseData
-
   # Parse all of a CSV's data
   loadFromString: (dataString) ->
     @data = d3.csv.parse dataString, @mapping
@@ -46,7 +21,6 @@ class ElectricityProductionProvider
   addData: (data) ->
     @data = @data.concat data
     @parseData @data
-
 
   mapping: (d) ->
     province: d.province
@@ -115,9 +89,6 @@ class ElectricityProductionProvider
   # across scenarios for a given configuration.
   dataForAllViz1Scenarios: (viz1config) ->
     filteredProvinceData = {}    
-
-    # if viz1config.dataset != @dataset
-    #   @loadForYear(viz1config.dataset)
 
     # Exclude data from provinces that aren't in the set
     for provinceName in Object.keys @dataByProvince
@@ -195,9 +166,6 @@ class ElectricityProductionProvider
   # objects after we return them here.
   dataForViz3: (viz3config) ->
     filteredData = {} #this is filtered by the viewBy
-
-    # if viz3config.dataset != @dataset
-    #   @loadForYear(viz3config.dataset)
 
     if viz3config.viewBy == 'province' 
       dataToUse = @dataByProvince
@@ -284,9 +252,6 @@ class ElectricityProductionProvider
   # across scenarios for a given configuration.
   dataForAllViz4Scenarios: (viz4config) ->
     filteredScenarioData = {}    
-
-    # if viz4config.dataset != @dataset
-    #   @loadForYear(viz4config.dataset)
 
     # Group data by scenario
     for scenarioName in Object.keys @dataByScenario

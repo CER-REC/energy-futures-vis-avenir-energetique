@@ -168,7 +168,7 @@ module.exports =
       jan2016:
         en: 'Description here...'
         fr: ''
-      nov2016:
+      oct2016:
         en: 'Description here...'
         fr: ''
 

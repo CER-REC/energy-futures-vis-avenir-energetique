@@ -60,9 +60,6 @@ module.exports =
     'Constrained': 'constrained' 
     'Constrained ': 'constrained' # NB: The source data column in some of the CSVs has a trailing space in the string 'Constrained ', this is NOT A TYPO
 
-
-
-
   datasets: [
     'jan2016'
     'oct2016'
@@ -85,6 +82,8 @@ module.exports =
         'high'
         'low'
       ]
+
+
 
 
   years: [

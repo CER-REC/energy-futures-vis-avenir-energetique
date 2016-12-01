@@ -16,14 +16,16 @@ class visualization
   datasetSelectionData: ->
     jan2016 =
       label: '2016'
+      dataset: 'jan2016'
       title: Tr.selectorTooltip.datasetSelector.jan2016[@app.language]
-      class: if @config.dataset == '2016' then 'vizButton selected' else 'vizButton'
-    nov2016 =
+      class: if @config.dataset == 'jan2016' then 'vizButton selected' else 'vizButton'
+    oct2016 =
       label: '2016 Update'
-      title: Tr.selectorTooltip.datasetSelector.nov2016[@app.language]
-      class: if @config.dataset == '2016 Update' then 'vizButton selected' else 'vizButton'
+      dataset: 'oct2016'
+      title: Tr.selectorTooltip.datasetSelector.oct2016[@app.language]
+      class: if @config.dataset == 'oct2016' then 'vizButton selected' else 'vizButton'
 
-    [nov2016, jan2016]
+    [oct2016, jan2016]
 
   unitSelectionData: ->
     petajoules = 
@@ -142,17 +144,20 @@ class visualization
 
     switch @config.mainSelection
       when 'energyDemand', 'electricityGeneration'
-        initialScenarioList = [reference, constrained, high, low, highLng, noLng]
+        if @config.dataset == 'jan2016'
+          [reference, constrained, high, low, highLng, noLng]
+        else
+          [reference, high, low]
       when 'oilProduction'
-        initialScenarioList = [reference, constrained, high, low]
+        if @config.dataset == 'jan2016'
+          [reference, constrained, high, low]
+        else
+          [reference, high, low]
       when 'gasProduction'
-        initialScenarioList = [reference, high, low, highLng, noLng]
-
-    finalScenarioList = []
-    for item in initialScenarioList
-      if !item.class.includes 'disabled'
-        finalScenarioList.push item
-    finalScenarioList
+        if @config.dataset == 'jan2016'
+          [reference, high, low, highLng, noLng]
+        else
+          [reference, high, low]
 
   sectorSelectionData: ->
     [  
@@ -228,8 +233,8 @@ class visualization
         .attr
           class: 'datasetSelectorButton'
         .on 'click', (d) =>
-          if @config.dataset != d.label
-            @config.setDataset d.label
+          if @config.dataset != d.dataset
+            @config.setDataset d.dataset
 
             # Check if the current scenario is valid for the new dataset
             # and update the list of supported scenarios.
