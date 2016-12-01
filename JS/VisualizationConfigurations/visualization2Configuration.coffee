@@ -81,7 +81,7 @@ class Visualization2Configuration
     @updateRouter()
 
   setScenario: (scenario) ->
-    if Constants.scenarios[@options.dataset]? && Constants.scenarios[@options.dataset].includes scenario
+    if Constants.scenarios[@dataset]? && Constants.scenarios[@dataset].includes scenario
       @scenario = scenario
     else
       @scenario = @defaultOptions.scenario
@@ -137,7 +137,6 @@ class Visualization2Configuration
       @dataset = dataset
     else 
       @dataset = @defaultOptions.dataset
-    @options.dataset = @dataset
     @updateRouter()
 
   # Router integration

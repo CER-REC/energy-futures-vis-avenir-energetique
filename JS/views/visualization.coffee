@@ -142,17 +142,20 @@ class visualization
 
     switch @config.mainSelection
       when 'energyDemand', 'electricityGeneration'
-        initialScenarioList = [reference, constrained, high, low, highLng, noLng]
+        if @config.dataset == '2016'
+          [reference, constrained, high, low, highLng, noLng]
+        else
+          [reference, high, low]
       when 'oilProduction'
-        initialScenarioList = [reference, constrained, high, low]
+        if @config.dataset == '2016'
+          [reference, constrained, high, low]
+        else
+          [reference, high, low]
       when 'gasProduction'
-        initialScenarioList = [reference, high, low, highLng, noLng]
-
-    finalScenarioList = []
-    for item in initialScenarioList
-      if !item.class.includes 'disabled'
-        finalScenarioList.push item
-    finalScenarioList
+        if @config.dataset == '2016'
+          [reference, high, low, highLng, noLng]
+        else
+          [reference, high, low]
 
   sectorSelectionData: ->
     [  

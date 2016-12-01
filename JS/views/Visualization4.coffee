@@ -514,23 +514,25 @@ class Visualization4
         else 
           'vizButton noLng disabled'
       colour: '#C7E9B4'
-    
+
     switch @config.mainSelection
       when 'energyDemand', 'electricityGeneration'
-        initialScenarioList = [reference, high, highLng, constrained, low, noLng]
+        if @config.dataset == '2016'
+          [reference, high, highLng, constrained, low, noLng]
+        else
+          [reference, high, low]
       when 'oilProduction'
-        initialScenarioList = [reference, high, constrained, low]
+        if @config.dataset == '2016'
+          [reference, high, constrained, low]
+        else
+          [reference, high, low]
       when 'gasProduction'
-        initialScenarioList = [reference, high, highLng, low, noLng]
-
-    finalScenarioList = []
-    for item in initialScenarioList
-      if !item.class.includes 'disabled'
-        finalScenarioList.push item
-    finalScenarioList
+        if @config.dataset == '2016'
+          [reference, high, highLng, low, noLng]
+        else
+          [reference, high, low]
+    
     # TODO: merge graphdata and graphscenario data, its dumb =/
-
-
 
   scenarioLegendData: ->
     baseData = 
