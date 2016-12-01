@@ -37,9 +37,11 @@ class Visualization1Configuration
       'SK'
       'YT' 
     ]
-    dataset: Constants.generatedInYears[0]
+    dataset: Constants.datasets[0]
 
   constructor: (@app, options) ->
+    @page = 'viz1'
+
     @options = _.extend {}, @defaultOptions, options
 
     @setDataset @options.dataset
@@ -164,7 +166,7 @@ class Visualization1Configuration
     @language = language if language == 'en' or language == 'fr'
 
   setDataset: (dataset) ->
-    if Constants.generatedInYears.includes dataset
+    if Constants.datasets.includes dataset
       @dataset = dataset
     else 
       @dataset = @defaultOptions.dataset

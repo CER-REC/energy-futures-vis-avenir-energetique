@@ -60,6 +60,34 @@ module.exports =
     'Constrained': 'constrained' 
     'Constrained ': 'constrained' # NB: The source data column in some of the CSVs has a trailing space in the string 'Constrained ', this is NOT A TYPO
 
+
+
+
+  datasets: [
+    'jan2016'
+    'oct2016'
+  ]
+
+  datasetDefinitions:
+    jan2016: 
+      scenarios: [
+        'reference'
+        'high'
+        'low'
+        'highLng'
+        'noLng'
+        'constrained' 
+      ]
+
+    oct2016: 
+      scenarios: [
+        'reference'
+        'high'
+        'low'
+      ]
+
+
+  # TODO: rationalize dataset tags
   scenarios: 
     '2016 Update':
         ['reference',
@@ -73,22 +101,20 @@ module.exports =
         'noLng',
         'constrained']
 
-  generatedInYears: [
-    '2016 Update',
-    '2016'
-  ]
 
-  dataFiles:
-    '2016 Update': 
-        "ElectricityGeneration": "CSV/2016-10-27_ElectricityGeneration.csv"
-        "EnergyDemand": "CSV/2016-10-18_EnergyDemand.csv"
-        "NaturalGasProduction": "CSV/2016-10-18_NaturalGasProduction.csv"
-        "CrudeOilProduction": "CSV/2016-10-18_CrudeOilProduction.csv"
-    '2016': 
-        "ElectricityGeneration": "CSV/2016-01_ElectricityGeneration.csv"
-        "EnergyDemand": "CSV/2016-01_EnergyDemand.csv"
-        "NaturalGasProduction": "CSV/2016-01_NaturalGasProduction.csv"
-        "CrudeOilProduction": "CSV/2016-01_CrudeOilProduction.csv"
+
+  # TODO: client requests of whole CSVs to be a thing of the past! 
+  # dataFiles:
+  #   '2016 Update': 
+  #       "ElectricityGeneration": "CSV/2016-10-27_ElectricityGeneration.csv"
+  #       "EnergyDemand": "CSV/2016-10-18_EnergyDemand.csv"
+  #       "NaturalGasProduction": "CSV/2016-10-18_NaturalGasProduction.csv"
+  #       "CrudeOilProduction": "CSV/2016-10-18_CrudeOilProduction.csv"
+  #   '2016': 
+  #       "ElectricityGeneration": "CSV/2016-01_ElectricityGeneration.csv"
+  #       "EnergyDemand": "CSV/2016-01_EnergyDemand.csv"
+  #       "NaturalGasProduction": "CSV/2016-01_NaturalGasProduction.csv"
+  #       "CrudeOilProduction": "CSV/2016-01_CrudeOilProduction.csv"
 
   years: [
     2005
@@ -221,12 +247,6 @@ module.exports =
 
   serverSideGraphWidth: 1065 # px
   viz4ServerSideGraphWidth: 995 # 1065 - 70 extra pixels of width for viz4's wider legend
-
-
-  datasets: [
-    'jan2016'
-    'oct2016'
-  ]
 
   cacheDuration: 3600 # seconds
 

@@ -6,7 +6,7 @@ queryString = require 'query-string'
 Logger = require '../Logger.coffee'
 ServerDataChunksPromises = require '../server/ServerDataChunksPromises.coffee'
 Constants = require '../Constants.coffee'
-DatasetDefinitions = require '../DatasetDefinitions.coffee'
+
 
 
 requestCounter = 0
@@ -43,7 +43,7 @@ module.exports = (req, res) ->
             reject new Error "Unrecognized sector or province parameter."
 
         when 'viz3'
-          if DatasetDefinitions[params.dataset].scenarios.includes params.scenario
+          if Constants.datasetDefinitions[params.dataset].scenarios.includes params.scenario
             response.data = serverDataChunks.viz3Chunks[params.scenario]
             resolve response
           else

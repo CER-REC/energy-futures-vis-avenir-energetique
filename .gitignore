@@ -16,3 +16,5 @@ public/bundle.js
 /JS/server/iisnode
 /JS/servers/ProductionServer/.env
 /log
+
+Thumbs.db

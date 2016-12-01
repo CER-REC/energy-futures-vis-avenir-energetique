@@ -2,7 +2,6 @@ Promise = require 'bluebird'
 
 ServerData = require './ServerData.coffee'
 Constants = require '../Constants.coffee'
-DatasetDefinitions = require '../DatasetDefinitions.coffee'
 Logger = require '../Logger.coffee'
 
 # To avoid downloading all of the data at once for each visualization, we split it up into
@@ -128,7 +127,7 @@ createDatasetPromise = (datasetName, datasetDefinition) ->
       }
 
 
-for datasetName, datasetDefinition of DatasetDefinitions
+for datasetName, datasetDefinition of Constants.datasetDefinitions
   promises[datasetName] = createDatasetPromise datasetName, datasetDefinition
 
 

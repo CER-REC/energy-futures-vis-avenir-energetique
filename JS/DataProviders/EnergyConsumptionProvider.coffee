@@ -22,15 +22,15 @@ class EnergyConsumptionProvider
   loadViaAjax: (loadedCallback) ->
     params = PrepareQueryParams QueryString.parse(window.parent.document.location.search)
 
-    if(Constants.generatedInYears.includes params.dataset)
+    if(Constants.datasets.includes params.dataset)
       @loadForYear(params.dataset)
     else
-      @loadForYear(Constants.generatedInYears[0])
+      @loadForYear(Constants.datasets[0])
 
     @loadedCallback = loadedCallback
 
   loadForYear: (dataset) ->
-    if Constants.generatedInYears.includes dataset
+    if Constants.datasets.includes dataset
       @dataset = dataset
       if datasets.length > 0
         @parseData null, datasets[dataset] 
