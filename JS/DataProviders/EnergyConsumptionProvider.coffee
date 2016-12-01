@@ -13,11 +13,11 @@ class EnergyConsumptionProvider
   constructor: ->
     @data = null
 
-    d3.csv Constants.dataFiles['2016']["EnergyDemand"], @mapping, (data) ->
-      datasets['2016'] = data
+    d3.csv Constants.dataFiles['jan2016']["EnergyDemand"], @mapping, (data) ->
+      datasets['jan2016'] = data
 
-    d3.csv Constants.dataFiles['2016 Update']["EnergyDemand"], @mapping, (data) ->
-      datasets['2016 Update'] = data
+    d3.csv Constants.dataFiles['oct2016']["EnergyDemand"], @mapping, (data) ->
+      datasets['oct2016'] = data
 
   loadViaAjax: (loadedCallback) ->
     params = PrepareQueryParams QueryString.parse(window.parent.document.location.search)
@@ -32,7 +32,7 @@ class EnergyConsumptionProvider
   loadForYear: (dataset) ->
     if Constants.generatedInYears.includes dataset
       @dataset = dataset
-      if datasets.length > 0
+      if datasets[dataset]? > 0
         @parseData null, datasets[dataset] 
       else
         d3.csv Constants.dataFiles[dataset]["EnergyDemand"], @mapping, @parseData
