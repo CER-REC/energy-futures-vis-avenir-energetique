@@ -87,35 +87,6 @@ module.exports =
       ]
 
 
-  # TODO: rationalize dataset tags
-  scenarios: 
-    '2016 Update':
-        ['reference',
-        'high',
-        'low']
-    '2016':
-        ['reference',
-        'high',
-        'low',
-        'highLng',
-        'noLng',
-        'constrained']
-
-
-
-  # TODO: client requests of whole CSVs to be a thing of the past! 
-  # dataFiles:
-  #   '2016 Update': 
-  #       "ElectricityGeneration": "CSV/2016-10-27_ElectricityGeneration.csv"
-  #       "EnergyDemand": "CSV/2016-10-18_EnergyDemand.csv"
-  #       "NaturalGasProduction": "CSV/2016-10-18_NaturalGasProduction.csv"
-  #       "CrudeOilProduction": "CSV/2016-10-18_CrudeOilProduction.csv"
-  #   '2016': 
-  #       "ElectricityGeneration": "CSV/2016-01_ElectricityGeneration.csv"
-  #       "EnergyDemand": "CSV/2016-01_EnergyDemand.csv"
-  #       "NaturalGasProduction": "CSV/2016-01_NaturalGasProduction.csv"
-  #       "CrudeOilProduction": "CSV/2016-01_CrudeOilProduction.csv"
-
   years: [
     2005
     2006
