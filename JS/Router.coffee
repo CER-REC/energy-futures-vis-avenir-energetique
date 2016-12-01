@@ -28,13 +28,9 @@ class Router
     @app.containingWindow.onpopstate = @onHistoryPopState
     
     params = Router.parseQueryParams()
+
     @setInitialParamConfiguration params
     @navigate params
-
-
-
-
-
 
   onHistoryPopState: (event) =>
     state = event.state || {}
@@ -51,7 +47,6 @@ class Router
         @app.visualization3Configuration = new Visualization3Configuration @app, params
       when 'viz4'
         @app.visualization4Configuration = new Visualization4Configuration @app, params
-    
 
   navigate: (params, options = {}) ->
     options = _.merge {shouldUpdateHistory: true}, options
@@ -116,6 +111,13 @@ class Router
         hitType: 'event',      
         eventCategory: 'Unit'
         eventAction: params.unit,
+        eventLabel: params.page
+      })
+
+      @app.containingWindow.ga('send', {
+        hitType: 'event',
+        eventCategory: 'Dataset'
+        eventAction: params.dataset,
         eventLabel: params.page
       })
 
@@ -200,6 +202,7 @@ class Router
     scenario: configuration.scenario
     provinces: configuration.provinces
     provincesInOrder: configuration.provincesInOrder
+    dataset: configuration.dataset
 
   setupVis2RouterParams: (configuration, params)->
     page: params.page
@@ -209,6 +212,7 @@ class Router
     sources: configuration.sources
     province: configuration.province
     sourcesInOrder: configuration.sourcesInOrder
+    dataset: configuration.dataset
 
   setupVis3RouterParams: (configuration, params)->
     page: params.page
@@ -218,6 +222,7 @@ class Router
     year: configuration.year
     province: configuration.province
     sources: configuration.sources
+    dataset: configuration.dataset
 
   setupVis4RouterParams: (configuration, params)->
     page: params.page
@@ -225,6 +230,7 @@ class Router
     unit: configuration.unit
     scenarios: configuration.scenarios
     province: configuration.province
+    dataset: configuration.dataset
 
    
 

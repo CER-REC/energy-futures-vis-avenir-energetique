@@ -30,16 +30,32 @@ class Visualization1 extends visualization
 
   renderBrowserTemplate: ->
     @app.window.document.getElementById('visualizationContent').innerHTML = Mustache.render Visualization1Template, 
+        selectDatasetLabel: Tr.datasetSelector.selectDatasetLabel[@app.language]
         selectOneLabel: Tr.mainSelector.selectOneLabel[@app.language]
         selectUnitLabel: Tr.unitSelector.selectUnitLabel[@app.language]
         selectScenarioLabel: Tr.scenarioSelector.selectScenarioLabel[@app.language]
         selectRegionLabel: Tr.regionSelector.selectRegionLabel[@app.language]
         svgStylesheet: SvgStylesheetTemplate
 
+    @datasetHelpPopover = new ControlsHelpPopover(@app)
     @mainSelectorHelpPopover = new ControlsHelpPopover(@app)
     @unitsHelpPopover = new ControlsHelpPopover(@app)
     @scenariosHelpPopover = new ControlsHelpPopover(@app)
     @provincesHelpPopover = new ControlsHelpPopover(@app)
+
+    d3.select(@app.window.document).select '.datasetSelectorHelpButton'
+      .on 'click', =>
+        d3.event.stopPropagation()
+        d3.event.preventDefault()
+        if @app.popoverManager.currentPopover == @datasetHelpPopover
+          @app.popoverManager.closePopover()
+        else
+          @app.popoverManager.showPopover @datasetHelpPopover,
+            outerClasses: 'vizModal floatingPopover datasetSelectorHelp'
+            innerClasses: 'viz1HelpTitle'
+            title: Tr.datasetSelector.datasetSelectorHelpTitle[@app.language]
+            content: Tr.datasetSelector.datasetSelectorHelp[@app.language]
+            attachmentSelector: '.datasetSelectorGroup'
 
     d3.select(@app.window.document).select '.mainSelectorHelpButton'
       .on 'click', =>
@@ -107,6 +123,8 @@ class Visualization1 extends visualization
     else if Platform.name == 'server'
       @renderServerTemplate()
 
+    @addDatasetToggle()
+
     @_margin = 
       top: 20
       bottom: 70
@@ -114,6 +132,7 @@ class Visualization1 extends visualization
       right: 60
     @_barMargin = 2
     @svgSize()
+    @addDatasetToggle()
     @addMainSelector()
     @addUnitToggle()
     @addScenarios()

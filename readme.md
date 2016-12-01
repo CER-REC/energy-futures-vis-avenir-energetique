@@ -121,6 +121,8 @@ We're the development team with VizworX who put this project together for the NE
 
 ## Changelog
 
+* 2016-11-30 - Added the dataset selector buttons in the left button panel. 
+* 2016-11-30 - Unsupported scenarios for a dataset will be hidden. The scenarios will only show for supported datasets. 
 * 2016-11-18 - The province & power source buttons on visualizations 1 & 2 will now animate out of the way as the user drags one of them up or down.
 * 2016-11-17 - Added a data ingestion and validation routine. Raw data should be placed under `public/rawCSV`, valiated data is written to `public/CSV`, and the tool can be run with `npm run ingest`. See `JS/validation/Ingest.coffee`.
 * 2016-11-17 - Resolved a memory leak related to JSDOM.

@@ -37,9 +37,12 @@ class Visualization1Configuration
       'SK'
       'YT' 
     ]
+    dataset: Constants.generatedInYears[0]
 
   constructor: (@app, options) ->
     @options = _.extend {}, @defaultOptions, options
+
+    @setDataset @options.dataset
 
     # mainSelection, one of energyDemand, oilProduction, electricityGeneration, or gasProduction
     @setMainSelection @options.mainSelection
@@ -85,6 +88,7 @@ class Visualization1Configuration
 
     # When the selection changes, the set of allowable units and scenarios change
     # Calling setUnit and setScenario validates the current choices
+    @setDataset @dataset
     @setUnit @unit
     @setScenario @scenario
 
@@ -106,23 +110,10 @@ class Visualization1Configuration
     @updateRouter()
 
   setScenario: (scenario) ->
-    allowableScenarios = ['reference', 'high', 'low']
-
-    # The original data had six scenarios, the revised data currently only has three.
-    # We expect this state of affairs to be temporary! 
-    # allowableScenarios = []
-    # switch @mainSelection
-    #   when 'energyDemand', 'electricityGeneration'
-    #     allowableScenarios = Constants.scenarios
-    #   when 'oilProduction'
-    #     allowableScenarios = ['reference', 'constrained', 'high', 'low']
-    #   when 'gasProduction'
-    #     allowableScenarios = ['reference', 'high', 'low', 'highLng', 'noLng']
-    
-    if allowableScenarios.includes scenario
+    if Constants.scenarios[@dataset]? && Constants.scenarios[@dataset].includes scenario
       @scenario = scenario
     else
-      @scenario = allowableScenarios[0]
+      @scenario = @defaultOptions.scenario
     @updateRouter()
 
   addProvince: (province) ->
@@ -172,6 +163,12 @@ class Visualization1Configuration
   setLanguage: (language) ->
     @language = language if language == 'en' or language == 'fr'
 
+  setDataset: (dataset) ->
+    if Constants.generatedInYears.includes dataset
+      @dataset = dataset
+    else 
+      @dataset = @defaultOptions.dataset
+    @updateRouter()
 
   # Router integration
 
@@ -182,6 +179,7 @@ class Visualization1Configuration
     scenario: @scenario
     provinces: @provinces
     provincesInOrder: @provincesInOrder
+    dataset: @dataset
     
   updateRouter: ->
     return unless @app? and @app.router?

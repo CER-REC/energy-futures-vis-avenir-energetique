@@ -61,16 +61,32 @@ class Visualization4
 
   renderBrowserTemplate: ->
     @app.window.document.getElementById('visualizationContent').innerHTML = Mustache.render Visualization4Template,
+      selectDatasetLabel: Tr.datasetSelector.selectDatasetLabel[@app.language]
       selectOneLabel: Tr.mainSelector.selectOneLabel[@app.language]
       selectUnitLabel: Tr.unitSelector.selectUnitLabel[@app.language]
       selectScenarioLabel: Tr.scenarioSelector.selectScenarioLabel[@app.language]
       selectRegionLabel: Tr.regionSelector.selectRegionLabel[@app.language]
       svgStylesheet: SvgStylesheetTemplate
 
+    @datasetHelpPopover = new ControlsHelpPopover(@app)
     @mainSelectorHelpPopover = new ControlsHelpPopover()
     @unitsHelpPopover = new ControlsHelpPopover()
     @scenariosHelpPopover = new ControlsHelpPopover()
     @provincesHelpPopover = new ControlsHelpPopover()
+
+    d3.select(@app.window.document).select '.datasetSelectorHelpButton'
+      .on 'click', =>
+        d3.event.stopPropagation()
+        d3.event.preventDefault()
+        if @app.popoverManager.currentPopover == @datasetHelpPopover
+          @app.popoverManager.closePopover()
+        else
+          @app.popoverManager.showPopover @datasetHelpPopover,
+            outerClasses: 'vizModal floatingPopover datasetSelectorHelp'
+            innerClasses: 'viz1HelpTitle'
+            title: Tr.datasetSelector.datasetSelectorHelpTitle[@app.language]
+            content: Tr.datasetSelector.datasetSelectorHelp[@app.language]
+            attachmentSelector: '.datasetSelectorGroup'
 
     d3.select(@app.window.document).select '.mainSelectorHelpButton'
       .on 'click', =>
@@ -128,10 +144,7 @@ class Visualization4
 
 
   constructor: (@app, config) ->
-
-
     @config = config
-    
     @outerHeight = 700 
     @margin = 
       top: 20
@@ -337,6 +350,19 @@ class Visualization4
 
 
   # Data here
+  datasetSelectionData: ->
+    jan2016 =
+      label: '2016'
+      dataset: 'jan2016'
+      title: Tr.selectorTooltip.datasetSelector.jan2016[@app.language]
+      class: if @config.dataset == 'jan2016' then 'vizButton selected' else 'vizButton'
+    oct2016 =
+      label: '2016 Update'
+      dataset: 'oct2016'
+      title: Tr.selectorTooltip.datasetSelector.oct2016[@app.language]
+      class: if @config.dataset == 'oct2016' then 'vizButton selected' else 'vizButton'
+
+    [oct2016, jan2016]
 
   mainSelectionData: ->
     [
@@ -417,59 +443,98 @@ class Visualization4
 
 
   scenariosSelectionData: ->
-    reference = 
+    reference =
       title: Tr.selectorTooltip.scenarioSelector.referenceButton[@app.language]
       label: Tr.scenarioSelector.referenceButton[@app.language]
       scenarioName: 'reference'
-      class: if @config.scenarios.includes 'reference' then 'vizButton selected reference' else 'vizButton reference'
+      class: 
+        if @config.scenarios.includes 'reference'
+          'vizButton selected reference'
+        else if Constants.scenarios[@config.dataset].includes 'reference'
+          'vizButton reference'
+        else 
+          'vizButton reference disabled'
       colour: '#999999'
-    high = 
+    high =
       title: Tr.selectorTooltip.scenarioSelector.highPriceButton[@app.language]
       label: Tr.scenarioSelector.highPriceButton[@app.language]
       scenarioName: 'high'
-      class: if @config.scenarios.includes 'high' then 'vizButton selected high' else 'vizButton high'
+      class: 
+        if @config.scenarios.includes 'high'
+          'vizButton selected high'
+        else if Constants.scenarios[@config.dataset].includes 'high'
+          'vizButton high'
+        else 
+          'vizButton high disabled'
       colour: '#0C2C84'
-    # highLng = 
-    #   title: Tr.selectorTooltip.scenarioSelector.highLngButton[@app.language]
-    #   label: Tr.scenarioSelector.highLngButton[@app.language]
-    #   scenarioName: 'highLng'
-    #   class: if @config.scenarios.includes 'highLng' then 'vizButton selected highLng' else 'vizButton highLng'
-    #   colour: '#225EA8'
-    # constrained = 
-    #   title: Tr.selectorTooltip.scenarioSelector.constrainedButton[@app.language]
+    highLng =
+      title: Tr.selectorTooltip.scenarioSelector.highLngButton[@app.language]
+      label: Tr.scenarioSelector.highLngButton[@app.language]
+      scenarioName: 'highLng'
+      class: 
+        if @config.scenarios.includes 'highLng'
+          'vizButton selected highLng' 
+        else if Constants.scenarios[@config.dataset].includes 'highLng' 
+          'vizButton highLng'
+        else
+          'vizButton highLng disabled'
+      colour: '#225EA8'
+    constrained =
+      title: Tr.selectorTooltip.scenarioSelector.constrainedButton[@app.language]
 
-    #   label: Tr.scenarioSelector.constrainedButton[@app.language]
-    #   scenarioName: 'constrained'
-    #   class: if @config.scenarios.includes 'constrained' then 'vizButton selected constrained' else 'vizButton constrained'
-    #   colour: '#41B6C4'
-    low = 
+      label: Tr.scenarioSelector.constrainedButton[@app.language]
+      scenarioName: 'constrained'
+      class: 
+        if @config.scenarios.includes 'constrained'
+          'vizButton selected constrained'
+        else if Constants.scenarios[@config.dataset].includes 'constrained'
+          'vizButton constrained'
+        else
+          'vizButton constrained disabled'
+      colour: '#41B6C4'
+    low =
       title: Tr.selectorTooltip.scenarioSelector.lowPriceButton[@app.language]
       label: Tr.scenarioSelector.lowPriceButton[@app.language]
       scenarioName: 'low'
-      class: if @config.scenarios.includes 'low' then 'vizButton selected low' else 'vizButton low'
+      class: 
+        if @config.scenarios.includes 'low'
+          'vizButton selected low'
+        else if Constants.scenarios[@config.dataset].includes 'low'
+          'vizButton low'
+        else 
+          'vizButton low disabled'
       colour: '#7FCDBB'
-    # noLng = 
-    #   title: Tr.selectorTooltip.scenarioSelector.noLngButton[@app.language]
-    #   label: Tr.scenarioSelector.noLngButton[@app.language]
-    #   scenarioName: 'noLng'
-    #   class: if @config.scenarios.includes 'noLng' then 'vizButton selected noLng' else 'vizButton noLng'
-    #   colour: '#C7E9B4'
+    noLng =
+      title: Tr.selectorTooltip.scenarioSelector.noLngButton[@app.language]
+      label: Tr.scenarioSelector.noLngButton[@app.language]
+      scenarioName: 'noLng'
+      class: 
+        if @config.scenarios.includes 'noLng'
+          'vizButton selected noLng'
+        else if Constants.scenarios[@config.dataset].includes 'noLng'
+          'vizButton noLng'
+        else 
+          'vizButton noLng disabled'
+      colour: '#C7E9B4'
 
-
-    [reference, high, low]
-    # The original data had six scenarios, the revised data currently only has three.
-    # We expect this state of affairs to be temporary! 
-    # switch @config.mainSelection
-    #   when 'energyDemand', 'electricityGeneration'
-    #     [reference, high, highLng, constrained, low, noLng]
-    #   when 'oilProduction'
-    #     [reference, high, constrained, low]
-    #   when 'gasProduction'
-    #     [reference, high, highLng, low, noLng]
-
+    switch @config.mainSelection
+      when 'energyDemand', 'electricityGeneration'
+        if @config.dataset == 'jan2016'
+          [reference, high, highLng, constrained, low, noLng]
+        else
+          [reference, high, low]
+      when 'oilProduction'
+        if @config.dataset == 'jan2016'
+          [reference, high, constrained, low]
+        else
+          [reference, high, low]
+      when 'gasProduction'
+        if @config.dataset == 'jan2016'
+          [reference, high, highLng, low, noLng]
+        else
+          [reference, high, low]
+    
     # TODO: merge graphdata and graphscenario data, its dumb =/
-
-
 
   scenarioLegendData: ->
     baseData = 
@@ -571,34 +636,34 @@ class Visualization4
       tooltip: Tr.selectorTooltip.scenarioSelector.highPriceButton[@app.language]
       key: 'high'
       colour: '#0C2C84'
-    # highLng =
-    #   tooltip: Tr.selectorTooltip.scenarioSelector.highLngButton[@app.language]
-    #   key: 'highLng'
-    #   colour: '#225EA8'
-    # constrained =
-    #   tooltip: Tr.selectorTooltip.scenarioSelector.constrainedButton[@app.language]
-    #   key: 'constrained'
-    #   colour: '#41B6C4'
+    highLng =
+      tooltip: Tr.selectorTooltip.scenarioSelector.highLngButton[@app.language]
+      key: 'highLng'
+      colour: '#225EA8'
+    constrained =
+      tooltip: Tr.selectorTooltip.scenarioSelector.constrainedButton[@app.language]
+      key: 'constrained'
+      colour: '#41B6C4'
     low =
       tooltip: Tr.selectorTooltip.scenarioSelector.lowPriceButton[@app.language]
       key: 'low'
       colour: '#7FCDBB'
-    # noLng =
-    #   tooltip: Tr.selectorTooltip.scenarioSelector.noLngButton[@app.language]
-    #   key: 'noLng'
-    #   colour: '#C7E9B4'
+    noLng =
+      tooltip: Tr.selectorTooltip.scenarioSelector.noLngButton[@app.language]
+      key: 'noLng'
+      colour: '#C7E9B4'
 
 
-    scenariosInOrder = [reference, high, low]
+    #scenariosInOrder = [reference, high, low]
     # The original data had six scenarios, the revised data currently only has three.
     # We expect this state of affairs to be temporary! 
-    # switch @config.mainSelection
-    #   when 'energyDemand', 'electricityGeneration'
-    #     scenariosInOrder = [reference, high, highLng, constrained, low, noLng]
-    #   when 'oilProduction'
-    #     scenariosInOrder = [reference, high, constrained, low]
-    #   when 'gasProduction'
-    #     scenariosInOrder = [reference, high, highLng, low, noLng]
+    switch @config.mainSelection
+      when 'energyDemand', 'electricityGeneration'
+        scenariosInOrder = [reference, high, highLng, constrained, low, noLng]
+      when 'oilProduction'
+        scenariosInOrder = [reference, high, constrained, low]
+      when 'gasProduction'
+        scenariosInOrder = [reference, high, highLng, low, noLng]
 
     graphData = @graphData()
     currentGraphScenarioData = []
@@ -707,6 +772,7 @@ class Visualization4
       .attr 'transform', "translate(#{@margin.top},#{@margin.left})"
         
     @renderMainSelector()
+    @renderDatasetSelector()
     @renderUnitsSelector()
     @renderScenariosSelector()
     @renderXAxis()
@@ -714,6 +780,37 @@ class Visualization4
     if !@provinceMenu #We only need to build once, but we need to build after the axis are built for alignment
       @provinceMenu = @buildProvinceMenu()
     @renderGraph(@app.animationDuration, width)
+
+  renderDatasetSelector: ->
+    if @config.dataset?
+      datasetSelectors = d3.select(@app.window.document).select('#datasetSelector')
+        .selectAll('.datasetSelectorButton')
+        .data(@datasetSelectionData())
+
+      datasetSelectors.enter()
+        .append('div')
+        .attr
+          class: 'datasetSelectorButton'
+        .on 'click', (d) =>
+          if @config.dataset != d.dataset
+            @config.setDataset d.dataset
+
+            # Check if the current scenario is valid for the new dataset
+            # and update the list of supported scenarios.
+            for scenario in @config.scenarios
+              @config.removeScenario scenario
+              @config.addScenario scenario
+
+            @renderScenariosSelector()
+            @renderDatasetSelector(@datasetSelectionData())
+
+            @renderYAxis()
+            @renderGraph()
+
+      datasetSelectors.html (d) ->
+        "<button class='#{d.class}' type='button' title='#{d.title}'>#{d.label}</button>"
+
+      datasetSelectors.exit().remove()
 
   renderMainSelector: ->
     mainSelectors = d3.select(@app.window.document).select('#mainSelector')
@@ -729,6 +826,7 @@ class Visualization4
         # TODO: For efficiency, only rerender what's necessary.
         # We could just call render() ... but that would potentially rebuild a bunch of menus... 
         @renderMainSelector()
+        @renderDatasetSelector()
         @renderUnitsSelector()
         @renderScenariosSelector()
         @renderYAxis()
@@ -793,7 +891,10 @@ class Visualization4
         @renderGraph()
 
     scenariosSelectors.html (d) ->
-      "<button class='#{d.class}' type='button' title='#{d.title}'>#{d.label}</button>"
+        indexOfDisabled = d.class.indexOf 'disabled'
+        spanClass = 'disabled'
+        if indexOfDisabled < 0 then spanClass = ''
+        "<button class='#{d.class}' type='button' title='#{d.title}'><span class='#{spanClass}'>#{d.label}</span></button>"
 
     scenariosSelectors.exit()
       .on 'click', null

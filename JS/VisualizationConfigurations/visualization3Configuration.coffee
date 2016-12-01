@@ -62,9 +62,12 @@ class Visualization3Configuration
     ]
     province: 'all'
     source: 'total'
+    dataset: Constants.generatedInYears[0]
 
   constructor: (@app, options) ->
     @options = _.extend {}, @defaultOptions, options
+
+    @setDataset @options.dataset
 
     @mainSelection = 'electricityGeneration' # this isn't an option for viz 3
 
@@ -129,7 +132,7 @@ class Visualization3Configuration
     @updateRouter()
 
   setScenario: (scenario) ->
-    if Constants.scenarios.includes scenario
+    if Constants.scenarios[@dataset]? && Constants.scenarios[@dataset].includes scenario
       @scenario = scenario
     else
       @scenario = @defaultOptions.scenario
@@ -234,6 +237,12 @@ class Visualization3Configuration
   setLanguage: (language) ->
     @language = language if language == 'en' or language == 'fr'
 
+  setDataset: (dataset) ->
+    if Constants.generatedInYears.includes dataset
+      @dataset = dataset
+    else 
+      @dataset = @defaultOptions.dataset
+    @updateRouter()
 
   # Router integration
 
@@ -244,6 +253,7 @@ class Visualization3Configuration
       unit: @unit
       scenario: @scenario
       year: @year
+      dataset: @dataset
     if @viewBy == 'province'
       params.province = @province
       params.sources = @sources

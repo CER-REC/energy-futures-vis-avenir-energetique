@@ -18,7 +18,7 @@ class EnergyConsumptionIngestor
     @summarizedGroupedData = {}
     @detailedGroupedData = {}
     @extraData = []
-    @scenarios = options.scenarios || Constants.scenarios
+    @scenarios = options.scenarios || Constants.scenarios[options.dataset]
 
 
     @normalize()

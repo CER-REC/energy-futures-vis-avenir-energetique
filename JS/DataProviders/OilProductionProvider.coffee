@@ -3,15 +3,39 @@ d3 = require 'd3'
 Constants = require '../Constants.coffee'
 UnitTransformation = require '../unit-transformation.coffee'
 
+QueryString = require 'query-string'
+PrepareQueryParams = require '../PrepareQueryParams.coffee'
+
+datasets = []
+
 class OilProductionProvider
 
   constructor: ->
     @data = null
 
+    d3.csv Constants.dataFiles['jan2016']["CrudeOilProduction"], @mapping, (data) ->
+      datasets['jan2016'] = data
+
+    d3.csv Constants.dataFiles['oct2016']["CrudeOilProduction"], @mapping, (data) ->
+      datasets['oct2016'] = data
+
   loadViaAjax: (loadedCallback) ->
+    params = PrepareQueryParams QueryString.parse(window.parent.document.location.search)
+
+    if(Constants.generatedInYears.includes params.dataset)
+      @loadForYear(params.dataset)
+    else
+      @loadForYear(Constants.generatedInYears[0])
+
     @loadedCallback = loadedCallback
-    d3.csv "CSV/2016-10-18_CrudeOilProduction.csv", @mapping, @parseData
-    # d3.csv "CSV/2016-01_CrudeOilProduction.csv", @mapping, @parseData
+
+  loadForYear: (dataset) ->
+    if Constants.generatedInYears.includes dataset
+      @dataset = dataset
+      if datasets[dataset]? > 0
+        @parseData null, datasets[dataset] 
+      else
+        d3.csv Constants.dataFiles[dataset]["CrudeOilProduction"], @mapping, @parseData
 
   loadFromString: (data) ->
     @parseData null, d3.csv.parse(data, @mapping)
@@ -71,6 +95,9 @@ class OilProductionProvider
   # across scenarios for a give configuration.
   dataForAllViz1Scenarios: (viz1config) ->
     filteredProvinceData = {}    
+
+    if viz1config.dataset != @dataset
+      @loadForYear(viz1config.dataset)
 
     # Exclude data from provinces that aren't in the set
     for provinceName in Object.keys @dataByProvince
@@ -133,6 +160,9 @@ class OilProductionProvider
   # across scenarios for a given configuration.
   dataForAllViz4Scenarios: (viz4config) ->
     filteredScenarioData = {}    
+
+    if viz4config.dataset != @dataset
+      @loadForYear(viz4config.dataset)
 
     # Group data by scenario
     for scenarioName in Object.keys @dataByScenario

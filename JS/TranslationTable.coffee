@@ -164,6 +164,14 @@ module.exports =
         """
 
   selectorTooltip:
+    datasetSelector:
+      jan2016:
+        en: 'Description here...'
+        fr: ''
+      oct2016:
+        en: 'Description here...'
+        fr: ''
+
     mainSelector:
       totalDemandButton:
         en: 'The total energy used in the four sectors of Canada’s economy: residential, commercial, industrial and transportation.  Includes the use of electricity, natural gas, petroleum products such as gasoline, coal, and renewable fuels. Also referred to as end-use or secondary demand, it does not include the energy used to generate electricity.'
@@ -461,6 +469,41 @@ module.exports =
             Compare la quantité d’électricité produite par région, par source.
           </p>
         </div>
+      """
+
+  datasetSelector: 
+    selectDatasetLabel:
+      en: 'ENERGY FUTURES'
+      fr: 'AVENIR ÉNERGÉTIQUE'
+    datasetSelectorHelpTitle:
+      en: 'DATASETS'
+      fr: 'DATASETS'
+    datasetSelectorHelp:
+      en: """
+        <h6> CANADA'S ENERGY FUTURE 2016 </h6>
+        <div class="sectionHeader"> January 2016 </div>
+        <p> 
+          A continuation of the Energy Futures series. In addition our usual baseline long-term outlook, we explores key uncertainties for Canadian energy such robustness of global LNG markets and availability of crude oil transportation infrastructure.
+        </p>
+
+        <h6> CANADA’S ENERGY FUTURE 2016: UPDATE </h6>
+        <div class="sectionHeader"> October 2016 </div>
+        <p> 
+          Presents reference and high and low prices cases. In the Reference Case, the crude oil price assumption is revised lower to US$90 per barrel by 2040. In addition to policies which were included in the January edition, such as Quebec’s cap and trade system and the carbon tax in B.C., most of the Alberta Climate Leadership Plan and the Ontario cap and trade program have been integrated into the forecast.
+        </p>
+      """
+      fr: """
+        <h6> CANADA'S ENERGY FUTURE 2016 </h6>
+        <div class="sectionHeader"> January 2016 </div>
+        <p> 
+          A continuation of the Energy Futures series. In addition our usual baseline long-term outlook, we explores key uncertainties for Canadian energy such robustness of global LNG markets and availability of crude oil transportation infrastructure.
+        </p>
+
+        <h6> CANADA’S ENERGY FUTURE 2016: UPDATE </h6>
+        <div class="sectionHeader"> October 2016 </div>
+        <p> 
+          Presents reference and high and low prices cases. In the Reference Case, the crude oil price assumption is revised lower to US$90 per barrel by 2040. In addition to policies which were included in the January edition, such as Quebec’s cap and trade system and the carbon tax in B.C., most of the Alberta Climate Leadership Plan and the Ontario cap and trade program have been integrated into the forecast.
+        </p>
       """
 
 

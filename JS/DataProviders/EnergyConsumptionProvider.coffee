@@ -3,19 +3,42 @@ d3 = require 'd3'
 Constants = require '../Constants.coffee'
 UnitTransformation = require '../unit-transformation.coffee'
 
+QueryString = require 'query-string'
+PrepareQueryParams = require '../PrepareQueryParams.coffee'
+
+datasets = []
+
 class EnergyConsumptionProvider
 
   constructor: ->
     @data = null
 
+    d3.csv Constants.dataFiles['jan2016']["EnergyDemand"], @mapping, (data) ->
+      datasets['jan2016'] = data
+
+    d3.csv Constants.dataFiles['oct2016']["EnergyDemand"], @mapping, (data) ->
+      datasets['oct2016'] = data
+
   loadViaAjax: (loadedCallback) ->
+    params = PrepareQueryParams QueryString.parse(window.parent.document.location.search)
+
+    if(Constants.generatedInYears.includes params.dataset)
+      @loadForYear(params.dataset)
+    else
+      @loadForYear(Constants.generatedInYears[0])
+
     @loadedCallback = loadedCallback
-    d3.csv "CSV/2016-10-18_EnergyDemand.csv", @mapping, @parseData
-    # d3.csv "CSV/2016-01_EnergyDemand.csv", @mapping, @parseData
+
+  loadForYear: (dataset) ->
+    if Constants.generatedInYears.includes dataset
+      @dataset = dataset
+      if datasets[dataset]? > 0
+        @parseData null, datasets[dataset] 
+      else
+        d3.csv Constants.dataFiles[dataset]["EnergyDemand"], @mapping, @parseData
   
   loadFromString: (data) ->
     @parseData null, d3.csv.parse(data, @mapping) 
-
 
   mapping: (d) ->
     province: d.province
@@ -86,6 +109,8 @@ class EnergyConsumptionProvider
   dataForAllViz1Scenarios: (viz1config) ->
     filteredProvinceData = {}    
 
+    if viz1config.dataset != @dataset
+      @loadForYear(viz1config.dataset)
     # Exclude data from provinces that aren't in the set
     for provinceName in Object.keys @dataByProvince
       if viz1config.provinces.includes provinceName
@@ -148,6 +173,9 @@ class EnergyConsumptionProvider
   dataForAllViz2Scenarios: (viz2config) ->
     filteredSourceData = {}
 
+    if viz2config.dataset != @dataset
+      @loadForYear(viz2config.dataset)
+
     # Exclude data from sources that aren't in the set
     for sourceName in Object.keys @dataBySource
       if viz2config.sources.includes sourceName
@@ -204,6 +232,9 @@ class EnergyConsumptionProvider
   # across scenarios for a given configuration.
   dataForAllViz4Scenarios: (viz4config) ->
     filteredScenarioData = {}
+
+    if viz4config.dataset != @dataset
+      @loadForYear(viz4config.dataset)
 
     # Group data by scenario
     for scenarioName in Object.keys @dataByScenario

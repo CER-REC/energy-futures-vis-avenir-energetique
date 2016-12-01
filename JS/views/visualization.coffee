@@ -1,5 +1,6 @@
 d3 = require 'd3'
 Tr = require '../TranslationTable.coffee'
+Constants = require '../Constants.coffee'
 
 class visualization
 
@@ -11,6 +12,20 @@ class visualization
   tearDown: ->
     # TODO: Consider garbage collection and event listeners
     @app.window.document.getElementById('visualizationContent').innerHTML = ''
+
+  datasetSelectionData: ->
+    jan2016 =
+      label: '2016'
+      dataset: 'jan2016'
+      title: Tr.selectorTooltip.datasetSelector.jan2016[@app.language]
+      class: if @config.dataset == 'jan2016' then 'vizButton selected' else 'vizButton'
+    oct2016 =
+      label: '2016 Update'
+      dataset: 'oct2016'
+      title: Tr.selectorTooltip.datasetSelector.oct2016[@app.language]
+      class: if @config.dataset == 'oct2016' then 'vizButton selected' else 'vizButton'
+
+    [oct2016, jan2016]
 
   unitSelectionData: ->
     petajoules = 
@@ -60,48 +75,89 @@ class visualization
         [cubicFeet, millionCubicMetres]
 
   scenariosSelectionData: ->
-    reference = 
+    reference =
       title: Tr.selectorTooltip.scenarioSelector.referenceButton[@app.language]
       label: Tr.scenarioSelector.referenceButton[@app.language]
       scenarioName: 'reference'
-      class: if @config.scenario == 'reference' then 'vizButton selected' else 'vizButton'
-    # constrained = 
-    #   title: Tr.selectorTooltip.scenarioSelector.constrainedButton[@app.language]
-    #   label: Tr.scenarioSelector.constrainedButton[@app.language]
-    #   scenarioName: 'constrained'
-    #   class: if @config.scenario == 'constrained' then 'vizButton selected' else 'vizButton'
-    high = 
+      class: 
+        if @config.scenario == 'reference'
+          'vizButton selected'
+        else if Constants.scenarios[@config.dataset].includes 'reference'
+          'vizButton'
+        else 
+          'vizButton disabled'
+    constrained =
+      title: Tr.selectorTooltip.scenarioSelector.constrainedButton[@app.language]
+      label: Tr.scenarioSelector.constrainedButton[@app.language]
+      scenarioName: 'constrained'
+      class: 
+        if @config.scenario == 'constrained'
+          'vizButton selected'
+        else if Constants.scenarios[@config.dataset].includes 'constrained'
+          'vizButton'
+        else 
+          'vizButton disabled'
+    high =
       title: Tr.selectorTooltip.scenarioSelector.highPriceButton[@app.language]
       label: Tr.scenarioSelector.highPriceButton[@app.language]
       scenarioName: 'high'
-      class: if @config.scenario == 'high' then 'vizButton selected' else 'vizButton'
-    low = 
+      class: 
+        if @config.scenario == 'high'
+          'vizButton selected'
+        else if Constants.scenarios[@config.dataset].includes 'high'
+          'vizButton'
+        else 
+          'vizButton disabled'
+    low =
       title: Tr.selectorTooltip.scenarioSelector.lowPriceButton[@app.language]
       label: Tr.scenarioSelector.lowPriceButton[@app.language]
       scenarioName: 'low'
-      class: if @config.scenario == 'low' then 'vizButton selected' else 'vizButton'
-    # highLng = 
-    #   title: Tr.selectorTooltip.scenarioSelector.highLngButton[@app.language]
-    #   label: Tr.scenarioSelector.highLngButton[@app.language]
-    #   scenarioName: 'highLng'
-    #   class: if @config.scenario == 'highLng' then 'vizButton selected' else 'vizButton'
-    # noLng = 
-    #   title: Tr.selectorTooltip.scenarioSelector.noLngButton[@app.language]
-    #   label: Tr.scenarioSelector.noLngButton[@app.language]
-    #   scenarioName: 'noLng'
-    #   class: if @config.scenario == 'noLng' then 'vizButton selected' else 'vizButton'
+      class: 
+        if @config.scenario == 'low'
+          'vizButton selected'
+        else if Constants.scenarios[@config.dataset].includes 'low'
+          'vizButton'
+        else 
+          'vizButton disabled'
+    highLng =
+      title: Tr.selectorTooltip.scenarioSelector.highLngButton[@app.language]
+      label: Tr.scenarioSelector.highLngButton[@app.language]
+      scenarioName: 'highLng'
+      class: 
+        if @config.scenario == 'highLng'
+          'vizButton selected'
+        else if Constants.scenarios[@config.dataset].includes 'highLng'
+          'vizButton'
+        else 
+          'vizButton disabled'
+    noLng =
+      title: Tr.selectorTooltip.scenarioSelector.noLngButton[@app.language]
+      label: Tr.scenarioSelector.noLngButton[@app.language]
+      scenarioName: 'noLng'
+      class: 
+        if @config.scenario == 'noLng'
+          'vizButton selected'
+        else if Constants.scenarios[@config.dataset].includes 'noLng'
+          'vizButton'
+        else 
+          'vizButton disabled'
 
-
-    [reference, high, low]
-    # The original data had six scenarios, the revised data currently only has three.
-    # We expect this state of affairs to be temporary! 
-    # switch @config.mainSelection
-    #   when 'energyDemand', 'electricityGeneration'
-    #     [reference, constrained, high, low, highLng, noLng]
-    #   when 'oilProduction'
-    #     [reference, constrained, high, low]
-    #   when 'gasProduction'
-    #     [reference, high, low, highLng, noLng]
+    switch @config.mainSelection
+      when 'energyDemand', 'electricityGeneration'
+        if @config.dataset == 'jan2016'
+          [reference, constrained, high, low, highLng, noLng]
+        else
+          [reference, high, low]
+      when 'oilProduction'
+        if @config.dataset == 'jan2016'
+          [reference, constrained, high, low]
+        else
+          [reference, high, low]
+      when 'gasProduction'
+        if @config.dataset == 'jan2016'
+          [reference, high, low, highLng, noLng]
+        else
+          [reference, high, low]
 
   sectorSelectionData: ->
     [  
@@ -166,6 +222,35 @@ class visualization
       }
     ]
 
+  addDatasetToggle: ->
+    if @config.dataset?
+      datasetSelectors = d3.select(@app.window.document).select('#datasetSelector')
+        .selectAll('.datasetSelectorButton')
+        .data(@datasetSelectionData())
+
+      datasetSelectors.enter()
+        .append('div')
+        .attr
+          class: 'datasetSelectorButton'
+        .on 'click', (d) =>
+          if @config.dataset != d.dataset
+            @config.setDataset d.dataset
+
+            # Check if the current scenario is valid for the new dataset
+            # and update the list of supported scenarios.
+            @config.setScenario @config.scenario
+
+            @addScenarios()
+            @addDatasetToggle(@datasetSelectionData())
+
+            @getDataAndRender()
+            if @buildYAxis? then @buildYAxis()
+
+      datasetSelectors.html (d) ->
+        "<button class='#{d.class}' type='button' title='#{d.title}'>#{d.label}</button>"
+
+      datasetSelectors.exit().remove()
+
   addUnitToggle: ->
     if @config.unit?  
       unitsSelectors = d3.select(@app.window.document).select('#unitsSelector')
@@ -180,6 +265,7 @@ class visualization
           if @config.unit != d.unitName  
             @config.setUnit d.unitName
             # TODO: For efficiency, only rerender what's necessary.
+            @unitSelectionData()
             @addUnitToggle(@unitSelectionData())
             @getDataAndRender()
             if @buildYAxis? then @buildYAxis()
@@ -200,16 +286,20 @@ class visualization
         .attr
           class: 'scenarioSelectorButton'
         .on 'click', (d) =>
-          if @config.scenario != d.scenarioName    
+          if @config.scenario != d.scenarioName && Constants.scenarios[@config.dataset].includes d.scenarioName  
             @config.setScenario d.scenarioName
 
             # TODO: For efficiency, only rerender what's necessary.
+            @addDatasetToggle()
             @addScenarios()
             @getDataAndRender()
 
 
       scenariosSelectors.html (d) ->
-        "<button class='#{d.class}' type='button' title='#{d.title}'>#{d.label}</button>"
+        indexOfDisabled = d.class.indexOf 'disabled'
+        spanClass = 'disabled'
+        if indexOfDisabled < 0 then spanClass = ''
+        "<button class='#{d.class}' type='button' title='#{d.title}'><span class='#{spanClass}'>#{d.label}</span></button>"
 
       scenariosSelectors.exit().remove()
 
@@ -252,6 +342,7 @@ class visualization
         if @config.mainSelection != d.selectorName  
           @config.setMainSelection d.selectorName
           # TODO: For efficiency, only rerender what's necessary.
+          @addDatasetToggle()
           @addMainSelector()
           @addUnitToggle()
           @addScenarios()

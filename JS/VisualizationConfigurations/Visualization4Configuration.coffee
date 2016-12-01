@@ -12,21 +12,24 @@ class Visualization4Configuration
     # We expect this state of affairs to be temporary! 
     scenarios: [
       'reference'
-      # 'constrained'
+      'constrained'
       'high'
       'low'
-      # 'highLng'
-      # 'noLng'
+      'highLng'
+      'noLng'
     ]
     province: 'all'
+
+    dataset: Constants.generatedInYears[0]
 
 
   constructor: (@app, options) ->
     @options = _.extend {}, @defaultOptions, options
 
+    @setDataset @options.dataset
+
     # mainSelection, one of energyDemand, oilProduction, electricityGeneration, or gasProduction
     @setMainSelection @options.mainSelection
-
 
     # unit, one of:
     # petajoules
@@ -50,7 +53,6 @@ class Visualization4Configuration
 
     @setLanguage @app.language || 'en'
 
-
   # Setters
 
   setMainSelection: (selection) ->
@@ -61,6 +63,7 @@ class Visualization4Configuration
 
     # When the selection changes, the set of allowable units changes
     # Calling setUnit validates the choice
+    @setDataset @dataset
     @setUnit @unit
 
   setUnit: (unit) ->
@@ -81,7 +84,7 @@ class Visualization4Configuration
     @updateRouter()
 
   addScenario: (scenario) ->
-    return unless Constants.scenarios.includes scenario
+    return unless Constants.scenarios[@dataset]? && Constants.scenarios[@dataset].includes scenario
     @scenarios.push scenario unless @scenarios.includes scenario
     @updateRouter()
 
@@ -99,6 +102,12 @@ class Visualization4Configuration
   setLanguage: (language) ->
     @language = language if language == 'en' or language == 'fr'
 
+  setDataset: (dataset) ->
+    if Constants.generatedInYears.includes dataset
+      @dataset = dataset
+    else 
+      @dataset = @defaultOptions.dataset
+    @updateRouter()
 
   # Router integration
 
@@ -108,6 +117,7 @@ class Visualization4Configuration
     unit: @unit
     scenarios: @scenarios
     province: @province
+    dataset: @dataset
 
   updateRouter: ->
     return unless @app? and @app.router?
