@@ -6,39 +6,46 @@ UnitTransformation = require '../unit-transformation.coffee'
 QueryString = require 'query-string'
 PrepareQueryParams = require '../PrepareQueryParams.coffee'
 
-datasets = []
-
 class GasProductionProvider
 
   constructor: ->
-    @data = null
+    @data = []
 
-    d3.csv Constants.dataFiles['2016']["NaturalGasProduction"], @mapping, (data) ->
-      datasets['2016'] = data
+  #   d3.csv Constants.dataFiles['2016']["NaturalGasProduction"], @mapping, (data) ->
+  #     datasets['2016'] = data
 
-    d3.csv Constants.dataFiles['2016 Update']["NaturalGasProduction"], @mapping, (data) ->
-      datasets['2016 Update'] = data
+  #   d3.csv Constants.dataFiles['2016 Update']["NaturalGasProduction"], @mapping, (data) ->
+  #     datasets['2016 Update'] = data
 
-  loadViaAjax: (loadedCallback) ->
-    params = PrepareQueryParams QueryString.parse(window.parent.document.location.search)
+  # loadViaAjax: (loadedCallback) ->
+  #   params = PrepareQueryParams QueryString.parse(window.parent.document.location.search)
 
-    if(Constants.datasets.includes params.dataset)
-      @loadForYear(params.dataset)
-    else
-      @loadForYear(Constants.datasets[0])
+  #   if(Constants.datasets.includes params.dataset)
+  #     @loadForYear(params.dataset)
+  #   else
+  #     @loadForYear(Constants.datasets[0])
 
-    @loadedCallback = loadedCallback
+  #   @loadedCallback = loadedCallback
 
-  loadForYear: (dataset) ->
-    if Constants.datasets.includes dataset
-      @dataset = dataset
-      if datasets.length > 0
-        @parseData null, datasets[dataset] 
-      else
-        d3.csv Constants.dataFiles[dataset]["NaturalGasProduction"], @mapping, @parseData
+  # loadForYear: (dataset) ->
+  #   if Constants.datasets.includes dataset
+  #     @dataset = dataset
+  #     if datasets.length > 0
+  #       @parseData null, datasets[dataset] 
+  #     else
+  #       d3.csv Constants.dataFiles[dataset]["NaturalGasProduction"], @mapping, @parseData
 
-  loadFromString: (data) ->
-    @parseData null, d3.csv.parse(data, @mapping)
+  # loadFromString: (data) ->
+  #   @parseData null, d3.csv.parse(data, @mapping)
+
+  loadFromString: (dataString) ->
+    @data = d3.csv.parse dataString, @mapping
+    @parseData @data
+
+  # Add an array of data objects to the data store
+  addData: (data) ->
+    @data = @data.concat data
+    @parseData @data
 
   mapping: (d) ->
     province: d.province

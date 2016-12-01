@@ -1055,7 +1055,7 @@ class Visualization3 extends visualization
     @render()
 
   getData: ->
-    @seriesData = @addLabelsToData(@app.electricityProductionProvider.dataForViz3(@config))
+    @seriesData = @addLabelsToData(@app.providers[@config.dataset].electricityProductionProvider.dataForViz3(@config))
 
   render: ->
     if @_chart?
@@ -1126,7 +1126,7 @@ class Visualization3 extends visualization
     @config.resetSources(true) 
     @config.resetProvinces(true)
 
-    @seriesData = @addLabelsToData(@app.electricityProductionProvider.dataForViz3(@config))
+    @seriesData = @addLabelsToData(@app.providers[@config.dataset].electricityProductionProvider.dataForViz3(@config))
     @_chart.mapping(@dataForStackMenu())
     @_chart.menu.someSelected(@getSelectionState().someSelected)
     @_chart.menu.allSelected(@getSelectionState().allSelected)
@@ -1242,9 +1242,5 @@ class Visualization3 extends visualization
         title: Tr.regionSelector.selectRegionLabel[@app.language]
         content: contentString
         attachmentSelector: '#provincesSelector'
-
-Visualization3.resourcesLoaded = (app) ->
-  app.loadedStatus.electricityProductionProvider
-
 
 module.exports = Visualization3

@@ -334,7 +334,13 @@ class visualization
       .attr
         class: 'mainSelectorButton'
       .on 'click', (d) =>
-        if @config.mainSelection != d.selectorName  
+        return if @config.mainSelection == d.selectorName  
+
+        newConfig = new @config.constructor()
+        newConfig.copy @config
+        newConfig.setMainSelection d.selectorName
+
+        update = =>
           @config.setMainSelection d.selectorName
           # TODO: For efficiency, only rerender what's necessary.
           @addDatasetToggle()
@@ -342,6 +348,13 @@ class visualization
           @addUnitToggle()
           @addScenarios()
           @getDataAndRender()
+
+        if @app.datasetRequester.haveDataForConfig newConfig
+          update()
+        else
+          @app.datasetRequester.requestData configParams, update
+
+
 
     mainSelectors.html (d) ->
       "<img src=#{d.image} class='mainSelectorImage' title='#{d.title}'>

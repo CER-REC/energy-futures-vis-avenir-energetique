@@ -1,7 +1,7 @@
 _ = require 'lodash'
 QueryString = require 'query-string'
 
-Constants = require '../Constants.coffee'
+Constants = require './Constants.coffee'
 
 
 
@@ -13,18 +13,15 @@ Constants = require '../Constants.coffee'
 
 
 
-class DatasetRequestor
-
+class DatasetRequester
 
   constructor: (@app, @providers) ->
 
-    @bottledConfigParams = null
+    @bottledRequest = null
 
     @loadedStateViz1_4 = {}
     @loadedStateViz2 = {}
     @loadedStateViz3 = {}
-
-
 
     for datasetName, datasetDefinition of Constants.datasetDefinitions
 
@@ -40,73 +37,69 @@ class DatasetRequestor
         for province in Constants.provinceRadioSelectionOptions
           @loadedStateViz2[datasetName][sector][province] = false
 
-      for scenario in Constants.datasetDefinition.scenarios
+      for scenario in datasetDefinition.scenarios
         @loadedStateViz3[datasetName][scenario] = false
 
 
 
-    # check if data loaded
-    # if data loaded, pass config to providers
-    # if data not loaded, make ajax request and... return null? and start spinner
-
-
-
-
-
-  dataLoaded: (config) ->
-    haveData = haveDataForConfig config
-    if not haveData
-      @requestData config
-    return haveData
-
-
-
-  haveDataForConfig: (config) ->
-    switch config.page
+  haveDataForConfig: (configParams) ->
+    switch configParams.page
       when 'viz1, viz4'
-        @loadedStateViz1_4[config.dataset][config.mainSelection] == true
+        @loadedStateViz1_4[configParams.dataset][configParams.mainSelection] == true
       when 'viz2'
-        @loadedStateViz2[config.dataset][config.sector][config.province] == true
+        @loadedStateViz2[configParams.dataset][configParams.sector][configParams.province] == true
       when 'viz3'
-        @loadedStateViz3[config.dataset][config.sector][config.province] == true
+        @loadedStateViz3[configParams.dataset][configParams.scenario] == true
 
 
-  requestData: (config) ->
-    # TODO: Should this be a method on the config objects instead?
-    switch config.page
+  # NB: Unlike most callbacks, this is NOT guaranteed to be called.
+  # To avoid multiple updates to the visualization in response to data arriving, we store
+  # the only the last requested UI update. After each HTTP request that arrives, we check
+  # whether we can update the UI with the data now present.
+  # The callback (to update the visualization) is only called if it was the last requested
+  # UI change.
+  requestData: (configParams, callback) ->
+    switch configParams.page
       when 'viz1, viz4'
         params = 
-          dataset: config.dataset
-          mainSelection: config.mainSelection
+          page: configParams.page
+          dataset: configParams.dataset
+          mainSelection: configParams.mainSelection
       when 'viz2'
         params = 
-          dataset: config.dataset
-          sector: config.sector
-          province: config.province
+          page: configParams.page
+          dataset: configParams.dataset
+          sector: configParams.sector
+          province: configParams.province
       when 'viz3'
         params = 
-          dataset: config.dataset
-          scenario: config.scenario
+          page: configParams.page
+          dataset: configParams.dataset
+          scenario: configParams.scenario
 
     paramsString = QueryString.stringify params
+    console.log params
+    console.log paramsString
+
+    requestUrl = "#{process.env.HOST}:#{process.env.PORT_NUMBER}/json_data?#{paramsString}"
+    console.log requestUrl
 
     http = new XMLHttpRequest()
-    http.open 'GET', "#{process.env.HOST}:#{process.env.PORT_NUMBER}/json_data/#{paramsString}"
+    http.open 'GET', requestUrl
 
-    requestedConfigParams = _.cloneDeep config.routerParams()
-    requestedConfigParams.page = config.page
-    @bottledConfigParams = requestedConfigParams
+    @bottledRequest = 
+      configParams: configParams
+      callback: callback
 
     http.onreadystatechange = =>
       if http.readyState == XMLHttpRequest.DONE
         if http.status == 200
           console.log 'we get data'
-          console.log http.responseText
-          @dataReceived requestedConfig, http.responseText
+          @dataReceived configParams, http.responseText
         else
           # TODO: something nicer than this!
           console.error "Oops, json_data request failed. Request was:"
-          console.error "#{process.env.HOST}:#{process.env.PORT_NUMBER}/json_data/#{params}"
+          console.error requestUrl
           console.error http
 
 
@@ -116,30 +109,46 @@ class DatasetRequestor
 
 
   dataReceived: (configParams, response) =>
+
+    # TODO: error handling (though it should never happen ... )
     data = JSON.parse response
+    console.log data
 
     # TODO: validate or sanity check the response data in some way
 
-    # Mark data as having arrived
+    # TODO: Don't load the data again if we have already loaded this data
+
+    # Mark data as having arrived, and add the data to the provider it belongs to
     switch configParams.page
       when 'viz1, viz4'
-        @loadedStateViz1_4[configParams.dataset][configParams.mainSelection] = true
+        @loadedStateViz1_4[configParams.dataset][configParams.mainSelection] = true        
+        switch configParams.mainSelection
+          when 'energyDemand'
+            @app.providers[configParams.dataset].energyConsumptionProvider.addData data.data
+          when 'oilProduction'
+            @app.providers[configParams.dataset].oilProductionProvider.addData data.data
+          when 'electricityGeneration'
+            @app.providers[configParams.dataset].electricityProductionProvider.addData data.data
+          when 'gasProduction'
+            @app.providers[configParams.dataset].gasProductionProvider.addData data.data
+
       when 'viz2'
         @loadedStateViz2[configParams.dataset][configParams.sector][configParams.province] = true
+        @app.providers[configParams.dataset].energyConsumptionProvider.addData data.data
+
       when 'viz3'
-        @loadedStateViz3[configParams.dataset][configParams.sector][configParams.province] = true
-
-    # Add the data to the provider it belongs to
-
+        @loadedStateViz3[configParams.dataset][configParams.scenario] = true
+        @app.providers[configParams.dataset].electricityProductionProvider.addData data.data
 
 
     # If the available data now satisfies the last requested configuration, switch the
     # visualization to that configuration
-    if @bottledConfigParams? and @haveDataForConfig @bottledConfigParams
-      @bottledConfigParams = null
+    if @bottledRequest? and @haveDataForConfig @bottledRequest.configParams
 
-      # TODO: find the right config object on app, set it from bottled config, navigate
+      # Carry out visual changes to the visualization, and update the viz's own config
+      @bottledRequest.callback()
 
+      @bottledRequest = null
       @hideSpinner()
 
 
@@ -165,7 +174,7 @@ class DatasetRequestor
 
 
 
-
+module.exports = DatasetRequester
 
 
 

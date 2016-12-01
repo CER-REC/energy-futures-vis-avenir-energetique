@@ -433,8 +433,8 @@ class Visualization2 extends visualization
     @render()
     
   getData: ->
-    @seriesData = @app.energyConsumptionProvider.dataForViz2 @config
-    @yAxisData = @app.energyConsumptionProvider.dataForAllViz2Scenarios @config
+    @seriesData = @app.providers[@config.dataset].energyConsumptionProvider.dataForViz2 @config
+    @yAxisData = @app.providers[@config.dataset].energyConsumptionProvider.dataForAllViz2Scenarios @config
 
   render: ->
     if @_chart?
@@ -800,10 +800,5 @@ class Visualization2 extends visualization
         title: Tr.regionSelector.selectRegionLabel[@app.language]
         content: contentString
         attachmentSelector: '#provincesSelector'
-
-
-Visualization2.resourcesLoaded = (app) ->
-  app.loadedStatus.energyConsumptionProvider
-
 
 module.exports = Visualization2

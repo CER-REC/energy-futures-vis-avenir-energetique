@@ -51,9 +51,6 @@ class LandingPage
   # for resizing
   redraw: ->
 
-LandingPage.resourcesLoaded = ->
-  # No data dependencies for this one
-  true
 
 
 module.exports = LandingPage

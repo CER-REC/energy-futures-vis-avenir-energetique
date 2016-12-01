@@ -183,7 +183,17 @@ class Visualization1Configuration
     provinces: @provinces
     provincesInOrder: @provincesInOrder
     dataset: @dataset
-    
+  
+  copy: (config) ->
+    configParams = _.cloneDeep config.routerParams()
+
+    @mainSelection = configParams.mainSelection
+    @unit = configParams.unit
+    @scenario = configParams.scenario
+    @provinces = configParams.provinces
+    @provincesInOrder = configParams.provincesInOrder
+    @dataset = configParams.dataset
+
   updateRouter: ->
     return unless @app? and @app.router?
     @app.router.navigate @routerParams()

@@ -397,17 +397,17 @@ class Visualization1 extends visualization
   getData: ->
     switch @config.mainSelection
       when 'gasProduction'  
-        @seriesData = @app.gasProductionProvider.dataForViz1 @config
-        @yAxisData = @app.gasProductionProvider.dataForAllViz1Scenarios @config
+        @seriesData = @app.providers[@config.dataset].gasProductionProvider.dataForViz1 @config
+        @yAxisData = @app.providers[@config.dataset].gasProductionProvider.dataForAllViz1Scenarios @config
       when 'electricityGeneration'
-        @seriesData = @app.electricityProductionProvider.dataForViz1 @config
-        @yAxisData = @app.electricityProductionProvider.dataForAllViz1Scenarios @config
+        @seriesData = @app.providers[@config.dataset].electricityProductionProvider.dataForViz1 @config
+        @yAxisData = @app.providers[@config.dataset].electricityProductionProvider.dataForAllViz1Scenarios @config
       when 'energyDemand'
-        @seriesData = @app.energyConsumptionProvider.dataForViz1 @config
-        @yAxisData = @app.energyConsumptionProvider.dataForAllViz1Scenarios @config
+        @seriesData = @app.providers[@config.dataset].energyConsumptionProvider.dataForViz1 @config
+        @yAxisData = @app.providers[@config.dataset].energyConsumptionProvider.dataForAllViz1Scenarios @config
       when 'oilProduction'
-        @seriesData = @app.oilProductionProvider.dataForViz1 @config
-        @yAxisData = @app.oilProductionProvider.dataForAllViz1Scenarios @config
+        @seriesData = @app.providers[@config.dataset].oilProductionProvider.dataForViz1 @config
+        @yAxisData = @app.providers[@config.dataset].oilProductionProvider.dataForAllViz1Scenarios @config
 
   render: ->
     if @_chart?
@@ -652,14 +652,6 @@ class Visualization1 extends visualization
         title: Tr.regionSelector.selectRegionLabel[@app.language]
         content: contentString
         attachmentSelector: '#provincesSelector'
-
-
-Visualization1.resourcesLoaded = (app) ->
-  app.loadedStatus.energyConsumptionProvider and
-  app.loadedStatus.oilProductionProvider and
-  app.loadedStatus.gasProductionProvider and
-  app.loadedStatus.electricityProductionProvider
-
 
 
 module.exports = Visualization1

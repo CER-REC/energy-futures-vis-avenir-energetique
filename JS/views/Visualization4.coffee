@@ -575,24 +575,24 @@ class Visualization4
   graphData: ->
     switch @config.mainSelection
       when 'energyDemand'
-        @app.energyConsumptionProvider.dataForViz4 @config
+        @app.providers[@config.dataset].energyConsumptionProvider.dataForViz4 @config
       when 'electricityGeneration'
-        @app.electricityProductionProvider.dataForViz4 @config
+        @app.providers[@config.dataset].electricityProductionProvider.dataForViz4 @config
       when 'oilProduction'
-        @app.oilProductionProvider.dataForViz4 @config
+        @app.providers[@config.dataset].oilProductionProvider.dataForViz4 @config
       when 'gasProduction'
-        @app.gasProductionProvider.dataForViz4 @config
+        @app.providers[@config.dataset].gasProductionProvider.dataForViz4 @config
 
   yAxisData: ->
     switch @config.mainSelection
       when 'energyDemand'
-        @app.energyConsumptionProvider.dataForAllViz4Scenarios @config
+        @app.providers[@config.dataset].energyConsumptionProvider.dataForAllViz4Scenarios @config
       when 'electricityGeneration'
-        @app.electricityProductionProvider.dataForAllViz4Scenarios @config
+        @app.providers[@config.dataset].electricityProductionProvider.dataForAllViz4Scenarios @config
       when 'oilProduction'
-        @app.oilProductionProvider.dataForAllViz4Scenarios @config
+        @app.providers[@config.dataset].oilProductionProvider.dataForAllViz4Scenarios @config
       when 'gasProduction'
-        @app.gasProductionProvider.dataForAllViz4Scenarios @config
+        @app.providers[@config.dataset].gasProductionProvider.dataForAllViz4Scenarios @config
 
   gradientData: ->
     [
@@ -650,9 +650,6 @@ class Visualization4
       colour: '#C7E9B4'
 
 
-    #scenariosInOrder = [reference, high, low]
-    # The original data had six scenarios, the revised data currently only has three.
-    # We expect this state of affairs to be temporary! 
     switch @config.mainSelection
       when 'energyDemand', 'electricityGeneration'
         scenariosInOrder = [reference, high, highLng, constrained, low, noLng]
@@ -1272,12 +1269,5 @@ class Visualization4
     # TODO: We might want to render with empty lists for buttons, so that
     # garbage collection of event handled dom nodes goes smoothly
     @app.window.document.getElementById('visualizationContent').innerHTML = ''
-
-Visualization4.resourcesLoaded = (app) ->
-  app.loadedStatus.energyConsumptionProvider and
-  app.loadedStatus.oilProductionProvider and
-  app.loadedStatus.gasProductionProvider and
-  app.loadedStatus.electricityProductionProvider
-
 
 module.exports = Visualization4
