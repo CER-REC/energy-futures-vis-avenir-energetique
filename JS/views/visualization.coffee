@@ -254,11 +254,7 @@ class visualization
             if @buildYAxis? then @buildYAxis()
             @app.router.navigate @config.routerParams()
 
-          if @app.datasetRequester.haveDataForConfig newConfig
-            update()
-          else
-            @app.datasetRequester.requestData newConfig, update
-
+          @app.datasetRequester.updateAndRequestIfRequired newConfig, update
 
 
 
@@ -294,10 +290,7 @@ class visualization
             if @buildYAxis? then @buildYAxis()
             @app.router.navigate @config.routerParams()
 
-          if @app.datasetRequester.haveDataForConfig newConfig
-            update()
-          else
-            @app.datasetRequester.requestData newConfig, update
+          @app.datasetRequester.updateAndRequestIfRequired newConfig, update
 
 
       unitsSelectors.html (d) ->
@@ -330,10 +323,7 @@ class visualization
             @getDataAndRender()
             @app.router.navigate @config.routerParams()
 
-          if @app.datasetRequester.haveDataForConfig newConfig
-            update()
-          else
-            @app.datasetRequester.requestData newConfig, update
+          @app.datasetRequester.updateAndRequestIfRequired newConfig, update
 
 
 
@@ -370,10 +360,7 @@ class visualization
             @getDataAndRender()
             @app.router.navigate @config.routerParams()
 
-          if @app.datasetRequester.haveDataForConfig newConfig
-            update()
-          else
-            @app.datasetRequester.requestData newConfig, update
+          @app.datasetRequester.updateAndRequestIfRequired newConfig, update
 
 
 
@@ -411,10 +398,7 @@ class visualization
           @getDataAndRender()
           @app.router.navigate @config.routerParams()
 
-        if @app.datasetRequester.haveDataForConfig newConfig
-          update()
-        else
-          @app.datasetRequester.requestData newConfig, update
+        @app.datasetRequester.updateAndRequestIfRequired newConfig, update
 
 
 

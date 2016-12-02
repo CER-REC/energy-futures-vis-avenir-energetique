@@ -245,10 +245,7 @@ class Visualization3 extends visualization
             @toggleViz()
             @app.router.navigate @config.routerParams()
 
-          if @app.datasetRequester.haveDataForConfig newConfig
-            update()
-          else
-            @app.datasetRequester.requestData newConfig, update
+          @app.datasetRequester.updateAndRequestIfRequired newConfig, update
 
 
 
@@ -899,10 +896,7 @@ class Visualization3 extends visualization
           @getDataAndRender()
           @app.router.navigate @config.routerParams()
 
-        if @app.datasetRequester.haveDataForConfig newConfig
-          update()
-        else
-          @app.datasetRequester.requestData newConfig, update
+        @app.datasetRequester.updateAndRequestIfRequired newConfig, update
 
 
       
@@ -1043,10 +1037,7 @@ class Visualization3 extends visualization
               )
               @app.router.navigate @config.routerParams()
 
-            if @app.datasetRequester.haveDataForConfig newConfig
-              update()
-            else
-              @app.datasetRequester.requestData newConfig, update
+            @app.datasetRequester.updateAndRequestIfRequired newConfig, update
 
           else
             d3.select(@app.window.document).select('#vizPauseButton').html("<img src='IMG/play_pause/pausebutton_selectedR.svg'/>")
@@ -1208,10 +1199,7 @@ class Visualization3 extends visualization
       @getDataAndRender()
       @app.router.navigate @config.routerParams()
 
-    if @app.datasetRequester.haveDataForConfig newConfig
-      update()
-    else
-      @app.datasetRequester.requestData newConfig, update
+    @app.datasetRequester.updateAndRequestIfRequired newConfig, update
 
 
 
@@ -1227,10 +1215,7 @@ class Visualization3 extends visualization
       @getDataAndRender()
       @app.router.navigate @config.routerParams()
 
-    if @app.datasetRequester.haveDataForConfig newConfig
-      update()
-    else
-      @app.datasetRequester.requestData newConfig, update
+    @app.datasetRequester.updateAndRequestIfRequired newConfig, update
 
 
 
@@ -1278,10 +1263,7 @@ class Visualization3 extends visualization
       @getDataAndRender()
       @app.router.navigate @config.routerParams()
 
-    if @app.datasetRequester.haveDataForConfig newConfig
-      update()
-    else
-      @app.datasetRequester.requestData newConfig, update
+    @app.datasetRequester.updateAndRequestIfRequired newConfig, update
 
 
 
@@ -1307,10 +1289,7 @@ class Visualization3 extends visualization
       @getDataAndRender()
       @app.router.navigate @config.routerParams()
 
-    if @app.datasetRequester.haveDataForConfig newConfig
-      update()
-    else
-      @app.datasetRequester.requestData newConfig, update
+    @app.datasetRequester.updateAndRequestIfRequired newConfig, update
 
 
 

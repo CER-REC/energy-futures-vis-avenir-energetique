@@ -52,6 +52,20 @@ class DatasetRequester
         @loadedStateViz3[configParams.dataset][configParams.scenario] == true
 
 
+
+
+  updateAndRequestIfRequired: (configParams, callback) ->
+
+    # We only want the UI to respond to the most recently requested action.
+    # Erase any previous bottled request.
+    @bottledRequest = null
+
+    if @haveDataForConfig configParams
+      callback()
+    else
+      @requestData configParams, callback
+
+
   # NB: Unlike most callbacks, this is NOT guaranteed to be called.
   # To avoid multiple updates to the visualization in response to data arriving, we store
   # the only the last requested UI update. After each HTTP request that arrives, we check

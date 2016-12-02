@@ -336,10 +336,7 @@ class Visualization4
       @renderGraph()
       @app.router.navigate @config.routerParams()
 
-    if @app.datasetRequester.haveDataForConfig newConfig
-      update()
-    else
-      @app.datasetRequester.requestData newConfig, update
+    @app.datasetRequester.updateAndRequestIfRequired newConfig, update
 
 
 
@@ -817,10 +814,7 @@ class Visualization4
             @renderGraph()
             @app.router.navigate @config.routerParams()
 
-          if @app.datasetRequester.haveDataForConfig newConfig
-            update()
-          else
-            @app.datasetRequester.requestData newConfig, update
+          @app.datasetRequester.updateAndRequestIfRequired newConfig, update
 
       datasetSelectors.html (d) ->
         "<button class='#{d.class}' type='button' title='#{d.title}'>#{d.label}</button>"
@@ -854,10 +848,7 @@ class Visualization4
           @renderGraph()
           @app.router.navigate @config.routerParams()
 
-        if @app.datasetRequester.haveDataForConfig newConfig
-          update()
-        else
-          @app.datasetRequester.requestData newConfig, update
+        @app.datasetRequester.updateAndRequestIfRequired newConfig, update
 
 
 
@@ -895,10 +886,7 @@ class Visualization4
           @renderGraph()
           @app.router.navigate @config.routerParams()
 
-        if @app.datasetRequester.haveDataForConfig newConfig
-          update()
-        else
-          @app.datasetRequester.requestData newConfig, update
+        @app.datasetRequester.updateAndRequestIfRequired newConfig, update
 
 
 
@@ -943,10 +931,7 @@ class Visualization4
           @renderGraph()
           @app.router.navigate @config.routerParams()
 
-        if @app.datasetRequester.haveDataForConfig newConfig
-          update()
-        else
-          @app.datasetRequester.requestData newConfig, update
+        @app.datasetRequester.updateAndRequestIfRequired newConfig, update
 
 
 

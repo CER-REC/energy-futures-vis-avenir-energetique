@@ -629,10 +629,7 @@ class Visualization1 extends visualization
       @app.router.navigate @config.routerParams()
 
 
-    if @app.datasetRequester.haveDataForConfig newConfig
-      update()
-    else
-      @app.datasetRequester.requestData newConfig, update
+    @app.datasetRequester.updateAndRequestIfRequired newConfig, update
 
 
 
@@ -653,10 +650,7 @@ class Visualization1 extends visualization
       @_chart.mapping @provinceMenuData()
       @app.router.navigate @config.routerParams()
     
-    if @app.datasetRequester.haveDataForConfig newConfig
-      update()
-    else
-      @app.datasetRequester.requestData newConfig, update
+    @app.datasetRequester.updateAndRequestIfRequired newConfig, update
 
 
 
@@ -670,10 +664,7 @@ class Visualization1 extends visualization
       @getDataAndRender()
       @app.router.navigate @config.routerParams()
 
-    if @app.datasetRequester.haveDataForConfig newConfig
-      update()
-    else
-      @app.datasetRequester.requestData newConfig, update
+    @app.datasetRequester.updateAndRequestIfRequired newConfig, update
 
 
   showProvinceNames: =>

@@ -720,10 +720,7 @@ class Visualization2 extends visualization
       @_chart.mapping(@sourceMenuData())
       @app.router.navigate @config.routerParams()
 
-    if @app.datasetRequester.haveDataForConfig newConfig
-      update()
-    else
-      @app.datasetRequester.requestData newConfig, update
+    @app.datasetRequester.updateAndRequestIfRequired newConfig, update
 
 
 
@@ -741,10 +738,7 @@ class Visualization2 extends visualization
       @getDataAndRender()
       @app.router.navigate @config.routerParams()
 
-    if @app.datasetRequester.haveDataForConfig newConfig
-      update()
-    else
-      @app.datasetRequester.requestData newConfig, update
+    @app.datasetRequester.updateAndRequestIfRequired newConfig, update
 
 
 
@@ -759,10 +753,7 @@ class Visualization2 extends visualization
       @getDataAndRender()
       @app.router.navigate @config.routerParams()
 
-    if @app.datasetRequester.haveDataForConfig newConfig
-      update()
-    else
-      @app.datasetRequester.requestData newConfig, update
+    @app.datasetRequester.updateAndRequestIfRequired newConfig, update
 
 
 
@@ -828,10 +819,7 @@ class Visualization2 extends visualization
       @getDataAndRender()
       @app.router.navigate @config.routerParams()
 
-    if @app.datasetRequester.haveDataForConfig newConfig
-      update()
-    else
-      @app.datasetRequester.requestData newConfig, update
+    @app.datasetRequester.updateAndRequestIfRequired newConfig, update
 
 
 
@@ -849,10 +837,7 @@ class Visualization2 extends visualization
       @getDataAndRender()
       @app.router.navigate @config.routerParams()
 
-    if @app.datasetRequester.haveDataForConfig newConfig
-      update()
-    else
-      @app.datasetRequester.requestData newConfig, update
+    @app.datasetRequester.updateAndRequestIfRequired newConfig, update
 
 
 
