@@ -34,6 +34,7 @@ CSVDataHandler = (req, res) ->
     Logger.info "csv_data (request C#{counter}): #{query}"
     csvData = null
   
+
     providers = {}
     for dataset in Constants.datasets
       # TODO: the 'dataset' objects on ServerData have a lot more than just
@@ -98,6 +99,7 @@ CSVDataHandler = (req, res) ->
     #CONVERT DATA TO CSV AND ASSIGN IT TO RESPONSE OBJECT
     if csvData?
       results = d3.csv.format csvData
+      res.attachment()
       res.write results
       res.end()
       Logger.debug "csv data request (request C#{counter}) Time: #{Date.now() - time}"
