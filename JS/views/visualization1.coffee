@@ -619,21 +619,58 @@ class Visualization1 extends visualization
     @buildYAxis()
 
   selectAllStacked: (selecting) =>
-    @config.resetProvinces selecting 
-    @getDataAndRender()
+    newConfig = new @config.constructor @app
+    newConfig.copy @config
+    newConfig.resetProvinces selecting 
+
+    update = =>
+      @config.resetProvinces selecting 
+      @getDataAndRender()
+
+    if @app.datasetRequester.haveDataForConfig newConfig
+      update()
+    else
+      @app.datasetRequester.requestData newConfig, update
+
+
+
 
   orderChanged: (newLocation, currentLocation) =>
     if currentLocation > newLocation
       temp_data = _.concat(@config.provincesInOrder[0...newLocation], @config.provincesInOrder[currentLocation],@config.provincesInOrder[newLocation...currentLocation], @config.provincesInOrder[(currentLocation+1)..])
     if currentLocation < newLocation 
       temp_data = _.concat(@config.provincesInOrder[0...currentLocation], @config.provincesInOrder[(currentLocation+1)..newLocation], @config.provincesInOrder[currentLocation], @config.provincesInOrder[(newLocation+1)..])
-    if temp_data?  
+    return unless temp_data?  
+
+    newConfig = new @config.constructor @app
+    newConfig.copy @config
+    newConfig.setProvincesInOrder temp_data
+
+    update = =>
       @config.setProvincesInOrder temp_data
       @_chart.mapping @provinceMenuData()
 
+    if @app.datasetRequester.haveDataForConfig newConfig
+      update()
+    else
+      @app.datasetRequester.requestData newConfig, update
+
+
+
   menuSelect: (key, regionIndex) =>
-    @config.flipProvince key
-    @getDataAndRender()
+    newConfig = new @config.constructor @app
+    newConfig.copy @config
+    newConfig.flipProvince key
+
+    update = =>
+      @config.flipProvince key
+      @getDataAndRender()
+
+    if @app.datasetRequester.haveDataForConfig newConfig
+      update()
+    else
+      @app.datasetRequester.requestData newConfig, update
+
 
   showProvinceNames: =>
     d3.event.stopPropagation()

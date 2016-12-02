@@ -233,7 +233,14 @@ class visualization
         .attr
           class: 'datasetSelectorButton'
         .on 'click', (d) =>
-          if @config.dataset != d.dataset
+          return if @config.dataset == d.dataset
+
+          newConfig = new @config.constructor @app
+          newConfig.copy @config
+          newConfig.setDataset d.dataset
+          newConfig.setScenario @config.scenario
+
+          update = =>
             @config.setDataset d.dataset
 
             # Check if the current scenario is valid for the new dataset
@@ -245,6 +252,15 @@ class visualization
 
             @getDataAndRender()
             if @buildYAxis? then @buildYAxis()
+
+          if @app.datasetRequester.haveDataForConfig newConfig
+            update()
+          else
+            @app.datasetRequester.requestData newConfig, update
+
+
+
+
 
       datasetSelectors.html (d) ->
         "<button class='#{d.class}' type='button' title='#{d.title}'>#{d.label}</button>"
@@ -262,13 +278,25 @@ class visualization
         .attr
           class: 'unitSelectorButton'
         .on 'click', (d) =>
-          if @config.unit != d.unitName  
+          return if @config.unit == d.unitName  
+
+          newConfig = new @config.constructor @app
+          newConfig.copy @config
+          newConfig.setUnit d.unitName
+
+          update = =>
             @config.setUnit d.unitName
             # TODO: For efficiency, only rerender what's necessary.
             @unitSelectionData()
             @addUnitToggle(@unitSelectionData())
             @getDataAndRender()
             if @buildYAxis? then @buildYAxis()
+
+          if @app.datasetRequester.haveDataForConfig newConfig
+            update()
+          else
+            @app.datasetRequester.requestData newConfig, update
+
 
       unitsSelectors.html (d) ->
         "<button class='#{d.class}' type='button' title='#{d.title}'>#{d.label}</button>"
@@ -286,13 +314,24 @@ class visualization
         .attr
           class: 'scenarioSelectorButton'
         .on 'click', (d) =>
-          if @config.scenario != d.scenarioName && Constants.datasetDefinitions[@config.dataset].scenarios.includes d.scenarioName  
-            @config.setScenario d.scenarioName
+          return if @config.scenario == d.scenarioName && Constants.datasetDefinitions[@config.dataset].scenarios.includes d.scenarioName  
 
+          newConfig = new @config.constructor @app
+          newConfig.copy @config
+          newConfig.setScenario d.scenarioName
+
+          update = =>
+            @config.setScenario d.scenarioName
             # TODO: For efficiency, only rerender what's necessary.
             @addDatasetToggle()
             @addScenarios()
             @getDataAndRender()
+
+          if @app.datasetRequester.haveDataForConfig newConfig
+            update()
+          else
+            @app.datasetRequester.requestData newConfig, update
+
 
 
       scenariosSelectors.html (d) ->
