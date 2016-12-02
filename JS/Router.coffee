@@ -29,11 +29,9 @@ class Router
     
     params = Router.parseQueryParams()
 
-    initialConfig = @setInitialParamConfiguration params
+    @setInitialParamConfiguration params
 
-    # Request data for the initial config, and navigate to the page
-    @app.datasetRequester.requestData initialConfig, =>
-      @navigate params
+    @navigate params
 
   onHistoryPopState: (event) =>
     state = event.state || {}
@@ -44,16 +42,12 @@ class Router
     switch params.page
       when 'viz1'
         @app.visualization1Configuration = new Visualization1Configuration @app, params
-        @app.visualization1Configuration
       when 'viz2'
         @app.visualization2Configuration = new Visualization2Configuration @app, params
-        @app.visualization2Configuration
       when 'viz3'
         @app.visualization3Configuration = new Visualization3Configuration @app, params
-        @app.visualization3Configuration
       when 'viz4'
         @app.visualization4Configuration = new Visualization4Configuration @app, params
-        @app.visualization4Configuration
 
   navigate: (params, options = {}) ->
     options = _.merge {shouldUpdateHistory: true}, options
