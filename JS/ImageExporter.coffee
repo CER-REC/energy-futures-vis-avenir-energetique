@@ -28,6 +28,8 @@ class ImageExporter
     params.language = @app.language
 
 
+    throw new Error "process.env.HOST is undefined." if process.env.HOST == ''
+
     imageUrl = "#{process.env.HOST}:#{process.env.PORT_NUMBER}/png_image/#{config.pngFileName()}#{ParamsToUrlString params}"
 
 
