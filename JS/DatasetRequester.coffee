@@ -120,12 +120,37 @@ class DatasetRequester
 
   dataReceived: (configParams, response) =>
 
+    @handleDataLoad configParams, response
+
+
+    # If the available data now satisfies the last requested configuration, switch the
+    # visualization to that configuration
+    if @bottledRequest? and @haveDataForConfig @bottledRequest.configParams
+
+      # Carry out visual changes to the visualization, and update the viz's own config
+      @bottledRequest.callback()
+
+      @bottledRequest = null
+      @hideSpinner()
+
+
+  handleDataLoad: (configParams, response) ->
+
+    # TODO: validate or sanity check the response data in some way
     # TODO: error handling (though it should never happen ... )
     data = JSON.parse response
 
-    # TODO: validate or sanity check the response data in some way
+    # If we have already loaded this chunk, don't load it again. 
+    # This can happen if the user triggers multiple requests for the same data, which
+    # each resolve later.
+    switch configParams.page
+      when 'viz1', 'viz4'
+        return if @loadedStateViz1_4[configParams.dataset][configParams.mainSelection] == true        
+      when 'viz2'
+        return if @loadedStateViz2[configParams.dataset][configParams.sector][configParams.province] == true
+      when 'viz3'
+        return if @loadedStateViz3[configParams.dataset][configParams.scenario] == true
 
-    # TODO: Don't load the data again if we have already loaded this data
 
     # Mark data as having arrived, and add the data to the provider it belongs to
     switch configParams.page
@@ -148,20 +173,6 @@ class DatasetRequester
       when 'viz3'
         @loadedStateViz3[configParams.dataset][configParams.scenario] = true
         @app.providers[configParams.dataset].electricityProductionProvider.addData data.data
-
-
-    # If the available data now satisfies the last requested configuration, switch the
-    # visualization to that configuration
-    if @bottledRequest? and @haveDataForConfig @bottledRequest.configParams
-
-      # Carry out visual changes to the visualization, and update the viz's own config
-      @bottledRequest.callback()
-
-      @bottledRequest = null
-      @hideSpinner()
-
-
-
 
 
 
