@@ -73,34 +73,28 @@ class Visualization2Configuration
       @sector = sector
     else
       @sector = @defaultOptions.sector
-    @updateRouter()
 
   setUnit: (unit) ->
     if ['petajoules', 'kilobarrelEquivalents'].includes unit
       @unit = unit
     else
       @unit = @defaultOptions.unit
-    @updateRouter()
 
   setScenario: (scenario) ->
     if Constants.datasetDefinitions[@dataset].scenarios.includes scenario
       @scenario = scenario
     else
       @scenario = @defaultOptions.scenario
-    @updateRouter()
 
   addSource: (source) ->  
     return unless Constants.viz2Sources.includes source
     @sources.push source unless @sources.includes source
-    @updateRouter()
 
   setSourcesInOrder: (sourcesInOrder) ->
     @sourcesInOrder = sourcesInOrder
-    @updateRouter()
 
   removeSource: (source) ->
     @sources = @sources.filter (s) -> s != source
-    @updateRouter()
 
   resetSources: (selectAll) ->
     if selectAll
@@ -114,14 +108,12 @@ class Visualization2Configuration
       ]
     else
       @sources = []
-    @updateRouter()
 
   setProvince: (province) ->
     if Constants.provinceRadioSelectionOptions.includes province
       @province = province
     else
       @province = @defaultOptions.province
-    @updateRouter()
 
   flipSource: (source) ->
     return unless Constants.viz2Sources.includes source
@@ -129,7 +121,6 @@ class Visualization2Configuration
       @sources = @sources.filter (s) -> s != source
     else 
       @sources.push source
-    @updateRouter()
 
   setLanguage: (language) ->
     @language = language if language == 'en' or language == 'fr'
@@ -139,7 +130,6 @@ class Visualization2Configuration
       @dataset = dataset
     else 
       @dataset = @defaultOptions.dataset
-    @updateRouter()
 
   # Router integration
 
@@ -153,9 +143,16 @@ class Visualization2Configuration
     province: @province
     dataset: @dataset
 
-  updateRouter: ->
-    return unless @app? and @app.router?
-    @app.router.navigate @routerParams()
+  copy: (config) ->
+    configParams = _.cloneDeep config.routerParams()
+
+    @sector = configParams.sector
+    @unit = configParams.unit
+    @scenario = configParams.scenario
+    @sources = configParams.sources
+    @sourcesInOrder = configParams.sourcesInOrder
+    @province = configParams.province
+    @dataset = configParams.dataset
 
 
   # Description for PNG export

@@ -252,6 +252,7 @@ class visualization
 
             @getDataAndRender()
             if @buildYAxis? then @buildYAxis()
+            @app.router.navigate @config.routerParams()
 
           if @app.datasetRequester.haveDataForConfig newConfig
             update()
@@ -291,6 +292,7 @@ class visualization
             @addUnitToggle(@unitSelectionData())
             @getDataAndRender()
             if @buildYAxis? then @buildYAxis()
+            @app.router.navigate @config.routerParams()
 
           if @app.datasetRequester.haveDataForConfig newConfig
             update()
@@ -326,6 +328,7 @@ class visualization
             @addDatasetToggle()
             @addScenarios()
             @getDataAndRender()
+            @app.router.navigate @config.routerParams()
 
           if @app.datasetRequester.haveDataForConfig newConfig
             update()
@@ -355,10 +358,24 @@ class visualization
         .attr
           class: (d) -> d.wrapperClass
         .on 'click', (d) =>
-          if @config.sector != d.sectorName  
+          return if @config.sector == d.sectorName  
+
+          newConfig = new @config.constructor @app
+          newConfig.copy @config
+          newConfig.setSector d.sectorName
+
+          update = =>
             @config.setSector d.sectorName
             @addSectors()
             @getDataAndRender()
+            @app.router.navigate @config.routerParams()
+
+          if @app.datasetRequester.haveDataForConfig newConfig
+            update()
+          else
+            @app.datasetRequester.requestData newConfig, update
+
+
 
       sectorsSelectors.html (d) ->
         if d.sectorName == 'total'
@@ -392,6 +409,7 @@ class visualization
           @addUnitToggle()
           @addScenarios()
           @getDataAndRender()
+          @app.router.navigate @config.routerParams()
 
         if @app.datasetRequester.haveDataForConfig newConfig
           update()

@@ -109,23 +109,19 @@ class Visualization1Configuration
       @unit = unit
     else
       @unit = allowableUnits[0]
-    @updateRouter()
 
   setScenario: (scenario) ->
     if Constants.datasetDefinitions[@dataset].scenarios.includes scenario
       @scenario = scenario
     else
       @scenario = @defaultOptions.scenario
-    @updateRouter()
 
   addProvince: (province) ->
     return unless Constants.provinces.includes province
     @provinces.push province unless @provinces.includes province
-    @updateRouter()
 
   removeProvince: (province) -> 
     @provinces = @provinces.filter (p) -> p != province
-    @updateRouter()
 
   flipProvince: (province) ->
     return unless Constants.provinces.includes province
@@ -133,7 +129,6 @@ class Visualization1Configuration
       @provinces = @provinces.filter (p) -> p != province
     else 
       @provinces.push province
-    @updateRouter()
 
   resetProvinces: (selectAll) ->
     if selectAll
@@ -154,12 +149,10 @@ class Visualization1Configuration
       ]
     else
       @provinces = []
-    @updateRouter()
 
   setProvincesInOrder: (provincesInOrder) ->
     # NB: We aren't currently tracking provinces in order in the URL bar
     @provincesInOrder = provincesInOrder
-    @updateRouter()
 
 
   setLanguage: (language) ->
@@ -170,7 +163,6 @@ class Visualization1Configuration
       @dataset = dataset
     else 
       @dataset = @defaultOptions.dataset
-    @updateRouter()
 
   # Router integration
 
@@ -192,10 +184,6 @@ class Visualization1Configuration
     @provinces = configParams.provinces
     @provincesInOrder = configParams.provincesInOrder
     @dataset = configParams.dataset
-
-  updateRouter: ->
-    return unless @app? and @app.router?
-    @app.router.navigate @routerParams()
 
 
   # Description for PNG export

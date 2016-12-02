@@ -626,6 +626,8 @@ class Visualization1 extends visualization
     update = =>
       @config.resetProvinces selecting 
       @getDataAndRender()
+      @app.router.navigate @config.routerParams()
+
 
     if @app.datasetRequester.haveDataForConfig newConfig
       update()
@@ -649,7 +651,8 @@ class Visualization1 extends visualization
     update = =>
       @config.setProvincesInOrder temp_data
       @_chart.mapping @provinceMenuData()
-
+      @app.router.navigate @config.routerParams()
+    
     if @app.datasetRequester.haveDataForConfig newConfig
       update()
     else
@@ -665,6 +668,7 @@ class Visualization1 extends visualization
     update = =>
       @config.flipProvince key
       @getDataAndRender()
+      @app.router.navigate @config.routerParams()
 
     if @app.datasetRequester.haveDataForConfig newConfig
       update()
