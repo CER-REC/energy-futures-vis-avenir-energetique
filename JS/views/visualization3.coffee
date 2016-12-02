@@ -223,7 +223,7 @@ class Visualization3 extends visualization
     ]
 
   buildProvinceVsSourceToggle: ->
-    if @config.viewBy?  
+    if @config.viewBy?
       viewBySelectors = d3.select(@app.window.document).select('#viewBySelector')
         .selectAll('.viewBySelectorButton')
         .data(@viewByData())
@@ -233,10 +233,24 @@ class Visualization3 extends visualization
         .attr
           class: 'viewBySelectorButton'
         .on 'click', (d) =>
-          if @config.viewBy != d.viewByName
+          return if @config.viewBy == d.viewByName
+
+          newConfig = new @config.constructor @app
+          newConfig.copy @config
+          newConfig.setViewBy d.viewByName
+
+          update = =>
             @config.setViewBy d.viewByName
             @buildProvinceVsSourceToggle()
             @toggleViz()
+            @app.router.navigate @config.routerParams()
+
+          if @app.datasetRequester.haveDataForConfig newConfig
+            update()
+          else
+            @app.datasetRequester.requestData newConfig, update
+
+
 
       viewBySelectors.html (d) ->
         "<button class='#{d.class}' type='button' title='#{d.title}'>#{d.label}</button>"
@@ -867,7 +881,14 @@ class Visualization3 extends visualization
         if newX < @timelineMargin then newX = @timelineMargin
         if newX > @timelineRightEnd() then newX = @timelineRightEnd()
         year = Math.round(@yearScale().invert(newX))
-        if year != @config.year
+
+        return if year == @config.year
+
+        newConfig = new @config.constructor @app
+        newConfig.copy @config
+        newConfig.setYear year
+    
+        update = =>
           @config.setYear year
           d3.select(@app.window.document).select('#sliderLabel').attr(
             transform: "translate(#{newX}, #{@height() + @_margin.top - 5})"
@@ -876,6 +897,14 @@ class Visualization3 extends visualization
             @config.year
           )
           @getDataAndRender()
+          @app.router.navigate @config.routerParams()
+
+        if @app.datasetRequester.haveDataForConfig newConfig
+          update()
+        else
+          @app.datasetRequester.requestData newConfig, update
+
+
       
     axis.selectAll("text") 
         .style 
@@ -990,8 +1019,15 @@ class Visualization3 extends visualization
         d3.select(@app.window.document).select('#vizPauseButton').html("<img src='IMG/play_pause/pausebutton_unselectedR.svg'/>")
         if @yearTimeout then window.clearTimeout(@yearTimeout)
         timeoutComplete = => 
-          if @_chart
-            if @config.year < 2040
+          return unless @_chart?
+
+          if @config.year < 2040
+
+            newConfig = new @config.constructor @app
+            newConfig.copy @config
+            newConfig.setYear @config.year + 1
+
+            update = =>
               @config.setYear @config.year + 1
               @yearTimeout = window.setTimeout(timeoutComplete, @_chart._duration)
               @getDataAndRender()
@@ -1005,9 +1041,16 @@ class Visualization3 extends visualization
               d3.select(@app.window.document).select('#labelBox').text((d) =>
                 @config.year
               )
+              @app.router.navigate @config.routerParams()
+
+            if @app.datasetRequester.haveDataForConfig newConfig
+              update()
             else
-              d3.select(@app.window.document).select('#vizPauseButton').html("<img src='IMG/play_pause/pausebutton_selectedR.svg'/>")
-              d3.select(@app.window.document).select('#vizPlayButton').html("<img src='IMG/play_pause/playbutton_unselectedR.svg'/>")
+              @app.datasetRequester.requestData newConfig, update
+
+          else
+            d3.select(@app.window.document).select('#vizPauseButton').html("<img src='IMG/play_pause/pausebutton_selectedR.svg'/>")
+            d3.select(@app.window.document).select('#vizPlayButton').html("<img src='IMG/play_pause/playbutton_unselectedR.svg'/>")
         @yearTimeout = window.setTimeout(timeoutComplete, 0)
       .html("<img src='IMG/play_pause/playbutton_unselectedR.svg'/>")
 
@@ -1148,14 +1191,48 @@ class Visualization3 extends visualization
       @_singleSelectMenu.setHelpHandler(@showSourceNames)
       @_chart.menu.setHelpHandler(@showProvinceNames)
 
-  selectAllBubbles:(selecting)=>
-    if @config.viewBy == 'province' then @config.resetSources(selecting) else @config.resetProvinces(selecting)
-    @getDataAndRender()
+  selectAllBubbles: (selecting) =>
+
+    newConfig = new @config.constructor @app
+    newConfig.copy @config
+    if @config.viewBy == 'province'
+      newConfig.resetSources(selecting)
+    else 
+      newConfig.resetProvinces(selecting)
+
+    update = =>
+      if @config.viewBy == 'province'
+        @config.resetSources(selecting)
+      else 
+        @config.resetProvinces(selecting)
+      @getDataAndRender()
+      @app.router.navigate @config.routerParams()
+
+    if @app.datasetRequester.haveDataForConfig newConfig
+      update()
+    else
+      @app.datasetRequester.requestData newConfig, update
+
+
 
   # Select one callback for the current multiselect
   menuSelect: (key, index) =>
-    @config.flip(key)
-    @getDataAndRender()
+
+    newConfig = new @config.constructor @app
+    newConfig.copy @config
+    newConfig.flip(key)
+
+    update = =>
+      @config.flip(key)
+      @getDataAndRender()
+      @app.router.navigate @config.routerParams()
+
+    if @app.datasetRequester.haveDataForConfig newConfig
+      update()
+    else
+      @app.datasetRequester.requestData newConfig, update
+
+
 
   # Black and white non multi select menu.
   buildSingleSelectMenu: ->
@@ -1183,20 +1260,59 @@ class Visualization3 extends visualization
     new squareMenu(@app, parent, provinceOptions) 
 
   selectAllSingleSelect: (selecting) =>
-    if @config.viewBy == 'province' then @config.setProvince 'all' else @config.setSource 'total'
-    @_singleSelectMenu._allSelected = true
-    @_singleSelectMenu.data(@dataForSingleSelectMenu())
-    @getDataAndRender()
 
-  singleSelectSelected: (key, index)=>
-    @_singleSelectMenu._allSelected = false
-    item = @_singleSelectMenu.mapping()[index]
+    newConfig = new @config.constructor @app
+    newConfig.copy @config
     if @config.viewBy == 'province'
-      @config.setProvince item.key
+      newConfig.setProvince 'all'
+    else
+      newConfig.setSource 'total'
+
+    update = =>
+      if @config.viewBy == 'province'
+        @config.setProvince 'all'
+      else
+        @config.setSource 'total'
+      @_singleSelectMenu._allSelected = true
+      @_singleSelectMenu.data(@dataForSingleSelectMenu())
+      @getDataAndRender()
+      @app.router.navigate @config.routerParams()
+
+    if @app.datasetRequester.haveDataForConfig newConfig
+      update()
+    else
+      @app.datasetRequester.requestData newConfig, update
+
+
+
+
+  singleSelectSelected: (key, index) =>
+
+    item = @_singleSelectMenu.mapping()[index]
+    
+    newConfig = new @config.constructor @app
+    newConfig.copy @config
+    if @config.viewBy == 'province'
+      newConfig.setProvince item.key
     else if @config.viewBy == 'source'
-      @config.setSource item.key
-    @_singleSelectMenu.data(@dataForSingleSelectMenu())
-    @getDataAndRender()
+      newConfig.setSource item.key
+
+    update = =>
+      @_singleSelectMenu._allSelected = false
+      if @config.viewBy == 'province'
+        @config.setProvince item.key
+      else if @config.viewBy == 'source'
+        @config.setSource item.key
+      @_singleSelectMenu.data(@dataForSingleSelectMenu())
+      @getDataAndRender()
+      @app.router.navigate @config.routerParams()
+
+    if @app.datasetRequester.haveDataForConfig newConfig
+      update()
+    else
+      @app.datasetRequester.requestData newConfig, update
+
+
 
   showSourceNames: =>
     d3.event.stopPropagation()

@@ -124,21 +124,18 @@ class Visualization3Configuration
       @viewBy = viewBy
     else
       @viewBy = @defaultOptions.viewBy
-    @updateRouter()
 
   setUnit: (unit) ->
     if ['petajoules', 'gigawattHours', 'kilobarrelEquivalents'].includes unit
       @unit = unit
     else
       @unit = @defaultOptions.unit
-    @updateRouter()
 
   setScenario: (scenario) ->
     if Constants.datasetDefinitions[@dataset].scenarios.includes scenario
       @scenario = scenario
     else
       @scenario = @defaultOptions.scenario
-    @updateRouter()
 
   setYear: (year) ->
     year = parseInt year, 10
@@ -146,43 +143,36 @@ class Visualization3Configuration
       @year = year
     else
       @year = @defaultOptions.year
-    @updateRouter()
 
   addProvince: (province) ->
     return unless Constants.provinces.includes province
     if @viewBy == 'source'  
       @provinces.push province unless @provinces.includes province
-    @updateRouter()
 
   removeProvince: (province) ->
     if @viewBy == 'source' 
       @provinces = @provinces.filter (p) -> p != province
-    @updateRouter()
 
   addSource: (source) ->  
     return unless Constants.sources.includes source
     if @viewBy == 'province'  
       @sources.push source unless @sources.includes source
-    @updateRouter()
 
   removeSource: (source) ->
     if @viewBy == 'province' 
       @sources = @sources.filter (s) -> s != source
-    @updateRouter()
 
   setSource: (source) ->
     if Constants.viz3SourceRadioSelectionOptions.includes source
       @source = source
     else
       @source = @defaultOptions.source
-    @updateRouter()
 
   setProvince: (province) ->
     if Constants.provinceRadioSelectionOptions.includes province
       @province = province
     else
       @province = @defaultOptions.province
-    @updateRouter()
 
 
   flip: (key) ->
@@ -198,7 +188,6 @@ class Visualization3Configuration
         @provinces = @provinces.filter (p) -> p != key
       else
         @provinces.push key
-    @updateRouter()
 
   resetSources: (selectAll) ->
     if selectAll
@@ -213,7 +202,6 @@ class Visualization3Configuration
       ]
     else
       @sources = []
-    @updateRouter()
 
   resetProvinces: (selectAll) ->
     if selectAll
@@ -234,7 +222,6 @@ class Visualization3Configuration
       ]
     else
       @provinces = []
-    @updateRouter()
 
   setLanguage: (language) ->
     @language = language if language == 'en' or language == 'fr'
@@ -244,7 +231,6 @@ class Visualization3Configuration
       @dataset = dataset
     else 
       @dataset = @defaultOptions.dataset
-    @updateRouter()
 
   # Router integration
 
@@ -265,9 +251,21 @@ class Visualization3Configuration
       
     params
 
-  updateRouter: ->
-    return unless @app? and @app.router?
-    @app.router.navigate @routerParams()
+
+  copy: (config) ->
+    configParams = _.cloneDeep config.routerParams()
+
+    @viewBy = configParams.viewBy
+    @unit = configParams.unit
+    @scenario = configParams.scenario
+    @year = configParams.year
+    @dataset = configParams.dataset
+    @province = configParams.province
+    @source = configParams.source
+    @provinces = configParams.provinces
+    @sources = configParams.sources
+
+
 
 
   # Description for PNG export
