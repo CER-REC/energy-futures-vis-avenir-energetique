@@ -26,15 +26,15 @@ class Visualization4Configuration
   constructor: (@app, options) ->
     @page = 'viz4'
 
-    @options = _.extend {}, @defaultOptions, options
+    options = _.extend {}, @defaultOptions, options
 
     # Initialize scenarios to an empty list, so that the scenarios validation routine
     # in setDataset does not crash.
     @scenarios = []
-    @setDataset @options.dataset
+    @setDataset options.dataset
 
     # mainSelection, one of energyDemand, oilProduction, electricityGeneration, or gasProduction
-    @setMainSelection @options.mainSelection
+    @setMainSelection options.mainSelection
 
     # unit, one of:
     # petajoules
@@ -44,17 +44,17 @@ class Visualization4Configuration
     # millionCubicMetres - million cubic metres per day, m^3/day (gas)
     # kilobarrels - kilobarrels of oil per day, kB/day
     # cubicFeet - million cubic feet per day, Mcf/day
-    @setUnit @options.unit
+    @setUnit options.unit
 
     # array, any of: reference, constrained, high, low, highLng, noLng
     @scenarios = []
-    for scenario in @options.scenarios
+    for scenario in options.scenarios
       @addScenario scenario
 
     # province
     # one of the two letter province abbreviations, or 'all'
     # BC AB SK MB ON QC NB NS NL PE YT NT NU all
-    @setProvince @options.province
+    @setProvince options.province
 
     @setLanguage @app.language || 'en'
 

@@ -67,53 +67,53 @@ class Visualization3Configuration
   constructor: (@app, options) ->
     @page = 'viz3'
 
-    @options = _.extend {}, @defaultOptions, options
+    options = _.extend {}, @defaultOptions, options
 
-    @setDataset @options.dataset
+    @setDataset options.dataset
 
     @mainSelection = 'electricityGeneration' # this isn't an option for viz 3
 
     # viewing method: 'province' or 'source'
-    @setViewBy @options.viewBy
+    @setViewBy options.viewBy
 
     # unit, one of:
     # petajoules
     # gigawattHours
     # kilobarrelEquivalents
-    @setUnit @options.unit
+    @setUnit options.unit
 
     # one of: reference, constrained, high, low, highLng, noLng
-    @setScenario @options.scenario
+    @setScenario options.scenario
 
     # year, int between 2005 and 2040 inclusive
-    @setYear @options.year
+    @setYear options.year
 
     # sources, array, used when ViewBy == 'province'
     # any of: oilProducts, nuclear, bio, naturalGas, coal, solarWindGeothermal, hydro
     @sources = []
-    for source in @options.sources
+    for source in options.sources
       @addSource source
 
     # provinces, array, used when ViewBy == 'source'
     # can include any of: BC AB SK MB ON QC NB NS NL PE YT NT NU
     @provinces = []
-    for province in @options.provinces
+    for province in options.provinces
       @addProvince province
 
     # source, used when ViewBy == 'source'
     # one of: total, oilProducts, nuclear, bio, naturalGas, coal, solarWindGeothermal, hydro
-    @setSource @options.source
+    @setSource options.source
 
     # province, used when ViewBy == 'province'
     # one of the two letter province abbreviations, or 'all'
     # BC AB SK MB ON QC NB NS NL PE YT NT NU all
-    @setProvince @options.province
+    @setProvince options.province
 
     # Used to manage the order of the provinces in a reorderable menu
-    @provincesInOrder = @options.provincesInOrder
+    @provincesInOrder = options.provincesInOrder
 
     # Used to manage the order of the sources in a reorderable menu
-    @sourcesInOrder = @options.sourcesInOrder
+    @sourcesInOrder = options.sourcesInOrder
 
     @setLanguage @app.language || 'en'
 

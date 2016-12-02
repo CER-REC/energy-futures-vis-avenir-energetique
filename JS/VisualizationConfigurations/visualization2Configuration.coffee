@@ -30,37 +30,37 @@ class Visualization2Configuration
   constructor: (@app, options) ->
     @page = 'viz2'
 
-    @options = _.extend {}, @defaultOptions, options
+    options = _.extend {}, @defaultOptions, options
 
-    @setDataset @options.dataset
+    @setDataset options.dataset
 
     @mainSelection = 'energyDemand' # this isn't an option for viz 2
 
     # sector, one of: residential, commercial, industrial, transportation, total
-    @setSector @options.sector
+    @setSector options.sector
 
     # unit, one of:
     # petajoules
     # kilobarrelEquivalents
-    @setUnit @options.unit
+    @setUnit options.unit
 
     # one of: reference, constrained, high, low, highLng, noLng
-    @setScenario @options.scenario
+    @setScenario options.scenario
 
     # sources, array
     # can include any of: hydro, oilProducts, bio, naturalGas, coal, solarWindGeothermal
     @sources = []
-    for source in @options.sources
+    for source in options.sources
       @addSource source
 
     # province
     # one of the two letter province abbreviations, or 'all'
     # BC AB SK MB ON QC NB NS NL PE YT NT NU all
-    @setProvince @options.province
+    @setProvince options.province
 
     @sourcesInOrder = []
-    if(@isValidSourcesInOrder(@options.sourcesInOrder))
-      @sourcesInOrder = @options.sourcesInOrder
+    if(@isValidSourcesInOrder(options.sourcesInOrder))
+      @sourcesInOrder = options.sourcesInOrder
     else
       @sourcesInOrder = @defaultOptions.sourcesInOrder
 
