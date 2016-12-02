@@ -34,6 +34,9 @@ CSVDataHandler = (req, res) ->
     Logger.info "csv_data (request C#{counter}): #{query}"
     csvData = null
   
+    # Ensures the csv data will be downloaded as an attachment
+    res.attachment()
+
     serverApp = new ServerApp null,
       energyConsumptionProvider: ServerData['oct2016'].energyConsumptionProvider
       oilProductionProvider: ServerData['oct2016'].oilProductionProvider

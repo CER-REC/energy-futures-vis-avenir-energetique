@@ -11,6 +11,7 @@ Tr = require '../TranslationTable.coffee'
 Platform = require '../Platform.coffee'
 ApplicationRoot = require '../../ApplicationRoot.coffee'
 
+ParamsToUrlString = require '../ParamsToUrlString.coffee'
 
 if Platform.name == "browser"
   Visualization2Template = require '../templates/Visualization2.mustache'
@@ -441,6 +442,11 @@ class Visualization2 extends visualization
       @adjustViz()
     else
       @buildViz()
+
+    # update the csv data download link
+    d3.select("#dataDownloadLink")
+      .attr
+        href: "#{process.env.HOST}:#{process.env.PORT_NUMBER}/csv_data#{ParamsToUrlString(@config.routerParams())}"
 
   #Gets the total of all the maximums (since we are stacking the data)
   graphDataMaximum: (data) ->
