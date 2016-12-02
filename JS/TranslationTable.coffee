@@ -118,13 +118,13 @@ module.exports =
     aboutContent:
       en: """
         <p> 
-          The National Energy Board (NEB) teamed up with leading data visualization experts in both academia and industry to create the Exploring Canada’s Energy Future interactive online tool. This pilot concept, based on our flagship publication – <a href="http://www.neb-one.gc.ca/nrg/ntgrtd/ftr/index-eng.html">Canada’s Energy Future</a>, has shaped a new initiative that will transform the way the NEB will share data going forward.
+          The National Energy Board (NEB) teamed up with leading data visualization experts in both academia and industry to create the Exploring Canada’s Energy Future interactive online tool. This pilot concept, based on our flagship publication – <a href="http://www.neb-one.gc.ca/nrg/ntgrtd/ftr/index-eng.html" target="_blank">Canada’s Energy Future</a>, has shaped a new initiative that will transform the way the NEB will share data going forward.
         </p>
         <p>
           Our objective is to present quality data from our two most recent energy outlooks in an interactive graphic format that is user-friendly and clarifies complex information into “visualizations” that are easily understood. This way you can explore Canada’s energy future right from your own computer. In the months and years to come, we will use this innovative format to share our pipeline safety data, energy data series, energy infrastructure information, and a host of other topical data.
         </p>
         <p>
-          If you want to use the data for research and undertake your own review, all the data is downloadable and shareable. The chart images are also downloadable, and if you are interested in the source code for the visualizations, it is available on the government’s Open Government portal: <a href="http://open.canada.ca">open.canada.ca</a>. 
+          If you want to use the data for research and undertake your own review, all the data is downloadable and shareable. The chart images are also downloadable, and if you are interested in the source code for the visualizations, it is available on the government’s Open Government portal: <a href="http://open.canada.ca" target="_blank">open.canada.ca</a>. 
         </p>
         <p>
           We hope we are hitting the mark. Your feedback is essential. 
