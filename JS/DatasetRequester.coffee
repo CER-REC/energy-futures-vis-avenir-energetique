@@ -1,5 +1,6 @@
 _ = require 'lodash'
 QueryString = require 'query-string'
+d3 = require 'd3'
 
 Constants = require './Constants.coffee'
 
@@ -61,8 +62,10 @@ class DatasetRequester
     @bottledRequest = null
 
     if @haveDataForConfig configParams
+      @hideSpinner()
       callback()
     else
+      @showSpinner()
       @requestData configParams, callback
 
 
@@ -128,10 +131,10 @@ class DatasetRequester
     if @bottledRequest? and @haveDataForConfig @bottledRequest.configParams
 
       # Carry out visual changes to the visualization, and update the viz's own config
+      @hideSpinner()
       @bottledRequest.callback()
 
       @bottledRequest = null
-      @hideSpinner()
 
 
   handleDataLoad: (configParams, response) ->
@@ -177,9 +180,11 @@ class DatasetRequester
 
 
   showSpinner: ->
+     d3.select('#dataLoadContainer').classed('hidden', false)
 
 
   hideSpinner: ->
+     d3.select('#dataLoadContainer').classed('hidden', true)
 
 
 
