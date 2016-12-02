@@ -323,11 +323,25 @@ class Visualization4
 
 
   provinceSelected: (key, regionIndex) =>
-    @provinceMenu.allSelected(false)
-    @config.setProvince key
-    @provinceMenu.data(@dataForProvinceMenu())
-    @renderYAxis()
-    @renderGraph()
+
+    newConfig = new @config.constructor @app
+    newConfig.copy @config
+    newConfig.setProvince key
+
+    update = =>
+      @provinceMenu.allSelected(false)
+      @config.setProvince key
+      @provinceMenu.data(@dataForProvinceMenu())
+      @renderYAxis()
+      @renderGraph()
+      @app.router.navigate @config.routerParams()
+
+    if @app.datasetRequester.haveDataForConfig newConfig
+      update()
+    else
+      @app.datasetRequester.requestData newConfig, update
+
+
 
   showProvinceNames: =>
     d3.event.stopPropagation()
@@ -789,20 +803,24 @@ class Visualization4
         .attr
           class: 'datasetSelectorButton'
         .on 'click', (d) =>
-          if @config.dataset != d.dataset
+          return if @config.dataset == d.dataset
+
+          newConfig = new @config.constructor @app
+          newConfig.copy @config
+          newConfig.setDataset d.dataset
+
+          update = =>          
             @config.setDataset d.dataset
-
-            # Check if the current scenario is valid for the new dataset
-            # and update the list of supported scenarios.
-            for scenario in @config.scenarios
-              @config.removeScenario scenario
-              @config.addScenario scenario
-
             @renderScenariosSelector()
             @renderDatasetSelector(@datasetSelectionData())
-
             @renderYAxis()
             @renderGraph()
+            @app.router.navigate @config.routerParams()
+
+          if @app.datasetRequester.haveDataForConfig newConfig
+            update()
+          else
+            @app.datasetRequester.requestData newConfig, update
 
       datasetSelectors.html (d) ->
         "<button class='#{d.class}' type='button' title='#{d.title}'>#{d.label}</button>"
@@ -819,15 +837,29 @@ class Visualization4
       .attr
         class: 'mainSelectorButton'
       .on 'click', (d) =>
-        @config.setMainSelection d.selectorName
-        # TODO: For efficiency, only rerender what's necessary.
-        # We could just call render() ... but that would potentially rebuild a bunch of menus... 
-        @renderMainSelector()
-        @renderDatasetSelector()
-        @renderUnitsSelector()
-        @renderScenariosSelector()
-        @renderYAxis()
-        @renderGraph()
+
+        newConfig = new @config.constructor @app
+        newConfig.copy @config
+        newConfig.setMainSelection d.selectorName
+
+        update = =>
+          @config.setMainSelection d.selectorName
+          # TODO: For efficiency, only rerender what's necessary.
+          # We could just call render() ... but that would potentially rebuild a bunch of menus... 
+          @renderMainSelector()
+          @renderDatasetSelector()
+          @renderUnitsSelector()
+          @renderScenariosSelector()
+          @renderYAxis()
+          @renderGraph()
+          @app.router.navigate @config.routerParams()
+
+        if @app.datasetRequester.haveDataForConfig newConfig
+          update()
+        else
+          @app.datasetRequester.requestData newConfig, update
+
+
 
     mainSelectors.html (d) ->
       "<img src=#{d.image} class='mainSelectorImage' title='#{d.title}'>
@@ -850,11 +882,25 @@ class Visualization4
       .attr
         class: 'unitSelectorButton'
       .on 'click', (d) =>
-        @config.setUnit d.unitName
-        # TODO: For efficiency, only rerender what's necessary.
-        @renderUnitsSelector()
-        @renderYAxis()
-        @renderGraph()
+
+        newConfig = new @config.constructor @app
+        newConfig.copy @config
+        newConfig.setUnit d.unitName
+
+        update = =>
+          @config.setUnit d.unitName
+          # TODO: For efficiency, only rerender what's necessary.
+          @renderUnitsSelector()
+          @renderYAxis()
+          @renderGraph()
+          @app.router.navigate @config.routerParams()
+
+        if @app.datasetRequester.haveDataForConfig newConfig
+          update()
+        else
+          @app.datasetRequester.requestData newConfig, update
+
+
 
     unitsSelectors.html (d) ->
       "<button class='#{d.class}' type='button' title='#{d.title}'>#{d.label}</button>"
@@ -875,17 +921,34 @@ class Visualization4
         class: 'scenarioSelectorButton'
       .on 'click', (d) =>
         selected = @config.scenarios.includes d.scenarioName
-        if selected
-          @config.removeScenario d.scenarioName
-        else
-          @config.addScenario d.scenarioName
 
-        # TODO: For efficiency, only rerender what's necessary.
-        @renderScenariosSelector()
-        @renderYAxis()
-        @renderGraph()
-        @renderScenariosSelector()
-        @renderGraph()
+        newConfig = new @config.constructor @app
+        newConfig.copy @config
+        if selected
+          newConfig.removeScenario d.scenarioName
+        else
+          newConfig.addScenario d.scenarioName
+
+        update = =>
+          if selected
+            @config.removeScenario d.scenarioName
+          else
+            @config.addScenario d.scenarioName
+
+          # TODO: For efficiency, only rerender what's necessary.
+          @renderScenariosSelector()
+          @renderYAxis()
+          @renderGraph()
+          @renderScenariosSelector()
+          @renderGraph()
+          @app.router.navigate @config.routerParams()
+
+        if @app.datasetRequester.haveDataForConfig newConfig
+          update()
+        else
+          @app.datasetRequester.requestData newConfig, update
+
+
 
     scenariosSelectors.html (d) ->
         indexOfDisabled = d.class.indexOf 'disabled'

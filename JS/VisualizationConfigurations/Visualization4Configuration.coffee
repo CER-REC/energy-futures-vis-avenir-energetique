@@ -28,6 +28,9 @@ class Visualization4Configuration
 
     @options = _.extend {}, @defaultOptions, options
 
+    # Initialize scenarios to an empty list, so that the scenarios validation routine
+    # in setDataset does not crash.
+    @scenarios = []
     @setDataset @options.dataset
 
     # mainSelection, one of energyDemand, oilProduction, electricityGeneration, or gasProduction
@@ -83,24 +86,26 @@ class Visualization4Configuration
       @unit = unit
     else
       @unit = allowableUnits[0]
-    @updateRouter()
 
   addScenario: (scenario) ->
     return unless Constants.datasetDefinitions[@dataset].scenarios.includes scenario
-
     @scenarios.push scenario unless @scenarios.includes scenario
-    @updateRouter()
 
   setProvince: (province) ->
     if Constants.provinceRadioSelectionOptions.includes province
       @province = province
     else
       @province = @defaultOptions.province
-    @updateRouter()
 
   removeScenario: (scenario) ->
     @scenarios = @scenarios.filter (s) -> s != scenario
-    @updateRouter()
+
+  validateScenarios: ->
+    # Check if the each scenario is valid for the current dataset
+    # and update the list of supported scenarios.
+    for scenario in @scenarios
+      @removeScenario scenario
+      @addScenario scenario
 
   setLanguage: (language) ->
     @language = language if language == 'en' or language == 'fr'
@@ -110,7 +115,7 @@ class Visualization4Configuration
       @dataset = dataset
     else 
       @dataset = @defaultOptions.dataset
-    @updateRouter()
+    @validateScenarios()
 
   # Router integration
 
@@ -122,10 +127,14 @@ class Visualization4Configuration
     province: @province
     dataset: @dataset
 
-  updateRouter: ->
-    return unless @app? and @app.router?
-    @app.router.navigate @routerParams()
+  copy: (config) ->
+    configParams = _.cloneDeep config.routerParams()
 
+    @mainSelection = configParams.mainSelection
+    @unit = configParams.unit
+    @scenarios = configParams.scenarios
+    @province = configParams.province
+    @dataset = configParams.dataset
 
   # Description for PNG export
   imageExportDescription: ->
