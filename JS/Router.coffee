@@ -58,9 +58,32 @@ class Router
   navigate: (params, options = {}) ->
     options = _.merge {shouldUpdateHistory: true}, options
     params.page = 'landingPage' unless Constants.pages.includes params.page
-
     return unless params? and params.page?
 
+    switch params.page
+      when 'viz1'
+        @app.datasetRequester.updateAndRequestIfRequired @app.visualization1Configuration, =>
+          @fulfillNavigation params, options
+      when 'viz2'
+        @app.datasetRequester.updateAndRequestIfRequired @app.visualization2Configuration, =>
+          @fulfillNavigation params, options
+        @app.visualization2Configuration
+      when 'viz3'
+        @app.datasetRequester.updateAndRequestIfRequired @app.visualization3Configuration, =>
+          @fulfillNavigation params, options
+        @app.visualization3Configuration
+      when 'viz4'
+        @app.datasetRequester.updateAndRequestIfRequired @app.visualization4Configuration, =>
+          @fulfillNavigation params, options
+      when 'landingPage'
+        @fulfillNavigation params, options
+
+
+
+    
+
+
+  fulfillNavigation: (params, options) ->
     @app.page = params.page
     @navbar.setNavBarState params.page
     @updateBottomNavBar options
