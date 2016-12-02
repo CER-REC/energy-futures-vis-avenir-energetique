@@ -86,7 +86,7 @@ div.chartTooltip:after {
   -webkit-column-count: 1;
   -moz-column-count: 1;
   box-sizing: border-box;
-  width: 50%;
+  width: 25%;
   float: right;
   padding-right: 10px; /* For precise alignment with link boxes */
 }
@@ -114,7 +114,7 @@ div.chartTooltip:after {
 
 #canadasEnergyFutureVisualization #panelRight.fr {
   box-sizing: border-box;
-  width: 50%;
+  width: 75%;
   float: right;
   padding-left: 4px; /* For precise alignment with link boxes */
 }
