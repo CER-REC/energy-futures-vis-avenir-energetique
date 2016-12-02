@@ -18,7 +18,7 @@ DatasetFiles = require '../DatasetFiles.coffee'
 ServerData = {}
 
 
-loadDataset = (datasetName, DatasetFiles) ->
+loadDataset = (datasetName, datasetFiles) ->
 
   dataset = {}
 

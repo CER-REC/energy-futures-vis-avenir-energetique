@@ -112,7 +112,7 @@ class Visualization1Configuration
     @updateRouter()
 
   setScenario: (scenario) ->
-    if Constants.scenarios[@dataset]? && Constants.scenarios[@dataset].includes scenario
+    if Constants.datasetDefinitions[@dataset].scenarios.includes scenario
       @scenario = scenario
     else
       @scenario = @defaultOptions.scenario

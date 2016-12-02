@@ -9,7 +9,7 @@ var ApplicationRoot = require('../ApplicationRoot.coffee');
 var path = require('path');
 
 require('dotenv').config({
-  path: path.join(ApplicationRoot, 'JS/servers/ProductionServer/.env')
+  path: path.join(ApplicationRoot, 'JS/servers/DevelopmentServer/.env')
 })
 
 module.exports = function(){};

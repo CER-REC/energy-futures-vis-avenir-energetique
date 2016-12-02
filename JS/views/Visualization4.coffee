@@ -450,7 +450,7 @@ class Visualization4
       class: 
         if @config.scenarios.includes 'reference'
           'vizButton selected reference'
-        else if Constants.scenarios[@config.dataset].includes 'reference'
+        else if Constants.datasetDefinitions[@config.dataset].scenarios.includes 'reference'
           'vizButton reference'
         else 
           'vizButton reference disabled'
@@ -462,7 +462,7 @@ class Visualization4
       class: 
         if @config.scenarios.includes 'high'
           'vizButton selected high'
-        else if Constants.scenarios[@config.dataset].includes 'high'
+        else if Constants.datasetDefinitions[@config.dataset].scenarios.includes 'high'
           'vizButton high'
         else 
           'vizButton high disabled'
@@ -474,7 +474,7 @@ class Visualization4
       class: 
         if @config.scenarios.includes 'highLng'
           'vizButton selected highLng' 
-        else if Constants.scenarios[@config.dataset].includes 'highLng' 
+        else if Constants.datasetDefinitions[@config.dataset].scenarios.includes 'highLng' 
           'vizButton highLng'
         else
           'vizButton highLng disabled'
@@ -487,7 +487,7 @@ class Visualization4
       class: 
         if @config.scenarios.includes 'constrained'
           'vizButton selected constrained'
-        else if Constants.scenarios[@config.dataset].includes 'constrained'
+        else if Constants.datasetDefinitions[@config.dataset].scenarios.includes 'constrained'
           'vizButton constrained'
         else
           'vizButton constrained disabled'
@@ -499,7 +499,7 @@ class Visualization4
       class: 
         if @config.scenarios.includes 'low'
           'vizButton selected low'
-        else if Constants.scenarios[@config.dataset].includes 'low'
+        else if Constants.datasetDefinitions[@config.dataset].scenarios.includes 'low'
           'vizButton low'
         else 
           'vizButton low disabled'
@@ -511,7 +511,7 @@ class Visualization4
       class: 
         if @config.scenarios.includes 'noLng'
           'vizButton selected noLng'
-        else if Constants.scenarios[@config.dataset].includes 'noLng'
+        else if Constants.datasetDefinitions[@config.dataset].scenarios.includes 'noLng'
           'vizButton noLng'
         else 
           'vizButton noLng disabled'

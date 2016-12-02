@@ -44,7 +44,7 @@ class DatasetRequester
 
   haveDataForConfig: (configParams) ->
     switch configParams.page
-      when 'viz1, viz4'
+      when 'viz1', 'viz4'
         @loadedStateViz1_4[configParams.dataset][configParams.mainSelection] == true
       when 'viz2'
         @loadedStateViz2[configParams.dataset][configParams.sector][configParams.province] == true
@@ -60,7 +60,7 @@ class DatasetRequester
   # UI change.
   requestData: (configParams, callback) ->
     switch configParams.page
-      when 'viz1, viz4'
+      when 'viz1', 'viz4'
         params = 
           page: configParams.page
           dataset: configParams.dataset
@@ -78,11 +78,8 @@ class DatasetRequester
           scenario: configParams.scenario
 
     paramsString = QueryString.stringify params
-    console.log params
-    console.log paramsString
 
     requestUrl = "#{process.env.HOST}:#{process.env.PORT_NUMBER}/json_data?#{paramsString}"
-    console.log requestUrl
 
     http = new XMLHttpRequest()
     http.open 'GET', requestUrl
@@ -94,7 +91,6 @@ class DatasetRequester
     http.onreadystatechange = =>
       if http.readyState == XMLHttpRequest.DONE
         if http.status == 200
-          console.log 'we get data'
           @dataReceived configParams, http.responseText
         else
           # TODO: something nicer than this!
@@ -112,7 +108,6 @@ class DatasetRequester
 
     # TODO: error handling (though it should never happen ... )
     data = JSON.parse response
-    console.log data
 
     # TODO: validate or sanity check the response data in some way
 
@@ -120,7 +115,7 @@ class DatasetRequester
 
     # Mark data as having arrived, and add the data to the provider it belongs to
     switch configParams.page
-      when 'viz1, viz4'
+      when 'viz1', 'viz4'
         @loadedStateViz1_4[configParams.dataset][configParams.mainSelection] = true        
         switch configParams.mainSelection
           when 'energyDemand'

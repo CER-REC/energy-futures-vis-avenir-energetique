@@ -30,8 +30,7 @@ class EnergyConsumptionProvider
     value: parseFloat(d.value)
     unit: d.unit
 
-  parseData: (error, data) =>
-    console.warn error if error?
+  parseData: (data) =>
     @data = data
 
 

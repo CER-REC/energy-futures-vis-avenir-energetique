@@ -82,7 +82,7 @@ class visualization
       class: 
         if @config.scenario == 'reference'
           'vizButton selected'
-        else if Constants.scenarios[@config.dataset].includes 'reference'
+        else if Constants.datasetDefinitions[@config.dataset].scenarios.includes 'reference'
           'vizButton'
         else 
           'vizButton disabled'
@@ -93,7 +93,7 @@ class visualization
       class: 
         if @config.scenario == 'constrained'
           'vizButton selected'
-        else if Constants.scenarios[@config.dataset].includes 'constrained'
+        else if Constants.datasetDefinitions[@config.dataset].scenarios.includes 'constrained'
           'vizButton'
         else 
           'vizButton disabled'
@@ -104,7 +104,7 @@ class visualization
       class: 
         if @config.scenario == 'high'
           'vizButton selected'
-        else if Constants.scenarios[@config.dataset].includes 'high'
+        else if Constants.datasetDefinitions[@config.dataset].scenarios.includes 'high'
           'vizButton'
         else 
           'vizButton disabled'
@@ -115,7 +115,7 @@ class visualization
       class: 
         if @config.scenario == 'low'
           'vizButton selected'
-        else if Constants.scenarios[@config.dataset].includes 'low'
+        else if Constants.datasetDefinitions[@config.dataset].scenarios.includes 'low'
           'vizButton'
         else 
           'vizButton disabled'
@@ -126,7 +126,7 @@ class visualization
       class: 
         if @config.scenario == 'highLng'
           'vizButton selected'
-        else if Constants.scenarios[@config.dataset].includes 'highLng'
+        else if Constants.datasetDefinitions[@config.dataset].scenarios.includes 'highLng'
           'vizButton'
         else 
           'vizButton disabled'
@@ -137,7 +137,7 @@ class visualization
       class: 
         if @config.scenario == 'noLng'
           'vizButton selected'
-        else if Constants.scenarios[@config.dataset].includes 'noLng'
+        else if Constants.datasetDefinitions[@config.dataset].scenarios.includes 'noLng'
           'vizButton'
         else 
           'vizButton disabled'
@@ -286,7 +286,7 @@ class visualization
         .attr
           class: 'scenarioSelectorButton'
         .on 'click', (d) =>
-          if @config.scenario != d.scenarioName && Constants.scenarios[@config.dataset].includes d.scenarioName  
+          if @config.scenario != d.scenarioName && Constants.datasetDefinitions[@config.dataset].scenarios.includes d.scenarioName  
             @config.setScenario d.scenarioName
 
             # TODO: For efficiency, only rerender what's necessary.
@@ -341,7 +341,7 @@ class visualization
       .on 'click', (d) =>
         return if @config.mainSelection == d.selectorName  
 
-        newConfig = new @config.constructor()
+        newConfig = new @config.constructor @app
         newConfig.copy @config
         newConfig.setMainSelection d.selectorName
 
@@ -357,7 +357,7 @@ class visualization
         if @app.datasetRequester.haveDataForConfig newConfig
           update()
         else
-          @app.datasetRequester.requestData configParams, update
+          @app.datasetRequester.requestData newConfig, update
 
 
 

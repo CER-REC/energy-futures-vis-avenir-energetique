@@ -86,7 +86,8 @@ class Visualization4Configuration
     @updateRouter()
 
   addScenario: (scenario) ->
-    return unless Constants.scenarios[@dataset]? && Constants.scenarios[@dataset].includes scenario
+    return unless Constants.datasetDefinitions[@dataset].scenarios.includes scenario
+
     @scenarios.push scenario unless @scenarios.includes scenario
     @updateRouter()
 

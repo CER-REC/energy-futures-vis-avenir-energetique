@@ -18,7 +18,7 @@ class ElectricityProductionIngestor
     @summarizedGroupedData = {}
     @detailedGroupedData = {}
     @extraData = []
-    @scenarios = options.scenarios || Constants.scenarios[options.dataset]
+    @scenarios = Constants.datasetDefinitions[options.dataset].scenarios
 
 
     @normalize()
