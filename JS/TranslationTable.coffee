@@ -184,11 +184,11 @@ module.exports =
   selectorTooltip:
     datasetSelector:
       jan2016:
-        en: 'Description here...'
-        fr: ''
+        en: "CANADA ENERGY FUTURE 2016 (January 2016). A continuation of the Energy Futures series. In addition our usual baseline long-term outlook, we explores key uncertainties for Canadian energy such robustness of global LNG markets and availability of crude oil transportation infrastructure."
+        fr: 'TODO'
       oct2016:
-        en: 'Description here...'
-        fr: ''
+        en: "CANADA ENERGY FUTURE 2016: UPDATE (October 2016). Presents reference and high and low prices cases. In the Reference Case, the crude oil price assumption is revised lower to US$90 per barrel by 2040. In addition to policies which were included in the January edition, such as Quebec’s cap and trade system and the carbon tax in B.C., most of the Alberta Climate Leadership Plan and the Ontario cap and trade program have been integrated into the forecast."
+        fr: 'TODO'
 
     mainSelector:
       totalDemandButton:
@@ -493,9 +493,15 @@ module.exports =
     selectDatasetLabel:
       en: 'ENERGY FUTURES'
       fr: 'AVENIR ÉNERGÉTIQUE'
+    jan2016Button:
+      en: '2016'
+      fr: '2016'
+    oct2016Button:
+      en: '2016 UPDATE'
+      fr: '2016 MISE À JOUR'
     datasetSelectorHelpTitle:
       en: 'DATASETS'
-      fr: 'DATASETS'
+      fr: 'TODO'
     datasetSelectorHelp:
       en: """
         <h6> CANADA'S ENERGY FUTURE 2016 </h6>
@@ -511,17 +517,7 @@ module.exports =
         </p>
       """
       fr: """
-        <h6> CANADA'S ENERGY FUTURE 2016 </h6>
-        <div class="sectionHeader"> January 2016 </div>
-        <p> 
-          A continuation of the Energy Futures series. In addition our usual baseline long-term outlook, we explores key uncertainties for Canadian energy such robustness of global LNG markets and availability of crude oil transportation infrastructure.
-        </p>
-
-        <h6> CANADA’S ENERGY FUTURE 2016: UPDATE </h6>
-        <div class="sectionHeader"> October 2016 </div>
-        <p> 
-          Presents reference and high and low prices cases. In the Reference Case, the crude oil price assumption is revised lower to US$90 per barrel by 2040. In addition to policies which were included in the January edition, such as Quebec’s cap and trade system and the carbon tax in B.C., most of the Alberta Climate Leadership Plan and the Ontario cap and trade program have been integrated into the forecast.
-        </p>
+        TODO
       """
 
 
