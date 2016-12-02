@@ -145,9 +145,9 @@ class Router
   viz1Handler: (params, options) ->
     if not @app.currentView?
       @app.currentView = new Visualization1 @app, @app.visualization1Configuration
-      _.throttle ( ->
+      _.throttle ->
         @app.containingWindow.history.replaceState params, '', ParamsToUrlString(params) if options.shouldUpdateHistory
-      ), 250
+      , 250
     else if not (@app.currentView instanceof Visualization1)
       @app.popoverManager.closePopover()
       @app.currentView.tearDown()
@@ -155,16 +155,16 @@ class Router
       params = @setupVis1RouterParams(@app.visualization1Configuration, params)
       @app.containingWindow.history.pushState params, '', ParamsToUrlString(params) if options.shouldUpdateHistory
     else if options.shouldUpdateHistory
-      _.throttle ( ->
+      _.throttle ->
         @app.containingWindow.history.replaceState params, '', ParamsToUrlString(params)
-      ), 250
+      , 250
 
   viz2Handler: (params, options) ->
     if not @app.currentView?
       @app.currentView = new Visualization2 @app, @app.visualization2Configuration
-      _.throttle ( ->
+      _.throttle ->
         @app.containingWindow.history.replaceState params, '', ParamsToUrlString(params) if options.shouldUpdateHistory
-      ), 250
+      , 250
     else if not (@app.currentView instanceof Visualization2)
       @app.popoverManager.closePopover()
       @app.currentView.tearDown()
@@ -172,16 +172,16 @@ class Router
       params = @setupVis2RouterParams(@app.visualization2Configuration, params)
       @app.containingWindow.history.pushState params, '', ParamsToUrlString(params) if options.shouldUpdateHistory
     else if options.shouldUpdateHistory
-      _.throttle ( ->
+      _.throttle ->
         @app.containingWindow.history.replaceState params, '', ParamsToUrlString(params)
-      ), 250
+      , 250
 
   viz3Handler: (params, options) ->
     if not @app.currentView?
       @app.currentView = new Visualization3 @app, @app.visualization3Configuration
-      _.throttle ( ->
+      _.throttle ->
         @app.containingWindow.history.replaceState params, '', ParamsToUrlString(params) if options.shouldUpdateHistory
-      ), 250
+      , 250
     else if not (@app.currentView instanceof Visualization3)
       @app.popoverManager.closePopover()
       @app.currentView.tearDown()
@@ -189,16 +189,16 @@ class Router
       params = @setupVis3RouterParams(@app.visualization3Configuration, params)
       @app.containingWindow.history.pushState params, '', ParamsToUrlString(params) if options.shouldUpdateHistory
     else if options.shouldUpdateHistory
-      _.throttle ( ->
+      _.throttle ->
         @app.containingWindow.history.replaceState params, '', ParamsToUrlString(params)
-      ), 250
+      , 250
 
   viz4Handler: (params, options) ->
     if not @app.currentView?
       @app.currentView = new Visualization4 @app, @app.visualization4Configuration
-      _.throttle ( ->
+      _.throttle ->
         @app.containingWindow.history.replaceState params, '', ParamsToUrlString(params) if options.shouldUpdateHistory
-      ), 250
+      , 250
     else if not (@app.currentView instanceof Visualization4)
       @app.popoverManager.closePopover()
       @app.currentView.tearDown()
@@ -206,9 +206,9 @@ class Router
       params = @setupVis4RouterParams(@app.visualization4Configuration, params)
       @app.containingWindow.history.pushState params, '', ParamsToUrlString(params) if options.shouldUpdateHistory
     else if options.shouldUpdateHistory
-      _.throttle ( ->
+      _.throttle ->
         @app.containingWindow.history.replaceState params, '', ParamsToUrlString(params)
-      ), 250
+      , 250
 
   setupVis1RouterParams: (configuration, params)->
     page: params.page
