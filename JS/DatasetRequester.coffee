@@ -7,10 +7,9 @@ Constants = require './Constants.coffee'
 
 
 # Dataset requester has a few jobs:
-# - When a UI request to change the viz comes in, if we have the data, pass it through to the provider
+# - When a UI request to change the viz comes in, if we have the data, use the callback immediately
 # - When a UI request to cahnge the viz comes in, if we do not have the data, bottle the UI request and make an ajax request of the data
-
-# - Whenever an ajax request for data returns, if we have a bottled request, check if we now have the data for the request. unbottle the request and discard it, and do the navigation
+# - Whenever an ajax request for data returns, if we have a bottled request, check if we now have the data for the request. Use the bottled request's callback.
 
 
 
@@ -189,9 +188,7 @@ class DatasetRequester
 
 
 
-# TODO: Figure out how to handle the initial load case. Probably need to stop anything from loading at all until that first request comes through
-
-# TODO: Also figure out: background data loading logic? maybe put that off to later =/
+# TODO: Load data in the background, when no other requests are ongoing?
 
 
 
