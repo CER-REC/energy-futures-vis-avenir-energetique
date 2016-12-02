@@ -8,12 +8,7 @@
 
 class ServerApp
 
-  constructor: (@window, providers={}) ->
-
-    @energyConsumptionProvider = providers.energyConsumptionProvider
-    @oilProductionProvider = providers.oilProductionProvider
-    @gasProductionProvider = providers.gasProductionProvider
-    @electricityProductionProvider = providers.electricityProductionProvider
+  constructor: (@window, @providers) ->
 
     @language = 'en'
 
