@@ -96,7 +96,12 @@ class squareMenu extends basicMenu
       @_drag.on("dragend", (d, i) =>
         @_lastDirection = 0
         @_chart.dragEnd()
-        @redraw() 
+        if @newSpot > -1 #Drag end gets called on click thiw just prevents it from rerunning the last move
+          @_orderChangedHandler(@newSpot, @currentSpot)
+          @newSpot = null
+          @redraw()
+          @currentSpot = -1
+          @newSpot = -1
       )
     @redraw()
 
