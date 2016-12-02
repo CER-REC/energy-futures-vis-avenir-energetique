@@ -10,10 +10,17 @@ module.exports =
     content1:
       en: """
       <p>
-      Energy is important to Canada. It heats our homes, fuels our vehicles, and is a key aspect of Canada’s economy. Based on data from our recent report, <a href='http://www.neb-one.gc.ca/nrg/ntgrtd/ftr/2016updt/index-eng.html'>Energy Futures Update 2016</a>, this interactive tool allows you to explore energy production and consumption trends and forecast them into the future.
+      Energy is important to Canada. It heats our homes, fuels our vehicles, and is a key aspect of Canada’s economy.
       </p>
       <p>
-      We present reference and high and low prices cases. In the Reference Case, the crude oil price assumption is revised lower to US$90 per barrel by 2040. In addition to policies which were included in the January edition, such as Quebec’s cap and trade system and the carbon tax in B.C., most of the Alberta Climate Leadership Plan and the Ontario cap and trade program have been integrated into the forecast.
+      Based on data from our, Energy Futures reports, this interactive tool allows you to explore energy production and consumption trends and forecast them into the future. You can explore the data from the most recent report, or refer to previous reports.
+      </p>
+      <p>
+      <a href='http://www.neb-one.gc.ca/nrg/ntgrtd/ftr/2016updt/index-eng.html' target="_blank">View the most recent report</a>
+      <br>
+      <a href='https://apps.neb-one.gc.ca/dvs/PDF/Methodology_ENG.PDF' target="_blank">Methodology</a>
+      <br>
+      <a href='#' id="aboutHyperlink">About</a>
       </p>
       """
       fr: """
