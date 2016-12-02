@@ -16,14 +16,14 @@ Visualization3Configuration = require '../VisualizationConfigurations/visualizat
 Visualization4Configuration = require '../VisualizationConfigurations/visualization4Configuration.coffee'
 
 ServerData = require '../server/ServerData.coffee'
+Constants = require '../Constants.coffee'
 
 requestCounter = 0
 
 
 CSVDataHandler = (req, res) ->
 
-  # TODO: For now, hard coding to use the most recent data set. Needs parameterization.
-  Promise.join ServerData['oct2016'].oilPromise, ServerData['oct2016'].gasPromise, ServerData['oct2016'].energyPromise, ServerData['oct2016'].electricityPromise, () ->
+  Promise.all(ServerData.loadPromises).then ->
 
     time = Date.now()
 
@@ -34,11 +34,14 @@ CSVDataHandler = (req, res) ->
     Logger.info "csv_data (request C#{counter}): #{query}"
     csvData = null
   
-    serverApp = new ServerApp null,
-      energyConsumptionProvider: ServerData['oct2016'].energyConsumptionProvider
-      oilProductionProvider: ServerData['oct2016'].oilProductionProvider
-      gasProductionProvider: ServerData['oct2016'].gasProductionProvider
-      electricityProductionProvider: ServerData['oct2016'].electricityProductionProvider
+    providers = {}
+    for dataset in Constants.datasets
+      # TODO: the 'dataset' objects on ServerData have a lot more than just
+      # providers. This is fine for now, but a little messy.
+      providers[dataset] = ServerData[dataset]
+
+
+    serverApp = new ServerApp null, providers
     serverApp.setLanguage req.query.language
 
     params = PrepareQueryParams queryString.parse(query)
@@ -49,43 +52,40 @@ CSVDataHandler = (req, res) ->
       when 'viz1'
         config = new Visualization1Configuration(serverApp, params)
         switch config.mainSelection
-          when 'gasProduction'
-            tempData = serverApp.gasProductionProvider.dataForViz1 config
+          when 'gasProduction'  
+            tempData = serverApp.providers[config.dataset].gasProductionProvider.dataForViz1 config
           when 'electricityGeneration'
-            tempData = serverApp.electricityProductionProvider.dataForViz1 config
+            tempData = serverApp.providers[config.dataset].electricityProductionProvider.dataForViz1 config
           when 'energyDemand'
-            tempData = serverApp.energyConsumptionProvider.dataForViz1 config
+            tempData = serverApp.providers[config.dataset].energyConsumptionProvider.dataForViz1 config
           when 'oilProduction'
-            tempData = serverApp.oilProductionProvider.dataForViz1 config
+            tempData = serverApp.providers[config.dataset].oilProductionProvider.dataForViz1 config
           else 
             mainSelectionErrorHandler()
             return
         csvData = generateArrayFromObject(tempData, "viz1")   
 
-        
       when 'viz2'
         config = new Visualization2Configuration(serverApp, params)
-        tempData = serverApp.energyConsumptionProvider.dataForViz2 config
+        tempData = serverApp.providers[config.dataset].energyConsumptionProvider.dataForViz2 config
         csvData = generateArrayFromObject(tempData, "viz2")
-        #ConsumptionProvider
 
       when 'viz3'
         config = new Visualization3Configuration(serverApp, params)
-        tempData = serverApp.electricityProductionProvider.dataForViz3 config
+        tempData = serverApp.providers[config.dataset].electricityProductionProvider.dataForViz3(config)
         csvData = generateArrayFromObject(tempData, "viz3")
-        #electricityProductionProvider
 
       when 'viz4'
         config = new Visualization4Configuration(serverApp, params)
         switch config.mainSelection
-          when 'gasProduction'  
-            tempData = serverApp.gasProductionProvider.dataForViz4 config
-          when 'electricityGeneration'
-            tempData = serverApp.electricityProductionProvider.dataForViz4 config
           when 'energyDemand'
-            tempData = serverApp.energyConsumptionProvider.dataForViz4 config
+            tempData = serverApp.providers[config.dataset].energyConsumptionProvider.dataForViz4 config
+          when 'electricityGeneration'
+            tempData = serverApp.providers[config.dataset].electricityProductionProvider.dataForViz4 config
           when 'oilProduction'
-            tempData = serverApp.oilProductionProvider.dataForViz4 config
+            tempData = serverApp.providers[config.dataset].oilProductionProvider.dataForViz4 config
+          when 'gasProduction'
+            tempData = serverApp.providers[config.dataset].gasProductionProvider.dataForViz4 config
           else 
             mainSelectionErrorHandler()
             return
