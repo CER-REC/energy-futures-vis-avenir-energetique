@@ -1099,7 +1099,7 @@ class Visualization3 extends visualization
       @buildViz()
 
     # update the csv data download link
-    d3.select("#dataDownloadLink")
+    d3.select(@app.window.document).select("#dataDownloadLink")
       .attr
         href: "#{process.env.HOST}:#{process.env.PORT_NUMBER}/csv_data#{ParamsToUrlString(@config.routerParams())}"
 
