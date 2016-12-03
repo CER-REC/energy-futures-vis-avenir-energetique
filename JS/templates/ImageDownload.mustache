@@ -8,7 +8,17 @@
 </div>
 
 <div class="modalContent">
-  <img id="imageDownloadSpinner" src='/IMG/spinner.gif'/>
+
+  <div id="imageDownloadSpinnerContainer"> 
+
+    <div id="imageDownloadSpinner">
+      <div>
+        <!-- NB: These empty divs are required for the CSS loading spinner styling. -->
+        <div class='uil-spin-css' style='-webkit-transform:scale(0.5)'><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div></div>
+      </div>
+    </div>
+
+  </div>
   <div id="renderedImageContainer">
   </div>
 
