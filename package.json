@@ -11,7 +11,8 @@
     "ingest": "node ./JS/validation/Ingest.js",
     "test": "mocha --recursive JS/test --compilers coffee:coffee-script/register",
     "test-watch": "mocha --recursive JS/test --compilers coffee:coffee-script/register --watch test",
-    "visual-studio-install": "node ./tasks/visual-studio-install.js"
+    "visual-studio-install": "node ./tasks/visual-studio-install.js",
+    "clean-vs": "node tasks/clean-vs.js"
   },
   "dependencies": {
     "array-includes": "^3.0.2",

@@ -16,7 +16,7 @@ iisNodeAppDirectory = path.join(iisRepositoryDirectory, 'node_app');
 
 
 // First, run the distribute script, to prepare the fileserver assets
-// execSync('node tasks/distribute.js', {stdio: [0,1,2]});
+execSync('node tasks/distribute.js', {stdio: [0,1,2]});
 
 
 // Remove the existing deployment
@@ -35,7 +35,7 @@ fs.copySync('JS', path.join(iisNodeAppDirectory, 'JS'));
 
 // TODO: Currently, the only files in public that are required by the prod server are the CSVs
 // We could split them out, and avoid copying this directory.
-fs.copySync('public', path.join(iisNodeAppDirectory, 'public'));
+fs.copySync('public/CSV', path.join(iisNodeAppDirectory, 'public/CSV'));
 
 fs.copySync('views', path.join(iisNodeAppDirectory, 'views'));
 fs.copySync('tasks', path.join(iisNodeAppDirectory, 'tasks'));
