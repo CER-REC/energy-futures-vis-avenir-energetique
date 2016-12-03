@@ -95,7 +95,7 @@ class DatasetRequester
 
     paramsString = QueryString.stringify params
 
-    requestUrl = "#{process.env.HOST}:#{process.env.PORT_NUMBER}/json_data?#{paramsString}"
+    requestUrl = "json_data?#{paramsString}"
 
     http = new XMLHttpRequest()
     http.open 'GET', requestUrl
