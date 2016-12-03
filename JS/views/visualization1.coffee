@@ -419,7 +419,7 @@ class Visualization1 extends visualization
     # update the csv data download link
     d3.select(@app.window.document).select("#dataDownloadLink")
       .attr
-        href: "#{process.env.HOST}:#{process.env.PORT_NUMBER}/csv_data#{ParamsToUrlString(@config.routerParams())}"
+        href: "csv_data#{ParamsToUrlString(@config.routerParams())}"
 
   #Gets the total of all the maximums (since we are stacking the data)
   graphDataMaximum: (data) ->

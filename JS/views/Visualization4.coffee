@@ -1296,7 +1296,7 @@ class Visualization4
     # update the csv data download link
     d3.select(@app.window.document).select("#dataDownloadLink")
       .attr
-        href: "#{process.env.HOST}:#{process.env.PORT_NUMBER}/csv_data#{ParamsToUrlString(@config.routerParams())}"
+        href: "csv_data#{ParamsToUrlString(@config.routerParams())}"
 
     #Add the reference case in front
     #Since these cannot be reordered. Ref case is first if its present.
