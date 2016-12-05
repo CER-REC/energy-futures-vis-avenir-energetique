@@ -112,7 +112,7 @@ class Visualization3 extends visualization
         title: Tr.visualization3Title[@app.language]
         description: @config.imageExportDescription()
         energyFuturesSource: Tr.allPages.imageDownloadSource[@app.language]
-        bitlyLink: '' # TODO: Integrate with bitly
+        bitlyLink: @app.bitlyLink
         legendContent: legendContent
 
 

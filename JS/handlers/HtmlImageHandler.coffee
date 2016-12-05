@@ -3,6 +3,8 @@ fs = require 'fs'
 Promise = require 'bluebird'
 url = require 'url'
 queryString = require 'query-string'
+Request = require 'request-promise'
+
 
 PrepareQueryParams = require '../PrepareQueryParams.coffee'
 readFile = Promise.promisify fs.readFile
@@ -48,60 +50,67 @@ HtmlImageHandler = (req, res) ->
     counter = requestCounter
     Logger.info "html_image (request H#{counter}): #{query}"
 
-    try
-      jsdom.env html, [], (error, window) -> 
+    shortenUrl = "https://apps.neb-one.gc.ca/dvs/#{query}"
 
-        if error?
-          errorHandler req, res, error, 500
-          return
+    Request "https://api-ssl.bitly.com/v3/shorten?login=#{process.env.BITLY_USERNAME}&apiKey=#{process.env.BITLY_API_KEY}&format=json&longUrl=#{ encodeURIComponent(shortenUrl)}"
 
-        params = PrepareQueryParams queryString.parse(query)
+    .then (bitlyResponse) ->
 
-        providers = {}
-        for dataset in Constants.datasets
-          # TODO: the 'dataset' objects on ServerData have a lot more than just
-          # providers. This is fine for now, but a little messy.
-          providers[dataset] = ServerData[dataset]
+      try
+        jsdom.env html, [], (error, window) -> 
 
-        serverApp = new ServerApp window, providers
-        serverApp.setLanguage req.query.language
-
-        # Parse the parameters with a configuration object, and then hand them off to a
-        # visualization object. The visualizations render the graphs in their constructors.
-        switch req.query.page
-          when 'viz1'
-            config = new Visualization1Configuration(serverApp, params)
-            viz = new Visualization1(serverApp, config)
-
-          when 'viz2'
-            config = new Visualization2Configuration(serverApp, params)
-            viz = new Visualization2(serverApp, config)
-
-          when 'viz3'
-            config = new Visualization3Configuration(serverApp, params)
-            viz = new Visualization3(serverApp, config)
-
-          when 'viz4'
-            config = new Visualization4Configuration(serverApp, params)
-            viz = new Visualization4(serverApp, config)
-
-          else 
-            errorHandler req, res, new Error("Visualization 'page' parameter not specified or not recognized."), 400, counter
+          if error?
+            errorHandler req, res, error, 500
             return
 
-        body = window.document.querySelector('body')
-          
+          params = PrepareQueryParams queryString.parse(query)
 
-        # we need to wait a tick for the zero duration animations to be scheduled and run
-        setTimeout ->
+          providers = {}
+          for dataset in Constants.datasets
+            # TODO: the 'dataset' objects on ServerData have a lot more than just
+            # providers. This is fine for now, but a little messy.
+            providers[dataset] = ServerData[dataset]
 
-          source = window.document.querySelector('html').outerHTML
-          res.write source
-          res.end()
-          Logger.debug "html_image (request H#{counter}) Time: #{Date.now() - time}"
+          serverApp = new ServerApp window, providers
+          serverApp.bitlyLink = bitlyResponse.url || "https://apps.neb-one.gc.ca/dvs/"
+          serverApp.setLanguage req.query.language
 
-    catch error
-      errorHandler req, res, error, 500, counter
+          # Parse the parameters with a configuration object, and then hand them off to a
+          # visualization object. The visualizations render the graphs in their constructors.
+          switch req.query.page
+            when 'viz1'
+              config = new Visualization1Configuration(serverApp, params)
+              viz = new Visualization1(serverApp, config)
+
+            when 'viz2'
+              config = new Visualization2Configuration(serverApp, params)
+              viz = new Visualization2(serverApp, config)
+
+            when 'viz3'
+              config = new Visualization3Configuration(serverApp, params)
+              viz = new Visualization3(serverApp, config)
+
+            when 'viz4'
+              config = new Visualization4Configuration(serverApp, params)
+              viz = new Visualization4(serverApp, config)
+
+            else 
+              errorHandler req, res, new Error("Visualization 'page' parameter not specified or not recognized."), 400, counter
+              return
+
+          body = window.document.querySelector('body')
+            
+
+          # we need to wait a tick for the zero duration animations to be scheduled and run
+          setTimeout ->
+
+            source = window.document.querySelector('html').outerHTML
+            res.write source
+            res.end()
+            Logger.debug "html_image (request H#{counter}) Time: #{Date.now() - time}"
+
+      catch error
+        errorHandler req, res, error, 500, counter
 
 
 errorHandler = (req, res, error, code, counter) ->

@@ -138,7 +138,7 @@ class Visualization4
         title: Tr.visualization4Titles[@config.mainSelection][@app.language]
         description: @config.imageExportDescription()
         energyFuturesSource: Tr.allPages.imageDownloadSource[@app.language]
-        bitlyLink: '' # TODO: Integrate with bitly
+        bitlyLink: @app.bitlyLink
         legendContent: @scenarioLegendData()
 
 
