@@ -18,7 +18,7 @@ module.exports =
       <p>
       <a href='http://www.neb-one.gc.ca/nrg/ntgrtd/ftr/2016updt/index-eng.html' target="_blank">View the most recent report</a>
       <br>
-      <a href='https://apps.neb-one.gc.ca/dvs/PDF/Methodology_ENG.PDF' target="_blank">Methodology</a>
+      <a href='PDF/Methodology_ENG.PDF' target="_blank">Methodology</a>
       <br>
       <a href='#' id="aboutHyperlink">About</a>
       </p>
@@ -37,7 +37,7 @@ module.exports =
         <p>
         <a href='http://www.neb-one.gc.ca/nrg/ntgrtd/ftr/2016updt/index-fra.html' target="_blank">Rapport le plus récent</a>
         <br>
-        <a href='https://apps.neb-one.gc.ca/dvs/PDF/Methodology_FRA.PDF' target="_blank">Méthodologie</a>
+        <a href='PDF/Methodology_FRA.PDF' target="_blank">Méthodologie</a>
         <br>
         <a href='#' id="aboutHyperlink">À propos de l’outil</a>
         </p>                
@@ -506,7 +506,7 @@ module.exports =
       fr: '2016'
     oct2016Button:
       en: '2016 UPDATE'
-      fr: 'MISE À JOUR DE 2016'
+      fr: 'MISE À JOUR 2016'
     datasetSelectorHelpTitle:
       en: 'ENERGY FUTURES'
       fr: 'AVENIR ÉNERGÉTIQUE'
