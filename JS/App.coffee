@@ -29,6 +29,7 @@ ImageDownloadPopover = require './popovers/ImageDownloadPopover.coffee'
 Constants = require './Constants.coffee'
 
 DatasetRequester = require './DatasetRequester.coffee'
+SocialMedia = require './SocialMedia.coffee'
 
 class App
 
@@ -214,6 +215,7 @@ Domready ->
   app = new App()
   # window.parent.app = app
   app.setup()
+  SocialMedia app
   
 
   

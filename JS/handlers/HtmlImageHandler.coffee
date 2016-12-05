@@ -23,6 +23,7 @@ Visualization3Configuration = require '../VisualizationConfigurations/visualizat
 Visualization4Configuration = require '../VisualizationConfigurations/visualization4Configuration.coffee'
 
 ServerData = require '../server/ServerData.coffee'
+Constants = require '../Constants.coffee'
 
 htmlFilePromise = readFile "#{ApplicationRoot}/JS/handlers/image.html" 
 htmlPromise = htmlFilePromise.then (data) ->
@@ -36,8 +37,9 @@ requestCounter = 0
 
 HtmlImageHandler = (req, res) ->
 
-  # TODO: For now, hard coding to use the most recent data set. Needs parameterization.
-  Promise.join htmlPromise, ServerData['oct2016'].oilPromise, ServerData['oct2016'].gasPromise, ServerData['oct2016'].energyPromise, ServerData['oct2016'].electricityPromise, (html) ->
+  dataLoadPromise = Promise.all ServerData.loadPromises
+
+  Promise.join htmlPromise, dataLoadPromise, (html) ->
 
     time = Date.now()
 
@@ -55,11 +57,13 @@ HtmlImageHandler = (req, res) ->
 
         params = PrepareQueryParams queryString.parse(query)
 
-        serverApp = new ServerApp window,
-          energyConsumptionProvider: ServerData['oct2016'].energyConsumptionProvider
-          oilProductionProvider: ServerData['oct2016'].oilProductionProvider
-          gasProductionProvider: ServerData['oct2016'].gasProductionProvider
-          electricityProductionProvider: ServerData['oct2016'].electricityProductionProvider
+        providers = {}
+        for dataset in Constants.datasets
+          # TODO: the 'dataset' objects on ServerData have a lot more than just
+          # providers. This is fine for now, but a little messy.
+          providers[dataset] = ServerData[dataset]
+
+        serverApp = new ServerApp window, providers
         serverApp.setLanguage req.query.language
 
         # Parse the parameters with a configuration object, and then hand them off to a

@@ -17,6 +17,8 @@ DatasetFiles = require '../DatasetFiles.coffee'
 
 ServerData = {}
 
+ServerData.loadPromises = []
+
 
 loadDataset = (datasetName, datasetFiles) ->
 
@@ -34,15 +36,19 @@ loadDataset = (datasetName, datasetFiles) ->
 
   dataset.oilPromise = oilFilePromise.then (data) ->
     dataset.oilProductionProvider.loadFromString data.toString()
+  ServerData.loadPromises.push dataset.oilPromise
 
   dataset.gasPromise = gasFilePromise.then (data) ->
     dataset.gasProductionProvider.loadFromString data.toString()
+  ServerData.loadPromises.push dataset.gasPromise
 
   dataset.energyPromise = energyDemandFilePromise.then (data) ->
     dataset.energyConsumptionProvider.loadFromString data.toString()
+  ServerData.loadPromises.push dataset.energyPromise
 
   dataset.electricityPromise = electricityFilePromise.then (data) ->
     dataset.electricityProductionProvider.loadFromString data.toString()
+  ServerData.loadPromises.push dataset.electricityPromise
 
   ServerData[datasetName] = dataset
 

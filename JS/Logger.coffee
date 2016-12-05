@@ -7,7 +7,7 @@ ApplicationRoot = require '../ApplicationRoot'
 
 
 winston.emitErrs = true
-logDirectory = path.join ApplicationRoot, "log"
+logDirectory = process.env.LOG_DIRECTORY || path.join ApplicationRoot, "log"
 fs.existsSync(logDirectory) || fs.mkdirSync(logDirectory)
 logfileName =  "#{process.env.LOG_FILENAME}.log" 
 

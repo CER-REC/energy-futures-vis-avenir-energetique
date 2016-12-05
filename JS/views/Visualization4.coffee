@@ -7,6 +7,7 @@ Tr = require '../TranslationTable.coffee'
 Platform = require '../Platform.coffee'
 ApplicationRoot = require '../../ApplicationRoot.coffee'
 
+ParamsToUrlString = require '../ParamsToUrlString.coffee'
 
 if Platform.name == "browser"
   Visualization4Template = require '../templates/Visualization4.mustache'
@@ -1292,6 +1293,10 @@ class Visualization4
             line(d.data.map((val) -> {year: val.year, value: 0}))
       .remove()
 
+    # update the csv data download link
+    d3.select(@app.window.document).select("#dataDownloadLink")
+      .attr
+        href: "csv_data#{ParamsToUrlString(@config.routerParams())}"
 
     #Add the reference case in front
     #Since these cannot be reordered. Ref case is first if its present.

@@ -1235,6 +1235,15 @@ module.exports =
       en: 'IMG/howto/Visualization_HowTo_4B-EN.png'
       fr: 'IMG/howto/Visualization_HowTo_4B-FR.png'
 
+  contactEmail:
+    body:
+      en: "The National Energy Board (NEB) worked together with leading data visualization experts in both academia and industry to create the Exploring Canada’s Energy Future interactive online tool. This pilot concept, based on our flagship publication – Canada’s Energy Future 2016: Energy Supply and Demand Projections to 2040, will give Canadians a taste of the exciting new way the NEB will share data going forward."
+      fr: "Pour créer l’outil interactif Explorer l’avenir énergétique du Canada, l’Office national de l’énergie s’est associé à des experts de la visualisation des données du milieu universitaire et de l’industrie. Fondé sur la publication phare Avenir énergétique du Canada en 2016 – Offre et demande énergétiques à l’horizon 2040, ce projet pilote donnera aux Canadiens un avant-goût du nouveau et fabuleux moyen qu’utilisera désormais l’Office pour diffuser ses données."
+    subject:
+      en: "Canada's Energy Future"
+      fr: "l%E2%80%99avenir%20%C3%A9nerg%C3%A9tique%20du%20Canada"
+
+
 
 
 
