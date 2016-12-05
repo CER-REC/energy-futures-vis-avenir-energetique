@@ -11,6 +11,8 @@ LandingPageTemplate = require '../templates/LandingPage.mustache'
 Wet3VideoTemplate = require '../templates/Wet3Video.mustache'
 # Wet4VideoTemplate = require '../templates/Wet4Video.mustache'
 
+PopoverManager = require '../PopoverManager.coffee'
+AboutThisProjectPopover = require '../popovers/AboutThisProjectPopover.coffee'
 
 class LandingPage
 
@@ -19,6 +21,7 @@ class LandingPage
 
     @app.window.document.getElementById('visualizationContent').innerHTML = Mustache.render LandingPageTemplate, 
         content: Tr.landingPage.content1[@app.language]
+        panelClass: @app.language
         visualization1Link: Tr.landingPage.visualization1Link[@app.language]
         visualization2Link: Tr.landingPage.visualization2Link[@app.language]
         visualization3Link: Tr.landingPage.visualization3Link[@app.language]
@@ -26,6 +29,18 @@ class LandingPage
         panelRightContent: Mustache.render(Wet3VideoTemplate)
         # panelRightContent: Mustache.render(Wet4VideoTemplate)
 
+    @popoverManager = new PopoverManager()
+    @aboutThisProjectPopover = new AboutThisProjectPopover @app
+
+    @app.window.document.getElementById("aboutHyperlink").addEventListener 'click', (event) => 
+      event.preventDefault()
+      event.stopPropagation()
+      @popoverManager.showPopover @aboutThisProjectPopover
+
+    @app.window.document.getElementById("aboutModal").getElementsByClassName("closeButton")[0].addEventListener 'click', (event) =>
+      event.preventDefault()
+      event.stopPropagation()
+      @popoverManager.closePopover()
 
     @app.window.document.getElementById("viz1Anchor").addEventListener 'click', (event) => 
       event.preventDefault()  

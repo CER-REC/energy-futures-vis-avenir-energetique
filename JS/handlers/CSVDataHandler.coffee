@@ -99,7 +99,7 @@ CSVDataHandler = (req, res) ->
     #CONVERT DATA TO CSV AND ASSIGN IT TO RESPONSE OBJECT
     if csvData?
       results = d3.csv.format csvData
-      res.attachment()
+      res.attachment 'energyFutures.csv'
       res.write results
       res.end()
       Logger.debug "csv data request (request C#{counter}) Time: #{Date.now() - time}"
