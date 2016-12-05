@@ -433,8 +433,8 @@ class Visualization2 extends visualization
     @render()
     
   getData: ->
-    @seriesData = @app.energyConsumptionProvider.dataForViz2 @config
-    @yAxisData = @app.energyConsumptionProvider.dataForAllViz2Scenarios @config
+    @seriesData = @app.providers[@config.dataset].energyConsumptionProvider.dataForViz2 @config
+    @yAxisData = @app.providers[@config.dataset].energyConsumptionProvider.dataForAllViz2Scenarios @config
 
   render: ->
     if @_chart?
@@ -709,17 +709,53 @@ class Visualization2 extends visualization
       temp_data = _.concat(@config.sourcesInOrder[0...newLocation], @config.sourcesInOrder[currentLocation],@config.sourcesInOrder[newLocation...currentLocation], @config.sourcesInOrder[(currentLocation+1)..])
     if currentLocation < newLocation 
       temp_data = _.concat(@config.sourcesInOrder[0...currentLocation], @config.sourcesInOrder[(currentLocation+1)..newLocation], @config.sourcesInOrder[currentLocation], @config.sourcesInOrder[(newLocation+1)..])
-    if temp_data?  
+    return unless temp_data?  
+
+    newConfig = new @config.constructor @app
+    newConfig.copy @config
+    newConfig.setSourcesInOrder temp_data
+
+    update = =>
       @config.setSourcesInOrder temp_data
       @_chart.mapping(@sourceMenuData())
+      @app.router.navigate @config.routerParams()
+
+    @app.datasetRequester.updateAndRequestIfRequired newConfig, update
+
+
+
+
+
     
-  menuSelect: (key, regionIndex) =>
-    @config.flipSource(key)
-    @getDataAndRender()
+  menuSelect: (key) =>
+
+    newConfig = new @config.constructor @app
+    newConfig.copy @config
+    newConfig.flipSource(key)
+
+    update = =>
+      @config.flipSource(key)
+      @getDataAndRender()
+      @app.router.navigate @config.routerParams()
+
+    @app.datasetRequester.updateAndRequestIfRequired newConfig, update
+
+
 
   selectAllStacked: (selecting) =>
-    @config.resetSources selecting 
-    @getDataAndRender()
+
+    newConfig = new @config.constructor @app
+    newConfig.copy @config
+    newConfig.resetSources selecting 
+
+    update = =>
+      @config.resetSources selecting 
+      @getDataAndRender()
+      @app.router.navigate @config.routerParams()
+
+    @app.datasetRequester.updateAndRequestIfRequired newConfig, update
+
+
 
   showSourceNames: =>
     d3.event.stopPropagation()
@@ -771,17 +807,41 @@ class Visualization2 extends visualization
     new squareMenu(@app, '#provinceMenuSVG', provinceOptions) 
 
   selectAllProvince: (selecting) =>
-    @config.setProvince 'all'
-    @_provinceMenu.allSelected(true)
-    @_provinceMenu.data(@dataForProvinceMenu())
-    @getDataAndRender()
 
-  provinceSelected: (key, regionIndex)=>
-    @_provinceMenu.allSelected(false)
-    @config.setProvince key
-    @_provinceMenu.data(@dataForProvinceMenu())
-    @_provinceMenu.redraw()
-    @getDataAndRender()
+    newConfig = new @config.constructor @app
+    newConfig.copy @config
+    newConfig.setProvince 'all'
+
+    update = =>
+      @config.setProvince 'all'
+      @_provinceMenu.allSelected(true)
+      @_provinceMenu.data(@dataForProvinceMenu())
+      @getDataAndRender()
+      @app.router.navigate @config.routerParams()
+
+    @app.datasetRequester.updateAndRequestIfRequired newConfig, update
+
+
+
+  provinceSelected: (key) =>
+
+    newConfig = new @config.constructor @app
+    newConfig.copy @config
+    newConfig.setProvince key
+
+    update = =>
+      @_provinceMenu.allSelected(false)
+      @config.setProvince key
+      @_provinceMenu.data(@dataForProvinceMenu())
+      @_provinceMenu.redraw()
+      @getDataAndRender()
+      @app.router.navigate @config.routerParams()
+
+    @app.datasetRequester.updateAndRequestIfRequired newConfig, update
+
+
+
+
 
   showProvinceNames: =>
     d3.event.stopPropagation()
@@ -800,10 +860,5 @@ class Visualization2 extends visualization
         title: Tr.regionSelector.selectRegionLabel[@app.language]
         content: contentString
         attachmentSelector: '#provincesSelector'
-
-
-Visualization2.resourcesLoaded = (app) ->
-  app.loadedStatus.energyConsumptionProvider
-
 
 module.exports = Visualization2

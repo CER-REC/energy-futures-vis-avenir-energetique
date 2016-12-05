@@ -37,15 +37,17 @@ class Visualization1Configuration
       'SK'
       'YT' 
     ]
-    dataset: Constants.generatedInYears[0]
+    dataset: Constants.datasets[0]
 
   constructor: (@app, options) ->
-    @options = _.extend {}, @defaultOptions, options
+    @page = 'viz1'
 
-    @setDataset @options.dataset
+    options = _.extend {}, @defaultOptions, options
+
+    @setDataset options.dataset
 
     # mainSelection, one of energyDemand, oilProduction, electricityGeneration, or gasProduction
-    @setMainSelection @options.mainSelection
+    @setMainSelection options.mainSelection
 
     # unit, one of:
     # petajoules
@@ -55,21 +57,21 @@ class Visualization1Configuration
     # millionCubicMetres - million cubic metres per day, m^3/day (gas)
     # kilobarrels - kilobarrels of oil per day, kB/day
     # cubicFeet - million cubic feet per day, Mcf/day
-    @setUnit @options.unit
+    @setUnit options.unit
 
     # one of: reference, constrained, high, low, highLng, noLng
-    @setScenario @options.scenario
+    @setScenario options.scenario
     
     # provinces, array
     # can include any of: BC AB SK MB ON QC NB NS NL PE YT NT NU all
     @provinces = []
-    for province in @options.provinces
+    for province in options.provinces
       @addProvince province
 
     # Used to manage the order of the provinces in a reorderable menu
     @provincesInOrder = []
-    if(@isValidProvincesInOrder(@options.provincesInOrder))
-      @provincesInOrder = @options.provincesInOrder
+    if(@isValidProvincesInOrder(options.provincesInOrder))
+      @provincesInOrder = options.provincesInOrder
     else
       @provincesInOrder = @defaultOptions.provincesInOrder
 
@@ -107,23 +109,19 @@ class Visualization1Configuration
       @unit = unit
     else
       @unit = allowableUnits[0]
-    @updateRouter()
 
   setScenario: (scenario) ->
-    if Constants.scenarios[@dataset]? && Constants.scenarios[@dataset].includes scenario
+    if Constants.datasetDefinitions[@dataset].scenarios.includes scenario
       @scenario = scenario
     else
       @scenario = @defaultOptions.scenario
-    @updateRouter()
 
   addProvince: (province) ->
     return unless Constants.provinces.includes province
     @provinces.push province unless @provinces.includes province
-    @updateRouter()
 
   removeProvince: (province) -> 
     @provinces = @provinces.filter (p) -> p != province
-    @updateRouter()
 
   flipProvince: (province) ->
     return unless Constants.provinces.includes province
@@ -131,7 +129,6 @@ class Visualization1Configuration
       @provinces = @provinces.filter (p) -> p != province
     else 
       @provinces.push province
-    @updateRouter()
 
   resetProvinces: (selectAll) ->
     if selectAll
@@ -152,23 +149,20 @@ class Visualization1Configuration
       ]
     else
       @provinces = []
-    @updateRouter()
 
   setProvincesInOrder: (provincesInOrder) ->
     # NB: We aren't currently tracking provinces in order in the URL bar
     @provincesInOrder = provincesInOrder
-    @updateRouter()
 
 
   setLanguage: (language) ->
     @language = language if language == 'en' or language == 'fr'
 
   setDataset: (dataset) ->
-    if Constants.generatedInYears.includes dataset
+    if Constants.datasets.includes dataset
       @dataset = dataset
     else 
       @dataset = @defaultOptions.dataset
-    @updateRouter()
 
   # Router integration
 
@@ -180,10 +174,16 @@ class Visualization1Configuration
     provinces: @provinces
     provincesInOrder: @provincesInOrder
     dataset: @dataset
-    
-  updateRouter: ->
-    return unless @app? and @app.router?
-    @app.router.navigate @routerParams()
+  
+  copy: (config) ->
+    configParams = _.cloneDeep config.routerParams()
+
+    @mainSelection = configParams.mainSelection
+    @unit = configParams.unit
+    @scenario = configParams.scenario
+    @provinces = configParams.provinces
+    @provincesInOrder = configParams.provincesInOrder
+    @dataset = configParams.dataset
 
 
   # Description for PNG export

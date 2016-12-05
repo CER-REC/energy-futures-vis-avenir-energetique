@@ -6,39 +6,20 @@ UnitTransformation = require '../unit-transformation.coffee'
 QueryString = require 'query-string'
 PrepareQueryParams = require '../PrepareQueryParams.coffee'
 
-datasets = []
-
 class EnergyConsumptionProvider
 
   constructor: ->
-    @data = null
+    @data = []
 
-    d3.csv Constants.dataFiles['jan2016']["EnergyDemand"], @mapping, (data) ->
-      datasets['jan2016'] = data
+  # Parse all of a CSV's data
+  loadFromString: (dataString) ->
+    @data = d3.csv.parse dataString, @mapping
+    @parseData @data
 
-    d3.csv Constants.dataFiles['oct2016']["EnergyDemand"], @mapping, (data) ->
-      datasets['oct2016'] = data
-
-  loadViaAjax: (loadedCallback) ->
-    params = PrepareQueryParams QueryString.parse(window.parent.document.location.search)
-
-    if(Constants.generatedInYears.includes params.dataset)
-      @loadForYear(params.dataset)
-    else
-      @loadForYear(Constants.generatedInYears[0])
-
-    @loadedCallback = loadedCallback
-
-  loadForYear: (dataset) ->
-    if Constants.generatedInYears.includes dataset
-      @dataset = dataset
-      if datasets[dataset]? > 0
-        @parseData null, datasets[dataset] 
-      else
-        d3.csv Constants.dataFiles[dataset]["EnergyDemand"], @mapping, @parseData
-  
-  loadFromString: (data) ->
-    @parseData null, d3.csv.parse(data, @mapping) 
+  # Add an array of data objects to the data store
+  addData: (data) ->
+    @data = @data.concat data
+    @parseData @data
 
   mapping: (d) ->
     province: d.province
@@ -49,8 +30,7 @@ class EnergyConsumptionProvider
     value: parseFloat(d.value)
     unit: d.unit
 
-  parseData: (error, data) =>
-    console.warn error if error?
+  parseData: (data) =>
     @data = data
 
 
@@ -95,7 +75,7 @@ class EnergyConsumptionProvider
       @dataByProvince[item.province].push item
       @dataBySource[item.source].push item
 
-    @loadedCallback() if @loadedCallback
+    # @loadedCallback() if @loadedCallback
     
     
   # accessors note: EnergyConsumptionProvider is never needed for viz 3!!
@@ -109,8 +89,6 @@ class EnergyConsumptionProvider
   dataForAllViz1Scenarios: (viz1config) ->
     filteredProvinceData = {}    
 
-    if viz1config.dataset != @dataset
-      @loadForYear(viz1config.dataset)
     # Exclude data from provinces that aren't in the set
     for provinceName in Object.keys @dataByProvince
       if viz1config.provinces.includes provinceName
@@ -173,9 +151,6 @@ class EnergyConsumptionProvider
   dataForAllViz2Scenarios: (viz2config) ->
     filteredSourceData = {}
 
-    if viz2config.dataset != @dataset
-      @loadForYear(viz2config.dataset)
-
     # Exclude data from sources that aren't in the set
     for sourceName in Object.keys @dataBySource
       if viz2config.sources.includes sourceName
@@ -232,9 +207,6 @@ class EnergyConsumptionProvider
   # across scenarios for a given configuration.
   dataForAllViz4Scenarios: (viz4config) ->
     filteredScenarioData = {}
-
-    if viz4config.dataset != @dataset
-      @loadForYear(viz4config.dataset)
 
     # Group data by scenario
     for scenarioName in Object.keys @dataByScenario

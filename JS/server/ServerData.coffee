@@ -9,7 +9,7 @@ OilProductionProvider = require '../DataProviders/OilProductionProvider.coffee'
 GasProductionProvider = require '../DataProviders/GasProductionProvider.coffee'
 ElectricityProductionProvider = require '../DataProviders/ElectricityProductionProvider.coffee'
 
-DatasetDefinitions = require '../DatasetDefinitions.coffee'
+DatasetFiles = require '../DatasetFiles.coffee'
 
 
 # Make singleton instances of the app's data files available on the server
@@ -18,7 +18,7 @@ DatasetDefinitions = require '../DatasetDefinitions.coffee'
 ServerData = {}
 
 
-loadDataset = (datasetName, datasetDefinition) ->
+loadDataset = (datasetName, datasetFiles) ->
 
   dataset = {}
 
@@ -27,10 +27,10 @@ loadDataset = (datasetName, datasetDefinition) ->
   dataset.gasProductionProvider = new GasProductionProvider 
   dataset.electricityProductionProvider = new ElectricityProductionProvider
 
-  oilFilePromise = readFile datasetDefinition.dataFiles.oilProduction
-  gasFilePromise = readFile datasetDefinition.dataFiles.gasProduction
-  energyDemandFilePromise = readFile datasetDefinition.dataFiles.energyDemand
-  electricityFilePromise = readFile datasetDefinition.dataFiles.electricityGeneration
+  oilFilePromise = readFile datasetFiles.oilProduction
+  gasFilePromise = readFile datasetFiles.gasProduction
+  energyDemandFilePromise = readFile datasetFiles.energyDemand
+  electricityFilePromise = readFile datasetFiles.electricityGeneration
 
   dataset.oilPromise = oilFilePromise.then (data) ->
     dataset.oilProductionProvider.loadFromString data.toString()
@@ -47,7 +47,7 @@ loadDataset = (datasetName, datasetDefinition) ->
   ServerData[datasetName] = dataset
 
 
-for datasetName, datasetDefinition of DatasetDefinitions
-  loadDataset datasetName, datasetDefinition
+for datasetName, datasetFiles of DatasetFiles
+  loadDataset datasetName, datasetFiles
 
 module.exports = ServerData

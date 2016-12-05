@@ -6,39 +6,20 @@ UnitTransformation = require '../unit-transformation.coffee'
 QueryString = require 'query-string'
 PrepareQueryParams = require '../PrepareQueryParams.coffee'
 
-datasets = []
-
 class GasProductionProvider
 
   constructor: ->
-    @data = null
+    @data = []
 
-    d3.csv Constants.dataFiles['jan2016']["NaturalGasProduction"], @mapping, (data) ->
-      datasets['jan2016'] = data
+  # Parse all of a CSV's data
+  loadFromString: (dataString) ->
+    @data = d3.csv.parse dataString, @mapping
+    @parseData @data
 
-    d3.csv Constants.dataFiles['oct2016']["NaturalGasProduction"], @mapping, (data) ->
-      datasets['oct2016'] = data
-
-  loadViaAjax: (loadedCallback) ->
-    params = PrepareQueryParams QueryString.parse(window.parent.document.location.search)
-
-    if(Constants.generatedInYears.includes params.dataset)
-      @loadForYear(params.dataset)
-    else
-      @loadForYear(Constants.generatedInYears[0])
-
-    @loadedCallback = loadedCallback
-
-  loadForYear: (dataset) ->
-    if Constants.generatedInYears.includes dataset
-      @dataset = dataset
-      if datasets[dataset]? > 0
-        @parseData null, datasets[dataset] 
-      else
-        d3.csv Constants.dataFiles[dataset]["NaturalGasProduction"], @mapping, @parseData
-
-  loadFromString: (data) ->
-    @parseData null, d3.csv.parse(data, @mapping)
+  # Add an array of data objects to the data store
+  addData: (data) ->
+    @data = @data.concat data
+    @parseData @data
 
   mapping: (d) ->
     province: d.province
@@ -48,8 +29,7 @@ class GasProductionProvider
     value: parseFloat(d.value)
     unit: d.unit
 
-  parseData: (error, data) =>
-    console.warn error if error?
+  parseData: (data) =>
     @data = data
     
     @dataByProvince = 
@@ -93,9 +73,6 @@ class GasProductionProvider
   # across scenarios for a given configuration.
   dataForAllViz1Scenarios: (viz1config) ->
     filteredProvinceData = {}    
-
-    if viz1config.dataset != @dataset
-      @loadForYear(viz1config.dataset)
 
     # Exclude data from provinces that aren't in the set
     for provinceName in Object.keys @dataByProvince
@@ -155,9 +132,6 @@ class GasProductionProvider
   # across scenarios for a given configuration.
   dataForAllViz4Scenarios: (viz4config) ->
     filteredScenarioData = {}    
-
-    if viz4config.dataset != @dataset
-      @loadForYear(viz4config.dataset)
 
     # Group data by scenario
     for scenarioName in Object.keys @dataByScenario

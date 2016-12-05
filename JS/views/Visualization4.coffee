@@ -323,11 +323,22 @@ class Visualization4
 
 
   provinceSelected: (key, regionIndex) =>
-    @provinceMenu.allSelected(false)
-    @config.setProvince key
-    @provinceMenu.data(@dataForProvinceMenu())
-    @renderYAxis()
-    @renderGraph()
+
+    newConfig = new @config.constructor @app
+    newConfig.copy @config
+    newConfig.setProvince key
+
+    update = =>
+      @provinceMenu.allSelected(false)
+      @config.setProvince key
+      @provinceMenu.data(@dataForProvinceMenu())
+      @renderYAxis()
+      @renderGraph()
+      @app.router.navigate @config.routerParams()
+
+    @app.datasetRequester.updateAndRequestIfRequired newConfig, update
+
+
 
   showProvinceNames: =>
     d3.event.stopPropagation()
@@ -450,7 +461,7 @@ class Visualization4
       class: 
         if @config.scenarios.includes 'reference'
           'vizButton selected reference'
-        else if Constants.scenarios[@config.dataset].includes 'reference'
+        else if Constants.datasetDefinitions[@config.dataset].scenarios.includes 'reference'
           'vizButton reference'
         else 
           'vizButton reference disabled'
@@ -462,7 +473,7 @@ class Visualization4
       class: 
         if @config.scenarios.includes 'high'
           'vizButton selected high'
-        else if Constants.scenarios[@config.dataset].includes 'high'
+        else if Constants.datasetDefinitions[@config.dataset].scenarios.includes 'high'
           'vizButton high'
         else 
           'vizButton high disabled'
@@ -474,7 +485,7 @@ class Visualization4
       class: 
         if @config.scenarios.includes 'highLng'
           'vizButton selected highLng' 
-        else if Constants.scenarios[@config.dataset].includes 'highLng' 
+        else if Constants.datasetDefinitions[@config.dataset].scenarios.includes 'highLng' 
           'vizButton highLng'
         else
           'vizButton highLng disabled'
@@ -487,7 +498,7 @@ class Visualization4
       class: 
         if @config.scenarios.includes 'constrained'
           'vizButton selected constrained'
-        else if Constants.scenarios[@config.dataset].includes 'constrained'
+        else if Constants.datasetDefinitions[@config.dataset].scenarios.includes 'constrained'
           'vizButton constrained'
         else
           'vizButton constrained disabled'
@@ -499,7 +510,7 @@ class Visualization4
       class: 
         if @config.scenarios.includes 'low'
           'vizButton selected low'
-        else if Constants.scenarios[@config.dataset].includes 'low'
+        else if Constants.datasetDefinitions[@config.dataset].scenarios.includes 'low'
           'vizButton low'
         else 
           'vizButton low disabled'
@@ -511,7 +522,7 @@ class Visualization4
       class: 
         if @config.scenarios.includes 'noLng'
           'vizButton selected noLng'
-        else if Constants.scenarios[@config.dataset].includes 'noLng'
+        else if Constants.datasetDefinitions[@config.dataset].scenarios.includes 'noLng'
           'vizButton noLng'
         else 
           'vizButton noLng disabled'
@@ -579,24 +590,24 @@ class Visualization4
   graphData: ->
     switch @config.mainSelection
       when 'energyDemand'
-        @app.energyConsumptionProvider.dataForViz4 @config
+        @app.providers[@config.dataset].energyConsumptionProvider.dataForViz4 @config
       when 'electricityGeneration'
-        @app.electricityProductionProvider.dataForViz4 @config
+        @app.providers[@config.dataset].electricityProductionProvider.dataForViz4 @config
       when 'oilProduction'
-        @app.oilProductionProvider.dataForViz4 @config
+        @app.providers[@config.dataset].oilProductionProvider.dataForViz4 @config
       when 'gasProduction'
-        @app.gasProductionProvider.dataForViz4 @config
+        @app.providers[@config.dataset].gasProductionProvider.dataForViz4 @config
 
   yAxisData: ->
     switch @config.mainSelection
       when 'energyDemand'
-        @app.energyConsumptionProvider.dataForAllViz4Scenarios @config
+        @app.providers[@config.dataset].energyConsumptionProvider.dataForAllViz4Scenarios @config
       when 'electricityGeneration'
-        @app.electricityProductionProvider.dataForAllViz4Scenarios @config
+        @app.providers[@config.dataset].electricityProductionProvider.dataForAllViz4Scenarios @config
       when 'oilProduction'
-        @app.oilProductionProvider.dataForAllViz4Scenarios @config
+        @app.providers[@config.dataset].oilProductionProvider.dataForAllViz4Scenarios @config
       when 'gasProduction'
-        @app.gasProductionProvider.dataForAllViz4Scenarios @config
+        @app.providers[@config.dataset].gasProductionProvider.dataForAllViz4Scenarios @config
 
   gradientData: ->
     [
@@ -654,9 +665,6 @@ class Visualization4
       colour: '#C7E9B4'
 
 
-    #scenariosInOrder = [reference, high, low]
-    # The original data had six scenarios, the revised data currently only has three.
-    # We expect this state of affairs to be temporary! 
     switch @config.mainSelection
       when 'energyDemand', 'electricityGeneration'
         scenariosInOrder = [reference, high, highLng, constrained, low, noLng]
@@ -792,20 +800,21 @@ class Visualization4
         .attr
           class: 'datasetSelectorButton'
         .on 'click', (d) =>
-          if @config.dataset != d.dataset
+          return if @config.dataset == d.dataset
+
+          newConfig = new @config.constructor @app
+          newConfig.copy @config
+          newConfig.setDataset d.dataset
+
+          update = =>          
             @config.setDataset d.dataset
-
-            # Check if the current scenario is valid for the new dataset
-            # and update the list of supported scenarios.
-            for scenario in @config.scenarios
-              @config.removeScenario scenario
-              @config.addScenario scenario
-
             @renderScenariosSelector()
             @renderDatasetSelector(@datasetSelectionData())
-
             @renderYAxis()
             @renderGraph()
+            @app.router.navigate @config.routerParams()
+
+          @app.datasetRequester.updateAndRequestIfRequired newConfig, update
 
       datasetSelectors.html (d) ->
         "<button class='#{d.class}' type='button' title='#{d.title}'>#{d.label}</button>"
@@ -822,15 +831,26 @@ class Visualization4
       .attr
         class: 'mainSelectorButton'
       .on 'click', (d) =>
-        @config.setMainSelection d.selectorName
-        # TODO: For efficiency, only rerender what's necessary.
-        # We could just call render() ... but that would potentially rebuild a bunch of menus... 
-        @renderMainSelector()
-        @renderDatasetSelector()
-        @renderUnitsSelector()
-        @renderScenariosSelector()
-        @renderYAxis()
-        @renderGraph()
+
+        newConfig = new @config.constructor @app
+        newConfig.copy @config
+        newConfig.setMainSelection d.selectorName
+
+        update = =>
+          @config.setMainSelection d.selectorName
+          # TODO: For efficiency, only rerender what's necessary.
+          # We could just call render() ... but that would potentially rebuild a bunch of menus... 
+          @renderMainSelector()
+          @renderDatasetSelector()
+          @renderUnitsSelector()
+          @renderScenariosSelector()
+          @renderYAxis()
+          @renderGraph()
+          @app.router.navigate @config.routerParams()
+
+        @app.datasetRequester.updateAndRequestIfRequired newConfig, update
+
+
 
     mainSelectors.html (d) ->
       "<img src=#{d.image} class='mainSelectorImage' title='#{d.title}'>
@@ -853,11 +873,22 @@ class Visualization4
       .attr
         class: 'unitSelectorButton'
       .on 'click', (d) =>
-        @config.setUnit d.unitName
-        # TODO: For efficiency, only rerender what's necessary.
-        @renderUnitsSelector()
-        @renderYAxis()
-        @renderGraph()
+
+        newConfig = new @config.constructor @app
+        newConfig.copy @config
+        newConfig.setUnit d.unitName
+
+        update = =>
+          @config.setUnit d.unitName
+          # TODO: For efficiency, only rerender what's necessary.
+          @renderUnitsSelector()
+          @renderYAxis()
+          @renderGraph()
+          @app.router.navigate @config.routerParams()
+
+        @app.datasetRequester.updateAndRequestIfRequired newConfig, update
+
+
 
     unitsSelectors.html (d) ->
       "<button class='#{d.class}' type='button' title='#{d.title}'>#{d.label}</button>"
@@ -878,17 +909,31 @@ class Visualization4
         class: 'scenarioSelectorButton'
       .on 'click', (d) =>
         selected = @config.scenarios.includes d.scenarioName
-        if selected
-          @config.removeScenario d.scenarioName
-        else
-          @config.addScenario d.scenarioName
 
-        # TODO: For efficiency, only rerender what's necessary.
-        @renderScenariosSelector()
-        @renderYAxis()
-        @renderGraph()
-        @renderScenariosSelector()
-        @renderGraph()
+        newConfig = new @config.constructor @app
+        newConfig.copy @config
+        if selected
+          newConfig.removeScenario d.scenarioName
+        else
+          newConfig.addScenario d.scenarioName
+
+        update = =>
+          if selected
+            @config.removeScenario d.scenarioName
+          else
+            @config.addScenario d.scenarioName
+
+          # TODO: For efficiency, only rerender what's necessary.
+          @renderScenariosSelector()
+          @renderYAxis()
+          @renderGraph()
+          @renderScenariosSelector()
+          @renderGraph()
+          @app.router.navigate @config.routerParams()
+
+        @app.datasetRequester.updateAndRequestIfRequired newConfig, update
+
+
 
     scenariosSelectors.html (d) ->
         indexOfDisabled = d.class.indexOf 'disabled'
@@ -1276,12 +1321,5 @@ class Visualization4
     # TODO: We might want to render with empty lists for buttons, so that
     # garbage collection of event handled dom nodes goes smoothly
     @app.window.document.getElementById('visualizationContent').innerHTML = ''
-
-Visualization4.resourcesLoaded = (app) ->
-  app.loadedStatus.energyConsumptionProvider and
-  app.loadedStatus.oilProductionProvider and
-  app.loadedStatus.gasProductionProvider and
-  app.loadedStatus.electricityProductionProvider
-
 
 module.exports = Visualization4

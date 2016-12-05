@@ -21,33 +21,29 @@ october2016Files = ->
       type: 'oil'
       dataFilename: path.join(ApplicationRoot, "devPublic/rawCSV/2016-10-18_CrudeOilProduction.csv")
       processedFilename: path.join(ApplicationRoot, "public/CSV/2016-10-18_CrudeOilProduction.csv")
+      dataset: 'oct2016'
       logFilename: path.join(ApplicationRoot, "devPublic/rawCSV/log/2016-10-18_CrudeOilProduction.csv_ingestion_errors.log")
-      scenarios: ['reference', 'high', 'low']
-      dataset: 2016
     }
     {
       type: 'gas'
       dataFilename: path.join(ApplicationRoot, "devPublic/rawCSV/2016-10-18_NaturalGasProduction.csv")
       processedFilename: path.join(ApplicationRoot, "public/CSV/2016-10-18_NaturalGasProduction.csv")
+      dataset: 'oct2016'
       logFilename: path.join(ApplicationRoot, "devPublic/rawCSV/log/2016-10-18_NaturalGasProduction.csv_ingestion_errors.log")
-      scenarios: ['reference', 'high', 'low']
-      dataset: 2016
     }
     {
       type: 'demand'
       dataFilename: path.join(ApplicationRoot, "devPublic/rawCSV/2016-10-18_EnergyDemand.csv")
       processedFilename: path.join(ApplicationRoot, "public/CSV/2016-10-18_EnergyDemand.csv")
+      dataset: 'oct2016'
       logFilename: path.join(ApplicationRoot, "devPublic/rawCSV/log/2016-10-18_EnergyDemand.csv_ingestion_errors.log")
-      scenarios: ['reference', 'high', 'low']
-      dataset: 2016
     }
     {  
       type: 'electricity'
       dataFilename: path.join(ApplicationRoot, "devPublic/rawCSV/2016-10-27_ElectricityGeneration.csv")
       processedFilename: path.join(ApplicationRoot, "public/CSV/2016-10-27_ElectricityGeneration.csv")
+      dataset: 'oct2016'
       logFilename: path.join(ApplicationRoot, "devPublic/rawCSV/log/2016-10-27_ElectricityGeneration.csv_ingestion_errors.log")
-      scenarios: ['reference', 'high', 'low']
-      dataset: 2016
     }
   ]
 
@@ -59,34 +55,30 @@ january2016Files = ->
       type: 'oil'
       dataFilename: path.join(ApplicationRoot, "devPublic/rawCSV/2016-01_CrudeOilProduction.csv")
       processedFilename: path.join(ApplicationRoot, "public/CSV/2016-01_CrudeOilProduction.csv")
+      dataset: 'jan2016'
       logFilename: path.join(ApplicationRoot, "devPublic/rawCSV/log/2016-01_CrudeOilProduction.csv_ingestion_errors.log")
-      scenarios: ['reference', 'high', 'low', 'highLng', 'noLng', 'constrained']
-      dataset: 2015
 
     }
     {
       type: 'gas'
       dataFilename: path.join(ApplicationRoot, "devPublic/rawCSV/2016-01_NaturalGasProduction.csv")
       processedFilename: path.join(ApplicationRoot, "public/CSV/2016-01_NaturalGasProduction.csv")
+      dataset: 'jan2016'
       logFilename: path.join(ApplicationRoot, "devPublic/rawCSV/log/2016-01_NaturalGasProduction.csv_ingestion_errors.log")
-      scenarios: ['reference', 'high', 'low', 'highLng', 'noLng', 'constrained']
-      dataset: 2015
     }
     {
       type: 'demand'
       dataFilename: path.join(ApplicationRoot, "devPublic/rawCSV/2016-01_EnergyDemand.csv")
       processedFilename: path.join(ApplicationRoot, "public/CSV/2016-01_EnergyDemand.csv")
+      dataset: 'jan2016'
       logFilename: path.join(ApplicationRoot, "devPublic/rawCSV/log/2016-01_EnergyDemand.csv_ingestion_errors.log")
-      scenarios: ['reference', 'high', 'low', 'highLng', 'noLng', 'constrained']
-      dataset: 2015
     }
     {  
       type: 'electricity'
       dataFilename: path.join(ApplicationRoot, "devPublic/rawCSV/2016-01_ElectricityGeneration.csv")
       processedFilename: path.join(ApplicationRoot, "public/CSV/2016-01_ElectricityGeneration.csv")
+      dataset: 'jan2016'
       logFilename: path.join(ApplicationRoot, "devPublic/rawCSV/log/2016-01_ElectricityGeneration.csv_ingestion_errors.log")
-      scenarios: ['reference', 'high', 'low', 'highLng', 'noLng', 'constrained']
-      dataset: 2015
     }
   ]
 

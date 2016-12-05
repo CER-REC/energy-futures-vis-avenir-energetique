@@ -82,7 +82,7 @@ class visualization
       class: 
         if @config.scenario == 'reference'
           'vizButton selected'
-        else if Constants.scenarios[@config.dataset].includes 'reference'
+        else if Constants.datasetDefinitions[@config.dataset].scenarios.includes 'reference'
           'vizButton'
         else 
           'vizButton disabled'
@@ -93,7 +93,7 @@ class visualization
       class: 
         if @config.scenario == 'constrained'
           'vizButton selected'
-        else if Constants.scenarios[@config.dataset].includes 'constrained'
+        else if Constants.datasetDefinitions[@config.dataset].scenarios.includes 'constrained'
           'vizButton'
         else 
           'vizButton disabled'
@@ -104,7 +104,7 @@ class visualization
       class: 
         if @config.scenario == 'high'
           'vizButton selected'
-        else if Constants.scenarios[@config.dataset].includes 'high'
+        else if Constants.datasetDefinitions[@config.dataset].scenarios.includes 'high'
           'vizButton'
         else 
           'vizButton disabled'
@@ -115,7 +115,7 @@ class visualization
       class: 
         if @config.scenario == 'low'
           'vizButton selected'
-        else if Constants.scenarios[@config.dataset].includes 'low'
+        else if Constants.datasetDefinitions[@config.dataset].scenarios.includes 'low'
           'vizButton'
         else 
           'vizButton disabled'
@@ -126,7 +126,7 @@ class visualization
       class: 
         if @config.scenario == 'highLng'
           'vizButton selected'
-        else if Constants.scenarios[@config.dataset].includes 'highLng'
+        else if Constants.datasetDefinitions[@config.dataset].scenarios.includes 'highLng'
           'vizButton'
         else 
           'vizButton disabled'
@@ -137,7 +137,7 @@ class visualization
       class: 
         if @config.scenario == 'noLng'
           'vizButton selected'
-        else if Constants.scenarios[@config.dataset].includes 'noLng'
+        else if Constants.datasetDefinitions[@config.dataset].scenarios.includes 'noLng'
           'vizButton'
         else 
           'vizButton disabled'
@@ -233,7 +233,14 @@ class visualization
         .attr
           class: 'datasetSelectorButton'
         .on 'click', (d) =>
-          if @config.dataset != d.dataset
+          return if @config.dataset == d.dataset
+
+          newConfig = new @config.constructor @app
+          newConfig.copy @config
+          newConfig.setDataset d.dataset
+          newConfig.setScenario @config.scenario
+
+          update = =>
             @config.setDataset d.dataset
 
             # Check if the current scenario is valid for the new dataset
@@ -245,6 +252,12 @@ class visualization
 
             @getDataAndRender()
             if @buildYAxis? then @buildYAxis()
+            @app.router.navigate @config.routerParams()
+
+          @app.datasetRequester.updateAndRequestIfRequired newConfig, update
+
+
+
 
       datasetSelectors.html (d) ->
         "<button class='#{d.class}' type='button' title='#{d.title}'>#{d.label}</button>"
@@ -262,13 +275,23 @@ class visualization
         .attr
           class: 'unitSelectorButton'
         .on 'click', (d) =>
-          if @config.unit != d.unitName  
+          return if @config.unit == d.unitName  
+
+          newConfig = new @config.constructor @app
+          newConfig.copy @config
+          newConfig.setUnit d.unitName
+
+          update = =>
             @config.setUnit d.unitName
             # TODO: For efficiency, only rerender what's necessary.
             @unitSelectionData()
             @addUnitToggle(@unitSelectionData())
             @getDataAndRender()
             if @buildYAxis? then @buildYAxis()
+            @app.router.navigate @config.routerParams()
+
+          @app.datasetRequester.updateAndRequestIfRequired newConfig, update
+
 
       unitsSelectors.html (d) ->
         "<button class='#{d.class}' type='button' title='#{d.title}'>#{d.label}</button>"
@@ -286,13 +309,22 @@ class visualization
         .attr
           class: 'scenarioSelectorButton'
         .on 'click', (d) =>
-          if @config.scenario != d.scenarioName && Constants.scenarios[@config.dataset].includes d.scenarioName  
-            @config.setScenario d.scenarioName
+          return if @config.scenario == d.scenarioName && Constants.datasetDefinitions[@config.dataset].scenarios.includes d.scenarioName  
 
+          newConfig = new @config.constructor @app
+          newConfig.copy @config
+          newConfig.setScenario d.scenarioName
+
+          update = =>
+            @config.setScenario d.scenarioName
             # TODO: For efficiency, only rerender what's necessary.
             @addDatasetToggle()
             @addScenarios()
             @getDataAndRender()
+            @app.router.navigate @config.routerParams()
+
+          @app.datasetRequester.updateAndRequestIfRequired newConfig, update
+
 
 
       scenariosSelectors.html (d) ->
@@ -316,10 +348,21 @@ class visualization
         .attr
           class: (d) -> d.wrapperClass
         .on 'click', (d) =>
-          if @config.sector != d.sectorName  
+          return if @config.sector == d.sectorName  
+
+          newConfig = new @config.constructor @app
+          newConfig.copy @config
+          newConfig.setSector d.sectorName
+
+          update = =>
             @config.setSector d.sectorName
             @addSectors()
             @getDataAndRender()
+            @app.router.navigate @config.routerParams()
+
+          @app.datasetRequester.updateAndRequestIfRequired newConfig, update
+
+
 
       sectorsSelectors.html (d) ->
         if d.sectorName == 'total'
@@ -339,7 +382,13 @@ class visualization
       .attr
         class: 'mainSelectorButton'
       .on 'click', (d) =>
-        if @config.mainSelection != d.selectorName  
+        return if @config.mainSelection == d.selectorName  
+
+        newConfig = new @config.constructor @app
+        newConfig.copy @config
+        newConfig.setMainSelection d.selectorName
+
+        update = =>
           @config.setMainSelection d.selectorName
           # TODO: For efficiency, only rerender what's necessary.
           @addDatasetToggle()
@@ -347,6 +396,11 @@ class visualization
           @addUnitToggle()
           @addScenarios()
           @getDataAndRender()
+          @app.router.navigate @config.routerParams()
+
+        @app.datasetRequester.updateAndRequestIfRequired newConfig, update
+
+
 
     mainSelectors.html (d) ->
       "<img src=#{d.image} class='mainSelectorImage' title='#{d.title}'>

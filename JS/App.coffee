@@ -28,6 +28,7 @@ ImageDownloadPopover = require './popovers/ImageDownloadPopover.coffee'
 
 Constants = require './Constants.coffee'
 
+DatasetRequester = require './DatasetRequester.coffee'
 
 class App
 
@@ -157,44 +158,25 @@ class App
     @visualization3Configuration = new Visualization3Configuration @
     @visualization4Configuration = new Visualization4Configuration @
 
+
+
     # Data Providers
 
-    @loadedStatus = {
-      energyConsumptionProvider: false
-      oilProductionProvider: false
-      gasProductionProvider: false
-      electricityProductionProvider: false
-    }
+    @providers = {}
 
-    # Order of provider initialization is optimized to schedule data requests via 
-    # ajax to start app soonest!
-    # Only really matters for viz2 and viz3, which each depend on one file. The other 
-    # two depend on all four. Also, viz2 depends on the largest file by far, which tends
-    # to dominate its startup performance. But viz3 loads up a few seconds faster at least!
+    # Initialize one set of providers per dataset
+    for dataset in Constants.datasets
+      @providers[dataset] = {}
 
-    @electricityProductionProvider = new ElectricityProductionProvider @
-    @electricityProductionProvider.loadViaAjax =>
-      @loadedStatus.electricityProductionProvider = true
-      @setupRouter()
+      @providers[dataset].electricityProductionProvider = new ElectricityProductionProvider @
+      @providers[dataset].energyConsumptionProvider = new EnergyConsumptionProvider()
+      @providers[dataset].oilProductionProvider = new OilProductionProvider()
+      @providers[dataset].gasProductionProvider = new GasProductionProvider()
 
-    @energyConsumptionProvider = new EnergyConsumptionProvider()
-    @energyConsumptionProvider.loadViaAjax =>
-      @loadedStatus.energyConsumptionProvider = true
-      @setupRouter()
+    @datasetRequester = new DatasetRequester @, @providers
 
-    @oilProductionProvider = new OilProductionProvider()
-    @oilProductionProvider.loadViaAjax =>
-      @loadedStatus.oilProductionProvider = true
-      @setupRouter()
+    @router = new Router @ 
 
-    @gasProductionProvider = new GasProductionProvider()
-    @gasProductionProvider.loadViaAjax =>
-      @loadedStatus.gasProductionProvider = true
-      @setupRouter()
-
-
-
-    @setupRouter()
 
 
   loadFonts: ->
@@ -222,11 +204,8 @@ class App
     http.send()
 
 
-  setupRouter: ->
-    return if @router?
 
-    if Router.currentViewClass().resourcesLoaded(@)
-      @router = new Router @ 
+
 
 
 

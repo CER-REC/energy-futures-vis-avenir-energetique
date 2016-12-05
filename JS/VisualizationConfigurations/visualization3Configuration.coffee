@@ -62,56 +62,58 @@ class Visualization3Configuration
     ]
     province: 'all'
     source: 'total'
-    dataset: Constants.generatedInYears[0]
+    dataset: Constants.datasets[0]
 
   constructor: (@app, options) ->
-    @options = _.extend {}, @defaultOptions, options
+    @page = 'viz3'
 
-    @setDataset @options.dataset
+    options = _.extend {}, @defaultOptions, options
+
+    @setDataset options.dataset
 
     @mainSelection = 'electricityGeneration' # this isn't an option for viz 3
 
     # viewing method: 'province' or 'source'
-    @setViewBy @options.viewBy
+    @setViewBy options.viewBy
 
     # unit, one of:
     # petajoules
     # gigawattHours
     # kilobarrelEquivalents
-    @setUnit @options.unit
+    @setUnit options.unit
 
     # one of: reference, constrained, high, low, highLng, noLng
-    @setScenario @options.scenario
+    @setScenario options.scenario
 
     # year, int between 2005 and 2040 inclusive
-    @setYear @options.year
+    @setYear options.year
 
     # sources, array, used when ViewBy == 'province'
     # any of: oilProducts, nuclear, bio, naturalGas, coal, solarWindGeothermal, hydro
     @sources = []
-    for source in @options.sources
+    for source in options.sources
       @addSource source
 
     # provinces, array, used when ViewBy == 'source'
     # can include any of: BC AB SK MB ON QC NB NS NL PE YT NT NU
     @provinces = []
-    for province in @options.provinces
+    for province in options.provinces
       @addProvince province
 
     # source, used when ViewBy == 'source'
     # one of: total, oilProducts, nuclear, bio, naturalGas, coal, solarWindGeothermal, hydro
-    @setSource @options.source
+    @setSource options.source
 
     # province, used when ViewBy == 'province'
     # one of the two letter province abbreviations, or 'all'
     # BC AB SK MB ON QC NB NS NL PE YT NT NU all
-    @setProvince @options.province
+    @setProvince options.province
 
     # Used to manage the order of the provinces in a reorderable menu
-    @provincesInOrder = @options.provincesInOrder
+    @provincesInOrder = options.provincesInOrder
 
     # Used to manage the order of the sources in a reorderable menu
-    @sourcesInOrder = @options.sourcesInOrder
+    @sourcesInOrder = options.sourcesInOrder
 
     @setLanguage @app.language || 'en'
 
@@ -122,21 +124,18 @@ class Visualization3Configuration
       @viewBy = viewBy
     else
       @viewBy = @defaultOptions.viewBy
-    @updateRouter()
 
   setUnit: (unit) ->
     if ['petajoules', 'gigawattHours', 'kilobarrelEquivalents'].includes unit
       @unit = unit
     else
       @unit = @defaultOptions.unit
-    @updateRouter()
 
   setScenario: (scenario) ->
-    if Constants.scenarios[@dataset]? && Constants.scenarios[@dataset].includes scenario
+    if Constants.datasetDefinitions[@dataset].scenarios.includes scenario
       @scenario = scenario
     else
       @scenario = @defaultOptions.scenario
-    @updateRouter()
 
   setYear: (year) ->
     year = parseInt year, 10
@@ -144,43 +143,36 @@ class Visualization3Configuration
       @year = year
     else
       @year = @defaultOptions.year
-    @updateRouter()
 
   addProvince: (province) ->
     return unless Constants.provinces.includes province
     if @viewBy == 'source'  
       @provinces.push province unless @provinces.includes province
-    @updateRouter()
 
   removeProvince: (province) ->
     if @viewBy == 'source' 
       @provinces = @provinces.filter (p) -> p != province
-    @updateRouter()
 
   addSource: (source) ->  
     return unless Constants.sources.includes source
     if @viewBy == 'province'  
       @sources.push source unless @sources.includes source
-    @updateRouter()
 
   removeSource: (source) ->
     if @viewBy == 'province' 
       @sources = @sources.filter (s) -> s != source
-    @updateRouter()
 
   setSource: (source) ->
     if Constants.viz3SourceRadioSelectionOptions.includes source
       @source = source
     else
       @source = @defaultOptions.source
-    @updateRouter()
 
   setProvince: (province) ->
     if Constants.provinceRadioSelectionOptions.includes province
       @province = province
     else
       @province = @defaultOptions.province
-    @updateRouter()
 
 
   flip: (key) ->
@@ -196,7 +188,6 @@ class Visualization3Configuration
         @provinces = @provinces.filter (p) -> p != key
       else
         @provinces.push key
-    @updateRouter()
 
   resetSources: (selectAll) ->
     if selectAll
@@ -211,7 +202,6 @@ class Visualization3Configuration
       ]
     else
       @sources = []
-    @updateRouter()
 
   resetProvinces: (selectAll) ->
     if selectAll
@@ -232,17 +222,15 @@ class Visualization3Configuration
       ]
     else
       @provinces = []
-    @updateRouter()
 
   setLanguage: (language) ->
     @language = language if language == 'en' or language == 'fr'
 
   setDataset: (dataset) ->
-    if Constants.generatedInYears.includes dataset
+    if Constants.datasets.includes dataset
       @dataset = dataset
     else 
       @dataset = @defaultOptions.dataset
-    @updateRouter()
 
   # Router integration
 
@@ -263,9 +251,21 @@ class Visualization3Configuration
       
     params
 
-  updateRouter: ->
-    return unless @app? and @app.router?
-    @app.router.navigate @routerParams()
+
+  copy: (config) ->
+    configParams = _.cloneDeep config.routerParams()
+
+    @viewBy = configParams.viewBy
+    @unit = configParams.unit
+    @scenario = configParams.scenario
+    @year = configParams.year
+    @dataset = configParams.dataset
+    @province = configParams.province
+    @source = configParams.source
+    @provinces = configParams.provinces
+    @sources = configParams.sources
+
+
 
 
   # Description for PNG export

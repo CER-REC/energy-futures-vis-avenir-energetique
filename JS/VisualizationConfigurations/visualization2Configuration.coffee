@@ -25,40 +25,42 @@ class Visualization2Configuration
       'electricity'
     ]
     province: 'all'
-    dataset: Constants.generatedInYears[0]
+    dataset: Constants.datasets[0]
 
   constructor: (@app, options) ->
-    @options = _.extend {}, @defaultOptions, options
+    @page = 'viz2'
 
-    @setDataset @options.dataset
+    options = _.extend {}, @defaultOptions, options
+
+    @setDataset options.dataset
 
     @mainSelection = 'energyDemand' # this isn't an option for viz 2
 
     # sector, one of: residential, commercial, industrial, transportation, total
-    @setSector @options.sector
+    @setSector options.sector
 
     # unit, one of:
     # petajoules
     # kilobarrelEquivalents
-    @setUnit @options.unit
+    @setUnit options.unit
 
     # one of: reference, constrained, high, low, highLng, noLng
-    @setScenario @options.scenario
+    @setScenario options.scenario
 
     # sources, array
     # can include any of: hydro, oilProducts, bio, naturalGas, coal, solarWindGeothermal
     @sources = []
-    for source in @options.sources
+    for source in options.sources
       @addSource source
 
     # province
     # one of the two letter province abbreviations, or 'all'
     # BC AB SK MB ON QC NB NS NL PE YT NT NU all
-    @setProvince @options.province
+    @setProvince options.province
 
     @sourcesInOrder = []
-    if(@isValidSourcesInOrder(@options.sourcesInOrder))
-      @sourcesInOrder = @options.sourcesInOrder
+    if(@isValidSourcesInOrder(options.sourcesInOrder))
+      @sourcesInOrder = options.sourcesInOrder
     else
       @sourcesInOrder = @defaultOptions.sourcesInOrder
 
@@ -71,34 +73,28 @@ class Visualization2Configuration
       @sector = sector
     else
       @sector = @defaultOptions.sector
-    @updateRouter()
 
   setUnit: (unit) ->
     if ['petajoules', 'kilobarrelEquivalents'].includes unit
       @unit = unit
     else
       @unit = @defaultOptions.unit
-    @updateRouter()
 
   setScenario: (scenario) ->
-    if Constants.scenarios[@dataset]? && Constants.scenarios[@dataset].includes scenario
+    if Constants.datasetDefinitions[@dataset].scenarios.includes scenario
       @scenario = scenario
     else
       @scenario = @defaultOptions.scenario
-    @updateRouter()
 
   addSource: (source) ->  
     return unless Constants.viz2Sources.includes source
     @sources.push source unless @sources.includes source
-    @updateRouter()
 
   setSourcesInOrder: (sourcesInOrder) ->
     @sourcesInOrder = sourcesInOrder
-    @updateRouter()
 
   removeSource: (source) ->
     @sources = @sources.filter (s) -> s != source
-    @updateRouter()
 
   resetSources: (selectAll) ->
     if selectAll
@@ -112,14 +108,12 @@ class Visualization2Configuration
       ]
     else
       @sources = []
-    @updateRouter()
 
   setProvince: (province) ->
     if Constants.provinceRadioSelectionOptions.includes province
       @province = province
     else
       @province = @defaultOptions.province
-    @updateRouter()
 
   flipSource: (source) ->
     return unless Constants.viz2Sources.includes source
@@ -127,17 +121,15 @@ class Visualization2Configuration
       @sources = @sources.filter (s) -> s != source
     else 
       @sources.push source
-    @updateRouter()
 
   setLanguage: (language) ->
     @language = language if language == 'en' or language == 'fr'
 
   setDataset: (dataset) ->
-    if Constants.generatedInYears.includes dataset
+    if Constants.datasets.includes dataset
       @dataset = dataset
     else 
       @dataset = @defaultOptions.dataset
-    @updateRouter()
 
   # Router integration
 
@@ -151,9 +143,16 @@ class Visualization2Configuration
     province: @province
     dataset: @dataset
 
-  updateRouter: ->
-    return unless @app? and @app.router?
-    @app.router.navigate @routerParams()
+  copy: (config) ->
+    configParams = _.cloneDeep config.routerParams()
+
+    @sector = configParams.sector
+    @unit = configParams.unit
+    @scenario = configParams.scenario
+    @sources = configParams.sources
+    @sourcesInOrder = configParams.sourcesInOrder
+    @province = configParams.province
+    @dataset = configParams.dataset
 
 
   # Description for PNG export

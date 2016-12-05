@@ -30,6 +30,7 @@ class Router
     params = Router.parseQueryParams()
 
     @setInitialParamConfiguration params
+
     @navigate params
 
   onHistoryPopState: (event) =>
@@ -51,11 +52,32 @@ class Router
   navigate: (params, options = {}) ->
     options = _.merge {shouldUpdateHistory: true}, options
     params.page = 'landingPage' unless Constants.pages.includes params.page
-
     return unless params? and params.page?
-    # Guard against navigating unless resources for the destination page are loaded up
-    return unless Router.viewClassForPage(params.page).resourcesLoaded(@app)
 
+    switch params.page
+      when 'viz1'
+        @app.datasetRequester.updateAndRequestIfRequired @app.visualization1Configuration, =>
+          @fulfillNavigation params, options
+      when 'viz2'
+        @app.datasetRequester.updateAndRequestIfRequired @app.visualization2Configuration, =>
+          @fulfillNavigation params, options
+        @app.visualization2Configuration
+      when 'viz3'
+        @app.datasetRequester.updateAndRequestIfRequired @app.visualization3Configuration, =>
+          @fulfillNavigation params, options
+        @app.visualization3Configuration
+      when 'viz4'
+        @app.datasetRequester.updateAndRequestIfRequired @app.visualization4Configuration, =>
+          @fulfillNavigation params, options
+      when 'landingPage'
+        @fulfillNavigation params, options
+
+
+
+    
+
+
+  fulfillNavigation: (params, options) ->
     @app.page = params.page
     @navbar.setNavBarState params.page
     @updateBottomNavBar options
@@ -248,37 +270,6 @@ class Router
     dataset: configuration.dataset
 
    
-
-
-
-  updateMetaTagViz1: ->
-    d3.select('meta[name="description"]')
-      .attr
-        content: => 
-          provincesFullNames = @app.visualization1Configuration.provinces.map (item) -> Tr.regionSelector.names[item][@app.language]
-          description = "#{Tr.allPages.metaDescription[@app.language]} #{@app.visualization1Configuration.imageExportDescription().toLowerCase()}. #{Tr.regionSelector.selectRegionLabel[@app.language]}: #{provincesFullNames}"
-
-  updateMetaTagViz2: ->
-    d3.select('meta[name="description"]')
-      .attr
-        content: => 
-          sourceFullNames = @app.visualization2Configuration.sources.map (item) -> Tr.sourceSelector.sources[item][@app.language]
-          description = "#{Tr.allPages.metaDescription[@app.language]} #{@app.visualization2Configuration.imageExportDescription()}. #{Tr.sourceSelector.selectSourceLabel[@app.language]}: #{sourceFullNames}"
-
-  updateMetaTagViz3: ->
-    d3.select('meta[name="description"]')
-      .attr
-        content: => 
-          multiSelect = if @app.visualization3Configuration.viewBy == 'province' then @app.visualization3Configuration.sources.map (item) -> Tr.sourceSelector.sources[item][@app.language] else @app.visualization3Configuration.provinces.map (item) -> Tr.regionSelector.names[item][@app.language]
-          multiSelectLabel = if @app.visualization3Configuration.viewBy == 'province' then Tr.sourceSelector.selectSourceLabel[@app.language] else Tr.regionSelector.selectRegionLabel[@app.language]
-          description = "#{Tr.allPages.metaDescription[@app.language]} #{@app.visualization3Configuration.imageExportDescription()}. #{multiSelectLabel}: #{multiSelect}"
-
-  updateMetaTagViz4: ->
-    d3.select('meta[name="description"]')
-      .attr
-        content: => 
-          scenarios = @app.visualization4Configuration.scenarios.map (item) -> Tr.scenarioSelector.names[item][@app.language]
-          description = "#{Tr.allPages.metaDescription[@app.language]} #{@app.visualization4Configuration.imageExportDescription()}. #{Tr.scenarioSelector.scenarioSelectorHelpTitle[@app.language]}: #{scenarios}"
 
 
 Router.parseQueryParams = ->

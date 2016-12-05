@@ -397,17 +397,17 @@ class Visualization1 extends visualization
   getData: ->
     switch @config.mainSelection
       when 'gasProduction'  
-        @seriesData = @app.gasProductionProvider.dataForViz1 @config
-        @yAxisData = @app.gasProductionProvider.dataForAllViz1Scenarios @config
+        @seriesData = @app.providers[@config.dataset].gasProductionProvider.dataForViz1 @config
+        @yAxisData = @app.providers[@config.dataset].gasProductionProvider.dataForAllViz1Scenarios @config
       when 'electricityGeneration'
-        @seriesData = @app.electricityProductionProvider.dataForViz1 @config
-        @yAxisData = @app.electricityProductionProvider.dataForAllViz1Scenarios @config
+        @seriesData = @app.providers[@config.dataset].electricityProductionProvider.dataForViz1 @config
+        @yAxisData = @app.providers[@config.dataset].electricityProductionProvider.dataForAllViz1Scenarios @config
       when 'energyDemand'
-        @seriesData = @app.energyConsumptionProvider.dataForViz1 @config
-        @yAxisData = @app.energyConsumptionProvider.dataForAllViz1Scenarios @config
+        @seriesData = @app.providers[@config.dataset].energyConsumptionProvider.dataForViz1 @config
+        @yAxisData = @app.providers[@config.dataset].energyConsumptionProvider.dataForAllViz1Scenarios @config
       when 'oilProduction'
-        @seriesData = @app.oilProductionProvider.dataForViz1 @config
-        @yAxisData = @app.oilProductionProvider.dataForAllViz1Scenarios @config
+        @seriesData = @app.providers[@config.dataset].oilProductionProvider.dataForViz1 @config
+        @yAxisData = @app.providers[@config.dataset].oilProductionProvider.dataForAllViz1Scenarios @config
 
   render: ->
     if @_chart?
@@ -619,21 +619,53 @@ class Visualization1 extends visualization
     @buildYAxis()
 
   selectAllStacked: (selecting) =>
-    @config.resetProvinces selecting 
-    @getDataAndRender()
+    newConfig = new @config.constructor @app
+    newConfig.copy @config
+    newConfig.resetProvinces selecting 
+
+    update = =>
+      @config.resetProvinces selecting 
+      @getDataAndRender()
+      @app.router.navigate @config.routerParams()
+
+
+    @app.datasetRequester.updateAndRequestIfRequired newConfig, update
+
+
+
 
   orderChanged: (newLocation, currentLocation) =>
     if currentLocation > newLocation
       temp_data = _.concat(@config.provincesInOrder[0...newLocation], @config.provincesInOrder[currentLocation],@config.provincesInOrder[newLocation...currentLocation], @config.provincesInOrder[(currentLocation+1)..])
     if currentLocation < newLocation 
       temp_data = _.concat(@config.provincesInOrder[0...currentLocation], @config.provincesInOrder[(currentLocation+1)..newLocation], @config.provincesInOrder[currentLocation], @config.provincesInOrder[(newLocation+1)..])
-    if temp_data?  
+    return unless temp_data?  
+
+    newConfig = new @config.constructor @app
+    newConfig.copy @config
+    newConfig.setProvincesInOrder temp_data
+
+    update = =>
       @config.setProvincesInOrder temp_data
       @_chart.mapping @provinceMenuData()
+      @app.router.navigate @config.routerParams()
+    
+    @app.datasetRequester.updateAndRequestIfRequired newConfig, update
+
+
 
   menuSelect: (key, regionIndex) =>
-    @config.flipProvince key
-    @getDataAndRender()
+    newConfig = new @config.constructor @app
+    newConfig.copy @config
+    newConfig.flipProvince key
+
+    update = =>
+      @config.flipProvince key
+      @getDataAndRender()
+      @app.router.navigate @config.routerParams()
+
+    @app.datasetRequester.updateAndRequestIfRequired newConfig, update
+
 
   showProvinceNames: =>
     d3.event.stopPropagation()
@@ -652,14 +684,6 @@ class Visualization1 extends visualization
         title: Tr.regionSelector.selectRegionLabel[@app.language]
         content: contentString
         attachmentSelector: '#provincesSelector'
-
-
-Visualization1.resourcesLoaded = (app) ->
-  app.loadedStatus.energyConsumptionProvider and
-  app.loadedStatus.oilProductionProvider and
-  app.loadedStatus.gasProductionProvider and
-  app.loadedStatus.electricityProductionProvider
-
 
 
 module.exports = Visualization1

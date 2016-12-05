@@ -1052,8 +1052,16 @@ svg { overflow: hidden; }
 
 
 
+#canadasEnergyFutureVisualization #dataLoadContainer {
+  position: absolute;
+  left: 50%;
+  top: 35%;
+}
 
-
+#canadasEnergyFutureVisualization #dataLoadSpinner {
+  position: relative;
+  margin: -50%;
+}
 
 
 
