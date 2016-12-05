@@ -46,6 +46,12 @@ fs.copySync('readme.md', path.join(iisNodeAppDirectory, 'readme.md'));
 fs.copySync('package.json', path.join(iisNodeAppDirectory, 'package.json'));
 fs.copySync('web.config', path.join(iisNodeAppDirectory, 'web.config'));
 
+fs.writeFile(path.join(iisNodeAppDirectory, "VERSION"), pjson.version, function(err) {
+  if(err) {
+    throw err;
+  }
+}); 
+
 
 console.log("Visual-studio-install done!");
 console.log("NB: For Web Deploy to work properly, you MUST add all the contents of the IIS project's 'public' and 'node_app' directories to the project in Visual Studio. Otherwise, the files aren't copied on deploy.");
