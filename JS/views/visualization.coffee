@@ -15,12 +15,12 @@ class visualization
 
   datasetSelectionData: ->
     jan2016 =
-      label: '2016'
+      label: Tr.datasetSelector.jan2016Button[@app.language]
       dataset: 'jan2016'
       title: Tr.selectorTooltip.datasetSelector.jan2016[@app.language]
       class: if @config.dataset == 'jan2016' then 'vizButton selected' else 'vizButton'
     oct2016 =
-      label: '2016 Update'
+      label: Tr.datasetSelector.oct2016Button[@app.language]
       dataset: 'oct2016'
       title: Tr.selectorTooltip.datasetSelector.oct2016[@app.language]
       class: if @config.dataset == 'oct2016' then 'vizButton selected' else 'vizButton'
