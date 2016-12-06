@@ -45,6 +45,7 @@ fs.copySync('LICENSE.TXT', path.join(iisNodeAppDirectory, 'LICENSE.TXT'));
 fs.copySync('readme.md', path.join(iisNodeAppDirectory, 'readme.md'));
 fs.copySync('package.json', path.join(iisNodeAppDirectory, 'package.json'));
 fs.copySync('web.config', path.join(iisNodeAppDirectory, 'web.config'));
+fs.copySync('post-web-deploy.cmd', path.join(iisNodeAppDirectory, 'post-web-deploy.cmd'));
 
 fs.writeFile(path.join(iisNodeAppDirectory, "VERSION"), pjson.version, function(err) {
   if(err) {
