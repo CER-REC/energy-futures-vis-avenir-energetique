@@ -1,1 +1,1 @@
-node node_app/tasks/post-web-deploy.js
+node tasks/post-web-deploy.js
