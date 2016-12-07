@@ -53,7 +53,6 @@ class Router
     options = _.merge {shouldUpdateHistory: true}, options
     params.page = 'landingPage' unless Constants.pages.includes params.page
     return unless params? and params.page?
-
     switch params.page
       when 'viz1'
         @app.datasetRequester.updateAndRequestIfRequired @app.visualization1Configuration, =>
@@ -177,9 +176,7 @@ class Router
       params = @setupVis1RouterParams(@app.visualization1Configuration, params)
       @app.containingWindow.history.pushState params, '', ParamsToUrlString(params) if options.shouldUpdateHistory
     else if options.shouldUpdateHistory
-      _.throttle ->
         @app.containingWindow.history.replaceState params, '', ParamsToUrlString(params)
-      , 250
 
   viz2Handler: (params, options) ->
     if not @app.currentView?
@@ -194,9 +191,7 @@ class Router
       params = @setupVis2RouterParams(@app.visualization2Configuration, params)
       @app.containingWindow.history.pushState params, '', ParamsToUrlString(params) if options.shouldUpdateHistory
     else if options.shouldUpdateHistory
-      _.throttle ->
         @app.containingWindow.history.replaceState params, '', ParamsToUrlString(params)
-      , 250
 
   viz3Handler: (params, options) ->
     if not @app.currentView?
@@ -211,9 +206,7 @@ class Router
       params = @setupVis3RouterParams(@app.visualization3Configuration, params)
       @app.containingWindow.history.pushState params, '', ParamsToUrlString(params) if options.shouldUpdateHistory
     else if options.shouldUpdateHistory
-      _.throttle ->
-        @app.containingWindow.history.replaceState params, '', ParamsToUrlString(params)
-      , 250
+      @app.containingWindow.history.replaceState params, '', ParamsToUrlString(params)
 
   viz4Handler: (params, options) ->
     if not @app.currentView?
@@ -228,9 +221,7 @@ class Router
       params = @setupVis4RouterParams(@app.visualization4Configuration, params)
       @app.containingWindow.history.pushState params, '', ParamsToUrlString(params) if options.shouldUpdateHistory
     else if options.shouldUpdateHistory
-      _.throttle ->
         @app.containingWindow.history.replaceState params, '', ParamsToUrlString(params)
-      , 250
 
   setupVis1RouterParams: (configuration, params)->
     page: params.page
