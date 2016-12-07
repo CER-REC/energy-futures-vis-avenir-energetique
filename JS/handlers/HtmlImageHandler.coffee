@@ -34,14 +34,32 @@ htmlPromise = htmlFilePromise.then (data) ->
 
 
 
-requestCounter = 0
+Vis1TemplatePromise = readFile("#{ApplicationRoot}/JS/templates/Visualization1Server.mustache")
+Vis2TemplatePromise = readFile("#{ApplicationRoot}/JS/templates/Visualization2Server.mustache")
+Vis3TemplatePromise = readFile("#{ApplicationRoot}/JS/templates/Visualization3Server.mustache")
+Vis4TemplatePromise = readFile("#{ApplicationRoot}/JS/templates/Visualization4Server.mustache")
+SvgStylesheetPromise = readFile("#{ApplicationRoot}/JS/templates/SvgStylesheet.css")
 
+
+templatesPromise = Promise.join Vis1TemplatePromise, Vis2TemplatePromise, Vis3TemplatePromise, Vis4TemplatePromise, SvgStylesheetPromise, (vis1Template, vis2Template, vis3Template, vis4Template, svgTemplate) ->
+
+  return {
+    vis1Template: vis1Template.toString()
+    vis2Template: vis2Template.toString()
+    vis3Template: vis3Template.toString()
+    vis4Template: vis4Template.toString()
+    svgTemplate: svgTemplate.toString()
+  }
+
+
+
+requestCounter = 0
 
 HtmlImageHandler = (req, res) ->
 
   dataLoadPromise = Promise.all ServerData.loadPromises
 
-  Promise.join htmlPromise, dataLoadPromise, (html) ->
+  Promise.join htmlPromise, templatesPromise, dataLoadPromise, (html, templates) ->
 
     time = Date.now()
 
@@ -80,19 +98,27 @@ HtmlImageHandler = (req, res) ->
           switch req.query.page
             when 'viz1'
               config = new Visualization1Configuration(serverApp, params)
-              viz = new Visualization1(serverApp, config)
+              viz = new Visualization1 serverApp, config,
+                template: templates.vis1Template
+                svgTemplate: templates.svgTemplate
 
             when 'viz2'
               config = new Visualization2Configuration(serverApp, params)
-              viz = new Visualization2(serverApp, config)
+              viz = new Visualization2 serverApp, config,
+                template: templates.vis2Template
+                svgTemplate: templates.svgTemplate
 
             when 'viz3'
               config = new Visualization3Configuration(serverApp, params)
-              viz = new Visualization3(serverApp, config)
+              viz = new Visualization3 serverApp, config,
+                template: templates.vis3Template
+                svgTemplate: templates.svgTemplate
 
             when 'viz4'
               config = new Visualization4Configuration(serverApp, params)
-              viz = new Visualization4(serverApp, config)
+              viz = new Visualization4 serverApp, config,
+                template: templates.vis4Template
+                svgTemplate: templates.svgTemplate
 
             else 
               errorHandler req, res, new Error("Visualization 'page' parameter not specified or not recognized."), 400, counter

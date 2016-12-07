@@ -14,10 +14,6 @@ ParamsToUrlString = require '../ParamsToUrlString.coffee'
 if Platform.name == "browser"
   Visualization3Template = require '../templates/Visualization3.mustache'
   SvgStylesheetTemplate = require '../templates/SvgStylesheet.css'
-else if Platform.name == "server"
-  fs = require 'fs'
-  Visualization3ServerTemplate = fs.readFileSync("#{ApplicationRoot}/JS/templates/Visualization3Server.mustache").toString()
-  SvgStylesheetTemplate = fs.readFileSync("#{ApplicationRoot}/JS/templates/SvgStylesheet.css").toString()
 
 
 ControlsHelpPopover = require '../popovers/ControlsHelpPopover.coffee'
@@ -107,8 +103,8 @@ class Visualization3 extends visualization
     else if @config.viewBy == 'source'
       legendContent = @provinceLegendData()
 
-    @app.window.document.getElementById('visualizationContent').innerHTML = Mustache.render Visualization3ServerTemplate, 
-        svgStylesheet: SvgStylesheetTemplate
+    @app.window.document.getElementById('visualizationContent').innerHTML = Mustache.render @options.template, 
+        svgStylesheet: @options.svgTemplate
         title: Tr.visualization3Title[@app.language]
         description: @config.imageExportDescription()
         energyFuturesSource: Tr.allPages.imageDownloadSource[@app.language]
@@ -117,7 +113,7 @@ class Visualization3 extends visualization
 
 
 
-  constructor: (@app, config) ->
+  constructor: (@app, config, @options) ->
     super(config)
 
     @getData()

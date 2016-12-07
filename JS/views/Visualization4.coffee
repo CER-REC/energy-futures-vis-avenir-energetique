@@ -12,10 +12,6 @@ ParamsToUrlString = require '../ParamsToUrlString.coffee'
 if Platform.name == "browser"
   Visualization4Template = require '../templates/Visualization4.mustache'
   SvgStylesheetTemplate = require '../templates/SvgStylesheet.css'
-else if Platform.name == "server"
-  fs = require 'fs'
-  Visualization4ServerTemplate = fs.readFileSync("#{ApplicationRoot}/JS/templates/Visualization4Server.mustache").toString()
-  SvgStylesheetTemplate = fs.readFileSync("#{ApplicationRoot}/JS/templates/SvgStylesheet.css").toString()
 
 pixelMap = [{pixelStart:260, pixelEnd:280, year:2005}
             {pixelStart:281, pixelEnd:303, year:2006}
@@ -133,8 +129,8 @@ class Visualization4
 
 
   renderServerTemplate: ->
-    @app.window.document.getElementById('visualizationContent').innerHTML = Mustache.render Visualization4ServerTemplate, 
-        svgStylesheet: SvgStylesheetTemplate
+    @app.window.document.getElementById('visualizationContent').innerHTML = Mustache.render @options.template, 
+        svgStylesheet: @options.svgTemplate
         title: Tr.visualization4Titles[@config.mainSelection][@app.language]
         description: @config.imageExportDescription()
         energyFuturesSource: Tr.allPages.imageDownloadSource[@app.language]
@@ -144,7 +140,7 @@ class Visualization4
 
 
 
-  constructor: (@app, config) ->
+  constructor: (@app, config, @options) ->
     @config = config
     @outerHeight = 700 
     @margin = 
