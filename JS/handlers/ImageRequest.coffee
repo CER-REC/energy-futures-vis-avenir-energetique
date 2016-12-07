@@ -54,7 +54,12 @@ class ImageRequest
       @errorHandler new Error("No visualization parameters specified.")
       return
 
-    @webdriverUrlRequest = @browserTools.webdriverSession.url("#{process.env.HOST}:#{process.env.PORT_NUMBER}/html_image/#{@query}")
+    if process.env.APP_PATH_PREFIX
+      requestUrl = "#{process.env.HOST}:#{process.env.PORT_NUMBER}#{process.env.APP_PATH_PREFIX}/html_image/#{@query}"
+    else
+      requestUrl = "#{process.env.HOST}:#{process.env.PORT_NUMBER}/html_image/#{@query}"
+      
+    @webdriverUrlRequest = @browserTools.webdriverSession.url requestUrl
 
     @webdriverUrlRequest.then =>
 

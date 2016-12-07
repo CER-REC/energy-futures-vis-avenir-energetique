@@ -11,8 +11,16 @@ Logger = require '../Logger.coffee'
 
 
 Server = (middlewares) ->
-  app = express()
+  
+  rootApp = express()
 
+  if process.env.APP_PATH_PREFIX
+    app = express()
+    rootApp.use process.env.APP_PATH_PREFIX, app
+  else
+    app = rootApp
+  
+  
   for middleware in middlewares
     app.use middleware
 
@@ -20,12 +28,17 @@ Server = (middlewares) ->
     res.status(404).send('404: Not Found.')
 
   # IIS-Node passes in a named pipe to listen to in process.env.PORT
-  app.listen process.env.PORT || process.env.PORT_NUMBER, ->
+  rootApp.listen process.env.PORT || process.env.PORT_NUMBER, ->
 
-    Logger.info "Ready: #{process.env.HOST}:#{process.env.PORT_NUMBER}"
-    app.emit 'server-online'
+    if process.env.APP_PATH_PREFIX
+      Logger.info "Ready: #{process.env.HOST}:#{process.env.PORT_NUMBER}#{process.env.APP_PATH_PREFIX}"
+    else
+      Logger.info "Ready: #{process.env.HOST}:#{process.env.PORT_NUMBER}"
 
-  app
+
+    rootApp.emit 'server-online'
+
+  rootApp
 
 
 
