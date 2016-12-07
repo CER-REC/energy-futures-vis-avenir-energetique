@@ -16,10 +16,6 @@ ParamsToUrlString = require '../ParamsToUrlString.coffee'
 if Platform.name == "browser"
   Visualization2Template = require '../templates/Visualization2.mustache'
   SvgStylesheetTemplate = require '../templates/SvgStylesheet.css'
-else if Platform.name == "server"
-  fs = require 'fs'
-  Visualization2ServerTemplate = fs.readFileSync("#{ApplicationRoot}/JS/templates/Visualization2Server.mustache").toString()
-  SvgStylesheetTemplate = fs.readFileSync("#{ApplicationRoot}/JS/templates/SvgStylesheet.css").toString()
 
 ControlsHelpPopover = require '../popovers/ControlsHelpPopover.coffee'
 
@@ -102,8 +98,8 @@ class Visualization2 extends visualization
 
 
   renderServerTemplate: ->
-    @app.window.document.getElementById('visualizationContent').innerHTML = Mustache.render Visualization2ServerTemplate, 
-        svgStylesheet: SvgStylesheetTemplate
+    @app.window.document.getElementById('visualizationContent').innerHTML = Mustache.render @options.template, 
+        svgStylesheet: @options.svgTemplate
         title: Tr.visualization2Title[@app.language]
         description: @config.imageExportDescription()
         energyFuturesSource: Tr.allPages.imageDownloadSource[@app.language]
@@ -111,7 +107,7 @@ class Visualization2 extends visualization
         legendContent: @sourceLegendData()
 
 
-  constructor: (@app, config) ->
+  constructor: (@app, config, @options) ->
     super(config)
 
     @getData()
