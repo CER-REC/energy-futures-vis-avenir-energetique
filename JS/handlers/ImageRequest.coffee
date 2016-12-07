@@ -55,9 +55,9 @@ class ImageRequest
       return
 
     if process.env.APP_PATH_PREFIX
-      requestUrl = "#{process.env.HOST}:#{process.env.PORT_NUMBER}#{process.env.APP_PATH_PREFIX}/html_image/#{@query}"
+      requestUrl = "#{process.env.HOST}:#{process.env.PORT_NUMBER}#{process.env.APP_PATH_PREFIX}/html_image#{@query}"
     else
-      requestUrl = "#{process.env.HOST}:#{process.env.PORT_NUMBER}/html_image/#{@query}"
+      requestUrl = "#{process.env.HOST}:#{process.env.PORT_NUMBER}/html_image#{@query}"
       
     @webdriverUrlRequest = @browserTools.webdriverSession.url requestUrl
 
