@@ -269,22 +269,22 @@ class Visualization2 extends visualization
   sourceLegendData: ->
     baseData = 
       solarWindGeothermal:
-        img: '/IMG/sources/solarWindGeo_selected.svg' 
+        img: 'IMG/sources/solarWindGeo_selected.svg' 
         present: @config.sources.includes('solarWindGeothermal') and not @zeroedOut('solarWindGeothermal')
       coal:
-        img: '/IMG/sources/coal_selected.svg' 
+        img: 'IMG/sources/coal_selected.svg' 
         present: @config.sources.includes('coal') and not @zeroedOut('coal')
       naturalGas:
-        img: '/IMG/sources/naturalGas_selected.svg' 
+        img: 'IMG/sources/naturalGas_selected.svg' 
         present: @config.sources.includes('naturalGas') and not @zeroedOut('naturalGas')
       bio:
-        img: '/IMG/sources/biomass_selected.svg' 
+        img: 'IMG/sources/biomass_selected.svg' 
         present: @config.sources.includes('bio') and not @zeroedOut('bio')
       oilProducts:
-        img: '/IMG/sources/oil_products_selected.svg' 
+        img: 'IMG/sources/oil_products_selected.svg' 
         present: @config.sources.includes('oilProducts') and not @zeroedOut('oilProducts')
       electricity:  
-        img: '/IMG/sources/electricity_selected.svg' 
+        img: 'IMG/sources/electricity_selected.svg' 
         present: @config.sources.includes('electricity') and not @zeroedOut('electricity')
 
     data = []
@@ -641,7 +641,7 @@ class Visualization2 extends visualization
         .attr
           class: 'forecast'
           transform: "translate(#{arrowX},#{arrowY})" 
-          "xlink:xlink:href": '/IMG/forecast_arrow.svg'
+          "xlink:xlink:href": 'IMG/forecast_arrow.svg'
           height: 9
           width: 200
 

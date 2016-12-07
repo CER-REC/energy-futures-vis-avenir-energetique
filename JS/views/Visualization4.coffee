@@ -1018,7 +1018,7 @@ class Visualization4
         .attr
           class: 'forecast'
           transform: "translate(#{arrowX},#{arrowY})" 
-          "xlink:xlink:href": '/IMG/forecast_arrow.svg'
+          "xlink:xlink:href": 'IMG/forecast_arrow.svg'
           height: 9
           width: 200
 

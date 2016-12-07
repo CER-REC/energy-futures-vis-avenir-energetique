@@ -376,19 +376,19 @@ class Visualization3 extends visualization
 
   sourcesBlackDictionary: ->
     hydro:  
-      img: '/IMG/sources/hydro_selectedR.svg'
+      img: 'IMG/sources/hydro_selectedR.svg'
     solarWindGeothermal:
-      img: '/IMG/sources/solarWindGeo_selectedR.svg'
+      img: 'IMG/sources/solarWindGeo_selectedR.svg'
     coal:
-      img: '/IMG/sources/coal_selectedR.svg'
+      img: 'IMG/sources/coal_selectedR.svg'
     naturalGas:
-      img: '/IMG/sources/naturalGas_selectedR.svg'
+      img: 'IMG/sources/naturalGas_selectedR.svg'
     bio:
-      img: '/IMG/sources/biomass_selectedR.svg'
+      img: 'IMG/sources/biomass_selectedR.svg'
     nuclear: 
-      img: '/IMG/sources/nuclear_selectedR.svg'
+      img: 'IMG/sources/nuclear_selectedR.svg'
     oilProducts:
-      img: '/IMG/sources/oil_products_selectedR.svg'
+      img: 'IMG/sources/oil_products_selectedR.svg'
 
   colouredSourceIconsDictionary: ->
     hydro:
@@ -416,25 +416,25 @@ class Visualization3 extends visualization
   sourceLegendData: ->
     baseData = 
       hydro:
-        img: '/IMG/sources/hydro_selected.svg' 
+        img: 'IMG/sources/hydro_selected.svg' 
         present: @config.sources.includes('hydro') and not @zeroedOut('hydro')
       solarWindGeothermal:
-        img: '/IMG/sources/solarWindGeo_selected.svg' 
+        img: 'IMG/sources/solarWindGeo_selected.svg' 
         present: @config.sources.includes('solarWindGeothermal') and not @zeroedOut('solarWindGeothermal')
       coal:
-        img: '/IMG/sources/coal_selected.svg' 
+        img: 'IMG/sources/coal_selected.svg' 
         present: @config.sources.includes('coal') and not @zeroedOut('coal')
       naturalGas:
-        img: '/IMG/sources/naturalGas_selected.svg' 
+        img: 'IMG/sources/naturalGas_selected.svg' 
         present: @config.sources.includes('naturalGas') and not @zeroedOut('naturalGas')
       bio:
-        img: '/IMG/sources/biomass_selected.svg' 
+        img: 'IMG/sources/biomass_selected.svg' 
         present: @config.sources.includes('bio') and not @zeroedOut('bio')
       oilProducts:
-        img: '/IMG/sources/oil_products_selected.svg' 
+        img: 'IMG/sources/oil_products_selected.svg' 
         present: @config.sources.includes('oilProducts') and not @zeroedOut('oilProducts')
       nuclear:  
-        img: '/IMG/sources/nuclear_selected.svg'
+        img: 'IMG/sources/nuclear_selected.svg'
         present: @config.sources.includes('nuclear') and not @zeroedOut('nuclear')
 
     data = []
@@ -550,79 +550,79 @@ class Visualization3 extends visualization
         key: 'AB'
         present: true
         colour: if @config.province == 'AB' then '#333' else '#fff'
-        img: '/IMG/provinces/radio/AB_SelectedR.svg' 
+        img: 'IMG/provinces/radio/AB_SelectedR.svg' 
       }
       BC: {
         key: 'BC'
         present: true
         colour: if @config.province == 'BC' then '#333' else '#fff'
-        img: '/IMG/provinces/radio/BC_SelectedR.svg' 
+        img: 'IMG/provinces/radio/BC_SelectedR.svg' 
       }
       MB: {
         key: 'MB'
         present: true
         colour: if @config.province == 'MB' then '#333' else '#fff'
-        img: '/IMG/provinces/radio/MB_SelectedR.svg'
+        img: 'IMG/provinces/radio/MB_SelectedR.svg'
       }     
       NB: {
         key: 'NB'
         present: true
         colour: if @config.province == 'NB' then '#333' else '#fff'
-        img: '/IMG/provinces/radio/NB_SelectedR.svg'
+        img: 'IMG/provinces/radio/NB_SelectedR.svg'
       }
       NL: {
         key : 'NL'
         present: true
         colour: if @config.province == 'NL' then '#333' else '#fff'
-        img: '/IMG/provinces/radio/NL_SelectedR.svg'
+        img: 'IMG/provinces/radio/NL_SelectedR.svg'
       }
       NS: {
         key: 'NS'
         present: true
         colour: if @config.province == 'NS' then '#333' else '#fff'
-        img: '/IMG/provinces/radio/NS_SelectedR.svg'
+        img: 'IMG/provinces/radio/NS_SelectedR.svg'
       }
       NT: {
         key: 'NT'
         present: true
         colour: if @config.province == 'NT' then '#333' else '#fff'
-        img: '/IMG/provinces/radio/NT_SelectedR.svg'
+        img: 'IMG/provinces/radio/NT_SelectedR.svg'
       }
       NU: { 
         key: 'NU'
         present: true
         colour: if @config.province == 'NU' then '#333' else '#fff'
-        img: '/IMG/provinces/radio/NU_SelectedR.svg'
+        img: 'IMG/provinces/radio/NU_SelectedR.svg'
       }
       ON: { 
         key: 'ON'
         present: true
         colour: if @config.province == 'ON' then '#333' else '#fff'
-        img: '/IMG/provinces/radio/ON_SelectedR.svg'
+        img: 'IMG/provinces/radio/ON_SelectedR.svg'
       }
       PE: {
         key: 'PE'
         present: true
         colour: if @config.province == 'PE' then '#333' else '#fff'
-        img: '/IMG/provinces/radio/PEI_SelectedR.svg'
+        img: 'IMG/provinces/radio/PEI_SelectedR.svg'
       }
       QC: { 
         key: 'QC'
         present: true
         colour: if @config.province == 'QC' then '#333' else '#fff'
-        img:'/IMG/provinces/radio/QC_SelectedR.svg'
+        img:'IMG/provinces/radio/QC_SelectedR.svg'
       }
       SK: {
         key: 'SK'
         present: true
         colour: if @config.province == 'SK' then '#333' else '#fff'
-        img: '/IMG/provinces/radio/Sask_SelectedR.svg'
+        img: 'IMG/provinces/radio/Sask_SelectedR.svg'
       }
       YT: {
         key: 'YT'
         present: true
         colour: if @config.province == 'YT' then '#333' else '#fff'
-        img: '/IMG/provinces/radio/Yukon_SelectedR.svg'
+        img: 'IMG/provinces/radio/Yukon_SelectedR.svg'
       }
     }
   
@@ -762,43 +762,43 @@ class Visualization3 extends visualization
     baseData = 
       BC:
         present: @config.provinces.includes('BC') and not @zeroedOut('BC')
-        img: '/IMG/provinces/colour/BC_Selected.svg' 
+        img: 'IMG/provinces/colour/BC_Selected.svg' 
       AB:
         present: @config.provinces.includes('AB') and not @zeroedOut('AB')
-        img: '/IMG/provinces/colour/AB_Selected.svg' 
+        img: 'IMG/provinces/colour/AB_Selected.svg' 
       SK: 
         present: @config.provinces.includes('SK') and not @zeroedOut('SK')
-        img: '/IMG/provinces/colour/Sask_Selected.svg' 
+        img: 'IMG/provinces/colour/Sask_Selected.svg' 
       MB: 
         present: @config.provinces.includes('MB') and not @zeroedOut('MB')
-        img: '/IMG/provinces/colour/MB_Selected.svg' 
+        img: 'IMG/provinces/colour/MB_Selected.svg' 
       ON: 
         present: @config.provinces.includes('ON') and not @zeroedOut('ON')
-        img: '/IMG/provinces/colour/ON_Selected.svg' 
+        img: 'IMG/provinces/colour/ON_Selected.svg' 
       QC: 
         present: @config.provinces.includes('QC') and not @zeroedOut('QC')
-        img: '/IMG/provinces/colour/QC_Selected.svg' 
+        img: 'IMG/provinces/colour/QC_Selected.svg' 
       NB:
         present: @config.provinces.includes('NB') and not @zeroedOut('NB')
-        img: '/IMG/provinces/colour/NB_Selected.svg' 
+        img: 'IMG/provinces/colour/NB_Selected.svg' 
       NS:
         present: @config.provinces.includes('NS') and not @zeroedOut('NS')
-        img: '/IMG/provinces/colour/NS_Selected.svg' 
+        img: 'IMG/provinces/colour/NS_Selected.svg' 
       NL:
         present: @config.provinces.includes('NL') and not @zeroedOut('NL')
-        img: '/IMG/provinces/colour/NL_Selected.svg' 
+        img: 'IMG/provinces/colour/NL_Selected.svg' 
       PE:
         present: @config.provinces.includes('PE') and not @zeroedOut('PE')
-        img: '/IMG/provinces/colour/PEI_Selected.svg' 
+        img: 'IMG/provinces/colour/PEI_Selected.svg' 
       YT:
         present: @config.provinces.includes('YT') and not @zeroedOut('YT')
-        img: '/IMG/provinces/colour/Yukon_Selected.svg'
+        img: 'IMG/provinces/colour/Yukon_Selected.svg'
       NT:
         present: @config.provinces.includes('NT') and not @zeroedOut('NT')
-        img: '/IMG/provinces/colour/NT_Selected.svg' 
+        img: 'IMG/provinces/colour/NT_Selected.svg' 
       NU: 
         present: @config.provinces.includes('NU') and not @zeroedOut('NU')
-        img: '/IMG/provinces/colour/NU_Selected.svg' 
+        img: 'IMG/provinces/colour/NU_Selected.svg' 
     
     data = []
     for province in @config.provincesInOrder
@@ -969,7 +969,7 @@ class Visualization3 extends visualization
     sliderLabel.append "image"
       .attr
         class: "tLTriangle"
-        "xlink:xlink:href": '/IMG/yearslider.svg'
+        "xlink:xlink:href": 'IMG/yearslider.svg'
         x: -(sliderWidth / 2)
         y: 0
         width: sliderWidth
