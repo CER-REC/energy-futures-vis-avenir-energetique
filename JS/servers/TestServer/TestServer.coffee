@@ -10,6 +10,7 @@ ImageGenerationMiddleware = require '../../middleware/ImageGenerationMiddleware.
 DevelopmentPageMiddleware = require '../../middleware/DevelopmentPageMiddleware.coffee'
 JsonDataMiddleware = require '../../middleware/JsonDataMiddleware.coffee'
 CSVDataMiddleware = require '../../middleware/CSVDataMiddleware.coffee'
+BitlyMiddleware = require '../../middleware/BitlyMiddleware.coffee'
 
 # Create the server instance, and return it
 module.exports = ->
@@ -19,5 +20,6 @@ module.exports = ->
     JsonDataMiddleware()
     DevelopmentPageMiddleware()
     CSVDataMiddleware()
+    BitlyMiddleware()
   ]
 
