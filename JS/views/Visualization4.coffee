@@ -66,10 +66,10 @@ class Visualization4
       svgStylesheet: SvgStylesheetTemplate
 
     @datasetHelpPopover = new ControlsHelpPopover(@app)
-    @mainSelectorHelpPopover = new ControlsHelpPopover()
-    @unitsHelpPopover = new ControlsHelpPopover()
-    @scenariosHelpPopover = new ControlsHelpPopover()
-    @provincesHelpPopover = new ControlsHelpPopover()
+    @mainSelectorHelpPopover = new ControlsHelpPopover(@app)
+    @unitsHelpPopover = new ControlsHelpPopover(@app)
+    @scenariosHelpPopover = new ControlsHelpPopover(@app)
+    @provincesHelpPopover = new ControlsHelpPopover(@app)
 
     d3.select(@app.window.document).select '.datasetSelectorHelpButton'
       .on 'click', =>
