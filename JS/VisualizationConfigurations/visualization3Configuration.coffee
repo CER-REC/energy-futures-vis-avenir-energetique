@@ -242,6 +242,7 @@ class Visualization3Configuration
       scenario: @scenario
       year: @year
       dataset: @dataset
+      language: @app.language
     if @viewBy == 'province'
       params.province = @province
       params.sources = @sources

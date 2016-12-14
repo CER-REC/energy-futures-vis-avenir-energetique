@@ -126,6 +126,7 @@ class Visualization4Configuration
     scenarios: @scenarios
     province: @province
     dataset: @dataset
+    language: @app.language
 
   copy: (config) ->
     configParams = _.cloneDeep config.routerParams()

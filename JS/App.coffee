@@ -2,6 +2,8 @@ d3 = require 'd3'
 Domready = require 'domready'
 Mustache = require 'mustache'
 _ = require 'lodash'
+BrowserCookies = require 'browser-cookies'
+QueryString = require 'query-string'
 
 
 require './ArrayIncludes.coffee'
@@ -59,19 +61,7 @@ class App
     # Language one of en, fr
     @language = null
 
-    # Language detection: we inspect the text in the change language link at the top of
-    # the page. NB: the current language of the page is the *opposite* of the lanauge
-    # that the link indicates, as the link is used to change the current language! 
-    languageLink = @containingWindow.document.getElementById 'LangID'
-    unless languageLink?
-      @language = 'en'
-    else if languageLink.getAttribute('lang') == 'fr'
-      @language = 'en'
-    else if languageLink.getAttribute('lang') == 'en'
-      @language = 'fr'
-    else
-      @language = 'en'
-
+    @detectLanguage()
 
     @popoverManager = new PopoverManager()
     @aboutThisProjectPopover = new AboutThisProjectPopover @
@@ -205,8 +195,31 @@ class App
     http.send()
 
 
+  detectLanguage: ->
 
+    # First, check the cookie
+    gc_lang_cookie = BrowserCookies.get '_gc_lang'
 
+    switch gc_lang_cookie
+      when 'E'
+        @language = 'en'
+        return
+      when 'F'
+        @language = 'fr'
+        return
+
+    # Second, check the URL parameter
+    query = QueryString.parse @containingWindow.location.search
+    switch query.language
+      when 'en'
+        @language = 'en'
+        return
+      when 'fr'
+        @language = 'fr'
+        return
+
+    # Default to english
+    @language = 'en'
 
 
 

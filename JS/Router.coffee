@@ -155,12 +155,12 @@ class Router
   landingPageHandler: (options) ->
     if not @app.currentView?
       @app.currentView = new LandingPage @app
-      @app.containingWindow.history.replaceState {page: 'landingPage'}, '', "?page=landingPage" if options.shouldUpdateHistory
+      @app.containingWindow.history.replaceState {page: 'landingPage', language: @app.language}, '', "?page=landingPage&language=#{@app.language}" if options.shouldUpdateHistory
     else if not (@app.currentView instanceof LandingPage)
       @app.popoverManager.closePopover()
       @app.currentView.tearDown()
       @app.currentView = new LandingPage @app
-      @app.containingWindow.history.pushState {page: 'landingPage'}, '', "?page=landingPage" if options.shouldUpdateHistory
+      @app.containingWindow.history.pushState {page: 'landingPage', language: @app.language}, '', "?page=landingPage&language=#{@app.language}" if options.shouldUpdateHistory
 
 
   viz1Handler: (params, options) ->
@@ -173,7 +173,7 @@ class Router
       @app.popoverManager.closePopover()
       @app.currentView.tearDown()
       @app.currentView = new Visualization1 @app, @app.visualization1Configuration
-      params = @setupVis1RouterParams(@app.visualization1Configuration, params)
+      params = @app.visualization1Configuration.routerParams()
       @app.containingWindow.history.pushState params, '', ParamsToUrlString(params) if options.shouldUpdateHistory
     else if options.shouldUpdateHistory
         @app.containingWindow.history.replaceState params, '', ParamsToUrlString(params)
@@ -188,7 +188,7 @@ class Router
       @app.popoverManager.closePopover()
       @app.currentView.tearDown()
       @app.currentView = new Visualization2 @app, @app.visualization2Configuration
-      params = @setupVis2RouterParams(@app.visualization2Configuration, params)
+      params = @app.visualization2Configuration.routerParams()
       @app.containingWindow.history.pushState params, '', ParamsToUrlString(params) if options.shouldUpdateHistory
     else if options.shouldUpdateHistory
         @app.containingWindow.history.replaceState params, '', ParamsToUrlString(params)
@@ -203,7 +203,7 @@ class Router
       @app.popoverManager.closePopover()
       @app.currentView.tearDown()
       @app.currentView = new Visualization3 @app, @app.visualization3Configuration
-      params = @setupVis3RouterParams(@app.visualization3Configuration, params)
+      params = @app.visualization3Configuration.routerParams()
       @app.containingWindow.history.pushState params, '', ParamsToUrlString(params) if options.shouldUpdateHistory
     else if options.shouldUpdateHistory
       @app.containingWindow.history.replaceState params, '', ParamsToUrlString(params)
@@ -218,47 +218,11 @@ class Router
       @app.popoverManager.closePopover()
       @app.currentView.tearDown()
       @app.currentView = new Visualization4 @app, @app.visualization4Configuration
-      params = @setupVis4RouterParams(@app.visualization4Configuration, params)
+      params = @app.visualization4Configuration.routerParams()
       @app.containingWindow.history.pushState params, '', ParamsToUrlString(params) if options.shouldUpdateHistory
     else if options.shouldUpdateHistory
         @app.containingWindow.history.replaceState params, '', ParamsToUrlString(params)
 
-  setupVis1RouterParams: (configuration, params)->
-    page: params.page
-    mainSelection: configuration.mainSelection
-    unit: configuration.unit
-    scenario: configuration.scenario
-    provinces: configuration.provinces
-    provincesInOrder: configuration.provincesInOrder
-    dataset: configuration.dataset
-
-  setupVis2RouterParams: (configuration, params)->
-    page: params.page
-    sector: configuration.sector
-    unit: configuration.unit
-    scenario: configuration.scenario
-    sources: configuration.sources
-    province: configuration.province
-    sourcesInOrder: configuration.sourcesInOrder
-    dataset: configuration.dataset
-
-  setupVis3RouterParams: (configuration, params)->
-    page: params.page
-    viewBy: configuration.viewBy
-    unit: configuration.unit
-    scenario: configuration.scenario
-    year: configuration.year
-    province: configuration.province
-    sources: configuration.sources
-    dataset: configuration.dataset
-
-  setupVis4RouterParams: (configuration, params)->
-    page: params.page
-    mainSelection: configuration.mainSelection
-    unit: configuration.unit
-    scenarios: configuration.scenarios
-    province: configuration.province
-    dataset: configuration.dataset
 
    
 
