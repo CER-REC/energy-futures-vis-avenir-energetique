@@ -30,9 +30,13 @@ CSVDataHandler = (req, res) ->
     query = url.parse(req.url).search
     requestCounter++
     counter = requestCounter
-    mainSelection = req.query.mainSelection
+    @mainSelection = req.query.mainSelection
+    @unit = req.query.unit
+    @page = req.query.page
+    @dataset = req.query.dataset
     Logger.info "csv_data (request C#{counter}): #{query}"
     csvData = null
+    results = ''
   
 
     providers = {}
@@ -64,7 +68,7 @@ CSVDataHandler = (req, res) ->
           else 
             mainSelectionErrorHandler()
             return
-        csvData = generateArrayFromObject(tempData, "viz1")   
+        csvData = generateArrayFromObject(tempData, "viz1")
 
       when 'viz2'
         config = new Visualization2Configuration(serverApp, params)
@@ -99,8 +103,9 @@ CSVDataHandler = (req, res) ->
     #CONVERT DATA TO CSV AND ASSIGN IT TO RESPONSE OBJECT
     if csvData?
       results = d3.csv.format csvData
+      refinedResults = refineResults results
       res.attachment 'energyFutures.csv'
-      res.write results
+      res.write refinedResults
       res.end()
       Logger.debug "csv data request (request C#{counter}) Time: #{Date.now() - time}"
     
@@ -115,7 +120,12 @@ mainSelectionErrorHandler = ->
 generateArrayFromObject = (csvDataObject, viz) ->
   hashArray = []
   switch viz
-    when "viz1", "viz2", "viz4"
+    when "viz1", "viz4"
+      for k,v of csvDataObject
+        v = filterSectorSourceUnitOut v
+        hashArray = hashArray.concat v
+      break
+    when "viz2"
       for k,v of csvDataObject
         hashArray = hashArray.concat v
       break
@@ -126,6 +136,57 @@ generateArrayFromObject = (csvDataObject, viz) ->
   
   return hashArray
   
+filterSectorSourceUnitOut = (csvDataObject) ->
+  for k,v of csvDataObject
+    delete v.sector
+    delete v.source
+    delete v.unit
+  return csvDataObject
+
+refineResults = (csvData) ->
+  filteredData = ''
+
+  newLine = '\n'
+  comma = ','
+
+  mainSelectionField = @mainSelection + ','
+  unitField = ',' + @unit
+  datasetField = ',' + @dataset
+
+  lines = csvData.split newLine
+  if lines.length <= 0 then return ''
+
+  # Setup data labels.
+  switch @page
+    when 'viz1', 'viz4'
+      filteredData += 'main selection,' + lines[0] + ',unit,dataset' + newLine
+      break
+    when 'viz2'
+      filteredData += lines[0] + ',dataset' + newLine
+      break
+    when 'viz3'
+      filteredData += lines[0] + ',dataset' + newLine
+
+  # Determine the index of the measurement value.
+  valueIndex = lines[0].split(comma).indexOf('value')
+
+  i = 1
+  while i < lines.length
+    fields = lines[i].split comma
+
+    # Remove rows with zeroed (or one) values, and
+    # add the missing attributes to each row.
+    if fields[valueIndex] != '0' && fields[valueIndex] != '1'
+      switch @page
+        when 'viz1', 'viz4'
+          filteredData += mainSelectionField + lines[i] + unitField + datasetField + newLine
+        when 'viz2'
+          filteredData += lines[i] + datasetField + newLine
+        when 'viz3'
+          filteredData += lines[i] + datasetField + newLine
+    i++
+
+  filteredData
 
 errorHandler = (req, res, error, code, counter) ->
 
