@@ -193,10 +193,10 @@ module.exports =
     datasetSelector:
       jan2016:
         en: "CANADA ENERGY FUTURE 2016 (January 2016). A continuation of the Energy Futures series. In addition our usual baseline long-term outlook, we explores key uncertainties for Canadian energy such robustness of global LNG markets and availability of crude oil transportation infrastructure."
-        fr: 'TODO'
+        fr: "La suite de la série sur l’avenir énergétique. En plus des perspectives à long terme habituelles, nous explorons certaines incertitudes de fond dans le secteur de l’énergie au Canada, qu’il s’agisse par exemple de celles découlant du degré de robustesse des marchés mondiaux du GNL ou de la disponibilité d’une infrastructure pour l’acheminement de pétrole brut."    
       oct2016:
         en: "CANADA ENERGY FUTURE 2016: UPDATE (October 2016). Presents reference and high and low prices cases. In the Reference Case, the crude oil price assumption is revised lower to US$90 per barrel by 2040. In addition to policies which were included in the January edition, such as Quebec’s cap and trade system and the carbon tax in B.C., most of the Alberta Climate Leadership Plan and the Ontario cap and trade program have been integrated into the forecast."
-        fr: 'TODO'
+        fr: "Présente des scénarios de prix, bas et élevés, ainsi qu’un scénario de référence. Dans ce dernier cas, l’hypothèse de prix du pétrole brut a été revue à la baisse, à 90 $ US le baril en 2040. En plus des politiques déjà incluses précédemment, notamment le système de plafonnement et d’échange de droits d’émission au Québec et la taxe sur le carbone en Colombie-Britannique, les nouvelles prévisions tiennent compte, dans sa plus grande partie, du plan de leadership de l’Alberta en matière de changement climatique de même que du programme de plafonnement et d’échange de droits de l’Ontario."
 
     mainSelector:
       totalDemandButton:
@@ -1003,8 +1003,185 @@ module.exports =
           'TOUTES LES SOURCES'
 
 
-
-
+  csvData:
+    province:
+      province:
+        en: 'region'
+        fr: 'région'
+      BC: 
+        en: 'BRITISH COLUMBIA'
+        fr: 'COLOMBIE-BRITANNIQUE'
+      AB: 
+        en: 'ALBERTA'
+        fr: 'ALBERTA'
+      SK: 
+        en: 'SASKATCHEWAN'
+        fr: 'SASKATCHEWAN'
+      MB: 
+        en: 'MANITOBA'
+        fr: 'MANITOBA'
+      ON: 
+        en: 'ONTARIO'
+        fr: 'ONTARIO'
+      QC: 
+        en: 'QUEBEC'
+        fr: 'QUÉBEC'
+      NB: 
+        en: 'NEW BRUNSWICK'
+        fr: 'NOUVEAU-BRUNSWICK'
+      NS: 
+        en: 'NOVA SCOTIA'
+        fr: 'NOUVELLE-ÉCOSSE'
+      NL: 
+        en: 'NEWFOUNDLAND AND LABRADOR'
+        fr: 'TERRE-NEUVE-ET-LABRADOR'
+      PE: 
+        en: 'PRINCE EDWARD ISLAND'
+        fr: 'ÎLE-DU-PRINCE-ÉDOUARD'
+      YT: 
+        en: 'YUKON'
+        fr: 'YUKON'
+      NT: 
+        en: 'NORTHWEST TERRITORIES'
+        fr: 'TERRITOIRES DU NORD-OUEST'
+      NU: 
+        en: 'NUNAVUT'
+        fr: 'NUNAVUT'
+      all: 
+        en: 'Canada'
+        fr: 'Canada'
+    mainSelection:
+      mainSelection:
+        en: 'selection'
+        fr: 'sélection'
+      energyDemand:
+        en: 'TOTAL DEMAND'
+        fr: 'DEMANDE TOTALE'
+      electricityGeneration:
+        en: 'ELECTRICITY GENERATION'
+        fr: 'PRODUCTION D’ÉLECTRICITÉ'
+      oilProduction:
+        en: 'OIL PRODUCTION'
+        fr: 'PRODUCTION DE PÉTROLE'
+      gasProduction:
+        en: 'GAS PRODUCTION'
+        fr: 'PRODUCTION DE GAZ'      
+    unit:
+      unit:
+        en: 'unit'
+        fr: 'unité'
+      petajoules:
+        en: 'PETAJOULE'
+        fr: 'PÉTAJOULE'
+      gigawattHours:
+        en: 'GW.h'
+        fr: 'GWh'
+      kilobarrelEquivalents:
+        en: 'kBOE/d'
+        fr: 'kBEP/j'
+      thousandCubicMetres:
+        en: 'km³/d'
+        fr: 'km³/j'
+      millionCubicMetres:
+        en: 'Mm³/d'
+        fr: 'Mm³/j'
+      kilobarrels:
+        en: 'kB/d'
+        fr: 'kB/j'
+      cubicFeet:
+        en: 'Mcf/d'
+        fr: 'Mpi³/j'
+    dataset:
+      dataset:
+        en: 'dataset'
+        fr: 'jeu de données'
+      jan2016:
+        en: '2016'
+        fr: '2016'
+      oct2016:
+        en: '2016 UPDATE'
+        fr: 'MISE À JOUR 2016'
+    sector:
+      sector:
+        en: 'sector'
+        fr: 'secteur'
+      residential:
+        en: 'RESIDENTIAL' 
+        fr: 'RÉSIDENTIEL'
+      commercial:
+        en: 'COMMERCIAL'
+        fr: 'COMMERCIAL'
+      industrial:
+        en: 'INDUSTRIAL'
+        fr: 'INDUSTRIEL'
+      transportation:
+        en: 'TRANSPORTATION'
+        fr: 'TRANSPORTS'
+      total:
+        en: 'TOTAL DEMAND'
+        fr: 'DEMANDE TOTALE'
+    source:
+      source:
+        en: 'source'
+        fr: 'source'
+      crudeOil:
+        en: 'CRUDE OIL'
+        fr: 'PÉTROLE BRUT'
+      oilProducts:
+        en: 'OIL PRODUCTS'
+        fr: 'PRODUITS PÉTROLIERS'
+      naturalGas:
+        en: 'NATURAL GAS'
+        fr: 'GAZ NATUREL'
+      coal:
+        en: 'COAL'
+        fr: 'CHARBON'
+      nuclear:
+        en: 'NUCLEAR'
+        fr: 'ÉNERGIE NUCLÉAIRE'
+      bio:
+        en: 'BIOMASS AND BIOFUELS'
+        fr: 'BIOMASSE ET BIOCARBURANTS'
+      electricity:
+        en: 'ELECTRICITY'
+        fr: 'ÉLECTRICITÉ'
+      solarWindGeothermal:
+        en: 'SOLAR/WIND/GEOTHERMAL'
+        fr: 'ÉNERGIES SOLAIRE, ÉOLIENNE ET GÉOTHERMIQUE'
+      hydro:
+        en: 'HYDRO'
+        fr: 'HYDROÉLECTRICITÉ'
+      total:
+        en: 'ALL SOURCES'
+        fr: 'TOUTES LES SOURCES'
+    scenario:
+      scenario:
+        en: 'scenario'
+        fr: 'scénario'
+      reference:
+        en: 'REFERENCE'
+        fr: 'RÉFÉRENCE'
+      low:
+        en: 'LOW PRICE'
+        fr: 'PRIX BAS'
+      high:
+        en: 'HIGH PRICE'
+        fr: 'PRIX ÉLEVÉ'
+      constrained:
+        en: 'CONSTRAINED'
+        fr: 'CAPACITÉ LIMITÉE'
+      noLng:
+        en: 'NO LNG'
+        fr: 'GNL ZÉRO'
+      highLng:
+        en: 'HIGH LNG'
+        fr: 'GNL ÉLEVÉ'
+    year:
+      en: 'year'
+      fr: 'an'
+    value:
+      en: 'value'
+      fr: 'valeur'
 
   forecastLabel: 
     en: 'FORECAST'
