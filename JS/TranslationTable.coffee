@@ -1393,11 +1393,10 @@ module.exports =
     howToImage:
       en: 'Usage instructions'
       fr: "Guide d'utilisation"
-
+      
     playAnimation: 
       en: 'Play'
       fr: 'Lire'
-
     pauseAnimation:
       en: 'Pause'
       fr: 'Pause'
