@@ -358,7 +358,7 @@ module.exports =
       en: """
           <div class="columnLeft">   
             <div class="imageColumnLeft"> 
-              <img class="sectorIcon" src='IMG/sector/residential_selected.svg'>
+              <img class="sectorIcon" src='IMG/sector/residential_selected.svg' alt='House'>
             </div>
             <div class="textColumnRight">  
               <div class="sectionHeader"> RESIDENTIAL </div>
@@ -369,7 +369,7 @@ module.exports =
           </div>
           <div class="columnRight">  
             <div class="imageColumnLeft"> 
-              <img class="sectorIcon" src='IMG/sector/commercial_selected.svg'>
+              <img class="sectorIcon" src='IMG/sector/commercial_selected.svg' alt='Skyscraper'>
             </div>
             <div class="textColumnRight">  
               <div class="sectionHeader"> COMMERCIAL </div>
@@ -381,7 +381,7 @@ module.exports =
           <div class="clearfix"> </div> 
           <div class="columnLeft">  
             <div class="imageColumnLeft"> 
-              <img class="sectorIcon" src='IMG/sector/industrial_selected.svg'>
+              <img class="sectorIcon" src='IMG/sector/industrial_selected.svg' alt='Factory'>
             </div>
             <div class="textColumnRight">  
               <div class="sectionHeader"> INDUSTRIAL </div>
@@ -393,7 +393,7 @@ module.exports =
           </div>          
           <div class="columnRight"> 
             <div class="imageColumnLeft"> 
-              <img class="sectorIcon" src='IMG/sector/transport_selected.svg'>
+              <img class="sectorIcon" src='IMG/sector/transport_selected.svg' alt='Transport truck'>
             </div>
             <div class="textColumnRight">  
               <div class="sectionHeader"> TRANSPORTATION </div>
@@ -407,7 +407,7 @@ module.exports =
       fr: """
           <div class="columnLeft">   
             <div class="imageColumnLeft"> 
-              <img class="sectorIcon" src='IMG/sector/residential_selected.svg'>
+              <img class="sectorIcon" src='IMG/sector/residential_selected.svg' alt='Maison'>
             </div>
             <div class="textColumnRight">  
               <div class="sectionHeader"> RÉSIDENTIEL </div>
@@ -418,7 +418,7 @@ module.exports =
           </div>
           <div class="columnRight">  
             <div class="imageColumnLeft"> 
-              <img class="sectorIcon" src='IMG/sector/commercial_selected.svg'>
+              <img class="sectorIcon" src='IMG/sector/commercial_selected.svg' alt='Gratte-ciel'>
             </div>
             <div class="textColumnRight">  
               <div class="sectionHeader"> COMMERCIAL </div>
@@ -430,7 +430,7 @@ module.exports =
           <div class="clearfix"> </div> 
           <div class="columnLeft">  
             <div class="imageColumnLeft"> 
-              <img class="sectorIcon" src='IMG/sector/industrial_selected.svg'>
+              <img class="sectorIcon" src='IMG/sector/industrial_selected.svg' alt='Usine'>
             </div>
             <div class="textColumnRight">  
               <div class="sectionHeader"> INDUSTRIEL </div>
@@ -442,7 +442,7 @@ module.exports =
           </div>          
           <div class="columnRight"> 
             <div class="imageColumnLeft"> 
-              <img class="sectorIcon" src='IMG/sector/transport_selected.svg'>
+              <img class="sectorIcon" src='IMG/sector/transport_selected.svg' alt='Camion'>
             </div>
             <div class="textColumnRight">  
               <div class="sectionHeader"> TRANSPORTS </div>
@@ -1288,12 +1288,14 @@ module.exports =
     email:
       en: "Share by email"
       fr: "Partager par courriel"
+
     questionMark_ColourBG:
       en: "How to Use"
       fr: "Comment explorer la visualization"
     explanationIcon_ColourBG:
       en: "About This Visualization"
       fr: "Renseignements sur cette visualisation"
+
     electricity_unselected:
       en: "Electricity Generation Unselected"
       fr: "Production d’électricité non sélectionné"
@@ -1311,13 +1313,14 @@ module.exports =
       fr: "Production de gaz non sélectionné"
     gas_selected:
       en: "Natural Gas Production Selected"
-      fr: "Production de gaz sélectionné"
+      fr: "Production de gaz industriel"
     totalDemand_unselected:
       en: "Total Energy Demand Unselected"
       fr: "Consommation totale d’énergie non sélectionné"
     totalDemand_selected:
       en: "Total Energy Demand Selected"
       fr: "Consommation totale d’énergie sélectionné"
+
     selected:
       en: "Selected"
       fr: "Sélectionné"
@@ -1360,5 +1363,31 @@ module.exports =
       en: 'About the "view by" options'
       fr: 'Renseignements sur les options «visualiser par»'
 
+    sectors:
+      residentialSelected:
+        en: 'Residential sector selected'
+        fr: 'Secteur résidentiel sélectionné'
+      commercialSelected:
+        en: 'Commercial sector selected'
+        fr: 'Secteur commercial sélectionné'
+      industrialSelected:
+        en: 'Industrial sector selected'
+        fr: 'Secteur industriel sélectionné'
+      transportationSelected:
+        en: 'Transportation sector selected'
+        fr: 'Secteur des transports sélectionné'
+
+      residentialUnselected:
+        en: 'Residential sector unselected'
+        fr: 'Secteur résidentiel non sélectionné'
+      commercialUnselected:
+        en: 'Commercial sector unselected'
+        fr: 'Secteur commercial non sélectionné'
+      industrialUnselected:
+        en: 'Industrial sector unselected'
+        fr: 'Secteur industriel non sélectionné'
+      transportationUnselected:
+        en: 'Transportation sector unselected'
+        fr: 'Secteur des transports non sélectionné'
 
 

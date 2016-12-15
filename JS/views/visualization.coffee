@@ -171,26 +171,30 @@ class visualization
       {
         title: Tr.selectorTooltip.sectorSelector.residentialSectorButton[@app.language]  
         sectorName: 'residential'
-        image: if @config.sector ==  'residential' then 'IMG/sector/residential_selected.svg' else 'IMG/sector/residential_unselected.svg'
+        image: if @config.sector == 'residential' then 'IMG/sector/residential_selected.svg' else 'IMG/sector/residential_unselected.svg'
         wrapperClass: 'sectorSelectorButton sectorImageButton topLeftSector'
+        altText: if @config.sector == 'residential' then Tr.altText.sectors.residentialSelected[@app.language] else Tr.altText.sectors.residentialUnselected[@app.language]
       }
       {
         title: Tr.selectorTooltip.sectorSelector.commercialSectorButton[@app.language]
         sectorName: 'commercial'
         image: if @config.sector ==  'commercial' then 'IMG/sector/commercial_selected.svg' else 'IMG/sector/commercial_unselected.svg'
         wrapperClass: 'sectorSelectorButton sectorImageButton topRightSector'
+        altText: if @config.sector == 'commercial' then Tr.altText.sectors.commercialSelected[@app.language] else Tr.altText.sectors.commercialUnselected[@app.language]
       }
       {
         title: Tr.selectorTooltip.sectorSelector.industrialSectorButton[@app.language]
         sectorName: 'industrial'
         image: if @config.sector == 'industrial' then 'IMG/sector/industrial_selected.svg' else 'IMG/sector/industrial_unselected.svg'
         wrapperClass: 'sectorSelectorButton sectorImageButton bottomLeftSector'
+        altText: if @config.sector == 'industrial' then Tr.altText.sectors.industrialSelected[@app.language] else Tr.altText.sectors.industrialUnselected[@app.language]
       }
       {
         title: Tr.selectorTooltip.sectorSelector.transportSectorButton[@app.language]
         sectorName: 'transportation'
         image: if @config.sector ==  'transportation' then 'IMG/sector/transport_selected.svg' else 'IMG/sector/transport_unselected.svg'
         wrapperClass: 'sectorSelectorButton sectorImageButton bottomRightSector'
+        altText: if @config.sector == 'transportation' then Tr.altText.sectors.transportationSelected[@app.language] else Tr.altText.sectors.transportationUnselected[@app.language]
       }
     ]
 
@@ -371,7 +375,7 @@ class visualization
         if d.sectorName == 'total'
           "<button class='#{d.buttonClass}' type='button' title='#{d.title}'>#{d.label}</button>"
         else
-          "<img src=#{d.image} title='#{d.title}'>"
+          "<img src=#{d.image} title='#{d.title}' alt='#{d.altText}'>"
 
       sectorsSelectors.exit().remove()
   
