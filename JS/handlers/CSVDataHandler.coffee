@@ -21,7 +21,6 @@ Constants = require '../Constants.coffee'
 
 requestCounter = 0
 
-
 CSVDataHandler = (req, res) ->
 
   Promise.all(ServerData.loadPromises).then ->
@@ -36,10 +35,11 @@ CSVDataHandler = (req, res) ->
     @unit = req.query.unit
     @page = req.query.page
     @dataset = req.query.dataset
+    @viewBy = req.query.viewBy
     Logger.info "csv_data (request C#{counter}): #{query}"
     csvData = null
     results = ''
-
+    @language = 'fr'
     providers = {}
     for dataset in Constants.datasets
       # TODO: the 'dataset' objects on ServerData have a lot more than just
@@ -51,6 +51,17 @@ CSVDataHandler = (req, res) ->
     serverApp.setLanguage req.query.language
 
     params = PrepareQueryParams queryString.parse(query)
+
+    @Keys =
+      selectionKey: Tr.csvData['mainSelection']['mainSelection'][@language]
+      provinceKey: Tr.csvData['province']['province'][@language]
+      scenarioKey: Tr.csvData['scenario']['scenario'][@language]
+      scetorKey: Tr.csvData['sector']['sector'][@language]
+      sourceKey: Tr.csvData['source']['source'][@language]
+      yearKey: Tr.csvData['year'][@language]
+      valueKey: Tr.csvData['value'][@language]
+      unitKey: Tr.csvData['unit']['unit'][@language]
+      datasetKey: Tr.csvData['dataset']['dataset'][@language]
 
     # Parse the parameters with a configuration object, and then hand them off to a
     # visualization object. The visualizations render the graphs in their constructors.
@@ -104,9 +115,8 @@ CSVDataHandler = (req, res) ->
     #CONVERT DATA TO CSV AND ASSIGN IT TO RESPONSE OBJECT
     if csvData?
       results = d3.csv.format csvData
-      refinedResults = refineResults results
       res.attachment 'energyFutures.csv'
-      res.write refinedResults
+      res.write results
       res.end()
       Logger.debug "csv data request (request C#{counter}) Time: #{Date.now() - time}"
     
@@ -123,13 +133,11 @@ generateArrayFromObject = (csvDataObject, viz) ->
   switch viz
     when "viz1", "viz4"
       for k,v of csvDataObject
-        v = filterViz1andViz4 v
-        hashArray = hashArray.concat v
+        hashArray = hashArray.concat filterViz1andViz4 v
       break
     when "viz2"
       for k,v of csvDataObject
-        v = filterViz2 v
-        hashArray = hashArray.concat v
+        hashArray = hashArray.concat filterViz2 v
       break
     when "viz3"
       for tempChild in csvDataObject.children
@@ -140,105 +148,70 @@ generateArrayFromObject = (csvDataObject, viz) ->
   return hashArray
   
 filterViz1andViz4 = (csvDataObject) ->
+  filteredData = []
+  
   for k,v of csvDataObject
-    delete v.sector
-    delete v.source
-    delete v.unit
-  return csvDataObject
+    item = {}
+
+    if v.value == 0 then continue
+
+    item[Keys.selectionKey] = Tr.csvData['mainSelection'][@mainSelection][@language]
+    if v.province? then item[Keys.provinceKey] = Tr.csvData['province'][v.province][@language]
+    if v.scenario? then item[Keys.scenarioKey] = Tr.csvData['scenario'][v.scenario][@language]
+    if v.year? then item[Keys.yearKey] = v.year
+    if v.value? then item[Keys.valueKey] = v.value
+    item[Keys.unitKey] = Tr.csvData['unit'][@unit][@language]
+    item[Keys.datasetKey] = Tr.csvData['dataset'][@dataset][@language]
+
+    filteredData.push item
+
+  return filteredData
 
 filterViz2 = (csvDataObject) ->
+  filteredData = []
+
   for k,v of csvDataObject
-    delete v.unit
-  return csvDataObject
+    item = {}
+
+    if v.value == 0 then continue
+
+    if v.province? then item[Keys.provinceKey] = Tr.csvData['province'][v.province][@language]
+    if v.sector? then item[Keys.scetorKey] = Tr.csvData['sector'][v.sector][@language]
+    if v.source? then item[Keys.sourceKey] = Tr.csvData['source'][v.source][@language]
+    if v.scenario? then item[Keys.scenarioKey] = Tr.csvData['scenario'][v.scenario][@language]
+    if v.year? then item[Keys.yearKey] = v.year
+    if v.value? then item[Keys.valueKey] = v.value
+    item[Keys.unitKey] = Tr.csvData['unit'][@unit][@language]
+    item[Keys.datasetKey] = Tr.csvData['dataset'][@dataset][@language]
+  
+    filteredData.push item
+
+  return filteredData
 
 filterViz3 = (hashArray) ->
+  filteredData = []
+
   for k,v of hashArray
-    v.province = v.name.substring(v.name.length - 2)
-    delete v.name
-    delete v.id
-  return hashArray
+    item = {}
 
-translateResults = (lines) ->
-  i = 0
-  comma = ','
-  
-  # Get the indices of each of the columns.
-  valueIndex = lines[0].split(comma).indexOf('value')
-  sizeIndex = lines[0].split(comma).indexOf('size')
-  yearIndex = lines[0].split(comma).indexOf('year')
-  provinceIndex = lines[0].split(comma).indexOf('province')
-  sectorIndex = lines[0].split(comma).indexOf('sector')
-  sourceIndex = lines[0].split(comma).indexOf('source')
-  scenarioIndex = lines[0].split(comma).indexOf('scenario')
-  
-  # Translate numerical columns.
-  fields = lines[0].split comma
-  if valueIndex > -1 then fields[valueIndex] = Tr.csvData['value'][@language]
-  if sizeIndex > -1 then fields[sizeIndex] = Tr.csvData['value'][@language]
-  if yearIndex > -1 then fields[yearIndex] = Tr.csvData['year'][@language]
-  lines[0] = fields.join()
+    if v.size == 1 then continue
 
-  # translate data.
-  while i < lines.length
-    fields = lines[i].split comma
+    if @viewBy == 'province'
+      province = v.name.substring(v.name.length - 2)
+      item[Keys.provinceKey] = Tr.csvData['province'][province][@language]
+      item[Keys.sourceKey] = Tr.csvData['source'][v.source][@language]
+    else
+      source = v.id.substring(2)
+      item[Keys.provinceKey] = Tr.csvData['province'][v.source][@language]
+      item[Keys.sourceKey] = Tr.csvData['source'][source][@language]
+
+    item[Keys.valueKey] = v.size
+    item[Keys.unitKey] = Tr.csvData['unit'][@unit][@language]
+    item[Keys.datasetKey] = Tr.csvData['dataset'][@dataset][@language]
     
-    if provinceIndex > -1 then fields[provinceIndex] = Tr.csvData['province'][fields[provinceIndex]][@language]
-    if sectorIndex > -1 then fields[sectorIndex] = Tr.csvData['sector'][fields[sectorIndex]][@language]
-    if sourceIndex > -1 then fields[sourceIndex] = Tr.csvData['source'][fields[sourceIndex]][@language]
-    if scenarioIndex > -1 then fields[scenarioIndex] = Tr.csvData['scenario'][fields[scenarioIndex]][@language]
-    
-    lines[i] = fields.join()
-    
-    i++
+    filteredData.push item
 
-  lines
-
-refineResults = (csvData) ->
-  filteredData = ''
-
-  newLine = '\n'
-  comma = ','
-
-  if @mainSelection? then mainSelectionField = Tr.csvData['mainSelection'][@mainSelection][@language] + ','
-  unitField = ',' + Tr.csvData['unit'][@unit][@language]
-  datasetField = ',' + Tr.csvData['dataset'][@dataset][@language]
-
-  lines = csvData.split newLine
-  lines = translateResults lines
-
-  if lines.length <= 0 then return ''
-
-  # Setup data labels.
-  switch @page
-    when 'viz1', 'viz4'
-      filteredData += Tr.csvData['mainSelection']['mainSelection'][@language] + ',' + lines[0] + ',' + Tr.csvData['unit']['unit'][@language] + ',' + Tr.csvData['dataset']['dataset'][@language]+ newLine
-      break
-    when 'viz2'
-      filteredData += lines[0] + ',' + Tr.csvData['unit']['unit'][@language] + ',' + Tr.csvData['dataset']['dataset'][@language]+ newLine
-      break
-    when 'viz3'
-      filteredData += lines[0] + ',' + Tr.csvData['unit']['unit'][@language] + ',' + Tr.csvData['dataset']['dataset'][@language]+ newLine
-
-  # Determine the index of the measurement value.
-  valueIndex = lines[0].split(comma).indexOf('value')
-
-  i = 1
-  while i < lines.length
-    fields = lines[i].split comma
-
-    # Remove rows with zeroed (or one) values, and
-    # add the missing attributes to each row.
-    if fields[valueIndex] != '0' && fields[valueIndex] != '1'
-      switch @page
-        when 'viz1', 'viz4'
-          filteredData += mainSelectionField + lines[i] + unitField + datasetField + newLine
-        when 'viz2'
-          filteredData += lines[i] + unitField + datasetField + newLine
-        when 'viz3'
-          filteredData += lines[i] + unitField + datasetField + newLine
-    i++
-
-  filteredData
+  return filteredData
 
 errorHandler = (req, res, error, code, counter) ->
 
