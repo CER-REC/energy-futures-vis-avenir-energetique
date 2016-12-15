@@ -780,7 +780,7 @@ class Visualization2 extends visualization
       for source in @sourceMenuData()
         contentString = """
           <div class="sourceLabel sourceLabel#{source.key}"> 
-            <img class="sourceIcon" src="#{@colouredSourceIconsDictionary()[source.key]}">
+            <img class="sourceIcon" src="#{@colouredSourceIconsDictionary()[source.key]}" alt='#{Tr.altText.sources[source.key][@app.language]}'>
             <h6> #{Tr.sourceSelector.sources[source.key][@app.language]} </h6> 
             <div class="clearfix"> </div>
             <p> #{Tr.sourceSelector.sourceSelectorHelp[source.key][@app.language]} </p>

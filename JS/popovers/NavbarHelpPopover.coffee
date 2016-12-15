@@ -21,6 +21,7 @@ class NavbarHelpPopover
       imageBUrl: options.imageBUrl
       nextImageAltText: Tr.altText.nextImage[@app.language]
       previousImageAltText: Tr.altText.previousImage[@app.language]
+      imageAltText: Tr.altText.howToImage[@app.language]
 
     # Set up event handlers to swap between the two help images
     d3.select('.howToBackButton').on 'click', =>

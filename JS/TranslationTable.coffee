@@ -1390,4 +1390,44 @@ module.exports =
         en: 'Transportation sector unselected'
         fr: 'Secteur des transports non sélectionné'
 
+    howToImage:
+      en: 'Usage instructions'
+      fr: "Guide d'utilisation"
+
+    playAnimation: 
+      en: 'Play'
+      fr: 'Lire'
+
+    pauseAnimation:
+      en: 'Pause'
+      fr: 'Pause'
+
+    sources: 
+
+      hydro:
+        en: 'Water'
+        fr: 'Eau'
+      solarWindGeothermal:
+        en: 'Sun and wind turbine'
+        fr: 'Le Soleil avec une éolienne'
+      coal:
+        en: 'Cart with coal'
+        fr: 'Charette avec charbon'
+      naturalGas:
+        en: 'Natural gas flame'
+        fr: 'Flamme gazière'
+      bio:
+        en: 'Branch with leaves'
+        fr: 'Branche avec feuilles'
+      nuclear: 
+        en: 'Atom'
+        fr: 'Atome'
+      oilProducts:
+        en: 'Gas pump'
+        fr: 'Pompe à essence'
+      electricity: 
+        en: 'Power cable'
+        fr: 'Câble électrique'
+
+
 
