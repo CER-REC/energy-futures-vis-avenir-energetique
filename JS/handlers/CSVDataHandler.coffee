@@ -55,7 +55,7 @@ CSVDataHandler = (req, res) ->
       selectionKey: Tr.csvData['mainSelection']['mainSelection'][@language]
       provinceKey: Tr.csvData['province']['province'][@language]
       scenarioKey: Tr.csvData['scenario']['scenario'][@language]
-      scetorKey: Tr.csvData['sector']['sector'][@language]
+      sectorKey: Tr.csvData['sector']['sector'][@language]
       sourceKey: Tr.csvData['source']['source'][@language]
       yearKey: Tr.csvData['year'][@language]
       valueKey: Tr.csvData['value'][@language]
@@ -175,7 +175,7 @@ filterViz2 = (csvDataObject) ->
     if v.value == 0 then continue
 
     if v.province? then item[Keys.provinceKey] = Tr.csvData['province'][v.province][@language]
-    if v.sector? then item[Keys.scetorKey] = Tr.csvData['sector'][v.sector][@language]
+    if v.sector? then item[Keys.sectorKey] = Tr.csvData['sector'][v.sector][@language]
     if v.source? then item[Keys.sourceKey] = Tr.csvData['source'][v.source][@language]
     if v.scenario? then item[Keys.scenarioKey] = Tr.csvData['scenario'][v.scenario][@language]
     if v.year? then item[Keys.yearKey] = v.year
@@ -193,8 +193,17 @@ filterViz3 = (hashArray) ->
   for k,v of hashArray
     item = {}
 
+    # Remove entries corresponding to empty bubbles (empty bubbles 
+    # have a radius of 1).
     if v.size == 1 then continue
 
+    # TODO: Visualization 3 data format
+    # T data fields for visualization 3 are formatted differently based on
+    # whether it is viewed by province or source. 
+    # If data is viewed by source, the field 'source' contains the province
+    # data, and the name field is in the format 'province source'.
+    # If the data is viewed by province, the field 'source' contains the
+    # source data, and the name field is in the format 'source province'
     if @viewBy == 'province'
       province = v.name.substring(v.name.length - 2)
       item[Keys.provinceKey] = Tr.csvData['province'][province][@language]
