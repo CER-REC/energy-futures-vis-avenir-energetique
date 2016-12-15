@@ -1334,8 +1334,31 @@ module.exports =
     previousImage:
       en: 'Previous Image'
       fr: "L'image précédente"
-    
 
+    mainSelectionHelp:
+      en: 'About the main selection'
+      fr: 'Renseignements sur la sélection principale'
+    sectorsHelp:
+      en: 'About the sectors'
+      fr: 'Renseignements sur les secteurs'
+    unitsHelp:
+      en: 'About the units'
+      fr: 'Renseignements sur les unités'
+    datasetsHelp:
+      en: "About the \"Canada's Energy Future\" report data sets"
+      fr: "Renseignements sur les séries de données des rapports «Avenir énergétique du Canada»"
+    scenariosHelp:
+      en: 'About the scenarios'
+      fr: 'Renseignements sur les scénarios'
+    regionsHelp:
+      en: 'About the regions'
+      fr: 'Renseignements sur les régions'
+    sourcesHelp:
+      en: 'About the energy sources'
+      fr: 'Renseignements sur les sources d’énergie'
+    viewByHelp:
+      en: 'About the "view by" options'
+      fr: 'Renseignements sur les options «visualiser par»'
 
 
 

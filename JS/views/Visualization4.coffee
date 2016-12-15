@@ -69,11 +69,17 @@ class Visualization4
       selectRegionLabel: Tr.regionSelector.selectRegionLabel[@app.language]
       svgStylesheet: SvgStylesheetTemplate
 
+      altText: 
+        mainSelectionHelp: Tr.altText.mainSelectionHelp[@app.language]
+        unitsHelp: Tr.altText.unitsHelp[@app.language]
+        datasetsHelp: Tr.altText.datasetsHelp[@app.language]
+        scenariosHelp: Tr.altText.scenariosHelp[@app.language]
+
     @datasetHelpPopover = new ControlsHelpPopover(@app)
-    @mainSelectorHelpPopover = new ControlsHelpPopover()
-    @unitsHelpPopover = new ControlsHelpPopover()
-    @scenariosHelpPopover = new ControlsHelpPopover()
-    @provincesHelpPopover = new ControlsHelpPopover()
+    @mainSelectorHelpPopover = new ControlsHelpPopover(@app)
+    @unitsHelpPopover = new ControlsHelpPopover(@app)
+    @scenariosHelpPopover = new ControlsHelpPopover(@app)
+    @provincesHelpPopover = new ControlsHelpPopover(@app)
 
     d3.select(@app.window.document).select '.datasetSelectorHelpButton'
       .on 'click', =>
@@ -84,7 +90,7 @@ class Visualization4
         else
           @app.popoverManager.showPopover @datasetHelpPopover,
             outerClasses: 'vizModal floatingPopover datasetSelectorHelp'
-            innerClasses: 'viz1HelpTitle'
+            innerClasses: 'viz4HelpTitle'
             title: Tr.datasetSelector.datasetSelectorHelpTitle[@app.language]
             content: Tr.datasetSelector.datasetSelectorHelp[@app.language]
             attachmentSelector: '.datasetSelectorGroup'

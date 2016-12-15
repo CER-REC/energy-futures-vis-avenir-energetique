@@ -37,6 +37,12 @@ class Visualization2 extends visualization
       selectSourceLabel: Tr.sourceSelector.selectSourceLabel[@app.language]
       svgStylesheet: SvgStylesheetTemplate
 
+      altText: 
+        sectorsHelp: Tr.altText.sectorsHelp[@app.language]
+        unitsHelp: Tr.altText.unitsHelp[@app.language]
+        datasetsHelp: Tr.altText.datasetsHelp[@app.language]
+        scenariosHelp: Tr.altText.scenariosHelp[@app.language]
+
     @datasetHelpPopover = new ControlsHelpPopover(@app)
     @sectorsSelectorHelpPopover = new ControlsHelpPopover(@app)
     @unitsHelpPopover = new ControlsHelpPopover(@app)
@@ -53,7 +59,7 @@ class Visualization2 extends visualization
         else
           @app.popoverManager.showPopover @datasetHelpPopover,
             outerClasses: 'vizModal floatingPopover datasetSelectorHelp'
-            innerClasses: 'viz1HelpTitle'
+            innerClasses: 'viz2HelpTitle'
             title: Tr.datasetSelector.datasetSelectorHelpTitle[@app.language]
             content: Tr.datasetSelector.datasetSelectorHelp[@app.language]
             attachmentSelector: '.datasetSelectorGroup'
