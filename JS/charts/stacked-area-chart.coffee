@@ -82,9 +82,6 @@ class stackedAreaChart extends stackedBarChart
           .attr
             class: 'vizPresentLinearGradient'
             gradientUnits: "objectBoundingBox"
-            cx: 0
-            cy: 0
-            r: "100%"
             id: (d) -> "viz2gradPresent" + d.key
       enterPresentGrads.append("stop")
           .attr
@@ -111,9 +108,6 @@ class stackedAreaChart extends stackedBarChart
           .attr
             class: 'vizFutureLinearGradient'
             gradientUnits: "objectBoundingBox"
-            cx: 0
-            cy: 0
-            r: "100%"
             id: (d) -> "viz2gradFuture" + d.key
 
       enterFutureGrads.append("stop")

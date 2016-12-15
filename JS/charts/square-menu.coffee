@@ -57,8 +57,8 @@ class squareMenu extends basicMenu
       )
       @_drag.on("drag", (d,i) =>
         # bring to front
-        @_group.select("#menuRect"+ i).node().parentNode.parentNode.appendChild(@_group.select("#menuRect"+ i).node().parentNode)
-        @_group.select("#menuRect"+ i).attr("transform", (d,i) ->
+        @_group.select(".menuRect"+ i).node().parentNode.parentNode.appendChild(@_group.select(".menuRect"+ i).node().parentNode)
+        @_group.select(".menuRect"+ i).attr("transform", (d,i) ->
             "translate(0, #{d3.event.y})"
         )
         if !(@currentSpot?) or (@currentSpot == -1) then @currentSpot = i
@@ -84,7 +84,7 @@ class squareMenu extends basicMenu
           else
             @_lastDirection = @direction
 
-          @_group.select("#menuRect"+ newpos).attr("transform", (d,i) ->
+          @_group.select(".menuRect"+ newpos).attr("transform", (d,i) ->
               "translate(0, #{distance})"
           )
 
@@ -205,9 +205,8 @@ class squareMenu extends basicMenu
     @_group.selectAll '.menuItem'
       .append "image"
         .attr
-          class: 'pointerCursor'
-          id: (d, i) ->
-            "menuRect" + i
+          class: (d, i) ->
+            "pointerCursor menuRect" + i
           "xlink:href":   (d) -> d.img
           x: '0px'
           width: @_boxSize

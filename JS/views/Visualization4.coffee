@@ -1134,9 +1134,6 @@ class Visualization4
         .attr
           class:'presentLinearGradient'
           gradientUnits: "objectBoundingBox"
-          cx: 0
-          cy: 0
-          r: "100%"
           id: (d) -> "viz4gradPresent" + d.key
 
     enterGrads.append("stop")
@@ -1164,9 +1161,6 @@ class Visualization4
         .attr
           class:'futureLinearGradient'
           gradientUnits: "objectBoundingBox"
-          cx: 0
-          cy: 0
-          r: "100%"
           id: (d) -> "viz4gradFuture" + d.key
 
     enterFutureGrads.append("stop")
