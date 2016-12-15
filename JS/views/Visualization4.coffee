@@ -389,24 +389,28 @@ class Visualization4
         label: Tr.mainSelector.totalDemandButton[@app.language]
         image: if @config.mainSelection == 'energyDemand' then 'IMG/main_selection/totalDemand_selected.png' else 'IMG/main_selection/totalDemand_unselected.png'
         selectorName: 'energyDemand'
+        altText: if @config.mainSelection == 'energyDemand' then Tr.altText.totalDemand_selected[@app.language] else Tr.altText.totalDemand_unselected[@app.language] 
       }
       {
         title: Tr.selectorTooltip.mainSelector.electricityGenerationButton[@app.language]
         label: Tr.mainSelector.electricityGenerationButton[@app.language]
         image: if @config.mainSelection == 'electricityGeneration' then 'IMG/main_selection/electricity_selected.png' else 'IMG/main_selection/electricity_unselected.png'
         selectorName: 'electricityGeneration'
+        altText: if @config.mainSelection == 'electricityGeneration' then Tr.altText.electricity_selected[@app.language] else Tr.altText.electricity_unselected[@app.language] 
       }
       {
         title: Tr.selectorTooltip.mainSelector.oilProductionButton[@app.language]
         label: Tr.mainSelector.oilProductionButton[@app.language]
         image: if @config.mainSelection == 'oilProduction' then 'IMG/main_selection/oil_selected.png' else 'IMG/main_selection/oil_unselected.png'
         selectorName: 'oilProduction'
+        altText: if @config.mainSelection == 'oilProduction' then Tr.altText.oil_selected[@app.language] else Tr.altText.oil_unselected[@app.language] 
       }
       {
         title: Tr.selectorTooltip.mainSelector.gasProductionButton[@app.language]
         label: Tr.mainSelector.gasProductionButton[@app.language]
         image: if @config.mainSelection == 'gasProduction' then 'IMG/main_selection/gas_selected.png' else 'IMG/main_selection/gas_unselected.png'
         selectorName: 'gasProduction'
+        altText: if @config.mainSelection == 'gasProduction' then Tr.altText.gas_selected[@app.language] else Tr.altText.gas_unselected[@app.language] 
       }
     ]
 
@@ -860,7 +864,7 @@ class Visualization4
 
 
     mainSelectors.html (d) ->
-      "<img src=#{d.image} class='mainSelectorImage' title='#{d.title}'>
+      "<img src=#{d.image} class='mainSelectorImage' title='#{d.title}' alt='#{d.altText}'>
        <span class='mainSelectorLabel' title='#{d.title}'>#{d.label}</span>"
 
 
