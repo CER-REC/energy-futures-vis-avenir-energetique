@@ -30,12 +30,7 @@ CSVDataHandler = (req, res) ->
     query = url.parse(req.url).search
     requestCounter++
     counter = requestCounter
-    @language = req.query.language
-    @mainSelection = req.query.mainSelection
-    @unit = req.query.unit
-    @page = req.query.page
-    @dataset = req.query.dataset
-    @viewBy = req.query.viewBy
+    language = req.query.language
     Logger.info "csv_data (request C#{counter}): #{query}"
     csvData = null
     results = ''
@@ -51,16 +46,16 @@ CSVDataHandler = (req, res) ->
 
     params = PrepareQueryParams queryString.parse(query)
 
-    @Keys =
-      selectionKey: Tr.csvData['mainSelection']['mainSelection'][@language]
-      provinceKey: Tr.csvData['province']['province'][@language]
-      scenarioKey: Tr.csvData['scenario']['scenario'][@language]
-      sectorKey: Tr.csvData['sector']['sector'][@language]
-      sourceKey: Tr.csvData['source']['source'][@language]
-      yearKey: Tr.csvData['year'][@language]
-      valueKey: Tr.csvData['value'][@language]
-      unitKey: Tr.csvData['unit']['unit'][@language]
-      datasetKey: Tr.csvData['dataset']['dataset'][@language]
+    Keys =
+      selectionKey: Tr.csvData['mainSelection']['mainSelection'][language]
+      provinceKey: Tr.csvData['province']['province'][language]
+      scenarioKey: Tr.csvData['scenario']['scenario'][language]
+      sectorKey: Tr.csvData['sector']['sector'][language]
+      sourceKey: Tr.csvData['source']['source'][language]
+      yearKey: Tr.csvData['year'][language]
+      valueKey: Tr.csvData['value'][language]
+      unitKey: Tr.csvData['unit']['unit'][language]
+      datasetKey: Tr.csvData['dataset']['dataset'][language]
 
     # Parse the parameters with a configuration object, and then hand them off to a
     # visualization object. The visualizations render the graphs in their constructors.
@@ -79,17 +74,17 @@ CSVDataHandler = (req, res) ->
           else 
             mainSelectionErrorHandler()
             return
-        csvData = generateArrayFromObject(tempData, "viz1")
+        csvData = generateArrayFromObject(tempData, "viz1", config, Keys)
 
       when 'viz2'
         config = new Visualization2Configuration(serverApp, params)
         tempData = serverApp.providers[config.dataset].energyConsumptionProvider.dataForViz2 config
-        csvData = generateArrayFromObject(tempData, "viz2")
+        csvData = generateArrayFromObject(tempData, "viz2", config, Keys)
 
       when 'viz3'
         config = new Visualization3Configuration(serverApp, params)
         tempData = serverApp.providers[config.dataset].electricityProductionProvider.dataForViz3(config)
-        csvData = generateArrayFromObject(tempData, "viz3")
+        csvData = generateArrayFromObject(tempData, "viz3", config, Keys)
 
       when 'viz4'
         config = new Visualization4Configuration(serverApp, params)
@@ -105,7 +100,7 @@ CSVDataHandler = (req, res) ->
           else 
             mainSelectionErrorHandler()
             return
-        csvData = generateArrayFromObject(tempData, "viz4")   
+        csvData = generateArrayFromObject(tempData, "viz4", config, Keys)   
 
       else 
         errorHandler req, res, new Error("Visualization 'page' parameter not specified or not recognized."), 400, counter
@@ -127,26 +122,26 @@ mainSelectionErrorHandler = ->
   errorHandler req, res, new Error("Visualization 'mainSelection' parameter not specified or not recognized."), 400, counter
   return
 
-generateArrayFromObject = (csvDataObject, viz) ->
+generateArrayFromObject = (csvDataObject, viz, config, Keys) ->
   hashArray = []
   switch viz
     when "viz1", "viz4"
       for k,v of csvDataObject
-        hashArray = hashArray.concat filterViz1andViz4 v
+        hashArray = hashArray.concat filterViz1andViz4(v, config, Keys)
       break
     when "viz2"
       for k,v of csvDataObject
-        hashArray = hashArray.concat filterViz2 v
+        hashArray = hashArray.concat filterViz2(v, config, Keys)
       break
     when "viz3"
       for tempChild in csvDataObject.children
         hashArray = hashArray.concat tempChild.children
-      hashArray = filterViz3 hashArray
+      hashArray = filterViz3(hashArray, config, Keys)
       break
   
   return hashArray
   
-filterViz1andViz4 = (csvDataObject) ->
+filterViz1andViz4 = (csvDataObject, config, Keys) ->
   filteredData = []
   
   for k,v of csvDataObject
@@ -154,19 +149,19 @@ filterViz1andViz4 = (csvDataObject) ->
 
     if v.value == 0 then continue
 
-    item[Keys.selectionKey] = Tr.csvData['mainSelection'][@mainSelection][@language]
-    if v.province? then item[Keys.provinceKey] = Tr.csvData['province'][v.province][@language]
-    if v.scenario? then item[Keys.scenarioKey] = Tr.csvData['scenario'][v.scenario][@language]
+    item[Keys.selectionKey] = Tr.csvData['mainSelection'][config.mainSelection][config.language]
+    if v.province? then item[Keys.provinceKey] = Tr.csvData['province'][v.province][config.language]
+    if v.scenario? then item[Keys.scenarioKey] = Tr.csvData['scenario'][v.scenario][config.language]
     if v.year? then item[Keys.yearKey] = v.year
     if v.value? then item[Keys.valueKey] = v.value
-    item[Keys.unitKey] = Tr.csvData['unit'][@unit][@language]
-    item[Keys.datasetKey] = Tr.csvData['dataset'][@dataset][@language]
+    item[Keys.unitKey] = Tr.csvData['unit'][config.unit][config.language]
+    item[Keys.datasetKey] = Tr.csvData['dataset'][config.dataset][config.language]
 
     filteredData.push item
 
   return filteredData
 
-filterViz2 = (csvDataObject) ->
+filterViz2 = (csvDataObject, config, Keys) ->
   filteredData = []
 
   for k,v of csvDataObject
@@ -174,20 +169,20 @@ filterViz2 = (csvDataObject) ->
 
     if v.value == 0 then continue
 
-    if v.province? then item[Keys.provinceKey] = Tr.csvData['province'][v.province][@language]
-    if v.sector? then item[Keys.sectorKey] = Tr.csvData['sector'][v.sector][@language]
-    if v.source? then item[Keys.sourceKey] = Tr.csvData['source'][v.source][@language]
-    if v.scenario? then item[Keys.scenarioKey] = Tr.csvData['scenario'][v.scenario][@language]
+    if v.province? then item[Keys.provinceKey] = Tr.csvData['province'][v.province][config.language]
+    if v.sector? then item[Keys.sectorKey] = Tr.csvData['sector'][v.sector][config.language]
+    if v.source? then item[Keys.sourceKey] = Tr.csvData['source'][v.source][config.language]
+    if v.scenario? then item[Keys.scenarioKey] = Tr.csvData['scenario'][v.scenario][config.language]
     if v.year? then item[Keys.yearKey] = v.year
     if v.value? then item[Keys.valueKey] = v.value
-    item[Keys.unitKey] = Tr.csvData['unit'][@unit][@language]
-    item[Keys.datasetKey] = Tr.csvData['dataset'][@dataset][@language]
+    item[Keys.unitKey] = Tr.csvData['unit'][config.unit][config.language]
+    item[Keys.datasetKey] = Tr.csvData['dataset'][config.dataset][config.language]
   
     filteredData.push item
 
   return filteredData
 
-filterViz3 = (hashArray) ->
+filterViz3 = (hashArray, config, Keys) ->
   filteredData = []
 
   for k,v of hashArray
@@ -204,18 +199,18 @@ filterViz3 = (hashArray) ->
     # data, and the name field is in the format 'province source'.
     # If the data is viewed by province, the field 'source' contains the
     # source data, and the name field is in the format 'source province'
-    if @viewBy == 'province'
+    if config.viewBy == 'province'
       province = v.name.substring(v.name.length - 2)
-      item[Keys.provinceKey] = Tr.csvData['province'][province][@language]
-      item[Keys.sourceKey] = Tr.csvData['source'][v.source][@language]
+      item[Keys.provinceKey] = Tr.csvData['province'][province][config.language]
+      item[Keys.sourceKey] = Tr.csvData['source'][v.source][config.language]
     else
       source = v.id.substring(2)
-      item[Keys.provinceKey] = Tr.csvData['province'][v.source][@language]
-      item[Keys.sourceKey] = Tr.csvData['source'][source][@language]
+      item[Keys.provinceKey] = Tr.csvData['province'][v.source][config.language]
+      item[Keys.sourceKey] = Tr.csvData['source'][source][config.language]
 
     item[Keys.valueKey] = v.size
-    item[Keys.unitKey] = Tr.csvData['unit'][@unit][@language]
-    item[Keys.datasetKey] = Tr.csvData['dataset'][@dataset][@language]
+    item[Keys.unitKey] = Tr.csvData['unit'][config.unit][config.language]
+    item[Keys.datasetKey] = Tr.csvData['dataset'][config.dataset][config.language]
     
     filteredData.push item
 
