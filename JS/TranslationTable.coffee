@@ -1275,7 +1275,59 @@ module.exports =
       en: "Canada's Energy Future"
       fr: "l%E2%80%99avenir%20%C3%A9nerg%C3%A9tique%20du%20Canada"
 
-
+  altText:
+    closeButton:
+      en: "Close"
+      fr: "Fermer"
+    twitter:
+      en: "Share on Twitter"
+      fr: "Partager avec Twitter"
+    linkedin:
+      en: "Share on Linkedin"
+      fr: "Partager avec LinkedIn"
+    email:
+      en: "Share by email"
+      fr: "Partager par courriel"
+    questionMark_ColourBG:
+      en: "How to Use"
+      fr: "Comment explorer la visualization"
+    explanationIcon_ColourBG:
+      en: "About This Visualization"
+      fr: "Renseignements sur cette visualisation"
+    electricity_unselected:
+      en: "Electricity Generation Unselected"
+      fr: "Production d’électricité non sélectionné"
+    electricity_selected:
+      en: "Electricity Generation Selected"
+      fr: "Production d’électricité sélectionné"
+    oil_unselected:
+      en: "Crude Oil Production Unselected"
+      fr: "Production de pétrole non sélectionné"
+    oil_selected:
+      en: "Crude Oil Production Selected"
+      fr: "Production de pétrole sélectionné"
+    gas_unselected:
+      en: "Natural Gas Production Unselected"
+      fr: "Production de gaz non sélectionné"
+    gas_selected:
+      en: "Natural Gas Production Selected"
+      fr: "Production de gaz sélectionné"
+    totalDemand_unselected:
+      en: "Total Energy Demand Unselected"
+      fr: "Consommation totale d’énergie non sélectionné"
+    totalDemand_selected:
+      en: "Total Energy Demand Selected"
+      fr: "Consommation totale d’énergie sélectionné"
+    selected:
+      en: "Selected"
+      fr: "Sélectionné"
+    unselected:
+      en: "Unselected"
+      fr: "Non sélectionné"
+    unavailable:
+      en: "Unavailable"
+      fr: "Non disponible"
+    
 
 
 
