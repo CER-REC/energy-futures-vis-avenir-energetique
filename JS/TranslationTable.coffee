@@ -1283,7 +1283,7 @@ module.exports =
       en: "Share on Twitter"
       fr: "Partager avec Twitter"
     linkedin:
-      en: "Share on Linkedin"
+      en: "Share on LinkedIn"
       fr: "Partager avec LinkedIn"
     email:
       en: "Share by email"

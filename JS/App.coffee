@@ -89,6 +89,9 @@ class App
         shareLabel: Tr.allPages.shareLabel[@language]
         dataDownloadLink: Tr.allPages.dataDownloadLink[@language]
         imageDownloadLink: Tr.allPages.imageDownloadLink[@language]
+        twitterAltText: Tr.altText.twitter[@language]
+        linkedinAltText: Tr.altText.linkedin[@language]
+        emailAltText: Tr.altText.email[@language]
 
 
 

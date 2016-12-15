@@ -189,8 +189,8 @@ class squareMenu extends basicMenu
 
     @_group.append "image"
       .attr
-        class:  'menuLineBehind pointerCursor'
-        "xlink:href":   'IMG/large_qmark.svg'
+        class: 'menuLineBehind pointerCursor'
+        "xlink:href": 'IMG/large_qmark.svg'
         x: "#{@_position.x + (@_size.w/ 2)  - 8}px"
         width: "16px"
         height: "16px"
