@@ -75,7 +75,7 @@ CSVDataHandler = (req, res) ->
         config = new Visualization2Configuration(serverApp, params)
         tempData = serverApp.providers[config.dataset].energyConsumptionProvider.dataForViz2 config
         csvData = generateArrayFromObject(tempData, "viz2")
-      # TODO
+
       when 'viz3'
         config = new Visualization3Configuration(serverApp, params)
         tempData = serverApp.providers[config.dataset].electricityProductionProvider.dataForViz3(config)
@@ -131,7 +131,6 @@ generateArrayFromObject = (csvDataObject, viz) ->
         v = filterViz2 v
         hashArray = hashArray.concat v
       break
-    # TODO
     when "viz3"
       for tempChild in csvDataObject.children
         hashArray = hashArray.concat tempChild.children
@@ -217,7 +216,6 @@ refineResults = (csvData) ->
     when 'viz2'
       filteredData += lines[0] + ',' + Tr.csvData['unit']['unit'][@language] + ',' + Tr.csvData['dataset']['dataset'][@language]+ newLine
       break
-    # TODO
     when 'viz3'
       filteredData += lines[0] + ',' + Tr.csvData['unit']['unit'][@language] + ',' + Tr.csvData['dataset']['dataset'][@language]+ newLine
 
@@ -236,7 +234,6 @@ refineResults = (csvData) ->
           filteredData += mainSelectionField + lines[i] + unitField + datasetField + newLine
         when 'viz2'
           filteredData += lines[i] + unitField + datasetField + newLine
-        # TODO
         when 'viz3'
           filteredData += lines[i] + unitField + datasetField + newLine
     i++
