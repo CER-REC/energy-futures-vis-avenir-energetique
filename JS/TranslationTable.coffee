@@ -1327,6 +1327,13 @@ module.exports =
     unavailable:
       en: "Unavailable"
       fr: "Non disponible"
+
+    nextImage:
+      en: 'Next Image'
+      fr: "L'image prochaine"
+    previousImage:
+      en: 'Previous Image'
+      fr: "L'image précédente"
     
 
 

@@ -1,8 +1,10 @@
 d3 = require 'd3'
 
+Tr = require '../TranslationTable.coffee'
+
 class NavbarInfoPopover
 
-  constructor: ->
+  constructor: (@app) ->
 
   show: (options) ->
     # Prevent clicks on the popover from propagating up to the body element, which would
@@ -14,7 +16,7 @@ class NavbarInfoPopover
     d3.select('.navbarHelpSection').html (e) => options.navbarInfoText
 
     # Set up the info icon
-    d3.select('.navbarMenuIcon').html "<img src='#{options.navbarInfoImageSelected}'>"
+    d3.select('.navbarMenuIcon').html "<img src='#{options.navbarInfoImageSelected}' alt='#{Tr.altText.explanationIcon_ColourBG[@app.language]}'>"
 
     # 'selected' class controls white background color
     d3.select('.navbarMenuIcon').classed('selected', true)
@@ -24,7 +26,7 @@ class NavbarInfoPopover
   close: ->
 
     d3.select('.navbarMenuIcon').classed('selected', false)
-    d3.select('.navbarMenuIcon').html "<img src='IMG/navbar_Icons/explanationIcon_ColourBG.svg'>"
+    d3.select('.navbarMenuIcon').html "<img src='IMG/navbar_Icons/explanationIcon_ColourBG.svg' alt='#{Tr.altText.explanationIcon_ColourBG[@app.language]}'>"
     d3.select('.navbarHelpSection').classed('hidden', true)
 
 
