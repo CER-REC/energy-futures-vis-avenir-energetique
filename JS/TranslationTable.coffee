@@ -1094,7 +1094,7 @@ module.exports =
     dataset:
       dataset:
         en: 'dataset'
-        fr: 'jeu de données'
+        fr: 'série de données'
       jan2016:
         en: '2016'
         fr: '2016'
