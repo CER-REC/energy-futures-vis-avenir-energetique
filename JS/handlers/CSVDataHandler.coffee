@@ -39,7 +39,6 @@ CSVDataHandler = (req, res) ->
     Logger.info "csv_data (request C#{counter}): #{query}"
     csvData = null
     results = ''
-    @language = 'fr'
     providers = {}
     for dataset in Constants.datasets
       # TODO: the 'dataset' objects on ServerData have a lot more than just
