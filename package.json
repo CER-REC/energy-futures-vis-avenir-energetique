@@ -19,6 +19,7 @@
     "bluebird": "^3.4.6",
     "browser-cookies": "^1.0.8",
     "coffee-script": "^1.11.1",
+    "compression": "^1.6.2",
     "d3": "^3.5.17",
     "dotenv": "^2.0.0",
     "express": "^4.14.0",
