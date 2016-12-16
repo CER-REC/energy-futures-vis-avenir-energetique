@@ -46,18 +46,22 @@ class LandingPage
       event.preventDefault()  
       @app.router.navigate 
         page: 'viz1'
+        language: @app.language
     @app.window.document.getElementById("viz2Anchor").addEventListener 'click', (event) => 
       event.preventDefault()  
       @app.router.navigate 
         page: 'viz2'
+        language: @app.language
     @app.window.document.getElementById("viz3Anchor").addEventListener 'click', (event) => 
       event.preventDefault()  
       @app.router.navigate 
         page: 'viz3'
+        language: @app.language
     @app.window.document.getElementById("viz4Anchor").addEventListener 'click', (event) => 
       event.preventDefault()  
       @app.router.navigate 
         page: 'viz4'
+        language: @app.language
 
     
   tearDown: ->

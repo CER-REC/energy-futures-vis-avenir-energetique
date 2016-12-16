@@ -139,6 +139,7 @@ class Navbar
         if d.page != @navbarState
           @app.router.navigate
             page: d.page
+            language: @app.language
       .style 
         'background-color': (d) -> d.colour
         width: (d) => 
