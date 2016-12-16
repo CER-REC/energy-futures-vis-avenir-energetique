@@ -72,6 +72,9 @@ class App
     else
       @language = 'en'
 
+    titleElement = @window.document.getElementById 'visualizationTitle'
+    titleElement.innerHTML = Tr.landingPage.mainHeader[@language]
+
 
     @popoverManager = new PopoverManager()
     @aboutThisProjectPopover = new AboutThisProjectPopover @
