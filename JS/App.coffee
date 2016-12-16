@@ -63,10 +63,6 @@ class App
 
     @detectLanguage()
 
-    titleElement = @window.document.getElementById 'visualizationTitle'
-    titleElement.innerHTML = Tr.landingPage.mainHeader[@language]
-
-    
     @popoverManager = new PopoverManager()
     @aboutThisProjectPopover = new AboutThisProjectPopover @
     @imageDownloadPopover = new ImageDownloadPopover @
