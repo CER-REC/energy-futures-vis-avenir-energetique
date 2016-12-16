@@ -15,10 +15,6 @@ ParamsToUrlString = require '../ParamsToUrlString.coffee'
 if Platform.name == "browser"
   Visualization1Template = require '../templates/Visualization1.mustache'
   SvgStylesheetTemplate = require '../templates/SvgStylesheet.css'
-else if Platform.name == "server"
-  fs = require 'fs'
-  Visualization1ServerTemplate = fs.readFileSync("#{ApplicationRoot}/JS/templates/Visualization1Server.mustache").toString()
-  SvgStylesheetTemplate = fs.readFileSync("#{ApplicationRoot}/JS/templates/SvgStylesheet.css").toString()
 
 ControlsHelpPopover = require '../popovers/ControlsHelpPopover.coffee'
 
@@ -110,18 +106,18 @@ class Visualization1 extends visualization
 
   renderServerTemplate: () ->
 
-    @app.window.document.getElementById('visualizationContent').innerHTML = Mustache.render Visualization1ServerTemplate, 
-        svgStylesheet: SvgStylesheetTemplate
+    @app.window.document.getElementById('visualizationContent').innerHTML = Mustache.render @options.template, 
+        svgStylesheet: @options.svgTemplate
         title: Tr.visualization1Titles[@config.mainSelection][@app.language]
         description: @config.imageExportDescription()
         energyFuturesSource: Tr.allPages.imageDownloadSource[@app.language]
-        bitlyLink: '' # TODO: Integrate with bitly
+        bitlyLink: @app.bitlyLink
         legendContent: @provinceLegendData()
 
 
 
 
-  constructor: (@app, config)  ->   
+  constructor: (@app, config, @options)  ->   
     super(config)
 
     @getData()
@@ -329,43 +325,43 @@ class Visualization1 extends visualization
     baseData = 
       BC:
         present: @config.provinces.includes('BC') and not @zeroedOut('BC')
-        img: '/IMG/provinces/colour/BC_Selected.svg' 
+        img: 'IMG/provinces/colour/BC_Selected.svg' 
       AB:
         present: @config.provinces.includes('AB') and not @zeroedOut('AB')
-        img: '/IMG/provinces/colour/AB_Selected.svg' 
+        img: 'IMG/provinces/colour/AB_Selected.svg' 
       SK: 
         present: @config.provinces.includes('SK') and not @zeroedOut('SK')
-        img: '/IMG/provinces/colour/Sask_Selected.svg' 
+        img: 'IMG/provinces/colour/Sask_Selected.svg' 
       MB: 
         present: @config.provinces.includes('MB') and not @zeroedOut('MB')
-        img: '/IMG/provinces/colour/MB_Selected.svg' 
+        img: 'IMG/provinces/colour/MB_Selected.svg' 
       ON: 
         present: @config.provinces.includes('ON') and not @zeroedOut('ON')
-        img: '/IMG/provinces/colour/ON_Selected.svg' 
+        img: 'IMG/provinces/colour/ON_Selected.svg' 
       QC: 
         present: @config.provinces.includes('QC') and not @zeroedOut('QC')
-        img: '/IMG/provinces/colour/QC_Selected.svg' 
+        img: 'IMG/provinces/colour/QC_Selected.svg' 
       NB:
         present: @config.provinces.includes('NB') and not @zeroedOut('NB')
-        img: '/IMG/provinces/colour/NB_Selected.svg' 
+        img: 'IMG/provinces/colour/NB_Selected.svg' 
       NS:
         present: @config.provinces.includes('NS') and not @zeroedOut('NS')
-        img: '/IMG/provinces/colour/NS_Selected.svg' 
+        img: 'IMG/provinces/colour/NS_Selected.svg' 
       NL:
         present: @config.provinces.includes('NL') and not @zeroedOut('NL')
-        img: '/IMG/provinces/colour/NL_Selected.svg' 
+        img: 'IMG/provinces/colour/NL_Selected.svg' 
       PE:
         present: @config.provinces.includes('PE') and not @zeroedOut('PE')
-        img: '/IMG/provinces/colour/PEI_Selected.svg' 
+        img: 'IMG/provinces/colour/PEI_Selected.svg' 
       YT:
         present: @config.provinces.includes('YT') and not @zeroedOut('YT')
-        img: '/IMG/provinces/colour/Yukon_Selected.svg'
+        img: 'IMG/provinces/colour/Yukon_Selected.svg'
       NT:
         present: @config.provinces.includes('NT') and not @zeroedOut('NT')
-        img: '/IMG/provinces/colour/NT_Selected.svg' 
+        img: 'IMG/provinces/colour/NT_Selected.svg' 
       NU: 
         present: @config.provinces.includes('NU') and not @zeroedOut('NU')
-        img: '/IMG/provinces/colour/NU_Selected.svg' 
+        img: 'IMG/provinces/colour/NU_Selected.svg' 
     
     data = []
     for province in @config.provincesInOrder
@@ -556,7 +552,7 @@ class Visualization1 extends visualization
           transform: "translate(#{arrowX},#{arrowY})" 
           # TODO: The extra 'xlink:' is a workaround to an issue with JSDOM. Remove when resolved.
           # https://github.com/tmpvar/jsdom/issues/1624
-          "xlink:xlink:href": '/IMG/forecast_arrow.svg'
+          "xlink:xlink:href": 'IMG/forecast_arrow.svg'
           height: 9
           width: 200
 

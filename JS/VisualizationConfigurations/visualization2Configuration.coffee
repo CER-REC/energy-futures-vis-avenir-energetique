@@ -142,6 +142,7 @@ class Visualization2Configuration
     sourcesInOrder: @sourcesInOrder
     province: @province
     dataset: @dataset
+    language: @app.language
 
   copy: (config) ->
     configParams = _.cloneDeep config.routerParams()
