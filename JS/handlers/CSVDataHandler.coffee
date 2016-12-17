@@ -115,7 +115,7 @@ CSVDataHandler = (req, res) ->
       Logger.debug "csv data request (request C#{counter}) Time: #{Date.now() - time}"
     
     else
-      res.writeHead 204
+      res.writeHead 400
       res.end()
       
 mainSelectionErrorHandler = ->

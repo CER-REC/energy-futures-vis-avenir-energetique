@@ -15,9 +15,9 @@ module.exports = (req, res) ->
   query = url.parse(req.url).search
 
   shortenUrl = "https://apps.neb-one.gc.ca/dvs/#{query}"
-  requesrUrl = "https://api-ssl.bitly.com/v3/shorten?login=#{process.env.BITLY_USERNAME}&apiKey=#{process.env.BITLY_API_KEY}&format=json&longUrl=#{encodeURIComponent(shortenUrl)}"
+  requestUrl = "https://api-ssl.bitly.com/v3/shorten?login=#{process.env.BITLY_USERNAME}&apiKey=#{process.env.BITLY_API_KEY}&format=json&longUrl=#{encodeURIComponent(shortenUrl)}"
 
-  Request requesrUrl
+  Request requestUrl
 
   .then (bitlyResponse) ->
 

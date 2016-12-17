@@ -5,6 +5,7 @@ Platform.name = 'server'
 require '../ArrayIncludes.coffee'
 
 express = require 'express'
+Compression = require 'compression'
 
 Logger = require '../Logger.coffee'
 
@@ -20,6 +21,7 @@ Server = (middlewares) ->
   else
     app = rootApp
   
+  app.use Compression()
   
   for middleware in middlewares
     app.use middleware
