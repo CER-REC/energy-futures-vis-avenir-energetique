@@ -10,6 +10,7 @@ class AboutThisProjectPopover
     @app.window.document.getElementById('aboutModal').innerHTML = Mustache.render AboutThisProjectTemplate,
         aboutTitle: Tr.aboutThisProject.aboutTitle[@app.language]
         aboutContent: Tr.aboutThisProject.aboutContent[@app.language]
+        closeButtonAltText: Tr.altText.closeButton[@app.language]
 
     # Prevent clicks on the popover from propagating up to the body element, which would
     # cause the popover to be closed.

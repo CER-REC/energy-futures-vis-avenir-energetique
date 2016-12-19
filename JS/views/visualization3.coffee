@@ -34,6 +34,13 @@ class Visualization3 extends visualization
       selectSourceLabel: Tr.sourceSelector.selectSourceLabel[@app.language]
       svgStylesheet: SvgStylesheetTemplate
 
+      altText: 
+        viewByHelp: Tr.altText.viewByHelp[@app.language]
+        unitsHelp: Tr.altText.unitsHelp[@app.language]
+        datasetsHelp: Tr.altText.datasetsHelp[@app.language]
+        scenariosHelp: Tr.altText.scenariosHelp[@app.language]
+
+
     @datasetHelpPopover = new ControlsHelpPopover(@app)
     @viewByHelpPopover = new ControlsHelpPopover(@app)
     @unitsHelpPopover = new ControlsHelpPopover(@app)
@@ -50,7 +57,7 @@ class Visualization3 extends visualization
         else
           @app.popoverManager.showPopover @datasetHelpPopover,
             outerClasses: 'vizModal floatingPopover datasetSelectorHelp'
-            innerClasses: 'viz1HelpTitle'
+            innerClasses: 'viz3HelpTitle'
             title: Tr.datasetSelector.datasetSelectorHelpTitle[@app.language]
             content: Tr.datasetSelector.datasetSelectorHelp[@app.language]
             attachmentSelector: '.datasetSelectorGroup'
@@ -401,6 +408,7 @@ class Visualization3 extends visualization
       img: 'IMG/sources/oil_products_selected.svg'
     nuclear:  
       img: 'IMG/sources/nuclear_selected.svg'
+
 
 
   sourceMenuData: ->
@@ -996,18 +1004,18 @@ class Visualization3 extends visualization
         class: 'playPauseButton selected'
         id: 'vizPauseButton'
       .on 'click', =>
-        d3.select(@app.window.document).select('#vizPauseButton').html("<img src='IMG/play_pause/pausebutton_selectedR.svg'/>")
-        d3.select(@app.window.document).select('#vizPlayButton').html("<img src='IMG/play_pause/playbutton_unselectedR.svg'/>")
+        d3.select(@app.window.document).select('#vizPauseButton').html("<img src='IMG/play_pause/pausebutton_selectedR.svg' alt='#{Tr.altText.pauseAnimation[@app.language]}'/>")
+        d3.select(@app.window.document).select('#vizPlayButton').html("<img src='IMG/play_pause/playbutton_unselectedR.svg' alt='#{Tr.altText.playAnimation[@app.language]}'/>")
         if @yearTimeout then window.clearTimeout(@yearTimeout)
-      .html("<img src='IMG/play_pause/pausebutton_selectedR.svg'/>")
+      .html("<img src='IMG/play_pause/pausebutton_selectedR.svg' alt='#{Tr.altText.pauseAnimation[@app.language]}'/>")
     
     div.append('div')
       .attr
         id: 'vizPlayButton'
         class: 'playPauseButton'
       .on 'click', (d) =>
-        d3.select(@app.window.document).select('#vizPlayButton').html("<img src='IMG/play_pause/playbutton_selectedR.svg'/>")
-        d3.select(@app.window.document).select('#vizPauseButton').html("<img src='IMG/play_pause/pausebutton_unselectedR.svg'/>")
+        d3.select(@app.window.document).select('#vizPlayButton').html("<img src='IMG/play_pause/playbutton_selectedR.svg' alt='#{Tr.altText.playAnimation[@app.language]}'/>")
+        d3.select(@app.window.document).select('#vizPauseButton').html("<img src='IMG/play_pause/pausebutton_unselectedR.svg' alt='#{Tr.altText.pauseAnimation[@app.language]}'/>")
         if @yearTimeout then window.clearTimeout(@yearTimeout)
         timeoutComplete = => 
           return unless @_chart?
@@ -1037,10 +1045,10 @@ class Visualization3 extends visualization
             @app.datasetRequester.updateAndRequestIfRequired newConfig, update
 
           else
-            d3.select(@app.window.document).select('#vizPauseButton').html("<img src='IMG/play_pause/pausebutton_selectedR.svg'/>")
-            d3.select(@app.window.document).select('#vizPlayButton').html("<img src='IMG/play_pause/playbutton_unselectedR.svg'/>")
+            d3.select(@app.window.document).select('#vizPauseButton').html("<img src='IMG/play_pause/pausebutton_selectedR.svg' alt='#{Tr.altText.pauseAnimation[@app.language]}'/>")
+            d3.select(@app.window.document).select('#vizPlayButton').html("<img src='IMG/play_pause/playbutton_unselectedR.svg' alt='#{Tr.altText.playAnimation[@app.language]}'/>")
         @yearTimeout = window.setTimeout(timeoutComplete, 0)
-      .html("<img src='IMG/play_pause/playbutton_unselectedR.svg'/>")
+      .html("<img src='IMG/play_pause/playbutton_unselectedR.svg' alt='#{Tr.altText.playAnimation[@app.language]}'/>")
 
   buildTimeline: ->
     @buildYearAxis()
@@ -1307,7 +1315,7 @@ class Visualization3 extends visualization
       for key, source of @sourceMenuData()
         contentString = """
           <div class="#{if @config.viewBy == "source" then 'sourceLabel'  else 'sourceLabel sourceLabel' + key}"> 
-            <img class="sourceIcon" src="#{images[key].img}">
+            <img class="sourceIcon" src="#{images[key].img}" alt="#{Tr.altText.sources[key][@app.language]}">
             <h6> #{Tr.sourceSelector.sources[key][@app.language]} </h6> 
             <div class="clearfix"> </div>
             <p> #{Tr.sourceSelector.sourceSelectorHelp[key][@app.language]} </p>

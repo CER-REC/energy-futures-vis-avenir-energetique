@@ -3,6 +3,7 @@ Mustache = require 'mustache'
 
 Platform = require '../Platform.coffee'
 ApplicationRoot = require '../../ApplicationRoot.coffee'
+Tr = require '../TranslationTable.coffee'
 
 
 if Platform.name == "browser"
@@ -20,9 +21,10 @@ class ControlsHelpPopover
     newEl = document.createElement 'div'
     newEl.className = options.outerClasses
     newEl.innerHTML = Mustache.render QuestionmarkPopoverTemplate, 
-          classes: options.innerClasses
-          title: options.title
-          content: options.content
+      classes: options.innerClasses
+      title: options.title
+      content: options.content
+      closeButtonAltText: Tr.altText.closeButton[@app.language]
     
     # Attach to correct element
     d3.select(options.attachmentSelector).node().appendChild newEl

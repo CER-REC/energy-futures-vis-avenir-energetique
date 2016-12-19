@@ -1,19 +1,19 @@
 <div class="modalContent">
 
   <div class="howToImageContainer imageAContainer">
-    <img src="{{ imageAUrl }}">
+    <img src="{{ imageAUrl }}" alt='{{ imageAltText }}'>
   </div> 
 
   <div class="howToImageContainer imageBContainer hidden">
-    <img src="{{ imageBUrl }}">
+    <img src="{{ imageBUrl }}" alt='{{ imageAltText }}'>
   </div> 
 
   <div class="howToNavigation">
     <button class="howToBackButton" type="button" disabled> 
-      <img src="IMG/howto/light-left-arrow.png">
+      <img src="IMG/howto/light-left-arrow.png" alt='{{ previousImageAltText }}' >
     </button>
     <button class="howToForwardButton" type="button"> 
-      <img src="IMG/howto/dark-right-arrow.png">
+      <img src="IMG/howto/dark-right-arrow.png" alt='{{ nextImageAltText }}' >
     </button>
   </div>
 

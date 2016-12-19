@@ -34,6 +34,13 @@ class Visualization1 extends visualization
         selectRegionLabel: Tr.regionSelector.selectRegionLabel[@app.language]
         svgStylesheet: SvgStylesheetTemplate
 
+        altText: 
+          mainSelectionHelp: Tr.altText.mainSelectionHelp[@app.language]
+          unitsHelp: Tr.altText.unitsHelp[@app.language]
+          datasetsHelp: Tr.altText.datasetsHelp[@app.language]
+          scenariosHelp: Tr.altText.scenariosHelp[@app.language]
+
+
     @datasetHelpPopover = new ControlsHelpPopover(@app)
     @mainSelectorHelpPopover = new ControlsHelpPopover(@app)
     @unitsHelpPopover = new ControlsHelpPopover(@app)

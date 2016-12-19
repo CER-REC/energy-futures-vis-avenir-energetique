@@ -2,11 +2,11 @@ d3 = require 'd3'
 Mustache = require 'mustache'
 
 HowToPopoverTemplate = require '../templates/HowToPopover.mustache'
-
+Tr = require '../TranslationTable.coffee'
 
 class NavbarHelpPopover
 
-  constructor: ->
+  constructor: (@app) ->
 
 
   show: (options) ->
@@ -19,36 +19,39 @@ class NavbarHelpPopover
     d3.select('.navbarHelpSection').html (e) => Mustache.render HowToPopoverTemplate, 
       imageAUrl: options.imageAUrl
       imageBUrl: options.imageBUrl
+      nextImageAltText: Tr.altText.nextImage[@app.language]
+      previousImageAltText: Tr.altText.previousImage[@app.language]
+      imageAltText: Tr.altText.howToImage[@app.language]
 
     # Set up event handlers to swap between the two help images
-    d3.select('.howToBackButton').on 'click', ->
+    d3.select('.howToBackButton').on 'click', =>
       d3.select('.imageAContainer').classed 'hidden', false
       d3.select('.imageBContainer').classed 'hidden', true
       
       d3.select('.howToBackButton').attr 'disabled', 'disabled'
       d3.select('.howToBackButton').html """
-        <img src="IMG/howto/light-left-arrow.png">
+        <img src="IMG/howto/light-left-arrow.png" alt='#{Tr.altText.previousImage[@app.language]}'>
       """
       d3.select('.howToForwardButton').attr 'disabled', null
       d3.select('.howToForwardButton').html """
-        <img src="IMG/howto/dark-right-arrow.png">
+        <img src="IMG/howto/dark-right-arrow.png" alt='#{Tr.altText.nextImage[@app.language]}'>
       """
 
-    d3.select('.howToForwardButton').on 'click', ->
+    d3.select('.howToForwardButton').on 'click', =>
       d3.select('.imageAContainer').classed 'hidden', true
       d3.select('.imageBContainer').classed 'hidden', false
 
       d3.select('.howToBackButton').attr 'disabled', null
       d3.select('.howToBackButton').html """
-        <img src="IMG/howto/dark-left-arrow.png">
+        <img src="IMG/howto/dark-left-arrow.png" alt='#{Tr.altText.previousImage[@app.language]}'>
       """
       d3.select('.howToForwardButton').attr 'disabled', 'disabled'
       d3.select('.howToForwardButton').html """
-        <img src="IMG/howto/light-right-arrow.png">
+        <img src="IMG/howto/light-right-arrow.png" alt='#{Tr.altText.nextImage[@app.language]}'>
       """
       
     # Set up the help icon
-    d3.select('.navbarHelpIcon').html "<img src='#{options.navbarHelpImageSelected}'>"
+    d3.select('.navbarHelpIcon').html "<img src='#{options.navbarHelpImageSelected}' alt='#{Tr.altText.questionMark_ColourBG[@app.language]}'>"
     # Class 'selected' sets the white background colour
     d3.select('.navbarHelpIcon').classed('selected', true) 
   
@@ -58,7 +61,7 @@ class NavbarHelpPopover
 
   close: ->
     d3.select('.navbarHelpIcon').classed('selected', false) 
-    d3.select('.navbarHelpIcon').html "<img src='IMG/navbar_Icons/questionMark_ColourBG.svg'>"
+    d3.select('.navbarHelpIcon').html "<img src='IMG/navbar_Icons/questionMark_ColourBG.svg' alt='#{Tr.altText.questionMark_ColourBG[@app.language]}'>"
     d3.select('.navbarHelpSection').classed('hidden', true)
 
 

@@ -11,8 +11,8 @@ class Navbar
     # navbarState can be one of: landingPage, viz1, viz2, viz3, viz4
     @navbarState = null
 
-    @navbarInfoPopover = new NavbarInfoPopover()
-    @navbarHelpPopover = new NavbarHelpPopover()
+    @navbarInfoPopover = new NavbarInfoPopover(@app)
+    @navbarHelpPopover = new NavbarHelpPopover(@app)
 
   # NB: This data is in REVERSE order on purpose
   # We float the resulting divs to the right, which means they appear in the reverse
@@ -161,10 +161,10 @@ class Navbar
           "<div class='navbarSelectedItem'> 
             <span>#{d.selectedLabel}</span>
             <div class='navbarHelpIcon'>
-              <img src='IMG/navbar_Icons/questionMark_ColourBG.svg'>
+              <img src='IMG/navbar_Icons/questionMark_ColourBG.svg' alt='#{Tr.altText.questionMark_ColourBG[@app.language]}'>
             </div>
             <div class='navbarMenuIcon'>
-              <img src='IMG/navbar_Icons/explanationIcon_ColourBG.svg'>
+              <img src='IMG/navbar_Icons/explanationIcon_ColourBG.svg' alt='#{Tr.altText.explanationIcon_ColourBG[@app.language]}'>
             </div>
             <div class='navbarHelpSection hidden'>
             </div>

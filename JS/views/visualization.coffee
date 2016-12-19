@@ -171,26 +171,30 @@ class visualization
       {
         title: Tr.selectorTooltip.sectorSelector.residentialSectorButton[@app.language]  
         sectorName: 'residential'
-        image: if @config.sector ==  'residential' then 'IMG/sector/residential_selected.svg' else 'IMG/sector/residential_unselected.svg'
+        image: if @config.sector == 'residential' then 'IMG/sector/residential_selected.svg' else 'IMG/sector/residential_unselected.svg'
         wrapperClass: 'sectorSelectorButton sectorImageButton topLeftSector'
+        altText: if @config.sector == 'residential' then Tr.altText.sectors.residentialSelected[@app.language] else Tr.altText.sectors.residentialUnselected[@app.language]
       }
       {
         title: Tr.selectorTooltip.sectorSelector.commercialSectorButton[@app.language]
         sectorName: 'commercial'
         image: if @config.sector ==  'commercial' then 'IMG/sector/commercial_selected.svg' else 'IMG/sector/commercial_unselected.svg'
         wrapperClass: 'sectorSelectorButton sectorImageButton topRightSector'
+        altText: if @config.sector == 'commercial' then Tr.altText.sectors.commercialSelected[@app.language] else Tr.altText.sectors.commercialUnselected[@app.language]
       }
       {
         title: Tr.selectorTooltip.sectorSelector.industrialSectorButton[@app.language]
         sectorName: 'industrial'
         image: if @config.sector == 'industrial' then 'IMG/sector/industrial_selected.svg' else 'IMG/sector/industrial_unselected.svg'
         wrapperClass: 'sectorSelectorButton sectorImageButton bottomLeftSector'
+        altText: if @config.sector == 'industrial' then Tr.altText.sectors.industrialSelected[@app.language] else Tr.altText.sectors.industrialUnselected[@app.language]
       }
       {
         title: Tr.selectorTooltip.sectorSelector.transportSectorButton[@app.language]
         sectorName: 'transportation'
         image: if @config.sector ==  'transportation' then 'IMG/sector/transport_selected.svg' else 'IMG/sector/transport_unselected.svg'
         wrapperClass: 'sectorSelectorButton sectorImageButton bottomRightSector'
+        altText: if @config.sector == 'transportation' then Tr.altText.sectors.transportationSelected[@app.language] else Tr.altText.sectors.transportationUnselected[@app.language]
       }
     ]
 
@@ -201,27 +205,30 @@ class visualization
         label: Tr.mainSelector.totalDemandButton[@app.language]
         image: if @config.mainSelection == 'energyDemand' then 'IMG/main_selection/totalDemand_selected.png' else 'IMG/main_selection/totalDemand_unselected.png'
         selectorName: 'energyDemand'
+        altText: if @config.mainSelection == 'energyDemand' then Tr.altText.totalDemand_selected[@app.language] else Tr.altText.totalDemand_unselected[@app.language] 
       }
       {
         title: Tr.selectorTooltip.mainSelector.electricityGenerationButton[@app.language]
         label: Tr.mainSelector.electricityGenerationButton[@app.language]
         image: if @config.mainSelection == 'electricityGeneration' then 'IMG/main_selection/electricity_selected.png' else 'IMG/main_selection/electricity_unselected.png'
         selectorName: 'electricityGeneration'
+        altText: if @config.mainSelection == 'electricityGeneration' then Tr.altText.electricity_selected[@app.language] else Tr.altText.electricity_unselected[@app.language] 
       }
       {
         title: Tr.selectorTooltip.mainSelector.oilProductionButton[@app.language]
         label: Tr.mainSelector.oilProductionButton[@app.language]
         image: if @config.mainSelection == 'oilProduction' then 'IMG/main_selection/oil_selected.png' else 'IMG/main_selection/oil_unselected.png'
         selectorName: 'oilProduction'
+        altText: if @config.mainSelection == 'oilProduction' then Tr.altText.oil_selected[@app.language] else Tr.altText.oil_unselected[@app.language] 
       }
       {
         title: Tr.selectorTooltip.mainSelector.gasProductionButton[@app.language]
         label: Tr.mainSelector.gasProductionButton[@app.language]
         image: if @config.mainSelection == 'gasProduction' then 'IMG/main_selection/gas_selected.png' else 'IMG/main_selection/gas_unselected.png'
         selectorName: 'gasProduction'
+        altText: if @config.mainSelection == 'gasProduction' then Tr.altText.gas_selected[@app.language] else Tr.altText.gas_unselected[@app.language] 
       }
     ]
-
   addDatasetToggle: ->
     if @config.dataset?
       datasetSelectors = d3.select(@app.window.document).select('#datasetSelector')
@@ -368,7 +375,7 @@ class visualization
         if d.sectorName == 'total'
           "<button class='#{d.buttonClass}' type='button' title='#{d.title}'>#{d.label}</button>"
         else
-          "<img src=#{d.image} title='#{d.title}'>"
+          "<img src=#{d.image} title='#{d.title}' alt='#{d.altText}'>"
 
       sectorsSelectors.exit().remove()
   
@@ -403,7 +410,7 @@ class visualization
 
 
     mainSelectors.html (d) ->
-      "<img src=#{d.image} class='mainSelectorImage' title='#{d.title}'>
+      "<img src=#{d.image} class='mainSelectorImage' title='#{d.title}' alt='#{d.altText}'>
        <span class='mainSelectorLabel' title='#{d.title}'>#{d.label}</span>"
 
     mainSelectors.exit().remove()
