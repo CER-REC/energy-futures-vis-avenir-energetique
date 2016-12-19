@@ -1605,5 +1605,7 @@ module.exports =
         en: 'Power cable'
         fr: 'Câble électrique'
 
-
+  report:
+    en: "REPORT: "
+    fr: "RAPPORT : "
 
