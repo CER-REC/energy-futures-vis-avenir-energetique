@@ -2,17 +2,19 @@ var execSync = require('child_process').execSync;
 var pjson = require('../package.json');
 var fs = require('fs-extra');
 require('coffee-script').register();
-var zip = require('./zip-folder.coffee');
+
+// NB: the distribute folders are not erased here anymore, as removing directories doesn't reliably complete synchronously. Use the package.json task 'clean-vs'.
 
 // We exclusively use the Node fs API here, to maintain portability with Windows
-
-// Clean up any existing distribution
-fs.removeSync('./dist');
 
 fs.mkdirsSync('./dist/public/HTML');
 
 // Make the pretty installguide
-execSync("generate-md --layout mixu-radar --input ./installguide.md --output ./dist/installguide");
+// execSync("generate-md --layout mixu-radar --input ./installguide.md --output ./dist/installguide");
+
+// Run the Node Security Project check against our current dependencies.
+console.log("Node Security Project known vulnerabilities check:")
+execSync('nsp check', {stdio: [0,1,2]})
 
 // Build the javascript bundle for production
 execSync("npm run build");
@@ -42,15 +44,4 @@ catch (error) {
 }
 
 
-// zip it up!
-filename = "Vizworx_NEB_Visualization_" + pjson.version + ".zip";
-fs.removeSync(filename);
-
-zip('dist', filename, function(err) {
-  if(err) {
-    console.log("There was a problem creating the zip archive.");
-  } else {
-    console.log("Distribute done!");
-  }
-});
 
