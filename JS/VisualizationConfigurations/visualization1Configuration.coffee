@@ -37,7 +37,7 @@ class Visualization1Configuration
       'SK'
       'YT' 
     ]
-    dataset: Constants.datasets[0]
+    dataset: Constants.datasets[1]
 
   constructor: (@app, options) ->
     @page = 'viz1'
