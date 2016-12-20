@@ -2,6 +2,9 @@ d3 = require 'd3'
 chart =  require './chart.coffee'
 squareMenu = require './square-menu.coffee'
 _ = require 'lodash'
+Platform = require '../Platform.coffee'
+
+root = exports ? this
 
 class bubbleChart extends chart
   bubbleChartDefaults:
@@ -10,23 +13,48 @@ class bubbleChart extends chart
     menuOptions: 
       canDrag: false
 
-  constructor: (parent, options = {}) ->
+
+  constructor: (@app, parent, options = {}) ->
+
     @options = _.extend {}, @bubbleChartDefaults, options
     @_mapping = @options.mapping
-    super(parent, @options)
+    @_year = @options.year
+
+    # super(parent, @options)
+    @chart_options = _.extend {}, @chart_defaults, @options
+    @_duration = @chart_options.duration
+    @parent(parent, @chart_options.groupId)
+    @_size = 
+      w : @chart_options.size.w
+      h : @chart_options.size.h
+    @_position = 
+      x : @chart_options.position.x
+      y : @chart_options.position.y
+    @_data = @options.data
+    @resize()
+
+
     @options.menuOptions.chart = this
-    @menu = new squareMenu(@options.menuParent, @options.menuOptions)
+    @menu = new squareMenu(@app, @options.menuParent, @options.menuOptions)
     @redraw()
 
-  data: (d, key) ->
+  filteredData: (currentData) ->
+    for i in [0...currentData.children.length]
+      if currentData.children[i].children?
+        if currentData.children[i].children.filter((d) -> d.size != 1).length > 0
+          currentData.children[i].children = currentData.children[i].children.filter((d) -> d.size != 1)
+    currentData
+
+  year: (d) ->
+    if !arguments.length
+      return @_year
+    @_year = d
+
+  data: (d) ->
     if !arguments.length
       return @_data
     @_data = d
-    @_key = key
     @redraw()
-
-  mappingAsObject: ->
-    @_mapping
 
   mapping: (mapping) ->
     if !arguments.length
@@ -37,7 +65,7 @@ class bubbleChart extends chart
   bubble: (data) ->
     d3.layout.pack()
       .size([@size().w, @_size.h])
-      .padding(5)
+      .padding(1)
       .value((d) -> d.size)
       .sort(null) #We need this since default sort is ascending... but null sort is tree
 
@@ -55,8 +83,8 @@ class bubbleChart extends chart
     @_group.selectAll(".toolTip").remove()
 
     node = @_group.selectAll('.node')
-      .data(@bubble().nodes(@_data), (d) -> d.name)
-    
+      .data(@bubble().nodes(@filteredData(@_data)), (d) -> d.name)
+
     enterSelection = node.enter().append('g')
       .attr
         class: 'node'
@@ -79,13 +107,26 @@ class bubbleChart extends chart
           if @_mapping[d.source] or d.depth == 0  or (d.depth ==1 and !(d.children)) then 0 else 1
         )
 
+    @_group.selectAll('.node')
+      .on "mouseover", (d) =>
+        if(d.depth == 2)
+          document.getElementById("tooltip").style.visibility = "visible"
+          document.getElementById("tooltip").style.top = (d3.event.pageY-10) + "px"
+          document.getElementById("tooltip").style.left = (d3.event.pageX+10) + "px"
+          document.getElementById("tooltip").innerHTML = d.name + " (" + @_year + "): "+ d.size.toFixed(2)
+
+      .on "mousemove", (d) =>
+        if(d.depth == 2)
+          document.getElementById("tooltip").style.top = (d3.event.pageY-10) + "px"
+          document.getElementById("tooltip").style.left = (d3.event.pageX+10) + "px"
+          document.getElementById("tooltip").innerHTML = d.name + " (" + @_year + "): "+ d.size.toFixed(2)
+
+      .on "mouseout", (d) =>
+        document.getElementById("tooltip").style.visibility = "hidden"
 
     enterSelection.filter((d) -> d.depth == 1 ).append('g')
           
-    enterSelection.select('g').append('image')  
-
-    node.filter((d) -> d.depth == 2 ).select('circle').append('title')
-      .text((d) -> d.name + ": " + d3.format('.3f')(d.size))
+    enterSelection.select('g').append('image')
 
     node.filter((d) -> d.depth == 2 ).select('circle').on 'click', (d, i) ->
       if d3.selectAll(".toolTip#{d.id}").empty() 
@@ -119,11 +160,13 @@ class bubbleChart extends chart
 
 
     node.select('g').select('image')  
-      .attr(
-        "xlink:href":   (d) -> if d.img then d.img
+      .attr
+        # TODO: The extra 'xlink:' is a workaround to an issue with JSDOM. Remove when resolved.
+        # https://github.com/tmpvar/jsdom/issues/1624
+        "xlink:xlink:href": (d) -> if d.img then d.img
         x: 0
         width: 25
-        height: 25)
+        height: 25
 
     exitSelection = node.exit()
 
@@ -148,76 +191,112 @@ class bubbleChart extends chart
     @force.nodes(regionNodes)
     @force.start()
     @force.on "tick", (e) =>
-        #  The collision relaxation procedure
-        collide = (node) ->
-          r = node.r + 16
-          nx1 = node.x - r
-          nx2 = node.x + r
-          ny1 = node.y - r
-          ny2 = node.y + r
-          (quad, x1, y1, x2, y2) ->
-            if (quad.point and (quad.point != node))
-              x = node.x - quad.point.x
-              y = node.y - quad.point.y
-              l = Math.sqrt(x * x + y * y)
-              r = node.r + quad.point.r + 32
-              if (l < r)
-                l = (l - r) / l * .5
-                x *= l
-                y *= l
-                node.x -= x 
-                node.y -= y 
-                quad.point.x += x
-                quad.point.y += y
-            x1 > nx2 or x2 < nx1 or y1 > ny2 or y2 < ny1
+      #  The collision relaxation procedure
+      collide = (node) ->
+        r = node.r + 16
+        nx1 = node.x - r
+        nx2 = node.x + r
+        ny1 = node.y - r
+        ny2 = node.y + r
+        (quad, x1, y1, x2, y2) ->
+          if (quad.point and (quad.point != node))
+            x = node.x - quad.point.x
+            y = node.y - quad.point.y
+            l = Math.sqrt(x * x + y * y)
+            r = node.r + quad.point.r + 32
+            if (l < r)
+              l = (l - r) / l * .5
+              x *= l
+              y *= l
+              node.x -= x 
+              node.y -= y 
+              quad.point.x += x
+              quad.point.y += y
+          x1 > nx2 or x2 < nx1 or y1 > ny2 or y2 < ny1
 
-        # Push nodes away from the borders include the size of the image/rectangle
-        k = 6 * e.alpha
+      # Push nodes away from the borders include the size of the image/rectangle
+      k = 6 * e.alpha
 
-        regionNodes.forEach (o, i) =>
-          f = k 
-          dx = if o.x < o.r then (o.r-o.x) else (if o.x + o.r > @_size.w - 30 then ((@_size.w - 30) - (o.x+o.r)) else 0)
-          dy = if o.y < o.r then (o.r-o.y) else (if o.y + o.r > @_size.h then (@_size.h - (o.y+o.r)) else 0)
-          o.y += dy*f
-          o.x += dx*f
+      regionNodes.forEach (o, i) =>
+        f = k 
+        dx = if o.x < o.r then (o.r-o.x) else (if o.x + o.r > @_size.w - 30 then ((@_size.w - 30) - (o.x+o.r)) else 0)
+        dy = if o.y < o.r then (o.r-o.y) else (if o.y + o.r > @_size.h then (@_size.h - (o.y+o.r)) else 0)
+        o.y += dy*f
+        o.x += dx*f
 
-        #Do collision detection
-        q = d3.geom.quadtree(regionNodes)
-        i = 0
-        n = regionNodes.length
+      #Do collision detection
+      q = d3.geom.quadtree(regionNodes)
+      i = 0
+      n = regionNodes.length
 
-        while (i < n) 
-          q.visit(collide(regionNodes[i]))
-          i++
+      while (i < n) 
+        q.visit(collide(regionNodes[i]))
+        i++
 
+
+
+
+      circle_radius_function = (d) =>
+        if (@_mapping[d.source] and !(@_mapping[d.source].present)) then 0 else d.r
+
+      group_transform_function = (d) ->
+        dst = d.r * 0.807 + 5;
+        "translate(#{dst},#{(-dst)})"
+
+      node_transform_function = (d) ->
+        if d.depth == 0 then return "translate(#{d.x},#{d.y})" 
+        if d.children then return "translate(#{d.x},#{d.y})" 
+        parent = d.parent
+        dx = parent.x - parent.x0
+        dy = parent.y - parent.y0
+        "translate(#{d.x + dx},#{d.y + dy})"  
+
+      if Platform.name == 'server'
+        # On server, we need to avoid scheduling bubble animations entirely for 
+        # compatibility with jsdom. D3 uses a part of the SVG spec that is not implemented 
+        # in jsdom, which results in a crash when we try to run animations of any length on 
+        # the server.
+        
+        node.select('circle')
+          .attr
+            r: circle_radius_function
+
+        node.select('g')
+          .attr
+            transform: group_transform_function
+
+        node.attr
+          transform: node_transform_function
+      
+      else if Platform.name == 'browser'
         node.select('circle')
           .transition()
-            .attr
-              r: (d) =>
-                if (@_mapping[d.source] and !(@_mapping[d.source].present)) then 0 else d.r
             .duration e.alpha * 10000 #this makes the transitions more linear
             .ease "linear"
+            .attr
+              r: circle_radius_function
 
         node.select('g')
           .transition()  
-            .attr
-              transform: (d) ->
-                dst = d.r * 0.807 + 5;
-                "translate(#{dst},#{(-dst)})"
             .duration e.alpha * 10000
             .ease "linear"
+            .attr
+              transform: group_transform_function
 
         node.transition()
-          .duration 10000 * e.alpha
-          .attr
-            transform: (d) ->
-              if d.depth == 0 then return "translate(#{d.x},#{d.y})" 
-              if d.children then return "translate(#{d.x},#{d.y})" 
-              parent = d.parent
-              dx = parent.x - parent.x0
-              dy = parent.y - parent.y0
-              "translate(#{d.x + dx},#{d.y + dy})"  
+          .duration e.alpha * 10000
           .ease "linear"  
+          .attr
+            transform: node_transform_function
+
+    # For server side rendering, we set animation duration to 0. We still need to produce 
+    # an acceptable bubble graph layout, without actually running the animation. 
+    # Run 100 'ticks' worth of force iterations, all at once.
+    if Platform.name == 'server'
+      for i in [0..100]
+        @force.tick
+          alpha: 0.05
+      @force.stop()
 
     this
 

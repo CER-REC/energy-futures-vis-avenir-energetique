@@ -1,65 +1,52 @@
 d3 = require 'd3'
+
 Constants = require '../Constants.coffee'
 UnitTransformation = require '../unit-transformation.coffee'
 Tr = require '../TranslationTable.coffee'
 
+QueryString = require 'query-string'
+PrepareQueryParams = require '../PrepareQueryParams.coffee'
+
 class ElectricityProductionProvider
 
+  constructor: ->
+    @data = []
 
+  # Parse all of a CSV's data
+  loadFromString: (dataString) ->
+    @data = d3.csv.parse dataString, @mapping
+    @parseData @data
 
-  constructor: (loadedCallback) ->
+  # Add an array of data objects to the data store
+  addData: (data) ->
+    @data = @data.concat data
+    @parseData @data
 
-    @data = null
-    @loadedCallback = loadedCallback
+  mapping: (d) ->
+    province: d.province
+    source: d.source
+    scenario: d.scenario
+    year: parseInt(d.year)
+    value: parseFloat(d.value)
+    unit: d.unit
 
-    d3.csv "CSV/2016-10-27_ElectricityGeneration.csv", @csvMapping, @parseData
-    # d3.csv "CSV/2016-01_ElectricityGeneration.csv", @csvMapping, @parseData
-  
-
-
-
-
-  csvMapping: (d) ->
-    province: d.Area
-    source: d.Source
-    scenario: d.Case
-    year: parseInt(d.Year)
-    value: parseFloat(d.Data.replace(',',''))
-
-  parseData: (error, data) =>
-    console.warn error if error?
-    @data = data
-
-    # Normalize some of the data in the CSV, to make life easier later
-    # TODO: precompute some of these changes?
-
-    for item in @data
-      item.scenario = Constants.csvScenarioToScenarioNameMapping[item.scenario]
-
-    for item in @data
-      item.source = Constants.csvSourceToSourceNameMapping[item.source]
-
-    for item in @data
-      item.province = Constants.csvProvinceToProvinceCodeMapping[item.province]
-
-    @data = @data.filter (item) ->
-      item.source not in ['crudeOil', 'electricity']
+  parseData: (data) =>
 
     @dataByProvince = 
-      'BC' : []
-      'AB' : []
-      'SK' : []
-      'MB' : []
-      'ON' :  []
-      'QC' : []
-      'NB' : []
-      'NS' : []
-      'NL' : []
-      'PE' : []
-      'YT' :  []
-      'NT' :  []
-      'NU' :  []
-      'all' : []
+      BC: []
+      AB: []
+      SK: []
+      MB: []
+      ON: []
+      QC: []
+      NB: []
+      NS: []
+      NL: []
+      PE: []
+      YT: []
+      NT: []
+      NU: []
+      all: []
 
     @dataBySource = 
       hydro: []
@@ -81,56 +68,26 @@ class ElectricityProductionProvider
       noLng: []
       constrained: []
 
-    @calculateTotalsForCanada()
-
     for item in @data
       @dataByScenario[item.scenario].push item
       @dataByProvince[item.province].push item
       @dataBySource[item.source].push item
 
-    @loadedCallback()
+    # @loadedCallback() if @loadedCallback
 
     
 
-  # We need certain totals for viz4 which aren't present in the data.
-  # We compute them, and add them to the existing data in memory
-  # NB: We are only calculating these totals for Total Generation, we are not calculating
-  # them out for each power source!
-  calculateTotalsForCanada: ->
-    # We're only interested in total generation, not individual sources
-    totalGenerationData = @data.filter (item) ->
-      item.source == 'total'
 
-    # Break data out by year and scenario
-    totalGenerationByYearAndScenario = {}
-    for year in Constants.years
-      totalGenerationByYearAndScenario[year] = {}
-      for scenario in Constants.scenarios
-        totalGenerationByYearAndScenario[year][scenario] = []
 
-    for item in totalGenerationData
-      totalGenerationByYearAndScenario[item.year][item.scenario].push item
-
-    # For each set of provincial/territorial data in each year and scenario, 
-    # find the sum of their production, and add it to the raw data for the provider
-
-    for scenario in Constants.scenarios
-      for year in Constants.years
-        sum = totalGenerationByYearAndScenario[year][scenario].reduce (sum, item) ->
-          sum + item.value
-        , 0
-
-        @data.push
-          province: 'all'
-          source: 'total'
-          scenario: scenario
-          year: year
-          value: sum
+  # accessors note: ElectricityProductionProvider is never needed for viz 2!!
 
 
 
-  # accessors note: this is never needed for viz 2!!
-  dataForViz1: (viz1config) ->
+  # Returns a set of data corresponding to the given config object, except that 
+  # it has not been filtered by scenario. In order to show a y-axis which does not change
+  # when the user switches the scenario, we need to take the maximum of all of the data 
+  # across scenarios for a given configuration.
+  dataForAllViz1Scenarios: (viz1config) ->
     filteredProvinceData = {}    
 
     # Exclude data from provinces that aren't in the set
@@ -138,10 +95,10 @@ class ElectricityProductionProvider
       if viz1config.provinces.includes provinceName
         filteredProvinceData[provinceName] = @dataByProvince[provinceName]
 
-    # We aren't interested in breakdowns by source, only the totals and only the correct scenario
+    # We aren't interested in breakdowns by source, only the totals
     for provinceName in Object.keys filteredProvinceData
       filteredProvinceData[provinceName] = filteredProvinceData[provinceName].filter (item) ->
-        item.source == 'total' and item.scenario == viz1config.scenario
+        item.source == 'total'
 
     # Finally, convert units
     return filteredProvinceData if viz1config.unit == 'gigawattHours'
@@ -162,6 +119,51 @@ class ElectricityProductionProvider
       return unitConvertedProvinceData
 
 
+
+
+
+
+  # Returns an object keyed by province short code (like "AB")
+  # Each entry has an array of objects in ascending order by year, like:
+  #   province: 'AB'
+  #   scenario: 'reference'
+  #   type: 'Total', or absent
+  #   sector: 'total', undefined, or absent
+  #   source: 'total', undefined, or absent
+  #   value: 234.929
+  #   year: 2005
+  # The attributes available vary from dataset to dataset, which is why some of them may 
+  # or may not be present. 
+  dataForViz1: (viz1config) ->
+    unfilteredData = @dataForAllViz1Scenarios viz1config
+    filteredData = {}
+
+    for sourceName in Object.keys unfilteredData
+      filteredData[sourceName] = unfilteredData[sourceName].filter (item) ->
+        item.scenario == viz1config.scenario
+
+    filteredData
+
+
+
+
+  # Returns an object like
+  # name: 'Total'
+  # viewBy: 'province'
+  # children: []
+
+  # Each of the child objects at depth 1 are like: 
+  # name: 'BC'
+  # children: []
+
+  # each of the child objects at depth 2 are like: 
+  # id: 'hydroBC'
+  # name: "HYDRO BC"
+  # size: 63631.55
+  # source: "hydro"
+
+  # bubble-chart and the D3 bubble packing system add numerous other properties to these 
+  # objects after we return them here.
   dataForViz3: (viz3config) ->
     filteredData = {} #this is filtered by the viewBy
 
@@ -199,6 +201,7 @@ class ElectricityProductionProvider
         item.scenario == viz3config.scenario
 
     # THIS IS JUST EXCLUDING CRUDE OIL AND TOTAL SINCE WE DONT HAVE IMAGES FOR IT
+    # TODO: Remove me, once merged with branch where data is pre-filtered
     for name in Object.keys filteredData
       filteredData[name] = filteredData[name].filter (item) ->
         item[nameField] in allValidNames and item.value != 0
@@ -233,24 +236,26 @@ class ElectricityProductionProvider
             children: []
           )
         bubbleObj.children[childrenKeys[source]].children.push(
-          name: if viz3config.viewBy == 'province' then "#{Tr.sourceSelector.sources[item[nameField]][app.language]} #{source}" else "#{item[nameField]} #{Tr.sourceSelector.sources[source][app.language]}"  #for titles
+          name: if viz3config.viewBy == 'province' then "#{Tr.sourceSelector.sources[item[nameField]][viz3config.language]} #{source}" else "#{item[nameField]} #{Tr.sourceSelector.sources[source][viz3config.language]}"  #for titles
           id: "#{item[nameField]}#{source}" #to distinguish
           source: item[nameField]
-          size: if viz3config[stackedFilterName].includes item[nameField] then item.value else 0.001
+          size: if viz3config[stackedFilterName].includes item[nameField] then item.value else 1
         )
     bubbleObj
 
 
 
 
-
-  dataForViz4: (viz4config) ->
+  # Returns a set of data corresponding to the given config object, except that 
+  # it has not been filtered by scenario. In order to show a y-axis which does not change
+  # when the user switches the scenario, we need to take the maximum of all of the data 
+  # across scenarios for a given configuration.
+  dataForAllViz4Scenarios: (viz4config) ->
     filteredScenarioData = {}    
 
-    # Exclude data from scenarios that aren't in the set
+    # Group data by scenario
     for scenarioName in Object.keys @dataByScenario
-      if viz4config.scenarios.includes scenarioName
-        filteredScenarioData[scenarioName] = @dataByScenario[scenarioName]
+      filteredScenarioData[scenarioName] = @dataByScenario[scenarioName]
 
     # We aren't interested in breakdowns by source, only the totals
     # TODO: Since this will always be the case for viz4, cache the data with this filter applied?
@@ -284,6 +289,31 @@ class ElectricityProductionProvider
 
     # TODO: if we get to here something has gone horribly wrong, and we should do something else
     console.warn 'something has gone wrong'
+
+
+
+
+  # Returns an object keyed by scenario name (e.g. 'reference')
+  # Each entry has an array of objects in ascending order by year, like:
+  #   province: 'all'
+  #   scenario: 'constrained'
+  #   sector: 'total' or undefined
+  #   source: 'total' or undefined, or the attribute may be absent
+  #   value: 2161.98
+  #   year: 2005
+  # The attributes available vary from dataset to dataset, which is why some of them may 
+  # or may not be present. 
+  dataForViz4: (viz4config) ->
+    unfilteredData = @dataForAllViz4Scenarios viz4config
+    filteredData = {}
+
+    # Exclude data from scenarios that aren't in the set
+    for scenarioName in Object.keys unfilteredData
+      if viz4config.scenarios.includes scenarioName
+        filteredData[scenarioName] = unfilteredData[scenarioName]
+
+    filteredData
+
 
 
 

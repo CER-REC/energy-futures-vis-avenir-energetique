@@ -1,15 +1,18 @@
 d3 = require 'd3'
 Tr = require '../TranslationTable.coffee'
-Templates = require '../templates.coffee'
-Mustache = require 'mustache'
+
+NavbarInfoPopover = require '../popovers/NavbarInfoPopover.coffee'
+NavbarHelpPopover = require '../popovers/NavbarHelpPopover.coffee'
 
 
 class Navbar 
 
-  constructor: ->
+  constructor: (@app) ->
     # navbarState can be one of: landingPage, viz1, viz2, viz3, viz4
     @navbarState = null
 
+    @navbarInfoPopover = new NavbarInfoPopover(@app)
+    @navbarHelpPopover = new NavbarHelpPopover(@app)
 
   # NB: This data is in REVERSE order on purpose
   # We float the resulting divs to the right, which means they appear in the reverse
@@ -21,48 +24,48 @@ class Navbar
     else
       [
         {
-          unselectedLabel: Tr.allPages.visualization4NavbarLink[app.language]
-          selectedLabel: Tr.visualization4Titles[app.visualization4Configuration.mainSelection][app.language]
+          unselectedLabel: Tr.allPages.visualization4NavbarLink[@app.language]
+          selectedLabel: Tr.visualization4Titles[@app.visualization4Configuration.mainSelection][@app.language]
           navbarHelpImageSelected: 'IMG/navbar_Icons/questionMark_ScenarioHighlighted.svg'
-          navbarInfoText: Tr.visualization4NavbarHelp[app.language]
+          navbarInfoText: Tr.visualization4NavbarHelp[@app.language]
           navbarInfoImageSelected: 'IMG/navbar_Icons/explanationIcon_ScenarioHighlighted.svg'
           colour: 'rgb(202, 152, 48)'
           page: 'viz4'
-          imageAUrl: Tr.howToImages.viz4A[app.language]
-          imageBUrl: Tr.howToImages.viz4B[app.language]
+          imageAUrl: Tr.howToImages.viz4A[@app.language]
+          imageBUrl: Tr.howToImages.viz4B[@app.language]
         }
         {
-          unselectedLabel: Tr.allPages.visualization3NavbarLink[app.language]
-          selectedLabel: Tr.visualization3Title[app.language]
-          navbarInfoText: Tr.visualization3NavbarHelp[app.language]
+          unselectedLabel: Tr.allPages.visualization3NavbarLink[@app.language]
+          selectedLabel: Tr.visualization3Title[@app.language]
+          navbarInfoText: Tr.visualization3NavbarHelp[@app.language]
           navbarHelpImageSelected: 'IMG/navbar_Icons/questionMark_ElectricityHighlighted.svg'
           navbarInfoImageSelected: 'IMG/navbar_Icons/explanationIcon_ElectricityHighlighted.svg'
           colour: 'rgb(54, 55, 150)'
           page: 'viz3'
-          imageAUrl: Tr.howToImages.viz3A[app.language]
-          imageBUrl: Tr.howToImages.viz3B[app.language]
+          imageAUrl: Tr.howToImages.viz3A[@app.language]
+          imageBUrl: Tr.howToImages.viz3B[@app.language]
         }
         {
-          unselectedLabel: Tr.allPages.visualization2NavbarLink[app.language]
-          selectedLabel: Tr.visualization2Title[app.language]
-          navbarInfoText: Tr.visualization2NavbarHelp[app.language]
+          unselectedLabel: Tr.allPages.visualization2NavbarLink[@app.language]
+          selectedLabel: Tr.visualization2Title[@app.language]
+          navbarInfoText: Tr.visualization2NavbarHelp[@app.language]
           navbarHelpImageSelected: 'IMG/navbar_Icons/questionMark_SectorHighlighted.svg'
           navbarInfoImageSelected: 'IMG/navbar_Icons/explanationIcon_SectorHighlighted.svg'
           colour: 'rgb(52, 153, 153)'
           page: 'viz2'
-          imageAUrl: Tr.howToImages.viz2A[app.language]
-          imageBUrl: Tr.howToImages.viz2B[app.language]
+          imageAUrl: Tr.howToImages.viz2A[@app.language]
+          imageBUrl: Tr.howToImages.viz2B[@app.language]
         }
         {
-          unselectedLabel: Tr.allPages.visualization1NavbarLink[app.language]
-          selectedLabel: Tr.visualization1Titles[app.visualization1Configuration.mainSelection][app.language]
-          navbarInfoText: Tr.visualization1NavbarHelp[app.language]
+          unselectedLabel: Tr.allPages.visualization1NavbarLink[@app.language]
+          selectedLabel: Tr.visualization1Titles[@app.visualization1Configuration.mainSelection][@app.language]
+          navbarInfoText: Tr.visualization1NavbarHelp[@app.language]
           navbarHelpImageSelected: 'IMG/navbar_Icons/questionMark_RegionHighlighted.svg'
           navbarInfoImageSelected: 'IMG/navbar_Icons/explanationIcon_RegionHighlighted.svg'
           colour: 'rgb(103, 153, 204)'
           page: 'viz1'
-          imageAUrl: Tr.howToImages.viz1A[app.language]
-          imageBUrl: Tr.howToImages.viz1B[app.language]
+          imageAUrl: Tr.howToImages.viz1A[@app.language]
+          imageBUrl: Tr.howToImages.viz1B[@app.language]
         }
         {
           img: 'IMG/home.svg'
@@ -134,8 +137,9 @@ class Navbar
       .on 'click', (d) =>
         d3.event.preventDefault()
         if d.page != @navbarState
-          app.router.navigate
+          @app.router.navigate
             page: d.page
+            language: @app.language
       .style 
         'background-color': (d) -> d.colour
         width: (d) => 
@@ -157,10 +161,10 @@ class Navbar
           "<div class='navbarSelectedItem'> 
             <span>#{d.selectedLabel}</span>
             <div class='navbarHelpIcon'>
-              <img src='IMG/navbar_Icons/questionMark_ColourBG.svg'>
+              <img src='IMG/navbar_Icons/questionMark_ColourBG.svg' alt='#{Tr.altText.questionMark_ColourBG[@app.language]}'>
             </div>
             <div class='navbarMenuIcon'>
-              <img src='IMG/navbar_Icons/explanationIcon_ColourBG.svg'>
+              <img src='IMG/navbar_Icons/explanationIcon_ColourBG.svg' alt='#{Tr.altText.explanationIcon_ColourBG[@app.language]}'>
             </div>
             <div class='navbarHelpSection hidden'>
             </div>
@@ -173,72 +177,25 @@ class Navbar
 
     
     vizNavbar.select('.navbarHelpIcon')
-      .on 'click', (d) ->
-        # Set the content of the pop up        
-        d3.select('.navbarHelpSection').html (e) => Mustache.render Templates.howToPopoverContent, 
-          imageAUrl: d.imageAUrl
-          imageBUrl: d.imageBUrl
-
-        # Set up event handlers to swap between the two help images
-        d3.select('.howToBackButton').on 'click', ->
-          d3.select('.imageAContainer').classed 'hidden', false
-          d3.select('.imageBContainer').classed 'hidden', true
-          
-          d3.select('.howToBackButton').attr 'disabled', 'disabled'
-          d3.select('.howToBackButton').html """
-            <img src="IMG/howto/light-left-arrow.png">
-          """
-          d3.select('.howToForwardButton').attr 'disabled', null
-          d3.select('.howToForwardButton').html """
-            <img src="IMG/howto/dark-right-arrow.png">
-          """
-
-
-        d3.select('.howToForwardButton').on 'click', ->
-          d3.select('.imageAContainer').classed 'hidden', true
-          d3.select('.imageBContainer').classed 'hidden', false
-
-          d3.select('.howToBackButton').attr 'disabled', null
-          d3.select('.howToBackButton').html """
-            <img src="IMG/howto/dark-left-arrow.png">
-          """
-          d3.select('.howToForwardButton').attr 'disabled', 'disabled'
-          d3.select('.howToForwardButton').html """
-            <img src="IMG/howto/light-right-arrow.png">
-          """
-
-        # Set up the help icon: depending on selection
-        d3.select('.navbarHelpIcon').classed('selected', !(d3.select('.navbarHelpIcon').classed('selected')))
-        if d3.select('.navbarHelpIcon').classed('selected') 
-          d3.select('.navbarHelpIcon').html "<img src='#{d.navbarHelpImageSelected}'>"
+      .on 'click', (d) =>
+        d3.event.stopPropagation()
+        if @app.popoverManager.currentPopover == @navbarHelpPopover
+          @app.popoverManager.closePopover()
         else
-          d3.select('.navbarHelpIcon').html "<img src='IMG/navbar_Icons/questionMark_ColourBG.svg'>"
-        
-        # Either way the explanation icon should be unselected
-        d3.select('.navbarMenuIcon').classed('selected', false)
-        d3.select('.navbarMenuIcon').html "<img src='IMG/navbar_Icons/explanationIcon_ColourBG.svg'>"
-        
-        # Determine whether to hide or show the element
-        d3.select('.navbarHelpSection').classed('hidden', !(d3.select('.navbarHelpIcon').classed('selected')))
+          @app.popoverManager.showPopover @navbarHelpPopover, 
+            imageAUrl: d.imageAUrl
+            imageBUrl: d.imageBUrl
+            navbarHelpImageSelected: d.navbarHelpImageSelected
 
     vizNavbar.select('.navbarMenuIcon')
-      .on 'click', (d) ->
-        # Set the content of the pop up
-        d3.select('.navbarHelpSection').html (e) => d.navbarInfoText
-        
-        # Set up the info icon: depending on selection
-        d3.select('.navbarMenuIcon').classed('selected', !(d3.select('.navbarMenuIcon').classed('selected')))
-        if d3.select('.navbarMenuIcon').classed('selected') 
-          d3.select('.navbarMenuIcon').html "<img src='#{d.navbarInfoImageSelected}'>"
+      .on 'click', (d) =>
+        d3.event.stopPropagation()
+        if @app.popoverManager.currentPopover == @navbarInfoPopover
+          @app.popoverManager.closePopover()
         else
-          d3.select('.navbarMenuIcon').html "<img src='IMG/navbar_Icons/explanationIcon_ColourBG.svg'>"
-        
-        # Either way the explanation help should be unselected
-        d3.select('.navbarHelpIcon').classed('selected', false)
-        d3.select('.navbarHelpIcon').html "<img src='IMG/navbar_Icons/questionMark_ColourBG.svg'>"
-        
-        # Determine whether to hide or show the element
-        d3.select('.navbarHelpSection').classed('hidden', !(d3.select('.navbarMenuIcon').classed('selected')))
+          @app.popoverManager.showPopover @navbarInfoPopover, 
+            navbarInfoText: d.navbarInfoText
+            navbarInfoImageSelected: d.navbarInfoImageSelected
 
 
 
@@ -258,12 +215,12 @@ class Navbar
           opacity: 
             if self.navbarState == d.page then 0 else 1
     vizNavbar.selectAll('span').transition()
-      .duration 1000
+      .duration @app.animationDuration
       .style
         opacity: 1
 
     vizNavbar.transition()
-      .duration 1000
+      .duration @app.animationDuration
       .styleTween 'width', (d, i, a) ->
         return if d.page == 'landingPage'
         if self.navbarState == d.page

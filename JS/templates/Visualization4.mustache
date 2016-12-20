@@ -1,0 +1,79 @@
+<div id="wideVisualizationPanel"> 
+
+  <div id="buttonPanel" class="selectorColumn">
+    <div class="mainSelectorSection">    
+      <span class="floatedTitleLabel">{{selectOneLabel}}</span>
+      <a href='#'>
+        <img src="IMG/large_qmark.svg" class="helpIconButton mainSelectorHelpButton pointerCursor" alt='{{ altText.mainSelectionHelp }}'> 
+      </a>
+      <div class="clearfix"> </div>
+      <div class="selectorGroup">
+        <div id="mainSelector"> </div>
+        <div class="clearfix"> </div>
+      </div>
+    </div>
+    <div class="unitsSelectorGroup">    
+      <span class="floatedTitleLabel">{{selectUnitLabel}}</span>
+      <a href='#'>  
+        <img src="IMG/large_qmark.svg" class="helpIconButton unitSelectorHelpButton pointerCursor" alt='{{ altText.unitsHelp }}'> 
+      </a>
+      <div class="selectorGroup">
+        <div id="unitsSelector"> </div>
+      </div>
+    </div>
+    <div class="datasetSelectorGroup">
+      <span class="floatedTitleLabel">{{selectDatasetLabel}}</span>
+      <a href='#'>
+        <img src="IMG/large_qmark.svg" class="helpIconButton datasetSelectorHelpButton pointerCursor" alt='{{ altText.datasetsHelp }}'> 
+      </a>
+      <div class="selectorGroup">
+        <div id="datasetSelector"></div>
+      </div>
+    </div>
+    <div class="scenarioSelectorGroup">  
+      <span class="floatedTitleLabel">{{selectScenarioLabel}}</span>
+      <a href='#'>
+        <img src="IMG/large_qmark.svg" class="helpIconButton scenarioSelectorHelpButton pointerCursor" alt='{{ altText.scenariosHelp }}'> 
+      </a>
+      <div class="selectorGroup">
+        <div id="scenariosSelector"> </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="provincePanel" class="smallSelectorColumn">
+    <span class="titleLabel textCentre">{{selectRegionLabel}}</span>
+    <div id="provincesSelector">
+      <svg id="provinceMenuSVG" xmlns="http://www.w3.org/2000/svg" xmlns:xlink='http://www.w3.org/1999/xlink'>
+      </svg>
+    </div>
+  </div>
+  <div id="graphPanel" class="wideVisualizationColumn">
+    <svg id="graphSVG" xmlns="http://www.w3.org/2000/svg" xmlns:xlink='http://www.w3.org/1999/xlink'>
+      <style> {{ svgStylesheet }} </style>
+      <g id="graphGroup"> 
+        <defs> </defs>
+        <g id="xAxisGrid"> </g>
+        <g id="yAxisGrid"> </g>
+        <g id="xAxis"> </g>
+        <g id="yAxis"> </g>
+        <g id="areasAndLinesGroup"> </g>
+        <g id="referenceCaseLineGroup"> </g>
+      </g>
+    </svg>
+  </div>
+
+  <div id='tooltip' class='chartTooltip'> </div>
+
+</div>
+
+<div class="hidden"> 
+  <img src="IMG/main_selection/electricity_selected.png" alt="Electricity"> 
+  <img src="IMG/main_selection/electricity_unselected.png" alt="Electricity"> 
+  <img src="IMG/main_selection/gas_selected.png" alt="Gas"> 
+  <img src="IMG/main_selection/gas_unselected.png" alt="Gas"> 
+  <img src="IMG/main_selection/oil_selected.png" alt="Oil"> 
+  <img src="IMG/main_selection/oil_unselected.png" alt="Oil"> 
+  <img src="IMG/main_selection/totalDemand_selected.png" alt="Total demand"> 
+  <img src="IMG/main_selection/totalDemand_unselected.png" alt="Total demand"> 
+</div>

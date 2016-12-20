@@ -1,0 +1,34 @@
+
+/* 
+
+This slightly mysterious CSS allows us to position the iframe inline with the content of the page and have it resize appropriately.
+
+NB: if the height of the page content changes, the padding here should be bumped up too.
+The padding is fairly generous, especially to allow space for the modals without scrolling
+
+
+Inspired by: https://benmarshall.me/responsive-iframes/
+
+*/
+
+#energy-future-outer-container {
+  position: relative;
+  width: 100%;
+  padding-bottom: 1000px;
+}
+
+#energy-future-iframe-container {
+  position: absolute;
+  width: 100%;
+  padding-bottom: 1000px;
+}
+
+#energy-future-iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+
+  position: absolute;
+  top: 0;
+  left: 0;
+}

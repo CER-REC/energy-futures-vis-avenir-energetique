@@ -6,7 +6,6 @@
   line-height: 1em;
   font-weight: 400;
   color: #333333;
-  margin-bottom: 20px;
 }
 
 #canadasEnergyFutureVisualization h1, 
@@ -18,11 +17,42 @@
   font-weight: 400;
 } 
 
-
-#canadasEnergyFutureVisualization .mainImageCarousel {
-  height: 400px;
-  float: right;
+div.chartTooltip {
+  visibility: hidden;
+  z-index: 10;
+  font-size: 12;
+  font-weight: bold;
+  position: absolute;
+  background-color: white;
+  padding: 5px 0;
+  font-family: Avenir Next Condensed, Arial Narrow, Arial, Verdana, sans-serif;
 }
+
+div.chartTooltip:before {
+  content: "\00a0 \00a0 ";
+}
+
+div.chartTooltip:after {
+  content: "\00a0 \00a0 ";
+}
+
+#canadasEnergyFutureVisualization .videoIframeContainer {
+  position: relative;
+  /* Approximate height of the video player elements. */
+  /* In WET3: in my tests the video player was always exactly 404px tall. Reducing the screen width only shrank the width of the element. */
+  padding-bottom: 430px; 
+  /* In WET4: in my tests the width and height shrank with reduced screen width. Above 600px width or so, the length:width ratio was always above 1.6, we could use a percentage padding-bottom to work with this. Below 600px this aspect ratio fell as low as 1.2, so we will need media queries to get the padding right in WET4. */
+}
+
+#canadasEnergyFutureVisualization .videoIframe {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  border: none;
+}
+
 
 #canadasEnergyFutureVisualization #mainPanel {
   position: relative;
@@ -41,21 +71,68 @@
 }
 
 
-#canadasEnergyFutureVisualization #panelLeft {
+#canadasEnergyFutureVisualization #panelLeft.en {
   /*column-count: 2;
   -webkit-column-count: 2;
   -moz-column-count: 2;*/
   box-sizing: border-box;
   width: 25%;
+  float: right;
+  padding-right: 10px; /* For precise alignment with link boxes */
+}
+
+#canadasEnergyFutureVisualization #panelLeft.fr {
+  column-count: 1;
+  -webkit-column-count: 1;
+  -moz-column-count: 1;
+  box-sizing: border-box;
+  width: 25%;
+  float: right;
+  padding-right: 10px; /* For precise alignment with link boxes */
+}
+
+#canadasEnergyFutureVisualization #panelLeft.fr p {
+    margin-top: 0;
+}
+
+#canadasEnergyFutureVisualization .columnLeftLandingPage {
+  width: 50%;
   float: left;
 }
 
-#canadasEnergyFutureVisualization #panelRight {
+#canadasEnergyFutureVisualization .columnRightLandingPage {
+  width: 50%;
+  float: right;
+}
+
+#canadasEnergyFutureVisualization #panelRight.en {
   box-sizing: border-box;
   width: 75%;
-  float: left;
-  padding-left: 7px; /* Necessary for precise alignment with link boxes */
+  float: right;
+  padding-left: 4px; /* For precise alignment with link boxes */
 }
+
+#canadasEnergyFutureVisualization #panelRight.fr {
+  box-sizing: border-box;
+  width: 75%;
+  float: right;
+  padding-left: 4px; /* For precise alignment with link boxes */
+}
+
+@media (max-width: 1023px) {
+  #canadasEnergyFutureVisualization #panelLeft {
+    float: none;
+    width: 100%;
+  }
+
+  #canadasEnergyFutureVisualization #panelRight {
+    float: none;
+    width: 100%;
+    padding-left: 0;
+  }
+}
+
+
 #canadasEnergyFutureVisualization #panelRight img {
   max-width: 100%;
   width: 100%;
@@ -68,26 +145,6 @@
   line-height: 1.3em;
 }
 
-@media (max-width: 1199px) {
-  #canadasEnergyFutureVisualization #panelLeft {
-    width: 45%; 
-  }
-  #canadasEnergyFutureVisualization #panelLeft h1 {
-    line-height: 1em;
-  }
-  #canadasEnergyFutureVisualization #panelRight {
-    width: 55%;
-  }
-}
-
-@media (max-width: 959px) {
-  #canadasEnergyFutureVisualization #panelLeft {
-    width: 50%;
-  }
-  #canadasEnergyFutureVisualization #panelRight {
-    width: 50%;
-  }
-}
 
 #canadasEnergyFutureVisualization .hidden {
   display: none;
@@ -98,7 +155,8 @@
   color: #fff;
   background-color: #333333;
   width: 100%;
-  font-size: 28px;
+  height: 50px;
+  font-size: 36px;
   padding: 7px 0px 7px 25px;
   line-height: 1em;
   box-shadow: 0px 1px 3px 1px #333333;
@@ -235,7 +293,7 @@
 
 
 #canadasEnergyFutureVisualization .viz1Img {
-  background-image: url("../IMG/landingPageThumb/vis1_808_NEW.png");
+  background-image: url("../IMG/landingPageThumb/vis1_808.png");
   background-size: cover;
   background-position:50% 50%;  /* Sets reference point to scale from */
 }
@@ -460,6 +518,26 @@
   padding: 3px;
 }
 
+#canadasEnergyFutureVisualization #imageDownloadSpinnerContainer {
+  width: 100px;
+  margin: auto;
+}
+
+#canadasEnergyFutureVisualization #imageDownloadSpinner {
+  margin: -50%;
+}
+
+
+
+#canadasEnergyFutureVisualization #modalImageDownloadButtonContainer {
+  margin: 10px 0px 10px 0px;
+}
+
+#canadasEnergyFutureVisualization #modalImageDownloadButton {
+  color: #333333;
+}
+
+
 #canadasEnergyFutureVisualization #imageDownloadModal p {
   margin: 0;
   padding: 10px 0px 10px 0px;
@@ -526,7 +604,7 @@
   font-weight: 400;
 }
 
-@media (max-width: 1200px) {
+@media (max-width: 1000px) {
   #canadasEnergyFutureVisualization .navbarSelectedItem span {
     font-size: 26px;
     margin-top: 12px;
@@ -540,7 +618,6 @@
   cursor: auto;
   font-size: 16px;
   z-index: 1000;
-  margin: 0 10 10;
   padding: 5px;
   text-align: left;
   position: absolute;
@@ -671,14 +748,14 @@
   cursor: pointer;
 }
 
-@media (max-width: 1199px) {
+@media (max-width: 1000px) {
   #canadasEnergyFutureVisualization .mainSelectorButton {
     font-size: 82%;
     line-height: 1em;
   }
 }
 
-@media (max-width: 959px) {
+@media (max-width: 1000px) {
   #canadasEnergyFutureVisualization .mainSelectorButton {
     font-size: 70%;
   }
@@ -700,6 +777,8 @@
   text-align: center;
 }
 
+#canadasEnergyFutureVisualization .datasetSelectorSection,
+#canadasEnergyFutureVisualization .datasetSelectorGroup,
 #canadasEnergyFutureVisualization .mainSelectorSection,
 #canadasEnergyFutureVisualization .unitsSelectorGroup,
 #canadasEnergyFutureVisualization .scenarioSelectorGroup,
@@ -814,6 +893,20 @@
   color: white;
 }
 
+#canadasEnergyFutureVisualization .vizButton.disabled {
+  color: gray;
+  border-color: gray;
+
+  text-shadow: -2px 0 white, 0 2px white, 2px 0 white, 0 -2px white;
+  background: linear-gradient(to top right, transparent 0%, transparent calc(50% - 2px), rgba(155,155,155,1) 50%, transparent calc(50% + 0.8px), transparent 100%);
+  background: linear-gradient(to top right, transparent, transparent 50%, gray 50%, gray 51%, transparent 52%);
+
+}
+
+#canadasEnergyFutureVisualization span.disabled {
+  background-color: white;
+  display: inline-block;
+}
 
 #canadasEnergyFutureVisualization span.textCentre {
   text-align: center;
@@ -992,8 +1085,16 @@ svg { overflow: hidden; }
 
 
 
+#canadasEnergyFutureVisualization #dataLoadContainer {
+  position: absolute;
+  left: 50%;
+  top: 35%;
+}
 
-
+#canadasEnergyFutureVisualization #dataLoadSpinner {
+  position: relative;
+  margin: -50%;
+}
 
 
 

@@ -54,20 +54,37 @@ module.exports =
     'High': 'high'
     'Low': 'low'
     'HighLNG': 'highLng'
-    'HighLNG ': 'highLng' # NB: The source data column in some of the CSVS has a trailing space in the string 'HighLNG ', this is NOT A TYPO
+    'HighLNG ': 'highLng' # NB: The source data column in some of the CSVs has a trailing space in the string 'HighLNG ', this is NOT A TYPO
     'NoLNG': 'noLng'
-    'NoLNG ': 'noLng' # NB: The source data column in some of the CSVS has a trailing space in the string 'LowLNG ', this is NOT A TYPO
+    'NoLNG ': 'noLng' # NB: The source data column in some of the CSVs has a trailing space in the string 'LowLNG ', this is NOT A TYPO
     'Constrained': 'constrained' 
-    'Constrained ': 'constrained' # NB: The source data column in some of the CSVS has a trailing space in the string 'Constrained ', this is NOT A TYPO
+    'Constrained ': 'constrained' # NB: The source data column in some of the CSVs has a trailing space in the string 'Constrained ', this is NOT A TYPO
 
-  scenarios: [
-    'reference'
-    'high'
-    'low'
-    # 'highLng'
-    # 'noLng'
-    # 'constrained' 
+  datasets: [
+    'jan2016'
+    'oct2016'
   ]
+
+  datasetDefinitions:
+    jan2016: 
+      scenarios: [
+        'reference'
+        'high'
+        'low'
+        'highLng'
+        'noLng'
+        'constrained' 
+      ]
+
+    oct2016: 
+      scenarios: [
+        'reference'
+        'high'
+        'low'
+      ]
+
+
+
 
   years: [
     2005
@@ -166,6 +183,16 @@ module.exports =
     'solarWindGeothermal'
   ]
 
+  viz3Sources: [
+    'hydro'
+    'solarWindGeothermal'
+    'coal'
+    'naturalGas'
+    'bio'
+    'nuclear'
+    'oilProducts'
+  ]
+
   viz3SourceRadioSelectionOptions: [
     'total'
     'hydro'
@@ -185,43 +212,22 @@ module.exports =
     'viz4'
   ]
 
-  imageExport:
-    iconHeight: 30
-    iconWidth: 30
 
-    legendWidth: 80
-    legendHeight: 680
+  animationDuration: 1000 # in ms
 
-    scenarioLegendWidth: 145
-    scenarioLegendHeight: 680
-    scenarioLegendItemWidth: 115 # 145 - 25*2
-    scenarioLegendItemHeight: 35
-    scenarioLegendFontSize: 15
-    scenarioLegendTextTopMargin: 10
-    scenarioLegendXPadding: 15
+  serverSideGraphWidth: 1065 # px
+  viz4ServerSideGraphWidth: 995 # 1065 - 70 extra pixels of width for viz4's wider legend
 
-    legendXPadding: 25
-    legendYPadding: 15
+  cacheDuration: 3600 # seconds
 
-    headerFontSize: 20
-    headerTopBottomMargin: 15
+  # provinces * years, must also be multiplied by scenario count
+  itemsPerViz1Viz4ChunkScenario: 14 * 36
 
-    infoTopSpacer: 40
+  # sources * years, must also be multiplied by scenario count
+  itemsPerViz2ChunkScenario: 6 * 36
 
-    infoFontSize: 15
-    infoTopBottomMargin: 5
-    infoLeftMargin: 25
-
-    sourceRightMargin: 25
-    sourceTopMargin: 10
-
-
-
-
-
-
-
-
+  # provinces * sources * years
+  itemsPerViz3Chunk: 13 * 7 * 36
 
 
 

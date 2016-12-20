@@ -10,5 +10,11 @@ lib-cov
 node_modules
 d3-neb.sublime-project
 d3-neb.sublime-workspace
-dist/
+/dist/
 public/bundle.js
+
+iisnode/
+/JS/servers/ProductionServer/.env
+/log
+
+Thumbs.db
