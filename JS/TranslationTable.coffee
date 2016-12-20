@@ -527,14 +527,14 @@ module.exports =
         <div class="sectionHeader"> Janvier 2016 </div>
         <p>
           La suite de la série sur l’avenir énergétique. En plus des perspectives à long terme habituelles, nous explorons certaines incertitudes de fond dans le secteur de l’énergie au Canada, qu’il s’agisse par exemple de celles découlant du degré de robustesse des marchés mondiaux du GNL ou de la disponibilité d’une infrastructure pour l’acheminement de pétrole brut.
-          <br><a href='http://www.neb-one.gc.ca/nrg/ntgrtd/ftr/2016/index-fra.html' target='_blank'>Rapport</a>
+          <br><a href='http://www.neb-one.gc.ca/nrg/ntgrtd/ftr/2016/index-fra.html' target='_blank'>Consulter le rapport</a>
         </p>
 
         <h6> AVENIR ÉNERGÉTIQUE DU CANADA EN 2016 – MISE À JOUR </h6>
         <div class="sectionHeader"> Octobre 2016 </div>
         <p>
           Présente des scénarios de prix, bas et élevés, ainsi qu’un scénario de référence. Dans ce dernier cas, l’hypothèse de prix du pétrole brut a été revue à la baisse, à 90 $ US le baril en 2040. En plus des politiques déjà incluses précédemment, notamment le système de plafonnement et d’échange de droits d’émission au Québec et la taxe sur le carbone en Colombie-Britannique, les nouvelles prévisions tiennent compte, dans sa plus grande partie, du plan de leadership de l’Alberta en matière de changement climatique de même que du programme de plafonnement et d’échange de droits de l’Ontario.
-          <br><a href='http://www.neb-one.gc.ca/nrg/ntgrtd/ftr/2016updt/index-fra.html' target='_blank'>Rapport</a>
+          <br><a href='http://www.neb-one.gc.ca/nrg/ntgrtd/ftr/2016updt/index-fra.html' target='_blank'>Consulter le rapport</a>
         </p>
       """
 
@@ -1418,52 +1418,52 @@ module.exports =
       fr: "Fermer"
     twitter:
       en: "Share on Twitter"
-      fr: "Partager avec Twitter"
+      fr: "Partager sur Twitter"
     linkedin:
       en: "Share on LinkedIn"
-      fr: "Partager avec LinkedIn"
+      fr: "Partager sur LinkedIn"
     email:
       en: "Share by email"
       fr: "Partager par courriel"
 
     questionMark_ColourBG:
       en: "How to Use"
-      fr: "Comment explorer la visualization"
+      fr: "Guide d'utilisation"
     explanationIcon_ColourBG:
       en: "About This Visualization"
-      fr: "Renseignements sur cette visualisation"
+      fr: "Au sujet de la visualisation"
 
     electricity_unselected:
       en: "Electricity Generation Unselected"
-      fr: "Production d’électricité non sélectionné"
+      fr: "Désélection - Production d’électricité"
     electricity_selected:
       en: "Electricity Generation Selected"
-      fr: "Production d’électricité sélectionné"
+      fr: "Sélection - Production d’électricité"
     oil_unselected:
       en: "Crude Oil Production Unselected"
-      fr: "Production de pétrole non sélectionné"
+      fr: "Désélection - Production de pétrole"
     oil_selected:
       en: "Crude Oil Production Selected"
-      fr: "Production de pétrole sélectionné"
+      fr: "Sélection - Production de pétrole"
     gas_unselected:
       en: "Natural Gas Production Unselected"
-      fr: "Production de gaz non sélectionné"
+      fr: "Désélection - Production de gaz"
     gas_selected:
       en: "Natural Gas Production Selected"
-      fr: "Production de gaz industriel"
+      fr: "Sélection - Production de gaz"
     totalDemand_unselected:
       en: "Total Energy Demand Unselected"
-      fr: "Consommation totale d’énergie non sélectionné"
+      fr: "Désélection - Consommation totale d’énergie"
     totalDemand_selected:
       en: "Total Energy Demand Selected"
-      fr: "Consommation totale d’énergie sélectionné"
+      fr: "Sélection - Consommation totale d’énergie"
 
     selected:
       en: "Selected"
       fr: "Sélectionné"
     unselected:
       en: "Unselected"
-      fr: "Non sélectionné"
+      fr: "Désélectionné"
     unavailable:
       en: "Unavailable"
       fr: "Non disponible"
@@ -1477,55 +1477,55 @@ module.exports =
 
     mainSelectionHelp:
       en: 'About the main selection'
-      fr: 'Renseignements sur la sélection principale'
+      fr: 'Au sujet de la sélection principale'
     sectorsHelp:
       en: 'About the sectors'
-      fr: 'Renseignements sur les secteurs'
+      fr: 'Au sujet des secteurs'
     unitsHelp:
       en: 'About the units'
-      fr: 'Renseignements sur les unités'
+      fr: 'Au sujet des unités'
     datasetsHelp:
-      en: "About the \"Canada's Energy Future\" report data sets"
-      fr: "Renseignements sur les séries de données des rapports «Avenir énergétique du Canada»"
+      en: "About the Canada's Energy Future report data sets"
+      fr: "Au sujet des ensembles de données utilisés pour Avenir énergétique du Canada"
     scenariosHelp:
       en: 'About the scenarios'
-      fr: 'Renseignements sur les scénarios'
+      fr: 'Au sujet des scénarios'
     regionsHelp:
       en: 'About the regions'
-      fr: 'Renseignements sur les régions'
+      fr: 'Au sujet des régions'
     sourcesHelp:
       en: 'About the energy sources'
-      fr: 'Renseignements sur les sources d’énergie'
+      fr: 'Au sujet des sources d’énergie'
     viewByHelp:
       en: 'About the "view by" options'
-      fr: 'Renseignements sur les options «visualiser par»'
+      fr: "Au sujet de l'option « Visualiser par »"
 
     sectors:
       residentialSelected:
         en: 'Residential sector selected'
-        fr: 'Secteur résidentiel sélectionné'
+        fr: 'Sélection - Secteur résidentiel'
       commercialSelected:
         en: 'Commercial sector selected'
-        fr: 'Secteur commercial sélectionné'
+        fr: 'Sélection - Secteur commercial'
       industrialSelected:
         en: 'Industrial sector selected'
-        fr: 'Secteur industriel sélectionné'
+        fr: 'Sélection - Secteur industriel'
       transportationSelected:
         en: 'Transportation sector selected'
-        fr: 'Secteur des transports sélectionné'
+        fr: 'Sélection - Secteur des transports'
 
       residentialUnselected:
         en: 'Residential sector unselected'
-        fr: 'Secteur résidentiel non sélectionné'
+        fr: 'Désélection - Secteur résidentiel'
       commercialUnselected:
         en: 'Commercial sector unselected'
-        fr: 'Secteur commercial non sélectionné'
+        fr: 'Désélection - Secteur commercial'
       industrialUnselected:
         en: 'Industrial sector unselected'
-        fr: 'Secteur industriel non sélectionné'
+        fr: 'Désélection - Secteur industriel'
       transportationUnselected:
         en: 'Transportation sector unselected'
-        fr: 'Secteur des transports non sélectionné'
+        fr: 'Désélection - Secteur des transports'
 
     howToImage:
       en: 'Usage instructions'
