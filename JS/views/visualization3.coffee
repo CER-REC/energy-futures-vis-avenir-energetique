@@ -943,6 +943,7 @@ class Visualization3 extends visualization
       year = Math.round(@yearScale().invert(newX))
       if year != @config.year
         @config.setYear year
+        @app.router.navigate @config.routerParams()
         d3.select(@app.window.document).select('#labelBox').text((d) =>
           @config.year
         )
@@ -958,6 +959,7 @@ class Visualization3 extends visualization
           @config.year
         )
         @config.setYear year
+        @app.router.navigate @config.routerParams()
         @getDataAndRender()
     )
     sliderWidth = 70

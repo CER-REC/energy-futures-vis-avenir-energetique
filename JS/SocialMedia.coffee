@@ -23,7 +23,7 @@ SocialMedia = (app) ->
         # Bitly shortened link, two newlines, and the email body
         emailBody = "#{url}%0A%0A#{Tr.contactEmail.body[app.language]}"
 
-        emailUrl = "mailto:energyindesign@neb-one.gc.ca?subject=#{Tr.contactEmail.subject[app.language]}&body=#{emailBody}"
+        emailUrl = "mailto:?subject=#{Tr.contactEmail.subject[app.language]}&body=#{emailBody}"
 
         app.window.location.href = emailUrl
 

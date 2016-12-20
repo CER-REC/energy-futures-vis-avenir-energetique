@@ -37,7 +37,7 @@ class Visualization1Configuration
       'SK'
       'YT' 
     ]
-    dataset: Constants.datasets[0]
+    dataset: Constants.datasets[1]
 
   constructor: (@app, options) ->
     @page = 'viz1'
@@ -230,7 +230,14 @@ class Visualization1Configuration
       when 'noLng'
         Tr.scenarioSelector.noLngButton[@app.language]
 
+    datasetText = switch @dataset
+      when 'jan2016'
+        "#{Tr.report[@app.language]}#{Tr.datasetSelector.jan2016Button[@app.language]}"
+      when 'oct2016'
+        "#{Tr.report[@app.language]}#{Tr.datasetSelector.oct2016Button[@app.language]}"
+
     description = ''
+    description += "#{datasetText} - "
     description += "#{mainSelectionText} - "
     description += "#{Tr.imageExportText.unit[@app.language]}: #{unitText} - "
     description += "#{Tr.imageExportText.scenario[@app.language]}: #{scenarioText}"

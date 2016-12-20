@@ -62,7 +62,7 @@ class Visualization3Configuration
     ]
     province: 'all'
     source: 'total'
-    dataset: Constants.datasets[0]
+    dataset: Constants.datasets[1]
 
   constructor: (@app, options) ->
     @page = 'viz3'
@@ -307,8 +307,14 @@ class Visualization3Configuration
     else if @viewBy == 'source'
       Tr.sourceSelector.sources[@source][@app.language]
 
-   
+    datasetText = switch @dataset
+      when 'jan2016'
+        "#{Tr.report[@app.language]}#{Tr.datasetSelector.jan2016Button[@app.language]}"
+      when 'oct2016'
+        "#{Tr.report[@app.language]}#{Tr.datasetSelector.oct2016Button[@app.language]}"
+
     description = ''
+    description += "#{datasetText} - "
     description += "#{Tr.mainSelector.electricityGenerationButton[@app.language]} - "
     # description += "#{Tr.imageExportText.unit[@app.language]}: #{unitText} - "
     description += "#{Tr.imageExportText.scenario[@app.language]}: #{scenarioText} - "

@@ -8,8 +8,6 @@ class Visualization4Configuration
     mainSelection: 'gasProduction'
     unit: 'petajoules'
 
-    # The original data had six scenarios, the revised data currently only has three.
-    # We expect this state of affairs to be temporary! 
     scenarios: [
       'reference'
       'constrained'
@@ -20,7 +18,7 @@ class Visualization4Configuration
     ]
     province: 'all'
 
-    dataset: Constants.datasets[0]
+    dataset: Constants.datasets[1]
 
 
   constructor: (@app, options) ->
@@ -172,8 +170,14 @@ class Visualization4Configuration
     else
       "#{Tr.viewBySelector.viewByProvinceButton[@app.language]}: #{Tr.regionSelector.names[@province][@app.language]}"
 
+    datasetText = switch @dataset
+      when 'jan2016'
+        "#{Tr.report[@app.language]}#{Tr.datasetSelector.jan2016Button[@app.language]}"
+      when 'oct2016'
+        "#{Tr.report[@app.language]}#{Tr.datasetSelector.oct2016Button[@app.language]}"
 
     description = ''
+    description += "#{datasetText} - "
     description += "#{mainSelectionText} - "
     description += "#{Tr.imageExportText.unit[@app.language]}: #{unitText} - "
     description += "#{provinceText}"

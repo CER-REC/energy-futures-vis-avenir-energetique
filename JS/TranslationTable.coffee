@@ -16,8 +16,6 @@ module.exports =
       Based on data from our, Energy Futures reports, this interactive tool allows you to explore energy production and consumption trends and forecast them into the future. You can explore the data from the most recent report, or refer to previous reports.
       </p>
       <p>
-      <a href='http://www.neb-one.gc.ca/nrg/ntgrtd/ftr/2016updt/index-eng.html' target="_blank">View the most recent report</a>
-      <br>
       <a href='PDF/Methodology_ENG.PDF' target="_blank">Methodology</a>
       <br>
       <a href='#' id="aboutHyperlink">About</a>
@@ -35,8 +33,6 @@ module.exports =
           Vous avez le loisir de vous en tenir au rapport le plus récent ou d’aller voir ce que disaient de précédents rapports.
         </p>
         <p>
-        <a href='http://www.neb-one.gc.ca/nrg/ntgrtd/ftr/2016updt/index-fra.html' target="_blank">Rapport le plus récent</a>
-        <br>
         <a href='PDF/Methodology_FRA.PDF' target="_blank">Méthodologie</a>
         <br>
         <a href='#' id="aboutHyperlink">À propos de l’outil</a>
@@ -154,13 +150,13 @@ module.exports =
       """
       fr: """
         <p> 
-          Pour créer l’outil interactif Explorer l’avenir énergétique du Canada, l’Office national de l’énergie s’est associé à des experts de la visualisation des données du milieu universitaire et de l’industrie. Fondé sur la publication phare qu’est le <a href="http://www.neb-one.gc.ca/nrg/ntgrtd/ftr/index-fra.html">Rapport sur l’avenir énergétique du Canada</a>, cet outil avant-gardiste ouvre la voie à une transformation du mode de diffusion des données qu’utilisera désormais l’Office.
+          Pour créer l’outil interactif Explorer l’avenir énergétique du Canada, l’Office national de l’énergie s’est associé à des experts de la visualisation des données du milieu universitaire et de l’industrie. Fondé sur la publication phare qu’est le <a href="http://www.neb-one.gc.ca/nrg/ntgrtd/ftr/index-fra.html" target="_blank">Rapport sur l’avenir énergétique du Canada</a>, cet outil avant-gardiste ouvre la voie à une transformation du mode de diffusion des données qu’utilisera désormais l’Office.
         </p>
         <p>
           Notre objectif consiste à présenter des données de qualité tirées des deux plus récentes perspectives énergétiques de l’Office dans un format visuel interactif et convivial, qui clarifie une information complexe grâce à des visualisations faciles à comprendre. Vous pouvez ainsi explorer l’avenir énergétique du Canada à partir de votre propre ordinateur. Au cours des mois et des années à venir, l’Office utilisera ce format novateur pour diffuser ses données sur la sécurité des pipelines et sur l’énergie, l’information qu’il possède sur l’infrastructure énergétique et une foule d’autres renseignements spécialisés.
         </p>
         <p>
-          Si vous souhaitez utiliser les données pour vos recherches ou pour en faire votre propre analyse, vous pouvez les télécharger et les partager. Les graphiques peuvent aussi être téléchargés. Quant au code source des visualisations, il est accessible sur le portail du « gouvernement ouvert » à l’adresse <a href="http://ouvert.canada.ca">ouvert.canada.ca</a>.
+          Si vous souhaitez utiliser les données pour vos recherches ou pour en faire votre propre analyse, vous pouvez les télécharger et les partager. Les graphiques peuvent aussi être téléchargés. Quant au code source des visualisations, il est accessible sur le portail du « gouvernement ouvert » à l’adresse <a href="http://ouvert.canada.ca" target="_blank">ouvert.canada.ca</a>.
         </p>
         <p>
           Nous espérons avoir atteint notre objectif. Votre rétroaction est essentielle.
@@ -516,12 +512,14 @@ module.exports =
         <div class="sectionHeader"> January 2016 </div>
         <p> 
           A continuation of the Energy Futures series. In addition our usual baseline long-term outlook, we explores key uncertainties for Canadian energy such robustness of global LNG markets and availability of crude oil transportation infrastructure.
+          <br><a href='http://www.neb-one.gc.ca/nrg/ntgrtd/ftr/2016/index-eng.html' target='_blank'>View the report</a>
         </p>
 
         <h6> CANADA’S ENERGY FUTURE 2016: UPDATE </h6>
         <div class="sectionHeader"> October 2016 </div>
         <p> 
           Presents reference and high and low prices cases. In the Reference Case, the crude oil price assumption is revised lower to US$90 per barrel by 2040. In addition to policies which were included in the January edition, such as Quebec’s cap and trade system and the carbon tax in B.C., most of the Alberta Climate Leadership Plan and the Ontario cap and trade program have been integrated into the forecast.
+          <br><a href='http://www.neb-one.gc.ca/nrg/ntgrtd/ftr/2016updt/index-eng.html' target='_blank'>View the report</a>
         </p>
       """
       fr: """
@@ -529,12 +527,14 @@ module.exports =
         <div class="sectionHeader"> Janvier 2016 </div>
         <p>
           La suite de la série sur l’avenir énergétique. En plus des perspectives à long terme habituelles, nous explorons certaines incertitudes de fond dans le secteur de l’énergie au Canada, qu’il s’agisse par exemple de celles découlant du degré de robustesse des marchés mondiaux du GNL ou de la disponibilité d’une infrastructure pour l’acheminement de pétrole brut.
+          <br><a href='http://www.neb-one.gc.ca/nrg/ntgrtd/ftr/2016/index-fra.html' target='_blank'>Consulter le rapport</a>
         </p>
 
         <h6> AVENIR ÉNERGÉTIQUE DU CANADA EN 2016 – MISE À JOUR </h6>
         <div class="sectionHeader"> Octobre 2016 </div>
         <p>
           Présente des scénarios de prix, bas et élevés, ainsi qu’un scénario de référence. Dans ce dernier cas, l’hypothèse de prix du pétrole brut a été revue à la baisse, à 90 $ US le baril en 2040. En plus des politiques déjà incluses précédemment, notamment le système de plafonnement et d’échange de droits d’émission au Québec et la taxe sur le carbone en Colombie-Britannique, les nouvelles prévisions tiennent compte, dans sa plus grande partie, du plan de leadership de l’Alberta en matière de changement climatique de même que du programme de plafonnement et d’échange de droits de l’Ontario.
+          <br><a href='http://www.neb-one.gc.ca/nrg/ntgrtd/ftr/2016updt/index-fra.html' target='_blank'>Consulter le rapport</a>
         </p>
       """
 
@@ -713,106 +713,65 @@ module.exports =
     scenarioSelectorHelp:
       en: """
         <p> 
-          The projections include three supplemental sensitivity cases:
+          The projections in EF 2016 include a Reference Case, two price sensitivity cases and three supplemental sensitivity cases:
         </p>
-        <div class="sectionHeader"> REFERENCE </div>  
-        <p>
-          The Reference Case provides a baseline outlook, based on a moderate view of future energy prices and economic growth.
-        </p>
-        <div class="sectionHeader"> HIGH PRICE </div>  
-        <p>  
-          A price case with higher oil and natural gas prices capture some of the uncertainty related to future energy prices.
-        </p>
-        <div class="sectionHeader"> LOW PRICE </div>  
-        <p>  
-          A price case with lower oil and natural gas prices capture some of the uncertainty related to future energy prices.
-        </p>
+        <div class="columnLeft">  
+          <div class="sectionHeader"> REFERENCE </div>  
+            <p>
+              The Reference Case provides a baseline outlook, based on a moderate view of future energy prices and economic growth.
+            </p>
+          <div class="sectionHeader"> HIGH PRICE </div>  
+            <p>  
+              A price case with higher oil and natural gas prices capture some of the uncertainty related to future energy prices.
+            </p>
+          <div class="sectionHeader"> LOW PRICE </div>  
+            <p>  
+              A price case with lower oil and natural gas prices capture some of the uncertainty related to future energy prices.
+            </p>
+        </div>
+        <div class="columnRight">  
+          <div class="sectionHeader"> CONSTRAINED </div>  
+            <p>
+              The EF 2016 report considers a case where no new major oil pipelines are built over the projection period to address uncertainties related to future oil export infrastructure. 
+            </p>
+          <div class="sectionHeader"> LNG </div>  
+            <p>
+              The uncertainty related to eventual volumes of liquefied natural gas (LNG) exports is explored in two additional cases.
+            </p>
+        </div>
       """
       fr: """
         <p>
-          Les projections comprennent trois scénarios :
+          Le rapport AE 2016 renferme une projection de l’évolution de l’offre et de la demande énergétiques future au Canada. Pour prendre en compte les multiples incertitudes et facteurs pouvant influer sur cette évolution, le rapport AE 2016 explore six scénarios prévisionnels bâtis à partir de diverses hypothèses. Cette analyse démontre les incidences des divers facteurs sur l’évolution de la filière énergétique, ainsi que les répercussions possibles des incertitudes actuelles sur les résultats à long terme.
         </p>
-        <div class="sectionHeader"> RÉFÉRENCE </div>  
         <p>
-          Le scénario de référence offre une perspective de base et mise sur une projection modérée des prix de l’énergie et de la croissance de l’économie dans les années à venir.
+          Les projections du rapport AE comprennent un scénario de référence, cinq scénarios de sensibilité, dont deux liés au prix :
         </p>
-        <div class="sectionHeader"> PRIX ÉLEVÉ </div>  
-        <p>  
-          Un premier scénario lié aux prix prévoit des prix du pétrole et du gaz naturel plus élevés et prend en compte certaines incertitudes qui ont trait aux prix futurs de l’énergie.
-        </p>
-        <div class="sectionHeader"> PRIX BAS </div>  
-        <p>  
-          Un second scénario lié aux prix table sur des prix du pétrole et du gaz naturel moins élevés et intègre certaines incertitudes concernant les prix futurs de l’énergie.
-        </p>
+        <div class="columnLeft">  
+          <div class="sectionHeader"> RÉFÉRENCE </div>  
+            <p>
+              Le scénario de référence offre une perspective de base et mise sur une projection modérée des prix de l’énergie et de la croissance de l’économie dans les années à venir.
+            </p>
+          <div class="sectionHeader"> PRIX ÉLEVÉ </div>  
+            <p>  
+              Un premier scénario lié aux prix prévoit des prix du pétrole et du gaz naturel plus élevés et prend en compte certaines incertitudes qui ont trait aux prix futurs de l’énergie.
+            </p>
+          <div class="sectionHeader"> PRIX BAS </div>  
+            <p>  
+              Un second scénario lié aux prix table sur des prix du pétrole et du gaz naturel moins élevés et intègre certaines incertitudes concernant les prix futurs de l’énergie.
+            </p>
+        </div>
+        <div class="columnRight">  
+          <div class="sectionHeader"> CAPACITÉ LIMITÉE </div>  
+            <p>
+              Le rapport AE 2016 prend aussi en considération des incertitudes relatives à l’infrastructure d’exportation du pétrole et propose un scénario dans lequel aucun pipeline d’envergure n’est construit durant la période de projection. 
+            </p>
+          <div class="sectionHeader"> GNL </div>  
+            <p>
+              Deux autres scénarios explorent les incertitudes entourant les éventuelles exportations de gaz naturel liquéfié (GNL).
+            </p>
+        </div>
       """
-
-    # The original data had six scenarios, the revised data currently only has three.
-    # We expect this state of affairs to be temporary! 
-    # The original content below should be restored when the data for the other three 
-    # scenarios is finished
-
-    # scenarioSelectorHelp:
-    #   en: """
-    #     <p> 
-    #       The projections in EF 2016 include a Reference Case, two price sensitivity cases and three supplemental sensitivity cases:
-    #     </p>
-    #     <div class="columnLeft">  
-    #       <div class="sectionHeader"> REFERENCE </div>  
-    #         <p>
-    #           The Reference Case provides a baseline outlook, based on a moderate view of future energy prices and economic growth.
-    #         </p>
-    #       <div class="sectionHeader"> HIGH PRICE </div>  
-    #         <p>  
-    #           A price case with higher oil and natural gas prices capture some of the uncertainty related to future energy prices.
-    #         </p>
-    #       <div class="sectionHeader"> LOW PRICE </div>  
-    #         <p>  
-    #           A price case with lower oil and natural gas prices capture some of the uncertainty related to future energy prices.
-    #         </p>
-    #     </div>
-    #     <div class="columnRight">  
-    #       <div class="sectionHeader"> CONSTRAINED </div>  
-    #         <p>
-    #           The EF 2016 report considers a case where no new major oil pipelines are built over the projection period to address uncertainties related to future oil export infrastructure. 
-    #         </p>
-    #       <div class="sectionHeader"> LNG </div>  
-    #         <p>
-    #           The uncertainty related to eventual volumes of liquefied natural gas (LNG) exports is explored in two additional cases.
-    #         </p>
-    #     </div>
-    #   """
-    #   fr: """
-    #     <p>
-    #       Le rapport AE 2016 renferme une projection de l’évolution de l’offre et de la demande énergétiques future au Canada. Pour prendre en compte les multiples incertitudes et facteurs pouvant influer sur cette évolution, le rapport AE 2016 explore six scénarios prévisionnels bâtis à partir de diverses hypothèses. Cette analyse démontre les incidences des divers facteurs sur l’évolution de la filière énergétique, ainsi que les répercussions possibles des incertitudes actuelles sur les résultats à long terme.
-    #     </p>
-    #     <p>
-    #       Les projections du rapport AE comprennent un scénario de référence, cinq scénarios de sensibilité, dont deux liés au prix :
-    #     </p>
-    #     <div class="columnLeft">  
-    #       <div class="sectionHeader"> RÉFÉRENCE </div>  
-    #         <p>
-    #           Le scénario de référence offre une perspective de base et mise sur une projection modérée des prix de l’énergie et de la croissance de l’économie dans les années à venir.
-    #         </p>
-    #       <div class="sectionHeader"> PRIX ÉLEVÉ </div>  
-    #         <p>  
-    #           Un premier scénario lié aux prix prévoit des prix du pétrole et du gaz naturel plus élevés et prend en compte certaines incertitudes qui ont trait aux prix futurs de l’énergie.
-    #         </p>
-    #       <div class="sectionHeader"> PRIX BAS </div>  
-    #         <p>  
-    #           Un second scénario lié aux prix table sur des prix du pétrole et du gaz naturel moins élevés et intègre certaines incertitudes concernant les prix futurs de l’énergie.
-    #         </p>
-    #     </div>
-    #     <div class="columnRight">  
-    #       <div class="sectionHeader"> CAPACITÉ LIMITÉE </div>  
-    #         <p>
-    #           Le rapport AE 2016 prend aussi en considération des incertitudes relatives à l’infrastructure d’exportation du pétrole et propose un scénario dans lequel aucun pipeline d’envergure n’est construit durant la période de projection. 
-    #         </p>
-    #       <div class="sectionHeader"> GNL </div>  
-    #         <p>
-    #           Deux autres scénarios explorent les incertitudes entourant les éventuelles exportations de gaz naturel liquéfié (GNL).
-    #         </p>
-    #     </div>
-    #   """
 
 
     names:
@@ -1263,35 +1222,15 @@ module.exports =
       </p>
     """
   visualization4NavbarHelp: 
-    en: """
-      <h4 class="viz4HelpTitle">  EXPLORE SCENARIOS </h4>
-      <p>  
-        Directly compare the scenarios. 
-      </p>
-      <p>
-        Explore the impact of key uncertainties on future energy trends, such as higher or lower energy prices.
-      </p>
-    """
-    fr: """
-      <h4 class="viz4HelpTitle"> EXPLORATION DES SCÉNARIOS </h4>
-      <p>
-        Comparez directement les scénarios. 
-      </p>
-      <p>
-        Analysez l’incidence des principales incertitudes sur l’évolution future de l’énergie, par exemple en fonction de prix plus élevés ou plus bas.
-      </p>
-    """
+    # Three scenario version
 
-    # The original data had six scenarios, the revised data currently only has three.
-    # We expect this state of affairs to be temporary! 
-    # Content below is for the six scenario version. 
     # en: """
     #   <h4 class="viz4HelpTitle">  EXPLORE SCENARIOS </h4>
     #   <p>  
     #     Directly compare the scenarios. 
     #   </p>
     #   <p>
-    #     Explore the impact of key uncertainties on future energy trends, such as higher or lower energy prices, higher LNG exports or No LNG exports, or not building crude oil export pipelines.
+    #     Explore the impact of key uncertainties on future energy trends, such as higher or lower energy prices.
     #   </p>
     # """
     # fr: """
@@ -1300,9 +1239,30 @@ module.exports =
     #     Comparez directement les scénarios. 
     #   </p>
     #   <p>
-    #     Analysez l’incidence des principales incertitudes sur l’évolution future de l’énergie, par exemple en fonction de prix plus élevés ou plus bas, d’exportations plus élevées de GNL, ou l’absence d’exportations de GNL, ou encore l’absence de nouveaux de pipelines d’exportation de pétrole brut.
+    #     Analysez l’incidence des principales incertitudes sur l’évolution future de l’énergie, par exemple en fonction de prix plus élevés ou plus bas.
     #   </p>
     # """
+
+    # Six scenario version
+    
+    en: """
+      <h4 class="viz4HelpTitle">  EXPLORE SCENARIOS </h4>
+      <p>  
+        Directly compare the scenarios. 
+      </p>
+      <p>
+        Explore the impact of key uncertainties on future energy trends, such as higher or lower energy prices, higher LNG exports or No LNG exports, or not building crude oil export pipelines.
+      </p>
+    """
+    fr: """
+      <h4 class="viz4HelpTitle"> EXPLORATION DES SCÉNARIOS </h4>
+      <p>
+        Comparez directement les scénarios. 
+      </p>
+      <p>
+        Analysez l’incidence des principales incertitudes sur l’évolution future de l’énergie, par exemple en fonction de prix plus élevés ou plus bas, d’exportations plus élevées de GNL, ou l’absence d’exportations de GNL, ou encore l’absence de nouveaux de pipelines d’exportation de pétrole brut.
+      </p>
+    """
 
 
 
@@ -1458,52 +1418,52 @@ module.exports =
       fr: "Fermer"
     twitter:
       en: "Share on Twitter"
-      fr: "Partager avec Twitter"
+      fr: "Partager sur Twitter"
     linkedin:
       en: "Share on LinkedIn"
-      fr: "Partager avec LinkedIn"
+      fr: "Partager sur LinkedIn"
     email:
       en: "Share by email"
       fr: "Partager par courriel"
 
     questionMark_ColourBG:
       en: "How to Use"
-      fr: "Comment explorer la visualization"
+      fr: "Guide d'utilisation"
     explanationIcon_ColourBG:
       en: "About This Visualization"
-      fr: "Renseignements sur cette visualisation"
+      fr: "Au sujet de la visualisation"
 
     electricity_unselected:
       en: "Electricity Generation Unselected"
-      fr: "Production d’électricité non sélectionné"
+      fr: "Désélection - Production d’électricité"
     electricity_selected:
       en: "Electricity Generation Selected"
-      fr: "Production d’électricité sélectionné"
+      fr: "Sélection - Production d’électricité"
     oil_unselected:
       en: "Crude Oil Production Unselected"
-      fr: "Production de pétrole non sélectionné"
+      fr: "Désélection - Production de pétrole"
     oil_selected:
       en: "Crude Oil Production Selected"
-      fr: "Production de pétrole sélectionné"
+      fr: "Sélection - Production de pétrole"
     gas_unselected:
       en: "Natural Gas Production Unselected"
-      fr: "Production de gaz non sélectionné"
+      fr: "Désélection - Production de gaz"
     gas_selected:
       en: "Natural Gas Production Selected"
-      fr: "Production de gaz industriel"
+      fr: "Sélection - Production de gaz"
     totalDemand_unselected:
       en: "Total Energy Demand Unselected"
-      fr: "Consommation totale d’énergie non sélectionné"
+      fr: "Désélection - Consommation totale d’énergie"
     totalDemand_selected:
       en: "Total Energy Demand Selected"
-      fr: "Consommation totale d’énergie sélectionné"
+      fr: "Sélection - Consommation totale d’énergie"
 
     selected:
       en: "Selected"
       fr: "Sélectionné"
     unselected:
       en: "Unselected"
-      fr: "Non sélectionné"
+      fr: "Désélectionné"
     unavailable:
       en: "Unavailable"
       fr: "Non disponible"
@@ -1517,55 +1477,55 @@ module.exports =
 
     mainSelectionHelp:
       en: 'About the main selection'
-      fr: 'Renseignements sur la sélection principale'
+      fr: 'Au sujet de la sélection principale'
     sectorsHelp:
       en: 'About the sectors'
-      fr: 'Renseignements sur les secteurs'
+      fr: 'Au sujet des secteurs'
     unitsHelp:
       en: 'About the units'
-      fr: 'Renseignements sur les unités'
+      fr: 'Au sujet des unités'
     datasetsHelp:
-      en: "About the \"Canada's Energy Future\" report data sets"
-      fr: "Renseignements sur les séries de données des rapports «Avenir énergétique du Canada»"
+      en: "About the Canada's Energy Future report data sets"
+      fr: "Au sujet des ensembles de données utilisés pour Avenir énergétique du Canada"
     scenariosHelp:
       en: 'About the scenarios'
-      fr: 'Renseignements sur les scénarios'
+      fr: 'Au sujet des scénarios'
     regionsHelp:
       en: 'About the regions'
-      fr: 'Renseignements sur les régions'
+      fr: 'Au sujet des régions'
     sourcesHelp:
       en: 'About the energy sources'
-      fr: 'Renseignements sur les sources d’énergie'
+      fr: 'Au sujet des sources d’énergie'
     viewByHelp:
       en: 'About the "view by" options'
-      fr: 'Renseignements sur les options «visualiser par»'
+      fr: "Au sujet de l'option « Visualiser par »"
 
     sectors:
       residentialSelected:
         en: 'Residential sector selected'
-        fr: 'Secteur résidentiel sélectionné'
+        fr: 'Sélection - Secteur résidentiel'
       commercialSelected:
         en: 'Commercial sector selected'
-        fr: 'Secteur commercial sélectionné'
+        fr: 'Sélection - Secteur commercial'
       industrialSelected:
         en: 'Industrial sector selected'
-        fr: 'Secteur industriel sélectionné'
+        fr: 'Sélection - Secteur industriel'
       transportationSelected:
         en: 'Transportation sector selected'
-        fr: 'Secteur des transports sélectionné'
+        fr: 'Sélection - Secteur des transports'
 
       residentialUnselected:
         en: 'Residential sector unselected'
-        fr: 'Secteur résidentiel non sélectionné'
+        fr: 'Désélection - Secteur résidentiel'
       commercialUnselected:
         en: 'Commercial sector unselected'
-        fr: 'Secteur commercial non sélectionné'
+        fr: 'Désélection - Secteur commercial'
       industrialUnselected:
         en: 'Industrial sector unselected'
-        fr: 'Secteur industriel non sélectionné'
+        fr: 'Désélection - Secteur industriel'
       transportationUnselected:
         en: 'Transportation sector unselected'
-        fr: 'Secteur des transports non sélectionné'
+        fr: 'Désélection - Secteur des transports'
 
     howToImage:
       en: 'Usage instructions'
@@ -1605,5 +1565,7 @@ module.exports =
         en: 'Power cable'
         fr: 'Câble électrique'
 
-
+  report:
+    en: "REPORT: "
+    fr: "RAPPORT : "
 

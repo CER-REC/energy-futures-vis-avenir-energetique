@@ -25,7 +25,7 @@ class Visualization2Configuration
       'electricity'
     ]
     province: 'all'
-    dataset: Constants.datasets[0]
+    dataset: Constants.datasets[1]
 
   constructor: (@app, options) ->
     @page = 'viz2'
@@ -187,7 +187,15 @@ class Visualization2Configuration
     else
       "#{Tr.viewBySelector.viewByProvinceButton[@app.language]}: #{@province}"
    
+    datasetText = switch @dataset
+      when 'jan2016'
+        "#{Tr.report[@app.language]}#{Tr.datasetSelector.jan2016Button[@app.language]}"
+      when 'oct2016'
+        "#{Tr.report[@app.language]}#{Tr.datasetSelector.oct2016Button[@app.language]}"
+
+   
     description = ''
+    description += "#{datasetText} - "
     description += "#{Tr.mainSelector.totalDemandButton[@app.language]} - "
     description += "#{Tr.imageExportText.sector[@app.language]}: #{sectorText} - "
     description += "#{Tr.imageExportText.unit[@app.language]}: #{unitText} - "
