@@ -2,6 +2,8 @@
 
 module.exports = 
 
+  appHost: 'https://apps2.neb-one.gc.ca/dvs'
+
   mainSelections: ['energyDemand', 'oilProduction', 'electricityGeneration', 'gasProduction']
 
 

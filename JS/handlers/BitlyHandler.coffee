@@ -16,7 +16,7 @@ module.exports = (req, res) ->
 
   unless process.env.BITLY_API_KEY? and process.env.BITLY_USERNAME?
     response = JSON.stringify
-      url: 'https://apps2.neb-one.gc.ca/dvs/'
+      url: Constants.appHost
       foo: 'bar'
     res.setHeader "content-type", "application/json"
     res.write response
@@ -25,7 +25,7 @@ module.exports = (req, res) ->
     return
     
 
-  shortenUrl = "https://apps2.neb-one.gc.ca/dvs/#{query}"
+  shortenUrl = "#{Constants.appHost}/#{query}"
   requestUrl = "https://api-ssl.bitly.com/v3/shorten?login=#{process.env.BITLY_USERNAME}&apiKey=#{process.env.BITLY_API_KEY}&format=json&longUrl=#{encodeURIComponent(shortenUrl)}"
 
   Request requestUrl
