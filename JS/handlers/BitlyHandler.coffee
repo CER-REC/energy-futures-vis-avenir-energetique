@@ -17,7 +17,6 @@ module.exports = (req, res) ->
   unless process.env.BITLY_API_KEY? and process.env.BITLY_USERNAME?
     response = JSON.stringify
       url: Constants.appHost
-      foo: 'bar'
     res.setHeader "content-type", "application/json"
     res.write response
     res.end()
