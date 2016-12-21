@@ -14,7 +14,17 @@ module.exports = (req, res) ->
   time = Date.now()
   query = url.parse(req.url).search
 
-  shortenUrl = "https://apps.neb-one.gc.ca/dvs/#{query}"
+  unless process.env.BITLY_API_KEY? and process.env.BITLY_USERNAME?
+    response = JSON.stringify
+      url: Constants.appHost
+    res.setHeader "content-type", "application/json"
+    res.write response
+    res.end()
+    Logger.info "bitly_url (request B#{requestCounter}): #{query} Time: #{Date.now() - time}"
+    return
+    
+
+  shortenUrl = "#{Constants.appHost}/#{query}"
   requestUrl = "https://api-ssl.bitly.com/v3/shorten?login=#{process.env.BITLY_USERNAME}&apiKey=#{process.env.BITLY_API_KEY}&format=json&longUrl=#{encodeURIComponent(shortenUrl)}"
 
   Request requestUrl
