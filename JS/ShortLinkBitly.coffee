@@ -32,13 +32,13 @@ ShortLinkBitly = (app, callback) ->
     return unless http.readyState == XMLHttpRequest.DONE
     
     if http.status != 200
-      callback "https://apps.neb-one.gc.ca/dvs"
+      callback "https://apps2.neb-one.gc.ca/dvs"
       return
 
     response = JSON.parse http.responseText
 
     if response.status_code != 200
-      callback "https://apps.neb-one.gc.ca/dvs"
+      callback "https://apps2.neb-one.gc.ca/dvs"
       return
 
     callback response.data.url

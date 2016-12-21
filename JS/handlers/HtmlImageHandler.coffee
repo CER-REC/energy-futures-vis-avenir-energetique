@@ -68,7 +68,7 @@ HtmlImageHandler = (req, res) ->
     counter = requestCounter
     Logger.info "html_image (request H#{counter}): #{query}"
 
-    shortenUrl = "https://apps.neb-one.gc.ca/dvs/#{query}"
+    shortenUrl = "https://apps2.neb-one.gc.ca/dvs/#{query}"
 
     Request "https://api-ssl.bitly.com/v3/shorten?login=#{process.env.BITLY_USERNAME}&apiKey=#{process.env.BITLY_API_KEY}&format=json&longUrl=#{ encodeURIComponent(shortenUrl)}"
 
@@ -90,7 +90,7 @@ HtmlImageHandler = (req, res) ->
             providers[dataset] = ServerData[dataset]
 
           serverApp = new ServerApp window, providers
-          serverApp.bitlyLink = bitlyResponse.url || "https://apps.neb-one.gc.ca/dvs/"
+          serverApp.bitlyLink = bitlyResponse.url || "https://apps2.neb-one.gc.ca/dvs/"
           serverApp.setLanguage req.query.language
 
           # Parse the parameters with a configuration object, and then hand them off to a
