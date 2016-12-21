@@ -68,11 +68,25 @@ HtmlImageHandler = (req, res) ->
     counter = requestCounter
     Logger.info "html_image (request H#{counter}): #{query}"
 
-    shortenUrl = "https://apps.neb-one.gc.ca/dvs/#{query}"
 
-    Request "https://api-ssl.bitly.com/v3/shorten?login=#{process.env.BITLY_USERNAME}&apiKey=#{process.env.BITLY_API_KEY}&format=json&longUrl=#{ encodeURIComponent(shortenUrl)}"
 
-    .then (bitlyResponse) ->
+    if process.env.BITLY_API_KEY? and process.env.BITLY_USERNAME?
+      shortenUrl = "#{Constants.appHost}/#{query}"
+      requestUrl = "https://api-ssl.bitly.com/v3/shorten?login=#{process.env.BITLY_USERNAME}&apiKey=#{process.env.BITLY_API_KEY}&format=json&longUrl=#{encodeURIComponent(shortenUrl)}"
+
+      shortUrlPromise = Request({uri: requestUrl, json: true})
+      .then (response) ->
+        if response.status_code == 200
+          return response.data.url
+        else
+          return Constants.appHost
+      .catch (error) ->
+        return Constants.appHost
+    else
+      shortUrlPromise = new Promise (resolve, reject) ->
+        resolve Constants.appHost
+
+    shortUrlPromise.then (shortUrl) ->
 
       try
         jsdom.env html, [], (error, window) -> 
@@ -90,7 +104,7 @@ HtmlImageHandler = (req, res) ->
             providers[dataset] = ServerData[dataset]
 
           serverApp = new ServerApp window, providers
-          serverApp.bitlyLink = bitlyResponse.url || "https://apps.neb-one.gc.ca/dvs/"
+          serverApp.bitlyLink = shortUrl
           serverApp.setLanguage req.query.language
 
           # Parse the parameters with a configuration object, and then hand them off to a
@@ -137,6 +151,10 @@ HtmlImageHandler = (req, res) ->
 
       catch error
         errorHandler req, res, error, 500, counter
+
+    .catch (error) ->
+      errorHandler req, res, error, 500, counter
+      
 
 
 errorHandler = (req, res, error, code, counter) ->

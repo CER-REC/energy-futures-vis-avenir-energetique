@@ -1,10 +1,10 @@
 ParamsToUrlString = require './ParamsToUrlString.coffee'
-
+Constants = require './Constants.coffee'
 
 ShortLinkBitly = (app, callback) ->
 
   switch app.page
-    # TODO: Find a way to dry up all visualization these cases
+    # TODO: Find a way to dry up all these visualization page cases
     when 'landingPage'
       requestUrl = "bitly_url?page=landingPage&language=#{app.language}"
     when 'viz1'
@@ -32,13 +32,13 @@ ShortLinkBitly = (app, callback) ->
     return unless http.readyState == XMLHttpRequest.DONE
     
     if http.status != 200
-      callback "https://apps.neb-one.gc.ca/dvs"
+      callback Constants.appHost
       return
 
     response = JSON.parse http.responseText
 
     if response.status_code != 200
-      callback "https://apps.neb-one.gc.ca/dvs"
+      callback Constants.appHost
       return
 
     callback response.data.url
