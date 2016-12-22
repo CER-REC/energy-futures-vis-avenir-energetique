@@ -13,7 +13,7 @@ module.exports =
       Energy is important to Canada. It heats our homes, fuels our vehicles, and is a key aspect of Canada’s economy.
       </p>
       <p>
-      Based on data from our, Energy Futures reports, this interactive tool allows you to explore energy production and consumption trends and forecast them into the future. You can explore the data from the most recent report, or refer to previous reports.
+      Based on data from our Energy Futures reports, this interactive tool allows you to explore energy production and consumption trends and forecast them into the future. You can explore the data from the most recent report, or refer to previous reports.
       </p>
       <p>
       <a href='PDF/Methodology_ENG.PDF' target="_blank">Methodology</a>

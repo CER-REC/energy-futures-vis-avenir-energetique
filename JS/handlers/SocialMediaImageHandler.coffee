@@ -26,10 +26,16 @@ module.exports = (req, res) ->
   query = url.parse(req.url).search
 
   requestOptions = 
-    uri: "#{process.env.HOST}:#{process.env.PORT_NUMBER}#{process.env.APP_PATH_PREFIX}/png_image/image.png#{query}"
     encoding: null
+    
 
-  # NB: request-promise is not recommended for streaming
+  if process.env.APP_PATH_PREFIX
+    requestOptions.uri = "#{process.env.HOST}:#{process.env.PORT_NUMBER}#{process.env.APP_PATH_PREFIX}/png_image/image.png#{query}"
+  else
+    requestOptions.uri = "#{process.env.HOST}:#{process.env.PORT_NUMBER}/png_image/image.png#{query}"
+
+  # NB: request-promise is not recommended for streaming, using ordinary 
+  # request instead
   Request requestOptions, (error, incomingMessage, responseBuffer) ->
     if error
       errorHandler res, req, error, counter
