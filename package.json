@@ -28,6 +28,7 @@
     "mustache": "^2.2.1",
     "mustache-express": "^1.2.2",
     "phantomjs-prebuilt": "^2.1.13",
+    "png-crop": "0.0.1",
     "query-string": "^4.2.3",
     "webdriverio": "^4.2.16",
     "winston": "^2.3.0",
