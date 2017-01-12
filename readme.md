@@ -62,7 +62,7 @@ In the `energy-futures-visualization` folder:
 * `npm run start` - Run the development server
 * `npm run watch` - Transpile the app's code and dependencies, and watch for changes
 
-The `start` and `watch` commands both need to run at the same time, you'll need two separate shell windows to do so. With both commands running, visit [http://localhost:3000/dvs](http://localhost:3000/dvs) to see the app in action.
+The `start` and `watch` commands both need to run at the same time. You'll need two separate shell windows to do so. With both commands running, visit [http://localhost:3000/dvs](http://localhost:3000/dvs) to see the app in action.
 
 ### Testing
 You can run the tests with `npm run test`.
