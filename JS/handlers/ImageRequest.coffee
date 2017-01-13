@@ -54,10 +54,12 @@ class ImageRequest
       @errorHandler new Error("No visualization parameters specified.")
       return
 
-    if process.env.APP_PATH_PREFIX
-      requestUrl = "#{process.env.HOST}:#{process.env.PORT_NUMBER}#{process.env.APP_PATH_PREFIX}/html_image#{@query}"
-    else
-      requestUrl = "#{process.env.HOST}:#{process.env.PORT_NUMBER}/html_image#{@query}"
+    # if process.env.APP_PATH_PREFIX
+    #   requestUrl = "#{process.env.HOST}:#{process.env.PORT_NUMBER}#{process.env.APP_PATH_PREFIX}/html_image#{@query}"
+    # else
+    #   requestUrl = "#{process.env.HOST}:#{process.env.PORT_NUMBER}/html_image#{@query}"
+
+    requestUrl = '/Users/kingp/Projects/neb/energy-futures-visualization/foo.html'
       
     @webdriverUrlRequest = @browserTools.webdriverSession.url requestUrl
 
