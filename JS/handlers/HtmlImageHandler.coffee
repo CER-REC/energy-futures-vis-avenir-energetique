@@ -9,6 +9,12 @@ Request = require 'request-promise'
 PrepareQueryParams = require '../PrepareQueryParams.coffee'
 readFile = Promise.promisify fs.readFile
 writeFile = Promise.promisify fs.writeFile
+
+open = Promise.promisify fs.open
+write = Promise.promisify fs.write
+close = Promise.promisify fs.close
+
+
 ApplicationRoot = require '../../ApplicationRoot.coffee'
 Logger = require '../Logger.coffee'
 
@@ -98,7 +104,7 @@ HtmlImageHandler = (query, filename) ->
             return
 
           params = PrepareQueryParams queryString.parse(query)
-          console.log params
+          # console.log params
 
           providers = {}
           for dataset in Constants.datasets
@@ -156,7 +162,20 @@ HtmlImageHandler = (query, filename) ->
 
             Logger.debug "html_image (request H#{counter}) Time: #{Date.now() - time}"
 
-            return writeFile filename, source
+            # We originally used the higher level fs.writeFile API here, but as we read immediately after writing it, it's necessary to wait for the 'close' event. The lower level fs API lets us do this.
+
+            openPromise = open filename, "w+"
+            writePromise = openPromise.then (fileDescriptor) ->
+              write fileDescriptor, source
+
+            writePromise.catch (error) ->
+              console.log "file writing error"
+              console.log error
+ 
+            return Promise.join openPromise, writePromise, (fileDescriptor) ->
+              close fileDescriptor
+
+            # return writeFile filename, source
 
 
 

@@ -17,7 +17,7 @@ class ImageRequest
     # Extract the query parameters, and pass them through to the request we will have 
     # Phantom make of our image page building endpoint.
     @query = url.parse(@req.url).search
-    console.log 'query object?'
+    # console.log 'query object?'
     # console.log @query
     # console.log @query.page
     # console.log @query.language
@@ -47,12 +47,12 @@ class ImageRequest
 
   awaitHtmlImage: ->
 
-    console.log "going to write an image to #{@imageHtmlFile}"
-    console.log @query
+    Logger.verbose "going to write an image to #{@imageHtmlFile}"
+    Logger.verbose @query
     HtmlImageHandler @query, @imageHtmlFile
 
     .then =>
-      console.log 'then handler for html image handler... '
+      # console.log 'then handler for html image handler... '
       @awaitPhantom()
 
     # TODO: catch
@@ -81,9 +81,12 @@ class ImageRequest
     # else
     #   requestUrl = "#{process.env.HOST}:#{process.env.PORT_NUMBER}/html_image#{@query}"
 
+    Logger.verbose "having phantom request image at #{@imageHtmlFile}"
     @webdriverUrlRequest = @browserTools.webdriverSession.url @imageHtmlFile
 
     @webdriverUrlRequest.then =>
+
+      Logger.verbose "after phantom url request"
 
       # We've seen an issue where the font has not loaded in time for the screenshot, and
       # so none of the text is rendered. The 50ms timeout is intended to compensate for this.
@@ -107,8 +110,7 @@ class ImageRequest
     # content-disposition=attachment prompts the browser to start a file download rather
     # than navigate to the image.
 
-    # TODO: put me back. dev mode only. 
-#    @res.setHeader "content-disposition", "attachment"
+    @res.setHeader "content-disposition", "attachment"
 
 
     # The expected use case for image generation is the user previews the image, and then
