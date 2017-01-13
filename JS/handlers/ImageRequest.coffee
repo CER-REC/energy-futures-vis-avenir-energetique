@@ -22,9 +22,10 @@ class ImageRequest
     # console.log @query.page
     # console.log @query.language
 
+    # NB: On Windows, for use with the file:/// scheme, we want to generate paths with forward slashes. Hence path.posix here.
+    @imageHtmlFile = path.posix.join ApplicationRoot, process.env.IMAGE_EXPORT_TEMP_DIRECTORY, "exported_image_#{@counter}.html"
 
-    @imageHtmlFile = path.join ApplicationRoot, process.env.IMAGE_EXPORT_TEMP_DIRECTORY, "exported_image_#{@counter}.html"
-
+    Logger.verbose @imageHtmlFile
 
     @webdriverUrlRequest = null
     @webdriverScreenshotRequest = null
@@ -49,10 +50,11 @@ class ImageRequest
 
     Logger.verbose "going to write an image to #{@imageHtmlFile}"
     Logger.verbose @query
-    HtmlImageHandler @query, @imageHtmlFile
+    htmlImagePromise = HtmlImageHandler @query, @imageHtmlFile
+    console.log htmlImagePromise
 
-    .then =>
-      # console.log 'then handler for html image handler... '
+    htmlImagePromise.then =>
+      Logger.verbose 'then handler for html image handler... '
       @awaitPhantom()
 
     # TODO: catch
@@ -81,8 +83,9 @@ class ImageRequest
     # else
     #   requestUrl = "#{process.env.HOST}:#{process.env.PORT_NUMBER}/html_image#{@query}"
 
-    Logger.verbose "having phantom request image at #{@imageHtmlFile}"
-    @webdriverUrlRequest = @browserTools.webdriverSession.url @imageHtmlFile
+    Logger.verbose "having phantom request image at file:///#{@imageHtmlFile}"
+
+    @webdriverUrlRequest = @browserTools.webdriverSession.url "file:///#{@imageHtmlFile}"
 
     @webdriverUrlRequest.then =>
 
@@ -110,7 +113,7 @@ class ImageRequest
     # content-disposition=attachment prompts the browser to start a file download rather
     # than navigate to the image.
 
-    @res.setHeader "content-disposition", "attachment"
+    # @res.setHeader "content-disposition", "attachment"
 
 
     # The expected use case for image generation is the user previews the image, and then

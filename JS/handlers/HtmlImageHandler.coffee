@@ -94,6 +94,7 @@ HtmlImageHandler = (query, filename) ->
   dataLoadPromise = Promise.all ServerData.loadPromises
 
   return Promise.join shortUrlPromise, htmlPromise, templatesPromise, dataLoadPromise, (shortUrl, html, templates) ->
+    return new Promise (resolve, reject) ->
 
       try
         jsdom.env html, [], (error, window) -> 
@@ -153,7 +154,7 @@ HtmlImageHandler = (query, filename) ->
           body = window.document.querySelector('body')
             
 
-          # we need to wait a tick for the zero duration animations to be scheduled and run
+          # we need to wait a tick for the zero duration animations to be scheduled and run          
           setTimeout ->
 
             source = window.document.querySelector('html').outerHTML
@@ -172,9 +173,11 @@ HtmlImageHandler = (query, filename) ->
               console.log "file writing error"
               console.log error
  
-            return Promise.join openPromise, writePromise, (fileDescriptor) ->
-              close fileDescriptor
+            closePromise = Promise.join openPromise, writePromise, (fileDescriptor) ->
+              Logger.verbose "This is the write file promise callback"
+              return close fileDescriptor
 
+            resolve closePromise
             # return writeFile filename, source
 
 
