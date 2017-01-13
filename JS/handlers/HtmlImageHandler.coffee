@@ -8,6 +8,7 @@ Request = require 'request-promise'
 
 PrepareQueryParams = require '../PrepareQueryParams.coffee'
 readFile = Promise.promisify fs.readFile
+writeFile = Promise.promisify fs.writeFile
 ApplicationRoot = require '../../ApplicationRoot.coffee'
 Logger = require '../Logger.coffee'
 
@@ -55,47 +56,49 @@ templatesPromise = Promise.join Vis1TemplatePromise, Vis2TemplatePromise, Vis3Te
 
 requestCounter = 0
 
-HtmlImageHandler = (req, res) ->
+# HtmlImageHandler = (req, res) ->
+
+# TODO: rename me! 
+HtmlImageHandler = (query, filename) ->
+
+  time = Date.now()
+
+  # query = url.parse(req.url).search
+  requestCounter++
+  counter = requestCounter
+  Logger.info "html_image (request H#{counter}): #{query}"
+
+  if process.env.BITLY_API_KEY? and process.env.BITLY_USERNAME?
+    shortenUrl = "#{Constants.appHost}/#{query}"
+    requestUrl = "https://api-ssl.bitly.com/v3/shorten?login=#{process.env.BITLY_USERNAME}&apiKey=#{process.env.BITLY_API_KEY}&format=json&longUrl=#{encodeURIComponent(shortenUrl)}"
+
+    shortUrlPromise = Request({uri: requestUrl, json: true})
+    .then (response) ->
+      if response.status_code == 200
+        return response.data.url
+      else
+        return Constants.appHost
+    .catch (error) ->
+      return Constants.appHost
+  else
+    shortUrlPromise = new Promise (resolve, reject) ->
+      resolve Constants.appHost
+
 
   dataLoadPromise = Promise.all ServerData.loadPromises
 
-  Promise.join htmlPromise, templatesPromise, dataLoadPromise, (html, templates) ->
-
-    time = Date.now()
-
-    query = url.parse(req.url).search
-    requestCounter++
-    counter = requestCounter
-    Logger.info "html_image (request H#{counter}): #{query}"
-
-
-
-    if process.env.BITLY_API_KEY? and process.env.BITLY_USERNAME?
-      shortenUrl = "#{Constants.appHost}/#{query}"
-      requestUrl = "https://api-ssl.bitly.com/v3/shorten?login=#{process.env.BITLY_USERNAME}&apiKey=#{process.env.BITLY_API_KEY}&format=json&longUrl=#{encodeURIComponent(shortenUrl)}"
-
-      shortUrlPromise = Request({uri: requestUrl, json: true})
-      .then (response) ->
-        if response.status_code == 200
-          return response.data.url
-        else
-          return Constants.appHost
-      .catch (error) ->
-        return Constants.appHost
-    else
-      shortUrlPromise = new Promise (resolve, reject) ->
-        resolve Constants.appHost
-
-    shortUrlPromise.then (shortUrl) ->
+  return Promise.join shortUrlPromise, htmlPromise, templatesPromise, dataLoadPromise, (shortUrl, html, templates) ->
 
       try
         jsdom.env html, [], (error, window) -> 
 
           if error?
-            errorHandler req, res, error, 500
+            # errorHandler req, res, error, 500
+            console.log "TODO: handle this error appropriately"
             return
 
           params = PrepareQueryParams queryString.parse(query)
+          console.log params
 
           providers = {}
           for dataset in Constants.datasets
@@ -105,11 +108,11 @@ HtmlImageHandler = (req, res) ->
 
           serverApp = new ServerApp window, providers
           serverApp.bitlyLink = shortUrl
-          serverApp.setLanguage req.query.language
+          serverApp.setLanguage params.language
 
           # Parse the parameters with a configuration object, and then hand them off to a
           # visualization object. The visualizations render the graphs in their constructors.
-          switch req.query.page
+          switch params.page
             when 'viz1'
               config = new Visualization1Configuration(serverApp, params)
               viz = new Visualization1 serverApp, config,
@@ -135,7 +138,10 @@ HtmlImageHandler = (req, res) ->
                 svgTemplate: templates.svgTemplate
 
             else 
-              errorHandler req, res, new Error("Visualization 'page' parameter not specified or not recognized."), 400, counter
+              console.log "TODO: handle this error too"
+              console.log params
+              console.log params.page
+              # errorHandler req, res, new Error("Visualization 'page' parameter not specified or not recognized."), 400, counter
               return
 
           body = window.document.querySelector('body')
@@ -145,15 +151,26 @@ HtmlImageHandler = (req, res) ->
           setTimeout ->
 
             source = window.document.querySelector('html').outerHTML
-            res.write source
-            res.end()
+            # res.write source
+            # res.end()
+
             Logger.debug "html_image (request H#{counter}) Time: #{Date.now() - time}"
 
+            return writeFile filename, source
+
+
+
       catch error
-        errorHandler req, res, error, 500, counter
+        console.log 'erroorrr'
+        console.log error
+        console.log error.error
+        # errorHandler req, res, error, 500, counter
 
     .catch (error) ->
-      errorHandler req, res, error, 500, counter
+        console.log 'erroorrr'
+        console.log error
+        console.log error.error
+      # errorHandler req, res, error, 500, counter
       
 
 

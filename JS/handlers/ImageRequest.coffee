@@ -1,8 +1,10 @@
 url = require 'url'
+path = require 'path'
 
 Logger = require '../Logger.coffee'
 Constants = require '../Constants.coffee'
-
+ApplicationRoot = require '../../ApplicationRoot'
+HtmlImageHandler = require './HtmlImageHandler'
 
 class ImageRequest
 
@@ -15,6 +17,14 @@ class ImageRequest
     # Extract the query parameters, and pass them through to the request we will have 
     # Phantom make of our image page building endpoint.
     @query = url.parse(@req.url).search
+    console.log 'query object?'
+    # console.log @query
+    # console.log @query.page
+    # console.log @query.language
+
+
+    @imageHtmlFile = path.join ApplicationRoot, process.env.IMAGE_EXPORT_TEMP_DIRECTORY, "exported_image_#{@counter}.html"
+
 
     @webdriverUrlRequest = null
     @webdriverScreenshotRequest = null
@@ -33,8 +43,19 @@ class ImageRequest
     @browserTools = browserTools
     @done = done
 
-    @awaitPhantom()
+    @awaitHtmlImage()
 
+  awaitHtmlImage: ->
+
+    console.log "going to write an image to #{@imageHtmlFile}"
+    console.log @query
+    HtmlImageHandler @query, @imageHtmlFile
+
+    .then =>
+      console.log 'then handler for html image handler... '
+      @awaitPhantom()
+
+    # TODO: catch
 
   awaitPhantom: ->
     @browserTools.phantomPromise.then @awaitWebdriver
@@ -50,6 +71,7 @@ class ImageRequest
 
   loadUrl: =>
 
+    # TODO: this condition needs to be checked waaaaaaaaay sooner
     unless @query?
       @errorHandler new Error("No visualization parameters specified.")
       return
@@ -59,9 +81,7 @@ class ImageRequest
     # else
     #   requestUrl = "#{process.env.HOST}:#{process.env.PORT_NUMBER}/html_image#{@query}"
 
-    requestUrl = '/Users/kingp/Projects/neb/energy-futures-visualization/foo.html'
-      
-    @webdriverUrlRequest = @browserTools.webdriverSession.url requestUrl
+    @webdriverUrlRequest = @browserTools.webdriverSession.url @imageHtmlFile
 
     @webdriverUrlRequest.then =>
 
@@ -86,7 +106,11 @@ class ImageRequest
     @res.setHeader "content-type", "image/png"
     # content-disposition=attachment prompts the browser to start a file download rather
     # than navigate to the image.
-    @res.setHeader "content-disposition", "attachment"
+
+    # TODO: put me back. dev mode only. 
+#    @res.setHeader "content-disposition", "attachment"
+
+
     # The expected use case for image generation is the user previews the image, and then
     # clicks the download image link. Caching the image in the browser will save us from
     # handling a second request.
