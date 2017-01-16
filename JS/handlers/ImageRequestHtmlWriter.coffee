@@ -8,7 +8,6 @@ Request = require 'request-promise'
 
 PrepareQueryParams = require '../PrepareQueryParams.coffee'
 readFile = Promise.promisify fs.readFile
-writeFile = Promise.promisify fs.writeFile
 
 open = Promise.promisify fs.open
 write = Promise.promisify fs.write
@@ -62,14 +61,12 @@ templatesPromise = Promise.join Vis1TemplatePromise, Vis2TemplatePromise, Vis3Te
 
 requestCounter = 0
 
-# HtmlImageHandler = (req, res) ->
 
-# TODO: rename me! 
-HtmlImageHandler = (query, filename) ->
+
+ImageRequestHtmlWriter = (query, filename) ->
 
   time = Date.now()
 
-  # query = url.parse(req.url).search
   requestCounter++
   counter = requestCounter
   Logger.info "html_image (request H#{counter}): #{query}"
@@ -105,7 +102,6 @@ HtmlImageHandler = (query, filename) ->
             return
 
           params = PrepareQueryParams queryString.parse(query)
-          # console.log params
 
           providers = {}
           for dataset in Constants.datasets
@@ -158,8 +154,6 @@ HtmlImageHandler = (query, filename) ->
           setTimeout ->
 
             source = window.document.querySelector('html').outerHTML
-            # res.write source
-            # res.end()
 
             Logger.debug "html_image (request H#{counter}) Time: #{Date.now() - time}"
 
@@ -174,11 +168,9 @@ HtmlImageHandler = (query, filename) ->
               console.log error
  
             closePromise = Promise.join openPromise, writePromise, (fileDescriptor) ->
-              Logger.verbose "This is the write file promise callback"
               return close fileDescriptor
 
             resolve closePromise
-            # return writeFile filename, source
 
 
 
@@ -205,5 +197,5 @@ errorHandler = (req, res, error, code, counter) ->
   res.end "HTTP #{code} #{error.message}"
 
 
-module.exports = HtmlImageHandler
+module.exports = ImageRequestHtmlWriter
 
