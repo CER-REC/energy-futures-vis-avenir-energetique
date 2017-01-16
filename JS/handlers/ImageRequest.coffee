@@ -3,8 +3,9 @@ path = require 'path'
 
 Logger = require '../Logger.coffee'
 Constants = require '../Constants.coffee'
-ApplicationRoot = require '../../ApplicationRoot'
-HtmlImageHandler = require './HtmlImageHandler'
+ApplicationRoot = require '../../ApplicationRoot.coffee'
+HtmlImageHandler = require './HtmlImageHandler.coffee'
+FileUrlPath = require './FileUrlPath.coffee'
 
 class ImageRequest
 
@@ -81,8 +82,8 @@ class ImageRequest
     # else
     #   requestUrl = "#{process.env.HOST}:#{process.env.PORT_NUMBER}/html_image#{@query}"
 
-    Logger.verbose "having phantom request image at #{@imageHtmlFile}"
-    @webdriverUrlRequest = @browserTools.webdriverSession.url @imageHtmlFile
+    Logger.verbose "having phantom request image at #{FileUrlPath(@imageHtmlFile)}"
+    @webdriverUrlRequest = @browserTools.webdriverSession.url FileUrlPath(@imageHtmlFile)
 
     @webdriverUrlRequest.then =>
 
