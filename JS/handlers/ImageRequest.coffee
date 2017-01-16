@@ -24,7 +24,7 @@ class ImageRequest
     # console.log @query.language
 
     # NB: On Windows, for use with the file:/// scheme, we want to generate paths with forward slashes. Hence path.posix here.
-    @imageHtmlFile = path.posix.join ApplicationRoot, process.env.IMAGE_EXPORT_TEMP_DIRECTORY, "exported_image_#{@counter}.html"
+    @imageHtmlFile = path.join ApplicationRoot, process.env.IMAGE_EXPORT_TEMP_DIRECTORY, "exported_image_#{@counter}.html"
 
     Logger.verbose @imageHtmlFile
 
