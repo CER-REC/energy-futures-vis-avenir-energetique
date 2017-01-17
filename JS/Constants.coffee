@@ -1,10 +1,15 @@
 
 
-module.exports = 
+module.exports =
 
   appHost: 'https://apps2.neb-one.gc.ca/dvs'
 
-  mainSelections: ['energyDemand', 'oilProduction', 'electricityGeneration', 'gasProduction']
+  mainSelections: [
+    'energyDemand'
+    'oilProduction'
+    'electricityGeneration'
+    'gasProduction'
+  ]
 
 
   csvProvinceToProvinceCodeMapping:
@@ -16,12 +21,12 @@ module.exports =
     'Quebec': 'QC'
     'New Brunswick': 'NB'
     'Nova Scotia': 'NS'
-    'Newfoundland and Labrador': "NL"
-    'Prince Edward Island': "PE"
-    'Yukon': "YT"
-    'Northwest Territories': "NT"
-    'Nunavut': "NU"
-    'Canada': "all"
+    'Newfoundland and Labrador': 'NL'
+    'Prince Edward Island': 'PE'
+    'Yukon': 'YT'
+    'Northwest Territories': 'NT'
+    'Nunavut': 'NU'
+    'Canada': 'all'
 
   csvSourceToSourceNameMapping:
     'Hydro': 'hydro'
@@ -59,7 +64,7 @@ module.exports =
     'HighLNG ': 'highLng' # NB: The source data column in some of the CSVs has a trailing space in the string 'HighLNG ', this is NOT A TYPO
     'NoLNG': 'noLng'
     'NoLNG ': 'noLng' # NB: The source data column in some of the CSVs has a trailing space in the string 'LowLNG ', this is NOT A TYPO
-    'Constrained': 'constrained' 
+    'Constrained': 'constrained'
     'Constrained ': 'constrained' # NB: The source data column in some of the CSVs has a trailing space in the string 'Constrained ', this is NOT A TYPO
 
   datasets: [
@@ -68,17 +73,17 @@ module.exports =
   ]
 
   datasetDefinitions:
-    jan2016: 
+    jan2016:
       scenarios: [
         'reference'
         'high'
         'low'
         'highLng'
         'noLng'
-        'constrained' 
+        'constrained'
       ]
 
-    oct2016: 
+    oct2016:
       scenarios: [
         'reference'
         'high'
@@ -139,16 +144,16 @@ module.exports =
     'AB'
     'BC'
     'MB'
-    'NB' 
+    'NB'
     'NL'
-    'NS' 
-    'NT' 
+    'NS'
+    'NT'
     'NU'
     'ON'
     'PE'
     'QC'
     'SK'
-    'YT' 
+    'YT'
   ]
 
   provinceRadioSelectionOptions: [
@@ -156,16 +161,16 @@ module.exports =
     'AB'
     'BC'
     'MB'
-    'NB' 
+    'NB'
     'NL'
-    'NS' 
-    'NT' 
+    'NS'
+    'NT'
     'NU'
     'ON'
     'PE'
     'QC'
     'SK'
-    'YT' 
+    'YT'
   ]
 
   sectors: [
@@ -233,6 +238,9 @@ module.exports =
 
 
 
+  socialCropSize:
+    width: 1200
+    height: 630
 
 
 

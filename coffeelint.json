@@ -143,17 +143,21 @@
         "require": true,
         "process": true,
         "module": true,
-        "console": true
+        "console": true,
+        "setTimeout": true,
+        "describe": true,
+        "before": true,
+        "it": true
     },
     "overwrite": true,
     "shadow": true,
     "shadow_builtins": false,
-    "shadow_exceptions": ["err", "next"],
+    "shadow_exceptions": ["err", "next", "error"],
     "undefined": true,
     "hoist_local": true,
     "hoist_parent": true,
     "unused_variables": true,
-    "unused_arguments": false,
+    "unused_arguments": true,
     "unused_classes": true
   },
   "no_trailing_commas": {
