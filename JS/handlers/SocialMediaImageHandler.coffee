@@ -1,4 +1,3 @@
-fs = require 'fs'
 url = require 'url'
 Request = require 'request'
 PngCrop = require 'png-crop'
@@ -25,7 +24,7 @@ module.exports = (req, res) ->
 
   query = url.parse(req.url).search
 
-  requestOptions = 
+  requestOptions =
     encoding: null
     
 
@@ -34,7 +33,7 @@ module.exports = (req, res) ->
   else
     requestOptions.uri = "#{process.env.HOST}:#{process.env.PORT_NUMBER}/png_image/image.png#{query}"
 
-  # NB: request-promise is not recommended for streaming, using ordinary 
+  # NB: request-promise is not recommended for streaming, using ordinary
   # request instead
   Request requestOptions, (error, incomingMessage, responseBuffer) ->
     if error
@@ -46,7 +45,7 @@ module.exports = (req, res) ->
         errorHandler res, req, error, counter
         return
       
-      res.setHeader "content-type", "image/png"
+      res.setHeader 'content-type', 'image/png'
       outputStream.pipe res
 
       Logger.debug "social_png (request S#{counter}) Time: #{Date.now() - time}"

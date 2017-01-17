@@ -18,12 +18,12 @@ class ImageRequest
     @time = @options.time || Date.now()
     @counter = @options.counter
 
-    # Extract the query parameters, and pass them through to the request we will have 
+    # Extract the query parameters, and pass them through to the request we will have
     # Phantom make of our image page building endpoint.
     @query = url.parse(@req.url).search
 
     unless @query?
-      @errorHandler new Error "No visualization parameters specified."
+      @errorHandler new Error 'No visualization parameters specified.'
       return
 
     @imageHtmlFile = path.join ApplicationRoot, process.env.IMAGE_EXPORT_TEMP_DIRECTORY, "exported_image_#{@counter}.html"
@@ -38,8 +38,8 @@ class ImageRequest
   # Only Phantom implements true promises, which is why this is structured as a set of
   # callbacks rather than a promise chain.
 
-  # No matter what, we need to call done() when we are done, so that queued requests 
-  # continue to be handled. 
+  # No matter what, we need to call done() when we are done, so that queued requests
+  # continue to be handled.
 
   handleRequest: (browserTools, done) ->
     @browserTools = browserTools
@@ -100,7 +100,7 @@ class ImageRequest
     # The expected use case for image generation is the user previews the image, and then
     # clicks the download image link. Caching the image in the browser will save us from
     # handling a second request.
-    @res.setHeader 'cache-control', "max-age=#{Constants.cacheDuration}" 
+    @res.setHeader 'cache-control', "max-age=#{Constants.cacheDuration}"
 
     @res.write(screenshotBuffer)
     @res.end()
@@ -111,7 +111,7 @@ class ImageRequest
 
     # Erase the HTML file we wrote for this request
     unlink @imageHtmlFile
-    .catch (error) ->
+    .catch (error) =>
       Logger.error "png_image: (request P#{@counter}) erase HTML after completion error: #{error.message}"
 
 
