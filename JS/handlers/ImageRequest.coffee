@@ -22,8 +22,11 @@ class ImageRequest
     # Phantom make of our image page building endpoint.
     @query = url.parse(@req.url).search
 
-    @imageHtmlFile = path.join ApplicationRoot, process.env.IMAGE_EXPORT_TEMP_DIRECTORY, "exported_image_#{@counter}.html"
+    unless @query?
+      @errorHandler new Error "No visualization parameters specified."
+      return
 
+    @imageHtmlFile = path.join ApplicationRoot, process.env.IMAGE_EXPORT_TEMP_DIRECTORY, "exported_image_#{@counter}.html"
 
     @webdriverUrlRequest = null
     @webdriverScreenshotRequest = null
@@ -51,7 +54,8 @@ class ImageRequest
     htmlWriterPromise.then =>
       @awaitPhantom()
 
-    # TODO: catch
+    .catch @errorHandler
+
 
   awaitPhantom: ->
     @browserTools.phantomPromise.then @awaitWebdriver
@@ -66,12 +70,6 @@ class ImageRequest
 
 
   loadUrl: =>
-
-    # TODO: this condition needs to be checked waaaaaaaaay sooner
-    unless @query?
-      @errorHandler new Error("No visualization parameters specified.")
-      return
-
     @webdriverUrlRequest = @browserTools.webdriverSession.url FileUrlPath(@imageHtmlFile)
 
     @webdriverUrlRequest.then =>

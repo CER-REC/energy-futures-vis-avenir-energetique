@@ -59,23 +59,16 @@ templatesPromise = Promise.join Vis1TemplatePromise, Vis2TemplatePromise, Vis3Te
 
 
 
-requestCounter = 0
 
 
 
-ImageRequestHtmlWriter = (query, filename) ->
-
-  time = Date.now()
-
-  requestCounter++
-  counter = requestCounter
-  Logger.info "html_image (request H#{counter}): #{query}"
+makeShortUrlPromise = (query) ->
 
   if process.env.BITLY_API_KEY? and process.env.BITLY_USERNAME?
     shortenUrl = "#{Constants.appHost}/#{query}"
     requestUrl = "https://api-ssl.bitly.com/v3/shorten?login=#{process.env.BITLY_USERNAME}&apiKey=#{process.env.BITLY_API_KEY}&format=json&longUrl=#{encodeURIComponent(shortenUrl)}"
 
-    shortUrlPromise = Request({uri: requestUrl, json: true})
+    return Request({uri: requestUrl, json: true})
     .then (response) ->
       if response.status_code == 200
         return response.data.url
@@ -84,21 +77,31 @@ ImageRequestHtmlWriter = (query, filename) ->
     .catch (error) ->
       return Constants.appHost
   else
-    shortUrlPromise = new Promise (resolve, reject) ->
+    return new Promise (resolve, reject) ->
       resolve Constants.appHost
 
 
+
+# requestCounter = 0
+
+ImageRequestHtmlWriter = (query, filename) ->
+
+  # time = Date.now()
+  # requestCounter++
+  # counter = requestCounter
+  # Logger.info "html_image (request H#{counter}): #{query}"
+
+  shortUrlPromise = makeShortUrlPromise query
   dataLoadPromise = Promise.all ServerData.loadPromises
 
-  return Promise.join shortUrlPromise, htmlPromise, templatesPromise, dataLoadPromise, (shortUrl, html, templates) ->
-    return new Promise (resolve, reject) ->
+  Promise.join shortUrlPromise, htmlPromise, templatesPromise, dataLoadPromise, (shortUrl, html, templates) ->
+    new Promise (resolve, reject) ->
 
       try
         jsdom.env html, [], (error, window) -> 
 
           if error?
-            # errorHandler req, res, error, 500
-            console.log "TODO: handle this error appropriately"
+            reject error
             return
 
           params = PrepareQueryParams queryString.parse(query)
@@ -141,10 +144,7 @@ ImageRequestHtmlWriter = (query, filename) ->
                 svgTemplate: templates.svgTemplate
 
             else 
-              console.log "TODO: handle this error too"
-              console.log params
-              console.log params.page
-              # errorHandler req, res, new Error("Visualization 'page' parameter not specified or not recognized."), 400, counter
+              reject new Error "Visualization 'page' parameter not specified or not recognized."
               return
 
           body = window.document.querySelector('body')
@@ -155,46 +155,24 @@ ImageRequestHtmlWriter = (query, filename) ->
 
             source = window.document.querySelector('html').outerHTML
 
-            Logger.debug "html_image (request H#{counter}) Time: #{Date.now() - time}"
+            # Logger.debug "html_image (request H#{counter}) Time: #{Date.now() - time}"
 
             # We originally used the higher level fs.writeFile API here, but as we read immediately after writing it, it's necessary to wait for the 'close' event. The lower level fs API lets us do this.
 
             openPromise = open filename, "w+"
             writePromise = openPromise.then (fileDescriptor) ->
-              write fileDescriptor, source
-
-            writePromise.catch (error) ->
-              console.log "file writing error"
-              console.log error
- 
+              write fileDescriptor, source 
             closePromise = Promise.join openPromise, writePromise, (fileDescriptor) ->
-              return close fileDescriptor
+              close fileDescriptor
 
             resolve closePromise
 
-
-
       catch error
-        console.log 'erroorrr'
-        console.log error
-        console.log error.error
-        # errorHandler req, res, error, 500, counter
+        reject error
 
-    .catch (error) ->
-        console.log 'erroorrr'
-        console.log error
-        console.log error.error
-      # errorHandler req, res, error, 500, counter
       
 
 
-errorHandler = (req, res, error, code, counter) ->
-
-  Logger.error "html_image (request H#{counter}) error: #{error.message}"
-  Logger.error error.stack
-
-  res.writeHead code
-  res.end "HTTP #{code} #{error.message}"
 
 
 module.exports = ImageRequestHtmlWriter
