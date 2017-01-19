@@ -200,7 +200,17 @@ class App
 
   detectLanguage: ->
 
-    # First, check the cookie
+    # First, check URL parameter
+    query = QueryString.parse @containingWindow.location.search
+    switch query.language
+      when 'en'
+        @language = 'en'
+        return
+      when 'fr'
+        @language = 'fr'
+        return
+
+    # Second, check the cookie
     gc_lang_cookie = BrowserCookies.get '_gc_lang'
 
     switch gc_lang_cookie
@@ -208,16 +218,6 @@ class App
         @language = 'en'
         return
       when 'F'
-        @language = 'fr'
-        return
-
-    # Second, check the URL parameter
-    query = QueryString.parse @containingWindow.location.search
-    switch query.language
-      when 'en'
-        @language = 'en'
-        return
-      when 'fr'
         @language = 'fr'
         return
 
