@@ -8,6 +8,12 @@ Request = require 'request-promise'
 
 PrepareQueryParams = require '../PrepareQueryParams.coffee'
 readFile = Promise.promisify fs.readFile
+
+open = Promise.promisify fs.open
+write = Promise.promisify fs.write
+close = Promise.promisify fs.close
+
+
 ApplicationRoot = require '../../ApplicationRoot.coffee'
 Logger = require '../Logger.coffee'
 
@@ -53,46 +59,49 @@ templatesPromise = Promise.join Vis1TemplatePromise, Vis2TemplatePromise, Vis3Te
 
 
 
-requestCounter = 0
 
-HtmlImageHandler = (req, res) ->
 
+
+makeShortUrlPromise = (query) ->
+
+  if process.env.BITLY_API_KEY? and process.env.BITLY_USERNAME?
+    shortenUrl = "#{Constants.appHost}/#{query}"
+    requestUrl = "https://api-ssl.bitly.com/v3/shorten?login=#{process.env.BITLY_USERNAME}&apiKey=#{process.env.BITLY_API_KEY}&format=json&longUrl=#{encodeURIComponent(shortenUrl)}"
+
+    return Request({uri: requestUrl, json: true})
+    .then (response) ->
+      if response.status_code == 200
+        return response.data.url
+      else
+        return Constants.appHost
+    .catch (error) ->
+      return Constants.appHost
+  else
+    return new Promise (resolve, reject) ->
+      resolve Constants.appHost
+
+
+
+# requestCounter = 0
+
+ImageRequestHtmlWriter = (query, filename) ->
+
+  # time = Date.now()
+  # requestCounter++
+  # counter = requestCounter
+  # Logger.info "html_image (request H#{counter}): #{query}"
+
+  shortUrlPromise = makeShortUrlPromise query
   dataLoadPromise = Promise.all ServerData.loadPromises
 
-  Promise.join htmlPromise, templatesPromise, dataLoadPromise, (html, templates) ->
-
-    time = Date.now()
-
-    query = url.parse(req.url).search
-    requestCounter++
-    counter = requestCounter
-    Logger.info "html_image (request H#{counter}): #{query}"
-
-
-
-    if process.env.BITLY_API_KEY? and process.env.BITLY_USERNAME?
-      shortenUrl = "#{Constants.appHost}/#{query}"
-      requestUrl = "https://api-ssl.bitly.com/v3/shorten?login=#{process.env.BITLY_USERNAME}&apiKey=#{process.env.BITLY_API_KEY}&format=json&longUrl=#{encodeURIComponent(shortenUrl)}"
-
-      shortUrlPromise = Request({uri: requestUrl, json: true})
-      .then (response) ->
-        if response.status_code == 200
-          return response.data.url
-        else
-          return Constants.appHost
-      .catch (error) ->
-        return Constants.appHost
-    else
-      shortUrlPromise = new Promise (resolve, reject) ->
-        resolve Constants.appHost
-
-    shortUrlPromise.then (shortUrl) ->
+  Promise.join shortUrlPromise, htmlPromise, templatesPromise, dataLoadPromise, (shortUrl, html, templates) ->
+    new Promise (resolve, reject) ->
 
       try
         jsdom.env html, [], (error, window) -> 
 
           if error?
-            errorHandler req, res, error, 500
+            reject error
             return
 
           params = PrepareQueryParams queryString.parse(query)
@@ -105,11 +114,11 @@ HtmlImageHandler = (req, res) ->
 
           serverApp = new ServerApp window, providers
           serverApp.bitlyLink = shortUrl
-          serverApp.setLanguage req.query.language
+          serverApp.setLanguage params.language
 
           # Parse the parameters with a configuration object, and then hand them off to a
           # visualization object. The visualizations render the graphs in their constructors.
-          switch req.query.page
+          switch params.page
             when 'viz1'
               config = new Visualization1Configuration(serverApp, params)
               viz = new Visualization1 serverApp, config,
@@ -135,36 +144,36 @@ HtmlImageHandler = (req, res) ->
                 svgTemplate: templates.svgTemplate
 
             else 
-              errorHandler req, res, new Error("Visualization 'page' parameter not specified or not recognized."), 400, counter
+              reject new Error "Visualization 'page' parameter not specified or not recognized."
               return
 
           body = window.document.querySelector('body')
             
 
-          # we need to wait a tick for the zero duration animations to be scheduled and run
+          # we need to wait a tick for the zero duration animations to be scheduled and run          
           setTimeout ->
 
             source = window.document.querySelector('html').outerHTML
-            res.write source
-            res.end()
-            Logger.debug "html_image (request H#{counter}) Time: #{Date.now() - time}"
+
+            # Logger.debug "html_image (request H#{counter}) Time: #{Date.now() - time}"
+
+            # We originally used the higher level fs.writeFile API here, but as we read immediately after writing it, it's necessary to wait for the 'close' event. The lower level fs API lets us do this.
+
+            openPromise = open filename, "w+"
+            writePromise = openPromise.then (fileDescriptor) ->
+              write fileDescriptor, source 
+            closePromise = Promise.join openPromise, writePromise, (fileDescriptor) ->
+              close fileDescriptor
+
+            resolve closePromise
 
       catch error
-        errorHandler req, res, error, 500, counter
+        reject error
 
-    .catch (error) ->
-      errorHandler req, res, error, 500, counter
       
 
 
-errorHandler = (req, res, error, code, counter) ->
-
-  Logger.error "html_image (request H#{counter}) error: #{error.message}"
-  Logger.error error.stack
-
-  res.writeHead code
-  res.end "HTTP #{code} #{error.message}"
 
 
-module.exports = HtmlImageHandler
+module.exports = ImageRequestHtmlWriter
 

@@ -53,6 +53,15 @@ fs.writeFile(path.join(iisNodeAppDirectory, "VERSION"), pjson.version, function(
   }
 }); 
 
+var git_last_modified_date = execSync('git show -s --format=%cd HEAD --date=short')
+
+fs.writeFile(path.join(iisNodeAppDirectory, "LAST_MODIFIED"), git_last_modified_date, function(err) {
+  if(err) {
+    throw err;
+  }
+}); 
+
+
 
 console.log("Visual-studio-install done!");
 console.log("NB: For Web Deploy to work properly, you MUST add all the contents of the IIS project's 'public' and 'node_app' directories to the project in Visual Studio. Otherwise, the files aren't copied on deploy.");
