@@ -11,10 +11,10 @@ Logger = require '../Logger.coffee'
 
 # Phantom setup
 
-# Start an instance of Phantom, and store a reference to the session. We'll re-use the 
+# Start an instance of Phantom, and store a reference to the session. We'll re-use the
 # Phantom instance over the lifetime of the server.
 
-browserTools = 
+browserTools =
   phantomPromise: phantomjs.run '--webdriver=4444'
   webdriverSession: null
   
@@ -23,13 +23,13 @@ browserTools =
 # sorts of weird and wonderful ways.
 # https://github.com/webdriverio/webdriverio/issues/1431
 
-browserTools.phantomPromise.then => 
+browserTools.phantomPromise.then ->
 
   wdOpts = { desiredCapabilities: { browserName: 'phantomjs' } }
   browserTools.webdriverSession = webdriverio.remote(wdOpts).init()
 
-  # NB: Page width is set in three locations: 
-  # - Here, which determines screenshot size 
+  # NB: Page width is set in three locations:
+  # - Here, which determines screenshot size
   # - in Constants, determines the size of the rendered SVG
   # - in serverSideRenderingStyles.css, which controls page layout
 
@@ -50,7 +50,7 @@ processingRequests = false
 requestCounter = 0
 
 
-PngImageHandler = (req, res) ->
+PngImageHandler = (req, res, options = {crop: false}) ->
   requestCounter++
 
   Logger.info "png_image (request P#{requestCounter}): #{url.parse(req.url).search}"
@@ -65,10 +65,11 @@ PngImageHandler = (req, res) ->
     res: res
     time: Date.now()
     counter: requestCounter
+    crop: options.crop
 
   if processingRequests == false
     processingRequests = true
-    processImageRequest() 
+    processImageRequest()
 
 
 
