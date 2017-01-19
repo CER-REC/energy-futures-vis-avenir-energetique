@@ -81,7 +81,7 @@ class ImageRequest
       # this. This is not an ideal solution, but detecting font loading is hard, and this
       # is simple. The issue occurred in maybe 1 request in 20. Other options: include
       # the font as a data URI, try the CSS3 document.fontloader API
-      setTimeout @saveScreenshot, 50
+      setTimeout @saveScreenshot, Constants.pngRenderSleepTime
 
     .catch @errorHandler
 
