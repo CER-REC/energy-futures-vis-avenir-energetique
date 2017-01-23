@@ -66,8 +66,8 @@ This project contains some tools which are used to deploy the app for the NEB, a
 ### Language Detection
 The application is fully French-English bilingual. We determine the language to use when the application loads by checking in order:
 
-1. Whether a cookie named `_gc_lang` has been set, with values `E` and `F` setting the application language to English and French.
-2. Whether the `language` URL query parameter has been set, with values `en` and `fr` setting the application language to English and French.
+1. Whether the `language` URL query parameter has been set, with values `en` and `fr` setting the application language to English and French.
+2. Whether a cookie named `_gc_lang` has been set, with values `E` and `F` setting the application language to English and French.
 3. If the above checks do not succeed, by defaulting to English.
 
 See the function `detectLanguage` in `JS/App.coffee` for the language determination code, and also `JS/TranslationTable.coffee` for the full set of English and French text.
@@ -80,3 +80,87 @@ The app is designed to use some non free fonts: [Avenir Next Condensed](http://w
 
 ### Bitly
 The image download feature has a mechanism to include a Bitly URL in the image, which points back to the original interactive version of the visualization. This feature is enabled if you set both the `BITLY_USERNAME` and `BITLY_API_KEY` variables (either as environment variables or in the `.env`file for your server.)
+
+
+# Documentation relative aux visualisations sur l’avenir énergétique
+
+## Structure du référentiel
+
+Le référentiel renferme quelques embranchements et indicateurs dont il faut tenir compte.
+
+* `master` renvoie à la dernière version.
+* `develop` renvoie à la dernière version de travail utilisable de l’application.
+* `feature/*` sert à développer de nouvelles fonctionnalités, mais peut être instable.
+* Les indicateurs comme `1.*.*` dénotent les versions déployées.
+
+Nous nous servons de [git-flow](https://github.com/nvie/gitflow) pour gérer nos embranchements.
+
+
+## L’application
+
+L’application de visualisation comporte deux parties principales : une application Web et un serveur. L’application Web est exécutée dans le navigateur et est responsable de tout ce que vous voyez à l’écran : la visualisation, les boutons et les instructions pour faire des changements, la page de destination et les barres de navigation. Le serveur est responsable 1) du langage HTML et Javascript de l’application Web, 2) d’autres ressources statiques comme les images et les polices de caractères, 3) des données nécessaires pour les visualisations et 4) de la création de téléchargements d’images et de fichiers CSV pour les visualisations.
+
+### L’application Web
+L’application Web comprend ce qui suit : 
+
+* un petit nombre de modèles Mustache dans `/views`;
+* Des fichiers codes de `/JS` regroupés en un fichier à l’aide de Browserify, inscrit dans `/public/bundle.js`.
+
+Le point d’entrée pour l’application Web est `/JS/App.coffee`. À partir de là, d’autres fichiers et modules NPM sont compris, et l’ensemble complet de codes inclus est combiné dans `bundle.js`. Lorsque `npm run watch` est exécuté, le système d’élaboration surveille chaque fichier d’`App.coffee` inclus, et actualise le groupe quand un de ces fichiers change.
+
+Certains éléments clés de l’application Web : 
+
+* `/JS/Application.coffee`, point d’entrée de l’application dans le navigateur; 
+* `/JS/Router.coffee`, routeur responsable du changement de page;
+* les représentations dans `/JS/views`, en particulier celles des visualisations. Chacun de ces fichiers définit une 'page' à l’intérieur de l’application, et les visualisations traitent la création et l’animation des graphiques.
+* Les tableaux dans `/JS/charts` sont utilisés par les représentations de visualisation.
+* Chacune des configurations dans `/JS/VisualizationConfigurations` définit les états possibles pour les quatre visualisations.
+* Les modèles dans `/JS/templates` sont des fragments de page servant de points de départ pour chaque représentation dans la visualisation et pour d’autres affichages modaux.
+
+### Le serveur
+Le serveur est une application node.js. Il y a trois configurations différentes pour le serveur : développement, essai et production. 
+
+Voici certains éléments clés du serveur : 
+
+* le serveur lui-même dans `/JS/serves/Server.coffee`;
+* les trois versions du serveur sont définies dans `/JS/servers`; chacune est le point d’entrée d’une instruction de serveur et charge un ensemble différent d’intergiciels.
+* Chaque serveur comprend un ensemble d’intergiciels de `/JS/middleware`. Les intergiciels sont modulaires et peuvent être ajoutés ou retirés de chaque serveur de façon indépendante. 
+* Chaque intergiciel utilise un ou plusieurs pilotes de `/JS/handlers`, qui répondent aux requêtes.
+
+#### Serveurs et configuration
+Il y a trois serveurs différents pour l’application sous `/JS/servers`, chacun ayant un but différent. 
+
+* Le serveur de développement (lancé au moyen de `npm run start`) comprend l’application complète, de même que le fichier statique (ou stable) utilisé pour les images, et traite les ressources statiques comme les images et les polices de caractères. C’est le serveur à utiliser pour examiner l’application ou pour l’élargir. 
+* Le serveur d’essai (exécuté avec `npm run test`) inclut tous les éléments de l’application qui sont à l’essai.
+* Le serveur de production (exécuté avec `npm run start-production`) est censé être utilisé avec un serveur SIA pour les fichiers et pages statiques (ou stables). Ce serveur comprend seulement les extrémités pour l’application Web à utiliser. Comme il ne traite pas les pages HTML de l’application Web, il ne peut pas traiter l’application tout seul.
+
+Chaque dossier du serveur contient un fichier `.env` file, avec les réglages de configuration pour ce serveur.
+
+## Points d’intégration avec le site de l’Office
+
+### Outils de déploiement propres à l’Office
+Ce projet contient certains outils qui servent à déployer l’application pour l’Office et ne sont utilisés par aucun autre utilisateur. Ce sont les suivants :
+
+* le serveur de production;
+* les fichiers `web.config` à la racine du projet et dans `JS/servers/ProductionServer`;
+* les scripts `build`, `distribute`, `ingest`, `visual-studio-install` et `clean-vs` dans le fichier `package.json` et les tâches qui leur sont reliées dans `/tasks`.
+
+### Détection de la langue
+L’application est entièrement bilingue (français et anglais). Nous déterminons la langue à utiliser pendant le chargement de l’application en vérifiant dans l’ordre suivant :
+
+1. Si le paramètre de requête URL `language` URL a été installé avec les valeurs `en` et `fr` pour régler l’application de la langue en français et en anglais.
+2. Si le témoin `_gc_lang` a été installé avec les valeurs `E` et `F` pour régler l’application de la langue en français et en anglais.
+3. Si les vérifications ci-dessus échouent, en revenant par défaut à l’anglais.
+
+Voir la fonction `detectLanguage` dans `JS/App.coffee` pour le code déterminant la langue, et également `JS/TranslationTable.coffee` pour l’ensemble du texte en anglais et en français.
+
+### Google Analytics
+L’application comporte quelques consignateurs d’événements personnalisés pour Google Analytics, permettant à l’utilisateur de choisir certains paramètres pour générer la visualisation. Si l’objet `ga` (créé par un extrait de code Google Analytics) est disponible dans la portée générale, l’application relèvera ces événements. Voir `JS/Router.coffee`.
+
+### Polices de caractères privées
+L’application est conçue pour l’utilisation de certaines polices non libres : [Avenir Next Condensed](http://www.fonts.com/font/linotype/avenir-next/condensed) et [Avenir Next Condensed Demi](http://www.fonts.com/font/linotype/avenir-next/condensed-demi). Pour l’Office, ces polices de caractères et une feuille de styles permettant de les intégrer sont fournies dans un référentiel distinct et privé. L’application vérifie si la feuille de styles Avenir est disponible et l’annexe à la page si elle l’est. Sinon, elle substitue une police de caractères Google (PT Sans Narrow). Voir `JS/App.coffee#loadFonts`
+
+### Bitly
+La fonction de téléchargement des images possède un mécanisme qui permet d’ajouter une adresse URL Bitly à l’image, qui renvoie à la version originale interactive de la visualisation. Cette fonction est activée si vous réglez les variables `BITLY_USERNAME` et `BITLY_API_KEY` (comme variables d’environnement ou dans le fichier `.env` pour votre serveur).
+
+
