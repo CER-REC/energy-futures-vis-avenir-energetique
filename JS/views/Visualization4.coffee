@@ -1290,17 +1290,17 @@ class Visualization4
     #     d.key
 
     enterGrads = grads.enter().append 'linearGradient'
-        .attr
-          class:'presentLinearGradient'
-          gradientUnits: 'objectBoundingBox'
-          id: (d) -> "viz4gradPresent#{d.key}"
+      .attr
+        class: 'presentLinearGradient'
+        gradientUnits: 'objectBoundingBox'
+        id: (d) -> "viz4gradPresent#{d.key}"
 
     enterGrads.append 'stop'
-          .attr
-            offset: '0'
-          .style
-            'stop-color': (d) -> d.colour
-            'stop-opacity': '0.4'
+      .attr
+        offset: '0'
+      .style
+        'stop-color': (d) -> d.colour
+        'stop-opacity': '0.4'
 
     enterGrads.append('stop')
       .attr
@@ -1311,31 +1311,31 @@ class Visualization4
         'stop-opacity': 0.4 * 0.9
 
     enterGrads.append('stop')
-        .attr
-          offset: '100%'
-        .style
-          'stop-color': (d) -> d.colour
-          'stop-opacity': 0.4 * 0.7
+      .attr
+        offset: '100%'
+      .style
+        'stop-color': (d) -> d.colour
+        'stop-opacity': 0.4 * 0.7
 
     enterFutureGrads = grads.enter().append('linearGradient')
-        .attr
-          class: 'futureLinearGradient'
-          gradientUnits: 'objectBoundingBox'
-          id: (d) -> "viz4gradFuture#{d.key}"
+      .attr
+        class: 'futureLinearGradient'
+        gradientUnits: 'objectBoundingBox'
+        id: (d) -> "viz4gradFuture#{d.key}"
 
     enterFutureGrads.append('stop')
-        .attr
-          offset:  0
-        .style
-          'stop-color': (d) -> d.colour
-          'stop-opacity': 0.4 * 0.7
+      .attr
+        offset: 0
+      .style
+        'stop-color': (d) -> d.colour
+        'stop-opacity': 0.4 * 0.7
 
     enterFutureGrads.append('stop')
-        .attr
-          offset: '100%'
-        .style
-          'stop-color': (d) -> d.colour
-          'stop-opacity': 0.4 * 0.2
+      .attr
+        offset: '100%'
+      .style
+        'stop-color': (d) -> d.colour
+        'stop-opacity': 0.4 * 0.2
 
 
     graphScenarioData = @graphScenarioData()
@@ -1351,7 +1351,7 @@ class Visualization4
       .attr
         class: 'graphGroup'
 
-    graphAreaSelectors =  graphAreaGroups.selectAll('.graphAreaPresent')
+    graphAreaSelectors = graphAreaGroups.selectAll('.graphAreaPresent')
       .data(((d) -> [d]), ((d) -> d.key))
       .on 'mouseover', (d) ->
         document.getElementById('tooltip').style.visibility = 'visible'
@@ -1387,7 +1387,7 @@ class Visualization4
         d: (d) ->
           area d.data
 
-    graphFutureAreaSelectors =  graphAreaGroups.selectAll('.graphAreaFuture')
+    graphFutureAreaSelectors = graphAreaGroups.selectAll('.graphAreaFuture')
       .data(((d) -> [d]), ((d) -> d.key))
       .on 'mouseover', (d) ->
         document.getElementById('tooltip').style.visibility = 'visible'
@@ -1430,7 +1430,6 @@ class Visualization4
       .attr
         class: 'presentLine'
         d: (d) ->
-          console.log d
           line d.data.map (val) ->
             year: val.year
             value: 0
@@ -1482,10 +1481,9 @@ class Visualization4
         href: "csv_data#{ParamsToUrlString(@config.routerParams())}"
 
     # Stroke the reference line a second time, to ensure it is drawn on top of the others
-    # Since these cannot be reordered. Ref case is first if its present.
+    # We rely on the fact that the reference case is sorted first in graphScenarioData
     # TODO: Not sure I like this approach, investigate controlling the draw order of the
     # lines.
-
     if @config.scenarios.includes('reference') && graphScenarioData.length > 0
       refCaseLine = d3.select @app.window.document
         .select '#referenceCaseLineGroup'
@@ -1518,6 +1516,41 @@ class Visualization4
               year: val.year
               value: 0
         .remove()
+
+    
+    # Draw 'dots' along the reference line, to add to its prominence
+    # We rely on the fact that the reference case is sorted first in graphScenarioData
+    if @config.scenarios.includes('reference') && graphScenarioData.length > 0
+      refCaseDots = d3.select @app.window.document
+        .select '#referenceCaseLineGroup'
+        .selectAll '.refCaseDot'
+        .data graphScenarioData[0].data
+
+      refCaseDots.enter().append 'circle'
+        .attr 'class', 'refCaseDot'
+        .attr 'r', 3.5
+        .attr 'cx', (d) ->
+          xAxisScale d.year
+        .attr 'cy', yAxisScale(0)
+        .style
+          fill: 'white'
+          stroke: '#999999'
+          'stroke-width': 2
+
+      refCaseDots.transition()
+        .duration duration
+        .attr 'cy', (d) ->
+          yAxisScale d.value
+    else
+      d3.select @app.window.document
+        .selectAll 'circle.refCaseDot'
+        .transition()
+        .duration duration
+        .attr 'cy', yAxisScale(0)
+        .remove()
+
+
+
 
   tearDown: ->
     # TODO: We might want to render with empty lists for buttons, so that
