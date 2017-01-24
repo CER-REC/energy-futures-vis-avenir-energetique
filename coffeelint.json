@@ -147,7 +147,10 @@
         "setTimeout": true,
         "describe": true,
         "before": true,
-        "it": true
+        "it": true,
+        "document": true,
+        "window": true,
+        "XMLHttpRequest": true
     },
     "overwrite": true,
     "shadow": true,
