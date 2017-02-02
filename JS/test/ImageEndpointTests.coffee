@@ -10,6 +10,7 @@ describe 'Image Generation Endpoints', ->
   before EnsureTestServer
 
   it 'Serves a PNG of the visualization', ->
+    @timeout 5000
     parameters = QueryString.stringify
       dataset: 'jan2016'
       page: 'viz4'
@@ -41,7 +42,7 @@ describe 'Image Generation Endpoints', ->
 
 
 
-  it 'Serves a cropped PNG of the visualization from /social_png', =>
+  it 'Serves a cropped PNG of the visualization from /social_png', ->
     @timeout 5000
     parameters = QueryString.stringify
       dataset: 'jan2016'
