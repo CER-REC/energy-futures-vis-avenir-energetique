@@ -92,6 +92,7 @@ We're the development team with VizworX who put this project together for the NE
 
 ## Changelog
 
+* 2017-01-24 - Add dots to the reference line for visualization 4, to add emphasis to the reference case.
 * 2017-01-18 - Address an issue with language detection.
 * 2017-01-16 - Fix a hang that would occur on the image generation endpoint, only under IIS.
 * 2016-12-22 - Improve the thumbnail used when sharing the site on social media.

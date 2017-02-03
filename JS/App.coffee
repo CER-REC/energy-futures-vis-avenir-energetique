@@ -37,7 +37,8 @@ class App
 
   setup: ->
 
-    # The app loads within an iframe, but it needs to interact with some features of the containing window
+    # The app loads within an iframe, but it needs to interact with some features of the
+    # containing window
 
     @containingWindow = window.parent
 
@@ -70,7 +71,8 @@ class App
     @imageExporter = new ImageExporter @
 
 
-    # TODO: Navbar and modal setup is getting weighty, might want to break it out into a separate class
+    # TODO: Navbar and modal setup is getting weighty, might want to break it out into a
+    # separate class
 
     @window.document.getElementById('bottomNavBar').innerHTML = Mustache.render BottomNavBarTemplate,
         aboutLink: Tr.allPages.aboutLink[@language]
@@ -114,14 +116,24 @@ class App
         @popoverManager.closePopover()
 
 
+    # TODO: rendering meta tags on server would make more sense
+    metaTag = if d3.selectAll('meta[name="description"]').empty()
+      d3.select 'head'
+        .append 'meta'
+    else
+      d3.select 'meta[name="description"]'
 
-    metaTag = if d3.selectAll('meta[name="description"]').empty() then d3.select('head').append('meta') else d3.select('meta[name="description"]')
     metaTag
       .attr
         name: 'description'
         content: Tr.allPages.metaDescription[@language]
 
-    keyWordsTag = if d3.selectAll('meta[name="keywords"]').empty() then d3.select('head').append('meta') else d3.select('meta[name="keywords"]')
+    keyWordsTag = if d3.selectAll('meta[name="keywords"]').empty()
+      d3.select 'head'
+        .append 'meta'
+    else
+      d3.select 'meta[name="keywords"]'
+
     keyWordsTag
       .attr
         name: 'keywords'
@@ -129,13 +141,14 @@ class App
 
 
     # Debounce, to redraw just once after the user has resized the display
-    # At small screen sizes the visualization would be resized/redrawn repeatedly, otherwise
+    # At small screen sizes the visualization would be resized/redrawn repeatedly,
+    # otherwise
     @debouncedResizeHandler = _.debounce =>
       newWidth = d3.select('#canadasEnergyFutureVisualization').node().getBoundingClientRect().width
-      if newWidth != @screenWidth 
+      if newWidth != @screenWidth
         @screenWidth = newWidth
         @currentView.redraw() if @currentView?
-    , 100 # delay, in ms  
+    , 100 # delay, in ms
 
     d3.select(@containingWindow).on 'resize', @debouncedResizeHandler
 
@@ -143,8 +156,8 @@ class App
     if d3.selectAll('head link[rel="author"][href="humans.txt"]').empty()
       d3.select('head').append('link')
         .attr
-          rel: "author" 
-          href: "humans.txt"
+          rel: 'author'
+          href: 'humans.txt'
 
     # Configuration Objects
     @visualization1Configuration = new Visualization1Configuration @
@@ -169,7 +182,7 @@ class App
 
     @datasetRequester = new DatasetRequester @, @providers
 
-    @router = new Router @ 
+    @router = new Router @
 
 
 
@@ -180,20 +193,21 @@ class App
       if http.readyState == XMLHttpRequest.DONE
         if http.status == 200
           # If we're running on the NEB server, we load some privately purchased fonts
-          # The Avenir fonts and the stylesheet to load them are not included in the 
+          # The Avenir fonts and the stylesheet to load them are not included in the
           # public distribution.
-          lnk = document.createElement('link')
-          lnk.type = "text/css"
+          lnk = document.createElement 'link'
+          lnk.type = 'text/css'
           lnk.rel = 'stylesheet'
           lnk.href = 'CSS/avenirFonts.css'
-          document.getElementsByTagName('head')[0].appendChild(lnk)
+          document.getElementsByTagName('head')[0].appendChild lnk
         else
-          # If we're not running on the NEB server, we load up some less pretty google fonts
-          lnk = document.createElement('link')
-          lnk.type = "text/css"
+          # If we're not running on the NEB server, we load up some less pretty google
+          # fonts
+          lnk = document.createElement 'link'
+          lnk.type = 'text/css'
           lnk.rel = 'stylesheet'
-          lnk.href = "https://fonts.googleapis.com/css?family=PT+Sans+Narrow"
-          document.getElementsByTagName('head')[0].appendChild(lnk)
+          lnk.href = 'https://fonts.googleapis.com/css?family=PT+Sans+Narrow'
+          document.getElementsByTagName('head')[0].appendChild lnk
 
     http.send()
 

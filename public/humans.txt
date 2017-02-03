@@ -17,6 +17,9 @@
   Software Developer: Patrick King
   Location: Calgary, Canada
 
+  Software Developer: Alaa Azazi
+  Location: Calgary, Canada
+
   Software Project Manager: Ben Cousins
   Location: Calgary, Canada
 
@@ -54,7 +57,7 @@
 
 
 /* SITE */
-  Last update: 2016/04/25
+  Last update: 2017/01/25
   Language: English / Français
   Doctype: HTML5
-  Components: D3.js, canvg.js, Coffeescript, Browserify
+  Components: D3.js, Coffeescript, Browserify, Node.js, Phantomjs
