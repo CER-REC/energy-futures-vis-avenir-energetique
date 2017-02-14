@@ -3,6 +3,13 @@
   position: relative;
   width: 200px;
   height: 200px;
+
+  -ms-transform: scale(0.5);
+  -moz-transform: scale(0.5);
+  -webkit-transform: scale(0.5);
+  -o-transform: scale(0.5);
+  transform: scale(0.5);
+
 }
 width: 100%;
 @-webkit-keyframes uil-spin-css {
