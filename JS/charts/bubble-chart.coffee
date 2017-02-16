@@ -128,7 +128,10 @@ class bubbleChart extends chart
           
     enterSelection.select('g').append('image')
 
-    node.filter((d) -> d.depth == 2 ).select('circle').on 'click', (d, i) ->
+    handlePopover = (d) ->
+      d3.event.preventDefault()
+      d3.event.stopPropagation()
+
       if d3.selectAll(".toolTip#{d.id}").empty() 
         this.parentNode.parentNode.appendChild(this.parentNode) #bring to front
         d3.select(this.parentNode).append('text')
@@ -158,6 +161,9 @@ class bubbleChart extends chart
       else
         d3.selectAll(".toolTip#{d.id}").remove()
 
+
+    node.filter((d) -> d.depth == 2 ).select('circle').on 'click', handlePopover
+    node.filter((d) -> d.depth == 2 ).select('circle').on 'touchend', handlePopover
 
     node.select('g').select('image')  
       .attr
