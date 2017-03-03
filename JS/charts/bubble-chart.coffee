@@ -73,7 +73,7 @@ class bubbleChart extends chart
 
   # Depending on the version of Internet Explorer/Edge, there are three different APIs
   # that we may wish to listen to for input.
-  # This is necessary for proper touch handling on Surface/touch devices.
+  # This is necessary for improved touch handling on Surface/touch devices.
   # It's important to only listen to one of them, otherwise multiple events will be
   # dispatched.
   setup_input_events: ->
@@ -192,9 +192,12 @@ class bubbleChart extends chart
       else
         d3.selectAll(".toolTip#{d.id}").remove()
 
-      # Regardless, we want to hide the tooltip popover
-      # TODO: how necessary am I? not necessary for iOS. 
-      # document.getElementById("tooltip").style.visibility = "hidden"
+      # Special hack for IE/Edge: the click/pointer events always trigger 'mouseover'
+      # even when the event was triggered by touch. We want to hide the hover tooltip, 
+      # otherwise the click popover and the hover tooltip both appear.
+      # Not necessary for iOS/Android, the touch API lets us prevent click/mouseover
+      # events entirely.
+      document.getElementById("tooltip").style.visibility = "hidden"
 
     node.filter((d) -> d.depth == 2 )
       .select('circle')
