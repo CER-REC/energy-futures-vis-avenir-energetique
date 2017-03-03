@@ -64,6 +64,16 @@ In the `energy-futures-visualization` folder:
 
 The `start` and `watch` commands both need to run at the same time. You'll need two separate shell windows to do so. With both commands running, visit [http://localhost:3000/dvs](http://localhost:3000/dvs) to see the app in action.
 
+#### Adding New Modules Under Windows
+For compatibility with Windows, the project is now configured to use Yarn in addition to NPM to install modules. These additional steps are necessary to enable smooth automated deployment on Windows. Non-NEB users running the project standalone, without IIS integration, can ignore these instructions.
+
+* Ensure that [Yarn](https://yarnpkg.com/docs/install) is installed.
+* When adding modules to the package, use `yarn install <module name> --flat`.
+* You may need to select one version from several choices, for some packages.
+* Be sure to commit the updated `yarn.lock`.
+
+These instructions install node dependencies with a flat file hierarchy under `node_modules`, rather than the nested hierarchy that NPM will produce. This is necessary to avoid encountering the 260 characters per path limit of most programs on Windows.
+
 ### Testing
 You can run the tests with `npm run test`.
 
