@@ -3,6 +3,7 @@ fs = require 'fs'
 Promise = require 'bluebird'
 queryString = require 'query-string'
 Request = require 'request-promise'
+Mustache = require 'mustache'
 
 
 PrepareQueryParams = require '../PrepareQueryParams.coffee'
@@ -31,9 +32,26 @@ Visualization4Configuration = require '../VisualizationConfigurations/visualizat
 ServerData = require '../server/ServerData.coffee'
 Constants = require '../Constants.coffee'
 
-htmlFilePromise = readFile "#{ApplicationRoot}/JS/handlers/image.html"
+htmlFilePromise = readFile "#{ApplicationRoot}/JS/handlers/image.mustache"
 htmlPromise = htmlFilePromise.then (data) ->
-  data.toString()
+  template = data.toString()
+
+  # The NEB production server has firewalled internet access, so it will time out if it
+  # attempts to load the fallback Google fonts. Don't load fallback fonts in production.
+
+  if process.env.USE_SERVERSIDE_FALLBACK_FONTS == 'true'
+    html = Mustache.render template,
+      fallbackFontStylesheetLink: '
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans+Narrow">
+      '
+  else
+    html = Mustache.render template,
+      fallbackFontStylesheetLink: ''
+
+  html
+
+  
+  
 
 
 

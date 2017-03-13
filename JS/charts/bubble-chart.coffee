@@ -16,6 +16,7 @@ class bubbleChart extends chart
 
   constructor: (@app, parent, options = {}) ->
 
+    @setup_input_events()
     @options = _.extend {}, @bubbleChartDefaults, options
     @_mapping = @options.mapping
     @_year = @options.year
@@ -70,6 +71,35 @@ class bubbleChart extends chart
       .sort(null) #We need this since default sort is ascending... but null sort is tree
 
 
+  # Depending on the version of Internet Explorer/Edge, there are three different APIs
+  # that we may wish to listen to for input.
+  # This is necessary for improved touch handling on Surface/touch devices.
+  # It's important to only listen to one of them, otherwise multiple events will be
+  # dispatched.
+  setup_input_events: ->
+    # IE > 11
+    if @app.window.PointerEvent
+      @mouseover_event_name = 'pointerover'
+      @mousemove_event_name = 'pointermove'
+      @mouseout_event_name = 'pointerleave'
+      @click_event_name = 'pointerup'
+
+    # IE = 10
+    else if @app.window.MSPointerEvent
+      @mouseover_event_name = 'MSPointerOver'
+      @mousemove_event_name = 'MSPointerHover'
+      @mouseout_event_name = 'MSPointerOut'
+      @click_event_name = 'MSPointerUp'
+
+    # All other browsers
+    else
+      @mouseover_event_name = 'mouseover'
+      @mousemove_event_name = 'mousemove'
+      @mouseout_event_name = 'mouseout'
+      @click_event_name = 'click'
+    
+
+
   redraw: -> 
     if !(@force?)
       @force = d3.layout.force()
@@ -107,28 +137,30 @@ class bubbleChart extends chart
           if @_mapping[d.source] or d.depth == 0  or (d.depth ==1 and !(d.children)) then 0 else 1
         )
 
-    @_group.selectAll('.node')
-      .on "mouseover", (d) =>
-        if(d.depth == 2)
-          document.getElementById("tooltip").style.visibility = "visible"
-          document.getElementById("tooltip").style.top = (d3.event.pageY-10) + "px"
-          document.getElementById("tooltip").style.left = (d3.event.pageX+10) + "px"
-          document.getElementById("tooltip").innerHTML = d.name + " (" + @_year + "): "+ d.size.toFixed(2)
+    node.filter (d) -> d.depth == 2
+      .select 'circle'
 
-      .on "mousemove", (d) =>
-        if(d.depth == 2)
-          document.getElementById("tooltip").style.top = (d3.event.pageY-10) + "px"
-          document.getElementById("tooltip").style.left = (d3.event.pageX+10) + "px"
-          document.getElementById("tooltip").innerHTML = d.name + " (" + @_year + "): "+ d.size.toFixed(2)
+      .on @mouseover_event_name, (d) =>
+        document.getElementById("tooltip").style.visibility = "visible"
+        document.getElementById("tooltip").style.top = (d3.event.pageY-10) + "px"
+        document.getElementById("tooltip").style.left = (d3.event.pageX+10) + "px"
+        document.getElementById("tooltip").innerHTML = d.name + " (" + @_year + "): "+ d.size.toFixed(2)
 
-      .on "mouseout", (d) =>
+      .on @mousemove_event_name, (d) =>
+        document.getElementById("tooltip").style.top = (d3.event.pageY-10) + "px"
+        document.getElementById("tooltip").style.left = (d3.event.pageX+10) + "px"
+        document.getElementById("tooltip").innerHTML = d.name + " (" + @_year + "): "+ d.size.toFixed(2)
+
+      .on @mouseout_event_name, (d) =>
         document.getElementById("tooltip").style.visibility = "hidden"
 
     enterSelection.filter((d) -> d.depth == 1 ).append('g')
           
     enterSelection.select('g').append('image')
 
-    node.filter((d) -> d.depth == 2 ).select('circle').on 'click', (d, i) ->
+    handlePopover = (d) ->
+      # d3.event.preventDefault()
+      # d3.event.stopPropagation()
       if d3.selectAll(".toolTip#{d.id}").empty() 
         this.parentNode.parentNode.appendChild(this.parentNode) #bring to front
         d3.select(this.parentNode).append('text')
@@ -155,8 +187,35 @@ class bubbleChart extends chart
             'stroke-width': 1
             stroke: '#333333'
 
+
+
       else
         d3.selectAll(".toolTip#{d.id}").remove()
+
+      # Special hack for IE/Edge: the click/pointer events always trigger 'mouseover'
+      # even when the event was triggered by touch. We want to hide the hover tooltip, 
+      # otherwise the click popover and the hover tooltip both appear.
+      # Not necessary for iOS/Android, the touch API lets us prevent click/mouseover
+      # events entirely.
+      document.getElementById("tooltip").style.visibility = "hidden"
+
+    node.filter((d) -> d.depth == 2 )
+      .select('circle')
+      .on @click_event_name, (d) ->
+        handlePopover.call this, d
+
+      .on 'touchstart', (d) ->
+        d3.event.preventDefault()
+
+      .on 'touchmove', (d) ->
+        d3.event.preventDefault()
+
+      .on 'touchend', (d) ->
+        d3.event.preventDefault()
+        handlePopover.call this, d
+
+      .on 'touchcancel', (d) ->
+        d3.event.preventDefault()
 
 
     node.select('g').select('image')  
