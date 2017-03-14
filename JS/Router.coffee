@@ -91,14 +91,13 @@ class Router
       when 'viz3' then @viz3Handler params, options
       when 'viz4' then @viz4Handler params, options
 
-
     # Google analytics reporting integration, tailored for the NEB.
-    if @app.containingWindow.ga?
+    # if @app.containingWindow.ga?
 
-      @app.containingWindow.ga 'set', 'vis_unit', params.unit
-      # TODO modify this, remove the full URL from it
-      @app.containingWindow.ga 'set', 'page', document.URL
-      @app.containingWindow.ga 'send', 'pageview'
+    #   @app.containingWindow.ga 'set', 'vis_unit', params.unit
+    #   # TODO modify this, remove the full URL from it
+    #   @app.containingWindow.ga 'set', 'page', document.URL
+    #   @app.containingWindow.ga 'send', 'pageview'
 
 
   # Navigation handlers
@@ -134,6 +133,7 @@ class Router
       @app.currentView = new LandingPage @app
       @app.containingWindow.history.pushState params, '', ParamsToUrlString(params) if options.shouldUpdateHistory
 
+
   viz1Handler: (params, options) ->
     if not @app.currentView?
       @app.currentView = new Visualization1 @app, @app.visualization1Configuration
@@ -147,6 +147,7 @@ class Router
     else
       @replaceState params, options
 
+    @app.analyticsReporter.reportPage @app.visualization1Configuration.routerParams()
 
   viz2Handler: (params, options) ->
     if not @app.currentView?
@@ -161,6 +162,7 @@ class Router
     else
       @replaceState params, options
 
+    @app.analyticsReporter.reportPage @app.visualization2Configuration.routerParams()
 
   viz3Handler: (params, options) ->
     if not @app.currentView?
@@ -175,6 +177,7 @@ class Router
     else
       @replaceState params, options
 
+    @app.analyticsReporter.reportPage @app.visualization3Configuration.routerParams()
 
   viz4Handler: (params, options) ->
     if not @app.currentView?
@@ -189,6 +192,7 @@ class Router
     else
       @replaceState params, options
 
+    @app.analyticsReporter.reportPage @app.visualization4Configuration.routerParams()
 
    
 

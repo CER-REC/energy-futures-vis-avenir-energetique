@@ -32,6 +32,8 @@ Constants = require './Constants.coffee'
 
 DatasetRequester = require './DatasetRequester.coffee'
 SocialMedia = require './SocialMedia.coffee'
+AnalyticsReporter = require './AnalyticsReporter.coffee'
+
 
 class App
 
@@ -181,6 +183,9 @@ class App
       @providers[dataset].gasProductionProvider = new GasProductionProvider()
 
     @datasetRequester = new DatasetRequester @, @providers
+
+    # Analytics and router
+    @analyticsReporter = new AnalyticsReporter @
 
     @router = new Router @
 
