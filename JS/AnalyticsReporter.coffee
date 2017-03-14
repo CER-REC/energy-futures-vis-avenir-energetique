@@ -1,21 +1,14 @@
-
-
 # Google analytics reporting integration, tailored for the NEB.
-
 class AnalyticsReporter
 
-
-
   constructor: (@app) ->
-
     if @app.containingWindow.ga?
       @ga = @app.containingWindow.ga
 
 
-
-
   reportPage: (params) ->
-
+    return unless @ga?
+    
     ### The following custom dimensions need to be set up for this app in Google Analytics
       vis_page
       vis_mainSelection
@@ -39,57 +32,26 @@ class AnalyticsReporter
 
     for paramName, param of params
       dimensionName = "vis_#{paramName}"
-      console.log "doing a GA set with #{dimensionName} #{param}"
       @ga 'set', dimensionName, param
 
     # We want to track the URL without the long string of URL parameters.
     location = @app.containingWindow.document.location
     @ga 'set', 'page', "#{location.protocol}//#{location.host}#{location.pathname}"
 
-    console.log "finishing with pageview for #{location.protocol}//#{location.host}#{location.pathname}"
     @ga 'send', 'pageview'
 
 
-
-
-
-
-
-  reportEvent: (options) ->
+  reportEvent: (category, action) ->
+    return unless @ga?
 
     @ga 'send',
       hitType: 'event'
-      eventCategory: 'Dataset'
-      eventAction: params.dataset
-      eventLabel: params.page
+      eventCategory: category
+      eventAction: action
 
-
-
-
-    # ga('send', {
-    #   hitType: 'event',
-    #   eventCategory: 'Videos',
-    #   eventAction: 'play',
-    #   eventLabel: 'Fall Campaign'
-    # });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    # unused, available attributes:
+      # eventLabel:
+      # eventValue:
 
 
 
