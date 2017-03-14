@@ -94,56 +94,12 @@ class Router
 
     # Google analytics reporting integration, tailored for the NEB.
     if @app.containingWindow.ga?
-      @app.containingWindow.ga('set', 'page', document.URL)
-      
-      @app.containingWindow.ga('send', {
-        hitType: 'pageview',      
-        page: document.URL,
-        title: params.mainSelection,
-        location: params.page
-      })
-        
-      @app.containingWindow.ga('send', {
-        hitType: 'event',      
-        eventCategory: 'Selection'
-        eventAction: params.mainSelection,
-        eventLabel: params.page
-      })
-      
-      @app.containingWindow.ga('send', {
-        hitType: 'event',      
-        eventCategory: 'Provinces'
-        eventAction: params.provinces,
-        eventLabel: params.page
-      })
-      
-      @app.containingWindow.ga('send', {
-        hitType: 'event',      
-        eventCategory: 'Scenarios'
-        eventAction: params.scenario,
-        eventLabel: params.page
-      })
-      
-      @app.containingWindow.ga('send', {
-        hitType: 'event',      
-        eventCategory: 'Year'
-        eventAction: params.year,
-        eventLabel: params.page
-      })
-      
-      @app.containingWindow.ga('send', {
-        hitType: 'event',      
-        eventCategory: 'Unit'
-        eventAction: params.unit,
-        eventLabel: params.page
-      })
 
-      @app.containingWindow.ga('send', {
-        hitType: 'event',
-        eventCategory: 'Dataset'
-        eventAction: params.dataset,
-        eventLabel: params.page
-      })
+      @app.containingWindow.ga 'set', 'vis_unit', params.unit
+      # TODO modify this, remove the full URL from it
+      @app.containingWindow.ga 'set', 'page', document.URL
+      @app.containingWindow.ga 'send', 'pageview'
+
 
   # Navigation handlers
 
