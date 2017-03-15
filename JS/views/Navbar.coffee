@@ -186,6 +186,7 @@ class Navbar
             imageAUrl: d.imageAUrl
             imageBUrl: d.imageBUrl
             navbarHelpImageSelected: d.navbarHelpImageSelected
+          @app.analyticsReporter.reportEvent 'Navbar help', @navbarState
 
     vizNavbar.select('.navbarMenuIcon')
       .on 'click', (d) =>
@@ -196,6 +197,7 @@ class Navbar
           @app.popoverManager.showPopover @navbarInfoPopover, 
             navbarInfoText: d.navbarInfoText
             navbarInfoImageSelected: d.navbarInfoImageSelected
+          @app.analyticsReporter.reportEvent 'Navbar info', @navbarState
 
 
 

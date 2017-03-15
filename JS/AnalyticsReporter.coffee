@@ -1,9 +1,13 @@
+Constants = require './Constants.coffee'
+
 # Google analytics reporting integration, tailored for the NEB.
 class AnalyticsReporter
 
   constructor: (@app) ->
     if @app.containingWindow.ga?
       @ga = @app.containingWindow.ga
+    else
+      console.warn "Google analytics object not found."
 
 
   reportPage: (params) ->
@@ -30,15 +34,18 @@ class AnalyticsReporter
     # We'll rely on Google Analytics' language detection feature instead of our parameter
     delete params.language if params.language?
 
+    gaMessage = {}
+
     for paramName, param of params
-      dimensionName = "vis_#{paramName}"
-      @ga 'set', dimensionName, param
+      dimensionName = Constants.googleAnalyticsCustomDimensions[paramName]
+      gaMessage[dimensionName] = param
 
     # We want to track the URL without the long string of URL parameters.
-    location = @app.containingWindow.document.location
-    @ga 'set', 'page', "#{location.protocol}//#{location.host}#{location.pathname}"
+    # But, GA will only consider the pageview to be 'new' if the reported URL has changed!
+    # location = @app.containingWindow.document.location
+    # @ga 'set', 'page', "#{location.protocol}//#{location.host}#{location.pathname}"
 
-    @ga 'send', 'pageview'
+    @ga 'send', 'pageview', gaMessage
 
 
   reportEvent: (category, action) ->

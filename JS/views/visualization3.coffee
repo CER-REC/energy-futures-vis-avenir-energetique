@@ -1013,6 +1013,7 @@ class Visualization3 extends visualization
         d3.select(@app.window.document).select('#vizPauseButton').html("<img src='IMG/play_pause/pausebutton_selectedR.svg' alt='#{Tr.altText.pauseAnimation[@app.language]}'/>")
         d3.select(@app.window.document).select('#vizPlayButton').html("<img src='IMG/play_pause/playbutton_unselectedR.svg' alt='#{Tr.altText.playAnimation[@app.language]}'/>")
         if @yearTimeout then window.clearTimeout(@yearTimeout)
+        @app.analyticsReporter.reportEvent 'Electricity Play/Pause', 'Pause'
       .html("<img src='IMG/play_pause/pausebutton_selectedR.svg' alt='#{Tr.altText.pauseAnimation[@app.language]}'/>")
     
     div.append('div')
@@ -1054,6 +1055,8 @@ class Visualization3 extends visualization
             d3.select(@app.window.document).select('#vizPauseButton').html("<img src='IMG/play_pause/pausebutton_selectedR.svg' alt='#{Tr.altText.pauseAnimation[@app.language]}'/>")
             d3.select(@app.window.document).select('#vizPlayButton').html("<img src='IMG/play_pause/playbutton_unselectedR.svg' alt='#{Tr.altText.playAnimation[@app.language]}'/>")
         @yearTimeout = window.setTimeout(timeoutComplete, 0)
+        @app.analyticsReporter.reportEvent 'Electricity Play/Pause', 'Play'
+
       .html("<img src='IMG/play_pause/playbutton_unselectedR.svg' alt='#{Tr.altText.playAnimation[@app.language]}'/>")
 
   buildTimeline: ->
