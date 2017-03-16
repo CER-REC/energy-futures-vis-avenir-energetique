@@ -65,9 +65,9 @@ class AnalyticsReporter
       gaMessage[dimensionName] = param
 
     # We want to track the URL without the long string of URL parameters.
-    # But, GA will only consider the pageview to be 'new' if the reported URL has changed!
-    # location = @app.containingWindow.document.location
-    # @ga 'set', 'page', "#{location.protocol}//#{location.host}#{location.pathname}"
+    location = @app.containingWindow.document.location
+    # @ga 'set', 'page', location
+    @ga 'set', 'page', "#{location.protocol}//#{location.host}#{location.pathname}"
 
     @ga 'send', 'pageview', gaMessage
 
