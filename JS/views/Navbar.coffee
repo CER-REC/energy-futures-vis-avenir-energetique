@@ -5,14 +5,14 @@ NavbarInfoPopover = require '../popovers/NavbarInfoPopover.coffee'
 NavbarHelpPopover = require '../popovers/NavbarHelpPopover.coffee'
 
 
-class Navbar 
+class Navbar
 
   constructor: (@app) ->
     # navbarState can be one of: landingPage, viz1, viz2, viz3, viz4
     @navbarState = null
 
-    @navbarInfoPopover = new NavbarInfoPopover(@app)
-    @navbarHelpPopover = new NavbarHelpPopover(@app)
+    @navbarInfoPopover = new NavbarInfoPopover @app
+    @navbarHelpPopover = new NavbarHelpPopover @app
 
   # NB: This data is in REVERSE order on purpose
   # We float the resulting divs to the right, which means they appear in the reverse
@@ -73,7 +73,7 @@ class Navbar
           selectedLabel: ''
           colour: '#333'
           page: 'landingPage'
-        }    
+        }
       ]
 
 
@@ -86,11 +86,15 @@ class Navbar
     @navbarState = newState
 
     if @navbarState == 'landingPage'
-      d3.select('#vizNavbar').classed('hidden', true)
-      d3.select("#landingPageHeading").classed("hidden", false)
+      d3.select '#vizNavbar'
+        .classed 'hidden', true
+      d3.select '#landingPageHeading'
+        .classed 'hidden', false
     else
-      d3.select('#vizNavbar').classed('hidden', false)
-      d3.select("#landingPageHeading").classed("hidden", true)
+      d3.select '#vizNavbar'
+        .classed 'hidden', false
+      d3.select '#landingPageHeading'
+        .classed 'hidden', true
 
     # Whether we should animate the navbar depends on how we arrive on the page
     if oldState == newState
@@ -110,9 +114,9 @@ class Navbar
   # Internal Methods
 
   vizNavbar: ->
-    d3.select('#vizNavbar')
-      .selectAll('.vizNavbarItem')
-      .data(@navbarData())
+    d3.select '#vizNavbar'
+      .selectAll '.vizNavbarItem'
+      .data @navbarData()
 
   renderWithoutAnimation: ->
     @renderEnter()
@@ -140,15 +144,15 @@ class Navbar
           @app.router.navigate
             page: d.page
             language: @app.language
-      .style 
+      .style
         'background-color': (d) -> d.colour
-        width: (d) => 
+        width: (d) =>
           if d.page == 'landingPage'
             '4.2%'
           else if @navbarState == d.page
-            "66.1%"
+            '66.1%'
           else
-            "9.9%"
+            '9.9%'
 
   renderHtml: ->
     vizNavbar = @vizNavbar()
@@ -158,20 +162,24 @@ class Navbar
         if d.page == 'landingPage'
           "<div class='vizNavbarHomeButton'> </div>"
         else if @navbarState == d.page
-          "<div class='navbarSelectedItem'> 
+          "<div class='navbarSelectedItem'>
             <span>#{d.selectedLabel}</span>
             <div class='navbarHelpIcon'>
-              <img src='IMG/navbar_Icons/questionMark_ColourBG.svg' alt='#{Tr.altText.questionMark_ColourBG[@app.language]}'>
+              <img src='IMG/navbar_Icons/questionMark_ColourBG.svg'
+                   alt='#{Tr.altText.questionMark_ColourBG[@app.language]}'
+              >
             </div>
             <div class='navbarMenuIcon'>
-              <img src='IMG/navbar_Icons/explanationIcon_ColourBG.svg' alt='#{Tr.altText.explanationIcon_ColourBG[@app.language]}'>
+              <img src='IMG/navbar_Icons/explanationIcon_ColourBG.svg'
+                   alt='#{Tr.altText.explanationIcon_ColourBG[@app.language]}'
+              >
             </div>
             <div class='navbarHelpSection hidden'>
             </div>
           </div>
           "
         else
-          "<div class='navbarUnselectedItem'> 
+          "<div class='navbarUnselectedItem'>
             <span>#{d.unselectedLabel}</span>
           </div>"
 
@@ -182,7 +190,7 @@ class Navbar
         if @app.popoverManager.currentPopover == @navbarHelpPopover
           @app.popoverManager.closePopover()
         else
-          @app.popoverManager.showPopover @navbarHelpPopover, 
+          @app.popoverManager.showPopover @navbarHelpPopover,
             imageAUrl: d.imageAUrl
             imageBUrl: d.imageBUrl
             navbarHelpImageSelected: d.navbarHelpImageSelected
@@ -193,7 +201,7 @@ class Navbar
         if @app.popoverManager.currentPopover == @navbarInfoPopover
           @app.popoverManager.closePopover()
         else
-          @app.popoverManager.showPopover @navbarInfoPopover, 
+          @app.popoverManager.showPopover @navbarInfoPopover,
             navbarInfoText: d.navbarInfoText
             navbarInfoImageSelected: d.navbarInfoImageSelected
 
@@ -212,7 +220,7 @@ class Navbar
     vizNavbar.each (d) ->
       d3.select(@).selectAll('span')
         .style
-          opacity: 
+          opacity:
             if self.navbarState == d.page then 0 else 1
     vizNavbar.selectAll('span').transition()
       .duration @app.animationDuration
@@ -224,9 +232,9 @@ class Navbar
       .styleTween 'width', (d, i, a) ->
         return if d.page == 'landingPage'
         if self.navbarState == d.page
-          d3.interpolateString(@style.width, '66.1%')
+          d3.interpolateString @style.width, '66.1%'
         else
-          d3.interpolateString(@style.width, '9.9%')
+          d3.interpolateString @style.width, '9.9%'
 
   renderExit: ->
     @vizNavbar().exit().remove()

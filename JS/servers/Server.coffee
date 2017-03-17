@@ -27,7 +27,7 @@ Server = (middlewares) ->
     app.use middleware
 
   app.use (req, res) ->
-    res.status(404).send('404: Not Found.')
+    res.status(404).send '404: Not Found.'
 
   # IIS-Node passes in a named pipe to listen to in process.env.PORT
   rootApp.listen process.env.PORT || process.env.PORT_NUMBER, ->

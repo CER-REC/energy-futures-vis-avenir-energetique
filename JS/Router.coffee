@@ -149,21 +149,23 @@ class Router
 
   updateBottomNavBar: ->
     if @app.page == 'landingPage'
-      d3.select('#dataDownloadLink').classed('hidden', true)
-      d3.select('#imageDownloadLink').classed('hidden', true)
+      d3.select('#dataDownloadLink').classed 'hidden', true
+      d3.select('#imageDownloadLink').classed 'hidden', true
     else
-      d3.select('#dataDownloadLink').classed('hidden', false)
-      d3.select('#imageDownloadLink').classed('hidden', false)
+      d3.select('#dataDownloadLink').classed 'hidden', false
+      d3.select('#imageDownloadLink').classed 'hidden', false
 
 
   # We replace page history for every interaction with visualization controls. Browsers
   # may cut off history API access if it is used too many times per second, which can
   # happen if the user drags slider controls around rapidly.
   # To avoid having the history API shut off, we throttle these updates to it.
+  # coffeelint: disable=missing_fat_arrows
   replaceState: (_.throttle (params, options) ->
     return unless options.shouldUpdateHistory
     @app.containingWindow.history.replaceState params, '', ParamsToUrlString(params)
   , 250)
+  # coffeelint: enable=missing_fat_arrows
 
   landingPageHandler: (options) ->
     params =

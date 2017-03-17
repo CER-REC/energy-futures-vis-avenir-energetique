@@ -74,7 +74,8 @@ class App
     # TODO: Navbar and modal setup is getting weighty, might want to break it out into a
     # separate class
 
-    @window.document.getElementById('bottomNavBar').innerHTML = Mustache.render BottomNavBarTemplate,
+    bottomNavBarElement = @window.document.getElementById 'bottomNavBar'
+    bottomNavBarElement.innerHTML = Mustache.render BottomNavBarTemplate,
         aboutLink: Tr.allPages.aboutLink[@language]
         methodologyLinkText: Tr.allPages.methodologyLinkText[@language]
         methodologyLinkUrl: Tr.allPages.methodologyLinkUrl[@language]
@@ -144,7 +145,8 @@ class App
     # At small screen sizes the visualization would be resized/redrawn repeatedly,
     # otherwise
     @debouncedResizeHandler = _.debounce =>
-      newWidth = d3.select('#canadasEnergyFutureVisualization').node().getBoundingClientRect().width
+      containerElement = d3.select '#canadasEnergyFutureVisualization'
+      newWidth = containerElement.node().getBoundingClientRect().width
       if newWidth != @screenWidth
         @screenWidth = newWidth
         @currentView.redraw() if @currentView?

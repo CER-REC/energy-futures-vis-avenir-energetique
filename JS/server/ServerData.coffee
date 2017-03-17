@@ -2,8 +2,6 @@ Promise = require 'bluebird'
 fs = require 'fs'
 readFile = Promise.promisify fs.readFile
 
-ApplicationRoot = require '../../ApplicationRoot.coffee'
-
 EnergyConsumptionProvider = require '../DataProviders/EnergyConsumptionProvider.coffee'
 OilProductionProvider = require '../DataProviders/OilProductionProvider.coffee'
 GasProductionProvider = require '../DataProviders/GasProductionProvider.coffee'
@@ -24,9 +22,9 @@ loadDataset = (datasetName, datasetFiles) ->
 
   dataset = {}
 
-  dataset.energyConsumptionProvider = new EnergyConsumptionProvider 
-  dataset.oilProductionProvider = new OilProductionProvider 
-  dataset.gasProductionProvider = new GasProductionProvider 
+  dataset.energyConsumptionProvider = new EnergyConsumptionProvider
+  dataset.oilProductionProvider = new OilProductionProvider
+  dataset.gasProductionProvider = new GasProductionProvider
   dataset.electricityProductionProvider = new ElectricityProductionProvider
 
   oilFilePromise = readFile datasetFiles.oilProduction
@@ -53,7 +51,7 @@ loadDataset = (datasetName, datasetFiles) ->
   ServerData[datasetName] = dataset
 
 
-for datasetName, datasetFiles of DatasetFiles
-  loadDataset datasetName, datasetFiles
+for name, files of DatasetFiles
+  loadDataset name, files
 
 module.exports = ServerData

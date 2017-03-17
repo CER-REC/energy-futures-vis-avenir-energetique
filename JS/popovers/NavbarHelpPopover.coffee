@@ -15,8 +15,8 @@ class NavbarHelpPopover
     d3.select('.navbarHelpSection').on 'click', ->
       d3.event.stopPropagation()
 
-    # Set the content of the pop up        
-    d3.select('.navbarHelpSection').html (e) => Mustache.render HowToPopoverTemplate, 
+    # Set the content of the pop up
+    d3.select('.navbarHelpSection').html => Mustache.render HowToPopoverTemplate,
       imageAUrl: options.imageAUrl
       imageBUrl: options.imageBUrl
       nextImageAltText: Tr.altText.nextImage[@app.language]
@@ -53,16 +53,16 @@ class NavbarHelpPopover
     # Set up the help icon
     d3.select('.navbarHelpIcon').html "<img src='#{options.navbarHelpImageSelected}' alt='#{Tr.altText.questionMark_ColourBG[@app.language]}'>"
     # Class 'selected' sets the white background colour
-    d3.select('.navbarHelpIcon').classed('selected', true) 
+    d3.select('.navbarHelpIcon').classed 'selected', true
   
 
     d3.select('.navbarHelpSection').classed('hidden', false)
 
 
   close: ->
-    d3.select('.navbarHelpIcon').classed('selected', false) 
+    d3.select('.navbarHelpIcon').classed 'selected', false
     d3.select('.navbarHelpIcon').html "<img src='IMG/navbar_Icons/questionMark_ColourBG.svg' alt='#{Tr.altText.questionMark_ColourBG[@app.language]}'>"
-    d3.select('.navbarHelpSection').classed('hidden', true)
+    d3.select('.navbarHelpSection').classed 'hidden', true
 
 
 
