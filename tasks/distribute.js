@@ -34,6 +34,8 @@ fs.copySync("views/wet3_video_body.mustache", "dist/public/HTML/wet3_video_body.
 fs.copySync("views/wet3_video_styles.mustache", "dist/public/HTML/wet3_video_styles.html");
 fs.copySync("views/wet4_video_body.mustache", "dist/public/HTML/wet4_video_body.html");
 
+fs.copySync("views/wet_video_reporter.mustache", "dist/public/HTML/wet_video_reporter.html");
+
 // The paid-up fonts are optional, the build is fine to continue without them.
 try {
   fs.copySync("../energy-futures-private-resources/Fonts", "dist/public/Fonts");
