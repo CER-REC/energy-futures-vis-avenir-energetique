@@ -19,7 +19,7 @@ class AnalyticsReporter
     @app.window.attachVideoAnalytics = (videoElement) =>
 
       videoElement.addEventListener 'timeupdate', =>
-        @reportEvent 'Video', "Played: #{videoElement.currentTime}"
+        @reportEvent 'Video', "Played: #{videoElement.currentTime}s"
 
       videoElement.addEventListener 'play', =>
         @reportEvent 'Video', 'Play'
@@ -66,7 +66,6 @@ class AnalyticsReporter
 
     # We want to track the URL without the long string of URL parameters.
     location = @app.containingWindow.document.location
-    # @ga 'set', 'page', location
     @ga 'revamp_test.set', 'page', "#{location.protocol}//#{location.host}#{location.pathname}"
 
     @ga 'revamp_test.send', 'pageview', gaMessage
