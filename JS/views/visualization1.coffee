@@ -60,6 +60,7 @@ class Visualization1 extends visualization
             title: Tr.datasetSelector.datasetSelectorHelpTitle[@app.language]
             content: Tr.datasetSelector.datasetSelectorHelp[@app.language]
             attachmentSelector: '.datasetSelectorGroup'
+          @app.analyticsReporter.reportEvent 'Controls help', 'Viz1 dataset help'
 
     d3.select(@app.window.document).select '.mainSelectorHelpButton'
       .on 'click', =>
@@ -68,12 +69,13 @@ class Visualization1 extends visualization
         if @app.popoverManager.currentPopover == @mainSelectorHelpPopover
           @app.popoverManager.closePopover()
         else
-          @app.popoverManager.showPopover @mainSelectorHelpPopover, 
+          @app.popoverManager.showPopover @mainSelectorHelpPopover,
             outerClasses: 'vizModal floatingPopover mainSelectorHelp'
             innerClasses: 'viz1HelpTitle'
             title: Tr.mainSelector.selectOneLabel[@app.language]
             content: Tr.mainSelector.mainSelectorHelp[@app.language]
             attachmentSelector: '.mainSelectorSection'
+          @app.analyticsReporter.reportEvent 'Controls help', 'Viz1 main selection help'
           
     d3.select(@app.window.document).select '.unitSelectorHelpButton'
       .on 'click', =>
@@ -82,12 +84,13 @@ class Visualization1 extends visualization
         if @app.popoverManager.currentPopover == @unitsHelpPopover
           @app.popoverManager.closePopover()
         else
-          @app.popoverManager.showPopover @unitsHelpPopover, 
+          @app.popoverManager.showPopover @unitsHelpPopover,
             outerClasses: 'vizModal floatingPopover unitSelectorHelp'
             innerClasses: 'viz1HelpTitle'
             title: Tr.unitSelector.unitSelectorHelpTitle[@app.language]
             content: Tr.unitSelector.unitSelectorHelp[@app.language]
             attachmentSelector: '.unitsSelectorGroup'
+          @app.analyticsReporter.reportEvent 'Controls help', 'Viz1 unit help'
     
     d3.select(@app.window.document).select '.scenarioSelectorHelpButton'
       .on 'click', =>
@@ -102,6 +105,7 @@ class Visualization1 extends visualization
             title: Tr.scenarioSelector.scenarioSelectorHelpTitle[@app.language]
             content: Tr.scenarioSelector.scenarioSelectorHelp[@app.language]
             attachmentSelector: '.scenarioSelectorGroup'
+          @app.analyticsReporter.reportEvent 'Controls help', 'Viz1 scenario help'
 
 
   renderServerTemplate: () ->
@@ -693,6 +697,7 @@ class Visualization1 extends visualization
         title: Tr.regionSelector.selectRegionLabel[@app.language]
         content: contentString
         attachmentSelector: '#provincesSelector'
+      @app.analyticsReporter.reportEvent 'Controls help', 'Viz1 region help'
 
 
 module.exports = Visualization1

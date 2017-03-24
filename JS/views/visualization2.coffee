@@ -59,6 +59,7 @@ class Visualization2 extends visualization
             title: Tr.datasetSelector.datasetSelectorHelpTitle[@app.language]
             content: Tr.datasetSelector.datasetSelectorHelp[@app.language]
             attachmentSelector: '.datasetSelectorGroup'
+          @app.analyticsReporter.reportEvent 'Controls help', 'Viz2 dataset help'
 
     d3.select(@app.window.document).select '.sectorSelectorHelpButton'
       .on 'click', =>
@@ -73,6 +74,7 @@ class Visualization2 extends visualization
             title: Tr.sectorSelector.sectorSelectorHelpTitle[@app.language]
             content: Tr.sectorSelector.sectorSelectorHelp[@app.language]
             attachmentSelector: '.sectorSelectorGroup'
+          @app.analyticsReporter.reportEvent 'Controls help', 'Viz2 sector help'
 
     d3.select(@app.window.document).select '.unitSelectorHelpButton'
       .on 'click', =>
@@ -87,6 +89,7 @@ class Visualization2 extends visualization
             title: Tr.unitSelector.unitSelectorHelpTitle[@app.language]
             content: Tr.unitSelector.unitSelectorHelp[@app.language]
             attachmentSelector: '.unitsSelectorGroup'
+          @app.analyticsReporter.reportEvent 'Controls help', 'Viz2 unit help'
 
     d3.select(@app.window.document).select '.scenarioSelectorHelpButton'
       .on 'click', =>
@@ -101,6 +104,7 @@ class Visualization2 extends visualization
             title: Tr.scenarioSelector.scenarioSelectorHelpTitle[@app.language]
             content: Tr.scenarioSelector.scenarioSelectorHelp[@app.language]
             attachmentSelector: '.scenarioSelectorGroup'
+          @app.analyticsReporter.reportEvent 'Controls help', 'Viz2 scenario help'
 
 
   renderServerTemplate: ->
@@ -790,6 +794,7 @@ class Visualization2 extends visualization
         title: Tr.sourceSelector.selectSourceLabel[@app.language]
         content: contentString
         attachmentSelector: '#powerSourceSelector'
+      @app.analyticsReporter.reportEvent 'Controls help', 'Viz2 source help'
 
 
   # Black and white non multi select menu.
@@ -868,5 +873,6 @@ class Visualization2 extends visualization
         title: Tr.regionSelector.selectRegionLabel[@app.language]
         content: contentString
         attachmentSelector: '#provincesSelector'
+      @app.analyticsReporter.reportEvent 'Controls help', 'Viz2 region help'
 
 module.exports = Visualization2

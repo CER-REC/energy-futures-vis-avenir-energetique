@@ -91,60 +91,6 @@ class Router
       when 'viz3' then @viz3Handler params, options
       when 'viz4' then @viz4Handler params, options
 
-
-    # Google analytics reporting integration, tailored for the NEB.
-    if @app.containingWindow.ga?
-      @app.containingWindow.ga('set', 'page', document.URL)
-      
-      @app.containingWindow.ga('send', {
-        hitType: 'pageview',      
-        page: document.URL,
-        title: params.mainSelection,
-        location: params.page
-      })
-        
-      @app.containingWindow.ga('send', {
-        hitType: 'event',      
-        eventCategory: 'Selection'
-        eventAction: params.mainSelection,
-        eventLabel: params.page
-      })
-      
-      @app.containingWindow.ga('send', {
-        hitType: 'event',      
-        eventCategory: 'Provinces'
-        eventAction: params.provinces,
-        eventLabel: params.page
-      })
-      
-      @app.containingWindow.ga('send', {
-        hitType: 'event',      
-        eventCategory: 'Scenarios'
-        eventAction: params.scenario,
-        eventLabel: params.page
-      })
-      
-      @app.containingWindow.ga('send', {
-        hitType: 'event',      
-        eventCategory: 'Year'
-        eventAction: params.year,
-        eventLabel: params.page
-      })
-      
-      @app.containingWindow.ga('send', {
-        hitType: 'event',      
-        eventCategory: 'Unit'
-        eventAction: params.unit,
-        eventLabel: params.page
-      })
-
-      @app.containingWindow.ga('send', {
-        hitType: 'event',
-        eventCategory: 'Dataset'
-        eventAction: params.dataset,
-        eventLabel: params.page
-      })
-
   # Navigation handlers
 
   updateBottomNavBar: ->
@@ -178,6 +124,7 @@ class Router
       @app.currentView = new LandingPage @app
       @app.containingWindow.history.pushState params, '', ParamsToUrlString(params) if options.shouldUpdateHistory
 
+
   viz1Handler: (params, options) ->
     if not @app.currentView?
       @app.currentView = new Visualization1 @app, @app.visualization1Configuration
@@ -191,6 +138,7 @@ class Router
     else
       @replaceState params, options
 
+    @app.analyticsReporter.reportPage @app.visualization1Configuration.routerParams()
 
   viz2Handler: (params, options) ->
     if not @app.currentView?
@@ -205,6 +153,7 @@ class Router
     else
       @replaceState params, options
 
+    @app.analyticsReporter.reportPage @app.visualization2Configuration.routerParams()
 
   viz3Handler: (params, options) ->
     if not @app.currentView?
@@ -219,6 +168,7 @@ class Router
     else
       @replaceState params, options
 
+    @app.analyticsReporter.reportPage @app.visualization3Configuration.routerParams()
 
   viz4Handler: (params, options) ->
     if not @app.currentView?
@@ -233,6 +183,7 @@ class Router
     else
       @replaceState params, options
 
+    @app.analyticsReporter.reportPage @app.visualization4Configuration.routerParams()
 
    
 

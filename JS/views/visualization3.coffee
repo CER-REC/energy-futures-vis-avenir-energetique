@@ -61,6 +61,7 @@ class Visualization3 extends visualization
             title: Tr.datasetSelector.datasetSelectorHelpTitle[@app.language]
             content: Tr.datasetSelector.datasetSelectorHelp[@app.language]
             attachmentSelector: '.datasetSelectorGroup'
+          @app.analyticsReporter.reportEvent 'Controls help', 'Viz3 dataset help'
 
     d3.select(@app.window.document).select '.viewBySelectorHelpButton'
       .on 'click', =>
@@ -75,6 +76,7 @@ class Visualization3 extends visualization
             title: Tr.viewBySelector.viewBySelectorHelpTitle[@app.language]
             content: Tr.viewBySelector.viewBySelectorHelp[@app.language]
             attachmentSelector: '.viewBySelectorGroup'
+          @app.analyticsReporter.reportEvent 'Controls help', 'Viz3 view by help'
 
     d3.select(@app.window.document).select '.unitSelectorHelpButton'
       .on 'click', =>
@@ -89,6 +91,7 @@ class Visualization3 extends visualization
             title: Tr.unitSelector.unitSelectorHelpTitle[@app.language]
             content: Tr.unitSelector.unitSelectorHelp[@app.language]
             attachmentSelector: '.unitsSelectorGroup'
+          @app.analyticsReporter.reportEvent 'Controls help', 'Viz3 unit help'
     
     d3.select(@app.window.document).select '.scenarioSelectorHelpButton'
       .on 'click', =>
@@ -103,6 +106,7 @@ class Visualization3 extends visualization
             title: Tr.scenarioSelector.scenarioSelectorHelpTitle[@app.language]
             content: Tr.scenarioSelector.scenarioSelectorHelp[@app.language]
             attachmentSelector: '.scenarioSelectorGroup'
+          @app.analyticsReporter.reportEvent 'Controls help', 'Viz3 scenario help'
 
   renderServerTemplate: ->
     if @config.viewBy == 'province'
@@ -1009,6 +1013,7 @@ class Visualization3 extends visualization
         d3.select(@app.window.document).select('#vizPauseButton').html("<img src='IMG/play_pause/pausebutton_selectedR.svg' alt='#{Tr.altText.pauseAnimation[@app.language]}'/>")
         d3.select(@app.window.document).select('#vizPlayButton').html("<img src='IMG/play_pause/playbutton_unselectedR.svg' alt='#{Tr.altText.playAnimation[@app.language]}'/>")
         if @yearTimeout then window.clearTimeout(@yearTimeout)
+        @app.analyticsReporter.reportEvent 'Electricity Play/Pause', 'Pause'
       .html("<img src='IMG/play_pause/pausebutton_selectedR.svg' alt='#{Tr.altText.pauseAnimation[@app.language]}'/>")
     
     div.append('div')
@@ -1050,6 +1055,8 @@ class Visualization3 extends visualization
             d3.select(@app.window.document).select('#vizPauseButton').html("<img src='IMG/play_pause/pausebutton_selectedR.svg' alt='#{Tr.altText.pauseAnimation[@app.language]}'/>")
             d3.select(@app.window.document).select('#vizPlayButton').html("<img src='IMG/play_pause/playbutton_unselectedR.svg' alt='#{Tr.altText.playAnimation[@app.language]}'/>")
         @yearTimeout = window.setTimeout(timeoutComplete, 0)
+        @app.analyticsReporter.reportEvent 'Electricity Play/Pause', 'Play'
+
       .html("<img src='IMG/play_pause/playbutton_unselectedR.svg' alt='#{Tr.altText.playAnimation[@app.language]}'/>")
 
   buildTimeline: ->
@@ -1331,6 +1338,7 @@ class Visualization3 extends visualization
         title: Tr.sourceSelector.selectSourceLabel[@app.language]
         content: contentString
         attachmentSelector: '#powerSourceSelector'
+      @app.analyticsReporter.reportEvent 'Controls help', 'Viz3 source help'
 
   showProvinceNames: =>
     d3.event.stopPropagation()
@@ -1349,5 +1357,6 @@ class Visualization3 extends visualization
         title: Tr.regionSelector.selectRegionLabel[@app.language]
         content: contentString
         attachmentSelector: '#provincesSelector'
+      @app.analyticsReporter.reportEvent 'Controls help', 'Viz3 region help'
 
 module.exports = Visualization3

@@ -151,7 +151,6 @@ class Visualization1Configuration
       @provinces = []
 
   setProvincesInOrder: (provincesInOrder) ->
-    # NB: We aren't currently tracking provinces in order in the URL bar
     @provincesInOrder = provincesInOrder
 
 

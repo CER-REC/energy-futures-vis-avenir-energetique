@@ -89,6 +89,7 @@ class Visualization4
             title: Tr.datasetSelector.datasetSelectorHelpTitle[@app.language]
             content: Tr.datasetSelector.datasetSelectorHelp[@app.language]
             attachmentSelector: '.datasetSelectorGroup'
+          @app.analyticsReporter.reportEvent 'Controls help', 'Viz4 dataset help'
 
     d3.select(@app.window.document).select '.mainSelectorHelpButton'
       .on 'click', =>
@@ -103,6 +104,7 @@ class Visualization4
             title: Tr.mainSelector.selectOneLabel[@app.language]
             content: Tr.mainSelector.mainSelectorHelp[@app.language]
             attachmentSelector: '.mainSelectorSection'
+          @app.analyticsReporter.reportEvent 'Controls help', 'Viz4 main selection help'
     
     d3.select(@app.window.document).select '.unitSelectorHelpButton'
       .on 'click', =>
@@ -117,6 +119,7 @@ class Visualization4
             title: Tr.unitSelector.unitSelectorHelpTitle[@app.language]
             content: Tr.unitSelector.unitSelectorHelp[@app.language]
             attachmentSelector: '.unitsSelectorGroup'
+          @app.analyticsReporter.reportEvent 'Controls help', 'Viz4 unit help'
 
     d3.select(@app.window.document).select '.scenarioSelectorHelpButton'
       .on 'click', =>
@@ -131,6 +134,7 @@ class Visualization4
             title: Tr.scenarioSelector.scenarioSelectorHelpTitle[@app.language]
             content: Tr.scenarioSelector.scenarioSelectorHelp[@app.language]
             attachmentSelector: '.scenarioSelectorGroup'
+          @app.analyticsReporter.reportEvent 'Controls help', 'Viz4 scenario help'
 
 
   renderServerTemplate: ->
@@ -418,6 +422,7 @@ class Visualization4
         title: Tr.regionSelector.selectRegionLabel[@app.language]
         content: contentString
         attachmentSelector: '#provincesSelector'
+      @app.analyticsReporter.reportEvent 'Controls help', 'Viz4 region help'
 
 
 

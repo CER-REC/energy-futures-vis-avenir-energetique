@@ -31,11 +31,10 @@ class LandingPage
       event.preventDefault()
       event.stopPropagation()
       @app.popoverManager.showPopover @app.aboutThisProjectPopover
+      @app.analyticsReporter.reportEvent 'Information', 'About modal'
 
-    @app.window.document.getElementById("aboutModal").getElementsByClassName("closeButton")[0].addEventListener 'click', (event) =>
-      event.preventDefault()
-      event.stopPropagation()
-      @app.popoverManager.closePopover()
+    @app.window.document.getElementById('landingPageMethodologyHyperlink').addEventListener 'click', (event) => 
+      @app.analyticsReporter.reportEvent 'Downloads', 'Methodology PDF download'
 
     @app.window.document.getElementById("viz1Anchor").addEventListener 'click', (event) => 
       event.preventDefault()  

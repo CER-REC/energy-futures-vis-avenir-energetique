@@ -32,6 +32,8 @@ Constants = require './Constants.coffee'
 
 DatasetRequester = require './DatasetRequester.coffee'
 SocialMedia = require './SocialMedia.coffee'
+AnalyticsReporter = require './AnalyticsReporter.coffee'
+
 
 class App
 
@@ -91,6 +93,7 @@ class App
       d3.event.preventDefault()
       d3.event.stopPropagation()
       @popoverManager.showPopover @aboutThisProjectPopover
+      @analyticsReporter.reportEvent 'Information', 'About modal'
 
     d3.select('#aboutModal .closeButton').on 'click', =>
       d3.event.preventDefault()
@@ -101,11 +104,20 @@ class App
       d3.event.preventDefault()
       d3.event.stopPropagation()
       @imageExporter.createImage()
+      @analyticsReporter.reportEvent 'Downloads', 'Open image download modal'
 
     d3.select('#imageDownloadModal .closeButton').on 'click', =>
       d3.event.preventDefault()
       d3.event.stopPropagation()
       @popoverManager.closePopover()
+
+
+    d3.select('#methodologyLinkAnchor').on 'click', =>
+      @analyticsReporter.reportEvent 'Downloads', 'Methodology PDF download'
+
+    d3.select('#dataDownloadLinkAnchor').on 'click', =>
+      @analyticsReporter.reportEvent 'Downloads', 'Data CSV download'
+
 
     d3.select('body').on 'click', =>
       if @popoverManager.currentPopover?
@@ -181,6 +193,9 @@ class App
       @providers[dataset].gasProductionProvider = new GasProductionProvider()
 
     @datasetRequester = new DatasetRequester @, @providers
+
+    # Analytics and router
+    @analyticsReporter = new AnalyticsReporter @
 
     @router = new Router @
 
