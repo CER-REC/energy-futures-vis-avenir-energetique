@@ -61,9 +61,9 @@ CSVDataHandler = (req, res) ->
     # visualization object. The visualizations render the graphs in their constructors.
     switch req.query.page
       when 'viz1'
-        config = new Visualization1Configuration(serverApp, params)
+        config = new Visualization1Configuration serverApp, params
         switch config.mainSelection
-          when 'gasProduction'  
+          when 'gasProduction'
             tempData = serverApp.providers[config.dataset].gasProductionProvider.dataForViz1 config
           when 'electricityGeneration'
             tempData = serverApp.providers[config.dataset].electricityProductionProvider.dataForViz1 config
@@ -71,23 +71,23 @@ CSVDataHandler = (req, res) ->
             tempData = serverApp.providers[config.dataset].energyConsumptionProvider.dataForViz1 config
           when 'oilProduction'
             tempData = serverApp.providers[config.dataset].oilProductionProvider.dataForViz1 config
-          else 
+          else
             mainSelectionErrorHandler()
             return
-        csvData = generateArrayFromObject(tempData, "viz1", config, Keys)
+        csvData = generateArrayFromObject tempData, 'viz1', config, Keys
 
       when 'viz2'
-        config = new Visualization2Configuration(serverApp, params)
+        config = new Visualization2Configuration serverApp, params
         tempData = serverApp.providers[config.dataset].energyConsumptionProvider.dataForViz2 config
-        csvData = generateArrayFromObject(tempData, "viz2", config, Keys)
+        csvData = generateArrayFromObject(tempData, 'viz2', config, Keys)
 
       when 'viz3'
-        config = new Visualization3Configuration(serverApp, params)
+        config = new Visualization3Configuration serverApp, params
         tempData = serverApp.providers[config.dataset].electricityProductionProvider.dataForViz3(config)
-        csvData = generateArrayFromObject(tempData, "viz3", config, Keys)
+        csvData = generateArrayFromObject(tempData, 'viz3', config, Keys)
 
       when 'viz4'
-        config = new Visualization4Configuration(serverApp, params)
+        config = new Visualization4Configuration serverApp, params
         switch config.mainSelection
           when 'energyDemand'
             tempData = serverApp.providers[config.dataset].energyConsumptionProvider.dataForViz4 config
@@ -97,12 +97,12 @@ CSVDataHandler = (req, res) ->
             tempData = serverApp.providers[config.dataset].oilProductionProvider.dataForViz4 config
           when 'gasProduction'
             tempData = serverApp.providers[config.dataset].gasProductionProvider.dataForViz4 config
-          else 
+          else
             mainSelectionErrorHandler()
             return
-        csvData = generateArrayFromObject(tempData, "viz4", config, Keys)   
+        csvData = generateArrayFromObject tempData, 'viz4', config, Keys
 
-      else 
+      else
         errorHandler req, res, new Error("Visualization 'page' parameter not specified or not recognized."), 400, counter
         return
       
@@ -120,23 +120,23 @@ CSVDataHandler = (req, res) ->
       
 mainSelectionErrorHandler = ->
   errorHandler req, res, new Error("Visualization 'mainSelection' parameter not specified or not recognized."), 400, counter
-  return
+
 
 generateArrayFromObject = (csvDataObject, viz, config, Keys) ->
   hashArray = []
   switch viz
-    when "viz1", "viz4"
+    when 'viz1', 'viz4'
       for k,v of csvDataObject
         hashArray = hashArray.concat filterViz1andViz4(v, config, Keys)
       break
-    when "viz2"
+    when 'viz2'
       for k,v of csvDataObject
         hashArray = hashArray.concat filterViz2(v, config, Keys)
       break
-    when "viz3"
+    when 'viz3'
       for tempChild in csvDataObject.children
         hashArray = hashArray.concat tempChild.children
-      hashArray = filterViz3(hashArray, config, Keys)
+      hashArray = filterViz3 hashArray, config, Keys
       break
   
   return hashArray
@@ -188,23 +188,23 @@ filterViz3 = (hashArray, config, Keys) ->
   for k,v of hashArray
     item = {}
 
-    # Remove entries corresponding to empty bubbles (empty bubbles 
+    # Remove entries corresponding to empty bubbles (empty bubbles
     # have a radius of 1).
     if v.size == 1 then continue
 
     # TODO: Visualization 3 data format
     # T data fields for visualization 3 are formatted differently based on
-    # whether it is viewed by province or source. 
+    # whether it is viewed by province or source.
     # If data is viewed by source, the field 'source' contains the province
     # data, and the name field is in the format 'province source'.
     # If the data is viewed by province, the field 'source' contains the
     # source data, and the name field is in the format 'source province'
     if config.viewBy == 'province'
-      province = v.name.substring(v.name.length - 2)
+      province = v.name.substring v.name.length - 2
       item[Keys.provinceKey] = Tr.csvData['province'][province][config.language]
       item[Keys.sourceKey] = Tr.csvData['source'][v.source][config.language]
     else
-      source = v.id.substring(2)
+      source = v.id.substring 2
       item[Keys.provinceKey] = Tr.csvData['province'][v.source][config.language]
       item[Keys.sourceKey] = Tr.csvData['source'][source][config.language]
 

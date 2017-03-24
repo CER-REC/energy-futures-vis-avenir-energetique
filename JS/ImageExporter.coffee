@@ -1,12 +1,11 @@
-QueryString = require 'query-string'
-
-Tr = require './TranslationTable.coffee'
 ParamsToUrlString = require './ParamsToUrlString.coffee'
 
 
 class ImageExporter
 
+  # coffeelint: disable=no_empty_functions
   constructor: (@app) ->
+  # coffeelint: enable=no_empty_functions
 
   createImage: ->
 
@@ -38,17 +37,17 @@ class ImageExporter
 
     container = @app.window.document.getElementById 'renderedImageContainer'
     # Remove the previous image, if any.
-    container.innerHTML = ""
+    container.innerHTML = ''
 
     spinner = @app.window.document.getElementById 'imageDownloadSpinner'
     spinner.setAttribute 'class', '' # Display the spinner, if it was hidden
 
     image = new Image()
-    image.onload = =>
+    image.onload = ->
       spinner.setAttribute 'class', 'hidden'
-      # It's important to remove the image prior to appending it again, in case the user 
+      # It's important to remove the image prior to appending it again, in case the user
       # has clicked the download image navbar link several times.
-      container.innerHTML = ""
+      container.innerHTML = ''
       container.appendChild image
       
     image.setAttribute 'src', imageUrl

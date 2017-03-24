@@ -7,7 +7,8 @@ AboutThisProjectTemplate = require '../templates/AboutThisProject.mustache'
 class AboutThisProjectPopover
 
   constructor: (@app) ->
-    @app.window.document.getElementById('aboutModal').innerHTML = Mustache.render AboutThisProjectTemplate,
+    aboutModalElement = @app.window.document.getElementById 'aboutModal'
+    aboutModalElement.innerHTML = Mustache.render AboutThisProjectTemplate,
         aboutTitle: Tr.aboutThisProject.aboutTitle[@app.language]
         aboutContent: Tr.aboutThisProject.aboutContent[@app.language]
         closeButtonAltText: Tr.altText.closeButton[@app.language]
@@ -18,10 +19,10 @@ class AboutThisProjectPopover
       d3.event.stopPropagation()
 
   show: ->
-    d3.select('#aboutModal').classed('hidden', false)
+    d3.select('#aboutModal').classed 'hidden', false
 
   close: ->
-    d3.select('#aboutModal').classed('hidden', true)
+    d3.select('#aboutModal').classed 'hidden', true
 
 
 

@@ -11,12 +11,12 @@ class PopoverManager
       @closePopover()
 
     @currentPopover = popover
-    @currentPopover.show(options)
+    @currentPopover.show options
 
 
   closePopover: ->
     if @currentPopover?
-      @currentPopover.close() 
+      @currentPopover.close()
       @currentPopover = null
 
 

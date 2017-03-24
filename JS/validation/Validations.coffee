@@ -1,9 +1,9 @@
 Constants = require '../Constants.coffee'
 
 
-module.exports = 
+module.exports =
 
-  # TODO: Specific sources lists for different data sources, different visualizations? 
+  # TODO: Specific sources lists for different data sources, different visualizations?
 
   source: (item, rawItem, i, errors) ->
     unless Constants.sources.includes item.source

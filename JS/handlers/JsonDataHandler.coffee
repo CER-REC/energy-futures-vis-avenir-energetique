@@ -16,13 +16,13 @@ module.exports = (req, res) ->
   requestCounter += 1
   time = Date.now()
   query = url.parse(req.url).search
-  params = queryString.parse(query)
+  params = queryString.parse query
 
   new Promise (resolve, reject) ->
     if Constants.datasets.includes params.dataset
       resolve ServerDataChunksPromises[params.dataset]
     else
-      reject new Error "Unrecognized dataset parameter."
+      reject new Error 'Unrecognized dataset parameter.'
 
   .then (serverDataChunks) ->
     return new Promise (resolve, reject) ->
@@ -33,28 +33,28 @@ module.exports = (req, res) ->
             response.data = serverDataChunks.viz1And4Chunks[params.mainSelection]
             resolve response
           else
-            reject new Error "Unrecognized mainSelection parameter."
+            reject new Error 'Unrecognized mainSelection parameter.'
 
         when 'viz2'
           if Constants.sectors.includes(params.sector) and Constants.provinceRadioSelectionOptions.includes(params.province)
             response.data = serverDataChunks.viz2Chunks[params.sector][params.province]
             resolve response
           else
-            reject new Error "Unrecognized sector or province parameter."
+            reject new Error 'Unrecognized sector or province parameter.'
 
         when 'viz3'
           if Constants.datasetDefinitions[params.dataset].scenarios.includes params.scenario
             response.data = serverDataChunks.viz3Chunks[params.scenario]
             resolve response
           else
-            reject new Error "Unrecognized scenario parameter."
+            reject new Error 'Unrecognized scenario parameter.'
         else
-          reject new Error "Unrecognized page parameter." 
+          reject new Error 'Unrecognized page parameter.'
 
 
   .then (response) ->
-    res.setHeader "content-type", "application/json"
-    res.setHeader 'cache-control', "max-age=#{Constants.cacheDuration}" 
+    res.setHeader 'content-type', 'application/json'
+    res.setHeader 'cache-control', "max-age=#{Constants.cacheDuration}"
     res.write JSON.stringify(response)
     res.end()
 

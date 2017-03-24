@@ -14,13 +14,13 @@ module.exports = (params) ->
   if params.sourcesInOrder?
     params.sourcesInOrder = params.sourcesInOrder.split ','
   if params.year?
-    params.year = parseInt(params.year)
+    params.year = parseInt params.year
   if params.dataset?
     params.dataset = params.dataset
 
   # The 'page' parameter is validated in the router
   # The other parameters are validated in the visualization config classes, in setters
-  params.page = 'landingPage' unless Constants.pages.includes params.page  
+  params.page = 'landingPage' unless Constants.pages.includes params.page
   # params = _.extend {page: 'landingPage'}, params
 
   params

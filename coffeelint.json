@@ -150,7 +150,8 @@
         "it": true,
         "document": true,
         "window": true,
-        "XMLHttpRequest": true
+        "XMLHttpRequest": true,
+        "Image": true
     },
     "overwrite": true,
     "shadow": true,

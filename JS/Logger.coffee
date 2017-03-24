@@ -7,9 +7,9 @@ ApplicationRoot = require '../ApplicationRoot'
 
 
 winston.emitErrs = true
-logDirectory = process.env.LOG_DIRECTORY || path.join ApplicationRoot, "log"
-fs.existsSync(logDirectory) || fs.mkdirSync(logDirectory)
-logfileName =  "#{process.env.LOG_FILENAME}.log" 
+logDirectory = process.env.LOG_DIRECTORY || path.join ApplicationRoot, 'log'
+fs.existsSync(logDirectory) || fs.mkdirSync logDirectory
+logfileName =  "#{process.env.LOG_FILENAME}.log"
 
 
 logger = new winston.Logger
@@ -18,10 +18,10 @@ logger = new winston.Logger
     new winston.transports.DailyRotateFile
       name: 'dailyLog'
       level: process.env.FILE_LOGLEVEL
-      filename: path.join(logDirectory, logfileName)
+      filename: path.join logDirectory, logfileName
       handleExceptions: true
       json: true
-      colorize: true,
+      colorize: true
       humanReadableUnhandledException: true
       prepend: true
 

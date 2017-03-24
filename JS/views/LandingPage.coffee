@@ -3,10 +3,10 @@ Mustache = require 'mustache'
 
 LandingPageTemplate = require '../templates/LandingPage.mustache'
 
-# A WET 4 compatible video template was built in anticipation of an eventual upgrade to WET 4. 
-# The WET 4 video template was built to work in the stock WET 4 distribution template, if 
-# the production version of WET 4 at the NEB is similar enough to the stock version, then
-# swapping out the WET 3 video for the WET 4 video should just work. 
+# A WET 4 compatible video template was built in anticipation of an eventual upgrade to
+# WET 4. The WET 4 video template was built to work in the stock WET 4 distribution
+# template, if the production version of WET 4 at the NEB is similar enough to the stock
+# version, thenswapping out the WET 3 video for the WET 4 video should just work.
 
 Wet3VideoTemplate = require '../templates/Wet3Video.mustache'
 # Wet4VideoTemplate = require '../templates/Wet4Video.mustache'
@@ -15,9 +15,11 @@ Wet3VideoTemplate = require '../templates/Wet3Video.mustache'
 class LandingPage
 
   constructor: (@app) ->
-    @app.window.document.getElementById('landingPageHeading').innerHTML = Tr.landingPage.mainHeader[@app.language]
+    headingElement = @app.window.document.getElementById 'landingPageHeading'
+    headingElement.innerHTML = Tr.landingPage.mainHeader[@app.language]
 
-    @app.window.document.getElementById('visualizationContent').innerHTML = Mustache.render LandingPageTemplate, 
+    contentElement = @app.window.document.getElementById 'visualizationContent'
+    contentElement.innerHTML = Mustache.render LandingPageTemplate,
         content: Tr.landingPage.content1[@app.language]
         panelClass: @app.language
         visualization1Link: Tr.landingPage.visualization1Link[@app.language]
@@ -27,42 +29,54 @@ class LandingPage
         panelRightContent: Mustache.render(Wet3VideoTemplate)
         # panelRightContent: Mustache.render(Wet4VideoTemplate)
 
-    @app.window.document.getElementById("aboutHyperlink").addEventListener 'click', (event) => 
+    aboutHyperlink = @app.window.document.getElementById 'aboutHyperlink'
+    aboutHyperlink.addEventListener 'click', (event) =>
       event.preventDefault()
       event.stopPropagation()
       @app.popoverManager.showPopover @app.aboutThisProjectPopover
       @app.analyticsReporter.reportEvent 'Information', 'About modal'
 
-    @app.window.document.getElementById('landingPageMethodologyHyperlink').addEventListener 'click', (event) => 
+    methodologyLink = @app.window.document.getElementById 'landingPageMethodologyHyperlink'
+    methodologyLink.addEventListener 'click', =>
       @app.analyticsReporter.reportEvent 'Downloads', 'Methodology PDF download'
 
-    @app.window.document.getElementById("viz1Anchor").addEventListener 'click', (event) => 
-      event.preventDefault()  
-      @app.router.navigate 
+    aboutModal = @app.window.document.getElementById 'aboutModal'
+    closeButton = aboutModal.getElementsByClassName('closeButton')[0]
+    closeButton.addEventListener 'click', (event) =>
+      event.preventDefault()
+      event.stopPropagation()
+      @app.popoverManager.closePopover()
+
+
+    @app.window.document.getElementById('viz1Anchor').addEventListener 'click', (event) =>
+      event.preventDefault()
+      @app.router.navigate
         page: 'viz1'
         language: @app.language
-    @app.window.document.getElementById("viz2Anchor").addEventListener 'click', (event) => 
-      event.preventDefault()  
-      @app.router.navigate 
+    @app.window.document.getElementById('viz2Anchor').addEventListener 'click', (event) =>
+      event.preventDefault()
+      @app.router.navigate
         page: 'viz2'
         language: @app.language
-    @app.window.document.getElementById("viz3Anchor").addEventListener 'click', (event) => 
-      event.preventDefault()  
-      @app.router.navigate 
+    @app.window.document.getElementById('viz3Anchor').addEventListener 'click', (event) =>
+      event.preventDefault()
+      @app.router.navigate
         page: 'viz3'
         language: @app.language
-    @app.window.document.getElementById("viz4Anchor").addEventListener 'click', (event) => 
-      event.preventDefault()  
-      @app.router.navigate 
+    @app.window.document.getElementById('viz4Anchor').addEventListener 'click', (event) =>
+      event.preventDefault()
+      @app.router.navigate
         page: 'viz4'
         language: @app.language
 
     
   tearDown: ->
-    @app.window.document.getElementById('visualizationContent').innerHTML = '' 
+    @app.window.document.getElementById('visualizationContent').innerHTML = ''
 
   # for resizing
+  # coffeelint: disable=no_empty_functions
   redraw: ->
+  # coffeelint: enable=no_empty_functions
 
 
 
