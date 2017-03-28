@@ -77,7 +77,7 @@ div.chartTooltip:after {
   -moz-column-count: 2;*/
   box-sizing: border-box;
   width: 25%;
-  float: right;
+  float: left;
   padding-right: 10px; /* For precise alignment with link boxes */
 }
 
@@ -87,7 +87,7 @@ div.chartTooltip:after {
   -moz-column-count: 1;
   box-sizing: border-box;
   width: 25%;
-  float: right;
+  float: left;
   padding-right: 10px; /* For precise alignment with link boxes */
 }
 
@@ -95,15 +95,6 @@ div.chartTooltip:after {
     margin-top: 0;
 }
 
-#canadasEnergyFutureVisualization .columnLeftLandingPage {
-  width: 50%;
-  float: left;
-}
-
-#canadasEnergyFutureVisualization .columnRightLandingPage {
-  width: 50%;
-  float: right;
-}
 
 #canadasEnergyFutureVisualization #panelRight.en {
   box-sizing: border-box;
