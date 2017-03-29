@@ -1,6 +1,5 @@
 d3 = require 'd3'
 Domready = require 'domready'
-Mustache = require 'mustache'
 _ = require 'lodash'
 BrowserCookies = require 'browser-cookies'
 QueryString = require 'query-string'
@@ -8,9 +7,6 @@ QueryString = require 'query-string'
 
 require './ArrayIncludes.coffee'
 Router = require './Router.coffee'
-Tr = require './TranslationTable.coffee'
-
-BottomNavBarTemplate = require './templates/BottomNavBar.mustache'
 
 Visualization1Configuration = require './VisualizationConfigurations/visualization1Configuration.coffee'
 Visualization2Configuration = require './VisualizationConfigurations/visualization2Configuration.coffee'
@@ -31,8 +27,8 @@ ImageDownloadPopover = require './popovers/ImageDownloadPopover.coffee'
 Constants = require './Constants.coffee'
 
 DatasetRequester = require './DatasetRequester.coffee'
-SocialMedia = require './SocialMedia.coffee'
 AnalyticsReporter = require './AnalyticsReporter.coffee'
+BottomNavbar = require './BottomNavbar.coffee'
 
 
 class App
@@ -66,91 +62,14 @@ class App
 
     @detectLanguage()
 
-    @popoverManager = new PopoverManager()
+    @popoverManager = new PopoverManager @
     @aboutThisProjectPopover = new AboutThisProjectPopover @
     @imageDownloadPopover = new ImageDownloadPopover @
 
     @imageExporter = new ImageExporter @
 
 
-    # TODO: Navbar and modal setup is getting weighty, might want to break it out into a
-    # separate class
-
-    bottomNavBarElement = @window.document.getElementById 'bottomNavBar'
-    bottomNavBarElement.innerHTML = Mustache.render BottomNavBarTemplate,
-        aboutLink: Tr.allPages.aboutLink[@language]
-        methodologyLinkText: Tr.allPages.methodologyLinkText[@language]
-        methodologyLinkUrl: Tr.allPages.methodologyLinkUrl[@language]
-        shareLabel: Tr.allPages.shareLabel[@language]
-        dataDownloadLink: Tr.allPages.dataDownloadLink[@language]
-        imageDownloadLink: Tr.allPages.imageDownloadLink[@language]
-        twitterAltText: Tr.altText.twitter[@language]
-        linkedinAltText: Tr.altText.linkedin[@language]
-        emailAltText: Tr.altText.email[@language]
-
-
-
-    d3.select('#aboutLink').on 'click', =>
-      d3.event.preventDefault()
-      d3.event.stopPropagation()
-      @popoverManager.showPopover @aboutThisProjectPopover
-      @analyticsReporter.reportEvent 'Information', 'About modal'
-
-    d3.select('#aboutModal .closeButton').on 'click', =>
-      d3.event.preventDefault()
-      d3.event.stopPropagation()
-      @popoverManager.closePopover()
-
-    d3.select('#imageDownloadLink').on 'click', =>
-      d3.event.preventDefault()
-      d3.event.stopPropagation()
-      @imageExporter.createImage()
-      @analyticsReporter.reportEvent 'Downloads', 'Open image download modal'
-
-    d3.select('#imageDownloadModal .closeButton').on 'click', =>
-      d3.event.preventDefault()
-      d3.event.stopPropagation()
-      @popoverManager.closePopover()
-
-
-    d3.select('#methodologyLinkAnchor').on 'click', =>
-      @analyticsReporter.reportEvent 'Downloads', 'Methodology PDF download'
-
-    d3.select('#dataDownloadLinkAnchor').on 'click', =>
-      @analyticsReporter.reportEvent 'Downloads', 'Data CSV download'
-
-
-    d3.select('body').on 'click', =>
-      if @popoverManager.currentPopover?
-        @popoverManager.closePopover()
-
-    d3.select(@containingWindow).on 'click', =>
-      if @popoverManager.currentPopover?
-        @popoverManager.closePopover()
-
-
-    # TODO: rendering meta tags on server would make more sense
-    metaTag = if d3.selectAll('meta[name="description"]').empty()
-      d3.select 'head'
-        .append 'meta'
-    else
-      d3.select 'meta[name="description"]'
-
-    metaTag
-      .attr
-        name: 'description'
-        content: Tr.allPages.metaDescription[@language]
-
-    keyWordsTag = if d3.selectAll('meta[name="keywords"]').empty()
-      d3.select 'head'
-        .append 'meta'
-    else
-      d3.select 'meta[name="keywords"]'
-
-    keyWordsTag
-      .attr
-        name: 'keywords'
-        content: ''
+    @bottomNavbar = new BottomNavbar @
 
 
     # Debounce, to redraw just once after the user has resized the display
@@ -166,7 +85,8 @@ class App
 
     d3.select(@containingWindow).on 'resize', @debouncedResizeHandler
 
-    #humans.txt
+    # humans.txt
+    # TODO: we may want to do this without relying on script
     if d3.selectAll('head link[rel="author"][href="humans.txt"]').empty()
       d3.select('head').append('link')
         .attr
@@ -262,7 +182,6 @@ Domready ->
   app = new App()
   # window.parent.app = app
   app.setup()
-  SocialMedia app
   
 
   

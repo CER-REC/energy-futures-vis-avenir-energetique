@@ -21,6 +21,11 @@ class ImageDownloadPopover
     d3.select('#modalImageDownloadButton').on 'click', =>
       @app.analyticsReporter.reportEvent 'Downloads', 'Download image'
 
+    @closeButton = d3.select '#imageDownloadModal .closeButton'
+    @closeButton.on 'click', =>
+      d3.event.preventDefault()
+      d3.event.stopPropagation()
+      @app.popoverManager.closePopover()
 
 
   show: ->

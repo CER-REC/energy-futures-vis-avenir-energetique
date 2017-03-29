@@ -18,6 +18,25 @@ class AboutThisProjectPopover
     d3.select('#aboutModal').on 'click', ->
       d3.event.stopPropagation()
 
+    @closeButton = d3.select '#aboutModal .closeButton'
+
+    @closeButtonClickHandler = =>
+      d3.event.preventDefault()
+      d3.event.stopPropagation()
+      @app.popoverManager.closePopover()
+
+    @closeButtonEnterHandler = =>
+      d3.event.preventDefault()
+      d3.event.stopPropagation()
+      if d3.event.key == 'Enter'
+        @app.popoverManager.closePopover()
+
+    @closeButton.on 'click', @closeButtonClickHandler
+    @closeButton.on 'keyup', @closeButtonEnterHandler
+
+
+
+
   show: ->
     d3.select('#aboutModal').classed 'hidden', false
 

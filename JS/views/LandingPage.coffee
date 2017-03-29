@@ -58,22 +58,6 @@ class LandingPage
     @methodologyLink.addEventListener 'click', @methodologyLinkClickHandler
     @methodologyLink.addEventListener 'keyup', @methodologyLinkEnterHandler
 
-    # TODO: does about modal setup belong here? it's not exclusively the job of the
-    # landing page
-    aboutModal = @app.window.document.getElementById 'aboutModal'
-    @closeButton = aboutModal.getElementsByClassName('closeButton')[0]
-    @closeButtonClickHandler = (event) =>
-      event.preventDefault()
-      event.stopPropagation()
-      @app.popoverManager.closePopover()
-    @closeButtonEnterHandler = (event) =>
-      event.preventDefault()
-      event.stopPropagation()
-      if event.key == 'Enter'
-        @app.popoverManager.closePopover()
-    @closeButton.addEventListener 'click', @closeButtonClickHandler
-    @closeButton.addEventListener 'keyup', @closeButtonEnterHandler
-
 
     @viz1Link = @app.window.document.getElementById 'viz1Anchor'
     @viz1LinkClickHandler = (event) =>
@@ -144,8 +128,6 @@ class LandingPage
     @aboutHyperlink.removeEventListener 'keyup', @aboutHyperlinkEnterHandler
     @methodologyLink.removeEventListener 'click', @methodologyLinkClickHandler
     @methodologyLink.removeEventListener 'keyup', @methodologyLinkEnterHandler
-    @closeButton.removeEventListener 'click', @closeButtonClickHandler
-    @closeButton.removeEventListener 'keyup', @closeButtonEnterHandler
 
     @viz1Link.removeEventListener 'click', @viz1LinkClickHandler
     @viz1Link.removeEventListener 'keyup', @viz1LinkEnterHandler
