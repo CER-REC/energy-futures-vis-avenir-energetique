@@ -225,8 +225,11 @@ div.chartTooltip:after {
 #canadasEnergyFutureVisualization .thumbnailContainer .imgContainer {
   width: 100%;
   height: 130px;
-  /* The current set of thumbnails have drop shadow baked in */
   box-shadow: inset 0px 0px 4px 2px rgba(68, 68, 68, 0.8);
+}
+
+#canadasEnergyFutureVisualization a:focus .thumbnailContainer {
+  outline: 2px solid red;
 }
 
 #canadasEnergyFutureVisualization .thumbnailContainer img {
@@ -1087,7 +1090,9 @@ svg { overflow: hidden; }
   margin: -50%;
 }
 
-
+a:focus {
+  outline: 2px solid red;
+}
 
 
 

@@ -40,24 +40,42 @@ class LandingPage
       event.stopPropagation()
       @app.popoverManager.showPopover @app.aboutThisProjectPopover
       @app.analyticsReporter.reportEvent 'Information', 'About modal'
+    @aboutHyperlinkEnterHandler = (event) =>
+      event.preventDefault()
+      event.stopPropagation()
+      if event.key == 'Enter'
+        @app.popoverManager.showPopover @app.aboutThisProjectPopover
+        @app.analyticsReporter.reportEvent 'Information', 'About modal'
     @aboutHyperlink.addEventListener 'click', @aboutHyperlinkClickHandler
+    @aboutHyperlink.addEventListener 'keyup', @aboutHyperlinkEnterHandler
 
     @methodologyLink = @app.window.document.getElementById 'landingPageMethodologyHyperlink'
     @methodologyLinkClickHandler = =>
       @app.analyticsReporter.reportEvent 'Downloads', 'Methodology PDF download'
+    @methodologyLinkEnterHandler = (event) =>
+      if event.key == 'Enter'
+        @app.analyticsReporter.reportEvent 'Downloads', 'Methodology PDF download'
     @methodologyLink.addEventListener 'click', @methodologyLinkClickHandler
+    @methodologyLink.addEventListener 'keyup', @methodologyLinkEnterHandler
 
+    # TODO: does about modal setup belong here? it's not exclusively the job of the
+    # landing page
     aboutModal = @app.window.document.getElementById 'aboutModal'
     @closeButton = aboutModal.getElementsByClassName('closeButton')[0]
-    @closeButtonHandler = (event) =>
+    @closeButtonClickHandler = (event) =>
       event.preventDefault()
       event.stopPropagation()
       @app.popoverManager.closePopover()
-    @closeButton.addEventListener 'click', @closeButtonHandler
+    @closeButtonEnterHandler = (event) =>
+      event.preventDefault()
+      event.stopPropagation()
+      if event.key == 'Enter'
+        @app.popoverManager.closePopover()
+    @closeButton.addEventListener 'click', @closeButtonClickHandler
+    @closeButton.addEventListener 'keyup', @closeButtonEnterHandler
 
 
     @viz1Link = @app.window.document.getElementById 'viz1Anchor'
-
     @viz1LinkClickHandler = (event) =>
       event.preventDefault()
       @app.router.navigate
@@ -69,13 +87,11 @@ class LandingPage
         @app.router.navigate
           page: 'viz1'
           language: @app.language
-
     @viz1Link.addEventListener 'click', @viz1LinkClickHandler
     @viz1Link.addEventListener 'keyup', @viz1LinkEnterHandler
 
 
     @viz2Link = @app.window.document.getElementById 'viz2Anchor'
-
     @viz2LinkClickHandler = (event) =>
       event.preventDefault()
       @app.router.navigate
@@ -87,13 +103,11 @@ class LandingPage
         @app.router.navigate
           page: 'viz2'
           language: @app.language
-
     @viz2Link.addEventListener 'click', @viz2LinkClickHandler
     @viz2Link.addEventListener 'keyup', @viz2LinkEnterHandler
 
 
     @viz3Link = @app.window.document.getElementById 'viz3Anchor'
-
     @viz3LinkClickHandler = (event) =>
       event.preventDefault()
       @app.router.navigate
@@ -105,13 +119,11 @@ class LandingPage
         @app.router.navigate
           page: 'viz3'
           language: @app.language
-
     @viz3Link.addEventListener 'click', @viz3LinkClickHandler
     @viz3Link.addEventListener 'keyup', @viz3LinkEnterHandler
 
 
     @viz4Link = @app.window.document.getElementById 'viz4Anchor'
-
     @viz4LinkClickHandler = (event) =>
       event.preventDefault()
       @app.router.navigate
@@ -123,16 +135,18 @@ class LandingPage
         @app.router.navigate
           page: 'viz4'
           language: @app.language
-
     @viz4Link.addEventListener 'click', @viz4LinkClickHandler
     @viz4Link.addEventListener 'keyup', @viz4LinkEnterHandler
 
   removeEventListeners: ->
 
-
     @aboutHyperlink.removeEventListener 'click', @aboutHyperlinkClickHandler
+    @aboutHyperlink.removeEventListener 'keyup', @aboutHyperlinkEnterHandler
     @methodologyLink.removeEventListener 'click', @methodologyLinkClickHandler
-    @closeButton.removeEventListener 'click', @closeButtonHandler
+    @methodologyLink.removeEventListener 'keyup', @methodologyLinkEnterHandler
+    @closeButton.removeEventListener 'click', @closeButtonClickHandler
+    @closeButton.removeEventListener 'keyup', @closeButtonEnterHandler
+
     @viz1Link.removeEventListener 'click', @viz1LinkClickHandler
     @viz1Link.removeEventListener 'keyup', @viz1LinkEnterHandler
     @viz2Link.removeEventListener 'click', @viz2LinkClickHandler
