@@ -5,30 +5,39 @@
   <div class="leftItem">{{ methodologyLinkText }}</div>
 </a>
 
-<a tabindex='0' href="#" id="twitterLinkAnchor">
-  <div class="twitterItem">
-    <img src='IMG/social_media/twitter.svg' alt='{{ twitterAltText }}'>
-  </div>
-</a>
-<a tabindex='0' href="#" id="linkedInLinkAnchor">
-  <div class="linkedinItem">
-    <img src='IMG/social_media/linkedin.svg' alt='{{ linkedinAltText }}'>
-  </div>
-</a>
-<a tabindex='0' href="#" id="emailLinkAnchor">
-  <div class="emailItem"> 
-    <img src='IMG/social_media/email.svg' alt='{{ emailAltText }}'>
-  </div>
-</a>
-<div class="rightItem">{{ shareLabel }}</div>
 
-<div class="rightItem spacer"></div>
+<div class="float-right">
 
-<div class="rightItem" id="dataDownloadLinkAnchor">  
-  <a tabindex='0' id='dataDownloadLink' data-ajax="false" href='#'>
-    {{ dataDownloadLink }}
+  <a tabindex='0' id='imageDownloadLink' href="#">
+    <div class="rightItem">{{ imageDownloadLink }}</div>
   </a>
+
+  <div class="rightItem" id="dataDownloadLinkAnchor">  
+    <a tabindex='0' id='dataDownloadLink' data-ajax="false" href='#'>
+      {{ dataDownloadLink }}
+    </a>
+  </div>
+
+  <div class="rightItem spacer"></div>
+
+  <div aria-hidden="true" class="rightItem">{{ shareLabel }}</div>
+
+  <a tabindex='0' href="#" id="emailLinkAnchor">
+    <div class="emailItem"> 
+      <img src='IMG/social_media/email.svg' alt='{{ emailAltText }}'>
+    </div>
+  </a>
+  
+  <a tabindex='0' href="#" id="linkedInLinkAnchor">
+    <div class="linkedinItem">
+      <img src='IMG/social_media/linkedin.svg' alt='{{ linkedinAltText }}'>
+    </div>
+  </a>
+
+  <a tabindex='0' href="#" id="twitterLinkAnchor">
+    <div class="twitterItem">
+      <img src='IMG/social_media/twitter.svg' alt='{{ twitterAltText }}'>
+    </div>
+  </a>
+
 </div>
-<a tabindex='0' id='imageDownloadLink' href="#">
-  <div class="rightItem">{{ imageDownloadLink }}</div>
-</a>

@@ -181,7 +181,7 @@ div.chartTooltip:after {
 }
 #canadasEnergyFutureVisualization #bottomNavBar .rightItem {
   margin: 7.5px 15px 0px 0px;
-  float: right;
+  float: left;
 }
 
 #canadasEnergyFutureVisualization #bottomNavBar .spacer {
@@ -207,7 +207,7 @@ div.chartTooltip:after {
 #canadasEnergyFutureVisualization #bottomNavBar .twitterItem,
 #canadasEnergyFutureVisualization #bottomNavBar .emailItem,
 #canadasEnergyFutureVisualization #bottomNavBar .linkedinItem {
-  float: right;
+  float: left;
   height: 100%;
   width: 27px;
 }
@@ -1094,5 +1094,8 @@ a:focus {
   outline: 2px solid red;
 }
 
+#canadasEnergyFutureVisualization .float-right {
+  float: right;
+}
 
 
