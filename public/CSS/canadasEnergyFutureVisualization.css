@@ -1090,7 +1090,7 @@ svg { overflow: hidden; }
   margin: -50%;
 }
 
-a:focus {
+a:focus, closeButton:focus {
   outline: 2px solid red;
 }
 

@@ -1,4 +1,4 @@
-<a tabindex='0' href="#" id="aboutLinkAnchor">
+<a tabindex='0' href="#" id="aboutLinkAnchor" role="button">
   <div id="aboutLink" class="leftItem">{{ aboutLink }}</div>
 </a>
 <a tabindex='0' href="{{ methodologyLinkUrl }}" target="_blank" id="methodologyLinkAnchor">
@@ -8,11 +8,11 @@
 
 <div class="float-right">
 
-  <a tabindex='0' id='imageDownloadLink' href="#">
+  <a tabindex='0' id='imageDownloadLink' href="#" role="button">
     <div class="rightItem">{{ imageDownloadLink }}</div>
   </a>
 
-  <div class="rightItem" id="dataDownloadLinkAnchor">  
+  <div class="rightItem" id="dataDownloadLinkAnchor" role="button">  
     <a tabindex='0' id='dataDownloadLink' data-ajax="false" href='#'>
       {{ dataDownloadLink }}
     </a>
@@ -20,21 +20,21 @@
 
   <div class="rightItem spacer"></div>
 
-  <div aria-hidden="true" class="rightItem">{{ shareLabel }}</div>
+  <div aria-hidden="true" role="presentation" class="rightItem">{{ shareLabel }}</div>
 
-  <a tabindex='0' href="#" id="emailLinkAnchor">
+  <a tabindex='0' href="#" id="emailLinkAnchor" role="button">
     <div class="emailItem"> 
       <img src='IMG/social_media/email.svg' alt='{{ emailAltText }}'>
     </div>
   </a>
   
-  <a tabindex='0' href="#" id="linkedInLinkAnchor">
+  <a tabindex='0' href="#" id="linkedInLinkAnchor" role="button">
     <div class="linkedinItem">
       <img src='IMG/social_media/linkedin.svg' alt='{{ linkedinAltText }}'>
     </div>
   </a>
 
-  <a tabindex='0' href="#" id="twitterLinkAnchor">
+  <a tabindex='0' href="#" id="twitterLinkAnchor" role="button">
     <div class="twitterItem">
       <img src='IMG/social_media/twitter.svg' alt='{{ twitterAltText }}'>
     </div>

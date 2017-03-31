@@ -1,7 +1,7 @@
 <div class="modalHeader"> 
-  <img tabindex='0' class="closeButton" src="IMG/close_button.svg" alt='{{ closeButtonAltText }}'/> 
+  <img id="aboutPopoverCloseButton" tabindex='0' class="closeButton" src="IMG/close_button.svg" alt='{{ closeButtonAltText }}' role='button'/> 
   <div>
-    <h5> {{ aboutTitle }} </h5>
+    <h5 id='aboutPopoverHeading' tabindex="-1"> {{ aboutTitle }} </h5>
   </div>
   <div class="clearfix"> </div>
 </div>

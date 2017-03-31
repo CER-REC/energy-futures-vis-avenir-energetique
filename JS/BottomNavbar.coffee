@@ -27,43 +27,39 @@ class BottomNavbar
     # removing these event handlers is not a performance problem. Remove them if this
     # changes.
 
-    @aboutLink = d3.select '#aboutLink'
+    @aboutLink = d3.select '#aboutLinkAnchor'
     @aboutLink.on 'click', @aboutClickHandler
     @aboutLink.on 'keyup', =>
       @aboutClickHandler() if d3.event.key == 'Enter'
 
     @methodologyLinkAnchor = d3.select '#methodologyLinkAnchor'
     @methodologyLinkAnchor.on 'click', @methodologyClickHandler
-    @methodologyLinkAnchor.on 'enter', =>
+    @methodologyLinkAnchor.on 'keyup', =>
       @methodologyClickHandler() if d3.event.key == 'Enter'
 
     @imageDownloadLink = d3.select '#imageDownloadLink'
     @imageDownloadLink.on 'click', @imageDownloadClickHandler
-    @imageDownloadLink.on 'enter', =>
+    @imageDownloadLink.on 'keyup', =>
       @imageDownloadClickHandler() if d3.event.key == 'Enter'
 
     @dataDownloadLinkAnchor = d3.select '#dataDownloadLinkAnchor'
     @dataDownloadLinkAnchor.on 'click', @dataDownloadClickHandler
-    @dataDownloadLinkAnchor.on 'enter', =>
+    @dataDownloadLinkAnchor.on 'keyup', =>
       @dataDownloadClickHandler() if d3.event.key == 'Enter'
 
     @twitterLink = d3.select '#twitterLinkAnchor'
     @twitterLink.on 'click', @twitterClickHandler
     @twitterLink.on 'keyup', =>
-      console.log 'but it doesnt even'
       @twitterClickHandler() if d3.event.key == 'Enter'
 
     @linkedinLink = d3.select '#linkedInLinkAnchor'
     @linkedinLink.on 'click', @linkedinClickHandler
     @linkedinLink.on 'keyup', =>
-      console.log 'but it doesnt even'
       @linkedinClickHandler() if d3.event.key == 'Enter'
 
     @emailLink = d3.select '#emailLinkAnchor'
     @emailLink.on 'click', @emailClickHandler
     @emailLink.on 'keyup', =>
-      console.log d3.event
-      console.log d3.event.key
       @emailClickHandler() if d3.event.key == 'Enter'
 
 
@@ -73,7 +69,8 @@ class BottomNavbar
     d3.event.preventDefault()
     # Prevents the popover from being immediately closed:
     d3.event.stopPropagation()
-    @app.popoverManager.showPopover @app.aboutThisProjectPopover
+    @app.popoverManager.showPopover @app.aboutThisProjectPopover,
+      elementToFocusOnClose: @app.window.document.getElementById('aboutLinkAnchor')
     @app.analyticsReporter.reportEvent 'Information', 'About modal'
 
   methodologyClickHandler: =>

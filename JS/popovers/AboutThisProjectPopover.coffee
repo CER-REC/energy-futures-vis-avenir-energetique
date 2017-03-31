@@ -43,6 +43,8 @@ class AboutThisProjectPopover
   close: ->
     d3.select('#aboutModal').classed 'hidden', true
 
+  focus: ->
+    @app.window.document.getElementById('aboutPopoverHeading').focus()
 
 
 
