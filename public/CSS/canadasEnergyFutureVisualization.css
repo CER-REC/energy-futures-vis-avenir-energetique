@@ -314,22 +314,6 @@ div.chartTooltip:after {
 }
 
 
-
-/*#canadasEnergyFutureVisualization .aboutModalOverlay {
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  z-index: 1050;
-  color: #333333;
-}*/
-/*To allow the vizModal to take up a % of its parent's height*/
-
-
-
-
-
-
 #canadasEnergyFutureVisualization #aboutModal{
   padding: 0 10px 0 10px;
   top: -40px;
@@ -342,7 +326,7 @@ div.chartTooltip:after {
 }
 
 #canadasEnergyFutureVisualization #aboutModal .modalHeader h5{
-  margin: 10px 0 0 0;
+  margin: 5px 0 0 0;
 }
 
 #canadasEnergyFutureVisualization #aboutModal h6{
@@ -434,7 +418,7 @@ div.chartTooltip:after {
 
 #canadasEnergyFutureVisualization .vizModal h5,
 #canadasEnergyFutureVisualization .vizModal h6 {
-  margin: 10px 0px 10px 0px;
+  margin: 5px 0px 5px 0px;
   line-height: 150%;
   font-size: 20px;
   border-bottom: none;
@@ -1090,12 +1074,16 @@ svg { overflow: hidden; }
   margin: -50%;
 }
 
-a:focus, closeButton:focus {
+#canadasEnergyFutureVisualization a:focus, #canadasEnergyFutureVisualization closeButton:focus {
   outline: 2px solid red;
 }
 
 #canadasEnergyFutureVisualization .float-right {
   float: right;
 }
+#canadasEnergyFutureVisualization .modalHeading {
+  display: inline-block;
+}
+
 
 

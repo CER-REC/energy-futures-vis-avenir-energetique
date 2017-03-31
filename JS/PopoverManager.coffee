@@ -17,6 +17,30 @@ class PopoverManager
       if @currentPopover?
         @closePopover()
 
+
+
+    # This event handler implements the 'modal' part of modal popovers for users of
+    # assistive technology.
+    # Capture all focus events on the page before they can bubble.
+    # If we have a popover open, and if the focus event is for an element not in the
+    # popover, focus the popover instead.
+    
+    # TODO: currently, this approach doesn't fully work because of the iframe, focus
+    # can move to an element on @app.containingWindow that we aren't listening to.
+    # Removing the iframe should fix this.
+    @app.window.document.addEventListener 'focus', (event) =>
+      return unless @currentPopover?
+
+      popoverElement = @currentPopover.container()
+      unless popoverElement.contains event.target
+        event.stopPropagation()
+        @currentPopover.focus()
+
+    , true
+
+
+
+
   ###
     We need to handle three cases:
     1) No popover is open, opening a popover: move focus to modal

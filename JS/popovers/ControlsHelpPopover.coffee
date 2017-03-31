@@ -6,7 +6,7 @@ Tr = require '../TranslationTable.coffee'
 
 
 if Platform.name == 'browser'
-  QuestionmarkPopoverTemplate = require '../templates/QuestionmarkPopover.mustache'
+  ControlsHelpPopoverTemplate = require '../templates/ControlsHelpPopover.mustache'
 
 
 
@@ -21,7 +21,7 @@ class ControlsHelpPopover
     # Build the popover
     newEl = document.createElement 'div'
     newEl.className = options.outerClasses
-    newEl.innerHTML = Mustache.render QuestionmarkPopoverTemplate,
+    newEl.innerHTML = Mustache.render ControlsHelpPopoverTemplate,
       classes: options.innerClasses
       title: options.title
       content: options.content

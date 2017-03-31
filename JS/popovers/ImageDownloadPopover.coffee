@@ -2,7 +2,7 @@ d3 = require 'd3'
 Mustache = require 'mustache'
 
 Tr = require '../TranslationTable.coffee'
-ImageDownloadTemplate = require '../templates/ImageDownload.mustache'
+ImageDownloadTemplate = require '../templates/ImageDownloadPopover.mustache'
 
 class ImageDownloadPopover
 

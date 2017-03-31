@@ -2,7 +2,7 @@ d3 = require 'd3'
 Mustache = require 'mustache'
 
 Tr = require '../TranslationTable.coffee'
-AboutThisProjectTemplate = require '../templates/AboutThisProject.mustache'
+AboutThisProjectTemplate = require '../templates/AboutThisProjectPopover.mustache'
 
 class AboutThisProjectPopover
 
@@ -45,6 +45,9 @@ class AboutThisProjectPopover
 
   focus: ->
     @app.window.document.getElementById('aboutPopoverHeading').focus()
+
+  container: ->
+    @app.window.document.getElementById 'aboutModal'
 
 
 

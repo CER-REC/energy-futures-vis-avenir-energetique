@@ -1,13 +1,14 @@
 d3 = require 'd3'
 Mustache = require 'mustache'
 
-HowToPopoverTemplate = require '../templates/HowToPopover.mustache'
+NavbarHelpPopoverTemplate = require '../templates/NavbarHelpPopover.mustache'
 Tr = require '../TranslationTable.coffee'
 
 class NavbarHelpPopover
 
+  # coffeelint: disable=no_empty_functions
   constructor: (@app) ->
-
+  # coffeelint: enable=no_empty_functions
 
   show: (options) ->
     # Prevent clicks on the popover from propagating up to the body element, which would
@@ -16,7 +17,7 @@ class NavbarHelpPopover
       d3.event.stopPropagation()
 
     # Set the content of the pop up
-    d3.select('.navbarHelpSection').html => Mustache.render HowToPopoverTemplate,
+    d3.select('.navbarHelpSection').html => Mustache.render NavbarHelpPopoverTemplate,
       imageAUrl: options.imageAUrl
       imageBUrl: options.imageBUrl
       nextImageAltText: Tr.altText.nextImage[@app.language]
