@@ -1,5 +1,7 @@
 d3 = require 'd3'
+Mustache = require 'mustache'
 
+NavbarInfoPopoverTemplate = require '../templates/NavbarInfoPopover.mustache'
 Tr = require '../TranslationTable.coffee'
 
 class NavbarInfoPopover
@@ -15,7 +17,14 @@ class NavbarInfoPopover
       d3.event.stopPropagation()
 
     # Set the content of the pop up
-    d3.select('.navbarHelpSection').html -> options.navbarInfoText
+    # d3.select('.navbarHelpSection').html -> options.navbarInfoText
+
+    d3.select('.navbarHelpSection').html => Mustache.render NavbarInfoPopoverTemplate,
+      closeButtonAltText: Tr.altText.closeButton[@app.language]
+      infoPopoverText: options.infoPopoverText
+      infoPopoverHeader: options.infoPopoverHeader
+      infoPopoverHeaderClass: options.infoPopoverHeaderClass
+
 
     # Set up the info icon
     d3.select('.navbarMenuIcon').html "<img src='#{options.navbarInfoImageSelected}' alt='#{Tr.altText.explanationIcon_ColourBG[@app.language]}'>"

@@ -27,45 +27,53 @@ class Navbar
           unselectedLabel: Tr.allPages.visualization4NavbarLink[@app.language]
           selectedLabel: Tr.visualization4Titles[@app.visualization4Configuration.mainSelection][@app.language]
           navbarHelpImageSelected: 'IMG/navbar_Icons/questionMark_ScenarioHighlighted.svg'
-          navbarInfoText: Tr.visualization4NavbarHelp[@app.language]
+          infoPopoverText: Tr.navbarInfoText.viz4[@app.language]
+          infoPopoverHeader: Tr.navbarInfoHeadings.viz4[@app.language]
           navbarInfoImageSelected: 'IMG/navbar_Icons/explanationIcon_ScenarioHighlighted.svg'
           colour: 'rgb(202, 152, 48)'
           page: 'viz4'
           imageAUrl: Tr.howToImages.viz4A[@app.language]
           imageBUrl: Tr.howToImages.viz4B[@app.language]
+          helpPopoverHeaderClass: 'viz4HelpTitle'
         }
         {
           unselectedLabel: Tr.allPages.visualization3NavbarLink[@app.language]
           selectedLabel: Tr.visualization3Title[@app.language]
-          navbarInfoText: Tr.visualization3NavbarHelp[@app.language]
+          infoPopoverText: Tr.navbarInfoText.viz3[@app.language]
+          infoPopoverHeader: Tr.navbarInfoHeadings.viz3[@app.language]
           navbarHelpImageSelected: 'IMG/navbar_Icons/questionMark_ElectricityHighlighted.svg'
           navbarInfoImageSelected: 'IMG/navbar_Icons/explanationIcon_ElectricityHighlighted.svg'
           colour: 'rgb(54, 55, 150)'
           page: 'viz3'
           imageAUrl: Tr.howToImages.viz3A[@app.language]
           imageBUrl: Tr.howToImages.viz3B[@app.language]
+          helpPopoverHeaderClass: 'viz3HelpTitle'
         }
         {
           unselectedLabel: Tr.allPages.visualization2NavbarLink[@app.language]
           selectedLabel: Tr.visualization2Title[@app.language]
-          navbarInfoText: Tr.visualization2NavbarHelp[@app.language]
+          infoPopoverText: Tr.navbarInfoText.viz2[@app.language]
+          infoPopoverHeader: Tr.navbarInfoHeadings.viz2[@app.language]
           navbarHelpImageSelected: 'IMG/navbar_Icons/questionMark_SectorHighlighted.svg'
           navbarInfoImageSelected: 'IMG/navbar_Icons/explanationIcon_SectorHighlighted.svg'
           colour: 'rgb(52, 153, 153)'
           page: 'viz2'
           imageAUrl: Tr.howToImages.viz2A[@app.language]
           imageBUrl: Tr.howToImages.viz2B[@app.language]
+          helpPopoverHeaderClass: 'viz2HelpTitle'
         }
         {
           unselectedLabel: Tr.allPages.visualization1NavbarLink[@app.language]
           selectedLabel: Tr.visualization1Titles[@app.visualization1Configuration.mainSelection][@app.language]
-          navbarInfoText: Tr.visualization1NavbarHelp[@app.language]
+          infoPopoverText: Tr.navbarInfoText.viz1[@app.language]
+          infoPopoverHeader: Tr.navbarInfoHeadings.viz1[@app.language]
           navbarHelpImageSelected: 'IMG/navbar_Icons/questionMark_RegionHighlighted.svg'
           navbarInfoImageSelected: 'IMG/navbar_Icons/explanationIcon_RegionHighlighted.svg'
           colour: 'rgb(103, 153, 204)'
           page: 'viz1'
           imageAUrl: Tr.howToImages.viz1A[@app.language]
           imageBUrl: Tr.howToImages.viz1B[@app.language]
+          helpPopoverHeaderClass: 'viz1HelpTitle'
         }
         {
           img: 'IMG/home.svg'
@@ -174,7 +182,7 @@ class Navbar
                    alt='#{Tr.altText.explanationIcon_ColourBG[@app.language]}'
               >
             </div>
-            <div class='navbarHelpSection hidden'>
+            <div class='vizModal navbarHelpSection hidden'>
             </div>
           </div>
           "
@@ -194,6 +202,7 @@ class Navbar
             imageAUrl: d.imageAUrl
             imageBUrl: d.imageBUrl
             navbarHelpImageSelected: d.navbarHelpImageSelected
+            helpPopoverHeaderClass: d.helpPopoverHeaderClass
           @app.analyticsReporter.reportEvent 'Navbar help', @navbarState
 
     vizNavbar.select('.navbarMenuIcon')
@@ -203,8 +212,10 @@ class Navbar
           @app.popoverManager.closePopover()
         else
           @app.popoverManager.showPopover @navbarInfoPopover,
-            navbarInfoText: d.navbarInfoText
             navbarInfoImageSelected: d.navbarInfoImageSelected
+            infoPopoverText: d.infoPopoverText
+            infoPopoverHeader: d.infoPopoverHeader
+            infoPopoverHeaderClass: d.helpPopoverHeaderClass
           @app.analyticsReporter.reportEvent 'Navbar info', @navbarState
 
 

@@ -84,7 +84,7 @@ class Visualization4
           @app.popoverManager.closePopover()
         else
           @app.popoverManager.showPopover @datasetHelpPopover,
-            outerClasses: 'vizModal floatingPopover datasetSelectorHelp'
+            outerClasses: 'vizModal controlsHelpPopover datasetSelectorHelp'
             innerClasses: 'viz4HelpTitle'
             title: Tr.datasetSelector.datasetSelectorHelpTitle[@app.language]
             content: Tr.datasetSelector.datasetSelectorHelp[@app.language]
@@ -99,7 +99,7 @@ class Visualization4
           @app.popoverManager.closePopover()
         else
           @app.popoverManager.showPopover @mainSelectorHelpPopover,
-            outerClasses: 'vizModal floatingPopover mainSelectorHelp'
+            outerClasses: 'vizModal controlsHelpPopover mainSelectorHelp'
             innerClasses: 'viz4HelpTitle'
             title: Tr.mainSelector.selectOneLabel[@app.language]
             content: Tr.mainSelector.mainSelectorHelp[@app.language]
@@ -114,7 +114,7 @@ class Visualization4
           @app.popoverManager.closePopover()
         else
           @app.popoverManager.showPopover @unitsHelpPopover,
-            outerClasses: 'vizModal floatingPopover unitSelectorHelp'
+            outerClasses: 'vizModal controlsHelpPopover unitSelectorHelp'
             innerClasses: 'viz4HelpTitle'
             title: Tr.unitSelector.unitSelectorHelpTitle[@app.language]
             content: Tr.unitSelector.unitSelectorHelp[@app.language]
@@ -129,7 +129,7 @@ class Visualization4
           @app.popoverManager.closePopover()
         else
           @app.popoverManager.showPopover @scenariosHelpPopover,
-            outerClasses: 'vizModal floatingPopover scenarioSelectorHelp'
+            outerClasses: 'vizModal controlsHelpPopover scenarioSelectorHelp'
             innerClasses: 'viz4HelpTitle'
             title: Tr.scenarioSelector.scenarioSelectorHelpTitle[@app.language]
             content: Tr.scenarioSelector.scenarioSelectorHelp[@app.language]
@@ -411,14 +411,13 @@ class Visualization4
       for province in @dataForProvinceMenu()
         contentString = """
           <div class="provinceLabel">
-            <h6> #{Tr.regionSelector.names[province.key][@app.language]} </h6>
+            <h2> #{Tr.regionSelector.names[province.key][@app.language]} </h2>
           </div>
           #{contentString}
         """
 
       @app.popoverManager.showPopover @provincesHelpPopover,
-        outerClasses: 'vizModal floatingPopover popOverSm provinceHelp'
-        innerClasses: 'localHelpTitle'
+        outerClasses: 'vizModal controlsHelpPopover popOverSm provinceHelp'
         title: Tr.regionSelector.selectRegionLabel[@app.language]
         content: contentString
         attachmentSelector: '#provincesSelector'

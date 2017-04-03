@@ -56,7 +56,7 @@ class Visualization3 extends visualization
           @app.popoverManager.closePopover()
         else
           @app.popoverManager.showPopover @datasetHelpPopover,
-            outerClasses: 'vizModal floatingPopover datasetSelectorHelp'
+            outerClasses: 'vizModal controlsHelpPopover datasetSelectorHelp'
             innerClasses: 'viz3HelpTitle'
             title: Tr.datasetSelector.datasetSelectorHelpTitle[@app.language]
             content: Tr.datasetSelector.datasetSelectorHelp[@app.language]
@@ -71,7 +71,7 @@ class Visualization3 extends visualization
           @app.popoverManager.closePopover()
         else
           @app.popoverManager.showPopover @viewByHelpPopover,
-            outerClasses: 'vizModal floatingPopover viewBySelectorHelp'
+            outerClasses: 'vizModal controlsHelpPopover viewBySelectorHelp'
             innerClasses: 'viz3HelpTitle'
             title: Tr.viewBySelector.viewBySelectorHelpTitle[@app.language]
             content: Tr.viewBySelector.viewBySelectorHelp[@app.language]
@@ -86,7 +86,7 @@ class Visualization3 extends visualization
           @app.popoverManager.closePopover()
         else
           @app.popoverManager.showPopover @unitsHelpPopover,
-            outerClasses: 'vizModal floatingPopover unitSelectorHelp'
+            outerClasses: 'vizModal controlsHelpPopover unitSelectorHelp'
             innerClasses: 'viz3HelpTitle'
             title: Tr.unitSelector.unitSelectorHelpTitle[@app.language]
             content: Tr.unitSelector.unitSelectorHelp[@app.language]
@@ -101,7 +101,7 @@ class Visualization3 extends visualization
           @app.popoverManager.closePopover()
         else
           @app.popoverManager.showPopover @scenariosHelpPopover,
-            outerClasses: 'vizModal floatingPopover scenarioSelectorHelp'
+            outerClasses: 'vizModal controlsHelpPopover scenarioSelectorHelp'
             innerClasses: 'viz3HelpTitle'
             title: Tr.scenarioSelector.scenarioSelectorHelpTitle[@app.language]
             content: Tr.scenarioSelector.scenarioSelectorHelp[@app.language]
@@ -1298,7 +1298,7 @@ class Visualization3 extends visualization
         contentString = """
           <div class="#{if @config.viewBy == "source" then 'sourceLabel'  else 'sourceLabel sourceLabel' + key}">
             <img class="sourceIcon" src="#{images[key].img}" alt="#{Tr.altText.sources[key][@app.language]}">
-            <h6> #{Tr.sourceSelector.sources[key][@app.language]} </h6>
+            <h2> #{Tr.sourceSelector.sources[key][@app.language]} </h2>
             <div class="clearfix"> </div>
             <p> #{Tr.sourceSelector.sourceSelectorHelp[key][@app.language]} </p>
           </div>
@@ -1306,8 +1306,7 @@ class Visualization3 extends visualization
       contentString = Tr.sourceSelector.sourceSelectorHelp.generalHelp[@app.language] + contentString
 
       @app.popoverManager.showPopover @sourcesHelpPopover,
-        outerClasses: 'vizModal floatingPopover popOverLg sourceSelectorHelp'
-        innerClasses: 'localHelpTitle'
+        outerClasses: 'vizModal controlsHelpPopover popOverLg sourceSelectorHelp'
         title: Tr.sourceSelector.selectSourceLabel[@app.language]
         content: contentString
         attachmentSelector: '#powerSourceSelector'
@@ -1322,11 +1321,10 @@ class Visualization3 extends visualization
       #Grab the provinces in order for the string
       contentString = ''
       for province of @provinceMenuData()
-        contentString = """<div class="#{if @config.viewBy == 'province' then 'provinceLabel' else 'provinceLabel provinceLabel' + province}"> <h6> #{Tr.regionSelector.names[province][@app.language]} </h6> </div>""" + contentString
+        contentString = """<div class="#{if @config.viewBy == 'province' then 'provinceLabel' else 'provinceLabel provinceLabel' + province}"> <h2> #{Tr.regionSelector.names[province][@app.language]} </h2> </div>""" + contentString
 
       @app.popoverManager.showPopover @provincesHelpPopover,
-        outerClasses: 'vizModal floatingPopover popOverSm provinceHelp'
-        innerClasses: 'localHelpTitle'
+        outerClasses: 'vizModal controlsHelpPopover popOverSm provinceHelp'
         title: Tr.regionSelector.selectRegionLabel[@app.language]
         content: contentString
         attachmentSelector: '#provincesSelector'
