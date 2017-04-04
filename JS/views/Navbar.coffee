@@ -175,16 +175,20 @@ class Navbar
             <div class='navbarHelpIcon'>
               <img src='IMG/navbar_Icons/questionMark_ColourBG.svg'
                    alt='#{Tr.altText.questionMark_ColourBG[@app.language]}'
+                   role='button'
+                   aria-label='#{Tr.altText.questionMark_ColourBG[@app.language]}'
               >
             </div>
             <div class='navbarMenuIcon'>
               <img src='IMG/navbar_Icons/explanationIcon_ColourBG.svg'
                    alt='#{Tr.altText.explanationIcon_ColourBG[@app.language]}'
+                   role='button'
+                   aria-label='#{Tr.altText.explanationIcon_ColourBG[@app.language]}'
               >
             </div>
-            <div class='vizModal navbarHelpSection hidden'>
+            <div class='vizModal navbarHelpSection hidden' role='dialog' aria-labelledby='navbarHelpPopoverHeading'>
             </div>
-            <div class='vizModal navbarInfoSection hidden'>
+            <div class='vizModal navbarInfoSection hidden' role='dialog' aria-labelledby='navbarInfoPopoverHeading'>
             </div>
           </div>
           "
