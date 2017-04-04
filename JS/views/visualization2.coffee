@@ -5,7 +5,7 @@ Mustache = require 'mustache'
 
 visualization = require './visualization.coffee'
 stackedAreaChart = require '../charts/stacked-area-chart.coffee'
-squareMenu = require '../charts/square-menu.coffee'
+SquareMenu = require '../charts/SquareMenu.coffee'
 Constants = require '../Constants.coffee'
 Tr = require '../TranslationTable.coffee'
 Platform = require '../Platform.coffee'
@@ -816,7 +816,7 @@ class Visualization2 extends visualization
         @showProvinceNames
       groupId:
         'provinceMenu'
-    new squareMenu(@app, '#provinceMenuSVG', provinceOptions) 
+    new SquareMenu(@app, '#provinceMenuSVG', provinceOptions) 
 
   selectAllProvince: (selecting) =>
 

@@ -1,9 +1,11 @@
-BasicMenu = require './basic-menu.coffee'
 _ = require 'lodash'
 d3 = require 'd3'
+
+Chart = require './Chart.coffee'
 Tr = require '../TranslationTable.coffee'
 
-class SquareMenu extends BasicMenu
+class SquareMenu extends Chart
+
   # Cause coffeescript. Want "local" variables
   questionMarkHeight = 23
   squareMenuDefaults:
@@ -22,6 +24,8 @@ class SquareMenu extends BasicMenu
     allSquareHandler: -> #Method that runs on 'All' button clicked
     orderChangedHandler: -> #Method that runs when draggin finished
     showHelpHandler: -> #Method that runs when the questionMark icon is clicked
+    onSelected: ->
+
 
   constructor: (@app, parent, options = {}) ->
     @options = _.extend {}, @squareMenuDefaults, options
@@ -47,8 +51,28 @@ class SquareMenu extends BasicMenu
     if @_hasChart then @_chart = @options.chart
     @_drag = d3.behavior.drag()
     
-    super parent, @options
-    
+    # Old BasicMenu constructor begins
+    @_selectedKey = 'Canada'
+    @_selectedMenuIndex = -1
+
+    @chart_options = _.extend {}, @chart_defaults, @options
+    @_duration = @chart_options.duration
+    @parent parent, @chart_options.groupId
+    @_size =
+      w: @chart_options.size.w
+      h: @chart_options.size.h
+    @_position =
+      x: @chart_options.position.x
+      y: @chart_options.position.y
+    @data @chart_options.data
+    @resize()
+
+
+    @_onSelected = @options.onSelected
+    @redraw()
+    # Old BasicMenu constructor ends
+
+
     # drag behaviour
     @yDiff = @getRectY(@mappingLength() - 2) - questionMarkHeight
     # The space between the squares 0 and 1 plus the boxes since we want it to go PAST
@@ -113,6 +137,18 @@ class SquareMenu extends BasicMenu
           @newSpot = -1
        
     @redraw()
+
+
+  # TODO: unclear how used
+  selection: (key, index) ->
+    if !arguments.length
+      return @_selectedKey
+    @_selectedKey = key
+    @_selectedMenuIndex = index
+    if @_onSelected
+      @_onSelected(key, index)
+    @redraw()
+
 
   # Get the center
   getRectX: =>

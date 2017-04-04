@@ -2,7 +2,7 @@ d3 = require 'd3'
 Mustache = require 'mustache'
 
 Constants = require '../Constants.coffee'
-squareMenu = require '../charts/square-menu.coffee'
+SquareMenu = require '../charts/SquareMenu.coffee'
 Tr = require '../TranslationTable.coffee'
 Platform = require '../Platform.coffee'
 
@@ -372,7 +372,7 @@ class Visualization4
       allSquareHandler: @selectAllProvince
       showHelpHandler: @showProvinceNames
       groupId: 'provinceMenu'
-    new squareMenu @app, '#provinceMenuSVG', provinceOptions
+    new SquareMenu @app, '#provinceMenuSVG', provinceOptions
 
   selectAllProvince: =>
     @config.setProvince 'all'

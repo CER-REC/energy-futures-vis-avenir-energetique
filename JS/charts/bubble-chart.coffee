@@ -1,11 +1,11 @@
 d3 = require 'd3'
 _ = require 'lodash'
 
-chart =  require './chart.coffee'
-squareMenu = require './square-menu.coffee'
+Chart =  require './chart.coffee'
+SquareMenu = require './SquareMenu.coffee'
 Platform = require '../Platform.coffee'
 
-class BubbleChart extends chart
+class BubbleChart extends Chart
   bubbleChartDefaults:
     mapping: []
     menuParent: '#powerSourceMenuSVG'
@@ -35,7 +35,7 @@ class BubbleChart extends chart
 
 
     @options.menuOptions.chart = this
-    @menu = new squareMenu @app, @options.menuParent, @options.menuOptions
+    @menu = new SquareMenu @app, @options.menuParent, @options.menuOptions
     @redraw()
 
   filteredData: (currentData) ->

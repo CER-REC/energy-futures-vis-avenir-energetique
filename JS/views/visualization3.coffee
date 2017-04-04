@@ -4,7 +4,7 @@ Mustache = require 'mustache'
 visualization = require './visualization.coffee'
 bubbleChart = require '../charts/bubble-chart.coffee'
 Constants = require '../Constants.coffee'
-squareMenu = require '../charts/square-menu.coffee'
+SquareMenu = require '../charts/SquareMenu.coffee'
 Tr = require '../TranslationTable.coffee'
 Platform = require '../Platform.coffee'
 
@@ -1228,7 +1228,7 @@ class Visualization3 extends visualization
         if @config.viewBy == 'province' then @showProvinceNames() else @showSourceNames()
       groupId:
         'singleSelectMenu'
-    new squareMenu @app, parent, provinceOptions
+    new SquareMenu @app, parent, provinceOptions
 
   selectAllSingleSelect: =>
 
