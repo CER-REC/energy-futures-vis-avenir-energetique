@@ -105,9 +105,6 @@ class squareMenu extends basicMenu
       )
     @redraw()
 
-  setHelpHandler: (handler) ->
-    @_showHelpHandler = handler
-
   # Get the center
   getRectX: () =>
     @_position.x + (@_size.w/ 2 - @_boxSize/2)
@@ -189,11 +186,12 @@ class squareMenu extends basicMenu
 
     @_group.append "image"
       .attr
-        class: 'menuLineBehind pointerCursor'
+        class: 'menuLineBehind pointerCursor squareMenuHelpButton'
         "xlink:href": 'IMG/large_qmark.svg'
-        x: "#{@_position.x + (@_size.w/ 2)  - 8}px"
+        x: "#{@_position.x + (@_size.w / 2)  - 8}px"
         width: "16px"
         height: "16px"
+        tabindex: '0'
       .on "click", =>
         @_showHelpHandler()
 

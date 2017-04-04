@@ -1007,16 +1007,21 @@ svg { overflow: hidden; }
 
 #canadasEnergyFutureVisualization a:focus, 
 #canadasEnergyFutureVisualization .closeButton:focus,
-#canadasEnergyFutureVisualization .navbarButton:focus img {
+#canadasEnergyFutureVisualization .navbarButton:focus img,
+#canadasEnergyFutureVisualization .helpIconAnchor:focus img,
+#canadasEnergyFutureVisualization .squareMenuHelpButton:focus
+{
   outline: solid red 2px;
 }
-
-
 
 #canadasEnergyFutureVisualization .float-right {
   float: right;
 }
 
+/* We rely on the image inside the anchor receiving an outline on focus, the outline on the surrounding a tag is misshapen and redundant */
+#canadasEnergyFutureVisualization .helpIconAnchor:focus {
+  outline: none;
+}
 
 
 

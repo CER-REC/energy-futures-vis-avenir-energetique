@@ -48,7 +48,7 @@ class Visualization3 extends visualization
     @sourcesHelpPopover = new ControlsHelpPopover @app
     @provincesHelpPopover = new ControlsHelpPopover @app
 
-    d3.select(@app.window.document).select '.datasetSelectorHelpButton'
+    d3.select(@app.window.document).select '#datasetSelectorHelpButton'
       .on 'click', =>
         d3.event.stopPropagation()
         d3.event.preventDefault()
@@ -63,7 +63,7 @@ class Visualization3 extends visualization
             attachmentSelector: '.datasetSelectorGroup'
           @app.analyticsReporter.reportEvent 'Controls help', 'Viz3 dataset help'
 
-    d3.select(@app.window.document).select '.viewBySelectorHelpButton'
+    d3.select(@app.window.document).select '#viewBySelectorHelpButton'
       .on 'click', =>
         d3.event.stopPropagation()
         d3.event.preventDefault()
@@ -78,7 +78,7 @@ class Visualization3 extends visualization
             attachmentSelector: '.viewBySelectorGroup'
           @app.analyticsReporter.reportEvent 'Controls help', 'Viz3 view by help'
 
-    d3.select(@app.window.document).select '.unitSelectorHelpButton'
+    d3.select(@app.window.document).select '#unitSelectorHelpButton'
       .on 'click', =>
         d3.event.stopPropagation()
         d3.event.preventDefault()
@@ -93,7 +93,7 @@ class Visualization3 extends visualization
             attachmentSelector: '.unitsSelectorGroup'
           @app.analyticsReporter.reportEvent 'Controls help', 'Viz3 unit help'
     
-    d3.select(@app.window.document).select '.scenarioSelectorHelpButton'
+    d3.select(@app.window.document).select '#scenarioSelectorHelpButton'
       .on 'click', =>
         d3.event.stopPropagation()
         d3.event.preventDefault()
@@ -1124,8 +1124,8 @@ class Visualization3 extends visualization
           @getSelectionState().someSelected
         allSquareHandler:
           @selectAllBubbles
-        showHelpHandler:
-          if @config.viewBy == 'province' then @showSourceNames else @showProvinceNames
+        showHelpHandler: =>
+          if @config.viewBy == 'province' then @showSourceNames() else @showProvinceNames()
         canDrag:
           false
         groupId:
@@ -1167,12 +1167,6 @@ class Visualization3 extends visualization
     @_chart.menu.moveMenu newParentForChartMenu
     @setIconSpacing()
 
-    if @config.viewBy == 'province'
-      @_singleSelectMenu.setHelpHandler @showProvinceNames
-      @_chart.menu.setHelpHandler @showSourceNames
-    else
-      @_singleSelectMenu.setHelpHandler @showSourceNames
-      @_chart.menu.setHelpHandler @showProvinceNames
 
   selectAllBubbles: (selecting) =>
 
@@ -1230,8 +1224,8 @@ class Visualization3 extends visualization
       allSelected: selectAll
       allSquareHandler:
         @selectAllSingleSelect
-      showHelpHandler:
-        if @config.viewBy == 'province' then @showProvinceNames else @showSourceNames
+      showHelpHandler: =>
+        if @config.viewBy == 'province' then @showProvinceNames() else @showSourceNames()
       groupId:
         'singleSelectMenu'
     new squareMenu @app, parent, provinceOptions

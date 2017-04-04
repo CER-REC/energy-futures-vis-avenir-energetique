@@ -76,7 +76,7 @@ class Visualization4
     @scenariosHelpPopover = new ControlsHelpPopover @app
     @provincesHelpPopover = new ControlsHelpPopover @app
 
-    d3.select(@app.window.document).select '.datasetSelectorHelpButton'
+    d3.select(@app.window.document).select '#datasetSelectorHelpButton'
       .on 'click', =>
         d3.event.stopPropagation()
         d3.event.preventDefault()
@@ -91,7 +91,7 @@ class Visualization4
             attachmentSelector: '.datasetSelectorGroup'
           @app.analyticsReporter.reportEvent 'Controls help', 'Viz4 dataset help'
 
-    d3.select(@app.window.document).select '.mainSelectorHelpButton'
+    d3.select(@app.window.document).select '#mainSelectorHelpButton'
       .on 'click', =>
         d3.event.stopPropagation()
         d3.event.preventDefault()
@@ -106,7 +106,7 @@ class Visualization4
             attachmentSelector: '.mainSelectorSection'
           @app.analyticsReporter.reportEvent 'Controls help', 'Viz4 main selection help'
     
-    d3.select(@app.window.document).select '.unitSelectorHelpButton'
+    d3.select(@app.window.document).select '#unitSelectorHelpButton'
       .on 'click', =>
         d3.event.stopPropagation()
         d3.event.preventDefault()
@@ -121,7 +121,7 @@ class Visualization4
             attachmentSelector: '.unitsSelectorGroup'
           @app.analyticsReporter.reportEvent 'Controls help', 'Viz4 unit help'
 
-    d3.select(@app.window.document).select '.scenarioSelectorHelpButton'
+    d3.select(@app.window.document).select '#scenarioSelectorHelpButton'
       .on 'click', =>
         d3.event.stopPropagation()
         d3.event.preventDefault()

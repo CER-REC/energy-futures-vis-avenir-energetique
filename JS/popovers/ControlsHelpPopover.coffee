@@ -42,6 +42,12 @@ class ControlsHelpPopover
   close: ->
     d3.selectAll('.controlsHelpPopover').remove()
 
+  focus: ->
+    @app.window.document.getElementById('controlsHelpPopoverHeading').focus()
+
+  container: ->
+    @app.window.document.getElementById 'controlsHelpPopover'
+
 
 
 

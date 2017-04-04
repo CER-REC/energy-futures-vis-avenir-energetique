@@ -35,6 +35,14 @@ class ImageDownloadPopover
   close: ->
     d3.select('#imageDownloadModal').classed 'hidden', true
 
+  focus: ->
+    @app.window.document.getElementById('imageDownloadPopoverHeading').focus()
+
+  container: ->
+    @app.window.document.getElementById 'imageDownloadModal'
+
+
+
 
 
 
