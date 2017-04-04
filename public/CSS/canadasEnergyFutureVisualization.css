@@ -605,12 +605,12 @@ div.chartTooltip:after {
 #canadasEnergyFutureVisualization .navbarHelpIcon {
   width: 50px;
   height: 50px;
-  float: right;
+  float: left;
 }
 #canadasEnergyFutureVisualization .navbarMenuIcon {
   width: 50px;
   height: 50px;
-  float: right;
+  float: left;
 }
 
 #canadasEnergyFutureVisualization .navbarHelpIcon.selected,
@@ -1005,13 +1005,19 @@ svg { overflow: hidden; }
   margin: -50%;
 }
 
-#canadasEnergyFutureVisualization a:focus, #canadasEnergyFutureVisualization closeButton:focus {
-  outline: 2px solid red;
+#canadasEnergyFutureVisualization a:focus, 
+#canadasEnergyFutureVisualization .closeButton:focus,
+#canadasEnergyFutureVisualization .navbarButton:focus img {
+  outline: solid red 2px;
 }
+
+
 
 #canadasEnergyFutureVisualization .float-right {
   float: right;
 }
+
+
 
 
 

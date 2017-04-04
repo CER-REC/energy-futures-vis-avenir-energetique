@@ -92,5 +92,12 @@ class NavbarHelpPopover
     d3.select('.navbarHelpSection').classed 'hidden', true
 
 
+  focus: ->
+    @app.window.document.getElementById('navbarHelpPopoverHeading').focus()
+
+  container: ->
+    @app.window.document.querySelector '.navbarHelpSection'
+
+
 
 module.exports = NavbarHelpPopover

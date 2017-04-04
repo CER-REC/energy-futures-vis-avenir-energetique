@@ -172,19 +172,26 @@ class Navbar
         else if @navbarState == d.page
           "<div class='navbarSelectedItem'>
             <span>#{d.selectedLabel}</span>
-            <div class='navbarHelpIcon'>
-              <img src='IMG/navbar_Icons/questionMark_ColourBG.svg'
-                   alt='#{Tr.altText.questionMark_ColourBG[@app.language]}'
-                   role='button'
-                   aria-label='#{Tr.altText.questionMark_ColourBG[@app.language]}'
-              >
-            </div>
-            <div class='navbarMenuIcon'>
-              <img src='IMG/navbar_Icons/explanationIcon_ColourBG.svg'
-                   alt='#{Tr.altText.explanationIcon_ColourBG[@app.language]}'
+
+            <div class='float-right'>
+              <div class='navbarMenuIcon navbarButton'
                    role='button'
                    aria-label='#{Tr.altText.explanationIcon_ColourBG[@app.language]}'
+                   tabindex='0'
               >
+                <img src='IMG/navbar_Icons/explanationIcon_ColourBG.svg'
+                     alt='#{Tr.altText.explanationIcon_ColourBG[@app.language]}'
+                >
+              </div>
+              <div class='navbarHelpIcon navbarButton'
+                   role='button'
+                   aria-label='#{Tr.altText.questionMark_ColourBG[@app.language]}'
+                   tabindex='0'
+              >
+                <img src='IMG/navbar_Icons/questionMark_ColourBG.svg'
+                     alt='#{Tr.altText.questionMark_ColourBG[@app.language]}'
+                >
+              </div>
             </div>
             <div class='vizModal navbarHelpSection hidden' role='dialog' aria-labelledby='navbarHelpPopoverHeading'>
             </div>
@@ -197,32 +204,42 @@ class Navbar
             <span>#{d.unselectedLabel}</span>
           </div>"
 
+
+    # TODO: would be good to unsubscribe these events on page navigation
+
+    helpButtonClick = (d) =>
+      d3.event.stopPropagation()
+      if @app.popoverManager.currentPopover == @navbarHelpPopover
+        @app.popoverManager.closePopover()
+      else
+        @app.popoverManager.showPopover @navbarHelpPopover,
+          imageAUrl: d.imageAUrl
+          imageBUrl: d.imageBUrl
+          navbarHelpImageSelected: d.navbarHelpImageSelected
+          helpPopoverHeaderClass: d.helpPopoverHeaderClass
+        @app.analyticsReporter.reportEvent 'Navbar help', @navbarState
     
     vizNavbar.select('.navbarHelpIcon')
-      .on 'click', (d) =>
-        d3.event.stopPropagation()
-        if @app.popoverManager.currentPopover == @navbarHelpPopover
-          @app.popoverManager.closePopover()
-        else
-          @app.popoverManager.showPopover @navbarHelpPopover,
-            imageAUrl: d.imageAUrl
-            imageBUrl: d.imageBUrl
-            navbarHelpImageSelected: d.navbarHelpImageSelected
-            helpPopoverHeaderClass: d.helpPopoverHeaderClass
-          @app.analyticsReporter.reportEvent 'Navbar help', @navbarState
+      .on 'click', helpButtonClick
+      .on 'keydown', (d) ->
+        helpButtonClick(d) if d3.event.key == 'Enter'
+
+    infoButtonClick = (d) =>
+      d3.event.stopPropagation()
+      if @app.popoverManager.currentPopover == @navbarInfoPopover
+        @app.popoverManager.closePopover()
+      else
+        @app.popoverManager.showPopover @navbarInfoPopover,
+          navbarInfoImageSelected: d.navbarInfoImageSelected
+          infoPopoverText: d.infoPopoverText
+          infoPopoverHeader: d.infoPopoverHeader
+          infoPopoverHeaderClass: d.helpPopoverHeaderClass
+        @app.analyticsReporter.reportEvent 'Navbar info', @navbarState
 
     vizNavbar.select('.navbarMenuIcon')
-      .on 'click', (d) =>
-        d3.event.stopPropagation()
-        if @app.popoverManager.currentPopover == @navbarInfoPopover
-          @app.popoverManager.closePopover()
-        else
-          @app.popoverManager.showPopover @navbarInfoPopover,
-            navbarInfoImageSelected: d.navbarInfoImageSelected
-            infoPopoverText: d.infoPopoverText
-            infoPopoverHeader: d.infoPopoverHeader
-            infoPopoverHeaderClass: d.helpPopoverHeaderClass
-          @app.analyticsReporter.reportEvent 'Navbar info', @navbarState
+      .on 'click', infoButtonClick
+      .on 'keydown', (d) ->
+        infoButtonClick(d) if d3.event.key == 'Enter'
 
 
 

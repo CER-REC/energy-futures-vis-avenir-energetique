@@ -61,6 +61,12 @@ class NavbarInfoPopover
 
 
 
+  focus: ->
+    @app.window.document.getElementById('navbarInfoPopoverHeading').focus()
+
+  container: ->
+    @app.window.document.querySelector '.navbarInfoSection'
+
 
         
 
