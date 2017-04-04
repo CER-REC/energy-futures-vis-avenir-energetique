@@ -184,6 +184,8 @@ class Navbar
             </div>
             <div class='vizModal navbarHelpSection hidden'>
             </div>
+            <div class='vizModal navbarInfoSection hidden'>
+            </div>
           </div>
           "
         else

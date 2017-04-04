@@ -342,7 +342,8 @@ div.chartTooltip:after {
 }
 
 
-#canadasEnergyFutureVisualization .vizModal.navbarHelpSection{
+#canadasEnergyFutureVisualization .vizModal.navbarHelpSection, 
+#canadasEnergyFutureVisualization .vizModal.navbarInfoSection {
   left: auto;
   top: auto;
   width: 66.1%;

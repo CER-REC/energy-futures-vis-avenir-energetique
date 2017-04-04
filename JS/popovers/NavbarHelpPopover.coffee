@@ -53,7 +53,26 @@ class NavbarHelpPopover
       d3.select('.howToForwardButton').html """
         <img src="IMG/howto/light-right-arrow.png" alt='#{Tr.altText.nextImage[@app.language]}'>
       """
-      
+
+
+    @closeButton = d3.select '.navbarHelpSection .closeButton'
+
+    @closeButtonClickHandler = =>
+      d3.event.preventDefault()
+      d3.event.stopPropagation()
+      @app.popoverManager.closePopover()
+
+    @closeButtonEnterHandler = =>
+      d3.event.preventDefault()
+      d3.event.stopPropagation()
+      if d3.event.key == 'Enter'
+        @app.popoverManager.closePopover()
+
+    @closeButton.on 'click', @closeButtonClickHandler
+    @closeButton.on 'keyup', @closeButtonEnterHandler
+
+
+
     # Set up the help icon
     d3.select('.navbarHelpIcon').html "<img src='#{options.navbarHelpImageSelected}' alt='#{Tr.altText.questionMark_ColourBG[@app.language]}'>"
     # Class 'selected' sets the white background colour
@@ -64,6 +83,10 @@ class NavbarHelpPopover
 
 
   close: ->
+
+    @closeButton.on 'click', null
+    @closeButton.on 'keyup', null
+
     d3.select('.navbarHelpIcon').classed 'selected', false
     d3.select('.navbarHelpIcon').html "<img src='IMG/navbar_Icons/questionMark_ColourBG.svg' alt='#{Tr.altText.questionMark_ColourBG[@app.language]}'>"
     d3.select('.navbarHelpSection').classed 'hidden', true
