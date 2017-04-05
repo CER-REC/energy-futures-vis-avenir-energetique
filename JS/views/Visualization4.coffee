@@ -364,7 +364,6 @@ class Visualization4
         bottom: 20
       canDrag: false
       hasChart: false
-      parentClass: 'provinceMenu'
       data: @dataForProvinceMenu()
       onSelected: @provinceSelected
       allSelected: (@config.province == 'all')

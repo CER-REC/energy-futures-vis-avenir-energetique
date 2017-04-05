@@ -13,7 +13,7 @@ class SquareMenu extends Chart
     hasChart: true
     chart: null
     boxSize: 30
-    iconSpacing: 'auto' #This just makes them fit within the height
+    iconSpacing: 'auto' # This just makes them fit within the height
     addAllSquare: true
     allSelected: true
     someSelected: false
@@ -21,9 +21,9 @@ class SquareMenu extends Chart
       '#powerSourceMenuSVG': 7
       '#provinceMenuSVG': 14
     boxesOffset: 46
-    allSquareHandler: -> #Method that runs on 'All' button clicked
-    orderChangedHandler: -> #Method that runs when draggin finished
-    showHelpHandler: -> #Method that runs when the questionMark icon is clicked
+    allSquareHandler: -> # Method that runs on 'All' button clicked
+    orderChangedHandler: -> # Method that runs when dragging finished
+    showHelpHandler: -> # Method that runs when the questionMark icon is clicked
     onSelected: ->
 
 

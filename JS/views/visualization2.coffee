@@ -804,7 +804,6 @@ class Visualization2 extends visualization
           h: @sourceMenuHeight()
       canDrag: false
       hasChart: false
-      parentClass: 'provinceMenu'
       data: @dataForProvinceMenu()
       onSelected:
         @provinceSelected

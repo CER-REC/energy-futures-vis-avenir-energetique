@@ -68,14 +68,15 @@ class PopoverManager
 
 
   closePopover: (options) ->
+    return unless @currentPopover?
+
     options = _.assign {returnFocus: true}, options
 
     if options.returnFocus
       @elementToFocusOnClose.focus()
 
-    if @currentPopover?
-      @currentPopover.close()
-      @currentPopover = null
+    @currentPopover.close()
+    @currentPopover = null
 
 
 

@@ -3,17 +3,17 @@ _ = require 'lodash'
 
 class chart
   #local variables
-  chart_defaults:
-    size:  
-      w: 200
-      h: 300
-    position:  
-      x: 0
-      y: 0
-    data: []
-    duration: 1000
-    group: 0
-    groupId: 'sChart' 
+  # chart_defaults:
+  #   size:  
+  #     w: 200
+  #     h: 300
+  #   position:  
+  #     x: 0
+  #     y: 0
+  #   data: []
+  #   duration: 1000
+  #   group: 0
+  #   groupId: 'sChart' 
 
   # Need more precise control over the order of execution, in particular for the bubble
   # graph. 
@@ -53,7 +53,7 @@ class chart
       h: s.h
     @redraw()
 
-  # Returns the position withOUT the marginss 
+  # Returns the position withOUT the margins
   position: (pos) ->
     if !arguments.length
       return {

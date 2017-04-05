@@ -143,7 +143,6 @@ class Visualization3 extends visualization
     @addDatasetToggle()
     @timelineMargin = 25
     @sliderLabelHeight = 28
-    @sourceIconSpacing = 10
     @svgSize()
     @addDatasetToggle()
     @buildProvinceVsSourceToggle()
@@ -167,8 +166,8 @@ class Visualization3 extends visualization
       @_chart.menu.size
         w: d3.select(@app.window.document).select('#powerSourcePanel').node().getBoundingClientRect().width
         h: @leftHandMenuHeight()
-    if @_singleSelectMenu
-      @_singleSelectMenu.size
+    if @singleSelectMenu
+      @singleSelectMenu.size
         w: d3.select(@app.window.document).select('#powerSourcePanel').node().getBoundingClientRect().width
         h: @leftHandMenuHeight()
 
@@ -1040,7 +1039,7 @@ class Visualization3 extends visualization
       if @config.sourcesInOrder.length != @config.sources.length
         allSelected = false
         if @config.sources.length > 0
-          someSelected =  true
+          someSelected = true
         else
           someSelected = false
       else
@@ -1050,7 +1049,7 @@ class Visualization3 extends visualization
       if @config.provincesInOrder.length != @config.provinces.length
         allSelected = false
         if @config.provinces.length > 0
-          someSelected =  true
+          someSelected = true
         else
           someSelected = false
       else
@@ -1066,9 +1065,9 @@ class Visualization3 extends visualization
   # to set one based on the other.
   setIconSpacing: ->
     if @config.viewBy == 'province'
-      @_chart.menu.setIconSpacing @_singleSelectMenu.getIconSpacing()
+      @_chart.menu.setIconSpacing @singleSelectMenu.getIconSpacing()
     else
-      @_singleSelectMenu.setIconSpacing @_chart.menu.getIconSpacing()
+      @singleSelectMenu.setIconSpacing @_chart.menu.getIconSpacing()
 
   getDataAndRender: ->
     @getData()
@@ -1090,7 +1089,10 @@ class Visualization3 extends visualization
 
   buildViz:  ->
     @buildTimeline()
-    @_singleSelectMenu = @buildSingleSelectMenu() # Black and white non multi select menu.
+    # Black and white non multi select menu.
+    @buildSingleSelectMenu()
+    @buildMultiSelectMenu()
+
     parent = if @config.viewBy == 'province' then '#powerSourceMenuSVG' else '#provinceMenuSVG'
     bubbleOptions =
       size:
@@ -1099,37 +1101,11 @@ class Visualization3 extends visualization
       position:
         x: @_margin.left
         y: @_margin.top
-      data:
-        @seriesData
-      year:
-        @config.year
-      groupId:
-        'graphGroup'
-      mapping:
-        @dataForStackMenu()
-      duration:
-        @app.animationDuration
-      menuParent:
-        parent
-      menuOptions:
-        size:
-          w: d3.select(@app.window.document).select(parent).node().getBoundingClientRect().width
-          h: @leftHandMenuHeight()
-        boxSize: 37.5
-        onSelected:
-          @menuSelect
-        allSelected:
-          @getSelectionState().allSelected
-        someSelected:
-          @getSelectionState().someSelected
-        allSquareHandler:
-          @selectAllBubbles
-        showHelpHandler: =>
-          if @config.viewBy == 'province' then @showSourceNames() else @showProvinceNames()
-        canDrag:
-          false
-        groupId:
-          'stackMenu'
+      data: @seriesData
+      year: @config.year
+      groupId: 'graphGroup'
+      mapping: @dataForStackMenu()
+      duration: @app.animationDuration
     @_chart = new bubbleChart @app, '#graphSVG', bubbleOptions
     @setIconSpacing()
 
@@ -1157,13 +1133,13 @@ class Visualization3 extends visualization
     @_chart.menu.allSelected @getSelectionState().allSelected
     @_chart.data @seriesData
 
-    @_singleSelectMenu._allSelected = true
-    @_singleSelectMenu.data @dataForSingleSelectMenu()
+    @singleSelectMenu._allSelected = true
+    @singleSelectMenu.data @dataForSingleSelectMenu()
 
     # Swapping spots is easier than hooking the menus up with the appropriate charts :)
     # TODO: This is the single biggest hack that I wish I had time to fix...
-    newParentForChartMenu = @_singleSelectMenu.parent()
-    @_singleSelectMenu.moveMenu @_chart.menu.parent()
+    newParentForChartMenu = @singleSelectMenu.parent()
+    @singleSelectMenu.moveMenu @_chart.menu.parent()
     @_chart.menu.moveMenu newParentForChartMenu
     @setIconSpacing()
 
@@ -1205,30 +1181,63 @@ class Visualization3 extends visualization
 
 
 
-  # Black and white non multi select menu.
+  # Black and white non multi select menu
   buildSingleSelectMenu: ->
+
     selectAll = if @config.viewBy == 'province' then @config.province == 'all' else @config.source == 'total'
+
     parent = if @config.viewBy == 'province' then '#provinceMenuSVG' else '#powerSourceMenuSVG'
-    provinceOptions =
+
+    options =
       size:
         w: d3.select(@app.window.document).select(parent).node().getBoundingClientRect().width
         h: @leftHandMenuHeight()
       canDrag: false
       hasChart: false
-      parentClass: 'provinceMenu'
-      data: @dataForSingleSelectMenu()
       boxSize: 37.5
-      onSelected:
-        @singleSelectSelected
+      onSelected: @singleSelectSelected
+      allSquareHandler: @selectAllSingleSelect
+      groupId: 'singleSelectMenu'
       addAllSquare: true
-      allSelected: selectAll
-      allSquareHandler:
-        @selectAllSingleSelect
       showHelpHandler: =>
         if @config.viewBy == 'province' then @showProvinceNames() else @showSourceNames()
-      groupId:
-        'singleSelectMenu'
-    new SquareMenu @app, parent, provinceOptions
+
+      allSelected: selectAll
+
+      # TODO: Unclear if this is used?
+      data: @dataForSingleSelectMenu()
+
+    @singleSelectMenu = new SquareMenu @app, parent, options
+
+  # Multicolor multiple selection menu
+  buildMultiSelectMenu: ->
+
+    parent = if @config.viewBy == 'province' then '#powerSourceMenuSVG' else '#provinceMenuSVG'
+
+    options =
+      size:
+        w: d3.select(@app.window.document).select(parent).node().getBoundingClientRect().width
+        h: @leftHandMenuHeight()
+      canDrag: false
+      hasChart: true
+      boxSize: 37.5
+      onSelected: @menuSelect
+      allSquareHandler: @selectAllBubbles
+      groupId: 'stackMenu'
+      addAllSquare: true
+      showHelpHandler: =>
+        if @config.viewBy == 'province' then @showSourceNames() else @showProvinceNames()
+
+      allSelected: @getSelectionState().allSelected
+      someSelected: @getSelectionState().someSelected
+
+
+
+
+
+    @multiSelectMenu = new SquareMenu @app, parent, @options.menuOptions
+
+
 
   selectAllSingleSelect: =>
 
@@ -1244,8 +1253,8 @@ class Visualization3 extends visualization
         @config.setProvince 'all'
       else
         @config.setSource 'total'
-      @_singleSelectMenu._allSelected = true
-      @_singleSelectMenu.data @dataForSingleSelectMenu()
+      @singleSelectMenu._allSelected = true
+      @singleSelectMenu.data @dataForSingleSelectMenu()
       @getDataAndRender()
       @app.router.navigate @config.routerParams()
 
@@ -1256,7 +1265,7 @@ class Visualization3 extends visualization
 
   singleSelectSelected: (key, index) =>
 
-    item = @_singleSelectMenu.mapping()[index]
+    item = @singleSelectMenu.mapping()[index]
     
     newConfig = new @config.constructor @app
     newConfig.copy @config
@@ -1266,12 +1275,12 @@ class Visualization3 extends visualization
       newConfig.setSource item.key
 
     update = =>
-      @_singleSelectMenu._allSelected = false
+      @singleSelectMenu._allSelected = false
       if @config.viewBy == 'province'
         @config.setProvince item.key
       else if @config.viewBy == 'source'
         @config.setSource item.key
-      @_singleSelectMenu.data @dataForSingleSelectMenu()
+      @singleSelectMenu.data @dataForSingleSelectMenu()
       @getDataAndRender()
       @app.router.navigate @config.routerParams()
 

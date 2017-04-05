@@ -2,7 +2,6 @@ d3 = require 'd3'
 _ = require 'lodash'
 
 Chart =  require './chart.coffee'
-SquareMenu = require './SquareMenu.coffee'
 Platform = require '../Platform.coffee'
 
 class BubbleChart extends Chart
@@ -35,7 +34,7 @@ class BubbleChart extends Chart
 
 
     @options.menuOptions.chart = this
-    @menu = new SquareMenu @app, @options.menuParent, @options.menuOptions
+    # @menu = new SquareMenu @app, @options.menuParent, @options.menuOptions
     @redraw()
 
   filteredData: (currentData) ->
@@ -60,7 +59,7 @@ class BubbleChart extends Chart
     if !arguments.length
       return _.values @_mapping
     @_mapping = mapping
-    @menu.redraw()
+    # @menu.redraw()
 
   bubble: ->
     d3.layout.pack()
