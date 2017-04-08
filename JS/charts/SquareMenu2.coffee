@@ -80,7 +80,7 @@ class SquareMenu2
       y: @state.position.y
     @data @state.data
 
-    @resize()
+    # @resize()
 
     @redraw()
 
@@ -190,10 +190,10 @@ class SquareMenu2
 
 
 
-  resize: ->
-    @_group.attr
-      transform: "translate(#{@_position.x}, #{@_position.y})"
-    @
+  # resize: ->
+  #   @_group.attr
+  #     transform: "translate(#{@_position.x}, #{@_position.y})"
+  #   @
 
   # Get the center
   getRectX: =>
@@ -239,7 +239,7 @@ class SquareMenu2
     else
       0
 
-  # TODO: refactor me into separate enter + update + exit methods!
+
   redraw: ->
     @_group.selectAll('.menuItem').remove()
     @_group.selectAll('.menuSquare').remove()
@@ -315,6 +315,23 @@ class SquareMenu2
           width: @_boxSize
           height: @_boxSize
         .on 'click', @_allSquareHandler
+
+
+
+  update: ->
+    menuItems = @_group.selectAll '.menuItem'
+      .data @_data
+    
+    menuItems.select 'image'
+      .attr
+        'xlink:href': (d) -> d.img
+
+    if @_addAllSquare
+      @_group.select '.selectAllGroup'
+        .select 'image'
+        .attr
+          'xlink:href': @getAllIcon
+
 
 
 module.exports = SquareMenu2

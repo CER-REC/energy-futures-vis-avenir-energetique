@@ -167,10 +167,12 @@ class Visualization3 extends visualization
     @provinceMenu.size
       w: d3.select(@app.window.document).select('#provinceMenuSVG').node().getBoundingClientRect().width
       h: @leftHandMenuHeight()
+    @provinceMenu.redraw()
 
     @sourceMenu.size
       w: d3.select(@app.window.document).select('#powerSourceMenuSVG').node().getBoundingClientRect().width
       h: @leftHandMenuHeight()
+    @sourceMenu.redraw()
 
 
 
@@ -242,14 +244,13 @@ class Visualization3 extends visualization
     # Menus need to be updated before the @_chart.data call
     # Is the chart mutating @seriesData? I think so in BubbleChart.filteredData
     @provinceMenu.data @dataForProvinceMenu()
-    @provinceMenu.redraw()
+    @provinceMenu.update()
     @sourceMenu.data @dataForSourceMenu()
-    @sourceMenu.redraw()
+    @sourceMenu.update()
 
     @_chart.mapping @menuDataForChart()
     @_chart.year @config.year
     @_chart.data @seriesData
-
 
 
   toggleViz: ->
@@ -762,7 +763,7 @@ class Visualization3 extends visualization
       @app.popoverManager.closePopover()
     else
       if @config.viewBy == 'province' then images = @sourceColorIcons() else images = @sourceBlackIcons()
-      #Grab the sources in order for the string
+      # Grab the sources in order for the string
       contentString = ''
       for source in Constants.viz3Sources
         contentString = """
@@ -788,7 +789,7 @@ class Visualization3 extends visualization
     if @app.popoverManager.currentPopover == @provincesHelpPopover
       @app.popoverManager.closePopover()
     else
-      #Grab the provinces in order for the string
+      # Grab the provinces in order for the string
       contentString = ''
       for province in Constants.provinces
         contentString = """<div class="#{if @config.viewBy == 'province' then 'provinceLabel' else 'provinceLabel provinceLabel' + province}"> <h2> #{Tr.regionSelector.names[province][@app.language]} </h2> </div>""" + contentString
@@ -799,15 +800,6 @@ class Visualization3 extends visualization
         content: contentString
         attachmentSelector: '#provincesSelector'
       @app.analyticsReporter.reportEvent 'Controls help', 'Viz3 region help'
-
-
-
-
-
-
-
-
-
 
 
 
@@ -872,7 +864,7 @@ class Visualization3 extends visualization
 
   ### Data dictionaries for D3 data join driven components ###
 
-  # Used for chart bubbles colours
+  # Used for chart bubble colours
   menuDataForChart: ->
     switch @config.viewBy
       when 'province'
