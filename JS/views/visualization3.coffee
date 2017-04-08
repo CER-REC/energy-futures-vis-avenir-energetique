@@ -762,15 +762,15 @@ class Visualization3 extends visualization
       @app.popoverManager.closePopover()
     else
       if @config.viewBy == 'province' then images = @sourceColorIcons() else images = @sourceBlackIcons()
-      #Grab the provinces in order for the string
+      #Grab the sources in order for the string
       contentString = ''
-      for key of @sourceColorMenuDictionary()
+      for source in Constants.viz3Sources
         contentString = """
-          <div class="#{if @config.viewBy == "source" then 'sourceLabel'  else 'sourceLabel sourceLabel' + key}">
-            <img class="sourceIcon" src="#{images[key].img}" alt="#{Tr.altText.sources[key][@app.language]}">
-            <h2> #{Tr.sourceSelector.sources[key][@app.language]} </h2>
+          <div class="#{if @config.viewBy == "source" then 'sourceLabel'  else 'sourceLabel sourceLabel' + source}">
+            <img class="sourceIcon" src="#{images[source].img}" alt="#{Tr.altText.sources[source][@app.language]}">
+            <h2> #{Tr.sourceSelector.sources[source][@app.language]} </h2>
             <div class="clearfix"> </div>
-            <p> #{Tr.sourceSelector.sourceSelectorHelp[key][@app.language]} </p>
+            <p> #{Tr.sourceSelector.sourceSelectorHelp[source][@app.language]} </p>
           </div>
           """ + contentString
       contentString = Tr.sourceSelector.sourceSelectorHelp.generalHelp[@app.language] + contentString
@@ -790,7 +790,7 @@ class Visualization3 extends visualization
     else
       #Grab the provinces in order for the string
       contentString = ''
-      for province of @provinceColorMenuDictionary()
+      for province in Constants.provinces
         contentString = """<div class="#{if @config.viewBy == 'province' then 'provinceLabel' else 'provinceLabel provinceLabel' + province}"> <h2> #{Tr.regionSelector.names[province][@app.language]} </h2> </div>""" + contentString
 
       @app.popoverManager.showPopover @provincesHelpPopover,
@@ -1011,37 +1011,30 @@ class Visualization3 extends visualization
     hydro:
       key: 'hydro'
       img: if @config.source == 'hydro' then 'IMG/sources/hydro_selectedR.svg' else 'IMG/sources/hydro_unselectedR.svg'
-      present: true
       colour: '#4167b1'
     solarWindGeothermal:
       key: 'solarWindGeothermal'
       img: if @config.source == 'solarWindGeothermal' then 'IMG/sources/solarWindGeo_selectedR.svg' else 'IMG/sources/solarWindGeo_unselectedR.svg'
-      present: true
       colour: '#339947'
     coal:
       key: 'coal'
       img: if @config.source == 'coal' then 'IMG/sources/coal_selectedR.svg' else 'IMG/sources/coal_unselectedR.svg'
-      present: true
       colour: '#996733'
     naturalGas:
       key: 'naturalGas'
       img: if @config.source == 'naturalGas' then 'IMG/sources/naturalGas_selectedR.svg' else 'IMG/sources/naturalGas_unselectedR.svg'
-      present: true
       colour: '#f16739'
     bio:
       key: 'bio'
       img: if @config.source == 'bio' then 'IMG/sources/biomass_selectedR.svg' else 'IMG/sources/biomass_unselectedR.svg'
-      present: true
       colour: '#8d68ac'
     nuclear:
       key: 'nuclear'
       img: if @config.source == 'nuclear' then 'IMG/sources/nuclear_selectedR.svg' else 'IMG/sources/nuclear_unselectedR.svg'
-      present: true
       colour: '#cccb31'
     oilProducts:
       key: 'oilProducts'
       img: if @config.source == 'oilProducts' then 'IMG/sources/oil_products_selectedR.svg' else 'IMG/sources/oil_products_unselectedR.svg'
-      present: true
       colour: '#cc6699'
     
 
@@ -1118,79 +1111,66 @@ class Visualization3 extends visualization
     AB:
       key: 'AB'
       tooltip: Tr.regionSelector.names.AB[@app.language]
-      present: true
       colour: if @config.province == 'AB' then '#333' else '#fff'
       img: if @config.province == 'AB' then 'IMG/provinces/radio/AB_SelectedR.svg' else 'IMG/provinces/radio/AB_UnselectedR.svg'
     BC:
       key: 'BC'
       tooltip: Tr.regionSelector.names.BC[@app.language]
-      present: true
       colour: if @config.province == 'BC' then '#333' else '#fff'
       img: if @config.province == 'BC' then 'IMG/provinces/radio/BC_SelectedR.svg' else 'IMG/provinces/radio/BC_UnselectedR.svg'
     MB:
       key: 'MB'
       tooltip: Tr.regionSelector.names.MB[@app.language]
-      present: true
       colour: if @config.province == 'MB' then '#333' else '#fff'
       img: if @config.province == 'MB' then 'IMG/provinces/radio/MB_SelectedR.svg' else 'IMG/provinces/radio/MB_UnselectedR.svg'
     NB:
       key: 'NB'
       tooltip: Tr.regionSelector.names.NB[@app.language]
-      present: true
       colour: if @config.province == 'NB' then '#333' else '#fff'
       img: if @config.province == 'NB' then 'IMG/provinces/radio/NB_SelectedR.svg' else 'IMG/provinces/radio/NB_UnselectedR.svg'
     NL:
       key : 'NL'
       tooltip: Tr.regionSelector.names.NL[@app.language]
-      present: true
       colour: if @config.province == 'NL' then '#333' else '#fff'
       img: if @config.province == 'NL' then 'IMG/provinces/radio/NL_SelectedR.svg' else 'IMG/provinces/radio/NL_UnselectedR.svg'
     NS:
       key: 'NS'
       tooltip: Tr.regionSelector.names.NS[@app.language]
-      present: true
       colour: if @config.province == 'NS' then '#333' else '#fff'
       img: if @config.province == 'NS' then 'IMG/provinces/radio/NS_SelectedR.svg' else 'IMG/provinces/radio/NS_UnselectedR.svg'
     NT:
       key: 'NT'
       tooltip: Tr.regionSelector.names.NT[@app.language]
-      present: true
       colour: if @config.province == 'NT' then '#333' else '#fff'
       img: if @config.province == 'NT' then 'IMG/provinces/radio/NT_SelectedR.svg' else 'IMG/provinces/radio/NT_UnselectedR.svg'
     NU:
       key: 'NU'
       tooltip: Tr.regionSelector.names.NU[@app.language]
-      present: true
       colour: if @config.province == 'NU' then '#333' else '#fff'
       img: if @config.province == 'NU' then 'IMG/provinces/radio/NU_SelectedR.svg' else 'IMG/provinces/radio/NU_UnselectedR.svg'
     ON:
       key: 'ON'
       tooltip: Tr.regionSelector.names.ON[@app.language]
-      present: true
       colour: if @config.province == 'ON' then '#333' else '#fff'
       img: if @config.province == 'ON' then 'IMG/provinces/radio/ON_SelectedR.svg' else 'IMG/provinces/radio/ON_UnselectedR.svg'
     PE:
       key: 'PE'
       tooltip: Tr.regionSelector.names.PE[@app.language]
-      present: true
       colour: if @config.province == 'PE' then '#333' else '#fff'
       img: if @config.province == 'PE' then 'IMG/provinces/radio/PEI_SelectedR.svg' else 'IMG/provinces/radio/PEI_UnselectedR.svg'
     QC:
       key: 'QC'
       tooltip: Tr.regionSelector.names.QC[@app.language]
-      present: true
       colour: if @config.province == 'QC' then '#333' else '#fff'
       img: if @config.province == 'QC' then 'IMG/provinces/radio/QC_SelectedR.svg' else 'IMG/provinces/radio/QC_UnselectedR.svg'
     SK:
       key: 'SK'
       tooltip: Tr.regionSelector.names.SK[@app.language]
-      present: true
       colour: if @config.province == 'SK' then '#333' else '#fff'
       img: if @config.province == 'SK' then 'IMG/provinces/radio/Sask_SelectedR.svg' else 'IMG/provinces/radio/Sask_UnselectedR.svg'
     YT:
       key: 'YT'
       tooltip: Tr.regionSelector.names.YT[@app.language]
-      present: true
       colour: if @config.province == 'YT' then '#333' else '#fff'
       img: if @config.province == 'YT' then 'IMG/provinces/radio/Yukon_SelectedR.svg' else 'IMG/provinces/radio/Yukon_UnselectedR.svg'
 
