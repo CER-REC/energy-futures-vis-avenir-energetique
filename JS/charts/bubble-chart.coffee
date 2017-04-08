@@ -7,9 +7,6 @@ Platform = require '../Platform.coffee'
 class BubbleChart extends Chart
   bubbleChartDefaults:
     mapping: []
-    menuParent: '#powerSourceMenuSVG'
-    menuOptions:
-      canDrag: false
 
 
   constructor: (@app, parent, options = {}) ->
@@ -32,11 +29,11 @@ class BubbleChart extends Chart
     @_data = @options.data
     @resize()
 
-
-    @options.menuOptions.chart = this
-    # @menu = new SquareMenu @app, @options.menuParent, @options.menuOptions
     @redraw()
 
+  # TODO: This mutates the passed in data, which can cause problems for other consumers
+  # of the data object that's passed to this chart.
+  # Bad! Fixme!
   filteredData: (currentData) ->
     for i in [0...currentData.children.length]
       if currentData.children[i].children?
@@ -59,7 +56,6 @@ class BubbleChart extends Chart
     if !arguments.length
       return _.values @_mapping
     @_mapping = mapping
-    # @menu.redraw()
 
   bubble: ->
     d3.layout.pack()

@@ -134,7 +134,7 @@ class Visualization2 extends visualization
       right: 60
       bottom: 70
       left: 20
-    @svgSize()
+    @svgResize()
     @addDatasetToggle()
     @addUnitToggle()
     @addSectors()
@@ -142,7 +142,7 @@ class Visualization2 extends visualization
     @render()
 
   redraw: ->
-    @svgSize()   
+    @svgResize()   
     @buildYAxis(false)
     @buildXAxis(false)    
     @buildForecast()
@@ -182,7 +182,7 @@ class Visualization2 extends visualization
       Constants.serverSideGraphWidth - @_margin.left - @_margin.right
 
 
-  svgSize: ->
+  svgResize: ->
     # getBoundingClientRect is not implemented in JSDOM, use fixed width on server
     if Platform.name == 'browser'
       svgWidth = d3.select(@app.window.document).select('#graphPanel').node().getBoundingClientRect().width

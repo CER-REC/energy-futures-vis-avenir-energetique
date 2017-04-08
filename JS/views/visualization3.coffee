@@ -2,9 +2,9 @@ d3 = require 'd3'
 Mustache = require 'mustache'
 
 visualization = require './visualization.coffee'
-bubbleChart = require '../charts/bubble-chart.coffee'
+BubbleChart = require '../charts/bubble-chart.coffee'
 Constants = require '../Constants.coffee'
-SquareMenu = require '../charts/SquareMenu.coffee'
+SquareMenu2 = require '../charts/SquareMenu2.coffee'
 Tr = require '../TranslationTable.coffee'
 Platform = require '../Platform.coffee'
 
@@ -143,7 +143,7 @@ class Visualization3 extends visualization
     @addDatasetToggle()
     @timelineMargin = 25
     @sliderLabelHeight = 28
-    @svgSize()
+    @svgResize()
     @addDatasetToggle()
     @buildProvinceVsSourceToggle()
     @addUnitToggle()
@@ -155,7 +155,7 @@ class Visualization3 extends visualization
     super()
 
   redraw: ->
-    @svgSize()
+    @svgResize()
     @buildTimeline()
     if @_chart
       @_chart._duration = 0 #prevent transitioning to the new width
@@ -163,45 +163,18 @@ class Visualization3 extends visualization
         w: @width()
         h: @height()
       @_chart._duration = @app.animationDuration
-      @_chart.menu.size
-        w: d3.select(@app.window.document).select('#powerSourcePanel').node().getBoundingClientRect().width
-        h: @leftHandMenuHeight()
-    if @singleSelectMenu
-      @singleSelectMenu.size
-        w: d3.select(@app.window.document).select('#powerSourcePanel').node().getBoundingClientRect().width
-        h: @leftHandMenuHeight()
 
-  # the graph's height
-  height: ->
-    height - @_margin.top - @_margin.bottom
+    @provinceMenu.size
+      w: d3.select(@app.window.document).select('#provinceMenuSVG').node().getBoundingClientRect().width
+      h: @leftHandMenuHeight()
 
-  # We want this menu to line up with the bottom of the x axis TICKS so those must be
-  # built before we can set this.
-  leftHandMenuHeight: ->
-    @height() + d3.select(@app.window.document).select('#timelineAxis').node().getBoundingClientRect().height
-
-  #the graph's width
-  width: ->
-    # getBoundingClientRect is not implemented in JSDOM, use fixed width on server
-    if Platform.name == 'browser'
-      d3.select(@app.window.document).select('#graphPanel').node().getBoundingClientRect().width - @_margin.left - @_margin.right
-    else if Platform.name == 'server'
-      Constants.serverSideGraphWidth - @_margin.left - @_margin.right
+    @sourceMenu.size
+      w: d3.select(@app.window.document).select('#powerSourceMenuSVG').node().getBoundingClientRect().width
+      h: @leftHandMenuHeight()
 
 
-  timelineRightEnd: ->
-    @getSvgWidth() - @timelineMargin
 
-  getSvgWidth: ->
-    # getBoundingClientRect is not implemented in JSDOM, use fixed width on server
-    if Platform.name == 'browser'
-      svgWidth = d3.select(@app.window.document).select('#graphPanel').node().getBoundingClientRect().width
-    else if Platform.name == 'server'
-      svgWidth = Constants.serverSideGraphWidth
-
-    svgWidth
-
-  svgSize: ->
+  svgResize: ->
     d3.select(@app.window.document).select '#graphSVG'
       .attr
         width: @getSvgWidth()
@@ -215,21 +188,87 @@ class Visualization3 extends visualization
         width: d3.select(@app.window.document).select('#powerSourcePanel').node().getBoundingClientRect().width
         height: height - @_margin.top - @_margin.bottom
 
-  viewByData: ->
-    [
-      {
-        title: Tr.selectorTooltip.viewBySelector.viewByProvinceButton[@app.language]
-        label: Tr.viewBySelector.viewByProvinceButton[@app.language]
-        viewByName: 'province'
-        class: if @config.viewBy == 'province' then 'vizButton selected' else 'vizButton'
-      }
-      {
-        title: Tr.selectorTooltip.viewBySelector.viewBySourceButton[@app.language]
-        label: Tr.viewBySelector.viewBySourceButton[@app.language]
-        viewByName: 'source'
-        class: if @config.viewBy == 'source' then 'vizButton selected' else 'vizButton'
-      }
-    ]
+
+  getDataAndRender: ->
+    @getData()
+    @render()
+
+  getData: ->
+    @seriesData = @addLabelsToData @app.providers[@config.dataset].electricityProductionProvider.dataForViz3(@config)
+
+  addLabelsToData: (data) ->
+    if @config.viewBy == 'province'
+      for singleSelectBubble in data.children
+        singleSelectBubble.img = @provinceBlackIcons()[singleSelectBubble.name].img
+    else
+      for singleSelectBubble in data.children
+        singleSelectBubble.img = @sourceBlackIcons()[singleSelectBubble.name].img
+    data
+
+  render: ->
+    if @_chart?
+      @updateViz()
+    else
+      @buildViz()
+
+    # update the csv data download link
+    d3.select(@app.window.document).select '#dataDownloadLink'
+      .attr
+        href: "csv_data#{ParamsToUrlString(@config.routerParams())}"
+
+  buildViz:  ->
+    @buildTimeline()
+    @buildProvinceMenu()
+    @buildSourceMenu()
+
+    bubbleChartOptions =
+      size:
+        w: @width()
+        h: @height()
+      position:
+        x: @_margin.left
+        y: @_margin.top
+      data: @seriesData
+      year: @config.year
+      groupId: 'graphGroup'
+      mapping: @menuDataForChart()
+      duration: @app.animationDuration
+    @_chart = new BubbleChart @app, '#graphSVG', bubbleChartOptions
+
+
+
+  updateViz: ->
+    # NB: There is an order of execution dependency here that I don't fully understand
+    # Menus need to be updated before the @_chart.data call
+    # Is the chart mutating @seriesData? I think so in BubbleChart.filteredData
+    @provinceMenu.data @dataForProvinceMenu()
+    @provinceMenu.redraw()
+    @sourceMenu.data @dataForSourceMenu()
+    @sourceMenu.redraw()
+
+    @_chart.mapping @menuDataForChart()
+    @_chart.year @config.year
+    @_chart.data @seriesData
+
+
+
+  toggleViz: ->
+    # Filters should not apply between them as the display options change
+    @config.setProvince 'all'
+    @config.setSource 'total'
+    @config.resetSources true
+    @config.resetProvinces true
+
+    @getDataAndRender()
+
+
+
+
+
+
+
+
+  ### Graph build methods ###
 
   buildProvinceVsSourceToggle: ->
     if @config.viewBy?
@@ -256,582 +295,11 @@ class Visualization3 extends visualization
 
           @app.datasetRequester.updateAndRequestIfRequired newConfig, update
 
-
-
       viewBySelectors.html (d) ->
         "<button class='#{d.class}' type='button' title='#{d.title}'>#{d.label}</button>"
 
       viewBySelectors.exit().remove()
   
-  sourcesDictionary: ->
-    {
-      hydro:
-        key: 'hydro'
-        tooltip: Tr.sourceSelector.sourceSelectorHelp.hydro[@app.language]
-        img:
-          if @zeroedOut('hydro')
-            'IMG/sources/unavailable/hydro_unavailable.svg'
-          else
-            if @config.sources.includes 'hydro' then 'IMG/sources/hydro_selected.svg' else 'IMG/sources/hydro_unselected.svg'
-        present: if @config.sources.includes 'hydro' then true else false
-        colour: '#4167b1'
-      solarWindGeothermal:
-        key: 'solarWindGeothermal'
-        tooltip: Tr.sourceSelector.sourceSelectorHelp.solarWindGeothermal[@app.language]
-        img:
-          if @zeroedOut('solarWindGeothermal')
-            'IMG/sources/unavailable/solarWindGeo_unavailable.svg'
-          else
-            if @config.sources.includes 'solarWindGeothermal' then 'IMG/sources/solarWindGeo_selected.svg' else 'IMG/sources/solarWindGeo_unselected.svg'
-        present: if @config.sources.includes 'solarWindGeothermal' then true else false
-        colour: '#339947'
-      coal:
-        key: 'coal'
-        tooltip: Tr.sourceSelector.sourceSelectorHelp.coal[@app.language]
-        img:
-          if @zeroedOut('coal')
-            'IMG/sources/unavailable/coal_unavailable.svg'
-          else
-            if @config.sources.includes 'coal' then 'IMG/sources/coal_selected.svg' else 'IMG/sources/coal_unselected.svg'
-        present: if @config.sources.includes 'coal' then true else false
-        colour: '#996733'
-      naturalGas:
-        key: 'naturalGas'
-        tooltip: Tr.sourceSelector.sourceSelectorHelp.naturalGas[@app.language]
-        img:
-          if @zeroedOut('naturalGas')
-            'IMG/sources/unavailable/naturalGas_unavailable.svg'
-          else
-            if @config.sources.includes 'naturalGas' then 'IMG/sources/naturalGas_selected.svg' else 'IMG/sources/naturalGas_unselected.svg'
-        present: if @config.sources.includes 'naturalGas' then true else false
-        colour: '#f16739'
-      bio:
-        key: 'bio'
-        tooltip: Tr.sourceSelector.sourceSelectorHelp.bio[@app.language]
-        img:
-          if @zeroedOut('bio')
-            'IMG/sources/unavailable/biomass_unavailable.svg'
-          else
-            if @config.sources.includes 'bio' then 'IMG/sources/biomass_selected.svg' else 'IMG/sources/biomass_unselected.svg'
-        present: if @config.sources.includes 'bio' then true else false
-        colour: '#8d68ac'
-      oilProducts:
-        key: 'oilProducts'
-        tooltip: Tr.sourceSelector.sourceSelectorHelp.oilProducts[@app.language]
-        img:
-          if @zeroedOut('oilProducts')
-            'IMG/sources/unavailable/oil_products_unavailable.svg'
-          else
-            if @config.sources.includes 'oilProducts' then 'IMG/sources/oil_products_selected.svg' else 'IMG/sources/oil_products_unselected.svg'
-        present: if @config.sources.includes 'oilProducts' then true else false
-        colour: '#cc6699'
-      nuclear:
-        key: 'nuclear'
-        tooltip: Tr.sourceSelector.sourceSelectorHelp.nuclear[@app.language]
-        img:
-          if @zeroedOut('nuclear')
-            'IMG/sources/unavailable/nuclear_unavailable.svg'
-          else
-            if @config.sources.includes 'nuclear' then 'IMG/sources/nuclear_selected.svg' else 'IMG/sources/nuclear_unselected.svg'
-        present: if @config.sources.includes 'nuclear' then true else false
-        colour: '#cccb31'
-      }
-
-  # We don't need to bother when we have all provinces/sources selected since nothing
-  # is zero
-  zeroedOut: (key) ->
-    if !(@seriesData) or !(@seriesData.children) or (@seriesData.children.length != 1) then return false
-    itemKey = @seriesData.children[0].children.filter (item) -> item.source == key
-    if itemKey.length == 0 then return true else false
-
-  sourcesBlackAndWhiteDictionary: ->
-    {
-      hydro:
-        key: 'hydro'
-        img: if @config.source == 'hydro' then 'IMG/sources/hydro_selectedR.svg' else 'IMG/sources/hydro_unselectedR.svg'
-        present: true
-        colour: '#4167b1'
-      solarWindGeothermal:
-        key: 'solarWindGeothermal'
-        img: if @config.source == 'solarWindGeothermal' then 'IMG/sources/solarWindGeo_selectedR.svg' else 'IMG/sources/solarWindGeo_unselectedR.svg'
-        present: true
-        colour: '#339947'
-      coal:
-        key: 'coal'
-        img: if @config.source == 'coal' then 'IMG/sources/coal_selectedR.svg' else 'IMG/sources/coal_unselectedR.svg'
-        present: true
-        colour: '#996733'
-      naturalGas:
-        key: 'naturalGas'
-        img: if @config.source == 'naturalGas' then 'IMG/sources/naturalGas_selectedR.svg' else 'IMG/sources/naturalGas_unselectedR.svg'
-        present: true
-        colour: '#f16739'
-      bio:
-        key: 'bio'
-        img: if @config.source == 'bio' then 'IMG/sources/biomass_selectedR.svg' else 'IMG/sources/biomass_unselectedR.svg'
-        present: true
-        colour: '#8d68ac'
-      nuclear:
-        key: 'nuclear'
-        img: if @config.source == 'nuclear' then 'IMG/sources/nuclear_selectedR.svg' else 'IMG/sources/nuclear_unselectedR.svg'
-        present: true
-        colour: '#cccb31'
-      oilProducts:
-        key: 'oilProducts'
-        img: if @config.source == 'oilProducts' then 'IMG/sources/oil_products_selectedR.svg' else 'IMG/sources/oil_products_unselectedR.svg'
-        present: true
-        colour: '#cc6699'
-      }
-
-  sourcesBlackDictionary: ->
-    hydro:
-      img: 'IMG/sources/hydro_selectedR.svg'
-    solarWindGeothermal:
-      img: 'IMG/sources/solarWindGeo_selectedR.svg'
-    coal:
-      img: 'IMG/sources/coal_selectedR.svg'
-    naturalGas:
-      img: 'IMG/sources/naturalGas_selectedR.svg'
-    bio:
-      img: 'IMG/sources/biomass_selectedR.svg'
-    nuclear:
-      img: 'IMG/sources/nuclear_selectedR.svg'
-    oilProducts:
-      img: 'IMG/sources/oil_products_selectedR.svg'
-
-  colouredSourceIconsDictionary: ->
-    hydro:
-      img: 'IMG/sources/hydro_selected.svg'
-    solarWindGeothermal:
-      img: 'IMG/sources/solarWindGeo_selected.svg'
-    coal:
-      img: 'IMG/sources/coal_selected.svg'
-    naturalGas:
-      img: 'IMG/sources/naturalGas_selected.svg'
-    bio:
-      img: 'IMG/sources/biomass_selected.svg'
-    oilProducts:
-      img: 'IMG/sources/oil_products_selected.svg'
-    nuclear:
-      img: 'IMG/sources/nuclear_selected.svg'
-
-
-
-  sourceMenuData: ->
-    data = {}
-    for source in @config.sourcesInOrder
-      data[source] = (@sourcesDictionary()[source])
-    data
-
-  sourceLegendData: ->
-    baseData =
-      hydro:
-        img: 'IMG/sources/hydro_selected.svg'
-        present: @config.sources.includes('hydro') and not @zeroedOut('hydro')
-      solarWindGeothermal:
-        img: 'IMG/sources/solarWindGeo_selected.svg'
-        present: @config.sources.includes('solarWindGeothermal') and not @zeroedOut('solarWindGeothermal')
-      coal:
-        img: 'IMG/sources/coal_selected.svg'
-        present: @config.sources.includes('coal') and not @zeroedOut('coal')
-      naturalGas:
-        img: 'IMG/sources/naturalGas_selected.svg'
-        present: @config.sources.includes('naturalGas') and not @zeroedOut('naturalGas')
-      bio:
-        img: 'IMG/sources/biomass_selected.svg'
-        present: @config.sources.includes('bio') and not @zeroedOut('bio')
-      oilProducts:
-        img: 'IMG/sources/oil_products_selected.svg'
-        present: @config.sources.includes('oilProducts') and not @zeroedOut('oilProducts')
-      nuclear:
-        img: 'IMG/sources/nuclear_selected.svg'
-        present: @config.sources.includes('nuclear') and not @zeroedOut('nuclear')
-
-    data = []
-    for source in @config.sourcesInOrder
-      data.push baseData[source] if baseData[source].present
-
-    # Legend content is reversed because graph elements are built bottom to top,
-    # but html elements will be laid out top to bottom.
-    data.reverse()
-    data
-
-
-  provincesBlackAndWhiteDictionary: ->
-    AB:
-      key: 'AB'
-      tooltip: Tr.regionSelector.names.AB[@app.language]
-      present: true
-      colour: if @config.province == 'AB' then '#333' else '#fff'
-      img: if @config.province == 'AB' then 'IMG/provinces/radio/AB_SelectedR.svg' else 'IMG/provinces/radio/AB_UnselectedR.svg'
-    BC:
-      key: 'BC'
-      tooltip: Tr.regionSelector.names.BC[@app.language]
-      present: true
-      colour: if @config.province == 'BC' then '#333' else '#fff'
-      img: if @config.province == 'BC' then 'IMG/provinces/radio/BC_SelectedR.svg' else 'IMG/provinces/radio/BC_UnselectedR.svg'
-    MB:
-      key: 'MB'
-      tooltip: Tr.regionSelector.names.MB[@app.language]
-      present: true
-      colour: if @config.province == 'MB' then '#333' else '#fff'
-      img: if @config.province == 'MB' then 'IMG/provinces/radio/MB_SelectedR.svg' else 'IMG/provinces/radio/MB_UnselectedR.svg'
-    NB:
-      key: 'NB'
-      tooltip: Tr.regionSelector.names.NB[@app.language]
-      present: true
-      colour: if @config.province == 'NB' then '#333' else '#fff'
-      img: if @config.province == 'NB' then 'IMG/provinces/radio/NB_SelectedR.svg' else 'IMG/provinces/radio/NB_UnselectedR.svg'
-    NL:
-      key : 'NL'
-      tooltip: Tr.regionSelector.names.NL[@app.language]
-      present: true
-      colour: if @config.province == 'NL' then '#333' else '#fff'
-      img: if @config.province == 'NL' then 'IMG/provinces/radio/NL_SelectedR.svg' else 'IMG/provinces/radio/NL_UnselectedR.svg'
-    NS:
-      key: 'NS'
-      tooltip: Tr.regionSelector.names.NS[@app.language]
-      present: true
-      colour: if @config.province == 'NS' then '#333' else '#fff'
-      img: if @config.province == 'NS' then 'IMG/provinces/radio/NS_SelectedR.svg' else 'IMG/provinces/radio/NS_UnselectedR.svg'
-    NT:
-      key: 'NT'
-      tooltip: Tr.regionSelector.names.NT[@app.language]
-      present: true
-      colour: if @config.province == 'NT' then '#333' else '#fff'
-      img: if @config.province == 'NT' then 'IMG/provinces/radio/NT_SelectedR.svg' else 'IMG/provinces/radio/NT_UnselectedR.svg'
-    NU:
-      key: 'NU'
-      tooltip: Tr.regionSelector.names.NU[@app.language]
-      present: true
-      colour: if @config.province == 'NU' then '#333' else '#fff'
-      img: if @config.province == 'NU' then 'IMG/provinces/radio/NU_SelectedR.svg' else 'IMG/provinces/radio/NU_UnselectedR.svg'
-    ON:
-      key: 'ON'
-      tooltip: Tr.regionSelector.names.ON[@app.language]
-      present: true
-      colour: if @config.province == 'ON' then '#333' else '#fff'
-      img: if @config.province == 'ON' then 'IMG/provinces/radio/ON_SelectedR.svg' else 'IMG/provinces/radio/ON_UnselectedR.svg'
-    PE:
-      key: 'PE'
-      tooltip: Tr.regionSelector.names.PE[@app.language]
-      present: true
-      colour: if @config.province == 'PE' then '#333' else '#fff'
-      img: if @config.province == 'PE' then 'IMG/provinces/radio/PEI_SelectedR.svg' else 'IMG/provinces/radio/PEI_UnselectedR.svg'
-    QC:
-      key: 'QC'
-      tooltip: Tr.regionSelector.names.QC[@app.language]
-      present: true
-      colour: if @config.province == 'QC' then '#333' else '#fff'
-      img: if @config.province == 'QC' then 'IMG/provinces/radio/QC_SelectedR.svg' else 'IMG/provinces/radio/QC_UnselectedR.svg'
-    SK:
-      key: 'SK'
-      tooltip: Tr.regionSelector.names.SK[@app.language]
-      present: true
-      colour: if @config.province == 'SK' then '#333' else '#fff'
-      img: if @config.province == 'SK' then 'IMG/provinces/radio/Sask_SelectedR.svg' else 'IMG/provinces/radio/Sask_UnselectedR.svg'
-    YT:
-      key: 'YT'
-      tooltip: Tr.regionSelector.names.YT[@app.language]
-      present: true
-      colour: if @config.province == 'YT' then '#333' else '#fff'
-      img: if @config.province == 'YT' then 'IMG/provinces/radio/Yukon_SelectedR.svg' else 'IMG/provinces/radio/Yukon_UnselectedR.svg'
-
-  provincesBlackDictionary: ->
-    AB:
-      key: 'AB'
-      present: true
-      colour: if @config.province == 'AB' then '#333' else '#fff'
-      img: 'IMG/provinces/radio/AB_SelectedR.svg'
-    BC:
-      key: 'BC'
-      present: true
-      colour: if @config.province == 'BC' then '#333' else '#fff'
-      img: 'IMG/provinces/radio/BC_SelectedR.svg'
-    MB:
-      key: 'MB'
-      present: true
-      colour: if @config.province == 'MB' then '#333' else '#fff'
-      img: 'IMG/provinces/radio/MB_SelectedR.svg'
-    NB:
-      key: 'NB'
-      present: true
-      colour: if @config.province == 'NB' then '#333' else '#fff'
-      img: 'IMG/provinces/radio/NB_SelectedR.svg'
-    NL:
-      key : 'NL'
-      present: true
-      colour: if @config.province == 'NL' then '#333' else '#fff'
-      img: 'IMG/provinces/radio/NL_SelectedR.svg'
-    NS:
-      key: 'NS'
-      present: true
-      colour: if @config.province == 'NS' then '#333' else '#fff'
-      img: 'IMG/provinces/radio/NS_SelectedR.svg'
-    NT:
-      key: 'NT'
-      present: true
-      colour: if @config.province == 'NT' then '#333' else '#fff'
-      img: 'IMG/provinces/radio/NT_SelectedR.svg'
-    NU:
-      key: 'NU'
-      present: true
-      colour: if @config.province == 'NU' then '#333' else '#fff'
-      img: 'IMG/provinces/radio/NU_SelectedR.svg'
-    ON:
-      key: 'ON'
-      present: true
-      colour: if @config.province == 'ON' then '#333' else '#fff'
-      img: 'IMG/provinces/radio/ON_SelectedR.svg'
-    PE:
-      key: 'PE'
-      present: true
-      colour: if @config.province == 'PE' then '#333' else '#fff'
-      img: 'IMG/provinces/radio/PEI_SelectedR.svg'
-    QC:
-      key: 'QC'
-      present: true
-      colour: if @config.province == 'QC' then '#333' else '#fff'
-      img:'IMG/provinces/radio/QC_SelectedR.svg'
-    SK:
-      key: 'SK'
-      present: true
-      colour: if @config.province == 'SK' then '#333' else '#fff'
-      img: 'IMG/provinces/radio/Sask_SelectedR.svg'
-    YT:
-      key: 'YT'
-      present: true
-      colour: if @config.province == 'YT' then '#333' else '#fff'
-      img: 'IMG/provinces/radio/Yukon_SelectedR.svg'
-  
-  provincesDictionary: ->
-    provinceColours = {
-      BC:
-        key: 'BC'
-        present: if @config.provinces.includes 'BC' then true else false
-        colour: '#AEC7E8'
-        img:
-          if @zeroedOut 'BC'
-            'IMG/provinces/DataUnavailable/BC_Unavailable.svg'
-          else
-            if @config.provinces.includes 'BC' then 'IMG/provinces/colour/BC_Selected.svg' else 'IMG/provinces/colour/BC_Unselected.svg'
-      AB:
-        key: 'AB'
-        present: if @config.provinces.includes 'AB' then true else false
-        colour: '#2278b5'
-        img:
-          if @zeroedOut 'AB'
-            'IMG/provinces/DataUnavailable/AB_Unavailable.svg'
-          else
-            if @config.provinces.includes 'AB' then 'IMG/provinces/colour/AB_Selected.svg' else 'IMG/provinces/colour/AB_Unselected.svg'
-      SK:
-        key: 'SK'
-        present: if @config.provinces.includes 'SK' then true else false
-        colour: '#d77ab1'
-        img:
-          if @zeroedOut 'SK'
-            'IMG/provinces/DataUnavailable/SK_Unavailable.svg'
-          else
-            if @config.provinces.includes 'SK' then 'IMG/provinces/colour/Sask_Selected.svg' else 'IMG/provinces/colour/Sask_Unselected.svg'
-      MB:
-        key: 'MB'
-        present: if @config.provinces.includes 'MB' then true else false
-        colour: '#FCBB78'
-        img:
-          if @zeroedOut 'MB'
-            'IMG/provinces/DataUnavailable/MB_Unavailable.svg'
-          else
-            if @config.provinces.includes 'MB' then 'IMG/provinces/colour/MB_Selected.svg' else 'IMG/provinces/colour/MB_Unselected.svg'
-      ON:
-        key: 'ON'
-        present: if @config.provinces.includes 'ON' then true else false
-        colour: '#C5B1D6'
-        img:
-          if @zeroedOut 'ON'
-            'IMG/provinces/DataUnavailable/ON_Unavailable.svg'
-          else
-            if @config.provinces.includes 'ON' then 'IMG/provinces/colour/ON_Selected.svg' else 'IMG/provinces/colour/ON_Unselected.svg'
-      QC:
-        key: 'QC'
-        present: if @config.provinces.includes 'QC' then true else false
-        colour: '#c49c94'
-        img:
-          if @zeroedOut 'QC'
-            'IMG/provinces/DataUnavailable/QC_Unavailable.svg'
-          else
-            if @config.provinces.includes 'QC' then 'IMG/provinces/colour/QC_Selected.svg' else 'IMG/provinces/colour/QC_Unselected.svg'
-      NB:
-        key: 'NB'
-        present: if @config.provinces.includes 'NB' then true else false
-        colour: '#2FA148'
-        img:
-          if @zeroedOut 'NB'
-            'IMG/provinces/DataUnavailable/NB_Unavailable.svg'
-          else
-            if @config.provinces.includes 'NB' then 'IMG/provinces/colour/NB_Selected.svg' else 'IMG/provinces/colour/NB_Unselected.svg'
-      NS:
-        key: 'NS'
-        present: if @config.provinces.includes 'NS' then true else false
-        colour: '#F69797'
-        img:
-          if @zeroedOut 'NS'
-            'IMG/provinces/DataUnavailable/NS_Unavailable.svg'
-          else
-            if @config.provinces.includes 'NS' then 'IMG/provinces/colour/NS_Selected.svg' else 'IMG/provinces/colour/NS_Unselected.svg'
-      NL:
-        key: 'NL'
-        present: if @config.provinces.includes 'NL' then true else false
-        colour: '#9ED089'
-        img:
-          if @zeroedOut 'NL'
-            'IMG/provinces/DataUnavailable/NL_Unavailable.svg'
-          else
-            if @config.provinces.includes 'NL' then 'IMG/provinces/colour/NL_Selected.svg' else 'IMG/provinces/colour/NL_Unselected.svg'
-      PE:
-        key: 'PE'
-        present: if @config.provinces.includes 'PE' then true else false
-        colour: '#8D574C'
-        img:
-          if @zeroedOut 'PE'
-            'IMG/provinces/DataUnavailable/PEI_Unavailable.svg'
-          else
-            if @config.provinces.includes 'PE' then 'IMG/provinces/colour/PEI_Selected.svg' else 'IMG/provinces/colour/PEI_Unselected.svg'
-      YT:
-        key: 'YT'
-        present: if @config.provinces.includes 'YT' then true else false
-        colour: '#F5B6D1'
-        img:
-          if @zeroedOut 'YT'
-            'IMG/provinces/DataUnavailable/Yukon_Unavailable.svg'
-          else
-            if @config.provinces.includes 'YT' then 'IMG/provinces/colour/Yukon_Selected.svg' else 'IMG/provinces/colour/Yukon_Unselected.svg'
-      NT:
-        key: 'NT'
-        present: if @config.provinces.includes 'NT' then true else false
-        colour: '#D62A28'
-        img:
-          if @zeroedOut 'NT'
-            'IMG/provinces/DataUnavailable/NT_Unavailable.svg'
-          else
-            if @config.provinces.includes 'NT' then 'IMG/provinces/colour/NT_Selected.svg' else 'IMG/provinces/colour/NT_Unselected.svg'
-      NU:
-        key: 'NU'
-        present: if @config.provinces.includes 'NU' then true else false
-        colour: '#9268ac'
-        img:
-          if @zeroedOut 'NU'
-            'IMG/provinces/DataUnavailable/NU_Unavailable.svg'
-          else
-            if @config.provinces.includes 'NU' then 'IMG/provinces/colour/NU_Selected.svg' else 'IMG/provinces/colour/NU_Unselected.svg'
-    }
-    # Ordering based on the constant
-    provincesDicInOrder = {}
-    for province in Constants.provinces
-      provincesDicInOrder[province] = provinceColours[province]
-    provincesDicInOrder
-
-  provinceMenuData: ->
-    data = {}
-    for province in @config.provincesInOrder
-      data[province] = @provincesDictionary()[province]
-    data
-
-  provinceLegendData: ->
-    baseData =
-      BC:
-        present: @config.provinces.includes('BC') and not @zeroedOut 'BC'
-        img: 'IMG/provinces/colour/BC_Selected.svg'
-      AB:
-        present: @config.provinces.includes('AB') and not @zeroedOut 'AB'
-        img: 'IMG/provinces/colour/AB_Selected.svg'
-      SK:
-        present: @config.provinces.includes('SK') and not @zeroedOut 'SK'
-        img: 'IMG/provinces/colour/Sask_Selected.svg'
-      MB:
-        present: @config.provinces.includes('MB') and not @zeroedOut 'MB'
-        img: 'IMG/provinces/colour/MB_Selected.svg'
-      ON:
-        present: @config.provinces.includes('ON') and not @zeroedOut 'ON'
-        img: 'IMG/provinces/colour/ON_Selected.svg'
-      QC:
-        present: @config.provinces.includes('QC') and not @zeroedOut 'QC'
-        img: 'IMG/provinces/colour/QC_Selected.svg'
-      NB:
-        present: @config.provinces.includes('NB') and not @zeroedOut 'NB'
-        img: 'IMG/provinces/colour/NB_Selected.svg'
-      NS:
-        present: @config.provinces.includes('NS') and not @zeroedOut 'NS'
-        img: 'IMG/provinces/colour/NS_Selected.svg'
-      NL:
-        present: @config.provinces.includes('NL') and not @zeroedOut 'NL'
-        img: 'IMG/provinces/colour/NL_Selected.svg'
-      PE:
-        present: @config.provinces.includes('PE') and not @zeroedOut 'PE'
-        img: 'IMG/provinces/colour/PEI_Selected.svg'
-      YT:
-        present: @config.provinces.includes('YT') and not @zeroedOut 'YT'
-        img: 'IMG/provinces/colour/Yukon_Selected.svg'
-      NT:
-        present: @config.provinces.includes('NT') and not @zeroedOut 'NT'
-        img: 'IMG/provinces/colour/NT_Selected.svg'
-      NU:
-        present: @config.provinces.includes('NU') and not @zeroedOut 'NU'
-        img: 'IMG/provinces/colour/NU_Selected.svg'
-    
-    data = []
-    for province in @config.provincesInOrder
-      data.push baseData[province] if baseData[province].present
-
-    # Legend content is reversed because graph elements are built bottom to top,
-    # but html elements will be laid out top to bottom.
-    data.reverse()
-    data
-
-
-
-  dataForStackMenu: ->
-    if @config.viewBy == 'province'
-      @sourceMenuData()
-    else
-      @provinceMenuData()
-
-  dataForSingleSelectMenu: ->
-    mappingForSingleSelectMenu = []
-    if @config.viewBy == 'province' then startingData = @provincesBlackAndWhiteDictionary() else startingData = @sourcesBlackAndWhiteDictionary()
-    for key, element of startingData
-      mappingForSingleSelectMenu.push element
-    mappingForSingleSelectMenu
-
-  addLabelsToData: (data) ->
-    if @config.viewBy == 'province'
-      for singleSelectBubble in data.children
-        singleSelectBubble.img = @provincesBlackDictionary()[singleSelectBubble.name].img
-    else
-      for singleSelectBubble in data.children
-        singleSelectBubble.img = @sourcesBlackDictionary()[singleSelectBubble.name].img
-    data
-
-
-  # The 'correct' scale used by the graph
-  yearScale: ->
-    d3.scale.linear()
-        .domain([
-          2005
-          2040
-        ])
-        .range [
-          @timelineMargin
-          @timelineRightEnd()
-        ]
-
-  yearAxis: ->
-    d3.svg.axis()
-      .scale(@yearScale())
-      .tickSize(10,2)
-      .ticks(7)
-      .tickFormat (d) ->
-        if d == 2005 or d == 2040 then d else ''
-      .orient 'bottom'
 
   buildYearAxis: ->
     axis = d3.select(@app.window.document).select '#timelineAxis'
@@ -840,7 +308,7 @@ class Visualization3 extends visualization
         transform: "translate( 0, #{@height() + @_margin.top + @sliderLabelHeight})"
       .call @yearAxis()
       
-    #We need a wider target for the click so we use a separate group
+    # We need a wider target for the click so we use a separate group
     d3.select(@app.window.document).select('#timeLineTouch')
       .attr
         class: 'pointerCursor'
@@ -1034,257 +502,256 @@ class Visualization3 extends visualization
     @buildSliderLabel()
     @buildSliderButtons()
 
-  getSelectionState: ->
-    if @config.viewBy == 'province'
-      if @config.sourcesInOrder.length != @config.sources.length
-        allSelected = false
-        if @config.sources.length > 0
-          someSelected = true
-        else
-          someSelected = false
-      else
-        allSelected = true
-        someSelected = false
-    else
-      if @config.provincesInOrder.length != @config.provinces.length
-        allSelected = false
-        if @config.provinces.length > 0
-          someSelected = true
-        else
-          someSelected = false
-      else
-        allSelected = true
-        someSelected = false
-    {
-      allSelected: allSelected
-      someSelected: someSelected
-    }
-
-  # This is pretty messy. Since we want the spacing of the sources to match the spacing
-  # of the provinces but the provinces menu is space out based on its height... we need
-  # to set one based on the other.
-  setIconSpacing: ->
-    if @config.viewBy == 'province'
-      @_chart.menu.setIconSpacing @singleSelectMenu.getIconSpacing()
-    else
-      @singleSelectMenu.setIconSpacing @_chart.menu.getIconSpacing()
-
-  getDataAndRender: ->
-    @getData()
-    @render()
-
-  getData: ->
-    @seriesData = @addLabelsToData @app.providers[@config.dataset].electricityProductionProvider.dataForViz3(@config)
-
-  render: ->
-    if @_chart?
-      @adjustViz()
-    else
-      @buildViz()
-
-    # update the csv data download link
-    d3.select(@app.window.document).select '#dataDownloadLink'
-      .attr
-        href: "csv_data#{ParamsToUrlString(@config.routerParams())}"
-
-  buildViz:  ->
-    @buildTimeline()
-    # Black and white non multi select menu.
-    @buildSingleSelectMenu()
-    @buildMultiSelectMenu()
-
-    parent = if @config.viewBy == 'province' then '#powerSourceMenuSVG' else '#provinceMenuSVG'
-    bubbleOptions =
-      size:
-        w: @width()
-        h: @height()
-      position:
-        x: @_margin.left
-        y: @_margin.top
-      data: @seriesData
-      year: @config.year
-      groupId: 'graphGroup'
-      mapping: @dataForStackMenu()
-      duration: @app.animationDuration
-    @_chart = new bubbleChart @app, '#graphSVG', bubbleOptions
-    @setIconSpacing()
-
-
-  adjustViz: ->
-    @_chart.menu.someSelected @getSelectionState().someSelected
-    @_chart.menu.allSelected @getSelectionState().allSelected
-    @_chart.mapping @dataForStackMenu()
-    @_chart.year @config.year
-    @_chart.data @seriesData
-
-  # When swapping between views (province and type) we need to regenerate the menus
-  toggleViz: ->
-    @app.popoverManager.closePopover()
-
-    # Filters should not apply between them as the display options change
-    @config.setProvince 'all'
-    @config.setSource 'total'
-    @config.resetSources true
-    @config.resetProvinces true
-
-    @seriesData = @addLabelsToData @app.providers[@config.dataset].electricityProductionProvider.dataForViz3(@config)
-    @_chart.mapping @dataForStackMenu()
-    @_chart.menu.someSelected @getSelectionState().someSelected
-    @_chart.menu.allSelected @getSelectionState().allSelected
-    @_chart.data @seriesData
-
-    @singleSelectMenu._allSelected = true
-    @singleSelectMenu.data @dataForSingleSelectMenu()
-
-    # Swapping spots is easier than hooking the menus up with the appropriate charts :)
-    # TODO: This is the single biggest hack that I wish I had time to fix...
-    newParentForChartMenu = @singleSelectMenu.parent()
-    @singleSelectMenu.moveMenu @_chart.menu.parent()
-    @_chart.menu.moveMenu newParentForChartMenu
-    @setIconSpacing()
-
-
-  selectAllBubbles: (selecting) =>
-
-    newConfig = new @config.constructor @app
-    newConfig.copy @config
-    if @config.viewBy == 'province'
-      newConfig.resetSources selecting
-    else
-      newConfig.resetProvinces selecting
-
-    update = =>
-      if @config.viewBy == 'province'
-        @config.resetSources selecting
-      else
-        @config.resetProvinces selecting
-      @getDataAndRender()
-      @app.router.navigate @config.routerParams()
-
-    @app.datasetRequester.updateAndRequestIfRequired newConfig, update
 
 
 
-  # Select one callback for the current multiselect
-  menuSelect: (key) =>
 
-    newConfig = new @config.constructor @app
-    newConfig.copy @config
-    newConfig.flip key
-
-    update = =>
-      @config.flip key
-      @getDataAndRender()
-      @app.router.navigate @config.routerParams()
-
-    @app.datasetRequester.updateAndRequestIfRequired newConfig, update
-
-
-
-  # Black and white non multi select menu
-  buildSingleSelectMenu: ->
-
-    selectAll = if @config.viewBy == 'province' then @config.province == 'all' else @config.source == 'total'
-
-    parent = if @config.viewBy == 'province' then '#provinceMenuSVG' else '#powerSourceMenuSVG'
-
+  buildProvinceMenu: ->
     options =
-      size:
-        w: d3.select(@app.window.document).select(parent).node().getBoundingClientRect().width
-        h: @leftHandMenuHeight()
+      parentId: '#provinceMenuSVG'
       canDrag: false
-      hasChart: false
       boxSize: 37.5
-      onSelected: @singleSelectSelected
-      allSquareHandler: @selectAllSingleSelect
-      groupId: 'singleSelectMenu'
+      groupId: 'provinceMenuGroup'
       addAllSquare: true
-      showHelpHandler: =>
-        if @config.viewBy == 'province' then @showProvinceNames() else @showSourceNames()
+      onSelected: (dataDictionaryItem) =>
+        switch @config.viewBy
+          when 'province'
+            @singleButtonSingleProvince dataDictionaryItem
+          when 'source'
+            @singleButtonMultipleProvince dataDictionaryItem
+      allSquareHandler: =>
+        switch @config.viewBy
+          when 'province'
+            @allButtonSingleProvince()
+          when 'source'
+            @allButtonMultipleProvince()
+      showHelpHandler: @showProvinceNames
+      getAllIcon: =>
+        switch @config.viewBy
+          when 'province'
+            if @config.province == 'all'
+              Tr.allSelectorButton.all[@app.language]
+            else
+              Tr.allSelectorButton.none[@app.language]
+          
+          when 'source'
+            if @config.provinces.length == Constants.provinces.length
+              Tr.allSelectorButton.all[@app.language]
+            else if @config.provinces.length > 0
+              Tr.allSelectorButton.someSelected[@app.language]
+            else if @config.provinces.length == 0
+              Tr.allSelectorButton.none[@app.language]
 
-      allSelected: selectAll
+    state =
+      iconSpacing: 'auto'
+      size:
+        w: d3.select(@app.window.document).select('#provinceMenuSVG').node().getBoundingClientRect().width
+        h: @leftHandMenuHeight()
+      data: @dataForProvinceMenu()
 
-      # TODO: Unclear if this is used?
-      data: @dataForSingleSelectMenu()
+    @provinceMenu = new SquareMenu2 @app, options, state
 
-    @singleSelectMenu = new SquareMenu @app, parent, options
-
-  # Multicolor multiple selection menu
-  buildMultiSelectMenu: ->
-
-    parent = if @config.viewBy == 'province' then '#powerSourceMenuSVG' else '#provinceMenuSVG'
-
+  buildSourceMenu: ->
     options =
-      size:
-        w: d3.select(@app.window.document).select(parent).node().getBoundingClientRect().width
-        h: @leftHandMenuHeight()
+      parentId: '#powerSourceMenuSVG'
       canDrag: false
-      hasChart: true
       boxSize: 37.5
-      onSelected: @menuSelect
-      allSquareHandler: @selectAllBubbles
-      groupId: 'stackMenu'
+      groupId: 'sourceMenuGroup'
       addAllSquare: true
-      showHelpHandler: =>
-        if @config.viewBy == 'province' then @showSourceNames() else @showProvinceNames()
+      onSelected: (dataDictionaryItem) =>
+        switch @config.viewBy
+          when 'source'
+            @singleButtonSingleSource dataDictionaryItem
+          when 'province'
+            @singleButtonMultipleSource dataDictionaryItem
+      allSquareHandler: =>
+        switch @config.viewBy
+          when 'source'
+            @allButtonSingleSource()
+          when 'province'
+            @allButtonMultipleSource()
+      showHelpHandler: @showSourceNames
+      getAllIcon: =>
+        switch @config.viewBy
+          when 'source'
+            if @config.source == 'total'
+              Tr.allSelectorButton.all[@app.language]
+            else
+              Tr.allSelectorButton.none[@app.language]
+          
+          when 'province'
+            if @config.sources.length == Constants.viz3Sources.length
+              Tr.allSelectorButton.all[@app.language]
+            else if @config.sources.length > 0
+              Tr.allSelectorButton.someSelected[@app.language]
+            else if @config.sources.length == 0
+              Tr.allSelectorButton.none[@app.language]
 
-      allSelected: @getSelectionState().allSelected
-      someSelected: @getSelectionState().someSelected
+
+    state =
+      iconSpacing: @provinceMenu.getIconSpacing()
+      size:
+        w: d3.select(@app.window.document).select('#powerSourceMenuSVG').node().getBoundingClientRect().width
+        h: @leftHandMenuHeight()
+      data: @dataForSourceMenu()
+
+    @sourceMenu = new SquareMenu2 @app, options, state
 
 
 
 
 
-    @multiSelectMenu = new SquareMenu @app, parent, @options.menuOptions
 
 
 
-  selectAllSingleSelect: =>
 
+  ### Callbacks ###
+  # The two control menus for regions and power sources can each function in two ways:
+  # as single selection 'radio button' menus, or as multiple selection menus
+  # In addition, they each have an all button which works differently depending on which
+  # mode the menu is in.
+
+  # These handlers each take care of one case, the callbacks themselves decide on the
+  # handler to call
+  
+
+  allButtonSingleProvince: ->
     newConfig = new @config.constructor @app
     newConfig.copy @config
-    if @config.viewBy == 'province'
-      newConfig.setProvince 'all'
-    else
-      newConfig.setSource 'total'
+    newConfig.setProvince 'all'
 
     update = =>
-      if @config.viewBy == 'province'
-        @config.setProvince 'all'
-      else
-        @config.setSource 'total'
-      @singleSelectMenu._allSelected = true
-      @singleSelectMenu.data @dataForSingleSelectMenu()
+      @config.setProvince 'all'
       @getDataAndRender()
       @app.router.navigate @config.routerParams()
 
     @app.datasetRequester.updateAndRequestIfRequired newConfig, update
 
 
-
-
-  singleSelectSelected: (key, index) =>
-
-    item = @singleSelectMenu.mapping()[index]
-    
+  allButtonMultipleProvince: ->
     newConfig = new @config.constructor @app
     newConfig.copy @config
-    if @config.viewBy == 'province'
-      newConfig.setProvince item.key
-    else if @config.viewBy == 'source'
-      newConfig.setSource item.key
+    if @config.provinces.length == Constants.provinces.length
+      # If all provinces are present, select none
+      newConfig.resetProvinces false
+    else if @config.provinces.length > 0
+      # If some provinces are selected, select all
+      newConfig.resetProvinces true
+    else if @config.provinces.length == 0
+      # If no provinces are selected, select all
+      newConfig.resetProvinces true
 
     update = =>
-      @singleSelectMenu._allSelected = false
-      if @config.viewBy == 'province'
-        @config.setProvince item.key
-      else if @config.viewBy == 'source'
-        @config.setSource item.key
-      @singleSelectMenu.data @dataForSingleSelectMenu()
+      if @config.provinces.length == Constants.provinces.length
+        # If all provinces are present, select none
+        @config.resetProvinces false
+      else if @config.provinces.length > 0
+        # If some provinces are selected, select all
+        @config.resetProvinces true
+      else if @config.provinces.length == 0
+        # If no provinces are selected, select all
+        @config.resetProvinces true
+
       @getDataAndRender()
       @app.router.navigate @config.routerParams()
 
     @app.datasetRequester.updateAndRequestIfRequired newConfig, update
+  
+
+  allButtonSingleSource: ->
+    newConfig = new @config.constructor @app
+    newConfig.copy @config
+    newConfig.setSource 'total'
+
+    update = =>
+      @config.setSource 'total'
+      @getDataAndRender()
+      @app.router.navigate @config.routerParams()
+
+    @app.datasetRequester.updateAndRequestIfRequired newConfig, update
+  
+
+  allButtonMultipleSource: ->
+    newConfig = new @config.constructor @app
+    newConfig.copy @config
+    if @config.sources.length == Constants.viz3Sources.length
+      # If all sources are present, select none
+      newConfig.resetSources false
+    else if @config.sources.length > 0
+      # If some sources are selected, select all
+      newConfig.resetSources true
+    else if @config.sources.length == 0
+      # If no sources are selected, select all
+      newConfig.resetSources true
+
+    update = =>
+      if @config.sources.length == Constants.viz3Sources.length
+        # If all sources are present, select none
+        @config.resetSources false
+      else if @config.sources.length > 0
+        # If some sources are selected, select all
+        @config.resetSources true
+      else if @config.sources.length == 0
+        # If no sources are selected, select all
+        @config.resetSources true
+
+      @getDataAndRender()
+      @app.router.navigate @config.routerParams()
+
+    @app.datasetRequester.updateAndRequestIfRequired newConfig, update
+  
+
+  singleButtonSingleProvince: (dataDictionaryItem) ->
+    newConfig = new @config.constructor @app
+    newConfig.copy @config
+    newConfig.setProvince dataDictionaryItem.key
+
+    update = =>
+      @config.setProvince dataDictionaryItem.key
+      @getDataAndRender()
+      @app.router.navigate @config.routerParams()
+
+    @app.datasetRequester.updateAndRequestIfRequired newConfig, update
+
+  singleButtonMultipleProvince: (dataDictionaryItem) ->
+    newConfig = new @config.constructor @app
+    newConfig.copy @config
+    newConfig.flipProvince dataDictionaryItem.key
+
+    update = =>
+      @config.flipProvince dataDictionaryItem.key
+      @getDataAndRender()
+      @app.router.navigate @config.routerParams()
+
+    @app.datasetRequester.updateAndRequestIfRequired newConfig, update
+  
+
+  singleButtonSingleSource: (dataDictionaryItem) ->
+    newConfig = new @config.constructor @app
+    newConfig.copy @config
+    newConfig.setSource dataDictionaryItem.key
+
+    update = =>
+      @config.setSource dataDictionaryItem.key
+      @getDataAndRender()
+      @app.router.navigate @config.routerParams()
+
+    @app.datasetRequester.updateAndRequestIfRequired newConfig, update
+  
+
+  singleButtonMultipleSource: (dataDictionaryItem) ->
+    newConfig = new @config.constructor @app
+    newConfig.copy @config
+    newConfig.flipSource dataDictionaryItem.key
+
+    update = =>
+      @config.flipSource dataDictionaryItem.key
+      @getDataAndRender()
+      @app.router.navigate @config.routerParams()
+
+    @app.datasetRequester.updateAndRequestIfRequired newConfig, update
+
+
 
 
 
@@ -1294,10 +761,10 @@ class Visualization3 extends visualization
     if @app.popoverManager.currentPopover == @sourcesHelpPopover
       @app.popoverManager.closePopover()
     else
-      if @config.viewBy == 'province' then images = @colouredSourceIconsDictionary() else images = @sourcesBlackDictionary()
+      if @config.viewBy == 'province' then images = @sourceColorIcons() else images = @sourceBlackIcons()
       #Grab the provinces in order for the string
       contentString = ''
-      for key of @sourceMenuData()
+      for key of @sourceColorMenuDictionary()
         contentString = """
           <div class="#{if @config.viewBy == "source" then 'sourceLabel'  else 'sourceLabel sourceLabel' + key}">
             <img class="sourceIcon" src="#{images[key].img}" alt="#{Tr.altText.sources[key][@app.language]}">
@@ -1323,7 +790,7 @@ class Visualization3 extends visualization
     else
       #Grab the provinces in order for the string
       contentString = ''
-      for province of @provinceMenuData()
+      for province of @provinceColorMenuDictionary()
         contentString = """<div class="#{if @config.viewBy == 'province' then 'provinceLabel' else 'provinceLabel provinceLabel' + province}"> <h2> #{Tr.regionSelector.names[province][@app.language]} </h2> </div>""" + contentString
 
       @app.popoverManager.showPopover @provincesHelpPopover,
@@ -1332,5 +799,604 @@ class Visualization3 extends visualization
         content: contentString
         attachmentSelector: '#provincesSelector'
       @app.analyticsReporter.reportEvent 'Controls help', 'Viz3 region help'
+
+
+
+
+
+
+
+
+
+
+
+
+
+  ### Helper functions ###
+
+  # the graph's height
+  height: ->
+    height - @_margin.top - @_margin.bottom
+
+  # We want this menu to line up with the bottom of the x axis TICKS so those must be
+  # built before we can set this.
+  leftHandMenuHeight: ->
+    @height() + d3.select(@app.window.document).select('#timelineAxis').node().getBoundingClientRect().height
+
+  # the graph's width
+  width: ->
+    # getBoundingClientRect is not implemented in JSDOM, use fixed width on server
+    if Platform.name == 'browser'
+      d3.select(@app.window.document).select('#graphPanel').node().getBoundingClientRect().width - @_margin.left - @_margin.right
+    else if Platform.name == 'server'
+      Constants.serverSideGraphWidth - @_margin.left - @_margin.right
+
+
+  timelineRightEnd: ->
+    @getSvgWidth() - @timelineMargin
+
+  getSvgWidth: ->
+    # getBoundingClientRect is not implemented in JSDOM, use fixed width on server
+    if Platform.name == 'browser'
+      svgWidth = d3.select(@app.window.document).select('#graphPanel').node().getBoundingClientRect().width
+    else if Platform.name == 'server'
+      svgWidth = Constants.serverSideGraphWidth
+
+    svgWidth
+
+
+  # The 'correct' scale used by the graph
+  yearScale: ->
+    d3.scale.linear()
+      .domain([
+        2005
+        2040
+      ])
+      .range [
+        @timelineMargin
+        @timelineRightEnd()
+      ]
+
+  yearAxis: ->
+    d3.svg.axis()
+      .scale(@yearScale())
+      .tickSize(10,2)
+      .ticks(7)
+      .tickFormat (d) ->
+        if d == 2005 or d == 2040 then d else ''
+      .orient 'bottom'
+
+
+
+
+
+  ### Data dictionaries for D3 data join driven components ###
+
+  # Used for chart bubbles colours
+  menuDataForChart: ->
+    switch @config.viewBy
+      when 'province'
+        @sourceColorMenuDictionary()
+      when 'source'
+        @provinceColorMenuDictionary()
+
+  dataForProvinceMenu: ->
+    dataHash = switch @config.viewBy
+      when 'province'
+        @provinceBlackMenuDictionary()
+      when 'source'
+        @provinceColorMenuDictionary()
+
+    dataArray = []
+    for province in Constants.provinces
+      dataArray.push dataHash[province]
+    dataArray
+
+  dataForSourceMenu: ->
+    dataHash = switch @config.viewBy
+      when 'province'
+        @sourceColorMenuDictionary()
+      when 'source'
+        @sourceBlackMenuDictionary()
+
+    dataArray = []
+    for source in Constants.viz3Sources
+      dataArray.push dataHash[source]
+    dataArray
+
+
+  viewByData: ->
+    [
+      {
+        title: Tr.selectorTooltip.viewBySelector.viewByProvinceButton[@app.language]
+        label: Tr.viewBySelector.viewByProvinceButton[@app.language]
+        viewByName: 'province'
+        class: if @config.viewBy == 'province' then 'vizButton selected' else 'vizButton'
+      }
+      {
+        title: Tr.selectorTooltip.viewBySelector.viewBySourceButton[@app.language]
+        label: Tr.viewBySelector.viewBySourceButton[@app.language]
+        viewByName: 'source'
+        class: if @config.viewBy == 'source' then 'vizButton selected' else 'vizButton'
+      }
+    ]
+
+  # When @seriesData.children.length != 1, we are looking at all regions or all sources
+  # on the current single selection menu. Since all of the corresponding multi select
+  # options will have some data, we skip the 'zeroedOut' check and do not show any of the
+  # icons with a grey slash
+  zeroedOut: (key) ->
+    if !(@seriesData) or !(@seriesData.children) or (@seriesData.children.length != 1) then return false
+    itemKey = @seriesData.children[0].children.filter (item) -> item.source == key
+    if itemKey.length == 0 then true else false
+    
+
+
+
+  sourceColorMenuDictionary: ->
+    hydro:
+      key: 'hydro'
+      tooltip: Tr.sourceSelector.sourceSelectorHelp.hydro[@app.language]
+      img:
+        if @zeroedOut('hydro')
+          'IMG/sources/unavailable/hydro_unavailable.svg'
+        else
+          if @config.sources.includes 'hydro' then 'IMG/sources/hydro_selected.svg' else 'IMG/sources/hydro_unselected.svg'
+      present: if @config.sources.includes 'hydro' then true else false
+      colour: '#4167b1'
+    solarWindGeothermal:
+      key: 'solarWindGeothermal'
+      tooltip: Tr.sourceSelector.sourceSelectorHelp.solarWindGeothermal[@app.language]
+      img:
+        if @zeroedOut('solarWindGeothermal')
+          'IMG/sources/unavailable/solarWindGeo_unavailable.svg'
+        else
+          if @config.sources.includes 'solarWindGeothermal' then 'IMG/sources/solarWindGeo_selected.svg' else 'IMG/sources/solarWindGeo_unselected.svg'
+      present: if @config.sources.includes 'solarWindGeothermal' then true else false
+      colour: '#339947'
+    coal:
+      key: 'coal'
+      tooltip: Tr.sourceSelector.sourceSelectorHelp.coal[@app.language]
+      img:
+        if @zeroedOut('coal')
+          'IMG/sources/unavailable/coal_unavailable.svg'
+        else
+          if @config.sources.includes 'coal' then 'IMG/sources/coal_selected.svg' else 'IMG/sources/coal_unselected.svg'
+      present: if @config.sources.includes 'coal' then true else false
+      colour: '#996733'
+    naturalGas:
+      key: 'naturalGas'
+      tooltip: Tr.sourceSelector.sourceSelectorHelp.naturalGas[@app.language]
+      img:
+        if @zeroedOut('naturalGas')
+          'IMG/sources/unavailable/naturalGas_unavailable.svg'
+        else
+          if @config.sources.includes 'naturalGas' then 'IMG/sources/naturalGas_selected.svg' else 'IMG/sources/naturalGas_unselected.svg'
+      present: if @config.sources.includes 'naturalGas' then true else false
+      colour: '#f16739'
+    bio:
+      key: 'bio'
+      tooltip: Tr.sourceSelector.sourceSelectorHelp.bio[@app.language]
+      img:
+        if @zeroedOut('bio')
+          'IMG/sources/unavailable/biomass_unavailable.svg'
+        else
+          if @config.sources.includes 'bio' then 'IMG/sources/biomass_selected.svg' else 'IMG/sources/biomass_unselected.svg'
+      present: if @config.sources.includes 'bio' then true else false
+      colour: '#8d68ac'
+    oilProducts:
+      key: 'oilProducts'
+      tooltip: Tr.sourceSelector.sourceSelectorHelp.oilProducts[@app.language]
+      img:
+        if @zeroedOut('oilProducts')
+          'IMG/sources/unavailable/oil_products_unavailable.svg'
+        else
+          if @config.sources.includes 'oilProducts' then 'IMG/sources/oil_products_selected.svg' else 'IMG/sources/oil_products_unselected.svg'
+      present: if @config.sources.includes 'oilProducts' then true else false
+      colour: '#cc6699'
+    nuclear:
+      key: 'nuclear'
+      tooltip: Tr.sourceSelector.sourceSelectorHelp.nuclear[@app.language]
+      img:
+        if @zeroedOut('nuclear')
+          'IMG/sources/unavailable/nuclear_unavailable.svg'
+        else
+          if @config.sources.includes 'nuclear' then 'IMG/sources/nuclear_selected.svg' else 'IMG/sources/nuclear_unselected.svg'
+      present: if @config.sources.includes 'nuclear' then true else false
+      colour: '#cccb31'
+      
+
+
+  sourceBlackMenuDictionary: ->
+    hydro:
+      key: 'hydro'
+      img: if @config.source == 'hydro' then 'IMG/sources/hydro_selectedR.svg' else 'IMG/sources/hydro_unselectedR.svg'
+      present: true
+      colour: '#4167b1'
+    solarWindGeothermal:
+      key: 'solarWindGeothermal'
+      img: if @config.source == 'solarWindGeothermal' then 'IMG/sources/solarWindGeo_selectedR.svg' else 'IMG/sources/solarWindGeo_unselectedR.svg'
+      present: true
+      colour: '#339947'
+    coal:
+      key: 'coal'
+      img: if @config.source == 'coal' then 'IMG/sources/coal_selectedR.svg' else 'IMG/sources/coal_unselectedR.svg'
+      present: true
+      colour: '#996733'
+    naturalGas:
+      key: 'naturalGas'
+      img: if @config.source == 'naturalGas' then 'IMG/sources/naturalGas_selectedR.svg' else 'IMG/sources/naturalGas_unselectedR.svg'
+      present: true
+      colour: '#f16739'
+    bio:
+      key: 'bio'
+      img: if @config.source == 'bio' then 'IMG/sources/biomass_selectedR.svg' else 'IMG/sources/biomass_unselectedR.svg'
+      present: true
+      colour: '#8d68ac'
+    nuclear:
+      key: 'nuclear'
+      img: if @config.source == 'nuclear' then 'IMG/sources/nuclear_selectedR.svg' else 'IMG/sources/nuclear_unselectedR.svg'
+      present: true
+      colour: '#cccb31'
+    oilProducts:
+      key: 'oilProducts'
+      img: if @config.source == 'oilProducts' then 'IMG/sources/oil_products_selectedR.svg' else 'IMG/sources/oil_products_unselectedR.svg'
+      present: true
+      colour: '#cc6699'
+    
+
+  sourceBlackIcons: ->
+    hydro:
+      img: 'IMG/sources/hydro_selectedR.svg'
+    solarWindGeothermal:
+      img: 'IMG/sources/solarWindGeo_selectedR.svg'
+    coal:
+      img: 'IMG/sources/coal_selectedR.svg'
+    naturalGas:
+      img: 'IMG/sources/naturalGas_selectedR.svg'
+    bio:
+      img: 'IMG/sources/biomass_selectedR.svg'
+    nuclear:
+      img: 'IMG/sources/nuclear_selectedR.svg'
+    oilProducts:
+      img: 'IMG/sources/oil_products_selectedR.svg'
+
+  # sourceColorIcons is only used for the sources help popover
+  # NB: There is no equivalent provinceColorIcons, because we do not show region icons
+  # on the help popover for regions
+  sourceColorIcons: ->
+    hydro:
+      img: 'IMG/sources/hydro_selected.svg'
+    solarWindGeothermal:
+      img: 'IMG/sources/solarWindGeo_selected.svg'
+    coal:
+      img: 'IMG/sources/coal_selected.svg'
+    naturalGas:
+      img: 'IMG/sources/naturalGas_selected.svg'
+    bio:
+      img: 'IMG/sources/biomass_selected.svg'
+    oilProducts:
+      img: 'IMG/sources/oil_products_selected.svg'
+    nuclear:
+      img: 'IMG/sources/nuclear_selected.svg'
+
+  sourceLegendData: ->
+    baseData =
+      hydro:
+        img: 'IMG/sources/hydro_selected.svg'
+        present: @config.sources.includes('hydro') and not @zeroedOut('hydro')
+      solarWindGeothermal:
+        img: 'IMG/sources/solarWindGeo_selected.svg'
+        present: @config.sources.includes('solarWindGeothermal') and not @zeroedOut('solarWindGeothermal')
+      coal:
+        img: 'IMG/sources/coal_selected.svg'
+        present: @config.sources.includes('coal') and not @zeroedOut('coal')
+      naturalGas:
+        img: 'IMG/sources/naturalGas_selected.svg'
+        present: @config.sources.includes('naturalGas') and not @zeroedOut('naturalGas')
+      bio:
+        img: 'IMG/sources/biomass_selected.svg'
+        present: @config.sources.includes('bio') and not @zeroedOut('bio')
+      oilProducts:
+        img: 'IMG/sources/oil_products_selected.svg'
+        present: @config.sources.includes('oilProducts') and not @zeroedOut('oilProducts')
+      nuclear:
+        img: 'IMG/sources/nuclear_selected.svg'
+        present: @config.sources.includes('nuclear') and not @zeroedOut('nuclear')
+
+    data = []
+    for source in Constants.viz3Sources
+      data.push baseData[source] if baseData[source].present
+
+    # Legend content is reversed because graph elements are built bottom to top,
+    # but html elements will be laid out top to bottom.
+    data.reverse()
+    data
+
+
+  provinceBlackMenuDictionary: ->
+    AB:
+      key: 'AB'
+      tooltip: Tr.regionSelector.names.AB[@app.language]
+      present: true
+      colour: if @config.province == 'AB' then '#333' else '#fff'
+      img: if @config.province == 'AB' then 'IMG/provinces/radio/AB_SelectedR.svg' else 'IMG/provinces/radio/AB_UnselectedR.svg'
+    BC:
+      key: 'BC'
+      tooltip: Tr.regionSelector.names.BC[@app.language]
+      present: true
+      colour: if @config.province == 'BC' then '#333' else '#fff'
+      img: if @config.province == 'BC' then 'IMG/provinces/radio/BC_SelectedR.svg' else 'IMG/provinces/radio/BC_UnselectedR.svg'
+    MB:
+      key: 'MB'
+      tooltip: Tr.regionSelector.names.MB[@app.language]
+      present: true
+      colour: if @config.province == 'MB' then '#333' else '#fff'
+      img: if @config.province == 'MB' then 'IMG/provinces/radio/MB_SelectedR.svg' else 'IMG/provinces/radio/MB_UnselectedR.svg'
+    NB:
+      key: 'NB'
+      tooltip: Tr.regionSelector.names.NB[@app.language]
+      present: true
+      colour: if @config.province == 'NB' then '#333' else '#fff'
+      img: if @config.province == 'NB' then 'IMG/provinces/radio/NB_SelectedR.svg' else 'IMG/provinces/radio/NB_UnselectedR.svg'
+    NL:
+      key : 'NL'
+      tooltip: Tr.regionSelector.names.NL[@app.language]
+      present: true
+      colour: if @config.province == 'NL' then '#333' else '#fff'
+      img: if @config.province == 'NL' then 'IMG/provinces/radio/NL_SelectedR.svg' else 'IMG/provinces/radio/NL_UnselectedR.svg'
+    NS:
+      key: 'NS'
+      tooltip: Tr.regionSelector.names.NS[@app.language]
+      present: true
+      colour: if @config.province == 'NS' then '#333' else '#fff'
+      img: if @config.province == 'NS' then 'IMG/provinces/radio/NS_SelectedR.svg' else 'IMG/provinces/radio/NS_UnselectedR.svg'
+    NT:
+      key: 'NT'
+      tooltip: Tr.regionSelector.names.NT[@app.language]
+      present: true
+      colour: if @config.province == 'NT' then '#333' else '#fff'
+      img: if @config.province == 'NT' then 'IMG/provinces/radio/NT_SelectedR.svg' else 'IMG/provinces/radio/NT_UnselectedR.svg'
+    NU:
+      key: 'NU'
+      tooltip: Tr.regionSelector.names.NU[@app.language]
+      present: true
+      colour: if @config.province == 'NU' then '#333' else '#fff'
+      img: if @config.province == 'NU' then 'IMG/provinces/radio/NU_SelectedR.svg' else 'IMG/provinces/radio/NU_UnselectedR.svg'
+    ON:
+      key: 'ON'
+      tooltip: Tr.regionSelector.names.ON[@app.language]
+      present: true
+      colour: if @config.province == 'ON' then '#333' else '#fff'
+      img: if @config.province == 'ON' then 'IMG/provinces/radio/ON_SelectedR.svg' else 'IMG/provinces/radio/ON_UnselectedR.svg'
+    PE:
+      key: 'PE'
+      tooltip: Tr.regionSelector.names.PE[@app.language]
+      present: true
+      colour: if @config.province == 'PE' then '#333' else '#fff'
+      img: if @config.province == 'PE' then 'IMG/provinces/radio/PEI_SelectedR.svg' else 'IMG/provinces/radio/PEI_UnselectedR.svg'
+    QC:
+      key: 'QC'
+      tooltip: Tr.regionSelector.names.QC[@app.language]
+      present: true
+      colour: if @config.province == 'QC' then '#333' else '#fff'
+      img: if @config.province == 'QC' then 'IMG/provinces/radio/QC_SelectedR.svg' else 'IMG/provinces/radio/QC_UnselectedR.svg'
+    SK:
+      key: 'SK'
+      tooltip: Tr.regionSelector.names.SK[@app.language]
+      present: true
+      colour: if @config.province == 'SK' then '#333' else '#fff'
+      img: if @config.province == 'SK' then 'IMG/provinces/radio/Sask_SelectedR.svg' else 'IMG/provinces/radio/Sask_UnselectedR.svg'
+    YT:
+      key: 'YT'
+      tooltip: Tr.regionSelector.names.YT[@app.language]
+      present: true
+      colour: if @config.province == 'YT' then '#333' else '#fff'
+      img: if @config.province == 'YT' then 'IMG/provinces/radio/Yukon_SelectedR.svg' else 'IMG/provinces/radio/Yukon_UnselectedR.svg'
+
+  provinceColorMenuDictionary: ->
+    BC:
+      key: 'BC'
+      present: if @config.provinces.includes 'BC' then true else false
+      colour: '#AEC7E8'
+      img:
+        if @zeroedOut 'BC'
+          'IMG/provinces/DataUnavailable/BC_Unavailable.svg'
+        else
+          if @config.provinces.includes 'BC' then 'IMG/provinces/colour/BC_Selected.svg' else 'IMG/provinces/colour/BC_Unselected.svg'
+    AB:
+      key: 'AB'
+      present: if @config.provinces.includes 'AB' then true else false
+      colour: '#2278b5'
+      img:
+        if @zeroedOut 'AB'
+          'IMG/provinces/DataUnavailable/AB_Unavailable.svg'
+        else
+          if @config.provinces.includes 'AB' then 'IMG/provinces/colour/AB_Selected.svg' else 'IMG/provinces/colour/AB_Unselected.svg'
+    SK:
+      key: 'SK'
+      present: if @config.provinces.includes 'SK' then true else false
+      colour: '#d77ab1'
+      img:
+        if @zeroedOut 'SK'
+          'IMG/provinces/DataUnavailable/SK_Unavailable.svg'
+        else
+          if @config.provinces.includes 'SK' then 'IMG/provinces/colour/Sask_Selected.svg' else 'IMG/provinces/colour/Sask_Unselected.svg'
+    MB:
+      key: 'MB'
+      present: if @config.provinces.includes 'MB' then true else false
+      colour: '#FCBB78'
+      img:
+        if @zeroedOut 'MB'
+          'IMG/provinces/DataUnavailable/MB_Unavailable.svg'
+        else
+          if @config.provinces.includes 'MB' then 'IMG/provinces/colour/MB_Selected.svg' else 'IMG/provinces/colour/MB_Unselected.svg'
+    ON:
+      key: 'ON'
+      present: if @config.provinces.includes 'ON' then true else false
+      colour: '#C5B1D6'
+      img:
+        if @zeroedOut 'ON'
+          'IMG/provinces/DataUnavailable/ON_Unavailable.svg'
+        else
+          if @config.provinces.includes 'ON' then 'IMG/provinces/colour/ON_Selected.svg' else 'IMG/provinces/colour/ON_Unselected.svg'
+    QC:
+      key: 'QC'
+      present: if @config.provinces.includes 'QC' then true else false
+      colour: '#c49c94'
+      img:
+        if @zeroedOut 'QC'
+          'IMG/provinces/DataUnavailable/QC_Unavailable.svg'
+        else
+          if @config.provinces.includes 'QC' then 'IMG/provinces/colour/QC_Selected.svg' else 'IMG/provinces/colour/QC_Unselected.svg'
+    NB:
+      key: 'NB'
+      present: if @config.provinces.includes 'NB' then true else false
+      colour: '#2FA148'
+      img:
+        if @zeroedOut 'NB'
+          'IMG/provinces/DataUnavailable/NB_Unavailable.svg'
+        else
+          if @config.provinces.includes 'NB' then 'IMG/provinces/colour/NB_Selected.svg' else 'IMG/provinces/colour/NB_Unselected.svg'
+    NS:
+      key: 'NS'
+      present: if @config.provinces.includes 'NS' then true else false
+      colour: '#F69797'
+      img:
+        if @zeroedOut 'NS'
+          'IMG/provinces/DataUnavailable/NS_Unavailable.svg'
+        else
+          if @config.provinces.includes 'NS' then 'IMG/provinces/colour/NS_Selected.svg' else 'IMG/provinces/colour/NS_Unselected.svg'
+    NL:
+      key: 'NL'
+      present: if @config.provinces.includes 'NL' then true else false
+      colour: '#9ED089'
+      img:
+        if @zeroedOut 'NL'
+          'IMG/provinces/DataUnavailable/NL_Unavailable.svg'
+        else
+          if @config.provinces.includes 'NL' then 'IMG/provinces/colour/NL_Selected.svg' else 'IMG/provinces/colour/NL_Unselected.svg'
+    PE:
+      key: 'PE'
+      present: if @config.provinces.includes 'PE' then true else false
+      colour: '#8D574C'
+      img:
+        if @zeroedOut 'PE'
+          'IMG/provinces/DataUnavailable/PEI_Unavailable.svg'
+        else
+          if @config.provinces.includes 'PE' then 'IMG/provinces/colour/PEI_Selected.svg' else 'IMG/provinces/colour/PEI_Unselected.svg'
+    YT:
+      key: 'YT'
+      present: if @config.provinces.includes 'YT' then true else false
+      colour: '#F5B6D1'
+      img:
+        if @zeroedOut 'YT'
+          'IMG/provinces/DataUnavailable/Yukon_Unavailable.svg'
+        else
+          if @config.provinces.includes 'YT' then 'IMG/provinces/colour/Yukon_Selected.svg' else 'IMG/provinces/colour/Yukon_Unselected.svg'
+    NT:
+      key: 'NT'
+      present: if @config.provinces.includes 'NT' then true else false
+      colour: '#D62A28'
+      img:
+        if @zeroedOut 'NT'
+          'IMG/provinces/DataUnavailable/NT_Unavailable.svg'
+        else
+          if @config.provinces.includes 'NT' then 'IMG/provinces/colour/NT_Selected.svg' else 'IMG/provinces/colour/NT_Unselected.svg'
+    NU:
+      key: 'NU'
+      present: if @config.provinces.includes 'NU' then true else false
+      colour: '#9268ac'
+      img:
+        if @zeroedOut 'NU'
+          'IMG/provinces/DataUnavailable/NU_Unavailable.svg'
+        else
+          if @config.provinces.includes 'NU' then 'IMG/provinces/colour/NU_Selected.svg' else 'IMG/provinces/colour/NU_Unselected.svg'
+
+
+  provinceBlackIcons: ->
+    AB:
+      img: 'IMG/provinces/radio/AB_SelectedR.svg'
+    BC:
+      img: 'IMG/provinces/radio/BC_SelectedR.svg'
+    MB:
+      img: 'IMG/provinces/radio/MB_SelectedR.svg'
+    NB:
+      img: 'IMG/provinces/radio/NB_SelectedR.svg'
+    NL:
+      img: 'IMG/provinces/radio/NL_SelectedR.svg'
+    NS:
+      img: 'IMG/provinces/radio/NS_SelectedR.svg'
+    NT:
+      img: 'IMG/provinces/radio/NT_SelectedR.svg'
+    NU:
+      img: 'IMG/provinces/radio/NU_SelectedR.svg'
+    ON:
+      img: 'IMG/provinces/radio/ON_SelectedR.svg'
+    PE:
+      img: 'IMG/provinces/radio/PEI_SelectedR.svg'
+    QC:
+      img:'IMG/provinces/radio/QC_SelectedR.svg'
+    SK:
+      img: 'IMG/provinces/radio/Sask_SelectedR.svg'
+    YT:
+      img: 'IMG/provinces/radio/Yukon_SelectedR.svg'
+  
+
+
+  provinceLegendData: ->
+    baseData =
+      BC:
+        present: @config.provinces.includes('BC') and not @zeroedOut 'BC'
+        img: 'IMG/provinces/colour/BC_Selected.svg'
+      AB:
+        present: @config.provinces.includes('AB') and not @zeroedOut 'AB'
+        img: 'IMG/provinces/colour/AB_Selected.svg'
+      SK:
+        present: @config.provinces.includes('SK') and not @zeroedOut 'SK'
+        img: 'IMG/provinces/colour/Sask_Selected.svg'
+      MB:
+        present: @config.provinces.includes('MB') and not @zeroedOut 'MB'
+        img: 'IMG/provinces/colour/MB_Selected.svg'
+      ON:
+        present: @config.provinces.includes('ON') and not @zeroedOut 'ON'
+        img: 'IMG/provinces/colour/ON_Selected.svg'
+      QC:
+        present: @config.provinces.includes('QC') and not @zeroedOut 'QC'
+        img: 'IMG/provinces/colour/QC_Selected.svg'
+      NB:
+        present: @config.provinces.includes('NB') and not @zeroedOut 'NB'
+        img: 'IMG/provinces/colour/NB_Selected.svg'
+      NS:
+        present: @config.provinces.includes('NS') and not @zeroedOut 'NS'
+        img: 'IMG/provinces/colour/NS_Selected.svg'
+      NL:
+        present: @config.provinces.includes('NL') and not @zeroedOut 'NL'
+        img: 'IMG/provinces/colour/NL_Selected.svg'
+      PE:
+        present: @config.provinces.includes('PE') and not @zeroedOut 'PE'
+        img: 'IMG/provinces/colour/PEI_Selected.svg'
+      YT:
+        present: @config.provinces.includes('YT') and not @zeroedOut 'YT'
+        img: 'IMG/provinces/colour/Yukon_Selected.svg'
+      NT:
+        present: @config.provinces.includes('NT') and not @zeroedOut 'NT'
+        img: 'IMG/provinces/colour/NT_Selected.svg'
+      NU:
+        present: @config.provinces.includes('NU') and not @zeroedOut 'NU'
+        img: 'IMG/provinces/colour/NU_Selected.svg'
+    
+    data = []
+    for province in @config.provincesInOrder
+      data.push baseData[province] if baseData[province].present
+
+    # Legend content is reversed because graph elements are built bottom to top,
+    # but html elements will be laid out top to bottom.
+    data.reverse()
+    data
+
+
+
+
 
 module.exports = Visualization3

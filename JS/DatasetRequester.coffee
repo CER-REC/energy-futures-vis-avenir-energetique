@@ -1,15 +1,18 @@
-_ = require 'lodash'
 QueryString = require 'query-string'
 d3 = require 'd3'
 
 Constants = require './Constants.coffee'
 
 
-
-# Dataset requester has a few jobs:
-# - When a UI request to change the viz comes in, if we have the data, use the callback immediately
-# - When a UI request to cahnge the viz comes in, if we do not have the data, bottle the UI request and make an ajax request of the data
-# - Whenever an ajax request for data returns, if we have a bottled request, check if we now have the data for the request. Use the bottled request's callback.
+###
+Dataset requester has a few jobs:
+  - When a UI request to change the viz comes in, if we have the data, use the callback
+  immediately
+  - When a UI request to change the viz comes in, if we do not have the data, bottle the
+  UI request and make an ajax request of the data
+  - Whenever an ajax request for data returns, if we have a bottled request, check if we
+  now have the data for the request. Use the bottled request's callback.
+###
 
 
 
@@ -70,7 +73,7 @@ class DatasetRequester
 
   # NB: Unlike most callbacks, this is NOT guaranteed to be called.
   # To avoid multiple updates to the visualization in response to data arriving, we store
-  # the only the last requested UI update. After each HTTP request that arrives, we check
+  # only the last requested UI update. After each HTTP request that arrives, we check
   # whether we can update the UI with the data now present.
   # The callback (to update the visualization) is only called if it was the last requested
   # UI change.

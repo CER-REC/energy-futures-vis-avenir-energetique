@@ -140,7 +140,7 @@ class Visualization1 extends visualization
       left: 9 #necessary for the labels at the bottom
       right: 60
     @_barMargin = 2
-    @svgSize()
+    @svgResize()
     @addDatasetToggle()
     @addMainSelector()
     @addUnitToggle()
@@ -149,7 +149,7 @@ class Visualization1 extends visualization
 
 
   redraw: ->
-    @svgSize()
+    @svgResize()
     @buildXAxis()
     @buildYAxis()
     @buildForecast()
@@ -186,7 +186,7 @@ class Visualization1 extends visualization
     else if Platform.name == 'server'
       Constants.serverSideGraphWidth - @_margin.left - @_margin.right
 
-  svgSize: ->
+  svgResize: ->
     # getBoundingClientRect is not implemented in JSDOM, use fixed width on server
     if Platform.name == 'browser'
       svgWidth = d3.select(@app.window.document).select('#graphPanel').node().getBoundingClientRect().width

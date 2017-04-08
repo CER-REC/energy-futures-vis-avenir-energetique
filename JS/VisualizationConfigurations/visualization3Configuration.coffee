@@ -36,30 +36,7 @@ class Visualization3Configuration
       'SK'
       'YT'
     ]
-    provincesInOrder: [
-      'AB'
-      'BC'
-      'MB'
-      'NB'
-      'NL'
-      'NS'
-      'NT'
-      'NU'
-      'ON'
-      'PE'
-      'QC'
-      'SK'
-      'YT'
-    ]
-    sourcesInOrder: [
-      'hydro'
-      'solarWindGeothermal'
-      'coal'
-      'naturalGas'
-      'bio'
-      'nuclear'
-      'oilProducts'
-    ]
+
     province: 'all'
     source: 'total'
     dataset: Constants.datasets[1]
@@ -109,12 +86,6 @@ class Visualization3Configuration
     # one of the two letter province abbreviations, or 'all'
     # BC AB SK MB ON QC NB NS NL PE YT NT NU all
     @setProvince options.province
-
-    # Used to manage the order of the provinces in a reorderable menu
-    @provincesInOrder = options.provincesInOrder
-
-    # Used to manage the order of the sources in a reorderable menu
-    @sourcesInOrder = options.sourcesInOrder
 
     @setLanguage @app.language || 'en'
 
@@ -175,20 +146,19 @@ class Visualization3Configuration
     else
       @province = @defaultOptions.province
 
-
-  flip: (key) ->
-    if @viewBy == 'province'
-      return unless Constants.sources.includes key
-      if @sources.includes key
-        @sources = @sources.filter (s) -> s != key
-      else
-        @sources.push key
+  flipSource: (key) ->
+    return unless Constants.viz3Sources.includes key
+    if @sources.includes key
+      @sources = @sources.filter (s) -> s != key
     else
-      return unless Constants.provinces.includes key
-      if @provinces.includes key
-        @provinces = @provinces.filter (p) -> p != key
-      else
-        @provinces.push key
+      @sources.push key
+
+  flipProvince: (key) ->
+    return unless Constants.provinces.includes key
+    if @provinces.includes key
+      @provinces = @provinces.filter (p) -> p != key
+    else
+      @provinces.push key
 
   resetSources: (selectAll) ->
     if selectAll

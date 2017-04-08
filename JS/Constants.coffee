@@ -262,7 +262,6 @@ module.exports =
     source: 'dimension14'
     scenarios: 'dimension15'
 
-
-
-
+  questionMarkHeight: 23
+  boxesOffset: 46
 
