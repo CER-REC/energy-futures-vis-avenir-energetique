@@ -38,13 +38,15 @@ class LandingPage
     @aboutHyperlinkClickHandler = (event) =>
       event.preventDefault()
       event.stopPropagation()
-      @app.popoverManager.showPopover @app.aboutThisProjectPopover
+      @app.popoverManager.showPopover @app.aboutThisProjectPopover,
+        elementToFocusOnClose: @aboutHyperlink
       @app.analyticsReporter.reportEvent 'Information', 'About modal'
     @aboutHyperlinkEnterHandler = (event) =>
       event.preventDefault()
       event.stopPropagation()
       if event.key == 'Enter'
-        @app.popoverManager.showPopover @app.aboutThisProjectPopover
+        @app.popoverManager.showPopover @app.aboutThisProjectPopover,
+          elementToFocusOnClose: @aboutHyperlink
         @app.analyticsReporter.reportEvent 'Information', 'About modal'
     @aboutHyperlink.addEventListener 'click', @aboutHyperlinkClickHandler
     @aboutHyperlink.addEventListener 'keyup', @aboutHyperlinkEnterHandler

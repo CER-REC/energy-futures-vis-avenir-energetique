@@ -59,6 +59,7 @@ class Visualization2 extends visualization
             title: Tr.datasetSelector.datasetSelectorHelpTitle[@app.language]
             content: Tr.datasetSelector.datasetSelectorHelp[@app.language]
             attachmentSelector: '.datasetSelectorGroup'
+            elementToFocusOnClose: @app.window.document.getElementById('datasetSelectorHelpButton')
           @app.analyticsReporter.reportEvent 'Controls help', 'Viz2 dataset help'
 
     d3.select(@app.window.document).select '#sectorSelectorHelpButton'
@@ -74,6 +75,7 @@ class Visualization2 extends visualization
             title: Tr.sectorSelector.sectorSelectorHelpTitle[@app.language]
             content: Tr.sectorSelector.sectorSelectorHelp[@app.language]
             attachmentSelector: '.sectorSelectorGroup'
+            elementToFocusOnClose: @app.window.document.getElementById('sectorSelectorHelpButton')
           @app.analyticsReporter.reportEvent 'Controls help', 'Viz2 sector help'
 
     d3.select(@app.window.document).select '#unitSelectorHelpButton'
@@ -89,6 +91,7 @@ class Visualization2 extends visualization
             title: Tr.unitSelector.unitSelectorHelpTitle[@app.language]
             content: Tr.unitSelector.unitSelectorHelp[@app.language]
             attachmentSelector: '.unitsSelectorGroup'
+            elementToFocusOnClose: @app.window.document.getElementById('unitSelectorHelpButton')
           @app.analyticsReporter.reportEvent 'Controls help', 'Viz2 unit help'
 
     d3.select(@app.window.document).select '#scenarioSelectorHelpButton'
@@ -104,6 +107,8 @@ class Visualization2 extends visualization
             title: Tr.scenarioSelector.scenarioSelectorHelpTitle[@app.language]
             content: Tr.scenarioSelector.scenarioSelectorHelp[@app.language]
             attachmentSelector: '.scenarioSelectorGroup'
+            elementToFocusOnClose: @app.window.document.getElementById('scenarioSelectorHelpButton')
+
           @app.analyticsReporter.reportEvent 'Controls help', 'Viz2 scenario help'
 
 
@@ -705,6 +710,8 @@ class Visualization2 extends visualization
         groupId:
           'stackMenu'
         helpButtonLabel: Tr.altText.sourcesHelp[@app.language]
+        helpButtonId: 'sourceHelpButton'
+
 
     @_chart = new stackedAreaChart(@app, "#graphSVG", @xScale(), @yScale(), stackedOptions)   
     @_provinceMenu = @buildProvinceMenu()
@@ -795,6 +802,7 @@ class Visualization2 extends visualization
         title: Tr.sourceSelector.selectSourceLabel[@app.language]
         content: contentString
         attachmentSelector: '#powerSourceSelector'
+        elementToFocusOnClose: @app.window.document.getElementById('sourceHelpButton')
       @app.analyticsReporter.reportEvent 'Controls help', 'Viz2 source help'
 
 
@@ -818,6 +826,7 @@ class Visualization2 extends visualization
       groupId:
         'provinceMenu'
       helpButtonLabel: Tr.altText.sourcesHelp[@app.language]
+      helpButtonId: 'provinceHelpButton'
     new SquareMenu(@app, '#provinceMenuSVG', provinceOptions) 
 
   selectAllProvince: (selecting) =>
@@ -873,6 +882,7 @@ class Visualization2 extends visualization
         title: Tr.regionSelector.selectRegionLabel[@app.language]
         content: contentString
         attachmentSelector: '#provincesSelector'
+        elementToFocusOnClose: @app.window.document.getElementById('provinceHelpButton')
       @app.analyticsReporter.reportEvent 'Controls help', 'Viz2 region help'
 
 module.exports = Visualization2

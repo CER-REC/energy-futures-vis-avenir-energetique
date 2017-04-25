@@ -22,10 +22,17 @@ class ImageDownloadPopover
       @app.analyticsReporter.reportEvent 'Downloads', 'Download image'
 
     @closeButton = d3.select '#imageDownloadModal .closeButton'
+
     @closeButton.on 'click', =>
       d3.event.preventDefault()
       d3.event.stopPropagation()
       @app.popoverManager.closePopover()
+
+    @closeButton.on 'keyup', =>
+      d3.event.preventDefault()
+      d3.event.stopPropagation()
+      if d3.event.key == 'Enter'
+        @app.popoverManager.closePopover()
 
 
   show: ->

@@ -30,8 +30,18 @@ class ControlsHelpPopover
     # Attach to correct element
     d3.select(options.attachmentSelector).node().appendChild newEl
 
-    d3.select '.controlsHelpPopover .closeButton'
-      .on 'click', => @app.popoverManager.closePopover()
+    @closeButton = d3.select '.controlsHelpPopover .closeButton'
+
+    @closeButton.on 'click', =>
+      d3.event.preventDefault()
+      d3.event.stopPropagation()
+      @app.popoverManager.closePopover()
+
+    @closeButton.on 'keyup', =>
+      d3.event.preventDefault()
+      d3.event.stopPropagation()
+      if d3.event.key == 'Enter'
+        @app.popoverManager.closePopover()
 
     # Prevent clicks on the popover from propagating up to the body element, which would
     # cause the popover to be closed.
@@ -40,6 +50,9 @@ class ControlsHelpPopover
 
 
   close: ->
+    @closeButton.on 'click', null
+    @closeButton.on 'keyup', null
+
     d3.selectAll('.controlsHelpPopover').remove()
 
   focus: ->

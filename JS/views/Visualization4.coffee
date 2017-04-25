@@ -89,6 +89,7 @@ class Visualization4
             title: Tr.datasetSelector.datasetSelectorHelpTitle[@app.language]
             content: Tr.datasetSelector.datasetSelectorHelp[@app.language]
             attachmentSelector: '.datasetSelectorGroup'
+            elementToFocusOnClose: @app.window.document.getElementById('datasetSelectorHelpButton')
           @app.analyticsReporter.reportEvent 'Controls help', 'Viz4 dataset help'
 
     d3.select(@app.window.document).select '#mainSelectorHelpButton'
@@ -104,6 +105,7 @@ class Visualization4
             title: Tr.mainSelector.selectOneLabel[@app.language]
             content: Tr.mainSelector.mainSelectorHelp[@app.language]
             attachmentSelector: '.mainSelectorSection'
+            elementToFocusOnClose: @app.window.document.getElementById('mainSelectorHelpButton')
           @app.analyticsReporter.reportEvent 'Controls help', 'Viz4 main selection help'
     
     d3.select(@app.window.document).select '#unitSelectorHelpButton'
@@ -119,6 +121,7 @@ class Visualization4
             title: Tr.unitSelector.unitSelectorHelpTitle[@app.language]
             content: Tr.unitSelector.unitSelectorHelp[@app.language]
             attachmentSelector: '.unitsSelectorGroup'
+            elementToFocusOnClose: @app.window.document.getElementById('unitSelectorHelpButton')
           @app.analyticsReporter.reportEvent 'Controls help', 'Viz4 unit help'
 
     d3.select(@app.window.document).select '#scenarioSelectorHelpButton'
@@ -134,6 +137,7 @@ class Visualization4
             title: Tr.scenarioSelector.scenarioSelectorHelpTitle[@app.language]
             content: Tr.scenarioSelector.scenarioSelectorHelp[@app.language]
             attachmentSelector: '.scenarioSelectorGroup'
+            elementToFocusOnClose: @app.window.document.getElementById('scenarioSelectorHelpButton')
           @app.analyticsReporter.reportEvent 'Controls help', 'Viz4 scenario help'
 
 
@@ -372,6 +376,7 @@ class Visualization4
       showHelpHandler: @showProvinceNames
       groupId: 'provinceMenu'
       helpButtonLabel: Tr.altText.regionsHelp[@app.language]
+      helpButtonId: 'provinceHelpButton'
 
     new SquareMenu @app, '#provinceMenuSVG', provinceOptions
 
@@ -422,6 +427,7 @@ class Visualization4
         title: Tr.regionSelector.selectRegionLabel[@app.language]
         content: contentString
         attachmentSelector: '#provincesSelector'
+        elementToFocusOnClose: @app.window.document.getElementById('provinceHelpButton')
       @app.analyticsReporter.reportEvent 'Controls help', 'Viz4 region help'
 
 

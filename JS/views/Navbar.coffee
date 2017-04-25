@@ -217,6 +217,7 @@ class Navbar
           imageBUrl: d.imageBUrl
           navbarHelpImageSelected: d.navbarHelpImageSelected
           helpPopoverHeaderClass: d.helpPopoverHeaderClass
+          elementToFocusOnClose: @app.window.document.querySelector('.navbarHelpIcon')
         @app.analyticsReporter.reportEvent 'Navbar help', @navbarState
     
     vizNavbar.select('.navbarHelpIcon')
@@ -234,6 +235,7 @@ class Navbar
           infoPopoverText: d.infoPopoverText
           infoPopoverHeader: d.infoPopoverHeader
           infoPopoverHeaderClass: d.helpPopoverHeaderClass
+          elementToFocusOnClose: @app.window.document.querySelector('.navbarMenuIcon')
         @app.analyticsReporter.reportEvent 'Navbar info', @navbarState
 
     vizNavbar.select('.navbarMenuIcon')

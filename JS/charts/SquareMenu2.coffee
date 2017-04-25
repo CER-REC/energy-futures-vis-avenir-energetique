@@ -278,6 +278,7 @@ class SquareMenu2
         tabindex: '0'
         'aria-label': @options.helpButtonLabel
         role: 'button'
+        id: @options.helpButtonId
       .on 'click', =>
         @_showHelpHandler()
       .on 'keyup', =>

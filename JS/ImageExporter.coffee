@@ -52,7 +52,8 @@ class ImageExporter
       
     image.setAttribute 'src', imageUrl
 
-    @app.popoverManager.showPopover @app.imageDownloadPopover
+    @app.popoverManager.showPopover @app.imageDownloadPopover,
+      elementToFocusOnClose: @app.window.document.getElementById('imageDownloadLink')
 
 
 
