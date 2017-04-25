@@ -371,6 +371,8 @@ class Visualization4
       allSquareHandler: @selectAllProvince
       showHelpHandler: @showProvinceNames
       groupId: 'provinceMenu'
+      helpButtonLabel: Tr.altText.regionsHelp[@app.language]
+
     new SquareMenu @app, '#provinceMenuSVG', provinceOptions
 
   selectAllProvince: =>

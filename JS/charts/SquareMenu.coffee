@@ -21,10 +21,12 @@ class SquareMenu extends Chart
       '#powerSourceMenuSVG': 7
       '#provinceMenuSVG': 14
     boxesOffset: 46
+    # coffeelint: disable=no_empty_functions
     allSquareHandler: -> # Method that runs on 'All' button clicked
     orderChangedHandler: -> # Method that runs when dragging finished
     showHelpHandler: -> # Method that runs when the questionMark icon is clicked
     onSelected: ->
+    # coffeelint: enable=no_empty_functions
 
 
   constructor: (@app, parent, options = {}) ->
@@ -239,8 +241,15 @@ class SquareMenu extends Chart
         width: '16px'
         height: '16px'
         tabindex: '0'
+        'aria-label': @options.helpButtonLabel
+        role: 'button'
       .on 'click', =>
         @_showHelpHandler()
+      .on 'keyup', =>
+        d3.event.preventDefault()
+        d3.event.stopPropagation()
+        if d3.event.key == 'Enter'
+          @_showHelpHandler()
 
     @_group.selectAll('.menuItem').data(@mapping()).enter().append('g').attr
       class: 'menuItem'

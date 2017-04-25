@@ -704,6 +704,8 @@ class Visualization2 extends visualization
           @selectAllStacked
         groupId:
           'stackMenu'
+        helpButtonLabel: Tr.altText.sourcesHelp[@app.language]
+
     @_chart = new stackedAreaChart(@app, "#graphSVG", @xScale(), @yScale(), stackedOptions)   
     @_provinceMenu = @buildProvinceMenu()
 
@@ -815,6 +817,7 @@ class Visualization2 extends visualization
         @showProvinceNames
       groupId:
         'provinceMenu'
+      helpButtonLabel: Tr.altText.sourcesHelp[@app.language]
     new SquareMenu(@app, '#provinceMenuSVG', provinceOptions) 
 
   selectAllProvince: (selecting) =>

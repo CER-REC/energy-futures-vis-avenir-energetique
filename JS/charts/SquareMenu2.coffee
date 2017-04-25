@@ -276,8 +276,16 @@ class SquareMenu2
         width: '16px'
         height: '16px'
         tabindex: '0'
+        'aria-label': @options.helpButtonLabel
+        role: 'button'
       .on 'click', =>
         @_showHelpHandler()
+      .on 'keyup', =>
+        d3.event.preventDefault()
+        d3.event.stopPropagation()
+        if d3.event.key == 'Enter'
+          @_showHelpHandler()
+
 
     @_group.selectAll('.menuItem').data(@_data).enter().append('g').attr
       class: 'menuItem'

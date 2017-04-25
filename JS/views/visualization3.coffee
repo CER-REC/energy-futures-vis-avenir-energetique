@@ -542,6 +542,7 @@ class Visualization3 extends visualization
               Tr.allSelectorButton.someSelected[@app.language]
             else if @config.provinces.length == 0
               Tr.allSelectorButton.none[@app.language]
+      helpButtonLabel: Tr.altText.regionsHelp[@app.language]
 
     state =
       iconSpacing: 'auto'
@@ -587,6 +588,7 @@ class Visualization3 extends visualization
               Tr.allSelectorButton.someSelected[@app.language]
             else if @config.sources.length == 0
               Tr.allSelectorButton.none[@app.language]
+      helpButtonLabel: Tr.altText.sourcesHelp[@app.language]
 
 
     state =

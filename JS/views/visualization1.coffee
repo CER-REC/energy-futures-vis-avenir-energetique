@@ -627,6 +627,8 @@ class Visualization1 extends visualization
           @showProvinceNames
         groupId:
           'stackMenu'
+        helpButtonLabel: Tr.altText.regionsHelp[@app.language]
+
     @_chart = new stackedBarChart @app, '#graphSVG', @xScale(), @yScale(), stackedOptions
 
   #called for adjustments: basically to avoid rebuilding the x axis and the chart object
