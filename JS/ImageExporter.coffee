@@ -1,4 +1,5 @@
 ParamsToUrlString = require './ParamsToUrlString.coffee'
+Tr = require './TranslationTable.coffee'
 
 
 class ImageExporter
@@ -50,6 +51,7 @@ class ImageExporter
       container.innerHTML = ''
       container.appendChild image
       
+    image.setAttribute 'alt', Tr.allPages.imageDownloadHeader[@app.language]
     image.setAttribute 'src', imageUrl
 
     @app.popoverManager.showPopover @app.imageDownloadPopover,
