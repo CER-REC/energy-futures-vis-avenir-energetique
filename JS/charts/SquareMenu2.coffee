@@ -80,8 +80,6 @@ class SquareMenu2
       y: @state.position.y
     @data @state.data
 
-    # @resize()
-
     @redraw()
 
 
@@ -185,15 +183,6 @@ class SquareMenu2
       return @_data
     @_data = d
 
-
-
-
-
-
-  # resize: ->
-  #   @_group.attr
-  #     transform: "translate(#{@_position.x}, #{@_position.y})"
-  #   @
 
   # Get the center
   getRectX: =>

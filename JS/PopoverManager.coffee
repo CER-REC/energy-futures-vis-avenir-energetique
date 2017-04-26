@@ -28,8 +28,9 @@ class PopoverManager
     # TODO: currently, this approach doesn't fully work because of the iframe, focus
     # can move to an element on @app.containingWindow that we aren't listening to.
     # Removing the iframe should fix this.
-    # TODO: further, this approach is incomplete. this handles keyboard focus, but not
-    # the screen reader cursor, which is another animal entirely...
+
+    # This approach does not handle screen reader cursor, but there doesn't seem to be
+    # a best practice around doing so other than marking the new popover as a dialog
     @app.window.document.addEventListener 'focus', (event) =>
       return unless @currentPopover?
 
