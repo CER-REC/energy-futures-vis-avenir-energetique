@@ -4,5 +4,5 @@
 # Necessary at a few points, where we simply have to have different behaviour in browser
 # vs in server.
 
-module.exports = 
-  name: "browser"
+module.exports =
+  name: 'browser'

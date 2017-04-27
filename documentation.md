@@ -73,7 +73,7 @@ The application is fully French-English bilingual. We determine the language to 
 See the function `detectLanguage` in `JS/App.coffee` for the language determination code, and also `JS/TranslationTable.coffee` for the full set of English and French text.
 
 ### Google Analytics
-The application has some customized event recording for Google Analytics for some of the parameters that the user can choose when operating the visualization. If the `ga` object (created by a Google Analytics snippet) is available in the global scope, the app will report these events. See `JS/Router.coffee`
+The application has some customized event recording for Google Analytics for some of the parameters that the user can choose when operating the visualization. If the `ga` object (created by a Google Analytics snippet) is available in the global scope, the app will report these events. See `JS/AnalyticsReporter.coffee`.
 
 ### Private Fonts
 The app is designed to use some non free fonts: [Avenir Next Condensed](http://www.fonts.com/font/linotype/avenir-next/condensed) and [Avenir Next Condensed Demi](http://www.fonts.com/font/linotype/avenir-next/condensed-demi). For the NEB, these fonts and a stylesheet to integrate them are included in a separate, private repository. The app tests whether the Avenir stylesheet is available, and appends it to the page if it is, or loads a substitute Google font (PT Sans Narrow). See `JS/App.coffee#loadFonts`.

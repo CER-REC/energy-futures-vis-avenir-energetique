@@ -2,25 +2,26 @@ d3 = require 'd3'
 Mustache = require 'mustache'
 
 Platform = require '../Platform.coffee'
-ApplicationRoot = require '../../ApplicationRoot.coffee'
 Tr = require '../TranslationTable.coffee'
 
 
-if Platform.name == "browser"
+if Platform.name == 'browser'
   QuestionmarkPopoverTemplate = require '../templates/QuestionmarkPopover.mustache'
 
 
 
 class ControlsHelpPopover
 
+  # coffeelint: disable=no_empty_functions
   constructor: (@app) ->
+  # coffeelint: enable=no_empty_functions
 
   show: (options) ->
 
     # Build the popover
     newEl = document.createElement 'div'
     newEl.className = options.outerClasses
-    newEl.innerHTML = Mustache.render QuestionmarkPopoverTemplate, 
+    newEl.innerHTML = Mustache.render QuestionmarkPopoverTemplate,
       classes: options.innerClasses
       title: options.title
       content: options.content

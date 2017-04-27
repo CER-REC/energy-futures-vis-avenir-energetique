@@ -4,7 +4,7 @@ Constants = require '../Constants.coffee'
 Tr = require '../TranslationTable.coffee'
 
 class Visualization4Configuration
-  defaultOptions: 
+  defaultOptions:
     mainSelection: 'gasProduction'
     unit: 'petajoules'
 
@@ -31,12 +31,13 @@ class Visualization4Configuration
     @scenarios = []
     @setDataset options.dataset
 
-    # mainSelection, one of energyDemand, oilProduction, electricityGeneration, or gasProduction
+    # mainSelection, one of energyDemand, oilProduction, electricityGeneration, or
+    # gasProduction
     @setMainSelection options.mainSelection
 
     # unit, one of:
     # petajoules
-    # kilobarrelEquivalents - kilobarrels of oil equivalent per day, kBOE/day 
+    # kilobarrelEquivalents - kilobarrels of oil equivalent per day, kBOE/day
     # gigawattHours - GWh
     # thousandCubicMetres - thousand cubic metres per day, m^3/day (oil)
     # millionCubicMetres - million cubic metres per day, m^3/day (gas)
@@ -111,7 +112,7 @@ class Visualization4Configuration
   setDataset: (dataset) ->
     if Constants.datasets.includes dataset
       @dataset = dataset
-    else 
+    else
       @dataset = @defaultOptions.dataset
     @validateScenarios()
 
@@ -166,9 +167,10 @@ class Visualization4Configuration
         Tr.unitSelector.cubicFeetButton[@app.language]
 
     provinceText = if @province == 'all'
-      "CANADA"
+      'CANADA'
     else
-      "#{Tr.viewBySelector.viewByProvinceButton[@app.language]}: #{Tr.regionSelector.names[@province][@app.language]}"
+      "#{Tr.viewBySelector.viewByProvinceButton[@app.language]}: " +
+      "#{Tr.regionSelector.names[@province][@app.language]}"
 
     datasetText = switch @dataset
       when 'jan2016'
@@ -192,10 +194,10 @@ class Visualization4Configuration
     components = [
       Tr.landingPage.mainHeader[@app.language]
       Tr.visualization4Titles[@mainSelection][@app.language]
-      scenarios.join(',')
+      scenarios.join ','
     ]
 
-    filename = components.join(' - ')
+    filename = components.join ' - '
     filename += '.png'
     filename
 

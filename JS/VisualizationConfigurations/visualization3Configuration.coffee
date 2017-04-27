@@ -3,16 +3,16 @@ _ = require 'lodash'
 Tr = require '../TranslationTable.coffee'
 Constants = require '../Constants.coffee'
 
-# Note: since this has a 'viewBy' option sometimes we can multi select provinces sometimes its sources. We have sep.
-# variables for each case.
+# Note: since this has a 'viewBy' option sometimes we can multi select provinces
+# sometimes its sources. We have separate variables for each case.
 
 class Visualization3Configuration
-  defaultOptions: 
+  defaultOptions:
     viewBy: 'province'
     unit: 'gigawattHours'
     scenario: 'reference'
     year: 2005
-    sources:[ 
+    sources: [
       'hydro'
       'solarWindGeothermal'
       'coal'
@@ -25,33 +25,33 @@ class Visualization3Configuration
       'AB'
       'BC'
       'MB'
-      'NB' 
+      'NB'
       'NL'
-      'NS' 
-      'NT' 
+      'NS'
+      'NT'
       'NU'
       'ON'
       'PE'
       'QC'
       'SK'
-      'YT' 
+      'YT'
     ]
     provincesInOrder: [
       'AB'
       'BC'
       'MB'
-      'NB' 
+      'NB'
       'NL'
-      'NS' 
-      'NT' 
+      'NS'
+      'NT'
       'NU'
       'ON'
       'PE'
       'QC'
       'SK'
-      'YT' 
+      'YT'
     ]
-    sourcesInOrder:[ 
+    sourcesInOrder: [
       'hydro'
       'solarWindGeothermal'
       'coal'
@@ -101,7 +101,8 @@ class Visualization3Configuration
       @addProvince province
 
     # source, used when ViewBy == 'source'
-    # one of: total, oilProducts, nuclear, bio, naturalGas, coal, solarWindGeothermal, hydro
+    # one of: total, oilProducts, nuclear, bio, naturalGas, coal, solarWindGeothermal,
+    # hydro
     @setSource options.source
 
     # province, used when ViewBy == 'province'
@@ -146,20 +147,20 @@ class Visualization3Configuration
 
   addProvince: (province) ->
     return unless Constants.provinces.includes province
-    if @viewBy == 'source'  
+    if @viewBy == 'source'
       @provinces.push province unless @provinces.includes province
 
   removeProvince: (province) ->
-    if @viewBy == 'source' 
+    if @viewBy == 'source'
       @provinces = @provinces.filter (p) -> p != province
 
-  addSource: (source) ->  
+  addSource: (source) ->
     return unless Constants.sources.includes source
-    if @viewBy == 'province'  
+    if @viewBy == 'province'
       @sources.push source unless @sources.includes source
 
   removeSource: (source) ->
-    if @viewBy == 'province' 
+    if @viewBy == 'province'
       @sources = @sources.filter (s) -> s != source
 
   setSource: (source) ->
@@ -180,9 +181,9 @@ class Visualization3Configuration
       return unless Constants.sources.includes key
       if @sources.includes key
         @sources = @sources.filter (s) -> s != key
-      else 
+      else
         @sources.push key
-    else 
+    else
       return unless Constants.provinces.includes key
       if @provinces.includes key
         @provinces = @provinces.filter (p) -> p != key
@@ -191,7 +192,7 @@ class Visualization3Configuration
 
   resetSources: (selectAll) ->
     if selectAll
-      @sources = [ 
+      @sources = [
         'hydro'
         'solarWindGeothermal'
         'coal'
@@ -208,16 +209,16 @@ class Visualization3Configuration
       @provinces = [
         'BC'
         'AB'
-        'SK' 
+        'SK'
         'MB'
-        'ON' 
-        'QC' 
-        'NB' 
-        'NS' 
-        'NL' 
-        'PE' 
-        'YT' 
-        'NT' 
+        'ON'
+        'QC'
+        'NB'
+        'NS'
+        'NL'
+        'PE'
+        'YT'
+        'NT'
         'NU'
       ]
     else
@@ -229,13 +230,13 @@ class Visualization3Configuration
   setDataset: (dataset) ->
     if Constants.datasets.includes dataset
       @dataset = dataset
-    else 
+    else
       @dataset = @defaultOptions.dataset
 
   # Router integration
 
   routerParams: ->
-    params = 
+    params =
       page: 'viz3'
       viewBy: @viewBy
       unit: @unit
@@ -273,7 +274,7 @@ class Visualization3Configuration
   imageExportDescription: ->
 
     # Given that there are no axes, and no way to inspect the numeric quantities behind
-    # each bubble in a PNG, does it make sense to include the units on the graph 
+    # each bubble in a PNG, does it make sense to include the units on the graph
     # description at all? My tilt is no.
 
     # unitText = switch @unit
@@ -301,9 +302,10 @@ class Visualization3Configuration
 
     sourceOrProvinceText = if @viewBy == 'province'
       if @province == 'all'
-        "CANADA"
+        'CANADA'
       else
-        "#{Tr.viewBySelector.viewByProvinceButton[@app.language]}: #{Tr.regionSelector.names[@province][@app.language]}"
+        "#{Tr.viewBySelector.viewByProvinceButton[@app.language]}: " +
+        "#{Tr.regionSelector.names[@province][@app.language]}"
     else if @viewBy == 'source'
       Tr.sourceSelector.sources[@source][@app.language]
 
@@ -329,7 +331,7 @@ class Visualization3Configuration
       viewByItem = Tr.sourceSelector.sources[@source][@app.language]
     else if @viewBy == 'province'
       viewByItem = if @province == 'all'
-        "CANADA"
+        'CANADA'
       else
         @province
 
@@ -341,7 +343,7 @@ class Visualization3Configuration
       @year
     ]
 
-    filename = components.join(' - ')
+    filename = components.join ' - '
     filename += '.png'
     filename
 

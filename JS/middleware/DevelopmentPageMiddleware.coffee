@@ -18,32 +18,32 @@ DevelopmentPageMiddleware = ->
   router = express.Router()
 
   # Direct the root to the newer template
-  router.get '/', (req, res, next) ->
+  router.get '/', (req, res) ->
     res.render 'WET4',
       title: 'WET 4.0.20'
 
-  router.get '/WET3', (req, res, next) ->
+  router.get '/WET3', (req, res) ->
     res.render 'WET3',
       title: 'WET 3.1.12'
 
-  router.get '/WET4', (req, res, next) ->
+  router.get '/WET4', (req, res) ->
     res.render 'WET4',
       title: 'WET 4.0.20'
 
-  router.get '/Wet3VideoIframe', (req, res, next) ->
+  router.get '/Wet3VideoIframe', (req, res) ->
     res.render 'Wet3VideoIframe'
 
-  router.get '/Wet4VideoIframe', (req, res, next) ->
+  router.get '/Wet4VideoIframe', (req, res) ->
     res.render 'Wet4VideoIframe'
 
-  router.get '/app_iframe.html', (req, res, next) ->
+  router.get '/app_iframe.html', (req, res) ->
     res.render 'app_iframe',
       title: "Canada's Energy Future Visualization"
   
   app.use router
 
-  # Turn off caching! 
-  app.disable("view cache")
+  # Turn off caching!
+  app.disable 'view cache'
 
   app
 

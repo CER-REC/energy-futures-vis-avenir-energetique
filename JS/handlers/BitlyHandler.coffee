@@ -17,7 +17,7 @@ module.exports = (req, res) ->
   unless process.env.BITLY_API_KEY? and process.env.BITLY_USERNAME?
     response = JSON.stringify
       url: Constants.appHost
-    res.setHeader "content-type", "application/json"
+    res.setHeader 'content-type', 'application/json'
     res.write response
     res.end()
     Logger.info "bitly_url (request B#{requestCounter}): #{query} Time: #{Date.now() - time}"
@@ -31,7 +31,7 @@ module.exports = (req, res) ->
 
   .then (bitlyResponse) ->
 
-    res.setHeader "content-type", "application/json"
+    res.setHeader 'content-type', 'application/json'
     res.write bitlyResponse
     res.end()
 

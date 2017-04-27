@@ -3,7 +3,7 @@ Constants = require '../Constants.coffee'
 Tr = require '../TranslationTable.coffee'
 
 class Visualization1Configuration
-  defaultOptions: 
+  defaultOptions:
     mainSelection: 'energyDemand'
     unit: 'petajoules'
     scenario: 'reference'
@@ -11,31 +11,31 @@ class Visualization1Configuration
       'AB'
       'BC'
       'MB'
-      'NB' 
+      'NB'
       'NL'
-      'NS' 
-      'NT' 
+      'NS'
+      'NT'
       'NU'
       'ON'
       'PE'
       'QC'
       'SK'
-      'YT' 
+      'YT'
     ]
     provincesInOrder: [
       'AB'
       'BC'
       'MB'
-      'NB' 
+      'NB'
       'NL'
-      'NS' 
-      'NT' 
+      'NS'
+      'NT'
       'NU'
       'ON'
       'PE'
       'QC'
       'SK'
-      'YT' 
+      'YT'
     ]
     dataset: Constants.datasets[1]
 
@@ -46,12 +46,13 @@ class Visualization1Configuration
 
     @setDataset options.dataset
 
-    # mainSelection, one of energyDemand, oilProduction, electricityGeneration, or gasProduction
+    # mainSelection, one of energyDemand, oilProduction, electricityGeneration, or
+    # gasProduction
     @setMainSelection options.mainSelection
 
     # unit, one of:
     # petajoules
-    # kilobarrelEquivalents - kilobarrels of oil equivalent per day, kBOE/day 
+    # kilobarrelEquivalents - kilobarrels of oil equivalent per day, kBOE/day
     # gigawattHours - GWh
     # thousandCubicMetres - thousand cubic metres per day, m^3/day (oil)
     # millionCubicMetres - million cubic metres per day, m^3/day (gas)
@@ -82,7 +83,7 @@ class Visualization1Configuration
   setMainSelection: (selection) ->
     if Constants.mainSelections.includes selection
       @mainSelection = selection
-      if @mainSelection == 'electricityGeneration' 
+      if @mainSelection == 'electricityGeneration'
         #we want this to be the default unit when changing to electricity generation
         @unit = 'gigawattHours'
     else
@@ -120,14 +121,14 @@ class Visualization1Configuration
     return unless Constants.provinces.includes province
     @provinces.push province unless @provinces.includes province
 
-  removeProvince: (province) -> 
+  removeProvince: (province) ->
     @provinces = @provinces.filter (p) -> p != province
 
   flipProvince: (province) ->
     return unless Constants.provinces.includes province
-    if @provinces.includes province 
+    if @provinces.includes province
       @provinces = @provinces.filter (p) -> p != province
-    else 
+    else
       @provinces.push province
 
   resetProvinces: (selectAll) ->
@@ -135,23 +136,22 @@ class Visualization1Configuration
       @provinces = [
         'BC'
         'AB'
-        'SK' 
+        'SK'
         'MB'
-        'ON' 
-        'QC' 
-        'NB' 
-        'NS' 
-        'NL' 
-        'PE' 
-        'YT' 
-        'NT' 
+        'ON'
+        'QC'
+        'NB'
+        'NS'
+        'NL'
+        'PE'
+        'YT'
+        'NT'
         'NU'
       ]
     else
       @provinces = []
 
   setProvincesInOrder: (provincesInOrder) ->
-    # NB: We aren't currently tracking provinces in order in the URL bar
     @provincesInOrder = provincesInOrder
 
 
@@ -161,7 +161,7 @@ class Visualization1Configuration
   setDataset: (dataset) ->
     if Constants.datasets.includes dataset
       @dataset = dataset
-    else 
+    else
       @dataset = @defaultOptions.dataset
 
   # Router integration
@@ -253,7 +253,7 @@ class Visualization1Configuration
       Tr.scenarioSelector.names[@scenario][@app.language]
     ]
 
-    filename = components.join(' - ')
+    filename = components.join ' - '
     filename += '.png'
     filename
 

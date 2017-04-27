@@ -1,8 +1,9 @@
 
 
-# This is a slimmed down, duck typed stand in of the 'App' class which appears on the client
+# This is a slimmed down, duck typed stand in of the 'App' class which appears on the
+# client.
 # Rather than driving the entire client app, on the server all we need this class to do
-# is to provide a few pieces of information and compatibility to visualization instances 
+# is to provide a few pieces of information and compatibility to visualization instances
 # while they run on the server.
 
 

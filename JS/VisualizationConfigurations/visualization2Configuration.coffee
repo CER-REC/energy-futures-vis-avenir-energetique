@@ -4,11 +4,11 @@ Tr = require '../TranslationTable.coffee'
 Constants = require '../Constants.coffee'
 
 class Visualization2Configuration
-  defaultOptions: 
+  defaultOptions:
     sector: 'total'
     unit: 'petajoules'
     scenario: 'reference'
-    sources:[ 
+    sources: [
       'solarWindGeothermal'
       'coal'
       'naturalGas'
@@ -16,7 +16,7 @@ class Visualization2Configuration
       'oilProducts'
       'electricity'
     ]
-    sourcesInOrder:[ 
+    sourcesInOrder: [
       'solarWindGeothermal'
       'coal'
       'naturalGas'
@@ -86,7 +86,7 @@ class Visualization2Configuration
     else
       @scenario = @defaultOptions.scenario
 
-  addSource: (source) ->  
+  addSource: (source) ->
     return unless Constants.viz2Sources.includes source
     @sources.push source unless @sources.includes source
 
@@ -117,9 +117,9 @@ class Visualization2Configuration
 
   flipSource: (source) ->
     return unless Constants.viz2Sources.includes source
-    if @sources.includes source 
+    if @sources.includes source
       @sources = @sources.filter (s) -> s != source
-    else 
+    else
       @sources.push source
 
   setLanguage: (language) ->
@@ -128,7 +128,7 @@ class Visualization2Configuration
   setDataset: (dataset) ->
     if Constants.datasets.includes dataset
       @dataset = dataset
-    else 
+    else
       @dataset = @defaultOptions.dataset
 
   # Router integration
@@ -183,7 +183,7 @@ class Visualization2Configuration
         Tr.scenarioSelector.noLngButton[@app.language]
 
     regionText = if @province == 'all'
-      "CANADA"
+      'CANADA'
     else
       "#{Tr.viewBySelector.viewByProvinceButton[@app.language]}: #{@province}"
    
@@ -208,7 +208,7 @@ class Visualization2Configuration
   pngFileName: ->
 
     region = if @province == 'all'
-      "CANADA"
+      'CANADA'
     else
       @province
 
@@ -220,7 +220,7 @@ class Visualization2Configuration
       region
     ]
 
-    filename = components.join(' - ')
+    filename = components.join ' - '
     filename += '.png'
     filename
 
