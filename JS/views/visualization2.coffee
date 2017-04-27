@@ -5,7 +5,7 @@ Mustache = require 'mustache'
 
 visualization = require './visualization.coffee'
 stackedAreaChart = require '../charts/stacked-area-chart.coffee'
-squareMenu = require '../charts/square-menu.coffee'
+SquareMenu = require '../charts/SquareMenu.coffee'
 Constants = require '../Constants.coffee'
 Tr = require '../TranslationTable.coffee'
 Platform = require '../Platform.coffee'
@@ -46,7 +46,7 @@ class Visualization2 extends visualization
     @sourcesHelpPopover = new ControlsHelpPopover(@app)
     @provincesHelpPopover = new ControlsHelpPopover(@app)
 
-    d3.select(@app.window.document).select '.datasetSelectorHelpButton'
+    d3.select(@app.window.document).select '#datasetSelectorHelpButton'
       .on 'click', =>
         d3.event.stopPropagation()
         d3.event.preventDefault()
@@ -54,14 +54,15 @@ class Visualization2 extends visualization
           @app.popoverManager.closePopover()
         else
           @app.popoverManager.showPopover @datasetHelpPopover,
-            outerClasses: 'vizModal floatingPopover datasetSelectorHelp'
+            outerClasses: 'vizModal controlsHelpPopover datasetSelectorHelp'
             innerClasses: 'viz2HelpTitle'
             title: Tr.datasetSelector.datasetSelectorHelpTitle[@app.language]
             content: Tr.datasetSelector.datasetSelectorHelp[@app.language]
             attachmentSelector: '.datasetSelectorGroup'
+            elementToFocusOnClose: @app.window.document.getElementById('datasetSelectorHelpButton')
           @app.analyticsReporter.reportEvent 'Controls help', 'Viz2 dataset help'
 
-    d3.select(@app.window.document).select '.sectorSelectorHelpButton'
+    d3.select(@app.window.document).select '#sectorSelectorHelpButton'
       .on 'click', =>
         d3.event.stopPropagation()
         d3.event.preventDefault()
@@ -69,14 +70,15 @@ class Visualization2 extends visualization
           @app.popoverManager.closePopover()
         else
           @app.popoverManager.showPopover @sectorsSelectorHelpPopover, 
-            outerClasses: 'vizModal floatingPopover sectorHelp'
+            outerClasses: 'vizModal controlsHelpPopover sectorHelp'
             innerClasses: 'viz2HelpTitle'
             title: Tr.sectorSelector.sectorSelectorHelpTitle[@app.language]
             content: Tr.sectorSelector.sectorSelectorHelp[@app.language]
             attachmentSelector: '.sectorSelectorGroup'
+            elementToFocusOnClose: @app.window.document.getElementById('sectorSelectorHelpButton')
           @app.analyticsReporter.reportEvent 'Controls help', 'Viz2 sector help'
 
-    d3.select(@app.window.document).select '.unitSelectorHelpButton'
+    d3.select(@app.window.document).select '#unitSelectorHelpButton'
       .on 'click', =>
         d3.event.stopPropagation()
         d3.event.preventDefault()
@@ -84,14 +86,15 @@ class Visualization2 extends visualization
           @app.popoverManager.closePopover()
         else
           @app.popoverManager.showPopover @unitsHelpPopover, 
-            outerClasses: 'vizModal floatingPopover unitSelectorHelp'
+            outerClasses: 'vizModal controlsHelpPopover unitSelectorHelp'
             innerClasses: 'viz2HelpTitle'
             title: Tr.unitSelector.unitSelectorHelpTitle[@app.language]
             content: Tr.unitSelector.unitSelectorHelp[@app.language]
             attachmentSelector: '.unitsSelectorGroup'
+            elementToFocusOnClose: @app.window.document.getElementById('unitSelectorHelpButton')
           @app.analyticsReporter.reportEvent 'Controls help', 'Viz2 unit help'
 
-    d3.select(@app.window.document).select '.scenarioSelectorHelpButton'
+    d3.select(@app.window.document).select '#scenarioSelectorHelpButton'
       .on 'click', =>
         d3.event.stopPropagation()
         d3.event.preventDefault()
@@ -99,11 +102,13 @@ class Visualization2 extends visualization
           @app.popoverManager.closePopover()
         else
           @app.popoverManager.showPopover @scenariosHelpPopover, 
-            outerClasses: 'vizModal floatingPopover scenarioSelectorHelp'
+            outerClasses: 'vizModal controlsHelpPopover scenarioSelectorHelp'
             innerClasses: 'viz2HelpTitle'
             title: Tr.scenarioSelector.scenarioSelectorHelpTitle[@app.language]
             content: Tr.scenarioSelector.scenarioSelectorHelp[@app.language]
             attachmentSelector: '.scenarioSelectorGroup'
+            elementToFocusOnClose: @app.window.document.getElementById('scenarioSelectorHelpButton')
+
           @app.analyticsReporter.reportEvent 'Controls help', 'Viz2 scenario help'
 
 
@@ -134,7 +139,7 @@ class Visualization2 extends visualization
       right: 60
       bottom: 70
       left: 20
-    @svgSize()
+    @svgResize()
     @addDatasetToggle()
     @addUnitToggle()
     @addSectors()
@@ -142,7 +147,7 @@ class Visualization2 extends visualization
     @render()
 
   redraw: ->
-    @svgSize()   
+    @svgResize()   
     @buildYAxis(false)
     @buildXAxis(false)    
     @buildForecast()
@@ -182,7 +187,7 @@ class Visualization2 extends visualization
       Constants.serverSideGraphWidth - @_margin.left - @_margin.right
 
 
-  svgSize: ->
+  svgResize: ->
     # getBoundingClientRect is not implemented in JSDOM, use fixed width on server
     if Platform.name == 'browser'
       svgWidth = d3.select(@app.window.document).select('#graphPanel').node().getBoundingClientRect().width
@@ -704,6 +709,10 @@ class Visualization2 extends visualization
           @selectAllStacked
         groupId:
           'stackMenu'
+        helpButtonLabel: Tr.altText.sourcesHelp[@app.language]
+        helpButtonId: 'sourceHelpButton'
+
+
     @_chart = new stackedAreaChart(@app, "#graphSVG", @xScale(), @yScale(), stackedOptions)   
     @_provinceMenu = @buildProvinceMenu()
 
@@ -781,7 +790,7 @@ class Visualization2 extends visualization
         contentString = """
           <div class="sourceLabel sourceLabel#{source.key}"> 
             <img class="sourceIcon" src="#{@colouredSourceIconsDictionary()[source.key]}" alt='#{Tr.altText.sources[source.key][@app.language]}'>
-            <h6> #{Tr.sourceSelector.sources[source.key][@app.language]} </h6> 
+            <h2> #{Tr.sourceSelector.sources[source.key][@app.language]} </h2>
             <div class="clearfix"> </div>
             <p> #{Tr.sourceSelector.sourceSelectorHelp[source.key][@app.language]} </p>
           </div>
@@ -789,11 +798,11 @@ class Visualization2 extends visualization
       contentString = Tr.sourceSelector.sourceSelectorHelp.generalHelp[@app.language] + contentString
 
       @app.popoverManager.showPopover @sourcesHelpPopover, 
-        outerClasses: 'vizModal floatingPopover popOverLg sourceSelectorHelp'
-        innerClasses: 'localHelpTitle'
+        outerClasses: 'vizModal controlsHelpPopover popOverLg sourceSelectorHelp'
         title: Tr.sourceSelector.selectSourceLabel[@app.language]
         content: contentString
         attachmentSelector: '#powerSourceSelector'
+        elementToFocusOnClose: @app.window.document.getElementById('sourceHelpButton')
       @app.analyticsReporter.reportEvent 'Controls help', 'Viz2 source help'
 
 
@@ -805,7 +814,6 @@ class Visualization2 extends visualization
           h: @sourceMenuHeight()
       canDrag: false
       hasChart: false
-      parentClass: 'provinceMenu'
       data: @dataForProvinceMenu()
       onSelected:
         @provinceSelected
@@ -817,7 +825,9 @@ class Visualization2 extends visualization
         @showProvinceNames
       groupId:
         'provinceMenu'
-    new squareMenu(@app, '#provinceMenuSVG', provinceOptions) 
+      helpButtonLabel: Tr.altText.sourcesHelp[@app.language]
+      helpButtonId: 'provinceHelpButton'
+    new SquareMenu(@app, '#provinceMenuSVG', provinceOptions) 
 
   selectAllProvince: (selecting) =>
 
@@ -865,14 +875,14 @@ class Visualization2 extends visualization
       #Grab the provinces in order for the string
       contentString = ""
       for province in @dataForProvinceMenu()
-        contentString = """<div class="provinceLabel"> <h6> #{Tr.regionSelector.names[province.key][@app.language]} </h6> </div>""" + contentString
+        contentString = """<div class="provinceLabel"> <h2> #{Tr.regionSelector.names[province.key][@app.language]} </h2> </div>""" + contentString
 
       @app.popoverManager.showPopover @provincesHelpPopover, 
-        outerClasses: 'vizModal floatingPopover popOverSm provinceHelp'
-        innerClasses: 'localHelpTitle'
+        outerClasses: 'vizModal controlsHelpPopover popOverSm provinceHelp'
         title: Tr.regionSelector.selectRegionLabel[@app.language]
         content: contentString
         attachmentSelector: '#provincesSelector'
+        elementToFocusOnClose: @app.window.document.getElementById('provinceHelpButton')
       @app.analyticsReporter.reportEvent 'Controls help', 'Viz2 region help'
 
 module.exports = Visualization2

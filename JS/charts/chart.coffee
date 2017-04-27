@@ -1,42 +1,32 @@
 d3 = require 'd3'
-_ = require 'lodash'
 
 class chart
-  #local variables
+  # local variables
   chart_defaults:
-    size:  
+    size:
       w: 200
       h: 300
-    position:  
+    position:
       x: 0
       y: 0
     data: []
     duration: 1000
     group: 0
-    groupId: 'sChart' 
+    groupId: 'sChart'
 
-  # Need more precise control over the order of execution, in particular for the bubble
-  # graph. 
-  # constructor: (parent, op = {}) ->
-  #   @options = _.extend {}, @defaults, op
-  #   @_duration = @options.duration
-  #   @parent(parent, @options.groupId)
-  #   @_size = 
-  #     w : @options.size.w
-  #     h : @options.size.h
-  #   @_position = 
-  #     x : @options.position.x
-  #     y : @options.position.y
-  #   # @_data = @options.data
-  #   @data(@options.data)
-  #   @resize()
-
-
-  #getters and setters (return chart object for chaining)
+  # getters and setters (return chart object for chaining)
   parent: (prnt, groupClass) ->
     if arguments.length
-      @_parent = if typeof prnt == 'string' or prnt instanceof String then d3.select(@app.window.document).select(prnt) else prnt
-      @_group = if !(d3.select(@app.window.document).select("##{groupClass}").empty()) then d3.select(@app.window.document).select("##{groupClass}") else @_parent.append('svg:g').attr(id: groupClass)
+      @_parent = if typeof prnt == 'string' or prnt instanceof String
+        d3.select(@app.window.document).select(prnt)
+      else
+        prnt
+
+      @_group = if !(d3.select(@app.window.document).select("##{groupClass}").empty())
+        d3.select(@app.window.document).select("##{groupClass}")
+      else
+        @_parent.append('svg:g').attr(id: groupClass)
+      
       this
     else
       @_parent.node()
@@ -53,7 +43,7 @@ class chart
       h: s.h
     @redraw()
 
-  # Returns the position withOUT the marginss 
+  # Returns the position withOUT the margins
   position: (pos) ->
     if !arguments.length
       return {

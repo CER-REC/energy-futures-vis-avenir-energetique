@@ -77,7 +77,7 @@ div.chartTooltip:after {
   -moz-column-count: 2;*/
   box-sizing: border-box;
   width: 25%;
-  float: right;
+  float: left;
   padding-right: 10px; /* For precise alignment with link boxes */
 }
 
@@ -87,7 +87,7 @@ div.chartTooltip:after {
   -moz-column-count: 1;
   box-sizing: border-box;
   width: 25%;
-  float: right;
+  float: left;
   padding-right: 10px; /* For precise alignment with link boxes */
 }
 
@@ -95,15 +95,6 @@ div.chartTooltip:after {
     margin-top: 0;
 }
 
-#canadasEnergyFutureVisualization .columnLeftLandingPage {
-  width: 50%;
-  float: left;
-}
-
-#canadasEnergyFutureVisualization .columnRightLandingPage {
-  width: 50%;
-  float: right;
-}
 
 #canadasEnergyFutureVisualization #panelRight.en {
   box-sizing: border-box;
@@ -190,7 +181,7 @@ div.chartTooltip:after {
 }
 #canadasEnergyFutureVisualization #bottomNavBar .rightItem {
   margin: 7.5px 15px 0px 0px;
-  float: right;
+  float: left;
 }
 
 #canadasEnergyFutureVisualization #bottomNavBar .spacer {
@@ -216,7 +207,7 @@ div.chartTooltip:after {
 #canadasEnergyFutureVisualization #bottomNavBar .twitterItem,
 #canadasEnergyFutureVisualization #bottomNavBar .emailItem,
 #canadasEnergyFutureVisualization #bottomNavBar .linkedinItem {
-  float: right;
+  float: left;
   height: 100%;
   width: 27px;
 }
@@ -234,8 +225,11 @@ div.chartTooltip:after {
 #canadasEnergyFutureVisualization .thumbnailContainer .imgContainer {
   width: 100%;
   height: 130px;
-  /* The current set of thumbnails have drop shadow baked in */
   box-shadow: inset 0px 0px 4px 2px rgba(68, 68, 68, 0.8);
+}
+
+#canadasEnergyFutureVisualization a:focus .thumbnailContainer {
+  outline: 2px solid red;
 }
 
 #canadasEnergyFutureVisualization .thumbnailContainer img {
@@ -321,65 +315,6 @@ div.chartTooltip:after {
 
 
 
-/*#canadasEnergyFutureVisualization .aboutModalOverlay {
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  z-index: 1050;
-  color: #333333;
-}*/
-/*To allow the vizModal to take up a % of its parent's height*/
-
-
-
-
-
-
-#canadasEnergyFutureVisualization #aboutModal{
-  padding: 0 10px 0 10px;
-  top: -40px;
-}
-
-
-#canadasEnergyFutureVisualization #aboutModal p{
-  line-height: 1.5;
-  margin: 2px 0 2px 0;
-}
-
-#canadasEnergyFutureVisualization #aboutModal .modalHeader h5{
-  margin: 10px 0 0 0;
-}
-
-#canadasEnergyFutureVisualization #aboutModal h6{
-  line-height: 1;
-  padding: 5px;
-  margin: 10px 0 0 0;
-}
-
-#canadasEnergyFutureVisualization #aboutModal h5{
-  line-height: 1;
-  padding: 5px;
-  margin: 30px 0 0 0;
-}
-
-
-#canadasEnergyFutureVisualization .vizModal.floatingPopover {
-  width: 400%;
-  left: 110%;
-  top: 0;
-  height: auto;
-  min-width: 150px;
-  padding: 0px 15px 0px 15px;
-}
-
-#canadasEnergyFutureVisualization .vizModal.floatingPopover.popOverSm {
-  width: 200%;
-}
-
-#canadasEnergyFutureVisualization .vizModal.floatingPopover.popOverLg {
-  width: 800%;
-}
 
 #canadasEnergyFutureVisualization .vizModal {
   font-family: Avenir Next Demi Condensed, 'PT Sans Narrow', Arial Narrow, Arial, Verdana, sans-serif;
@@ -392,117 +327,147 @@ div.chartTooltip:after {
   position: absolute;
   color: #333333;
   background-color: rgba(255,255,255,1);
+
   -webkit-background-clip: padding-box;
   background-clip: padding-box;
-  border: 1px solid #ccc;
+
   border: 1px solid rgba(0,0,0,.15);
+
   -webkit-box-shadow: 0 6px 12px rgba(0,0,0,.175);
   box-shadow: 0 6px 12px rgba(0,0,0,.175);
+
   -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
   -moz-box-sizing: border-box;    /* Firefox, other Gecko */
   box-sizing: border-box;         /* Opera/IE 8+ */
 }
 
+
+#canadasEnergyFutureVisualization .vizModal.navbarHelpSection, 
+#canadasEnergyFutureVisualization .vizModal.navbarInfoSection {
+  left: auto;
+  top: auto;
+  width: 66.1%;
+  cursor: auto;
+}
+
+
+
+#canadasEnergyFutureVisualization .vizModal.controlsHelpPopover {
+  width: 400%;
+  left: 110%;
+  top: 0;
+  height: auto;
+  min-width: 150px;
+  padding: 0px 15px 0px 15px;
+}
+
+#canadasEnergyFutureVisualization .vizModal.controlsHelpPopover.popOverSm {
+  width: 200%;
+}
+
+#canadasEnergyFutureVisualization .vizModal.controlsHelpPopover.popOverLg {
+  width: 800%;
+}
+
+
+/* I think these two things should be treated the same way ... */
 #canadasEnergyFutureVisualization .vizModal .modalHeader {
   border-bottom: 1px solid #e5e5e5;
 }
 
-#canadasEnergyFutureVisualization .vizModal.floatingPopover .modalHeader {
-  height: 30px;
+#canadasEnergyFutureVisualization .vizModal .modalHeader {
+  height: 40px;
 }
 
-
-#canadasEnergyFutureVisualization .vizModal .modalContent p {
-  color: #333333;
-  padding: 5px;
-  font-family: Avenir Next Condensed, 'PT Sans Narrow', Arial Narrow, Arial, Verdana, sans-serif;
-  margin: 10px;
-}
-
-#canadasEnergyFutureVisualization .vizModal .modalContent p.sectorHelpText {
-  padding: 0;
-}
-
-#canadasEnergyFutureVisualization .floatingPopover .modalContent > p
-{
-  margin-top: 10px;
-}
-
-#canadasEnergyFutureVisualization .vizModal.floatingPopover .modalContent p
-{
-  text-align: justify;
-  font-weight: 200;
-  color: #444444;
-  font-size: 14px;
-  margin-top: 0;
-}
-
-
-#canadasEnergyFutureVisualization .vizModal h5,
-#canadasEnergyFutureVisualization .vizModal h6 {
-  margin: 10px 0px 10px 0px;
-  line-height: 150%;
+#canadasEnergyFutureVisualization .vizModal .modalHeader h1 {
   font-size: 20px;
-  border-bottom: none;
-  color: #333333 !important;
-  font-family: Avenir Next Demi Condensed, 'PT Sans Narrow', Arial Narrow, Arial, Verdana, sans-serif;
+  margin: 10px 0 10px 0;
+  line-height: 1em;
+  display: inline-block;
 }
 
-#canadasEnergyFutureVisualization .vizModal.floatingPopover h5{
-  margin: 5px 0px 5px 0px;
-}
-
-#canadasEnergyFutureVisualization .vizModal h6 {
-  font-size: 110%;
-  border-bottom: none;
-}
-
-#canadasEnergyFutureVisualization .vizModal .closeButton {
-  margin: 5px 0px 5px 0px;
+#canadasEnergyFutureVisualization .vizModal .modalHeader .closeButton {
+  margin: 10px 0px 10px 0px;
   float: right;
   height: 20px;
   padding: 0;
   cursor: pointer;
 }
 
-#canadasEnergyFutureVisualization .floatingPopover .sectionHeader{
-  margin-top: 5px;
-  margin-left: 10px;
-  margin-bottom: 0px;
-  color: #333333  !important;
-  font-family: Avenir Next Demi Condensed, Arial Narrow, Arial, Verdana, sans-serif;
+
+#canadasEnergyFutureVisualization .vizModal h1 {
+  font-size: 20px;
 }
 
-#canadasEnergyFutureVisualization .vizModal.floatingPopover .columnLeft{
+#canadasEnergyFutureVisualization .vizModal h2 {
+  font-size: 18px;
+}
+
+#canadasEnergyFutureVisualization .vizModal h1,
+#canadasEnergyFutureVisualization .vizModal h2 {
+  margin: 10px 0px 10px 0px;
+  line-height: 1em;
+}
+
+
+
+
+#canadasEnergyFutureVisualization .vizModal p
+{
+  font-family: Avenir Next Condensed, 'PT Sans Narrow', Arial Narrow, Arial, Verdana, sans-serif;
+  margin-top: 10px;
+  text-align: justify;
+  line-height: 1.1em;
+  padding-left: 10px;
+}
+
+#canadasEnergyFutureVisualization .vizModal .columnLeft {
   width: 50%;
   float: left;
+  box-sizing: border-box;
+  padding-right: 7.5px;
+  margin-top: 10px;
 }
 
-#canadasEnergyFutureVisualization .vizModal.floatingPopover .imageColumnLeft{
+#canadasEnergyFutureVisualization .vizModal .imageColumnLeft {
   width: 20%;
   float: left;
+  box-sizing: border-box;
 }
 
-#canadasEnergyFutureVisualization .vizModal.floatingPopover .columnRight{
+#canadasEnergyFutureVisualization .vizModal .columnRight {
   width: 50%;
   float: right;
+  box-sizing: border-box;
+  padding-left: 7.5px;
+  margin-top: 10px;
 }
 
-#canadasEnergyFutureVisualization .vizModal.floatingPopover .textColumnRight{
+#canadasEnergyFutureVisualization .vizModal .textColumnRight {
   width: 80%;
   float: left;
+  box-sizing: border-box;
+  padding-left: 15px;
 }
 
-#canadasEnergyFutureVisualization .vizModal img.sourceIcon{
+#canadasEnergyFutureVisualization .vizModal .textColumnRight h2 {
+  margin-top: 0;
+}
+
+#canadasEnergyFutureVisualization .vizModal .textColumnRight p {
+  padding: 0;
+}
+
+
+#canadasEnergyFutureVisualization .vizModal img.sourceIcon {
   height: 28px;
   width: 28px;
   float: left;
-  margin: 0px 10px 5px 5px;
+  margin: 0px 10px 5px 0px;
 }
 
-#canadasEnergyFutureVisualization img.sectorIcon{
+#canadasEnergyFutureVisualization img.sectorIcon {
   width: 100%;
-  padding-top: 5px;
   margin: 0;
 }
 
@@ -533,16 +498,11 @@ div.chartTooltip:after {
   margin: 10px 0px 10px 0px;
 }
 
+
+/* WET stylesheets will make our download link blue without this */
 #canadasEnergyFutureVisualization #modalImageDownloadButton {
   color: #333333;
 }
-
-
-#canadasEnergyFutureVisualization #imageDownloadModal p {
-  margin: 0;
-  padding: 10px 0px 10px 0px;
-}
-
 
 
 /*
@@ -612,59 +572,24 @@ div.chartTooltip:after {
   }
 }
 
-#canadasEnergyFutureVisualization .navbarHelpSection{
-  font-family: Avenir Next Condensed, 'PT Sans Narrow', Arial Narrow, Arial, Verdana, sans-serif;
-  width: 66.1%;
-  cursor: auto;
-  font-size: 16px;
-  z-index: 1000;
-  padding: 5px;
-  text-align: left;
-  position: absolute;
-  color: #333333;
-  background-color: rgba(255,255,255,1);
-  -webkit-background-clip: padding-box;
-  background-clip: padding-box;
-  border: 1px solid #ccc;
-  border: 1px solid rgba(0,0,0,.15);
-  -webkit-box-shadow: 0 6px 12px rgba(0,0,0,.175);
-  box-shadow: 0 6px 12px rgba(0,0,0,.175);
-  -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
-  -moz-box-sizing: border-box;    /* Firefox, other Gecko */
-  box-sizing: border-box;         /* Opera/IE 8+ */
 
+#canadasEnergyFutureVisualization h1.viz1HelpTitle,
+#canadasEnergyFutureVisualization h2.viz1HelpTitle{
+  color: rgb(103, 153, 204) !important;
 }
-
-#canadasEnergyFutureVisualization h4 {
-  border-bottom: none;
-  font-size: 18px;
-  font-family: Avenir Next Demi Condensed, 'PT Sans Narrow', Arial Narrow, Arial, Verdana, sans-serif;
-  margin-bottom: 16px;
-  margin-top: 5px;
-  margin-left: 0px;
-}
-
-#canadasEnergyFutureVisualization h5.viz1HelpTitle,
-#canadasEnergyFutureVisualization h4.viz1HelpTitle{
-  color: rgb(103, 153, 204)  !important;
-}
-#canadasEnergyFutureVisualization h5.viz2HelpTitle,
-#canadasEnergyFutureVisualization h4.viz2HelpTitle{
+#canadasEnergyFutureVisualization h1.viz2HelpTitle,
+#canadasEnergyFutureVisualization h2.viz2HelpTitle{
   color: rgb(52, 153, 153) !important;
 }
-#canadasEnergyFutureVisualization h5.viz3HelpTitle,
-#canadasEnergyFutureVisualization h4.viz3HelpTitle{
+#canadasEnergyFutureVisualization h1.viz3HelpTitle,
+#canadasEnergyFutureVisualization h2.viz3HelpTitle{
   color: rgb(54, 55, 150) !important;
 }
-#canadasEnergyFutureVisualization h5.viz4HelpTitle,
-#canadasEnergyFutureVisualization h4.viz4HelpTitle{
+#canadasEnergyFutureVisualization h1.viz4HelpTitle,
+#canadasEnergyFutureVisualization h2.viz4HelpTitle{
   color: rgb(202, 152, 48) !important;
 }
 
-#canadasEnergyFutureVisualization h5.localHelpTitle,
-#canadasEnergyFutureVisualization h4.localHelpTitle{
-  color: #333333 !important;
-}
 
 #canadasEnergyFutureVisualization .navbarUnselectedItem span {
   font-size: 18px;
@@ -680,12 +605,12 @@ div.chartTooltip:after {
 #canadasEnergyFutureVisualization .navbarHelpIcon {
   width: 50px;
   height: 50px;
-  float: right;
+  float: left;
 }
 #canadasEnergyFutureVisualization .navbarMenuIcon {
   width: 50px;
   height: 50px;
-  float: right;
+  float: left;
 }
 
 #canadasEnergyFutureVisualization .navbarHelpIcon.selected,
@@ -953,88 +878,75 @@ div.chartTooltip:after {
 }
 
 
-#canadasEnergyFutureVisualization .floatingPopover .provinceLabel:first-child{
-  margin-top: 25px;
-}
 
-#canadasEnergyFutureVisualization .sourceLabel h6 {
-  margin-top: 0px;
-  margin-bottom: 0px;
-  margin-left: 10px;
-  color: #333333  !important;
-}
-
-#canadasEnergyFutureVisualization .provinceLabel h6{
+#canadasEnergyFutureVisualization .provinceLabel h2 {
   padding: 5.75px;
-  line-height: 100%;
-  color: #333333 !important; 
-  border-bottom: none;
 }
 
-#canadasEnergyFutureVisualization .floatingPopover .provinceLabelAB h6{
+
+#canadasEnergyFutureVisualization .provinceLabelAB h2 {
   color: #2278B5 !important;
 }
-
-#canadasEnergyFutureVisualization .provinceLabelBC h6{
+#canadasEnergyFutureVisualization .provinceLabelBC h2 {
   color: #AEC7E8 !important;
 }
-
-#canadasEnergyFutureVisualization .provinceLabelMB h6{
+#canadasEnergyFutureVisualization .provinceLabelMB h2 {
   color: #FCBB78 !important;
 }
-#canadasEnergyFutureVisualization .provinceLabelNB h6{
+#canadasEnergyFutureVisualization .provinceLabelNB h2 {
   color: #2FA148 !important;
 }
-#canadasEnergyFutureVisualization .provinceLabelNL h6{
+#canadasEnergyFutureVisualization .provinceLabelNL h2 {
   color: #9ED089 !important;
 }
-#canadasEnergyFutureVisualization .provinceLabelNT h6{
+#canadasEnergyFutureVisualization .provinceLabelNT h2 {
   color: #D62A28 !important;
 }
-#canadasEnergyFutureVisualization .provinceLabelNS h6{
+#canadasEnergyFutureVisualization .provinceLabelNS h2 {
   color: #F69797 !important;
 }
-#canadasEnergyFutureVisualization .provinceLabelNU h6{
+#canadasEnergyFutureVisualization .provinceLabelNU h2 {
   color: #9268ac !important;
 }
-#canadasEnergyFutureVisualization .provinceLabelON h6{
+#canadasEnergyFutureVisualization .provinceLabelON h2 {
   color: #C5B1D6 !important;
 }
-#canadasEnergyFutureVisualization .provinceLabelPE h6{
+#canadasEnergyFutureVisualization .provinceLabelPE h2 {
   color: #8D574C !important;
 }
-#canadasEnergyFutureVisualization .provinceLabelQC h6{
+#canadasEnergyFutureVisualization .provinceLabelQC h2 {
   color: #c49c94 !important;
 }
-#canadasEnergyFutureVisualization .provinceLabelYT h6{
+#canadasEnergyFutureVisualization .provinceLabelYT h2 {
   color: #F5B6D1 !important;
 }
-#canadasEnergyFutureVisualization .provinceLabelSK h6{
+#canadasEnergyFutureVisualization .provinceLabelSK h2 {
   color: #d77ab1 !important;
 }
 
-#canadasEnergyFutureVisualization .sourceLabelelectricity h6{
+
+#canadasEnergyFutureVisualization .sourceLabelelectricity h2 {
   color: #33cccc !important;
 }
-#canadasEnergyFutureVisualization .sourceLabelcoal h6{
+#canadasEnergyFutureVisualization .sourceLabelcoal h2 {
   color: #996733 !important;
 }
-#canadasEnergyFutureVisualization .sourceLabelnaturalGas h6{
+#canadasEnergyFutureVisualization .sourceLabelnaturalGas h2 {
   color: #f16739 !important;
 }
-#canadasEnergyFutureVisualization .sourceLabeloilProducts h6{
+#canadasEnergyFutureVisualization .sourceLabeloilProducts h2 {
   color: #cc6699 !important;
 }
-#canadasEnergyFutureVisualization .sourceLabelsolarWindGeothermal h6{
+#canadasEnergyFutureVisualization .sourceLabelsolarWindGeothermal h2 {
   color: #339947 !important;
 }
-#canadasEnergyFutureVisualization .sourceLabelbio h6{
+#canadasEnergyFutureVisualization .sourceLabelbio h2 {
   color: #8d68ac !important;
 }
-#canadasEnergyFutureVisualization .sourceLabelhydro h6{
+#canadasEnergyFutureVisualization .sourceLabelhydro h2 {
   color: #4167b0 !important; 
 }
-#canadasEnergyFutureVisualization .sourceLabelnuclear h6{
+#canadasEnergyFutureVisualization .sourceLabelnuclear h2 {
   color: #cbcb30 !important;
 }
 
@@ -1062,9 +974,6 @@ div.chartTooltip:after {
 
 
 
-#mainPanel h6{
-  margin-top: 10px;
-}
 
 #mainPanel > div {
   padding: 10px;
@@ -1096,6 +1005,24 @@ svg { overflow: hidden; }
   margin: -50%;
 }
 
+#canadasEnergyFutureVisualization a:focus, 
+#canadasEnergyFutureVisualization .closeButton:focus,
+#canadasEnergyFutureVisualization .navbarButton:focus img,
+#canadasEnergyFutureVisualization .helpIconAnchor:focus img,
+#canadasEnergyFutureVisualization .squareMenuHelpButton:focus
+{
+  outline: solid red 2px;
+}
+
+#canadasEnergyFutureVisualization .float-right {
+  float: right;
+  height: 100%;
+}
+
+/* We rely on the image inside the anchor receiving an outline on focus, the outline on the surrounding a tag is misshapen and redundant */
+#canadasEnergyFutureVisualization .helpIconAnchor:focus {
+  outline: none;
+}
 
 
 

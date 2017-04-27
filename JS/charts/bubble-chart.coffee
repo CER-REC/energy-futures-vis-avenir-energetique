@@ -1,16 +1,12 @@
 d3 = require 'd3'
 _ = require 'lodash'
 
-chart =  require './chart.coffee'
-squareMenu = require './square-menu.coffee'
+Chart =  require './chart.coffee'
 Platform = require '../Platform.coffee'
 
-class BubbleChart extends chart
+class BubbleChart extends Chart
   bubbleChartDefaults:
     mapping: []
-    menuParent: '#powerSourceMenuSVG'
-    menuOptions:
-      canDrag: false
 
 
   constructor: (@app, parent, options = {}) ->
@@ -33,11 +29,11 @@ class BubbleChart extends chart
     @_data = @options.data
     @resize()
 
-
-    @options.menuOptions.chart = this
-    @menu = new squareMenu @app, @options.menuParent, @options.menuOptions
     @redraw()
 
+  # TODO: This mutates the passed in data, which can cause problems for other consumers
+  # of the data object that's passed to this chart.
+  # Bad! Fixme!
   filteredData: (currentData) ->
     for i in [0...currentData.children.length]
       if currentData.children[i].children?
@@ -60,7 +56,6 @@ class BubbleChart extends chart
     if !arguments.length
       return _.values @_mapping
     @_mapping = mapping
-    @menu.redraw()
 
   bubble: ->
     d3.layout.pack()

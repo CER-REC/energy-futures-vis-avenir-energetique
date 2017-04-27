@@ -3,8 +3,8 @@
   <div id="buttonPanel" class="selectorColumn">
     <div class="viewBySelectorGroup">  
       <span class="floatedTitleLabel">{{selectViewByLabel}}</span>
-      <a href='#'> 
-        <img src="IMG/large_qmark.svg" class="helpIconButton viewBySelectorHelpButton pointerCursor" alt='{{ altText.viewByHelp }}'> 
+      <a href='#' tabindex='0' role='button' id='viewBySelectorHelpButton' class='helpIconAnchor' aria-label='{{ altText.viewByHelp }}'>
+        <img src="IMG/large_qmark.svg" class="helpIconButton pointerCursor" alt='{{ altText.viewByHelp }}'> 
       </a>
       <div class="selectorGroup">
         <div id="viewBySelector"> </div>
@@ -12,8 +12,8 @@
     </div>
     <div class="unitsSelectorGroup">    
       <span class="floatedTitleLabel">{{selectUnitLabel}}</span>
-      <a href='#'> 
-        <img src="IMG/large_qmark.svg" class="helpIconButton unitSelectorHelpButton pointerCursor" alt='{{ altText.unitsHelp }}'> 
+      <a href='#' tabindex='0' role='button' id='unitSelectorHelpButton' class='helpIconAnchor' aria-label='{{ altText.unitsHelp }}'>
+        <img src="IMG/large_qmark.svg" class="helpIconButton pointerCursor" alt='{{ altText.unitsHelp }}'> 
       </a>
       <div class="selectorGroup">
         <div id="unitsSelector"> </div>
@@ -21,8 +21,8 @@
     </div>
     <div class="datasetSelectorGroup">
       <span class="floatedTitleLabel">{{selectDatasetLabel}}</span>
-      <a href='#'>
-        <img src="IMG/large_qmark.svg" class="helpIconButton datasetSelectorHelpButton pointerCursor" alt='{{ altText.datasetsHelp }}'> 
+      <a href='#' tabindex='0' role='button' id='datasetSelectorHelpButton' class='helpIconAnchor' aria-label='{{ altText.datasetsHelp }}'>
+        <img src="IMG/large_qmark.svg" class="helpIconButton pointerCursor" alt='{{ altText.datasetsHelp }}'> 
       </a>
       <div class="selectorGroup">
         <div id="datasetSelector"></div>
@@ -30,8 +30,8 @@
     </div>
     <div class="scenarioSelectorGroup">    
       <span class="floatedTitleLabel">{{selectScenarioLabel}}</span>
-      <a href='#'> 
-        <img src="IMG/large_qmark.svg" class="helpIconButton scenarioSelectorHelpButton pointerCursor" alt='{{ altText.scenariosHelp }}'> 
+      <a href='#' tabindex='0' role='button' id='scenarioSelectorHelpButton' class='helpIconAnchor' aria-label='{{ altText.scenariosHelp }}'>
+        <img src="IMG/large_qmark.svg" class="helpIconButton pointerCursor" alt='{{ altText.scenariosHelp }}'> 
       </a>
       <div class="selectorGroup">
         <div id="scenariosSelector"> </div>

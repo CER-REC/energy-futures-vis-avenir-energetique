@@ -27,45 +27,53 @@ class Navbar
           unselectedLabel: Tr.allPages.visualization4NavbarLink[@app.language]
           selectedLabel: Tr.visualization4Titles[@app.visualization4Configuration.mainSelection][@app.language]
           navbarHelpImageSelected: 'IMG/navbar_Icons/questionMark_ScenarioHighlighted.svg'
-          navbarInfoText: Tr.visualization4NavbarHelp[@app.language]
+          infoPopoverText: Tr.navbarInfoText.viz4[@app.language]
+          infoPopoverHeader: Tr.navbarInfoHeadings.viz4[@app.language]
           navbarInfoImageSelected: 'IMG/navbar_Icons/explanationIcon_ScenarioHighlighted.svg'
           colour: 'rgb(202, 152, 48)'
           page: 'viz4'
           imageAUrl: Tr.howToImages.viz4A[@app.language]
           imageBUrl: Tr.howToImages.viz4B[@app.language]
+          helpPopoverHeaderClass: 'viz4HelpTitle'
         }
         {
           unselectedLabel: Tr.allPages.visualization3NavbarLink[@app.language]
           selectedLabel: Tr.visualization3Title[@app.language]
-          navbarInfoText: Tr.visualization3NavbarHelp[@app.language]
+          infoPopoverText: Tr.navbarInfoText.viz3[@app.language]
+          infoPopoverHeader: Tr.navbarInfoHeadings.viz3[@app.language]
           navbarHelpImageSelected: 'IMG/navbar_Icons/questionMark_ElectricityHighlighted.svg'
           navbarInfoImageSelected: 'IMG/navbar_Icons/explanationIcon_ElectricityHighlighted.svg'
           colour: 'rgb(54, 55, 150)'
           page: 'viz3'
           imageAUrl: Tr.howToImages.viz3A[@app.language]
           imageBUrl: Tr.howToImages.viz3B[@app.language]
+          helpPopoverHeaderClass: 'viz3HelpTitle'
         }
         {
           unselectedLabel: Tr.allPages.visualization2NavbarLink[@app.language]
           selectedLabel: Tr.visualization2Title[@app.language]
-          navbarInfoText: Tr.visualization2NavbarHelp[@app.language]
+          infoPopoverText: Tr.navbarInfoText.viz2[@app.language]
+          infoPopoverHeader: Tr.navbarInfoHeadings.viz2[@app.language]
           navbarHelpImageSelected: 'IMG/navbar_Icons/questionMark_SectorHighlighted.svg'
           navbarInfoImageSelected: 'IMG/navbar_Icons/explanationIcon_SectorHighlighted.svg'
           colour: 'rgb(52, 153, 153)'
           page: 'viz2'
           imageAUrl: Tr.howToImages.viz2A[@app.language]
           imageBUrl: Tr.howToImages.viz2B[@app.language]
+          helpPopoverHeaderClass: 'viz2HelpTitle'
         }
         {
           unselectedLabel: Tr.allPages.visualization1NavbarLink[@app.language]
           selectedLabel: Tr.visualization1Titles[@app.visualization1Configuration.mainSelection][@app.language]
-          navbarInfoText: Tr.visualization1NavbarHelp[@app.language]
+          infoPopoverText: Tr.navbarInfoText.viz1[@app.language]
+          infoPopoverHeader: Tr.navbarInfoHeadings.viz1[@app.language]
           navbarHelpImageSelected: 'IMG/navbar_Icons/questionMark_RegionHighlighted.svg'
           navbarInfoImageSelected: 'IMG/navbar_Icons/explanationIcon_RegionHighlighted.svg'
           colour: 'rgb(103, 153, 204)'
           page: 'viz1'
           imageAUrl: Tr.howToImages.viz1A[@app.language]
           imageBUrl: Tr.howToImages.viz1B[@app.language]
+          helpPopoverHeaderClass: 'viz1HelpTitle'
         }
         {
           img: 'IMG/home.svg'
@@ -164,17 +172,30 @@ class Navbar
         else if @navbarState == d.page
           "<div class='navbarSelectedItem'>
             <span>#{d.selectedLabel}</span>
-            <div class='navbarHelpIcon'>
-              <img src='IMG/navbar_Icons/questionMark_ColourBG.svg'
-                   alt='#{Tr.altText.questionMark_ColourBG[@app.language]}'
+
+            <div class='float-right'>
+              <div class='navbarMenuIcon navbarButton'
+                   role='button'
+                   aria-label='#{Tr.altText.explanationIcon_ColourBG[@app.language]}'
+                   tabindex='0'
               >
-            </div>
-            <div class='navbarMenuIcon'>
-              <img src='IMG/navbar_Icons/explanationIcon_ColourBG.svg'
-                   alt='#{Tr.altText.explanationIcon_ColourBG[@app.language]}'
+                <img src='IMG/navbar_Icons/explanationIcon_ColourBG.svg'
+                     alt='#{Tr.altText.explanationIcon_ColourBG[@app.language]}'
+                >
+              </div>
+              <div class='navbarHelpIcon navbarButton'
+                   role='button'
+                   aria-label='#{Tr.altText.questionMark_ColourBG[@app.language]}'
+                   tabindex='0'
               >
+                <img src='IMG/navbar_Icons/questionMark_ColourBG.svg'
+                     alt='#{Tr.altText.questionMark_ColourBG[@app.language]}'
+                >
+              </div>
             </div>
-            <div class='navbarHelpSection hidden'>
+            <div class='vizModal navbarHelpSection hidden' role='dialog' aria-labelledby='navbarHelpPopoverHeading'>
+            </div>
+            <div class='vizModal navbarInfoSection hidden' role='dialog' aria-labelledby='navbarInfoPopoverHeading'>
             </div>
           </div>
           "
@@ -183,29 +204,44 @@ class Navbar
             <span>#{d.unselectedLabel}</span>
           </div>"
 
+
+    # TODO: would be good to unsubscribe these events on page navigation
+
+    helpButtonClick = (d) =>
+      d3.event.stopPropagation()
+      if @app.popoverManager.currentPopover == @navbarHelpPopover
+        @app.popoverManager.closePopover()
+      else
+        @app.popoverManager.showPopover @navbarHelpPopover,
+          imageAUrl: d.imageAUrl
+          imageBUrl: d.imageBUrl
+          navbarHelpImageSelected: d.navbarHelpImageSelected
+          helpPopoverHeaderClass: d.helpPopoverHeaderClass
+          elementToFocusOnClose: @app.window.document.querySelector('.navbarHelpIcon')
+        @app.analyticsReporter.reportEvent 'Navbar help', @navbarState
     
     vizNavbar.select('.navbarHelpIcon')
-      .on 'click', (d) =>
-        d3.event.stopPropagation()
-        if @app.popoverManager.currentPopover == @navbarHelpPopover
-          @app.popoverManager.closePopover()
-        else
-          @app.popoverManager.showPopover @navbarHelpPopover,
-            imageAUrl: d.imageAUrl
-            imageBUrl: d.imageBUrl
-            navbarHelpImageSelected: d.navbarHelpImageSelected
-          @app.analyticsReporter.reportEvent 'Navbar help', @navbarState
+      .on 'click', helpButtonClick
+      .on 'keydown', (d) ->
+        helpButtonClick(d) if d3.event.key == 'Enter'
+
+    infoButtonClick = (d) =>
+      d3.event.stopPropagation()
+      if @app.popoverManager.currentPopover == @navbarInfoPopover
+        @app.popoverManager.closePopover()
+      else
+        @app.popoverManager.showPopover @navbarInfoPopover,
+          navbarInfoImageSelected: d.navbarInfoImageSelected
+          infoPopoverText: d.infoPopoverText
+          infoPopoverHeader: d.infoPopoverHeader
+          infoPopoverHeaderClass: d.helpPopoverHeaderClass
+          elementToFocusOnClose: @app.window.document.querySelector('.navbarMenuIcon')
+        @app.analyticsReporter.reportEvent 'Navbar info', @navbarState
 
     vizNavbar.select('.navbarMenuIcon')
-      .on 'click', (d) =>
-        d3.event.stopPropagation()
-        if @app.popoverManager.currentPopover == @navbarInfoPopover
-          @app.popoverManager.closePopover()
-        else
-          @app.popoverManager.showPopover @navbarInfoPopover,
-            navbarInfoText: d.navbarInfoText
-            navbarInfoImageSelected: d.navbarInfoImageSelected
-          @app.analyticsReporter.reportEvent 'Navbar info', @navbarState
+      .on 'click', infoButtonClick
+      .on 'keydown', (d) ->
+        infoButtonClick(d) if d3.event.key == 'Enter'
 
 
 

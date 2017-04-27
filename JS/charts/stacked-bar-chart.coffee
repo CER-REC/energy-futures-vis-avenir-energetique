@@ -1,5 +1,5 @@
 d3 = require 'd3'
-squareMenu = require './square-menu.coffee'
+SquareMenu = require './SquareMenu.coffee'
 _ = require 'lodash'
 barChart = require './bar-chart.coffee'
 
@@ -18,7 +18,7 @@ class stackedBarChart extends barChart
     @_mapping = if @options.mapping then @options.mapping else null # Maybe this is required?
     super(parent, x, y, @options)
     @options.menuOptions.chart = this
-    @menu = new squareMenu(@app, @options.menuOptions.selector, @options.menuOptions)
+    @menu = new SquareMenu(@app, @options.menuOptions.selector, @options.menuOptions)
     @menu.data(@_mapping)
     @redraw()
 

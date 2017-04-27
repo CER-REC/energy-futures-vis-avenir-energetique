@@ -103,6 +103,9 @@ module.exports =
       en: 'Canada’s Energy Future 2016 – National Energy Board'
       fr: 'Avenir énergétique du Canada en 2016 – Office national de l’énergie'
 
+    helpPopoverHeader:
+      en: 'HELP'
+      fr: 'AIDE'
 
     shareLabel:
       en: 'SHARE'
@@ -129,16 +132,16 @@ module.exports =
         <p>
           Email us with your comments and ideas: <a href="mailto:energyindesign@neb-one.gc.ca">energyindesign@neb-one.gc.ca</a>. We look forward to hearing from you.
         </p>
-        <h5> CONTRIBUTORS </h5>
-        <h6> DATA SOURCE: </h6>
+        <h1> CONTRIBUTORS </h1>
+        <h2> DATA SOURCE: </h2>
         <p>
           Abha Bhargava (Director), Matthew Hansen (Market Analyst), Bryce van Sluys (Market Analyst), Chris Doleman (Market Analyst), Michael Nadew (Market Analyst)
         </p>
-        <h6> COORDINATION: </h6>
+        <h2> COORDINATION: </h2>
         <p>
           Annette Hester (Concept and Coordination); Katherine Murphy (Project Manager); Stephen Chow (Data Coordination); Garth Rowe (Web Lead); Jim Chisholm (Information Management and Technology)
         </p>
-        <h6> DATA VISUALIZATION: </h6>
+        <h2> DATA VISUALIZATION: </h2>
         <p>
           Lead Design Research: Sheelagh Carpendale and Wesley Willett, InnoVis, University of Calgary.
           <br>
@@ -165,16 +168,16 @@ module.exports =
         <p>
           Vous pouvez nous la faire parvenir, ainsi que vos suggestions, à l’adresse <a href="mailto:conceptionenergie@neb-one.gc.ca">conceptionenergie@neb-one.gc.ca</a>. Votre opinion compte.
         </p>
-        <h5> LES CONTRIBUTEURS </h5>
-        <h6> SOURCE DES DONNÉES </h6>
+        <h1> LES CONTRIBUTEURS </h1>
+        <h2> SOURCE DES DONNÉES </h2>
         <p>
           Abha Bhargava (directrice) et Matthew Hansen, Bryce van Sluys, Chris Doleman et Michael Nadew (analystes de marchés)
         </p>
-        <h6> COORDINATION </h6>
+        <h2> COORDINATION </h2>
         <p>
           Annette Hester (conception et coordination); Katherine Murphy (gestionnaire de projet); Stephen Chow (coordination des données); Garth Rowe (responsable du Web); Jim Chisholm (gestion de l’information et technologie)
         </p>
-        <h6> VISUALISATION DES DONNÉES </h6>
+        <h2> VISUALISATION DES DONNÉES </h2>
         <p>
           Recherche conceptuelle sous la direction de Sheelagh Carpendale et Wesley Willett, InnoVis, Université de Calgary
           <br>
@@ -296,21 +299,21 @@ module.exports =
     mainSelectorHelp:
       en: """
         <div class="columnLeft">
-          <div class="sectionHeader"> TOTAL DEMAND </div>
+          <h2> TOTAL DEMAND </h2>
             <p>
               The total energy used in the four sectors of Canada’s economy: residential, commercial, industrial and transportation.  Includes the use of electricity, natural gas, petroleum products such as gasoline, coal, and renewable fuels. Also referred to as end-use or secondary demand, it does not include the energy used to generate electricity.
             </p>
-          <div class="sectionHeader"> ELECTRICITY GENERATION </div>
+          <h2> ELECTRICITY GENERATION </h2>
             <p>
               The amount of electric energy produced by transforming other forms of energy. In Canada, electricity is generated from hydro, other renewables like wind and solar, thermal sources like natural gas and coal, and nuclear power.
             </p>
         </div>
         <div class="columnRight">
-          <div class="sectionHeader"> OIL PRODUCTION </div>
+          <h2> OIL PRODUCTION </h2>
             <p>
               The amount of crude oil produced in Canada. Crude oil is produced from various areas using different technologies. This includes mined and in situ bitumen from the oil sands, conventional light and heavy oil produced in the Western Canada Sedimentary Basin, condensate, and oil produced from off-shore platforms on the east coast.
             </p>
-          <div class="sectionHeader"> NATURAL GAS PRODUCTION </div>
+          <h2> NATURAL GAS PRODUCTION </h2>
             <p>
               The amount of marketable natural gas produced in Canada. Natural gas is produced from various areas using different technologies. This includes tight, shale, coal bed methane, conventional, and natural gas produced along with oil from oil wells (also called associated or solution gas).
             </p>
@@ -318,21 +321,21 @@ module.exports =
       """
       fr: """
         <div class="columnLeft">
-          <div class="sectionHeader"> DEMANDE TOTALE </div>
+          <h2> DEMANDE TOTALE </h2>
             <p>
               Il s’agit de la consommation totale d’énergie dans les quatre grands secteurs de l’économie canadienne : résidentiel, commercial, industriel et transports. Elle comprend la consommation d’électricité, de gaz naturel, de produits pétroliers comme l’essence, de charbon, et de carburants renouvelables. Aussi appelée demande pour utilisation finale ou demande secondaire, la demande totale ne tient pas compte de l’énergie utilisée pour produire de l’électricité.
             </p>
-          <div class="sectionHeader"> PRODUCTION D’ÉLECTRICITÉ </div>
+          <h2> PRODUCTION D’ÉLECTRICITÉ </h2>
             <p>
               Il s’agit de la quantité d’énergie électrique produite pour transformer d’autres formes d’énergie. Au Canada, l’électricité provient des sources suivantes : l’hydroélectricité; les énergies renouvelables, comme l’énergie éolienne et l’énergie solaire; les sources thermiques, comme le gaz naturel et le charbon; et l’énergie nucléaire.
             </p>
         </div>
         <div class="columnRight">
-          <div class="sectionHeader"> PRODUCTION DE PÉTROLE </div>
+          <h2> PRODUCTION DE PÉTROLE </h2>
             <p>
              Il s’agit de la quantité de pétrole brut produit au Canada. Plusieurs régions produisent du pétrole brut à partir de diverses techniques. La production de pétrole comprend celle de bitume (à ciel ouvert et in situ); les sables bitumineux, le pétrole léger et le pétrole brut classiques dans le bassin sédimentaire de l’Ouest Canada; les condensats; et le pétrole produit à partir des plateformes de forage au large de la côte est.
             </p>
-          <div class="sectionHeader"> PRODUCTION DE GAZ NATUREL </div>
+          <h2> PRODUCTION DE GAZ NATUREL </h2>
             <p>
               Elle désigne la quantité de gaz naturel commercialisable produit au Canada. Plusieurs régions produisent du gaz naturel à partir de diverses techniques. La production de gaz naturel comprend le gaz de réservoirs étanches, le gaz de schiste, le méthane de houille, le gaz classique et le gaz tiré de l’exploitation des puits de pétrole (aussi appelé gaz associé ou gaz dissous).
             </p>
@@ -358,7 +361,7 @@ module.exports =
               <img class="sectorIcon" src='IMG/sector/residential_selected.svg' alt='House'>
             </div>
             <div class="textColumnRight">
-              <div class="sectionHeader"> RESIDENTIAL </div>
+              <h2> RESIDENTIAL </h2>
                 <p class="sectorHelpText">
                   This is the energy consumed by Canadian households. It includes energy used for space and water heating, air conditioning, lighting, large appliances, and other energy-using devices like televisions and computers.
                 </p>
@@ -369,7 +372,7 @@ module.exports =
               <img class="sectorIcon" src='IMG/sector/commercial_selected.svg' alt='Skyscraper'>
             </div>
             <div class="textColumnRight">
-              <div class="sectionHeader"> COMMERCIAL </div>
+              <h2> COMMERCIAL </h2>
                 <p class="sectorHelpText">
                   A broad category  including offices, stores, warehouses, government and institutional buildings, utilities, communications, and other service industries. It also includes energy consumed by street lighting and pipelines. Buildings use energy for space and water heating, air conditioning, lighting, appliances and other devices. Pipelines use energy to power pumps or compressors that move oil and natural gas through pipelines.
                 </p>
@@ -381,7 +384,7 @@ module.exports =
               <img class="sectorIcon" src='IMG/sector/industrial_selected.svg' alt='Factory'>
             </div>
             <div class="textColumnRight">
-              <div class="sectionHeader"> INDUSTRIAL </div>
+              <h2> INDUSTRIAL </h2>
                 <p class="sectorHelpText">
                   This sector includes manufacturing, forestry, fisheries, agriculture, construction, mining, and oil and natural gas extraction. In 2013, 81 per cent of industrial energy was consumed by a number of energy-intensive industries like iron and steel, aluminum, cement, chemicals and fertilizers, pulp and paper, petroleum refining, mining, and oil and natural gas extraction.
                 </p>
@@ -393,7 +396,7 @@ module.exports =
               <img class="sectorIcon" src='IMG/sector/transport_selected.svg' alt='Transport truck'>
             </div>
             <div class="textColumnRight">
-              <div class="sectionHeader"> TRANSPORTATION </div>
+              <h2> TRANSPORTATION </h2>
                 <p class="sectorHelpText">
                   Includes passenger and freight on-road transportation, as well as air, rail, marine, and non-industrial off-road travel, such as recreational all-terrain vehicles and snowmobiles. Demand in the transportation sector includes foreign energy used on Canadian soil, airspace and waters.
                 </p>
@@ -407,7 +410,7 @@ module.exports =
               <img class="sectorIcon" src='IMG/sector/residential_selected.svg' alt='Maison'>
             </div>
             <div class="textColumnRight">
-              <div class="sectionHeader"> RÉSIDENTIEL </div>
+              <h2> RÉSIDENTIEL </h2>
                 <p class="sectorHelpText">
                   Consommation résidentielle d’énergie par les ménages canadiens, notamment pour le chauffage des bâtiments et de l’eau, la climatisation, l’éclairage et le fonctionnement des gros appareils ménagers et d’autres appareils comme les téléviseurs et les ordinateurs.
                 </p>
@@ -418,7 +421,7 @@ module.exports =
               <img class="sectorIcon" src='IMG/sector/commercial_selected.svg' alt='Gratte-ciel'>
             </div>
             <div class="textColumnRight">
-              <div class="sectionHeader"> COMMERCIAL </div>
+              <h2> COMMERCIAL </h2>
                 <p class="sectorHelpText">
                   Vaste catégorie qui englobe les bureaux, les commerces, les entrepôts, les immeubles gouvernementaux et institutionnels, les services publics, les entreprises de communications et d’autres industries du secteur tertiaire. On y prend en compte la consommation d’énergie pour l’éclairage des voies publiques, ainsi que le fonctionnement des pipelines. Dans les bâtiments, l’énergie sert pour le chauffage des locaux et de l’eau, la climatisation, l’éclairage et le fonctionnement des appareils ménagers et autres. Dans le cas des pipelines, elle alimente les pompes et les compresseurs qui permettent le transport du pétrole et du gaz naturel.
                 </p>
@@ -430,7 +433,7 @@ module.exports =
               <img class="sectorIcon" src='IMG/sector/industrial_selected.svg' alt='Usine'>
             </div>
             <div class="textColumnRight">
-              <div class="sectionHeader"> INDUSTRIEL </div>
+              <h2> INDUSTRIEL </h2>
                 <p class="sectorHelpText">
                   Ce secteur englobe la consommation énergétique des industries manufacturière et forestière, des pêches, de l’agriculture, de la construction et des mines. En 2013, quelques industries à forte densité énergétique consommaient 81 % de l’énergie destinée au secteur industriel, soit l’industrie sidérurgique, les alumineries, les cimenteries, les usines pétrochimiques et d’engrais et les raffineries de pétrole, ainsi que l’extraction minière, pétrolière et gazière.
                 </p>
@@ -442,7 +445,7 @@ module.exports =
               <img class="sectorIcon" src='IMG/sector/transport_selected.svg' alt='Camion'>
             </div>
             <div class="textColumnRight">
-              <div class="sectionHeader"> TRANSPORTS </div>
+              <h2> TRANSPORTS </h2>
                 <p class="sectorHelpText">
                   Le secteur des transports comprend le transport de personnes et de fret par véhicules routiers, le transport par air, rail et mer ainsi que le transport non industriel hors route, comme les véhicules tout terrain et les motoneiges. La demande de ce secteur englobe l’énergie provenant de l’étranger qui est consommée sur le territoire canadien (sol, air et eaux).
                 </p>
@@ -467,13 +470,13 @@ module.exports =
     viewBySelectorHelp:
       en: """
           <div class="columnLeft">
-            <div class="sectionHeader"> REGION </div>
+            <h2> REGION </h2>
             <p>
               Compares the amount of electricity generated by each source for each region.
             </p>
           </div>
           <div class="columnRight">
-            <div class="sectionHeader"> SOURCE </div>
+            <h2> SOURCE </h2>
             <p>
               Compares the amount of electricity generated by each region for each source.
             </p>
@@ -481,13 +484,13 @@ module.exports =
       """
       fr: """
         <div class="columnLeft">
-          <div class="sectionHeader"> RÉGION </div>
+          <h2> RÉGION </h2>
           <p>
             Compare la quantité d’électricité produite par source, par région.
           </p>
         </div>
         <div class="columnRight">
-          <div class="sectionHeader"> SOURCE </div>
+          <h2> SOURCE </h2>
           <p>
             Compare la quantité d’électricité produite par région, par source.
           </p>
@@ -509,30 +512,30 @@ module.exports =
       fr: 'AVENIR ÉNERGÉTIQUE'
     datasetSelectorHelp:
       en: """
-        <h6> CANADA'S ENERGY FUTURE 2016 </h6>
-        <div class="sectionHeader"> January 2016 </div>
+        <h1> CANADA'S ENERGY FUTURE 2016 </h1>
+        <h2> January 2016 </h2>
         <p>
           A continuation of the Energy Futures series. In addition our usual baseline long-term outlook, we explores key uncertainties for Canadian energy such robustness of global LNG markets and availability of crude oil transportation infrastructure.
           <br><a href='http://www.neb-one.gc.ca/nrg/ntgrtd/ftr/2016/index-eng.html' target='_blank'>View the report</a>
         </p>
 
-        <h6> CANADA’S ENERGY FUTURE 2016: UPDATE </h6>
-        <div class="sectionHeader"> October 2016 </div>
+        <h1> CANADA’S ENERGY FUTURE 2016: UPDATE </h1>
+        <h2> October 2016 </h2>
         <p>
           Presents reference and high and low prices cases. In the Reference Case, the crude oil price assumption is revised lower to US$90 per barrel by 2040. In addition to policies which were included in the January edition, such as Quebec’s cap and trade system and the carbon tax in B.C., most of the Alberta Climate Leadership Plan and the Ontario cap and trade program have been integrated into the forecast.
           <br><a href='http://www.neb-one.gc.ca/nrg/ntgrtd/ftr/2016updt/index-eng.html' target='_blank'>View the report</a>
         </p>
       """
       fr: """
-        <h6> AVENIR ÉNERGÉTIQUE DU CANADA EN 2016 </h6>
-        <div class="sectionHeader"> Janvier 2016 </div>
+        <h1> AVENIR ÉNERGÉTIQUE DU CANADA EN 2016 </h1>
+        <h2> Janvier 2016 </h2>
         <p>
           La suite de la série sur l’avenir énergétique. En plus des perspectives à long terme habituelles, nous explorons certaines incertitudes de fond dans le secteur de l’énergie au Canada, qu’il s’agisse par exemple de celles découlant du degré de robustesse des marchés mondiaux du GNL ou de la disponibilité d’une infrastructure pour l’acheminement de pétrole brut.
           <br><a href='http://www.neb-one.gc.ca/nrg/ntgrtd/ftr/2016/index-fra.html' target='_blank'>Consulter le rapport</a>
         </p>
 
-        <h6> AVENIR ÉNERGÉTIQUE DU CANADA EN 2016 – MISE À JOUR </h6>
-        <div class="sectionHeader"> Octobre 2016 </div>
+        <h1> AVENIR ÉNERGÉTIQUE DU CANADA EN 2016 – MISE À JOUR </h1>
+        <h2> Octobre 2016 </h2>
         <p>
           Présente des scénarios de prix, bas et élevés, ainsi qu’un scénario de référence. Dans ce dernier cas, l’hypothèse de prix du pétrole brut a été revue à la baisse, à 90 $ US le baril en 2040. En plus des politiques déjà incluses précédemment, notamment le système de plafonnement et d’échange de droits d’émission au Québec et la taxe sur le carbone en Colombie-Britannique, les nouvelles prévisions tiennent compte, dans sa plus grande partie, du plan de leadership de l’Alberta en matière de changement climatique de même que du programme de plafonnement et d’échange de droits de l’Ontario.
           <br><a href='http://www.neb-one.gc.ca/nrg/ntgrtd/ftr/2016updt/index-fra.html' target='_blank'>Consulter le rapport</a>
@@ -571,42 +574,42 @@ module.exports =
     unitSelectorHelp:
       en: """
         <div class="columnLeft">
-          <h6> ENERGY UNITS </h6>
-            <div class="sectionHeader"> PETAJOULE </div>
+          <h1> ENERGY UNITS </h1>
+            <h2> PETAJOULE </h2>
               <p>
                 A measure of energy that is a quadrillion (10<sup>15</sup>) joules. According to Statistics Canada, a petajoule is the approximate amount of energy it takes to run the Montreal Metro for one year.
               </p>
-            <div class="sectionHeader"> THOUSAND BARRELS OF OIL EQUIVALENT PER DAY (kBOE/d) </div>
+            <h2> THOUSAND BARRELS OF OIL EQUIVALENT PER DAY (kBOE/d) </h2>
               <p>
                 A measure of energy normalized to the equivalent energy content of a barrel of light crude oil. One barrel of oil equivalent is equal to 6.811 joules , while one petajoule is equal to 0.4475 kBOE/d.
               </p>
-            <div class="sectionHeader"> GW.h </div>
+            <h2> GW.h </h2>
               <p>
                 A measure of electric energy that is a billion (10<sup>9</sup>) watt hours of electric energy per year. One GW.h is equal to 0.0036 petajoules and 0.0016 kBOE/d.
               </p>
         </div>
         <div class="columnRight">
-          <h6> VOLUMETRIC UNITS</h6>
-          <div class="sectionHeader"> THOUSAND BARRELS PER DAY (kb/d) </div>
+          <h1> VOLUMETRIC UNITS</h1>
+          <h2> THOUSAND BARRELS PER DAY (kb/d) </h2>
             <p>
                Number of barrels of crude oil produced per day.
             </p>
-          <div class="sectionHeader"> THOUSAND CUBIC METRES PER DAY (10<sup>3</sup>m<sup>3</sup>/d) </div>
+          <h2> THOUSAND CUBIC METRES PER DAY (10<sup>3</sup>m<sup>3</sup>/d) </h2>
             <p>
               Number of cubic metres of crude oil produced per day. One barrel of oil is equal to 0.159 cubic metres.
             </p>
-          <div class="sectionHeader"> MILLION CUBIC FEET PER DAY (Mcf/d) </div>
+          <h2> MILLION CUBIC FEET PER DAY (Mcf/d) </h2>
             <p>
               Number of cubic feet of natural gas produced per day.
             </p>
-          <div class="sectionHeader"> MILLION CUBIC METRES PER DAY (10<sup>6</sup>m<sup>3</sup>/d) </div>
+          <h2> MILLION CUBIC METRES PER DAY (10<sup>6</sup>m<sup>3</sup>/d) </h2>
             <p>
               Number of cubic metres of natural gas produced per day. One cubic foot of natural gas is equal to 0.0283 cubic metres.
             </p>
         </div>
         <div class="clearfix"></div>
         <hr>
-        <div class="sectionHeader"> Y-AXIS SCALING NOTES </div>
+        <h2> Y-AXIS SCALING NOTES </h2>
         <div class="columnLeft">
           <p>
             Depending on the value, the y-axis may be scaled with a multiplier k, m or µ.
@@ -626,42 +629,42 @@ module.exports =
       """
       fr: """
         <div class="columnLeft">
-          <h6> UNITÉS D’ÉNERGIE </h6>
-          <div class="sectionHeader"> PÉTAJOULE </div>
+          <h1> UNITÉS D’ÉNERGIE </h1>
+          <h2> PÉTAJOULE </h2>
             <p>
                Mesure d’énergie correspondant à un quadrillion (10<sup>15</sup>) de joules. Selon Statistique Canada, un pétajoule représente l’énergie requise pour faire fonctionner le métro de Montréal pendant un an.
             </p>
-          <div class="sectionHeader"> MILLIER DE BARILS D’ÉQUIVALENT PÉTROLE PAR JOUR (kbep/j) </div>
+          <h2> MILLIER DE BARILS D’ÉQUIVALENT PÉTROLE PAR JOUR (kbep/j) </h2>
             <p>
               Mesure d’énergie normalisée à l’équivalent de la teneur en énergie d’un baril de pétrole brut léger. Un baril d’équivalent pétrole équivaut à 6,811 joules ; et un pétajoule est égal à 0,4475 kbep/j.
             </p>
-          <div class="sectionHeader"> GIGAWATTHEURE (GWh)  </div>
+          <h2> GIGAWATTHEURE (GWh)  </h2>
             <p>
               Mesure de puissance énergétique correspondant à un milliard (10<sup>9</sup>) de wattheures d’énergie électrique par année. Un gigawatt équivaut à 0,0036 pétajoule et à 0,0016 kbep/j.
             </p>
         </div>
         <div class="columnRight">
-          <h6> UNITÉS VOLUMÉTRIQUES </h6>
-          <div class="sectionHeader"> MILLIER DE BARILS PAR JOUR (kb/j) </div>
+          <h1> UNITÉS VOLUMÉTRIQUES </h1>
+          <h2> MILLIER DE BARILS PAR JOUR (kb/j) </h2>
             <p>
               Nombre de barils de pétrole brut produits par jour.
             </p>
-          <div class="sectionHeader"> MILLIER DE MÈTRES CUBES PAR JOUR (10<sup>3</sup>m<sup>3</sup>/j) </div>
+          <h2> MILLIER DE MÈTRES CUBES PAR JOUR (10<sup>3</sup>m<sup>3</sup>/j) </h2>
             <p>
               Nombre de mètres cubes de pétrole brut produits par jour. Un baril de pétrole équivaut à 0,159 mètre cube.
             </p>
-          <div class="sectionHeader"> MILLIER DE PIEDS CUBES PAR JOUR (Mpi<sup>3</sup>/j) </div>
+          <h2> MILLIER DE PIEDS CUBES PAR JOUR (Mpi<sup>3</sup>/j) </h2>
             <p>
               Nombre de pieds cubes de gaz naturel produits par jour.
             </p>
-          <div class="sectionHeader"> MILLION DE MÈTRES CUBES PAR JOUR (Mm<sup>3</sup>/j) </div>
+          <h2> MILLION DE MÈTRES CUBES PAR JOUR (Mm<sup>3</sup>/j) </h2>
             <p>
               Nombre de mètres cubes de gaz naturel produits par jour. Un pied cube de gaz naturel équivaut à 0,0283 mètre cube.
             </p>
         </div>
         <div class="clearfix"></div>
         <hr>
-        <div class="sectionHeader"> REMARQUE AU SUJET DE LA GRADUATION DE L’AXE Y </div>
+        <h2> REMARQUE AU SUJET DE LA GRADUATION DE L’AXE Y </h2>
         <div class="columnLeft">
           <p>
             Selon la valeur, un multiplicateur k, m ou µ peut être appliqué à l’axe y.
@@ -717,25 +720,25 @@ module.exports =
           The projections in EF 2016 include a Reference Case, two price sensitivity cases and three supplemental sensitivity cases:
         </p>
         <div class="columnLeft">
-          <div class="sectionHeader"> REFERENCE </div>
+          <h2> REFERENCE </h2>
             <p>
               The Reference Case provides a baseline outlook, based on a moderate view of future energy prices and economic growth.
             </p>
-          <div class="sectionHeader"> HIGH PRICE </div>
+          <h2> HIGH PRICE </h2>
             <p>
               A price case with higher oil and natural gas prices capture some of the uncertainty related to future energy prices.
             </p>
-          <div class="sectionHeader"> LOW PRICE </div>
+          <h2> LOW PRICE </h2>
             <p>
               A price case with lower oil and natural gas prices capture some of the uncertainty related to future energy prices.
             </p>
         </div>
         <div class="columnRight">
-          <div class="sectionHeader"> CONSTRAINED </div>
+          <h2> CONSTRAINED </h2>
             <p>
               The EF 2016 report considers a case where no new major oil pipelines are built over the projection period to address uncertainties related to future oil export infrastructure.
             </p>
-          <div class="sectionHeader"> LNG </div>
+          <h2> LNG </h2>
             <p>
               The uncertainty related to eventual volumes of liquefied natural gas (LNG) exports is explored in two additional cases.
             </p>
@@ -749,25 +752,25 @@ module.exports =
           Les projections du rapport AE comprennent un scénario de référence, cinq scénarios de sensibilité, dont deux liés au prix :
         </p>
         <div class="columnLeft">
-          <div class="sectionHeader"> RÉFÉRENCE </div>
+          <h2> RÉFÉRENCE </h2>
             <p>
               Le scénario de référence offre une perspective de base et mise sur une projection modérée des prix de l’énergie et de la croissance de l’économie dans les années à venir.
             </p>
-          <div class="sectionHeader"> PRIX ÉLEVÉ </div>
+          <h2> PRIX ÉLEVÉ </h2>
             <p>
               Un premier scénario lié aux prix prévoit des prix du pétrole et du gaz naturel plus élevés et prend en compte certaines incertitudes qui ont trait aux prix futurs de l’énergie.
             </p>
-          <div class="sectionHeader"> PRIX BAS </div>
+          <h2> PRIX BAS </h2>
             <p>
               Un second scénario lié aux prix table sur des prix du pétrole et du gaz naturel moins élevés et intègre certaines incertitudes concernant les prix futurs de l’énergie.
             </p>
         </div>
         <div class="columnRight">
-          <div class="sectionHeader"> CAPACITÉ LIMITÉE </div>
+          <h2> CAPACITÉ LIMITÉE </h2>
             <p>
               Le rapport AE 2016 prend aussi en considération des incertitudes relatives à l’infrastructure d’exportation du pétrole et propose un scénario dans lequel aucun pipeline d’envergure n’est construit durant la période de projection.
             </p>
-          <div class="sectionHeader"> GNL </div>
+          <h2> GNL </h2>
             <p>
               Deux autres scénarios explorent les incertitudes entourant les éventuelles exportations de gaz naturel liquéfié (GNL).
             </p>
@@ -1157,91 +1160,96 @@ module.exports =
       en: 'IMG/provinces/colour/all_noneSelected.svg'
       fr: 'IMG/provinces/french/tous_noneSelectedR.svg'
 
+  navbarInfoHeadings:
+    viz1:
+      en: 'EXPLORE BY REGION'
+      fr: 'EXPLORATION PAR RÉGION'
+    viz2:
+      en: 'EXPLORE BY SECTOR'
+      fr: 'EXPLORATION PAR SECTEUR'
+    viz3:
+      en: 'EXPLORE ELECTRICITY'
+      fr: 'EXPLORATION DE LA COMPOSANTE ÉLECTRICITÉ'
+    viz4:
+      en: 'EXPLORE SCENARIOS'
+      fr: 'EXPLORATION DES SCÉNARIOS'
 
 
-  visualization1NavbarHelp:
-    en: """
-          <h4 class="viz1HelpTitle"> EXPLORE BY REGION </h4>
-          <p>
-            Compare historical and projected energy supply and demand data from across Canada’s provinces and territories.
-          </p>
-          <p>
-            Select total demand, electricity generation, crude oil production or natural gas production, and then compare, add or remove, or re-arrange the provinces and territories to explore different possible outcomes.
-          </p>
-        """
-    fr: """
-      <h4 class="viz1HelpTitle"> EXPLORATION PAR RÉGION </h4>
-      <p>
-        Comparez les données passées et faites des projections de l’offre et de la demande d’énergie pour les provinces et les territoires au Canada.
-      </p>
-      <p>
-        Sélectionnez la demande totale, la production d’électricité, la production de pétrole brut ou la production de gaz naturel, puis comparez, ajoutez, retirez ou réorganisez les données selon les provinces et les territoires pour analyser divers résultats possibles.
-      </p>
-    """
-  visualization2NavbarHelp:
-    en: """
-      <h4 class="viz2HelpTitle"> EXPLORE BY SECTOR </h4>
-      <p>
-        Explore how energy source mixes from different sectors have evolved in recent history, and how they are projected to evolve in the EF 2016 scenarios.
-      </p>
-      <p>
-        Select a province or territory, and choose between residential, commercial, transportation, industrial or total energy use.
-      </p>
-    """
-    fr: """
-      <h4 class="viz2HelpTitle"> EXPLORATION PAR SECTEUR </h4>
-      <p>
-        Examinez l’évolution de la consommation des divers produits énergétiques par différents secteurs depuis quelques années, et découvrez l’évolution que proposent les scénarios du rapport AE 2016.
-      </p>
-      <p>
-        Sélectionnez une province ou un territoire, puis consultez la consommation énergétique des secteurs résidentiel, commercial, industriel ou des transports, ou encore la consommation totale d’énergie.
-      </p>
-    """
-  visualization3NavbarHelp:
-    en: """
-      <h4 class="viz3HelpTitle"> EXPLORE ELECTRICITY </h4>
-      <p>
-        Compare the relative amount of electricity generated by various energy sources across the provinces and territories for a given year.
-      </p>
-      <p>
-        Switch between two views: one that compares the amount of electricity generated by each source for each region, and one that compares the amount of electricity generated by each region for each source.
-      </p>
-      <p>
-        Note:   the outer circles are for labelling purposes and do not precisely reflect the relative total generation by region or source.
-      </p>
-    """
-    fr: """
-      <h4 class="viz3HelpTitle">  EXPLORATION DE LA COMPOSANTE ÉLECTRICITÉ </h4>
-      <p>
-        Comparez la quantité relative d’électricité produite à partir de diverses sources dans les provinces et les territoires au cours d’une année donnée.
-      </p>
-      <p>
-        Passez d’une visualisation à l’autre, de la quantité d’électricité produite par chaque source dans chaque région, à la quantité d’électricité produite dans chaque région par chaque source.
-      </p>
-      <p>
-        Remarque : Les cercles extérieurs n’ont d’autres utilités que l’identification; ils ne reproduisent pas avec précision la production totale relative selon la région ou la source d’énergie.
-      </p>
-    """
-  visualization4NavbarHelp:
-    en: """
-      <h4 class="viz4HelpTitle">  EXPLORE SCENARIOS </h4>
-      <p>
-        Directly compare the scenarios.
-      </p>
-      <p>
-        Explore the impact of key uncertainties on future energy trends, such as higher or lower energy prices, higher LNG exports or No LNG exports, or not building crude oil export pipelines.
-      </p>
-    """
-    fr: """
-      <h4 class="viz4HelpTitle"> EXPLORATION DES SCÉNARIOS </h4>
-      <p>
-        Comparez directement les scénarios.
-      </p>
-      <p>
-        Analysez l’incidence des principales incertitudes sur l’évolution future de l’énergie, par exemple en fonction de prix plus élevés ou plus bas, d’exportations plus élevées de GNL, ou l’absence d’exportations de GNL, ou encore l’absence de nouveaux de pipelines d’exportation de pétrole brut.
-      </p>
-    """
-
+  navbarInfoText:
+    viz1:
+      en: """
+        <p>
+          Compare historical and projected energy supply and demand data from across Canada’s provinces and territories.
+        </p>
+        <p>
+          Select total demand, electricity generation, crude oil production or natural gas production, and then compare, add or remove, or re-arrange the provinces and territories to explore different possible outcomes.
+        </p>
+      """
+      fr: """
+        <p>
+          Comparez les données passées et faites des projections de l’offre et de la demande d’énergie pour les provinces et les territoires au Canada.
+        </p>
+        <p>
+          Sélectionnez la demande totale, la production d’électricité, la production de pétrole brut ou la production de gaz naturel, puis comparez, ajoutez, retirez ou réorganisez les données selon les provinces et les territoires pour analyser divers résultats possibles.
+        </p>
+      """
+    viz2:
+      en: """
+        <p>
+          Explore how energy source mixes from different sectors have evolved in recent history, and how they are projected to evolve in the EF 2016 scenarios.
+        </p>
+        <p>
+          Select a province or territory, and choose between residential, commercial, transportation, industrial or total energy use.
+        </p>
+      """
+      fr: """
+        <p>
+          Examinez l’évolution de la consommation des divers produits énergétiques par différents secteurs depuis quelques années, et découvrez l’évolution que proposent les scénarios du rapport AE 2016.
+        </p>
+        <p>
+          Sélectionnez une province ou un territoire, puis consultez la consommation énergétique des secteurs résidentiel, commercial, industriel ou des transports, ou encore la consommation totale d’énergie.
+        </p>
+      """
+    viz3:
+      en: """
+        <p>
+          Compare the relative amount of electricity generated by various energy sources across the provinces and territories for a given year.
+        </p>
+        <p>
+          Switch between two views: one that compares the amount of electricity generated by each source for each region, and one that compares the amount of electricity generated by each region for each source.
+        </p>
+        <p>
+          Note:   the outer circles are for labelling purposes and do not precisely reflect the relative total generation by region or source.
+        </p>
+      """
+      fr: """
+        <p>
+          Comparez la quantité relative d’électricité produite à partir de diverses sources dans les provinces et les territoires au cours d’une année donnée.
+        </p>
+        <p>
+          Passez d’une visualisation à l’autre, de la quantité d’électricité produite par chaque source dans chaque région, à la quantité d’électricité produite dans chaque région par chaque source.
+        </p>
+        <p>
+          Remarque : Les cercles extérieurs n’ont d’autres utilités que l’identification; ils ne reproduisent pas avec précision la production totale relative selon la région ou la source d’énergie.
+        </p>
+      """
+    viz4:
+      en: """
+        <p>
+          Directly compare the scenarios.
+        </p>
+        <p>
+          Explore the impact of key uncertainties on future energy trends, such as higher or lower energy prices, higher LNG exports or No LNG exports, or not building crude oil export pipelines.
+        </p>
+      """
+      fr: """
+        <p>
+          Comparez directement les scénarios.
+        </p>
+        <p>
+          Analysez l’incidence des principales incertitudes sur l’évolution future de l’énergie, par exemple en fonction de prix plus élevés ou plus bas, d’exportations plus élevées de GNL, ou l’absence d’exportations de GNL, ou encore l’absence de nouveaux de pipelines d’exportation de pétrole brut.
+        </p>
+      """
 
 
   # Titles

@@ -171,13 +171,11 @@ class ElectricityProductionProvider
       dataToUse = @dataByProvince
       singleSelectFilterName = 'provinces'
       stackedFilterName = 'sources'
-      allValidNames = viz3config.sourcesInOrder
       nameField = 'source'
     else 
       dataToUse = @dataBySource
       singleSelectFilterName = 'sources'
       stackedFilterName = 'provinces'
-      allValidNames = viz3config.provincesInOrder
       nameField = 'province'
 
     # When province/source is all/total, add in all of the provinces/sources
@@ -190,7 +188,7 @@ class ElectricityProductionProvider
     else 
       filteredData[viz3config[viz3config.viewBy]] = dataToUse[viz3config[viz3config.viewBy]]
 
-    # Include only the year and non zero value
+    # Include only the year
     for name in Object.keys filteredData
       filteredData[name] = filteredData[name].filter (item) ->
         item.year == viz3config.year
@@ -200,11 +198,10 @@ class ElectricityProductionProvider
       filteredData[name] = filteredData[name].filter (item) ->
         item.scenario == viz3config.scenario
 
-    # THIS IS JUST EXCLUDING CRUDE OIL AND TOTAL SINCE WE DONT HAVE IMAGES FOR IT
-    # TODO: Remove me, once merged with branch where data is pre-filtered
+    # Include only items with nonzero data
     for name in Object.keys filteredData
       filteredData[name] = filteredData[name].filter (item) ->
-        item[nameField] in allValidNames and item.value != 0
+        item.value != 0
 
     #So um units are not really used?
     if viz3config.unit == 'kilobarrelEquivalents' or viz3config.unit == 'petajoules' 

@@ -2,7 +2,7 @@ d3 = require 'd3'
 Mustache = require 'mustache'
 
 Tr = require '../TranslationTable.coffee'
-AboutThisProjectTemplate = require '../templates/AboutThisProject.mustache'
+AboutThisProjectTemplate = require '../templates/AboutThisProjectPopover.mustache'
 
 class AboutThisProjectPopover
 
@@ -18,12 +18,36 @@ class AboutThisProjectPopover
     d3.select('#aboutModal').on 'click', ->
       d3.event.stopPropagation()
 
+    @closeButton = d3.select '#aboutModal .closeButton'
+
+    @closeButtonClickHandler = =>
+      d3.event.preventDefault()
+      d3.event.stopPropagation()
+      @app.popoverManager.closePopover()
+
+    @closeButtonEnterHandler = =>
+      d3.event.preventDefault()
+      d3.event.stopPropagation()
+      if d3.event.key == 'Enter'
+        @app.popoverManager.closePopover()
+
+    @closeButton.on 'click', @closeButtonClickHandler
+    @closeButton.on 'keyup', @closeButtonEnterHandler
+
+
+
+
   show: ->
     d3.select('#aboutModal').classed 'hidden', false
 
   close: ->
     d3.select('#aboutModal').classed 'hidden', true
 
+  focus: ->
+    @app.window.document.getElementById('aboutPopoverHeading').focus()
+
+  container: ->
+    @app.window.document.getElementById 'aboutModal'
 
 
 

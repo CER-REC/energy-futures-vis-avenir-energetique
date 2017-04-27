@@ -2,7 +2,7 @@ d3 = require 'd3'
 Mustache = require 'mustache'
 
 Tr = require '../TranslationTable.coffee'
-ImageDownloadTemplate = require '../templates/ImageDownload.mustache'
+ImageDownloadTemplate = require '../templates/ImageDownloadPopover.mustache'
 
 class ImageDownloadPopover
 
@@ -21,6 +21,18 @@ class ImageDownloadPopover
     d3.select('#modalImageDownloadButton').on 'click', =>
       @app.analyticsReporter.reportEvent 'Downloads', 'Download image'
 
+    @closeButton = d3.select '#imageDownloadModal .closeButton'
+
+    @closeButton.on 'click', =>
+      d3.event.preventDefault()
+      d3.event.stopPropagation()
+      @app.popoverManager.closePopover()
+
+    @closeButton.on 'keyup', =>
+      d3.event.preventDefault()
+      d3.event.stopPropagation()
+      if d3.event.key == 'Enter'
+        @app.popoverManager.closePopover()
 
 
   show: ->
@@ -29,6 +41,14 @@ class ImageDownloadPopover
 
   close: ->
     d3.select('#imageDownloadModal').classed 'hidden', true
+
+  focus: ->
+    @app.window.document.getElementById('imageDownloadPopoverHeading').focus()
+
+  container: ->
+    @app.window.document.getElementById 'imageDownloadModal'
+
+
 
 
 
