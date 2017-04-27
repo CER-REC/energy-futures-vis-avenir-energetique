@@ -1555,3 +1555,7 @@ module.exports =
     en: 'REPORT: '
     fr: 'RAPPORT : '
 
+  home:
+    en: 'Home'
+    fr: 'Accueil'
+

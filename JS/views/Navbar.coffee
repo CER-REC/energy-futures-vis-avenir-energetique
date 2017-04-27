@@ -14,53 +14,18 @@ class Navbar
     @navbarInfoPopover = new NavbarInfoPopover @app
     @navbarHelpPopover = new NavbarHelpPopover @app
 
-  # NB: This data is in REVERSE order on purpose
-  # We float the resulting divs to the right, which means they appear in the reverse
-  # of the order the data is in here
-  # We have to float right in order to achieve the desired drop shadowing appearance
+
   navbarData: ->
     if @navbarState == 'landingPage'
       []
     else
       [
         {
-          unselectedLabel: Tr.allPages.visualization4NavbarLink[@app.language]
-          selectedLabel: Tr.visualization4Titles[@app.visualization4Configuration.mainSelection][@app.language]
-          navbarHelpImageSelected: 'IMG/navbar_Icons/questionMark_ScenarioHighlighted.svg'
-          infoPopoverText: Tr.navbarInfoText.viz4[@app.language]
-          infoPopoverHeader: Tr.navbarInfoHeadings.viz4[@app.language]
-          navbarInfoImageSelected: 'IMG/navbar_Icons/explanationIcon_ScenarioHighlighted.svg'
-          colour: 'rgb(202, 152, 48)'
-          page: 'viz4'
-          imageAUrl: Tr.howToImages.viz4A[@app.language]
-          imageBUrl: Tr.howToImages.viz4B[@app.language]
-          helpPopoverHeaderClass: 'viz4HelpTitle'
-        }
-        {
-          unselectedLabel: Tr.allPages.visualization3NavbarLink[@app.language]
-          selectedLabel: Tr.visualization3Title[@app.language]
-          infoPopoverText: Tr.navbarInfoText.viz3[@app.language]
-          infoPopoverHeader: Tr.navbarInfoHeadings.viz3[@app.language]
-          navbarHelpImageSelected: 'IMG/navbar_Icons/questionMark_ElectricityHighlighted.svg'
-          navbarInfoImageSelected: 'IMG/navbar_Icons/explanationIcon_ElectricityHighlighted.svg'
-          colour: 'rgb(54, 55, 150)'
-          page: 'viz3'
-          imageAUrl: Tr.howToImages.viz3A[@app.language]
-          imageBUrl: Tr.howToImages.viz3B[@app.language]
-          helpPopoverHeaderClass: 'viz3HelpTitle'
-        }
-        {
-          unselectedLabel: Tr.allPages.visualization2NavbarLink[@app.language]
-          selectedLabel: Tr.visualization2Title[@app.language]
-          infoPopoverText: Tr.navbarInfoText.viz2[@app.language]
-          infoPopoverHeader: Tr.navbarInfoHeadings.viz2[@app.language]
-          navbarHelpImageSelected: 'IMG/navbar_Icons/questionMark_SectorHighlighted.svg'
-          navbarInfoImageSelected: 'IMG/navbar_Icons/explanationIcon_SectorHighlighted.svg'
-          colour: 'rgb(52, 153, 153)'
-          page: 'viz2'
-          imageAUrl: Tr.howToImages.viz2A[@app.language]
-          imageBUrl: Tr.howToImages.viz2B[@app.language]
-          helpPopoverHeaderClass: 'viz2HelpTitle'
+          img: 'IMG/home.svg'
+          unselectedLabel: ''
+          selectedLabel: ''
+          colour: '#333'
+          page: 'landingPage'
         }
         {
           unselectedLabel: Tr.allPages.visualization1NavbarLink[@app.language]
@@ -76,11 +41,43 @@ class Navbar
           helpPopoverHeaderClass: 'viz1HelpTitle'
         }
         {
-          img: 'IMG/home.svg'
-          unselectedLabel: ''
-          selectedLabel: ''
-          colour: '#333'
-          page: 'landingPage'
+          unselectedLabel: Tr.allPages.visualization2NavbarLink[@app.language]
+          selectedLabel: Tr.visualization2Title[@app.language]
+          infoPopoverText: Tr.navbarInfoText.viz2[@app.language]
+          infoPopoverHeader: Tr.navbarInfoHeadings.viz2[@app.language]
+          navbarHelpImageSelected: 'IMG/navbar_Icons/questionMark_SectorHighlighted.svg'
+          navbarInfoImageSelected: 'IMG/navbar_Icons/explanationIcon_SectorHighlighted.svg'
+          colour: 'rgb(52, 153, 153)'
+          page: 'viz2'
+          imageAUrl: Tr.howToImages.viz2A[@app.language]
+          imageBUrl: Tr.howToImages.viz2B[@app.language]
+          helpPopoverHeaderClass: 'viz2HelpTitle'
+        }
+        {
+          unselectedLabel: Tr.allPages.visualization3NavbarLink[@app.language]
+          selectedLabel: Tr.visualization3Title[@app.language]
+          infoPopoverText: Tr.navbarInfoText.viz3[@app.language]
+          infoPopoverHeader: Tr.navbarInfoHeadings.viz3[@app.language]
+          navbarHelpImageSelected: 'IMG/navbar_Icons/questionMark_ElectricityHighlighted.svg'
+          navbarInfoImageSelected: 'IMG/navbar_Icons/explanationIcon_ElectricityHighlighted.svg'
+          colour: 'rgb(54, 55, 150)'
+          page: 'viz3'
+          imageAUrl: Tr.howToImages.viz3A[@app.language]
+          imageBUrl: Tr.howToImages.viz3B[@app.language]
+          helpPopoverHeaderClass: 'viz3HelpTitle'
+        }
+        {
+          unselectedLabel: Tr.allPages.visualization4NavbarLink[@app.language]
+          selectedLabel: Tr.visualization4Titles[@app.visualization4Configuration.mainSelection][@app.language]
+          navbarHelpImageSelected: 'IMG/navbar_Icons/questionMark_ScenarioHighlighted.svg'
+          infoPopoverText: Tr.navbarInfoText.viz4[@app.language]
+          infoPopoverHeader: Tr.navbarInfoHeadings.viz4[@app.language]
+          navbarInfoImageSelected: 'IMG/navbar_Icons/explanationIcon_ScenarioHighlighted.svg'
+          colour: 'rgb(202, 152, 48)'
+          page: 'viz4'
+          imageAUrl: Tr.howToImages.viz4A[@app.language]
+          imageBUrl: Tr.howToImages.viz4B[@app.language]
+          helpPopoverHeaderClass: 'viz4HelpTitle'
         }
       ]
 
@@ -114,15 +111,17 @@ class Navbar
     else if oldState == 'landingPage' and @navbarState != 'landingPage'
       # Landing page -> Visualization page: no animation
       @renderWithoutAnimation()
+      @setVisualizationFocus()
     else
       # Visualization page -> Visualization page: animate
       @renderWithAnimation()
+      @setVisualizationFocus()
 
 
   # Internal Methods
 
   vizNavbar: ->
-    d3.select '#vizNavbar'
+    d3.select '#navbarInnerContainer'
       .selectAll '.vizNavbarItem'
       .data @navbarData()
 
@@ -152,6 +151,14 @@ class Navbar
           @app.router.navigate
             page: d.page
             language: @app.language
+      .on 'keyup', (d) =>
+        if d3.event.key == 'Enter' and d.page != @navbarState
+          d3.event.preventDefault()
+          d3.event.stopPropagation()
+          @app.router.navigate
+            page: d.page
+            language: @app.language
+
       .style
         'background-color': (d) -> d.colour
         width: (d) =>
@@ -168,10 +175,10 @@ class Navbar
     vizNavbar
       .html (d) =>
         if d.page == 'landingPage'
-          "<div class='vizNavbarHomeButton'> </div>"
+          "<div class='vizNavbarHomeButton' tabindex='0' role='button' aria-label='#{Tr.home[@app.language]}'> </div>"
         else if @navbarState == d.page
           "<div class='navbarSelectedItem'>
-            <span>#{d.selectedLabel}</span>
+            <span class='navbarTitle' role='button' tabindex='0'> #{d.selectedLabel} </span>
 
             <div class='float-right'>
               <div class='navbarMenuIcon navbarButton'
@@ -201,11 +208,18 @@ class Navbar
           "
         else
           "<div class='navbarUnselectedItem'>
-            <span>#{d.unselectedLabel}</span>
+            <span class='navbarTitle' role='button' tabindex='0'>#{d.unselectedLabel}</span>
           </div>"
 
 
     # TODO: would be good to unsubscribe these events on page navigation
+
+
+
+
+
+
+
 
     helpButtonClick = (d) =>
       d3.event.stopPropagation()
@@ -277,6 +291,10 @@ class Navbar
   renderExit: ->
     @vizNavbar().exit().remove()
 
-
+  setVisualizationFocus: ->
+    # Manage focus when transitioning pages
+    focusTarget = @app.window.document.querySelector('.navbarSelectedItem .navbarTitle')
+    return unless focusTarget?
+    focusTarget.focus()
 
 module.exports = Navbar

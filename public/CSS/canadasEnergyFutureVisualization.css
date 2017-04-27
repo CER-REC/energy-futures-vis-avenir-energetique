@@ -70,6 +70,11 @@ div.chartTooltip:after {
   font-family: Avenir Next Demi Condensed, 'PT Sans Narrow',  Arial Narrow, Arial, Verdana, sans-serif;
 }
 
+#canadasEnergyFutureVisualization #navbarInnerContainer {
+  box-shadow: 0px 0px 5px 0px black;
+  float: left;
+  width: 100%;
+}
 
 #canadasEnergyFutureVisualization #panelLeft.en {
   /*column-count: 2;
@@ -539,17 +544,18 @@ div.chartTooltip:after {
 
 
 #canadasEnergyFutureVisualization .vizNavbarItem {
-  float: right;
+  float: left;
   color: white;
   box-sizing: border-box;
   cursor: pointer;
   height: 50px;
   padding: 0;
   overflow: hidden;
-  box-shadow: 0px 0px 5px black;
+  /* This inset drop shadow creates the illusion that the element to the left has cast a shadow on the current element */
+  box-shadow: inset 5px 0px 5px -5px black;
 }
 
-#canadasEnergyFutureVisualization .navbarSelectedItem{
+#canadasEnergyFutureVisualization .navbarSelectedItem {
   height: 100%;
 }
 
@@ -640,6 +646,10 @@ div.chartTooltip:after {
   background-repeat: no-repeat;
   background-size: 23px 20px;
   background-image: url(../IMG/home.png);  
+}
+
+#canadasEnergyFutureVisualization .vizNavbarHomeButton:focus {
+  box-shadow: inset 0px 0px 0px 3px #F00;
 }
 
 
@@ -1024,6 +1034,9 @@ svg { overflow: hidden; }
   outline: none;
 }
 
+#canadasEnergyFutureVisualization .navbarTitle:focus {
+  outline: solid red 2px;
+}
 
 
 
