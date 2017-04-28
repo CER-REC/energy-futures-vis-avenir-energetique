@@ -1,6 +1,7 @@
 d3 = require 'd3'
-Tr = require '../TranslationTable.coffee'
+_ = require 'lodash'
 
+Tr = require '../TranslationTable.coffee'
 NavbarInfoPopover = require '../popovers/NavbarInfoPopover.coffee'
 NavbarHelpPopover = require '../popovers/NavbarHelpPopover.coffee'
 
@@ -82,11 +83,15 @@ class Navbar
       ]
 
 
-    
-  
 
-  setNavBarState: (newState) ->
-    
+
+
+  setNavBarState: (newState, options) ->
+    # We only select the navbar item if navgation was done by keyboard, and not by mouse
+    # click. This is a compromise between accessibility and preserving the appearance of
+    # the design for sighted users using a mouse.
+    options = _.merge {shouldSelectNavbarItem: true}, options
+
     oldState = @navbarState
     @navbarState = newState
 
@@ -111,11 +116,11 @@ class Navbar
     else if oldState == 'landingPage' and @navbarState != 'landingPage'
       # Landing page -> Visualization page: no animation
       @renderWithoutAnimation()
-      @setVisualizationFocus()
+      @setVisualizationFocus() if options.shouldSelectNavbarItem
     else
       # Visualization page -> Visualization page: animate
       @renderWithAnimation()
-      @setVisualizationFocus()
+      @setVisualizationFocus() if options.shouldSelectNavbarItem
 
 
   # Internal Methods
@@ -148,9 +153,11 @@ class Navbar
       .on 'click', (d) =>
         d3.event.preventDefault()
         if d.page != @navbarState
-          @app.router.navigate
+          @app.router.navigate {
             page: d.page
             language: @app.language
+          },
+            shouldSelectNavbarItem: false
       .on 'keyup', (d) =>
         if d3.event.key == 'Enter' and d.page != @navbarState
           d3.event.preventDefault()
@@ -158,6 +165,7 @@ class Navbar
           @app.router.navigate
             page: d.page
             language: @app.language
+
 
       .style
         'background-color': (d) -> d.colour

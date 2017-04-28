@@ -10,40 +10,30 @@
 
 <div class="clearfix"> </div>  
 
-{{! Yes, it's actually necessary to add tabindex to <a> tags, for some browsers. }}
-
 <div id="thumbnailRow">
-  <a id="viz1Anchor" tabindex='0' href='#'>
-    <div class='thumbnailContainer'>
+    <div class='thumbnailContainer' id="viz1Anchor" tabindex='0' role='button' aria-label='{{visualization1Link}}'>
       <div class="imgContainer viz1Img"> </div>
       <div class='vizLinkBox viz1linkBox'>
         <span> {{ visualization1Link }} </span>
       </div>
-    </div>
-  </a>
-  <a id="viz2Anchor" tabindex='0' href='#'>
-    <div class='thumbnailContainer'>
+  </div>
+    <div class='thumbnailContainer' id="viz2Anchor" tabindex='0' role='button' aria-label='{{visualization2Link}}'>
       <div class="imgContainer viz2Img"> </div>
       <div class='vizLinkBox viz2linkBox'>
         <span> {{ visualization2Link }} </span>
       </div>
-    </div>
-  </a>
-  <a id="viz3Anchor" tabindex='0' href='#'>
-    <div class='thumbnailContainer'>
+  </div>
+    <div class='thumbnailContainer' id="viz3Anchor" tabindex='0' role='button' aria-label='{{visualization3Link}}'>
       <div class="imgContainer viz3Img"> </div>
       <div class='vizLinkBox viz3linkBox'>
         <span> {{ visualization3Link }} </span>
       </div>
-    </div>
-  </a>
-  <a id="viz4Anchor" tabindex='0' href='#'>
-    <div class='thumbnailContainer'>
+  </div>
+    <div class='thumbnailContainer' id="viz4Anchor" tabindex='0' role='button' aria-label='{{visualization4Link}}'>
       <div class="imgContainer viz4Img"> </div>
       <div class='vizLinkBox viz4linkBox'>
         <span> {{ visualization4Link }} </span>
       </div>
-    </div>
-  </a>
+  </div>
   <div class="clearfix"> </div>  
 </div>

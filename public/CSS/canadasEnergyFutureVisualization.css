@@ -225,6 +225,7 @@ div.chartTooltip:after {
   width: 25%;
   box-sizing: border-box;
   padding: 0px 7px 0px 7px;
+  cursor: pointer;
 }
 
 #canadasEnergyFutureVisualization .thumbnailContainer .imgContainer {
@@ -1019,7 +1020,9 @@ svg { overflow: hidden; }
 #canadasEnergyFutureVisualization .closeButton:focus,
 #canadasEnergyFutureVisualization .navbarButton:focus img,
 #canadasEnergyFutureVisualization .helpIconAnchor:focus img,
-#canadasEnergyFutureVisualization .squareMenuHelpButton:focus
+#canadasEnergyFutureVisualization .squareMenuHelpButton:focus,
+#canadasEnergyFutureVisualization .thumbnailContainer:focus
+/*#canadasEnergyFutureVisualization .landingPageButton:focus*/
 {
   outline: solid red 2px;
 }
@@ -1036,6 +1039,16 @@ svg { overflow: hidden; }
 
 #canadasEnergyFutureVisualization .navbarTitle:focus {
   outline: solid red 2px;
+}
+
+/* Hidden from regular users, visible to screen readers and other AT */
+#canadasEnergyFutureVisualization #accessibleStatus {
+  clip: rect(1px, 1px, 1px, 1px);
+  height: 1px;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap; /* added line */
+  width: 1px;
 }
 
 
