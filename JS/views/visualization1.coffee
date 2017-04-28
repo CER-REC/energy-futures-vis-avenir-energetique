@@ -165,8 +165,7 @@ class Visualization1 extends visualization
       @_chart.y @yScale()
       @_chart.barSize @barSize()
       @_chart.menu.size
-        w: d3.select(@app.window.document).select('#provincePanel').node()
-            .getBoundingClientRect().width
+        w: d3.select(@app.window.document).select('#provincePanel').node().getBoundingClientRect().width
         h: @provinceMenuHeight()
 
 
