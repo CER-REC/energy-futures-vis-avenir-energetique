@@ -35,6 +35,7 @@ fs.copySync("views/wet_video_reporter.mustache", "dist/public/HTML/wet_video_rep
 try {
   fs.copySync("../energy-futures-private-resources/Fonts", "dist/public/Fonts");
   fs.copySync("../energy-futures-private-resources/CSS/avenirFonts.css", "dist/public/CSS/avenirFonts.css");
+  fs.copySync("../energy-futures-private-resources/CSS/avenirFontsNoTracker.css", "dist/public/CSS/avenirFontsNoTracker.css");
 }
 catch (error) {
   console.warn("Avenir font not included in deployment package.");

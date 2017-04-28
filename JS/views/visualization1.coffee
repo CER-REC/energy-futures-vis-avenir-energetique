@@ -115,7 +115,7 @@ class Visualization1 extends visualization
   renderServerTemplate: ->
 
     contentElement = @app.window.document.getElementById 'visualizationContent'
-    contentElement.innerHTML = Mustache.render @options.template
+    contentElement.innerHTML = Mustache.render @options.template,
       svgStylesheet: @options.svgTemplate
       title: Tr.visualization1Titles[@config.mainSelection][@app.language]
       description: @config.imageExportDescription()
