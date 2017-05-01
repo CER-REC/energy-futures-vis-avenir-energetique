@@ -1484,6 +1484,9 @@ module.exports =
       fr: "Au sujet de l’option « Visualiser par »"
 
     sectors:
+      totalSelected:
+        en: 'Total demand selected'
+        fr: 'Sélection - Demande totale'
       residentialSelected:
         en: 'Residential sector selected'
         fr: 'Sélection - Secteur résidentiel'
@@ -1497,6 +1500,9 @@ module.exports =
         en: 'Transportation sector selected'
         fr: 'Sélection - Secteur des transports'
 
+      totalUnselected:
+        en: 'Total demand unselected'
+        fr: 'Désélection - Demande totale'
       residentialUnselected:
         en: 'Residential sector unselected'
         fr: 'Désélection - Secteur résidentiel'

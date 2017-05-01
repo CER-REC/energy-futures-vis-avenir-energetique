@@ -167,6 +167,7 @@ class visualization
         sectorName: 'total'
         wrapperClass: 'sectorSelectorButton totalSectorButton'
         buttonClass: if @config.sector == 'total' then 'vizButton selected' else 'vizButton'
+        ariaLabel: if @config.sector == 'total' then Tr.altText.sectors.totalSelected[@app.language] else Tr.altText.sectors.totalUnselected[@app.language]
       }
       {
         title: Tr.selectorTooltip.sectorSelector.residentialSectorButton[@app.language]  
@@ -174,6 +175,7 @@ class visualization
         image: if @config.sector == 'residential' then 'IMG/sector/residential_selected.svg' else 'IMG/sector/residential_unselected.svg'
         wrapperClass: 'sectorSelectorButton sectorImageButton topLeftSector'
         altText: if @config.sector == 'residential' then Tr.altText.sectors.residentialSelected[@app.language] else Tr.altText.sectors.residentialUnselected[@app.language]
+        buttonClass: if @config.sector == 'residential' then 'selected' else ''
       }
       {
         title: Tr.selectorTooltip.sectorSelector.commercialSectorButton[@app.language]
@@ -181,6 +183,7 @@ class visualization
         image: if @config.sector ==  'commercial' then 'IMG/sector/commercial_selected.svg' else 'IMG/sector/commercial_unselected.svg'
         wrapperClass: 'sectorSelectorButton sectorImageButton topRightSector'
         altText: if @config.sector == 'commercial' then Tr.altText.sectors.commercialSelected[@app.language] else Tr.altText.sectors.commercialUnselected[@app.language]
+        buttonClass: if @config.sector == 'commercial' then 'selected' else ''
       }
       {
         title: Tr.selectorTooltip.sectorSelector.industrialSectorButton[@app.language]
@@ -188,6 +191,7 @@ class visualization
         image: if @config.sector == 'industrial' then 'IMG/sector/industrial_selected.svg' else 'IMG/sector/industrial_unselected.svg'
         wrapperClass: 'sectorSelectorButton sectorImageButton bottomLeftSector'
         altText: if @config.sector == 'industrial' then Tr.altText.sectors.industrialSelected[@app.language] else Tr.altText.sectors.industrialUnselected[@app.language]
+        buttonClass: if @config.sector == 'industrial' then 'selected' else ''
       }
       {
         title: Tr.selectorTooltip.sectorSelector.transportSectorButton[@app.language]
@@ -195,6 +199,7 @@ class visualization
         image: if @config.sector ==  'transportation' then 'IMG/sector/transport_selected.svg' else 'IMG/sector/transport_unselected.svg'
         wrapperClass: 'sectorSelectorButton sectorImageButton bottomRightSector'
         altText: if @config.sector == 'transportation' then Tr.altText.sectors.transportationSelected[@app.language] else Tr.altText.sectors.transportationUnselected[@app.language]
+        buttonClass: if @config.sector == 'transportation' then 'selected' else ''
       }
     ]
 
@@ -345,37 +350,44 @@ class visualization
 
 
   addSectors: ->
-    if @config.sector?  
-      sectorsSelectors = d3.select(@app.window.document).select('#sectorsSelector')
-        .selectAll('.sectorSelectorButton')
-        .data(@sectorSelectionData())
+
+    sectorsCallback = (d) =>
+      return if @config.sector == d.sectorName
+
+      newConfig = new @config.constructor @app
+      newConfig.copy @config
+      newConfig.setSector d.sectorName
+
+      update = =>
+        @config.setSector d.sectorName
+        @addSectors()
+        @getDataAndRender()
+        @app.router.navigate @config.routerParams()
+        @app.window.document.querySelector('#sectorsSelector .selected').focus()
+
+      @app.datasetRequester.updateAndRequestIfRequired newConfig, update
+
+    if @config.sector?
+      sectorsSelectors = d3.select(@app.window.document)
+        .select '#sectorsSelector'
+        .selectAll '.sectorSelectorButton'
+        .data @sectorSelectionData()
       
       sectorsSelectors.enter()
-        .append('div')
+        .append 'div'
         .attr
           class: (d) -> d.wrapperClass
-        .on 'click', (d) =>
-          return if @config.sector == d.sectorName  
-
-          newConfig = new @config.constructor @app
-          newConfig.copy @config
-          newConfig.setSector d.sectorName
-
-          update = =>
-            @config.setSector d.sectorName
-            @addSectors()
-            @getDataAndRender()
-            @app.router.navigate @config.routerParams()
-
-          @app.datasetRequester.updateAndRequestIfRequired newConfig, update
+        .on 'click', sectorsCallback
+        .on 'keyup', (d) ->
+          sectorsCallback d if d3.event.key == 'Enter'
 
 
 
       sectorsSelectors.html (d) ->
         if d.sectorName == 'total'
-          "<button class='#{d.buttonClass}' type='button' title='#{d.title}'>#{d.label}</button>"
+          "<button class='#{d.buttonClass}' type='button' title='#{d.title}' aria-label='#{d.ariaLabel}'>#{d.label}</button>"
         else
-          "<img src=#{d.image} title='#{d.title}' alt='#{d.altText}'>"
+          "<img src=#{d.image} title='#{d.title}' alt='#{d.altText}' tabindex='0' aria-label='#{d.altText}' role='button' class='#{d.buttonClass}'>"
 
       sectorsSelectors.exit().remove()
   
@@ -411,7 +423,7 @@ class visualization
         tabindex: '0'
         role: 'button'
       .on 'click', mainSelectorCallback
-      .on 'keyup', (d) =>
+      .on 'keyup', (d) ->
         mainSelectorCallback d if d3.event.key == 'Enter'
 
     mainSelectors
