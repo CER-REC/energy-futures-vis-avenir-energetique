@@ -380,6 +380,26 @@ class visualization
       sectorsSelectors.exit().remove()
   
   addMainSelector: ->
+
+    mainSelectorCallback = (d) =>
+      return if @config.mainSelection == d.selectorName
+
+      newConfig = new @config.constructor @app
+      newConfig.copy @config
+      newConfig.setMainSelection d.selectorName
+
+      update = =>
+        @config.setMainSelection d.selectorName
+        # TODO: For efficiency, only rerender what's necessary.
+        @addDatasetToggle()
+        @addMainSelector()
+        @addUnitToggle()
+        @addScenarios()
+        @getDataAndRender()
+        @app.router.navigate @config.routerParams()
+
+      @app.datasetRequester.updateAndRequestIfRequired newConfig, update
+
     mainSelectors = d3.select(@app.window.document).select('#mainSelector')
       .selectAll('.mainSelectorButton')
       .data(@mainSelectionData())
@@ -388,26 +408,15 @@ class visualization
       .append('div')
       .attr
         class: 'mainSelectorButton'
-      .on 'click', (d) =>
-        return if @config.mainSelection == d.selectorName  
+        tabindex: '0'
+        role: 'button'
+      .on 'click', mainSelectorCallback
+      .on 'keyup', (d) =>
+        mainSelectorCallback d if d3.event.key == 'Enter'
 
-        newConfig = new @config.constructor @app
-        newConfig.copy @config
-        newConfig.setMainSelection d.selectorName
-
-        update = =>
-          @config.setMainSelection d.selectorName
-          # TODO: For efficiency, only rerender what's necessary.
-          @addDatasetToggle()
-          @addMainSelector()
-          @addUnitToggle()
-          @addScenarios()
-          @getDataAndRender()
-          @app.router.navigate @config.routerParams()
-
-        @app.datasetRequester.updateAndRequestIfRequired newConfig, update
-
-
+    mainSelectors
+      .attr
+        'aria-label': (d) -> d.altText
 
     mainSelectors.html (d) ->
       "<img src=#{d.image} class='mainSelectorImage' title='#{d.title}' alt='#{d.altText}'>

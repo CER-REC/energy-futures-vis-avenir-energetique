@@ -1022,8 +1022,8 @@ svg { overflow: hidden; }
 #canadasEnergyFutureVisualization .navbarButton:focus img,
 #canadasEnergyFutureVisualization .helpIconAnchor:focus img,
 #canadasEnergyFutureVisualization .squareMenuHelpButton:focus,
-#canadasEnergyFutureVisualization .thumbnailContainer:focus
-/*#canadasEnergyFutureVisualization .landingPageButton:focus*/
+#canadasEnergyFutureVisualization .thumbnailContainer:focus,
+#canadasEnergyFutureVisualization .mainSelectorButton:focus
 {
   outline: solid red 2px;
 }

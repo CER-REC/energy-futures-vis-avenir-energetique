@@ -983,6 +983,26 @@ class Visualization4
       datasetSelectors.exit().remove()
 
   renderMainSelector: ->
+    mainSelectorCallback = (d) =>
+      newConfig = new @config.constructor @app
+      newConfig.copy @config
+      newConfig.setMainSelection d.selectorName
+
+      update = =>
+        @config.setMainSelection d.selectorName
+        # TODO: For efficiency, only rerender what's necessary.
+        # We could just call render() ... but that would potentially rebuild a bunch
+        # of menus...
+        @renderMainSelector()
+        @renderDatasetSelector()
+        @renderUnitsSelector()
+        @renderScenariosSelector()
+        @renderYAxis()
+        @renderGraph()
+        @app.router.navigate @config.routerParams()
+
+      @app.datasetRequester.updateAndRequestIfRequired newConfig, update
+
     mainSelectors = d3.select(@app.window.document)
       .select('#mainSelector')
       .selectAll('.mainSelectorButton')
@@ -992,28 +1012,15 @@ class Visualization4
       .append('div')
       .attr
         class: 'mainSelectorButton'
-      .on 'click', (d) =>
+        tabindex: '0'
+        role: 'button'
+      .on 'click', mainSelectorCallback
+      .on 'keyup', (d) =>
+        mainSelectorCallback d if d3.event.key == 'Enter'
 
-        newConfig = new @config.constructor @app
-        newConfig.copy @config
-        newConfig.setMainSelection d.selectorName
-
-        update = =>
-          @config.setMainSelection d.selectorName
-          # TODO: For efficiency, only rerender what's necessary.
-          # We could just call render() ... but that would potentially rebuild a bunch
-          # of menus...
-          @renderMainSelector()
-          @renderDatasetSelector()
-          @renderUnitsSelector()
-          @renderScenariosSelector()
-          @renderYAxis()
-          @renderGraph()
-          @app.router.navigate @config.routerParams()
-
-        @app.datasetRequester.updateAndRequestIfRequired newConfig, update
-
-
+    mainSelectors
+      .attr
+        'aria-label': (d) -> d.altText
 
     mainSelectors.html (d) ->
       """<img src=#{d.image}
