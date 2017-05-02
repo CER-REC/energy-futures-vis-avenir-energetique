@@ -570,16 +570,11 @@ class Visualization4
   height: ->
     @outerHeight - @margin.top - @margin.bottom
 
-
-  # NB: See 'render' for width discussion, IE specific issue.
-  xAxisScale: (width) ->
+  xAxisScale: ->
     #TODO should the domain come from the data?
-
-    width = width || @width()
-
     d3.scale.linear()
       .domain [2005, 2040]
-      .range [0, width]
+      .range [0, @width()]
 
   yAxisScale: ->
     d3.scale.linear()
@@ -622,18 +617,6 @@ class Visualization4
   # Render helpers here
 
   render: ->
-
-    ###
-    NB: This is a workaround to a problem in Internet Explorer.
-    For some reason, during page load, width reports a slightly wider width at
-    the very end. This results in a graph that overflows onto the y axis.
-    To work around it, we save the width as measured at the beginning of the render
-    call and use it later. This problem only occurred after the switch to using an
-    iframe, and seems limited to IE.
-    # TODO: investigate if this still occurs with the switch away from the iframe
-    ###
-    width = @width()
-
     d3.select(@app.window.document).select '#graphSVG'
       .attr
         width: @outerWidth()
@@ -651,7 +634,7 @@ class Visualization4
       # We only need to build once, but we need to build after the axis are built
       # for alignment
       @provinceMenu = @buildProvinceMenu()
-    @renderGraph @app.animationDuration, width
+    @renderGraph()
 
   renderDatasetSelector: ->
     if @config.dataset?
@@ -967,8 +950,8 @@ class Visualization4
         'shape-rendering': 'crispEdges'
 
 
-  renderGraph: (duration = @app.animationDuration, width) ->
-    xAxisScale = @xAxisScale width
+  renderGraph: (duration = @app.animationDuration) ->
+    xAxisScale = @xAxisScale()
     yAxisScale = @yAxisScale()
 
     area = d3.svg.area()
@@ -1001,14 +984,6 @@ class Visualization4
       .selectAll('.presentLinearGradient')
       .data @gradientData(), (d) ->
         d.key
-  
-    # TODO: Apparently unused, remove once confirmed
-    # futureGrads = d3.select(@app.window.document)
-    #   .select('#graphGroup')
-    #   .select('defs')
-    #   .selectAll('.futureLinearGradient')
-    #   .data @gradientData(), (d) ->
-    #     d.key
 
     enterGrads = grads.enter().append 'linearGradient'
       .attr
