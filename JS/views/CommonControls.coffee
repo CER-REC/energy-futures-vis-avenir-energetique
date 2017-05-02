@@ -1,4 +1,5 @@
 Tr = require '../TranslationTable.coffee'
+Constants = require '../Constants.coffee'
 
 
 CommonControls =
@@ -207,6 +208,8 @@ CommonControls =
         else
           Tr.altText.unit.cubicFeetUnselected[app.language]
 
+    # TODO: not all visualizations have a 'main selection'.
+    # This should be named differently.
     switch config.mainSelection
       when 'energyDemand'
         [petajoules, kilobarrelEquivalents]
@@ -216,6 +219,149 @@ CommonControls =
         [kilobarrels, thousandCubicMetres]
       when 'gasProduction'
         [cubicFeet, millionCubicMetres]
+
+
+  scenariosSelectionData: (config, app) ->
+    reference =
+      title: Tr.selectorTooltip.scenarioSelector.referenceButton[app.language]
+      label: Tr.scenarioSelector.referenceButton[app.language]
+      scenarioName: 'reference'
+      singleSelectClass:
+        if config.scenario == 'reference'
+          'vizButton selected'
+        else if Constants.datasetDefinitions[config.dataset].scenarios.includes 'reference'
+          'vizButton'
+      multipleSelectClass:
+        if config.scenarios?.includes 'reference'
+          'vizButton selected reference'
+        else if Constants.datasetDefinitions[config.dataset].scenarios.includes 'reference'
+          'vizButton reference'
+      ariaLabel:
+        if config.scenario == 'reference' or config.scenarios?.includes 'reference'
+          Tr.altText.scenario.referenceSelected[app.language]
+        else
+          Tr.altText.scenario.referenceUnselected[app.language]
+      colour: '#999999'
+    constrained =
+      title: Tr.selectorTooltip.scenarioSelector.constrainedButton[app.language]
+      label: Tr.scenarioSelector.constrainedButton[app.language]
+      scenarioName: 'constrained'
+      singleSelectClass:
+        if config.scenario == 'constrained'
+          'vizButton selected'
+        else if Constants.datasetDefinitions[config.dataset].scenarios.includes 'constrained'
+          'vizButton'
+      multipleSelectClass:
+        if config.scenarios?.includes 'constrained'
+          'vizButton selected constrained'
+        else if Constants.datasetDefinitions[config.dataset].scenarios.includes 'constrained'
+          'vizButton constrained'
+      ariaLabel:
+        if config.scenario == 'constrained' or config.scenarios?.includes 'constrained'
+          Tr.altText.scenario.constrainedSelected[app.language]
+        else
+          Tr.altText.scenario.constrainedUnselected[app.language]
+      colour: '#41B6C4'
+    high =
+      title: Tr.selectorTooltip.scenarioSelector.highPriceButton[app.language]
+      label: Tr.scenarioSelector.highPriceButton[app.language]
+      scenarioName: 'high'
+      singleSelectClass:
+        if config.scenario == 'high'
+          'vizButton selected'
+        else if Constants.datasetDefinitions[config.dataset].scenarios.includes 'high'
+          'vizButton'
+      multipleSelectClass:
+        if config.scenarios?.includes 'high'
+          'vizButton selected high'
+        else if Constants.datasetDefinitions[config.dataset].scenarios.includes 'high'
+          'vizButton high'
+      ariaLabel:
+        if config.scenario == 'high' or config.scenarios?.includes 'high'
+          Tr.altText.scenario.highSelected[app.language]
+        else
+          Tr.altText.scenario.highUnselected[app.language]
+      colour: '#0C2C84'
+    low =
+      title: Tr.selectorTooltip.scenarioSelector.lowPriceButton[app.language]
+      label: Tr.scenarioSelector.lowPriceButton[app.language]
+      scenarioName: 'low'
+      singleSelectClass:
+        if config.scenario == 'low'
+          'vizButton selected'
+        else if Constants.datasetDefinitions[config.dataset].scenarios.includes 'low'
+          'vizButton'
+      multipleSelectClass:
+        if config.scenarios?.includes 'low'
+          'vizButton selected low'
+        else if Constants.datasetDefinitions[config.dataset].scenarios.includes 'low'
+          'vizButton low'
+      ariaLabel:
+        if config.scenario == 'low' or config.scenarios?.includes 'low'
+          Tr.altText.scenario.lowSelected[app.language]
+        else
+          Tr.altText.scenario.lowUnselected[app.language]
+      colour: '#7FCDBB'
+    highLng =
+      title: Tr.selectorTooltip.scenarioSelector.highLngButton[app.language]
+      label: Tr.scenarioSelector.highLngButton[app.language]
+      scenarioName: 'highLng'
+      singleSelectClass:
+        if config.scenario == 'highLng'
+          'vizButton selected'
+        else if Constants.datasetDefinitions[config.dataset].scenarios.includes 'highLng'
+          'vizButton'
+      multipleSelectClass:
+        if config.scenarios?.includes 'highLng'
+          'vizButton selected highLng'
+        else if Constants.datasetDefinitions[config.dataset].scenarios.includes 'highLng'
+          'vizButton highLng'
+      ariaLabel:
+        if config.scenario == 'highLng' or config.scenarios?.includes 'highLng'
+          Tr.altText.scenario.highLngSelected[app.language]
+        else
+          Tr.altText.scenario.highLngUnselected[app.language]
+      colour: '#41B6C4'
+    noLng =
+      title: Tr.selectorTooltip.scenarioSelector.noLngButton[app.language]
+      label: Tr.scenarioSelector.noLngButton[app.language]
+      scenarioName: 'noLng'
+      singleSelectClass:
+        if config.scenario == 'noLng'
+          'vizButton selected'
+        else if Constants.datasetDefinitions[config.dataset].scenarios.includes 'noLng'
+          'vizButton'
+      multipleSelectClass:
+        if config.scenarios?.includes 'noLng'
+          'vizButton selected noLng'
+        else if Constants.datasetDefinitions[config.dataset].scenarios.includes 'noLng'
+          'vizButton noLng'
+      ariaLabel:
+        if config.scenario == 'noLng' or config.scenarios?.includes 'noLng'
+          Tr.altText.scenario.noLngSelected[app.language]
+        else
+          Tr.altText.scenario.noLngUnselected[app.language]
+      colour: '#C7E9B4'
+
+    # TODO: not all visualizations have a 'main selection'.
+    # This should be named differently.
+
+    switch config.mainSelection
+      when 'energyDemand', 'electricityGeneration'
+        if config.dataset == 'jan2016'
+          [reference, high, highLng, constrained, low, noLng]
+        else
+          [reference, high, low]
+      when 'oilProduction'
+        if config.dataset == 'jan2016'
+          [reference, high, constrained, low]
+        else
+          [reference, high, low]
+      when 'gasProduction'
+        if config.dataset == 'jan2016'
+          [reference, high, highLng, low, noLng]
+        else
+          [reference, high, low]
 
 
 module.exports = CommonControls

@@ -5,110 +5,6 @@ CommonControls = require './CommonControls.coffee'
 
 class Visualization
 
-  constructor: (config) ->
-    @config = config
-    @_chart = null
-    @_provinceMenu = null
-
-  tearDown: ->
-    # TODO: Consider garbage collection and event listeners
-    @app.window.document.getElementById('visualizationContent').innerHTML = ''
-
-
-
-
-
-  scenariosSelectionData: ->
-    reference =
-      title: Tr.selectorTooltip.scenarioSelector.referenceButton[@app.language]
-      label: Tr.scenarioSelector.referenceButton[@app.language]
-      scenarioName: 'reference'
-      class:
-        if @config.scenario == 'reference'
-          'vizButton selected'
-        else if Constants.datasetDefinitions[@config.dataset].scenarios.includes 'reference'
-          'vizButton'
-        else
-          'vizButton disabled'
-      ariaLabel: if @config.scenario == 'reference' then Tr.altText.scenario.referenceSelected[@app.language] else Tr.altText.scenario.referenceUnselected[@app.language]
-    constrained =
-      title: Tr.selectorTooltip.scenarioSelector.constrainedButton[@app.language]
-      label: Tr.scenarioSelector.constrainedButton[@app.language]
-      scenarioName: 'constrained'
-      class:
-        if @config.scenario == 'constrained'
-          'vizButton selected'
-        else if Constants.datasetDefinitions[@config.dataset].scenarios.includes 'constrained'
-          'vizButton'
-        else
-          'vizButton disabled'
-      ariaLabel: if @config.scenario == 'constrained' then Tr.altText.scenario.constrainedSelected[@app.language] else Tr.altText.scenario.constrainedUnselected[@app.language]
-    high =
-      title: Tr.selectorTooltip.scenarioSelector.highPriceButton[@app.language]
-      label: Tr.scenarioSelector.highPriceButton[@app.language]
-      scenarioName: 'high'
-      class:
-        if @config.scenario == 'high'
-          'vizButton selected'
-        else if Constants.datasetDefinitions[@config.dataset].scenarios.includes 'high'
-          'vizButton'
-        else
-          'vizButton disabled'
-      ariaLabel: if @config.scenario == 'high' then Tr.altText.scenario.highSelected[@app.language] else Tr.altText.scenario.highUnselected[@app.language]
-    low =
-      title: Tr.selectorTooltip.scenarioSelector.lowPriceButton[@app.language]
-      label: Tr.scenarioSelector.lowPriceButton[@app.language]
-      scenarioName: 'low'
-      class:
-        if @config.scenario == 'low'
-          'vizButton selected'
-        else if Constants.datasetDefinitions[@config.dataset].scenarios.includes 'low'
-          'vizButton'
-        else
-          'vizButton disabled'
-      ariaLabel: if @config.scenario == 'low' then Tr.altText.scenario.lowSelected[@app.language] else Tr.altText.scenario.lowUnselected[@app.language]
-    highLng =
-      title: Tr.selectorTooltip.scenarioSelector.highLngButton[@app.language]
-      label: Tr.scenarioSelector.highLngButton[@app.language]
-      scenarioName: 'highLng'
-      class:
-        if @config.scenario == 'highLng'
-          'vizButton selected'
-        else if Constants.datasetDefinitions[@config.dataset].scenarios.includes 'highLng'
-          'vizButton'
-        else
-          'vizButton disabled'
-      ariaLabel: if @config.scenario == 'highLng' then Tr.altText.scenario.highLngSelected[@app.language] else Tr.altText.scenario.highLngUnselected[@app.language]
-    noLng =
-      title: Tr.selectorTooltip.scenarioSelector.noLngButton[@app.language]
-      label: Tr.scenarioSelector.noLngButton[@app.language]
-      scenarioName: 'noLng'
-      class:
-        if @config.scenario == 'noLng'
-          'vizButton selected'
-        else if Constants.datasetDefinitions[@config.dataset].scenarios.includes 'noLng'
-          'vizButton'
-        else
-          'vizButton disabled'
-      ariaLabel: if @config.scenario == 'noLng' then Tr.altText.scenario.noLngSelected[@app.language] else Tr.altText.scenario.noLngUnselected[@app.language]
-
-    switch @config.mainSelection
-      when 'energyDemand', 'electricityGeneration'
-        if @config.dataset == 'jan2016'
-          [reference, constrained, high, low, highLng, noLng]
-        else
-          [reference, high, low]
-      when 'oilProduction'
-        if @config.dataset == 'jan2016'
-          [reference, constrained, high, low]
-        else
-          [reference, high, low]
-      when 'gasProduction'
-        if @config.dataset == 'jan2016'
-          [reference, high, low, highLng, noLng]
-        else
-          [reference, high, low]
-
   sectorSelectionData: ->
     [
       {
@@ -232,7 +128,7 @@ class Visualization
     if @config.scenario?
       scenariosSelectors = d3.select(@app.window.document).select('#scenariosSelector')
         .selectAll('.scenarioSelectorButton')
-        .data(@scenariosSelectionData())
+        .data CommonControls.scenariosSelectionData(@config, @app)
       
       scenariosSelectors.enter()
         .append('div')
@@ -258,10 +154,9 @@ class Visualization
 
 
       scenariosSelectors.html (d) ->
-        indexOfDisabled = d.class.indexOf 'disabled'
-        spanClass = 'disabled'
-        if indexOfDisabled < 0 then spanClass = ''
-        "<button class='#{d.class}' type='button' title='#{d.title}'><span class='#{spanClass}' aria-label='#{d.ariaLabel}'>#{d.label}</span></button>"
+        "<button class='#{d.singleSelectClass}' type='button' title='#{d.title}'>
+          <span aria-label='#{d.ariaLabel}'>#{d.label}</span>
+        </button>"
 
       scenariosSelectors.exit().remove()
 

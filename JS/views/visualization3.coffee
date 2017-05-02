@@ -130,7 +130,9 @@ class Visualization3 extends visualization
 
 
   constructor: (@app, config, @options) ->
-    super config
+    @config = config
+    @_chart = null
+    @_provinceMenu = null
 
     @getData()
 
@@ -156,7 +158,8 @@ class Visualization3 extends visualization
 
   tearDown: ->
     if @yearTimeout then window.clearTimeout @yearTimeout
-    super()
+    # TODO: Consider garbage collection and event listeners
+    @app.window.document.getElementById('visualizationContent').innerHTML = ''
 
   redraw: ->
     @svgResize()

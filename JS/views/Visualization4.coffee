@@ -434,101 +434,7 @@ class Visualization4
 
 
   # Data here
-
-
-  scenariosSelectionData: ->
-    reference =
-      title: Tr.selectorTooltip.scenarioSelector.referenceButton[@app.language]
-      label: Tr.scenarioSelector.referenceButton[@app.language]
-      scenarioName: 'reference'
-      class:
-        if @config.scenarios.includes 'reference'
-          'vizButton selected reference'
-        else if Constants.datasetDefinitions[@config.dataset].scenarios.includes 'reference'
-          'vizButton reference'
-        else
-          'vizButton reference disabled'
-      colour: '#999999'
-    high =
-      title: Tr.selectorTooltip.scenarioSelector.highPriceButton[@app.language]
-      label: Tr.scenarioSelector.highPriceButton[@app.language]
-      scenarioName: 'high'
-      class:
-        if @config.scenarios.includes 'high'
-          'vizButton selected high'
-        else if Constants.datasetDefinitions[@config.dataset].scenarios.includes 'high'
-          'vizButton high'
-        else
-          'vizButton high disabled'
-      colour: '#0C2C84'
-    highLng =
-      title: Tr.selectorTooltip.scenarioSelector.highLngButton[@app.language]
-      label: Tr.scenarioSelector.highLngButton[@app.language]
-      scenarioName: 'highLng'
-      class:
-        if @config.scenarios.includes 'highLng'
-          'vizButton selected highLng'
-        else if Constants.datasetDefinitions[@config.dataset].scenarios.includes 'highLng'
-          'vizButton highLng'
-        else
-          'vizButton highLng disabled'
-      colour: '#225EA8'
-    constrained =
-      title: Tr.selectorTooltip.scenarioSelector.constrainedButton[@app.language]
-
-      label: Tr.scenarioSelector.constrainedButton[@app.language]
-      scenarioName: 'constrained'
-      class:
-        if @config.scenarios.includes 'constrained'
-          'vizButton selected constrained'
-        else if Constants.datasetDefinitions[@config.dataset].scenarios.includes 'constrained'
-          'vizButton constrained'
-        else
-          'vizButton constrained disabled'
-      colour: '#41B6C4'
-    low =
-      title: Tr.selectorTooltip.scenarioSelector.lowPriceButton[@app.language]
-      label: Tr.scenarioSelector.lowPriceButton[@app.language]
-      scenarioName: 'low'
-      class:
-        if @config.scenarios.includes 'low'
-          'vizButton selected low'
-        else if Constants.datasetDefinitions[@config.dataset].scenarios.includes 'low'
-          'vizButton low'
-        else
-          'vizButton low disabled'
-      colour: '#7FCDBB'
-    noLng =
-      title: Tr.selectorTooltip.scenarioSelector.noLngButton[@app.language]
-      label: Tr.scenarioSelector.noLngButton[@app.language]
-      scenarioName: 'noLng'
-      class:
-        if @config.scenarios.includes 'noLng'
-          'vizButton selected noLng'
-        else if Constants.datasetDefinitions[@config.dataset].scenarios.includes 'noLng'
-          'vizButton noLng'
-        else
-          'vizButton noLng disabled'
-      colour: '#C7E9B4'
-
-    switch @config.mainSelection
-      when 'energyDemand', 'electricityGeneration'
-        if @config.dataset == 'jan2016'
-          [reference, high, highLng, constrained, low, noLng]
-        else
-          [reference, high, low]
-      when 'oilProduction'
-        if @config.dataset == 'jan2016'
-          [reference, high, constrained, low]
-        else
-          [reference, high, low]
-      when 'gasProduction'
-        if @config.dataset == 'jan2016'
-          [reference, high, highLng, low, noLng]
-        else
-          [reference, high, low]
-    
-    # TODO: merge graphdata and graphscenario data, its dumb =/
+  # TODO: merge graphdata and graphscenario data, its dumb =/
 
   scenarioLegendData: ->
     baseData =
@@ -826,6 +732,7 @@ class Visualization4
 
       datasetSelectors.html (d) ->
         "<button class='#{d.class}' type='button' title='#{d.title}'>#{d.label}</button>"
+        "<button class='#{d.class}' type='button' title='#{d.title}' aria-label='#{d.ariaLabel}'>#{d.label}</button>"
 
       datasetSelectors.exit().remove()
 
@@ -913,7 +820,8 @@ class Visualization4
 
 
     unitsSelectors.html (d) ->
-      "<button class='#{d.class}' type='button' title='#{d.title}'>#{d.label}</button>"
+      "<button class='#{d.class}' type='button' title='#{d.title}' aria-label='#{d.ariaLabel}'>#{d.label}</button>"
+
 
     unitsSelectors.exit()
       .on 'click', null
@@ -924,7 +832,7 @@ class Visualization4
     scenariosSelectors = d3.select(@app.window.document)
       .select('#scenariosSelector')
       .selectAll('.scenarioSelectorButton')
-      .data @scenariosSelectionData()
+      .data CommonControls.scenariosSelectionData(@config, @app)
     
     scenariosSelectors.enter()
       .append('div')
@@ -959,12 +867,9 @@ class Visualization4
 
 
     scenariosSelectors.html (d) ->
-      indexOfDisabled = d.class.indexOf 'disabled'
-      spanClass = 'disabled'
-      if indexOfDisabled < 0 then spanClass = ''
       """
-        <button class='#{d.class}' type='button' title='#{d.title}'>
-          <span class='#{spanClass}'>#{d.label}</span>
+        <button class='#{d.multipleSelectClass}' type='button' title='#{d.title}'>
+          <span aria-label='#{d.ariaLabel}'>#{d.label}</span>
         </button>
       """
 
