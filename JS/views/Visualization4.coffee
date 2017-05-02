@@ -1274,7 +1274,6 @@ class Visualization4
   displayTooltip: (scenario) ->
     # Mouse coordinates relative to the graph panel element, should be the same
     # coordinate space that the scale is used to draw in.
-    console.log scenario
     coords = d3.mouse @graphPanel # [x, y]
 
     # I hope that making a scale isn't too expensive to do on mousemove

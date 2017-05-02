@@ -3,8 +3,6 @@ SquareMenu = require './SquareMenu.coffee'
 _ = require 'lodash'
 barChart = require './bar-chart.coffee'
 
-root = exports ? this
-
 class stackedBarChart extends barChart
   stackedChartDefaults: 
     menuOptions: {}
@@ -21,6 +19,10 @@ class stackedBarChart extends barChart
     @menu = new SquareMenu(@app, @options.menuOptions.selector, @options.menuOptions)
     @menu.data(@_mapping)
     @redraw()
+
+    @tooltip = @app.window.document.getElementById 'tooltip'
+    @tooltipParent = @app.window.document.getElementById 'wideVisualizationPanel'
+
 
   mapping: (mapping)->
     if !arguments.length
@@ -82,18 +84,19 @@ class stackedBarChart extends barChart
       rect = layer.selectAll(".bar")
           .data(((d, i) =>  @_stackDictionary[d.key].values.map((yearData) -> {name: d.key, data: yearData})))
           .on "mouseover", (d) =>
-            @app.window.document.getElementById("tooltip").style.visibility = "visible"
-            @app.window.document.getElementById("tooltip").style.top = (d3.event.pageY-10) + "px"
-            @app.window.document.getElementById("tooltip").style.left = (d3.event.pageX+10) + "px"
-            @app.window.document.getElementById("tooltip").innerHTML = d.name + " (" + d.data.x + "): "+ d.data.y.toFixed(2)
+            coords = d3.mouse @tooltipParent # [x, y]
+            @tooltip.style.visibility = "visible"
+            @tooltip.style.left = "#{coords[0] + 30}px"
+            @tooltip.style.top = "#{coords[1]}px"
+            @tooltip.innerHTML = d.name + " (" + d.data.x + "): "+ d.data.y.toFixed(2)
 
           .on "mousemove", (d) =>
-            @app.window.document.getElementById("tooltip").style.top = (d3.event.pageY-10) + "px"
-            @app.window.document.getElementById("tooltip").style.left = (d3.event.pageX+10) + "px"
-            @app.window.document.getElementById("tooltip").innerHTML = d.name + " (" + d.data.x + "): "+ d.data.y.toFixed(2)
-
+            coords = d3.mouse @tooltipParent # [x, y]
+            @tooltip.style.left = "#{coords[0] + 30}px"
+            @tooltip.style.top = "#{coords[1]}px"
+            @tooltip.innerHTML = d.name + " (" + d.data.x + "): "+ d.data.y.toFixed(2)
           .on "mouseout", (d) =>
-            @app.window.document.getElementById("tooltip").style.visibility = "hidden"
+            @tooltip.style.visibility = "hidden"
 
       rect.enter().append("rect")
           .attr(
