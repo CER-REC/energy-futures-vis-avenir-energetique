@@ -19,50 +19,59 @@ class visualization
       dataset: 'jan2016'
       title: Tr.selectorTooltip.datasetSelector.jan2016[@app.language]
       class: if @config.dataset == 'jan2016' then 'vizButton selected' else 'vizButton'
+      ariaLabel: if @config.dataset == 'jan2016' then Tr.altText.dataset.jan2016Selected[@app.language] else Tr.altText.dataset.jan2016Unselected[@app.language]
     oct2016 =
       label: Tr.datasetSelector.oct2016Button[@app.language]
       dataset: 'oct2016'
       title: Tr.selectorTooltip.datasetSelector.oct2016[@app.language]
       class: if @config.dataset == 'oct2016' then 'vizButton selected' else 'vizButton'
+      ariaLabel: if @config.dataset == 'oct2016' then Tr.altText.dataset.oct2016Selected[@app.language] else Tr.altText.dataset.oct2016Unselected[@app.language]
 
     [oct2016, jan2016]
 
   unitSelectionData: ->
-    petajoules = 
+    petajoules =
       label: Tr.unitSelector.petajoulesButton[@app.language]
       title: Tr.selectorTooltip.unitSelector.petajoulesButton[@app.language]
       unitName: 'petajoules'
       class: if @config.unit == 'petajoules' then 'vizButton selected' else 'vizButton'
-    kilobarrelEquivalents = 
+      ariaLabel: if @config.unit == 'petajoules' then Tr.altText.unit.petajoulesSelected[@app.language] else Tr.altText.unit.petajoulesUnselected[@app.language]
+    kilobarrelEquivalents =
       title: Tr.selectorTooltip.unitSelector.kilobarrelEquivalentsButton[@app.language]
       label: Tr.unitSelector.kilobarrelEquivalentsButton[@app.language]
       unitName: 'kilobarrelEquivalents'
       class: if @config.unit == 'kilobarrelEquivalents' then 'vizButton selected' else 'vizButton'
-    gigawattHours = 
+      ariaLabel: if @config.unit == 'kilobarrelEquivalents' then Tr.altText.unit.kilobarrelEquivalentsSelected[@app.language] else Tr.altText.unit.kilobarrelEquivalentsUnselected[@app.language]
+    gigawattHours =
       title: Tr.selectorTooltip.unitSelector.gigawattHourButton[@app.language]
       label: Tr.unitSelector.gigawattHourButton[@app.language]
       unitName: 'gigawattHours'
       class: if @config.unit == 'gigawattHours' then 'vizButton selected' else 'vizButton'
-    thousandCubicMetres = 
+      ariaLabel: if @config.unit == 'gigawattHours' then Tr.altText.unit.gigawattHoursSelected[@app.language] else Tr.altText.unit.gigawattHoursUnselected[@app.language]
+    thousandCubicMetres =
       title: Tr.selectorTooltip.unitSelector.thousandCubicMetresButton[@app.language]
       label: Tr.unitSelector.thousandCubicMetresButton[@app.language]
       unitName: 'thousandCubicMetres'
       class: if @config.unit == 'thousandCubicMetres' then 'vizButton selected' else 'vizButton'
-    millionCubicMetres = 
+      ariaLabel: if @config.unit == 'thousandCubicMetres' then Tr.altText.unit.thousandCubicMetresSelected[@app.language] else Tr.altText.unit.thousandCubicMetresUnselected[@app.language]
+    millionCubicMetres =
       title: Tr.selectorTooltip.unitSelector.millionCubicMetresButton[@app.language]
       label: Tr.unitSelector.millionCubicMetresButton[@app.language]
       unitName: 'millionCubicMetres'
       class: if @config.unit == 'millionCubicMetres' then 'vizButton selected' else 'vizButton'
-    kilobarrels = 
+      ariaLabel: if @config.unit == 'millionCubicMetres' then Tr.altText.unit.millionCubicMetresSelected[@app.language] else Tr.altText.unit.millionCubicMetresUnselected[@app.language]
+    kilobarrels =
       title: Tr.selectorTooltip.unitSelector.kilobarrelsButton[@app.language]
       label: Tr.unitSelector.kilobarrelsButton[@app.language]
       unitName: 'kilobarrels'
       class: if @config.unit == 'kilobarrels' then 'vizButton selected' else 'vizButton'
-    cubicFeet  = 
+      ariaLabel: if @config.unit == 'kilobarrels' then Tr.altText.unit.kilobarrelsSelected[@app.language] else Tr.altText.unit.kilobarrelsUnselected[@app.language]
+    cubicFeet =
       title: Tr.selectorTooltip.unitSelector.cubicFeetButton[@app.language]
       label: Tr.unitSelector.cubicFeetButton[@app.language]
       unitName: 'cubicFeet'
       class: if @config.unit == 'cubicFeet' then 'vizButton selected' else 'vizButton'
+      ariaLabel: if @config.unit == 'cubicFeet' then Tr.altText.unit.cubicFeetSelected[@app.language] else Tr.altText.unit.cubicFeetUnselected[@app.language]
 
     switch @config.mainSelection
       when 'energyDemand'
@@ -79,68 +88,74 @@ class visualization
       title: Tr.selectorTooltip.scenarioSelector.referenceButton[@app.language]
       label: Tr.scenarioSelector.referenceButton[@app.language]
       scenarioName: 'reference'
-      class: 
+      class:
         if @config.scenario == 'reference'
           'vizButton selected'
         else if Constants.datasetDefinitions[@config.dataset].scenarios.includes 'reference'
           'vizButton'
-        else 
+        else
           'vizButton disabled'
+      ariaLabel: if @config.scenario == 'reference' then Tr.altText.scenario.referenceSelected[@app.language] else Tr.altText.scenario.referenceUnselected[@app.language]
     constrained =
       title: Tr.selectorTooltip.scenarioSelector.constrainedButton[@app.language]
       label: Tr.scenarioSelector.constrainedButton[@app.language]
       scenarioName: 'constrained'
-      class: 
+      class:
         if @config.scenario == 'constrained'
           'vizButton selected'
         else if Constants.datasetDefinitions[@config.dataset].scenarios.includes 'constrained'
           'vizButton'
-        else 
+        else
           'vizButton disabled'
+      ariaLabel: if @config.scenario == 'constrained' then Tr.altText.scenario.constrainedSelected[@app.language] else Tr.altText.scenario.constrainedUnselected[@app.language]
     high =
       title: Tr.selectorTooltip.scenarioSelector.highPriceButton[@app.language]
       label: Tr.scenarioSelector.highPriceButton[@app.language]
       scenarioName: 'high'
-      class: 
+      class:
         if @config.scenario == 'high'
           'vizButton selected'
         else if Constants.datasetDefinitions[@config.dataset].scenarios.includes 'high'
           'vizButton'
-        else 
+        else
           'vizButton disabled'
+      ariaLabel: if @config.scenario == 'high' then Tr.altText.scenario.highSelected[@app.language] else Tr.altText.scenario.highUnselected[@app.language]
     low =
       title: Tr.selectorTooltip.scenarioSelector.lowPriceButton[@app.language]
       label: Tr.scenarioSelector.lowPriceButton[@app.language]
       scenarioName: 'low'
-      class: 
+      class:
         if @config.scenario == 'low'
           'vizButton selected'
         else if Constants.datasetDefinitions[@config.dataset].scenarios.includes 'low'
           'vizButton'
-        else 
+        else
           'vizButton disabled'
+      ariaLabel: if @config.scenario == 'low' then Tr.altText.scenario.lowSelected[@app.language] else Tr.altText.scenario.lowUnselected[@app.language]
     highLng =
       title: Tr.selectorTooltip.scenarioSelector.highLngButton[@app.language]
       label: Tr.scenarioSelector.highLngButton[@app.language]
       scenarioName: 'highLng'
-      class: 
+      class:
         if @config.scenario == 'highLng'
           'vizButton selected'
         else if Constants.datasetDefinitions[@config.dataset].scenarios.includes 'highLng'
           'vizButton'
-        else 
+        else
           'vizButton disabled'
+      ariaLabel: if @config.scenario == 'highLng' then Tr.altText.scenario.highLngSelected[@app.language] else Tr.altText.scenario.highLngUnselected[@app.language]
     noLng =
       title: Tr.selectorTooltip.scenarioSelector.noLngButton[@app.language]
       label: Tr.scenarioSelector.noLngButton[@app.language]
       scenarioName: 'noLng'
-      class: 
+      class:
         if @config.scenario == 'noLng'
           'vizButton selected'
         else if Constants.datasetDefinitions[@config.dataset].scenarios.includes 'noLng'
           'vizButton'
-        else 
+        else
           'vizButton disabled'
+      ariaLabel: if @config.scenario == 'noLng' then Tr.altText.scenario.noLngSelected[@app.language] else Tr.altText.scenario.noLngUnselected[@app.language]
 
     switch @config.mainSelection
       when 'energyDemand', 'electricityGeneration'
@@ -160,7 +175,7 @@ class visualization
           [reference, high, low]
 
   sectorSelectionData: ->
-    [  
+    [
       {
         label: Tr.sectorSelector.totalSectorDemandButton[@app.language]
         title: Tr.selectorTooltip.sectorSelector.totalDemandButton[@app.language]
@@ -170,7 +185,7 @@ class visualization
         ariaLabel: if @config.sector == 'total' then Tr.altText.sectors.totalSelected[@app.language] else Tr.altText.sectors.totalUnselected[@app.language]
       }
       {
-        title: Tr.selectorTooltip.sectorSelector.residentialSectorButton[@app.language]  
+        title: Tr.selectorTooltip.sectorSelector.residentialSectorButton[@app.language]
         sectorName: 'residential'
         image: if @config.sector == 'residential' then 'IMG/sector/residential_selected.svg' else 'IMG/sector/residential_unselected.svg'
         wrapperClass: 'sectorSelectorButton sectorImageButton topLeftSector'
@@ -210,30 +225,31 @@ class visualization
         label: Tr.mainSelector.totalDemandButton[@app.language]
         image: if @config.mainSelection == 'energyDemand' then 'IMG/main_selection/totalDemand_selected.png' else 'IMG/main_selection/totalDemand_unselected.png'
         selectorName: 'energyDemand'
-        altText: if @config.mainSelection == 'energyDemand' then Tr.altText.totalDemand_selected[@app.language] else Tr.altText.totalDemand_unselected[@app.language] 
+        altText: if @config.mainSelection == 'energyDemand' then Tr.altText.totalDemand_selected[@app.language] else Tr.altText.totalDemand_unselected[@app.language]
       }
       {
         title: Tr.selectorTooltip.mainSelector.electricityGenerationButton[@app.language]
         label: Tr.mainSelector.electricityGenerationButton[@app.language]
         image: if @config.mainSelection == 'electricityGeneration' then 'IMG/main_selection/electricity_selected.png' else 'IMG/main_selection/electricity_unselected.png'
         selectorName: 'electricityGeneration'
-        altText: if @config.mainSelection == 'electricityGeneration' then Tr.altText.electricity_selected[@app.language] else Tr.altText.electricity_unselected[@app.language] 
+        altText: if @config.mainSelection == 'electricityGeneration' then Tr.altText.electricity_selected[@app.language] else Tr.altText.electricity_unselected[@app.language]
       }
       {
         title: Tr.selectorTooltip.mainSelector.oilProductionButton[@app.language]
         label: Tr.mainSelector.oilProductionButton[@app.language]
         image: if @config.mainSelection == 'oilProduction' then 'IMG/main_selection/oil_selected.png' else 'IMG/main_selection/oil_unselected.png'
         selectorName: 'oilProduction'
-        altText: if @config.mainSelection == 'oilProduction' then Tr.altText.oil_selected[@app.language] else Tr.altText.oil_unselected[@app.language] 
+        altText: if @config.mainSelection == 'oilProduction' then Tr.altText.oil_selected[@app.language] else Tr.altText.oil_unselected[@app.language]
       }
       {
         title: Tr.selectorTooltip.mainSelector.gasProductionButton[@app.language]
         label: Tr.mainSelector.gasProductionButton[@app.language]
         image: if @config.mainSelection == 'gasProduction' then 'IMG/main_selection/gas_selected.png' else 'IMG/main_selection/gas_unselected.png'
         selectorName: 'gasProduction'
-        altText: if @config.mainSelection == 'gasProduction' then Tr.altText.gas_selected[@app.language] else Tr.altText.gas_unselected[@app.language] 
+        altText: if @config.mainSelection == 'gasProduction' then Tr.altText.gas_selected[@app.language] else Tr.altText.gas_unselected[@app.language]
       }
     ]
+    
   addDatasetToggle: ->
     if @config.dataset?
       datasetSelectors = d3.select(@app.window.document).select('#datasetSelector')
@@ -260,7 +276,7 @@ class visualization
             @config.setScenario @config.scenario
 
             @addScenarios()
-            @addDatasetToggle(@datasetSelectionData())
+            @addDatasetToggle()
 
             @getDataAndRender()
             if @buildYAxis? then @buildYAxis()
@@ -272,12 +288,12 @@ class visualization
 
 
       datasetSelectors.html (d) ->
-        "<button class='#{d.class}' type='button' title='#{d.title}'>#{d.label}</button>"
+        "<button class='#{d.class}' type='button' title='#{d.title}' aria-label='#{d.ariaLabel}'>#{d.label}</button>"
 
       datasetSelectors.exit().remove()
 
   addUnitToggle: ->
-    if @config.unit?  
+    if @config.unit?
       unitsSelectors = d3.select(@app.window.document).select('#unitsSelector')
         .selectAll('.unitSelectorButton')
         .data(@unitSelectionData())
@@ -287,7 +303,7 @@ class visualization
         .attr
           class: 'unitSelectorButton'
         .on 'click', (d) =>
-          return if @config.unit == d.unitName  
+          return if @config.unit == d.unitName
 
           newConfig = new @config.constructor @app
           newConfig.copy @config
@@ -296,8 +312,7 @@ class visualization
           update = =>
             @config.setUnit d.unitName
             # TODO: For efficiency, only rerender what's necessary.
-            @unitSelectionData()
-            @addUnitToggle(@unitSelectionData())
+            @addUnitToggle()
             @getDataAndRender()
             if @buildYAxis? then @buildYAxis()
             @app.router.navigate @config.routerParams()
@@ -306,12 +321,12 @@ class visualization
 
 
       unitsSelectors.html (d) ->
-        "<button class='#{d.class}' type='button' title='#{d.title}'>#{d.label}</button>"
+        "<button class='#{d.class}' type='button' title='#{d.title}' aria-label='#{d.ariaLabel}'>#{d.label}</button>"
 
       unitsSelectors.exit().remove()
 
   addScenarios: ->
-    if @config.scenario?  
+    if @config.scenario?
       scenariosSelectors = d3.select(@app.window.document).select('#scenariosSelector')
         .selectAll('.scenarioSelectorButton')
         .data(@scenariosSelectionData())
@@ -321,7 +336,7 @@ class visualization
         .attr
           class: 'scenarioSelectorButton'
         .on 'click', (d) =>
-          return if @config.scenario == d.scenarioName && Constants.datasetDefinitions[@config.dataset].scenarios.includes d.scenarioName  
+          return if @config.scenario == d.scenarioName && Constants.datasetDefinitions[@config.dataset].scenarios.includes d.scenarioName
 
           newConfig = new @config.constructor @app
           newConfig.copy @config
@@ -343,7 +358,7 @@ class visualization
         indexOfDisabled = d.class.indexOf 'disabled'
         spanClass = 'disabled'
         if indexOfDisabled < 0 then spanClass = ''
-        "<button class='#{d.class}' type='button' title='#{d.title}'><span class='#{spanClass}'>#{d.label}</span></button>"
+        "<button class='#{d.class}' type='button' title='#{d.title}'><span class='#{spanClass}' aria-label='#{d.ariaLabel}'>#{d.label}</span></button>"
 
       scenariosSelectors.exit().remove()
 

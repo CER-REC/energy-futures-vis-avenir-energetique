@@ -1516,6 +1516,106 @@ module.exports =
         en: 'Transportation sector unselected'
         fr: 'Désélection - Secteur des transports'
 
+    unit:
+      petajoulesSelected:
+        en: 'Petajoule selected'
+        fr: 'Sélection - Pétajoule'
+      gigawattHoursSelected:
+        en: 'GW.h selected'
+        fr: 'Sélection - GWh'
+      kilobarrelEquivalentsSelected:
+        en: 'kBOE/d selected'
+        fr: 'Sélection - kBEP/j'
+      thousandCubicMetresSelected:
+        en: 'km³/d selected'
+        fr: 'Sélection - km³/j'
+      millionCubicMetresSelected:
+        en: 'Mm³/d selected'
+        fr: 'Sélection - Mm³/j'
+      kilobarrelsSelected:
+        en: 'kB/d selected'
+        fr: 'Sélection - kB/j'
+      cubicFeetSelected:
+        en: 'Mcf/d selected'
+        fr: 'Sélection - Mpi³/j'
+
+      petajoulesUnselected:
+        en: 'Petajoule unselected'
+        fr: 'Désélection - Pétajoule'
+      gigawattHoursUnselected:
+        en: 'GW.h unselected'
+        fr: 'Désélection - GWh'
+      kilobarrelEquivalentsUnselected:
+        en: 'kBOE/d unselected'
+        fr: 'Désélection - kBEP/j'
+      thousandCubicMetresUnselected:
+        en: 'km³/d unselected'
+        fr: 'Désélection - km³/j'
+      millionCubicMetresUnselected:
+        en: 'Mm³/d unselected'
+        fr: 'Désélection - Mm³/j'
+      kilobarrelsUnselected:
+        en: 'kB/d unselected'
+        fr: 'Désélection - kB/j'
+      cubicFeetUnselected:
+        en: 'Mcf/d unselected'
+        fr: 'Désélection - Mpi³/j'
+    
+    dataset:
+      jan2016Selected:
+        en: '2016 selected'
+        fr: 'Sélection - 2016'
+      oct2016Selected:
+        en: '2016 update selected'
+        fr: 'Sélection - Mise à jour 2016'
+
+      jan2016Unselected:
+        en: '2016 unselected'
+        fr: 'Désélection - 2016'
+      oct2016Unselected:
+        en: '2016 update unselected'
+        fr: 'Désélection - Mise à jour 2016'
+
+    scenario:
+      referenceSelected:
+        en: 'Reference selected'
+        fr: 'Sélection - Référence'
+      lowSelected:
+        en: 'Low price selected'
+        fr: 'Sélection - Prix bas'
+      highSelected:
+        en: 'High price selected'
+        fr: 'Sélection - Prix élevé'
+      constrainedSelected:
+        en: 'Constrained selected'
+        fr: 'Sélection - Capacité limitée'
+      noLngSelected:
+        en: 'No LNG selected'
+        fr: 'Sélection - GNL zéro'
+      highLngSelected:
+        en: 'High LNG selected'
+        fr: 'Sélection - GNL élevé'
+
+      referenceUnselected:
+        en: 'Reference unselected'
+        fr: 'Désélection - Référence'
+      lowUnselected:
+        en: 'Low price unselected'
+        fr: 'Désélection - Prix bas'
+      highUnselected:
+        en: 'High price unselected'
+        fr: 'Désélection - Prix élevé'
+      constrainedUnselected:
+        en: 'Constrained unselected'
+        fr: 'Désélection - Capacité limitée'
+      noLngUnselected:
+        en: 'No LNG unselected'
+        fr: 'Désélection - GNL zéro'
+      highLngUnselected:
+        en: 'High LNG unselected'
+        fr: 'Désélection - GNL élevé'
+
+
     howToImage:
       en: 'Usage instructions'
       fr: "Guide d’utilisation"
@@ -1528,7 +1628,6 @@ module.exports =
       fr: 'Pause'
 
     sources:
-
       hydro:
         en: 'Water'
         fr: 'Eau'
