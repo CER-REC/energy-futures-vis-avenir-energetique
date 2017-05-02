@@ -31,6 +31,10 @@ class BubbleChart extends Chart
 
     @redraw()
 
+    @tooltip = @app.window.document.getElementById 'tooltip'
+    @tooltipParent = @app.window.document.getElementById 'wideVisualizationPanel'
+
+
   # TODO: This mutates the passed in data, which can cause problems for other consumers
   # of the data object that's passed to this chart.
   # Bad! Fixme!
@@ -134,18 +138,20 @@ class BubbleChart extends Chart
       .select 'circle'
 
       .on @mouseover_event_name, (d) =>
-        document.getElementById('tooltip').style.visibility = 'visible'
-        document.getElementById('tooltip').style.top = (d3.event.pageY - 10) + 'px'
-        document.getElementById('tooltip').style.left = (d3.event.pageX + 10) + 'px'
-        document.getElementById('tooltip').innerHTML = "#{d.name} (#{@_year}): #{d.size.toFixed(2)}"
+        coords = d3.mouse @tooltipParent # [x, y]
+        @tooltip.style.visibility = 'visible'
+        @tooltip.style.left = "#{coords[0] + 30}px"
+        @tooltip.style.top = "#{coords[1]}px"
+        @tooltip.innerHTML = "#{d.name} (#{@_year}): #{d.size.toFixed(2)}"
 
       .on @mousemove_event_name, (d) =>
-        document.getElementById('tooltip').style.top = (d3.event.pageY - 10) + 'px'
-        document.getElementById('tooltip').style.left = (d3.event.pageX + 10) + 'px'
-        document.getElementById('tooltip').innerHTML = "#{d.name} (#{@_year}): #{d.size.toFixed(2)}"
+        coords = d3.mouse @tooltipParent # [x, y]
+        @tooltip.style.left = "#{coords[0] + 30}px"
+        @tooltip.style.top = "#{coords[1]}px"
+        @tooltip.innerHTML = "#{d.name} (#{@_year}): #{d.size.toFixed(2)}"
 
-      .on @mouseout_event_name, ->
-        document.getElementById('tooltip').style.visibility = 'hidden'
+      .on @mouseout_event_name, =>
+        @tooltip.style.visibility = 'hidden'
 
     enterSelection.filter((d) -> d.depth == 1 ).append 'g'
           
@@ -190,7 +196,7 @@ class BubbleChart extends Chart
       # otherwise the click popover and the hover tooltip both appear.
       # Not necessary for iOS/Android, the touch API lets us prevent click/mouseover
       # events entirely.
-      document.getElementById('tooltip').style.visibility = 'hidden'
+      @tooltip.style.visibility = 'hidden'
 
     node.filter((d) -> d.depth == 2 )
       .select('circle')
