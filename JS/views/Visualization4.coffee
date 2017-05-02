@@ -13,44 +13,6 @@ if Platform.name == 'browser'
   Visualization4Template = require '../templates/Visualization4.mustache'
   SvgStylesheetTemplate = require '../templates/SvgStylesheet.css'
 
-pixelMap = [{pixelStart:260, pixelEnd:280, year:2005}
-            {pixelStart:281, pixelEnd:303, year:2006}
-            {pixelStart:304, pixelEnd:325, year:2007}
-            {pixelStart:326, pixelEnd:349, year:2008}
-            {pixelStart:350, pixelEnd:373, year:2009}
-            {pixelStart:374, pixelEnd:396, year:2010}
-            {pixelStart:397, pixelEnd:420, year:2011}
-            {pixelStart:421, pixelEnd:442, year:2012}
-            {pixelStart:443, pixelEnd:465, year:2013}
-            {pixelStart:466, pixelEnd:487, year:2014}
-            {pixelStart:488, pixelEnd:512, year:2015}
-            {pixelStart:513, pixelEnd:533, year:2016}
-            {pixelStart:534, pixelEnd:526, year:2017}
-            {pixelStart:527, pixelEnd:578, year:2018}
-            {pixelStart:579, pixelEnd:601, year:2019}
-            {pixelStart:602, pixelEnd:624, year:2020}
-            {pixelStart:625, pixelEnd:647, year:2021}
-            {pixelStart:648, pixelEnd:670, year:2022}
-            {pixelStart:671, pixelEnd:692, year:2023}
-            {pixelStart:693, pixelEnd:717, year:2024}
-            {pixelStart:718, pixelEnd:740, year:2025}
-            {pixelStart:741, pixelEnd:762, year:2026}
-            {pixelStart:763, pixelEnd:785, year:2027}
-            {pixelStart:786, pixelEnd:808, year:2028}
-            {pixelStart:809, pixelEnd:832, year:2029}
-            {pixelStart:833, pixelEnd:855, year:2030}
-            {pixelStart:856, pixelEnd:879, year:2031}
-            {pixelStart:880, pixelEnd:901, year:2032}
-            {pixelStart:902, pixelEnd:924, year:2033}
-            {pixelStart:925, pixelEnd:947, year:2034}
-            {pixelStart:948, pixelEnd:968, year:2035}
-            {pixelStart:969, pixelEnd:992, year:2036}
-            {pixelStart:993, pixelEnd:1014, year:2037}
-            {pixelStart:1015, pixelEnd:1035, year:2038}
-            {pixelStart:1036, pixelEnd:1060, year:2039}]
-
-root = exports ? this
-
 ControlsHelpPopover = require '../popovers/ControlsHelpPopover.coffee'
 
 
@@ -165,27 +127,15 @@ class Visualization4
 
     if Platform.name == 'browser'
       @renderBrowserTemplate()
-      document.onmousemove = @handleMouseMove
     else if Platform.name == 'server'
       @renderServerTemplate()
 
     @tooltip = @app.window.document.getElementById 'tooltip'
     @tooltipParent = @app.window.document.getElementById 'wideVisualizationPanel'
+    @graphPanel = @app.window.document.getElementById 'graphPanel'
 
     @render()
     @redraw()
-
-  handleMouseMove: (event) =>
-    root.mousePos = {x: event.pageX, y: event.pageY}
-    if root.activeScenario?
-      current = pixelMap.filter (entry) ->
-        root.mousePos.x >= entry.pixelStart && root.mousePos.x < entry.pixelEnd
-      current = current[0]
-      if current?
-        titletobe = root.data.filter (value) ->
-          value.year == current.year
-        titletobe = titletobe[0]
-        document.getElementById('tooltip').innerHTML = Tr.scenarioSelector.names[root.activeScenario][@app.language] + " (" + current.year + "): " + titletobe.value.toFixed(2)
 
 
   redraw: ->
@@ -1126,22 +1076,18 @@ class Visualization4
     graphAreaSelectors = graphAreaGroups.selectAll('.graphAreaPresent')
       .data(((d) -> [d]), ((d) -> d.key))
       .on 'mouseover', (d) =>
-        coords = d3.mouse @tooltipParent
+        coords = d3.mouse @tooltipParent # [x, y]
         @tooltip.style.visibility = 'visible'
         @tooltip.style.left = "#{coords[0] + 30}px"
         @tooltip.style.top = "#{coords[1]}px"
-        root.activeArea = "present#{d.data[0].scenario}"
-        root.activeScenario = d.data[0].scenario
-        root.data = d.data
-      .on 'mousemove', =>
-        coords = d3.mouse @tooltipParent
+        @displayTooltip d.key
+      .on 'mousemove', (d) =>
+        coords = d3.mouse @tooltipParent # [x, y]
         @tooltip.style.left = "#{coords[0] + 30}px"
         @tooltip.style.top = "#{coords[1]}px"
+        @displayTooltip d.key
       .on 'mouseout', =>
         @tooltip.style.visibility = 'hidden'
-        root.activeArea = null
-        root.activeScenario = null
-        root.data = null
 
     graphAreaSelectors.enter().append 'path'
       .attr
@@ -1164,22 +1110,18 @@ class Visualization4
     graphFutureAreaSelectors = graphAreaGroups.selectAll('.graphAreaFuture')
       .data(((d) -> [d]), ((d) -> d.key))
       .on 'mouseover', (d) =>
-        coords = d3.mouse @tooltipParent
+        coords = d3.mouse @tooltipParent # [x, y]
         @tooltip.style.visibility = 'visible'
         @tooltip.style.left = "#{coords[0] + 30}px"
         @tooltip.style.top = "#{coords[1]}px"
-        root.activeArea = "future#{d.data[0].scenario}"
-        root.activeScenario = d.data[0].scenario
-        root.data = d.data
-      .on 'mousemove', =>
-        coords = d3.mouse @tooltipParent
+        @displayTooltip d.key
+      .on 'mousemove', (d) =>
+        coords = d3.mouse @tooltipParent # [x, y]
         @tooltip.style.left = "#{coords[0] + 30}px"
         @tooltip.style.top = "#{coords[1]}px"
+        @displayTooltip d.key
       .on 'mouseout', =>
         @tooltip.style.visibility = 'hidden'
-        root.activeArea = null
-        root.activeScenario = null
-        root.data = null
 
     graphFutureAreaSelectors.enter().append 'path'
       .attr
@@ -1325,7 +1267,31 @@ class Visualization4
         .attr 'cy', yAxisScale(0)
         .remove()
 
+  # Take the mouse coordinates, and invert the scale we used to draw the graph to
+  # look up which year they correspond to. Combine with the name of the scenario to
+  # populate the contents of the mouseover tooltip. Should work at any resolution!
+  # We assume that this method is called during a d3 event handler
+  displayTooltip: (scenario) ->
+    # Mouse coordinates relative to the graph panel element, should be the same
+    # coordinate space that the scale is used to draw in.
+    console.log scenario
+    coords = d3.mouse @graphPanel # [x, y]
 
+    # I hope that making a scale isn't too expensive to do on mousemove
+    scale = @xAxisScale()
+    year = Math.floor scale.invert(coords[0])
+
+    # I hope that fetching data isn't too expensive to do on mousemove either!
+    data = @graphData()
+
+    # This can happen during an animation where a scenario has been toggled off
+    return unless data[scenario]?
+
+    tooltipDatum = data[scenario].find (item) ->
+      item.year == year
+    return unless tooltipDatum
+
+    @tooltip.innerHTML = "#{Tr.scenarioSelector.names[scenario][@app.language]} (#{year}) #{tooltipDatum.value.toFixed(2)}"
 
 
   tearDown: ->
