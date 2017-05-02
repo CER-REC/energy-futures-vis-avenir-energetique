@@ -1,7 +1,7 @@
 path = require 'path'
 
 ApplicationRoot = require '../../ApplicationRoot.coffee'
-require '../ArrayIncludes.coffee'
+require '../Polyfills.coffee'
 
 IngestEnergyConsumption = require './IngestEnergyConsumption.coffee'
 IngestOilProduction = require './IngestOilProduction.coffee'

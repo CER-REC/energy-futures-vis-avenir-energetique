@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "array-includes": "^3.0.2",
+    "array.prototype.find": "^2.0.4",
     "bluebird": "^3.4.6",
     "browser-cookies": "^1.0.8",
     "coffee-script": "^1.11.1",
