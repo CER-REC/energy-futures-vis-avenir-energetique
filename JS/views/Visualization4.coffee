@@ -169,7 +169,8 @@ class Visualization4
     else if Platform.name == 'server'
       @renderServerTemplate()
 
-
+    @tooltip = @app.window.document.getElementById 'tooltip'
+    @tooltipParent = @app.window.document.getElementById 'wideVisualizationPanel'
 
     @render()
     @redraw()
@@ -1124,18 +1125,20 @@ class Visualization4
 
     graphAreaSelectors = graphAreaGroups.selectAll('.graphAreaPresent')
       .data(((d) -> [d]), ((d) -> d.key))
-      .on 'mouseover', (d) ->
-        document.getElementById('tooltip').style.visibility = 'visible'
-        document.getElementById('tooltip').style.top = "#{d3.event.pageY - 10}px"
-        document.getElementById('tooltip').style.left = "#{d3.event.pageX + 10}px"
+      .on 'mouseover', (d) =>
+        coords = d3.mouse @tooltipParent
+        @tooltip.style.visibility = 'visible'
+        @tooltip.style.left = "#{coords[0] + 30}px"
+        @tooltip.style.top = "#{coords[1]}px"
         root.activeArea = "present#{d.data[0].scenario}"
         root.activeScenario = d.data[0].scenario
         root.data = d.data
-      .on 'mousemove', ->
-        document.getElementById('tooltip').style.top = "#{d3.event.pageY-10}px"
-        document.getElementById('tooltip').style.left = "#{d3.event.pageX+10}px"
-      .on 'mouseout', ->
-        document.getElementById('tooltip').style.visibility = 'hidden'
+      .on 'mousemove', =>
+        coords = d3.mouse @tooltipParent
+        @tooltip.style.left = "#{coords[0] + 30}px"
+        @tooltip.style.top = "#{coords[1]}px"
+      .on 'mouseout', =>
+        @tooltip.style.visibility = 'hidden'
         root.activeArea = null
         root.activeScenario = null
         root.data = null
@@ -1160,18 +1163,20 @@ class Visualization4
 
     graphFutureAreaSelectors = graphAreaGroups.selectAll('.graphAreaFuture')
       .data(((d) -> [d]), ((d) -> d.key))
-      .on 'mouseover', (d) ->
-        document.getElementById('tooltip').style.visibility = 'visible'
-        document.getElementById('tooltip').style.top = "#{d3.event.pageY - 10}px"
-        document.getElementById('tooltip').style.left = "#{d3.event.pageX + 10}px"
+      .on 'mouseover', (d) =>
+        coords = d3.mouse @tooltipParent
+        @tooltip.style.visibility = 'visible'
+        @tooltip.style.left = "#{coords[0] + 30}px"
+        @tooltip.style.top = "#{coords[1]}px"
         root.activeArea = "future#{d.data[0].scenario}"
         root.activeScenario = d.data[0].scenario
         root.data = d.data
-      .on 'mousemove', ->
-        document.getElementById('tooltip').style.top = "#{d3.event.pageY - 10}px"
-        document.getElementById('tooltip').style.left = "#{d3.event.pageX + 10}px"
-      .on 'mouseout', ->
-        document.getElementById('tooltip').style.visibility = 'hidden'
+      .on 'mousemove', =>
+        coords = d3.mouse @tooltipParent
+        @tooltip.style.left = "#{coords[0] + 30}px"
+        @tooltip.style.top = "#{coords[1]}px"
+      .on 'mouseout', =>
+        @tooltip.style.visibility = 'hidden'
         root.activeArea = null
         root.activeScenario = null
         root.data = null
