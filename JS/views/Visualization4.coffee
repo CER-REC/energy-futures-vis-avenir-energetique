@@ -682,7 +682,6 @@ class Visualization4
           @app.datasetRequester.updateAndRequestIfRequired newConfig, update
 
       datasetSelectors.html (d) ->
-        "<button class='#{d.class}' type='button' title='#{d.title}'>#{d.label}</button>"
         "<button class='#{d.class}' type='button' title='#{d.title}' aria-label='#{d.ariaLabel}'>#{d.label}</button>"
 
       datasetSelectors.exit().remove()
@@ -1247,13 +1246,15 @@ class Visualization4
       refCaseDots.enter().append 'circle'
         .attr 'class', 'refCaseDot'
         .attr 'r', 3.5
-        .attr 'cx', (d) ->
-          xAxisScale d.year
         .attr 'cy', yAxisScale(0)
         .style
           fill: 'white'
           stroke: '#999999'
           'stroke-width': 2
+
+      refCaseDots
+        .attr 'cx', (d) ->
+          xAxisScale d.year
 
       refCaseDots.transition()
         .duration duration
