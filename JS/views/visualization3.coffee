@@ -304,7 +304,7 @@ class Visualization3 extends visualization
           @app.datasetRequester.updateAndRequestIfRequired newConfig, update
 
       viewBySelectors.html (d) ->
-        "<button class='#{d.class}' type='button' title='#{d.title}'>#{d.label}</button>"
+        "<button class='#{d.class}' type='button' title='#{d.title}' aria-label='#{d.ariaLabel}' >#{d.label}</button>"
 
       viewBySelectors.exit().remove()
   
@@ -917,12 +917,22 @@ class Visualization3 extends visualization
         label: Tr.viewBySelector.viewByProvinceButton[@app.language]
         viewByName: 'province'
         class: if @config.viewBy == 'province' then 'vizButton selected' else 'vizButton'
+        ariaLabel:
+          if @config.viewBy == 'province'
+            Tr.altText.viewBy.regionSelected[@app.language]
+          else
+            Tr.altText.viewBy.regionUnselected[@app.language]
       }
       {
         title: Tr.selectorTooltip.viewBySelector.viewBySourceButton[@app.language]
         label: Tr.viewBySelector.viewBySourceButton[@app.language]
         viewByName: 'source'
         class: if @config.viewBy == 'source' then 'vizButton selected' else 'vizButton'
+        ariaLabel:
+          if @config.viewBy == 'source'
+            Tr.altText.viewBy.sourceSelected[@app.language]
+          else
+            Tr.altText.viewBy.sourceUnselected[@app.language]
       }
     ]
 

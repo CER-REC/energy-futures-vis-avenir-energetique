@@ -1610,6 +1610,20 @@ module.exports =
         en: 'High LNG unselected'
         fr: 'Désélection - GNL élevé'
 
+    viewBy:
+      regionSelected:
+        en: 'Region selected'
+        fr: 'Sélection - Région'
+      sourceSelected:
+        en: 'Source selected'
+        fr: 'Sélection - Région'
+      regionUnselected:
+        en: 'Region unselected'
+        fr: 'Désélection - Source'
+      sourceUnselected:
+        en: 'Source unselected'
+        fr: 'Désélection - Source'
+
 
     howToImage:
       en: 'Usage instructions'
