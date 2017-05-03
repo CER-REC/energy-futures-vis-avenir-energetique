@@ -52,7 +52,7 @@ class EnergyConsumptionIngestor
 
   validateLineByLine: ->
     if @unmappedData.length != @mappedData.length
-      throw "Error: Sanity check failed, unmapped CSV data (length #{@unmappedData.length}) and mapped CSV data (length #{@mappedData.length}) had different lengths for #{@dataFilename}"
+      throw new Error "Error: Sanity check failed, unmapped CSV data (length #{@unmappedData.length}) and mapped CSV data (length #{@mappedData.length}) had different lengths for #{@dataFilename}"
 
 
     for i in [0...@unmappedData.length]
@@ -70,9 +70,12 @@ class EnergyConsumptionIngestor
   createGroupedDataStructure: ->
     # Visualizations 1, 2, and 4 all draw on this data set.
     
-    # Viz1 and 4 use exactly the same data subset, which is not broken out by source, (scenarios * years * regions) (6 * 36 * 14) items, for 1512 items total.
+    # Viz1 and 4 use exactly the same data subset, which is not broken out by source,
+    # (scenarios * years * regions) (6 * 36 * 14) items, for 1512 items total.
 
-    # Viz2 uses a completely disjoint and much larger subset of data, broken out by sector and by source. (sectors * sources * scenarios * years * regions) (5 * 6 * 6 * 36 * 14), 90720 items total.
+    # Viz2 uses a completely disjoint and much larger subset of data, broken out by
+    # sector and by source. (sectors * sources * scenarios * years * regions)
+    # (5 * 6 * 6 * 36 * 14), 90720 items total.
 
     # Viz 1 and 4
     for scenario in @scenarios
@@ -169,12 +172,12 @@ class EnergyConsumptionIngestor
 
 
 
-  ##### 
+  #####
 
   detailedAddAndDetectDuplicate: (item) ->
     if @detailedGroupedData[item.sector][item.source][item.scenario][item.year][item.province]?
       @logMessages.push
-        message: "Duplicate item detected"
+        message: 'Duplicate item detected'
         line: item
         lineNumber: null
     else
@@ -187,8 +190,8 @@ EnergyConsumptionIngestor.csvMapping = (d) ->
   sector: d.Sector
   source: d.Source
   scenario: d.Case
-  year: parseInt(d.Year)
-  value: parseFloat(d.Data)
+  year: parseInt d.Year
+  value: parseFloat d.Data
   unit: d.Unit
 
 

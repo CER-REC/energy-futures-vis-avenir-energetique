@@ -1,10 +1,6 @@
 d3 = require 'd3'
 
-Constants = require '../Constants.coffee'
 UnitTransformation = require '../unit-transformation.coffee'
-
-QueryString = require 'query-string'
-PrepareQueryParams = require '../PrepareQueryParams.coffee'
 
 class EnergyConsumptionProvider
 
@@ -14,27 +10,25 @@ class EnergyConsumptionProvider
   # Parse all of a CSV's data
   loadFromString: (dataString) ->
     @data = d3.csv.parse dataString, @mapping
-    @parseData @data
+    @parseData()
 
   # Add an array of data objects to the data store
   addData: (data) ->
     @data = @data.concat data
-    @parseData @data
-
+    @parseData()
+    
   mapping: (d) ->
     province: d.province
     sector: d.sector
     source: d.source
     scenario: d.scenario
-    year: parseInt(d.year)
-    value: parseFloat(d.value)
+    year: parseInt d.year
+    value: parseFloat d.value
     unit: d.unit
 
-  parseData: (data) =>
-    @data = data
+  parseData: =>
 
-
-    @dataByProvince = 
+    @dataByProvince =
       BC: []
       AB: []
       SK: []
@@ -50,7 +44,7 @@ class EnergyConsumptionProvider
       NU: []
       all: []
 
-    @dataByScenario = 
+    @dataByScenario =
       reference: []
       high: []
       low: []
@@ -82,12 +76,12 @@ class EnergyConsumptionProvider
 
 
 
-  # Returns a set of data corresponding to the given config object, except that 
+  # Returns a set of data corresponding to the given config object, except that
   # it has not been filtered by scenario. In order to show a y-axis which does not change
-  # when the user switches the scenario, we need to take the maximum of all of the data 
+  # when the user switches the scenario, we need to take the maximum of all of the data
   # across scenarios for a given configuration.
   dataForAllViz1Scenarios: (viz1config) ->
-    filteredProvinceData = {}    
+    filteredProvinceData = {}
 
     # Exclude data from provinces that aren't in the set
     for provinceName in Object.keys @dataByProvince
@@ -98,18 +92,18 @@ class EnergyConsumptionProvider
     # We aren't interested in breakdowns by sector, only the totals
     for provinceName in Object.keys filteredProvinceData
       filteredProvinceData[provinceName] = filteredProvinceData[provinceName].filter (item) ->
-        item.source == 'total' and 
+        item.source == 'total' and
         item.sector == 'total'
 
     # Finally, convert units
     return filteredProvinceData if viz1config.unit == 'petajoules'
 
-    if viz1config.unit == 'kilobarrelEquivalents' 
+    if viz1config.unit == 'kilobarrelEquivalents'
       unitConvertedProvinceData = {}
       for province in Object.keys filteredProvinceData
         unitConvertedProvinceData[province] = []
         for item in filteredProvinceData[province]
-          unitConvertedProvinceData[province].push 
+          unitConvertedProvinceData[province].push
             # TODO: This approach is pretty nasty, is there a better way?
             province: item.province
             sector: item.sector
@@ -130,8 +124,8 @@ class EnergyConsumptionProvider
   #   source: 'total', undefined, or absent
   #   value: 234.929
   #   year: 2005
-  # The attributes available vary from dataset to dataset, which is why some of them may 
-  # or may not be present. 
+  # The attributes available vary from dataset to dataset, which is why some of them may
+  # or may not be present.
   dataForViz1: (viz1config) ->
     unfilteredData = @dataForAllViz1Scenarios viz1config
     filteredData = {}
@@ -144,9 +138,9 @@ class EnergyConsumptionProvider
 
 
 
-  # Returns a set of data corresponding to the given config object, except that 
+  # Returns a set of data corresponding to the given config object, except that
   # it has not been filtered by scenario. In order to show a y-axis which does not change
-  # when the user switches the scenario, we need to take the maximum of all of the data 
+  # when the user switches the scenario, we need to take the maximum of all of the data
   # across scenarios for a given configuration.
   dataForAllViz2Scenarios: (viz2config) ->
     filteredSourceData = {}
@@ -165,12 +159,12 @@ class EnergyConsumptionProvider
     # Finally, convert units
     return filteredSourceData if viz2config.unit == 'petajoules'
 
-    if viz2config.unit == 'kilobarrelEquivalents' 
+    if viz2config.unit == 'kilobarrelEquivalents'
       unitConvertedSourceData = {}
       for province in Object.keys filteredSourceData
         unitConvertedSourceData[province] = []
         for item in filteredSourceData[province]
-          unitConvertedSourceData[province].push 
+          unitConvertedSourceData[province].push
             # TODO: This approach is pretty nasty, is there a better way?
             province: item.province
             sector: item.sector
@@ -201,9 +195,9 @@ class EnergyConsumptionProvider
 
 
 
-  # Returns a set of data corresponding to the given config object, except that 
+  # Returns a set of data corresponding to the given config object, except that
   # it has not been filtered by scenario. In order to show a y-axis which does not change
-  # when the user switches the scenario, we need to take the maximum of all of the data 
+  # when the user switches the scenario, we need to take the maximum of all of the data
   # across scenarios for a given configuration.
   dataForAllViz4Scenarios: (viz4config) ->
     filteredScenarioData = {}
@@ -213,7 +207,8 @@ class EnergyConsumptionProvider
       filteredScenarioData[scenarioName] = @dataByScenario[scenarioName]
 
     # We aren't interested in breakdowns by source or sector, only the totals
-    # TODO: Since this will always be the case for viz4, cache the data with this filter applied?
+    # TODO: Since this will always be the case for viz4, cache the data with this filter
+    # applied?
     for scenarioName in Object.keys filteredScenarioData
       filteredScenarioData[scenarioName] = filteredScenarioData[scenarioName].filter (item) ->
         item.source == 'total' and item.sector == 'total'
@@ -233,7 +228,7 @@ class EnergyConsumptionProvider
       for scenario in Object.keys filteredScenarioData
         unitConvertedScenarioData[scenario] = []
         for item in filteredScenarioData[scenario]
-          unitConvertedScenarioData[scenario].push 
+          unitConvertedScenarioData[scenario].push
             # TODO: This approach is pretty nasty, is there a better way?
             province: item.province
             sector: item.sector
@@ -243,7 +238,8 @@ class EnergyConsumptionProvider
             value: item.value * UnitTransformation.transformUnits('petajoules', 'kilobarrelEquivalents')
       return unitConvertedScenarioData
 
-    # TODO: if we get to here something has gone horribly wrong, and we should do something else
+    # TODO: if we get to here something has gone horribly wrong, and we should do
+    # something else
     console.warn 'something has gone wrong'
 
 
@@ -255,8 +251,8 @@ class EnergyConsumptionProvider
   #   source: 'total' or undefined, or the attribute may be absent
   #   value: 2161.98
   #   year: 2005
-  # The attributes available vary from dataset to dataset, which is why some of them may 
-  # or may not be present. 
+  # The attributes available vary from dataset to dataset, which is why some of them may
+  # or may not be present.
   dataForViz4: (viz4config) ->
     unfilteredData = @dataForAllViz4Scenarios viz4config
     filteredData = {}

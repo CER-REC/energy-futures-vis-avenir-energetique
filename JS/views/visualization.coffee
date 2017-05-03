@@ -12,47 +12,104 @@ class Visualization
         title: Tr.selectorTooltip.sectorSelector.totalDemandButton[@app.language]
         sectorName: 'total'
         wrapperClass: 'sectorSelectorButton totalSectorButton'
-        buttonClass: if @config.sector == 'total' then 'vizButton selected' else 'vizButton'
-        ariaLabel: if @config.sector == 'total' then Tr.altText.sectors.totalSelected[@app.language] else Tr.altText.sectors.totalUnselected[@app.language]
+        buttonClass:
+          if @config.sector == 'total'
+            'vizButton selected'
+          else
+            'vizButton'
+        ariaLabel:
+          if @config.sector == 'total'
+            Tr.altText.sectors.totalSelected[@app.language]
+          else
+            Tr.altText.sectors.totalUnselected[@app.language]
       }
       {
         title: Tr.selectorTooltip.sectorSelector.residentialSectorButton[@app.language]
         sectorName: 'residential'
-        image: if @config.sector == 'residential' then 'IMG/sector/residential_selected.svg' else 'IMG/sector/residential_unselected.svg'
+        image:
+          if @config.sector == 'residential'
+            'IMG/sector/residential_selected.svg'
+          else
+            'IMG/sector/residential_unselected.svg'
         wrapperClass: 'sectorSelectorButton sectorImageButton topLeftSector'
-        altText: if @config.sector == 'residential' then Tr.altText.sectors.residentialSelected[@app.language] else Tr.altText.sectors.residentialUnselected[@app.language]
-        buttonClass: if @config.sector == 'residential' then 'selected' else ''
+        altText:
+          if @config.sector == 'residential'
+            Tr.altText.sectors.residentialSelected[@app.language]
+          else
+            Tr.altText.sectors.residentialUnselected[@app.language]
+        buttonClass:
+          if @config.sector == 'residential'
+            'selected'
+          else
+            ''
       }
       {
         title: Tr.selectorTooltip.sectorSelector.commercialSectorButton[@app.language]
         sectorName: 'commercial'
-        image: if @config.sector ==  'commercial' then 'IMG/sector/commercial_selected.svg' else 'IMG/sector/commercial_unselected.svg'
+        image:
+          if @config.sector ==  'commercial'
+            'IMG/sector/commercial_selected.svg'
+          else
+            'IMG/sector/commercial_unselected.svg'
         wrapperClass: 'sectorSelectorButton sectorImageButton topRightSector'
-        altText: if @config.sector == 'commercial' then Tr.altText.sectors.commercialSelected[@app.language] else Tr.altText.sectors.commercialUnselected[@app.language]
-        buttonClass: if @config.sector == 'commercial' then 'selected' else ''
+        altText:
+          if @config.sector == 'commercial'
+            Tr.altText.sectors.commercialSelected[@app.language]
+          else
+            Tr.altText.sectors.commercialUnselected[@app.language]
+        buttonClass:
+          if @config.sector == 'commercial'
+            'selected'
+          else
+            ''
       }
       {
         title: Tr.selectorTooltip.sectorSelector.industrialSectorButton[@app.language]
         sectorName: 'industrial'
-        image: if @config.sector == 'industrial' then 'IMG/sector/industrial_selected.svg' else 'IMG/sector/industrial_unselected.svg'
+        image:
+          if @config.sector == 'industrial'
+            'IMG/sector/industrial_selected.svg'
+          else
+            'IMG/sector/industrial_unselected.svg'
         wrapperClass: 'sectorSelectorButton sectorImageButton bottomLeftSector'
-        altText: if @config.sector == 'industrial' then Tr.altText.sectors.industrialSelected[@app.language] else Tr.altText.sectors.industrialUnselected[@app.language]
-        buttonClass: if @config.sector == 'industrial' then 'selected' else ''
+        altText:
+          if @config.sector == 'industrial'
+            Tr.altText.sectors.industrialSelected[@app.language]
+          else
+            Tr.altText.sectors.industrialUnselected[@app.language]
+        buttonClass:
+          if @config.sector == 'industrial'
+            'selected'
+          else
+            ''
       }
       {
         title: Tr.selectorTooltip.sectorSelector.transportSectorButton[@app.language]
         sectorName: 'transportation'
-        image: if @config.sector ==  'transportation' then 'IMG/sector/transport_selected.svg' else 'IMG/sector/transport_unselected.svg'
+        image:
+          if @config.sector ==  'transportation'
+            'IMG/sector/transport_selected.svg'
+          else
+            'IMG/sector/transport_unselected.svg'
         wrapperClass: 'sectorSelectorButton sectorImageButton bottomRightSector'
-        altText: if @config.sector == 'transportation' then Tr.altText.sectors.transportationSelected[@app.language] else Tr.altText.sectors.transportationUnselected[@app.language]
-        buttonClass: if @config.sector == 'transportation' then 'selected' else ''
+        altText:
+          if @config.sector == 'transportation'
+            Tr.altText.sectors.transportationSelected[@app.language]
+          else
+            Tr.altText.sectors.transportationUnselected[@app.language]
+        buttonClass:
+          if @config.sector == 'transportation'
+            'selected'
+          else
+            ''
       }
     ]
 
   addDatasetToggle: ->
     if @config.dataset?
-      datasetSelectors = d3.select(@app.window.document).select('#datasetSelector')
-        .selectAll('.datasetSelectorButton')
+      datasetSelectors = d3.select @app.window.document
+        .select '#datasetSelector'
+        .selectAll '.datasetSelectorButton'
         .data CommonControls.datasetSelectionData(@config, @app)
 
       datasetSelectors.enter()
@@ -86,19 +143,26 @@ class Visualization
 
 
 
-      datasetSelectors.html (d) ->
-        "<button class='#{d.class}' type='button' title='#{d.title}' aria-label='#{d.ariaLabel}'>#{d.label}</button>"
+      datasetSelectors.html (d) -> """
+        <button class='#{d.class}'
+                type='button'
+                title='#{d.title}'
+                aria-label='#{d.ariaLabel}'>
+          #{d.label}
+        </button>
+      """
 
       datasetSelectors.exit().remove()
 
   addUnitToggle: ->
     if @config.unit?
-      unitsSelectors = d3.select(@app.window.document).select('#unitsSelector')
-        .selectAll('.unitSelectorButton')
+      unitsSelectors = d3.select @app.window.document
+        .select '#unitsSelector'
+        .selectAll '.unitSelectorButton'
         .data CommonControls.unitSelectionData(@config, @app)
       
       unitsSelectors.enter()
-        .append('div')
+        .append 'div'
         .attr
           class: 'unitSelectorButton'
         .on 'click', (d) =>
@@ -119,19 +183,26 @@ class Visualization
           @app.datasetRequester.updateAndRequestIfRequired newConfig, update
 
 
-      unitsSelectors.html (d) ->
-        "<button class='#{d.class}' type='button' title='#{d.title}' aria-label='#{d.ariaLabel}'>#{d.label}</button>"
+      unitsSelectors.html (d) -> """
+        <button class='#{d.class}'
+                type='button'
+                title='#{d.title}'
+                aria-label='#{d.ariaLabel}'>
+          #{d.label}
+        </button>
+        """
 
       unitsSelectors.exit().remove()
 
   addScenarios: ->
     if @config.scenario?
-      scenariosSelectors = d3.select(@app.window.document).select('#scenariosSelector')
-        .selectAll('.scenarioSelectorButton')
+      scenariosSelectors = d3.select @app.window.document
+        .select '#scenariosSelector'
+        .selectAll '.scenarioSelectorButton'
         .data CommonControls.scenariosSelectionData(@config, @app)
       
       scenariosSelectors.enter()
-        .append('div')
+        .append 'div'
         .attr
           class: 'scenarioSelectorButton'
         .on 'click', (d) =>
@@ -198,9 +269,20 @@ class Visualization
 
       sectorsSelectors.html (d) ->
         if d.sectorName == 'total'
-          "<button class='#{d.buttonClass}' type='button' title='#{d.title}' aria-label='#{d.ariaLabel}'>#{d.label}</button>"
+          """<button class='#{d.buttonClass}'
+                     type='button'
+                     title='#{d.title}'
+                     aria-label='#{d.ariaLabel}'>
+            #{d.label}
+          </button>"""
         else
-          "<img src=#{d.image} title='#{d.title}' alt='#{d.altText}' tabindex='0' aria-label='#{d.altText}' role='button' class='#{d.buttonClass}'>"
+          """<img src=#{d.image}
+                  title='#{d.title}'
+                  alt='#{d.altText}'
+                  tabindex='0'
+                  aria-label='#{d.altText}'
+                  role='button'
+                  class='#{d.buttonClass}'>"""
 
       sectorsSelectors.exit().remove()
   
@@ -225,12 +307,13 @@ class Visualization
 
       @app.datasetRequester.updateAndRequestIfRequired newConfig, update
 
-    mainSelectors = d3.select(@app.window.document).select('#mainSelector')
-      .selectAll('.mainSelectorButton')
+    mainSelectors = d3.select @app.window.document
+      .select '#mainSelector'
+      .selectAll '.mainSelectorButton'
       .data CommonControls.mainSelectionData(@config, @app)
 
     mainSelectors.enter()
-      .append('div')
+      .append 'div'
       .attr
         class: 'mainSelectorButton'
         tabindex: '0'
@@ -244,8 +327,16 @@ class Visualization
         'aria-label': (d) -> d.altText
 
     mainSelectors.html (d) ->
-      "<img src=#{d.image} class='mainSelectorImage' title='#{d.title}' alt='#{d.altText}'>
-       <span class='mainSelectorLabel' title='#{d.title}'>#{d.label}</span>"
+      """
+      <img src=#{d.image}
+           class='mainSelectorImage'
+           title='#{d.title}'
+           alt='#{d.altText}'>
+       <span class='mainSelectorLabel'
+             title='#{d.title}'>
+         #{d.label}
+       </span>
+       """
 
     mainSelectors.exit().remove()
 

@@ -5,12 +5,12 @@ QueryString = require 'query-string'
 EnsureTestServer = require '../testSupport/EnsureTestServer.coffee'
 
 
-describe "JSON Data Endpoints", ->
+describe 'JSON Data Endpoints', ->
 
   before EnsureTestServer
 
 
-  it "Serves data for Visualization 1", ->
+  it 'Serves data for Visualization 1', ->
     parameters = QueryString.stringify
       dataset: 'jan2016'
       page: 'viz1'
@@ -25,7 +25,7 @@ describe "JSON Data Endpoints", ->
 
 
 
-  it "Serves data for Visualization 2", ->
+  it 'Serves data for Visualization 2', ->
     parameters = QueryString.stringify
       dataset: 'jan2016'
       page: 'viz2'
@@ -41,7 +41,7 @@ describe "JSON Data Endpoints", ->
   
 
 
-  it "Serves data for Visualization 3", ->
+  it 'Serves data for Visualization 3', ->
     parameters = QueryString.stringify
       dataset: 'jan2016'
       page: 'viz3'
@@ -55,7 +55,7 @@ describe "JSON Data Endpoints", ->
   
 
 
-  it "Serves data for Visualization 4", ->
+  it 'Serves data for Visualization 4', ->
     parameters = QueryString.stringify
       dataset: 'jan2016'
       page: 'viz4'
@@ -69,7 +69,7 @@ describe "JSON Data Endpoints", ->
 
 
 
-  it "Serves an error for Visualization 1", ->
+  it 'Serves an error for Visualization 1', ->
     parameters = QueryString.stringify
       dataset: 'jan2016'
       page: 'viz1'
@@ -78,13 +78,13 @@ describe "JSON Data Endpoints", ->
     Request "#{process.env.HOST}:#{process.env.PORT_NUMBER}/json_data?#{parameters}"
 
     .then (jsonResponse) ->
-      should.fail "Shouldn't respond with 200 for an error condition."
+      Should.fail "Shouldn't respond with 200 for an error condition."
 
     .catch (response) ->
       response.statusCode.should.equal 400
 
 
-  it "Serves an error for Visualization 2", ->
+  it 'Serves an error for Visualization 2', ->
     parameters = QueryString.stringify
       dataset: 'jan2016'
       page: 'viz2'
@@ -94,14 +94,14 @@ describe "JSON Data Endpoints", ->
     Request "#{process.env.HOST}:#{process.env.PORT_NUMBER}/json_data?#{parameters}"
 
     .then (jsonResponse) ->
-      should.fail "Shouldn't respond with 200 for an error condition."
+      Should.fail "Shouldn't respond with 200 for an error condition."
 
     .catch (response) ->
       response.statusCode.should.equal 400
   
 
 
-  it "Serves an error for Visualization 3", ->
+  it 'Serves an error for Visualization 3', ->
     parameters = QueryString.stringify
       dataset: 'jan2016'
       page: 'viz3'
@@ -110,13 +110,13 @@ describe "JSON Data Endpoints", ->
     Request "#{process.env.HOST}:#{process.env.PORT_NUMBER}/json_data?#{parameters}"
 
     .then (jsonResponse) ->
-      should.fail "Shouldn't respond with 200 for an error condition."
+      Should.fail "Shouldn't respond with 200 for an error condition."
 
     .catch (response) ->
       response.statusCode.should.equal 400
 
 
-  it "Serves an error for Visualization 4", ->
+  it 'Serves an error for Visualization 4', ->
     parameters = QueryString.stringify
       dataset: 'jan2016'
       page: 'viz4'
@@ -125,7 +125,7 @@ describe "JSON Data Endpoints", ->
     Request "#{process.env.HOST}:#{process.env.PORT_NUMBER}/json_data?#{parameters}"
 
     .then (jsonResponse) ->
-      should.fail "Shouldn't respond with 200 for an error condition."
+      Should.fail "Shouldn't respond with 200 for an error condition."
 
     .catch (response) ->
       response.statusCode.should.equal 400

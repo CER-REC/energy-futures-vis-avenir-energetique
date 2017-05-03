@@ -21,10 +21,8 @@ ControlsHelpPopover = require '../popovers/ControlsHelpPopover.coffee'
 class Visualization3 extends visualization
   height = 700
 
-
-
   renderBrowserTemplate: ->
-    contentElement = @app.window.document.getElementById 'visualizationContent'
+    contentElement = @document.getElementById 'visualizationContent'
     contentElement.innerHTML = Mustache.render Visualization3Template,
       selectDatasetLabel: Tr.datasetSelector.selectDatasetLabel[@app.language]
       selectViewByLabel: Tr.viewBySelector.selectViewByLabel[@app.language]
@@ -40,7 +38,6 @@ class Visualization3 extends visualization
         datasetsHelp: Tr.altText.datasetsHelp[@app.language]
         scenariosHelp: Tr.altText.scenariosHelp[@app.language]
 
-
     @datasetHelpPopover = new ControlsHelpPopover @app
     @viewByHelpPopover = new ControlsHelpPopover @app
     @unitsHelpPopover = new ControlsHelpPopover @app
@@ -48,7 +45,7 @@ class Visualization3 extends visualization
     @sourcesHelpPopover = new ControlsHelpPopover @app
     @provincesHelpPopover = new ControlsHelpPopover @app
 
-    d3.select(@app.window.document).select '#datasetSelectorHelpButton'
+    @d3document.select '#datasetSelectorHelpButton'
       .on 'click', =>
         d3.event.stopPropagation()
         d3.event.preventDefault()
@@ -61,10 +58,10 @@ class Visualization3 extends visualization
             title: Tr.datasetSelector.datasetSelectorHelpTitle[@app.language]
             content: Tr.datasetSelector.datasetSelectorHelp[@app.language]
             attachmentSelector: '.datasetSelectorGroup'
-            elementToFocusOnClose: @app.window.document.getElementById('datasetSelectorHelpButton')
+            elementToFocusOnClose: @document.getElementById('datasetSelectorHelpButton')
           @app.analyticsReporter.reportEvent 'Controls help', 'Viz3 dataset help'
 
-    d3.select(@app.window.document).select '#viewBySelectorHelpButton'
+    @d3document.select '#viewBySelectorHelpButton'
       .on 'click', =>
         d3.event.stopPropagation()
         d3.event.preventDefault()
@@ -77,10 +74,10 @@ class Visualization3 extends visualization
             title: Tr.viewBySelector.viewBySelectorHelpTitle[@app.language]
             content: Tr.viewBySelector.viewBySelectorHelp[@app.language]
             attachmentSelector: '.viewBySelectorGroup'
-            elementToFocusOnClose: @app.window.document.getElementById('viewBySelectorHelpButton')
+            elementToFocusOnClose: @document.getElementById('viewBySelectorHelpButton')
           @app.analyticsReporter.reportEvent 'Controls help', 'Viz3 view by help'
 
-    d3.select(@app.window.document).select '#unitSelectorHelpButton'
+    @d3document.select '#unitSelectorHelpButton'
       .on 'click', =>
         d3.event.stopPropagation()
         d3.event.preventDefault()
@@ -93,10 +90,10 @@ class Visualization3 extends visualization
             title: Tr.unitSelector.unitSelectorHelpTitle[@app.language]
             content: Tr.unitSelector.unitSelectorHelp[@app.language]
             attachmentSelector: '.unitsSelectorGroup'
-            elementToFocusOnClose: @app.window.document.getElementById('unitSelectorHelpButton')
+            elementToFocusOnClose: @document.getElementById('unitSelectorHelpButton')
           @app.analyticsReporter.reportEvent 'Controls help', 'Viz3 unit help'
     
-    d3.select(@app.window.document).select '#scenarioSelectorHelpButton'
+    @d3document.select '#scenarioSelectorHelpButton'
       .on 'click', =>
         d3.event.stopPropagation()
         d3.event.preventDefault()
@@ -109,7 +106,7 @@ class Visualization3 extends visualization
             title: Tr.scenarioSelector.scenarioSelectorHelpTitle[@app.language]
             content: Tr.scenarioSelector.scenarioSelectorHelp[@app.language]
             attachmentSelector: '.scenarioSelectorGroup'
-            elementToFocusOnClose: @app.window.document.getElementById('unitSelectorHelpButton')
+            elementToFocusOnClose: @document.getElementById('unitSelectorHelpButton')
           @app.analyticsReporter.reportEvent 'Controls help', 'Viz3 scenario help'
 
   renderServerTemplate: ->
@@ -118,14 +115,14 @@ class Visualization3 extends visualization
     else if @config.viewBy == 'source'
       legendContent = @provinceLegendData()
 
-    contentElement = @app.window.document.getElementById 'visualizationContent'
+    contentElement = @document.getElementById 'visualizationContent'
     contentElement.innerHTML = Mustache.render @options.template,
-        svgStylesheet: @options.svgTemplate
-        title: Tr.visualization3Title[@app.language]
-        description: @config.imageExportDescription()
-        energyFuturesSource: Tr.allPages.imageDownloadSource[@app.language]
-        bitlyLink: @app.bitlyLink
-        legendContent: legendContent
+      svgStylesheet: @options.svgTemplate
+      title: Tr.visualization3Title[@app.language]
+      description: @config.imageExportDescription()
+      energyFuturesSource: Tr.allPages.imageDownloadSource[@app.language]
+      bitlyLink: @app.bitlyLink
+      legendContent: legendContent
 
 
 
@@ -133,6 +130,9 @@ class Visualization3 extends visualization
     @config = config
     @_chart = null
     @_provinceMenu = null
+    @document = @app.window.document
+    @d3document = d3.select @document
+
 
     @getData()
 
@@ -159,7 +159,7 @@ class Visualization3 extends visualization
   tearDown: ->
     if @yearTimeout then window.clearTimeout @yearTimeout
     # TODO: Consider garbage collection and event listeners
-    @app.window.document.getElementById('visualizationContent').innerHTML = ''
+    @document.getElementById('visualizationContent').innerHTML = ''
 
   redraw: ->
     @svgResize()
@@ -172,29 +172,29 @@ class Visualization3 extends visualization
       @_chart._duration = @app.animationDuration
 
     @provinceMenu.size
-      w: d3.select(@app.window.document).select('#provinceMenuSVG').node().getBoundingClientRect().width
+      w: @d3document.select('#provinceMenuSVG').node().getBoundingClientRect().width
       h: @leftHandMenuHeight()
     @provinceMenu.redraw()
 
     @sourceMenu.size
-      w: d3.select(@app.window.document).select('#powerSourceMenuSVG').node().getBoundingClientRect().width
+      w: @d3document.select('#powerSourceMenuSVG').node().getBoundingClientRect().width
       h: @leftHandMenuHeight()
     @sourceMenu.redraw()
 
 
 
   svgResize: ->
-    d3.select(@app.window.document).select '#graphSVG'
+    @d3document.select '#graphSVG'
       .attr
         width: @getSvgWidth()
         height: height
-    d3.select(@app.window.document).select '#provinceMenuSVG'
+    @d3document.select '#provinceMenuSVG'
       .attr
-        width: d3.select(@app.window.document).select('#provincePanel').node().getBoundingClientRect().width
+        width: @d3document.select('#provincePanel').node().getBoundingClientRect().width
         height: height - @_margin.top
-    d3.select(@app.window.document).select '#powerSourceMenuSVG'
+    @d3document.select '#powerSourceMenuSVG'
       .attr
-        width: d3.select(@app.window.document).select('#powerSourcePanel').node().getBoundingClientRect().width
+        width: @d3document.select('#powerSourcePanel').node().getBoundingClientRect().width
         height: height - @_margin.top - @_margin.bottom
 
 
@@ -203,7 +203,7 @@ class Visualization3 extends visualization
     @render()
 
   getData: ->
-    @seriesData = @addLabelsToData @app.providers[@config.dataset].electricityProductionProvider.dataForViz3(@config)
+    @seriesData = @addLabelsToData @app.providers[@config.dataset].electricityProductionProvider.dataForViz3 @config
 
   addLabelsToData: (data) ->
     if @config.viewBy == 'province'
@@ -221,7 +221,7 @@ class Visualization3 extends visualization
       @buildViz()
 
     # update the csv data download link
-    d3.select(@app.window.document).select '#dataDownloadLink'
+    @d3document.select '#dataDownloadLink'
       .attr
         href: "csv_data#{ParamsToUrlString(@config.routerParams())}"
 
@@ -280,7 +280,7 @@ class Visualization3 extends visualization
 
   buildProvinceVsSourceToggle: ->
     if @config.viewBy?
-      viewBySelectors = d3.select(@app.window.document).select('#viewBySelector')
+      viewBySelectors = @d3document.select('#viewBySelector')
         .selectAll '.viewBySelectorButton'
         .data @viewByData()
       
@@ -303,21 +303,26 @@ class Visualization3 extends visualization
 
           @app.datasetRequester.updateAndRequestIfRequired newConfig, update
 
-      viewBySelectors.html (d) ->
-        "<button class='#{d.class}' type='button' title='#{d.title}' aria-label='#{d.ariaLabel}' >#{d.label}</button>"
-
+      viewBySelectors.html (d) -> """
+        <button class='#{d.class}'
+                type='button'
+                title='#{d.title}'
+                aria-label='#{d.ariaLabel}'>
+          #{d.label}
+        </button>
+      """
       viewBySelectors.exit().remove()
   
 
   buildYearAxis: ->
-    axis = d3.select(@app.window.document).select '#timelineAxis'
+    axis = @d3document.select '#timelineAxis'
       .attr
         fill: '#333'
         transform: "translate( 0, #{@height() + @_margin.top + @sliderLabelHeight})"
       .call @yearAxis()
       
     # We need a wider target for the click so we use a separate group
-    d3.select(@app.window.document).select('#timeLineTouch')
+    @d3document.select('#timeLineTouch')
       .attr
         class: 'pointerCursor'
         'pointer-events': 'visible'
@@ -328,7 +333,7 @@ class Visualization3 extends visualization
       .style
         fill: 'none'
       .on 'click', =>
-        element = d3.select(@app.window.document).select('#timelineAxis').node()
+        element = @d3document.select('#timelineAxis').node()
         newX = d3.mouse(element)[0]
         if newX < @timelineMargin then newX = @timelineMargin
         if newX > @timelineRightEnd() then newX = @timelineRightEnd()
@@ -342,10 +347,10 @@ class Visualization3 extends visualization
     
         update = =>
           @config.setYear year
-          d3.select(@app.window.document).select('#sliderLabel').attr
+          @d3document.select('#sliderLabel').attr
             transform: "translate(#{newX}, #{@height() + @_margin.top - 5})"
           
-          d3.select(@app.window.document).select('#labelBox').text =>
+          @d3document.select('#labelBox').text =>
             @config.year
           
           @getDataAndRender()
@@ -356,11 +361,11 @@ class Visualization3 extends visualization
 
       
     axis.selectAll('text')
-        .style
-          'text-anchor': 'middle'
-        .attr
-          dy: '0.5em'
-          'fill': '#333'
+      .style
+        'text-anchor': 'middle'
+      .attr
+        dy: '0.5em'
+        'fill': '#333'
 
     axis.select 'path.domain'
       .attr
@@ -378,34 +383,34 @@ class Visualization3 extends visualization
         'shape-rendering': 'crispEdges'
   
   buildSliderLabel: ->
-    d3.select(@app.window.document).select('.sliderLabel').remove()
+    @d3document.select('.sliderLabel').remove()
     year = @config.year
 
     #Drag Behaviour
     drag = d3.behavior.drag()
-    drag.on 'drag', (d,i) =>
+    drag.on 'drag', =>
       newX = d3.event.x
-      d3.select(@app.window.document).select('#sliderLabel').attr 'transform', (d,i) =>
+      @d3document.select('#sliderLabel').attr 'transform', =>
         if newX < @timelineMargin then newX = @timelineMargin
         if newX > @timelineRightEnd() then newX = @timelineRightEnd()
         "translate(#{newX}, #{@height() + @_margin.top - 5})"
 
-      year = Math.round @yearScale().invert(newX)
+      year = Math.round @yearScale().invert newX
       if year != @config.year
         @config.setYear year
         @app.router.navigate @config.routerParams()
-        d3.select(@app.window.document).select('#labelBox').text (d) =>
+        @d3document.select('#labelBox').text =>
           @config.year
         
         @getDataAndRender()
 
-    drag.on 'dragend', (d, i) =>
+    drag.on 'dragend', =>
       if year != @config.year
         newX = @yearScale()(year)
-        d3.select(@app.window.document).select('#sliderLabel').attr
+        @d3document.select('#sliderLabel').attr
           transform: "translate(#{newX}, #{@height() + @_margin.top - 5})"
 
-        d3.select(@app.window.document).select('#labelBox').selectAll('text').text (d) =>
+        @d3document.select('#labelBox').selectAll('text').text =>
           @config.year
         @config.setYear year
         @app.router.navigate @config.routerParams()
@@ -413,7 +418,7 @@ class Visualization3 extends visualization
 
     sliderWidth = 70
 
-    sliderLabel = d3.select(@app.window.document).select('#graphSVG')
+    sliderLabel = @d3document.select('#graphSVG')
       .append 'g'
       .attr
         id: 'sliderLabel'
@@ -444,8 +449,8 @@ class Visualization3 extends visualization
 
   # I'm adding them to the left hand side for simplicity, we can move them later
   buildSliderButtons: ->
-    d3.select(@app.window.document).select('#powerSourcePanel .mediaButtons').remove()
-    div = d3.select(@app.window.document).select('#powerSourcePanel')
+    @d3document.select('#powerSourcePanel .mediaButtons').remove()
+    div = @d3document.select('#powerSourcePanel')
       .append 'div'
         .attr
           class: 'mediaButtons'
@@ -455,9 +460,9 @@ class Visualization3 extends visualization
         class: 'playPauseButton selected'
         id: 'vizPauseButton'
       .on 'click', =>
-        d3.select(@app.window.document).select('#vizPauseButton').html("<img src='IMG/play_pause/pausebutton_selectedR.svg' alt='#{Tr.altText.pauseAnimation[@app.language]}'/>")
-        d3.select(@app.window.document).select('#vizPlayButton').html("<img src='IMG/play_pause/playbutton_unselectedR.svg' alt='#{Tr.altText.playAnimation[@app.language]}'/>")
-        if @yearTimeout then window.clearTimeout(@yearTimeout)
+        @d3document.select('#vizPauseButton').html("<img src='IMG/play_pause/pausebutton_selectedR.svg' alt='#{Tr.altText.pauseAnimation[@app.language]}'/>")
+        @d3document.select('#vizPlayButton').html("<img src='IMG/play_pause/playbutton_unselectedR.svg' alt='#{Tr.altText.playAnimation[@app.language]}'/>")
+        if @yearTimeout then window.clearTimeout @yearTimeout
         @app.analyticsReporter.reportEvent 'Electricity Play/Pause', 'Pause'
       .html("<img src='IMG/play_pause/pausebutton_selectedR.svg' alt='#{Tr.altText.pauseAnimation[@app.language]}'/>")
     
@@ -465,9 +470,9 @@ class Visualization3 extends visualization
       .attr
         id: 'vizPlayButton'
         class: 'playPauseButton'
-      .on 'click', (d) =>
-        d3.select(@app.window.document).select('#vizPlayButton').html("<img src='IMG/play_pause/playbutton_selectedR.svg' alt='#{Tr.altText.playAnimation[@app.language]}'/>")
-        d3.select(@app.window.document).select('#vizPauseButton').html("<img src='IMG/play_pause/pausebutton_unselectedR.svg' alt='#{Tr.altText.pauseAnimation[@app.language]}'/>")
+      .on 'click', =>
+        @d3document.select('#vizPlayButton').html("<img src='IMG/play_pause/playbutton_selectedR.svg' alt='#{Tr.altText.playAnimation[@app.language]}'/>")
+        @d3document.select('#vizPauseButton').html("<img src='IMG/play_pause/pausebutton_unselectedR.svg' alt='#{Tr.altText.pauseAnimation[@app.language]}'/>")
         if @yearTimeout then window.clearTimeout @yearTimeout
         timeoutComplete = =>
           return unless @_chart?
@@ -482,21 +487,21 @@ class Visualization3 extends visualization
               @config.setYear @config.year + 1
               @yearTimeout = window.setTimeout timeoutComplete, @_chart._duration
               @getDataAndRender()
-              d3.select(@app.window.document).select('#sliderLabel')
+              @d3document.select('#sliderLabel')
                 .transition()
                   .attr
                     transform: "translate(#{@yearScale()(@config.year)}, #{@height() + @_margin.top  - 5})"
                 .duration @_chart._duration
                 .ease 'linear'
-              d3.select(@app.window.document).select('#labelBox').text =>
+              @d3document.select('#labelBox').text =>
                 @config.year
               @app.router.navigate @config.routerParams()
 
             @app.datasetRequester.updateAndRequestIfRequired newConfig, update
 
           else
-            d3.select(@app.window.document).select('#vizPauseButton').html("<img src='IMG/play_pause/pausebutton_selectedR.svg' alt='#{Tr.altText.pauseAnimation[@app.language]}'/>")
-            d3.select(@app.window.document).select('#vizPlayButton').html("<img src='IMG/play_pause/playbutton_unselectedR.svg' alt='#{Tr.altText.playAnimation[@app.language]}'/>")
+            @d3document.select('#vizPauseButton').html("<img src='IMG/play_pause/pausebutton_selectedR.svg' alt='#{Tr.altText.pauseAnimation[@app.language]}'/>")
+            @d3document.select('#vizPlayButton').html("<img src='IMG/play_pause/playbutton_unselectedR.svg' alt='#{Tr.altText.playAnimation[@app.language]}'/>")
 
         @yearTimeout = window.setTimeout timeoutComplete, 0
         @app.analyticsReporter.reportEvent 'Electricity Play/Pause', 'Play'
@@ -555,7 +560,7 @@ class Visualization3 extends visualization
     state =
       iconSpacing: 'auto'
       size:
-        w: d3.select(@app.window.document).select('#provinceMenuSVG').node().getBoundingClientRect().width
+        w: @d3document.select('#provinceMenuSVG').node().getBoundingClientRect().width
         h: @leftHandMenuHeight()
       data: @dataForProvinceMenu()
 
@@ -603,7 +608,7 @@ class Visualization3 extends visualization
     state =
       iconSpacing: @provinceMenu.getIconSpacing()
       size:
-        w: d3.select(@app.window.document).select('#powerSourceMenuSVG').node().getBoundingClientRect().width
+        w: @d3document.select('#powerSourceMenuSVG').node().getBoundingClientRect().width
         h: @leftHandMenuHeight()
       data: @dataForSourceMenu()
 
@@ -773,12 +778,16 @@ class Visualization3 extends visualization
     if @app.popoverManager.currentPopover == @sourcesHelpPopover
       @app.popoverManager.closePopover()
     else
-      if @config.viewBy == 'province' then images = @sourceColorIcons() else images = @sourceBlackIcons()
+      if @config.viewBy == 'province'
+        images = @sourceColorIcons()
+      else
+        images = @sourceBlackIcons()
+
       # Grab the sources in order for the string
       contentString = ''
       for source in Constants.viz3Sources
         contentString = """
-          <div class="#{if @config.viewBy == "source" then 'sourceLabel'  else 'sourceLabel sourceLabel' + source}">
+          <div class="#{if @config.viewBy == "source" then 'sourceLabel' else 'sourceLabel sourceLabel' + source}">
             <img class="sourceIcon" src="#{images[source].img}" alt="#{Tr.altText.sources[source][@app.language]}">
             <h2> #{Tr.sourceSelector.sources[source][@app.language]} </h2>
             <div class="clearfix"> </div>
@@ -792,7 +801,7 @@ class Visualization3 extends visualization
         title: Tr.sourceSelector.selectSourceLabel[@app.language]
         content: contentString
         attachmentSelector: '#powerSourceSelector'
-        elementToFocusOnClose: @app.window.document.getElementById('sourceHelpButton')
+        elementToFocusOnClose: @document.getElementById('sourceHelpButton')
       @app.analyticsReporter.reportEvent 'Controls help', 'Viz3 source help'
 
   showProvinceNames: =>
@@ -811,7 +820,7 @@ class Visualization3 extends visualization
         title: Tr.regionSelector.selectRegionLabel[@app.language]
         content: contentString
         attachmentSelector: '#provincesSelector'
-        elementToFocusOnClose: @app.window.document.getElementById('provinceHelpButton')
+        elementToFocusOnClose: @document.getElementById('provinceHelpButton')
       @app.analyticsReporter.reportEvent 'Controls help', 'Viz3 region help'
 
 
@@ -826,13 +835,21 @@ class Visualization3 extends visualization
   # We want this menu to line up with the bottom of the x axis TICKS so those must be
   # built before we can set this.
   leftHandMenuHeight: ->
-    @height() + d3.select(@app.window.document).select('#timelineAxis').node().getBoundingClientRect().height
+    @height() + @d3document
+      .select('#timelineAxis')
+      .node()
+      .getBoundingClientRect()
+      .height
 
   # the graph's width
   width: ->
     # getBoundingClientRect is not implemented in JSDOM, use fixed width on server
     if Platform.name == 'browser'
-      d3.select(@app.window.document).select('#graphPanel').node().getBoundingClientRect().width - @_margin.left - @_margin.right
+      @d3document
+        .select('#graphPanel')
+        .node()
+        .getBoundingClientRect()
+        .width - @_margin.left - @_margin.right
     else if Platform.name == 'server'
       Constants.serverSideGraphWidth - @_margin.left - @_margin.right
 
@@ -843,7 +860,11 @@ class Visualization3 extends visualization
   getSvgWidth: ->
     # getBoundingClientRect is not implemented in JSDOM, use fixed width on server
     if Platform.name == 'browser'
-      svgWidth = d3.select(@app.window.document).select('#graphPanel').node().getBoundingClientRect().width
+      svgWidth = @d3document
+        .select('#graphPanel')
+        .node()
+        .getBoundingClientRect()
+        .width
     else if Platform.name == 'server'
       svgWidth = Constants.serverSideGraphWidth
 
@@ -953,71 +974,85 @@ class Visualization3 extends visualization
       key: 'hydro'
       tooltip: Tr.sourceSelector.sourceSelectorHelp.hydro[@app.language]
       img:
-        if @zeroedOut('hydro')
+        if @zeroedOut 'hydro'
           'IMG/sources/unavailable/hydro_unavailable.svg'
+        else if @config.sources.includes 'hydro'
+          'IMG/sources/hydro_selected.svg'
         else
-          if @config.sources.includes 'hydro' then 'IMG/sources/hydro_selected.svg' else 'IMG/sources/hydro_unselected.svg'
-      present: if @config.sources.includes 'hydro' then true else false
+          'IMG/sources/hydro_unselected.svg'
+      present: @config.sources.includes 'hydro'
       colour: '#4167b1'
     solarWindGeothermal:
       key: 'solarWindGeothermal'
       tooltip: Tr.sourceSelector.sourceSelectorHelp.solarWindGeothermal[@app.language]
       img:
-        if @zeroedOut('solarWindGeothermal')
+        if @zeroedOut 'solarWindGeothermal'
           'IMG/sources/unavailable/solarWindGeo_unavailable.svg'
+        else if @config.sources.includes 'solarWindGeothermal'
+          'IMG/sources/solarWindGeo_selected.svg'
         else
-          if @config.sources.includes 'solarWindGeothermal' then 'IMG/sources/solarWindGeo_selected.svg' else 'IMG/sources/solarWindGeo_unselected.svg'
-      present: if @config.sources.includes 'solarWindGeothermal' then true else false
+          'IMG/sources/solarWindGeo_unselected.svg'
+      present: @config.sources.includes 'solarWindGeothermal'
       colour: '#339947'
     coal:
       key: 'coal'
       tooltip: Tr.sourceSelector.sourceSelectorHelp.coal[@app.language]
       img:
-        if @zeroedOut('coal')
+        if @zeroedOut 'coal'
           'IMG/sources/unavailable/coal_unavailable.svg'
+        else if @config.sources.includes 'coal'
+          'IMG/sources/coal_selected.svg'
         else
-          if @config.sources.includes 'coal' then 'IMG/sources/coal_selected.svg' else 'IMG/sources/coal_unselected.svg'
-      present: if @config.sources.includes 'coal' then true else false
+          'IMG/sources/coal_unselected.svg'
+      present: @config.sources.includes 'coal'
       colour: '#996733'
     naturalGas:
       key: 'naturalGas'
       tooltip: Tr.sourceSelector.sourceSelectorHelp.naturalGas[@app.language]
       img:
-        if @zeroedOut('naturalGas')
+        if @zeroedOut 'naturalGas'
           'IMG/sources/unavailable/naturalGas_unavailable.svg'
+        else if @config.sources.includes 'naturalGas'
+          'IMG/sources/naturalGas_selected.svg'
         else
-          if @config.sources.includes 'naturalGas' then 'IMG/sources/naturalGas_selected.svg' else 'IMG/sources/naturalGas_unselected.svg'
-      present: if @config.sources.includes 'naturalGas' then true else false
+          'IMG/sources/naturalGas_unselected.svg'
+      present: @config.sources.includes 'naturalGas'
       colour: '#f16739'
     bio:
       key: 'bio'
       tooltip: Tr.sourceSelector.sourceSelectorHelp.bio[@app.language]
       img:
-        if @zeroedOut('bio')
+        if @zeroedOut 'bio'
           'IMG/sources/unavailable/biomass_unavailable.svg'
+        else if @config.sources.includes 'bio'
+          'IMG/sources/biomass_selected.svg'
         else
-          if @config.sources.includes 'bio' then 'IMG/sources/biomass_selected.svg' else 'IMG/sources/biomass_unselected.svg'
-      present: if @config.sources.includes 'bio' then true else false
+          'IMG/sources/biomass_unselected.svg'
+      present: @config.sources.includes 'bio'
       colour: '#8d68ac'
     oilProducts:
       key: 'oilProducts'
       tooltip: Tr.sourceSelector.sourceSelectorHelp.oilProducts[@app.language]
       img:
-        if @zeroedOut('oilProducts')
+        if @zeroedOut 'oilProducts'
           'IMG/sources/unavailable/oil_products_unavailable.svg'
+        else if @config.sources.includes 'oilProducts'
+          'IMG/sources/oil_products_selected.svg'
         else
-          if @config.sources.includes 'oilProducts' then 'IMG/sources/oil_products_selected.svg' else 'IMG/sources/oil_products_unselected.svg'
-      present: if @config.sources.includes 'oilProducts' then true else false
+          'IMG/sources/oil_products_unselected.svg'
+      present: @config.sources.includes 'oilProducts'
       colour: '#cc6699'
     nuclear:
       key: 'nuclear'
       tooltip: Tr.sourceSelector.sourceSelectorHelp.nuclear[@app.language]
       img:
-        if @zeroedOut('nuclear')
+        if @zeroedOut 'nuclear'
           'IMG/sources/unavailable/nuclear_unavailable.svg'
+        else if @config.sources.includes 'nuclear'
+          'IMG/sources/nuclear_selected.svg'
         else
-          if @config.sources.includes 'nuclear' then 'IMG/sources/nuclear_selected.svg' else 'IMG/sources/nuclear_unselected.svg'
-      present: if @config.sources.includes 'nuclear' then true else false
+          'IMG/sources/nuclear_unselected.svg'
+      present: @config.sources.includes 'nuclear'
       colour: '#cccb31'
       
 
@@ -1025,31 +1060,59 @@ class Visualization3 extends visualization
   sourceBlackMenuDictionary: ->
     hydro:
       key: 'hydro'
-      img: if @config.source == 'hydro' then 'IMG/sources/hydro_selectedR.svg' else 'IMG/sources/hydro_unselectedR.svg'
+      img:
+        if @config.source == 'hydro'
+          'IMG/sources/hydro_selectedR.svg'
+        else
+          'IMG/sources/hydro_unselectedR.svg'
       colour: '#4167b1'
     solarWindGeothermal:
       key: 'solarWindGeothermal'
-      img: if @config.source == 'solarWindGeothermal' then 'IMG/sources/solarWindGeo_selectedR.svg' else 'IMG/sources/solarWindGeo_unselectedR.svg'
+      img:
+        if @config.source == 'solarWindGeothermal'
+          'IMG/sources/solarWindGeo_selectedR.svg'
+        else
+          'IMG/sources/solarWindGeo_unselectedR.svg'
       colour: '#339947'
     coal:
       key: 'coal'
-      img: if @config.source == 'coal' then 'IMG/sources/coal_selectedR.svg' else 'IMG/sources/coal_unselectedR.svg'
+      img:
+        if @config.source == 'coal'
+          'IMG/sources/coal_selectedR.svg'
+        else
+          'IMG/sources/coal_unselectedR.svg'
       colour: '#996733'
     naturalGas:
       key: 'naturalGas'
-      img: if @config.source == 'naturalGas' then 'IMG/sources/naturalGas_selectedR.svg' else 'IMG/sources/naturalGas_unselectedR.svg'
+      img:
+        if @config.source == 'naturalGas'
+          'IMG/sources/naturalGas_selectedR.svg'
+        else
+          'IMG/sources/naturalGas_unselectedR.svg'
       colour: '#f16739'
     bio:
       key: 'bio'
-      img: if @config.source == 'bio' then 'IMG/sources/biomass_selectedR.svg' else 'IMG/sources/biomass_unselectedR.svg'
+      img:
+        if @config.source == 'bio'
+          'IMG/sources/biomass_selectedR.svg'
+        else
+          'IMG/sources/biomass_unselectedR.svg'
       colour: '#8d68ac'
     nuclear:
       key: 'nuclear'
-      img: if @config.source == 'nuclear' then 'IMG/sources/nuclear_selectedR.svg' else 'IMG/sources/nuclear_unselectedR.svg'
+      img:
+        if @config.source == 'nuclear'
+          'IMG/sources/nuclear_selectedR.svg'
+        else
+          'IMG/sources/nuclear_unselectedR.svg'
       colour: '#cccb31'
     oilProducts:
       key: 'oilProducts'
-      img: if @config.source == 'oilProducts' then 'IMG/sources/oil_products_selectedR.svg' else 'IMG/sources/oil_products_unselectedR.svg'
+      img:
+        if @config.source == 'oilProducts'
+          'IMG/sources/oil_products_selectedR.svg'
+        else
+          'IMG/sources/oil_products_unselectedR.svg'
       colour: '#cc6699'
     
 
@@ -1127,67 +1190,119 @@ class Visualization3 extends visualization
       key: 'AB'
       tooltip: Tr.regionSelector.names.AB[@app.language]
       colour: if @config.province == 'AB' then '#333' else '#fff'
-      img: if @config.province == 'AB' then 'IMG/provinces/radio/AB_SelectedR.svg' else 'IMG/provinces/radio/AB_UnselectedR.svg'
+      img:
+        if @config.province == 'AB'
+          'IMG/provinces/radio/AB_SelectedR.svg'
+        else
+          'IMG/provinces/radio/AB_UnselectedR.svg'
     BC:
       key: 'BC'
       tooltip: Tr.regionSelector.names.BC[@app.language]
       colour: if @config.province == 'BC' then '#333' else '#fff'
-      img: if @config.province == 'BC' then 'IMG/provinces/radio/BC_SelectedR.svg' else 'IMG/provinces/radio/BC_UnselectedR.svg'
+      img:
+        if @config.province == 'BC'
+          'IMG/provinces/radio/BC_SelectedR.svg'
+        else
+          'IMG/provinces/radio/BC_UnselectedR.svg'
     MB:
       key: 'MB'
       tooltip: Tr.regionSelector.names.MB[@app.language]
       colour: if @config.province == 'MB' then '#333' else '#fff'
-      img: if @config.province == 'MB' then 'IMG/provinces/radio/MB_SelectedR.svg' else 'IMG/provinces/radio/MB_UnselectedR.svg'
+      img:
+        if @config.province == 'MB'
+          'IMG/provinces/radio/MB_SelectedR.svg'
+        else
+          'IMG/provinces/radio/MB_UnselectedR.svg'
     NB:
       key: 'NB'
       tooltip: Tr.regionSelector.names.NB[@app.language]
       colour: if @config.province == 'NB' then '#333' else '#fff'
-      img: if @config.province == 'NB' then 'IMG/provinces/radio/NB_SelectedR.svg' else 'IMG/provinces/radio/NB_UnselectedR.svg'
+      img:
+        if @config.province == 'NB'
+          'IMG/provinces/radio/NB_SelectedR.svg'
+        else
+          'IMG/provinces/radio/NB_UnselectedR.svg'
     NL:
       key : 'NL'
       tooltip: Tr.regionSelector.names.NL[@app.language]
       colour: if @config.province == 'NL' then '#333' else '#fff'
-      img: if @config.province == 'NL' then 'IMG/provinces/radio/NL_SelectedR.svg' else 'IMG/provinces/radio/NL_UnselectedR.svg'
+      img:
+        if @config.province == 'NL'
+          'IMG/provinces/radio/NL_SelectedR.svg'
+        else
+          'IMG/provinces/radio/NL_UnselectedR.svg'
     NS:
       key: 'NS'
       tooltip: Tr.regionSelector.names.NS[@app.language]
       colour: if @config.province == 'NS' then '#333' else '#fff'
-      img: if @config.province == 'NS' then 'IMG/provinces/radio/NS_SelectedR.svg' else 'IMG/provinces/radio/NS_UnselectedR.svg'
+      img:
+        if @config.province == 'NS'
+          'IMG/provinces/radio/NS_SelectedR.svg'
+        else
+          'IMG/provinces/radio/NS_UnselectedR.svg'
     NT:
       key: 'NT'
       tooltip: Tr.regionSelector.names.NT[@app.language]
       colour: if @config.province == 'NT' then '#333' else '#fff'
-      img: if @config.province == 'NT' then 'IMG/provinces/radio/NT_SelectedR.svg' else 'IMG/provinces/radio/NT_UnselectedR.svg'
+      img:
+        if @config.province == 'NT'
+          'IMG/provinces/radio/NT_SelectedR.svg'
+        else
+          'IMG/provinces/radio/NT_UnselectedR.svg'
     NU:
       key: 'NU'
       tooltip: Tr.regionSelector.names.NU[@app.language]
       colour: if @config.province == 'NU' then '#333' else '#fff'
-      img: if @config.province == 'NU' then 'IMG/provinces/radio/NU_SelectedR.svg' else 'IMG/provinces/radio/NU_UnselectedR.svg'
+      img:
+        if @config.province == 'NU'
+          'IMG/provinces/radio/NU_SelectedR.svg'
+        else
+          'IMG/provinces/radio/NU_UnselectedR.svg'
     ON:
       key: 'ON'
       tooltip: Tr.regionSelector.names.ON[@app.language]
       colour: if @config.province == 'ON' then '#333' else '#fff'
-      img: if @config.province == 'ON' then 'IMG/provinces/radio/ON_SelectedR.svg' else 'IMG/provinces/radio/ON_UnselectedR.svg'
+      img:
+        if @config.province == 'ON'
+          'IMG/provinces/radio/ON_SelectedR.svg'
+        else
+          'IMG/provinces/radio/ON_UnselectedR.svg'
     PE:
       key: 'PE'
       tooltip: Tr.regionSelector.names.PE[@app.language]
       colour: if @config.province == 'PE' then '#333' else '#fff'
-      img: if @config.province == 'PE' then 'IMG/provinces/radio/PEI_SelectedR.svg' else 'IMG/provinces/radio/PEI_UnselectedR.svg'
+      img:
+        if @config.province == 'PE'
+          'IMG/provinces/radio/PEI_SelectedR.svg'
+        else
+          'IMG/provinces/radio/PEI_UnselectedR.svg'
     QC:
       key: 'QC'
       tooltip: Tr.regionSelector.names.QC[@app.language]
       colour: if @config.province == 'QC' then '#333' else '#fff'
-      img: if @config.province == 'QC' then 'IMG/provinces/radio/QC_SelectedR.svg' else 'IMG/provinces/radio/QC_UnselectedR.svg'
+      img:
+        if @config.province == 'QC'
+          'IMG/provinces/radio/QC_SelectedR.svg'
+        else
+          'IMG/provinces/radio/QC_UnselectedR.svg'
     SK:
       key: 'SK'
       tooltip: Tr.regionSelector.names.SK[@app.language]
       colour: if @config.province == 'SK' then '#333' else '#fff'
-      img: if @config.province == 'SK' then 'IMG/provinces/radio/Sask_SelectedR.svg' else 'IMG/provinces/radio/Sask_UnselectedR.svg'
+      img:
+        if @config.province == 'SK'
+          'IMG/provinces/radio/Sask_SelectedR.svg'
+        else
+          'IMG/provinces/radio/Sask_UnselectedR.svg'
     YT:
       key: 'YT'
       tooltip: Tr.regionSelector.names.YT[@app.language]
       colour: if @config.province == 'YT' then '#333' else '#fff'
-      img: if @config.province == 'YT' then 'IMG/provinces/radio/Yukon_SelectedR.svg' else 'IMG/provinces/radio/Yukon_UnselectedR.svg'
+      img:
+        if @config.province == 'YT'
+          'IMG/provinces/radio/Yukon_SelectedR.svg'
+        else
+          'IMG/provinces/radio/Yukon_UnselectedR.svg'
 
   provinceColorMenuDictionary: ->
     BC:
@@ -1197,8 +1312,10 @@ class Visualization3 extends visualization
       img:
         if @zeroedOut 'BC'
           'IMG/provinces/DataUnavailable/BC_Unavailable.svg'
+        else if @config.provinces.includes 'BC'
+          'IMG/provinces/colour/BC_Selected.svg'
         else
-          if @config.provinces.includes 'BC' then 'IMG/provinces/colour/BC_Selected.svg' else 'IMG/provinces/colour/BC_Unselected.svg'
+          'IMG/provinces/colour/BC_Unselected.svg'
     AB:
       key: 'AB'
       present: if @config.provinces.includes 'AB' then true else false
@@ -1206,8 +1323,10 @@ class Visualization3 extends visualization
       img:
         if @zeroedOut 'AB'
           'IMG/provinces/DataUnavailable/AB_Unavailable.svg'
+        else if @config.provinces.includes 'AB'
+          'IMG/provinces/colour/AB_Selected.svg'
         else
-          if @config.provinces.includes 'AB' then 'IMG/provinces/colour/AB_Selected.svg' else 'IMG/provinces/colour/AB_Unselected.svg'
+          'IMG/provinces/colour/AB_Unselected.svg'
     SK:
       key: 'SK'
       present: if @config.provinces.includes 'SK' then true else false
@@ -1215,8 +1334,10 @@ class Visualization3 extends visualization
       img:
         if @zeroedOut 'SK'
           'IMG/provinces/DataUnavailable/SK_Unavailable.svg'
+        else if @config.provinces.includes 'SK'
+          'IMG/provinces/colour/Sask_Selected.svg'
         else
-          if @config.provinces.includes 'SK' then 'IMG/provinces/colour/Sask_Selected.svg' else 'IMG/provinces/colour/Sask_Unselected.svg'
+          'IMG/provinces/colour/Sask_Unselected.svg'
     MB:
       key: 'MB'
       present: if @config.provinces.includes 'MB' then true else false
@@ -1224,8 +1345,10 @@ class Visualization3 extends visualization
       img:
         if @zeroedOut 'MB'
           'IMG/provinces/DataUnavailable/MB_Unavailable.svg'
+        else if @config.provinces.includes 'MB'
+          'IMG/provinces/colour/MB_Selected.svg'
         else
-          if @config.provinces.includes 'MB' then 'IMG/provinces/colour/MB_Selected.svg' else 'IMG/provinces/colour/MB_Unselected.svg'
+          'IMG/provinces/colour/MB_Unselected.svg'
     ON:
       key: 'ON'
       present: if @config.provinces.includes 'ON' then true else false
@@ -1233,8 +1356,10 @@ class Visualization3 extends visualization
       img:
         if @zeroedOut 'ON'
           'IMG/provinces/DataUnavailable/ON_Unavailable.svg'
+        else if @config.provinces.includes 'ON'
+          'IMG/provinces/colour/ON_Selected.svg'
         else
-          if @config.provinces.includes 'ON' then 'IMG/provinces/colour/ON_Selected.svg' else 'IMG/provinces/colour/ON_Unselected.svg'
+          'IMG/provinces/colour/ON_Unselected.svg'
     QC:
       key: 'QC'
       present: if @config.provinces.includes 'QC' then true else false
@@ -1242,8 +1367,10 @@ class Visualization3 extends visualization
       img:
         if @zeroedOut 'QC'
           'IMG/provinces/DataUnavailable/QC_Unavailable.svg'
+        else if @config.provinces.includes 'QC'
+          'IMG/provinces/colour/QC_Selected.svg'
         else
-          if @config.provinces.includes 'QC' then 'IMG/provinces/colour/QC_Selected.svg' else 'IMG/provinces/colour/QC_Unselected.svg'
+          'IMG/provinces/colour/QC_Unselected.svg'
     NB:
       key: 'NB'
       present: if @config.provinces.includes 'NB' then true else false
@@ -1251,8 +1378,10 @@ class Visualization3 extends visualization
       img:
         if @zeroedOut 'NB'
           'IMG/provinces/DataUnavailable/NB_Unavailable.svg'
+        else if @config.provinces.includes 'NB'
+          'IMG/provinces/colour/NB_Selected.svg'
         else
-          if @config.provinces.includes 'NB' then 'IMG/provinces/colour/NB_Selected.svg' else 'IMG/provinces/colour/NB_Unselected.svg'
+          'IMG/provinces/colour/NB_Unselected.svg'
     NS:
       key: 'NS'
       present: if @config.provinces.includes 'NS' then true else false
@@ -1260,8 +1389,10 @@ class Visualization3 extends visualization
       img:
         if @zeroedOut 'NS'
           'IMG/provinces/DataUnavailable/NS_Unavailable.svg'
+        else if @config.provinces.includes 'NS'
+          'IMG/provinces/colour/NS_Selected.svg'
         else
-          if @config.provinces.includes 'NS' then 'IMG/provinces/colour/NS_Selected.svg' else 'IMG/provinces/colour/NS_Unselected.svg'
+          'IMG/provinces/colour/NS_Unselected.svg'
     NL:
       key: 'NL'
       present: if @config.provinces.includes 'NL' then true else false
@@ -1269,8 +1400,10 @@ class Visualization3 extends visualization
       img:
         if @zeroedOut 'NL'
           'IMG/provinces/DataUnavailable/NL_Unavailable.svg'
+        else if @config.provinces.includes 'NL'
+          'IMG/provinces/colour/NL_Selected.svg'
         else
-          if @config.provinces.includes 'NL' then 'IMG/provinces/colour/NL_Selected.svg' else 'IMG/provinces/colour/NL_Unselected.svg'
+          'IMG/provinces/colour/NL_Unselected.svg'
     PE:
       key: 'PE'
       present: if @config.provinces.includes 'PE' then true else false
@@ -1278,8 +1411,10 @@ class Visualization3 extends visualization
       img:
         if @zeroedOut 'PE'
           'IMG/provinces/DataUnavailable/PEI_Unavailable.svg'
+        else if @config.provinces.includes 'PE'
+          'IMG/provinces/colour/PEI_Selected.svg'
         else
-          if @config.provinces.includes 'PE' then 'IMG/provinces/colour/PEI_Selected.svg' else 'IMG/provinces/colour/PEI_Unselected.svg'
+          'IMG/provinces/colour/PEI_Unselected.svg'
     YT:
       key: 'YT'
       present: if @config.provinces.includes 'YT' then true else false
@@ -1287,8 +1422,10 @@ class Visualization3 extends visualization
       img:
         if @zeroedOut 'YT'
           'IMG/provinces/DataUnavailable/Yukon_Unavailable.svg'
+        else if @config.provinces.includes 'YT'
+          'IMG/provinces/colour/Yukon_Selected.svg'
         else
-          if @config.provinces.includes 'YT' then 'IMG/provinces/colour/Yukon_Selected.svg' else 'IMG/provinces/colour/Yukon_Unselected.svg'
+          'IMG/provinces/colour/Yukon_Unselected.svg'
     NT:
       key: 'NT'
       present: if @config.provinces.includes 'NT' then true else false
@@ -1296,8 +1433,10 @@ class Visualization3 extends visualization
       img:
         if @zeroedOut 'NT'
           'IMG/provinces/DataUnavailable/NT_Unavailable.svg'
+        else if @config.provinces.includes 'NT'
+          'IMG/provinces/colour/NT_Selected.svg'
         else
-          if @config.provinces.includes 'NT' then 'IMG/provinces/colour/NT_Selected.svg' else 'IMG/provinces/colour/NT_Unselected.svg'
+          'IMG/provinces/colour/NT_Unselected.svg'
     NU:
       key: 'NU'
       present: if @config.provinces.includes 'NU' then true else false
@@ -1305,8 +1444,10 @@ class Visualization3 extends visualization
       img:
         if @zeroedOut 'NU'
           'IMG/provinces/DataUnavailable/NU_Unavailable.svg'
+        else if @config.provinces.includes 'NU'
+          'IMG/provinces/colour/NU_Selected.svg'
         else
-          if @config.provinces.includes 'NU' then 'IMG/provinces/colour/NU_Selected.svg' else 'IMG/provinces/colour/NU_Unselected.svg'
+          'IMG/provinces/colour/NU_Unselected.svg'
 
 
   provinceBlackIcons: ->

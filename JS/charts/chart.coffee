@@ -1,6 +1,6 @@
 d3 = require 'd3'
 
-class chart
+class Chart
   # local variables
   chart_defaults:
     size:
@@ -18,14 +18,14 @@ class chart
   parent: (prnt, groupClass) ->
     if arguments.length
       @_parent = if typeof prnt == 'string' or prnt instanceof String
-        d3.select(@app.window.document).select(prnt)
+        d3.select(@app.window.document).select prnt
       else
         prnt
 
       @_group = if !(d3.select(@app.window.document).select("##{groupClass}").empty())
-        d3.select(@app.window.document).select("##{groupClass}")
+        d3.select(@app.window.document).select "##{groupClass}"
       else
-        @_parent.append('svg:g').attr(id: groupClass)
+        @_parent.append('svg:g').attr id: groupClass
       
       this
     else
@@ -38,7 +38,7 @@ class chart
         w: @_size.w
         h: @_size.h
       }
-    @_size = 
+    @_size =
       w: s.w
       h: s.h
     @redraw()
@@ -50,7 +50,7 @@ class chart
         x: @_position.x
         y: @_position.y
       }
-    @_position = 
+    @_position =
       x: pos.x
       y: pos.y
     @redraw()
@@ -63,24 +63,23 @@ class chart
 
   resize: ->
     @_group.attr
-        transform: "translate(" + @_position.x + "," + @_position.y + ")"
+      transform: "translate(#{@_position.x}, #{@_position.y})"
     this
 
   # dummy redraw
 
   redraw: ->
-    if @_size and @_position  
+    if @_size and @_position
       @_group.selectAll('rect').remove()
       @_group.append('rect')
-        .attr(
+        .attr
           x: @_position.x
           y: @_position.y
           width: @_size.w
           height: @_size.h
-        )
     this
 
-  this
+  
   #each different type of chart and its related functions: will need draw method
 
-module.exports = chart
+module.exports = Chart

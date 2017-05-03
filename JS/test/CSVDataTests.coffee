@@ -5,12 +5,12 @@ QueryString = require 'query-string'
 EnsureTestServer = require '../testSupport/EnsureTestServer.coffee'
 
 
-describe "CSV Data Endpoints", ->
+describe 'CSV Data Endpoints', ->
 
   before EnsureTestServer
 
 
-  it "Serves data for Visualization 1", ->
+  it 'Serves data for Visualization 1', ->
     parameters = QueryString.stringify
       dataset: 'oct2016'
       page: 'viz1'
@@ -21,9 +21,9 @@ describe "CSV Data Endpoints", ->
     .then (csvResponse) ->
       pattern = /^(?:(?:"((?:""|[^"])+)"|([^,]*))(?:$|,))+$/
       output = pattern.exec csvResponse
-      output.should.be.ok 
+      output.should.be.ok
 
-  it "Serves data for Visualization 2", ->
+  it 'Serves data for Visualization 2', ->
     parameters = QueryString.stringify
       dataset: 'oct2016'
       page: 'viz2'
@@ -34,9 +34,9 @@ describe "CSV Data Endpoints", ->
     .then (csvResponse) ->
       pattern = /^(?:(?:"((?:""|[^"])+)"|([^,]*))(?:$|,))+$/
       output = pattern.exec csvResponse
-      output.should.be.ok 
+      output.should.be.ok
   
-  it "Serves data for Visualization 3", ->
+  it 'Serves data for Visualization 3', ->
     parameters = QueryString.stringify
       dataset: 'oct2016'
       page: 'viz3'
@@ -47,9 +47,9 @@ describe "CSV Data Endpoints", ->
     .then (csvResponse) ->
       pattern = /^(?:(?:"((?:""|[^"])+)"|([^,]*))(?:$|,))+$/
       output = pattern.exec csvResponse
-      output.should.be.ok 
+      output.should.be.ok
   
-  it "Serves data for Visualization 4", ->
+  it 'Serves data for Visualization 4', ->
     parameters = QueryString.stringify
       dataset: 'oct2016'
       page: 'viz4'
@@ -60,4 +60,4 @@ describe "CSV Data Endpoints", ->
     .then (csvResponse) ->
       pattern = /^(?:(?:"((?:""|[^"])+)"|([^,]*))(?:$|,))+$/
       output = pattern.exec csvResponse
-      output.should.be.ok 
+      output.should.be.ok
