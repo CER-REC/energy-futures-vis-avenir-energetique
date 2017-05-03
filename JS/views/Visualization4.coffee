@@ -7,48 +7,11 @@ Tr = require '../TranslationTable.coffee'
 Platform = require '../Platform.coffee'
 
 ParamsToUrlString = require '../ParamsToUrlString.coffee'
+CommonControls = require './CommonControls.coffee'
 
 if Platform.name == 'browser'
   Visualization4Template = require '../templates/Visualization4.mustache'
   SvgStylesheetTemplate = require '../templates/SvgStylesheet.css'
-
-pixelMap = [{pixelStart:260, pixelEnd:280, year:2005}
-            {pixelStart:281, pixelEnd:303, year:2006}
-            {pixelStart:304, pixelEnd:325, year:2007}
-            {pixelStart:326, pixelEnd:349, year:2008}
-            {pixelStart:350, pixelEnd:373, year:2009}
-            {pixelStart:374, pixelEnd:396, year:2010}
-            {pixelStart:397, pixelEnd:420, year:2011}
-            {pixelStart:421, pixelEnd:442, year:2012}
-            {pixelStart:443, pixelEnd:465, year:2013}
-            {pixelStart:466, pixelEnd:487, year:2014}
-            {pixelStart:488, pixelEnd:512, year:2015}
-            {pixelStart:513, pixelEnd:533, year:2016}
-            {pixelStart:534, pixelEnd:526, year:2017}
-            {pixelStart:527, pixelEnd:578, year:2018}
-            {pixelStart:579, pixelEnd:601, year:2019}
-            {pixelStart:602, pixelEnd:624, year:2020}
-            {pixelStart:625, pixelEnd:647, year:2021}
-            {pixelStart:648, pixelEnd:670, year:2022}
-            {pixelStart:671, pixelEnd:692, year:2023}
-            {pixelStart:693, pixelEnd:717, year:2024}
-            {pixelStart:718, pixelEnd:740, year:2025}
-            {pixelStart:741, pixelEnd:762, year:2026}
-            {pixelStart:763, pixelEnd:785, year:2027}
-            {pixelStart:786, pixelEnd:808, year:2028}
-            {pixelStart:809, pixelEnd:832, year:2029}
-            {pixelStart:833, pixelEnd:855, year:2030}
-            {pixelStart:856, pixelEnd:879, year:2031}
-            {pixelStart:880, pixelEnd:901, year:2032}
-            {pixelStart:902, pixelEnd:924, year:2033}
-            {pixelStart:925, pixelEnd:947, year:2034}
-            {pixelStart:948, pixelEnd:968, year:2035}
-            {pixelStart:969, pixelEnd:992, year:2036}
-            {pixelStart:993, pixelEnd:1014, year:2037}
-            {pixelStart:1015, pixelEnd:1035, year:2038}
-            {pixelStart:1036, pixelEnd:1060, year:2039}]
-
-root = exports ? this
 
 ControlsHelpPopover = require '../popovers/ControlsHelpPopover.coffee'
 
@@ -164,26 +127,15 @@ class Visualization4
 
     if Platform.name == 'browser'
       @renderBrowserTemplate()
-      document.onmousemove = @handleMouseMove
     else if Platform.name == 'server'
       @renderServerTemplate()
 
-
+    @tooltip = @app.window.document.getElementById 'tooltip'
+    @tooltipParent = @app.window.document.getElementById 'wideVisualizationPanel'
+    @graphPanel = @app.window.document.getElementById 'graphPanel'
 
     @render()
     @redraw()
-
-  handleMouseMove: (event) =>
-    root.mousePos = {x: event.pageX, y: event.pageY}
-    if root.activeScenario?
-      current = pixelMap.filter (entry) ->
-        root.mousePos.x >= entry.pixelStart && root.mousePos.x < entry.pixelEnd
-      current = current[0]
-      if current?
-        titletobe = root.data.filter (value) ->
-          value.year == current.year
-        titletobe = titletobe[0]
-        document.getElementById('tooltip').innerHTML = Tr.scenarioSelector.names[root.activeScenario][@app.language] + " (" + current.year + "): " + titletobe.value.toFixed(2)
 
 
   redraw: ->
@@ -193,7 +145,7 @@ class Visualization4
         height: @outerHeight
     @renderXAxis false
     @renderYAxis false
-    @renderGraph 0
+    @renderGraph() # This call used to pass in 0 for duration. Why?
     @provinceMenu.size
       w: d3.select(@app.window.document).select('#provincesSelector').node().getBoundingClientRect().width
       h: @height() - d3.select(@app.window.document).select('span.titleLabel').node().getBoundingClientRect().height + d3.select(@app.window.document).select('#xAxis').node().getBoundingClientRect().height
@@ -433,255 +385,7 @@ class Visualization4
 
 
   # Data here
-  datasetSelectionData: ->
-    jan2016 =
-      label: Tr.datasetSelector.jan2016Button[@app.language]
-      dataset: 'jan2016'
-      title: Tr.selectorTooltip.datasetSelector.jan2016[@app.language]
-      class: if @config.dataset == 'jan2016' then 'vizButton selected' else 'vizButton'
-    oct2016 =
-      label: Tr.datasetSelector.oct2016Button[@app.language]
-      dataset: 'oct2016'
-      title: Tr.selectorTooltip.datasetSelector.oct2016[@app.language]
-      class: if @config.dataset == 'oct2016' then 'vizButton selected' else 'vizButton'
-
-    [oct2016, jan2016]
-
-  mainSelectionData: ->
-    [
-      {
-        title: Tr.selectorTooltip.mainSelector.totalDemandButton[@app.language]
-        label: Tr.mainSelector.totalDemandButton[@app.language]
-        image:
-          if @config.mainSelection == 'energyDemand'
-            'IMG/main_selection/totalDemand_selected.png'
-          else
-            'IMG/main_selection/totalDemand_unselected.png'
-        selectorName: 'energyDemand'
-        altText:
-          if @config.mainSelection == 'energyDemand'
-            Tr.altText.totalDemand_selected[@app.language]
-          else
-            Tr.altText.totalDemand_unselected[@app.language]
-      }
-      {
-        title: Tr.selectorTooltip.mainSelector.electricityGenerationButton[@app.language]
-        label: Tr.mainSelector.electricityGenerationButton[@app.language]
-        image:
-          if @config.mainSelection == 'electricityGeneration'
-            'IMG/main_selection/electricity_selected.png'
-          else
-            'IMG/main_selection/electricity_unselected.png'
-        selectorName: 'electricityGeneration'
-        altText:
-          if @config.mainSelection == 'electricityGeneration'
-            Tr.altText.electricity_selected[@app.language]
-          else
-            Tr.altText.electricity_unselected[@app.language]
-      }
-      {
-        title: Tr.selectorTooltip.mainSelector.oilProductionButton[@app.language]
-        label: Tr.mainSelector.oilProductionButton[@app.language]
-        image:
-          if @config.mainSelection == 'oilProduction'
-            'IMG/main_selection/oil_selected.png'
-          else
-            'IMG/main_selection/oil_unselected.png'
-        selectorName: 'oilProduction'
-        altText:
-          if @config.mainSelection == 'oilProduction'
-            Tr.altText.oil_selected[@app.language]
-          else
-            Tr.altText.oil_unselected[@app.language]
-      }
-      {
-        title: Tr.selectorTooltip.mainSelector.gasProductionButton[@app.language]
-        label: Tr.mainSelector.gasProductionButton[@app.language]
-        image:
-          if @config.mainSelection == 'gasProduction'
-            'IMG/main_selection/gas_selected.png'
-          else
-            'IMG/main_selection/gas_unselected.png'
-        selectorName: 'gasProduction'
-        altText:
-          if @config.mainSelection == 'gasProduction'
-            Tr.altText.gas_selected[@app.language]
-          else
-            Tr.altText.gas_unselected[@app.language]
-      }
-    ]
-
-
-  unitSelectionData: ->
-    petajoules =
-      title: Tr.selectorTooltip.unitSelector.petajoulesButton[@app.language]
-      label: Tr.unitSelector.petajoulesButton[@app.language]
-      unitName: 'petajoules'
-      class:
-        if @config.unit == 'petajoules'
-          'vizButton selected'
-        else
-          'vizButton'
-    kilobarrelEquivalents =
-      title: Tr.selectorTooltip.unitSelector.kilobarrelEquivalentsButton[@app.language]
-      label: Tr.unitSelector.kilobarrelEquivalentsButton[@app.language]
-      unitName: 'kilobarrelEquivalents'
-      class:
-        if @config.unit == 'kilobarrelEquivalents'
-          'vizButton selected'
-        else
-          'vizButton'
-    gigawattHours =
-      title: Tr.selectorTooltip.unitSelector.gigawattHourButton[@app.language]
-      label: Tr.unitSelector.gigawattHourButton[@app.language]
-      unitName: 'gigawattHours'
-      class:
-        if @config.unit == 'gigawattHours'
-          'vizButton selected'
-        else
-          'vizButton'
-    thousandCubicMetres =
-      title: Tr.selectorTooltip.unitSelector.thousandCubicMetresButton[@app.language]
-      label: Tr.unitSelector.thousandCubicMetresButton[@app.language]
-      unitName: 'thousandCubicMetres'
-      class:
-        if @config.unit == 'thousandCubicMetres'
-          'vizButton selected'
-        else
-          'vizButton'
-    millionCubicMetres =
-      title: Tr.selectorTooltip.unitSelector.millionCubicMetresButton[@app.language]
-      label: Tr.unitSelector.millionCubicMetresButton[@app.language]
-      unitName: 'millionCubicMetres'
-      class:
-        if @config.unit == 'millionCubicMetres'
-          'vizButton selected'
-        else
-          'vizButton'
-    kilobarrels =
-      title: Tr.selectorTooltip.unitSelector.kilobarrelsButton[@app.language]
-      label: Tr.unitSelector.kilobarrelsButton[@app.language]
-      unitName: 'kilobarrels'
-      class:
-        if @config.unit == 'kilobarrels'
-          'vizButton selected'
-        else
-          'vizButton'
-    cubicFeet =
-      title: Tr.selectorTooltip.unitSelector.cubicFeetButton[@app.language]
-      label: Tr.unitSelector.cubicFeetButton[@app.language]
-      unitName: 'cubicFeet'
-      class:
-        if @config.unit == 'cubicFeet'
-          'vizButton selected'
-        else
-          'vizButton'
-
-    switch @config.mainSelection
-      when 'energyDemand'
-        [petajoules, kilobarrelEquivalents]
-      when 'electricityGeneration'
-        [petajoules, gigawattHours, kilobarrelEquivalents]
-      when 'oilProduction'
-        [kilobarrels, thousandCubicMetres]
-      when 'gasProduction'
-        [cubicFeet, millionCubicMetres]
-
-
-
-  scenariosSelectionData: ->
-    reference =
-      title: Tr.selectorTooltip.scenarioSelector.referenceButton[@app.language]
-      label: Tr.scenarioSelector.referenceButton[@app.language]
-      scenarioName: 'reference'
-      class:
-        if @config.scenarios.includes 'reference'
-          'vizButton selected reference'
-        else if Constants.datasetDefinitions[@config.dataset].scenarios.includes 'reference'
-          'vizButton reference'
-        else
-          'vizButton reference disabled'
-      colour: '#999999'
-    high =
-      title: Tr.selectorTooltip.scenarioSelector.highPriceButton[@app.language]
-      label: Tr.scenarioSelector.highPriceButton[@app.language]
-      scenarioName: 'high'
-      class:
-        if @config.scenarios.includes 'high'
-          'vizButton selected high'
-        else if Constants.datasetDefinitions[@config.dataset].scenarios.includes 'high'
-          'vizButton high'
-        else
-          'vizButton high disabled'
-      colour: '#0C2C84'
-    highLng =
-      title: Tr.selectorTooltip.scenarioSelector.highLngButton[@app.language]
-      label: Tr.scenarioSelector.highLngButton[@app.language]
-      scenarioName: 'highLng'
-      class:
-        if @config.scenarios.includes 'highLng'
-          'vizButton selected highLng'
-        else if Constants.datasetDefinitions[@config.dataset].scenarios.includes 'highLng'
-          'vizButton highLng'
-        else
-          'vizButton highLng disabled'
-      colour: '#225EA8'
-    constrained =
-      title: Tr.selectorTooltip.scenarioSelector.constrainedButton[@app.language]
-
-      label: Tr.scenarioSelector.constrainedButton[@app.language]
-      scenarioName: 'constrained'
-      class:
-        if @config.scenarios.includes 'constrained'
-          'vizButton selected constrained'
-        else if Constants.datasetDefinitions[@config.dataset].scenarios.includes 'constrained'
-          'vizButton constrained'
-        else
-          'vizButton constrained disabled'
-      colour: '#41B6C4'
-    low =
-      title: Tr.selectorTooltip.scenarioSelector.lowPriceButton[@app.language]
-      label: Tr.scenarioSelector.lowPriceButton[@app.language]
-      scenarioName: 'low'
-      class:
-        if @config.scenarios.includes 'low'
-          'vizButton selected low'
-        else if Constants.datasetDefinitions[@config.dataset].scenarios.includes 'low'
-          'vizButton low'
-        else
-          'vizButton low disabled'
-      colour: '#7FCDBB'
-    noLng =
-      title: Tr.selectorTooltip.scenarioSelector.noLngButton[@app.language]
-      label: Tr.scenarioSelector.noLngButton[@app.language]
-      scenarioName: 'noLng'
-      class:
-        if @config.scenarios.includes 'noLng'
-          'vizButton selected noLng'
-        else if Constants.datasetDefinitions[@config.dataset].scenarios.includes 'noLng'
-          'vizButton noLng'
-        else
-          'vizButton noLng disabled'
-      colour: '#C7E9B4'
-
-    switch @config.mainSelection
-      when 'energyDemand', 'electricityGeneration'
-        if @config.dataset == 'jan2016'
-          [reference, high, highLng, constrained, low, noLng]
-        else
-          [reference, high, low]
-      when 'oilProduction'
-        if @config.dataset == 'jan2016'
-          [reference, high, constrained, low]
-        else
-          [reference, high, low]
-      when 'gasProduction'
-        if @config.dataset == 'jan2016'
-          [reference, high, highLng, low, noLng]
-        else
-          [reference, high, low]
-    
-    # TODO: merge graphdata and graphscenario data, its dumb =/
+  # TODO: merge graphdata and graphscenario data, its dumb =/
 
   scenarioLegendData: ->
     baseData =
@@ -866,16 +570,11 @@ class Visualization4
   height: ->
     @outerHeight - @margin.top - @margin.bottom
 
-
-  # NB: See 'render' for width discussion, IE specific issue.
-  xAxisScale: (width) ->
+  xAxisScale: ->
     #TODO should the domain come from the data?
-
-    width = width || @width()
-
     d3.scale.linear()
       .domain [2005, 2040]
-      .range [0, width]
+      .range [0, @width()]
 
   yAxisScale: ->
     d3.scale.linear()
@@ -918,18 +617,6 @@ class Visualization4
   # Render helpers here
 
   render: ->
-
-    ###
-    NB: This is a workaround to a problem in Internet Explorer.
-    For some reason, during page load, width reports a slightly wider width at
-    the very end. This results in a graph that overflows onto the y axis.
-    To work around it, we save the width as measured at the beginning of the render
-    call and use it later. This problem only occurred after the switch to using an
-    iframe, and seems limited to IE.
-    # TODO: investigate if this still occurs with the switch away from the iframe
-    ###
-    width = @width()
-
     d3.select(@app.window.document).select '#graphSVG'
       .attr
         width: @outerWidth()
@@ -947,14 +634,14 @@ class Visualization4
       # We only need to build once, but we need to build after the axis are built
       # for alignment
       @provinceMenu = @buildProvinceMenu()
-    @renderGraph @app.animationDuration, width
+    @renderGraph()
 
   renderDatasetSelector: ->
     if @config.dataset?
       datasetSelectors = d3.select(@app.window.document)
         .select('#datasetSelector')
         .selectAll('.datasetSelectorButton')
-        .data @datasetSelectionData()
+        .data CommonControls.datasetSelectionData(@config, @app)
 
       datasetSelectors.enter()
         .append('div')
@@ -970,7 +657,7 @@ class Visualization4
           update = =>
             @config.setDataset d.dataset
             @renderScenariosSelector()
-            @renderDatasetSelector @datasetSelectionData()
+            @renderDatasetSelector()
             @renderYAxis()
             @renderGraph()
             @app.router.navigate @config.routerParams()
@@ -978,42 +665,49 @@ class Visualization4
           @app.datasetRequester.updateAndRequestIfRequired newConfig, update
 
       datasetSelectors.html (d) ->
-        "<button class='#{d.class}' type='button' title='#{d.title}'>#{d.label}</button>"
+        "<button class='#{d.class}' type='button' title='#{d.title}' aria-label='#{d.ariaLabel}'>#{d.label}</button>"
 
       datasetSelectors.exit().remove()
 
   renderMainSelector: ->
+    mainSelectorCallback = (d) =>
+      newConfig = new @config.constructor @app
+      newConfig.copy @config
+      newConfig.setMainSelection d.selectorName
+
+      update = =>
+        @config.setMainSelection d.selectorName
+        # TODO: For efficiency, only rerender what's necessary.
+        # We could just call render() ... but that would potentially rebuild a bunch
+        # of menus...
+        @renderMainSelector()
+        @renderDatasetSelector()
+        @renderUnitsSelector()
+        @renderScenariosSelector()
+        @renderYAxis()
+        @renderGraph()
+        @app.router.navigate @config.routerParams()
+
+      @app.datasetRequester.updateAndRequestIfRequired newConfig, update
+
     mainSelectors = d3.select(@app.window.document)
       .select('#mainSelector')
       .selectAll('.mainSelectorButton')
-      .data @mainSelectionData()
+      .data CommonControls.mainSelectionData(@config, @app)
 
     mainSelectors.enter()
       .append('div')
       .attr
         class: 'mainSelectorButton'
-      .on 'click', (d) =>
+        tabindex: '0'
+        role: 'button'
+      .on 'click', mainSelectorCallback
+      .on 'keyup', (d) ->
+        mainSelectorCallback d if d3.event.key == 'Enter'
 
-        newConfig = new @config.constructor @app
-        newConfig.copy @config
-        newConfig.setMainSelection d.selectorName
-
-        update = =>
-          @config.setMainSelection d.selectorName
-          # TODO: For efficiency, only rerender what's necessary.
-          # We could just call render() ... but that would potentially rebuild a bunch
-          # of menus...
-          @renderMainSelector()
-          @renderDatasetSelector()
-          @renderUnitsSelector()
-          @renderScenariosSelector()
-          @renderYAxis()
-          @renderGraph()
-          @app.router.navigate @config.routerParams()
-
-        @app.datasetRequester.updateAndRequestIfRequired newConfig, update
-
-
+    mainSelectors
+      .attr
+        'aria-label': (d) -> d.altText
 
     mainSelectors.html (d) ->
       """<img src=#{d.image}
@@ -1034,7 +728,7 @@ class Visualization4
     unitsSelectors = d3.select(@app.window.document)
       .select('#unitsSelector')
       .selectAll('.unitSelectorButton')
-      .data @unitSelectionData()
+      .data CommonControls.unitSelectionData(@config, @app)
     
     unitsSelectors.enter()
       .append('div')
@@ -1059,7 +753,8 @@ class Visualization4
 
 
     unitsSelectors.html (d) ->
-      "<button class='#{d.class}' type='button' title='#{d.title}'>#{d.label}</button>"
+      "<button class='#{d.class}' type='button' title='#{d.title}' aria-label='#{d.ariaLabel}'>#{d.label}</button>"
+
 
     unitsSelectors.exit()
       .on 'click', null
@@ -1070,7 +765,7 @@ class Visualization4
     scenariosSelectors = d3.select(@app.window.document)
       .select('#scenariosSelector')
       .selectAll('.scenarioSelectorButton')
-      .data @scenariosSelectionData()
+      .data CommonControls.scenariosSelectionData(@config, @app)
     
     scenariosSelectors.enter()
       .append('div')
@@ -1105,12 +800,9 @@ class Visualization4
 
 
     scenariosSelectors.html (d) ->
-      indexOfDisabled = d.class.indexOf 'disabled'
-      spanClass = 'disabled'
-      if indexOfDisabled < 0 then spanClass = ''
       """
-        <button class='#{d.class}' type='button' title='#{d.title}'>
-          <span class='#{spanClass}'>#{d.label}</span>
+        <button class='#{d.multipleSelectClass}' type='button' title='#{d.title}'>
+          <span aria-label='#{d.ariaLabel}'>#{d.label}</span>
         </button>
       """
 
@@ -1258,8 +950,8 @@ class Visualization4
         'shape-rendering': 'crispEdges'
 
 
-  renderGraph: (duration = @app.animationDuration, width) ->
-    xAxisScale = @xAxisScale width
+  renderGraph: (duration = @app.animationDuration) ->
+    xAxisScale = @xAxisScale()
     yAxisScale = @yAxisScale()
 
     area = d3.svg.area()
@@ -1292,14 +984,6 @@ class Visualization4
       .selectAll('.presentLinearGradient')
       .data @gradientData(), (d) ->
         d.key
-  
-    # TODO: Apparently unused, remove once confirmed
-    # futureGrads = d3.select(@app.window.document)
-    #   .select('#graphGroup')
-    #   .select('defs')
-    #   .selectAll('.futureLinearGradient')
-    #   .data @gradientData(), (d) ->
-    #     d.key
 
     enterGrads = grads.enter().append 'linearGradient'
       .attr
@@ -1365,21 +1049,19 @@ class Visualization4
 
     graphAreaSelectors = graphAreaGroups.selectAll('.graphAreaPresent')
       .data(((d) -> [d]), ((d) -> d.key))
-      .on 'mouseover', (d) ->
-        document.getElementById('tooltip').style.visibility = 'visible'
-        document.getElementById('tooltip').style.top = "#{d3.event.pageY - 10}px"
-        document.getElementById('tooltip').style.left = "#{d3.event.pageX + 10}px"
-        root.activeArea = "present#{d.data[0].scenario}"
-        root.activeScenario = d.data[0].scenario
-        root.data = d.data
-      .on 'mousemove', ->
-        document.getElementById('tooltip').style.top = "#{d3.event.pageY-10}px"
-        document.getElementById('tooltip').style.left = "#{d3.event.pageX+10}px"
-      .on 'mouseout', ->
-        document.getElementById('tooltip').style.visibility = 'hidden'
-        root.activeArea = null
-        root.activeScenario = null
-        root.data = null
+      .on 'mouseover', (d) =>
+        coords = d3.mouse @tooltipParent # [x, y]
+        @tooltip.style.visibility = 'visible'
+        @tooltip.style.left = "#{coords[0] + 30}px"
+        @tooltip.style.top = "#{coords[1]}px"
+        @displayTooltip d.key
+      .on 'mousemove', (d) =>
+        coords = d3.mouse @tooltipParent # [x, y]
+        @tooltip.style.left = "#{coords[0] + 30}px"
+        @tooltip.style.top = "#{coords[1]}px"
+        @displayTooltip d.key
+      .on 'mouseout', =>
+        @tooltip.style.visibility = 'hidden'
 
     graphAreaSelectors.enter().append 'path'
       .attr
@@ -1401,21 +1083,19 @@ class Visualization4
 
     graphFutureAreaSelectors = graphAreaGroups.selectAll('.graphAreaFuture')
       .data(((d) -> [d]), ((d) -> d.key))
-      .on 'mouseover', (d) ->
-        document.getElementById('tooltip').style.visibility = 'visible'
-        document.getElementById('tooltip').style.top = "#{d3.event.pageY - 10}px"
-        document.getElementById('tooltip').style.left = "#{d3.event.pageX + 10}px"
-        root.activeArea = "future#{d.data[0].scenario}"
-        root.activeScenario = d.data[0].scenario
-        root.data = d.data
-      .on 'mousemove', ->
-        document.getElementById('tooltip').style.top = "#{d3.event.pageY - 10}px"
-        document.getElementById('tooltip').style.left = "#{d3.event.pageX + 10}px"
-      .on 'mouseout', ->
-        document.getElementById('tooltip').style.visibility = 'hidden'
-        root.activeArea = null
-        root.activeScenario = null
-        root.data = null
+      .on 'mouseover', (d) =>
+        coords = d3.mouse @tooltipParent # [x, y]
+        @tooltip.style.visibility = 'visible'
+        @tooltip.style.left = "#{coords[0] + 30}px"
+        @tooltip.style.top = "#{coords[1]}px"
+        @displayTooltip d.key
+      .on 'mousemove', (d) =>
+        coords = d3.mouse @tooltipParent # [x, y]
+        @tooltip.style.left = "#{coords[0] + 30}px"
+        @tooltip.style.top = "#{coords[1]}px"
+        @displayTooltip d.key
+      .on 'mouseout', =>
+        @tooltip.style.visibility = 'hidden'
 
     graphFutureAreaSelectors.enter().append 'path'
       .attr
@@ -1541,13 +1221,15 @@ class Visualization4
       refCaseDots.enter().append 'circle'
         .attr 'class', 'refCaseDot'
         .attr 'r', 3.5
-        .attr 'cx', (d) ->
-          xAxisScale d.year
         .attr 'cy', yAxisScale(0)
         .style
           fill: 'white'
           stroke: '#999999'
           'stroke-width': 2
+
+      refCaseDots
+        .attr 'cx', (d) ->
+          xAxisScale d.year
 
       refCaseDots.transition()
         .duration duration
@@ -1561,7 +1243,30 @@ class Visualization4
         .attr 'cy', yAxisScale(0)
         .remove()
 
+  # Take the mouse coordinates, and invert the scale we used to draw the graph to
+  # look up which year they correspond to. Combine with the name of the scenario to
+  # populate the contents of the mouseover tooltip. Should work at any resolution!
+  # We assume that this method is called during a d3 event handler
+  displayTooltip: (scenario) ->
+    # Mouse coordinates relative to the graph panel element, should be the same
+    # coordinate space that the scale is used to draw in.
+    coords = d3.mouse @graphPanel # [x, y]
 
+    # I hope that making a scale isn't too expensive to do on mousemove
+    scale = @xAxisScale()
+    year = Math.floor scale.invert(coords[0])
+
+    # I hope that fetching data isn't too expensive to do on mousemove either!
+    data = @graphData()
+
+    # This can happen during an animation where a scenario has been toggled off
+    return unless data[scenario]?
+
+    tooltipDatum = data[scenario].find (item) ->
+      item.year == year
+    return unless tooltipDatum
+
+    @tooltip.innerHTML = "#{Tr.scenarioSelector.names[scenario][@app.language]} (#{year}) #{tooltipDatum.value.toFixed(2)}"
 
 
   tearDown: ->

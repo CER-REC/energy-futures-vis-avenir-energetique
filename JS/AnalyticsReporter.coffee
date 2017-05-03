@@ -66,15 +66,15 @@ class AnalyticsReporter
 
     # We want to track the URL without the long string of URL parameters.
     location = @app.window.document.location
-    @ga 'revamp_test.set', 'page', "#{location.protocol}//#{location.host}#{location.pathname}"
+    @ga 'energyFutures.set', 'page', "#{location.protocol}//#{location.host}#{location.pathname}"
 
-    @ga 'revamp_test.send', 'pageview', gaMessage
+    @ga 'energyFutures.send', 'pageview', gaMessage
 
 
   reportEvent: (category, action) ->
     return unless @ga?
 
-    @ga 'revamp_test.send',
+    @ga 'energyFutures.send',
       hitType: 'event'
       eventCategory: category
       eventAction: action

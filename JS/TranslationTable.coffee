@@ -3,7 +3,7 @@ module.exports =
 
   landingPage:
     mainHeader:
-      en: "EXPLORING CANADA’S ENERGY FUTURE"
+      en: 'EXPLORING CANADA’S ENERGY FUTURE'
       fr: 'EXPLORER L’AVENIR ÉNERGÉTIQUE DU CANADA'
     content1:
       en: """
@@ -45,8 +45,7 @@ module.exports =
       fr: 'EXPLORATION PAR SECTEUR'
     visualization3Link:
       en: 'EXPLORE ELECTRICITY GENERATION'
-      fr: "EXPLORATION DE L’ÉLECTRICITÉ"
-      # fr: 'EXPLORATION DE LA COMPOSANTE ÉLECTRICITÉ'
+      fr: 'EXPLORATION DE L’ÉLECTRICITÉ'
     visualization4Link:
       en: 'EXPLORE SCENARIOS'
       fr: 'EXPLORATION DES SCÉNARIOS'
@@ -82,7 +81,7 @@ module.exports =
 
     imageDownloadLink:
       en: 'DOWNLOAD IMAGE'
-      fr: "TÉLÉCHARGEMENT D’IMAGE"
+      fr: 'TÉLÉCHARGEMENT D’IMAGE'
     dataDownloadLink:
       en: 'DOWNLOAD DATA'
       fr: 'TÉLÉCHARGEMENT DES DONNÉES'
@@ -92,7 +91,7 @@ module.exports =
 
     imageDownloadHeader:
       en: 'IMAGE DOWNLOAD'
-      fr: "TÉLÉCHARGEMENT D’IMAGE"
+      fr: 'TÉLÉCHARGEMENT D’IMAGE'
     bitlyLinkInstructions:
       en: 'To interact with this visualization, visit: '
       fr: 'Pour manipuler cette visualisation, visitez: '
@@ -254,10 +253,10 @@ module.exports =
         en: 'The Reference Case provides a baseline outlook, based on a moderate view of future energy prices and economic growth.'
         fr: 'Le scénario de référence offre une perspective de base et mise sur une projection modérée des prix de l’énergie et de la croissance de l’économie dans les années à venir.'
       lowPriceButton:
-        en: 'A price case with lower oil and natural gas prices capture some of the uncertainty related to future energy prices.'
+        en: 'A price case with lower oil and natural gas prices captures some of the uncertainty related to future energy prices.'
         fr: 'Un second scénario lié aux prix table sur des prix du pétrole et du gaz naturel moins élevés et intègre certaines incertitudes concernant les prix futurs de l’énergie.'
       highPriceButton:
-        en: 'A price case with higher oil and natural gas prices capture some of the uncertainty related to future energy prices.'
+        en: 'A price case with higher oil and natural gas prices captures some of the uncertainty related to future energy prices.'
         fr: 'Un premier scénario lié aux prix prévoit des prix du pétrole et du gaz naturel plus élevés et prend en compte certaines incertitudes qui ont trait aux prix futurs de l’énergie.'
       constrainedButton:
         en: 'The EF 2016 report considers a case where no new major oil pipelines are built over the projection period to address uncertainties related to future oil export infrastructure.'
@@ -509,33 +508,33 @@ module.exports =
       fr: 'AVENIR ÉNERGÉTIQUE'
     datasetSelectorHelp:
       en: """
-        <h1> CANADA’S ENERGY FUTURE 2016 </h1>
-        <h2> January 2016 </h2>
-        <p>
-          A continuation of the Energy Futures series. In addition our usual baseline long-term outlook, we explores key uncertainties for Canadian energy such robustness of global LNG markets and availability of crude oil transportation infrastructure.
-          <br><a href='http://www.neb-one.gc.ca/nrg/ntgrtd/ftr/2016/index-eng.html' target='_blank'>View the report</a>
-        </p>
-
         <h1> CANADA’S ENERGY FUTURE 2016: UPDATE </h1>
         <h2> October 2016 </h2>
         <p>
           Presents reference and high and low prices cases. In the Reference Case, the crude oil price assumption is revised lower to US$90 per barrel by 2040. In addition to policies which were included in the January edition, such as Quebec’s cap and trade system and the carbon tax in B.C., most of the Alberta Climate Leadership Plan and the Ontario cap and trade program have been integrated into the forecast.
           <br><a href='http://www.neb-one.gc.ca/nrg/ntgrtd/ftr/2016updt/index-eng.html' target='_blank'>View the report</a>
         </p>
+
+        <h1> CANADA’S ENERGY FUTURE 2016 </h1>
+        <h2> January 2016 </h2>
+        <p>
+          A continuation of the Energy Futures series. In addition our usual baseline long-term outlook, we explore key uncertainties for Canadian energy such robustness of global LNG markets and availability of crude oil transportation infrastructure.
+          <br><a href='http://www.neb-one.gc.ca/nrg/ntgrtd/ftr/2016/index-eng.html' target='_blank'>View the report</a>
+        </p>
       """
       fr: """
-        <h1> AVENIR ÉNERGÉTIQUE DU CANADA EN 2016 </h1>
-        <h2> Janvier 2016 </h2>
-        <p>
-          La suite de la série sur l’avenir énergétique. En plus des perspectives à long terme habituelles, nous explorons certaines incertitudes de fond dans le secteur de l’énergie au Canada, qu’il s’agisse par exemple de celles découlant du degré de robustesse des marchés mondiaux du GNL ou de la disponibilité d’une infrastructure pour l’acheminement de pétrole brut.
-          <br><a href='http://www.neb-one.gc.ca/nrg/ntgrtd/ftr/2016/index-fra.html' target='_blank'>Consulter le rapport</a>
-        </p>
-
         <h1> AVENIR ÉNERGÉTIQUE DU CANADA EN 2016 – MISE À JOUR </h1>
         <h2> Octobre 2016 </h2>
         <p>
           Présente des scénarios de prix, bas et élevés, ainsi qu’un scénario de référence. Dans ce dernier cas, l’hypothèse de prix du pétrole brut a été revue à la baisse, à 90 $ US le baril en 2040. En plus des politiques déjà incluses précédemment, notamment le système de plafonnement et d’échange de droits d’émission au Québec et la taxe sur le carbone en Colombie-Britannique, les nouvelles prévisions tiennent compte, dans sa plus grande partie, du plan de leadership de l’Alberta en matière de changement climatique de même que du programme de plafonnement et d’échange de droits de l’Ontario.
           <br><a href='http://www.neb-one.gc.ca/nrg/ntgrtd/ftr/2016updt/index-fra.html' target='_blank'>Consulter le rapport</a>
+        </p>
+
+        <h1> AVENIR ÉNERGÉTIQUE DU CANADA EN 2016 </h1>
+        <h2> Janvier 2016 </h2>
+        <p>
+          La suite de la série sur l’avenir énergétique. En plus des perspectives à long terme habituelles, nous explorons certaines incertitudes de fond dans le secteur de l’énergie au Canada, qu’il s’agisse par exemple de celles découlant du degré de robustesse des marchés mondiaux du GNL ou de la disponibilité d’une infrastructure pour l’acheminement de pétrole brut.
+          <br><a href='http://www.neb-one.gc.ca/nrg/ntgrtd/ftr/2016/index-fra.html' target='_blank'>Consulter le rapport</a>
         </p>
       """
 
@@ -578,7 +577,7 @@ module.exports =
               </p>
             <h2> THOUSAND BARRELS OF OIL EQUIVALENT PER DAY (kBOE/d) </h2>
               <p>
-                A measure of energy normalized to the equivalent energy content of a barrel of light crude oil. One barrel of oil equivalent is equal to 6.811 joules , while one petajoule is equal to 0.4475 kBOE/d.
+                A measure of energy normalized to the equivalent energy content of a barrel of light crude oil. One barrel of oil equivalent is equal to 6.811 joules, while one petajoule is equal to 0.4475 kBOE/d.
               </p>
             <h2> GW.h </h2>
               <p>
@@ -635,7 +634,7 @@ module.exports =
             <p>
               Mesure d’énergie normalisée à l’équivalent de la teneur en énergie d’un baril de pétrole brut léger. Un baril d’équivalent pétrole équivaut à 6,811 joules ; et un pétajoule est égal à 0,4475 kbep/j.
             </p>
-          <h2> GIGAWATTHEURE (GWh)  </h2>
+          <h2> GIGAWATTHEURE (GWh) </h2>
             <p>
               Mesure de puissance énergétique correspondant à un milliard (10<sup>9</sup>) de wattheures d’énergie électrique par année. Un gigawatt équivaut à 0,0036 pétajoule et à 0,0016 kbep/j.
             </p>
@@ -666,7 +665,7 @@ module.exports =
           <p>
             Selon la valeur, un multiplicateur k, m ou µ peut être appliqué à l’axe y.
           </p>
-          <p> 
+          <p>
             k=1000. Par exemple, 15,0k Mpi³/j équivaut à 15,0 milliards de pieds cubes par jour, ou 6,0k kb/j est égal à 6 millions de barils par jour.
           </p>
         </div>
@@ -723,11 +722,11 @@ module.exports =
             </p>
           <h2> HIGH PRICE </h2>
             <p>
-              A price case with higher oil and natural gas prices capture some of the uncertainty related to future energy prices.
+              A price case with higher oil and natural gas prices captures some of the uncertainty related to future energy prices.
             </p>
           <h2> LOW PRICE </h2>
             <p>
-              A price case with lower oil and natural gas prices capture some of the uncertainty related to future energy prices.
+              A price case with lower oil and natural gas prices captures some of the uncertainty related to future energy prices.
             </p>
         </div>
         <div class="columnRight">
@@ -743,7 +742,7 @@ module.exports =
       """
       fr: """
         <p>
-          Le rapport AE 2016 renferme une projection de l’évolution de l’offre et de la demande énergétiques future au Canada. Pour prendre en compte les multiples incertitudes et facteurs pouvant influer sur cette évolution, le rapport AE 2016 explore six scénarios prévisionnels bâtis à partir de diverses hypothèses. Cette analyse démontre les incidences des divers facteurs sur l’évolution de la filière énergétique, ainsi que les répercussions possibles des incertitudes actuelles sur les résultats à long terme.
+          Le rapport AE 2016 renferme une projection de l’évolution de l’offre et de la demande énergétique future au Canada. Pour prendre en compte les multiples incertitudes et facteurs pouvant influer sur cette évolution, le rapport AE 2016 explore six scénarios prévisionnels bâtis à partir de diverses hypothèses. Cette analyse démontre les incidences des divers facteurs sur l’évolution de la filière énergétique, ainsi que les répercussions possibles des incertitudes actuelles sur les résultats à long terme.
         </p>
         <p>
           Les projections du rapport AE comprennent un scénario de référence, cinq scénarios de sensibilité, dont deux liés au prix :
@@ -1216,7 +1215,7 @@ module.exports =
           Switch between two views: one that compares the amount of electricity generated by each source for each region, and one that compares the amount of electricity generated by each region for each source.
         </p>
         <p>
-          Note:   the outer circles are for labelling purposes and do not precisely reflect the relative total generation by region or source.
+          Note: the outer circles are for labelling purposes and do not precisely reflect the relative total generation by region or source.
         </p>
       """
       fr: """
@@ -1236,7 +1235,7 @@ module.exports =
           Directly compare the scenarios.
         </p>
         <p>
-          Explore the impact of key uncertainties on future energy trends, such as higher or lower energy prices, higher LNG exports or No LNG exports, or not building crude oil export pipelines.
+          Explore the impact of key uncertainties on future energy trends, such as higher or lower energy prices, higher LNG exports or no LNG exports, or not building crude oil export pipelines.
         </p>
       """
       fr: """
@@ -1278,19 +1277,15 @@ module.exports =
     energyDemand:
       en: 'COMPARING DEMAND SCENARIOS'
       fr: 'SCÉNARIOS DE DEMANDE'
-      # fr: 'COMPARER DES SCÉNARIOS RELATIFS À LA DEMANDE'
     oilProduction:
       en: 'COMPARING OIL PRODUCTION SCENARIOS'
       fr: 'SCÉNARIOS DE PRODUCTION PÉTROLIÈRE'
-      # fr: 'COMPARER DES SCÉNARIOS RELATIFS À LA PRODUCTION PÉTROLIÈRE'
     gasProduction:
       en: 'COMPARING GAS PRODUCTION SCENARIOS'
       fr: 'SCÉNARIOS DE PRODUCTION GAZIÈRE'
-      # fr: 'COMPARER DES SCÉNARIOS RELATIFS À LA PRODUCTION GAZIÈRE'
     electricityGeneration:
       en: 'COMPARING ELECTRICITY SCENARIOS'
       fr: 'SCÉNARIOS DE PRODUCTION D’ÉLECTRICITÉ'
-      # fr: 'COMPARER DES SCÉNARIOS RELATIFS À L’ÉLECTRICITÉ'
 
 
 
@@ -1392,7 +1387,7 @@ module.exports =
       en: 'The National Energy Board (NEB) worked together with leading data visualization experts in both academia and industry to create the Exploring Canada’s Energy Future interactive online tool. This pilot concept, based on our flagship publication – Canada’s Energy Future 2016: Energy Supply and Demand Projections to 2040, will give Canadians a taste of the exciting new way the NEB will share data going forward.'
       fr: 'Pour créer l’outil interactif Explorer l’avenir énergétique du Canada, l’Office national de l’énergie s’est associé à des experts de la visualisation des données du milieu universitaire et de l’industrie. Fondé sur la publication phare Avenir énergétique du Canada en 2016 – Offre et demande énergétiques à l’horizon 2040, ce projet pilote donnera aux Canadiens un avant-goût du nouveau et fabuleux moyen qu’utilisera désormais l’Office pour diffuser ses données.'
     subject:
-      en: "Canada’s Energy Future"
+      en: 'Canada’s Energy Future'
       fr: 'l%E2%80%99avenir%20%C3%A9nerg%C3%A9tique%20du%20Canada'
 
   altText:
@@ -1411,7 +1406,7 @@ module.exports =
 
     questionMark_ColourBG:
       en: 'How to Use'
-      fr: "Guide d’utilisation"
+      fr: 'Guide d’utilisation'
     explanationIcon_ColourBG:
       en: 'About This Visualization'
       fr: 'Au sujet de la visualisation'
@@ -1453,10 +1448,10 @@ module.exports =
 
     nextImage:
       en: 'Next Image'
-      fr: "L’image prochaine"
+      fr: 'L’image prochaine'
     previousImage:
       en: 'Previous Image'
-      fr: "L’image précédente"
+      fr: 'L’image précédente'
 
     mainSelectionHelp:
       en: 'About the main selection'
@@ -1468,7 +1463,7 @@ module.exports =
       en: 'About the units'
       fr: 'Au sujet des unités'
     datasetsHelp:
-      en: "About the Canada’s Energy Future report data sets"
+      en: 'About the Canada’s Energy Future report data sets'
       fr: 'Au sujet des ensembles de données utilisés pour Avenir énergétique du Canada'
     scenariosHelp:
       en: 'About the scenarios'
@@ -1481,9 +1476,12 @@ module.exports =
       fr: 'Au sujet des sources d’énergie'
     viewByHelp:
       en: 'About the "view by" options'
-      fr: "Au sujet de l’option « Visualiser par »"
+      fr: 'Au sujet de l’option « Visualiser par »'
 
     sectors:
+      totalSelected:
+        en: 'Total demand selected'
+        fr: 'Sélection - Demande totale'
       residentialSelected:
         en: 'Residential sector selected'
         fr: 'Sélection - Secteur résidentiel'
@@ -1497,6 +1495,9 @@ module.exports =
         en: 'Transportation sector selected'
         fr: 'Sélection - Secteur des transports'
 
+      totalUnselected:
+        en: 'Total demand unselected'
+        fr: 'Désélection - Demande totale'
       residentialUnselected:
         en: 'Residential sector unselected'
         fr: 'Désélection - Secteur résidentiel'
@@ -1510,9 +1511,123 @@ module.exports =
         en: 'Transportation sector unselected'
         fr: 'Désélection - Secteur des transports'
 
+    unit:
+      petajoulesSelected:
+        en: 'Petajoule selected'
+        fr: 'Sélection - Pétajoule'
+      gigawattHoursSelected:
+        en: 'GW.h selected'
+        fr: 'Sélection - GWh'
+      kilobarrelEquivalentsSelected:
+        en: 'kBOE/d selected'
+        fr: 'Sélection - kBEP/j'
+      thousandCubicMetresSelected:
+        en: 'km³/d selected'
+        fr: 'Sélection - km³/j'
+      millionCubicMetresSelected:
+        en: 'Mm³/d selected'
+        fr: 'Sélection - Mm³/j'
+      kilobarrelsSelected:
+        en: 'kB/d selected'
+        fr: 'Sélection - kB/j'
+      cubicFeetSelected:
+        en: 'Mcf/d selected'
+        fr: 'Sélection - Mpi³/j'
+
+      petajoulesUnselected:
+        en: 'Petajoule unselected'
+        fr: 'Désélection - Pétajoule'
+      gigawattHoursUnselected:
+        en: 'GW.h unselected'
+        fr: 'Désélection - GWh'
+      kilobarrelEquivalentsUnselected:
+        en: 'kBOE/d unselected'
+        fr: 'Désélection - kBEP/j'
+      thousandCubicMetresUnselected:
+        en: 'km³/d unselected'
+        fr: 'Désélection - km³/j'
+      millionCubicMetresUnselected:
+        en: 'Mm³/d unselected'
+        fr: 'Désélection - Mm³/j'
+      kilobarrelsUnselected:
+        en: 'kB/d unselected'
+        fr: 'Désélection - kB/j'
+      cubicFeetUnselected:
+        en: 'Mcf/d unselected'
+        fr: 'Désélection - Mpi³/j'
+    
+    dataset:
+      jan2016Selected:
+        en: '2016 selected'
+        fr: 'Sélection - 2016'
+      oct2016Selected:
+        en: '2016 update selected'
+        fr: 'Sélection - Mise à jour 2016'
+
+      jan2016Unselected:
+        en: '2016 unselected'
+        fr: 'Désélection - 2016'
+      oct2016Unselected:
+        en: '2016 update unselected'
+        fr: 'Désélection - Mise à jour 2016'
+
+    scenario:
+      referenceSelected:
+        en: 'Reference selected'
+        fr: 'Sélection - Référence'
+      lowSelected:
+        en: 'Low price selected'
+        fr: 'Sélection - Prix bas'
+      highSelected:
+        en: 'High price selected'
+        fr: 'Sélection - Prix élevé'
+      constrainedSelected:
+        en: 'Constrained selected'
+        fr: 'Sélection - Capacité limitée'
+      noLngSelected:
+        en: 'No LNG selected'
+        fr: 'Sélection - GNL zéro'
+      highLngSelected:
+        en: 'High LNG selected'
+        fr: 'Sélection - GNL élevé'
+
+      referenceUnselected:
+        en: 'Reference unselected'
+        fr: 'Désélection - Référence'
+      lowUnselected:
+        en: 'Low price unselected'
+        fr: 'Désélection - Prix bas'
+      highUnselected:
+        en: 'High price unselected'
+        fr: 'Désélection - Prix élevé'
+      constrainedUnselected:
+        en: 'Constrained unselected'
+        fr: 'Désélection - Capacité limitée'
+      noLngUnselected:
+        en: 'No LNG unselected'
+        fr: 'Désélection - GNL zéro'
+      highLngUnselected:
+        en: 'High LNG unselected'
+        fr: 'Désélection - GNL élevé'
+
+    viewBy:
+      regionSelected:
+        en: 'Region selected'
+        fr: 'Sélection - Région'
+      sourceSelected:
+        en: 'Source selected'
+        fr: 'Sélection - Région'
+      regionUnselected:
+        en: 'Region unselected'
+        fr: 'Désélection - Source'
+      sourceUnselected:
+        en: 'Source unselected'
+        fr: 'Désélection - Source'
+
+
     howToImage:
       en: 'Usage instructions'
-      fr: "Guide d’utilisation"
+      fr: 'Guide d’utilisation'
       
     playAnimation:
       en: 'Play'
@@ -1522,7 +1637,6 @@ module.exports =
       fr: 'Pause'
 
     sources:
-
       hydro:
         en: 'Water'
         fr: 'Eau'

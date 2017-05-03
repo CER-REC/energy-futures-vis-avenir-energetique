@@ -2,7 +2,7 @@ Platform = require '../Platform.coffee'
 Platform.name = 'server'
 # Array.includes is supported with a command line switch, but for maximum robustness
 # we'll continue to use this polyfill.
-require '../ArrayIncludes.coffee'
+require '../Polyfills.coffee'
 
 express = require 'express'
 Compression = require 'compression'

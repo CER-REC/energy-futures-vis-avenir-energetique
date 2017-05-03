@@ -127,7 +127,9 @@ class Visualization1 extends visualization
 
 
   constructor: (@app, config, @options) ->
-    super config
+    @config = config
+    @_chart = null
+    @_provinceMenu = null
 
     @getData()
 
@@ -151,6 +153,9 @@ class Visualization1 extends visualization
     @addScenarios()
     @render()
 
+  tearDown: ->
+    # TODO: Consider garbage collection and event listeners
+    @app.window.document.getElementById('visualizationContent').innerHTML = ''
 
   redraw: ->
     @svgResize()

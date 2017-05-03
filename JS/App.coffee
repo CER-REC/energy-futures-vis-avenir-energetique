@@ -5,7 +5,7 @@ BrowserCookies = require 'browser-cookies'
 QueryString = require 'query-string'
 
 
-require './ArrayIncludes.coffee'
+require './Polyfills.coffee'
 Router = require './Router.coffee'
 
 Visualization1Configuration = require './VisualizationConfigurations/visualization1Configuration.coffee'
