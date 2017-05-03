@@ -6,6 +6,7 @@
   line-height: 1em;
   font-weight: 400;
   color: #333333;
+  margin: 10px 0 10px 0;
 }
 
 #canadasEnergyFutureVisualization h1, 
@@ -70,6 +71,11 @@ div.chartTooltip:after {
   font-family: Avenir Next Demi Condensed, 'PT Sans Narrow',  Arial Narrow, Arial, Verdana, sans-serif;
 }
 
+#canadasEnergyFutureVisualization #navbarInnerContainer {
+  box-shadow: 0px 0px 5px 0px black;
+  float: left;
+  width: 100%;
+}
 
 #canadasEnergyFutureVisualization #panelLeft.en {
   /*column-count: 2;
@@ -220,6 +226,7 @@ div.chartTooltip:after {
   width: 25%;
   box-sizing: border-box;
   padding: 0px 7px 0px 7px;
+  cursor: pointer;
 }
 
 #canadasEnergyFutureVisualization .thumbnailContainer .imgContainer {
@@ -539,17 +546,18 @@ div.chartTooltip:after {
 
 
 #canadasEnergyFutureVisualization .vizNavbarItem {
-  float: right;
+  float: left;
   color: white;
   box-sizing: border-box;
   cursor: pointer;
   height: 50px;
   padding: 0;
   overflow: hidden;
-  box-shadow: 0px 0px 5px black;
+  /* This inset drop shadow creates the illusion that the element to the left has cast a shadow on the current element */
+  box-shadow: inset 5px 0px 5px -5px black;
 }
 
-#canadasEnergyFutureVisualization .navbarSelectedItem{
+#canadasEnergyFutureVisualization .navbarSelectedItem {
   height: 100%;
 }
 
@@ -640,6 +648,10 @@ div.chartTooltip:after {
   background-repeat: no-repeat;
   background-size: 23px 20px;
   background-image: url(../IMG/home.png);  
+}
+
+#canadasEnergyFutureVisualization .vizNavbarHomeButton:focus {
+  box-shadow: inset 0px 0px 0px 3px #F00;
 }
 
 
@@ -1009,7 +1021,9 @@ svg { overflow: hidden; }
 #canadasEnergyFutureVisualization .closeButton:focus,
 #canadasEnergyFutureVisualization .navbarButton:focus img,
 #canadasEnergyFutureVisualization .helpIconAnchor:focus img,
-#canadasEnergyFutureVisualization .squareMenuHelpButton:focus
+#canadasEnergyFutureVisualization .squareMenuHelpButton:focus,
+#canadasEnergyFutureVisualization .thumbnailContainer:focus
+/*#canadasEnergyFutureVisualization .landingPageButton:focus*/
 {
   outline: solid red 2px;
 }
@@ -1024,6 +1038,19 @@ svg { overflow: hidden; }
   outline: none;
 }
 
+#canadasEnergyFutureVisualization .navbarTitle:focus {
+  outline: solid red 2px;
+}
+
+/* Hidden from regular users, visible to screen readers and other AT */
+#canadasEnergyFutureVisualization #accessibleStatus {
+  clip: rect(1px, 1px, 1px, 1px);
+  height: 1px;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap; /* added line */
+  width: 1px;
+}
 
 
 

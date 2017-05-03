@@ -35,11 +35,6 @@ class App
 
   setup: ->
 
-    # The app loads within an iframe, but it needs to interact with some features of the
-    # containing window
-
-    @containingWindow = window.parent
-
     # We need to specify the window where the visualization classes should do their work.
     # On the client, this is just the browser window object. On the server, this becomes
     # a jsdom window object.
@@ -51,7 +46,6 @@ class App
 
     @currentView = null
     @router = null
-    # NB: This now refers to the iframe width
     @screenWidth = (window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth)
 
     # Global URL params, these are initialized by the router
@@ -83,7 +77,7 @@ class App
         @currentView.redraw() if @currentView?
     , 100 # delay, in ms
 
-    d3.select(@containingWindow).on 'resize', @debouncedResizeHandler
+    d3.select(@window).on 'resize', @debouncedResizeHandler
 
     # humans.txt
     # TODO: we may want to do this without relying on script
@@ -152,7 +146,7 @@ class App
   detectLanguage: ->
 
     # First, check URL parameter
-    query = QueryString.parse @containingWindow.location.search
+    query = QueryString.parse @window.location.search
     switch query.language
       when 'en'
         @language = 'en'

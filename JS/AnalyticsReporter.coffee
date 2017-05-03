@@ -4,8 +4,8 @@ Constants = require './Constants.coffee'
 class AnalyticsReporter
 
   constructor: (@app) ->
-    if @app.containingWindow.ga?
-      @ga = @app.containingWindow.ga
+    if @app.window.ga?
+      @ga = @app.window.ga
       @setupVideoAnalytics()
     else
       console.warn 'Google analytics object not found.'
@@ -65,7 +65,7 @@ class AnalyticsReporter
       gaMessage[dimensionName] = param
 
     # We want to track the URL without the long string of URL parameters.
-    location = @app.containingWindow.document.location
+    location = @app.window.document.location
     @ga 'revamp_test.set', 'page', "#{location.protocol}//#{location.host}#{location.pathname}"
 
     @ga 'revamp_test.send', 'pageview', gaMessage

@@ -35,10 +35,6 @@ DevelopmentPageMiddleware = ->
 
   router.get '/Wet4VideoIframe', (req, res) ->
     res.render 'Wet4VideoIframe'
-
-  router.get '/app_iframe.html', (req, res) ->
-    res.render 'app_iframe',
-      title: "Canada's Energy Future Visualization"
   
   app.use router
 

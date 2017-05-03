@@ -9,9 +9,6 @@ require('coffee-script').register();
 
 fs.mkdirsSync('./dist/public/HTML');
 
-// Make the pretty installguide
-// execSync("generate-md --layout mixu-radar --input ./installguide.md --output ./dist/installguide");
-
 // Run the Node Security Project check against our current dependencies.
 console.log("Node Security Project known vulnerabilities check:")
 execSync('nsp check', {stdio: [0,1,2]})
@@ -26,9 +23,7 @@ fs.copySync("public/IMG", "dist/public/IMG");
 fs.copySync("public/PDF", "dist/public/PDF");
 
 fs.copySync("views/app_container_body.mustache", "dist/public/HTML/app_container_body.html");
-fs.copySync("views/app_container_styles.mustache", "dist/public/HTML/app_container_styles.html");
-fs.copySync("views/app_iframe_body.mustache", "dist/public/HTML/app_iframe_body.html");
-fs.copySync("views/app_iframe_styles.mustache", "dist/public/HTML/app_iframe_styles.html");
+fs.copySync("views/app_styles.mustache", "dist/public/HTML/app_styles.html");
 
 fs.copySync("views/wet3_video_body.mustache", "dist/public/HTML/wet3_video_body.html");
 fs.copySync("views/wet3_video_styles.mustache", "dist/public/HTML/wet3_video_styles.html");

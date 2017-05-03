@@ -64,15 +64,18 @@ class LandingPage
     @viz1Link = @app.window.document.getElementById 'viz1Anchor'
     @viz1LinkClickHandler = (event) =>
       event.preventDefault()
-      @app.router.navigate
+      @app.router.navigate {
         page: 'viz1'
         language: @app.language
+      },
+        shouldSelectNavbarItem: false
     @viz1LinkEnterHandler = (event) =>
       event.preventDefault()
       if event.key == 'Enter'
         @app.router.navigate
           page: 'viz1'
           language: @app.language
+
     @viz1Link.addEventListener 'click', @viz1LinkClickHandler
     @viz1Link.addEventListener 'keyup', @viz1LinkEnterHandler
 
@@ -80,25 +83,29 @@ class LandingPage
     @viz2Link = @app.window.document.getElementById 'viz2Anchor'
     @viz2LinkClickHandler = (event) =>
       event.preventDefault()
-      @app.router.navigate
+      @app.router.navigate {
         page: 'viz2'
         language: @app.language
+      },
+        shouldSelectNavbarItem: false
     @viz2LinkEnterHandler = (event) =>
       event.preventDefault()
       if event.key == 'Enter'
         @app.router.navigate
           page: 'viz2'
           language: @app.language
-    @viz2Link.addEventListener 'click', @viz2LinkClickHandler
     @viz2Link.addEventListener 'keyup', @viz2LinkEnterHandler
+    @viz2Link.addEventListener 'click', @viz2LinkClickHandler
 
 
     @viz3Link = @app.window.document.getElementById 'viz3Anchor'
     @viz3LinkClickHandler = (event) =>
       event.preventDefault()
-      @app.router.navigate
+      @app.router.navigate {
         page: 'viz3'
         language: @app.language
+      },
+        shouldSelectNavbarItem: false
     @viz3LinkEnterHandler = (event) =>
       event.preventDefault()
       if event.key == 'Enter'
@@ -112,9 +119,11 @@ class LandingPage
     @viz4Link = @app.window.document.getElementById 'viz4Anchor'
     @viz4LinkClickHandler = (event) =>
       event.preventDefault()
-      @app.router.navigate
+      @app.router.navigate {
         page: 'viz4'
         language: @app.language
+      },
+        shouldSelectNavbarItem: false
     @viz4LinkEnterHandler = (event) =>
       event.preventDefault()
       if event.key == 'Enter'

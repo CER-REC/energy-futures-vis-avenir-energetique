@@ -926,6 +926,7 @@ class Visualization4
     To work around it, we save the width as measured at the beginning of the render
     call and use it later. This problem only occurred after the switch to using an
     iframe, and seems limited to IE.
+    # TODO: investigate if this still occurs with the switch away from the iframe
     ###
     width = @width()
 

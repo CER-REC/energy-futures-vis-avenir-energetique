@@ -25,7 +25,8 @@ class Router
   constructor: (app) ->
     @app = app
     @navbar = new Navbar @app
-    @app.containingWindow.onpopstate = @onHistoryPopState
+    @app.window.onpopstate = @onHistoryPopState
+    @accessibleStatusElement = @app.window.document.getElementById 'accessibleStatus'
     
     params = Router.parseQueryParams()
 
@@ -81,7 +82,7 @@ class Router
 
   fulfillNavigation: (params, options) ->
     @app.page = params.page
-    @navbar.setNavBarState params.page
+    @navbar.setNavBarState params.page, options
     @updateBottomNavBar options
 
     switch params.page
@@ -109,7 +110,7 @@ class Router
   # coffeelint: disable=missing_fat_arrows
   replaceState: (_.throttle (params, options) ->
     return unless options.shouldUpdateHistory
-    @app.containingWindow.history.replaceState params, '', ParamsToUrlString(params)
+    @app.window.history.replaceState params, '', ParamsToUrlString(params)
   , 250)
   # coffeelint: enable=missing_fat_arrows
 
@@ -124,7 +125,8 @@ class Router
       @app.popoverManager.closePopover()
       @app.currentView.tearDown()
       @app.currentView = new LandingPage @app
-      @app.containingWindow.history.pushState params, '', ParamsToUrlString(params) if options.shouldUpdateHistory
+      @app.window.history.pushState params, '', ParamsToUrlString(params) if options.shouldUpdateHistory
+      @updateStatusElement params.page
 
 
   viz1Handler: (params, options) ->
@@ -136,7 +138,8 @@ class Router
       @app.currentView.tearDown()
       @app.currentView = new Visualization1 @app, @app.visualization1Configuration
       params = @app.visualization1Configuration.routerParams()
-      @app.containingWindow.history.pushState params, '', ParamsToUrlString(params) if options.shouldUpdateHistory
+      @app.window.history.pushState params, '', ParamsToUrlString(params) if options.shouldUpdateHistory
+      @updateStatusElement params.page
     else
       @replaceState params, options
 
@@ -151,7 +154,8 @@ class Router
       @app.currentView.tearDown()
       @app.currentView = new Visualization2 @app, @app.visualization2Configuration
       params = @app.visualization2Configuration.routerParams()
-      @app.containingWindow.history.pushState params, '', ParamsToUrlString(params) if options.shouldUpdateHistory
+      @app.window.history.pushState params, '', ParamsToUrlString(params) if options.shouldUpdateHistory
+      @updateStatusElement params.page
     else
       @replaceState params, options
 
@@ -166,7 +170,8 @@ class Router
       @app.currentView.tearDown()
       @app.currentView = new Visualization3 @app, @app.visualization3Configuration
       params = @app.visualization3Configuration.routerParams()
-      @app.containingWindow.history.pushState params, '', ParamsToUrlString(params) if options.shouldUpdateHistory
+      @app.window.history.pushState params, '', ParamsToUrlString(params) if options.shouldUpdateHistory
+      @updateStatusElement params.page
     else
       @replaceState params, options
 
@@ -181,13 +186,16 @@ class Router
       @app.currentView.tearDown()
       @app.currentView = new Visualization4 @app, @app.visualization4Configuration
       params = @app.visualization4Configuration.routerParams()
-      @app.containingWindow.history.pushState params, '', ParamsToUrlString(params) if options.shouldUpdateHistory
+      @app.window.history.pushState params, '', ParamsToUrlString(params) if options.shouldUpdateHistory
+      @updateStatusElement params.page
     else
       @replaceState params, options
 
     @app.analyticsReporter.reportPage @app.visualization4Configuration.routerParams()
 
    
+  updateStatusElement: (page) ->
+    @accessibleStatusElement.innerHTML = Tr.navigation[page][@app.language]
 
 
 Router.parseQueryParams = ->

@@ -3,11 +3,8 @@ module.exports =
 
   landingPage:
     mainHeader:
-      en: "EXPLORING CANADA'S ENERGY FUTURE"
+      en: "EXPLORING CANADA’S ENERGY FUTURE"
       fr: 'EXPLORER L’AVENIR ÉNERGÉTIQUE DU CANADA'
-    # contentHeader1:
-    #   en: "What is Canada's energy future?"
-    #   fr: 'Quel est l’avenir énergétique du Canada?'
     content1:
       en: """
       <p>
@@ -48,7 +45,7 @@ module.exports =
       fr: 'EXPLORATION PAR SECTEUR'
     visualization3Link:
       en: 'EXPLORE ELECTRICITY GENERATION'
-      fr: "EXPLORATION DE L'ÉLECTRICITÉ"
+      fr: "EXPLORATION DE L’ÉLECTRICITÉ"
       # fr: 'EXPLORATION DE LA COMPOSANTE ÉLECTRICITÉ'
     visualization4Link:
       en: 'EXPLORE SCENARIOS'
@@ -85,7 +82,7 @@ module.exports =
 
     imageDownloadLink:
       en: 'DOWNLOAD IMAGE'
-      fr: "TÉLÉCHARGEMENT D'IMAGE"
+      fr: "TÉLÉCHARGEMENT D’IMAGE"
     dataDownloadLink:
       en: 'DOWNLOAD DATA'
       fr: 'TÉLÉCHARGEMENT DES DONNÉES'
@@ -95,7 +92,7 @@ module.exports =
 
     imageDownloadHeader:
       en: 'IMAGE DOWNLOAD'
-      fr: "TÉLÉCHARGEMENT D'IMAGE"
+      fr: "TÉLÉCHARGEMENT D’IMAGE"
     bitlyLinkInstructions:
       en: 'To interact with this visualization, visit: '
       fr: 'Pour manipuler cette visualisation, visitez: '
@@ -124,7 +121,7 @@ module.exports =
           Our objective is to present quality data from our two most recent energy outlooks in an interactive graphic format that is user-friendly and clarifies complex information into “visualizations” that are easily understood. This way you can explore Canada’s energy future right from your own computer. In the months and years to come, we will use this innovative format to share our pipeline safety data, energy data series, energy infrastructure information, and a host of other topical data.
         </p>
         <p>
-          If you want to use the data for research and undertake your own review, all the data is downloadable and shareable. The chart images are also downloadable, and if you are interested in the source code for the visualizations, it is available on the government’s Open Government portal: <a href="http://open.canada.ca" target="_blank">open.canada.ca</a>. 
+          If you want to use the data for research and undertake your own review, all the data is downloadable and shareable. The chart images are also downloadable, and if you are interested in the source code for the visualizations, it is available on the government’s Open Government portal: <a href="http://open.canada.ca" target="_blank">open.canada.ca</a>.
         </p>
         <p>
           We hope we are hitting the mark. Your feedback is essential.
@@ -512,7 +509,7 @@ module.exports =
       fr: 'AVENIR ÉNERGÉTIQUE'
     datasetSelectorHelp:
       en: """
-        <h1> CANADA'S ENERGY FUTURE 2016 </h1>
+        <h1> CANADA’S ENERGY FUTURE 2016 </h1>
         <h2> January 2016 </h2>
         <p>
           A continuation of the Energy Futures series. In addition our usual baseline long-term outlook, we explores key uncertainties for Canadian energy such robustness of global LNG markets and availability of crude oil transportation infrastructure.
@@ -877,7 +874,7 @@ module.exports =
         en:
           'Includes refined petroleum products and natural gas liquids. Specifically this includes: motor gasoline, diesel, aviation fuel, light fuel oil, kerosene, heavy fuel oil, propane, butane, ethane, petroleum coke, still gas, and non-energy products such as lubricants, asphalt, and petrochemical feedstocks.'
         fr:
-          "Comprennent les produits produits raffinés et les liquides de gaz naturel, plus particulièrement, l’essence automobile, le diesel, le carburéacteur, le mazout léger, le kérosène, le mazout lourd, le propane, le butane, l’éthane, la coke de pétrole, le gaz de distillation et les produits non énergétiques, comme les lubrifiants, l’asphalte et les charges d'alimentation pétrochimiques"
+          "Comprennent les produits produits raffinés et les liquides de gaz naturel, plus particulièrement, l’essence automobile, le diesel, le carburéacteur, le mazout léger, le kérosène, le mazout lourd, le propane, le butane, l’éthane, la coke de pétrole, le gaz de distillation et les produits non énergétiques, comme les lubrifiants, l’asphalte et les charges d’alimentation pétrochimiques"
       naturalGas:
         en:
           'Production refers to dry marketable gas production. Total consumption of gas includes some non-marketed producer consumption. In Canada it is produced from conventional, tight, shale, and coal bed methane resources, as well is produced along with crude oil production (also known as solution or associated gas).'
@@ -1395,7 +1392,7 @@ module.exports =
       en: 'The National Energy Board (NEB) worked together with leading data visualization experts in both academia and industry to create the Exploring Canada’s Energy Future interactive online tool. This pilot concept, based on our flagship publication – Canada’s Energy Future 2016: Energy Supply and Demand Projections to 2040, will give Canadians a taste of the exciting new way the NEB will share data going forward.'
       fr: 'Pour créer l’outil interactif Explorer l’avenir énergétique du Canada, l’Office national de l’énergie s’est associé à des experts de la visualisation des données du milieu universitaire et de l’industrie. Fondé sur la publication phare Avenir énergétique du Canada en 2016 – Offre et demande énergétiques à l’horizon 2040, ce projet pilote donnera aux Canadiens un avant-goût du nouveau et fabuleux moyen qu’utilisera désormais l’Office pour diffuser ses données.'
     subject:
-      en: "Canada's Energy Future"
+      en: "Canada’s Energy Future"
       fr: 'l%E2%80%99avenir%20%C3%A9nerg%C3%A9tique%20du%20Canada'
 
   altText:
@@ -1414,7 +1411,7 @@ module.exports =
 
     questionMark_ColourBG:
       en: 'How to Use'
-      fr: "Guide d'utilisation"
+      fr: "Guide d’utilisation"
     explanationIcon_ColourBG:
       en: 'About This Visualization'
       fr: 'Au sujet de la visualisation'
@@ -1456,10 +1453,10 @@ module.exports =
 
     nextImage:
       en: 'Next Image'
-      fr: "L'image prochaine"
+      fr: "L’image prochaine"
     previousImage:
       en: 'Previous Image'
-      fr: "L'image précédente"
+      fr: "L’image précédente"
 
     mainSelectionHelp:
       en: 'About the main selection'
@@ -1471,7 +1468,7 @@ module.exports =
       en: 'About the units'
       fr: 'Au sujet des unités'
     datasetsHelp:
-      en: "About the Canada's Energy Future report data sets"
+      en: "About the Canada’s Energy Future report data sets"
       fr: 'Au sujet des ensembles de données utilisés pour Avenir énergétique du Canada'
     scenariosHelp:
       en: 'About the scenarios'
@@ -1484,7 +1481,7 @@ module.exports =
       fr: 'Au sujet des sources d’énergie'
     viewByHelp:
       en: 'About the "view by" options'
-      fr: "Au sujet de l'option « Visualiser par »"
+      fr: "Au sujet de l’option « Visualiser par »"
 
     sectors:
       residentialSelected:
@@ -1515,7 +1512,7 @@ module.exports =
 
     howToImage:
       en: 'Usage instructions'
-      fr: "Guide d'utilisation"
+      fr: "Guide d’utilisation"
       
     playAnimation:
       en: 'Play'
@@ -1554,4 +1551,26 @@ module.exports =
   report:
     en: 'REPORT: '
     fr: 'RAPPORT : '
+
+  home:
+    en: 'Home'
+    fr: 'Accueil'
+
+  navigation:
+    landingPage:
+      en: 'Switched to home page'
+      fr: 'Navigation au page d’accueil'
+    viz1:
+      en: 'Switched to "explore by region" page'
+      fr: 'Navigation au page "exploration par région"'
+    viz2:
+      en: 'Switched to "explore by sector" page'
+      fr: 'Navigation au page "exploration par secteur"'
+    viz3:
+      en: 'Switched to "explore electricity generation" page'
+      fr: 'Navigation au page "exploration de l’électricité"'
+    viz4:
+      en: 'Switched to "explore scenarios" page'
+      fr: 'Navigation au page "exploration des scénarios"'
+
 
