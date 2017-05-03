@@ -44,7 +44,7 @@ class GasProductionIngestor
 
   validateLineByLine: ->
     if @unmappedData.length != @mappedData.length
-      throw "Error: Sanity check failed, unmapped CSV data (length #{@unmappedData.length}) and mapped CSV data (length #{@mappedData.length}) had different lengths for #{@dataFilename}"
+      throw new Error "Error: Sanity check failed, unmapped CSV data (length #{@unmappedData.length}) and mapped CSV data (length #{@mappedData.length}) had different lengths for #{@dataFilename}"
 
 
     for i in [0...@unmappedData.length]
@@ -117,8 +117,8 @@ GasProductionIngestor.csvMapping = (d) ->
   province: d.Area
   type: d.Type
   scenario: d.Case
-  year: parseInt(d.Year)
-  value: parseFloat(d.Data)
+  year: parseInt d.Year
+  value: parseFloat d.Data
   unit: d.Unit
 
 

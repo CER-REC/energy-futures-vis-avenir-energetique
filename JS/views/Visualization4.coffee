@@ -19,7 +19,8 @@ ControlsHelpPopover = require '../popovers/ControlsHelpPopover.coffee'
 class Visualization4
 
   renderBrowserTemplate: ->
-    @app.window.document.getElementById('visualizationContent').innerHTML = Mustache.render Visualization4Template,
+    contentElement = @document.getElementById 'visualizationContent'
+    contentElement.innerHTML = Mustache.render Visualization4Template,
       selectDatasetLabel: Tr.datasetSelector.selectDatasetLabel[@app.language]
       selectOneLabel: Tr.mainSelector.selectOneLabel[@app.language]
       selectUnitLabel: Tr.unitSelector.selectUnitLabel[@app.language]
@@ -39,7 +40,7 @@ class Visualization4
     @scenariosHelpPopover = new ControlsHelpPopover @app
     @provincesHelpPopover = new ControlsHelpPopover @app
 
-    d3.select(@app.window.document).select '#datasetSelectorHelpButton'
+    @d3document.select '#datasetSelectorHelpButton'
       .on 'click', =>
         d3.event.stopPropagation()
         d3.event.preventDefault()
@@ -52,10 +53,10 @@ class Visualization4
             title: Tr.datasetSelector.datasetSelectorHelpTitle[@app.language]
             content: Tr.datasetSelector.datasetSelectorHelp[@app.language]
             attachmentSelector: '.datasetSelectorGroup'
-            elementToFocusOnClose: @app.window.document.getElementById('datasetSelectorHelpButton')
+            elementToFocusOnClose: @document.getElementById('datasetSelectorHelpButton')
           @app.analyticsReporter.reportEvent 'Controls help', 'Viz4 dataset help'
 
-    d3.select(@app.window.document).select '#mainSelectorHelpButton'
+    @d3document.select '#mainSelectorHelpButton'
       .on 'click', =>
         d3.event.stopPropagation()
         d3.event.preventDefault()
@@ -68,10 +69,10 @@ class Visualization4
             title: Tr.mainSelector.selectOneLabel[@app.language]
             content: Tr.mainSelector.mainSelectorHelp[@app.language]
             attachmentSelector: '.mainSelectorSection'
-            elementToFocusOnClose: @app.window.document.getElementById('mainSelectorHelpButton')
+            elementToFocusOnClose: @document.getElementById('mainSelectorHelpButton')
           @app.analyticsReporter.reportEvent 'Controls help', 'Viz4 main selection help'
     
-    d3.select(@app.window.document).select '#unitSelectorHelpButton'
+    @d3document.select '#unitSelectorHelpButton'
       .on 'click', =>
         d3.event.stopPropagation()
         d3.event.preventDefault()
@@ -84,10 +85,10 @@ class Visualization4
             title: Tr.unitSelector.unitSelectorHelpTitle[@app.language]
             content: Tr.unitSelector.unitSelectorHelp[@app.language]
             attachmentSelector: '.unitsSelectorGroup'
-            elementToFocusOnClose: @app.window.document.getElementById('unitSelectorHelpButton')
+            elementToFocusOnClose: @document.getElementById('unitSelectorHelpButton')
           @app.analyticsReporter.reportEvent 'Controls help', 'Viz4 unit help'
 
-    d3.select(@app.window.document).select '#scenarioSelectorHelpButton'
+    @d3document.select '#scenarioSelectorHelpButton'
       .on 'click', =>
         d3.event.stopPropagation()
         d3.event.preventDefault()
@@ -100,18 +101,19 @@ class Visualization4
             title: Tr.scenarioSelector.scenarioSelectorHelpTitle[@app.language]
             content: Tr.scenarioSelector.scenarioSelectorHelp[@app.language]
             attachmentSelector: '.scenarioSelectorGroup'
-            elementToFocusOnClose: @app.window.document.getElementById('scenarioSelectorHelpButton')
+            elementToFocusOnClose: @document.getElementById('scenarioSelectorHelpButton')
           @app.analyticsReporter.reportEvent 'Controls help', 'Viz4 scenario help'
 
 
   renderServerTemplate: ->
-    @app.window.document.getElementById('visualizationContent').innerHTML = Mustache.render @options.template,
-        svgStylesheet: @options.svgTemplate
-        title: Tr.visualization4Titles[@config.mainSelection][@app.language]
-        description: @config.imageExportDescription()
-        energyFuturesSource: Tr.allPages.imageDownloadSource[@app.language]
-        bitlyLink: @app.bitlyLink
-        legendContent: @scenarioLegendData()
+    contentElement = @document.getElementById 'visualizationContent'
+    contentElement.innerHTML = Mustache.render @options.template,
+      svgStylesheet: @options.svgTemplate
+      title: Tr.visualization4Titles[@config.mainSelection][@app.language]
+      description: @config.imageExportDescription()
+      energyFuturesSource: Tr.allPages.imageDownloadSource[@app.language]
+      bitlyLink: @app.bitlyLink
+      legendContent: @scenarioLegendData()
 
 
 
@@ -124,22 +126,25 @@ class Visualization4
       right: 70
       bottom: 50
       left: 10
+    @document = @app.window.document
+    @d3document = d3.select @document
+
 
     if Platform.name == 'browser'
       @renderBrowserTemplate()
     else if Platform.name == 'server'
       @renderServerTemplate()
 
-    @tooltip = @app.window.document.getElementById 'tooltip'
-    @tooltipParent = @app.window.document.getElementById 'wideVisualizationPanel'
-    @graphPanel = @app.window.document.getElementById 'graphPanel'
+    @tooltip = @document.getElementById 'tooltip'
+    @tooltipParent = @document.getElementById 'wideVisualizationPanel'
+    @graphPanel = @document.getElementById 'graphPanel'
 
     @render()
     @redraw()
 
 
   redraw: ->
-    d3.select(@app.window.document).select '#graphSVG'
+    @d3document.select '#graphSVG'
       .attr
         width: @outerWidth()
         height: @outerHeight
@@ -147,8 +152,8 @@ class Visualization4
     @renderYAxis false
     @renderGraph() # This call used to pass in 0 for duration. Why?
     @provinceMenu.size
-      w: d3.select(@app.window.document).select('#provincesSelector').node().getBoundingClientRect().width
-      h: @height() - d3.select(@app.window.document).select('span.titleLabel').node().getBoundingClientRect().height + d3.select(@app.window.document).select('#xAxis').node().getBoundingClientRect().height
+      w: @d3document.select('#provincesSelector').node().getBoundingClientRect().width
+      h: @height() - @d3document.select('span.titleLabel').node().getBoundingClientRect().height + @d3document.select('#xAxis').node().getBoundingClientRect().height
 
 
 
@@ -304,15 +309,15 @@ class Visualization4
 
   # Black and white non multi select menu.
   buildProvinceMenu: ->
-    d3.select(@app.window.document).select '#provinceMenuSVG'
+    @d3document.select '#provinceMenuSVG'
       .attr
-        width: d3.select(@app.window.document).select('#provincesSelector').node().getBoundingClientRect().width
+        width: @d3document.select('#provincesSelector').node().getBoundingClientRect().width
         height: @outerHeight
 
     provinceOptions =
       size:
-        w: d3.select(@app.window.document).select('#provincesSelector').node().getBoundingClientRect().width
-        h: @height() - d3.select(@app.window.document).select('span.titleLabel').node().getBoundingClientRect().height + d3.select(@app.window.document).select('#xAxis').node().getBoundingClientRect().height
+        w: @d3document.select('#provincesSelector').node().getBoundingClientRect().width
+        h: @height() - @d3document.select('span.titleLabel').node().getBoundingClientRect().height + @d3document.select('#xAxis').node().getBoundingClientRect().height
       margin:
         left: 0
         right: 0
@@ -379,7 +384,7 @@ class Visualization4
         title: Tr.regionSelector.selectRegionLabel[@app.language]
         content: contentString
         attachmentSelector: '#provincesSelector'
-        elementToFocusOnClose: @app.window.document.getElementById('provinceHelpButton')
+        elementToFocusOnClose: @document.getElementById('provinceHelpButton')
       @app.analyticsReporter.reportEvent 'Controls help', 'Viz4 region help'
 
 
@@ -556,7 +561,7 @@ class Visualization4
   outerWidth: ->
     # getBoundingClientRect is not implemented in JSDOM, use fixed width on server
     if Platform.name == 'browser'
-      d3.select(@app.window.document)
+      @d3document
         .select('#graphPanel')
         .node()
         .getBoundingClientRect()
@@ -617,11 +622,11 @@ class Visualization4
   # Render helpers here
 
   render: ->
-    d3.select(@app.window.document).select '#graphSVG'
+    @d3document.select '#graphSVG'
       .attr
         width: @outerWidth()
         height: @outerHeight
-    d3.select(@app.window.document).select '#graphGroup'
+    @d3document.select '#graphGroup'
       .attr 'transform', "translate(#{@margin.top},#{@margin.left})"
         
     @renderMainSelector()
@@ -638,7 +643,7 @@ class Visualization4
 
   renderDatasetSelector: ->
     if @config.dataset?
-      datasetSelectors = d3.select(@app.window.document)
+      datasetSelectors = @d3document
         .select('#datasetSelector')
         .selectAll('.datasetSelectorButton')
         .data CommonControls.datasetSelectionData(@config, @app)
@@ -664,8 +669,14 @@ class Visualization4
 
           @app.datasetRequester.updateAndRequestIfRequired newConfig, update
 
-      datasetSelectors.html (d) ->
-        "<button class='#{d.class}' type='button' title='#{d.title}' aria-label='#{d.ariaLabel}'>#{d.label}</button>"
+      datasetSelectors.html (d) -> """
+        <button class='#{d.class}'
+                type='button'
+                title='#{d.title}'
+                aria-label='#{d.ariaLabel}'>
+          #{d.label}
+        </button>
+      """
 
       datasetSelectors.exit().remove()
 
@@ -690,7 +701,7 @@ class Visualization4
 
       @app.datasetRequester.updateAndRequestIfRequired newConfig, update
 
-    mainSelectors = d3.select(@app.window.document)
+    mainSelectors = @d3document
       .select('#mainSelector')
       .selectAll('.mainSelectorButton')
       .data CommonControls.mainSelectionData(@config, @app)
@@ -709,13 +720,13 @@ class Visualization4
       .attr
         'aria-label': (d) -> d.altText
 
-    mainSelectors.html (d) ->
-      """<img src=#{d.image}
-              class='mainSelectorImage'
-              title='#{d.title}'
-              alt='#{d.altText}'>
-       <span class='mainSelectorLabel' title='#{d.title}'>#{d.label}</span>
-      """
+    mainSelectors.html (d) -> """
+      <img src=#{d.image}
+           class='mainSelectorImage'
+           title='#{d.title}'
+           alt='#{d.altText}'>
+      <span class='mainSelectorLabel' title='#{d.title}'>#{d.label}</span>
+    """
 
 
 
@@ -725,7 +736,7 @@ class Visualization4
 
 
   renderUnitsSelector: ->
-    unitsSelectors = d3.select(@app.window.document)
+    unitsSelectors = @d3document
       .select('#unitsSelector')
       .selectAll('.unitSelectorButton')
       .data CommonControls.unitSelectionData(@config, @app)
@@ -752,9 +763,14 @@ class Visualization4
 
 
 
-    unitsSelectors.html (d) ->
-      "<button class='#{d.class}' type='button' title='#{d.title}' aria-label='#{d.ariaLabel}'>#{d.label}</button>"
-
+    unitsSelectors.html (d) -> """
+      <button class='#{d.class}'
+              type='button'
+              title='#{d.title}'
+              aria-label='#{d.ariaLabel}'>
+        #{d.label}
+      </button>
+    """
 
     unitsSelectors.exit()
       .on 'click', null
@@ -762,7 +778,7 @@ class Visualization4
 
 
   renderScenariosSelector: ->
-    scenariosSelectors = d3.select(@app.window.document)
+    scenariosSelectors = @d3document
       .select('#scenariosSelector')
       .selectAll('.scenarioSelectorButton')
       .data CommonControls.scenariosSelectionData(@config, @app)
@@ -799,22 +815,21 @@ class Visualization4
 
 
 
-    scenariosSelectors.html (d) ->
-      """
-        <button class='#{d.multipleSelectClass}' type='button' title='#{d.title}'>
-          <span aria-label='#{d.ariaLabel}'>#{d.label}</span>
-        </button>
-      """
+    scenariosSelectors.html (d) -> """
+      <button class='#{d.multipleSelectClass}' type='button' title='#{d.title}'>
+        <span aria-label='#{d.ariaLabel}'>#{d.label}</span>
+      </button>
+    """
 
     scenariosSelectors.exit()
       .on 'click', null
       .remove()
 
   renderXAxis: (transition = true) ->
-    d3.select(@app.window.document).selectAll('.forecast').remove()
+    @d3document.selectAll('.forecast').remove()
 
     #Render the axis with the labels
-    axis = d3.select(@app.window.document).select '#xAxis'
+    axis = @d3document.select '#xAxis'
       .attr
         transform: "translate(#{0},#{@height()})"
       .call @xAxis()
@@ -834,7 +849,7 @@ class Visualization4
         'shape-rendering': 'crispEdges'
 
     #render the gridLines
-    gridLines = d3.select(@app.window.document).select '#xAxisGrid'
+    gridLines = @d3document.select '#xAxisGrid'
       .attr
         transform: "translate(#{0},#{@height()})"
       
@@ -866,7 +881,7 @@ class Visualization4
 
     textX = @margin.left + @xAxisScale()(2015)
     textY = @outerHeight - 16
-    d3.select(@app.window.document).select '#graphGroup'
+    @d3document.select '#graphGroup'
       .append 'text'
         .attr
           class: 'forecast forecastLabel'
@@ -877,7 +892,7 @@ class Visualization4
 
     arrowX = @margin.left + @xAxisScale()(2015) + 65
     arrowY = @outerHeight - 27
-    d3.select(@app.window.document).select '#graphGroup'
+    @d3document.select '#graphGroup'
       .append 'image'
         .attr
           class: 'forecast'
@@ -886,7 +901,7 @@ class Visualization4
           height: 9
           width: 200
 
-    d3.select(@app.window.document).select '#graphGroup'
+    @d3document.select '#graphGroup'
       .append 'line'
         .attr
           class: 'forecast'
@@ -899,7 +914,7 @@ class Visualization4
   
   renderYAxis: (transition = true) ->
     # Render the axis
-    axis = d3.select(@app.window.document).select '#yAxis'
+    axis = @d3document.select '#yAxis'
       .attr
         transform: "translate(#{@width()},0)"
     
@@ -923,7 +938,7 @@ class Visualization4
         'shape-rendering': 'crispEdges'
 
     #render the gridLines
-    gridLines = d3.select(@app.window.document).select '#yAxisGrid'
+    gridLines = @d3document.select '#yAxisGrid'
       .attr
         transform: "translate(#{@width()},0)"
 
@@ -978,7 +993,7 @@ class Visualization4
       .y (d) ->
         yAxisScale d.value
 
-    grads = d3.select(@app.window.document)
+    grads = @d3document
       .select('#graphGroup')
       .select('defs')
       .selectAll('.presentLinearGradient')
@@ -1036,7 +1051,7 @@ class Visualization4
 
     graphScenarioData = @graphScenarioData()
 
-    graphAreaGroups = d3.select(@app.window.document).select '#areasAndLinesGroup'
+    graphAreaGroups = @d3document.select '#areasAndLinesGroup'
       .selectAll '.graphGroup'
       .data graphScenarioData, (d) ->
         d.key
@@ -1168,7 +1183,7 @@ class Visualization4
       .remove()
 
     # update the csv data download link
-    d3.select(@app.window.document).select('#dataDownloadLink')
+    @d3document.select('#dataDownloadLink')
       .attr
         href: "csv_data#{ParamsToUrlString(@config.routerParams())}"
 
@@ -1177,7 +1192,7 @@ class Visualization4
     # TODO: Not sure I like this approach, investigate controlling the draw order of the
     # lines.
     if @config.scenarios.includes('reference') && graphScenarioData.length > 0
-      refCaseLine = d3.select @app.window.document
+      refCaseLine = d3.select @document
         .select '#referenceCaseLineGroup'
         .selectAll '#refCaseLine'
         .data [graphScenarioData[0]]
@@ -1200,7 +1215,7 @@ class Visualization4
           d: (d) ->
             line d.data
     else
-      d3.select(@app.window.document).select('#refCaseLine').transition()
+      @d3document.select('#refCaseLine').transition()
         .duration duration
         .attr
           d: (d) ->
@@ -1213,7 +1228,7 @@ class Visualization4
     # Draw 'dots' along the reference line, to add to its prominence
     # We rely on the fact that the reference case is sorted first in graphScenarioData
     if @config.scenarios.includes('reference') && graphScenarioData.length > 0
-      refCaseDots = d3.select @app.window.document
+      refCaseDots = d3.select @document
         .select '#referenceCaseLineGroup'
         .selectAll '.refCaseDot'
         .data graphScenarioData[0].data
@@ -1236,7 +1251,7 @@ class Visualization4
         .attr 'cy', (d) ->
           yAxisScale d.value
     else
-      d3.select @app.window.document
+      d3.select @document
         .selectAll 'circle.refCaseDot'
         .transition()
         .duration duration
@@ -1272,6 +1287,6 @@ class Visualization4
   tearDown: ->
     # TODO: We might want to render with empty lists for buttons, so that
     # garbage collection of event handled dom nodes goes smoothly
-    @app.window.document.getElementById('visualizationContent').innerHTML = ''
+    @document.getElementById('visualizationContent').innerHTML = ''
 
 module.exports = Visualization4

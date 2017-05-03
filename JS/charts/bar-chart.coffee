@@ -1,25 +1,25 @@
-_ = require 'lodash';
-chart = require './chart.coffee'
+_ = require 'lodash'
+Chart = require './chart.coffee'
 
-class barChart extends chart
+class BarChart extends Chart
   barChartDefaults:
     barSize : 10
     barMargin: 2
 
-  constructor: (parent, x, y, options = {})->  
+  constructor: (parent, x, y, options = {}) ->
     @options = _.extend {}, @barChartDefaults, options
 
-    # super(parent, @options) 
+
     @chart_options = _.extend {}, @chart_defaults, @options
     @_duration = @chart_options.duration
-    @parent(parent, @chart_options.groupId)
-    @_size = 
+    @parent parent, @chart_options.groupId
+    @_size =
       w : @chart_options.size.w
       h : @chart_options.size.h
-    @_position = 
+    @_position =
       x : @chart_options.position.x
       y : @chart_options.position.y
-    @data(@chart_options.data)
+    @data @chart_options.data
     @resize()
 
     @_barMargin = @options.barMargin
@@ -42,4 +42,4 @@ class barChart extends chart
     @redraw()
 
 
-module.exports = barChart
+module.exports = BarChart

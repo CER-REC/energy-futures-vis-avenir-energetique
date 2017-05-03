@@ -1,21 +1,23 @@
+# coffeelint: disable=missing_fat_arrows
+
 fs = require 'fs'
 path = require 'path'
 
 # A small set of methods that are completely identical between the ingestors.
 
-IngestionMethods = 
+IngestionMethods =
 
   setupFilenames: (options) ->
     if not options.dataFilename
-      console.log "Missing required option dataFilename"
+      console.log 'Missing required option dataFilename'
       console.log options
       return
     if not options.processedFilename
-      console.log "Missing required option processedFilename"
+      console.log 'Missing required option processedFilename'
       console.log options
       return
     if not options.logFilename
-      console.log "Missing required option logFilename"
+      console.log 'Missing required option logFilename'
       console.log options
       return
 
@@ -28,7 +30,7 @@ IngestionMethods =
   summarizedAddAndDetectDuplicate: (item) ->
     if @summarizedGroupedData[item.scenario][item.year][item.province]?
       @logMessages.push
-        message: "Duplicate item detected"
+        message: 'Duplicate item detected'
         line: item
         lineNumber: null
     else
@@ -44,7 +46,7 @@ IngestionMethods =
     @logFile = fs.openSync @logFilename, 'w+'
 
     if @logMessages.length == 0
-      @logFile.write "No errors"
+      @logFile.write 'No errors'
 
     for error in @logMessages
       fs.writeSync @logFile, "#{error.message}\n"

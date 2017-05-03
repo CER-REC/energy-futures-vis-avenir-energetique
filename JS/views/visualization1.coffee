@@ -19,13 +19,11 @@ ControlsHelpPopover = require '../popovers/ControlsHelpPopover.coffee'
 
 
 class Visualization1 extends visualization
-
-  
   height = 700
   
 
   renderBrowserTemplate: ->
-    contentElement = @app.window.document.getElementById 'visualizationContent'
+    contentElement = @document.getElementById 'visualizationContent'
     contentElement.innerHTML = Mustache.render Visualization1Template,
       selectDatasetLabel: Tr.datasetSelector.selectDatasetLabel[@app.language]
       selectOneLabel: Tr.mainSelector.selectOneLabel[@app.language]
@@ -47,7 +45,7 @@ class Visualization1 extends visualization
     @scenariosHelpPopover = new ControlsHelpPopover @app
     @provincesHelpPopover = new ControlsHelpPopover @app
 
-    d3.select(@app.window.document).select '#datasetSelectorHelpButton'
+    @d3document.select '#datasetSelectorHelpButton'
       .on 'click', =>
         d3.event.stopPropagation()
         d3.event.preventDefault()
@@ -60,10 +58,10 @@ class Visualization1 extends visualization
             title: Tr.datasetSelector.datasetSelectorHelpTitle[@app.language]
             content: Tr.datasetSelector.datasetSelectorHelp[@app.language]
             attachmentSelector: '.datasetSelectorGroup'
-            elementToFocusOnClose: @app.window.document.getElementById('datasetSelectorHelpButton')
+            elementToFocusOnClose: @document.getElementById('datasetSelectorHelpButton')
           @app.analyticsReporter.reportEvent 'Controls help', 'Viz1 dataset help'
 
-    d3.select(@app.window.document).select '#mainSelectorHelpButton'
+    @d3document.select '#mainSelectorHelpButton'
       .on 'click', =>
         d3.event.stopPropagation()
         d3.event.preventDefault()
@@ -76,10 +74,10 @@ class Visualization1 extends visualization
             title: Tr.mainSelector.selectOneLabel[@app.language]
             content: Tr.mainSelector.mainSelectorHelp[@app.language]
             attachmentSelector: '.mainSelectorSection'
-            elementToFocusOnClose: @app.window.document.getElementById('mainSelectorHelpButton')
+            elementToFocusOnClose: @document.getElementById('mainSelectorHelpButton')
           @app.analyticsReporter.reportEvent 'Controls help', 'Viz1 main selection help'
           
-    d3.select(@app.window.document).select '#unitSelectorHelpButton'
+    @d3document.select '#unitSelectorHelpButton'
       .on 'click', =>
         d3.event.stopPropagation()
         d3.event.preventDefault()
@@ -92,10 +90,10 @@ class Visualization1 extends visualization
             title: Tr.unitSelector.unitSelectorHelpTitle[@app.language]
             content: Tr.unitSelector.unitSelectorHelp[@app.language]
             attachmentSelector: '.unitsSelectorGroup'
-            elementToFocusOnClose: @app.window.document.getElementById('unitSelectorHelpButton')
+            elementToFocusOnClose: @document.getElementById('unitSelectorHelpButton')
           @app.analyticsReporter.reportEvent 'Controls help', 'Viz1 unit help'
     
-    d3.select(@app.window.document).select '#scenarioSelectorHelpButton'
+    @d3document.select '#scenarioSelectorHelpButton'
       .on 'click', =>
         d3.event.stopPropagation()
         d3.event.preventDefault()
@@ -108,13 +106,12 @@ class Visualization1 extends visualization
             title: Tr.scenarioSelector.scenarioSelectorHelpTitle[@app.language]
             content: Tr.scenarioSelector.scenarioSelectorHelp[@app.language]
             attachmentSelector: '.scenarioSelectorGroup'
-            elementToFocusOnClose: @app.window.document.getElementById('scenarioSelectorHelpButton')
+            elementToFocusOnClose: @document.getElementById('scenarioSelectorHelpButton')
           @app.analyticsReporter.reportEvent 'Controls help', 'Viz1 scenario help'
 
 
   renderServerTemplate: ->
-
-    contentElement = @app.window.document.getElementById 'visualizationContent'
+    contentElement = @document.getElementById 'visualizationContent'
     contentElement.innerHTML = Mustache.render @options.template,
       svgStylesheet: @options.svgTemplate
       title: Tr.visualization1Titles[@config.mainSelection][@app.language]
@@ -130,6 +127,8 @@ class Visualization1 extends visualization
     @config = config
     @_chart = null
     @_provinceMenu = null
+    @document = @app.window.document
+    @d3document = d3.select @document
 
     @getData()
 
@@ -143,7 +142,7 @@ class Visualization1 extends visualization
     @_margin =
       top: 20
       bottom: 70
-      left: 9 #necessary for the labels at the bottom
+      left: 9 # necessary for the labels at the bottom
       right: 60
     @_barMargin = 2
     @svgResize()
@@ -155,7 +154,7 @@ class Visualization1 extends visualization
 
   tearDown: ->
     # TODO: Consider garbage collection and event listeners
-    @app.window.document.getElementById('visualizationContent').innerHTML = ''
+    @document.getElementById('visualizationContent').innerHTML = ''
 
   redraw: ->
     @svgResize()
@@ -170,7 +169,7 @@ class Visualization1 extends visualization
       @_chart.y @yScale()
       @_chart.barSize @barSize()
       @_chart.menu.size
-        w: d3.select(@app.window.document).select('#provincePanel').node().getBoundingClientRect().width
+        w: @d3document.select('#provincePanel').node().getBoundingClientRect().width
         h: @provinceMenuHeight()
 
 
@@ -182,32 +181,52 @@ class Visualization1 extends visualization
   # built before we can set this.
   provinceMenuHeight: ->
     @height() -
-    d3.select(@app.window.document).select('span.titleLabel').node().getBoundingClientRect().height +
-    d3.select(@app.window.document).select('#xAxis').node().getBoundingClientRect().height +
-    (d3.select(@app.window.document).select('#xAxisForLabels text').node().getBoundingClientRect().height /2)
+    @d3document
+      .select('span.titleLabel')
+      .node()
+      .getBoundingClientRect()
+      .height +
+    @d3document
+      .select('#xAxis')
+      .node()
+      .getBoundingClientRect()
+      .height +
+    (@d3document
+      .select('#xAxisForLabels text')
+      .node()
+      .getBoundingClientRect()
+      .height / 2)
 
   # the graph's width
   width: ->
     # getBoundingClientRect is not implemented in JSDOM, use fixed width on server
     if Platform.name == 'browser'
-      d3.select(@app.window.document).select('#graphPanel').node().getBoundingClientRect().width - @_margin.left - @_margin.right
+      @d3document
+        .select('#graphPanel')
+        .node()
+        .getBoundingClientRect()
+        .width - @_margin.left - @_margin.right
     else if Platform.name == 'server'
       Constants.serverSideGraphWidth - @_margin.left - @_margin.right
 
   svgResize: ->
     # getBoundingClientRect is not implemented in JSDOM, use fixed width on server
     if Platform.name == 'browser'
-      svgWidth = d3.select(@app.window.document).select('#graphPanel').node().getBoundingClientRect().width
+      svgWidth = @d3document
+        .select('#graphPanel')
+        .node()
+        .getBoundingClientRect()
+        .width
     else if Platform.name == 'server'
       svgWidth = Constants.serverSideGraphWidth
 
-    d3.select(@app.window.document).select '#graphSVG'
+    @d3document.select '#graphSVG'
       .attr
         width: svgWidth
         height: height
-    d3.select(@app.window.document).select '#provinceMenuSVG'
+    @d3document.select '#provinceMenuSVG'
       .attr
-        width: d3.select(@app.window.document).select('#provincePanel').node().getBoundingClientRect().width
+        width: @d3document.select('#provincePanel').node().getBoundingClientRect().width
         height: height - @_margin.top
 
   provinceMenuData: ->
@@ -219,8 +238,10 @@ class Visualization1 extends visualization
         img:
           if @zeroedOut('BC')
             'IMG/provinces/DataUnavailable/BC_Unavailable.svg'
+          else if @config.provinces.includes 'BC'
+            'IMG/provinces/colour/BC_Selected.svg'
           else
-            if @config.provinces.includes 'BC' then 'IMG/provinces/colour/BC_Selected.svg' else 'IMG/provinces/colour/BC_Unselected.svg'
+            'IMG/provinces/colour/BC_Unselected.svg'
       AB:
         tooltip: Tr.regionSelector.names.AB[@app.language]
         present: if @config.provinces.includes 'AB' then true else false
@@ -228,8 +249,10 @@ class Visualization1 extends visualization
         img:
           if @zeroedOut('AB')
             'IMG/provinces/DataUnavailable/AB_Unavailable.svg'
+          else if @config.provinces.includes 'AB'
+            'IMG/provinces/colour/AB_Selected.svg'
           else
-            if @config.provinces.includes 'AB' then 'IMG/provinces/colour/AB_Selected.svg' else 'IMG/provinces/colour/AB_Unselected.svg'
+            'IMG/provinces/colour/AB_Unselected.svg'
       SK:
         tooltip: Tr.regionSelector.names.SK[@app.language]
         present: if @config.provinces.includes 'SK' then true else false
@@ -237,8 +260,10 @@ class Visualization1 extends visualization
         img:
           if @zeroedOut('SK')
             'IMG/provinces/DataUnavailable/SK_Unavailable.svg'
+          else if @config.provinces.includes 'SK'
+            'IMG/provinces/colour/Sask_Selected.svg'
           else
-            if @config.provinces.includes 'SK' then 'IMG/provinces/colour/Sask_Selected.svg' else 'IMG/provinces/colour/Sask_Unselected.svg'
+            'IMG/provinces/colour/Sask_Unselected.svg'
       MB:
         tooltip: Tr.regionSelector.names.MB[@app.language]
         present: if @config.provinces.includes 'MB' then true else false
@@ -246,8 +271,10 @@ class Visualization1 extends visualization
         img:
           if @zeroedOut('MB')
             'IMG/provinces/DataUnavailable/MB_Unavailable.svg'
+          else if @config.provinces.includes 'MB'
+            'IMG/provinces/colour/MB_Selected.svg'
           else
-            if @config.provinces.includes 'MB' then 'IMG/provinces/colour/MB_Selected.svg' else 'IMG/provinces/colour/MB_Unselected.svg'
+            'IMG/provinces/colour/MB_Unselected.svg'
       ON:
         tooltip: Tr.regionSelector.names.ON[@app.language]
         present: if @config.provinces.includes 'ON' then true else false
@@ -255,8 +282,10 @@ class Visualization1 extends visualization
         img:
           if @zeroedOut('ON')
             'IMG/provinces/DataUnavailable/ON_Unavailable.svg'
+          else if @config.provinces.includes 'ON'
+            'IMG/provinces/colour/ON_Selected.svg'
           else
-            if @config.provinces.includes 'ON' then 'IMG/provinces/colour/ON_Selected.svg' else 'IMG/provinces/colour/ON_Unselected.svg'
+            'IMG/provinces/colour/ON_Unselected.svg'
       QC:
         tooltip: Tr.regionSelector.names.QC[@app.language]
         present: if @config.provinces.includes 'QC' then true else false
@@ -264,8 +293,10 @@ class Visualization1 extends visualization
         img:
           if @zeroedOut('QC')
             'IMG/provinces/DataUnavailable/QC_Unavailable.svg'
+          else if @config.provinces.includes 'QC'
+            'IMG/provinces/colour/QC_Selected.svg'
           else
-            if @config.provinces.includes 'QC' then 'IMG/provinces/colour/QC_Selected.svg' else 'IMG/provinces/colour/QC_Unselected.svg'
+            'IMG/provinces/colour/QC_Unselected.svg'
       NB:
         tooltip: Tr.regionSelector.names.NB[@app.language]
         present: if @config.provinces.includes 'NB' then true else false
@@ -273,8 +304,10 @@ class Visualization1 extends visualization
         img:
           if @zeroedOut('NB')
             'IMG/provinces/DataUnavailable/NB_Unavailable.svg'
+          else if @config.provinces.includes 'NB'
+            'IMG/provinces/colour/NB_Selected.svg'
           else
-            if @config.provinces.includes 'NB' then 'IMG/provinces/colour/NB_Selected.svg' else 'IMG/provinces/colour/NB_Unselected.svg'
+            'IMG/provinces/colour/NB_Unselected.svg'
       NS:
         tooltip: Tr.regionSelector.names.NS[@app.language]
         present: if @config.provinces.includes 'NS' then true else false
@@ -282,8 +315,10 @@ class Visualization1 extends visualization
         img:
           if @zeroedOut('NS')
             'IMG/provinces/DataUnavailable/NS_Unavailable.svg'
+          else if @config.provinces.includes 'NS'
+            'IMG/provinces/colour/NS_Selected.svg'
           else
-            if @config.provinces.includes 'NS' then 'IMG/provinces/colour/NS_Selected.svg' else 'IMG/provinces/colour/NS_Unselected.svg'
+            'IMG/provinces/colour/NS_Unselected.svg'
       NL:
         tooltip: Tr.regionSelector.names.NL[@app.language]
         present: if @config.provinces.includes 'NL' then true else false
@@ -291,8 +326,10 @@ class Visualization1 extends visualization
         img:
           if @zeroedOut('NL')
             'IMG/provinces/DataUnavailable/NL_Unavailable.svg'
+          else if @config.provinces.includes 'NL'
+            'IMG/provinces/colour/NL_Selected.svg'
           else
-            if @config.provinces.includes 'NL' then 'IMG/provinces/colour/NL_Selected.svg' else 'IMG/provinces/colour/NL_Unselected.svg'
+            'IMG/provinces/colour/NL_Unselected.svg'
       PE:
         tooltip: Tr.regionSelector.names.PE[@app.language]
         present: if @config.provinces.includes 'PE' then true else false
@@ -300,8 +337,10 @@ class Visualization1 extends visualization
         img:
           if @zeroedOut('PE')
             'IMG/provinces/DataUnavailable/PEI_Unavailable.svg'
+          else if @config.provinces.includes 'PE'
+            'IMG/provinces/colour/PEI_Selected.svg'
           else
-            if @config.provinces.includes 'PE' then 'IMG/provinces/colour/PEI_Selected.svg' else 'IMG/provinces/colour/PEI_Unselected.svg'
+            'IMG/provinces/colour/PEI_Unselected.svg'
       YT:
         tooltip: Tr.regionSelector.names.YT[@app.language]
         present: if @config.provinces.includes 'YT' then true else false
@@ -309,8 +348,10 @@ class Visualization1 extends visualization
         img:
           if @zeroedOut('YT')
             'IMG/provinces/DataUnavailable/Yukon_Unavailable.svg'
+          else if @config.provinces.includes 'YT'
+            'IMG/provinces/colour/Yukon_Selected.svg'
           else
-            if @config.provinces.includes 'YT' then 'IMG/provinces/colour/Yukon_Selected.svg' else 'IMG/provinces/colour/Yukon_Unselected.svg'
+            'IMG/provinces/colour/Yukon_Unselected.svg'
       NT:
         tooltip: Tr.regionSelector.names.NT[@app.language]
         present: if @config.provinces.includes 'NT' then true else false
@@ -318,8 +359,10 @@ class Visualization1 extends visualization
         img:
           if @zeroedOut('NT')
             'IMG/provinces/DataUnavailable/NT_Unavailable.svg'
+          else if @config.provinces.includes 'NT'
+            'IMG/provinces/colour/NT_Selected.svg'
           else
-            if @config.provinces.includes 'NT' then 'IMG/provinces/colour/NT_Selected.svg' else 'IMG/provinces/colour/NT_Unselected.svg'
+            'IMG/provinces/colour/NT_Unselected.svg'
       NU:
         tooltip: Tr.regionSelector.names.NU[@app.language]
         present: if @config.provinces.includes 'NU' then true else false
@@ -327,12 +370,15 @@ class Visualization1 extends visualization
         img:
           if @zeroedOut('NU')
             'IMG/provinces/DataUnavailable/NU_Unavailable.svg'
+          else if @config.provinces.includes 'NU'
+            'IMG/provinces/colour/NU_Selected.svg'
           else
-            if @config.provinces.includes 'NU' then 'IMG/provinces/colour/NU_Selected.svg' else 'IMG/provinces/colour/NU_Unselected.svg'
+            'IMG/provinces/colour/NU_Unselected.svg'
     }
     data = []
     for province in @config.provincesInOrder
-      provinceColours[province].key = province #this really should be above but its easier to add here for now
+      # this really should be above but its easier to add here for now
+      provinceColours[province].key = province
       data.push provinceColours[province]
     data
 
@@ -416,17 +462,16 @@ class Visualization1 extends visualization
   getData: ->
     switch @config.mainSelection
       when 'gasProduction'
-        @seriesData = @app.providers[@config.dataset].gasProductionProvider.dataForViz1 @config
-        @yAxisData = @app.providers[@config.dataset].gasProductionProvider.dataForAllViz1Scenarios @config
+        provider = @app.providers[@config.dataset].gasProductionProvider
       when 'electricityGeneration'
-        @seriesData = @app.providers[@config.dataset].electricityProductionProvider.dataForViz1 @config
-        @yAxisData = @app.providers[@config.dataset].electricityProductionProvider.dataForAllViz1Scenarios @config
+        provider = @app.providers[@config.dataset].electricityProductionProvider
       when 'energyDemand'
-        @seriesData = @app.providers[@config.dataset].energyConsumptionProvider.dataForViz1 @config
-        @yAxisData = @app.providers[@config.dataset].energyConsumptionProvider.dataForAllViz1Scenarios @config
+        provider = @app.providers[@config.dataset].energyConsumptionProvider
       when 'oilProduction'
-        @seriesData = @app.providers[@config.dataset].oilProductionProvider.dataForViz1 @config
-        @yAxisData = @app.providers[@config.dataset].oilProductionProvider.dataForAllViz1Scenarios @config
+        provider = @app.providers[@config.dataset].oilProductionProvider
+
+    @seriesData = provider.dataForViz1 @config
+    @yAxisData = provider.dataForAllViz1Scenarios @config
 
   render: ->
     if @_chart?
@@ -435,7 +480,7 @@ class Visualization1 extends visualization
       @buildViz()
 
     # update the csv data download link
-    d3.select(@app.window.document).select('#dataDownloadLink')
+    @d3document.select('#dataDownloadLink')
       .attr
         href: "csv_data#{ParamsToUrlString(@config.routerParams())}"
 
@@ -452,10 +497,7 @@ class Visualization1 extends visualization
 
   yScale: ->
     d3.scale.linear()
-      .domain([
-        0
-        @graphDataMaximum(@yAxisData)
-      ])
+      .domain [0, @graphDataMaximum(@yAxisData)]
       .range [@height(), 0]
 
   yAxis: ->
@@ -468,7 +510,7 @@ class Visualization1 extends visualization
 
   #Redraws the Y axis
   buildYAxis:  ->
-    axis = d3.select(@app.window.document).select '#yAxis'
+    axis = @d3document.select '#yAxis'
       .attr
         class: 'y axis'
         transform: "translate(#{@width() + @_margin.left}, #{@_margin.top})"
@@ -505,7 +547,7 @@ class Visualization1 extends visualization
     domainPlusOne = [2005..2041]
     d3.scale.ordinal()
         .domain domainPlusOne
-        .rangeBands([@_margin.left, @width() + @_margin.left + @barSize() + (@_barMargin /2)])
+        .rangeBands [@_margin.left, @width() + @_margin.left + @barSize() + (@_barMargin /2)]
 
   xAxisForTicks: ->
     d3.svg.axis()
@@ -517,10 +559,10 @@ class Visualization1 extends visualization
 
   buildXAxis: ->
     # Add axis which use the chart's height
-    axisWithTicks = d3.select(@app.window.document).select '#xAxisForTicks'
-        .attr
-          class: 'x axis'
-          transform: "translate(#{0 - (@barSize()/ 2) - (@_barMargin )}, #{@height() + @_margin.top})"
+    axisWithTicks = @d3document.select '#xAxisForTicks'
+      .attr
+        class: 'x axis'
+        transform: "translate(#{0 - (@barSize() / 2) - (@_barMargin )}, #{@height() + @_margin.top})"
       .call @xAxisForTicks()
 
     axisWithTicks.selectAll '.tick line'
@@ -530,7 +572,7 @@ class Visualization1 extends visualization
         'stroke-width': '1'
         'shape-rendering': 'crispEdges'
 
-    d3.select(@app.window.document).select '#xAxisForLabels'
+    @d3document.select '#xAxisForLabels'
       .attr
         class: 'x axis labels'
         transform: "translate(#{@_margin.left}, #{@height() + @_margin.top})"
@@ -543,12 +585,12 @@ class Visualization1 extends visualization
           x: -(@_barMargin)
 
   buildForecast: ->
-    d3.select(@app.window.document).selectAll('.forecast').remove()
+    @d3document.selectAll('.forecast').remove()
 
 
     textX = @_margin.left + @xScale()(2015)
     textY = height - 16
-    d3.select(@app.window.document).select '#graphSVG'
+    @d3document.select '#graphSVG'
       .append 'text'
         .attr
           class: 'forecast forecastLabel'
@@ -562,7 +604,7 @@ class Visualization1 extends visualization
 
     arrowX = @_margin.left + @xScale()(2015) + 65
     arrowY = height - 27
-    d3.select(@app.window.document).select '#graphSVG'
+    @d3document.select '#graphSVG'
       .append 'image'
         .attr
           class: 'forecast'
@@ -575,7 +617,7 @@ class Visualization1 extends visualization
           width: 200
 
 
-    d3.select(@app.window.document).select '#graphSVG'
+    @d3document.select '#graphSVG'
       .append 'line'
         .attr
           class: 'forecast'
@@ -619,7 +661,7 @@ class Visualization1 extends visualization
       menuOptions:
         selector: '#provinceMenuSVG'
         size:
-          w: d3.select(@app.window.document).select('#provincePanel').node().getBoundingClientRect().width
+          w: @d3document.select('#provincePanel').node().getBoundingClientRect().width
           h: @provinceMenuHeight()
         onSelected:
           @menuSelect
@@ -668,9 +710,9 @@ class Visualization1 extends visualization
 
   orderChanged: (newLocation, currentLocation) =>
     if currentLocation > newLocation
-      temp_data = _.concat(@config.provincesInOrder[0...newLocation], @config.provincesInOrder[currentLocation],@config.provincesInOrder[newLocation...currentLocation], @config.provincesInOrder[(currentLocation+1)..])
+      temp_data = _.concat @config.provincesInOrder[0...newLocation], @config.provincesInOrder[currentLocation],@config.provincesInOrder[newLocation...currentLocation], @config.provincesInOrder[(currentLocation+1)..]
     if currentLocation < newLocation
-      temp_data = _.concat(@config.provincesInOrder[0...currentLocation], @config.provincesInOrder[(currentLocation+1)..newLocation], @config.provincesInOrder[currentLocation], @config.provincesInOrder[(newLocation+1)..])
+      temp_data = _.concat @config.provincesInOrder[0...currentLocation], @config.provincesInOrder[(currentLocation+1)..newLocation], @config.provincesInOrder[currentLocation], @config.provincesInOrder[(newLocation+1)..]
     return unless temp_data?
 
     newConfig = new @config.constructor @app
@@ -718,7 +760,7 @@ class Visualization1 extends visualization
         title: Tr.regionSelector.selectRegionLabel[@app.language]
         content: contentString
         attachmentSelector: '#provincesSelector'
-        elementToFocusOnClose: @app.window.document.getElementById('provinceHelpButton')
+        elementToFocusOnClose: @document.getElementById('provinceHelpButton')
       @app.analyticsReporter.reportEvent 'Controls help', 'Viz1 region help'
 
 

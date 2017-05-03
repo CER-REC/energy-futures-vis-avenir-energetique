@@ -80,18 +80,18 @@ class DatasetRequester
   requestData: (configParams, callback) ->
     switch configParams.page
       when 'viz1', 'viz4'
-        params = 
+        params =
           page: configParams.page
           dataset: configParams.dataset
           mainSelection: configParams.mainSelection
       when 'viz2'
-        params = 
+        params =
           page: configParams.page
           dataset: configParams.dataset
           sector: configParams.sector
           province: configParams.province
       when 'viz3'
-        params = 
+        params =
           page: configParams.page
           dataset: configParams.dataset
           scenario: configParams.scenario
@@ -103,7 +103,7 @@ class DatasetRequester
     http = new XMLHttpRequest()
     http.open 'GET', requestUrl
 
-    @bottledRequest = 
+    @bottledRequest =
       configParams: configParams
       callback: callback
 
@@ -113,7 +113,7 @@ class DatasetRequester
           @dataReceived configParams, http.responseText
         else
           # TODO: something nicer than this!
-          console.error "Oops, json_data request failed. Request was:"
+          console.error 'Oops, json_data request failed. Request was:'
           console.error requestUrl
           console.error http
 
@@ -145,12 +145,12 @@ class DatasetRequester
     # TODO: error handling (though it should never happen ... )
     data = JSON.parse response
 
-    # If we have already loaded this chunk, don't load it again. 
+    # If we have already loaded this chunk, don't load it again.
     # This can happen if the user triggers multiple requests for the same data, which
     # each resolve later.
     switch configParams.page
       when 'viz1', 'viz4'
-        return if @loadedStateViz1_4[configParams.dataset][configParams.mainSelection] == true        
+        return if @loadedStateViz1_4[configParams.dataset][configParams.mainSelection] == true
       when 'viz2'
         return if @loadedStateViz2[configParams.dataset][configParams.sector][configParams.province] == true
       when 'viz3'
@@ -160,7 +160,7 @@ class DatasetRequester
     # Mark data as having arrived, and add the data to the provider it belongs to
     switch configParams.page
       when 'viz1', 'viz4'
-        @loadedStateViz1_4[configParams.dataset][configParams.mainSelection] = true        
+        @loadedStateViz1_4[configParams.dataset][configParams.mainSelection] = true
         switch configParams.mainSelection
           when 'energyDemand'
             @app.providers[configParams.dataset].energyConsumptionProvider.addData data.data
@@ -182,11 +182,13 @@ class DatasetRequester
 
 
   showSpinner: ->
-     d3.select('#dataLoadContainer').classed('hidden', false)
+    d3.select '#dataLoadContainer'
+      .classed 'hidden', false
 
 
   hideSpinner: ->
-     d3.select('#dataLoadContainer').classed('hidden', true)
+    d3.select '#dataLoadContainer'
+      .classed 'hidden', true
 
 
 

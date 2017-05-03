@@ -49,7 +49,7 @@ class ElectricityProductionIngestor
 
   validateLineByLine: ->
     if @unmappedData.length != @mappedData.length
-      throw "Error: Sanity check failed, unmapped CSV data (length #{@unmappedData.length}) and mapped CSV data (length #{@mappedData.length}) had different lengths for #{@dataFilename}"
+      throw new Error "Error: Sanity check failed, unmapped CSV data (length #{@unmappedData.length}) and mapped CSV data (length #{@mappedData.length}) had different lengths for #{@dataFilename}"
 
 
     for i in [0...@unmappedData.length]
@@ -81,7 +81,7 @@ class ElectricityProductionIngestor
     for item in totalGenerationData
       totalGenerationByYearAndScenario[item.year][item.scenario].push item
 
-    # For each set of provincial/territorial data in each year and scenario, 
+    # For each set of provincial/territorial data in each year and scenario,
     # find the sum of their production, and add it to the raw data for the provider
 
     for scenario in @scenarios
@@ -105,9 +105,12 @@ class ElectricityProductionIngestor
   createGroupedDataStructure: ->
     # Visualizations 1, 3, and 4 all use this data.
 
-    # Viz1 and 4 use exactly the same data subset, which is not broken out by source, (scenarios * years * regions) (6 * 36 * 14) items, for 1512 items total.
+    # Viz1 and 4 use exactly the same data subset, which is not broken out by source,
+    # (scenarios * years * regions) (6 * 36 * 14) items, for 1512 items total.
 
-    # Viz3 uses a completely disjoint and larger subset of data, which does not include any totals (sources * scenarios * years * regions) (7 * 6 * 36 * 13), 19656 items total.
+    # Viz3 uses a completely disjoint and larger subset of data, which does not include
+    # any totals (sources * scenarios * years * regions) (7 * 6 * 36 * 13), 19656 items
+    # total.
 
     # Viz 1 and 4
     for scenario in @scenarios
@@ -202,12 +205,12 @@ class ElectricityProductionIngestor
 
 
 
-  ##### 
+  #####
 
   detailedAddAndDetectDuplicate: (item) ->
     if @detailedGroupedData[item.source][item.scenario][item.year][item.province]?
       @logMessages.push
-        message: "Duplicate item detected"
+        message: 'Duplicate item detected'
         line: item
         lineNumber: null
     else
@@ -218,8 +221,8 @@ ElectricityProductionIngestor.csvMapping = (d) ->
   province: d.Area
   source: d.Source
   scenario: d.Case
-  year: parseInt(d.Year)
-  value: parseFloat(d.Data.replace(',',''))
+  year: parseInt d.Year
+  value: parseFloat d.Data.replace(',','')
   unit: d.Unit
 
 
