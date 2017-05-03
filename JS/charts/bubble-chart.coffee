@@ -16,7 +16,6 @@ class BubbleChart extends Chart
     @_mapping = @options.mapping
     @_year = @options.year
 
-    # super(parent, @options)
     @chart_options = _.extend {}, @chart_defaults, @options
     @_duration = @chart_options.duration
     @parent parent, @chart_options.groupId
