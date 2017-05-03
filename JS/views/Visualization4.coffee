@@ -145,7 +145,7 @@ class Visualization4
         height: @outerHeight
     @renderXAxis false
     @renderYAxis false
-    @renderGraph 0
+    @renderGraph() # This call used to pass in 0 for duration. Why?
     @provinceMenu.size
       w: d3.select(@app.window.document).select('#provincesSelector').node().getBoundingClientRect().width
       h: @height() - d3.select(@app.window.document).select('span.titleLabel').node().getBoundingClientRect().height + d3.select(@app.window.document).select('#xAxis').node().getBoundingClientRect().height
