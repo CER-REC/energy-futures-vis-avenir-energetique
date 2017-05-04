@@ -197,13 +197,13 @@ module.exports =
   ]
 
   viz3Sources: [
-    'hydro'
-    'solarWindGeothermal'
-    'coal'
-    'naturalGas'
-    'bio'
-    'nuclear'
     'oilProducts'
+    'nuclear'
+    'bio'
+    'naturalGas'
+    'coal'
+    'solarWindGeothermal'
+    'hydro'
   ]
 
   viz3SourceRadioSelectionOptions: [

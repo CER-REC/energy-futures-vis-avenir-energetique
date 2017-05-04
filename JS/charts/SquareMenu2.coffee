@@ -188,30 +188,29 @@ class SquareMenu2
   getRectX: =>
     @_position.x + (@_size.w / 2 - @_boxSize / 2)
 
-  # Read the comments this is kind of complicated. We space them equally then divide up
-  # the top and bottom space in 'auto' mode. Otherwise we use a numerical spacing
+  # When an explicit icon spacing isn't specified, we calculate spacing automatically
+  autoIconSpacing: ->
+    # Divide the drawable height into equal portions
+    equalSlice = @usableHeight() / @itemCount()
+    # Calculate the amount of unused height per icon
+    spaceBetween = equalSlice - @_boxSize
+    # Compute the total amount of available vertical space, and divide it among the
+    # number of gutters between icons (which is one less than the number of icons)
+    # This is the amount of vertical space separating neighbouring icons
+    (spaceBetween * @itemCount()) / (@itemCount() - 1)
+
   getRectY: (i) =>
-    if @_iconSpacing == 'auto'
-      # divide into equal portions
-      equalSlice = @usableHeight() / @itemCount()
-      # calculate the empty space left in between
-      spaceBetween = equalSlice - @_boxSize
-      # distribute  the space from the top and bottom into the spaced inbetween so the top
-      # and bottom land where they should
-      distributedSpaceBetween = spaceBetween + (spaceBetween / (@itemCount() - 1))
-      # Subtract the square at the bottom
-      # using length - (i+1) to build bottom up:
-      (@itemCount() - (i + 1)) * (@_boxSize + distributedSpaceBetween) + Constants.questionMarkHeight
-    else
-      (@itemCount() - (i + 1)) * (@_iconSpacing + @_boxSize) + Constants.questionMarkHeight
+    i * (@getIconSpacing() + @_boxSize) + Constants.questionMarkHeight
 
   setIconSpacing: (spacing) ->
     @_iconSpacing = spacing
     @redraw()
 
   getIconSpacing: ->
-    if @_iconSpacing != 'auto' then return @_iconSpacing
-    @getRectY(@itemCount() - 2) - @_boxSize - Constants.questionMarkHeight
+    if @_iconSpacing == 'auto'
+      @autoIconSpacing()
+    else
+      @_iconSpacing
 
   usableHeight: ->
     # The 2 is because the stroke width is otherwise cut off
@@ -271,16 +270,18 @@ class SquareMenu2
       .on 'click', =>
         @_showHelpHandler()
       .on 'keyup', =>
-        d3.event.preventDefault()
-        d3.event.stopPropagation()
         if d3.event.key == 'Enter'
+          d3.event.preventDefault()
+          d3.event.stopPropagation()
           @_showHelpHandler()
 
 
     @_group.selectAll('.menuItem').data(@_data).enter().append('g').attr
       class: 'menuItem'
       transform: (d, i) =>
-        "translate(#{@getRectX()}, #{@getRectY(i)})"
+        # If the 'all' icon is present, the others are bumped down one spot
+        index = if @_addAllSquare then i + 1 else i
+        "translate(#{@getRectX()}, #{@getRectY(index)})"
 
     @_group.selectAll '.menuItem'
       .append 'image'
@@ -303,7 +304,7 @@ class SquareMenu2
         .attr
           class: 'selectAllGroup pointerCursor'
           transform: =>
-            "translate(#{@getRectX()}, #{@getRectY(@_data.length)})"
+            "translate(#{@getRectX()}, #{@getRectY(0)})"
 
       squareGroup.append 'image'
         .attr
