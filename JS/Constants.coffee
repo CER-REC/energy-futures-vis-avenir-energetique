@@ -274,6 +274,5 @@ module.exports =
   timelineMargin: 25
   sliderLabelHeight: 28
 
-  # TODO: Replace these magic numbers everywhere
   minYear: 2005
   maxYear: 2040

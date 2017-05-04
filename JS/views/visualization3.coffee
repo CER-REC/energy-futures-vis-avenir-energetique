@@ -469,7 +469,7 @@ class Visualization3 extends visualization
         timeoutComplete = =>
           return unless @_chart?
 
-          if @config.year < 2040
+          if @config.year < Constants.maxYear
 
             newConfig = new @config.constructor @app
             newConfig.copy @config
@@ -906,10 +906,7 @@ class Visualization3 extends visualization
   # The 'correct' scale used by the graph
   yearScale: ->
     d3.scale.linear()
-      .domain([
-        2005
-        2040
-      ])
+      .domain [Constants.minYear, Constants.maxYear]
       .range [
         Constants.timelineMargin
         @timelineRightEnd()
@@ -921,7 +918,7 @@ class Visualization3 extends visualization
       .tickSize(10,2)
       .ticks(7)
       .tickFormat (d) ->
-        if d == 2005 or d == 2040 then d else ''
+        if d == Constants.minYear or d == Constants.maxYear then d else ''
       .orient 'bottom'
 
 

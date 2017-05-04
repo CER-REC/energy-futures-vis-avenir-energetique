@@ -578,7 +578,7 @@ class Visualization4
   xAxisScale: ->
     #TODO should the domain come from the data?
     d3.scale.linear()
-      .domain [2005, 2040]
+      .domain [Constants.minYear, Constants.maxYear]
       .range [0, @width()]
 
   yAxisScale: ->

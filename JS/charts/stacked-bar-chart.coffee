@@ -68,7 +68,7 @@ class StackedBarChart extends BarChart
                 y: if province.present then d.value else 0
             else
               emptyVals = []
-              for year in [2005..2040]
+              for year in [Constants.minYear..Constants.maxYear]
                 emptyVals.push {x: year, y:0}
               emptyVals
         _stackData.push provinceData
