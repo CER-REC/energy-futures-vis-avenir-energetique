@@ -1662,6 +1662,10 @@ module.exports =
         en: 'Power cable'
         fr: 'Câble électrique'
 
+    yearsSlider:
+      en: 'Years'
+      fr: 'Années'
+
   report:
     en: 'REPORT: '
     fr: 'RAPPORT : '
