@@ -385,7 +385,10 @@ class Visualization3 extends visualization
         @app.router.navigate @config.routerParams()
         @d3document.select('#labelBox').text =>
           @config.year
-        
+        @d3document.select '#sliderLabel'
+          .attr
+            'aria-valuenow': @config.year
+
         @getDataAndRender()
 
     drag.on 'dragend', =>
@@ -396,6 +399,9 @@ class Visualization3 extends visualization
 
         @d3document.select('#labelBox').selectAll('text').text =>
           @config.year
+        @d3document.select '#sliderLabel'
+          .attr
+            'aria-valuenow': @config.year
         @config.setYear year
         @app.router.navigate @config.routerParams()
         @getDataAndRender()
@@ -487,8 +493,9 @@ class Visualization3 extends visualization
                 .ease 'linear'
               @d3document.select '#labelBox'
                 .text @config.year
+              @d3document.select '#sliderLabel'
                 .attr
-                  'aria-valuenow': value
+                  'aria-valuenow': @config.year
               @app.router.navigate @config.routerParams()
 
             @app.datasetRequester.updateAndRequestIfRequired newConfig, update
@@ -844,6 +851,7 @@ class Visualization3 extends visualization
       
       @d3document.select '#labelBox'
         .text @config.year
+      @d3document.select '#sliderLabel'
         .attr
           'aria-valuenow': @config.year
 
