@@ -2,7 +2,7 @@ d3 = require 'd3'
 Mustache = require 'mustache'
 
 Constants = require '../Constants.coffee'
-SquareMenu = require '../charts/SquareMenu.coffee'
+SquareMenu2 = require '../charts/SquareMenu2.coffee'
 Tr = require '../TranslationTable.coffee'
 Platform = require '../Platform.coffee'
 
@@ -314,47 +314,56 @@ class Visualization4
         width: @d3document.select('#provincesSelector').node().getBoundingClientRect().width
         height: @outerHeight
 
-    provinceOptions =
+    options =
+      canDrag: false
+      onSelected: @provinceSelected
+      addAllSquare: true
+      groupId: 'provinceMenu'
+      allSquareHandler: @selectAllProvince
+      showHelpHandler: @showProvinceNames
+      helpButtonLabel: Tr.altText.regionsHelp[@app.language]
+      helpButtonId: 'provinceHelpButton'
+      getAllIcon: =>
+        if @config.province == 'all'
+          Tr.allSelectorButton.all[@app.language]
+        else
+          Tr.allSelectorButton.none[@app.language]
+      boxSize: 37.5
+      parentId: '#provinceMenuSVG'
+
+    state =
       size:
         w: @d3document.select('#provincesSelector').node().getBoundingClientRect().width
         h: @height() - @d3document.select('span.titleLabel').node().getBoundingClientRect().height + @d3document.select('#xAxis').node().getBoundingClientRect().height
-      margin:
-        left: 0
-        right: 0
-        top: 20
-        bottom: 20
-      canDrag: false
-      hasChart: false
       data: @dataForProvinceMenu()
-      onSelected: @provinceSelected
-      allSelected: (@config.province == 'all')
-      addAllSquare: true
-      allSquareHandler: @selectAllProvince
-      showHelpHandler: @showProvinceNames
-      groupId: 'provinceMenu'
-      helpButtonLabel: Tr.altText.regionsHelp[@app.language]
-      helpButtonId: 'provinceHelpButton'
 
-    new SquareMenu @app, '#provinceMenuSVG', provinceOptions
+    new SquareMenu2 @app, options, state
 
   selectAllProvince: =>
-    @config.setProvince 'all'
-    @provinceMenu.allSelected true
-    @provinceMenu.data @dataForProvinceMenu()
-    @renderYAxis()
-    @renderGraph()
-
-
-  provinceSelected: (key) =>
-
     newConfig = new @config.constructor @app
     newConfig.copy @config
-    newConfig.setProvince key
+    newConfig.setProvince 'all'
 
     update = =>
-      @provinceMenu.allSelected false
-      @config.setProvince key
+      @config.setProvince 'all'
       @provinceMenu.data @dataForProvinceMenu()
+      @provinceMenu.update()
+      @renderYAxis()
+      @renderGraph()
+      @app.router.navigate @config.routerParams()
+
+    @app.datasetRequester.updateAndRequestIfRequired newConfig, update
+
+
+  provinceSelected: (dataDictionaryItem) =>
+    newConfig = new @config.constructor @app
+    newConfig.copy @config
+    newConfig.setProvince dataDictionaryItem.key
+
+    update = =>
+      @config.setProvince dataDictionaryItem.key
+      @provinceMenu.data @dataForProvinceMenu()
+      @provinceMenu.update()
       @renderYAxis()
       @renderGraph()
       @app.router.navigate @config.routerParams()
