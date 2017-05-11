@@ -197,13 +197,13 @@ module.exports =
   ]
 
   viz3Sources: [
-    'oilProducts'
-    'nuclear'
-    'bio'
-    'naturalGas'
-    'coal'
-    'solarWindGeothermal'
     'hydro'
+    'solarWindGeothermal'
+    'coal'
+    'naturalGas'
+    'bio'
+    'nuclear'
+    'oilProducts'
   ]
 
   viz3SourceRadioSelectionOptions: [
@@ -276,3 +276,5 @@ module.exports =
 
   minYear: 2005
   maxYear: 2040
+
+  iconDragDuration: 100 # ms

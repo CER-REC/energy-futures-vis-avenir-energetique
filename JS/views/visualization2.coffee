@@ -169,12 +169,13 @@ class Visualization2 extends visualization
       @_chart.x @xScale()
       @_chart.y @yScale()
       @_chart._duration = @app.animationDuration
-      @_chart.menu.size
-        w: @d3document.select('#powerSourcePanel').node().getBoundingClientRect().width
-        h: @sourceMenuHeight()
     if @_provinceMenu
       @_provinceMenu.size
         w: @d3document.select('#provincePanel').node().getBoundingClientRect().width
+        h: @sourceMenuHeight()
+    if @sourceMenu
+      @sourceMenu.size
+        w: @d3document.select('#powerSourcePanel').node().getBoundingClientRect().width
         h: @sourceMenuHeight()
 
    #the graph's height
@@ -764,36 +765,15 @@ class Visualization2 extends visualization
         @app.animationDuration
       groupId:
         'graphGroup'
-      menuOptions:
-        selector: '#powerSourceMenuSVG'
-        boxSize: 37.5
-        size:
-          w: @d3document.select('#powerSourcePanel').node().getBoundingClientRect().width
-          h: @sourceMenuHeight()
-        onSelected:
-          @menuSelect
-        orderChangedHandler:
-          @orderChanged
-        showHelpHandler:
-          @showSourceNames
-        allSelected:
-          @getSelectionState().allSelected
-        someSelected:
-          @getSelectionState().someSelected
-        allSquareHandler:
-          @selectAllStacked
-        groupId:
-          'stackMenu'
-        helpButtonLabel: Tr.altText.sourcesHelp[@app.language]
-        helpButtonId: 'sourceHelpButton'
-
 
     @_chart = new stackedAreaChart @app, '#graphSVG', @xScale(), @yScale(), stackedOptions
+
     @_provinceMenu = @buildProvinceMenu()
+    @sourceMenu = @buildSourceMenu()
 
   adjustViz: ->
-    @_chart.menu.allSelected @getSelectionState().allSelected
-    @_chart.menu.someSelected @getSelectionState().someSelected
+    # @_chart.menu.allSelected @getSelectionState().allSelected
+    # @_chart.menu.someSelected @getSelectionState().someSelected
 
     @_chart.mapping @sourceMenuData()
     @_chart.data @seriesData
@@ -832,6 +812,10 @@ class Visualization2 extends visualization
     update = =>
       @config.flipSource key
       @getDataAndRender()
+
+      @sourceMenu.data @sourceMenuData()
+      @sourceMenu.redraw()
+
       @app.router.navigate @config.routerParams()
 
     @app.datasetRequester.updateAndRequestIfRequired newConfig, update
@@ -847,6 +831,10 @@ class Visualization2 extends visualization
     update = =>
       @config.resetSources selecting
       @getDataAndRender()
+
+      @sourceMenu.data @sourceMenuData()
+      @sourceMenu.redraw()
+
       @app.router.navigate @config.routerParams()
 
     @app.datasetRequester.updateAndRequestIfRequired newConfig, update
@@ -893,7 +881,6 @@ class Visualization2 extends visualization
       onSelected:
         @provinceSelected
       allSelected: (@config.province == 'all')
-      addAllSquare: true
       allSquareHandler:
         @selectAllProvince
       showHelpHandler:
@@ -903,6 +890,40 @@ class Visualization2 extends visualization
       helpButtonLabel: Tr.altText.sourcesHelp[@app.language]
       helpButtonId: 'provinceHelpButton'
     new SquareMenu @app, '#provinceMenuSVG', provinceOptions
+
+
+  buildSourceMenu: ->
+    menuOptions =
+      selector: '#powerSourceMenuSVG'
+      size:
+        w: @d3document.select('#powerSourcePanel').node().getBoundingClientRect().width
+        h: @sourceMenuHeight()
+      onSelected:
+        @menuSelect
+      orderChangedHandler:
+        @orderChanged
+      showHelpHandler:
+        @showSourceNames
+      allSelected:
+        @getSelectionState().allSelected
+      someSelected:
+        @getSelectionState().someSelected
+      allSquareHandler:
+        @selectAllStacked
+      groupId:
+        'stackMenu'
+      helpButtonLabel: Tr.altText.sourcesHelp[@app.language]
+      helpButtonId: 'sourceHelpButton'
+      hasChart: false
+      canDrag: false # TODO: TEMPORARY
+      boxSize: 37.5
+
+    @sourceMenu = new SquareMenu @app, menuOptions.selector, menuOptions
+    @sourceMenu.data @sourceMenuData()
+
+    @sourceMenu
+
+
 
   selectAllProvince: =>
 

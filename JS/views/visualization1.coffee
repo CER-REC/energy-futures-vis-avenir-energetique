@@ -5,6 +5,7 @@ Mustache = require 'mustache'
 
 visualization = require './visualization.coffee'
 stackedBarChart = require '../charts/stacked-bar-chart.coffee'
+SquareMenu2 = require '../charts/SquareMenu2.coffee'
 Constants = require '../Constants.coffee'
 Tr = require '../TranslationTable.coffee'
 Platform = require '../Platform.coffee'
@@ -658,83 +659,104 @@ class Visualization1 extends visualization
         @app.animationDuration
       groupId:
         'graphGroup'
-      menuOptions:
-        selector: '#provinceMenuSVG'
-        size:
-          w: @d3document.select('#provincePanel').node().getBoundingClientRect().width
-          h: @provinceMenuHeight()
-        onSelected:
-          @menuSelect
-        allSelected:
-          @getSelectionState().allSelected
-        someSelected:
-          @getSelectionState().someSelected
-        allSquareHandler:
-          @selectAllStacked
-        orderChangedHandler:
-          @orderChanged
-        showHelpHandler:
-          @showProvinceNames
-        groupId:
-          'stackMenu'
-        helpButtonLabel: Tr.altText.regionsHelp[@app.language]
-        helpButtonId: 'provinceHelpButton'
 
     @_chart = new stackedBarChart @app, '#graphSVG', @xScale(), @yScale(), stackedOptions
 
+    menuOptions =
+      parentId: '#provinceMenuSVG'
+      groupId: 'stackMenu'
+      onSelected: @menuSelect
+      allSquareHandler: @selectAllStacked
+      showHelpHandler: @showProvinceNames
+      orderChangedHandler: @orderChanged
+      canDrag: true
+      helpButtonLabel: Tr.altText.regionsHelp[@app.language]
+      helpButtonId: 'provinceHelpButton'
+      getAllIcon: =>
+        if @config.provinces.length == Constants.provinces.length
+          Tr.allSelectorButton.all[@app.language]
+        else if @config.provinces.length > 0
+          Tr.allSelectorButton.someSelected[@app.language]
+        else if @config.provinces.length == 0
+          Tr.allSelectorButton.none[@app.language]
+      onDragStart: @_chart.dragStart
+      onDragEnd: @_chart.dragEnd
+
+    menuState =
+      size:
+        w: @d3document.select('#provincePanel').node().getBoundingClientRect().width
+        h: @provinceMenuHeight()
+      data: @provinceMenuData()
+
+    @menu = new SquareMenu2 @app, menuOptions, menuState
+
   #called for adjustments: basically to avoid rebuilding the x axis and the chart object
   adjustViz: ->
-    @_chart.menu.allSelected @getSelectionState().allSelected
-    @_chart.menu.someSelected @getSelectionState().someSelected
     @_chart.mapping @provinceMenuData()
     @_chart.data @seriesData
+
+    @menu.data @provinceMenuData()
+    @menu.update()
 
     @_chart.y @yScale()
     @buildYAxis()
 
-  selectAllStacked: (selecting) =>
+  selectAllStacked: =>
     newConfig = new @config.constructor @app
     newConfig.copy @config
-    newConfig.resetProvinces selecting
+    if @config.provinces.length == Constants.provinces.length
+      # If all provinces are present, select none
+      newConfig.resetProvinces false
+    else if @config.provinces.length > 0
+      # If some provinces are selected, select all
+      newConfig.resetProvinces true
+    else if @config.provinces.length == 0
+      # If no provinces are selected, select all
+      newConfig.resetProvinces true
 
     update = =>
-      @config.resetProvinces selecting
+      if @config.provinces.length == Constants.provinces.length
+        # If all provinces are present, select none
+        @config.resetProvinces false
+      else if @config.provinces.length > 0
+        # If some provinces are selected, select all
+        @config.resetProvinces true
+      else if @config.provinces.length == 0
+        # If no provinces are selected, select all
+        @config.resetProvinces true
+
       @getDataAndRender()
       @app.router.navigate @config.routerParams()
-
 
     @app.datasetRequester.updateAndRequestIfRequired newConfig, update
 
 
 
 
-  orderChanged: (newLocation, currentLocation) =>
-    if currentLocation > newLocation
-      temp_data = _.concat @config.provincesInOrder[0...newLocation], @config.provincesInOrder[currentLocation],@config.provincesInOrder[newLocation...currentLocation], @config.provincesInOrder[(currentLocation+1)..]
-    if currentLocation < newLocation
-      temp_data = _.concat @config.provincesInOrder[0...currentLocation], @config.provincesInOrder[(currentLocation+1)..newLocation], @config.provincesInOrder[currentLocation], @config.provincesInOrder[(newLocation+1)..]
-    return unless temp_data?
-
+  orderChanged: (newOrder) =>
     newConfig = new @config.constructor @app
     newConfig.copy @config
-    newConfig.setProvincesInOrder temp_data
+    newConfig.setProvincesInOrder newOrder
 
     update = =>
-      @config.setProvincesInOrder temp_data
+      @config.setProvincesInOrder newOrder
       @_chart.mapping @provinceMenuData()
+      @menu.data @provinceMenuData()
+      @menu.update()
       @app.router.navigate @config.routerParams()
     
     @app.datasetRequester.updateAndRequestIfRequired newConfig, update
 
 
 
-  menuSelect: (key) =>
+  menuSelect: (dataDictionaryItem) =>
     newConfig = new @config.constructor @app
     newConfig.copy @config
-    newConfig.flipProvince key
+    newConfig.flipProvince dataDictionaryItem.key
 
     update = =>
-      @config.flipProvince key
+      @config.flipProvince dataDictionaryItem.key
+
       @getDataAndRender()
       @app.router.navigate @config.routerParams()
 

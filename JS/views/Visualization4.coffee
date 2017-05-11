@@ -317,7 +317,6 @@ class Visualization4
     options =
       canDrag: false
       onSelected: @provinceSelected
-      addAllSquare: true
       groupId: 'provinceMenu'
       allSquareHandler: @selectAllProvince
       showHelpHandler: @showProvinceNames

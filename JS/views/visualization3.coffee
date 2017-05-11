@@ -526,7 +526,6 @@ class Visualization3 extends visualization
       canDrag: false
       boxSize: 37.5
       groupId: 'provinceMenuGroup'
-      addAllSquare: true
       onSelected: (dataDictionaryItem) =>
         switch @config.viewBy
           when 'province'
@@ -573,7 +572,6 @@ class Visualization3 extends visualization
       canDrag: false
       boxSize: 37.5
       groupId: 'sourceMenuGroup'
-      addAllSquare: true
       onSelected: (dataDictionaryItem) =>
         switch @config.viewBy
           when 'source'

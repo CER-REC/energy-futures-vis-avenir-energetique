@@ -20,10 +20,10 @@ class StackedAreaChart extends StackedBarChart
     @graphPanel = @app.window.document.getElementById 'graphPanel'
 
   # When dragging we want a shorter duration
-  dragStart: ->
+  dragStart: =>
     @_duration = 500
 
-  dragEnd: ->
+  dragEnd: =>
     @_duration = @options.duration
 
   redraw: ->
