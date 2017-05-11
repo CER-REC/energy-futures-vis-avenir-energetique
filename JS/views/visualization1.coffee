@@ -441,21 +441,6 @@ class Visualization1 extends visualization
     nonZeroVals = @seriesData[key].filter (item) -> item.value != 0
     return nonZeroVals.length == 0
 
-  getSelectionState: ->
-    if @config.provincesInOrder.length != @config.provinces.length
-      allSelected = false
-      if @config.provinces.length > 0
-        someSelected =  true
-      else
-        someSelected = false
-    else
-      allSelected = true
-      someSelected = false
-    {
-      allSelected: allSelected
-      someSelected: someSelected
-    }
-
   getDataAndRender: ->
     @getData()
     @render()

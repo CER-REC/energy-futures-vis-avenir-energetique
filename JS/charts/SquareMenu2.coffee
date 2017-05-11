@@ -197,16 +197,9 @@ class SquareMenu2
     for key, index in newDisplayOrder
       animationBinHash[key] = index
 
-    animationInstructions = []
     # @dataBeforeDrag reflects the items' DOM order
-    for item, index in @dataBeforeDrag
-      if item.key == @draggedIcon
-        # We don't actually want to animate the dragged icon, because its position is
-        # being set by the user dragging it with the mouse. So, we pass the index it
-        # had before we began the drag.
-        animationInstructions.push index
-      else
-        animationInstructions.push animationBinHash[item.key]
+    animationInstructions = @dataBeforeDrag.map (item) ->
+      animationBinHash[item.key]
 
     # Third, animate all the things
     @_group.selectAll '.menuItem'

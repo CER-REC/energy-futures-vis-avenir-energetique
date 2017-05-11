@@ -5,7 +5,7 @@ Mustache = require 'mustache'
 
 visualization = require './visualization.coffee'
 stackedAreaChart = require '../charts/stacked-area-chart.coffee'
-SquareMenu = require '../charts/SquareMenu.coffee'
+SquareMenu2 = require '../charts/SquareMenu2.coffee'
 Constants = require '../Constants.coffee'
 Tr = require '../TranslationTable.coffee'
 Platform = require '../Platform.coffee'
@@ -126,7 +126,6 @@ class Visualization2 extends visualization
   constructor: (@app, config, @options) ->
     @config = config
     @_chart = null
-    @_provinceMenu = null
     @document = @app.window.document
     @d3document = d3.select @document
 
@@ -346,22 +345,6 @@ class Visualization2 extends visualization
       'IMG/sources/oil_products_selected.svg'
     electricity:
       'IMG/sources/electricity_selected.svg'
-
-
-  getSelectionState: ->
-    if @config.sourcesInOrder.length != @config.sources.length
-      allSelected = false
-      if @config.sources.length > 0
-        someSelected =  true
-      else
-        someSelected = false
-    else
-      allSelected = true
-      someSelected = false
-    {
-      allSelected: allSelected
-      someSelected: someSelected
-    }
 
   zeroedOut: (key) ->
     if !(@seriesData) or !(@seriesData[key]) then return false
@@ -772,28 +755,25 @@ class Visualization2 extends visualization
     @sourceMenu = @buildSourceMenu()
 
   adjustViz: ->
-    # @_chart.menu.allSelected @getSelectionState().allSelected
-    # @_chart.menu.someSelected @getSelectionState().someSelected
-
     @_chart.mapping @sourceMenuData()
     @_chart.data @seriesData
     @_chart.y @yScale()
     @buildYAxis()
 
-  orderChanged: (newLocation, currentLocation) =>
-    if currentLocation > newLocation
-      temp_data = _.concat(@config.sourcesInOrder[0...newLocation], @config.sourcesInOrder[currentLocation],@config.sourcesInOrder[newLocation...currentLocation], @config.sourcesInOrder[(currentLocation + 1)..])
-    if currentLocation < newLocation
-      temp_data = _.concat(@config.sourcesInOrder[0...currentLocation], @config.sourcesInOrder[(currentLocation + 1)..newLocation], @config.sourcesInOrder[currentLocation], @config.sourcesInOrder[(newLocation + 1)..])
-    return unless temp_data?
+    @sourceMenu.data @sourceMenuData()
+    @sourceMenu.update()
 
+
+  orderChanged: (newOrder) =>
     newConfig = new @config.constructor @app
     newConfig.copy @config
-    newConfig.setSourcesInOrder temp_data
+    newConfig.setSourcesInOrder newOrder
 
     update = =>
-      @config.setSourcesInOrder temp_data
+      @config.setSourcesInOrder newOrder
       @_chart.mapping @sourceMenuData()
+      @sourceMenu.data @sourceMenuData()
+      @sourceMenu.update()
       @app.router.navigate @config.routerParams()
 
     @app.datasetRequester.updateAndRequestIfRequired newConfig, update
@@ -803,18 +783,18 @@ class Visualization2 extends visualization
 
 
     
-  menuSelect: (key) =>
+  menuSelect: (dataDictionaryItem) =>
 
     newConfig = new @config.constructor @app
     newConfig.copy @config
-    newConfig.flipSource key
+    newConfig.flipSource dataDictionaryItem.key
 
     update = =>
-      @config.flipSource key
+      @config.flipSource dataDictionaryItem.key
       @getDataAndRender()
 
       @sourceMenu.data @sourceMenuData()
-      @sourceMenu.redraw()
+      @sourceMenu.update()
 
       @app.router.navigate @config.routerParams()
 
@@ -823,17 +803,33 @@ class Visualization2 extends visualization
 
 
   selectAllStacked: (selecting) =>
-
     newConfig = new @config.constructor @app
     newConfig.copy @config
-    newConfig.resetSources selecting
+
+    if @config.sources.length == Constants.viz2Sources.length
+      # If all sources are present, select none
+      newConfig.resetSources false
+    else if @config.sources.length > 0
+      # If some sources are selected, select all
+      newConfig.resetSources true
+    else if @config.sources.length == 0
+      # If no sources are selected, select all
+      newConfig.resetSources true
 
     update = =>
-      @config.resetSources selecting
-      @getDataAndRender()
+      if @config.sources.length == Constants.viz2Sources.length
+        # If all sources are present, select none
+        @config.resetSources false
+      else if @config.sources.length > 0
+        # If some sources are selected, select all
+        @config.resetSources true
+      else if @config.sources.length == 0
+        # If no sources are selected, select all
+        @config.resetSources true
 
+      @getDataAndRender()
       @sourceMenu.data @sourceMenuData()
-      @sourceMenu.redraw()
+      @sourceMenu.update()
 
       @app.router.navigate @config.routerParams()
 
@@ -871,57 +867,58 @@ class Visualization2 extends visualization
 
   # Black and white non multi select menu.
   buildProvinceMenu: ->
-    provinceOptions =
+    options =
+      parentId: '#provinceMenuSVG'
+      groupId: 'provinceMenu'
+      onSelected: @provinceSelected
+      allSquareHandler: @selectAllProvince
+      showHelpHandler: @showProvinceNames
+      helpButtonLabel: Tr.altText.regionsHelp[@app.language]
+      helpButtonId: 'provinceHelpButton'
+      getAllIcon: =>
+        if @config.province == 'all'
+          Tr.allSelectorButton.all[@app.language]
+        else
+          Tr.allSelectorButton.none[@app.language]
+
+    state =
       size:
         w: @d3document.select('#provinceMenuSVG').node().getBoundingClientRect().width
         h: @sourceMenuHeight()
-      canDrag: false
-      hasChart: false
       data: @dataForProvinceMenu()
-      onSelected:
-        @provinceSelected
-      allSelected: (@config.province == 'all')
-      allSquareHandler:
-        @selectAllProvince
-      showHelpHandler:
-        @showProvinceNames
-      groupId:
-        'provinceMenu'
-      helpButtonLabel: Tr.altText.sourcesHelp[@app.language]
-      helpButtonId: 'provinceHelpButton'
-    new SquareMenu @app, '#provinceMenuSVG', provinceOptions
+
+    new SquareMenu2 @app, options, state
 
 
   buildSourceMenu: ->
-    menuOptions =
-      selector: '#powerSourceMenuSVG'
+    options =
+      parentId: '#powerSourceMenuSVG'
+      groupId: 'stackMenu'
+      onSelected: @menuSelect
+      allSquareHandler: @selectAllStacked
+      showHelpHandler: @showSourceNames
+      orderChangedHandler: @orderChanged
+      canDrag: true
+      helpButtonLabel: Tr.altText.sourcesHelp[@app.language]
+      helpButtonId: 'sourceHelpButton'
+      getAllIcon: =>
+        if @config.sources.length == Constants.viz2Sources.length
+          Tr.allSelectorButton.all[@app.language]
+        else if @config.sources.length > 0
+          Tr.allSelectorButton.someSelected[@app.language]
+        else if @config.sources.length == 0
+          Tr.allSelectorButton.none[@app.language]
+      onDragStart: @_chart.dragStart
+      onDragEnd: @_chart.dragEnd
+      boxSize: 37.5
+
+    state =
       size:
         w: @d3document.select('#powerSourcePanel').node().getBoundingClientRect().width
         h: @sourceMenuHeight()
-      onSelected:
-        @menuSelect
-      orderChangedHandler:
-        @orderChanged
-      showHelpHandler:
-        @showSourceNames
-      allSelected:
-        @getSelectionState().allSelected
-      someSelected:
-        @getSelectionState().someSelected
-      allSquareHandler:
-        @selectAllStacked
-      groupId:
-        'stackMenu'
-      helpButtonLabel: Tr.altText.sourcesHelp[@app.language]
-      helpButtonId: 'sourceHelpButton'
-      hasChart: false
-      canDrag: false # TODO: TEMPORARY
-      boxSize: 37.5
+      data: @sourceMenuData()
 
-    @sourceMenu = new SquareMenu @app, menuOptions.selector, menuOptions
-    @sourceMenu.data @sourceMenuData()
-
-    @sourceMenu
+    new SquareMenu2 @app, options, state
 
 
 
@@ -933,8 +930,8 @@ class Visualization2 extends visualization
 
     update = =>
       @config.setProvince 'all'
-      @_provinceMenu.allSelected true
       @_provinceMenu.data @dataForProvinceMenu()
+      @_provinceMenu.update()
       @getDataAndRender()
       @app.router.navigate @config.routerParams()
 
@@ -942,17 +939,16 @@ class Visualization2 extends visualization
 
 
 
-  provinceSelected: (key) =>
+  provinceSelected: (dataDictionaryItem) =>
 
     newConfig = new @config.constructor @app
     newConfig.copy @config
-    newConfig.setProvince key
+    newConfig.setProvince dataDictionaryItem.key
 
     update = =>
-      @_provinceMenu.allSelected false
-      @config.setProvince key
+      @config.setProvince dataDictionaryItem.key
       @_provinceMenu.data @dataForProvinceMenu()
-      @_provinceMenu.redraw()
+      @_provinceMenu.update()
       @getDataAndRender()
       @app.router.navigate @config.routerParams()
 
