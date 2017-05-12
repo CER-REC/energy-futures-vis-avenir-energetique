@@ -648,7 +648,7 @@ class Visualization1 extends visualization
     @_chart = new stackedBarChart @app, '#graphSVG', @xScale(), @yScale(), stackedOptions
 
     menuOptions =
-      parentId: '#provinceMenuSVG'
+      parentId: 'provinceMenuSVG'
       groupId: 'stackMenu'
       onSelected: @menuSelect
       allSquareHandler: @selectAllStacked

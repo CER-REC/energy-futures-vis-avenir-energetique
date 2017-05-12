@@ -23,11 +23,6 @@ class SquareMenu
     onDragEnd: ->
     # coffeelint: enable=no_empty_functions
 
-    # TODO: I definitely don't belong here ...
-    boxCount:
-      '#powerSourceMenuSVG': 7
-      '#provinceMenuSVG': 14
-
   defaultState:
     iconSpacing: 'auto' # When set to auto, we compute the icon spacings
     size:
@@ -60,7 +55,7 @@ class SquareMenu
 
     
     @parent = d3.select @app.window.document
-      .select @options.parentId
+      .select "##{@options.parentId}"
     @parent.append 'svg:g'
       .attr
         id: @options.groupId
@@ -94,8 +89,7 @@ class SquareMenu
 
     # dragContainer is the element containing the elements which are draggable, for
     # coordinate computation purposes
-    # TODO: parentId shouldn't have the # in it.
-    @dragContainer = @app.window.document.querySelector @options.parentId
+    @dragContainer = @app.window.document.getElementById @options.parentId
 
     @_drag.on 'dragstart', (d) =>
       @onDragStart()
@@ -105,11 +99,6 @@ class SquareMenu
       @draggedIconBin = @computeBin()
       @draggedIconStartBin = @computeBin()
       @dataBeforeDrag = @_data
-
-
-      # Bring the dragged element to the front
-      # TODO: do this with z-index instead of a DOM append
-      # @_group.select(".menuRect#{i}").node().parentNode.parentNode.appendChild(@_group.select(".menuRect#{i}").node().parentNode)
 
     @_drag.on 'drag', (d, i) =>
       @_group.select(".menuRect#{i}").attr 'transform', "translate(#{@getRectX()}, #{d3.event.y - @_boxSize / 2})"
@@ -409,7 +398,7 @@ class SquareMenu
     menuItems.select 'image'
       .attr
         'xlink:href': (d) -> d.img
-      .append('title').text (d) ->
+      .select('title').text (d) ->
         d.tooltip
 
 

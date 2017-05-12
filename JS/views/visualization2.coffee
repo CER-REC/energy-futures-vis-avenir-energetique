@@ -868,7 +868,7 @@ class Visualization2 extends visualization
   # Black and white non multi select menu.
   buildProvinceMenu: ->
     options =
-      parentId: '#provinceMenuSVG'
+      parentId: 'provinceMenuSVG'
       groupId: 'provinceMenu'
       onSelected: @provinceSelected
       allSquareHandler: @selectAllProvince
@@ -892,7 +892,7 @@ class Visualization2 extends visualization
 
   buildSourceMenu: ->
     options =
-      parentId: '#powerSourceMenuSVG'
+      parentId: 'powerSourceMenuSVG'
       groupId: 'stackMenu'
       onSelected: @menuSelect
       allSquareHandler: @selectAllStacked

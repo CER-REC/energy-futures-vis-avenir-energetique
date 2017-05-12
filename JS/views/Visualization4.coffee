@@ -327,7 +327,7 @@ class Visualization4
           Tr.allSelectorButton.all[@app.language]
         else
           Tr.allSelectorButton.none[@app.language]
-      parentId: '#provinceMenuSVG'
+      parentId: 'provinceMenuSVG'
 
     state =
       size:

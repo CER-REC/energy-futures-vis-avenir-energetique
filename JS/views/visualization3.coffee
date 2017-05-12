@@ -522,7 +522,7 @@ class Visualization3 extends visualization
 
   buildProvinceMenu: ->
     options =
-      parentId: '#provinceMenuSVG'
+      parentId: 'provinceMenuSVG'
       canDrag: false
       boxSize: 37.5
       groupId: 'provinceMenuGroup'
@@ -568,7 +568,7 @@ class Visualization3 extends visualization
 
   buildSourceMenu: ->
     options =
-      parentId: '#powerSourceMenuSVG'
+      parentId: 'powerSourceMenuSVG'
       canDrag: false
       boxSize: 37.5
       groupId: 'sourceMenuGroup'
