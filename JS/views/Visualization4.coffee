@@ -150,10 +150,11 @@ class Visualization4
         height: @outerHeight
     @renderXAxis false
     @renderYAxis false
-    @renderGraph() # This call used to pass in 0 for duration. Why?
+    @renderGraph() # TODO: This call used to pass in 0 for duration. Why?
     @provinceMenu.size
       w: @d3document.select('#provincesSelector').node().getBoundingClientRect().width
       h: @height() - @d3document.select('span.titleLabel').node().getBoundingClientRect().height + @d3document.select('#xAxis').node().getBoundingClientRect().height
+    @provinceMenu.redraw()
 
 
 
@@ -1249,14 +1250,13 @@ class Visualization4
           stroke: '#999999'
           'stroke-width': 2
 
-      refCaseDots
-        .attr 'cx', (d) ->
-          xAxisScale d.year
-
       refCaseDots.transition()
         .duration duration
-        .attr 'cy', (d) ->
-          yAxisScale d.value
+        .attr
+          cx: (d) ->
+            xAxisScale d.year
+          cy: (d) ->
+            yAxisScale d.value
     else
       d3.select @document
         .selectAll 'circle.refCaseDot'

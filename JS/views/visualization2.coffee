@@ -172,10 +172,12 @@ class Visualization2 extends visualization
       @_provinceMenu.size
         w: @d3document.select('#provincePanel').node().getBoundingClientRect().width
         h: @sourceMenuHeight()
+      @_provinceMenu.redraw()
     if @sourceMenu
       @sourceMenu.size
         w: @d3document.select('#powerSourcePanel').node().getBoundingClientRect().width
         h: @sourceMenuHeight()
+      @sourceMenu.redraw()
 
    #the graph's height
   height: ->
