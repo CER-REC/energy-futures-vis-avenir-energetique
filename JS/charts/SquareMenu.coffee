@@ -92,8 +92,12 @@ class SquareMenu
     @dragContainer = @app.window.document.getElementById @options.parentId
 
     @_drag.on 'dragstart', (d) =>
+      # Only allow one item to be dragged at a time
+      return if @draggedIcon?
+
       @onDragStart()
       d3.event.sourceEvent.stopPropagation()
+      d3.event.sourceEvent.preventDefault()
 
       @draggedIcon = d.key
       @draggedIconBin = @computeBin()
@@ -101,6 +105,9 @@ class SquareMenu
       @dataBeforeDrag = @_data
 
     @_drag.on 'drag', (d, i) =>
+      # Only allow one item to be dragged at a time
+      return unless d.key == @draggedIcon
+
       @_group.select(".menuRect#{i}").attr 'transform', "translate(#{@getRectX()}, #{d3.event.y - @_boxSize / 2})"
 
       # Compute which spot the icon should occupy
@@ -110,7 +117,10 @@ class SquareMenu
       @animateIconsWhileDragging bin
       @draggedIconBin = bin
 
-    @_drag.on 'dragend', =>
+    @_drag.on 'dragend', (d) =>
+      # Only allow one item to be dragged at a time
+      return unless d.key == @draggedIcon
+
       @onDragEnd()
 
       @draggedIcon = null
@@ -387,8 +397,14 @@ class SquareMenu
     # we do not interrupt drag related animations.
     return if @draggedIcon?
 
+    # The zero duration transition here serves a special purpose after a drag and drop
+    # operation: it cancels any outstanding animations, and then sets the icons' new
+    # positions appropriately. Attempting to cancel the animation and then set position
+    # after encounters a race condition, don't try that.
     menuItems = @_group.selectAll '.menuItem'
       .data @_data
+      .transition()
+      .duration 0
       .attr
         transform: (d, i) =>
           # If the 'all' icon is present, the others are bumped down one spot

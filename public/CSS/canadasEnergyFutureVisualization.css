@@ -1055,5 +1055,10 @@ svg { overflow: hidden; }
   width: 1px;
 }
 
+#canadasEnergyFutureVisualization .menuItem {
+  /* Necessary to enable drag on touch for new versions of IE/Edge */
+  touch-action: none;
+}
+
 
 
