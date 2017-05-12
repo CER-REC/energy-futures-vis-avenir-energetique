@@ -5,7 +5,7 @@ Mustache = require 'mustache'
 
 visualization = require './visualization.coffee'
 stackedBarChart = require '../charts/stacked-bar-chart.coffee'
-SquareMenu2 = require '../charts/SquareMenu2.coffee'
+SquareMenu = require '../charts/SquareMenu.coffee'
 Constants = require '../Constants.coffee'
 Tr = require '../TranslationTable.coffee'
 Platform = require '../Platform.coffee'
@@ -673,7 +673,7 @@ class Visualization1 extends visualization
         h: @provinceMenuHeight()
       data: @provinceMenuData()
 
-    @menu = new SquareMenu2 @app, menuOptions, menuState
+    @menu = new SquareMenu @app, menuOptions, menuState
 
   #called for adjustments: basically to avoid rebuilding the x axis and the chart object
   adjustViz: ->

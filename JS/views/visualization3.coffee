@@ -4,7 +4,7 @@ Mustache = require 'mustache'
 visualization = require './visualization.coffee'
 BubbleChart = require '../charts/bubble-chart.coffee'
 Constants = require '../Constants.coffee'
-SquareMenu2 = require '../charts/SquareMenu2.coffee'
+SquareMenu = require '../charts/SquareMenu.coffee'
 Tr = require '../TranslationTable.coffee'
 Platform = require '../Platform.coffee'
 
@@ -564,7 +564,7 @@ class Visualization3 extends visualization
         h: @leftHandMenuHeight()
       data: @dataForProvinceMenu()
 
-    @provinceMenu = new SquareMenu2 @app, options, state
+    @provinceMenu = new SquareMenu @app, options, state
 
   buildSourceMenu: ->
     options =
@@ -611,7 +611,7 @@ class Visualization3 extends visualization
         h: @leftHandMenuHeight()
       data: @dataForSourceMenu()
 
-    @sourceMenu = new SquareMenu2 @app, options, state
+    @sourceMenu = new SquareMenu @app, options, state
 
 
 

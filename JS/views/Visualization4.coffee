@@ -2,7 +2,7 @@ d3 = require 'd3'
 Mustache = require 'mustache'
 
 Constants = require '../Constants.coffee'
-SquareMenu2 = require '../charts/SquareMenu2.coffee'
+SquareMenu = require '../charts/SquareMenu.coffee'
 Tr = require '../TranslationTable.coffee'
 Platform = require '../Platform.coffee'
 
@@ -327,7 +327,6 @@ class Visualization4
           Tr.allSelectorButton.all[@app.language]
         else
           Tr.allSelectorButton.none[@app.language]
-      boxSize: 37.5
       parentId: '#provinceMenuSVG'
 
     state =
@@ -336,7 +335,7 @@ class Visualization4
         h: @height() - @d3document.select('span.titleLabel').node().getBoundingClientRect().height + @d3document.select('#xAxis').node().getBoundingClientRect().height
       data: @dataForProvinceMenu()
 
-    new SquareMenu2 @app, options, state
+    new SquareMenu @app, options, state
 
   selectAllProvince: =>
     newConfig = new @config.constructor @app

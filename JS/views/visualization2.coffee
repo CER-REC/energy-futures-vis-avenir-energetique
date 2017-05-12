@@ -5,7 +5,7 @@ Mustache = require 'mustache'
 
 visualization = require './visualization.coffee'
 stackedAreaChart = require '../charts/stacked-area-chart.coffee'
-SquareMenu2 = require '../charts/SquareMenu2.coffee'
+SquareMenu = require '../charts/SquareMenu.coffee'
 Constants = require '../Constants.coffee'
 Tr = require '../TranslationTable.coffee'
 Platform = require '../Platform.coffee'
@@ -887,7 +887,7 @@ class Visualization2 extends visualization
         h: @sourceMenuHeight()
       data: @dataForProvinceMenu()
 
-    new SquareMenu2 @app, options, state
+    new SquareMenu @app, options, state
 
 
   buildSourceMenu: ->
@@ -918,7 +918,7 @@ class Visualization2 extends visualization
         h: @sourceMenuHeight()
       data: @sourceMenuData()
 
-    new SquareMenu2 @app, options, state
+    new SquareMenu @app, options, state
 
 
 
