@@ -58,11 +58,7 @@ class Visualization2Configuration
     # BC AB SK MB ON QC NB NS NL PE YT NT NU all
     @setProvince options.province
 
-    @sourcesInOrder = []
-    if(@isValidSourcesInOrder(options.sourcesInOrder))
-      @sourcesInOrder = options.sourcesInOrder
-    else
-      @sourcesInOrder = @defaultOptions.sourcesInOrder
+    @setSourcesInOrder options.sourcesInOrder
 
     @setLanguage @app.language || 'en'
 
@@ -91,7 +87,11 @@ class Visualization2Configuration
     @sources.push source unless @sources.includes source
 
   setSourcesInOrder: (sourcesInOrder) ->
-    @sourcesInOrder = sourcesInOrder
+    if @isValidSourcesInOrder sourcesInOrder
+      @sourcesInOrder = sourcesInOrder
+    else
+      @sourcesInOrder = @defaultOptions.sourcesInOrder
+
 
   removeSource: (source) ->
     @sources = @sources.filter (s) -> s != source
