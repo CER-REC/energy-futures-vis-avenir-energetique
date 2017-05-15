@@ -7,7 +7,7 @@ Constants = require '../Constants.coffee'
 class SquareMenu
 
   defaultOptions:
-    canDrag: true
+    canDrag: false
     boxSize: 30
     groupId: 'sChart'
     addAllSquare: true
@@ -103,10 +103,12 @@ class SquareMenu
       @draggedIconBin = @computeBin()
       @draggedIconStartBin = @computeBin()
       @dataBeforeDrag = @_data
+      @haveSeenDragEvent = false
 
     @_drag.on 'drag', (d, i) =>
       # Only allow one item to be dragged at a time
       return unless d.key == @draggedIcon
+      @haveSeenDragEvent = true
 
       @_group.select(".menuRect#{i}").attr 'transform', "translate(#{@getRectX()}, #{d3.event.y - @_boxSize / 2})"
 
@@ -128,9 +130,14 @@ class SquareMenu
       @draggedIconStartBin = null
       @dataBeforeDrag = null
 
-      # At the end of the animation, we need to update the elements in the DOM so that
-      # they reflect the new display order.
-      @update()
+      # At the end of the animation, we rebuild the DOM elements so that. they reflect
+      # the new display order. I tried updating the existing elements instead, but this
+      # had unacceptable graphical glitches in Firefox.
+      # However, clicks will also trigger a dragstart and a dragend event. Redrawing here
+      # will destroy the element and its click handler before they can respond to the
+      # click event, so we only redraw if we have seen at least one frame of drag.
+      @redraw() if @haveSeenDragEvent
+      @haveSeenDragEvent = false
 
 
 
@@ -302,6 +309,11 @@ class SquareMenu
 
 
   redraw: ->
+
+    # When the user is interacting via drag, we suppress ordinary menu updates so that
+    # we do not interrupt drag related animations.
+    return if @draggedIcon?
+
     @_group.selectAll('.menuItem').remove()
     @_group.selectAll('.menuSquare').remove()
     @_group.selectAll('.menuLineBehind').remove()
@@ -389,40 +401,6 @@ class SquareMenu
         .append('title').text (d) ->
           d.tooltip
       
-
-
-
-  update: ->
-    # When the user is interacting via drag, we suppress ordinary menu updates so that
-    # we do not interrupt drag related animations.
-    return if @draggedIcon?
-
-    # The zero duration transition here serves a special purpose after a drag and drop
-    # operation: it cancels any outstanding animations, and then sets the icons' new
-    # positions appropriately. Attempting to cancel the animation and then set position
-    # after encounters a race condition, don't try that.
-    menuItems = @_group.selectAll '.menuItem'
-      .data @_data
-      .transition()
-      .duration 0
-      .attr
-        transform: (d, i) =>
-          # If the 'all' icon is present, the others are bumped down one spot
-          index = if @_addAllSquare then i + 1 else i
-          "translate(#{@getRectX()}, #{@getRectY(index)})"
-
-    menuItems.select 'image'
-      .attr
-        'xlink:href': (d) -> d.img
-      .select('title').text (d) ->
-        d.tooltip
-
-
-    if @_addAllSquare
-      @_group.select '.selectAllGroup'
-        .select 'image'
-        .attr
-          'xlink:href': @getAllIcon
 
 
 

@@ -249,9 +249,9 @@ class Visualization3 extends visualization
     # Menus need to be updated before the @_chart.data call
     # Is the chart mutating @seriesData? I think so in BubbleChart.filteredData
     @provinceMenu.data @dataForProvinceMenu()
-    @provinceMenu.update()
+    @provinceMenu.redraw()
     @sourceMenu.data @dataForSourceMenu()
-    @sourceMenu.update()
+    @sourceMenu.redraw()
 
     @_chart.mapping @menuDataForChart()
     @_chart.year @config.year

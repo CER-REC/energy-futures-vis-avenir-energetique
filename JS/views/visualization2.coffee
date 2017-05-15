@@ -763,7 +763,7 @@ class Visualization2 extends visualization
     @buildYAxis()
 
     @sourceMenu.data @sourceMenuData()
-    @sourceMenu.update()
+    @sourceMenu.redraw()
 
 
   orderChanged: (newOrder) =>
@@ -775,7 +775,7 @@ class Visualization2 extends visualization
       @config.setSourcesInOrder newOrder
       @_chart.mapping @sourceMenuData()
       @sourceMenu.data @sourceMenuData()
-      @sourceMenu.update()
+      @sourceMenu.redraw()
       @app.router.navigate @config.routerParams()
 
     @app.datasetRequester.updateAndRequestIfRequired newConfig, update
@@ -796,7 +796,7 @@ class Visualization2 extends visualization
       @getDataAndRender()
 
       @sourceMenu.data @sourceMenuData()
-      @sourceMenu.update()
+      @sourceMenu.redraw()
 
       @app.router.navigate @config.routerParams()
 
@@ -804,7 +804,7 @@ class Visualization2 extends visualization
 
 
 
-  selectAllStacked: (selecting) =>
+  selectAllStacked: =>
     newConfig = new @config.constructor @app
     newConfig.copy @config
 
@@ -831,7 +831,7 @@ class Visualization2 extends visualization
 
       @getDataAndRender()
       @sourceMenu.data @sourceMenuData()
-      @sourceMenu.update()
+      @sourceMenu.redraw()
 
       @app.router.navigate @config.routerParams()
 
@@ -933,7 +933,7 @@ class Visualization2 extends visualization
     update = =>
       @config.setProvince 'all'
       @_provinceMenu.data @dataForProvinceMenu()
-      @_provinceMenu.update()
+      @_provinceMenu.redraw()
       @getDataAndRender()
       @app.router.navigate @config.routerParams()
 
@@ -950,7 +950,7 @@ class Visualization2 extends visualization
     update = =>
       @config.setProvince dataDictionaryItem.key
       @_provinceMenu.data @dataForProvinceMenu()
-      @_provinceMenu.update()
+      @_provinceMenu.redraw()
       @getDataAndRender()
       @app.router.navigate @config.routerParams()
 

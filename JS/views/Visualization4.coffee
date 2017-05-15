@@ -346,7 +346,7 @@ class Visualization4
     update = =>
       @config.setProvince 'all'
       @provinceMenu.data @dataForProvinceMenu()
-      @provinceMenu.update()
+      @provinceMenu.redraw()
       @renderYAxis()
       @renderGraph()
       @app.router.navigate @config.routerParams()
@@ -362,7 +362,7 @@ class Visualization4
     update = =>
       @config.setProvince dataDictionaryItem.key
       @provinceMenu.data @dataForProvinceMenu()
-      @provinceMenu.update()
+      @provinceMenu.redraw()
       @renderYAxis()
       @renderGraph()
       @app.router.navigate @config.routerParams()

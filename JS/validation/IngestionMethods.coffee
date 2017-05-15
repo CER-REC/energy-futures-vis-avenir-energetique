@@ -52,7 +52,7 @@ IngestionMethods =
       fs.writeSync @logFile, "#{error.message}\n"
       fs.writeSync @logFile, "#{error.line.toString()}\n" if error.line?
       fs.writeSync @logFile, "#{error.lineNumber}\n" if error.lineNumber?
-      fs.writeSync @logFile, "\n"
+      fs.writeSync @logFile, '\n'
 
     fs.closeSync @logFile
 

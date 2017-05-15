@@ -1,4 +1,3 @@
-_ = require 'lodash'
 d3 = require 'd3'
 Mustache = require 'mustache'
 
@@ -535,7 +534,7 @@ class Visualization1 extends visualization
     domainPlusOne = [2005..2041]
     d3.scale.ordinal()
         .domain domainPlusOne
-        .rangeBands [@_margin.left, @width() + @_margin.left + @barSize() + (@_barMargin /2)]
+        .rangeBands [@_margin.left, @width() + @_margin.left + @barSize() + (@_barMargin / 2)]
 
   xAxisForTicks: ->
     d3.svg.axis()
@@ -683,7 +682,7 @@ class Visualization1 extends visualization
     @_chart.data @seriesData
 
     @menu.data @provinceMenuData()
-    @menu.update()
+    @menu.redraw()
 
     @_chart.y @yScale()
     @buildYAxis()
@@ -729,7 +728,7 @@ class Visualization1 extends visualization
       @config.setProvincesInOrder newOrder
       @_chart.mapping @provinceMenuData()
       @menu.data @provinceMenuData()
-      @menu.update()
+      @menu.redraw()
       @app.router.navigate @config.routerParams()
     
     @app.datasetRequester.updateAndRequestIfRequired newConfig, update
