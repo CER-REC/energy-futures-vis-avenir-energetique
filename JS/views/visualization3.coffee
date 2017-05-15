@@ -147,8 +147,6 @@ class Visualization3 extends visualization
       right: 20
       bottom: 70
     @addDatasetToggle()
-    @timelineMargin = 25
-    @sliderLabelHeight = 28
     @svgResize()
     @addDatasetToggle()
     @buildProvinceVsSourceToggle()
@@ -318,16 +316,16 @@ class Visualization3 extends visualization
     axis = @d3document.select '#timelineAxis'
       .attr
         fill: '#333'
-        transform: "translate( 0, #{@height() + @_margin.top + @sliderLabelHeight})"
+        transform: "translate( 0, #{@height() + @_margin.top + Constants.sliderLabelHeight})"
       .call @yearAxis()
       
     # We need a wider target for the click so we use a separate group
-    @d3document.select('#timeLineTouch')
+    @d3document.select '#timeLineTouch'
       .attr
         class: 'pointerCursor'
         'pointer-events': 'visible'
         transform:
-          "translate( 0, #{@height() + @_margin.top + @sliderLabelHeight - (axis.node().getBoundingClientRect().height / 2)})"
+          "translate(0, #{@height() + @_margin.top + Constants.sliderLabelHeight - (axis.node().getBoundingClientRect().height / 2)})"
         height: axis.node().getBoundingClientRect().height
         width: axis.node().getBoundingClientRect().width
       .style
@@ -335,30 +333,12 @@ class Visualization3 extends visualization
       .on 'click', =>
         element = @d3document.select('#timelineAxis').node()
         newX = d3.mouse(element)[0]
-        if newX < @timelineMargin then newX = @timelineMargin
+        if newX < Constants.timelineMargin then newX = Constants.timelineMargin
         if newX > @timelineRightEnd() then newX = @timelineRightEnd()
         year = Math.round @yearScale().invert(newX)
 
         return if year == @config.year
-
-        newConfig = new @config.constructor @app
-        newConfig.copy @config
-        newConfig.setYear year
-    
-        update = =>
-          @config.setYear year
-          @d3document.select('#sliderLabel').attr
-            transform: "translate(#{newX}, #{@height() + @_margin.top - 5})"
-          
-          @d3document.select('#labelBox').text =>
-            @config.year
-          
-          @getDataAndRender()
-          @app.router.navigate @config.routerParams()
-
-        @app.datasetRequester.updateAndRequestIfRequired newConfig, update
-
-
+        @updateSlider year
       
     axis.selectAll('text')
       .style
@@ -388,10 +368,14 @@ class Visualization3 extends visualization
 
     #Drag Behaviour
     drag = d3.behavior.drag()
+
+    drag.on 'dragstart', =>
+      year = @config.year
+
     drag.on 'drag', =>
       newX = d3.event.x
       @d3document.select('#sliderLabel').attr 'transform', =>
-        if newX < @timelineMargin then newX = @timelineMargin
+        if newX < Constants.timelineMargin then newX = Constants.timelineMargin
         if newX > @timelineRightEnd() then newX = @timelineRightEnd()
         "translate(#{newX}, #{@height() + @_margin.top - 5})"
 
@@ -401,7 +385,10 @@ class Visualization3 extends visualization
         @app.router.navigate @config.routerParams()
         @d3document.select('#labelBox').text =>
           @config.year
-        
+        @d3document.select '#sliderLabel'
+          .attr
+            'aria-valuenow': @config.year
+
         @getDataAndRender()
 
     drag.on 'dragend', =>
@@ -412,6 +399,9 @@ class Visualization3 extends visualization
 
         @d3document.select('#labelBox').selectAll('text').text =>
           @config.year
+        @d3document.select '#sliderLabel'
+          .attr
+            'aria-valuenow': @config.year
         @config.setYear year
         @app.router.navigate @config.routerParams()
         @getDataAndRender()
@@ -425,6 +415,14 @@ class Visualization3 extends visualization
         class: 'sliderLabel pointerCursor'
         # Re the 5. It is because the ticks are moved
         transform: "translate(#{@yearScale()(@config.year)},#{@height() + @_margin.top - 5})"
+        tabindex: '0'
+        role: 'slider'
+        'aria-label': Tr.altText.yearsSlider[@app.language]
+        'aria-orientation': 'horizontal'
+        'aria-valuemin': Constants.minYear
+        'aria-valuemax': Constants.minYear
+        'aria-valuenow': @config.year
+      .on 'keydown', @handleSliderKeydown
       .call drag
         
     sliderLabel.append 'image'
@@ -477,7 +475,7 @@ class Visualization3 extends visualization
         timeoutComplete = =>
           return unless @_chart?
 
-          if @config.year < 2040
+          if @config.year < Constants.maxYear
 
             newConfig = new @config.constructor @app
             newConfig.copy @config
@@ -487,14 +485,17 @@ class Visualization3 extends visualization
               @config.setYear @config.year + 1
               @yearTimeout = window.setTimeout timeoutComplete, @_chart._duration
               @getDataAndRender()
-              @d3document.select('#sliderLabel')
+              @d3document.select '#sliderLabel'
                 .transition()
                   .attr
                     transform: "translate(#{@yearScale()(@config.year)}, #{@height() + @_margin.top  - 5})"
                 .duration @_chart._duration
                 .ease 'linear'
-              @d3document.select('#labelBox').text =>
-                @config.year
+              @d3document.select '#labelBox'
+                .text @config.year
+              @d3document.select '#sliderLabel'
+                .attr
+                  'aria-valuenow': @config.year
               @app.router.navigate @config.routerParams()
 
             @app.datasetRequester.updateAndRequestIfRequired newConfig, update
@@ -824,6 +825,45 @@ class Visualization3 extends visualization
       @app.analyticsReporter.reportEvent 'Controls help', 'Viz3 region help'
 
 
+  handleSliderKeydown: =>
+    switch d3.event.key
+      when 'ArrowRight', 'ArrowUp'
+        @updateSlider @config.year + 1
+      when 'ArrowLeft', 'ArrowDown'
+        @updateSlider @config.year - 1
+      when 'End'
+        @updateSlider Constants.maxYear
+      when 'Home'
+        @updateSlider Constants.minYear
+
+  updateSlider: (value) ->
+    # Prevent arrow keys and home/end from scrolling the page while using the slider
+    d3.event.preventDefault()
+
+    newConfig = new @config.constructor @app
+    newConfig.copy @config
+    newConfig.setYear value
+
+    update = =>
+      @config.setYear value
+      @d3document.select('#sliderLabel').attr
+        transform: "translate(#{@yearScale()(@config.year)}, #{@height() + @_margin.top - 5})"
+      
+      @d3document.select '#labelBox'
+        .text @config.year
+      @d3document.select '#sliderLabel'
+        .attr
+          'aria-valuenow': @config.year
+
+      @getDataAndRender()
+      @app.router.navigate @config.routerParams()
+
+    @app.datasetRequester.updateAndRequestIfRequired newConfig, update
+
+
+
+
+
 
 
   ### Helper functions ###
@@ -855,7 +895,7 @@ class Visualization3 extends visualization
 
 
   timelineRightEnd: ->
-    @getSvgWidth() - @timelineMargin
+    @getSvgWidth() - Constants.timelineMargin
 
   getSvgWidth: ->
     # getBoundingClientRect is not implemented in JSDOM, use fixed width on server
@@ -874,12 +914,9 @@ class Visualization3 extends visualization
   # The 'correct' scale used by the graph
   yearScale: ->
     d3.scale.linear()
-      .domain([
-        2005
-        2040
-      ])
+      .domain [Constants.minYear, Constants.maxYear]
       .range [
-        @timelineMargin
+        Constants.timelineMargin
         @timelineRightEnd()
       ]
 
@@ -889,7 +926,7 @@ class Visualization3 extends visualization
       .tickSize(10,2)
       .ticks(7)
       .tickFormat (d) ->
-        if d == 2005 or d == 2040 then d else ''
+        if d == Constants.minYear or d == Constants.maxYear then d else ''
       .orient 'bottom'
 
 

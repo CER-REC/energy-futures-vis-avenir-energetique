@@ -11,7 +11,7 @@ class Visualization3Configuration
     viewBy: 'province'
     unit: 'gigawattHours'
     scenario: 'reference'
-    year: 2005
+    year: Constants.minYear
     sources: [
       'hydro'
       'solarWindGeothermal'
@@ -111,8 +111,10 @@ class Visualization3Configuration
 
   setYear: (year) ->
     year = parseInt year, 10
-    if year >= 2005 and year <= 2040
+    if year >= Constants.minYear and year <= Constants.maxYear
       @year = year
+    else if year > Constants.maxYear
+      @year = Constants.maxYear
     else
       @year = @defaultOptions.year
 
