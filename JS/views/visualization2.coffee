@@ -172,12 +172,12 @@ class Visualization2 extends visualization
       @_provinceMenu.size
         w: @d3document.select('#provincePanel').node().getBoundingClientRect().width
         h: @sourceMenuHeight()
-      @_provinceMenu.redraw()
+      @_provinceMenu.update()
     if @sourceMenu
       @sourceMenu.size
         w: @d3document.select('#powerSourcePanel').node().getBoundingClientRect().width
         h: @sourceMenuHeight()
-      @sourceMenu.redraw()
+      @sourceMenu.update()
 
    #the graph's height
   height: ->
@@ -763,7 +763,7 @@ class Visualization2 extends visualization
     @buildYAxis()
 
     @sourceMenu.data @sourceMenuData()
-    @sourceMenu.redraw()
+    @sourceMenu.update()
 
 
   orderChanged: (newOrder) =>
@@ -775,7 +775,6 @@ class Visualization2 extends visualization
       @config.setSourcesInOrder newOrder
       @_chart.mapping @sourceMenuData()
       @sourceMenu.data @sourceMenuData()
-      @sourceMenu.redraw()
       @app.router.navigate @config.routerParams()
 
     @app.datasetRequester.updateAndRequestIfRequired newConfig, update
@@ -796,7 +795,7 @@ class Visualization2 extends visualization
       @getDataAndRender()
 
       @sourceMenu.data @sourceMenuData()
-      @sourceMenu.redraw()
+      @sourceMenu.update()
 
       @app.router.navigate @config.routerParams()
 
@@ -831,7 +830,7 @@ class Visualization2 extends visualization
 
       @getDataAndRender()
       @sourceMenu.data @sourceMenuData()
-      @sourceMenu.redraw()
+      @sourceMenu.update()
 
       @app.router.navigate @config.routerParams()
 
@@ -933,7 +932,7 @@ class Visualization2 extends visualization
     update = =>
       @config.setProvince 'all'
       @_provinceMenu.data @dataForProvinceMenu()
-      @_provinceMenu.redraw()
+      @_provinceMenu.update()
       @getDataAndRender()
       @app.router.navigate @config.routerParams()
 
@@ -950,7 +949,7 @@ class Visualization2 extends visualization
     update = =>
       @config.setProvince dataDictionaryItem.key
       @_provinceMenu.data @dataForProvinceMenu()
-      @_provinceMenu.redraw()
+      @_provinceMenu.update()
       @getDataAndRender()
       @app.router.navigate @config.routerParams()
 

@@ -172,12 +172,12 @@ class Visualization3 extends visualization
     @provinceMenu.size
       w: @d3document.select('#provinceMenuSVG').node().getBoundingClientRect().width
       h: @leftHandMenuHeight()
-    @provinceMenu.redraw()
+    @provinceMenu.update()
 
     @sourceMenu.size
       w: @d3document.select('#powerSourceMenuSVG').node().getBoundingClientRect().width
       h: @leftHandMenuHeight()
-    @sourceMenu.redraw()
+    @sourceMenu.update()
 
 
 
@@ -249,9 +249,9 @@ class Visualization3 extends visualization
     # Menus need to be updated before the @_chart.data call
     # Is the chart mutating @seriesData? I think so in BubbleChart.filteredData
     @provinceMenu.data @dataForProvinceMenu()
-    @provinceMenu.redraw()
+    @provinceMenu.update()
     @sourceMenu.data @dataForSourceMenu()
-    @sourceMenu.redraw()
+    @sourceMenu.update()
 
     @_chart.mapping @menuDataForChart()
     @_chart.year @config.year

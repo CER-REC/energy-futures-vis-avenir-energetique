@@ -172,7 +172,7 @@ class Visualization1 extends visualization
     @menu.size
       w: @d3document.select('#provincePanel').node().getBoundingClientRect().width
       h: @provinceMenuHeight()
-    @menu.redraw()
+    @menu.update()
 
 
   # the graph's height
@@ -682,7 +682,7 @@ class Visualization1 extends visualization
     @_chart.data @seriesData
 
     @menu.data @provinceMenuData()
-    @menu.redraw()
+    @menu.update()
 
     @_chart.y @yScale()
     @buildYAxis()
@@ -728,7 +728,6 @@ class Visualization1 extends visualization
       @config.setProvincesInOrder newOrder
       @_chart.mapping @provinceMenuData()
       @menu.data @provinceMenuData()
-      @menu.redraw()
       @app.router.navigate @config.routerParams()
     
     @app.datasetRequester.updateAndRequestIfRequired newConfig, update

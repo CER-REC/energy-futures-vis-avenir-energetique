@@ -401,7 +401,31 @@ class SquareMenu
         .append('title').text (d) ->
           d.tooltip
       
+ 
+  update: ->
+    # When the user is interacting via drag, we suppress ordinary menu updates so that
+    # we do not interrupt drag related animations.
+    return if @draggedIcon?
 
+    menuItems = @_group.selectAll '.menuItem'
+      .data @_data
+      .attr
+        transform: (d, i) =>
+          # If the 'all' icon is present, the others are bumped down one spot
+          index = if @_addAllSquare then i + 1 else i
+          "translate(#{@getRectX()}, #{@getRectY(index)})"
+
+    menuItems.select 'image'
+      .attr
+        'xlink:href': (d) -> d.img
+      .select('title').text (d) ->
+        d.tooltip
+
+    if @_addAllSquare
+      @_group.select '.selectAllGroup'
+        .select 'image'
+        .attr
+          'xlink:href': @getAllIcon
 
 
 module.exports = SquareMenu
