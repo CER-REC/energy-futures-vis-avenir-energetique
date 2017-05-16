@@ -1438,10 +1438,10 @@ module.exports =
 
     selected:
       en: 'Selected'
-      fr: 'Sélectionné'
+      fr: 'Sélection'
     unselected:
       en: 'Unselected'
-      fr: 'Désélectionné'
+      fr: 'Désélection'
     unavailable:
       en: 'Unavailable'
       fr: 'Non disponible'
@@ -1623,6 +1623,27 @@ module.exports =
       sourceUnselected:
         en: 'Source unselected'
         fr: 'Désélection - Source'
+
+    allButton:
+      allRegionsSelected:
+        en: 'All regions selected'
+        fr: 'Selection - toutes les régions'
+      someRegionsSelected:
+        en: 'Some regions selected'
+        fr: 'Selection - quelques régions'
+      noRegionsSelected:
+        en: 'All regions unselected'
+        fr: 'Désélection - toutes les régions'
+
+      allSourcesSelected:
+        en: 'All sources selected'
+        fr: 'Sélection - toutes les sources'
+      someSourcesSelected:
+        en: 'Some regions selected'
+        fr: 'Selection - quelques sources'
+      noSourcesSelected:
+        en: 'All sources unselected'
+        fr: 'Désélection - toutes les sources'
 
 
     howToImage:

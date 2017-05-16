@@ -16,7 +16,7 @@ if Platform.name == 'browser'
   SvgStylesheetTemplate = require '../templates/SvgStylesheet.css'
 
 ControlsHelpPopover = require '../popovers/ControlsHelpPopover.coffee'
-
+ProvinceAriaText = require '../ProvinceAriaText.coffee'
 
 class Visualization1 extends visualization
   height = 700
@@ -232,10 +232,13 @@ class Visualization1 extends visualization
         height: height - @_margin.top
 
   provinceMenuData: ->
-    provinceColours = {
+
+
+
+    provinceColours =
       BC:
-        tooltip: Tr.regionSelector.names.BC[@app.language]
-        present: if @config.provinces.includes 'BC' then true else false
+        tooltip: ProvinceAriaText @app, @config.provinces.includes('BC'), 'BC'
+        present: @config.provinces.includes 'BC'
         colour: '#AEC7E8'
         img:
           if @zeroedOut('BC')
@@ -245,8 +248,8 @@ class Visualization1 extends visualization
           else
             'IMG/provinces/colour/BC_Unselected.svg'
       AB:
-        tooltip: Tr.regionSelector.names.AB[@app.language]
-        present: if @config.provinces.includes 'AB' then true else false
+        tooltip: ProvinceAriaText @app, @config.provinces.includes('AB'), 'AB'
+        present: @config.provinces.includes 'AB'
         colour: '#2278b5'
         img:
           if @zeroedOut('AB')
@@ -256,8 +259,8 @@ class Visualization1 extends visualization
           else
             'IMG/provinces/colour/AB_Unselected.svg'
       SK:
-        tooltip: Tr.regionSelector.names.SK[@app.language]
-        present: if @config.provinces.includes 'SK' then true else false
+        tooltip: ProvinceAriaText @app, @config.provinces.includes('SK'), 'SK'
+        present: @config.provinces.includes 'SK'
         colour: '#d77ab1'
         img:
           if @zeroedOut('SK')
@@ -267,8 +270,8 @@ class Visualization1 extends visualization
           else
             'IMG/provinces/colour/Sask_Unselected.svg'
       MB:
-        tooltip: Tr.regionSelector.names.MB[@app.language]
-        present: if @config.provinces.includes 'MB' then true else false
+        tooltip: ProvinceAriaText @app, @config.provinces.includes('MB'), 'MB'
+        present: @config.provinces.includes 'MB'
         colour: '#FCBB78'
         img:
           if @zeroedOut('MB')
@@ -278,8 +281,8 @@ class Visualization1 extends visualization
           else
             'IMG/provinces/colour/MB_Unselected.svg'
       ON:
-        tooltip: Tr.regionSelector.names.ON[@app.language]
-        present: if @config.provinces.includes 'ON' then true else false
+        tooltip: ProvinceAriaText @app, @config.provinces.includes('ON'), 'ON'
+        present: @config.provinces.includes 'ON'
         colour: '#C5B1D6'
         img:
           if @zeroedOut('ON')
@@ -289,8 +292,8 @@ class Visualization1 extends visualization
           else
             'IMG/provinces/colour/ON_Unselected.svg'
       QC:
-        tooltip: Tr.regionSelector.names.QC[@app.language]
-        present: if @config.provinces.includes 'QC' then true else false
+        tooltip: ProvinceAriaText @app, @config.provinces.includes('QC'), 'QC'
+        present: @config.provinces.includes 'QC'
         colour: '#c49c94'
         img:
           if @zeroedOut('QC')
@@ -300,8 +303,8 @@ class Visualization1 extends visualization
           else
             'IMG/provinces/colour/QC_Unselected.svg'
       NB:
-        tooltip: Tr.regionSelector.names.NB[@app.language]
-        present: if @config.provinces.includes 'NB' then true else false
+        tooltip: ProvinceAriaText @app, @config.provinces.includes('NB'), 'NB'
+        present: @config.provinces.includes 'NB'
         colour: '#2FA148'
         img:
           if @zeroedOut('NB')
@@ -311,8 +314,8 @@ class Visualization1 extends visualization
           else
             'IMG/provinces/colour/NB_Unselected.svg'
       NS:
-        tooltip: Tr.regionSelector.names.NS[@app.language]
-        present: if @config.provinces.includes 'NS' then true else false
+        tooltip: ProvinceAriaText @app, @config.provinces.includes('NS'), 'NS'
+        present: @config.provinces.includes 'NS'
         colour: '#F69797'
         img:
           if @zeroedOut('NS')
@@ -322,8 +325,8 @@ class Visualization1 extends visualization
           else
             'IMG/provinces/colour/NS_Unselected.svg'
       NL:
-        tooltip: Tr.regionSelector.names.NL[@app.language]
-        present: if @config.provinces.includes 'NL' then true else false
+        tooltip: ProvinceAriaText @app, @config.provinces.includes('NL'), 'NL'
+        present: @config.provinces.includes 'NL'
         colour: '#9ED089'
         img:
           if @zeroedOut('NL')
@@ -333,8 +336,8 @@ class Visualization1 extends visualization
           else
             'IMG/provinces/colour/NL_Unselected.svg'
       PE:
-        tooltip: Tr.regionSelector.names.PE[@app.language]
-        present: if @config.provinces.includes 'PE' then true else false
+        tooltip: ProvinceAriaText @app, @config.provinces.includes('PE'), 'PE'
+        present: @config.provinces.includes 'PE'
         colour: '#8D574C'
         img:
           if @zeroedOut('PE')
@@ -344,8 +347,8 @@ class Visualization1 extends visualization
           else
             'IMG/provinces/colour/PEI_Unselected.svg'
       YT:
-        tooltip: Tr.regionSelector.names.YT[@app.language]
-        present: if @config.provinces.includes 'YT' then true else false
+        tooltip: ProvinceAriaText @app, @config.provinces.includes('YT'), 'YT'
+        present: @config.provinces.includes 'YT'
         colour: '#F5B6D1'
         img:
           if @zeroedOut('YT')
@@ -355,8 +358,8 @@ class Visualization1 extends visualization
           else
             'IMG/provinces/colour/Yukon_Unselected.svg'
       NT:
-        tooltip: Tr.regionSelector.names.NT[@app.language]
-        present: if @config.provinces.includes 'NT' then true else false
+        tooltip: ProvinceAriaText @app, @config.provinces.includes('NT'), 'NT'
+        present: @config.provinces.includes 'NT'
         colour: '#D62A28'
         img:
           if @zeroedOut('NT')
@@ -366,8 +369,8 @@ class Visualization1 extends visualization
           else
             'IMG/provinces/colour/NT_Unselected.svg'
       NU:
-        tooltip: Tr.regionSelector.names.NU[@app.language]
-        present: if @config.provinces.includes 'NU' then true else false
+        tooltip: ProvinceAriaText @app, @config.provinces.includes('NU'), 'NU'
+        present: @config.provinces.includes 'NU'
         colour: '#9268ac'
         img:
           if @zeroedOut('NU')
@@ -376,7 +379,7 @@ class Visualization1 extends visualization
             'IMG/provinces/colour/NU_Selected.svg'
           else
             'IMG/provinces/colour/NU_Unselected.svg'
-    }
+
     data = []
     for province in @config.provincesInOrder
       # this really should be above but its easier to add here for now
@@ -665,6 +668,13 @@ class Visualization1 extends visualization
           Tr.allSelectorButton.someSelected[@app.language]
         else if @config.provinces.length == 0
           Tr.allSelectorButton.none[@app.language]
+      getAllLabel: =>
+        if @config.provinces.length == Constants.provinces.length
+          Tr.altText.allButton.allRegionsSelected[@app.language]
+        else if @config.provinces.length > 0
+          Tr.altText.allButton.someRegionsSelected[@app.language]
+        else if @config.provinces.length == 0
+          Tr.altText.allButton.noRegionsSelected[@app.language]
       onDragStart: @_chart.dragStart
       onDragEnd: @_chart.dragEnd
 

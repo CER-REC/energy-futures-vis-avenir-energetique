@@ -21,6 +21,7 @@ class SquareMenu
     getAllIcon: -> # Called to determine what image to use for the 'all' icon
     onDragStart: ->
     onDragEnd: ->
+    getAllLabel: -> # Called to determine what string to use for the all button aria-label
     # coffeelint: enable=no_empty_functions
 
   defaultState:
@@ -50,6 +51,7 @@ class SquareMenu
     @_orderChangedHandler = @options.orderChangedHandler
     @_showHelpHandler = @options.showHelpHandler
     @getAllIcon = @options.getAllIcon
+    @getAllLabel = @options.getAllLabel
     @onDragStart = @options.onDragStart
     @onDragEnd = @options.onDragEnd
 
@@ -361,15 +363,6 @@ class SquareMenu
           @_showHelpHandler()
 
 
-    @_group.selectAll('.menuItem').data(@_data).enter().append('g').attr
-      class: (d, i) ->
-        "menuItem menuRect#{i}"
-      transform: (d, i) =>
-        # If the 'all' icon is present, the others are bumped down one spot
-        index = if @_addAllSquare then i + 1 else i
-        "translate(#{@getRectX()}, #{@getRectY(index)})"
-    .call @_drag
-
     if @_addAllSquare
       squareGroup = @_group.append 'g'
         .attr
@@ -384,20 +377,39 @@ class SquareMenu
           x: '0px'
           width: @_boxSize
           height: @_boxSize
+          tabindex: '0'
+          'aria-label': @getAllLabel()
+          role: 'button'
         .on 'click', @_allSquareHandler
+        .on 'keydown', =>
+          @_allSquareHandler() if d3.event.key == 'Enter'
+
+
+    @_group.selectAll('.menuItem').data(@_data).enter().append('g').attr
+      class: (d, i) ->
+        "menuItem menuRect#{i}"
+      transform: (d, i) =>
+        # If the 'all' icon is present, the others are bumped down one spot
+        index = if @_addAllSquare then i + 1 else i
+        "translate(#{@getRectX()}, #{@getRectY(index)})"
+    .call @_drag
 
     @_group.selectAll '.menuItem'
       .append 'image'
         .attr
-          class: (d, i) ->
-            'pointerCursor'
+          class: 'pointerCursor'
           'xlink:href': (d) -> d.img
           x: '0px'
           width: @_boxSize
           height: @_boxSize
+          tabindex: '0'
+          'aria-label': (d) -> d.tooltip
+          role: 'button'
         .on 'click', (d) =>
           return if d3.event.defaultPrevented
           @_onSelected d
+        .on 'keydown', (d) =>
+          @_onSelected d if d3.event.key == 'Enter'
         .append('title').text (d) ->
           d.tooltip
       
@@ -418,6 +430,7 @@ class SquareMenu
     menuItems.select 'image'
       .attr
         'xlink:href': (d) -> d.img
+        'aria-label': (d) -> d.tooltip
       .select('title').text (d) ->
         d.tooltip
 
@@ -425,7 +438,7 @@ class SquareMenu
       @_group.select '.selectAllGroup'
         .select 'image'
         .attr
-          'xlink:href': @getAllIcon
-
+          'aria-label': @getAllLabel()
+          'xlink:href': @getAllIcon()
 
 module.exports = SquareMenu
