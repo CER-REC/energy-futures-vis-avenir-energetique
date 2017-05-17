@@ -42,7 +42,7 @@ class LandingPage
         elementToFocusOnClose: @aboutHyperlink
       @app.analyticsReporter.reportEvent 'Information', 'About modal'
     @aboutHyperlinkEnterHandler = (event) =>
-      if event.key == 'Enter'
+      if event.key == 'Enter' or event.key == ' '
         event.preventDefault()
         event.stopPropagation()
         @app.popoverManager.showPopover @app.aboutThisProjectPopover,
@@ -55,7 +55,7 @@ class LandingPage
     @methodologyLinkClickHandler = =>
       @app.analyticsReporter.reportEvent 'Downloads', 'Methodology PDF download'
     @methodologyLinkEnterHandler = (event) =>
-      if event.key == 'Enter'
+      if event.key == 'Enter' # Ordinary links are not triggered by space
         @app.analyticsReporter.reportEvent 'Downloads', 'Methodology PDF download'
     @methodologyLink.addEventListener 'click', @methodologyLinkClickHandler
     @methodologyLink.addEventListener 'keydown', @methodologyLinkEnterHandler
@@ -70,7 +70,7 @@ class LandingPage
       },
         shouldSelectNavbarItem: false
     @viz1LinkEnterHandler = (event) =>
-      if event.key == 'Enter'
+      if event.key == 'Enter' or event.key == ' '
         event.preventDefault()
         @app.router.navigate
           page: 'viz1'
@@ -89,7 +89,7 @@ class LandingPage
       },
         shouldSelectNavbarItem: false
     @viz2LinkEnterHandler = (event) =>
-      if event.key == 'Enter'
+      if event.key == 'Enter' or event.key == ' '
         event.preventDefault()
         @app.router.navigate
           page: 'viz2'
@@ -107,7 +107,7 @@ class LandingPage
       },
         shouldSelectNavbarItem: false
     @viz3LinkEnterHandler = (event) =>
-      if event.key == 'Enter'
+      if event.key == 'Enter' or event.key == ' '
         event.preventDefault()
         @app.router.navigate
           page: 'viz3'
@@ -125,7 +125,7 @@ class LandingPage
       },
         shouldSelectNavbarItem: false
     @viz4LinkEnterHandler = (event) =>
-      if event.key == 'Enter'
+      if event.key == 'Enter' or event.key == ' '
         event.preventDefault()
         @app.router.navigate
           page: 'viz4'

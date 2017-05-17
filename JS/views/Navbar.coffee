@@ -159,7 +159,7 @@ class Navbar
           },
             shouldSelectNavbarItem: false
       .on 'keydown', (d) =>
-        if d3.event.key == 'Enter' and d.page != @navbarState
+        if (d3.event.key == 'Enter' or d3.event.key == ' ') and d.page != @navbarState
           d3.event.preventDefault()
           d3.event.stopPropagation()
           @app.router.navigate
@@ -245,7 +245,9 @@ class Navbar
     vizNavbar.select('.navbarHelpIcon')
       .on 'click', helpButtonClick
       .on 'keydown', (d) ->
-        helpButtonClick(d) if d3.event.key == 'Enter'
+        if d3.event.key == 'Enter' or d3.event.key == ' '
+          d3.event.preventDefault()
+          helpButtonClick d
 
     infoButtonClick = (d) =>
       d3.event.stopPropagation()
@@ -263,7 +265,9 @@ class Navbar
     vizNavbar.select('.navbarMenuIcon')
       .on 'click', infoButtonClick
       .on 'keydown', (d) ->
-        infoButtonClick(d) if d3.event.key == 'Enter'
+        if d3.event.key == 'Enter' or d3.event.key == ' '
+          d3.event.preventDefault()
+          infoButtonClick d
 
 
 

@@ -263,7 +263,9 @@ class Visualization
           class: (d) -> d.wrapperClass
         .on 'click', sectorsCallback
         .on 'keydown', (d) ->
-          sectorsCallback d if d3.event.key == 'Enter'
+          if d3.event.key == 'Enter' or d3.event.key == ' '
+            d3.event.preventDefault()
+            sectorsCallback d
 
 
 
@@ -320,7 +322,9 @@ class Visualization
         role: 'button'
       .on 'click', mainSelectorCallback
       .on 'keydown', (d) ->
-        mainSelectorCallback d if d3.event.key == 'Enter'
+        if d3.event.key == 'Enter' or d3.event.key == ' '
+          d3.event.preventDefault()
+          mainSelectorCallback d
 
     mainSelectors
       .attr

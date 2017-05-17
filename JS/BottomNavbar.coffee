@@ -30,49 +30,49 @@ class BottomNavbar
     @aboutLink = d3.select '#aboutLinkAnchor'
     @aboutLink.on 'click', @aboutClickHandler
     @aboutLink.on 'keydown', =>
-      if d3.event.key == 'Enter'
+      if d3.event.key == 'Enter' or d3.event.key == ' '
         d3.event.preventDefault()
         @aboutClickHandler()
 
     @methodologyLinkAnchor = d3.select '#methodologyLinkAnchor'
     @methodologyLinkAnchor.on 'click', @methodologyClickHandler
     @methodologyLinkAnchor.on 'keydown', =>
-      if d3.event.key == 'Enter'
-        d3.event.preventDefault()
+      if d3.event.key == 'Enter' # Links are not triggered on space
+        # Don't prevent default, we want the default behaviour here
         @methodologyClickHandler()
 
     @imageDownloadLink = d3.select '#imageDownloadLink'
     @imageDownloadLink.on 'click', @imageDownloadClickHandler
     @imageDownloadLink.on 'keydown', =>
-      if d3.event.key == 'Enter'
+      if d3.event.key == 'Enter' or d3.event.key == ' '
         d3.event.preventDefault()
         @imageDownloadClickHandler()
 
     @dataDownloadLinkAnchor = d3.select '#dataDownloadLinkAnchor'
     @dataDownloadLinkAnchor.on 'click', @dataDownloadClickHandler
     @dataDownloadLinkAnchor.on 'keydown', =>
-      if d3.event.key == 'Enter'
+      if d3.event.key == 'Enter' # Links are not triggered on space
         # Don't prevent default, we want the default behaviour here
         @dataDownloadClickHandler()
 
     @twitterLink = d3.select '#twitterLinkAnchor'
     @twitterLink.on 'click', @twitterClickHandler
     @twitterLink.on 'keydown', =>
-      if d3.event.key == 'Enter'
+      if d3.event.key == 'Enter' or d3.event.key == ' '
         d3.event.preventDefault()
         @twitterClickHandler()
 
     @linkedinLink = d3.select '#linkedInLinkAnchor'
     @linkedinLink.on 'click', @linkedinClickHandler
     @linkedinLink.on 'keydown', =>
-      if d3.event.key == 'Enter'
+      if d3.event.key == 'Enter' or d3.event.key == ' '
         d3.event.preventDefault()
         @linkedinClickHandler()
 
     @emailLink = d3.select '#emailLinkAnchor'
     @emailLink.on 'click', @emailClickHandler
     @emailLink.on 'keydown', =>
-      if d3.event.key == 'Enter'
+      if d3.event.key == 'Enter' or d3.event.key == ' '
         d3.event.preventDefault()
         @emailClickHandler()
 

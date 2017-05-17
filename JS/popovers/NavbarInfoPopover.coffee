@@ -32,7 +32,7 @@ class NavbarInfoPopover
       @app.popoverManager.closePopover()
 
     @closeButtonEnterHandler = =>
-      if d3.event.key == 'Enter'
+      if d3.event.key == 'Enter' or d3.event.key == ' '
         d3.event.preventDefault()
         d3.event.stopPropagation()
         @app.popoverManager.closePopover()

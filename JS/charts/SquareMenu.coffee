@@ -371,7 +371,7 @@ class SquareMenu
       .on 'click', =>
         @_showHelpHandler()
       .on 'keydown', =>
-        if d3.event.key == 'Enter'
+        if d3.event.key == 'Enter' or d3.event.key == ' '
           d3.event.preventDefault()
           d3.event.stopPropagation()
           @_showHelpHandler()
@@ -396,7 +396,9 @@ class SquareMenu
           role: 'button'
         .on 'click', @_allSquareHandler
         .on 'keydown', =>
-          @_allSquareHandler() if d3.event.key == 'Enter'
+          if d3.event.key == 'Enter' or d3.event.key == ' '
+            d3.event.preventDefault()
+            @_allSquareHandler()
 
 
 
@@ -430,7 +432,8 @@ class SquareMenu
           @_onSelected d
         .on 'keydown', (d, i) =>
           switch d3.event.key
-            when 'Enter'
+            when 'Enter', ' '
+              d3.event.preventDefault()
               @_onSelected d
             when 'ArrowUp'
               d3.event.preventDefault()
