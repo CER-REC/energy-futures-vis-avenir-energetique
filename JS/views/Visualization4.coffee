@@ -15,6 +15,8 @@ if Platform.name == 'browser'
 
 ControlsHelpPopover = require '../popovers/ControlsHelpPopover.coffee'
 
+ProvinceAriaText = require '../ProvinceAriaText.coffee'
+
 
 class Visualization4
 
@@ -164,8 +166,7 @@ class Visualization4
     [
       {
         key: 'AB'
-        tooltip: Tr.regionSelector.names.AB[@app.language]
-        present: true
+        tooltip: ProvinceAriaText @app, @config.province == 'AB', 'AB'
         colour: if @config.province == 'AB' then '#333' else '#fff'
         img:
           if @config.province == 'AB'
@@ -175,8 +176,7 @@ class Visualization4
       }
       {
         key: 'BC'
-        tooltip: Tr.regionSelector.names.BC[@app.language]
-        present: true
+        tooltip: ProvinceAriaText @app, @config.province == 'BC', 'BC'
         colour: if @config.province == 'BC' then '#333' else '#fff'
         img:
           if @config.province == 'BC'
@@ -186,8 +186,7 @@ class Visualization4
       }
       {
         key: 'MB'
-        tooltip: Tr.regionSelector.names.MB[@app.language]
-        present: true
+        tooltip: ProvinceAriaText @app, @config.province == 'MB', 'MB'
         colour: if @config.province == 'MB' then '#333' else '#fff'
         img:
           if @config.province == 'MB'
@@ -197,8 +196,7 @@ class Visualization4
       }
       {
         key: 'NB'
-        tooltip: Tr.regionSelector.names.NB[@app.language]
-        present: true
+        tooltip: ProvinceAriaText @app, @config.province == 'NB', 'NB'
         colour: if @config.province == 'NB' then '#333' else '#fff'
         img:
           if @config.province == 'NB'
@@ -208,8 +206,7 @@ class Visualization4
       }
       {
         key : 'NL'
-        tooltip: Tr.regionSelector.names.NL[@app.language]
-        present: true
+        tooltip: ProvinceAriaText @app, @config.province == 'NL', 'NL'
         colour: if @config.province == 'NL' then '#333' else '#fff'
         img:
           if @config.province == 'NL'
@@ -219,8 +216,7 @@ class Visualization4
       }
       {
         key: 'NS'
-        tooltip: Tr.regionSelector.names.NS[@app.language]
-        present: true
+        tooltip: ProvinceAriaText @app, @config.province == 'NS', 'NS'
         colour: if @config.province == 'NS' then '#333' else '#fff'
         img:
           if @config.province == 'NS'
@@ -230,8 +226,7 @@ class Visualization4
       }
       {
         key: 'NT'
-        tooltip: Tr.regionSelector.names.NT[@app.language]
-        present: true
+        tooltip: ProvinceAriaText @app, @config.province == 'NT', 'NT'
         colour: if @config.province == 'NT' then '#333' else '#fff'
         img:
           if @config.province == 'NT'
@@ -241,8 +236,7 @@ class Visualization4
       }
       {
         key: 'NU'
-        tooltip: Tr.regionSelector.names.NU[@app.language]
-        present: true
+        tooltip: ProvinceAriaText @app, @config.province == 'NU', 'NU'
         colour: if @config.province == 'NU' then '#333' else '#fff'
         img:
           if @config.province == 'NU'
@@ -252,8 +246,7 @@ class Visualization4
       }
       {
         key: 'ON'
-        tooltip: Tr.regionSelector.names.ON[@app.language]
-        present: true
+        tooltip: ProvinceAriaText @app, @config.province == 'ON', 'ON'
         colour: if @config.province == 'ON' then '#333' else '#fff'
         img:
           if @config.province == 'ON'
@@ -263,8 +256,7 @@ class Visualization4
       }
       {
         key: 'PE'
-        tooltip: Tr.regionSelector.names.PE[@app.language]
-        present: true
+        tooltip: ProvinceAriaText @app, @config.province == 'PE', 'PE'
         colour: if @config.province == 'PE' then '#333' else '#fff'
         img:
           if @config.province == 'PE'
@@ -274,8 +266,7 @@ class Visualization4
       }
       {
         key: 'QC'
-        tooltip: Tr.regionSelector.names.QC[@app.language]
-        present: true
+        tooltip: ProvinceAriaText @app, @config.province == 'QC', 'QC'
         colour: if @config.province == 'QC' then '#333' else '#fff'
         img:
           if @config.province == 'QC'
@@ -285,8 +276,7 @@ class Visualization4
       }
       {
         key: 'SK'
-        tooltip: Tr.regionSelector.names.SK[@app.language]
-        present: true
+        tooltip: ProvinceAriaText @app, @config.province == 'SK', 'SK'
         colour: if @config.province == 'SK' then '#333' else '#fff'
         img:
           if @config.province == 'SK'
@@ -296,8 +286,7 @@ class Visualization4
       }
       {
         key: 'YT'
-        tooltip: Tr.regionSelector.names.YT[@app.language]
-        present: true
+        tooltip: ProvinceAriaText @app, @config.province == 'YT', 'YT'
         colour: if @config.province == 'YT' then '#333' else '#fff'
         img:
           if @config.province == 'YT'
@@ -316,7 +305,6 @@ class Visualization4
         height: @outerHeight
 
     options =
-      canDrag: false
       onSelected: @provinceSelected
       groupId: 'provinceMenu'
       allSquareHandler: @selectAllProvince
@@ -328,6 +316,11 @@ class Visualization4
           Tr.allSelectorButton.all[@app.language]
         else
           Tr.allSelectorButton.none[@app.language]
+      getAllLabel: =>
+        if @config.province == 'all'
+          Tr.altText.allButton.allCanadaSelected[@app.language]
+        else
+          Tr.altText.allButton.allCanadaUnselected[@app.language]
       parentId: 'provinceMenuSVG'
 
     state =

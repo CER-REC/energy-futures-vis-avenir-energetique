@@ -232,9 +232,6 @@ class Visualization1 extends visualization
         height: height - @_margin.top
 
   provinceMenuData: ->
-
-
-
     provinceColours =
       BC:
         tooltip: ProvinceAriaText @app, @config.provinces.includes('BC'), 'BC'
@@ -382,7 +379,6 @@ class Visualization1 extends visualization
 
     data = []
     for province in @config.provincesInOrder
-      # this really should be above but its easier to add here for now
       provinceColours[province].key = province
       data.push provinceColours[province]
     data

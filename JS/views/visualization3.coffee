@@ -17,6 +17,9 @@ if Platform.name == 'browser'
 
 ControlsHelpPopover = require '../popovers/ControlsHelpPopover.coffee'
 
+ProvinceAriaText = require '../ProvinceAriaText.coffee'
+SourceAriaText = require '../SourceAriaText.coffee'
+
 
 class Visualization3 extends visualization
   height = 700
@@ -554,6 +557,21 @@ class Visualization3 extends visualization
               Tr.allSelectorButton.someSelected[@app.language]
             else if @config.provinces.length == 0
               Tr.allSelectorButton.none[@app.language]
+      getAllLabel: =>
+        switch @config.viewBy
+          when 'province'
+            if @config.province == 'all'
+              Tr.altText.allButton.allCanadaSelected[@app.language]
+            else
+              Tr.altText.allButton.allCanadaUnselected[@app.language]
+
+          when 'source'
+            if @config.provinces.length == Constants.Provinces.length
+              Tr.altText.allButton.allProvincesSelected[@app.language]
+            else if @config.provinces.length > 0
+              Tr.altText.allButton.someProvincesSelected[@app.language]
+            else if @config.provinces.length == 0
+              Tr.altText.allButton.noProvincesSelected[@app.language]
       helpButtonLabel: Tr.altText.regionsHelp[@app.language]
       helpButtonId: 'provinceHelpButton'
 
@@ -600,6 +618,22 @@ class Visualization3 extends visualization
               Tr.allSelectorButton.someSelected[@app.language]
             else if @config.sources.length == 0
               Tr.allSelectorButton.none[@app.language]
+      getAllLabel: =>
+        switch @config.viewBy
+          when 'source'
+            if @config.province == 'all'
+              Tr.altText.allButton.allSourcesSelected[@app.language]
+            else
+              Tr.altText.allButton.noSourcesSelected[@app.language]
+
+          when 'province'
+            if @config.sources.length == Constants.viz3Sources.length
+              Tr.altText.allButton.allSourcesSelected[@app.language]
+            else if @config.sources.length > 0
+              Tr.altText.allButton.someSourcesSelected[@app.language]
+            else if @config.sources.length == 0
+              Tr.altText.allButton.noSourcesSelected[@app.language]
+
       helpButtonLabel: Tr.altText.sourcesHelp[@app.language]
       helpButtonId: 'sourceHelpButton'
 
@@ -1007,7 +1041,7 @@ class Visualization3 extends visualization
   sourceColorMenuDictionary: ->
     hydro:
       key: 'hydro'
-      tooltip: Tr.sourceSelector.sourceSelectorHelp.hydro[@app.language]
+      tooltip: SourceAriaText @app, @config.sources.includes('hydro'), 'hydro'
       img:
         if @zeroedOut 'hydro'
           'IMG/sources/unavailable/hydro_unavailable.svg'
@@ -1019,7 +1053,7 @@ class Visualization3 extends visualization
       colour: '#4167b1'
     solarWindGeothermal:
       key: 'solarWindGeothermal'
-      tooltip: Tr.sourceSelector.sourceSelectorHelp.solarWindGeothermal[@app.language]
+      tooltip: SourceAriaText @app, @config.sources.includes('solarWindGeothermal'), 'solarWindGeothermal'
       img:
         if @zeroedOut 'solarWindGeothermal'
           'IMG/sources/unavailable/solarWindGeo_unavailable.svg'
@@ -1031,7 +1065,7 @@ class Visualization3 extends visualization
       colour: '#339947'
     coal:
       key: 'coal'
-      tooltip: Tr.sourceSelector.sourceSelectorHelp.coal[@app.language]
+      tooltip: SourceAriaText @app, @config.sources.includes('coal'), 'coal'
       img:
         if @zeroedOut 'coal'
           'IMG/sources/unavailable/coal_unavailable.svg'
@@ -1043,7 +1077,7 @@ class Visualization3 extends visualization
       colour: '#996733'
     naturalGas:
       key: 'naturalGas'
-      tooltip: Tr.sourceSelector.sourceSelectorHelp.naturalGas[@app.language]
+      tooltip: SourceAriaText @app, @config.sources.includes('naturalGas'), 'naturalGas'
       img:
         if @zeroedOut 'naturalGas'
           'IMG/sources/unavailable/naturalGas_unavailable.svg'
@@ -1055,7 +1089,7 @@ class Visualization3 extends visualization
       colour: '#f16739'
     bio:
       key: 'bio'
-      tooltip: Tr.sourceSelector.sourceSelectorHelp.bio[@app.language]
+      tooltip: SourceAriaText @app, @config.sources.includes('bio'), 'bio'
       img:
         if @zeroedOut 'bio'
           'IMG/sources/unavailable/biomass_unavailable.svg'
@@ -1067,7 +1101,7 @@ class Visualization3 extends visualization
       colour: '#8d68ac'
     oilProducts:
       key: 'oilProducts'
-      tooltip: Tr.sourceSelector.sourceSelectorHelp.oilProducts[@app.language]
+      tooltip: SourceAriaText @app, @config.sources.includes('oilProducts'), 'oilProducts'
       img:
         if @zeroedOut 'oilProducts'
           'IMG/sources/unavailable/oil_products_unavailable.svg'
@@ -1079,7 +1113,7 @@ class Visualization3 extends visualization
       colour: '#cc6699'
     nuclear:
       key: 'nuclear'
-      tooltip: Tr.sourceSelector.sourceSelectorHelp.nuclear[@app.language]
+      tooltip: SourceAriaText @app, @config.sources.includes('nuclear'), 'nuclear'
       img:
         if @zeroedOut 'nuclear'
           'IMG/sources/unavailable/nuclear_unavailable.svg'
@@ -1091,10 +1125,13 @@ class Visualization3 extends visualization
       colour: '#cccb31'
       
 
+      
+
 
   sourceBlackMenuDictionary: ->
     hydro:
       key: 'hydro'
+      tooltip: SourceAriaText @app, @config.source == 'hydro', 'hydro'
       img:
         if @config.source == 'hydro'
           'IMG/sources/hydro_selectedR.svg'
@@ -1103,6 +1140,7 @@ class Visualization3 extends visualization
       colour: '#4167b1'
     solarWindGeothermal:
       key: 'solarWindGeothermal'
+      tooltip: SourceAriaText @app, @config.source == 'solarWindGeothermal', 'solarWindGeothermal'
       img:
         if @config.source == 'solarWindGeothermal'
           'IMG/sources/solarWindGeo_selectedR.svg'
@@ -1111,6 +1149,7 @@ class Visualization3 extends visualization
       colour: '#339947'
     coal:
       key: 'coal'
+      tooltip: SourceAriaText @app, @config.source == 'coal', 'coal'
       img:
         if @config.source == 'coal'
           'IMG/sources/coal_selectedR.svg'
@@ -1119,6 +1158,7 @@ class Visualization3 extends visualization
       colour: '#996733'
     naturalGas:
       key: 'naturalGas'
+      tooltip: SourceAriaText @app, @config.source == 'naturalGas', 'naturalGas'
       img:
         if @config.source == 'naturalGas'
           'IMG/sources/naturalGas_selectedR.svg'
@@ -1127,6 +1167,7 @@ class Visualization3 extends visualization
       colour: '#f16739'
     bio:
       key: 'bio'
+      tooltip: SourceAriaText @app, @config.source == 'bio', 'bio'
       img:
         if @config.source == 'bio'
           'IMG/sources/biomass_selectedR.svg'
@@ -1135,6 +1176,7 @@ class Visualization3 extends visualization
       colour: '#8d68ac'
     nuclear:
       key: 'nuclear'
+      tooltip: SourceAriaText @app, @config.source == 'nuclear', 'nuclear'
       img:
         if @config.source == 'nuclear'
           'IMG/sources/nuclear_selectedR.svg'
@@ -1143,6 +1185,7 @@ class Visualization3 extends visualization
       colour: '#cccb31'
     oilProducts:
       key: 'oilProducts'
+      tooltip: SourceAriaText @app, @config.source == 'oilProducts', 'oilProducts'
       img:
         if @config.source == 'oilProducts'
           'IMG/sources/oil_products_selectedR.svg'
@@ -1223,7 +1266,7 @@ class Visualization3 extends visualization
   provinceBlackMenuDictionary: ->
     AB:
       key: 'AB'
-      tooltip: Tr.regionSelector.names.AB[@app.language]
+      tooltip: ProvinceAriaText @app, @config.province == 'AB', 'AB'
       colour: if @config.province == 'AB' then '#333' else '#fff'
       img:
         if @config.province == 'AB'
@@ -1232,7 +1275,7 @@ class Visualization3 extends visualization
           'IMG/provinces/radio/AB_UnselectedR.svg'
     BC:
       key: 'BC'
-      tooltip: Tr.regionSelector.names.BC[@app.language]
+      tooltip: ProvinceAriaText @app, @config.province == 'BC', 'BC'
       colour: if @config.province == 'BC' then '#333' else '#fff'
       img:
         if @config.province == 'BC'
@@ -1241,7 +1284,7 @@ class Visualization3 extends visualization
           'IMG/provinces/radio/BC_UnselectedR.svg'
     MB:
       key: 'MB'
-      tooltip: Tr.regionSelector.names.MB[@app.language]
+      tooltip: ProvinceAriaText @app, @config.province == 'MB', 'MB'
       colour: if @config.province == 'MB' then '#333' else '#fff'
       img:
         if @config.province == 'MB'
@@ -1250,7 +1293,7 @@ class Visualization3 extends visualization
           'IMG/provinces/radio/MB_UnselectedR.svg'
     NB:
       key: 'NB'
-      tooltip: Tr.regionSelector.names.NB[@app.language]
+      tooltip: ProvinceAriaText @app, @config.province == 'NB', 'NB'
       colour: if @config.province == 'NB' then '#333' else '#fff'
       img:
         if @config.province == 'NB'
@@ -1259,7 +1302,7 @@ class Visualization3 extends visualization
           'IMG/provinces/radio/NB_UnselectedR.svg'
     NL:
       key : 'NL'
-      tooltip: Tr.regionSelector.names.NL[@app.language]
+      tooltip: ProvinceAriaText @app, @config.province == 'NL', 'NL'
       colour: if @config.province == 'NL' then '#333' else '#fff'
       img:
         if @config.province == 'NL'
@@ -1268,7 +1311,7 @@ class Visualization3 extends visualization
           'IMG/provinces/radio/NL_UnselectedR.svg'
     NS:
       key: 'NS'
-      tooltip: Tr.regionSelector.names.NS[@app.language]
+      tooltip: ProvinceAriaText @app, @config.province == 'NS', 'NS'
       colour: if @config.province == 'NS' then '#333' else '#fff'
       img:
         if @config.province == 'NS'
@@ -1277,7 +1320,7 @@ class Visualization3 extends visualization
           'IMG/provinces/radio/NS_UnselectedR.svg'
     NT:
       key: 'NT'
-      tooltip: Tr.regionSelector.names.NT[@app.language]
+      tooltip: ProvinceAriaText @app, @config.province == 'NT', 'NT'
       colour: if @config.province == 'NT' then '#333' else '#fff'
       img:
         if @config.province == 'NT'
@@ -1286,7 +1329,7 @@ class Visualization3 extends visualization
           'IMG/provinces/radio/NT_UnselectedR.svg'
     NU:
       key: 'NU'
-      tooltip: Tr.regionSelector.names.NU[@app.language]
+      tooltip: ProvinceAriaText @app, @config.province == 'NU', 'NU'
       colour: if @config.province == 'NU' then '#333' else '#fff'
       img:
         if @config.province == 'NU'
@@ -1295,7 +1338,7 @@ class Visualization3 extends visualization
           'IMG/provinces/radio/NU_UnselectedR.svg'
     ON:
       key: 'ON'
-      tooltip: Tr.regionSelector.names.ON[@app.language]
+      tooltip: ProvinceAriaText @app, @config.province == 'ON', 'ON'
       colour: if @config.province == 'ON' then '#333' else '#fff'
       img:
         if @config.province == 'ON'
@@ -1304,7 +1347,7 @@ class Visualization3 extends visualization
           'IMG/provinces/radio/ON_UnselectedR.svg'
     PE:
       key: 'PE'
-      tooltip: Tr.regionSelector.names.PE[@app.language]
+      tooltip: ProvinceAriaText @app, @config.province == 'PE', 'PE'
       colour: if @config.province == 'PE' then '#333' else '#fff'
       img:
         if @config.province == 'PE'
@@ -1313,7 +1356,7 @@ class Visualization3 extends visualization
           'IMG/provinces/radio/PEI_UnselectedR.svg'
     QC:
       key: 'QC'
-      tooltip: Tr.regionSelector.names.QC[@app.language]
+      tooltip: ProvinceAriaText @app, @config.province == 'QC', 'QC'
       colour: if @config.province == 'QC' then '#333' else '#fff'
       img:
         if @config.province == 'QC'
@@ -1322,7 +1365,7 @@ class Visualization3 extends visualization
           'IMG/provinces/radio/QC_UnselectedR.svg'
     SK:
       key: 'SK'
-      tooltip: Tr.regionSelector.names.SK[@app.language]
+      tooltip: ProvinceAriaText @app, @config.province == 'SK', 'SK'
       colour: if @config.province == 'SK' then '#333' else '#fff'
       img:
         if @config.province == 'SK'
@@ -1331,7 +1374,7 @@ class Visualization3 extends visualization
           'IMG/provinces/radio/Sask_UnselectedR.svg'
     YT:
       key: 'YT'
-      tooltip: Tr.regionSelector.names.YT[@app.language]
+      tooltip: ProvinceAriaText @app, @config.province == 'YT', 'YT'
       colour: if @config.province == 'YT' then '#333' else '#fff'
       img:
         if @config.province == 'YT'
@@ -1339,10 +1382,13 @@ class Visualization3 extends visualization
         else
           'IMG/provinces/radio/Yukon_UnselectedR.svg'
 
+
+
   provinceColorMenuDictionary: ->
     BC:
       key: 'BC'
-      present: if @config.provinces.includes 'BC' then true else false
+      tooltip: ProvinceAriaText @app, @config.provinces.includes('BC'), 'BC'
+      present: @config.provinces.includes 'BC'
       colour: '#AEC7E8'
       img:
         if @zeroedOut 'BC'
@@ -1353,7 +1399,8 @@ class Visualization3 extends visualization
           'IMG/provinces/colour/BC_Unselected.svg'
     AB:
       key: 'AB'
-      present: if @config.provinces.includes 'AB' then true else false
+      tooltip: ProvinceAriaText @app, @config.provinces.includes('AB'), 'AB'
+      present: @config.provinces.includes 'AB'
       colour: '#2278b5'
       img:
         if @zeroedOut 'AB'
@@ -1364,7 +1411,8 @@ class Visualization3 extends visualization
           'IMG/provinces/colour/AB_Unselected.svg'
     SK:
       key: 'SK'
-      present: if @config.provinces.includes 'SK' then true else false
+      tooltip: ProvinceAriaText @app, @config.provinces.includes('SK'), 'SK'
+      present: @config.provinces.includes 'SK'
       colour: '#d77ab1'
       img:
         if @zeroedOut 'SK'
@@ -1375,7 +1423,8 @@ class Visualization3 extends visualization
           'IMG/provinces/colour/Sask_Unselected.svg'
     MB:
       key: 'MB'
-      present: if @config.provinces.includes 'MB' then true else false
+      tooltip: ProvinceAriaText @app, @config.provinces.includes('MB'), 'MB'
+      present: @config.provinces.includes 'MB'
       colour: '#FCBB78'
       img:
         if @zeroedOut 'MB'
@@ -1386,7 +1435,8 @@ class Visualization3 extends visualization
           'IMG/provinces/colour/MB_Unselected.svg'
     ON:
       key: 'ON'
-      present: if @config.provinces.includes 'ON' then true else false
+      tooltip: ProvinceAriaText @app, @config.provinces.includes('ON'), 'ON'
+      present: @config.provinces.includes 'ON'
       colour: '#C5B1D6'
       img:
         if @zeroedOut 'ON'
@@ -1397,7 +1447,8 @@ class Visualization3 extends visualization
           'IMG/provinces/colour/ON_Unselected.svg'
     QC:
       key: 'QC'
-      present: if @config.provinces.includes 'QC' then true else false
+      tooltip: ProvinceAriaText @app, @config.provinces.includes('QC'), 'QC'
+      present: @config.provinces.includes 'QC'
       colour: '#c49c94'
       img:
         if @zeroedOut 'QC'
@@ -1408,7 +1459,8 @@ class Visualization3 extends visualization
           'IMG/provinces/colour/QC_Unselected.svg'
     NB:
       key: 'NB'
-      present: if @config.provinces.includes 'NB' then true else false
+      tooltip: ProvinceAriaText @app, @config.provinces.includes('NB'), 'NB'
+      present: @config.provinces.includes 'NB'
       colour: '#2FA148'
       img:
         if @zeroedOut 'NB'
@@ -1419,7 +1471,8 @@ class Visualization3 extends visualization
           'IMG/provinces/colour/NB_Unselected.svg'
     NS:
       key: 'NS'
-      present: if @config.provinces.includes 'NS' then true else false
+      tooltip: ProvinceAriaText @app, @config.provinces.includes('NS'), 'NS'
+      present: @config.provinces.includes 'NS'
       colour: '#F69797'
       img:
         if @zeroedOut 'NS'
@@ -1430,7 +1483,8 @@ class Visualization3 extends visualization
           'IMG/provinces/colour/NS_Unselected.svg'
     NL:
       key: 'NL'
-      present: if @config.provinces.includes 'NL' then true else false
+      tooltip: ProvinceAriaText @app, @config.provinces.includes('NL'), 'NL'
+      present: @config.provinces.includes 'NL'
       colour: '#9ED089'
       img:
         if @zeroedOut 'NL'
@@ -1441,7 +1495,8 @@ class Visualization3 extends visualization
           'IMG/provinces/colour/NL_Unselected.svg'
     PE:
       key: 'PE'
-      present: if @config.provinces.includes 'PE' then true else false
+      tooltip: ProvinceAriaText @app, @config.provinces.includes('PE'), 'PE'
+      present: @config.provinces.includes 'PE'
       colour: '#8D574C'
       img:
         if @zeroedOut 'PE'
@@ -1452,7 +1507,8 @@ class Visualization3 extends visualization
           'IMG/provinces/colour/PEI_Unselected.svg'
     YT:
       key: 'YT'
-      present: if @config.provinces.includes 'YT' then true else false
+      tooltip: ProvinceAriaText @app, @config.provinces.includes('YT'), 'YT'
+      present: @config.provinces.includes 'YT'
       colour: '#F5B6D1'
       img:
         if @zeroedOut 'YT'
@@ -1463,7 +1519,8 @@ class Visualization3 extends visualization
           'IMG/provinces/colour/Yukon_Unselected.svg'
     NT:
       key: 'NT'
-      present: if @config.provinces.includes 'NT' then true else false
+      tooltip: ProvinceAriaText @app, @config.provinces.includes('NT'), 'NT'
+      present: @config.provinces.includes 'NT'
       colour: '#D62A28'
       img:
         if @zeroedOut 'NT'
@@ -1474,7 +1531,8 @@ class Visualization3 extends visualization
           'IMG/provinces/colour/NT_Unselected.svg'
     NU:
       key: 'NU'
-      present: if @config.provinces.includes 'NU' then true else false
+      tooltip: ProvinceAriaText @app, @config.provinces.includes('NU'), 'NU'
+      present: @config.provinces.includes 'NU'
       colour: '#9268ac'
       img:
         if @zeroedOut 'NU'

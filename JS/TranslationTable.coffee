@@ -1627,10 +1627,10 @@ module.exports =
     allButton:
       allRegionsSelected:
         en: 'All regions selected'
-        fr: 'Selection - toutes les régions'
+        fr: 'Sélection - toutes les régions'
       someRegionsSelected:
         en: 'Some regions selected'
-        fr: 'Selection - quelques régions'
+        fr: 'Sélection - quelques régions'
       noRegionsSelected:
         en: 'All regions unselected'
         fr: 'Désélection - toutes les régions'
@@ -1639,11 +1639,18 @@ module.exports =
         en: 'All sources selected'
         fr: 'Sélection - toutes les sources'
       someSourcesSelected:
-        en: 'Some regions selected'
-        fr: 'Selection - quelques sources'
+        en: 'Some sources selected'
+        fr: 'Sélection - quelques sources'
       noSourcesSelected:
         en: 'All sources unselected'
         fr: 'Désélection - toutes les sources'
+
+      allCanadaSelected:
+        en: 'All of Canada selected'
+        fr: 'Sélection - Tout le Canada'
+      allCanadaUnselected:
+        en: 'All of Canada unselected'
+        fr: 'Désélection - Tout le Canada'
 
 
     howToImage:

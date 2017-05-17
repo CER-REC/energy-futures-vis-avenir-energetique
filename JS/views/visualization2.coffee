@@ -18,6 +18,9 @@ if Platform.name == 'browser'
 
 ControlsHelpPopover = require '../popovers/ControlsHelpPopover.coffee'
 
+ProvinceAriaText = require '../ProvinceAriaText.coffee'
+SourceAriaText = require '../SourceAriaText.coffee'
+
 
 class Visualization2 extends visualization
   height = 700
@@ -224,7 +227,7 @@ class Visualization2 extends visualization
     sourcesWithColours =
       solarWindGeothermal:
         key: 'solarWindGeothermal'
-        tooltip: Tr.sourceSelector.sourceSelectorHelp.solarWindGeothermal[@app.language]
+        tooltip: SourceAriaText @app, @config.sources.includes('solarWindGeothermal'), 'solarWindGeothermal'
         img:
           if @zeroedOut 'solarWindGeothermal'
             'IMG/sources/unavailable/solarWindGeo_unavailable.svg'
@@ -236,7 +239,7 @@ class Visualization2 extends visualization
         colour: '#339947'
       coal:
         key: 'coal'
-        tooltip: Tr.sourceSelector.sourceSelectorHelp.coal[@app.language]
+        tooltip: SourceAriaText @app, @config.sources.includes('coal'), 'coal'
         img:
           if @zeroedOut 'coal'
             'IMG/sources/unavailable/coal_unavailable.svg'
@@ -248,7 +251,7 @@ class Visualization2 extends visualization
         colour: '#996733'
       naturalGas:
         key: 'naturalGas'
-        tooltip: Tr.sourceSelector.sourceSelectorHelp.naturalGas[@app.language]
+        tooltip: SourceAriaText @app, @config.sources.includes('naturalGas'), 'naturalGas'
         img:
           if @zeroedOut 'naturalGas'
             'IMG/sources/unavailable/naturalGas_unavailable.svg'
@@ -260,7 +263,7 @@ class Visualization2 extends visualization
         colour: '#f16739'
       bio:
         key: 'bio'
-        tooltip: Tr.sourceSelector.sourceSelectorHelp.bio[@app.language]
+        tooltip: SourceAriaText @app, @config.sources.includes('bio'), 'bio'
         img:
           if @zeroedOut 'bio'
             'IMG/sources/unavailable/biomass_unavailable.svg'
@@ -272,7 +275,7 @@ class Visualization2 extends visualization
         colour: '#8d68ac'
       oilProducts:
         key: 'oilProducts'
-        tooltip: Tr.sourceSelector.sourceSelectorHelp.oilProducts[@app.language]
+        tooltip: SourceAriaText @app, @config.sources.includes('oilProducts'), 'oilProducts'
         img:
           if @zeroedOut 'oilProducts'
             'IMG/sources/unavailable/oil_products_unavailable.svg'
@@ -284,7 +287,7 @@ class Visualization2 extends visualization
         colour: '#cc6699'
       electricity:
         key: 'electricity'
-        tooltip: Tr.sourceSelector.sourceSelectorHelp.electricity[@app.language]
+        tooltip: SourceAriaText @app, @config.sources.includes('electricity'), 'electricity'
         img:
           if @zeroedOut 'electricity'
             'IMG/sources/unavailable/electricity_unavailable.svg'
@@ -357,7 +360,7 @@ class Visualization2 extends visualization
     [
       {
         key: 'AB'
-        tooltip: Tr.regionSelector.names.AB[@app.language]
+        tooltip: ProvinceAriaText @app, @config.province == 'AB', 'AB'
         present: true
         colour: if @config.province == 'AB' then '#333' else '#fff'
         img:
@@ -368,7 +371,7 @@ class Visualization2 extends visualization
       }
       {
         key: 'BC'
-        tooltip: Tr.regionSelector.names.BC[@app.language]
+        tooltip: ProvinceAriaText @app, @config.province == 'BC', 'BC'
         present: true
         colour: if @config.province == 'BC' then '#333' else '#fff'
         img:
@@ -379,7 +382,7 @@ class Visualization2 extends visualization
       }
       {
         key: 'MB'
-        tooltip: Tr.regionSelector.names.MB[@app.language]
+        tooltip: ProvinceAriaText @app, @config.province == 'MB', 'MB'
         present: true
         colour: if @config.province == 'MB' then '#333' else '#fff'
         img:
@@ -390,7 +393,7 @@ class Visualization2 extends visualization
       }
       {
         key: 'NB'
-        tooltip: Tr.regionSelector.names.NB[@app.language]
+        tooltip: ProvinceAriaText @app, @config.province == 'NB', 'NB'
         present: true
         colour: if @config.province == 'NB' then '#333' else '#fff'
         img:
@@ -401,7 +404,7 @@ class Visualization2 extends visualization
       }
       {
         key : 'NL'
-        tooltip: Tr.regionSelector.names.NL[@app.language]
+        tooltip: ProvinceAriaText @app, @config.province == 'NL', 'NL'
         present: true
         colour: if @config.province == 'NL' then '#333' else '#fff'
         img:
@@ -412,7 +415,7 @@ class Visualization2 extends visualization
       }
       {
         key: 'NS'
-        tooltip: Tr.regionSelector.names.NS[@app.language]
+        tooltip: ProvinceAriaText @app, @config.province == 'NS', 'NS'
         present: true
         colour: if @config.province == 'NS' then '#333' else '#fff'
         img:
@@ -423,7 +426,7 @@ class Visualization2 extends visualization
       }
       {
         key: 'NT'
-        tooltip: Tr.regionSelector.names.NT[@app.language]
+        tooltip: ProvinceAriaText @app, @config.province == 'NT', 'NT'
         present: true
         colour: if @config.province == 'NT' then '#333' else '#fff'
         img:
@@ -434,7 +437,7 @@ class Visualization2 extends visualization
       }
       {
         key: 'NU'
-        tooltip: Tr.regionSelector.names.NU[@app.language]
+        tooltip: ProvinceAriaText @app, @config.province == 'NU', 'NU'
         present: true
         colour: if @config.province == 'NU' then '#333' else '#fff'
         img:
@@ -445,7 +448,7 @@ class Visualization2 extends visualization
       }
       {
         key: 'ON'
-        tooltip: Tr.regionSelector.names.ON[@app.language]
+        tooltip: ProvinceAriaText @app, @config.province == 'ON', 'ON'
         present: true
         colour: if @config.province == 'ON' then '#333' else '#fff'
         img:
@@ -456,7 +459,7 @@ class Visualization2 extends visualization
       }
       {
         key: 'PE'
-        tooltip: Tr.regionSelector.names.PE[@app.language]
+        tooltip: ProvinceAriaText @app, @config.province == 'PE', 'PE'
         present: true
         colour: if @config.province == 'PE' then '#333' else '#fff'
         img:
@@ -467,7 +470,7 @@ class Visualization2 extends visualization
       }
       {
         key: 'QC'
-        tooltip: Tr.regionSelector.names.QC[@app.language]
+        tooltip: ProvinceAriaText @app, @config.province == 'QC', 'QC'
         present: true
         colour: if @config.province == 'QC' then '#333' else '#fff'
         img:
@@ -478,7 +481,7 @@ class Visualization2 extends visualization
       }
       {
         key: 'SK'
-        tooltip: Tr.regionSelector.names.SK[@app.language]
+        tooltip: ProvinceAriaText @app, @config.province == 'SK', 'SK'
         present: true
         colour: if @config.province == 'SK' then '#333' else '#fff'
         img:
@@ -489,7 +492,7 @@ class Visualization2 extends visualization
       }
       {
         key: 'YT'
-        tooltip: Tr.regionSelector.names.YT[@app.language]
+        tooltip: ProvinceAriaText @app, @config.province == 'YT', 'YT'
         present: true
         colour: if @config.province == 'YT' then '#333' else '#fff'
         img:
@@ -881,6 +884,11 @@ class Visualization2 extends visualization
           Tr.allSelectorButton.all[@app.language]
         else
           Tr.allSelectorButton.none[@app.language]
+      getAllLabel: =>
+        if @config.province == 'all'
+          Tr.altText.allButton.allCanadaSelected[@app.language]
+        else
+          Tr.altText.allButton.allCanadaUnselected[@app.language]
 
     state =
       size:
@@ -909,6 +917,13 @@ class Visualization2 extends visualization
           Tr.allSelectorButton.someSelected[@app.language]
         else if @config.sources.length == 0
           Tr.allSelectorButton.none[@app.language]
+      getAllLabel: =>
+        if @config.sources.length == Constants.viz2Sources.length
+          Tr.altText.allButton.allSourcesSelected[@app.language]
+        else if @config.sources.length > 0
+          Tr.altText.allButton.someSourcesSelected[@app.language]
+        else if @config.sources.length == 0
+          Tr.altText.allButton.noSourcesSelected[@app.language]
       onDragStart: @_chart.dragStart
       onDragEnd: @_chart.dragEnd
       boxSize: 37.5
