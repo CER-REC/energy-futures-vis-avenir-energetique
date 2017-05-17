@@ -107,6 +107,13 @@ class SquareMenu
       @dataBeforeDrag = @_data
       @haveSeenDragEvent = false
 
+      @_group.select ".menuRect#{@draggedIconStartBin}"
+        .select 'image'
+        .attr
+          'aria-grabbed': true
+      @_group.attr
+        'aria-dropeffect': 'move'
+
     @_drag.on 'drag', (d, i) =>
       # Only allow one item to be dragged at a time
       return unless d.key == @draggedIcon
@@ -145,6 +152,9 @@ class SquareMenu
       # Since we destroy and rebuild the DOM elements after drag, we should manually place
       # the user's focus.
       @placeFocus lastDraggedIconBin
+
+      @_group.attr
+        'aria-dropeffect': null
 
 
   computeBin: ->
@@ -412,6 +422,9 @@ class SquareMenu
           tabindex: '0'
           'aria-label': (d) -> d.tooltip
           role: 'button'
+          # false signifies it can be grabbed but is not grabbed right now
+          # null means it is not grabbable
+          'aria-grabbed': if @_canDrag then false else null
         .on 'click', (d) =>
           return if d3.event.defaultPrevented
           @_onSelected d
