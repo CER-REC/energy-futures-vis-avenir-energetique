@@ -127,6 +127,7 @@ class SquareMenu
 
       @onDragEnd()
 
+      lastDraggedIconBin = @draggedIconBin
       @draggedIcon = null
       @draggedIconBin = null
       @draggedIconStartBin = null
@@ -141,6 +142,9 @@ class SquareMenu
       @redraw() if @haveSeenDragEvent
       @haveSeenDragEvent = false
 
+      # Since we destroy and rebuild the DOM elements after drag, we should manually place
+      # the user's focus.
+      @placeFocus lastDraggedIconBin
 
 
   computeBin: ->
@@ -385,6 +389,9 @@ class SquareMenu
           @_allSquareHandler() if d3.event.key == 'Enter'
 
 
+
+
+
     @_group.selectAll('.menuItem').data(@_data).enter().append('g').attr
       class: (d, i) ->
         "menuItem menuRect#{i}"
@@ -408,8 +415,18 @@ class SquareMenu
         .on 'click', (d) =>
           return if d3.event.defaultPrevented
           @_onSelected d
-        .on 'keydown', (d) =>
-          @_onSelected d if d3.event.key == 'Enter'
+        .on 'keydown', (d, i) =>
+          switch d3.event.key
+            when 'Enter'
+              @_onSelected d
+            when 'ArrowUp'
+              d3.event.preventDefault()
+              newBin = i - 1
+              @swapItems i, newBin
+            when 'ArrowDown'
+              d3.event.preventDefault()
+              newBin = i + 1
+              @swapItems i, newBin
         .append('title').text (d) ->
           d.tooltip
       
@@ -440,5 +457,33 @@ class SquareMenu
         .attr
           'aria-label': @getAllLabel()
           'xlink:href': @getAllIcon()
+
+  placeFocus: (bin) ->
+    @app.window.document.querySelector "##{@groupId} .menuRect#{bin} image"
+      .focus()
+
+  # Swap two menu items, update the app, and then update the menu display
+  swapItems: (currentBin, newBin) ->
+    return unless @_canDrag
+    return if newBin < 0 or newBin >= @_data.length
+
+    newOrder = @_data.map (item) ->
+      item.key
+
+    temp = newOrder[newBin]
+    newOrder[newBin] = newOrder[currentBin]
+    newOrder[currentBin] = temp
+
+    # The graph is drawn bottom to top, but the menu DOM order is top to bottom.
+    # The menu uses the reverse of order seen in the configuration.
+    # So, when we notify the rest of the app that the order has changed, we need to
+    # reverse the order back to what it used to be.
+    newOrder.reverse()
+
+    @_orderChangedHandler newOrder
+    @update()
+    @placeFocus newBin
+
+
 
 module.exports = SquareMenu
