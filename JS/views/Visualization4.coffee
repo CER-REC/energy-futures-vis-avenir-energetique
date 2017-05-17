@@ -714,7 +714,7 @@ class Visualization4
         tabindex: '0'
         role: 'button'
       .on 'click', mainSelectorCallback
-      .on 'keyup', (d) ->
+      .on 'keydown', (d) ->
         mainSelectorCallback d if d3.event.key == 'Enter'
 
     mainSelectors

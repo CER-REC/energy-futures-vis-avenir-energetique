@@ -37,10 +37,10 @@ class ControlsHelpPopover
       d3.event.stopPropagation()
       @app.popoverManager.closePopover()
 
-    @closeButton.on 'keyup', =>
-      d3.event.preventDefault()
-      d3.event.stopPropagation()
+    @closeButton.on 'keydown', =>
       if d3.event.key == 'Enter'
+        d3.event.preventDefault()
+        d3.event.stopPropagation()
         @app.popoverManager.closePopover()
 
     # Prevent clicks on the popover from propagating up to the body element, which would
@@ -51,7 +51,7 @@ class ControlsHelpPopover
 
   close: ->
     @closeButton.on 'click', null
-    @closeButton.on 'keyup', null
+    @closeButton.on 'keydown', null
 
     d3.selectAll('.controlsHelpPopover').remove()
 

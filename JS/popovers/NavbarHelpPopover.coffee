@@ -63,13 +63,13 @@ class NavbarHelpPopover
       @app.popoverManager.closePopover()
 
     @closeButtonEnterHandler = =>
-      d3.event.preventDefault()
-      d3.event.stopPropagation()
       if d3.event.key == 'Enter'
+        d3.event.preventDefault()
+        d3.event.stopPropagation()
         @app.popoverManager.closePopover()
 
     @closeButton.on 'click', @closeButtonClickHandler
-    @closeButton.on 'keyup', @closeButtonEnterHandler
+    @closeButton.on 'keydown', @closeButtonEnterHandler
 
 
 
@@ -85,7 +85,7 @@ class NavbarHelpPopover
   close: ->
 
     @closeButton.on 'click', null
-    @closeButton.on 'keyup', null
+    @closeButton.on 'keydown', null
 
     d3.select('.navbarHelpIcon').classed 'selected', false
     d3.select('.navbarHelpIcon').html "<img src='IMG/navbar_Icons/questionMark_ColourBG.svg' alt='#{Tr.altText.questionMark_ColourBG[@app.language]}'>"

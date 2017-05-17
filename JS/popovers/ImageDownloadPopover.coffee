@@ -28,10 +28,10 @@ class ImageDownloadPopover
       d3.event.stopPropagation()
       @app.popoverManager.closePopover()
 
-    @closeButton.on 'keyup', =>
-      d3.event.preventDefault()
-      d3.event.stopPropagation()
+    @closeButton.on 'keydown', =>
       if d3.event.key == 'Enter'
+        d3.event.preventDefault()
+        d3.event.stopPropagation()
         @app.popoverManager.closePopover()
 
 

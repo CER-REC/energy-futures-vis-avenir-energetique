@@ -158,7 +158,7 @@ class Navbar
             language: @app.language
           },
             shouldSelectNavbarItem: false
-      .on 'keyup', (d) =>
+      .on 'keydown', (d) =>
         if d3.event.key == 'Enter' and d.page != @navbarState
           d3.event.preventDefault()
           d3.event.stopPropagation()

@@ -360,7 +360,7 @@ class SquareMenu
         id: @options.helpButtonId
       .on 'click', =>
         @_showHelpHandler()
-      .on 'keyup', =>
+      .on 'keydown', =>
         if d3.event.key == 'Enter'
           d3.event.preventDefault()
           d3.event.stopPropagation()
