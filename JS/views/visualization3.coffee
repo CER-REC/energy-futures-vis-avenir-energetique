@@ -566,12 +566,12 @@ class Visualization3 extends visualization
               Tr.altText.allButton.allCanadaUnselected[@app.language]
 
           when 'source'
-            if @config.provinces.length == Constants.Provinces.length
-              Tr.altText.allButton.allProvincesSelected[@app.language]
+            if @config.provinces.length == Constants.provinces.length
+              Tr.altText.allButton.allRegionsSelected[@app.language]
             else if @config.provinces.length > 0
-              Tr.altText.allButton.someProvincesSelected[@app.language]
+              Tr.altText.allButton.someRegionsSelected[@app.language]
             else if @config.provinces.length == 0
-              Tr.altText.allButton.noProvincesSelected[@app.language]
+              Tr.altText.allButton.noRegionsSelected[@app.language]
       helpButtonLabel: Tr.altText.regionsHelp[@app.language]
       helpButtonId: 'provinceHelpButton'
 
