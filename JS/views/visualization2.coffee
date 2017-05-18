@@ -42,77 +42,81 @@ class Visualization2 extends visualization
         datasetsHelp: Tr.altText.datasetsHelp[@app.language]
         scenariosHelp: Tr.altText.scenariosHelp[@app.language]
 
-    @datasetHelpPopover = new ControlsHelpPopover @app
-    @sectorsSelectorHelpPopover = new ControlsHelpPopover @app
-    @unitsHelpPopover = new ControlsHelpPopover @app
-    @scenariosHelpPopover = new ControlsHelpPopover @app
-    @sourcesHelpPopover = new ControlsHelpPopover @app
-    @provincesHelpPopover = new ControlsHelpPopover @app
+    @datasetHelpPopover = new ControlsHelpPopover @app,
+      popoverButtonId: 'datasetSelectorHelpButton'
+      outerClasses: 'vizModal controlsHelpPopover datasetSelectorHelp'
+      innerClasses: 'viz2HelpTitle'
+      title: Tr.datasetSelector.datasetSelectorHelpTitle[@app.language]
+      content: => Tr.datasetSelector.datasetSelectorHelp[@app.language]
+      attachmentSelector: '.datasetSelectorGroup'
+      analyticsEvent: 'Viz2 dataset help'
 
-    @d3document.select '#datasetSelectorHelpButton'
-      .on 'click', =>
-        d3.event.stopPropagation()
-        d3.event.preventDefault()
-        if @app.popoverManager.currentPopover == @datasetHelpPopover
-          @app.popoverManager.closePopover()
-        else
-          @app.popoverManager.showPopover @datasetHelpPopover,
-            outerClasses: 'vizModal controlsHelpPopover datasetSelectorHelp'
-            innerClasses: 'viz2HelpTitle'
-            title: Tr.datasetSelector.datasetSelectorHelpTitle[@app.language]
-            content: Tr.datasetSelector.datasetSelectorHelp[@app.language]
-            attachmentSelector: '.datasetSelectorGroup'
-            elementToFocusOnClose: @document.getElementById('datasetSelectorHelpButton')
-          @app.analyticsReporter.reportEvent 'Controls help', 'Viz2 dataset help'
+    @sectorsSelectorHelpPopover = new ControlsHelpPopover @app,
+      popoverButtonId: 'sectorSelectorHelpButton'
+      outerClasses: 'vizModal controlsHelpPopover sectorHelp'
+      innerClasses: 'viz2HelpTitle'
+      title: Tr.sectorSelector.sectorSelectorHelpTitle[@app.language]
+      content: => Tr.sectorSelector.sectorSelectorHelp[@app.language]
+      attachmentSelector: '.sectorSelectorGroup'
+      analyticsEvent: 'Viz2 sector help'
 
-    @d3document.select '#sectorSelectorHelpButton'
-      .on 'click', =>
-        d3.event.stopPropagation()
-        d3.event.preventDefault()
-        if @app.popoverManager.currentPopover == @sectorsSelectorHelpPopover
-          @app.popoverManager.closePopover()
-        else
-          @app.popoverManager.showPopover @sectorsSelectorHelpPopover,
-            outerClasses: 'vizModal controlsHelpPopover sectorHelp'
-            innerClasses: 'viz2HelpTitle'
-            title: Tr.sectorSelector.sectorSelectorHelpTitle[@app.language]
-            content: Tr.sectorSelector.sectorSelectorHelp[@app.language]
-            attachmentSelector: '.sectorSelectorGroup'
-            elementToFocusOnClose: @document.getElementById('sectorSelectorHelpButton')
-          @app.analyticsReporter.reportEvent 'Controls help', 'Viz2 sector help'
+    @unitsHelpPopover = new ControlsHelpPopover @app,
+      popoverButtonId: 'unitSelectorHelpButton'
+      outerClasses: 'vizModal controlsHelpPopover unitSelectorHelp'
+      innerClasses: 'viz2HelpTitle'
+      title: Tr.unitSelector.unitSelectorHelpTitle[@app.language]
+      content: => Tr.unitSelector.unitSelectorHelp[@app.language]
+      attachmentSelector: '.unitsSelectorGroup'
+      analyticsEvent: 'Viz2 unit help'
 
-    @d3document.select '#unitSelectorHelpButton'
-      .on 'click', =>
-        d3.event.stopPropagation()
-        d3.event.preventDefault()
-        if @app.popoverManager.currentPopover == @unitsHelpPopover
-          @app.popoverManager.closePopover()
-        else
-          @app.popoverManager.showPopover @unitsHelpPopover,
-            outerClasses: 'vizModal controlsHelpPopover unitSelectorHelp'
-            innerClasses: 'viz2HelpTitle'
-            title: Tr.unitSelector.unitSelectorHelpTitle[@app.language]
-            content: Tr.unitSelector.unitSelectorHelp[@app.language]
-            attachmentSelector: '.unitsSelectorGroup'
-            elementToFocusOnClose: @document.getElementById('unitSelectorHelpButton')
-          @app.analyticsReporter.reportEvent 'Controls help', 'Viz2 unit help'
+    @scenariosHelpPopover = new ControlsHelpPopover @app,
+      popoverButtonId: 'scenarioSelectorHelpButton'
+      outerClasses: 'vizModal controlsHelpPopover scenarioSelectorHelp'
+      innerClasses: 'viz2HelpTitle'
+      title: Tr.scenarioSelector.scenarioSelectorHelpTitle[@app.language]
+      content: => Tr.scenarioSelector.scenarioSelectorHelp[@app.language]
+      attachmentSelector: '.scenarioSelectorGroup'
+      analyticsEvent: 'Viz2 scenario help'
 
-    @d3document.select '#scenarioSelectorHelpButton'
-      .on 'click', =>
-        d3.event.stopPropagation()
-        d3.event.preventDefault()
-        if @app.popoverManager.currentPopover == @scenariosHelpPopover
-          @app.popoverManager.closePopover()
-        else
-          @app.popoverManager.showPopover @scenariosHelpPopover,
-            outerClasses: 'vizModal controlsHelpPopover scenarioSelectorHelp'
-            innerClasses: 'viz2HelpTitle'
-            title: Tr.scenarioSelector.scenarioSelectorHelpTitle[@app.language]
-            content: Tr.scenarioSelector.scenarioSelectorHelp[@app.language]
-            attachmentSelector: '.scenarioSelectorGroup'
-            elementToFocusOnClose: @document.getElementById('scenarioSelectorHelpButton')
+    @sourcesHelpPopover = new ControlsHelpPopover @app,
+      popoverButtonId: 'sourceHelpButton'
+      outerClasses: 'vizModal controlsHelpPopover popOverLg sourceSelectorHelp'
+      title: Tr.sourceSelector.selectSourceLabel[@app.language]
+      content: =>
+        contentString = ''
+        for source in @sourceMenuData()
+          contentString = """
+            <div class="sourceLabel sourceLabel#{source.key}">
+              <img class="sourceIcon" src="#{@colouredSourceIconsDictionary()[source.key]}" alt='#{Tr.altText.sources[source.key][@app.language]}'>
+              <h2> #{Tr.sourceSelector.sources[source.key][@app.language]} </h2>
+              <div class="clearfix"> </div>
+              <p> #{Tr.sourceSelector.sourceSelectorHelp[source.key][@app.language]} </p>
+            </div>
+            """ + contentString
+        contentString = Tr.sourceSelector.sourceSelectorHelp.generalHelp[@app.language] + contentString
+        contentString
+      attachmentSelector: '#powerSourceSelector'
+      analyticsEvent: 'Viz2 source help'
+      setupEvents: false
 
-          @app.analyticsReporter.reportEvent 'Controls help', 'Viz2 scenario help'
+
+    @provincesHelpPopover = new ControlsHelpPopover @app,
+      popoverButtonId: 'provinceHelpButton'
+      outerClasses: 'vizModal controlsHelpPopover popOverSm provinceHelp'
+      title: Tr.regionSelector.selectRegionLabel[@app.language]
+      content: =>
+        #Grab the provinces in order for the string
+        contentString = ''
+        for province in @dataForProvinceMenu()
+          contentString = """
+            <div class="provinceLabel">
+              <h2> #{Tr.regionSelector.names[province.key][@app.language]} </h2>
+            </div>
+          """ + contentString
+        contentString
+      attachmentSelector: '#provincesSelector'
+      analyticsEvent: 'Viz2 region help'
+      setupEvents: false
 
 
   renderServerTemplate: ->
@@ -840,35 +844,6 @@ class Visualization2 extends visualization
     @app.datasetRequester.updateAndRequestIfRequired newConfig, update
 
 
-
-  showSourceNames: =>
-    d3.event.stopPropagation()
-    d3.event.preventDefault()
-    if @app.popoverManager.currentPopover == @sourcesHelpPopover
-      @app.popoverManager.closePopover()
-    else
-      #Grab the provinces in order for the string
-      contentString = ''
-      for source in @sourceMenuData()
-        contentString = """
-          <div class="sourceLabel sourceLabel#{source.key}">
-            <img class="sourceIcon" src="#{@colouredSourceIconsDictionary()[source.key]}" alt='#{Tr.altText.sources[source.key][@app.language]}'>
-            <h2> #{Tr.sourceSelector.sources[source.key][@app.language]} </h2>
-            <div class="clearfix"> </div>
-            <p> #{Tr.sourceSelector.sourceSelectorHelp[source.key][@app.language]} </p>
-          </div>
-          """ + contentString
-      contentString = Tr.sourceSelector.sourceSelectorHelp.generalHelp[@app.language] + contentString
-
-      @app.popoverManager.showPopover @sourcesHelpPopover,
-        outerClasses: 'vizModal controlsHelpPopover popOverLg sourceSelectorHelp'
-        title: Tr.sourceSelector.selectSourceLabel[@app.language]
-        content: contentString
-        attachmentSelector: '#powerSourceSelector'
-        elementToFocusOnClose: @document.getElementById('sourceHelpButton')
-      @app.analyticsReporter.reportEvent 'Controls help', 'Viz2 source help'
-
-
   # Black and white non multi select menu.
   buildProvinceMenu: ->
     options =
@@ -876,7 +851,7 @@ class Visualization2 extends visualization
       groupId: 'provinceMenu'
       onSelected: @provinceSelected
       allSquareHandler: @selectAllProvince
-      showHelpHandler: @showProvinceNames
+      showHelpHandler: @provincesHelpPopover.showPopoverCallback
       helpButtonLabel: Tr.altText.regionsHelp[@app.language]
       helpButtonId: 'provinceHelpButton'
       getAllIcon: =>
@@ -905,7 +880,7 @@ class Visualization2 extends visualization
       groupId: 'stackMenu'
       onSelected: @menuSelect
       allSquareHandler: @selectAllStacked
-      showHelpHandler: @showSourceNames
+      showHelpHandler: @sourcesHelpPopover.showPopoverCallback
       orderChangedHandler: @orderChanged
       canDrag: true
       helpButtonLabel: Tr.altText.sourcesHelp[@app.language]
@@ -970,31 +945,5 @@ class Visualization2 extends visualization
 
     @app.datasetRequester.updateAndRequestIfRequired newConfig, update
 
-
-
-
-
-  showProvinceNames: =>
-    d3.event.stopPropagation()
-    d3.event.preventDefault()
-    if @app.popoverManager.currentPopover == @provincesHelpPopover
-      @app.popoverManager.closePopover()
-    else
-      #Grab the provinces in order for the string
-      contentString = ''
-      for province in @dataForProvinceMenu()
-        contentString = """
-          <div class="provinceLabel">
-            <h2> #{Tr.regionSelector.names[province.key][@app.language]} </h2>
-          </div>
-        """ + contentString
-
-      @app.popoverManager.showPopover @provincesHelpPopover,
-        outerClasses: 'vizModal controlsHelpPopover popOverSm provinceHelp'
-        title: Tr.regionSelector.selectRegionLabel[@app.language]
-        content: contentString
-        attachmentSelector: '#provincesSelector'
-        elementToFocusOnClose: @document.getElementById('provinceHelpButton')
-      @app.analyticsReporter.reportEvent 'Controls help', 'Viz2 region help'
 
 module.exports = Visualization2
