@@ -156,12 +156,12 @@ class BubbleChart extends Chart
           
     enterSelection.select('g').append 'image'
 
-    handlePopover = (d) ->
+    handlePopover = (element, d) =>
       # d3.event.preventDefault()
       # d3.event.stopPropagation()
       if d3.selectAll(".toolTip#{d.id}").empty()
-        this.parentNode.parentNode.appendChild this.parentNode #bring to front
-        d3.select(this.parentNode).append('text')
+        element.parentNode.parentNode.appendChild element.parentNode #bring to front
+        d3.select(element.parentNode).append('text')
           .attr
             class: "toolTip toolTip#{d.id}"
             x: -(d.r / 2) + 2 #padding
@@ -173,7 +173,7 @@ class BubbleChart extends Chart
           .text ->
             "#{d.name}: #{d3.format('.3f')(d.size)}"
         
-        d3.select(this.parentNode).insert 'rect', 'text'
+        d3.select(element.parentNode).insert 'rect', 'text'
           .attr
             class: "toolTip toolTip#{d.id}"
             x: -(d.r / 2)
@@ -200,7 +200,8 @@ class BubbleChart extends Chart
     node.filter((d) -> d.depth == 2 )
       .select('circle')
       .on @click_event_name, (d) ->
-        handlePopover.call @, d
+        # 'this' is the element which was clicked
+        handlePopover @, d
 
       .on 'touchstart', ->
         d3.event.preventDefault()
@@ -210,7 +211,8 @@ class BubbleChart extends Chart
 
       .on 'touchend', (d) ->
         d3.event.preventDefault()
-        handlePopover.call @, d
+        # 'this' is the element which was touched
+        handlePopover @, d
 
       .on 'touchcancel', ->
         d3.event.preventDefault()
