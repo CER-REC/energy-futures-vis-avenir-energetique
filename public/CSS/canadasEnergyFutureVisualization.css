@@ -880,8 +880,11 @@ div.chartTooltip:after {
   width: 100%;
 }
 
-#canadasEnergyFutureVisualization .playPauseButton img{
+#canadasEnergyFutureVisualization .playPauseButton {
   width: 45%;
+}
+#canadasEnergyFutureVisualization .playPauseButton img{
+
   float: right;
   padding: 0.1em;
   box-sizing: border-box;
@@ -1057,5 +1060,13 @@ svg { overflow: hidden; }
   touch-action: none;
 }
 
+
+#canadasEnergyFutureVisualization #vizPlayButton {
+  float: left;
+}
+
+#canadasEnergyFutureVisualization #vizPauseButton {
+  float: right;
+}
 
 

@@ -456,69 +456,121 @@ class Visualization3 extends visualization
       .text =>
         @config.year
 
+
+  sliderPlayButtonCallback: =>
+    @d3document.select '#vizPlayButton'
+      .html """
+        <img src='IMG/play_pause/playbutton_selectedR.svg'
+             alt='#{Tr.altText.playAnimation[@app.language]}'/>
+      """
+    @d3document.select '#vizPauseButton'
+      .html """
+        <img src='IMG/play_pause/pausebutton_unselectedR.svg'
+             alt='#{Tr.altText.pauseAnimation[@app.language]}'/>
+      """
+    if @yearTimeout then window.clearTimeout @yearTimeout
+    timeoutComplete = =>
+      return unless @_chart?
+
+      if @config.year < Constants.maxYear
+
+        newConfig = new @config.constructor @app
+        newConfig.copy @config
+        newConfig.setYear @config.year + 1
+
+        update = =>
+          @config.setYear @config.year + 1
+          @yearTimeout = window.setTimeout timeoutComplete, @_chart._duration
+          @getDataAndRender()
+          @d3document.select '#sliderLabel'
+            .transition()
+              .attr
+                transform: "translate(#{@yearScale()(@config.year)}, #{@height() + @_margin.top  - 5})"
+            .duration @_chart._duration
+            .ease 'linear'
+          @d3document.select '#labelBox'
+            .text @config.year
+          @d3document.select '#sliderLabel'
+            .attr
+              'aria-valuenow': @config.year
+          @app.router.navigate @config.routerParams()
+
+        @app.datasetRequester.updateAndRequestIfRequired newConfig, update
+
+      else
+        @d3document.select '#vizPauseButton'
+          .html """
+            <img src='IMG/play_pause/pausebutton_selectedR.svg'
+                 alt='#{Tr.altText.pauseAnimation[@app.language]}'/>
+          """
+        @d3document.select '#vizPlayButton'
+          .html """
+            <img src='IMG/play_pause/playbutton_unselectedR.svg'
+                 alt='#{Tr.altText.playAnimation[@app.language]}'/>
+          """
+
+    @yearTimeout = window.setTimeout timeoutComplete, 0
+    @app.analyticsReporter.reportEvent 'Electricity Play/Pause', 'Play'
+
+
+
+  sliderPauseButtonCallback: =>
+    @d3document.select '#vizPauseButton'
+      .html """
+        <img src='IMG/play_pause/pausebutton_selectedR.svg'
+             alt='#{Tr.altText.pauseAnimation[@app.language]}'/>
+      """
+    @d3document.select '#vizPlayButton'
+      .html """
+        <img src='IMG/play_pause/playbutton_unselectedR.svg'
+             alt='#{Tr.altText.playAnimation[@app.language]}'/>
+       """
+    if @yearTimeout then window.clearTimeout @yearTimeout
+    @app.analyticsReporter.reportEvent 'Electricity Play/Pause', 'Pause'
+
+
   # I'm adding them to the left hand side for simplicity, we can move them later
   buildSliderButtons: ->
     @d3document.select('#powerSourcePanel .mediaButtons').remove()
-    div = @d3document.select('#powerSourcePanel')
+    div = @d3document.select '#powerSourcePanel'
       .append 'div'
         .attr
           class: 'mediaButtons'
-      
-    div.append('div')
-      .attr
-        class: 'playPauseButton selected'
-        id: 'vizPauseButton'
-      .on 'click', =>
-        @d3document.select('#vizPauseButton').html("<img src='IMG/play_pause/pausebutton_selectedR.svg' alt='#{Tr.altText.pauseAnimation[@app.language]}'/>")
-        @d3document.select('#vizPlayButton').html("<img src='IMG/play_pause/playbutton_unselectedR.svg' alt='#{Tr.altText.playAnimation[@app.language]}'/>")
-        if @yearTimeout then window.clearTimeout @yearTimeout
-        @app.analyticsReporter.reportEvent 'Electricity Play/Pause', 'Pause'
-      .html("<img src='IMG/play_pause/pausebutton_selectedR.svg' alt='#{Tr.altText.pauseAnimation[@app.language]}'/>")
-    
-    div.append('div')
+    div.append 'div'
       .attr
         id: 'vizPlayButton'
         class: 'playPauseButton'
-      .on 'click', =>
-        @d3document.select('#vizPlayButton').html("<img src='IMG/play_pause/playbutton_selectedR.svg' alt='#{Tr.altText.playAnimation[@app.language]}'/>")
-        @d3document.select('#vizPauseButton').html("<img src='IMG/play_pause/pausebutton_unselectedR.svg' alt='#{Tr.altText.pauseAnimation[@app.language]}'/>")
-        if @yearTimeout then window.clearTimeout @yearTimeout
-        timeoutComplete = =>
-          return unless @_chart?
+        role: 'button'
+        tabindex: '0'
+        'aria-label': Tr.altText.playAnimation[@app.language]
+      .on 'click', @sliderPlayButtonCallback
+      .on 'keydown', =>
+        if d3.event.key == 'Enter' or d3.event.key == ' '
+          d3.event.preventDefault()
+          @sliderPlayButtonCallback()
+      .html """
+        <img src='IMG/play_pause/playbutton_unselectedR.svg'
+             alt='#{Tr.altText.playAnimation[@app.language]}'/>
+      """
 
-          if @config.year < Constants.maxYear
+    div.append 'div'
+      .attr
+        id: 'vizPauseButton'
+        class: 'playPauseButton selected'
+        role: 'button'
+        tabindex: '0'
+        'aria-label': Tr.altText.pauseAnimation[@app.language]
+      .on 'click', @sliderPauseButtonCallback
+      .on 'keydown', =>
+        if d3.event.key == 'Enter' or d3.event.key == ' '
+          d3.event.preventDefault()
+          @sliderPauseButtonCallback()
+      .html """
+        <img src='IMG/play_pause/pausebutton_selectedR.svg'
+             alt='#{Tr.altText.pauseAnimation[@app.language]}'/>
+      """
+      
 
-            newConfig = new @config.constructor @app
-            newConfig.copy @config
-            newConfig.setYear @config.year + 1
-
-            update = =>
-              @config.setYear @config.year + 1
-              @yearTimeout = window.setTimeout timeoutComplete, @_chart._duration
-              @getDataAndRender()
-              @d3document.select '#sliderLabel'
-                .transition()
-                  .attr
-                    transform: "translate(#{@yearScale()(@config.year)}, #{@height() + @_margin.top  - 5})"
-                .duration @_chart._duration
-                .ease 'linear'
-              @d3document.select '#labelBox'
-                .text @config.year
-              @d3document.select '#sliderLabel'
-                .attr
-                  'aria-valuenow': @config.year
-              @app.router.navigate @config.routerParams()
-
-            @app.datasetRequester.updateAndRequestIfRequired newConfig, update
-
-          else
-            @d3document.select('#vizPauseButton').html("<img src='IMG/play_pause/pausebutton_selectedR.svg' alt='#{Tr.altText.pauseAnimation[@app.language]}'/>")
-            @d3document.select('#vizPlayButton').html("<img src='IMG/play_pause/playbutton_unselectedR.svg' alt='#{Tr.altText.playAnimation[@app.language]}'/>")
-
-        @yearTimeout = window.setTimeout timeoutComplete, 0
-        @app.analyticsReporter.reportEvent 'Electricity Play/Pause', 'Play'
-
-      .html "<img src='IMG/play_pause/playbutton_unselectedR.svg' alt='#{Tr.altText.playAnimation[@app.language]}'/>"
 
 
 
