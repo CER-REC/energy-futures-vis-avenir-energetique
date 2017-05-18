@@ -36,75 +36,61 @@ class Visualization4
         datasetsHelp: Tr.altText.datasetsHelp[@app.language]
         scenariosHelp: Tr.altText.scenariosHelp[@app.language]
 
-    @datasetHelpPopover = new ControlsHelpPopover @app
-    @mainSelectorHelpPopover = new ControlsHelpPopover @app
-    @unitsHelpPopover = new ControlsHelpPopover @app
-    @scenariosHelpPopover = new ControlsHelpPopover @app
-    @provincesHelpPopover = new ControlsHelpPopover @app
+    @datasetHelpPopover = new ControlsHelpPopover @app,
+      popoverButtonId: 'datasetSelectorHelpButton'
+      outerClasses: 'vizModal controlsHelpPopover datasetSelectorHelp'
+      innerClasses: 'viz4HelpTitle'
+      title: Tr.datasetSelector.datasetSelectorHelpTitle[@app.language]
+      content: => Tr.datasetSelector.datasetSelectorHelp[@app.language]
+      attachmentSelector: '.datasetSelectorGroup'
+      analyticsElement: 'Viz4 dataset help'
 
-    @d3document.select '#datasetSelectorHelpButton'
-      .on 'click', =>
-        d3.event.stopPropagation()
-        d3.event.preventDefault()
-        if @app.popoverManager.currentPopover == @datasetHelpPopover
-          @app.popoverManager.closePopover()
-        else
-          @app.popoverManager.showPopover @datasetHelpPopover,
-            outerClasses: 'vizModal controlsHelpPopover datasetSelectorHelp'
-            innerClasses: 'viz4HelpTitle'
-            title: Tr.datasetSelector.datasetSelectorHelpTitle[@app.language]
-            content: Tr.datasetSelector.datasetSelectorHelp[@app.language]
-            attachmentSelector: '.datasetSelectorGroup'
-            elementToFocusOnClose: @document.getElementById('datasetSelectorHelpButton')
-          @app.analyticsReporter.reportEvent 'Controls help', 'Viz4 dataset help'
+    @mainSelectorHelpPopover = new ControlsHelpPopover @app,
+      popoverButtonId: 'mainSelectorHelpButton'
+      outerClasses: 'vizModal controlsHelpPopover mainSelectorHelp'
+      innerClasses: 'viz4HelpTitle'
+      title: Tr.mainSelector.selectOneLabel[@app.language]
+      content: => Tr.mainSelector.mainSelectorHelp[@app.language]
+      attachmentSelector: '.mainSelectorSection'
+      analyticsElement: 'Viz4 main selection help'
 
-    @d3document.select '#mainSelectorHelpButton'
-      .on 'click', =>
-        d3.event.stopPropagation()
-        d3.event.preventDefault()
-        if @app.popoverManager.currentPopover == @mainSelectorHelpPopover
-          @app.popoverManager.closePopover()
-        else
-          @app.popoverManager.showPopover @mainSelectorHelpPopover,
-            outerClasses: 'vizModal controlsHelpPopover mainSelectorHelp'
-            innerClasses: 'viz4HelpTitle'
-            title: Tr.mainSelector.selectOneLabel[@app.language]
-            content: Tr.mainSelector.mainSelectorHelp[@app.language]
-            attachmentSelector: '.mainSelectorSection'
-            elementToFocusOnClose: @document.getElementById('mainSelectorHelpButton')
-          @app.analyticsReporter.reportEvent 'Controls help', 'Viz4 main selection help'
-    
-    @d3document.select '#unitSelectorHelpButton'
-      .on 'click', =>
-        d3.event.stopPropagation()
-        d3.event.preventDefault()
-        if @app.popoverManager.currentPopover == @unitsHelpPopover
-          @app.popoverManager.closePopover()
-        else
-          @app.popoverManager.showPopover @unitsHelpPopover,
-            outerClasses: 'vizModal controlsHelpPopover unitSelectorHelp'
-            innerClasses: 'viz4HelpTitle'
-            title: Tr.unitSelector.unitSelectorHelpTitle[@app.language]
-            content: Tr.unitSelector.unitSelectorHelp[@app.language]
-            attachmentSelector: '.unitsSelectorGroup'
-            elementToFocusOnClose: @document.getElementById('unitSelectorHelpButton')
-          @app.analyticsReporter.reportEvent 'Controls help', 'Viz4 unit help'
+    @unitsHelpPopover = new ControlsHelpPopover @app,
+      popoverButtonId: 'unitSelectorHelpButton'
+      outerClasses: 'vizModal controlsHelpPopover unitSelectorHelp'
+      innerClasses: 'viz4HelpTitle'
+      title: Tr.unitSelector.unitSelectorHelpTitle[@app.language]
+      content: => Tr.unitSelector.unitSelectorHelp[@app.language]
+      attachmentSelector: '.unitsSelectorGroup'
+      analyticsElement: 'Viz4 unit help'
 
-    @d3document.select '#scenarioSelectorHelpButton'
-      .on 'click', =>
-        d3.event.stopPropagation()
-        d3.event.preventDefault()
-        if @app.popoverManager.currentPopover == @scenariosHelpPopover
-          @app.popoverManager.closePopover()
-        else
-          @app.popoverManager.showPopover @scenariosHelpPopover,
-            outerClasses: 'vizModal controlsHelpPopover scenarioSelectorHelp'
-            innerClasses: 'viz4HelpTitle'
-            title: Tr.scenarioSelector.scenarioSelectorHelpTitle[@app.language]
-            content: Tr.scenarioSelector.scenarioSelectorHelp[@app.language]
-            attachmentSelector: '.scenarioSelectorGroup'
-            elementToFocusOnClose: @document.getElementById('scenarioSelectorHelpButton')
-          @app.analyticsReporter.reportEvent 'Controls help', 'Viz4 scenario help'
+    @scenariosHelpPopover = new ControlsHelpPopover @app,
+      popoverButtonId: 'scenarioSelectorHelpButton'
+      outerClasses: 'vizModal controlsHelpPopover scenarioSelectorHelp'
+      innerClasses: 'viz4HelpTitle'
+      title: Tr.scenarioSelector.scenarioSelectorHelpTitle[@app.language]
+      content: => Tr.scenarioSelector.scenarioSelectorHelp[@app.language]
+      attachmentSelector: '.scenarioSelectorGroup'
+      analyticsElement: 'Viz4 scenario help'
+
+    @provincesHelpPopover = new ControlsHelpPopover @app,
+      popoverButtonId: 'provinceHelpButton'
+      outerClasses: 'vizModal controlsHelpPopover popOverSm provinceHelp'
+      title: Tr.regionSelector.selectRegionLabel[@app.language]
+      content: =>
+        #Grab the provinces in order for the string
+        contentString = ''
+        for province in @dataForProvinceMenu()
+          contentString = """
+            <div class="provinceLabel">
+              <h2> #{Tr.regionSelector.names[province.key][@app.language]} </h2>
+            </div>
+            #{contentString}
+          """
+        contentString
+      attachmentSelector: '#provincesSelector'
+      analyticsElement: 'Viz4 region help'
+      setupEvents: false
+
 
 
   renderServerTemplate: ->
@@ -308,7 +294,7 @@ class Visualization4
       onSelected: @provinceSelected
       groupId: 'provinceMenu'
       allSquareHandler: @selectAllProvince
-      showHelpHandler: @showProvinceNames
+      showHelpHandler: @provincesHelpPopover.showPopoverCallback
       helpButtonLabel: Tr.altText.regionsHelp[@app.language]
       helpButtonId: 'provinceHelpButton'
       getAllIcon: =>
@@ -361,33 +347,6 @@ class Visualization4
       @app.router.navigate @config.routerParams()
 
     @app.datasetRequester.updateAndRequestIfRequired newConfig, update
-
-
-
-  showProvinceNames: =>
-    d3.event.stopPropagation()
-    d3.event.preventDefault()
-    if @app.popoverManager.currentPopover == @provincesHelpPopover
-      @app.popoverManager.closePopover()
-    else
-      #Grab the provinces in order for the string
-      contentString = ''
-      for province in @dataForProvinceMenu()
-        contentString = """
-          <div class="provinceLabel">
-            <h2> #{Tr.regionSelector.names[province.key][@app.language]} </h2>
-          </div>
-          #{contentString}
-        """
-
-      @app.popoverManager.showPopover @provincesHelpPopover,
-        outerClasses: 'vizModal controlsHelpPopover popOverSm provinceHelp'
-        title: Tr.regionSelector.selectRegionLabel[@app.language]
-        content: contentString
-        attachmentSelector: '#provincesSelector'
-        elementToFocusOnClose: @document.getElementById('provinceHelpButton')
-      @app.analyticsReporter.reportEvent 'Controls help', 'Viz4 region help'
-
 
 
   # Data here
