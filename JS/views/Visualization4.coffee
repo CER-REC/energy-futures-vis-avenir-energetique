@@ -733,6 +733,7 @@ class Visualization4
 
     mainSelectors.exit()
       .on 'click', null
+      .on 'keydown', null
       .remove()
 
 

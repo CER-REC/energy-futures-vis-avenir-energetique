@@ -369,6 +369,7 @@ class SquareMenu
         role: 'button'
         id: @options.helpButtonId
       .on 'click', =>
+        d3.event.stopPropagation()
         @_showHelpHandler()
       .on 'keydown', =>
         if d3.event.key == 'Enter' or d3.event.key == ' '
