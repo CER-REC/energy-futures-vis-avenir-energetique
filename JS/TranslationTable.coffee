@@ -177,9 +177,9 @@ module.exports =
         <p>
           Recherche conceptuelle sous la direction de Sheelagh Carpendale et Wesley Willett, InnoVis, Université de Calgary
           <br>
-          Conception : Lindsay MacDonald, Charles Perin et Jo Vermeulen ainsi que Doris Kosminsky,
+          Conception : Lindsay MacDonald, Charles Perin et Jo Vermeulen ainsi que Doris Kosminsky
           <br>
-          chef technique à Vizworx
+          Chef technique à Vizworx
           <br>
           Aspect technique : Stephanie Sachrajda, Patrick King, Alaa Azazi, Abhishek Sharma, Ben Cousins et Claudio Esperança
         </p>
@@ -188,10 +188,10 @@ module.exports =
   selectorTooltip:
     datasetSelector:
       jan2016:
-        en: 'CANADA ENERGY FUTURE 2016 (January 2016). A continuation of the Energy Futures series. In addition our usual baseline long-term outlook, we explores key uncertainties for Canadian energy such robustness of global LNG markets and availability of crude oil transportation infrastructure.'
+        en: 'CANADA ENERGY FUTURE 2016 (January 2016). A continuation of the Energy Futures series. In addition to our usual baseline long-term outlook, we explore key uncertainties for Canadian energy such robustness of global LNG markets and availability of crude oil transportation infrastructure.'
         fr: 'La suite de la série sur l’avenir énergétique. En plus des perspectives à long terme habituelles, nous explorons certaines incertitudes de fond dans le secteur de l’énergie au Canada, qu’il s’agisse par exemple de celles découlant du degré de robustesse des marchés mondiaux du GNL ou de la disponibilité d’une infrastructure pour l’acheminement de pétrole brut.'
       oct2016:
-        en: 'CANADA ENERGY FUTURE 2016: UPDATE (October 2016). Presents reference and high and low prices cases. In the Reference Case, the crude oil price assumption is revised lower to US$90 per barrel by 2040. In addition to policies which were included in the January edition, such as Quebec’s cap and trade system and the carbon tax in B.C., most of the Alberta Climate Leadership Plan and the Ontario cap and trade program have been integrated into the forecast.'
+        en: 'CANADA ENERGY FUTURE 2016: UPDATE (October 2016). Presents reference, high, and low price cases. In the Reference Case, the crude oil price assumption is revised lower to US$90 per barrel by 2040. In addition to policies which were included in the January edition, such as Quebec’s cap and trade system and the carbon tax in B.C., most of the Alberta Climate Leadership Plan and the Ontario cap and trade program have been integrated into the forecast.'
         fr: 'Présente des scénarios de prix, bas et élevés, ainsi qu’un scénario de référence. Dans ce dernier cas, l’hypothèse de prix du pétrole brut a été revue à la baisse, à 90 $ US le baril en 2040. En plus des politiques déjà incluses précédemment, notamment le système de plafonnement et d’échange de droits d’émission au Québec et la taxe sur le carbone en Colombie-Britannique, les nouvelles prévisions tiennent compte, dans sa plus grande partie, du plan de leadership de l’Alberta en matière de changement climatique de même que du programme de plafonnement et d’échange de droits de l’Ontario.'
 
     mainSelector:
@@ -511,14 +511,14 @@ module.exports =
         <h1> CANADA’S ENERGY FUTURE 2016: UPDATE </h1>
         <h2> October 2016 </h2>
         <p>
-          Presents reference and high and low prices cases. In the Reference Case, the crude oil price assumption is revised lower to US$90 per barrel by 2040. In addition to policies which were included in the January edition, such as Quebec’s cap and trade system and the carbon tax in B.C., most of the Alberta Climate Leadership Plan and the Ontario cap and trade program have been integrated into the forecast.
+          Presents reference, high, and low price cases. In the Reference Case, the crude oil price assumption is revised lower to US$90 per barrel by 2040. In addition to policies which were included in the January edition, such as Quebec’s cap and trade system and the carbon tax in B.C., most of the Alberta Climate Leadership Plan and the Ontario cap and trade program have been integrated into the forecast.
           <br><a href='http://www.neb-one.gc.ca/nrg/ntgrtd/ftr/2016updt/index-eng.html' target='_blank'>View the report</a>
         </p>
 
         <h1> CANADA’S ENERGY FUTURE 2016 </h1>
         <h2> January 2016 </h2>
         <p>
-          A continuation of the Energy Futures series. In addition our usual baseline long-term outlook, we explore key uncertainties for Canadian energy such robustness of global LNG markets and availability of crude oil transportation infrastructure.
+          A continuation of the Energy Futures series. In addition to our usual baseline long-term outlook, we explore key uncertainties for Canadian energy such robustness of global LNG markets and availability of crude oil transportation infrastructure.
           <br><a href='http://www.neb-one.gc.ca/nrg/ntgrtd/ftr/2016/index-eng.html' target='_blank'>View the report</a>
         </p>
       """
