@@ -1,10 +1,10 @@
-_ = require 'lodash'
 d3 = require 'd3'
 Mustache = require 'mustache'
 
 
 visualization = require './visualization.coffee'
 stackedBarChart = require '../charts/stacked-bar-chart.coffee'
+SquareMenu = require '../charts/SquareMenu.coffee'
 Constants = require '../Constants.coffee'
 Tr = require '../TranslationTable.coffee'
 Platform = require '../Platform.coffee'
@@ -16,7 +16,7 @@ if Platform.name == 'browser'
   SvgStylesheetTemplate = require '../templates/SvgStylesheet.css'
 
 ControlsHelpPopover = require '../popovers/ControlsHelpPopover.coffee'
-
+ProvinceAriaText = require '../ProvinceAriaText.coffee'
 
 class Visualization1 extends visualization
   height = 700
@@ -39,75 +39,58 @@ class Visualization1 extends visualization
         scenariosHelp: Tr.altText.scenariosHelp[@app.language]
 
 
-    @datasetHelpPopover = new ControlsHelpPopover @app
-    @mainSelectorHelpPopover = new ControlsHelpPopover @app
-    @unitsHelpPopover = new ControlsHelpPopover @app
-    @scenariosHelpPopover = new ControlsHelpPopover @app
-    @provincesHelpPopover = new ControlsHelpPopover @app
+    @datasetHelpPopover = new ControlsHelpPopover @app,
+      popoverButtonId: 'datasetSelectorHelpButton'
+      outerClasses: 'vizModal controlsHelpPopover datasetSelectorHelp'
+      innerClasses: 'viz1HelpTitle'
+      title: Tr.datasetSelector.datasetSelectorHelpTitle[@app.language]
+      content: => Tr.datasetSelector.datasetSelectorHelp[@app.language]
+      attachmentSelector: '.datasetSelectorGroup'
+      analyticsEvent: 'Viz1 dataset help'
 
-    @d3document.select '#datasetSelectorHelpButton'
-      .on 'click', =>
-        d3.event.stopPropagation()
-        d3.event.preventDefault()
-        if @app.popoverManager.currentPopover == @datasetHelpPopover
-          @app.popoverManager.closePopover()
-        else
-          @app.popoverManager.showPopover @datasetHelpPopover,
-            outerClasses: 'vizModal controlsHelpPopover datasetSelectorHelp'
-            innerClasses: 'viz1HelpTitle'
-            title: Tr.datasetSelector.datasetSelectorHelpTitle[@app.language]
-            content: Tr.datasetSelector.datasetSelectorHelp[@app.language]
-            attachmentSelector: '.datasetSelectorGroup'
-            elementToFocusOnClose: @document.getElementById('datasetSelectorHelpButton')
-          @app.analyticsReporter.reportEvent 'Controls help', 'Viz1 dataset help'
+    @mainSelectorHelpPopover = new ControlsHelpPopover @app,
+      popoverButtonId: 'mainSelectorHelpButton'
+      outerClasses: 'vizModal controlsHelpPopover mainSelectorHelp'
+      innerClasses: 'viz1HelpTitle'
+      title: Tr.mainSelector.selectOneLabel[@app.language]
+      content: => Tr.mainSelector.mainSelectorHelp[@app.language]
+      attachmentSelector: '.mainSelectorSection'
+      analyticsEvent: 'Viz1 main selection help'
 
-    @d3document.select '#mainSelectorHelpButton'
-      .on 'click', =>
-        d3.event.stopPropagation()
-        d3.event.preventDefault()
-        if @app.popoverManager.currentPopover == @mainSelectorHelpPopover
-          @app.popoverManager.closePopover()
-        else
-          @app.popoverManager.showPopover @mainSelectorHelpPopover,
-            outerClasses: 'vizModal controlsHelpPopover mainSelectorHelp'
-            innerClasses: 'viz1HelpTitle'
-            title: Tr.mainSelector.selectOneLabel[@app.language]
-            content: Tr.mainSelector.mainSelectorHelp[@app.language]
-            attachmentSelector: '.mainSelectorSection'
-            elementToFocusOnClose: @document.getElementById('mainSelectorHelpButton')
-          @app.analyticsReporter.reportEvent 'Controls help', 'Viz1 main selection help'
-          
-    @d3document.select '#unitSelectorHelpButton'
-      .on 'click', =>
-        d3.event.stopPropagation()
-        d3.event.preventDefault()
-        if @app.popoverManager.currentPopover == @unitsHelpPopover
-          @app.popoverManager.closePopover()
-        else
-          @app.popoverManager.showPopover @unitsHelpPopover,
-            outerClasses: 'vizModal controlsHelpPopover unitSelectorHelp'
-            innerClasses: 'viz1HelpTitle'
-            title: Tr.unitSelector.unitSelectorHelpTitle[@app.language]
-            content: Tr.unitSelector.unitSelectorHelp[@app.language]
-            attachmentSelector: '.unitsSelectorGroup'
-            elementToFocusOnClose: @document.getElementById('unitSelectorHelpButton')
-          @app.analyticsReporter.reportEvent 'Controls help', 'Viz1 unit help'
+    @unitsHelpPopover = new ControlsHelpPopover @app,
+      popoverButtonId: 'unitSelectorHelpButton'
+      outerClasses: 'vizModal controlsHelpPopover unitSelectorHelp'
+      innerClasses: 'viz1HelpTitle'
+      title: Tr.unitSelector.unitSelectorHelpTitle[@app.language]
+      content: => Tr.unitSelector.unitSelectorHelp[@app.language]
+      attachmentSelector: '.unitsSelectorGroup'
+      analyticsEvent: 'Viz1 unit help'
+
+    @scenariosHelpPopover = new ControlsHelpPopover @app,
+      popoverButtonId: 'scenarioSelectorHelpButton'
+      outerClasses: 'vizModal controlsHelpPopover scenarioSelectorHelp'
+      innerClasses: 'viz1HelpTitle'
+      title: Tr.scenarioSelector.scenarioSelectorHelpTitle[@app.language]
+      content: => Tr.scenarioSelector.scenarioSelectorHelp[@app.language]
+      attachmentSelector: '.scenarioSelectorGroup'
+      analyticsEvent: 'Viz1 scenario help'
+
+    @provincesHelpPopover = new ControlsHelpPopover @app,
+      popoverButtonId: 'provinceHelpButton'
+      outerClasses: 'vizModal controlsHelpPopover popOverSm provinceHelp'
+      title: Tr.regionSelector.selectRegionLabel[@app.language]
+      content: =>
+        contentString = ''
+        for province in @provinceMenuData()
+          contentString = """
+            <div class="provinceLabel provinceLabel#{province.key}">
+              <h2> #{Tr.regionSelector.names[province.key][@app.language]} </h2>
+            </div>""" + contentString
+        contentString
+      attachmentSelector: '#provincesSelector'
+      setupEvents: false
+
     
-    @d3document.select '#scenarioSelectorHelpButton'
-      .on 'click', =>
-        d3.event.stopPropagation()
-        d3.event.preventDefault()
-        if @app.popoverManager.currentPopover == @scenariosHelpPopover
-          @app.popoverManager.closePopover()
-        else
-          @app.popoverManager.showPopover @scenariosHelpPopover,
-            outerClasses: 'vizModal controlsHelpPopover scenarioSelectorHelp'
-            innerClasses: 'viz1HelpTitle'
-            title: Tr.scenarioSelector.scenarioSelectorHelpTitle[@app.language]
-            content: Tr.scenarioSelector.scenarioSelectorHelp[@app.language]
-            attachmentSelector: '.scenarioSelectorGroup'
-            elementToFocusOnClose: @document.getElementById('scenarioSelectorHelpButton')
-          @app.analyticsReporter.reportEvent 'Controls help', 'Viz1 scenario help'
 
 
   renderServerTemplate: ->
@@ -168,9 +151,11 @@ class Visualization1 extends visualization
       @_chart.x @xScale()
       @_chart.y @yScale()
       @_chart.barSize @barSize()
-      @_chart.menu.size
-        w: @d3document.select('#provincePanel').node().getBoundingClientRect().width
-        h: @provinceMenuHeight()
+
+    @menu.size
+      w: @d3document.select('#provincePanel').node().getBoundingClientRect().width
+      h: @provinceMenuHeight()
+    @menu.update()
 
 
   # the graph's height
@@ -230,10 +215,10 @@ class Visualization1 extends visualization
         height: height - @_margin.top
 
   provinceMenuData: ->
-    provinceColours = {
+    provinceColours =
       BC:
-        tooltip: Tr.regionSelector.names.BC[@app.language]
-        present: if @config.provinces.includes 'BC' then true else false
+        tooltip: ProvinceAriaText @app, @config.provinces.includes('BC'), 'BC'
+        present: @config.provinces.includes 'BC'
         colour: '#AEC7E8'
         img:
           if @zeroedOut('BC')
@@ -243,8 +228,8 @@ class Visualization1 extends visualization
           else
             'IMG/provinces/colour/BC_Unselected.svg'
       AB:
-        tooltip: Tr.regionSelector.names.AB[@app.language]
-        present: if @config.provinces.includes 'AB' then true else false
+        tooltip: ProvinceAriaText @app, @config.provinces.includes('AB'), 'AB'
+        present: @config.provinces.includes 'AB'
         colour: '#2278b5'
         img:
           if @zeroedOut('AB')
@@ -254,8 +239,8 @@ class Visualization1 extends visualization
           else
             'IMG/provinces/colour/AB_Unselected.svg'
       SK:
-        tooltip: Tr.regionSelector.names.SK[@app.language]
-        present: if @config.provinces.includes 'SK' then true else false
+        tooltip: ProvinceAriaText @app, @config.provinces.includes('SK'), 'SK'
+        present: @config.provinces.includes 'SK'
         colour: '#d77ab1'
         img:
           if @zeroedOut('SK')
@@ -265,8 +250,8 @@ class Visualization1 extends visualization
           else
             'IMG/provinces/colour/Sask_Unselected.svg'
       MB:
-        tooltip: Tr.regionSelector.names.MB[@app.language]
-        present: if @config.provinces.includes 'MB' then true else false
+        tooltip: ProvinceAriaText @app, @config.provinces.includes('MB'), 'MB'
+        present: @config.provinces.includes 'MB'
         colour: '#FCBB78'
         img:
           if @zeroedOut('MB')
@@ -276,8 +261,8 @@ class Visualization1 extends visualization
           else
             'IMG/provinces/colour/MB_Unselected.svg'
       ON:
-        tooltip: Tr.regionSelector.names.ON[@app.language]
-        present: if @config.provinces.includes 'ON' then true else false
+        tooltip: ProvinceAriaText @app, @config.provinces.includes('ON'), 'ON'
+        present: @config.provinces.includes 'ON'
         colour: '#C5B1D6'
         img:
           if @zeroedOut('ON')
@@ -287,8 +272,8 @@ class Visualization1 extends visualization
           else
             'IMG/provinces/colour/ON_Unselected.svg'
       QC:
-        tooltip: Tr.regionSelector.names.QC[@app.language]
-        present: if @config.provinces.includes 'QC' then true else false
+        tooltip: ProvinceAriaText @app, @config.provinces.includes('QC'), 'QC'
+        present: @config.provinces.includes 'QC'
         colour: '#c49c94'
         img:
           if @zeroedOut('QC')
@@ -298,8 +283,8 @@ class Visualization1 extends visualization
           else
             'IMG/provinces/colour/QC_Unselected.svg'
       NB:
-        tooltip: Tr.regionSelector.names.NB[@app.language]
-        present: if @config.provinces.includes 'NB' then true else false
+        tooltip: ProvinceAriaText @app, @config.provinces.includes('NB'), 'NB'
+        present: @config.provinces.includes 'NB'
         colour: '#2FA148'
         img:
           if @zeroedOut('NB')
@@ -309,8 +294,8 @@ class Visualization1 extends visualization
           else
             'IMG/provinces/colour/NB_Unselected.svg'
       NS:
-        tooltip: Tr.regionSelector.names.NS[@app.language]
-        present: if @config.provinces.includes 'NS' then true else false
+        tooltip: ProvinceAriaText @app, @config.provinces.includes('NS'), 'NS'
+        present: @config.provinces.includes 'NS'
         colour: '#F69797'
         img:
           if @zeroedOut('NS')
@@ -320,8 +305,8 @@ class Visualization1 extends visualization
           else
             'IMG/provinces/colour/NS_Unselected.svg'
       NL:
-        tooltip: Tr.regionSelector.names.NL[@app.language]
-        present: if @config.provinces.includes 'NL' then true else false
+        tooltip: ProvinceAriaText @app, @config.provinces.includes('NL'), 'NL'
+        present: @config.provinces.includes 'NL'
         colour: '#9ED089'
         img:
           if @zeroedOut('NL')
@@ -331,8 +316,8 @@ class Visualization1 extends visualization
           else
             'IMG/provinces/colour/NL_Unselected.svg'
       PE:
-        tooltip: Tr.regionSelector.names.PE[@app.language]
-        present: if @config.provinces.includes 'PE' then true else false
+        tooltip: ProvinceAriaText @app, @config.provinces.includes('PE'), 'PE'
+        present: @config.provinces.includes 'PE'
         colour: '#8D574C'
         img:
           if @zeroedOut('PE')
@@ -342,8 +327,8 @@ class Visualization1 extends visualization
           else
             'IMG/provinces/colour/PEI_Unselected.svg'
       YT:
-        tooltip: Tr.regionSelector.names.YT[@app.language]
-        present: if @config.provinces.includes 'YT' then true else false
+        tooltip: ProvinceAriaText @app, @config.provinces.includes('YT'), 'YT'
+        present: @config.provinces.includes 'YT'
         colour: '#F5B6D1'
         img:
           if @zeroedOut('YT')
@@ -353,8 +338,8 @@ class Visualization1 extends visualization
           else
             'IMG/provinces/colour/Yukon_Unselected.svg'
       NT:
-        tooltip: Tr.regionSelector.names.NT[@app.language]
-        present: if @config.provinces.includes 'NT' then true else false
+        tooltip: ProvinceAriaText @app, @config.provinces.includes('NT'), 'NT'
+        present: @config.provinces.includes 'NT'
         colour: '#D62A28'
         img:
           if @zeroedOut('NT')
@@ -364,8 +349,8 @@ class Visualization1 extends visualization
           else
             'IMG/provinces/colour/NT_Unselected.svg'
       NU:
-        tooltip: Tr.regionSelector.names.NU[@app.language]
-        present: if @config.provinces.includes 'NU' then true else false
+        tooltip: ProvinceAriaText @app, @config.provinces.includes('NU'), 'NU'
+        present: @config.provinces.includes 'NU'
         colour: '#9268ac'
         img:
           if @zeroedOut('NU')
@@ -374,10 +359,9 @@ class Visualization1 extends visualization
             'IMG/provinces/colour/NU_Selected.svg'
           else
             'IMG/provinces/colour/NU_Unselected.svg'
-    }
+
     data = []
     for province in @config.provincesInOrder
-      # this really should be above but its easier to add here for now
       provinceColours[province].key = province
       data.push provinceColours[province]
     data
@@ -439,21 +423,6 @@ class Visualization1 extends visualization
     if !(@seriesData) or !(@seriesData[key]) then return false
     nonZeroVals = @seriesData[key].filter (item) -> item.value != 0
     return nonZeroVals.length == 0
-
-  getSelectionState: ->
-    if @config.provincesInOrder.length != @config.provinces.length
-      allSelected = false
-      if @config.provinces.length > 0
-        someSelected =  true
-      else
-        someSelected = false
-    else
-      allSelected = true
-      someSelected = false
-    {
-      allSelected: allSelected
-      someSelected: someSelected
-    }
 
   getDataAndRender: ->
     @getData()
@@ -547,7 +516,7 @@ class Visualization1 extends visualization
     domainPlusOne = [2005..2041]
     d3.scale.ordinal()
         .domain domainPlusOne
-        .rangeBands [@_margin.left, @width() + @_margin.left + @barSize() + (@_barMargin /2)]
+        .rangeBands [@_margin.left, @width() + @_margin.left + @barSize() + (@_barMargin / 2)]
 
   xAxisForTicks: ->
     d3.svg.axis()
@@ -658,110 +627,115 @@ class Visualization1 extends visualization
         @app.animationDuration
       groupId:
         'graphGroup'
-      menuOptions:
-        selector: '#provinceMenuSVG'
-        size:
-          w: @d3document.select('#provincePanel').node().getBoundingClientRect().width
-          h: @provinceMenuHeight()
-        onSelected:
-          @menuSelect
-        allSelected:
-          @getSelectionState().allSelected
-        someSelected:
-          @getSelectionState().someSelected
-        allSquareHandler:
-          @selectAllStacked
-        orderChangedHandler:
-          @orderChanged
-        showHelpHandler:
-          @showProvinceNames
-        groupId:
-          'stackMenu'
-        helpButtonLabel: Tr.altText.regionsHelp[@app.language]
-        helpButtonId: 'provinceHelpButton'
 
     @_chart = new stackedBarChart @app, '#graphSVG', @xScale(), @yScale(), stackedOptions
 
+    menuOptions =
+      parentId: 'provinceMenuSVG'
+      groupId: 'stackMenu'
+      onSelected: @menuSelect
+      allSquareHandler: @selectAllStacked
+      showHelpHandler: @provincesHelpPopover.showPopoverCallback
+      orderChangedHandler: @orderChanged
+      canDrag: true
+      helpButtonLabel: Tr.altText.regionsHelp[@app.language]
+      helpButtonId: 'provinceHelpButton'
+      getAllIcon: =>
+        if @config.provinces.length == Constants.provinces.length
+          Tr.allSelectorButton.all[@app.language]
+        else if @config.provinces.length > 0
+          Tr.allSelectorButton.someSelected[@app.language]
+        else if @config.provinces.length == 0
+          Tr.allSelectorButton.none[@app.language]
+      getAllLabel: =>
+        if @config.provinces.length == Constants.provinces.length
+          Tr.altText.allButton.allRegionsSelected[@app.language]
+        else if @config.provinces.length > 0
+          Tr.altText.allButton.someRegionsSelected[@app.language]
+        else if @config.provinces.length == 0
+          Tr.altText.allButton.noRegionsSelected[@app.language]
+      onDragStart: @_chart.dragStart
+      onDragEnd: @_chart.dragEnd
+
+    menuState =
+      size:
+        w: @d3document.select('#provincePanel').node().getBoundingClientRect().width
+        h: @provinceMenuHeight()
+      data: @provinceMenuData()
+
+    @menu = new SquareMenu @app, menuOptions, menuState
+
   #called for adjustments: basically to avoid rebuilding the x axis and the chart object
   adjustViz: ->
-    @_chart.menu.allSelected @getSelectionState().allSelected
-    @_chart.menu.someSelected @getSelectionState().someSelected
     @_chart.mapping @provinceMenuData()
     @_chart.data @seriesData
+
+    @menu.data @provinceMenuData()
+    @menu.update()
 
     @_chart.y @yScale()
     @buildYAxis()
 
-  selectAllStacked: (selecting) =>
+  selectAllStacked: =>
     newConfig = new @config.constructor @app
     newConfig.copy @config
-    newConfig.resetProvinces selecting
+    if @config.provinces.length == Constants.provinces.length
+      # If all provinces are present, select none
+      newConfig.resetProvinces false
+    else if @config.provinces.length > 0
+      # If some provinces are selected, select all
+      newConfig.resetProvinces true
+    else if @config.provinces.length == 0
+      # If no provinces are selected, select all
+      newConfig.resetProvinces true
 
     update = =>
-      @config.resetProvinces selecting
+      if @config.provinces.length == Constants.provinces.length
+        # If all provinces are present, select none
+        @config.resetProvinces false
+      else if @config.provinces.length > 0
+        # If some provinces are selected, select all
+        @config.resetProvinces true
+      else if @config.provinces.length == 0
+        # If no provinces are selected, select all
+        @config.resetProvinces true
+
       @getDataAndRender()
       @app.router.navigate @config.routerParams()
-
 
     @app.datasetRequester.updateAndRequestIfRequired newConfig, update
 
 
 
 
-  orderChanged: (newLocation, currentLocation) =>
-    if currentLocation > newLocation
-      temp_data = _.concat @config.provincesInOrder[0...newLocation], @config.provincesInOrder[currentLocation],@config.provincesInOrder[newLocation...currentLocation], @config.provincesInOrder[(currentLocation+1)..]
-    if currentLocation < newLocation
-      temp_data = _.concat @config.provincesInOrder[0...currentLocation], @config.provincesInOrder[(currentLocation+1)..newLocation], @config.provincesInOrder[currentLocation], @config.provincesInOrder[(newLocation+1)..]
-    return unless temp_data?
-
+  orderChanged: (newOrder) =>
     newConfig = new @config.constructor @app
     newConfig.copy @config
-    newConfig.setProvincesInOrder temp_data
+    newConfig.setProvincesInOrder newOrder
 
     update = =>
-      @config.setProvincesInOrder temp_data
+      @config.setProvincesInOrder newOrder
       @_chart.mapping @provinceMenuData()
+      @menu.data @provinceMenuData()
       @app.router.navigate @config.routerParams()
     
     @app.datasetRequester.updateAndRequestIfRequired newConfig, update
 
 
 
-  menuSelect: (key) =>
+  menuSelect: (dataDictionaryItem) =>
     newConfig = new @config.constructor @app
     newConfig.copy @config
-    newConfig.flipProvince key
+    newConfig.flipProvince dataDictionaryItem.key
 
     update = =>
-      @config.flipProvince key
+      @config.flipProvince dataDictionaryItem.key
+
       @getDataAndRender()
       @app.router.navigate @config.routerParams()
 
     @app.datasetRequester.updateAndRequestIfRequired newConfig, update
 
-
-  showProvinceNames: =>
-    d3.event.stopPropagation()
-    d3.event.preventDefault()
-    if @app.popoverManager.currentPopover == @provincesHelpPopover
-      @app.popoverManager.closePopover()
-    else
-      #Grab the provinces in order for the string
-      contentString = ''
-      for province in @provinceMenuData()
-        contentString = """
-          <div class="provinceLabel provinceLabel#{province.key}">
-            <h2> #{Tr.regionSelector.names[province.key][@app.language]} </h2>
-          </div>""" + contentString
-
-      @app.popoverManager.showPopover @provincesHelpPopover,
-        outerClasses: 'vizModal controlsHelpPopover popOverSm provinceHelp'
-        title: Tr.regionSelector.selectRegionLabel[@app.language]
-        content: contentString
-        attachmentSelector: '#provincesSelector'
-        elementToFocusOnClose: @document.getElementById('provinceHelpButton')
-      @app.analyticsReporter.reportEvent 'Controls help', 'Viz1 region help'
 
 
 module.exports = Visualization1

@@ -70,11 +70,7 @@ class Visualization1Configuration
       @addProvince province
 
     # Used to manage the order of the provinces in a reorderable menu
-    @provincesInOrder = []
-    if(@isValidProvincesInOrder(options.provincesInOrder))
-      @provincesInOrder = options.provincesInOrder
-    else
-      @provincesInOrder = @defaultOptions.provincesInOrder
+    @setProvincesInOrder options.provincesInOrder
 
     @setLanguage @app.language || 'en'
 
@@ -152,7 +148,11 @@ class Visualization1Configuration
       @provinces = []
 
   setProvincesInOrder: (provincesInOrder) ->
-    @provincesInOrder = provincesInOrder
+    if @isValidProvincesInOrder provincesInOrder
+      @provincesInOrder = provincesInOrder
+    else
+      @provincesInOrder = @defaultOptions.provincesInOrder
+
 
 
   setLanguage: (language) ->

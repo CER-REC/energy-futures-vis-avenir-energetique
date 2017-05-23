@@ -18,6 +18,9 @@ if Platform.name == 'browser'
 
 ControlsHelpPopover = require '../popovers/ControlsHelpPopover.coffee'
 
+ProvinceAriaText = require '../ProvinceAriaText.coffee'
+SourceAriaText = require '../SourceAriaText.coffee'
+
 
 class Visualization2 extends visualization
   height = 700
@@ -39,77 +42,81 @@ class Visualization2 extends visualization
         datasetsHelp: Tr.altText.datasetsHelp[@app.language]
         scenariosHelp: Tr.altText.scenariosHelp[@app.language]
 
-    @datasetHelpPopover = new ControlsHelpPopover @app
-    @sectorsSelectorHelpPopover = new ControlsHelpPopover @app
-    @unitsHelpPopover = new ControlsHelpPopover @app
-    @scenariosHelpPopover = new ControlsHelpPopover @app
-    @sourcesHelpPopover = new ControlsHelpPopover @app
-    @provincesHelpPopover = new ControlsHelpPopover @app
+    @datasetHelpPopover = new ControlsHelpPopover @app,
+      popoverButtonId: 'datasetSelectorHelpButton'
+      outerClasses: 'vizModal controlsHelpPopover datasetSelectorHelp'
+      innerClasses: 'viz2HelpTitle'
+      title: Tr.datasetSelector.datasetSelectorHelpTitle[@app.language]
+      content: => Tr.datasetSelector.datasetSelectorHelp[@app.language]
+      attachmentSelector: '.datasetSelectorGroup'
+      analyticsEvent: 'Viz2 dataset help'
 
-    @d3document.select '#datasetSelectorHelpButton'
-      .on 'click', =>
-        d3.event.stopPropagation()
-        d3.event.preventDefault()
-        if @app.popoverManager.currentPopover == @datasetHelpPopover
-          @app.popoverManager.closePopover()
-        else
-          @app.popoverManager.showPopover @datasetHelpPopover,
-            outerClasses: 'vizModal controlsHelpPopover datasetSelectorHelp'
-            innerClasses: 'viz2HelpTitle'
-            title: Tr.datasetSelector.datasetSelectorHelpTitle[@app.language]
-            content: Tr.datasetSelector.datasetSelectorHelp[@app.language]
-            attachmentSelector: '.datasetSelectorGroup'
-            elementToFocusOnClose: @document.getElementById('datasetSelectorHelpButton')
-          @app.analyticsReporter.reportEvent 'Controls help', 'Viz2 dataset help'
+    @sectorsSelectorHelpPopover = new ControlsHelpPopover @app,
+      popoverButtonId: 'sectorSelectorHelpButton'
+      outerClasses: 'vizModal controlsHelpPopover sectorHelp'
+      innerClasses: 'viz2HelpTitle'
+      title: Tr.sectorSelector.sectorSelectorHelpTitle[@app.language]
+      content: => Tr.sectorSelector.sectorSelectorHelp[@app.language]
+      attachmentSelector: '.sectorSelectorGroup'
+      analyticsEvent: 'Viz2 sector help'
 
-    @d3document.select '#sectorSelectorHelpButton'
-      .on 'click', =>
-        d3.event.stopPropagation()
-        d3.event.preventDefault()
-        if @app.popoverManager.currentPopover == @sectorsSelectorHelpPopover
-          @app.popoverManager.closePopover()
-        else
-          @app.popoverManager.showPopover @sectorsSelectorHelpPopover,
-            outerClasses: 'vizModal controlsHelpPopover sectorHelp'
-            innerClasses: 'viz2HelpTitle'
-            title: Tr.sectorSelector.sectorSelectorHelpTitle[@app.language]
-            content: Tr.sectorSelector.sectorSelectorHelp[@app.language]
-            attachmentSelector: '.sectorSelectorGroup'
-            elementToFocusOnClose: @document.getElementById('sectorSelectorHelpButton')
-          @app.analyticsReporter.reportEvent 'Controls help', 'Viz2 sector help'
+    @unitsHelpPopover = new ControlsHelpPopover @app,
+      popoverButtonId: 'unitSelectorHelpButton'
+      outerClasses: 'vizModal controlsHelpPopover unitSelectorHelp'
+      innerClasses: 'viz2HelpTitle'
+      title: Tr.unitSelector.unitSelectorHelpTitle[@app.language]
+      content: => Tr.unitSelector.unitSelectorHelp[@app.language]
+      attachmentSelector: '.unitsSelectorGroup'
+      analyticsEvent: 'Viz2 unit help'
 
-    @d3document.select '#unitSelectorHelpButton'
-      .on 'click', =>
-        d3.event.stopPropagation()
-        d3.event.preventDefault()
-        if @app.popoverManager.currentPopover == @unitsHelpPopover
-          @app.popoverManager.closePopover()
-        else
-          @app.popoverManager.showPopover @unitsHelpPopover,
-            outerClasses: 'vizModal controlsHelpPopover unitSelectorHelp'
-            innerClasses: 'viz2HelpTitle'
-            title: Tr.unitSelector.unitSelectorHelpTitle[@app.language]
-            content: Tr.unitSelector.unitSelectorHelp[@app.language]
-            attachmentSelector: '.unitsSelectorGroup'
-            elementToFocusOnClose: @document.getElementById('unitSelectorHelpButton')
-          @app.analyticsReporter.reportEvent 'Controls help', 'Viz2 unit help'
+    @scenariosHelpPopover = new ControlsHelpPopover @app,
+      popoverButtonId: 'scenarioSelectorHelpButton'
+      outerClasses: 'vizModal controlsHelpPopover scenarioSelectorHelp'
+      innerClasses: 'viz2HelpTitle'
+      title: Tr.scenarioSelector.scenarioSelectorHelpTitle[@app.language]
+      content: => Tr.scenarioSelector.scenarioSelectorHelp[@app.language]
+      attachmentSelector: '.scenarioSelectorGroup'
+      analyticsEvent: 'Viz2 scenario help'
 
-    @d3document.select '#scenarioSelectorHelpButton'
-      .on 'click', =>
-        d3.event.stopPropagation()
-        d3.event.preventDefault()
-        if @app.popoverManager.currentPopover == @scenariosHelpPopover
-          @app.popoverManager.closePopover()
-        else
-          @app.popoverManager.showPopover @scenariosHelpPopover,
-            outerClasses: 'vizModal controlsHelpPopover scenarioSelectorHelp'
-            innerClasses: 'viz2HelpTitle'
-            title: Tr.scenarioSelector.scenarioSelectorHelpTitle[@app.language]
-            content: Tr.scenarioSelector.scenarioSelectorHelp[@app.language]
-            attachmentSelector: '.scenarioSelectorGroup'
-            elementToFocusOnClose: @document.getElementById('scenarioSelectorHelpButton')
+    @sourcesHelpPopover = new ControlsHelpPopover @app,
+      popoverButtonId: 'sourceHelpButton'
+      outerClasses: 'vizModal controlsHelpPopover popOverLg sourceSelectorHelp'
+      title: Tr.sourceSelector.selectSourceLabel[@app.language]
+      content: =>
+        contentString = ''
+        for source in @sourceMenuData()
+          contentString = """
+            <div class="sourceLabel sourceLabel#{source.key}">
+              <img class="sourceIcon" src="#{@colouredSourceIconsDictionary()[source.key]}" alt='#{Tr.altText.sources[source.key][@app.language]}'>
+              <h2> #{Tr.sourceSelector.sources[source.key][@app.language]} </h2>
+              <div class="clearfix"> </div>
+              <p> #{Tr.sourceSelector.sourceSelectorHelp[source.key][@app.language]} </p>
+            </div>
+            """ + contentString
+        contentString = Tr.sourceSelector.sourceSelectorHelp.generalHelp[@app.language] + contentString
+        contentString
+      attachmentSelector: '#powerSourceSelector'
+      analyticsEvent: 'Viz2 source help'
+      setupEvents: false
 
-          @app.analyticsReporter.reportEvent 'Controls help', 'Viz2 scenario help'
+
+    @provincesHelpPopover = new ControlsHelpPopover @app,
+      popoverButtonId: 'provinceHelpButton'
+      outerClasses: 'vizModal controlsHelpPopover popOverSm provinceHelp'
+      title: Tr.regionSelector.selectRegionLabel[@app.language]
+      content: =>
+        #Grab the provinces in order for the string
+        contentString = ''
+        for province in @dataForProvinceMenu()
+          contentString = """
+            <div class="provinceLabel">
+              <h2> #{Tr.regionSelector.names[province.key][@app.language]} </h2>
+            </div>
+          """ + contentString
+        contentString
+      attachmentSelector: '#provincesSelector'
+      analyticsEvent: 'Viz2 region help'
+      setupEvents: false
 
 
   renderServerTemplate: ->
@@ -126,7 +133,6 @@ class Visualization2 extends visualization
   constructor: (@app, config, @options) ->
     @config = config
     @_chart = null
-    @_provinceMenu = null
     @document = @app.window.document
     @d3document = d3.select @document
 
@@ -169,13 +175,16 @@ class Visualization2 extends visualization
       @_chart.x @xScale()
       @_chart.y @yScale()
       @_chart._duration = @app.animationDuration
-      @_chart.menu.size
-        w: @d3document.select('#powerSourcePanel').node().getBoundingClientRect().width
-        h: @sourceMenuHeight()
     if @_provinceMenu
       @_provinceMenu.size
         w: @d3document.select('#provincePanel').node().getBoundingClientRect().width
         h: @sourceMenuHeight()
+      @_provinceMenu.update()
+    if @sourceMenu
+      @sourceMenu.size
+        w: @d3document.select('#powerSourcePanel').node().getBoundingClientRect().width
+        h: @sourceMenuHeight()
+      @sourceMenu.update()
 
    #the graph's height
   height: ->
@@ -222,7 +231,7 @@ class Visualization2 extends visualization
     sourcesWithColours =
       solarWindGeothermal:
         key: 'solarWindGeothermal'
-        tooltip: Tr.sourceSelector.sourceSelectorHelp.solarWindGeothermal[@app.language]
+        tooltip: SourceAriaText @app, @config.sources.includes('solarWindGeothermal'), 'solarWindGeothermal'
         img:
           if @zeroedOut 'solarWindGeothermal'
             'IMG/sources/unavailable/solarWindGeo_unavailable.svg'
@@ -234,7 +243,7 @@ class Visualization2 extends visualization
         colour: '#339947'
       coal:
         key: 'coal'
-        tooltip: Tr.sourceSelector.sourceSelectorHelp.coal[@app.language]
+        tooltip: SourceAriaText @app, @config.sources.includes('coal'), 'coal'
         img:
           if @zeroedOut 'coal'
             'IMG/sources/unavailable/coal_unavailable.svg'
@@ -246,7 +255,7 @@ class Visualization2 extends visualization
         colour: '#996733'
       naturalGas:
         key: 'naturalGas'
-        tooltip: Tr.sourceSelector.sourceSelectorHelp.naturalGas[@app.language]
+        tooltip: SourceAriaText @app, @config.sources.includes('naturalGas'), 'naturalGas'
         img:
           if @zeroedOut 'naturalGas'
             'IMG/sources/unavailable/naturalGas_unavailable.svg'
@@ -258,7 +267,7 @@ class Visualization2 extends visualization
         colour: '#f16739'
       bio:
         key: 'bio'
-        tooltip: Tr.sourceSelector.sourceSelectorHelp.bio[@app.language]
+        tooltip: SourceAriaText @app, @config.sources.includes('bio'), 'bio'
         img:
           if @zeroedOut 'bio'
             'IMG/sources/unavailable/biomass_unavailable.svg'
@@ -270,7 +279,7 @@ class Visualization2 extends visualization
         colour: '#8d68ac'
       oilProducts:
         key: 'oilProducts'
-        tooltip: Tr.sourceSelector.sourceSelectorHelp.oilProducts[@app.language]
+        tooltip: SourceAriaText @app, @config.sources.includes('oilProducts'), 'oilProducts'
         img:
           if @zeroedOut 'oilProducts'
             'IMG/sources/unavailable/oil_products_unavailable.svg'
@@ -282,7 +291,7 @@ class Visualization2 extends visualization
         colour: '#cc6699'
       electricity:
         key: 'electricity'
-        tooltip: Tr.sourceSelector.sourceSelectorHelp.electricity[@app.language]
+        tooltip: SourceAriaText @app, @config.sources.includes('electricity'), 'electricity'
         img:
           if @zeroedOut 'electricity'
             'IMG/sources/unavailable/electricity_unavailable.svg'
@@ -346,22 +355,6 @@ class Visualization2 extends visualization
     electricity:
       'IMG/sources/electricity_selected.svg'
 
-
-  getSelectionState: ->
-    if @config.sourcesInOrder.length != @config.sources.length
-      allSelected = false
-      if @config.sources.length > 0
-        someSelected =  true
-      else
-        someSelected = false
-    else
-      allSelected = true
-      someSelected = false
-    {
-      allSelected: allSelected
-      someSelected: someSelected
-    }
-
   zeroedOut: (key) ->
     if !(@seriesData) or !(@seriesData[key]) then return false
     nonZeroVals = @seriesData[key].filter (item) -> item.value != 0
@@ -371,7 +364,7 @@ class Visualization2 extends visualization
     [
       {
         key: 'AB'
-        tooltip: Tr.regionSelector.names.AB[@app.language]
+        tooltip: ProvinceAriaText @app, @config.province == 'AB', 'AB'
         present: true
         colour: if @config.province == 'AB' then '#333' else '#fff'
         img:
@@ -382,7 +375,7 @@ class Visualization2 extends visualization
       }
       {
         key: 'BC'
-        tooltip: Tr.regionSelector.names.BC[@app.language]
+        tooltip: ProvinceAriaText @app, @config.province == 'BC', 'BC'
         present: true
         colour: if @config.province == 'BC' then '#333' else '#fff'
         img:
@@ -393,7 +386,7 @@ class Visualization2 extends visualization
       }
       {
         key: 'MB'
-        tooltip: Tr.regionSelector.names.MB[@app.language]
+        tooltip: ProvinceAriaText @app, @config.province == 'MB', 'MB'
         present: true
         colour: if @config.province == 'MB' then '#333' else '#fff'
         img:
@@ -404,7 +397,7 @@ class Visualization2 extends visualization
       }
       {
         key: 'NB'
-        tooltip: Tr.regionSelector.names.NB[@app.language]
+        tooltip: ProvinceAriaText @app, @config.province == 'NB', 'NB'
         present: true
         colour: if @config.province == 'NB' then '#333' else '#fff'
         img:
@@ -415,7 +408,7 @@ class Visualization2 extends visualization
       }
       {
         key : 'NL'
-        tooltip: Tr.regionSelector.names.NL[@app.language]
+        tooltip: ProvinceAriaText @app, @config.province == 'NL', 'NL'
         present: true
         colour: if @config.province == 'NL' then '#333' else '#fff'
         img:
@@ -426,7 +419,7 @@ class Visualization2 extends visualization
       }
       {
         key: 'NS'
-        tooltip: Tr.regionSelector.names.NS[@app.language]
+        tooltip: ProvinceAriaText @app, @config.province == 'NS', 'NS'
         present: true
         colour: if @config.province == 'NS' then '#333' else '#fff'
         img:
@@ -437,7 +430,7 @@ class Visualization2 extends visualization
       }
       {
         key: 'NT'
-        tooltip: Tr.regionSelector.names.NT[@app.language]
+        tooltip: ProvinceAriaText @app, @config.province == 'NT', 'NT'
         present: true
         colour: if @config.province == 'NT' then '#333' else '#fff'
         img:
@@ -448,7 +441,7 @@ class Visualization2 extends visualization
       }
       {
         key: 'NU'
-        tooltip: Tr.regionSelector.names.NU[@app.language]
+        tooltip: ProvinceAriaText @app, @config.province == 'NU', 'NU'
         present: true
         colour: if @config.province == 'NU' then '#333' else '#fff'
         img:
@@ -459,7 +452,7 @@ class Visualization2 extends visualization
       }
       {
         key: 'ON'
-        tooltip: Tr.regionSelector.names.ON[@app.language]
+        tooltip: ProvinceAriaText @app, @config.province == 'ON', 'ON'
         present: true
         colour: if @config.province == 'ON' then '#333' else '#fff'
         img:
@@ -470,7 +463,7 @@ class Visualization2 extends visualization
       }
       {
         key: 'PE'
-        tooltip: Tr.regionSelector.names.PE[@app.language]
+        tooltip: ProvinceAriaText @app, @config.province == 'PE', 'PE'
         present: true
         colour: if @config.province == 'PE' then '#333' else '#fff'
         img:
@@ -481,7 +474,7 @@ class Visualization2 extends visualization
       }
       {
         key: 'QC'
-        tooltip: Tr.regionSelector.names.QC[@app.language]
+        tooltip: ProvinceAriaText @app, @config.province == 'QC', 'QC'
         present: true
         colour: if @config.province == 'QC' then '#333' else '#fff'
         img:
@@ -492,7 +485,7 @@ class Visualization2 extends visualization
       }
       {
         key: 'SK'
-        tooltip: Tr.regionSelector.names.SK[@app.language]
+        tooltip: ProvinceAriaText @app, @config.province == 'SK', 'SK'
         present: true
         colour: if @config.province == 'SK' then '#333' else '#fff'
         img:
@@ -503,7 +496,7 @@ class Visualization2 extends visualization
       }
       {
         key: 'YT'
-        tooltip: Tr.regionSelector.names.YT[@app.language]
+        tooltip: ProvinceAriaText @app, @config.province == 'YT', 'YT'
         present: true
         colour: if @config.province == 'YT' then '#333' else '#fff'
         img:
@@ -764,56 +757,31 @@ class Visualization2 extends visualization
         @app.animationDuration
       groupId:
         'graphGroup'
-      menuOptions:
-        selector: '#powerSourceMenuSVG'
-        boxSize: 37.5
-        size:
-          w: @d3document.select('#powerSourcePanel').node().getBoundingClientRect().width
-          h: @sourceMenuHeight()
-        onSelected:
-          @menuSelect
-        orderChangedHandler:
-          @orderChanged
-        showHelpHandler:
-          @showSourceNames
-        allSelected:
-          @getSelectionState().allSelected
-        someSelected:
-          @getSelectionState().someSelected
-        allSquareHandler:
-          @selectAllStacked
-        groupId:
-          'stackMenu'
-        helpButtonLabel: Tr.altText.sourcesHelp[@app.language]
-        helpButtonId: 'sourceHelpButton'
-
 
     @_chart = new stackedAreaChart @app, '#graphSVG', @xScale(), @yScale(), stackedOptions
+
     @_provinceMenu = @buildProvinceMenu()
+    @sourceMenu = @buildSourceMenu()
 
   adjustViz: ->
-    @_chart.menu.allSelected @getSelectionState().allSelected
-    @_chart.menu.someSelected @getSelectionState().someSelected
-
     @_chart.mapping @sourceMenuData()
     @_chart.data @seriesData
     @_chart.y @yScale()
     @buildYAxis()
 
-  orderChanged: (newLocation, currentLocation) =>
-    if currentLocation > newLocation
-      temp_data = _.concat(@config.sourcesInOrder[0...newLocation], @config.sourcesInOrder[currentLocation],@config.sourcesInOrder[newLocation...currentLocation], @config.sourcesInOrder[(currentLocation + 1)..])
-    if currentLocation < newLocation
-      temp_data = _.concat(@config.sourcesInOrder[0...currentLocation], @config.sourcesInOrder[(currentLocation + 1)..newLocation], @config.sourcesInOrder[currentLocation], @config.sourcesInOrder[(newLocation + 1)..])
-    return unless temp_data?
+    @sourceMenu.data @sourceMenuData()
+    @sourceMenu.update()
 
+
+  orderChanged: (newOrder) =>
     newConfig = new @config.constructor @app
     newConfig.copy @config
-    newConfig.setSourcesInOrder temp_data
+    newConfig.setSourcesInOrder newOrder
 
     update = =>
-      @config.setSourcesInOrder temp_data
+      @config.setSourcesInOrder newOrder
       @_chart.mapping @sourceMenuData()
+      @sourceMenu.data @sourceMenuData()
       @app.router.navigate @config.routerParams()
 
     @app.datasetRequester.updateAndRequestIfRequired newConfig, update
@@ -823,86 +791,127 @@ class Visualization2 extends visualization
 
 
     
-  menuSelect: (key) =>
+  menuSelect: (dataDictionaryItem) =>
 
     newConfig = new @config.constructor @app
     newConfig.copy @config
-    newConfig.flipSource key
+    newConfig.flipSource dataDictionaryItem.key
 
     update = =>
-      @config.flipSource key
+      @config.flipSource dataDictionaryItem.key
       @getDataAndRender()
+
+      @sourceMenu.data @sourceMenuData()
+      @sourceMenu.update()
+
       @app.router.navigate @config.routerParams()
 
     @app.datasetRequester.updateAndRequestIfRequired newConfig, update
 
 
 
-  selectAllStacked: (selecting) =>
-
+  selectAllStacked: =>
     newConfig = new @config.constructor @app
     newConfig.copy @config
-    newConfig.resetSources selecting
+
+    if @config.sources.length == Constants.viz2Sources.length
+      # If all sources are present, select none
+      newConfig.resetSources false
+    else if @config.sources.length > 0
+      # If some sources are selected, select all
+      newConfig.resetSources true
+    else if @config.sources.length == 0
+      # If no sources are selected, select all
+      newConfig.resetSources true
 
     update = =>
-      @config.resetSources selecting
+      if @config.sources.length == Constants.viz2Sources.length
+        # If all sources are present, select none
+        @config.resetSources false
+      else if @config.sources.length > 0
+        # If some sources are selected, select all
+        @config.resetSources true
+      else if @config.sources.length == 0
+        # If no sources are selected, select all
+        @config.resetSources true
+
       @getDataAndRender()
+      @sourceMenu.data @sourceMenuData()
+      @sourceMenu.update()
+
       @app.router.navigate @config.routerParams()
 
     @app.datasetRequester.updateAndRequestIfRequired newConfig, update
-
-
-
-  showSourceNames: =>
-    d3.event.stopPropagation()
-    d3.event.preventDefault()
-    if @app.popoverManager.currentPopover == @sourcesHelpPopover
-      @app.popoverManager.closePopover()
-    else
-      #Grab the provinces in order for the string
-      contentString = ''
-      for source in @sourceMenuData()
-        contentString = """
-          <div class="sourceLabel sourceLabel#{source.key}">
-            <img class="sourceIcon" src="#{@colouredSourceIconsDictionary()[source.key]}" alt='#{Tr.altText.sources[source.key][@app.language]}'>
-            <h2> #{Tr.sourceSelector.sources[source.key][@app.language]} </h2>
-            <div class="clearfix"> </div>
-            <p> #{Tr.sourceSelector.sourceSelectorHelp[source.key][@app.language]} </p>
-          </div>
-          """ + contentString
-      contentString = Tr.sourceSelector.sourceSelectorHelp.generalHelp[@app.language] + contentString
-
-      @app.popoverManager.showPopover @sourcesHelpPopover,
-        outerClasses: 'vizModal controlsHelpPopover popOverLg sourceSelectorHelp'
-        title: Tr.sourceSelector.selectSourceLabel[@app.language]
-        content: contentString
-        attachmentSelector: '#powerSourceSelector'
-        elementToFocusOnClose: @document.getElementById('sourceHelpButton')
-      @app.analyticsReporter.reportEvent 'Controls help', 'Viz2 source help'
 
 
   # Black and white non multi select menu.
   buildProvinceMenu: ->
-    provinceOptions =
+    options =
+      parentId: 'provinceMenuSVG'
+      groupId: 'provinceMenu'
+      onSelected: @provinceSelected
+      allSquareHandler: @selectAllProvince
+      showHelpHandler: @provincesHelpPopover.showPopoverCallback
+      helpButtonLabel: Tr.altText.regionsHelp[@app.language]
+      helpButtonId: 'provinceHelpButton'
+      getAllIcon: =>
+        if @config.province == 'all'
+          Tr.allSelectorButton.all[@app.language]
+        else
+          Tr.allSelectorButton.none[@app.language]
+      getAllLabel: =>
+        if @config.province == 'all'
+          Tr.altText.allButton.allCanadaSelected[@app.language]
+        else
+          Tr.altText.allButton.allCanadaUnselected[@app.language]
+
+    state =
       size:
         w: @d3document.select('#provinceMenuSVG').node().getBoundingClientRect().width
         h: @sourceMenuHeight()
-      canDrag: false
-      hasChart: false
       data: @dataForProvinceMenu()
-      onSelected:
-        @provinceSelected
-      allSelected: (@config.province == 'all')
-      addAllSquare: true
-      allSquareHandler:
-        @selectAllProvince
-      showHelpHandler:
-        @showProvinceNames
-      groupId:
-        'provinceMenu'
+
+    new SquareMenu @app, options, state
+
+
+  buildSourceMenu: ->
+    options =
+      parentId: 'powerSourceMenuSVG'
+      groupId: 'stackMenu'
+      onSelected: @menuSelect
+      allSquareHandler: @selectAllStacked
+      showHelpHandler: @sourcesHelpPopover.showPopoverCallback
+      orderChangedHandler: @orderChanged
+      canDrag: true
       helpButtonLabel: Tr.altText.sourcesHelp[@app.language]
-      helpButtonId: 'provinceHelpButton'
-    new SquareMenu @app, '#provinceMenuSVG', provinceOptions
+      helpButtonId: 'sourceHelpButton'
+      getAllIcon: =>
+        if @config.sources.length == Constants.viz2Sources.length
+          Tr.allSelectorButton.all[@app.language]
+        else if @config.sources.length > 0
+          Tr.allSelectorButton.someSelected[@app.language]
+        else if @config.sources.length == 0
+          Tr.allSelectorButton.none[@app.language]
+      getAllLabel: =>
+        if @config.sources.length == Constants.viz2Sources.length
+          Tr.altText.allButton.allSourcesSelected[@app.language]
+        else if @config.sources.length > 0
+          Tr.altText.allButton.someSourcesSelected[@app.language]
+        else if @config.sources.length == 0
+          Tr.altText.allButton.noSourcesSelected[@app.language]
+      onDragStart: @_chart.dragStart
+      onDragEnd: @_chart.dragEnd
+      boxSize: 37.5
+
+    state =
+      size:
+        w: @d3document.select('#powerSourcePanel').node().getBoundingClientRect().width
+        h: @sourceMenuHeight()
+      data: @sourceMenuData()
+
+    new SquareMenu @app, options, state
+
+
 
   selectAllProvince: =>
 
@@ -912,8 +921,8 @@ class Visualization2 extends visualization
 
     update = =>
       @config.setProvince 'all'
-      @_provinceMenu.allSelected true
       @_provinceMenu.data @dataForProvinceMenu()
+      @_provinceMenu.update()
       @getDataAndRender()
       @app.router.navigate @config.routerParams()
 
@@ -921,47 +930,20 @@ class Visualization2 extends visualization
 
 
 
-  provinceSelected: (key) =>
+  provinceSelected: (dataDictionaryItem) =>
 
     newConfig = new @config.constructor @app
     newConfig.copy @config
-    newConfig.setProvince key
+    newConfig.setProvince dataDictionaryItem.key
 
     update = =>
-      @_provinceMenu.allSelected false
-      @config.setProvince key
+      @config.setProvince dataDictionaryItem.key
       @_provinceMenu.data @dataForProvinceMenu()
-      @_provinceMenu.redraw()
+      @_provinceMenu.update()
       @getDataAndRender()
       @app.router.navigate @config.routerParams()
 
     @app.datasetRequester.updateAndRequestIfRequired newConfig, update
 
-
-
-
-
-  showProvinceNames: =>
-    d3.event.stopPropagation()
-    d3.event.preventDefault()
-    if @app.popoverManager.currentPopover == @provincesHelpPopover
-      @app.popoverManager.closePopover()
-    else
-      #Grab the provinces in order for the string
-      contentString = ''
-      for province in @dataForProvinceMenu()
-        contentString = """
-          <div class="provinceLabel">
-            <h2> #{Tr.regionSelector.names[province.key][@app.language]} </h2>
-          </div>
-        """ + contentString
-
-      @app.popoverManager.showPopover @provincesHelpPopover,
-        outerClasses: 'vizModal controlsHelpPopover popOverSm provinceHelp'
-        title: Tr.regionSelector.selectRegionLabel[@app.language]
-        content: contentString
-        attachmentSelector: '#provincesSelector'
-        elementToFocusOnClose: @document.getElementById('provinceHelpButton')
-      @app.analyticsReporter.reportEvent 'Controls help', 'Viz2 region help'
 
 module.exports = Visualization2

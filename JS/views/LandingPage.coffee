@@ -42,23 +42,23 @@ class LandingPage
         elementToFocusOnClose: @aboutHyperlink
       @app.analyticsReporter.reportEvent 'Information', 'About modal'
     @aboutHyperlinkEnterHandler = (event) =>
-      event.preventDefault()
-      event.stopPropagation()
-      if event.key == 'Enter'
+      if event.key == 'Enter' or event.key == ' '
+        event.preventDefault()
+        event.stopPropagation()
         @app.popoverManager.showPopover @app.aboutThisProjectPopover,
           elementToFocusOnClose: @aboutHyperlink
         @app.analyticsReporter.reportEvent 'Information', 'About modal'
     @aboutHyperlink.addEventListener 'click', @aboutHyperlinkClickHandler
-    @aboutHyperlink.addEventListener 'keyup', @aboutHyperlinkEnterHandler
+    @aboutHyperlink.addEventListener 'keydown', @aboutHyperlinkEnterHandler
 
     @methodologyLink = @app.window.document.getElementById 'landingPageMethodologyHyperlink'
     @methodologyLinkClickHandler = =>
       @app.analyticsReporter.reportEvent 'Downloads', 'Methodology PDF download'
     @methodologyLinkEnterHandler = (event) =>
-      if event.key == 'Enter'
+      if event.key == 'Enter' # Ordinary links are not triggered by space
         @app.analyticsReporter.reportEvent 'Downloads', 'Methodology PDF download'
     @methodologyLink.addEventListener 'click', @methodologyLinkClickHandler
-    @methodologyLink.addEventListener 'keyup', @methodologyLinkEnterHandler
+    @methodologyLink.addEventListener 'keydown', @methodologyLinkEnterHandler
 
 
     @viz1Link = @app.window.document.getElementById 'viz1Anchor'
@@ -70,14 +70,14 @@ class LandingPage
       },
         shouldSelectNavbarItem: false
     @viz1LinkEnterHandler = (event) =>
-      event.preventDefault()
-      if event.key == 'Enter'
+      if event.key == 'Enter' or event.key == ' '
+        event.preventDefault()
         @app.router.navigate
           page: 'viz1'
           language: @app.language
 
     @viz1Link.addEventListener 'click', @viz1LinkClickHandler
-    @viz1Link.addEventListener 'keyup', @viz1LinkEnterHandler
+    @viz1Link.addEventListener 'keydown', @viz1LinkEnterHandler
 
 
     @viz2Link = @app.window.document.getElementById 'viz2Anchor'
@@ -89,12 +89,12 @@ class LandingPage
       },
         shouldSelectNavbarItem: false
     @viz2LinkEnterHandler = (event) =>
-      event.preventDefault()
-      if event.key == 'Enter'
+      if event.key == 'Enter' or event.key == ' '
+        event.preventDefault()
         @app.router.navigate
           page: 'viz2'
           language: @app.language
-    @viz2Link.addEventListener 'keyup', @viz2LinkEnterHandler
+    @viz2Link.addEventListener 'keydown', @viz2LinkEnterHandler
     @viz2Link.addEventListener 'click', @viz2LinkClickHandler
 
 
@@ -107,13 +107,13 @@ class LandingPage
       },
         shouldSelectNavbarItem: false
     @viz3LinkEnterHandler = (event) =>
-      event.preventDefault()
-      if event.key == 'Enter'
+      if event.key == 'Enter' or event.key == ' '
+        event.preventDefault()
         @app.router.navigate
           page: 'viz3'
           language: @app.language
     @viz3Link.addEventListener 'click', @viz3LinkClickHandler
-    @viz3Link.addEventListener 'keyup', @viz3LinkEnterHandler
+    @viz3Link.addEventListener 'keydown', @viz3LinkEnterHandler
 
 
     @viz4Link = @app.window.document.getElementById 'viz4Anchor'
@@ -125,29 +125,29 @@ class LandingPage
       },
         shouldSelectNavbarItem: false
     @viz4LinkEnterHandler = (event) =>
-      event.preventDefault()
-      if event.key == 'Enter'
+      if event.key == 'Enter' or event.key == ' '
+        event.preventDefault()
         @app.router.navigate
           page: 'viz4'
           language: @app.language
     @viz4Link.addEventListener 'click', @viz4LinkClickHandler
-    @viz4Link.addEventListener 'keyup', @viz4LinkEnterHandler
+    @viz4Link.addEventListener 'keydown', @viz4LinkEnterHandler
 
   removeEventListeners: ->
 
     @aboutHyperlink.removeEventListener 'click', @aboutHyperlinkClickHandler
-    @aboutHyperlink.removeEventListener 'keyup', @aboutHyperlinkEnterHandler
+    @aboutHyperlink.removeEventListener 'keydown', @aboutHyperlinkEnterHandler
     @methodologyLink.removeEventListener 'click', @methodologyLinkClickHandler
-    @methodologyLink.removeEventListener 'keyup', @methodologyLinkEnterHandler
+    @methodologyLink.removeEventListener 'keydown', @methodologyLinkEnterHandler
 
     @viz1Link.removeEventListener 'click', @viz1LinkClickHandler
-    @viz1Link.removeEventListener 'keyup', @viz1LinkEnterHandler
+    @viz1Link.removeEventListener 'keydown', @viz1LinkEnterHandler
     @viz2Link.removeEventListener 'click', @viz2LinkClickHandler
-    @viz2Link.removeEventListener 'keyup', @viz2LinkEnterHandler
+    @viz2Link.removeEventListener 'keydown', @viz2LinkEnterHandler
     @viz3Link.removeEventListener 'click', @viz3LinkClickHandler
-    @viz3Link.removeEventListener 'keyup', @viz3LinkEnterHandler
+    @viz3Link.removeEventListener 'keydown', @viz3LinkEnterHandler
     @viz4Link.removeEventListener 'click', @viz4LinkClickHandler
-    @viz4Link.removeEventListener 'keyup', @viz4LinkEnterHandler
+    @viz4Link.removeEventListener 'keydown', @viz4LinkEnterHandler
 
 
 

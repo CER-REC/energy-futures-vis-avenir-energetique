@@ -1,211 +1,335 @@
 _ = require 'lodash'
 d3 = require 'd3'
 
-Chart = require './Chart.coffee'
-Tr = require '../TranslationTable.coffee'
+Constants = require '../Constants.coffee'
 
-class SquareMenu extends Chart
 
-  # Cause coffeescript. Want "local" variables
-  questionMarkHeight = 23
-  squareMenuDefaults:
-    canDrag: true
-    hasChart: true
-    chart: null
+class SquareMenu
+
+  defaultOptions:
+    canDrag: false
     boxSize: 30
-    iconSpacing: 'auto' # This just makes them fit within the height
+    groupId: 'sChart'
     addAllSquare: true
-    allSelected: true
-    someSelected: false
-    boxCount:
-      '#powerSourceMenuSVG': 7
-      '#provinceMenuSVG': 14
-    boxesOffset: 46
+    duration: Constants.animationDuration
+    
     # coffeelint: disable=no_empty_functions
+    onSelected: ->
     allSquareHandler: -> # Method that runs on 'All' button clicked
     orderChangedHandler: -> # Method that runs when dragging finished
     showHelpHandler: -> # Method that runs when the questionMark icon is clicked
-    onSelected: ->
+    getAllIcon: -> # Called to determine what image to use for the 'all' icon
+    onDragStart: ->
+    onDragEnd: ->
+    getAllLabel: -> # Called to determine what string to use for the all button aria-label
     # coffeelint: enable=no_empty_functions
 
+  defaultState:
+    iconSpacing: 'auto' # When set to auto, we compute the icon spacings
+    size:
+      w: 200
+      h: 300
+    position:
+      x: 0
+      y: 0
+    data: []
 
-  constructor: (@app, parent, options = {}) ->
-    @options = _.extend {}, @squareMenuDefaults, options
+  constructor: (@app, options = {}, state = {}) ->
+    @options = _.extend {}, @defaultOptions, options
+    @state = _.extend {}, @defaultState, state
     
-    #defaults
-    @_iconSpacing = @options.iconSpacing
-    @_allSelected = @options.allSelected
-    @_someSelected  = @options.someSelected
-    @_hasChart = @options.hasChart
+    # defaults
     @_canDrag = @options.canDrag
-
-    # The line behind draggable menus
-    if @_canDrag then @lineHeight = questionMarkHeight else @lineHeight = 0
-    
     @_boxSize = @options.boxSize
-
-    #handlers
+    @groupId = @options.groupId
     @_addAllSquare = @options.addAllSquare
+    @_duration = @options.duration
+
+    # handlers
+    @_onSelected = @options.onSelected
     @_allSquareHandler = @options.allSquareHandler
     @_orderChangedHandler = @options.orderChangedHandler
     @_showHelpHandler = @options.showHelpHandler
+    @getAllIcon = @options.getAllIcon
+    @getAllLabel = @options.getAllLabel
+    @onDragStart = @options.onDragStart
+    @onDragEnd = @options.onDragEnd
 
-    if @_hasChart then @_chart = @options.chart
-    @_drag = d3.behavior.drag()
     
-    # Old BasicMenu constructor begins
-    @_selectedKey = 'Canada'
-    @_selectedMenuIndex = -1
+    @parent = d3.select @app.window.document
+      .select "##{@options.parentId}"
+    @parent.append 'svg:g'
+      .attr
+        id: @options.groupId
+    @_group = d3.select @app.window.document
+      .select "##{@groupId}"
 
-    @chart_options = _.extend {}, @chart_defaults, @options
-    @_duration = @chart_options.duration
-    @parent parent, @chart_options.groupId
+
+    # Initial state setup
+
+    @_iconSpacing = @state.iconSpacing
+
     @_size =
-      w: @chart_options.size.w
-      h: @chart_options.size.h
+      w: @state.size.w
+      h: @state.size.h
     @_position =
-      x: @chart_options.position.x
-      y: @chart_options.position.y
-    @data @chart_options.data
-    @resize()
+      x: @state.position.x
+      y: @state.position.y
+    @data @state.data
 
+    @_drag = d3.behavior.drag()
+    @setupDrag() if @_canDrag
 
-    @_onSelected = @options.onSelected
-    @redraw()
-    # Old BasicMenu constructor ends
-
-
-    # drag behaviour
-    @yDiff = @getRectY(@mappingLength() - 2) - questionMarkHeight
-    # The space between the squares 0 and 1 plus the boxes since we want it to go PAST
-    # the box
-    if @_canDrag
-      @_drag.on 'dragstart', =>
-        @_chart.dragStart()
-        @currentSpot = -1
-        @newSpot = -1
-        d3.event.sourceEvent.stopPropagation()
-
-      @_drag.on 'drag', (d,i) =>
-        # bring to front
-        @_group.select(".menuRect#{i}").node().parentNode.parentNode.appendChild(@_group.select(".menuRect#{i}").node().parentNode)
-        @_group.select(".menuRect"+ i).attr 'transform', ->
-          "translate(0, #{d3.event.y})"
-
-        if !(@currentSpot?) or (@currentSpot == -1) then @currentSpot = i
-        @newSpot = i - Math.round((d3.event.y -  (d3.event.y % @yDiff)) / @yDiff)
-        if @newSpot < 0 then @newSpot = 0
-        if @newSpot > (@_chart.mapping().length) - 1 then @newSpot = (@_chart.mapping().length) - 1
-        if @newSpot != @currentSpot
-          if @newSpot > @currentSpot then @direction = 1 else @direction = -1
-
-          # Computes the index of the button to be dragged, and the movement offset (
-          # distance).
-          newpos = @newSpot
-          n = @squareMenuDefaults.boxCount[@options.selector]
-          distance = ((@options.size.h - @squareMenuDefaults.boxesOffset - (@options.boxSize * n)) / (n - 1) + @options.boxSize) * @direction
-
-          # Check whether or not the current drag event is continuing in the same
-          # direction as before. If it is not,
-          # check if the drag had passed the original starting position, or reverse the
-          # direction of movement otherwise.
-          if @_lastDirection? && @_lastDirection != 0 && @_lastDirection != @direction
-            if(newpos - @direction != i)
-              newpos -= @direction
-              distance = 2 * @direction
-            else
-              @_lastDirection = @direction
-          else
-            @_lastDirection = @direction
-
-          @_group.select(".menuRect#{newpos}").attr 'transform', ->
-            "translate(0, #{distance})"
-          
-
-          @_orderChangedHandler @newSpot, @currentSpot
-          @currentSpot = @newSpot
-          @_chart.dragEnd()
-
-      
-      @_drag.on 'dragend', =>
-        @_lastDirection = 0
-        @_chart.dragEnd()
-        # Drag end gets called on click this just prevents it from rerunning the last move
-        if @newSpot > -1
-          @_orderChangedHandler @newSpot, @currentSpot
-          @newSpot = null
-          @redraw()
-          @currentSpot = -1
-          @newSpot = -1
-       
     @redraw()
 
 
-  # TODO: unclear how used
-  selection: (key, index) ->
+
+
+
+
+  setupDrag: ->
+
+    # dragContainer is the element containing the elements which are draggable, for
+    # coordinate computation purposes
+    @dragContainer = @app.window.document.getElementById @options.parentId
+
+    @_drag.on 'dragstart', (d) =>
+      # Only allow one item to be dragged at a time
+      return if @draggedIcon?
+
+      @onDragStart()
+      d3.event.sourceEvent.stopPropagation()
+      d3.event.sourceEvent.preventDefault()
+
+      @draggedIcon = d.key
+      @draggedIconBin = @computeBin()
+      @draggedIconStartBin = @computeBin()
+      @dataBeforeDrag = @_data
+      @haveSeenDragEvent = false
+
+      @_group.select ".menuRect#{@draggedIconStartBin}"
+        .select 'image'
+        .attr
+          'aria-grabbed': true
+      @_group.attr
+        'aria-dropeffect': 'move'
+
+    @_drag.on 'drag', (d, i) =>
+      # Only allow one item to be dragged at a time
+      return unless d.key == @draggedIcon
+      @haveSeenDragEvent = true
+
+      @_group.select(".menuRect#{i}").attr 'transform', "translate(#{@getRectX()}, #{d3.event.y - @_boxSize / 2})"
+
+      # Compute which spot the icon should occupy
+      bin = @computeBin()
+
+      # Animate each of the other icons, if necessary
+      @animateIconsWhileDragging bin
+      @draggedIconBin = bin
+
+    @_drag.on 'dragend', (d) =>
+      # Only allow one item to be dragged at a time
+      return unless d.key == @draggedIcon
+
+      @onDragEnd()
+
+      lastDraggedIconBin = @draggedIconBin
+      @draggedIcon = null
+      @draggedIconBin = null
+      @draggedIconStartBin = null
+      @dataBeforeDrag = null
+
+      # At the end of the animation, we rebuild the DOM elements so that. they reflect
+      # the new display order. I tried updating the existing elements instead, but this
+      # had unacceptable graphical glitches in Firefox.
+      # However, clicks will also trigger a dragstart and a dragend event. Redrawing here
+      # will destroy the element and its click handler before they can respond to the
+      # click event, so we only redraw if we have seen at least one frame of drag.
+      @redraw() if @haveSeenDragEvent
+      @haveSeenDragEvent = false
+
+      # Since we destroy and rebuild the DOM elements after drag, we should manually place
+      # the user's focus.
+      @placeFocus lastDraggedIconBin
+
+      @_group.attr
+        'aria-dropeffect': null
+
+
+  computeBin: ->
+    coords = d3.mouse @dragContainer
+    equalSlice = @usableHeight() / @itemCount() # TODO: make me a function?
+
+    # Conceptually, there is one 'bin' for each of the draggable icons.
+    binSize = (@usableHeight() - equalSlice) / @_data.length
+
+    # We normalize the y coordinate in the space where these icons are drawn, by
+    # subtracting away the height for the top questionmark and the 'all' icon.
+    # Then we divide by the number of bins.
+    # Finally we take the floor rather than rounding to the nearest integer, because
+    # the icon is considered to be at its top edge, and not at the centre of its bin.
+    bin = Math.floor((coords[1] - Constants.questionMarkHeight - equalSlice) / binSize)
+    bin = 0 if bin < 0
+    bin = @_data.length - 1 if bin > (@_data.length - 1)
+    bin
+
+
+  # If the computed bin for the icon which is being dragged around has changed, we
+  # schedule a new animation for each of the other icons.
+  animateIconsWhileDragging: (newBin) ->
+    # If the dragged icon is not in a new bin, we have nothing to do
+    return if newBin == @draggedIconBin
+
+    # First, compute the visual order that the icons should be in now
+    newDisplayOrder = []
+
+    if newBin == @draggedIconStartBin
+      newDisplayOrder = @dataBeforeDrag.map (item) ->
+        item.key
+    else
+      for item, index in @dataBeforeDrag
+        if index == newBin and newBin > @draggedIconStartBin
+          # This is the bin where the item has been dragged to.
+          # Insert the dragged item here and the current item in the loop
+          newDisplayOrder.push item.key
+          newDisplayOrder.push @draggedIcon
+        else if index == newBin and newBin < @draggedIconStartBin
+          newDisplayOrder.push @draggedIcon
+          newDisplayOrder.push item.key
+        else if item.key == @draggedIcon
+          # This is the bin where the dragged item used to be. Nothing to do here
+          continue
+        else
+          newDisplayOrder.push item.key
+
+    # The visual order is the order in which the menu items appear to the user.
+    # The DOM order is the order in which the items exist in the DOM.
+    # During animation, these two orders will get out of sync, by design. E.g., dragging
+    # an item down one bin will change the visual order, but we keep the DOM order
+    # unchanged so that we have stable targets to send animation instructions to.
+
+    # Second, we take the visual order above, and create animation instructions in DOM
+    # order.
+
+    animationBinHash = {}
+    for key, index in newDisplayOrder
+      animationBinHash[key] = index
+
+    # @dataBeforeDrag reflects the items' DOM order
+    animationInstructions = @dataBeforeDrag.map (item) ->
+      animationBinHash[item.key]
+
+    # Third, animate all the things
+    @_group.selectAll '.menuItem'
+      .data animationInstructions
+      .transition()
+      .duration Constants.iconDragDuration
+      .ease 'linear'
+      .attr
+        transform: (d) =>
+          # If the 'all' icon is present, the others are bumped down one spot
+          index = if @_addAllSquare then d + 1 else d
+          "translate(#{@getRectX()}, #{@getRectY(index)})"
+
+    # There is one item we do not want to animate: the box which is being dragged by the
+    # user. Cancel that animation:
+    @_group.select ".menuRect#{@draggedIconStartBin}"
+      .transition()
+
+    # The graph is drawn bottom to top, but the menu DOM order is top to bottom.
+    # The menu uses the reverse of order seen in the configuration.
+    # So, when we notify the rest of the app that the order has changed, we need to
+    # reverse the order back to what it used to be.
+    newDisplayOrder.reverse()
+
+    # Notify the rest of the app that the order for this menu has changed
+    @_orderChangedHandler newDisplayOrder
+
+
+
+  # Returns the size withOUT the margins
+  size: (s) ->
     if !arguments.length
-      return @_selectedKey
-    @_selectedKey = key
-    @_selectedMenuIndex = index
-    if @_onSelected
-      @_onSelected(key, index)
-    @redraw()
+      return {
+        w: @_size.w
+        h: @_size.h
+      }
+    @_size =
+      w: s.w
+      h: s.h
+
+  # Returns the position withOUT the margins
+  position: (pos) ->
+    if !arguments.length
+      return {
+        x: @_position.x
+        y: @_position.y
+      }
+    @_position =
+      x: pos.x
+      y: pos.y
+
+  data: (d) ->
+    if !arguments.length
+      return @_data
+    @_data = d
+    # The graph is drawn bottom to top, but the menu DOM order is top to bottom.
+    # The menu uses the reverse of the order seen in the configuration.
+    @_data.reverse()
 
 
   # Get the center
   getRectX: =>
     @_position.x + (@_size.w / 2 - @_boxSize / 2)
 
-  # Read the comments this is kind of complicated. We space them equally then divide up
-  # the top and bottom space in 'auto' mode. Otherwise we use a numerical spacing
+  # When an explicit icon spacing isn't specified, we calculate spacing automatically
+  autoIconSpacing: ->
+    # Divide the drawable height into equal portions
+    equalSlice = @usableHeight() / @itemCount()
+    # Calculate the amount of unused height per icon
+    spaceBetween = equalSlice - @_boxSize
+    # Compute the total amount of available vertical space, and divide it among the
+    # number of gutters between icons (which is one less than the number of icons)
+    # This is the amount of vertical space separating neighbouring icons
+    (spaceBetween * @itemCount()) / (@itemCount() - 1)
+
   getRectY: (i) =>
-    if @_iconSpacing == 'auto'
-      # divide into equal portions
-      equalSlice = @usableHeight() / @mappingLength()
-      # calculate the empty space left in between
-      spaceBetween = equalSlice - @_boxSize
-      # distribute  the space from the top and bottom into the spaced inbetween so the top
-      # and bottom land where they should
-      distributedSpaceBetween = spaceBetween + (spaceBetween / (@mappingLength() - 1))
-      # Subtract the square at the bottom
-      # using length - (i+1) to build bottom up:
-      (@mappingLength() - (i + 1)) * (@_boxSize + distributedSpaceBetween) + questionMarkHeight
-    else
-      (@mappingLength() - (i + 1)) * (@_iconSpacing + @_boxSize) + questionMarkHeight
+    i * (@getIconSpacing() + @_boxSize) + Constants.questionMarkHeight
 
   setIconSpacing: (spacing) ->
     @_iconSpacing = spacing
     @redraw()
 
   getIconSpacing: ->
-    if @_iconSpacing != 'auto' then return @_iconSpacing
-    @getRectY(@mappingLength() - 2) - @_boxSize - questionMarkHeight
+    if @_iconSpacing == 'auto'
+      @autoIconSpacing()
+    else
+      @_iconSpacing
 
   usableHeight: ->
     # The 2 is because the stroke width is otherwise cut off
-    @_size.h - @lineHeight - 2 - questionMarkHeight
+    @_size.h - @bottomSquareHeight() - 2 - Constants.questionMarkHeight
 
-  mapping: ->
-    if @_hasChart then @_chart.mapping() else @_data
+  itemCount: ->
+    if @_addAllSquare then (@_data.length + 1) else @_data.length
 
-  mappingLength: ->
-    if @_addAllSquare then (@mapping().length + 1) else @mapping().length
 
-  allSelected: (allSelected) ->
-    @_allSelected = allSelected
+  # The height of the bottom square decoration, which is only drawn if the controls are
+  # draggable
+  bottomSquareHeight: ->
+    if @_canDrag
+      Constants.questionMarkHeight
+    else
+      0
 
-  someSelected: (someSelected) ->
-    @_someSelected = someSelected
-
-  # TODO: this needs to go away
-  moveMenu: (newParent) ->
-    @_parent.selectAll("##{@options.groupId}").remove()
-    @parent d3.select(newParent), @options.groupId
-    @size {w:newParent.getBoundingClientRect().width, h:@size().h}
-    @resize()
-    @redraw()
 
   redraw: ->
+
+    # When the user is interacting via drag, we suppress ordinary menu updates so that
+    # we do not interrupt drag related animations.
+    return if @draggedIcon?
+
     @_group.selectAll('.menuItem').remove()
     @_group.selectAll('.menuSquare').remove()
     @_group.selectAll('.menuLineBehind').remove()
@@ -218,7 +342,7 @@ class SquareMenu extends Chart
           x1: "#{@_position.x + (@_size.w / 2)}px"
           x2: "#{@_position.x + (@_size.w / 2)}px"
           y1: '0px'
-          y2: "#{@getRectY(0) + @_boxSize + @lineHeight}px"
+          y2: "#{@getRectY(@itemCount() - 1) + @_boxSize + @bottomSquareHeight()}px"
       
       @_group.append 'rect'
         .attr
@@ -226,7 +350,7 @@ class SquareMenu extends Chart
           fill: '#333333'
           id: 'bottomRect'
           x: "#{@_position.x + (@_size.w / 2) - 3.5}px"
-          y: "#{@getRectY(0) + @_boxSize + @lineHeight - 7}px"
+          y: "#{@getRectY(@itemCount() - 1) + @_boxSize + @bottomSquareHeight() - 7}px"
           width: '7px'
           height: '7px'
         .style
@@ -245,57 +369,138 @@ class SquareMenu extends Chart
         role: 'button'
         id: @options.helpButtonId
       .on 'click', =>
-        @_showHelpHandler()
-      .on 'keyup', =>
-        d3.event.preventDefault()
         d3.event.stopPropagation()
-        if d3.event.key == 'Enter'
+        @_showHelpHandler()
+      .on 'keydown', =>
+        if d3.event.key == 'Enter' or d3.event.key == ' '
+          d3.event.preventDefault()
+          d3.event.stopPropagation()
           @_showHelpHandler()
 
-    @_group.selectAll('.menuItem').data(@mapping()).enter().append('g').attr
-      class: 'menuItem'
-      transform: (d, i) =>
-        "translate(#{@getRectX()}, #{@getRectY(i)})"
 
-    @_group.selectAll '.menuItem'
-      .append 'image'
-        .attr
-          class: (d, i) ->
-            "pointerCursor menuRect#{i}"
-          'xlink:href': (d) -> d.img
-          x: '0px'
-          width: @_boxSize
-          height: @_boxSize
-        .on 'click', (d, i) =>
-          if d3.event.defaultPrevented
-            return
-          @selection d.key, i
-        .call @_drag
-        .append('title').text (d) ->
-          d.tooltip
-      
     if @_addAllSquare
       squareGroup = @_group.append 'g'
         .attr
           class: 'selectAllGroup pointerCursor'
           transform: =>
-            "translate(#{@getRectX()}, #{@getRectY(@mapping().length)})"
+            "translate(#{@getRectX()}, #{@getRectY(0)})"
 
       squareGroup.append 'image'
         .attr
           class: 'pointerCursor'
-          'xlink:href': =>
-            if @_someSelected
-              Tr.allSelectorButton.someSelected[@app.language]
-            else
-              if @_allSelected then Tr.allSelectorButton.all[@app.language] else Tr.allSelectorButton.none[@app.language]
+          'xlink:href': @getAllIcon
           x: '0px'
           width: @_boxSize
           height: @_boxSize
-        .on 'click',  =>
-          @_allSelected = !@_allSelected
-          @_allSquareHandler @_allSelected
-          @redraw()
+          tabindex: '0'
+          'aria-label': @getAllLabel()
+          role: 'button'
+        .on 'click', @_allSquareHandler
+        .on 'keydown', =>
+          if d3.event.key == 'Enter' or d3.event.key == ' '
+            d3.event.preventDefault()
+            @_allSquareHandler()
+
+
+
+
+
+    @_group.selectAll('.menuItem').data(@_data).enter().append('g').attr
+      class: (d, i) ->
+        "menuItem menuRect#{i}"
+      transform: (d, i) =>
+        # If the 'all' icon is present, the others are bumped down one spot
+        index = if @_addAllSquare then i + 1 else i
+        "translate(#{@getRectX()}, #{@getRectY(index)})"
+    .call @_drag
+
+    @_group.selectAll '.menuItem'
+      .append 'image'
+        .attr
+          class: 'pointerCursor'
+          'xlink:href': (d) -> d.img
+          x: '0px'
+          width: @_boxSize
+          height: @_boxSize
+          tabindex: '0'
+          'aria-label': (d) -> d.tooltip
+          role: 'button'
+          # false signifies it can be grabbed but is not grabbed right now
+          # null means it is not grabbable
+          'aria-grabbed': if @_canDrag then false else null
+        .on 'click', (d) =>
+          return if d3.event.defaultPrevented
+          @_onSelected d
+        .on 'keydown', (d, i) =>
+          switch d3.event.key
+            when 'Enter', ' '
+              d3.event.preventDefault()
+              @_onSelected d
+            when 'ArrowUp'
+              d3.event.preventDefault()
+              newBin = i - 1
+              @swapItems i, newBin
+            when 'ArrowDown'
+              d3.event.preventDefault()
+              newBin = i + 1
+              @swapItems i, newBin
+        .append('title').text (d) ->
+          d.tooltip
+      
+ 
+  update: ->
+    # When the user is interacting via drag, we suppress ordinary menu updates so that
+    # we do not interrupt drag related animations.
+    return if @draggedIcon?
+
+    menuItems = @_group.selectAll '.menuItem'
+      .data @_data
+      .attr
+        transform: (d, i) =>
+          # If the 'all' icon is present, the others are bumped down one spot
+          index = if @_addAllSquare then i + 1 else i
+          "translate(#{@getRectX()}, #{@getRectY(index)})"
+
+    menuItems.select 'image'
+      .attr
+        'xlink:href': (d) -> d.img
+        'aria-label': (d) -> d.tooltip
+      .select('title').text (d) ->
+        d.tooltip
+
+    if @_addAllSquare
+      @_group.select '.selectAllGroup'
+        .select 'image'
+        .attr
+          'aria-label': @getAllLabel()
+          'xlink:href': @getAllIcon()
+
+  placeFocus: (bin) ->
+    @app.window.document.querySelector "##{@groupId} .menuRect#{bin} image"
+      .focus()
+
+  # Swap two menu items, update the app, and then update the menu display
+  swapItems: (currentBin, newBin) ->
+    return unless @_canDrag
+    return if newBin < 0 or newBin >= @_data.length
+
+    newOrder = @_data.map (item) ->
+      item.key
+
+    temp = newOrder[newBin]
+    newOrder[newBin] = newOrder[currentBin]
+    newOrder[currentBin] = temp
+
+    # The graph is drawn bottom to top, but the menu DOM order is top to bottom.
+    # The menu uses the reverse of order seen in the configuration.
+    # So, when we notify the rest of the app that the order has changed, we need to
+    # reverse the order back to what it used to be.
+    newOrder.reverse()
+
+    @_orderChangedHandler newOrder
+    @update()
+    @placeFocus newBin
+
 
 
 module.exports = SquareMenu

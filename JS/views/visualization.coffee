@@ -262,8 +262,10 @@ class Visualization
         .attr
           class: (d) -> d.wrapperClass
         .on 'click', sectorsCallback
-        .on 'keyup', (d) ->
-          sectorsCallback d if d3.event.key == 'Enter'
+        .on 'keydown', (d) ->
+          if d3.event.key == 'Enter' or d3.event.key == ' '
+            d3.event.preventDefault()
+            sectorsCallback d
 
 
 
@@ -319,8 +321,10 @@ class Visualization
         tabindex: '0'
         role: 'button'
       .on 'click', mainSelectorCallback
-      .on 'keyup', (d) ->
-        mainSelectorCallback d if d3.event.key == 'Enter'
+      .on 'keydown', (d) ->
+        if d3.event.key == 'Enter' or d3.event.key == ' '
+          d3.event.preventDefault()
+          mainSelectorCallback d
 
     mainSelectors
       .attr

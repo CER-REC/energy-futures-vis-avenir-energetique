@@ -276,3 +276,5 @@ module.exports =
 
   minYear: 2005
   maxYear: 2040
+
+  iconDragDuration: 100 # ms

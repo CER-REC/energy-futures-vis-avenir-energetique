@@ -26,13 +26,13 @@ class AboutThisProjectPopover
       @app.popoverManager.closePopover()
 
     @closeButtonEnterHandler = =>
-      d3.event.preventDefault()
-      d3.event.stopPropagation()
-      if d3.event.key == 'Enter'
+      if d3.event.key == 'Enter' or d3.event.key == ' '
+        d3.event.preventDefault()
+        d3.event.stopPropagation()
         @app.popoverManager.closePopover()
 
     @closeButton.on 'click', @closeButtonClickHandler
-    @closeButton.on 'keyup', @closeButtonEnterHandler
+    @closeButton.on 'keydown', @closeButtonEnterHandler
 
 
 

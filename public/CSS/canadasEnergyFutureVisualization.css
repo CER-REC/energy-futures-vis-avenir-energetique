@@ -880,8 +880,11 @@ div.chartTooltip:after {
   width: 100%;
 }
 
-#canadasEnergyFutureVisualization .playPauseButton img{
+#canadasEnergyFutureVisualization .playPauseButton {
   width: 45%;
+}
+#canadasEnergyFutureVisualization .playPauseButton img{
+
   float: right;
   padding: 0.1em;
   box-sizing: border-box;
@@ -1020,13 +1023,15 @@ svg { overflow: hidden; }
 #canadasEnergyFutureVisualization a:focus, 
 #canadasEnergyFutureVisualization .closeButton:focus,
 #canadasEnergyFutureVisualization .navbarButton:focus img,
-#canadasEnergyFutureVisualization .helpIconAnchor:focus img,
+#canadasEnergyFutureVisualization .helpIconButton:focus,
 #canadasEnergyFutureVisualization .squareMenuHelpButton:focus,
 #canadasEnergyFutureVisualization .thumbnailContainer:focus,
 #canadasEnergyFutureVisualization .mainSelectorButton:focus,
 #canadasEnergyFutureVisualization .sectorSelectorButton img:focus,
 #canadasEnergyFutureVisualization .vizButton:focus,
-#canadasEnergyFutureVisualization #sliderLabel:focus
+#canadasEnergyFutureVisualization #sliderLabel:focus,
+#canadasEnergyFutureVisualization .menuItem image:focus,
+#canadasEnergyFutureVisualization .selectAllGroup image:focus
 {
   outline: solid red 2px;
 }
@@ -1034,11 +1039,6 @@ svg { overflow: hidden; }
 #canadasEnergyFutureVisualization .float-right {
   float: right;
   height: 100%;
-}
-
-/* We rely on the image inside the anchor receiving an outline on focus, the outline on the surrounding a tag is misshapen and redundant */
-#canadasEnergyFutureVisualization .helpIconAnchor:focus {
-  outline: none;
 }
 
 #canadasEnergyFutureVisualization .navbarTitle:focus {
@@ -1055,5 +1055,18 @@ svg { overflow: hidden; }
   width: 1px;
 }
 
+#canadasEnergyFutureVisualization .menuItem {
+  /* Necessary to enable drag on touch for new versions of IE/Edge */
+  touch-action: none;
+}
+
+
+#canadasEnergyFutureVisualization #vizPlayButton {
+  float: left;
+}
+
+#canadasEnergyFutureVisualization #vizPauseButton {
+  float: right;
+}
 
 

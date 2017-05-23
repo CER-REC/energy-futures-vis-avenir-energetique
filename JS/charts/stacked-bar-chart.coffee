@@ -1,7 +1,8 @@
 d3 = require 'd3'
-SquareMenu = require './SquareMenu.coffee'
 _ = require 'lodash'
+
 BarChart = require './bar-chart.coffee'
+Constants = require '../Constants.coffee'
 
 class StackedBarChart extends BarChart
   stackedChartDefaults:
@@ -19,8 +20,6 @@ class StackedBarChart extends BarChart
 
     super parent, x, y, @options
     @options.menuOptions.chart = this
-    @menu = new SquareMenu @app, @options.menuOptions.selector, @options.menuOptions
-    @menu.data @_mapping
     @redraw()
 
     @tooltip = @app.window.document.getElementById 'tooltip'
@@ -42,14 +41,13 @@ class StackedBarChart extends BarChart
     if !arguments.length
       return @_data
     @_data = data
-    if @menu then @menu.redraw()
     @generateStackData()
 
   # When dragging we want a shorter duration
-  dragStart: ->
+  dragStart: =>
     @_duration = 500
 
-  dragEnd: ->
+  dragEnd: =>
     @_duration = @options.duration
 
   generateStackData: ->

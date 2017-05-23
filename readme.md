@@ -102,6 +102,9 @@ We're the development team with VizworX who put this project together for the NE
 
 ## Changelog
 
+* 2017-03-27 - Fix "jump to main content" link.
+* 2017-03-24 - Add improved and more granular analytics collection.
+* 2017-03-02 - Bugs fixed: address an issue with touch and popovers in Edge, address an issue with history and mobile Safari, address loading spinner styling in IE/Edge.
 * 2017-01-24 - Add dots to the reference line for visualization 4, to add emphasis to the reference case.
 * 2017-01-18 - Address an issue with language detection.
 * 2017-01-16 - Fix a hang that would occur on the image generation endpoint, only under IIS.

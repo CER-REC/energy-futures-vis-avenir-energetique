@@ -15,6 +15,8 @@ if Platform.name == 'browser'
 
 ControlsHelpPopover = require '../popovers/ControlsHelpPopover.coffee'
 
+ProvinceAriaText = require '../ProvinceAriaText.coffee'
+
 
 class Visualization4
 
@@ -34,75 +36,61 @@ class Visualization4
         datasetsHelp: Tr.altText.datasetsHelp[@app.language]
         scenariosHelp: Tr.altText.scenariosHelp[@app.language]
 
-    @datasetHelpPopover = new ControlsHelpPopover @app
-    @mainSelectorHelpPopover = new ControlsHelpPopover @app
-    @unitsHelpPopover = new ControlsHelpPopover @app
-    @scenariosHelpPopover = new ControlsHelpPopover @app
-    @provincesHelpPopover = new ControlsHelpPopover @app
+    @datasetHelpPopover = new ControlsHelpPopover @app,
+      popoverButtonId: 'datasetSelectorHelpButton'
+      outerClasses: 'vizModal controlsHelpPopover datasetSelectorHelp'
+      innerClasses: 'viz4HelpTitle'
+      title: Tr.datasetSelector.datasetSelectorHelpTitle[@app.language]
+      content: => Tr.datasetSelector.datasetSelectorHelp[@app.language]
+      attachmentSelector: '.datasetSelectorGroup'
+      analyticsElement: 'Viz4 dataset help'
 
-    @d3document.select '#datasetSelectorHelpButton'
-      .on 'click', =>
-        d3.event.stopPropagation()
-        d3.event.preventDefault()
-        if @app.popoverManager.currentPopover == @datasetHelpPopover
-          @app.popoverManager.closePopover()
-        else
-          @app.popoverManager.showPopover @datasetHelpPopover,
-            outerClasses: 'vizModal controlsHelpPopover datasetSelectorHelp'
-            innerClasses: 'viz4HelpTitle'
-            title: Tr.datasetSelector.datasetSelectorHelpTitle[@app.language]
-            content: Tr.datasetSelector.datasetSelectorHelp[@app.language]
-            attachmentSelector: '.datasetSelectorGroup'
-            elementToFocusOnClose: @document.getElementById('datasetSelectorHelpButton')
-          @app.analyticsReporter.reportEvent 'Controls help', 'Viz4 dataset help'
+    @mainSelectorHelpPopover = new ControlsHelpPopover @app,
+      popoverButtonId: 'mainSelectorHelpButton'
+      outerClasses: 'vizModal controlsHelpPopover mainSelectorHelp'
+      innerClasses: 'viz4HelpTitle'
+      title: Tr.mainSelector.selectOneLabel[@app.language]
+      content: => Tr.mainSelector.mainSelectorHelp[@app.language]
+      attachmentSelector: '.mainSelectorSection'
+      analyticsElement: 'Viz4 main selection help'
 
-    @d3document.select '#mainSelectorHelpButton'
-      .on 'click', =>
-        d3.event.stopPropagation()
-        d3.event.preventDefault()
-        if @app.popoverManager.currentPopover == @mainSelectorHelpPopover
-          @app.popoverManager.closePopover()
-        else
-          @app.popoverManager.showPopover @mainSelectorHelpPopover,
-            outerClasses: 'vizModal controlsHelpPopover mainSelectorHelp'
-            innerClasses: 'viz4HelpTitle'
-            title: Tr.mainSelector.selectOneLabel[@app.language]
-            content: Tr.mainSelector.mainSelectorHelp[@app.language]
-            attachmentSelector: '.mainSelectorSection'
-            elementToFocusOnClose: @document.getElementById('mainSelectorHelpButton')
-          @app.analyticsReporter.reportEvent 'Controls help', 'Viz4 main selection help'
-    
-    @d3document.select '#unitSelectorHelpButton'
-      .on 'click', =>
-        d3.event.stopPropagation()
-        d3.event.preventDefault()
-        if @app.popoverManager.currentPopover == @unitsHelpPopover
-          @app.popoverManager.closePopover()
-        else
-          @app.popoverManager.showPopover @unitsHelpPopover,
-            outerClasses: 'vizModal controlsHelpPopover unitSelectorHelp'
-            innerClasses: 'viz4HelpTitle'
-            title: Tr.unitSelector.unitSelectorHelpTitle[@app.language]
-            content: Tr.unitSelector.unitSelectorHelp[@app.language]
-            attachmentSelector: '.unitsSelectorGroup'
-            elementToFocusOnClose: @document.getElementById('unitSelectorHelpButton')
-          @app.analyticsReporter.reportEvent 'Controls help', 'Viz4 unit help'
+    @unitsHelpPopover = new ControlsHelpPopover @app,
+      popoverButtonId: 'unitSelectorHelpButton'
+      outerClasses: 'vizModal controlsHelpPopover unitSelectorHelp'
+      innerClasses: 'viz4HelpTitle'
+      title: Tr.unitSelector.unitSelectorHelpTitle[@app.language]
+      content: => Tr.unitSelector.unitSelectorHelp[@app.language]
+      attachmentSelector: '.unitsSelectorGroup'
+      analyticsElement: 'Viz4 unit help'
 
-    @d3document.select '#scenarioSelectorHelpButton'
-      .on 'click', =>
-        d3.event.stopPropagation()
-        d3.event.preventDefault()
-        if @app.popoverManager.currentPopover == @scenariosHelpPopover
-          @app.popoverManager.closePopover()
-        else
-          @app.popoverManager.showPopover @scenariosHelpPopover,
-            outerClasses: 'vizModal controlsHelpPopover scenarioSelectorHelp'
-            innerClasses: 'viz4HelpTitle'
-            title: Tr.scenarioSelector.scenarioSelectorHelpTitle[@app.language]
-            content: Tr.scenarioSelector.scenarioSelectorHelp[@app.language]
-            attachmentSelector: '.scenarioSelectorGroup'
-            elementToFocusOnClose: @document.getElementById('scenarioSelectorHelpButton')
-          @app.analyticsReporter.reportEvent 'Controls help', 'Viz4 scenario help'
+    @scenariosHelpPopover = new ControlsHelpPopover @app,
+      popoverButtonId: 'scenarioSelectorHelpButton'
+      outerClasses: 'vizModal controlsHelpPopover scenarioSelectorHelp'
+      innerClasses: 'viz4HelpTitle'
+      title: Tr.scenarioSelector.scenarioSelectorHelpTitle[@app.language]
+      content: => Tr.scenarioSelector.scenarioSelectorHelp[@app.language]
+      attachmentSelector: '.scenarioSelectorGroup'
+      analyticsElement: 'Viz4 scenario help'
+
+    @provincesHelpPopover = new ControlsHelpPopover @app,
+      popoverButtonId: 'provinceHelpButton'
+      outerClasses: 'vizModal controlsHelpPopover popOverSm provinceHelp'
+      title: Tr.regionSelector.selectRegionLabel[@app.language]
+      content: =>
+        #Grab the provinces in order for the string
+        contentString = ''
+        for province in @dataForProvinceMenu()
+          contentString = """
+            <div class="provinceLabel">
+              <h2> #{Tr.regionSelector.names[province.key][@app.language]} </h2>
+            </div>
+            #{contentString}
+          """
+        contentString
+      attachmentSelector: '#provincesSelector'
+      analyticsElement: 'Viz4 region help'
+      setupEvents: false
+
 
 
   renderServerTemplate: ->
@@ -150,10 +138,11 @@ class Visualization4
         height: @outerHeight
     @renderXAxis false
     @renderYAxis false
-    @renderGraph() # This call used to pass in 0 for duration. Why?
+    @renderGraph() # TODO: This call used to pass in 0 for duration. Why?
     @provinceMenu.size
       w: @d3document.select('#provincesSelector').node().getBoundingClientRect().width
       h: @height() - @d3document.select('span.titleLabel').node().getBoundingClientRect().height + @d3document.select('#xAxis').node().getBoundingClientRect().height
+    @provinceMenu.update()
 
 
 
@@ -163,8 +152,7 @@ class Visualization4
     [
       {
         key: 'AB'
-        tooltip: Tr.regionSelector.names.AB[@app.language]
-        present: true
+        tooltip: ProvinceAriaText @app, @config.province == 'AB', 'AB'
         colour: if @config.province == 'AB' then '#333' else '#fff'
         img:
           if @config.province == 'AB'
@@ -174,8 +162,7 @@ class Visualization4
       }
       {
         key: 'BC'
-        tooltip: Tr.regionSelector.names.BC[@app.language]
-        present: true
+        tooltip: ProvinceAriaText @app, @config.province == 'BC', 'BC'
         colour: if @config.province == 'BC' then '#333' else '#fff'
         img:
           if @config.province == 'BC'
@@ -185,8 +172,7 @@ class Visualization4
       }
       {
         key: 'MB'
-        tooltip: Tr.regionSelector.names.MB[@app.language]
-        present: true
+        tooltip: ProvinceAriaText @app, @config.province == 'MB', 'MB'
         colour: if @config.province == 'MB' then '#333' else '#fff'
         img:
           if @config.province == 'MB'
@@ -196,8 +182,7 @@ class Visualization4
       }
       {
         key: 'NB'
-        tooltip: Tr.regionSelector.names.NB[@app.language]
-        present: true
+        tooltip: ProvinceAriaText @app, @config.province == 'NB', 'NB'
         colour: if @config.province == 'NB' then '#333' else '#fff'
         img:
           if @config.province == 'NB'
@@ -207,8 +192,7 @@ class Visualization4
       }
       {
         key : 'NL'
-        tooltip: Tr.regionSelector.names.NL[@app.language]
-        present: true
+        tooltip: ProvinceAriaText @app, @config.province == 'NL', 'NL'
         colour: if @config.province == 'NL' then '#333' else '#fff'
         img:
           if @config.province == 'NL'
@@ -218,8 +202,7 @@ class Visualization4
       }
       {
         key: 'NS'
-        tooltip: Tr.regionSelector.names.NS[@app.language]
-        present: true
+        tooltip: ProvinceAriaText @app, @config.province == 'NS', 'NS'
         colour: if @config.province == 'NS' then '#333' else '#fff'
         img:
           if @config.province == 'NS'
@@ -229,8 +212,7 @@ class Visualization4
       }
       {
         key: 'NT'
-        tooltip: Tr.regionSelector.names.NT[@app.language]
-        present: true
+        tooltip: ProvinceAriaText @app, @config.province == 'NT', 'NT'
         colour: if @config.province == 'NT' then '#333' else '#fff'
         img:
           if @config.province == 'NT'
@@ -240,8 +222,7 @@ class Visualization4
       }
       {
         key: 'NU'
-        tooltip: Tr.regionSelector.names.NU[@app.language]
-        present: true
+        tooltip: ProvinceAriaText @app, @config.province == 'NU', 'NU'
         colour: if @config.province == 'NU' then '#333' else '#fff'
         img:
           if @config.province == 'NU'
@@ -251,8 +232,7 @@ class Visualization4
       }
       {
         key: 'ON'
-        tooltip: Tr.regionSelector.names.ON[@app.language]
-        present: true
+        tooltip: ProvinceAriaText @app, @config.province == 'ON', 'ON'
         colour: if @config.province == 'ON' then '#333' else '#fff'
         img:
           if @config.province == 'ON'
@@ -262,8 +242,7 @@ class Visualization4
       }
       {
         key: 'PE'
-        tooltip: Tr.regionSelector.names.PE[@app.language]
-        present: true
+        tooltip: ProvinceAriaText @app, @config.province == 'PE', 'PE'
         colour: if @config.province == 'PE' then '#333' else '#fff'
         img:
           if @config.province == 'PE'
@@ -273,8 +252,7 @@ class Visualization4
       }
       {
         key: 'QC'
-        tooltip: Tr.regionSelector.names.QC[@app.language]
-        present: true
+        tooltip: ProvinceAriaText @app, @config.province == 'QC', 'QC'
         colour: if @config.province == 'QC' then '#333' else '#fff'
         img:
           if @config.province == 'QC'
@@ -284,8 +262,7 @@ class Visualization4
       }
       {
         key: 'SK'
-        tooltip: Tr.regionSelector.names.SK[@app.language]
-        present: true
+        tooltip: ProvinceAriaText @app, @config.province == 'SK', 'SK'
         colour: if @config.province == 'SK' then '#333' else '#fff'
         img:
           if @config.province == 'SK'
@@ -295,8 +272,7 @@ class Visualization4
       }
       {
         key: 'YT'
-        tooltip: Tr.regionSelector.names.YT[@app.language]
-        present: true
+        tooltip: ProvinceAriaText @app, @config.province == 'YT', 'YT'
         colour: if @config.province == 'YT' then '#333' else '#fff'
         img:
           if @config.province == 'YT'
@@ -314,47 +290,42 @@ class Visualization4
         width: @d3document.select('#provincesSelector').node().getBoundingClientRect().width
         height: @outerHeight
 
-    provinceOptions =
+    options =
+      onSelected: @provinceSelected
+      groupId: 'provinceMenu'
+      allSquareHandler: @selectAllProvince
+      showHelpHandler: @provincesHelpPopover.showPopoverCallback
+      helpButtonLabel: Tr.altText.regionsHelp[@app.language]
+      helpButtonId: 'provinceHelpButton'
+      getAllIcon: =>
+        if @config.province == 'all'
+          Tr.allSelectorButton.all[@app.language]
+        else
+          Tr.allSelectorButton.none[@app.language]
+      getAllLabel: =>
+        if @config.province == 'all'
+          Tr.altText.allButton.allCanadaSelected[@app.language]
+        else
+          Tr.altText.allButton.allCanadaUnselected[@app.language]
+      parentId: 'provinceMenuSVG'
+
+    state =
       size:
         w: @d3document.select('#provincesSelector').node().getBoundingClientRect().width
         h: @height() - @d3document.select('span.titleLabel').node().getBoundingClientRect().height + @d3document.select('#xAxis').node().getBoundingClientRect().height
-      margin:
-        left: 0
-        right: 0
-        top: 20
-        bottom: 20
-      canDrag: false
-      hasChart: false
       data: @dataForProvinceMenu()
-      onSelected: @provinceSelected
-      allSelected: (@config.province == 'all')
-      addAllSquare: true
-      allSquareHandler: @selectAllProvince
-      showHelpHandler: @showProvinceNames
-      groupId: 'provinceMenu'
-      helpButtonLabel: Tr.altText.regionsHelp[@app.language]
-      helpButtonId: 'provinceHelpButton'
 
-    new SquareMenu @app, '#provinceMenuSVG', provinceOptions
+    new SquareMenu @app, options, state
 
   selectAllProvince: =>
-    @config.setProvince 'all'
-    @provinceMenu.allSelected true
-    @provinceMenu.data @dataForProvinceMenu()
-    @renderYAxis()
-    @renderGraph()
-
-
-  provinceSelected: (key) =>
-
     newConfig = new @config.constructor @app
     newConfig.copy @config
-    newConfig.setProvince key
+    newConfig.setProvince 'all'
 
     update = =>
-      @provinceMenu.allSelected false
-      @config.setProvince key
+      @config.setProvince 'all'
       @provinceMenu.data @dataForProvinceMenu()
+      @provinceMenu.update()
       @renderYAxis()
       @renderGraph()
       @app.router.navigate @config.routerParams()
@@ -362,31 +333,20 @@ class Visualization4
     @app.datasetRequester.updateAndRequestIfRequired newConfig, update
 
 
+  provinceSelected: (dataDictionaryItem) =>
+    newConfig = new @config.constructor @app
+    newConfig.copy @config
+    newConfig.setProvince dataDictionaryItem.key
 
-  showProvinceNames: =>
-    d3.event.stopPropagation()
-    d3.event.preventDefault()
-    if @app.popoverManager.currentPopover == @provincesHelpPopover
-      @app.popoverManager.closePopover()
-    else
-      #Grab the provinces in order for the string
-      contentString = ''
-      for province in @dataForProvinceMenu()
-        contentString = """
-          <div class="provinceLabel">
-            <h2> #{Tr.regionSelector.names[province.key][@app.language]} </h2>
-          </div>
-          #{contentString}
-        """
+    update = =>
+      @config.setProvince dataDictionaryItem.key
+      @provinceMenu.data @dataForProvinceMenu()
+      @provinceMenu.update()
+      @renderYAxis()
+      @renderGraph()
+      @app.router.navigate @config.routerParams()
 
-      @app.popoverManager.showPopover @provincesHelpPopover,
-        outerClasses: 'vizModal controlsHelpPopover popOverSm provinceHelp'
-        title: Tr.regionSelector.selectRegionLabel[@app.language]
-        content: contentString
-        attachmentSelector: '#provincesSelector'
-        elementToFocusOnClose: @document.getElementById('provinceHelpButton')
-      @app.analyticsReporter.reportEvent 'Controls help', 'Viz4 region help'
-
+    @app.datasetRequester.updateAndRequestIfRequired newConfig, update
 
 
   # Data here
@@ -713,7 +673,7 @@ class Visualization4
         tabindex: '0'
         role: 'button'
       .on 'click', mainSelectorCallback
-      .on 'keyup', (d) ->
+      .on 'keydown', (d) ->
         mainSelectorCallback d if d3.event.key == 'Enter'
 
     mainSelectors
@@ -732,6 +692,7 @@ class Visualization4
 
     mainSelectors.exit()
       .on 'click', null
+      .on 'keydown', null
       .remove()
 
 
@@ -1242,14 +1203,13 @@ class Visualization4
           stroke: '#999999'
           'stroke-width': 2
 
-      refCaseDots
-        .attr 'cx', (d) ->
-          xAxisScale d.year
-
       refCaseDots.transition()
         .duration duration
-        .attr 'cy', (d) ->
-          yAxisScale d.value
+        .attr
+          cx: (d) ->
+            xAxisScale d.year
+          cy: (d) ->
+            yAxisScale d.value
     else
       d3.select @document
         .selectAll 'circle.refCaseDot'
