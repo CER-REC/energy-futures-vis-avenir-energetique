@@ -31,6 +31,7 @@ class Visualization1 extends visualization
       selectScenarioLabel: Tr.scenarioSelector.selectScenarioLabel[@app.language]
       selectRegionLabel: Tr.regionSelector.selectRegionLabel[@app.language]
       svgStylesheet: SvgStylesheetTemplate
+      graphLabel: Tr.altText.visualization
 
       altText:
         mainSelectionHelp: Tr.altText.mainSelectionHelp[@app.language]

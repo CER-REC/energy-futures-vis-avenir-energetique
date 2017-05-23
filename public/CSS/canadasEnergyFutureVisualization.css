@@ -1031,7 +1031,8 @@ svg { overflow: hidden; }
 #canadasEnergyFutureVisualization .vizButton:focus,
 #canadasEnergyFutureVisualization #sliderLabel:focus,
 #canadasEnergyFutureVisualization .menuItem image:focus,
-#canadasEnergyFutureVisualization .selectAllGroup image:focus
+#canadasEnergyFutureVisualization .selectAllGroup image:focus,
+#canadasEnergyFutureVisualization #graphPanel:focus
 {
   outline: solid red 2px;
 }

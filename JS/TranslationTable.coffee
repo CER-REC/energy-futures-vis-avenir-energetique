@@ -1694,6 +1694,10 @@ module.exports =
       en: 'Years'
       fr: 'Années'
 
+    visualization:
+      en: 'Visualization'
+      fr: 'Visualisation'
+
   report:
     en: 'REPORT: '
     fr: 'RAPPORT : '
@@ -1718,5 +1722,6 @@ module.exports =
     viz4:
       en: 'Switched to "explore scenarios" page'
       fr: 'Navigation au page "exploration des scénarios"'
+
 
 
