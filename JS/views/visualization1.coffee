@@ -17,6 +17,8 @@ if Platform.name == 'browser'
 
 ControlsHelpPopover = require '../popovers/ControlsHelpPopover.coffee'
 ProvinceAriaText = require '../ProvinceAriaText.coffee'
+Viz1AccessConfig = require '../VisualizationConfigurations/Vis1AccessConfig.coffee'
+
 
 class Visualization1 extends visualization
   height = 700
@@ -109,6 +111,7 @@ class Visualization1 extends visualization
 
   constructor: (@app, config, @options) ->
     @config = config
+    @accessibilityConfig = new Viz1AccessConfig @config
     @_chart = null
     @_provinceMenu = null
     @document = @app.window.document
@@ -135,6 +138,7 @@ class Visualization1 extends visualization
     @addUnitToggle()
     @addScenarios()
     @render()
+    @setupGraphEvents()
 
   tearDown: ->
     # TODO: Consider garbage collection and event listeners
@@ -737,6 +741,32 @@ class Visualization1 extends visualization
 
     @app.datasetRequester.updateAndRequestIfRequired newConfig, update
 
+
+
+  setupGraphEvents: ->
+    graphElement = @document.getElementById 'graphPanel'
+    graphElement.addEventListener 'keydown', (event) =>
+
+      switch event.key
+        when 'ArrowRight'
+          event.preventDefault()
+          @accessibilityConfig.setYear @accessibilityConfig.activeYear + 1
+        when 'ArrowLeft'
+          event.preventDefault()
+          @accessibilityConfig.setYear @accessibilityConfig.activeYear - 1
+        when 'ArrowUp'
+          event.preventDefault()
+          @accessibilityConfig.setProvince @config.nextActiveProvinceForward(@accessibilityConfig.activeProvince)
+        when 'ArrowDown'
+          @accessibilityConfig.setProvince @config.nextActiveProvinceReverse(@accessibilityConfig.activeProvince)
+          event.preventDefault()
+
+      console.log @accessibilityConfig.description()
+
+    graphElement.addEventListener 'focus', (event) =>
+      @accessibilityConfig.validate @config
+
+      console.log "validated: #{@accessibilityConfig.description()}"
 
 
 module.exports = Visualization1

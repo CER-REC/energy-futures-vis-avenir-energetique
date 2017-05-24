@@ -12,64 +12,45 @@ class Vis1AccessConfig
 
   constructor: (viz1Config) ->
 
+    @setYear Constants.years[0]
+
     @activeProvince = viz1Config.provincesInOrder[0]
-    @activeYear = Constants.years[0]
+    @validate viz1Config
 
 
 
   # We only re-validate the access config when the user next focuses the graph.
   # This way, the user can deactivate and re-activate several provinces and the app can
   # still determine roughly or exactly where they were.
+  # TODO: I don't like this name
   validate: (viz1Config) ->
 
     # If the active province is in the current configuration, there is nothing to do
     return if viz1Config.provinces.includes @activeProvince
 
+    @setProvince viz1Config.nextActiveProvince(@activeProvince)
 
-    activeProvinceIndex = viz1Config.provincesInOrder.indexOf @activeProvince
-
-    # Look at each of the next provinces in provincesInOrder
-    # If we find a province that is also in the currently displayed set, it becomes our
-    # new active province
-    for i in [activeProvinceIndex..viz1Config.provincesInOrder.length]
-      if viz1Config.provinces.includes viz1Config.provincesInOrder[i]
-        @setProvince viz1Config.provincesInOrder[i]
-        return
-
-    # If we don't find an active province going forward, take the last province in the
-
-    # cases:
-    # the province we were looking at is gone, but there are other provinces. look up a province which was close to the last one in the order (or just the next one in the order?) and focus it
-    # province we were looking at is gone and so are all the others.
+    # if viz1Config.provinces is empty, we will arrive here without having changed the
+    # province on the accessibility config.
+    # This is fine, the case where no provinces are selected is a special case to be
+    # handled separately by the UI.
 
 
-  # Up and down arrow inputs change the current province/region.
-  # The regions are re-orderable, so we need to consult the current configuration to
-  # discover the next province every time.
-  
-  goToNextProvince: (viz1Config) ->
-    # cases to handle:
-    # next province is valid
-    # there is no next province
-    # there are no provinces at all ... can that happen? yes, we can be null and have no provinces
-  
-  goToPreviousProvince: (viz1Config) ->
-
-
-
-
+  setProvince: (province) ->
+    return unless Constants.provinces.includes province
+    @activeProvince = province
 
 
   setYear: (year) ->
-    return if year > Constants.maxYear
-    return if year < Constants.minYear
+    return if year > Constants.maxYear or year < Constants.minYear
     @activeYear = year
 
 
   # A full text description of the current data.
 
   description: ->
-
+    # TODO: translate and flesh out
+    "#{@activeProvince} #{@activeYear}"
 
   # A full text description of the most recent transition. Do I need this?
   lastTransitionDescription: ->
