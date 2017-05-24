@@ -111,7 +111,7 @@ class Visualization1 extends visualization
 
   constructor: (@app, config, @options) ->
     @config = config
-    @accessibilityConfig = new Viz1AccessConfig @config
+    @accessConfig = new Viz1AccessConfig @config
     @_chart = null
     @_provinceMenu = null
     @document = @app.window.document
@@ -632,6 +632,11 @@ class Visualization1 extends visualization
         @app.animationDuration
       groupId:
         'graphGroup'
+      barClass: (d) =>
+        if d.name == @accessConfig.activeProvince and d.data.x == @accessConfig.activeYear
+          'accessibleFocus'
+        else
+          ''
 
     @_chart = new stackedBarChart @app, '#graphSVG', @xScale(), @yScale(), stackedOptions
 
@@ -745,28 +750,33 @@ class Visualization1 extends visualization
 
   setupGraphEvents: ->
     graphElement = @document.getElementById 'graphPanel'
-    graphElement.addEventListener 'keydown', (event) =>
 
+    graphElement.addEventListener 'keydown', (event) =>
       switch event.key
         when 'ArrowRight'
           event.preventDefault()
-          @accessibilityConfig.setYear @accessibilityConfig.activeYear + 1
+          @accessConfig.setYear @accessConfig.activeYear + 1
+          @render()
         when 'ArrowLeft'
           event.preventDefault()
-          @accessibilityConfig.setYear @accessibilityConfig.activeYear - 1
+          @accessConfig.setYear @accessConfig.activeYear - 1
+          @render()
         when 'ArrowUp'
           event.preventDefault()
-          @accessibilityConfig.setProvince @config.nextActiveProvinceForward(@accessibilityConfig.activeProvince)
+          @accessConfig.setProvince @config.nextActiveProvinceForward(@accessConfig.activeProvince)
+          @render()
         when 'ArrowDown'
-          @accessibilityConfig.setProvince @config.nextActiveProvinceReverse(@accessibilityConfig.activeProvince)
           event.preventDefault()
+          @accessConfig.setProvince @config.nextActiveProvinceReverse(@accessConfig.activeProvince)
+          @render()
 
-      console.log @accessibilityConfig.description()
-
-    graphElement.addEventListener 'focus', (event) =>
-      @accessibilityConfig.validate @config
-
-      console.log "validated: #{@accessibilityConfig.description()}"
+    graphElement.addEventListener 'focus', =>
+      # When we return to focusing the graph element, the graph sub element that the user
+      # had focused may have been toggled off (by removing the province).
+      # Calling validate ensures that the sub-focus is placed on an element that actually
+      # exists.
+      @accessConfig.validate @config
+      @render()
 
 
 module.exports = Visualization1

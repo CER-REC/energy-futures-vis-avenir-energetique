@@ -6,8 +6,9 @@ Constants = require '../Constants.coffee'
 
 class StackedBarChart extends BarChart
   stackedChartDefaults:
-    menuOptions: {}
-
+    # coffeelint: disable=no_empty_functions
+    barClass: ->
+    # coffeelint: enable=no_empty_functions
 
   constructor: (@app, parent, x, y, options = {}) ->
 
@@ -19,7 +20,6 @@ class StackedBarChart extends BarChart
     @_mapping = if @options.mapping then @options.mapping else null
 
     super parent, x, y, @options
-    @options.menuOptions.chart = this
     @redraw()
 
     @tooltip = @app.window.document.getElementById 'tooltip'
@@ -117,6 +117,8 @@ class StackedBarChart extends BarChart
         x: (d) =>
           @_x d.data.x
         width: @_barSize
+        class: (d) =>
+          "bar #{@options.barClass d}"
       rect.exit().remove()
       rect.transition()
         .duration =>
