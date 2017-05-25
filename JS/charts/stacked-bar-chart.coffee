@@ -8,6 +8,7 @@ class StackedBarChart extends BarChart
   stackedChartDefaults:
     # coffeelint: disable=no_empty_functions
     barClass: ->
+    onAccessibleFocus: ->
     # coffeelint: enable=no_empty_functions
 
   constructor: (@app, parent, x, y, options = {}) ->
@@ -106,9 +107,9 @@ class StackedBarChart extends BarChart
         .on 'accessibleFocus', (d) =>
           # First, find the position in absolute page coordinates where the tooltip should
           # go
-          bounds = d3.event.target.getBoundingClientRect()
-          xDest = bounds.right + window.scrollX + Constants.tooltipXOffset
-          yDest = bounds.top + window.scrollY  + bounds.height / 2
+          graphElementBounds = d3.event.target.getBoundingClientRect()
+          xDest = graphElementBounds.right + window.scrollX + Constants.tooltipXOffset
+          yDest = graphElementBounds.top + window.scrollY + graphElementBounds.height / 2
 
           # Second, calculate the offset for the tooltip element based on its parent
           parentBounds = @tooltipParent.getBoundingClientRect()
@@ -121,6 +122,7 @@ class StackedBarChart extends BarChart
           @tooltip.style.top = "#{yDest - yParentOffset}px"
           @tooltip.innerHTML = "#{d.name} (#{d.data.x}): #{d.data.y.toFixed(2)}"
 
+          @options.onAccessibleFocus d
 
       rect.enter().append 'rect'
         .attr

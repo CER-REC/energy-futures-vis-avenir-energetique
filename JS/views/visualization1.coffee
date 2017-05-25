@@ -33,7 +33,7 @@ class Visualization1 extends visualization
       selectScenarioLabel: Tr.scenarioSelector.selectScenarioLabel[@app.language]
       selectRegionLabel: Tr.regionSelector.selectRegionLabel[@app.language]
       svgStylesheet: SvgStylesheetTemplate
-      graphLabel: Tr.altText.visualization
+      graphDescription: Tr.altText.viz1GraphAccessibleInstructions[@app.language]
 
       altText:
         mainSelectionHelp: Tr.altText.mainSelectionHelp[@app.language]
@@ -116,6 +116,9 @@ class Visualization1 extends visualization
     @_provinceMenu = null
     @document = @app.window.document
     @d3document = d3.select @document
+
+
+    @accessibleStatusElement = @document.getElementById 'accessibleStatus'
 
     @getData()
 
@@ -637,6 +640,7 @@ class Visualization1 extends visualization
           'accessibleFocus'
         else
           ''
+      onAccessibleFocus: @onAccessibleFocus
 
     @_chart = new stackedBarChart @app, '#graphSVG', @xScale(), @yScale(), stackedOptions
 
@@ -783,6 +787,27 @@ class Visualization1 extends visualization
     @render()
     accessibleFocusElement = @document.querySelector '.accessibleFocus'
     accessibleFocusElement.dispatchEvent new Event 'accessibleFocus'
+
+
+  # The order of execution is a little convoluted here.
+  # We pass this callback to stacked bar chart at initialization time.
+  # When the chart is focused, we dispatch an 'accessibleFocus' event, and the bar chart
+  # handler calls this callback with the focused data element.
+  # We need access to the accessible config, the visualization config, and the data
+  # element itself to create this information string.
+  onAccessibleFocus: (d) =>
+
+    regionString = Tr.regionSelector.names[@accessConfig.activeProvince][@app.language]
+    unitString = Tr.altText.unitNames[@config.unit][@app.language]
+    description = "#{regionString} #{@accessConfig.activeYear}, #{d.data.y} #{unitString}"
+
+    @d3document.select '#graphPanel'
+      .attr
+        'aria-label': description
+
+    @accessibleStatusElement.innerHTML = description
+
+
 
 
 module.exports = Visualization1

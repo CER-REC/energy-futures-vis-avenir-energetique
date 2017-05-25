@@ -25,9 +25,7 @@ class Vis1AccessConfig
   # We only re-validate the access config when the user next focuses the graph.
   # This way, the user can deactivate and re-activate several provinces and the app can
   # still determine roughly or exactly where they were.
-  # TODO: I don't like this name
   validate: (viz1Config) ->
-
     # If the active province is in the current configuration, there is nothing to do
     return if viz1Config.provinces.includes @activeProvince
 
@@ -47,17 +45,6 @@ class Vis1AccessConfig
   setYear: (year) ->
     return if year > Constants.maxYear or year < Constants.minYear
     @activeYear = year
-
-
-  # A full text description of the current data.
-
-  description: ->
-    # TODO: translate and flesh out
-    "#{@activeProvince} #{@activeYear}"
-
-  # A full text description of the most recent transition. Do I need this?
-  lastTransitionDescription: ->
-
 
 
 
