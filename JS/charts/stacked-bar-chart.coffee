@@ -9,6 +9,7 @@ class StackedBarChart extends BarChart
     # coffeelint: disable=no_empty_functions
     barClass: ->
     onAccessibleFocus: ->
+    chartElementClick: ->
     # coffeelint: enable=no_empty_functions
 
   constructor: (@app, parent, x, y, options = {}) ->
@@ -124,6 +125,8 @@ class StackedBarChart extends BarChart
 
           @options.onAccessibleFocus d
 
+        .on 'click', @options.chartElementClick
+
       rect.enter().append 'rect'
         .attr
           y: @_size.h
@@ -139,7 +142,7 @@ class StackedBarChart extends BarChart
           @_x d.data.x
         width: @_barSize
         class: (d) =>
-          "bar #{@options.barClass d}"
+          "bar pointerCursor #{@options.barClass d}"
       rect.exit().remove()
       rect.transition()
         .duration =>

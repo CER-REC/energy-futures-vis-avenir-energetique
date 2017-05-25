@@ -641,6 +641,7 @@ class Visualization1 extends visualization
         else
           ''
       onAccessibleFocus: @onAccessibleFocus
+      chartElementClick: @chartElementClick
 
     @_chart = new stackedBarChart @app, '#graphSVG', @xScale(), @yScale(), stackedOptions
 
@@ -796,7 +797,6 @@ class Visualization1 extends visualization
   # We need access to the accessible config, the visualization config, and the data
   # element itself to create this information string.
   onAccessibleFocus: (d) =>
-
     regionString = Tr.regionSelector.names[@accessConfig.activeProvince][@app.language]
     unitString = Tr.altText.unitNames[@config.unit][@app.language]
     description = "#{regionString} #{@accessConfig.activeYear}, #{d.data.y} #{unitString}"
@@ -807,6 +807,10 @@ class Visualization1 extends visualization
 
     @accessibleStatusElement.innerHTML = description
 
+  chartElementClick: (d) =>
+    @accessConfig.setYear d.data.x
+    @accessConfig.setProvince d.name
+    @updateAccessibleFocus()
 
 
 
