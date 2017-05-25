@@ -116,9 +116,8 @@ class Visualization1 extends visualization
     @_provinceMenu = null
     @document = @app.window.document
     @d3document = d3.select @document
-
-
     @accessibleStatusElement = @document.getElementById 'accessibleStatus'
+
 
     @getData()
 
@@ -781,7 +780,7 @@ class Visualization1 extends visualization
       # Calling validate ensures that the sub-focus is placed on an element that actually
       # exists.
       @accessConfig.validate @config
-      @render()
+      @updateAccessibleFocus()
 
 
   updateAccessibleFocus: ->
@@ -799,13 +798,15 @@ class Visualization1 extends visualization
   onAccessibleFocus: (d) =>
     regionString = Tr.regionSelector.names[@accessConfig.activeProvince][@app.language]
     unitString = Tr.altText.unitNames[@config.unit][@app.language]
-    description = "#{regionString} #{@accessConfig.activeYear}, #{d.data.y} #{unitString}"
+    description = "#{regionString} #{@accessConfig.activeYear}, #{d.data.y.toFixed 2} #{unitString}"
 
     @d3document.select '#graphPanel'
       .attr
         'aria-label': description
+        'aria-activedescendant': "barElement-#{d.data.x}-#{d.name}"
 
     @accessibleStatusElement.innerHTML = description
+
 
   chartElementClick: (d) =>
     @accessConfig.setYear d.data.x

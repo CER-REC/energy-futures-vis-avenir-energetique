@@ -135,6 +135,8 @@ class StackedBarChart extends BarChart
           'fill-opacity': (d, i) =>
             if d.data.x > 2014
               1 - i / (@_x.domain().length + 5)
+          id: (d) ->
+            "barElement-#{d.data.x}-#{d.name}"
 
 
       rect.attr
