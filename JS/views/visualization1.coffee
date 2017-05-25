@@ -756,19 +756,19 @@ class Visualization1 extends visualization
         when 'ArrowRight'
           event.preventDefault()
           @accessConfig.setYear @accessConfig.activeYear + 1
-          @render()
+          @updateAccessibleFocus()
         when 'ArrowLeft'
           event.preventDefault()
           @accessConfig.setYear @accessConfig.activeYear - 1
-          @render()
+          @updateAccessibleFocus()
         when 'ArrowUp'
           event.preventDefault()
           @accessConfig.setProvince @config.nextActiveProvinceForward(@accessConfig.activeProvince)
-          @render()
+          @updateAccessibleFocus()
         when 'ArrowDown'
           event.preventDefault()
           @accessConfig.setProvince @config.nextActiveProvinceReverse(@accessConfig.activeProvince)
-          @render()
+          @updateAccessibleFocus()
 
     graphElement.addEventListener 'focus', =>
       # When we return to focusing the graph element, the graph sub element that the user
@@ -777,6 +777,12 @@ class Visualization1 extends visualization
       # exists.
       @accessConfig.validate @config
       @render()
+
+
+  updateAccessibleFocus: ->
+    @render()
+    accessibleFocusElement = @document.querySelector '.accessibleFocus'
+    accessibleFocusElement.dispatchEvent new Event 'accessibleFocus'
 
 
 module.exports = Visualization1

@@ -7,7 +7,10 @@ Constants = require '../Constants.coffee'
 # 'active descendent' graph element when the overall graph has focus.
 # The accessibility config behaves much like the ordinary configs, being a store of state
 # that needs perfectly reliable validation, but the rules for when the state changes
-# are different
+# are different.
+
+# This state is only relevant to the visualization, and is basically internal to it,
+# unlike the ordinary configurations.
 class Vis1AccessConfig
 
   constructor: (viz1Config) ->

@@ -278,3 +278,5 @@ module.exports =
   maxYear: 2040
 
   iconDragDuration: 100 # ms
+
+  tooltipXOffset: 30 # px

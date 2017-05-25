@@ -91,17 +91,36 @@ class StackedBarChart extends BarChart
         .on 'mouseover', (d) =>
           coords = d3.mouse @tooltipParent # [x, y]
           @tooltip.style.visibility = 'visible'
-          @tooltip.style.left = "#{coords[0] + 30}px"
+          @tooltip.style.left = "#{coords[0] + Constants.tooltipXOffset}px"
           @tooltip.style.top = "#{coords[1]}px"
           @tooltip.innerHTML = "#{d.name} (#{d.data.x}): #{d.data.y.toFixed(2)}"
 
         .on 'mousemove', (d) =>
           coords = d3.mouse @tooltipParent # [x, y]
-          @tooltip.style.left = "#{coords[0] + 30}px"
+          @tooltip.style.left = "#{coords[0] + Constants.tooltipXOffset}px"
           @tooltip.style.top = "#{coords[1]}px"
           @tooltip.innerHTML = "#{d.name} (#{d.data.x}): #{d.data.y.toFixed(2)}"
         .on 'mouseout', =>
           @tooltip.style.visibility = 'hidden'
+
+        .on 'accessibleFocus', (d) =>
+          # First, find the position in absolute page coordinates where the tooltip should
+          # go
+          bounds = d3.event.target.getBoundingClientRect()
+          xDest = bounds.right + window.scrollX + Constants.tooltipXOffset
+          yDest = bounds.top + window.scrollY  + bounds.height / 2
+
+          # Second, calculate the offset for the tooltip element based on its parent
+          parentBounds = @tooltipParent.getBoundingClientRect()
+          xParentOffset = parentBounds.left + window.scrollX
+          yParentOffset = parentBounds.top + window.scrollY
+
+          # Third, place the tooltip
+          @tooltip.style.visibility = 'visible'
+          @tooltip.style.left = "#{xDest - xParentOffset}px"
+          @tooltip.style.top = "#{yDest - yParentOffset}px"
+          @tooltip.innerHTML = "#{d.name} (#{d.data.x}): #{d.data.y.toFixed(2)}"
+
 
       rect.enter().append 'rect'
         .attr
