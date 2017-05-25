@@ -756,6 +756,10 @@ class Visualization1 extends visualization
     graphElement = @document.getElementById 'graphPanel'
 
     graphElement.addEventListener 'keydown', (event) =>
+
+      # Only process the input if there is at least one selected region
+      return if @config.provinces.length == 0
+
       switch event.key
         when 'ArrowRight'
           event.preventDefault()
@@ -779,8 +783,15 @@ class Visualization1 extends visualization
       # had focused may have been toggled off (by removing the province).
       # Calling validate ensures that the sub-focus is placed on an element that actually
       # exists.
-      @accessConfig.validate @config
-      @updateAccessibleFocus()
+      if @config.provinces.length > 0
+        @accessConfig.validate @config
+        @updateAccessibleFocus()
+      else
+        # If there are no active provinces, we handle the special case
+        @d3document.select '#graphPanel'
+          .attr
+            'aria-label': Tr.altText.emptySelection[@app.language]
+            'aria-activedescendant': null
 
 
   updateAccessibleFocus: ->

@@ -1725,7 +1725,12 @@ module.exports =
     # TODO: French translations need validation
     viz1GraphAccessibleInstructions:
       en: 'Use the arrow keys or the mouse to select chart elements.'
-      fr: 'Utiliser les boutons flèches ou la souris pour naviguer la graphique.'
+      fr: 'Utiliser les boutons flèches ou la souris pour naviguer le graphique.'
+
+    # TODO: French translations need validation
+    emptySelection:
+      en: 'No regions selected'
+      fr: 'Aucune région selectionnée'
 
 
   report:
