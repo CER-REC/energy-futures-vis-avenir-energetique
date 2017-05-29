@@ -790,7 +790,7 @@ class Visualization1 extends visualization
         # If there are no active provinces, we handle the special case
         @d3document.select '#graphPanel'
           .attr
-            'aria-label': Tr.altText.emptySelection[@app.language]
+            'aria-label': Tr.altText.emptyRegionSelection[@app.language]
             'aria-activedescendant': null
 
 

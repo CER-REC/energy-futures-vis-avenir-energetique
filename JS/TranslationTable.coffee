@@ -1727,10 +1727,17 @@ module.exports =
       en: 'Use the arrow keys or the mouse to select chart elements.'
       fr: 'Utiliser les boutons flèches ou la souris pour naviguer le graphique.'
 
+    viz2GraphAccessibleInstructions:
+      en: 'Use the arrow keys to navigate the chart.'
+      fr: 'Utiliser les boutons flèches pour naviguer le graphique.'
+
     # TODO: French translations need validation
-    emptySelection:
+    emptyRegionSelection:
       en: 'No regions selected'
       fr: 'Aucune région selectionnée'
+    emptySourceSelection:
+      en: 'No sources selected'
+      fr: 'Aucune source selectionnée'
 
 
   report:

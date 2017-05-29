@@ -1,4 +1,3 @@
-_ = require 'lodash'
 d3 = require 'd3'
 Mustache = require 'mustache'
 
@@ -21,6 +20,8 @@ ControlsHelpPopover = require '../popovers/ControlsHelpPopover.coffee'
 ProvinceAriaText = require '../ProvinceAriaText.coffee'
 SourceAriaText = require '../SourceAriaText.coffee'
 
+Viz2AccessConfig = require '../VisualizationConfigurations/Vis2AccessConfig.coffee'
+
 
 class Visualization2 extends visualization
   height = 700
@@ -35,6 +36,7 @@ class Visualization2 extends visualization
       selectRegionLabel: Tr.regionSelector.selectRegionLabel[@app.language]
       selectSourceLabel: Tr.sourceSelector.selectSourceLabel[@app.language]
       svgStylesheet: SvgStylesheetTemplate
+      graphDescription: Tr.altText.viz2GraphAccessibleInstructions[@app.language]
 
       altText:
         sectorsHelp: Tr.altText.sectorsHelp[@app.language]
@@ -132,9 +134,11 @@ class Visualization2 extends visualization
 
   constructor: (@app, config, @options) ->
     @config = config
+    @accessConfig = new Viz2AccessConfig @config
     @_chart = null
     @document = @app.window.document
     @d3document = d3.select @document
+    @accessibleStatusElement = @document.getElementById 'accessibleStatus'
 
 
     @getData()
@@ -157,6 +161,8 @@ class Visualization2 extends visualization
     @addSectors()
     @addScenarios()
     @render()
+    @setupGraphEvents()
+
 
   tearDown: ->
     # TODO: Consider garbage collection and event listeners
@@ -944,6 +950,82 @@ class Visualization2 extends visualization
       @app.router.navigate @config.routerParams()
 
     @app.datasetRequester.updateAndRequestIfRequired newConfig, update
+
+
+
+  setupGraphEvents: ->
+    graphElement = @document.getElementById 'graphPanel'
+
+    graphElement.addEventListener 'keydown', (event) =>
+
+      # Only process the input if there is at least one selected source
+      return if @config.sources.length == 0
+
+      switch event.key
+        when 'ArrowRight'
+          event.preventDefault()
+          @accessConfig.setYear @accessConfig.activeYear + 1
+          @updateAccessibleFocus()
+        when 'ArrowLeft'
+          event.preventDefault()
+          @accessConfig.setYear @accessConfig.activeYear - 1
+          @updateAccessibleFocus()
+        when 'ArrowUp'
+          event.preventDefault()
+          @accessConfig.setSource @config.nextActiveSourceForward(@accessConfig.activeSource)
+          @updateAccessibleFocus()
+        when 'ArrowDown'
+          event.preventDefault()
+          @accessConfig.setSource @config.nextActiveSourceReverse(@accessConfig.activeSource)
+          @updateAccessibleFocus()
+
+    graphElement.addEventListener 'focus', =>
+      # When we return to focusing the graph element, the graph sub element that the user
+      # had focused may have been toggled off (by removing the source).
+      # Calling validate ensures that the sub-focus element is positioned correctly
+      if @config.sources.length > 0
+        @accessConfig.validate @config
+        @updateAccessibleFocus()
+      else
+        # If there are no active sources, we handle the special case
+        @d3document.select '#graphPanel'
+          .attr
+            'aria-label': Tr.altText.emptySourceSelection[@app.language]
+            'aria-activedescendant': null
+
+
+  updateAccessibleFocus: ->
+    @render()
+    # TODO: This whole approach will need to be a bit different ...
+
+    # accessibleFocusElement = @document.querySelector '.accessibleFocus'
+    # accessibleFocusElement.dispatchEvent new Event 'accessibleFocus'
+
+
+  # # The order of execution is a little convoluted here.
+  # # We pass this callback to stacked bar chart at initialization time.
+  # # When the chart is focused, we dispatch an 'accessibleFocus' event, and the bar chart
+  # # handler calls this callback with the focused data element.
+  # # We need access to the accessible config, the visualization config, and the data
+  # # element itself to create this information string.
+  # onAccessibleFocus: (d) =>
+  #   regionString = Tr.regionSelector.names[@accessConfig.activeProvince][@app.language]
+  #   unitString = Tr.altText.unitNames[@config.unit][@app.language]
+  #   description = "#{regionString} #{@accessConfig.activeYear}, #{d.data.y.toFixed 2} #{unitString}"
+
+  #   @d3document.select '#graphPanel'
+  #     .attr
+  #       'aria-label': description
+  #       'aria-activedescendant': "barElement-#{d.data.x}-#{d.name}"
+
+  #   @accessibleStatusElement.innerHTML = description
+
+
+  # chartElementClick: (d) =>
+  #   @accessConfig.setYear d.data.x
+  #   @accessConfig.setProvince d.name
+  #   @updateAccessibleFocus()
+
 
 
 module.exports = Visualization2
