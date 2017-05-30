@@ -996,34 +996,34 @@ class Visualization2 extends visualization
         @d3document.select '#graphPanel'
           .attr
             'aria-label': Tr.altText.emptySourceSelection[@app.language]
-            'aria-activedescendant': 'accessibleFocusDot'
+        @accessibleFocusDot.attr
+          transform: 'translate(-1000, -1000)'
+        @_chart.tooltip.style.visibility = 'hidden'
 
 
   updateAccessibleFocus: ->
     @render()
 
     item = @_chart.getStackDictionaryInfoForAccessibility @accessConfig.activeSource, @accessConfig.activeYear
+    # The case where there is no active item is handled before the call to
+    # updateAccessibleFocus
+    return unless item?
 
-    if item?
-      xCoord = @xScale()(item.x)
-      yCoord = @yScale()(item.y + item.y0)
+    xCoord = @xScale()(item.x)
+    yCoord = @yScale()(item.y + item.y0)
+    @accessibleFocusDot.attr
+      transform: "translate(#{xCoord}, #{yCoord})"
 
-      @accessibleFocusDot.attr
-        transform: "translate(#{xCoord}, #{yCoord})"
+    sourceString = Tr.sourceSelector.sources[@accessConfig.activeSource][@app.language]
+    unitString = Tr.altText.unitNames[@config.unit][@app.language]
+    description = "#{sourceString} #{@accessConfig.activeYear}, #{item.y.toFixed 2} #{unitString}"
+    @d3document.select '#graphPanel'
+      .attr
+        'aria-label': description
+    @accessibleStatusElement.innerHTML = description
 
-      sourceString = Tr.sourceSelector.sources[@accessConfig.activeSource][@app.language]
-      unitString = Tr.altText.unitNames[@config.unit][@app.language]
-      description = "#{sourceString} #{@accessConfig.activeYear}, #{item.y.toFixed 2} #{unitString}"
+    @_chart.displayTooltipKeyboard @accessConfig.activeSource, @accessConfig.activeYear, item.y, @accessibleFocusDotElement
 
-      @d3document.select '#graphPanel'
-        .attr
-          'aria-label': description
-
-      @accessibleStatusElement.innerHTML = description
-      @_chart.displayTooltipKeyboard @accessConfig.activeSource, @accessConfig.activeYear, item.y, @accessibleFocusDotElement
-
-    else
-      console.log 'handle the null case ... '
 
 
   # chartElementClick: (d) =>
@@ -1043,6 +1043,10 @@ class Visualization2 extends visualization
     @accessibleFocusDot = @d3document.select '#accessibleFocusDot'
     @accessibleFocusDotElement = @document.getElementById 'accessibleFocusDot'
     
+    @d3document.select '#graphPanel'
+      .attr
+        'aria-activedescendant': 'accessibleFocusDot'
+
     @accessibleFocusDot
       .append 'circle'
         .attr
