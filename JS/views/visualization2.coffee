@@ -763,6 +763,15 @@ class Visualization2 extends visualization
         @app.animationDuration
       groupId:
         'graphGroup'
+      areaElementClick: (d) =>
+        coords = d3.mouse graphPanel
+
+        @accessConfig.setYear Math.floor(@xScale().invert(coords[0]))
+        @accessConfig.setSource d.key
+
+        @updateAccessibleFocus()
+
+
 
     @_chart = new stackedAreaChart @app, '#graphSVG', @xScale(), @yScale(), stackedOptions
 
@@ -770,7 +779,7 @@ class Visualization2 extends visualization
     @sourceMenu = @buildSourceMenu()
 
     # Build a dot to serve as the accessible focus
-    @buildAccesibleFocusDot()
+    @buildAccessibleFocusDot()
 
 
 
@@ -1033,7 +1042,7 @@ class Visualization2 extends visualization
 
 
 
-  buildAccesibleFocusDot: ->
+  buildAccessibleFocusDot: ->
     @d3document.select '#graphGroup'
       .append 'g'
       .attr

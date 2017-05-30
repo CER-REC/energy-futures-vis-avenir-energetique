@@ -8,11 +8,15 @@ Constants = require '../Constants.coffee'
 class StackedAreaChart extends StackedBarChart
   stackedAreaDefaults:
     strokeWidth: 1
+    # coffeelint: disable=no_empty_functions
+    areaElementClick: ->
+    # coffeelint: enable=no_empty_functions
 
   constructor: (@app, parent, x, y, options = {}) ->
 
     @options = _.extend {}, @stackedAreaDefaults, options
     @_strokeWidth = @options.strokeWidth
+    @areaElementClick = @options.areaElementClick
     super @app, parent, x, y, @options
     @redraw()
 
@@ -130,6 +134,7 @@ class StackedAreaChart extends StackedBarChart
           @displayTooltip d.key
         .on 'mouseout', =>
           @tooltip.style.visibility = 'hidden'
+        .on 'click', @areaElementClick
 
       presentArea.enter().append 'path'
         .attr
@@ -162,6 +167,7 @@ class StackedAreaChart extends StackedBarChart
           @displayTooltip d.key
         .on 'mouseout', =>
           @tooltip.style.visibility = 'hidden'
+        .on 'click', @areaElementClick
 
       futureArea.enter().append 'path'
         .attr
