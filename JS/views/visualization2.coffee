@@ -764,6 +764,7 @@ class Visualization2 extends visualization
       groupId:
         'graphGroup'
       areaElementClick: (d) =>
+        graphPanel = @document.getElementById 'graphPanel'
         coords = d3.mouse graphPanel
 
         @accessConfig.setYear Math.floor(@xScale().invert(coords[0]))
@@ -1032,13 +1033,6 @@ class Visualization2 extends visualization
     @accessibleStatusElement.innerHTML = description
 
     @_chart.displayTooltipKeyboard @accessConfig.activeSource, @accessConfig.activeYear, item.y, @accessibleFocusDotElement
-
-
-
-  # chartElementClick: (d) =>
-  #   @accessConfig.setYear d.data.x
-  #   @accessConfig.setProvince d.name
-  #   @updateAccessibleFocus()
 
 
 
