@@ -769,6 +769,11 @@ class Visualization2 extends visualization
     @_provinceMenu = @buildProvinceMenu()
     @sourceMenu = @buildSourceMenu()
 
+    # Build a dot to serve as the accessible focus
+    @buildAccesibleFocusDot()
+
+
+
   adjustViz: ->
     @_chart.mapping @sourceMenuData()
     @_chart.data @seriesData
@@ -991,34 +996,34 @@ class Visualization2 extends visualization
         @d3document.select '#graphPanel'
           .attr
             'aria-label': Tr.altText.emptySourceSelection[@app.language]
-            'aria-activedescendant': null
+            'aria-activedescendant': 'accessibleFocusDot'
 
 
   updateAccessibleFocus: ->
     @render()
-    # TODO: This whole approach will need to be a bit different ...
 
-    # accessibleFocusElement = @document.querySelector '.accessibleFocus'
-    # accessibleFocusElement.dispatchEvent new Event 'accessibleFocus'
+    item = @_chart.getStackDictionaryInfoForAccessibility @accessConfig.activeSource, @accessConfig.activeYear
 
+    if item?
+      xCoord = @xScale()(item.x)
+      yCoord = @yScale()(item.y + item.y0)
 
-  # # The order of execution is a little convoluted here.
-  # # We pass this callback to stacked bar chart at initialization time.
-  # # When the chart is focused, we dispatch an 'accessibleFocus' event, and the bar chart
-  # # handler calls this callback with the focused data element.
-  # # We need access to the accessible config, the visualization config, and the data
-  # # element itself to create this information string.
-  # onAccessibleFocus: (d) =>
-  #   regionString = Tr.regionSelector.names[@accessConfig.activeProvince][@app.language]
-  #   unitString = Tr.altText.unitNames[@config.unit][@app.language]
-  #   description = "#{regionString} #{@accessConfig.activeYear}, #{d.data.y.toFixed 2} #{unitString}"
+      @accessibleFocusDot.attr
+        transform: "translate(#{xCoord}, #{yCoord})"
 
-  #   @d3document.select '#graphPanel'
-  #     .attr
-  #       'aria-label': description
-  #       'aria-activedescendant': "barElement-#{d.data.x}-#{d.name}"
+      sourceString = Tr.sourceSelector.sources[@accessConfig.activeSource][@app.language]
+      unitString = Tr.altText.unitNames[@config.unit][@app.language]
+      description = "#{sourceString} #{@accessConfig.activeYear}, #{item.y.toFixed 2} #{unitString}"
 
-  #   @accessibleStatusElement.innerHTML = description
+      @d3document.select '#graphPanel'
+        .attr
+          'aria-label': description
+
+      @accessibleStatusElement.innerHTML = description
+      @_chart.displayTooltipKeyboard @accessConfig.activeSource, @accessConfig.activeYear, item.y, @accessibleFocusDotElement
+
+    else
+      console.log 'handle the null case ... '
 
 
   # chartElementClick: (d) =>
@@ -1026,6 +1031,29 @@ class Visualization2 extends visualization
   #   @accessConfig.setProvince d.name
   #   @updateAccessibleFocus()
 
+
+
+  buildAccesibleFocusDot: ->
+    @d3document.select '#graphGroup'
+      .append 'g'
+      .attr
+        id: 'accessibleFocusDot'
+        class: 'accessibleFocus'
+
+    @accessibleFocusDot = @d3document.select '#accessibleFocusDot'
+    @accessibleFocusDotElement = @document.getElementById 'accessibleFocusDot'
+    
+    @accessibleFocusDot
+      .append 'circle'
+        .attr
+          r: 10
+          fill: 'red'
+          'fill-opacity': 0.5
+    @accessibleFocusDot
+      .append 'circle'
+        .attr
+          r: 5
+          fill: 'red'
 
 
 module.exports = Visualization2

@@ -15,7 +15,6 @@ class StackedBarChart extends BarChart
   constructor: (@app, parent, x, y, options = {}) ->
 
     @options = _.extend {}, @stackedChartDefaults, options
-    @_stackData = []
     @_stackDictionary = {}
 
     # Maybe this is required?
@@ -33,10 +32,6 @@ class StackedBarChart extends BarChart
       return @_mapping
     @_mapping = mapping
     @generateStackData()
-
-  # The data after the stack layout is applied: useful for generating new axis
-  stackData: ->
-    return @_stackData
 
   # We use an object for the data in this case
   data: (data) ->
@@ -72,7 +67,7 @@ class StackedBarChart extends BarChart
                 emptyVals.push {x: year, y:0}
               emptyVals
         _stackData.push provinceData
-    @_stackData = stack _stackData
+    stack _stackData
     for province in _stackData
       @_stackDictionary[province.name] = province
     @redraw()
