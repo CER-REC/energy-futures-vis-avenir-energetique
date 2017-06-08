@@ -202,4 +202,42 @@ class Visualization4Configuration
     filename
 
 
+
+  # Given an active scenario, find the next scenario which should become active if this
+  # active scenario were removed from the scenarios
+  nextActiveScenario: (activeScenario) ->
+    scenario = @nextActiveScenarioReverse activeScenario
+    return scenario if scenario?
+    
+    scenario = @nextActiveScenarioForward activeScenario
+    return scenario if scenario?
+
+    return null
+
+
+  # Scan forward through the scenarios in order until we find one which is in the active
+  # set
+  nextActiveScenarioForward: (activeScenario) ->
+    scenariosInOrder = Constants.datasetDefinitions[@dataset].scenarios
+    activeScenarioIndex = scenariosInOrder.indexOf activeScenario
+
+    for i in [(activeScenarioIndex + 1)...scenariosInOrder.length]
+      if @scenarios.includes scenariosInOrder[i]
+        return scenariosInOrder[i]
+
+    return null
+
+  # Scan backward through the scenarios in order until we find one which is in the active
+  # set
+  nextActiveScenarioReverse: (activeScenario) ->
+    scenariosInOrder = Constants.datasetDefinitions[@dataset].scenarios
+    activeScenarioIndex = scenariosInOrder.indexOf activeScenario
+
+    for i in [(activeScenarioIndex - 1)..0]
+      if @scenarios.includes scenariosInOrder[i]
+        return scenariosInOrder[i]
+
+    return null
+
+
 module.exports = Visualization4Configuration

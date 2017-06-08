@@ -78,15 +78,16 @@ module.exports =
     'oct2016'
   ]
 
+  # The order of the scenarios here is important to the UI
   datasetDefinitions:
     jan2016:
       scenarios: [
         'reference'
         'high'
-        'low'
         'highLng'
-        'noLng'
         'constrained'
+        'low'
+        'noLng'
       ]
 
     oct2016:
