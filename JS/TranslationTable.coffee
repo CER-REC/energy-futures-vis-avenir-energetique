@@ -1731,6 +1731,11 @@ module.exports =
       en: 'Use the arrow keys to navigate the chart.'
       fr: 'Utiliser les boutons flèches pour naviguer le graphique.'
 
+    viz4GraphAccessibleInstructions:
+      en: 'Use the arrow keys to navigate the chart.'
+      fr: 'Utiliser les boutons flèches pour naviguer le graphique.'
+
+
     # TODO: French translations need validation
     emptyRegionSelection:
       en: 'No regions selected'
@@ -1738,6 +1743,9 @@ module.exports =
     emptySourceSelection:
       en: 'No sources selected'
       fr: 'Aucune source selectionnée'
+    emptyScenarioSelection:
+      en: 'No scenarios selected'
+      fr: 'Aucune scénario selectionné'
 
 
   report:

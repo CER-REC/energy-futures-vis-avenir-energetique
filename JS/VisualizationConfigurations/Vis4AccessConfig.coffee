@@ -33,13 +33,13 @@ class Vis4AccessConfig
     if Constants.datasetDefinitions[viz4config.dataset].scenarios.includes @activeScenario
       # The active scenario is in the set of possible scenarios, for this dataset.
       # Find the next nearest scenario to become the new active scenario.
-      @setScenario viz4config.nextActiveScenario(@activeScenario)
+      @setScenario viz4config.nextActiveScenario(@activeScenario), viz4config.dataset
     else
       # The dataset has changed, and the active scenario is not in the set of possible
       # scenarios for the new dataset.
       # In that case, there is no way to locate a 'neighbouring' scenario to select, so we
       # just take the first scenario in the configuration.
-      @setScenario viz4config.scenarios[0]
+      @setScenario viz4config.scenarios[0], viz4config.dataset
 
     # if viz4config.scenarios is empty, we will arrive here without having changed the
     # scenario on the accessibility config.

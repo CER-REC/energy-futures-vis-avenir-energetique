@@ -138,7 +138,7 @@ class StackedAreaChart extends StackedBarChart
 
       presentArea.enter().append 'path'
         .attr
-          class: 'presentArea'
+          class: 'presentArea pointerCursor'
           d: (d) =>
             area @_stackDictionary[d.key].values.map (data) ->
               x: data.x
@@ -171,7 +171,7 @@ class StackedAreaChart extends StackedBarChart
 
       futureArea.enter().append 'path'
         .attr
-          class: 'futureArea'
+          class: 'futureArea pointerCursor'
           d: (d) =>
             areaFuture @_stackDictionary[d.key].values.map (data) ->
               x: data.x

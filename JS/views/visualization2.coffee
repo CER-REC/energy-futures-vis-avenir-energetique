@@ -1012,8 +1012,6 @@ class Visualization2 extends visualization
 
 
   updateAccessibleFocus: ->
-    @render()
-
     item = @_chart.getStackDictionaryInfoForAccessibility @accessConfig.activeSource, @accessConfig.activeYear
     # The case where there is no active item is handled before the call to
     # updateAccessibleFocus

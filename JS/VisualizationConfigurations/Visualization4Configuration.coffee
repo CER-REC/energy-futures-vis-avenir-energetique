@@ -205,6 +205,12 @@ class Visualization4Configuration
 
   # Given an active scenario, find the next scenario which should become active if this
   # active scenario were removed from the scenarios
+
+  # TODO: Currently, we are simply taking the drawing order to determine the next/previous
+  # scenario, which works adequately. A potential improvement: take the values for the
+  # current scenarios/datset/year, and compute which is actually above/below the current
+  # position on the chart.
+  # Consider: reference + lowprice, jan2016, total demand. The lines cross...
   nextActiveScenario: (activeScenario) ->
     scenario = @nextActiveScenarioReverse activeScenario
     return scenario if scenario?
@@ -218,11 +224,12 @@ class Visualization4Configuration
   # Scan forward through the scenarios in order until we find one which is in the active
   # set
   nextActiveScenarioForward: (activeScenario) ->
-    scenariosInOrder = Constants.datasetDefinitions[@dataset].scenarios
+    scenariosInOrder = Constants.scenarioDrawingOrder
     activeScenarioIndex = scenariosInOrder.indexOf activeScenario
+    potentialScenarios = Constants.datasetDefinitions[@dataset].scenariosPerSelection[@mainSelection]
 
     for i in [(activeScenarioIndex + 1)...scenariosInOrder.length]
-      if @scenarios.includes scenariosInOrder[i]
+      if @scenarios.includes(scenariosInOrder[i]) and potentialScenarios.includes(scenariosInOrder[i])
         return scenariosInOrder[i]
 
     return null
@@ -230,14 +237,29 @@ class Visualization4Configuration
   # Scan backward through the scenarios in order until we find one which is in the active
   # set
   nextActiveScenarioReverse: (activeScenario) ->
-    scenariosInOrder = Constants.datasetDefinitions[@dataset].scenarios
+    scenariosInOrder = Constants.scenarioDrawingOrder
     activeScenarioIndex = scenariosInOrder.indexOf activeScenario
+    potentialScenarios = Constants.datasetDefinitions[@dataset].scenariosPerSelection[@mainSelection]
 
     for i in [(activeScenarioIndex - 1)..0]
-      if @scenarios.includes scenariosInOrder[i]
+      if @scenarios.includes(scenariosInOrder[i]) and potentialScenarios.includes(scenariosInOrder[i])
         return scenariosInOrder[i]
 
     return null
+
+
+  # Are there any visible scenarios with this configuration?
+  scenariosVisible: ->
+    # Whether any scenarios are visible or not depends on the scenarios for in the
+    # dataset + mainSelection, and whether any of those are in the current set.
+    potentialScenarios = Constants.datasetDefinitions[@dataset].scenariosPerSelection[@mainSelection]
+
+    for scenario in potentialScenarios
+      return true if @scenarios.includes scenario
+
+    return false
+
+
 
 
 module.exports = Visualization4Configuration

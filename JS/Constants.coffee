@@ -78,7 +78,7 @@ module.exports =
     'oct2016'
   ]
 
-  # The order of the scenarios here is important to the UI
+
   datasetDefinitions:
     jan2016:
       scenarios: [
@@ -89,6 +89,12 @@ module.exports =
         'low'
         'noLng'
       ]
+      scenariosPerSelection:
+        energyDemand: ['high', 'highLng', 'reference', 'noLng', 'constrained', 'low']
+        electricityGeneration: ['high', 'highLng', 'reference', 'noLng', 'constrained', 'low']
+        oilProduction: ['high', 'reference', 'constrained', 'low']
+        gasProduction: ['high', 'highLng', 'reference', 'noLng', 'low']
+
 
     oct2016:
       scenarios: [
@@ -96,8 +102,20 @@ module.exports =
         'high'
         'low'
       ]
+      scenariosPerSelection:
+        energyDemand: ['high', 'reference', 'low']
+        electricityGeneration: ['high', 'reference', 'low']
+        oilProduction: ['high', 'reference', 'low']
+        gasProduction: ['high', 'reference', 'low']
 
-
+  # The order in which the scenarios are drawn, in viz4.
+  # Generally, this order moves from highest to lowest. Since lower valued scenarios
+  # have smaller areas, and are drawn last / on top of higher valued scenarios, this
+  # gives us some clickable area for each of the scenarios being drawn.
+  # But, there are some configurations where this ordering does not work. And since lines
+  # in a line graph can and do cross each other, some configurations have no possible
+  # ordering that can work.
+  scenarioDrawingOrder: ['high', 'highLng', 'reference', 'noLng', 'constrained', 'low']
 
 
   years: [

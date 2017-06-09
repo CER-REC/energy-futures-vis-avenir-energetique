@@ -16,6 +16,7 @@ if Platform.name == 'browser'
 ControlsHelpPopover = require '../popovers/ControlsHelpPopover.coffee'
 
 ProvinceAriaText = require '../ProvinceAriaText.coffee'
+Viz4AccessConfig = require '../VisualizationConfigurations/Vis4AccessConfig.coffee'
 
 
 class Visualization4
@@ -29,6 +30,7 @@ class Visualization4
       selectScenarioLabel: Tr.scenarioSelector.selectScenarioLabel[@app.language]
       selectRegionLabel: Tr.regionSelector.selectRegionLabel[@app.language]
       svgStylesheet: SvgStylesheetTemplate
+      graphDescription: Tr.altText.viz4GraphAccessibleInstructions[@app.language]
 
       altText:
         mainSelectionHelp: Tr.altText.mainSelectionHelp[@app.language]
@@ -108,6 +110,7 @@ class Visualization4
 
   constructor: (@app, config, @options) ->
     @config = config
+    @accessConfig = new Viz4AccessConfig @config
     @outerHeight = 700
     @margin =
       top: 20
@@ -116,6 +119,7 @@ class Visualization4
       left: 10
     @document = @app.window.document
     @d3document = d3.select @document
+    @accessibleStatusElement = @document.getElementById 'accessibleStatus'
 
 
     if Platform.name == 'browser'
@@ -129,6 +133,7 @@ class Visualization4
 
     @render()
     @redraw()
+    @setupGraphEvents()
 
 
   redraw: ->
@@ -460,45 +465,41 @@ class Visualization4
     
 
   graphScenarioData: ->
-    reference =
-      tooltip: Tr.selectorTooltip.scenarioSelector.referenceButton[@app.language]
-      key: 'reference'
-      colour: '#999999'
-    high =
-      tooltip: Tr.selectorTooltip.scenarioSelector.highPriceButton[@app.language]
-      key: 'high'
-      colour: '#0C2C84'
-    highLng =
-      tooltip: Tr.selectorTooltip.scenarioSelector.highLngButton[@app.language]
-      key: 'highLng'
-      colour: '#225EA8'
-    constrained =
-      tooltip: Tr.selectorTooltip.scenarioSelector.constrainedButton[@app.language]
-      key: 'constrained'
-      colour: '#41B6C4'
-    low =
-      tooltip: Tr.selectorTooltip.scenarioSelector.lowPriceButton[@app.language]
-      key: 'low'
-      colour: '#7FCDBB'
-    noLng =
-      tooltip: Tr.selectorTooltip.scenarioSelector.noLngButton[@app.language]
-      key: 'noLng'
-      colour: '#C7E9B4'
+    scenarioData =
+      reference:
+        tooltip: Tr.selectorTooltip.scenarioSelector.referenceButton[@app.language]
+        key: 'reference'
+        colour: '#999999'
+      high:
+        tooltip: Tr.selectorTooltip.scenarioSelector.highPriceButton[@app.language]
+        key: 'high'
+        colour: '#0C2C84'
+      highLng:
+        tooltip: Tr.selectorTooltip.scenarioSelector.highLngButton[@app.language]
+        key: 'highLng'
+        colour: '#225EA8'
+      constrained:
+        tooltip: Tr.selectorTooltip.scenarioSelector.constrainedButton[@app.language]
+        key: 'constrained'
+        colour: '#41B6C4'
+      low:
+        tooltip: Tr.selectorTooltip.scenarioSelector.lowPriceButton[@app.language]
+        key: 'low'
+        colour: '#7FCDBB'
+      noLng:
+        tooltip: Tr.selectorTooltip.scenarioSelector.noLngButton[@app.language]
+        key: 'noLng'
+        colour: '#C7E9B4'
 
+    scenariosInSelection = Constants.datasetDefinitions[@config.dataset].scenariosPerSelection[@config.mainSelection]
 
-    switch @config.mainSelection
-      when 'energyDemand', 'electricityGeneration'
-        scenariosInOrder = [reference, high, highLng, constrained, low, noLng]
-      when 'oilProduction'
-        scenariosInOrder = [reference, high, constrained, low]
-      when 'gasProduction'
-        scenariosInOrder = [reference, high, highLng, low, noLng]
 
     graphData = @graphData()
     currentGraphScenarioData = []
-    for scenario in scenariosInOrder
-      if @config.scenarios.includes scenario.key
-        scenario.data = graphData[scenario.key]
+    for scenarioName in Constants.scenarioDrawingOrder
+      if (@config.scenarios.includes scenarioName) and (scenariosInSelection.includes scenarioName)
+        scenario = scenarioData[scenarioName]
+        scenario.data = graphData[scenarioName]
         currentGraphScenarioData.push scenario
     currentGraphScenarioData
     
@@ -599,6 +600,9 @@ class Visualization4
       # We only need to build once, but we need to build after the axis are built
       # for alignment
       @provinceMenu = @buildProvinceMenu()
+
+    # Build a dot to serve as the accessible focus
+    @buildAccessibleFocusDot()
     @renderGraph()
 
   renderDatasetSelector: ->
@@ -1038,10 +1042,18 @@ class Visualization4
         @displayTooltip d.key
       .on 'mouseout', =>
         @tooltip.style.visibility = 'hidden'
+      .on 'click', (d) =>
+        graphPanel = @document.getElementById 'graphPanel'
+        coords = d3.mouse graphPanel
+
+        @accessConfig.setYear Math.floor(@xAxisScale().invert(coords[0]))
+        @accessConfig.setScenario d.key, @config.dataset
+
+        @updateAccessibleFocus()
 
     graphAreaSelectors.enter().append 'path'
       .attr
-        class: 'graphAreaPresent'
+        class: 'graphAreaPresent pointerCursor'
         d: (d) ->
           area d.data.map (val) ->
             year: val.year
@@ -1050,6 +1062,7 @@ class Visualization4
         fill: (d) ->
           colour = d3.rgb d.colour
           "url(#viz4gradPresent#{d.key}) rgba(#{colour.r}, #{colour.g}, #{colour.b}, 0.5)"
+
 
     graphAreaSelectors.transition()
       .duration duration
@@ -1072,10 +1085,19 @@ class Visualization4
         @displayTooltip d.key
       .on 'mouseout', =>
         @tooltip.style.visibility = 'hidden'
+      .on 'click', (d) =>
+        graphPanel = @document.getElementById 'graphPanel'
+        coords = d3.mouse graphPanel
+
+        @accessConfig.setYear Math.floor(@xAxisScale().invert(coords[0]))
+        @accessConfig.setScenario d.key, @config.dataset
+
+        @updateAccessibleFocus()
+
 
     graphFutureAreaSelectors.enter().append 'path'
       .attr
-        class: 'graphAreaFuture'
+        class: 'graphAreaFuture pointerCursor'
         d: (d) ->
           areaFuture d.data.map (val) ->
             year: val.year
@@ -1149,14 +1171,14 @@ class Visualization4
         href: "csv_data#{ParamsToUrlString(@config.routerParams())}"
 
     # Stroke the reference line a second time, to ensure it is drawn on top of the others
-    # We rely on the fact that the reference case is sorted first in graphScenarioData
     # TODO: Not sure I like this approach, investigate controlling the draw order of the
     # lines.
-    if @config.scenarios.includes('reference') && graphScenarioData.length > 0
+    referenceData = graphScenarioData.find (item) -> item.key == 'reference'
+    if referenceData?
       refCaseLine = d3.select @document
         .select '#referenceCaseLineGroup'
         .selectAll '#refCaseLine'
-        .data [graphScenarioData[0]]
+        .data [referenceData]
 
       refCaseLine.enter().append('path')
         .attr
@@ -1187,12 +1209,11 @@ class Visualization4
 
     
     # Draw 'dots' along the reference line, to add to its prominence
-    # We rely on the fact that the reference case is sorted first in graphScenarioData
-    if @config.scenarios.includes('reference') && graphScenarioData.length > 0
+    if referenceData?
       refCaseDots = d3.select @document
         .select '#referenceCaseLineGroup'
         .selectAll '.refCaseDot'
-        .data graphScenarioData[0].data
+        .data referenceData.data
 
       refCaseDots.enter().append 'circle'
         .attr 'class', 'refCaseDot'
@@ -1244,9 +1265,136 @@ class Visualization4
     @tooltip.innerHTML = "#{Tr.scenarioSelector.names[scenario][@app.language]} (#{year}) #{tooltipDatum.value.toFixed(2)}"
 
 
+  displayTooltipKeyboard: (scenario, year, accessibleFocusDot) ->
+    data = @graphData()
+    return unless data[scenario]?
+
+    tooltipDatum = data[scenario].find (item) ->
+      item.year == year
+    return unless tooltipDatum
+
+
+    # First, find the position in absolute page coordinates where the tooltip should
+    # go
+    dotBounds = accessibleFocusDot.getBoundingClientRect()
+    xDest = dotBounds.right + window.scrollX + Constants.tooltipXOffset
+    yDest = dotBounds.top + window.scrollY + dotBounds.height / 2
+
+    # Second, calculate the offset for the tooltip element based on its parent
+    parentBounds = @tooltipParent.getBoundingClientRect()
+    xParentOffset = parentBounds.left + window.scrollX
+    yParentOffset = parentBounds.top + window.scrollY
+
+    # Third, place the tooltip
+    @tooltip.style.visibility = 'visible'
+    @tooltip.style.left = "#{xDest - xParentOffset}px"
+    @tooltip.style.top = "#{yDest - yParentOffset}px"
+
+    @tooltip.innerHTML = "#{Tr.scenarioSelector.names[scenario][@app.language]} (#{year}) #{tooltipDatum.value.toFixed(2)}"
+
+
   tearDown: ->
     # TODO: We might want to render with empty lists for buttons, so that
     # garbage collection of event handled dom nodes goes smoothly
     @document.getElementById('visualizationContent').innerHTML = ''
+
+
+  setupGraphEvents: ->
+    graphElement = @document.getElementById 'graphPanel'
+
+    graphElement.addEventListener 'keydown', (event) =>
+
+      # Only process the input if there is at least one selected scenario
+      return if @config.scenarios.length == 0
+
+      switch event.key
+        when 'ArrowRight'
+          event.preventDefault()
+          @accessConfig.setYear @accessConfig.activeYear + 1
+          @updateAccessibleFocus()
+        when 'ArrowLeft'
+          event.preventDefault()
+          @accessConfig.setYear @accessConfig.activeYear - 1
+          @updateAccessibleFocus()
+        when 'ArrowUp'
+          event.preventDefault()
+          nextScenario = @config.nextActiveScenarioReverse @accessConfig.activeScenario
+          @accessConfig.setScenario nextScenario, @config.dataset
+          @updateAccessibleFocus()
+        when 'ArrowDown'
+          event.preventDefault()
+          nextScenario = @config.nextActiveScenarioForward @accessConfig.activeScenario
+          @accessConfig.setScenario nextScenario, @config.dataset
+          @updateAccessibleFocus()
+
+    graphElement.addEventListener 'focus', =>
+      # When we return to focusing the graph element, the graph sub element that the user
+      # had focused may have been toggled off (by removing the scenario).
+      # Calling validate ensures that the sub-focus element is positioned correctly
+      if @config.scenariosVisible()
+        @accessConfig.validate @config
+        @updateAccessibleFocus()
+      else
+        # If there are no active scenarios, we handle the special case
+        @d3document.select '#graphPanel'
+          .attr
+            'aria-label': Tr.altText.emptyScenarioSelection[@app.language]
+        @accessibleFocusDot.attr
+          transform: 'translate(-1000, -1000)'
+        @tooltip.style.visibility = 'hidden'
+
+
+  updateAccessibleFocus: ->
+    # The case where there is no active item is handled before the call to
+    # updateAccessibleFocus
+    data = @graphData()
+    scenarioData = data[@accessConfig.activeScenario]
+    return unless scenarioData?
+    item = scenarioData.find (scenarioDataItem) =>
+      scenarioDataItem.year == @accessConfig.activeYear
+    return unless item?
+
+    xCoord = @xAxisScale()(item.year)
+    yCoord = @yAxisScale()(item.value)
+    @accessibleFocusDot.attr
+      transform: "translate(#{xCoord}, #{yCoord})"
+
+    scenarioString = Tr.scenarioSelector.names[@accessConfig.activeScenario][@app.language]
+    unitString = Tr.altText.unitNames[@config.unit][@app.language]
+    description = "#{scenarioString} #{@accessConfig.activeYear}, #{item.value.toFixed 2} #{unitString}"
+    @d3document.select '#graphPanel'
+      .attr
+        'aria-label': description
+    @accessibleStatusElement.innerHTML = description
+
+    @displayTooltipKeyboard @accessConfig.activeScenario, @accessConfig.activeYear, @accessibleFocusDotElement
+
+
+  # TODO: Find a way to extract this? duplicated in viz2.
+  buildAccessibleFocusDot: ->
+    @d3document.select '#graphGroup'
+      .append 'g'
+      .attr
+        id: 'accessibleFocusDot'
+        class: 'accessibleFocus'
+
+    @accessibleFocusDot = @d3document.select '#accessibleFocusDot'
+    @accessibleFocusDotElement = @document.getElementById 'accessibleFocusDot'
+    
+    @d3document.select '#graphPanel'
+      .attr
+        'aria-activedescendant': 'accessibleFocusDot'
+
+    @accessibleFocusDot
+      .append 'circle'
+        .attr
+          r: 10
+          fill: 'red'
+          'fill-opacity': 0.5
+    @accessibleFocusDot
+      .append 'circle'
+        .attr
+          r: 5
+          fill: 'red'
 
 module.exports = Visualization4
