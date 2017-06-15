@@ -31,7 +31,7 @@ class Vis2AccessConfig
 
     @setSource viz2config.nextActiveSource(@activeSource)
 
-    # if viz2config.sources is empty, we will arrive here without having changed the
+    # If viz2config.sources is empty, we will arrive here without having changed the
     # source on the accessibility config.
     # This is fine, the case where no sources are selected is a special case to be
     # handled separately by the UI.

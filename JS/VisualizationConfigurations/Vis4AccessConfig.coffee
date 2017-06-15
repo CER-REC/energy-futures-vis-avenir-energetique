@@ -41,7 +41,7 @@ class Vis4AccessConfig
       # just take the first scenario in the configuration.
       @setScenario viz4config.scenarios[0], viz4config.dataset
 
-    # if viz4config.scenarios is empty, we will arrive here without having changed the
+    # If viz4config.scenarios is empty, we will arrive here without having changed the
     # scenario on the accessibility config.
     # This is fine, the case where no scenarios are selected is a special case to be
     # handled separately by the UI.

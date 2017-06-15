@@ -7,6 +7,7 @@ Platform = require '../Platform.coffee'
 class BubbleChart extends Chart
   bubbleChartDefaults:
     mapping: []
+    bubbleClass: ->
 
 
   constructor: (@app, parent, options = {}) ->
@@ -26,6 +27,7 @@ class BubbleChart extends Chart
       x : @chart_options.position.x
       y : @chart_options.position.y
     @_data = @options.data
+    @bubbleClass = @options.bubbleClass
     @resize()
 
     @redraw()
@@ -126,11 +128,11 @@ class BubbleChart extends Chart
         r: 0
       .style
         fill: (d) =>
-          if @_mapping[d.source] then @_mapping[d.source].colour else 'none'
+          if @_mapping[d.leafName] then @_mapping[d.leafName].colour else 'none'
         'fill-opacity': 0.8
-        stroke: (d) -> if d.depth == 0 then 'none' else '#333333'
-        'stroke-width': (d) =>
-          if @_mapping[d.source] or d.depth == 0  or (d.depth == 1 and !(d.children)) then 0 else 1
+        stroke: (d) -> if d.depth == 1 then '#333333'
+        'stroke-width': (d) ->
+          if d.depth == 0 or (d.depth == 1 and !(d.children)) then 0
         
 
     node.filter (d) -> d.depth == 2
@@ -151,6 +153,14 @@ class BubbleChart extends Chart
 
       .on @mouseout_event_name, =>
         @tooltip.style.visibility = 'hidden'
+
+      .attr
+        class: (d) =>
+          "circle-#{d.leafName} circle-#{d.parent.name} #{@bubbleClass d}"
+        'data-province': (d) ->
+          d.province
+        'data-source': (d) ->
+          d.source
 
     enterSelection.filter((d) -> d.depth == 1 ).append 'g'
           
@@ -296,7 +306,7 @@ class BubbleChart extends Chart
 
 
       circle_radius_function = (d) =>
-        if (@_mapping[d.source] and !(@_mapping[d.source].present)) then 0 else d.r
+        if (@_mapping[d.leafName] and !(@_mapping[d.leafName].present)) then 0 else d.r
 
       group_transform_function = (d) ->
         dst = d.r * 0.807 + 5

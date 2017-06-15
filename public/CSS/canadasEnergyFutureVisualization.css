@@ -1081,3 +1081,11 @@ svg { overflow: hidden; }
   display: inline; 
   outline: unset;
 }
+
+
+#canadasEnergyFutureVisualization #graphPanel:focus circle.accessibleFocus {
+  /* Use the SVG stroke to highlight this element instead of outline */
+  outline: none;
+  stroke-width: 2px;
+  stroke: red;
+}

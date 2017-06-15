@@ -20,6 +20,7 @@ ControlsHelpPopover = require '../popovers/ControlsHelpPopover.coffee'
 ProvinceAriaText = require '../ProvinceAriaText.coffee'
 SourceAriaText = require '../SourceAriaText.coffee'
 
+Vis3AccessConfig = require '../VisualizationConfigurations/Vis3AccessConfig.coffee'
 
 class Visualization3 extends visualization
   height = 700
@@ -146,6 +147,7 @@ class Visualization3 extends visualization
 
 
     @getData()
+    @accessConfig = new Vis3AccessConfig @config, @seriesData
 
     if Platform.name == 'browser'
       @renderBrowserTemplate()
@@ -164,6 +166,7 @@ class Visualization3 extends visualization
     @addUnitToggle()
     @addScenarios()
     @render()
+    @setupGraphEvents()
 
   tearDown: ->
     if @yearTimeout then window.clearTimeout @yearTimeout
@@ -251,6 +254,12 @@ class Visualization3 extends visualization
       groupId: 'graphGroup'
       mapping: @menuDataForChart()
       duration: @app.animationDuration
+      bubbleClass: (d) =>
+        if d.source == @accessConfig.activeSource and d.province == @accessConfig.activeProvince
+          'accessibleFocus'
+        else
+          ''
+
     @_chart = new BubbleChart @app, '#graphSVG', bubbleChartOptions
 
 
@@ -710,6 +719,187 @@ class Visualization3 extends visualization
 
 
 
+  setupGraphEvents: ->
+    graphElement = @document.getElementById 'graphPanel'
+
+    graphElement.addEventListener 'keydown', (event) =>
+
+      # Only process the input if there is at least one displayed bubble
+      return unless @accessConfig.atLeastOneDataItemOnDisplay @seriesData
+
+      switch event.key
+        when 'ArrowRight'
+          event.preventDefault()
+
+          switch @config.viewBy
+            when 'province'
+              @findPreviousOuterProvince()
+            when 'source'
+              @findPreviousOuterSource()
+
+          # @accessConfig.setYear @accessConfig.activeYear + 1
+          @updateAccessibleFocus()
+        when 'ArrowLeft'
+          event.preventDefault()
+
+          switch @config.viewBy
+            when 'province'
+              @findNextOuterProvince()
+            when 'source'
+              @findNextOuterSource()
+
+          # @accessConfig.setYear @accessConfig.activeYear - 1
+          @updateAccessibleFocus()
+        when 'ArrowUp'
+          event.preventDefault()
+          nextConfig = @findNextInnerBubble 'reverse'
+          return unless nextConfig?
+          @accessConfig.setState nextConfig.province, nextConfig.source, @seriesData
+          @updateAccessibleFocus()
+        when 'ArrowDown'
+          event.preventDefault()
+          nextConfig = @findNextInnerBubble 'forward'
+          return unless nextConfig?
+          @accessConfig.setState nextConfig.province, nextConfig.source, @seriesData
+          @updateAccessibleFocus()
+
+    graphElement.addEventListener 'focus', =>
+      @accessConfig.validate @config, @seriesData
+      @updateAccessibleFocus()
+
+      # When we return to focusing the graph element, the graph sub element that the user
+      # had focused may have been toggled off (by removing the scenario).
+      # Calling validate ensures that the sub-focus element is positioned correctly
+      # if @config.scenariosVisible()
+      #   @accessConfig.validate @config
+      #   @updateAccessibleFocus()
+      # else
+      #   # If there are no active scenarios, we handle the special case
+      #   @d3document.select '#graphPanel'
+      #     .attr
+      #       'aria-label': Tr.altText.emptyScenarioSelection[@app.language]
+      #   @accessibleFocusDot.attr
+      #     transform: 'translate(-1000, -1000)'
+      #   @tooltip.style.visibility = 'hidden'
+
+  updateAccessibleFocus: ->
+    @render()
+    # accessibleFocusElement = @document.querySelector '.accessibleFocus'
+    # accessibleFocusElement.dispatchEvent new Event 'accessibleFocus'
+
+
+
+
+  ### Methods for finding the next item to select, based on arrow key input ###
+
+  # The data for viz3 is full of holes, it doesn't resemble a fully filled table the way
+  # that the data for the other visualizations does.
+  # As a result, when the user hits an arrow key to navigate the graph by keyboard, the
+  # task of finding the next item to select is actually very complicated.
+
+  # In all cases, the navigation order is determined by the display order of the bubbles
+  # This is created by the bubble layout engine, the only way for us to obtain this data
+  # is by measuring the bubble element positions.
+
+  # Finding the next bubble when navigating between leaf nodes within a bubble grouping is
+  # relatively easy, we just take the next item above or below the currently focused item,
+  # if such a bubble exists.
+
+  # Finding the next bubble when navigating between groups of nodes comes with some
+  # additional cases to handle:
+  # 1) The next group of nodes may be empty (e.g. because all the power sources that a
+  # province possesses have been toggled off). In this case, we skip the group.
+  # 2) The leaf type in our departure group may not exist in the destination
+  # group. In this case, we pick another bubble with a different leaf type.
+  # (E.g., when viewing by region, the sources are the 'leaf types'. If we had nuclear
+  # selected and move to a region without nuclear power, we need to pick a new source.)
+
+  # Like all the other visualizations, the basic principle behind the graphs is that while
+  # the user focuses the graph, there should always be an item selected.
+
+
+
+  findNextOuterProvince: ->
+
+    # Based on the current config, grab all of the top level circles
+    # measure them
+    # sort by measurement
+    # find OUR bubble group in the list
+    # find the next bubble, test if it has things, repeat until we have a bubble with
+    # data or we run out
+    # once we have a bubble, check its children
+    # if we have a child with the same child source/province, it's our selection target
+    # if we don't have a child like that, select... the topmost?
+
+  findNextOuterSource: ->
+
+
+  findPreviousOuterProvince: ->
+
+
+  findPreviousOuterSource: ->
+
+
+
+  # direction: one of 'forward' or 'reverse'
+  findNextInnerBubble: (direction) ->
+
+    # Based on the currently selected item, grab all of its peer leaf bubbles
+    switch @config.viewBy
+      when 'source'
+        circleElementQuery = ".circle-#{@accessConfig.activeSource}"
+      when 'province'
+        circleElementQuery = ".circle-#{@accessConfig.activeProvince}"
+    circleElements = @document.querySelectorAll circleElementQuery
+    # NB: circleElements is a NodeList, not an Array
+
+    # Measure them
+    circleMeasurements = []
+    for element in circleElements
+      circleMeasurements.push
+        element: element
+        rect: element.getBoundingClientRect()
+
+    # Sort them by measurement
+    # Inner selection is controlled via up/down arrow keys, so we order elements by y
+    # coordinate
+    circleMeasurements.sort (itemA, itemB) ->
+      if itemA.rect.top > itemB.rect.top then 1 else -1
+
+    # Find the current bubble in the list
+    switch @config.viewBy
+      when 'source'
+        currentCircleClass = "circle-#{@accessConfig.activeProvince}"
+      when 'province'
+        currentCircleClass = "circle-#{@accessConfig.activeSource}"
+    indexOfActiveCircle = circleMeasurements.findIndex (item) ->
+      item.element.className.baseVal.includes currentCircleClass
+
+    # Take the next bubble in the list, depending on the direction we are moving
+    # We may be at the end of the list, if this happens we return null
+    switch direction
+      when 'forward'
+        nextCircle = circleMeasurements[indexOfActiveCircle + 1]
+      when 'reverse'
+        nextCircle = circleMeasurements[indexOfActiveCircle - 1]
+    return null unless nextCircle?
+
+    # Determine what access configuration state we are moving toward:
+    switch @config.viewBy
+      when 'source'
+        province = nextCircle.element.getAttribute 'data-province'
+        return {
+          province: province
+          source: @accessConfig.activeSource
+        }
+      when 'province'
+        source = nextCircle.element.getAttribute 'data-source'
+        return {
+          province: @accessConfig.activeProvince
+          source: source
+        }
+
+
 
 
 
@@ -1037,7 +1227,7 @@ class Visualization3 extends visualization
   # icons with a grey slash
   zeroedOut: (key) ->
     if !(@seriesData) or !(@seriesData.children) or (@seriesData.children.length != 1) then return false
-    itemKey = @seriesData.children[0].children.filter (item) -> item.source == key
+    itemKey = @seriesData.children[0].children.filter (item) -> item.leafName == key
     if itemKey.length == 0 then true else false
     
 
