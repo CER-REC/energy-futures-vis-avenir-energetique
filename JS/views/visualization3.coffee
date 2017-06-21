@@ -144,6 +144,7 @@ class Visualization3 extends visualization
     @_provinceMenu = null
     @document = @app.window.document
     @d3document = d3.select @document
+    @accessibleStatusElement = @document.getElementById 'accessibleStatus'
 
 
     @getData()
@@ -259,6 +260,8 @@ class Visualization3 extends visualization
           'accessibleFocus'
         else
           ''
+      onAccessibleFocus: @onAccessibleFocus
+
 
     @_chart = new BubbleChart @app, '#graphSVG', bubbleChartOptions
 
@@ -773,8 +776,26 @@ class Visualization3 extends visualization
 
   updateAccessibleFocus: ->
     @render()
-    # accessibleFocusElement = @document.querySelector '.accessibleFocus'
-    # accessibleFocusElement.dispatchEvent new Event 'accessibleFocus'
+
+
+    accessibleFocusElement = @document.querySelector '.accessibleFocus'
+    accessibleFocusElement.dispatchEvent new Event 'accessibleFocus'
+
+
+  # In updateAccessibleFocus, we dispatch an accessibleFocus event to the graph
+  # sub-element that just came into focus. It calls onAccessibleFocus with its data item
+  onAccessibleFocus: (d) =>
+
+    provinceString = Tr.regionSelector.names[@accessConfig.activeProvince][@app.language]
+    sourceString = Tr.sourceSelector.sources[@accessConfig.activeSource][@app.language]
+
+    unitString = Tr.altText.unitNames[@config.unit][@app.language]
+    description = "#{provinceString} #{sourceString}, #{d.value.toFixed 2} #{unitString}"
+    @d3document.select '#graphPanel'
+      .attr
+        'aria-label': description
+    @accessibleStatusElement.innerHTML = description
+
 
 
 

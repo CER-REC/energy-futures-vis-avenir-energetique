@@ -7,8 +7,10 @@ Platform = require '../Platform.coffee'
 class BubbleChart extends Chart
   bubbleChartDefaults:
     mapping: []
+    # coffeelint: disable=no_empty_functions
     bubbleClass: ->
-
+    onAccessibleFocus: ->
+    # coffeelint: enable=no_empty_functions
 
   constructor: (@app, parent, options = {}) ->
 
@@ -28,6 +30,7 @@ class BubbleChart extends Chart
       y : @chart_options.position.y
     @_data = @options.data
     @bubbleClass = @options.bubbleClass
+    @onAccessibleFocus = @options.onAccessibleFocus
     @resize()
 
     @redraw()
@@ -163,6 +166,9 @@ class BubbleChart extends Chart
 
       .on @mouseout_event_name, =>
         @tooltip.style.visibility = 'hidden'
+
+      .on 'accessibleFocus', (d) =>
+        @onAccessibleFocus d
 
       .attr
         class: (d) =>
