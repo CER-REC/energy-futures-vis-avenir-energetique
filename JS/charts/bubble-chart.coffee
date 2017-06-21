@@ -134,7 +134,17 @@ class BubbleChart extends Chart
         'stroke-width': (d) ->
           if d.depth == 0 or (d.depth == 1 and !(d.children)) then 0
         
+    node.filter (d) -> d.depth == 1
+      .select 'circle'
+      .attr
+        class: (d) ->
+          "circleGroup circleGroup-#{d.name}"
+        'data-name': (d) ->
+          d.name
 
+
+    # TODO: This occurs on redraw, could it be moved to enter? are we recreating all these
+    # event handlers needlessly?
     node.filter (d) -> d.depth == 2
       .select 'circle'
 
@@ -256,7 +266,7 @@ class BubbleChart extends Chart
         d.px = d.x0 = d.x
         d.py = d.y0 = d.y
         regionNodes.push d
-            
+
     @force.nodes regionNodes
     @force.start()
     @force.on 'tick', (e) =>

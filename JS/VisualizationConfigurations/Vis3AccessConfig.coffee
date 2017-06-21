@@ -128,6 +128,7 @@ class Vis3AccessConfig
 
   # True if there is at least one data item on display, false when everything in the
   # the dataset is hidden / the dataset is empty
+  # data: a data object for viz3 as produced by the electricity production provider
   atLeastOneDataItemOnDisplay: (data) ->
     for secondLevelItem in data.children
       for thirdLevelItem in secondLevelItem.children

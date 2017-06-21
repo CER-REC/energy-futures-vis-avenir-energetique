@@ -723,32 +723,21 @@ class Visualization3 extends visualization
     graphElement = @document.getElementById 'graphPanel'
 
     graphElement.addEventListener 'keydown', (event) =>
-
       # Only process the input if there is at least one displayed bubble
       return unless @accessConfig.atLeastOneDataItemOnDisplay @seriesData
 
       switch event.key
         when 'ArrowRight'
           event.preventDefault()
-
-          switch @config.viewBy
-            when 'province'
-              @findPreviousOuterProvince()
-            when 'source'
-              @findPreviousOuterSource()
-
-          # @accessConfig.setYear @accessConfig.activeYear + 1
+          nextConfig = @findNextOuterBubble 'forward'
+          return unless nextConfig?
+          @accessConfig.setState nextConfig.province, nextConfig.source, @seriesData
           @updateAccessibleFocus()
         when 'ArrowLeft'
           event.preventDefault()
-
-          switch @config.viewBy
-            when 'province'
-              @findNextOuterProvince()
-            when 'source'
-              @findNextOuterSource()
-
-          # @accessConfig.setYear @accessConfig.activeYear - 1
+          nextConfig = @findNextOuterBubble 'reverse'
+          return unless nextConfig?
+          @accessConfig.setState nextConfig.province, nextConfig.source, @seriesData
           @updateAccessibleFocus()
         when 'ArrowUp'
           event.preventDefault()
@@ -814,30 +803,91 @@ class Visualization3 extends visualization
   # (E.g., when viewing by region, the sources are the 'leaf types'. If we had nuclear
   # selected and move to a region without nuclear power, we need to pick a new source.)
 
-  # Like all the other visualizations, the basic principle behind the graphs is that while
-  # the user focuses the graph, there should always be an item selected.
+  # Like all the other visualizations, the basic principle behind the accessible UI is
+  # that while the user focuses the graph, there should always be an item selected.
 
 
 
-  findNextOuterProvince: ->
+  findNextOuterBubble: (direction) ->
+    # Grab all of the circle groups
+    circleGroupElements = @document.querySelectorAll '.circleGroup'
+    # NB: circleGroupElements is a NodeList, not an Array
 
-    # Based on the current config, grab all of the top level circles
-    # measure them
-    # sort by measurement
-    # find OUR bubble group in the list
-    # find the next bubble, test if it has things, repeat until we have a bubble with
-    # data or we run out
-    # once we have a bubble, check its children
-    # if we have a child with the same child source/province, it's our selection target
-    # if we don't have a child like that, select... the topmost?
+    # Measure them
+    circleGroupMeasurements = []
+    for element in circleGroupElements
+      circleGroupMeasurements.push
+        element: element
+        rect: element.getBoundingClientRect()
 
-  findNextOuterSource: ->
+    # Sort by measurement
+    # Circle groups are navigated with left-right arrow keys, so we look at the x
+    # coordinate
+    circleGroupMeasurements.sort (itemA, itemB) ->
+      if itemA.rect.left > itemB.rect.left then 1 else -1
+
+    # Find the bubble group in the list with accessibility focus.
+    switch @config.viewBy
+      when 'province'
+        circleGroupClass = "circleGroup-#{@accessConfig.activeProvince}"
+      when 'source'
+        circleGroupClass = "circleGroup-#{@accessConfig.activeSource}"
+    indexOfActiveCircleGroup = circleGroupMeasurements.findIndex (item) ->
+      item.element.className.baseVal.includes circleGroupClass
+
+    i = 0
+    while true
+      i += 1
+
+      # Take the next circle group in the list, depending on the direction we are moving.
+      # We may be at one end of the list, if this happens we return null.
+      switch direction
+        when 'forward'
+          nextGroup = circleGroupMeasurements[indexOfActiveCircleGroup + i]
+        when 'reverse'
+          nextGroup = circleGroupMeasurements[indexOfActiveCircleGroup - i]
+      return null unless nextGroup?
+
+      # Test if the group has at least one element on display.
+      groupName = nextGroup.element.getAttribute 'data-name'
+      continue unless @atLeastOneItemInBubbleGroup groupName
+
+      # Once we have a bubble, check whether the desired data item is on display
+      # The desired item is part of the new group, and has the same selection as the
+      # previous selection. E.g. if we are moving from the BC group to the AB group, and
+      # Hydro was our source selection, then we wish to test for the presence of AB Hydro
+      switch @config.viewBy
+        when 'province'
+          queryItem =
+            province: groupName
+            source: @accessConfig.activeSource
+        when 'source'
+          queryItem =
+            province: @accessConfig.activeProvince
+            source: groupName
+
+      if @accessConfig.datasetContains queryItem, @seriesData
+        return queryItem
+      else
+        # If we don't have the desired data item, just take the first item we find in the
+        # group.
+
+        for secondLevelItem in @seriesData.children
+          continue unless secondLevelItem.name == groupName
+          for thirdLevelItem in secondLevelItem.children
+            # A value of 1 signifies that there is no data here, and the bubble graph
+            # engine should not draw the item.
+            if thirdLevelItem.value != 1
+              return {
+                province: thirdLevelItem.province
+                source: thirdLevelItem.source
+              }
 
 
-  findPreviousOuterProvince: ->
+
+    # Repeat until we find a group that contains displayed data, or we run out.
 
 
-  findPreviousOuterSource: ->
 
 
 
@@ -876,7 +926,7 @@ class Visualization3 extends visualization
       item.element.className.baseVal.includes currentCircleClass
 
     # Take the next bubble in the list, depending on the direction we are moving
-    # We may be at the end of the list, if this happens we return null
+    # We may be at one end of the list, if this happens we return null
     switch direction
       when 'forward'
         nextCircle = circleMeasurements[indexOfActiveCircle + 1]
@@ -898,6 +948,20 @@ class Visualization3 extends visualization
           province: @accessConfig.activeProvince
           source: source
         }
+
+  # groupName: either a province or source name, matching the viewBy
+  atLeastOneItemInBubbleGroup: (groupName) ->
+    for secondLevelItem in @seriesData.children
+      continue unless secondLevelItem.name == groupName
+      for thirdLevelItem in secondLevelItem.children
+        # A value of 1 signifies that there is no data here, and the bubble graph
+        # engine should not draw the item.
+        if thirdLevelItem.value == 1
+          continue
+        else
+          return true
+
+    return false
 
 
 
