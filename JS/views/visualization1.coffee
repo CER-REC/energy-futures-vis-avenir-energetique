@@ -17,6 +17,8 @@ if Platform.name == 'browser'
 
 ControlsHelpPopover = require '../popovers/ControlsHelpPopover.coffee'
 ProvinceAriaText = require '../ProvinceAriaText.coffee'
+Viz1AccessConfig = require '../VisualizationConfigurations/Vis1AccessConfig.coffee'
+
 
 class Visualization1 extends visualization
   height = 700
@@ -31,6 +33,7 @@ class Visualization1 extends visualization
       selectScenarioLabel: Tr.scenarioSelector.selectScenarioLabel[@app.language]
       selectRegionLabel: Tr.regionSelector.selectRegionLabel[@app.language]
       svgStylesheet: SvgStylesheetTemplate
+      graphDescription: Tr.altText.viz1GraphAccessibleInstructions[@app.language]
 
       altText:
         mainSelectionHelp: Tr.altText.mainSelectionHelp[@app.language]
@@ -108,10 +111,13 @@ class Visualization1 extends visualization
 
   constructor: (@app, config, @options) ->
     @config = config
+    @accessConfig = new Viz1AccessConfig @config
     @_chart = null
     @_provinceMenu = null
     @document = @app.window.document
     @d3document = d3.select @document
+    @accessibleStatusElement = @document.getElementById 'accessibleStatus'
+
 
     @getData()
 
@@ -134,6 +140,7 @@ class Visualization1 extends visualization
     @addUnitToggle()
     @addScenarios()
     @render()
+    @setupGraphEvents()
 
   tearDown: ->
     # TODO: Consider garbage collection and event listeners
@@ -627,6 +634,13 @@ class Visualization1 extends visualization
         @app.animationDuration
       groupId:
         'graphGroup'
+      barClass: (d) =>
+        if d.name == @accessConfig.activeProvince and d.data.x == @accessConfig.activeYear
+          'accessibleFocus'
+        else
+          ''
+      onAccessibleFocus: @onAccessibleFocus
+      chartElementClick: @chartElementClick
 
     @_chart = new stackedBarChart @app, '#graphSVG', @xScale(), @yScale(), stackedOptions
 
@@ -735,6 +749,80 @@ class Visualization1 extends visualization
       @app.router.navigate @config.routerParams()
 
     @app.datasetRequester.updateAndRequestIfRequired newConfig, update
+
+
+
+  setupGraphEvents: ->
+    graphElement = @document.getElementById 'graphPanel'
+
+    graphElement.addEventListener 'keydown', (event) =>
+
+      # Only process the input if there is at least one selected region
+      return if @config.provinces.length == 0
+
+      switch event.key
+        when 'ArrowRight'
+          event.preventDefault()
+          @accessConfig.setYear @accessConfig.activeYear + 1
+          @updateAccessibleFocus()
+        when 'ArrowLeft'
+          event.preventDefault()
+          @accessConfig.setYear @accessConfig.activeYear - 1
+          @updateAccessibleFocus()
+        when 'ArrowUp'
+          event.preventDefault()
+          @accessConfig.setProvince @config.nextActiveProvinceForward(@accessConfig.activeProvince)
+          @updateAccessibleFocus()
+        when 'ArrowDown'
+          event.preventDefault()
+          @accessConfig.setProvince @config.nextActiveProvinceReverse(@accessConfig.activeProvince)
+          @updateAccessibleFocus()
+
+    graphElement.addEventListener 'focus', =>
+      # When we return to focusing the graph element, the graph sub element that the user
+      # had focused may have been toggled off (by removing the province).
+      # Calling validate ensures that the sub-focus is placed on an element that actually
+      # exists.
+      if @config.provinces.length > 0
+        @accessConfig.validate @config
+        @updateAccessibleFocus()
+      else
+        # If there are no active provinces, we handle the special case
+        @d3document.select '#graphPanel'
+          .attr
+            'aria-label': Tr.altText.emptySelection[@app.language]
+            'aria-activedescendant': null
+
+
+  updateAccessibleFocus: ->
+    @render()
+    accessibleFocusElement = @document.querySelector '.accessibleFocus'
+    accessibleFocusElement.dispatchEvent new Event 'accessibleFocus'
+
+
+  # The order of execution is a little convoluted here.
+  # We pass this callback to stacked bar chart at initialization time.
+  # When the chart is focused, we dispatch an 'accessibleFocus' event, and the bar chart
+  # handler calls this callback with the focused data element.
+  # We need access to the accessible config, the visualization config, and the data
+  # element itself to create this information string.
+  onAccessibleFocus: (d) =>
+    regionString = Tr.regionSelector.names[@accessConfig.activeProvince][@app.language]
+    unitString = Tr.altText.unitNames[@config.unit][@app.language]
+    description = "#{regionString} #{@accessConfig.activeYear}, #{d.data.y.toFixed 2} #{unitString}"
+
+    @d3document.select '#graphPanel'
+      .attr
+        'aria-label': description
+        'aria-activedescendant': "barElement-#{d.data.x}-#{d.name}"
+
+    @accessibleStatusElement.innerHTML = description
+
+
+  chartElementClick: (d) =>
+    @accessConfig.setYear d.data.x
+    @accessConfig.setProvince d.name
+    @updateAccessibleFocus()
 
 
 

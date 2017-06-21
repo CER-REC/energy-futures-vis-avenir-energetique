@@ -271,6 +271,42 @@ class Visualization1Configuration
     return true
 
 
+  # Given an active province, find the next province which should become active if this
+  # active province were removed from the provinces
+  nextActiveProvince: (activeProvince) ->
+
+    province = @nextActiveProvinceReverse activeProvince
+    return province if province?
+    
+    province = @nextActiveProvinceForward activeProvince
+    return province if province?
+
+    return null
+
+
+  # Scan forward through the provinces in order until we find one which is in the active
+  # set
+  nextActiveProvinceForward: (activeProvince) ->
+
+    activeProvinceIndex = @provincesInOrder.indexOf activeProvince
+
+    for i in [(activeProvinceIndex + 1)...@provincesInOrder.length]
+      if @provinces.includes @provincesInOrder[i]
+        return @provincesInOrder[i]
+
+    return null
+
+  # Scan backward through the provinces in order until we find one which is in the active
+  # set
+  nextActiveProvinceReverse: (activeProvince) ->
+
+    activeProvinceIndex = @provincesInOrder.indexOf activeProvince
+
+    for i in [(activeProvinceIndex - 1)..0]
+      if @provinces.includes @provincesInOrder[i]
+        return @provincesInOrder[i]
+
+    return null
 
 
 module.exports = Visualization1Configuration

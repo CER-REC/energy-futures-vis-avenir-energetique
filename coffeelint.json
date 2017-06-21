@@ -151,7 +151,8 @@
         "document": true,
         "window": true,
         "XMLHttpRequest": true,
-        "Image": true
+        "Image": true,
+        "Event": true
     },
     "overwrite": true,
     "shadow": true,

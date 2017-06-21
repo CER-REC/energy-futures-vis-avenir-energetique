@@ -1694,6 +1694,45 @@ module.exports =
       en: 'Years'
       fr: 'Années'
 
+    visualization:
+      en: 'Visualization'
+      fr: 'Visualisation'
+
+    # TODO: French translations need validation
+    unitNames:
+      petajoules:
+        en: 'Petajoules'
+        fr: 'Pétajoules'
+      kilobarrelEquivalents:
+        en: 'Kilobarrels of oil equivalent'
+        fr: 'Millier de barils d’équivalent pétrole par jour'
+      gigawattHours:
+        en: 'Gigawatt hours'
+        fr: 'Gigawattheures'
+      thousandCubicMetres:
+        en: 'Thousand cubic metres per day'
+        fr: 'Millier de mètres cubes par jour'
+      millionCubicMetres:
+        en: 'Million cubic metres per day'
+        fr: 'Million de mètres cubes par jour'
+      kilobarrels:
+        en: 'Thousand barrels per day'
+        fr: 'Millier de barils par jour'
+      cubicFeet:
+        en: 'Thousand cubic feet per day'
+        fr: 'Millier de pieds cubes par jour'
+
+    # TODO: French translations need validation
+    viz1GraphAccessibleInstructions:
+      en: 'Use the arrow keys or the mouse to select chart elements.'
+      fr: 'Utiliser les boutons flèches ou la souris pour naviguer le graphique.'
+
+    # TODO: French translations need validation
+    emptySelection:
+      en: 'No regions selected'
+      fr: 'Aucune région selectionnée'
+
+
   report:
     en: 'REPORT: '
     fr: 'RAPPORT : '
@@ -1718,5 +1757,6 @@ module.exports =
     viz4:
       en: 'Switched to "explore scenarios" page'
       fr: 'Navigation au page "exploration des scénarios"'
+
 
 
