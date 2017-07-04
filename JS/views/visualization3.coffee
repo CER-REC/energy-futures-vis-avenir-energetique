@@ -35,6 +35,8 @@ class Visualization3 extends visualization
       selectRegionLabel: Tr.regionSelector.selectRegionLabel[@app.language]
       selectSourceLabel: Tr.sourceSelector.selectSourceLabel[@app.language]
       svgStylesheet: SvgStylesheetTemplate
+      graphDescription: Tr.altText.viz3GraphAccessibleInstructions[@app.language]
+
 
       altText:
         viewByHelp: Tr.altText.viewByHelp[@app.language]
@@ -756,23 +758,22 @@ class Visualization3 extends visualization
           @updateAccessibleFocus()
 
     graphElement.addEventListener 'focus', =>
-      @accessConfig.validate @config, @seriesData
-      @updateAccessibleFocus()
-
       # When we return to focusing the graph element, the graph sub element that the user
-      # had focused may have been toggled off (by removing the scenario).
+      # had focused may have been toggled off (by removing the province/source).
       # Calling validate ensures that the sub-focus element is positioned correctly
-      # if @config.scenariosVisible()
-      #   @accessConfig.validate @config
-      #   @updateAccessibleFocus()
-      # else
-      #   # If there are no active scenarios, we handle the special case
-      #   @d3document.select '#graphPanel'
-      #     .attr
-      #       'aria-label': Tr.altText.emptyScenarioSelection[@app.language]
-      #   @accessibleFocusDot.attr
-      #     transform: 'translate(-1000, -1000)'
-      #   @tooltip.style.visibility = 'hidden'
+
+      if @accessConfig.atLeastOneDataItemOnDisplay @seriesData
+        @accessConfig.validate @config, @seriesData
+        @updateAccessibleFocus()
+      else
+        # If there are no active bubbles, we handle the special case
+        @d3document.select '#graphPanel'
+          .attr
+            'aria-label': Tr.altText.emptyViz3Selection[@app.language]
+            'aria-activedescendant': null
+        # @tooltip.style.visibility = 'hidden'
+
+
 
   updateAccessibleFocus: ->
     @render()
@@ -794,6 +795,8 @@ class Visualization3 extends visualization
     @d3document.select '#graphPanel'
       .attr
         'aria-label': description
+        'aria-activedescendant': "circle-#{d.id}"
+
     @accessibleStatusElement.innerHTML = description
 
 

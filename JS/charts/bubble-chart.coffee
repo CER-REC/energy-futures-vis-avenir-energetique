@@ -177,6 +177,8 @@ class BubbleChart extends Chart
           d.province
         'data-source': (d) ->
           d.source
+        id: (d) =>
+          "circle-#{d.id}"
 
     enterSelection.filter((d) -> d.depth == 1 ).append 'g'
           
