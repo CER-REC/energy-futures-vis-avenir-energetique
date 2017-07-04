@@ -148,6 +148,9 @@ class Visualization3 extends visualization
     @d3document = d3.select @document
     @accessibleStatusElement = @document.getElementById 'accessibleStatus'
 
+    # one of 'playing' or 'paused'
+    @playPauseStatus = 'paused'
+
 
     @getData()
     @accessConfig = new Vis3AccessConfig @config, @seriesData
@@ -472,6 +475,9 @@ class Visualization3 extends visualization
 
 
   sliderPlayButtonCallback: =>
+    return if @playPauseStatus == 'playing'
+    @playPauseStatus = 'playing'
+
     @d3document.select '#vizPlayButton'
       .html """
         <img src='IMG/play_pause/playbutton_selectedR.svg'
@@ -529,6 +535,9 @@ class Visualization3 extends visualization
 
 
   sliderPauseButtonCallback: =>
+    return if @playPauseStatus == 'paused'
+    @playPauseStatus = 'paused'
+
     @d3document.select '#vizPauseButton'
       .html """
         <img src='IMG/play_pause/pausebutton_selectedR.svg'
