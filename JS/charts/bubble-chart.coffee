@@ -200,7 +200,7 @@ class BubbleChart extends Chart
 
       .attr
         class: (d) =>
-          "circle-#{d.leafName} circle-#{d.parent.name} #{@bubbleClass d}"
+          "pointerCursor circle-#{d.leafName} circle-#{d.parent.name} #{@bubbleClass d}"
         'data-province': (d) ->
           d.province
         'data-source': (d) ->

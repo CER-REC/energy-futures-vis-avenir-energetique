@@ -361,6 +361,13 @@ class Visualization2 extends visualization
     electricity:
       'IMG/sources/electricity_selected.svg'
 
+  # TODO: Known issue here: when a source is disabled, its data does not appear in
+  # @seriesData at all. We can't determine whether the source data is all zeroes or not.
+  # Currently, when a source has all zero items, it will show the zeroed out icon when
+  # selected and show the de-selected icon when de-selected.
+  # The desired behaviour is to show the zeroed out icon at all times, selected or not.
+  # Fixing this will mean changing or adding to the data that the energy demand provider
+  # returns. See NEBV-405
   zeroedOut: (key) ->
     if !(@seriesData) or !(@seriesData[key]) then return false
     nonZeroVals = @seriesData[key].filter (item) -> item.value != 0
