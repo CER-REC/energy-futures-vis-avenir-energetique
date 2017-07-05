@@ -14,29 +14,12 @@ Constants = require '../Constants.coffee'
 class Vis3AccessConfig
 
   constructor: (viz3config, data) ->
-
-    # TODO: I think we can dispose of the rest of this constructor junk and just rely
-    # on the validation logic
-
-    # switch viz3config.viewBy
-    #   when 'province'
-    #     @setProvince viz3config.province, data
-    #     @setSource viz3config.sources[0], data
-    #   when 'source'
-    #     @setSource viz3config.source, data
-    #     @setProvince viz3config.provinces[0], data
-
-    # # If there are no provinces/sources selected, or if province/source is set to 'all'/
-    # # 'total', these values can be un-initialized
-    # @setProvince Constants.provinces[0], data unless @activeProvince?
-    # @setSource Constants.viz3Sources[0], data unless @activeSource?
-
     @validate viz3config, data
 
 
 
   # We only re-validate the access config when the user next focuses the graph.
-  # This way, the user can deactivate and re-activate several scenarios and the app can
+  # This way, the user can deactivate and re-activate several items and the app can
   # still determine roughly or exactly where they were.
   validate: (viz3config, data) ->
     return if @datasetContains {source: @activeSource, province: @activeProvince}, data
@@ -95,7 +78,6 @@ class Vis3AccessConfig
 
 
 
-  # TODO: what to name this?
   # Does the given set of data contain this data item?
   # item: an object with province, source
   # data: a data object for viz3 as produced by the electricity production provider

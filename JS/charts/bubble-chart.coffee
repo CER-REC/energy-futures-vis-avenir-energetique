@@ -3,6 +3,7 @@ _ = require 'lodash'
 
 Chart =  require './chart.coffee'
 Platform = require '../Platform.coffee'
+Constants = require '../Constants.coffee'
 
 class BubbleChart extends Chart
   bubbleChartDefaults:
@@ -10,6 +11,7 @@ class BubbleChart extends Chart
     # coffeelint: disable=no_empty_functions
     bubbleClass: ->
     onAccessibleFocus: ->
+    onBubbleClick: ->
     # coffeelint: enable=no_empty_functions
 
   constructor: (@app, parent, options = {}) ->
@@ -31,6 +33,7 @@ class BubbleChart extends Chart
     @_data = @options.data
     @bubbleClass = @options.bubbleClass
     @onAccessibleFocus = @options.onAccessibleFocus
+    @onBubbleClick = @options.onBubbleClick
     @resize()
 
     @redraw()
@@ -101,6 +104,16 @@ class BubbleChart extends Chart
       @click_event_name = 'click'
     
 
+  mouseOverHandler: (d, coords) =>
+    @tooltip.style.visibility = 'visible'
+    @mouseMoveHandler d, coords
+
+  mouseMoveHandler: (d, coords) =>
+    @tooltip.style.left = "#{coords[0] + Constants.tooltipXOffset}px"
+    @tooltip.style.top = "#{coords[1]}px"
+    @tooltip.innerHTML = "#{d.name} (#{@_year}): #{d.size.toFixed(2)}"
+
+
 
   redraw: ->
     if !(@force?)
@@ -153,19 +166,35 @@ class BubbleChart extends Chart
 
       .on @mouseover_event_name, (d) =>
         coords = d3.mouse @tooltipParent # [x, y]
-        @tooltip.style.visibility = 'visible'
-        @tooltip.style.left = "#{coords[0] + 30}px"
-        @tooltip.style.top = "#{coords[1]}px"
-        @tooltip.innerHTML = "#{d.name} (#{@_year}): #{d.size.toFixed(2)}"
+        @mouseOverHandler d, coords
 
       .on @mousemove_event_name, (d) =>
         coords = d3.mouse @tooltipParent # [x, y]
-        @tooltip.style.left = "#{coords[0] + 30}px"
-        @tooltip.style.top = "#{coords[1]}px"
-        @tooltip.innerHTML = "#{d.name} (#{@_year}): #{d.size.toFixed(2)}"
+        @mouseMoveHandler d, coords
 
       .on @mouseout_event_name, =>
         @tooltip.style.visibility = 'hidden'
+
+      .on 'displayTooltip', (d) =>
+
+        # First, find the position in absolute page coordinates where the tooltip should
+        # go
+        graphElementBounds = d3.event.target.getBoundingClientRect()
+        xDest = graphElementBounds.right + window.scrollX
+        yDest = graphElementBounds.top + window.scrollY + graphElementBounds.height / 2
+
+        # Second, calculate the offset for the tooltip element based on its parent
+        parentBounds = @tooltipParent.getBoundingClientRect()
+        xParentOffset = parentBounds.left + window.scrollX
+        yParentOffset = parentBounds.top + window.scrollY
+
+        # Third, place the tooltip
+        coords = [
+          xDest - xParentOffset
+          yDest - yParentOffset
+        ]
+        
+        @mouseOverHandler d, coords
 
       .on 'accessibleFocus', (d) =>
         @onAccessibleFocus d
@@ -177,14 +206,19 @@ class BubbleChart extends Chart
           d.province
         'data-source': (d) ->
           d.source
-        id: (d) =>
+        id: (d) ->
           "circle-#{d.id}"
 
     enterSelection.filter((d) -> d.depth == 1 ).append 'g'
           
     enterSelection.select('g').append 'image'
 
-    handlePopover = (element, d) =>
+    handleClick = (element, d) =>
+      @onBubbleClick d
+
+      # Create the 'permanent' tooltip attached to the bubble, until the user toggles it
+      # off
+
       # d3.event.preventDefault()
       # d3.event.stopPropagation()
       if d3.selectAll(".toolTip#{d.id}").empty()
@@ -229,7 +263,7 @@ class BubbleChart extends Chart
       .select('circle')
       .on @click_event_name, (d) ->
         # 'this' is the element which was clicked
-        handlePopover @, d
+        handleClick @, d
 
       .on 'touchstart', ->
         d3.event.preventDefault()
@@ -240,7 +274,7 @@ class BubbleChart extends Chart
       .on 'touchend', (d) ->
         d3.event.preventDefault()
         # 'this' is the element which was touched
-        handlePopover @, d
+        handleClick @, d
 
       .on 'touchcancel', ->
         d3.event.preventDefault()

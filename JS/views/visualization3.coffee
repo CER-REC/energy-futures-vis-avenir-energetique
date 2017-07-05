@@ -266,6 +266,13 @@ class Visualization3 extends visualization
         else
           ''
       onAccessibleFocus: @onAccessibleFocus
+      onBubbleClick: (d) =>
+        @accessConfig.setState d.province, d.source, @seriesData
+        # When we click on a bubble, we attach a semi-permanent label to the bubble.
+        # So in this case, we suppress displaying the mouseover tooltip, otherwise we
+        # would see two labels appear on click.
+        @updateAccessibleFocus
+          displayTooltip: false
 
 
     @_chart = new BubbleChart @app, '#graphSVG', bubbleChartOptions
@@ -771,6 +778,9 @@ class Visualization3 extends visualization
       # had focused may have been toggled off (by removing the province/source).
       # Calling validate ensures that the sub-focus element is positioned correctly
 
+      # Don't let the animation play while we are inspecting the visualization
+      @sliderPauseButtonCallback()
+
       if @accessConfig.atLeastOneDataItemOnDisplay @seriesData
         @accessConfig.validate @config, @seriesData
         @updateAccessibleFocus()
@@ -784,22 +794,28 @@ class Visualization3 extends visualization
 
 
 
-  updateAccessibleFocus: ->
-    @render()
+  updateAccessibleFocus: (options = {displayTooltip: true}) ->
+    # To avoid a re-render here: unclass the existing accessible focus item if any,
+    # and pick the correct element to become the new accessible focus.
+    @d3document.select '.accessibleFocus'
+      .classed 'accessibleFocus', false
 
+    @d3document.select ".circle-#{@accessConfig.activeSource}.circle-#{@accessConfig.activeProvince}"
+      .classed 'accessibleFocus', true
 
     accessibleFocusElement = @document.querySelector '.accessibleFocus'
     accessibleFocusElement.dispatchEvent new Event 'accessibleFocus'
+    if options.displayTooltip
+      accessibleFocusElement.dispatchEvent new Event 'displayTooltip'
 
 
   # In updateAccessibleFocus, we dispatch an accessibleFocus event to the graph
   # sub-element that just came into focus. It calls onAccessibleFocus with its data item
   onAccessibleFocus: (d) =>
-
     provinceString = Tr.regionSelector.names[@accessConfig.activeProvince][@app.language]
     sourceString = Tr.sourceSelector.sources[@accessConfig.activeSource][@app.language]
-
     unitString = Tr.altText.unitNames[@config.unit][@app.language]
+
     description = "#{provinceString} #{sourceString}, #{d.value.toFixed 2} #{unitString}"
     @d3document.select '#graphPanel'
       .attr
