@@ -23,7 +23,6 @@ SourceAriaText = require '../SourceAriaText.coffee'
 Vis3AccessConfig = require '../VisualizationConfigurations/Vis3AccessConfig.coffee'
 
 class Visualization3 extends visualization
-  height = 700
 
   renderBrowserTemplate: ->
     contentElement = @document.getElementById 'visualizationContent'
@@ -205,15 +204,19 @@ class Visualization3 extends visualization
     @d3document.select '#graphSVG'
       .attr
         width: @getSvgWidth()
-        height: height
+        height: Constants.viz3GraphHeight
+    @d3document.select '#sliderSVG'
+      .attr
+        width: @getSvgWidth()
+        height: Constants.viz3SliderHeight
     @d3document.select '#provinceMenuSVG'
       .attr
         width: @d3document.select('#provincePanel').node().getBoundingClientRect().width
-        height: height - @_margin.top
+        height: Constants.viz3Height - @_margin.top
     @d3document.select '#powerSourceMenuSVG'
       .attr
         width: @d3document.select('#powerSourcePanel').node().getBoundingClientRect().width
-        height: height - @_margin.top - @_margin.bottom
+        height: Constants.viz3Height - @_margin.top - @_margin.bottom
 
 
   getDataAndRender: ->
@@ -273,7 +276,6 @@ class Visualization3 extends visualization
         # would see two labels appear on click.
         @updateAccessibleFocus
           displayTooltip: false
-
 
     @_chart = new BubbleChart @app, '#graphSVG', bubbleChartOptions
 
@@ -351,7 +353,7 @@ class Visualization3 extends visualization
     axis = @d3document.select '#timelineAxis'
       .attr
         fill: '#333'
-        transform: "translate( 0, #{@height() + @_margin.top + Constants.sliderLabelHeight})"
+        transform: "translate(0, #{@_margin.top + Constants.sliderLabelHeight})"
       .call @yearAxis()
       
     # We need a wider target for the click so we use a separate group
@@ -359,9 +361,7 @@ class Visualization3 extends visualization
       .attr
         class: 'pointerCursor'
         'pointer-events': 'visible'
-        transform:
-          "translate(0, #{@height() + @_margin.top + Constants.sliderLabelHeight - (axis.node().getBoundingClientRect().height / 2)})"
-        height: axis.node().getBoundingClientRect().height
+        height: Constants.viz3SliderHeight
         width: axis.node().getBoundingClientRect().width
       .style
         fill: 'none'
@@ -412,7 +412,7 @@ class Visualization3 extends visualization
       @d3document.select('#sliderLabel').attr 'transform', =>
         if newX < Constants.timelineMargin then newX = Constants.timelineMargin
         if newX > @timelineRightEnd() then newX = @timelineRightEnd()
-        "translate(#{newX}, #{@height() + @_margin.top - 5})"
+        "translate(#{newX}, #{@_margin.top - 5})"
 
       year = Math.round @yearScale().invert newX
       if year != @config.year
@@ -430,7 +430,7 @@ class Visualization3 extends visualization
       if year != @config.year
         newX = @yearScale()(year)
         @d3document.select('#sliderLabel').attr
-          transform: "translate(#{newX}, #{@height() + @_margin.top - 5})"
+          transform: "translate(#{newX}, #{@_margin.top - 5})"
 
         @d3document.select('#labelBox').selectAll('text').text =>
           @config.year
@@ -443,13 +443,13 @@ class Visualization3 extends visualization
 
     sliderWidth = 70
 
-    sliderLabel = @d3document.select('#graphSVG')
+    sliderLabel = @d3document.select('#sliderSVG')
       .append 'g'
       .attr
         id: 'sliderLabel'
         class: 'sliderLabel pointerCursor'
         # Re the 5. It is because the ticks are moved
-        transform: "translate(#{@yearScale()(@config.year)},#{@height() + @_margin.top - 5})"
+        transform: "translate(#{@yearScale()(@config.year)}, #{@_margin.top - 5})"
         tabindex: '0'
         role: 'slider'
         'aria-label': Tr.altText.yearsSlider[@app.language]
@@ -512,7 +512,7 @@ class Visualization3 extends visualization
           @d3document.select '#sliderLabel'
             .transition()
               .attr
-                transform: "translate(#{@yearScale()(@config.year)}, #{@height() + @_margin.top  - 5})"
+                transform: "translate(#{@yearScale()(@config.year)},#{@_margin.top  - 5})"
             .duration @_chart._duration
             .ease 'linear'
           @d3document.select '#labelBox'
@@ -1189,7 +1189,7 @@ class Visualization3 extends visualization
     update = =>
       @config.setYear value
       @d3document.select('#sliderLabel').attr
-        transform: "translate(#{@yearScale()(@config.year)}, #{@height() + @_margin.top - 5})"
+        transform: "translate(#{@yearScale()(@config.year)}, #{@_margin.top - 5})"
       
       @d3document.select '#labelBox'
         .text @config.year
@@ -1212,12 +1212,12 @@ class Visualization3 extends visualization
 
   # the graph's height
   height: ->
-    height - @_margin.top - @_margin.bottom
+    Constants.viz3GraphHeight - @_margin.top - @_margin.bottom
 
   # We want this menu to line up with the bottom of the x axis TICKS so those must be
   # built before we can set this.
   leftHandMenuHeight: ->
-    @height() + @d3document
+    Constants.viz3Height - @_margin.top - @_margin.bottom + @d3document
       .select('#timelineAxis')
       .node()
       .getBoundingClientRect()

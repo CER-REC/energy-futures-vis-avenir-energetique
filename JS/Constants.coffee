@@ -299,3 +299,8 @@ module.exports =
   iconDragDuration: 100 # ms
 
   tooltipXOffset: 30 # px
+
+  # Viz3 height should total 700px
+  viz3Height: 700
+  viz3GraphHeight: 620 # px
+  viz3SliderHeight: 80 # px
