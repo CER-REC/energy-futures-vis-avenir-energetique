@@ -299,7 +299,8 @@ class Visualization4
       onSelected: @provinceSelected
       groupId: 'provinceMenu'
       allSquareHandler: @selectAllProvince
-      showHelpHandler: @provincesHelpPopover.showPopoverCallback
+      # Popovers are not defined on server, so we use ?.
+      showHelpHandler: @provincesHelpPopover?.showPopoverCallback
       helpButtonLabel: Tr.altText.regionsHelp[@app.language]
       helpButtonId: 'provinceHelpButton'
       getAllIcon: =>

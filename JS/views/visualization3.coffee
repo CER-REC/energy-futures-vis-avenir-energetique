@@ -631,7 +631,8 @@ class Visualization3 extends visualization
             @allButtonSingleProvince()
           when 'source'
             @allButtonMultipleProvince()
-      showHelpHandler: @provincesHelpPopover.showPopoverCallback
+      # Popovers are not defined on server, so we use ?.
+      showHelpHandler: @provincesHelpPopover?.showPopoverCallback
       getAllIcon: =>
         switch @config.viewBy
           when 'province'
@@ -692,7 +693,8 @@ class Visualization3 extends visualization
             @allButtonSingleSource()
           when 'province'
             @allButtonMultipleSource()
-      showHelpHandler: @sourcesHelpPopover.showPopoverCallback
+      # Popovers are not defined on server, so we use ?.
+      showHelpHandler: @sourcesHelpPopover?.showPopoverCallback
       getAllIcon: =>
         switch @config.viewBy
           when 'source'

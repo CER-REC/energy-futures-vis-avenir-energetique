@@ -649,7 +649,8 @@ class Visualization1 extends visualization
       groupId: 'stackMenu'
       onSelected: @menuSelect
       allSquareHandler: @selectAllStacked
-      showHelpHandler: @provincesHelpPopover.showPopoverCallback
+      # Popovers are not defined on server, so we use ?.
+      showHelpHandler: @provincesHelpPopover?.showPopoverCallback
       orderChangedHandler: @orderChanged
       canDrag: true
       helpButtonLabel: Tr.altText.regionsHelp[@app.language]

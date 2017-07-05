@@ -193,7 +193,6 @@ class BubbleChart extends Chart
           xDest - xParentOffset
           yDest - yParentOffset
         ]
-        
         @mouseOverHandler d, coords
 
       .on 'accessibleFocus', (d) =>
