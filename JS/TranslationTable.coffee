@@ -1169,6 +1169,9 @@ module.exports =
     viz4:
       en: 'EXPLORE SCENARIOS'
       fr: 'EXPLORATION DES SCÉNARIOS'
+    viz5:
+      en: 'EXPLORE CHANGING DEMAND'
+      fr: '<TODO>'
 
 
   navbarInfoText:
@@ -1287,6 +1290,9 @@ module.exports =
       en: 'COMPARING ELECTRICITY SCENARIOS'
       fr: 'SCÉNARIOS DE PRODUCTION D’ÉLECTRICITÉ'
 
+  visualization5Title:
+    en: 'CHANGING DEMAND'
+    fr: '<TODO>'
 
 
   imageExportText:
@@ -1354,6 +1360,18 @@ module.exports =
       source:
         en: 'SOURCE'
         fr: 'SOURCE'
+
+    demandIn:
+      en: 'DEMAND IN'
+      fr: '<TODO>' # DEMANDE EN
+      
+    relativeTo:
+      en: 'RELATIVE TO'
+      fr: '<TODO>' # RÉLATIF A
+
+    and:
+      en: 'AND'
+      fr: 'ET'
 
 
   howToImages:
