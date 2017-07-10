@@ -67,6 +67,8 @@ class Visualization5Configuration
     else
       @baseYear = @defaultOptions.baseYear
 
+    @setComparisonYear @comparisonYear
+
   setComparisonYear: (year) ->
     year = parseInt year, 10
     if year >= Constants.minYear and year <= Constants.maxYear
@@ -75,6 +77,10 @@ class Visualization5Configuration
       @comparisonYear = Constants.maxYear
     else
       @comparisonYear = @defaultOptions.comparisonYear
+
+    # Comparison year must be at the current base year, or further in the future
+    if @comparisonYear < @baseYear
+      @comparisonYear = @baseYear
 
   setLeftProvince: (province) ->
     if Constants.provinceRadioSelectionOptions.includes province
