@@ -1516,46 +1516,49 @@ module.exports =
         en: 'Petajoule selected'
         fr: 'Sélection - Pétajoule'
       gigawattHoursSelected:
-        en: 'GW.h selected'
-        fr: 'Sélection - GWh'
+        en: 'Gigawatt hour selected'
+        fr: 'Sélection - Gigawattheure'
       kilobarrelEquivalentsSelected:
-        en: 'kBOE/d selected'
-        fr: 'Sélection - kBEP/j'
+        en: 'Kilobarrels of oil equivalent per day selected'
+        fr: 'Sélection - Millier de barils d’équivalent pétrole par jour'
       thousandCubicMetresSelected:
-        en: 'km³/d selected'
-        fr: 'Sélection - km³/j'
+        en: 'Thousand cubic metres per day selected'
+        fr: 'Sélection - Millier de mètres cubes par jour'
       millionCubicMetresSelected:
-        en: 'Mm³/d selected'
-        fr: 'Sélection - Mm³/j'
+        en: 'Million cubic metres per day selected'
+        fr: 'Sélection - Million de mètres cubes par jour'
       kilobarrelsSelected:
-        en: 'kB/d selected'
-        fr: 'Sélection - kB/j'
+        en: 'Thousand barrels per day selected'
+        fr: 'Sélection - Millier de barils par jour'
       cubicFeetSelected:
-        en: 'Mcf/d selected'
-        fr: 'Sélection - Mpi³/j'
+        en: 'Thousand cubic feet per day selected'
+        fr: 'Sélection - Millier de pieds cubes par jour'
 
       petajoulesUnselected:
         en: 'Petajoule unselected'
         fr: 'Désélection - Pétajoule'
       gigawattHoursUnselected:
-        en: 'GW.h unselected'
-        fr: 'Désélection - GWh'
+        en: 'Gigawatt hour unselected'
+        fr: 'Désélection - Gigawattheure'
       kilobarrelEquivalentsUnselected:
-        en: 'kBOE/d unselected'
-        fr: 'Désélection - kBEP/j'
+        en: 'Kilobarrels of oil equivalent per day unselected'
+        fr: 'Désélection - Millier de barils d’équivalent pétrole par jour'
       thousandCubicMetresUnselected:
-        en: 'km³/d unselected'
-        fr: 'Désélection - km³/j'
+        en: 'Thousand cubic metres per day unselected'
+        fr: 'Désélection - Millier de mètres cubes par jour'
       millionCubicMetresUnselected:
-        en: 'Mm³/d unselected'
-        fr: 'Désélection - Mm³/j'
+        en: 'Million cubic metres per day unselected'
+        fr: 'Désélection - Million de mètres cubes par jour'
       kilobarrelsUnselected:
-        en: 'kB/d unselected'
-        fr: 'Désélection - kB/j'
+        en: 'Thousand barrels per day unselected'
+        fr: 'Désélection - Millier de barils par jour'
       cubicFeetUnselected:
-        en: 'Mcf/d unselected'
-        fr: 'Désélection - Mpi³/j'
+        en: 'Thousand cubic feet per day unselected'
+        fr: 'Désélection - Millier de pieds cubes par jour'
+
+
     
+
     dataset:
       jan2016Selected:
         en: '2016 selected'
@@ -1627,23 +1630,23 @@ module.exports =
     allButton:
       allRegionsSelected:
         en: 'All regions selected'
-        fr: 'Sélection - toutes les régions'
+        fr: 'Sélection - Toutes les régions'
       someRegionsSelected:
         en: 'Some regions selected'
-        fr: 'Sélection - quelques régions'
+        fr: 'Sélection - Quelques régions'
       noRegionsSelected:
         en: 'All regions unselected'
-        fr: 'Désélection - toutes les régions'
+        fr: 'Désélection - Toutes les régions'
 
       allSourcesSelected:
         en: 'All sources selected'
-        fr: 'Sélection - toutes les sources'
+        fr: 'Sélection - Toutes les sources'
       someSourcesSelected:
         en: 'Some sources selected'
-        fr: 'Sélection - quelques sources'
+        fr: 'Sélection - Quelques sources'
       noSourcesSelected:
         en: 'All sources unselected'
-        fr: 'Désélection - toutes les sources'
+        fr: 'Désélection - Toutes les sources'
 
       allCanadaSelected:
         en: 'All of Canada selected'
@@ -1698,7 +1701,6 @@ module.exports =
       en: 'Visualization'
       fr: 'Visualisation'
 
-    # TODO: French translations need validation
     unitNames:
       petajoules:
         en: 'Petajoules'
@@ -1722,22 +1724,20 @@ module.exports =
         en: 'Thousand cubic feet per day'
         fr: 'Millier de pieds cubes par jour'
 
-    # TODO: French translations need validation
     viz1GraphAccessibleInstructions:
       en: 'Use the arrow keys or the mouse to select chart elements.'
-      fr: 'Utiliser les boutons flèches ou la souris pour naviguer le graphique.'
+      fr: 'Utiliser les boutons flèches ou la souris pour sélectionner les éléments du diagramme.'
     viz2GraphAccessibleInstructions:
       en: 'Use the arrow keys to navigate the chart.'
-      fr: 'Utiliser les boutons flèches pour naviguer le graphique.'
+      fr: 'Utiliser les boutons flèches pour naviguer dans le diagramme.'
     viz3GraphAccessibleInstructions:
       en: 'Use the arrow keys or the mouse to select chart elements.'
-      fr: 'Utiliser les boutons flèches ou la souris pour naviguer le graphique.'
+      fr: 'Utiliser les boutons flèches ou la souris pour sélectionner les éléments du diagramme.'
     viz4GraphAccessibleInstructions:
       en: 'Use the arrow keys to navigate the chart.'
-      fr: 'Utiliser les boutons flèches pour naviguer le graphique.'
+      fr: 'Utiliser les boutons flèches pour naviguer dans le diagramme.'
 
 
-    # TODO: French translations need validation
     emptyRegionSelection:
       en: 'No regions selected'
       fr: 'Aucune région sélectionnée'
@@ -1746,7 +1746,7 @@ module.exports =
       fr: 'Aucune source sélectionnée'
     emptyScenarioSelection:
       en: 'No scenarios selected'
-      fr: 'Aucune scénario sélectionné'
+      fr: 'Aucun scénario sélectionné'
     emptyViz3Selection:
       en: 'No regions or sources selected'
       fr: 'Aucune région ou source sélectionnée'
@@ -1763,19 +1763,19 @@ module.exports =
   navigation:
     landingPage:
       en: 'Switched to home page'
-      fr: 'Navigation au page d’accueil'
+      fr: 'Vous êtes à la page d’accueil'
     viz1:
       en: 'Switched to "explore by region" page'
-      fr: 'Navigation au page "exploration par région"'
+      fr: 'Vous êtes à la page "exploration par région"'
     viz2:
       en: 'Switched to "explore by sector" page'
-      fr: 'Navigation au page "exploration par secteur"'
+      fr: 'Vous êtes à la page "exploration par secteur"'
     viz3:
       en: 'Switched to "explore electricity generation" page'
-      fr: 'Navigation au page "exploration de l’électricité"'
+      fr: 'Vous êtes à la page "exploration de l’électricité"'
     viz4:
       en: 'Switched to "explore scenarios" page'
-      fr: 'Navigation au page "exploration des scénarios"'
+      fr: 'Vous êtes à la page "exploration des scénarios"'
 
 
 
