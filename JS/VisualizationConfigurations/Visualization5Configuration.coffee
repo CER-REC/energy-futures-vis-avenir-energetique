@@ -104,7 +104,7 @@ class Visualization5Configuration
   # Router integration
 
   routerParams: ->
-    page: 'viz3'
+    page: 'viz5'
     dataset: @dataset
     scenario: @scenario
     baseYear: @baseYear
