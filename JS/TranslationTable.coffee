@@ -78,6 +78,9 @@ module.exports =
     visualization4NavbarLink:
       en: 'SCENARIOS'
       fr: 'SCÉNARIOS'
+    visualization5NavbarLink:
+      en: 'DEMAND'
+      fr: '<TODO>' # DEMANDE
 
     imageDownloadLink:
       en: 'DOWNLOAD IMAGE'
@@ -1249,46 +1252,69 @@ module.exports =
           Analysez l’incidence des principales incertitudes sur l’évolution future de l’énergie, par exemple en fonction de prix plus élevés ou plus bas, d’exportations plus élevées de GNL, ou l’absence d’exportations de GNL, ou encore l’absence de nouveaux de pipelines d’exportation de pétrole brut.
         </p>
       """
+    viz5:
+      en: '<TODO>'
+      fr: '<TODO>'
 
 
   # Titles
 
 
+  # TODO: validate shortened titles with NEB
 
   visualization1Titles:
     energyDemand:
-      en: 'TOTAL DEMAND BY REGION'
-      fr: 'DEMANDE TOTALE PAR RÉGION'
+      # en: 'TOTAL DEMAND BY REGION'
+      en: 'TOTAL DEMAND'
+      # fr: 'DEMANDE TOTALE PAR RÉGION'
+      fr: 'DEMANDE TOTALE'
     oilProduction:
-      en: 'OIL PRODUCTION BY REGION'
-      fr: 'PRODUCTION DE PÉTROLE PAR RÉGION'
+      # en: 'OIL PRODUCTION BY REGION'
+      en: 'OIL PRODUCTION'
+      # fr: 'PRODUCTION DE PÉTROLE PAR RÉGION'
+      fr: 'PRODUCTION DE PÉTROLE'
     gasProduction:
-      en: 'GAS PRODUCTION BY REGION'
-      fr: 'PRODUCTION DE GAZ PAR RÉGION'
+      # en: 'GAS PRODUCTION BY REGION'
+      en: 'GAS PRODUCTION'
+      # fr: 'PRODUCTION DE GAZ PAR RÉGION'
+      fr: 'PRODUCTION DE GAZ'
     electricityGeneration:
-      en: 'ELECTRICITY GENERATION BY REGION'
-      fr: 'PRODUCTION D’ÉLECTRICITÉ PAR RÉGION'
+      # en: 'ELECTRICITY GENERATION BY REGION'
+      en: 'ELECTRICITY GENERATION'
+      # fr: 'PRODUCTION D’ÉLECTRICITÉ PAR RÉGION'
+      fr: 'PRODUCTION D’ÉLECTRICITÉ'
 
   visualization2Title:
-    en: 'ENERGY DEMAND BY SOURCE & SECTOR'
-    fr: 'DEMANDE D’ÉNERGIE PAR SOURCE ET SECTEUR'
+    # en: 'ENERGY DEMAND BY SOURCE & SECTOR'
+    en: 'ENERGY DEMAND BY SECTOR'
+    # fr: 'DEMANDE D’ÉNERGIE PAR SOURCE ET SECTEUR'
+    fr: 'DEMANDE PAR SECTEUR'
   visualization3Title:
     en: 'ELECTRICITY GENERATION'
     fr: 'PRODUCTION D’ÉLECTRICITÉ'
 
   visualization4Titles:
     energyDemand:
-      en: 'COMPARING DEMAND SCENARIOS'
+      # en: 'COMPARING DEMAND SCENARIOS'
+      en: 'DEMAND SCENARIOS'
       fr: 'SCÉNARIOS DE DEMANDE'
     oilProduction:
-      en: 'COMPARING OIL PRODUCTION SCENARIOS'
-      fr: 'SCÉNARIOS DE PRODUCTION PÉTROLIÈRE'
+      # en: 'COMPARING OIL PRODUCTION SCENARIOS'
+      en: 'OIL PRODUCTION SCENARIOS'
+      # fr: 'SCÉNARIOS DE PRODUCTION PÉTROLIÈRE'
+      fr: 'SCÉNARIOS PÉTROLIÈRES'
     gasProduction:
-      en: 'COMPARING GAS PRODUCTION SCENARIOS'
-      fr: 'SCÉNARIOS DE PRODUCTION GAZIÈRE'
+      # en: 'COMPARING GAS PRODUCTION SCENARIOS'
+      # TODO: GAS PRODUCTION SCENARIOS is still too long at the minimum resolution
+      # we aim to support.
+      en: 'GAS PRODUCTION SCENARIOS'
+      # fr: 'SCÉNARIOS DE PRODUCTION GAZIÈRE'
+      fr: 'SCÉNARIOS GAZIÈRES'
     electricityGeneration:
-      en: 'COMPARING ELECTRICITY SCENARIOS'
-      fr: 'SCÉNARIOS DE PRODUCTION D’ÉLECTRICITÉ'
+      # en: 'COMPARING ELECTRICITY SCENARIOS'
+      en: 'ELECTRICITY SCENARIOS'
+      # fr: 'SCÉNARIOS DE PRODUCTION D’ÉLECTRICITÉ'
+      fr: 'SCÉNARIOS D’ÉLECTRICITÉ'
 
   visualization5Title:
     en: 'CHANGING DEMAND'
@@ -1399,6 +1425,12 @@ module.exports =
     viz4B:
       en: 'IMG/howto/Visualization_HowTo_4B-EN.png'
       fr: 'IMG/howto/Visualization_HowTo_4B-FR.png'
+    viz5A:
+      en: '<TODO>'
+      fr: '<TODO>'
+    viz5B:
+      en: '<TODO>'
+      fr: '<TODO>'
 
   contactEmail:
     body:

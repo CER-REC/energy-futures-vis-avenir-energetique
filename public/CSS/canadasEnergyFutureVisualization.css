@@ -353,7 +353,7 @@ div.chartTooltip:after {
 #canadasEnergyFutureVisualization .vizModal.navbarInfoSection {
   left: auto;
   top: auto;
-  width: 66.1%;
+  width: 56.2%;
   cursor: auto;
 }
 
@@ -596,6 +596,10 @@ div.chartTooltip:after {
 #canadasEnergyFutureVisualization h1.viz4HelpTitle,
 #canadasEnergyFutureVisualization h2.viz4HelpTitle{
   color: rgb(202, 152, 48) !important;
+}
+#canadasEnergyFutureVisualization h1.viz5HelpTitle,
+#canadasEnergyFutureVisualization h2.viz5HelpTitle{
+  color: rgb(204, 102, 102) !important;
 }
 
 
