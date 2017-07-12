@@ -26,6 +26,7 @@ class LandingPage
         visualization2Link: Tr.landingPage.visualization2Link[@app.language]
         visualization3Link: Tr.landingPage.visualization3Link[@app.language]
         visualization4Link: Tr.landingPage.visualization4Link[@app.language]
+        visualization5Link: Tr.landingPage.visualization5Link[@app.language]
         panelRightContent: Mustache.render(Wet3VideoTemplate)
         # panelRightContent: Mustache.render(Wet4VideoTemplate)
     
@@ -133,6 +134,25 @@ class LandingPage
     @viz4Link.addEventListener 'click', @viz4LinkClickHandler
     @viz4Link.addEventListener 'keydown', @viz4LinkEnterHandler
 
+
+
+    @viz5Link = @app.window.document.getElementById 'viz5Anchor'
+    @viz5LinkClickHandler = (event) =>
+      event.preventDefault()
+      @app.router.navigate {
+        page: 'viz5'
+        language: @app.language
+      },
+        shouldSelectNavbarItem: false
+    @viz5LinkEnterHandler = (event) =>
+      if event.key == 'Enter' or event.key == ' '
+        event.preventDefault()
+        @app.router.navigate
+          page: 'viz5'
+          language: @app.language
+    @viz5Link.addEventListener 'click', @viz5LinkClickHandler
+    @viz5Link.addEventListener 'keydown', @viz5LinkEnterHandler
+
   removeEventListeners: ->
 
     @aboutHyperlink.removeEventListener 'click', @aboutHyperlinkClickHandler
@@ -148,6 +168,8 @@ class LandingPage
     @viz3Link.removeEventListener 'keydown', @viz3LinkEnterHandler
     @viz4Link.removeEventListener 'click', @viz4LinkClickHandler
     @viz4Link.removeEventListener 'keydown', @viz4LinkEnterHandler
+    @viz5Link.removeEventListener 'click', @viz5LinkClickHandler
+    @viz5Link.removeEventListener 'keydown', @viz5LinkEnterHandler
 
 
 

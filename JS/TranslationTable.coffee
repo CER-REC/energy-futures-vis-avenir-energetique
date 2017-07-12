@@ -44,11 +44,16 @@ module.exports =
       en: 'EXPLORE BY SECTOR'
       fr: 'EXPLORATION PAR SECTEUR'
     visualization3Link:
-      en: 'EXPLORE ELECTRICITY GENERATION'
+      # TODO: this was too long, need to validate shortened version with NEB
+      # en: 'EXPLORE ELECTRICITY GENERATION'
+      en: 'EXPLORE ELECTRICITY'
       fr: 'EXPLORATION DE L’ÉLECTRICITÉ'
     visualization4Link:
       en: 'EXPLORE SCENARIOS'
       fr: 'EXPLORATION DES SCÉNARIOS'
+    visualization5Link:
+      en: 'EXPLORE DEMAND'
+      fr: '<TODO>' # EXPLORATION DE LA DEMANDE
 
 
 
