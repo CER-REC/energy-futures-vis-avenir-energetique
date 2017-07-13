@@ -1781,11 +1781,30 @@ module.exports =
     viz1GraphAccessibleInstructions:
       en: 'Use the arrow keys or the mouse to select chart elements.'
       fr: 'Utiliser les boutons flèches ou la souris pour naviguer le graphique.'
+    viz2GraphAccessibleInstructions:
+      en: 'Use the arrow keys to navigate the chart.'
+      fr: 'Utiliser les boutons flèches pour naviguer le graphique.'
+    viz3GraphAccessibleInstructions:
+      en: 'Use the arrow keys or the mouse to select chart elements.'
+      fr: 'Utiliser les boutons flèches ou la souris pour naviguer le graphique.'
+    viz4GraphAccessibleInstructions:
+      en: 'Use the arrow keys to navigate the chart.'
+      fr: 'Utiliser les boutons flèches pour naviguer le graphique.'
+
 
     # TODO: French translations need validation
-    emptySelection:
+    emptyRegionSelection:
       en: 'No regions selected'
-      fr: 'Aucune région selectionnée'
+      fr: 'Aucune région sélectionnée'
+    emptySourceSelection:
+      en: 'No sources selected'
+      fr: 'Aucune source sélectionnée'
+    emptyScenarioSelection:
+      en: 'No scenarios selected'
+      fr: 'Aucune scénario sélectionné'
+    emptyViz3Selection:
+      en: 'No regions or sources selected'
+      fr: 'Aucune région ou source sélectionnée'
 
 
   report:

@@ -237,4 +237,40 @@ class Visualization2Configuration
         return false
     return true
 
+
+  # Given an active source, find the next source which should become active if this
+  # active source were removed from the sources
+  nextActiveSource: (activeSource) ->
+    source = @nextActiveSourceReverse activeSource
+    return source if source?
+    
+    source = @nextActiveSourceForward activeSource
+    return source if source?
+
+    return null
+
+
+  # Scan forward through the sources in order until we find one which is in the active
+  # set
+  nextActiveSourceForward: (activeSource) ->
+    activeSourceIndex = @sourcesInOrder.indexOf activeSource
+
+    for i in [(activeSourceIndex + 1)...@sourcesInOrder.length]
+      if @sources.includes @sourcesInOrder[i]
+        return @sourcesInOrder[i]
+
+    return null
+
+  # Scan backward through the sources in order until we find one which is in the active
+  # set
+  nextActiveSourceReverse: (activeSource) ->
+    activeSourceIndex = @sourcesInOrder.indexOf activeSource
+
+    for i in [(activeSourceIndex - 1)..0]
+      if @sources.includes @sourcesInOrder[i]
+        return @sourcesInOrder[i]
+
+    return null
+
+
 module.exports = Visualization2Configuration

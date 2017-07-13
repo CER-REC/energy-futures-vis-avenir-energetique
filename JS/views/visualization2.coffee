@@ -1,4 +1,3 @@
-_ = require 'lodash'
 d3 = require 'd3'
 Mustache = require 'mustache'
 
@@ -21,6 +20,8 @@ ControlsHelpPopover = require '../popovers/ControlsHelpPopover.coffee'
 ProvinceAriaText = require '../ProvinceAriaText.coffee'
 SourceAriaText = require '../SourceAriaText.coffee'
 
+Viz2AccessConfig = require '../VisualizationConfigurations/Vis2AccessConfig.coffee'
+
 
 class Visualization2 extends visualization
   height = 700
@@ -35,6 +36,7 @@ class Visualization2 extends visualization
       selectRegionLabel: Tr.regionSelector.selectRegionLabel[@app.language]
       selectSourceLabel: Tr.sourceSelector.selectSourceLabel[@app.language]
       svgStylesheet: SvgStylesheetTemplate
+      graphDescription: Tr.altText.viz2GraphAccessibleInstructions[@app.language]
 
       altText:
         sectorsHelp: Tr.altText.sectorsHelp[@app.language]
@@ -132,9 +134,11 @@ class Visualization2 extends visualization
 
   constructor: (@app, config, @options) ->
     @config = config
+    @accessConfig = new Viz2AccessConfig @config
     @_chart = null
     @document = @app.window.document
     @d3document = d3.select @document
+    @accessibleStatusElement = @document.getElementById 'accessibleStatus'
 
 
     @getData()
@@ -157,6 +161,8 @@ class Visualization2 extends visualization
     @addSectors()
     @addScenarios()
     @render()
+    @setupGraphEvents()
+
 
   tearDown: ->
     # TODO: Consider garbage collection and event listeners
@@ -355,6 +361,13 @@ class Visualization2 extends visualization
     electricity:
       'IMG/sources/electricity_selected.svg'
 
+  # TODO: Known issue here: when a source is disabled, its data does not appear in
+  # @seriesData at all. We can't determine whether the source data is all zeroes or not.
+  # Currently, when a source has all zero items, it will show the zeroed out icon when
+  # selected and show the de-selected icon when de-selected.
+  # The desired behaviour is to show the zeroed out icon at all times, selected or not.
+  # Fixing this will mean changing or adding to the data that the energy demand provider
+  # returns. See NEBV-405
   zeroedOut: (key) ->
     if !(@seriesData) or !(@seriesData[key]) then return false
     nonZeroVals = @seriesData[key].filter (item) -> item.value != 0
@@ -757,11 +770,26 @@ class Visualization2 extends visualization
         @app.animationDuration
       groupId:
         'graphGroup'
+      areaElementClick: (d) =>
+        graphPanel = @document.getElementById 'graphPanel'
+        coords = d3.mouse graphPanel
+
+        @accessConfig.setYear Math.floor(@xScale().invert(coords[0]))
+        @accessConfig.setSource d.key
+
+        @updateAccessibleFocus()
+
+
 
     @_chart = new stackedAreaChart @app, '#graphSVG', @xScale(), @yScale(), stackedOptions
 
     @_provinceMenu = @buildProvinceMenu()
     @sourceMenu = @buildSourceMenu()
+
+    # Build a dot to serve as the accessible focus
+    @buildAccessibleFocusDot()
+
+
 
   adjustViz: ->
     @_chart.mapping @sourceMenuData()
@@ -851,7 +879,8 @@ class Visualization2 extends visualization
       groupId: 'provinceMenu'
       onSelected: @provinceSelected
       allSquareHandler: @selectAllProvince
-      showHelpHandler: @provincesHelpPopover.showPopoverCallback
+      # Popovers are not defined on server, so we use ?.
+      showHelpHandler: @provincesHelpPopover?.showPopoverCallback
       helpButtonLabel: Tr.altText.regionsHelp[@app.language]
       helpButtonId: 'provinceHelpButton'
       getAllIcon: =>
@@ -880,7 +909,8 @@ class Visualization2 extends visualization
       groupId: 'stackMenu'
       onSelected: @menuSelect
       allSquareHandler: @selectAllStacked
-      showHelpHandler: @sourcesHelpPopover.showPopoverCallback
+      # Popovers are not defined on server, so we use ?.
+      showHelpHandler: @sourcesHelpPopover?.showPopoverCallback
       orderChangedHandler: @orderChanged
       canDrag: true
       helpButtonLabel: Tr.altText.sourcesHelp[@app.language]
@@ -944,6 +974,100 @@ class Visualization2 extends visualization
       @app.router.navigate @config.routerParams()
 
     @app.datasetRequester.updateAndRequestIfRequired newConfig, update
+
+
+
+  setupGraphEvents: ->
+    graphElement = @document.getElementById 'graphPanel'
+
+    graphElement.addEventListener 'keydown', (event) =>
+
+      # Only process the input if there is at least one selected source
+      return if @config.sources.length == 0
+
+      switch event.key
+        when 'ArrowRight'
+          event.preventDefault()
+          @accessConfig.setYear @accessConfig.activeYear + 1
+          @updateAccessibleFocus()
+        when 'ArrowLeft'
+          event.preventDefault()
+          @accessConfig.setYear @accessConfig.activeYear - 1
+          @updateAccessibleFocus()
+        when 'ArrowUp'
+          event.preventDefault()
+          @accessConfig.setSource @config.nextActiveSourceForward(@accessConfig.activeSource)
+          @updateAccessibleFocus()
+        when 'ArrowDown'
+          event.preventDefault()
+          @accessConfig.setSource @config.nextActiveSourceReverse(@accessConfig.activeSource)
+          @updateAccessibleFocus()
+
+    graphElement.addEventListener 'focus', =>
+      # When we return to focusing the graph element, the graph sub element that the user
+      # had focused may have been toggled off (by removing the source).
+      # Calling validate ensures that the sub-focus element is positioned correctly
+      if @config.sources.length > 0
+        @accessConfig.validate @config
+        @updateAccessibleFocus()
+      else
+        # If there are no active sources, we handle the special case
+        @d3document.select '#graphPanel'
+          .attr
+            'aria-label': Tr.altText.emptySourceSelection[@app.language]
+        @accessibleFocusDot.attr
+          transform: 'translate(-1000, -1000)'
+        @_chart.tooltip.style.visibility = 'hidden'
+
+
+  updateAccessibleFocus: ->
+    item = @_chart.getStackDictionaryInfoForAccessibility @accessConfig.activeSource, @accessConfig.activeYear
+    # The case where there is no active item is handled before the call to
+    # updateAccessibleFocus
+    return unless item?
+
+    xCoord = @xScale()(item.x)
+    yCoord = @yScale()(item.y + item.y0)
+    @accessibleFocusDot.attr
+      transform: "translate(#{xCoord}, #{yCoord})"
+
+    sourceString = Tr.sourceSelector.sources[@accessConfig.activeSource][@app.language]
+    unitString = Tr.altText.unitNames[@config.unit][@app.language]
+    description = "#{sourceString} #{@accessConfig.activeYear}, #{item.y.toFixed 2} #{unitString}"
+    @d3document.select '#graphPanel'
+      .attr
+        'aria-label': description
+    @accessibleStatusElement.innerHTML = description
+
+    @_chart.displayTooltipKeyboard @accessConfig.activeSource, @accessConfig.activeYear, item.y, @accessibleFocusDotElement
+
+
+
+  buildAccessibleFocusDot: ->
+    @d3document.select '#graphGroup'
+      .append 'g'
+      .attr
+        id: 'accessibleFocusDot'
+        class: 'accessibleFocus'
+
+    @accessibleFocusDot = @d3document.select '#accessibleFocusDot'
+    @accessibleFocusDotElement = @document.getElementById 'accessibleFocusDot'
+    
+    @d3document.select '#graphPanel'
+      .attr
+        'aria-activedescendant': 'accessibleFocusDot'
+
+    @accessibleFocusDot
+      .append 'circle'
+        .attr
+          r: 10
+          fill: 'red'
+          'fill-opacity': 0.5
+    @accessibleFocusDot
+      .append 'circle'
+        .attr
+          r: 5
+          fill: 'red'
 
 
 module.exports = Visualization2

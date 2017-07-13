@@ -3,11 +3,16 @@ _ = require 'lodash'
 
 Chart =  require './chart.coffee'
 Platform = require '../Platform.coffee'
+Constants = require '../Constants.coffee'
 
 class BubbleChart extends Chart
   bubbleChartDefaults:
     mapping: []
-
+    # coffeelint: disable=no_empty_functions
+    bubbleClass: ->
+    onAccessibleFocus: ->
+    onBubbleClick: ->
+    # coffeelint: enable=no_empty_functions
 
   constructor: (@app, parent, options = {}) ->
 
@@ -26,6 +31,9 @@ class BubbleChart extends Chart
       x : @chart_options.position.x
       y : @chart_options.position.y
     @_data = @options.data
+    @bubbleClass = @options.bubbleClass
+    @onAccessibleFocus = @options.onAccessibleFocus
+    @onBubbleClick = @options.onBubbleClick
     @resize()
 
     @redraw()
@@ -96,6 +104,16 @@ class BubbleChart extends Chart
       @click_event_name = 'click'
     
 
+  mouseOverHandler: (d, coords) =>
+    @tooltip.style.visibility = 'visible'
+    @mouseMoveHandler d, coords
+
+  mouseMoveHandler: (d, coords) =>
+    @tooltip.style.left = "#{coords[0] + Constants.tooltipXOffset}px"
+    @tooltip.style.top = "#{coords[1]}px"
+    @tooltip.innerHTML = "#{d.name} (#{@_year}): #{d.size.toFixed(2)}"
+
+
 
   redraw: ->
     if !(@force?)
@@ -126,37 +144,80 @@ class BubbleChart extends Chart
         r: 0
       .style
         fill: (d) =>
-          if @_mapping[d.source] then @_mapping[d.source].colour else 'none'
+          if @_mapping[d.leafName] then @_mapping[d.leafName].colour else 'none'
         'fill-opacity': 0.8
-        stroke: (d) -> if d.depth == 0 then 'none' else '#333333'
-        'stroke-width': (d) =>
-          if @_mapping[d.source] or d.depth == 0  or (d.depth == 1 and !(d.children)) then 0 else 1
+        stroke: (d) -> if d.depth == 1 then '#333333'
+        'stroke-width': (d) ->
+          if d.depth == 0 or (d.depth == 1 and !(d.children)) then 0
         
+    node.filter (d) -> d.depth == 1
+      .select 'circle'
+      .attr
+        class: (d) ->
+          "circleGroup circleGroup-#{d.name}"
+        'data-name': (d) ->
+          d.name
 
+
+    # TODO: This occurs on redraw, could it be moved to enter? are we recreating all these
+    # event handlers needlessly?
     node.filter (d) -> d.depth == 2
       .select 'circle'
 
       .on @mouseover_event_name, (d) =>
         coords = d3.mouse @tooltipParent # [x, y]
-        @tooltip.style.visibility = 'visible'
-        @tooltip.style.left = "#{coords[0] + 30}px"
-        @tooltip.style.top = "#{coords[1]}px"
-        @tooltip.innerHTML = "#{d.name} (#{@_year}): #{d.size.toFixed(2)}"
+        @mouseOverHandler d, coords
 
       .on @mousemove_event_name, (d) =>
         coords = d3.mouse @tooltipParent # [x, y]
-        @tooltip.style.left = "#{coords[0] + 30}px"
-        @tooltip.style.top = "#{coords[1]}px"
-        @tooltip.innerHTML = "#{d.name} (#{@_year}): #{d.size.toFixed(2)}"
+        @mouseMoveHandler d, coords
 
       .on @mouseout_event_name, =>
         @tooltip.style.visibility = 'hidden'
+
+      .on 'displayTooltip', (d) =>
+
+        # First, find the position in absolute page coordinates where the tooltip should
+        # go
+        graphElementBounds = d3.event.target.getBoundingClientRect()
+        xDest = graphElementBounds.right + window.scrollX
+        yDest = graphElementBounds.top + window.scrollY + graphElementBounds.height / 2
+
+        # Second, calculate the offset for the tooltip element based on its parent
+        parentBounds = @tooltipParent.getBoundingClientRect()
+        xParentOffset = parentBounds.left + window.scrollX
+        yParentOffset = parentBounds.top + window.scrollY
+
+        # Third, place the tooltip
+        coords = [
+          xDest - xParentOffset
+          yDest - yParentOffset
+        ]
+        @mouseOverHandler d, coords
+
+      .on 'accessibleFocus', (d) =>
+        @onAccessibleFocus d
+
+      .attr
+        class: (d) =>
+          "pointerCursor circle-#{d.leafName} circle-#{d.parent.name} #{@bubbleClass d}"
+        'data-province': (d) ->
+          d.province
+        'data-source': (d) ->
+          d.source
+        id: (d) ->
+          "circle-#{d.id}"
 
     enterSelection.filter((d) -> d.depth == 1 ).append 'g'
           
     enterSelection.select('g').append 'image'
 
-    handlePopover = (element, d) =>
+    handleClick = (element, d) =>
+      @onBubbleClick d
+
+      # Create the 'permanent' tooltip attached to the bubble, until the user toggles it
+      # off
+
       # d3.event.preventDefault()
       # d3.event.stopPropagation()
       if d3.selectAll(".toolTip#{d.id}").empty()
@@ -201,7 +262,7 @@ class BubbleChart extends Chart
       .select('circle')
       .on @click_event_name, (d) ->
         # 'this' is the element which was clicked
-        handlePopover @, d
+        handleClick @, d
 
       .on 'touchstart', ->
         d3.event.preventDefault()
@@ -212,7 +273,7 @@ class BubbleChart extends Chart
       .on 'touchend', (d) ->
         d3.event.preventDefault()
         # 'this' is the element which was touched
-        handlePopover @, d
+        handleClick @, d
 
       .on 'touchcancel', ->
         d3.event.preventDefault()
@@ -246,7 +307,7 @@ class BubbleChart extends Chart
         d.px = d.x0 = d.x
         d.py = d.y0 = d.y
         regionNodes.push d
-            
+
     @force.nodes regionNodes
     @force.start()
     @force.on 'tick', (e) =>
@@ -296,7 +357,7 @@ class BubbleChart extends Chart
 
 
       circle_radius_function = (d) =>
-        if (@_mapping[d.source] and !(@_mapping[d.source].present)) then 0 else d.r
+        if (@_mapping[d.leafName] and !(@_mapping[d.leafName].present)) then 0 else d.r
 
       group_transform_function = (d) ->
         dst = d.r * 0.807 + 5

@@ -1083,4 +1083,21 @@ svg { overflow: hidden; }
   float: right;
 }
 
+#canadasEnergyFutureVisualization #accessibleFocusDot {
+  display: none;
+  outline: none white 0px;
+}
 
+#canadasEnergyFutureVisualization #graphPanel:focus #accessibleFocusDot {
+  /* We want to reset this back to its default when focused. Inline seems to be the default for SVG elements. */
+  display: inline; 
+  outline: unset;
+}
+
+
+#canadasEnergyFutureVisualization #graphPanel:focus circle.accessibleFocus {
+  /* Use the SVG stroke to highlight this element instead of outline */
+  outline: none;
+  stroke-width: 3px;
+  stroke: red;
+}
