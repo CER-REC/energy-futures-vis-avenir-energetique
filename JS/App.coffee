@@ -174,7 +174,7 @@ class App
 
 Domready ->
   app = new App()
-  # window.parent.app = app
+  # window.app = app
   app.setup()
   
 

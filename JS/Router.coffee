@@ -199,7 +199,7 @@ class Router
 
 
 Router.parseQueryParams = ->
-  PrepareQueryParams QueryString.parse(window.parent.document.location.search)
+  PrepareQueryParams QueryString.parse(document.location.search)
 
 Router.currentViewClass = ->
   Router.viewClassForPage Router.parseQueryParams().page

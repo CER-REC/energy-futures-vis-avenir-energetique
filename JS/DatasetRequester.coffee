@@ -3,7 +3,6 @@ d3 = require 'd3'
 
 Constants = require './Constants.coffee'
 
-
 ###
 Dataset requester has a few jobs:
   - When a UI request to change the viz comes in, if we have the data, use the callback
@@ -15,7 +14,6 @@ Dataset requester has a few jobs:
 ###
 
 
-
 class DatasetRequester
 
   constructor: (@app, @providers) ->
@@ -23,22 +21,22 @@ class DatasetRequester
     @bottledRequest = null
 
     @loadedStateViz1_4 = {}
-    @loadedStateViz2 = {}
+    @loadedStateViz2_5 = {}
     @loadedStateViz3 = {}
 
     for datasetName, datasetDefinition of Constants.datasetDefinitions
 
-      @loadedStateViz1_4[datasetName] = []
-      @loadedStateViz2[datasetName] = []
-      @loadedStateViz3[datasetName] = []
+      @loadedStateViz1_4[datasetName] = {}
+      @loadedStateViz2_5[datasetName] = {}
+      @loadedStateViz3[datasetName] = {}
 
       for mainSelection in Constants.mainSelections
         @loadedStateViz1_4[datasetName][mainSelection] = false
 
       for sector in Constants.sectors
-        @loadedStateViz2[datasetName][sector] = {}
+        @loadedStateViz2_5[datasetName][sector] = {}
         for province in Constants.provinceRadioSelectionOptions
-          @loadedStateViz2[datasetName][sector][province] = false
+          @loadedStateViz2_5[datasetName][sector][province] = false
 
       for scenario in datasetDefinition.scenarios
         @loadedStateViz3[datasetName][scenario] = false
@@ -50,9 +48,16 @@ class DatasetRequester
       when 'viz1', 'viz4'
         @loadedStateViz1_4[configParams.dataset][configParams.mainSelection] == true
       when 'viz2'
-        @loadedStateViz2[configParams.dataset][configParams.sector][configParams.province] == true
+        @loadedStateViz2_5[configParams.dataset][configParams.sector][configParams.province] == true
       when 'viz3'
         @loadedStateViz3[configParams.dataset][configParams.scenario] == true
+      when 'viz5'
+        # For a viz5 config: we require all of the data for an entire sector be to present
+        for province in Constants.provinces
+          if @loadedStateViz2_5[configParams.dataset][configParams.sector][province] == false
+            return false
+
+        true
 
 
 
@@ -95,6 +100,13 @@ class DatasetRequester
           page: configParams.page
           dataset: configParams.dataset
           scenario: configParams.scenario
+      when 'viz5'
+        params =
+          page: configParams.page
+          dataset: configParams.dataset
+          sector: configParams.sector
+
+        
 
     paramsString = QueryString.stringify params
 
@@ -152,7 +164,7 @@ class DatasetRequester
       when 'viz1', 'viz4'
         return if @loadedStateViz1_4[configParams.dataset][configParams.mainSelection] == true
       when 'viz2'
-        return if @loadedStateViz2[configParams.dataset][configParams.sector][configParams.province] == true
+        return if @loadedStateViz2_5[configParams.dataset][configParams.sector][configParams.province] == true
       when 'viz3'
         return if @loadedStateViz3[configParams.dataset][configParams.scenario] == true
 
@@ -172,13 +184,27 @@ class DatasetRequester
             @app.providers[configParams.dataset].gasProductionProvider.addData data.data
 
       when 'viz2'
-        @loadedStateViz2[configParams.dataset][configParams.sector][configParams.province] = true
+        @loadedStateViz2_5[configParams.dataset][configParams.sector][configParams.province] = true
         @app.providers[configParams.dataset].energyConsumptionProvider.addData data.data
 
       when 'viz3'
         @loadedStateViz3[configParams.dataset][configParams.scenario] = true
         @app.providers[configParams.dataset].electricityProductionProvider.addData data.data
 
+      when 'viz5'
+        # For viz5, we return 13 chunks per request, one per province.
+        # Each of those chunks may be loaded individually by a request to the viz2 data
+        # endpoint. So, we check for the presence of each chunk individually before
+        # loading it.
+        # We also download and load data for all of Canada ('all'), since the endpoint
+        # sends it, even though it is not needed for viz5.
+        for province in Constants.provinceRadioSelectionOption
+          continue if @loadedStateViz2_5[configParams.dataset][configParams.sector][province] == true
+
+          @loadedStateViz2_5[configParams.dataset][configParams.sector][province] = true
+          @app.providers[configParams.dataset].energyConsumptionProvider.addData data.data[province]
+
+        
 
 
   showSpinner: ->
