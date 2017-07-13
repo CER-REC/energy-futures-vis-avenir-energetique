@@ -9,7 +9,7 @@ NavbarHelpPopover = require '../popovers/NavbarHelpPopover.coffee'
 class Navbar
 
   constructor: (@app) ->
-    # navbarState can be one of: landingPage, viz1, viz2, viz3, viz4
+    # navbarState can be one of: landingPage, viz1, viz2, viz3, viz4, viz5
     @navbarState = null
 
     @navbarInfoPopover = new NavbarInfoPopover @app
@@ -79,6 +79,19 @@ class Navbar
           imageAUrl: Tr.howToImages.viz4A[@app.language]
           imageBUrl: Tr.howToImages.viz4B[@app.language]
           helpPopoverHeaderClass: 'viz4HelpTitle'
+        }
+        {
+          unselectedLabel: Tr.allPages.visualization5NavbarLink[@app.language]
+          selectedLabel: Tr.visualization5Title[@app.language]
+          navbarHelpImageSelected: 'IMG/navbar_Icons/questionMark_ScenarioHighlighted.svg'
+          infoPopoverText: Tr.navbarInfoText.viz5[@app.language]
+          infoPopoverHeader: Tr.navbarInfoHeadings.viz5[@app.language]
+          navbarInfoImageSelected: 'IMG/navbar_Icons/explanationIcon_ScenarioHighlighted.svg'
+          colour: 'rgb(204, 102, 102)'
+          page: 'viz5'
+          imageAUrl: Tr.howToImages.viz5A[@app.language]
+          imageBUrl: Tr.howToImages.viz5B[@app.language]
+          helpPopoverHeaderClass: 'viz5HelpTitle'
         }
       ]
 
@@ -173,7 +186,7 @@ class Navbar
           if d.page == 'landingPage'
             '4.2%'
           else if @navbarState == d.page
-            '66.1%'
+            '56.2%'
           else
             '9.9%'
 
@@ -296,7 +309,7 @@ class Navbar
       .styleTween 'width', (d, i, a) ->
         return if d.page == 'landingPage'
         if self.navbarState == d.page
-          d3.interpolateString @style.width, '66.1%'
+          d3.interpolateString @style.width, '56.2%'
         else
           d3.interpolateString @style.width, '9.9%'
 

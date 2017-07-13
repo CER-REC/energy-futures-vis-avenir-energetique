@@ -223,7 +223,7 @@ div.chartTooltip:after {
 
 #canadasEnergyFutureVisualization .thumbnailContainer {
   float: left;
-  width: 25%;
+  width: 20%;
   box-sizing: border-box;
   padding: 0px 7px 0px 7px;
   cursor: pointer;
@@ -271,6 +271,9 @@ div.chartTooltip:after {
 #canadasEnergyFutureVisualization .viz4linkBox {
   background-color: rgb(202, 152, 48);
 }
+#canadasEnergyFutureVisualization .viz5linkBox {
+  background-color: rgb(204, 102, 102);
+}
 
 
 #canadasEnergyFutureVisualization #landingPagePanel {
@@ -310,6 +313,11 @@ div.chartTooltip:after {
 }
 #canadasEnergyFutureVisualization .viz4Img {
   background-image: url("../IMG/landingPageThumb/vis4_808.png");
+  background-size: cover;
+  background-position:50% 50%;  /* Sets reference point to scale from */
+}
+#canadasEnergyFutureVisualization .viz5Img {
+  background-image: url("../IMG/doge.jpg"); /* TODO: Once we're ready to launch, put a real image here. */
   background-size: cover;
   background-position:50% 50%;  /* Sets reference point to scale from */
 }
@@ -353,7 +361,7 @@ div.chartTooltip:after {
 #canadasEnergyFutureVisualization .vizModal.navbarInfoSection {
   left: auto;
   top: auto;
-  width: 66.1%;
+  width: 56.2%;
   cursor: auto;
 }
 
@@ -596,6 +604,10 @@ div.chartTooltip:after {
 #canadasEnergyFutureVisualization h1.viz4HelpTitle,
 #canadasEnergyFutureVisualization h2.viz4HelpTitle{
   color: rgb(202, 152, 48) !important;
+}
+#canadasEnergyFutureVisualization h1.viz5HelpTitle,
+#canadasEnergyFutureVisualization h2.viz5HelpTitle{
+  color: rgb(204, 102, 102) !important;
 }
 
 
