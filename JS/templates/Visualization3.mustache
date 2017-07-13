@@ -45,10 +45,17 @@
       </svg>
     </div>
   </div>
-  <div id="graphPanel" class="narrowVisualizationColumn">
-    <svg id="graphSVG" xmlns="http://www.w3.org/2000/svg" xmlns:xlink='http://www.w3.org/1999/xlink'>
+
+
+  <div class="narrowVisualizationColumn">
+    <div id="graphPanel" tabindex='0' aria-description='{{ graphDescription }}'>
+      <svg id="graphSVG" xmlns="http://www.w3.org/2000/svg" xmlns:xlink='http://www.w3.org/1999/xlink'>
+        <style> {{ svgStylesheet }} </style>
+        <g id="graphGroup"></g>
+      </svg>
+    </div>
+    <svg id="sliderSVG" xmlns="http://www.w3.org/2000/svg" xmlns:xlink='http://www.w3.org/1999/xlink'>
       <style> {{ svgStylesheet }} </style>
-      <g id="graphGroup">  </g>
       <g id="timeline"> 
         <g id="timelineAxis"> </g>
         <rect id="timeLineTouch"> </rect>

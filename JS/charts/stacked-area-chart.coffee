@@ -3,15 +3,20 @@ _ = require 'lodash'
 
 StackedBarChart = require './stacked-bar-chart.coffee'
 Tr = require '../TranslationTable.coffee'
+Constants = require '../Constants.coffee'
 
 class StackedAreaChart extends StackedBarChart
   stackedAreaDefaults:
     strokeWidth: 1
+    # coffeelint: disable=no_empty_functions
+    areaElementClick: ->
+    # coffeelint: enable=no_empty_functions
 
   constructor: (@app, parent, x, y, options = {}) ->
 
     @options = _.extend {}, @stackedAreaDefaults, options
     @_strokeWidth = @options.strokeWidth
+    @areaElementClick = @options.areaElementClick
     super @app, parent, x, y, @options
     @redraw()
 
@@ -129,10 +134,11 @@ class StackedAreaChart extends StackedBarChart
           @displayTooltip d.key
         .on 'mouseout', =>
           @tooltip.style.visibility = 'hidden'
+        .on 'click', @areaElementClick
 
       presentArea.enter().append 'path'
         .attr
-          class: 'presentArea'
+          class: 'presentArea pointerCursor'
           d: (d) =>
             area @_stackDictionary[d.key].values.map (data) ->
               x: data.x
@@ -161,10 +167,11 @@ class StackedAreaChart extends StackedBarChart
           @displayTooltip d.key
         .on 'mouseout', =>
           @tooltip.style.visibility = 'hidden'
+        .on 'click', @areaElementClick
 
       futureArea.enter().append 'path'
         .attr
-          class: 'futureArea'
+          class: 'futureArea pointerCursor'
           d: (d) =>
             areaFuture @_stackDictionary[d.key].values.map (data) ->
               x: data.x
@@ -273,6 +280,38 @@ class StackedAreaChart extends StackedBarChart
     return unless tooltipDatum
 
     @tooltip.innerHTML = "#{Tr.sourceSelector.sources[powerSource][@app.language]} (#{year}) #{tooltipDatum.y.toFixed(2)}"
+
+
+  displayTooltipKeyboard: (source, year, value, accessibleFocusDot) ->
+
+    # First, find the position in absolute page coordinates where the tooltip should
+    # go
+    dotBounds = accessibleFocusDot.getBoundingClientRect()
+    xDest = dotBounds.right + window.scrollX + Constants.tooltipXOffset
+    yDest = dotBounds.top + window.scrollY + dotBounds.height / 2
+
+    # Second, calculate the offset for the tooltip element based on its parent
+    parentBounds = @tooltipParent.getBoundingClientRect()
+    xParentOffset = parentBounds.left + window.scrollX
+    yParentOffset = parentBounds.top + window.scrollY
+
+    # Third, place the tooltip
+    @tooltip.style.visibility = 'visible'
+    @tooltip.style.left = "#{xDest - xParentOffset}px"
+    @tooltip.style.top = "#{yDest - yParentOffset}px"
+
+    @tooltip.innerHTML = "#{Tr.sourceSelector.sources[source][@app.language]} (#{year}) #{value.toFixed 2}"
+
+
+  getStackDictionaryInfoForAccessibility: (name, xValue) ->
+    for itemName, item of @_stackDictionary
+      continue unless itemName == name
+
+      for subItem in item.values
+        return subItem if subItem.x == xValue
+
+    # Return null when all of the power sources have been switched off
+    return null
 
 
 module.exports = StackedAreaChart

@@ -31,7 +31,7 @@ class Vis1AccessConfig
 
     @setProvince viz1Config.nextActiveProvince(@activeProvince)
 
-    # if viz1Config.provinces is empty, we will arrive here without having changed the
+    # If viz1Config.provinces is empty, we will arrive here without having changed the
     # province on the accessibility config.
     # This is fine, the case where no provinces are selected is a special case to be
     # handled separately by the UI.
