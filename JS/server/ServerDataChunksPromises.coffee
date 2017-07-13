@@ -16,6 +16,8 @@ Logger = require '../Logger.coffee'
 # Viz 2 has the largest amount of data, and is broken into 70 chunks per dataset.
 # With 3 scenarios, the chunks are 80-85kb
 # With 6 scenarios, the chunks are 160-172kb
+# Viz 5 uses the same data as viz 2, but requires more of it at once. We re-use the same
+# chunks on the server side.
 
 # Viz 3 requires all the data within a given scenario for the 'play' animation, so it is
 # in 3 or 6 chunks, one per scenario, depending how many scenarios are in the dataset.
@@ -43,16 +45,16 @@ createDatasetPromise = (datasetName, datasetDefinition) ->
     # Setup structs
 
     viz1And4Chunks = {}
-    viz2Chunks = {}
+    viz2And5Chunks = {}
     viz3Chunks = {}
 
     for mainSelection in Constants.mainSelections
       viz1And4Chunks[mainSelection] = []
 
     for sector in Constants.sectors
-      viz2Chunks[sector] = {}
+      viz2And5Chunks[sector] = {}
       for province in Constants.provinceRadioSelectionOptions
-        viz2Chunks[sector][province] = []
+        viz2And5Chunks[sector][province] = []
 
     for scenario in datasetDefinition.scenarios
       viz3Chunks[scenario] = []
@@ -78,15 +80,15 @@ createDatasetPromise = (datasetName, datasetDefinition) ->
       
 
 
-    # Viz 2
+    # Viz 2 and 5
     for item in ServerData[datasetName].energyConsumptionProvider.data
       continue if item.source == 'total'
-      viz2Chunks[item.sector][item.province].push item
+      viz2And5Chunks[item.sector][item.province].push item
 
     for sector in Constants.sectors
       for province in Constants.provinceRadioSelectionOptions
-        if viz2Chunks[sector][province].length != (Constants.itemsPerViz2ChunkScenario * datasetDefinition.scenarios.length)
-          Logger.error "viz2 data not right for sector #{sector}, province #{province} (#{viz2Chunks[sector][province].length} != #{(Constants.itemsPerViz2ChunkScenario * datasetDefinition.scenarios.length)})"
+        if viz2And5Chunks[sector][province].length != (Constants.itemsPerViz2ChunkScenario * datasetDefinition.scenarios.length)
+          Logger.error "viz2/5 data not right for sector #{sector}, province #{province} (#{viz2And5Chunks[sector][province].length} != #{(Constants.itemsPerViz2ChunkScenario * datasetDefinition.scenarios.length)})"
 
 
     # Viz 3
@@ -99,30 +101,9 @@ createDatasetPromise = (datasetName, datasetDefinition) ->
         Logger.error "viz3 data not right for scenario #{scenario} (#{viz3Chunks[scenario].length} != Constants.itemsPerViz3Chunk)"
 
 
-    # Write files to disk, in development, to gauge approximate data sizes.
-
-    # fs = require 'fs'
-    # outputDirectory = "/Users/kingp/Projects/neb/#{datasetName}_serializedData"
-    # fs.existsSync(outputDirectory) || fs.mkdirSync(outputDirectory)
-
-    # for mainSelection in Constants.mainSelections
-    #   fs.writeFile "#{outputDirectory}/viz_1_4_#{mainSelection}.json", JSON.stringify(viz1And4Chunks[mainSelection])
-
-    # for sector in Constants.sectors
-    #   fs.writeFile "#{outputDirectory}/viz_2_#{sector}.json", JSON.stringify(viz2Chunks[sector])
-    # These come out to 1.1-2.4mb each. Too big!
-
-    # for sector in Constants.sectors
-    #   for province in Constants.provinceRadioSelectionOptions
-    #     fs.writeFile "#{outputDirectory}/viz_2_#{sector}_#{province}.json", JSON.stringify(viz2Chunks[sector][province])
-
-    # for scenario in datasetDefinition.scenarios
-    #   fs.writeFile "#{outputDirectory}/viz_3_#{scenario}.json", JSON.stringify(viz3Chunks[scenario])
-
-
     return {
       viz1And4Chunks: viz1And4Chunks
-      viz2Chunks: viz2Chunks
+      viz2And5Chunks: viz2And5Chunks
       viz3Chunks: viz3Chunks
     }
 

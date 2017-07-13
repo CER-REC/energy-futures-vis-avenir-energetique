@@ -37,7 +37,7 @@ module.exports = (req, res) ->
 
         when 'viz2'
           if Constants.sectors.includes(params.sector) and Constants.provinceRadioSelectionOptions.includes(params.province)
-            response.data = serverDataChunks.viz2Chunks[params.sector][params.province]
+            response.data = serverDataChunks.viz2And5Chunks[params.sector][params.province]
             resolve response
           else
             reject new Error 'Unrecognized sector or province parameter.'
@@ -48,6 +48,16 @@ module.exports = (req, res) ->
             resolve response
           else
             reject new Error 'Unrecognized scenario parameter.'
+
+        # For viz5, we serve the same data as for viz2, but we serve the data for all
+        # regions at once, keyed by region.
+        when 'viz5'
+          if Constants.sectors.includes(params.sector)
+            response.data = serverDataChunks.viz2And5Chunks[params.sector]
+            resolve response
+          else
+            reject new Error 'Unrecognized sector parameter.'
+
         else
           reject new Error 'Unrecognized page parameter.'
 

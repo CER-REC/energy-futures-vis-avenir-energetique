@@ -12,6 +12,7 @@ Visualization1Configuration = require './VisualizationConfigurations/visualizati
 Visualization2Configuration = require './VisualizationConfigurations/visualization2Configuration.coffee'
 Visualization3Configuration = require './VisualizationConfigurations/visualization3Configuration.coffee'
 Visualization4Configuration = require './VisualizationConfigurations/Visualization4Configuration.coffee'
+Visualization5Configuration = require './VisualizationConfigurations/Visualization5Configuration.coffee'
 
 EnergyConsumptionProvider = require './DataProviders/EnergyConsumptionProvider.coffee'
 OilProductionProvider = require './DataProviders/OilProductionProvider.coffee'
@@ -49,7 +50,7 @@ class App
     @screenWidth = (window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth)
 
     # Global URL params, these are initialized by the router
-    # Page, one of landingPage, viz1, viz2, viz3, viz4
+    # Page, one of landingPage, viz1, viz2, viz3, viz4, viz5
     @page = null
     # Language one of en, fr
     @language = null
@@ -92,6 +93,7 @@ class App
     @visualization2Configuration = new Visualization2Configuration @
     @visualization3Configuration = new Visualization3Configuration @
     @visualization4Configuration = new Visualization4Configuration @
+    @visualization5Configuration = new Visualization5Configuration @
 
 
 
@@ -174,7 +176,7 @@ class App
 
 Domready ->
   app = new App()
-  # window.parent.app = app
+  # window.app = app
   app.setup()
   
 
