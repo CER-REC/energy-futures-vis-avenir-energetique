@@ -68,6 +68,20 @@ describe 'JSON Data Endpoints', ->
       response.data[0].unit.should.equal 'GW.h'
 
 
+  it 'Serves data for Visualization 5', ->
+    parameters = QueryString.stringify
+      dataset: 'jan2016'
+      page: 'viz5'
+      sector: 'commercial'
+
+    Request "#{process.env.HOST}:#{process.env.PORT_NUMBER}/json_data?#{parameters}"
+
+    .then (jsonResponse) ->
+      response = JSON.parse jsonResponse
+      response.data.MB[0].unit.should.equal 'Petajoules'
+      response.data.MB[0].sector.should.equal 'commercial'
+
+
 
   it 'Serves an error for Visualization 1', ->
     parameters = QueryString.stringify
@@ -121,6 +135,21 @@ describe 'JSON Data Endpoints', ->
       dataset: 'jan2016'
       page: 'viz4'
       mainSelection: 'an invalid parameter'
+
+    Request "#{process.env.HOST}:#{process.env.PORT_NUMBER}/json_data?#{parameters}"
+
+    .then (jsonResponse) ->
+      Should.fail "Shouldn't respond with 200 for an error condition."
+
+    .catch (response) ->
+      response.statusCode.should.equal 400
+
+
+  it 'Serves an error for Visualization 5', ->
+    parameters = QueryString.stringify
+      dataset: 'jan2016'
+      page: 'viz5'
+      sector: 'an invalid sector'
 
     Request "#{process.env.HOST}:#{process.env.PORT_NUMBER}/json_data?#{parameters}"
 

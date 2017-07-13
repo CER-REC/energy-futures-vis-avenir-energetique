@@ -265,6 +265,8 @@ class EnergyConsumptionProvider
     filteredData
 
 
+  dataForViz5: (viz5config) ->
+    throw new Error 'todo!'
 
 
 
