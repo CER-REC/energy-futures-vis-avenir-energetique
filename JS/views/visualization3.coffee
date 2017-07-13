@@ -20,9 +20,9 @@ ControlsHelpPopover = require '../popovers/ControlsHelpPopover.coffee'
 ProvinceAriaText = require '../ProvinceAriaText.coffee'
 SourceAriaText = require '../SourceAriaText.coffee'
 
+Vis3AccessConfig = require '../VisualizationConfigurations/Vis3AccessConfig.coffee'
 
 class Visualization3 extends visualization
-  height = 700
 
   renderBrowserTemplate: ->
     contentElement = @document.getElementById 'visualizationContent'
@@ -34,6 +34,8 @@ class Visualization3 extends visualization
       selectRegionLabel: Tr.regionSelector.selectRegionLabel[@app.language]
       selectSourceLabel: Tr.sourceSelector.selectSourceLabel[@app.language]
       svgStylesheet: SvgStylesheetTemplate
+      graphDescription: Tr.altText.viz3GraphAccessibleInstructions[@app.language]
+
 
       altText:
         viewByHelp: Tr.altText.viewByHelp[@app.language]
@@ -143,9 +145,14 @@ class Visualization3 extends visualization
     @_provinceMenu = null
     @document = @app.window.document
     @d3document = d3.select @document
+    @accessibleStatusElement = @document.getElementById 'accessibleStatus'
+
+    # one of 'playing' or 'paused'
+    @playPauseStatus = 'paused'
 
 
     @getData()
+    @accessConfig = new Vis3AccessConfig @config, @seriesData
 
     if Platform.name == 'browser'
       @renderBrowserTemplate()
@@ -164,6 +171,7 @@ class Visualization3 extends visualization
     @addUnitToggle()
     @addScenarios()
     @render()
+    @setupGraphEvents()
 
   tearDown: ->
     if @yearTimeout then window.clearTimeout @yearTimeout
@@ -196,15 +204,19 @@ class Visualization3 extends visualization
     @d3document.select '#graphSVG'
       .attr
         width: @getSvgWidth()
-        height: height
+        height: Constants.viz3GraphHeight
+    @d3document.select '#sliderSVG'
+      .attr
+        width: @getSvgWidth()
+        height: Constants.viz3SliderHeight
     @d3document.select '#provinceMenuSVG'
       .attr
         width: @d3document.select('#provincePanel').node().getBoundingClientRect().width
-        height: height - @_margin.top
+        height: Constants.viz3Height - @_margin.top
     @d3document.select '#powerSourceMenuSVG'
       .attr
         width: @d3document.select('#powerSourcePanel').node().getBoundingClientRect().width
-        height: height - @_margin.top - @_margin.bottom
+        height: Constants.viz3Height - @_margin.top - @_margin.bottom
 
 
   getDataAndRender: ->
@@ -251,6 +263,20 @@ class Visualization3 extends visualization
       groupId: 'graphGroup'
       mapping: @menuDataForChart()
       duration: @app.animationDuration
+      bubbleClass: (d) =>
+        if d.source == @accessConfig.activeSource and d.province == @accessConfig.activeProvince
+          'accessibleFocus'
+        else
+          ''
+      onAccessibleFocus: @onAccessibleFocus
+      onBubbleClick: (d) =>
+        @accessConfig.setState d.province, d.source, @seriesData
+        # When we click on a bubble, we attach a semi-permanent label to the bubble.
+        # So in this case, we suppress displaying the mouseover tooltip, otherwise we
+        # would see two labels appear on click.
+        @updateAccessibleFocus
+          displayTooltip: false
+
     @_chart = new BubbleChart @app, '#graphSVG', bubbleChartOptions
 
 
@@ -327,7 +353,7 @@ class Visualization3 extends visualization
     axis = @d3document.select '#timelineAxis'
       .attr
         fill: '#333'
-        transform: "translate( 0, #{@height() + @_margin.top + Constants.sliderLabelHeight})"
+        transform: "translate(0, #{@_margin.top + Constants.sliderLabelHeight})"
       .call @yearAxis()
       
     # We need a wider target for the click so we use a separate group
@@ -335,9 +361,7 @@ class Visualization3 extends visualization
       .attr
         class: 'pointerCursor'
         'pointer-events': 'visible'
-        transform:
-          "translate(0, #{@height() + @_margin.top + Constants.sliderLabelHeight - (axis.node().getBoundingClientRect().height / 2)})"
-        height: axis.node().getBoundingClientRect().height
+        height: Constants.viz3SliderHeight
         width: axis.node().getBoundingClientRect().width
       .style
         fill: 'none'
@@ -388,7 +412,7 @@ class Visualization3 extends visualization
       @d3document.select('#sliderLabel').attr 'transform', =>
         if newX < Constants.timelineMargin then newX = Constants.timelineMargin
         if newX > @timelineRightEnd() then newX = @timelineRightEnd()
-        "translate(#{newX}, #{@height() + @_margin.top - 5})"
+        "translate(#{newX}, #{@_margin.top - 5})"
 
       year = Math.round @yearScale().invert newX
       if year != @config.year
@@ -406,7 +430,7 @@ class Visualization3 extends visualization
       if year != @config.year
         newX = @yearScale()(year)
         @d3document.select('#sliderLabel').attr
-          transform: "translate(#{newX}, #{@height() + @_margin.top - 5})"
+          transform: "translate(#{newX}, #{@_margin.top - 5})"
 
         @d3document.select('#labelBox').selectAll('text').text =>
           @config.year
@@ -419,13 +443,13 @@ class Visualization3 extends visualization
 
     sliderWidth = 70
 
-    sliderLabel = @d3document.select('#graphSVG')
+    sliderLabel = @d3document.select('#sliderSVG')
       .append 'g'
       .attr
         id: 'sliderLabel'
         class: 'sliderLabel pointerCursor'
         # Re the 5. It is because the ticks are moved
-        transform: "translate(#{@yearScale()(@config.year)},#{@height() + @_margin.top - 5})"
+        transform: "translate(#{@yearScale()(@config.year)}, #{@_margin.top - 5})"
         tabindex: '0'
         role: 'slider'
         'aria-label': Tr.altText.yearsSlider[@app.language]
@@ -458,6 +482,9 @@ class Visualization3 extends visualization
 
 
   sliderPlayButtonCallback: =>
+    return if @playPauseStatus == 'playing'
+    @playPauseStatus = 'playing'
+
     @d3document.select '#vizPlayButton'
       .html """
         <img src='IMG/play_pause/playbutton_selectedR.svg'
@@ -485,7 +512,7 @@ class Visualization3 extends visualization
           @d3document.select '#sliderLabel'
             .transition()
               .attr
-                transform: "translate(#{@yearScale()(@config.year)}, #{@height() + @_margin.top  - 5})"
+                transform: "translate(#{@yearScale()(@config.year)},#{@_margin.top  - 5})"
             .duration @_chart._duration
             .ease 'linear'
           @d3document.select '#labelBox'
@@ -515,6 +542,9 @@ class Visualization3 extends visualization
 
 
   sliderPauseButtonCallback: =>
+    return if @playPauseStatus == 'paused'
+    @playPauseStatus = 'paused'
+
     @d3document.select '#vizPauseButton'
       .html """
         <img src='IMG/play_pause/pausebutton_selectedR.svg'
@@ -601,7 +631,8 @@ class Visualization3 extends visualization
             @allButtonSingleProvince()
           when 'source'
             @allButtonMultipleProvince()
-      showHelpHandler: @provincesHelpPopover.showPopoverCallback
+      # Popovers are not defined on server, so we use ?.
+      showHelpHandler: @provincesHelpPopover?.showPopoverCallback
       getAllIcon: =>
         switch @config.viewBy
           when 'province'
@@ -662,7 +693,8 @@ class Visualization3 extends visualization
             @allButtonSingleSource()
           when 'province'
             @allButtonMultipleSource()
-      showHelpHandler: @sourcesHelpPopover.showPopoverCallback
+      # Popovers are not defined on server, so we use ?.
+      showHelpHandler: @sourcesHelpPopover?.showPopoverCallback
       getAllIcon: =>
         switch @config.viewBy
           when 'source'
@@ -708,6 +740,279 @@ class Visualization3 extends visualization
     @sourceMenu = new SquareMenu @app, options, state
 
 
+
+
+  setupGraphEvents: ->
+    graphElement = @document.getElementById 'graphPanel'
+
+    graphElement.addEventListener 'keydown', (event) =>
+      # Only process the input if there is at least one displayed bubble
+      return unless @accessConfig.atLeastOneDataItemOnDisplay @seriesData
+
+      switch event.key
+        when 'ArrowRight'
+          event.preventDefault()
+          nextConfig = @findNextOuterBubble 'forward'
+          return unless nextConfig?
+          @accessConfig.setState nextConfig.province, nextConfig.source, @seriesData
+          @updateAccessibleFocus()
+        when 'ArrowLeft'
+          event.preventDefault()
+          nextConfig = @findNextOuterBubble 'reverse'
+          return unless nextConfig?
+          @accessConfig.setState nextConfig.province, nextConfig.source, @seriesData
+          @updateAccessibleFocus()
+        when 'ArrowUp'
+          event.preventDefault()
+          nextConfig = @findNextInnerBubble 'reverse'
+          return unless nextConfig?
+          @accessConfig.setState nextConfig.province, nextConfig.source, @seriesData
+          @updateAccessibleFocus()
+        when 'ArrowDown'
+          event.preventDefault()
+          nextConfig = @findNextInnerBubble 'forward'
+          return unless nextConfig?
+          @accessConfig.setState nextConfig.province, nextConfig.source, @seriesData
+          @updateAccessibleFocus()
+
+    graphElement.addEventListener 'focus', =>
+      # When we return to focusing the graph element, the graph sub element that the user
+      # had focused may have been toggled off (by removing the province/source).
+      # Calling validate ensures that the sub-focus element is positioned correctly
+
+      # Don't let the animation play while we are inspecting the visualization
+      @sliderPauseButtonCallback()
+
+      if @accessConfig.atLeastOneDataItemOnDisplay @seriesData
+        @accessConfig.validate @config, @seriesData
+        @updateAccessibleFocus()
+      else
+        # If there are no active bubbles, we handle the special case
+        @d3document.select '#graphPanel'
+          .attr
+            'aria-label': Tr.altText.emptyViz3Selection[@app.language]
+            'aria-activedescendant': null
+        # @tooltip.style.visibility = 'hidden'
+
+
+
+  updateAccessibleFocus: (options = {displayTooltip: true}) ->
+    # To avoid a re-render here: unclass the existing accessible focus item if any,
+    # and pick the correct element to become the new accessible focus.
+    @d3document.select '.accessibleFocus'
+      .classed 'accessibleFocus', false
+
+    @d3document.select ".circle-#{@accessConfig.activeSource}.circle-#{@accessConfig.activeProvince}"
+      .classed 'accessibleFocus', true
+
+    accessibleFocusElement = @document.querySelector '.accessibleFocus'
+    accessibleFocusElement.dispatchEvent new Event 'accessibleFocus'
+    if options.displayTooltip
+      accessibleFocusElement.dispatchEvent new Event 'displayTooltip'
+
+
+  # In updateAccessibleFocus, we dispatch an accessibleFocus event to the graph
+  # sub-element that just came into focus. It calls onAccessibleFocus with its data item
+  onAccessibleFocus: (d) =>
+    provinceString = Tr.regionSelector.names[@accessConfig.activeProvince][@app.language]
+    sourceString = Tr.sourceSelector.sources[@accessConfig.activeSource][@app.language]
+    unitString = Tr.altText.unitNames[@config.unit][@app.language]
+
+    description = "#{provinceString} #{sourceString}, #{d.value.toFixed 2} #{unitString}"
+    @d3document.select '#graphPanel'
+      .attr
+        'aria-label': description
+        'aria-activedescendant': "circle-#{d.id}"
+
+    @accessibleStatusElement.innerHTML = description
+
+
+
+
+
+  ### Methods for finding the next item to select, based on arrow key input ###
+
+  # The data for viz3 is full of holes, it doesn't resemble a fully filled table the way
+  # that the data for the other visualizations does.
+  # As a result, when the user hits an arrow key to navigate the graph by keyboard, the
+  # task of finding the next item to select is actually very complicated.
+
+  # In all cases, the navigation order is determined by the display order of the bubbles
+  # This is created by the bubble layout engine, the only way for us to obtain this data
+  # is by measuring the bubble element positions.
+
+  # Finding the next bubble when navigating between leaf nodes within a bubble grouping is
+  # relatively easy, we just take the next item above or below the currently focused item,
+  # if such a bubble exists.
+
+  # Finding the next bubble when navigating between groups of nodes comes with some
+  # additional cases to handle:
+  # 1) The next group of nodes may be empty (e.g. because all the power sources that a
+  # province possesses have been toggled off). In this case, we skip the group.
+  # 2) The leaf type in our departure group may not exist in the destination
+  # group. In this case, we pick another bubble with a different leaf type.
+  # (E.g., when viewing by region, the sources are the 'leaf types'. If we had nuclear
+  # selected and move to a region without nuclear power, we need to pick a new source.)
+
+  # Like all the other visualizations, the basic principle behind the accessible UI is
+  # that while the user focuses the graph, there should always be an item selected.
+
+
+
+  findNextOuterBubble: (direction) ->
+    # Grab all of the circle groups
+    circleGroupElements = @document.querySelectorAll '.circleGroup'
+    # NB: circleGroupElements is a NodeList, not an Array
+
+    # Measure them
+    circleGroupMeasurements = []
+    for element in circleGroupElements
+      circleGroupMeasurements.push
+        element: element
+        rect: element.getBoundingClientRect()
+
+    # Sort by measurement
+    # Circle groups are navigated with left-right arrow keys, so we look at the x
+    # coordinate
+    circleGroupMeasurements.sort (itemA, itemB) ->
+      if itemA.rect.left > itemB.rect.left then 1 else -1
+
+    # Find the bubble group in the list with accessibility focus.
+    switch @config.viewBy
+      when 'province'
+        circleGroupClass = "circleGroup-#{@accessConfig.activeProvince}"
+      when 'source'
+        circleGroupClass = "circleGroup-#{@accessConfig.activeSource}"
+    indexOfActiveCircleGroup = circleGroupMeasurements.findIndex (item) ->
+      item.element.className.baseVal.includes circleGroupClass
+
+    i = 0
+    while true
+      i += 1
+
+      # Take the next circle group in the list, depending on the direction we are moving.
+      # We may be at one end of the list, if this happens we return null.
+      switch direction
+        when 'forward'
+          nextGroup = circleGroupMeasurements[indexOfActiveCircleGroup + i]
+        when 'reverse'
+          nextGroup = circleGroupMeasurements[indexOfActiveCircleGroup - i]
+      return null unless nextGroup?
+
+      # Test if the group has at least one element on display.
+      groupName = nextGroup.element.getAttribute 'data-name'
+      continue unless @atLeastOneItemInBubbleGroup groupName
+
+      # Once we have a bubble, check whether the desired data item is on display
+      # The desired item is part of the new group, and has the same selection as the
+      # previous selection. E.g. if we are moving from the BC group to the AB group, and
+      # Hydro was our source selection, then we wish to test for the presence of AB Hydro
+      switch @config.viewBy
+        when 'province'
+          queryItem =
+            province: groupName
+            source: @accessConfig.activeSource
+        when 'source'
+          queryItem =
+            province: @accessConfig.activeProvince
+            source: groupName
+
+      if @accessConfig.datasetContains queryItem, @seriesData
+        return queryItem
+      else
+        # If we don't have the desired data item, just take the first item we find in the
+        # group.
+
+        for secondLevelItem in @seriesData.children
+          continue unless secondLevelItem.name == groupName
+          for thirdLevelItem in secondLevelItem.children
+            # A value of 1 signifies that there is no data here, and the bubble graph
+            # engine should not draw the item.
+            if thirdLevelItem.value != 1
+              return {
+                province: thirdLevelItem.province
+                source: thirdLevelItem.source
+              }
+
+
+
+    # Repeat until we find a group that contains displayed data, or we run out.
+
+
+
+
+
+  # direction: one of 'forward' or 'reverse'
+  findNextInnerBubble: (direction) ->
+
+    # Based on the currently selected item, grab all of its peer leaf bubbles
+    switch @config.viewBy
+      when 'source'
+        circleElementQuery = ".circle-#{@accessConfig.activeSource}"
+      when 'province'
+        circleElementQuery = ".circle-#{@accessConfig.activeProvince}"
+    circleElements = @document.querySelectorAll circleElementQuery
+    # NB: circleElements is a NodeList, not an Array
+
+    # Measure them
+    circleMeasurements = []
+    for element in circleElements
+      circleMeasurements.push
+        element: element
+        rect: element.getBoundingClientRect()
+
+    # Sort them by measurement
+    # Inner selection is controlled via up/down arrow keys, so we order elements by y
+    # coordinate
+    circleMeasurements.sort (itemA, itemB) ->
+      if itemA.rect.top > itemB.rect.top then 1 else -1
+
+    # Find the current bubble in the list
+    switch @config.viewBy
+      when 'source'
+        currentCircleClass = "circle-#{@accessConfig.activeProvince}"
+      when 'province'
+        currentCircleClass = "circle-#{@accessConfig.activeSource}"
+    indexOfActiveCircle = circleMeasurements.findIndex (item) ->
+      item.element.className.baseVal.includes currentCircleClass
+
+    # Take the next bubble in the list, depending on the direction we are moving
+    # We may be at one end of the list, if this happens we return null
+    switch direction
+      when 'forward'
+        nextCircle = circleMeasurements[indexOfActiveCircle + 1]
+      when 'reverse'
+        nextCircle = circleMeasurements[indexOfActiveCircle - 1]
+    return null unless nextCircle?
+
+    # Determine what access configuration state we are moving toward:
+    switch @config.viewBy
+      when 'source'
+        province = nextCircle.element.getAttribute 'data-province'
+        return {
+          province: province
+          source: @accessConfig.activeSource
+        }
+      when 'province'
+        source = nextCircle.element.getAttribute 'data-source'
+        return {
+          province: @accessConfig.activeProvince
+          source: source
+        }
+
+  # groupName: either a province or source name, matching the viewBy
+  atLeastOneItemInBubbleGroup: (groupName) ->
+    for secondLevelItem in @seriesData.children
+      continue unless secondLevelItem.name == groupName
+      for thirdLevelItem in secondLevelItem.children
+        # A value of 1 signifies that there is no data here, and the bubble graph
+        # engine should not draw the item.
+        if thirdLevelItem.value == 1
+          continue
+        else
+          return true
+
+    return false
 
 
 
@@ -884,7 +1189,7 @@ class Visualization3 extends visualization
     update = =>
       @config.setYear value
       @d3document.select('#sliderLabel').attr
-        transform: "translate(#{@yearScale()(@config.year)}, #{@height() + @_margin.top - 5})"
+        transform: "translate(#{@yearScale()(@config.year)}, #{@_margin.top - 5})"
       
       @d3document.select '#labelBox'
         .text @config.year
@@ -907,12 +1212,12 @@ class Visualization3 extends visualization
 
   # the graph's height
   height: ->
-    height - @_margin.top - @_margin.bottom
+    Constants.viz3GraphHeight - @_margin.top - @_margin.bottom
 
   # We want this menu to line up with the bottom of the x axis TICKS so those must be
   # built before we can set this.
   leftHandMenuHeight: ->
-    @height() + @d3document
+    Constants.viz3Height - @_margin.top - @_margin.bottom + @d3document
       .select('#timelineAxis')
       .node()
       .getBoundingClientRect()
@@ -1037,7 +1342,7 @@ class Visualization3 extends visualization
   # icons with a grey slash
   zeroedOut: (key) ->
     if !(@seriesData) or !(@seriesData.children) or (@seriesData.children.length != 1) then return false
-    itemKey = @seriesData.children[0].children.filter (item) -> item.source == key
+    itemKey = @seriesData.children[0].children.filter (item) -> item.leafName == key
     if itemKey.length == 0 then true else false
     
 

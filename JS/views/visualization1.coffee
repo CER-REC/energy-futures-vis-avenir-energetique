@@ -649,7 +649,8 @@ class Visualization1 extends visualization
       groupId: 'stackMenu'
       onSelected: @menuSelect
       allSquareHandler: @selectAllStacked
-      showHelpHandler: @provincesHelpPopover.showPopoverCallback
+      # Popovers are not defined on server, so we use ?.
+      showHelpHandler: @provincesHelpPopover?.showPopoverCallback
       orderChangedHandler: @orderChanged
       canDrag: true
       helpButtonLabel: Tr.altText.regionsHelp[@app.language]
@@ -790,7 +791,7 @@ class Visualization1 extends visualization
         # If there are no active provinces, we handle the special case
         @d3document.select '#graphPanel'
           .attr
-            'aria-label': Tr.altText.emptySelection[@app.language]
+            'aria-label': Tr.altText.emptyRegionSelection[@app.language]
             'aria-activedescendant': null
 
 

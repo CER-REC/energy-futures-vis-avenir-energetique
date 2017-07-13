@@ -221,29 +221,43 @@ class ElectricityProductionProvider
       name: 'Total'
       children: []
       viewBy: viz3config.viewBy
-    for source, array of filteredData
+    for key, array of filteredData
       for item in array
-        if childrenKeys[source] == undefined
+        if childrenKeys[key] == undefined
           # Save the index for easy access later
-          childrenKeys[source] = bubbleObj.children.length
+          childrenKeys[key] = bubbleObj.children.length
           bubbleObj.children.push
-            name: source
+            name: key
             children: []
 
-        bubbleObj.children[childrenKeys[source]].children.push
+        bubbleObj.children[childrenKeys[key]].children.push
           name:
             # for titles
             if viz3config.viewBy == 'province'
-              "#{Tr.sourceSelector.sources[item[nameField]][viz3config.language]} #{source}"
+              "#{Tr.sourceSelector.sources[item[nameField]][viz3config.language]} #{key}"
             else
-              "#{item[nameField]} #{Tr.sourceSelector.sources[source][viz3config.language]}"
-          id: "#{item[nameField]}#{source}" # to distinguish
-          source: item[nameField]
+              "#{item[nameField]} #{Tr.sourceSelector.sources[key][viz3config.language]}"
+
+          # NB: The order of province/source gets flipped around based on viewby
+          id: "#{item[nameField]}#{key}"
+
+          leafName: item[nameField]
           size:
             if viz3config[stackedFilterName].includes item[nameField]
               item.value
             else
               1
+
+          source:
+            if viz3config.viewBy == 'province'
+              item[nameField]
+            else
+              key
+          province:
+            if viz3config.viewBy == 'province'
+              key
+            else
+              item[nameField]
 
     bubbleObj
 

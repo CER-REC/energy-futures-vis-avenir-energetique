@@ -274,7 +274,6 @@ class Visualization1Configuration
   # Given an active province, find the next province which should become active if this
   # active province were removed from the provinces
   nextActiveProvince: (activeProvince) ->
-
     province = @nextActiveProvinceReverse activeProvince
     return province if province?
     
@@ -287,7 +286,6 @@ class Visualization1Configuration
   # Scan forward through the provinces in order until we find one which is in the active
   # set
   nextActiveProvinceForward: (activeProvince) ->
-
     activeProvinceIndex = @provincesInOrder.indexOf activeProvince
 
     for i in [(activeProvinceIndex + 1)...@provincesInOrder.length]
@@ -299,7 +297,6 @@ class Visualization1Configuration
   # Scan backward through the provinces in order until we find one which is in the active
   # set
   nextActiveProvinceReverse: (activeProvince) ->
-
     activeProvinceIndex = @provincesInOrder.indexOf activeProvince
 
     for i in [(activeProvinceIndex - 1)..0]
