@@ -7,11 +7,13 @@ Visualization1 = require './views/visualization1.coffee'
 Visualization2 = require './views/visualization2.coffee'
 Visualization3 = require './views/visualization3.coffee'
 Visualization4 = require './views/Visualization4.coffee'
+Visualization5 = require './views/Visualization5.coffee'
 
 Visualization1Configuration = require './VisualizationConfigurations/visualization1Configuration.coffee'
 Visualization2Configuration = require './VisualizationConfigurations/visualization2Configuration.coffee'
 Visualization3Configuration = require './VisualizationConfigurations/visualization3Configuration.coffee'
 Visualization4Configuration = require './VisualizationConfigurations/Visualization4Configuration.coffee'
+Visualization5Configuration = require './VisualizationConfigurations/Visualization5Configuration.coffee'
 
 Constants = require './Constants.coffee'
 d3 = require 'd3'
@@ -52,6 +54,8 @@ class Router
         @app.visualization3Configuration = new Visualization3Configuration @app, params
       when 'viz4'
         @app.visualization4Configuration = new Visualization4Configuration @app, params
+      when 'viz5'
+        @app.visualization5Configuration = new Visualization5Configuration @app, params
 
   navigate: (params, options = {}) ->
     options = _.merge {shouldUpdateHistory: true}, options
@@ -72,6 +76,9 @@ class Router
       when 'viz4'
         @app.datasetRequester.updateAndRequestIfRequired @app.visualization4Configuration, =>
           @fulfillNavigation params, options
+      when 'viz5'
+        @app.datasetRequester.updateAndRequestIfRequired @app.visualization5Configuration, =>
+          @fulfillNavigation params, options
       when 'landingPage'
         @fulfillNavigation params, options
 
@@ -91,6 +98,7 @@ class Router
       when 'viz2' then @viz2Handler params, options
       when 'viz3' then @viz3Handler params, options
       when 'viz4' then @viz4Handler params, options
+      when 'viz5' then @viz5Handler params, options
 
   # Navigation handlers
 
@@ -193,6 +201,25 @@ class Router
 
     @app.analyticsReporter.reportPage @app.visualization4Configuration.routerParams()
 
+
+  viz5Handler: (params, options) ->
+    if not @app.currentView?
+      @app.currentView = new Visualization5 @app, @app.visualization5Configuration
+      @replaceState params, options
+    else if not (@app.currentView instanceof Visualization5)
+      @app.popoverManager.closePopover()
+      @app.currentView.tearDown()
+      @app.currentView = new Visualization5 @app, @app.visualization5Configuration
+      params = @app.visualization5Configuration.routerParams()
+      @app.window.history.pushState params, '', ParamsToUrlString(params) if options.shouldUpdateHistory
+      @updateStatusElement params.page
+    else
+      @replaceState params, options
+
+    @app.analyticsReporter.reportPage @app.visualization5Configuration.routerParams()
+
+
+
    
   updateStatusElement: (page) ->
     @accessibleStatusElement.innerHTML = Tr.navigation[page][@app.language]
@@ -211,5 +238,6 @@ Router.viewClassForPage = (page) ->
     when 'viz2' then Visualization2
     when 'viz3' then Visualization3
     when 'viz4' then Visualization4
+    when 'viz5' then Visualization5
 
 module.exports = Router
