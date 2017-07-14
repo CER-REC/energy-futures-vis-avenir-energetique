@@ -242,6 +242,7 @@ module.exports =
     'viz2'
     'viz3'
     'viz4'
+    'viz5'
   ]
 
 
@@ -304,3 +305,39 @@ module.exports =
   viz3Height: 700
   viz3GraphHeight: 620 # px
   viz3SliderHeight: 80 # px
+
+
+  # Rose dimensions are normalized to a 112x112 canvas / group, which is re-scaled in the
+  # visualization.
+  roseSize: 112 # px
+  roseOuterCircleRadius: 56 # px
+  roseBaselineCircleRadius: 33 # px
+  roseCentreCircleRadius: 10 # px
+
+  # all in radians
+  roseAngles: [
+    0
+    Math.PI * 1 / 3
+    Math.PI * 2 / 3
+    Math.PI * 3 / 3
+    Math.PI * 4 / 3
+    Math.PI * 5 / 3
+  ]
+
+  # All in px
+  # These distances are relative to the rose baseline circle, toward or away from the
+  # centre of the rose.
+  roseTickDistances: [
+    -15
+    -10
+    -5
+    5
+    10
+    15
+  ]
+
+  roseTickLength: 8 # px
+  roseThornLength: 4 # px
+
+
+
