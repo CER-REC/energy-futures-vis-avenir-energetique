@@ -1831,6 +1831,9 @@ module.exports =
     viz4:
       en: 'Switched to "explore scenarios" page'
       fr: 'Navigation au page "exploration des scénarios"'
+    viz5:
+      en: 'Switched to "explore changing demand" page'
+      fr: '<TODO>'
 
 
 

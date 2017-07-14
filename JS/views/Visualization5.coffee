@@ -31,3 +31,4 @@ class Visualization5
   constructor: ->
     alert 'todo, viz5'
 
+module.exports = Visualization5
