@@ -314,7 +314,7 @@ module.exports =
   roseBaselineCircleRadius: 33 # px
   roseCentreCircleRadius: 10 # px
 
-  # all in radians
+  # All in radians
   roseAngles: [
     0
     Math.PI * 1 / 3
@@ -339,5 +339,6 @@ module.exports =
   roseTickLength: 8 # px
   roseThornLength: 4 # px
 
+  thornAngularWidth: Math.PI / 64
 
 

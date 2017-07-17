@@ -1,4 +1,5 @@
 d3 = require 'd3'
+d3Path = require 'd3-path'
 Mustache = require 'mustache'
 
 Constants = require '../Constants.coffee'
@@ -82,7 +83,6 @@ class Visualization5
 
 
 
-  roseData: ->
 
 
 
@@ -124,46 +124,34 @@ class Visualization5
       province: 'AB'
       petals: [ # better than this!
         {
-          value: 5
-          color: '#8d68ac'
-          startAngle: Math.PI * (0 / 3 + 1 / 6)
-          endAngle: Math.PI * (1 / 3 + 1 / 6)
-          thornAngle: Math.PI * -1 / 6
-        }
-        {
-          value: 10
-          color: '#996733'
-          startAngle: Math.PI * (1 / 3 + 1 / 6)
-          endAngle: Math.PI * (2 / 3 + 1 / 6)
-          thornAngle: Math.PI * 1 / 6
-        }
-        {
           value: 15
-          color: '#33cccc'
-          startAngle: Math.PI * (2 / 3 + 1 / 6)
-          endAngle: Math.PI * (3 / 3 + 1 / 6)
-          thornAngle: Math.PI * 3 / 6
+          color: '#33cccc' # teal, electricity
+          startAngle: Math.PI * (2 / 3)
         }
         {
           value: -5
-          color: '#f16739'
-          startAngle: Math.PI * (3 / 3 + 1 / 6)
-          endAngle: Math.PI * (4 / 3 + 1 / 6)
-          thornAngle: Math.PI * -7 / 6
+          color: '#f16739' # orange, nat gas
+          startAngle: Math.PI * (3 / 3)
         }
         {
-          value: -10
-          color: '#cc6699'
-          startAngle: Math.PI * (4 / 3 + 1 / 6)
-          endAngle: Math.PI * (5 / 3 + 1 / 6)
-          thornAngle: Math.PI * -5 / 6
+          value: 5
+          color: '#8d68ac' # purple, biofuels
+          startAngle: Math.PI * (0 / 3)
         }
         {
           value: -15
-          color: '#339947'
-          startAngle: Math.PI * (5 / 3 + 1 / 6)
-          endAngle: Math.PI * (6 / 3 + 1 / 6)
-          thornAngle: Math.PI * -3 / 6
+          color: '#339947' # green, solar/wind/geo
+          startAngle: Math.PI * (5 / 3)
+        }
+        {
+          value: 10
+          color: '#996733' # brown, coal
+          startAngle: Math.PI * (1 / 3)
+        }
+        {
+          value: -10
+          color: '#cc6699' # pink, oil products
+          startAngle: Math.PI * (4 / 3)
         }
 
       ]
@@ -258,92 +246,21 @@ class Visualization5
             x2: midpointX - Constants.roseTickLength / 2 * Math.cos(angle + Math.PI / 2)
             y2: midpointY - Constants.roseTickLength / 2 * Math.sin(angle + Math.PI / 2)
 
-
-    # petals
-    arcGenerator = d3.svg.arc()
-    rose.each (d) ->
+    # petals v2
+    rose.each (d) =>
       rose.selectAll '.petal'
         .data d.petals
         .enter()
         .append 'path'
         .attr
           transform: "translate(#{Constants.roseOuterCircleRadius}, #{Constants.roseOuterCircleRadius})"
-          d: (d) ->
-            valueRadius = d.value + Constants.roseBaselineCircleRadius
-
-
-            arcGenerator.innerRadius Math.min(valueRadius, Constants.roseBaselineCircleRadius)
-            arcGenerator.outerRadius Math.max(valueRadius, Constants.roseBaselineCircleRadius)
-            arcGenerator.startAngle d.startAngle
-            arcGenerator.endAngle d.endAngle
-
-            arcGenerator()
-          fill: (d) ->
-            d.color
+          d: (d) =>
+            @petalPath d.value, d.startAngle
           # stroke: (d) ->
           #   d.color
+          fill: (d) ->
+            d.color
           class: 'petal'
-
-
-    # thorns
-
-    lineFunction = d3.svg.line()
-      .x (d) -> d.x # are these necessary?
-      .y (d) -> d.y
-      .interpolate 'linear' # this necessary either?
-
-    rose.each (d) ->
-      rose.selectAll '.thorn'
-        .data d.petals
-        .enter()
-        .append 'path'
-        .attr
-          transform: "translate(#{Constants.roseOuterCircleRadius}, #{Constants.roseOuterCircleRadius})"
-          d: (d) ->
-
-            petalDistance = Constants.roseBaselineCircleRadius + d.value
-            if petalDistance < Constants.roseBaselineCircleRadius
-              # pointed inward
-              thornDistance = petalDistance - Constants.roseThornLength
-            else
-              # pointed outward
-              thornDistance = petalDistance + Constants.roseThornLength
-
-            # NB: These thorns are specified with reference to the angle and distance to
-            # the centre of the rose. This means that the thorn shape will change with
-            # the size of the petal, long petals pointed toward the centre will have
-            # narrow thorns, long petals pointed outward will have broader flatter thorns.
-            
-            # This could be corrected with a different approach to drawing the thorns:
-            # take a point at a distance of Constants.roseThornLength from the petal, and
-            # find the intersection of two lines from that point to the arc of the petal.
-            # The math for this is more complex, and the visual difference will be
-            # minimal, but we could run this past the design team.
-            foo = [
-              # on the arc
-              {
-                x: petalDistance * Math.cos(d.thornAngle + Math.PI * 2/64)
-                y: petalDistance * Math.sin(d.thornAngle + Math.PI * 2/64)
-              }
-              # point of the thorn
-              {
-                x: thornDistance * Math.cos(d.thornAngle)
-                y: thornDistance * Math.sin(d.thornAngle)
-              }
-              # on the arc
-              {
-                x: petalDistance * Math.cos(d.thornAngle + Math.PI * -2/64)
-                y: petalDistance * Math.sin(d.thornAngle + Math.PI * -2/64)
-              }
-            ]
-            console.log foo
-            lineFunction foo
-
-          fill: (d) ->
-            d.color
-          # stroke: (d) ->
-          #   d.color
-          class: 'thorn'
 
 
 
@@ -368,6 +285,96 @@ class Visualization5
 
     #   potentially: position, scale
 
+
+  # Produce a string for use as the definition of a path element, which includes a petal
+  # and thorn. The petal is always drawn as a 1/6 section of a circle.
+  #   value: a number, positive or negative, the distance from the baseline
+  #   startAngle: a number, radians, how far from the x
+  # NB: unlike the very similar d3.svg.arc function, rotation is measured
+  # counterclockwise from the positive x axis, and not clockwise from the positive y axis.
+  petalPath: (value, startAngle) ->
+
+    # A petal is composed of an outer arc, which is broken in two by a thorn (a triangular
+    # point) in the middle, and an unbroken inner arc. The inner arc always lies along
+    # the baseline circle of the rose, the outer arc may be closer to the origin or more
+    # distant (i.e. greater or lower radius) from it depending on the data value.
+
+    petalDistance = Constants.roseBaselineCircleRadius + value
+    if petalDistance < Constants.roseBaselineCircleRadius
+      # pointed inward
+      thornDistance = petalDistance - Constants.roseThornLength
+    else
+      # pointed outward
+      thornDistance = petalDistance + Constants.roseThornLength
+
+    finalAngle = startAngle + Math.PI * 1 / 3
+
+    thornAngle = startAngle + Math.PI * 1 / 6
+    thornBaseStartAngle = thornAngle - Constants.thornAngularWidth
+    thornBaseEndAngle = thornAngle + Constants.thornAngularWidth
+
+
+    # First, we compute all of the points with which we will be drawing lines
+    # Strictly speaking, the points passed to arcTo only need to have the right angle to
+    # the current point, the distance to the current point is taken from the radius and
+    # not measured from the passed in point.
+    # But, to maintain sanity, we'll calculate all of the actual points involved in the
+    # path.
+
+    # First point in the first outer arc
+    outerArc1X1 = petalDistance * Math.cos startAngle
+    outerArc1Y1 = petalDistance * Math.sin startAngle
+
+    # Second point in the first outer arc, base of the thorn
+    # outerArc1X2 = petalDistance * Math.cos thornBaseStartAngle
+    # outerArc1Y2 = petalDistance * Math.sin thornBaseStartAngle
+
+    # Point of the thorn
+    thornPointX = thornDistance * Math.cos thornAngle
+    thornPointY = thornDistance * Math.sin thornAngle
+
+    # First point in the second outer arc, base of the thorn
+    outerArc2X1 = petalDistance * Math.cos thornBaseEndAngle
+    outerArc2Y1 = petalDistance * Math.sin thornBaseEndAngle
+
+    # Second point in the second outer arc
+    # outerArc2X2 = petalDistance * Math.cos finalAngle
+    # outerArc2Y2 = petalDistance * Math.sin finalAngle
+
+    # Points defining the lower arc
+    # lowerArcX1 = Constants.roseBaselineCircleRadius * Math.cos startAngle
+    # lowerArcY1 = Constants.roseBaselineCircleRadius * Math.sin startAngle
+
+    lowerArcX2 = Constants.roseBaselineCircleRadius * Math.cos finalAngle
+    lowerArcY2 = Constants.roseBaselineCircleRadius * Math.sin finalAngle
+
+
+
+    path = d3Path.path()
+
+    # First outer arc
+    path.moveTo outerArc1X1, outerArc1Y1
+    path.arc 0, 0, petalDistance, startAngle, thornBaseStartAngle
+
+    # Thorn leg 1
+    path.lineTo thornPointX, thornPointY
+
+    # Thorn leg 2
+    path.lineTo outerArc2X1, outerArc2Y1
+
+    # Second outer arc
+    path.arc 0, 0, petalDistance, thornBaseEndAngle, finalAngle
+
+    # Line to lower arc
+    path.lineTo lowerArcX2, lowerArcY2
+
+    # Lower arc
+    path.arc 0, 0, Constants.roseBaselineCircleRadius, finalAngle, startAngle, true
+    
+    # End!
+    path.closePath()
+
+    path.toString()
 
   renderGraph: ->
 
