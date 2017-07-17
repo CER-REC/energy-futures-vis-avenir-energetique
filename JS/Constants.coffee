@@ -250,6 +250,7 @@ module.exports =
 
   serverSideGraphWidth: 1065 # px
   viz4ServerSideGraphWidth: 995 # 1065 - 70 extra pixels of width for viz4's wider legend
+  viz5ServerSideGraphWidth: 995 # TODO: Change this later.
 
   cacheDuration: 3600 # seconds
 

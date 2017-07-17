@@ -362,6 +362,15 @@ CommonControls =
           [reference, high, highLng, low, noLng]
         else
           [reference, high, low]
+      # This is the case when the scenarios list is requested by viz5. Because
+      # viz5 config does not contain a main selection and since we currently
+      # need to return the full list of scenarios, we are defaulting to return all
+      # the scenarios for each of the datasets.
+      else
+        if config.dataset == 'jan2016'
+          [reference, high, highLng, constrained, low, noLng]
+        else
+          [reference, high, low]
 
 
 module.exports = CommonControls
