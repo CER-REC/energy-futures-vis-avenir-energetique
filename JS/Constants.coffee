@@ -339,6 +339,52 @@ module.exports =
   roseTickLength: 8 # px
   roseThornLength: 4 # px
 
-  thornAngularWidth: Math.PI / 64
+  thornAngularWidth: Math.PI / 32
 
+  # Indexed from the top left
+  rosePositions:
+    YT:
+      row: 0
+      column: 0
+    NT:
+      row: 0
+      column: 1
+    NU:
+      row: 0
+      column: 2
+    NL:
+      row: 0
+      column: 5
 
+    BC:
+      row: 1
+      column: 0
+    AB:
+      row: 1
+      column: 1
+    SK:
+      row: 1
+      column: 2
+    MB:
+      row: 1
+      column: 3
+    ON:
+      row: 1
+      column: 4
+    QC:
+      row: 1
+      column: 5
+
+    NB:
+      row: 2
+      column: 3
+    PE:
+      row: 2
+      column: 4
+    NS:
+      row: 2
+      column: 5
+
+  viz5Height: 700 # px
+
+  roseMargin: 11 # px
