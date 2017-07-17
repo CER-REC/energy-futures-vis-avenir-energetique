@@ -27,12 +27,18 @@
 
   <div id="provincePanel" class="smallSelectorColumn">
     <span class="titleLabel textCentre">{{selectRegionLabel}}</span>
-    <div id="provincesSelector">
-      <svg id="provinceMenuSVG" xmlns="http://www.w3.org/2000/svg" xmlns:xlink='http://www.w3.org/1999/xlink'>
+    <div id="leftProvincesSelector">
+      <svg id="leftProvinceMenuSVG" xmlns="http://www.w3.org/2000/svg" xmlns:xlink='http://www.w3.org/1999/xlink'>
       </svg>
     </div>
   </div>
-  <div id="graphPanel" class="wideVisualizationColumn" tabindex='0' aria-description='{{ graphDescription }}'>
+  <div id="provincePanel" class="smallSelectorColumn_rightAligned">
+    <div id="rightProvincesSelector">
+      <svg id="rightProvinceMenuSVG" xmlns="http://www.w3.org/2000/svg" xmlns:xlink='http://www.w3.org/1999/xlink'>
+      </svg>
+    </div>
+  </div>
+  <div id="graphPanel" class="viz5VisualizationColumn" tabindex='0' aria-description='{{ graphDescription }}'>
     <svg id="graphSVG" xmlns="http://www.w3.org/2000/svg" xmlns:xlink='http://www.w3.org/1999/xlink'>
       <style> {{ svgStylesheet }} </style>
       <g id="graphGroup"> 
@@ -52,12 +58,12 @@
 </div>
 
 <div class="hidden"> 
-  <img src="IMG/main_selection/electricity_selected.png" alt="Electricity"> 
-  <img src="IMG/main_selection/electricity_unselected.png" alt="Electricity"> 
-  <img src="IMG/main_selection/gas_selected.png" alt="Gas"> 
-  <img src="IMG/main_selection/gas_unselected.png" alt="Gas"> 
-  <img src="IMG/main_selection/oil_selected.png" alt="Oil"> 
-  <img src="IMG/main_selection/oil_unselected.png" alt="Oil"> 
-  <img src="IMG/main_selection/totalDemand_selected.png" alt="Total demand"> 
-  <img src="IMG/main_selection/totalDemand_unselected.png" alt="Total demand"> 
+  <img src="IMG/sector/commercial_selected.svg" alt="commercial"> 
+  <img src="IMG/sector/commercial_unselected.svg" alt="commercial"> 
+  <img src="IMG/sector/industrial_selected.svg" alt="industrial"> 
+  <img src="IMG/sector/industrial_unselected.svg" alt="industrial"> 
+  <img src="IMG/sector/residential_selected.svg" alt="residential"> 
+  <img src="IMG/sector/residential_unselected.svg" alt="residential"> 
+  <img src="IMG/sector/transport_selected.svg" alt="transport"> 
+  <img src="IMG/sector/transport_unselected.svg" alt="transport"> 
 </div>

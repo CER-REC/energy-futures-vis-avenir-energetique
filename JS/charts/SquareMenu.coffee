@@ -357,25 +357,28 @@ class SquareMenu
           stroke: '#333333'
           'stroke-width': 1
 
-    @_group.append 'image'
-      .attr
-        class: 'menuLineBehind pointerCursor squareMenuHelpButton'
-        'xlink:href': 'IMG/large_qmark.svg'
-        x: "#{@_position.x + (@_size.w / 2)  - 8}px"
-        width: '16px'
-        height: '16px'
-        tabindex: '0'
-        'aria-label': @options.helpButtonLabel
-        role: 'button'
-        id: @options.helpButtonId
-      .on 'click', =>
-        d3.event.stopPropagation()
-        @_showHelpHandler()
-      .on 'keydown', =>
-        if d3.event.key == 'Enter' or d3.event.key == ' '
-          d3.event.preventDefault()
+    # I am performing this check to make sure that we do not 
+    # draw the help icon for the right province menu on viz5.
+    if @options.groupId != 'rightProvinceMenu'
+      @_group.append 'image'
+        .attr
+          class: 'menuLineBehind pointerCursor squareMenuHelpButton'
+          'xlink:href': 'IMG/large_qmark.svg'
+          x: "#{@_position.x + (@_size.w / 2)  - 8}px"
+          width: '16px'
+          height: '16px'
+          tabindex: '0'
+          'aria-label': @options.helpButtonLabel
+          role: 'button'
+          id: @options.helpButtonId
+        .on 'click', =>
           d3.event.stopPropagation()
           @_showHelpHandler()
+        .on 'keydown', =>
+          if d3.event.key == 'Enter' or d3.event.key == ' '
+            d3.event.preventDefault()
+            d3.event.stopPropagation()
+            @_showHelpHandler()
 
 
     if @_addAllSquare

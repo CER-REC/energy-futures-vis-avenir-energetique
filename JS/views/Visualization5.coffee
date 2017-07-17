@@ -77,7 +77,7 @@ class Visualization5
       content: =>
         #Grab the provinces in order for the string
         contentString = ''
-        for province in @dataForProvinceMenu()
+        for province in @dataForProvinceMenu(@config.leftProvince)
           contentString = """
             <div class="provinceLabel">
               <h2> #{Tr.regionSelector.names[province.key][@app.language]} </h2>
@@ -85,7 +85,7 @@ class Visualization5
             #{contentString}
           """
         contentString
-      attachmentSelector: '#provincesSelector'
+      attachmentSelector: '#leftProvincesSelector'
       analyticsElement: 'Viz5 region help'
       setupEvents: false
 
@@ -131,6 +131,256 @@ class Visualization5
     # TODO: Setup graph events.
     # @setupGraphEvents()
 
+
+  # Province menu stuff
+  dataForProvinceMenu: (selectionProvince)->
+    [
+      {
+        key: 'AB'
+        tooltip: ProvinceAriaText @app, selectionProvince == 'AB', 'AB'
+        colour: if selectionProvince == 'AB' then '#333' else '#fff'
+        img:
+          if selectionProvince == 'AB'
+            'IMG/provinces/radio/AB_SelectedR.svg'
+          else
+            'IMG/provinces/radio/AB_UnselectedR.svg'
+      }
+      {
+        key: 'BC'
+        tooltip: ProvinceAriaText @app, selectionProvince == 'BC', 'BC'
+        colour: if selectionProvince == 'BC' then '#333' else '#fff'
+        img:
+          if selectionProvince == 'BC'
+            'IMG/provinces/radio/BC_SelectedR.svg'
+          else
+            'IMG/provinces/radio/BC_UnselectedR.svg'
+      }
+      {
+        key: 'MB'
+        tooltip: ProvinceAriaText @app, selectionProvince == 'MB', 'MB'
+        colour: if selectionProvince == 'MB' then '#333' else '#fff'
+        img:
+          if selectionProvince == 'MB'
+            'IMG/provinces/radio/MB_SelectedR.svg'
+          else
+            'IMG/provinces/radio/MB_UnselectedR.svg'
+      }
+      {
+        key: 'NB'
+        tooltip: ProvinceAriaText @app, selectionProvince == 'NB', 'NB'
+        colour: if selectionProvince == 'NB' then '#333' else '#fff'
+        img:
+          if selectionProvince == 'NB'
+            'IMG/provinces/radio/NB_SelectedR.svg'
+          else
+            'IMG/provinces/radio/NB_UnselectedR.svg'
+      }
+      {
+        key : 'NL'
+        tooltip: ProvinceAriaText @app, selectionProvince == 'NL', 'NL'
+        colour: if selectionProvince == 'NL' then '#333' else '#fff'
+        img:
+          if selectionProvince == 'NL'
+            'IMG/provinces/radio/NL_SelectedR.svg'
+          else
+            'IMG/provinces/radio/NL_UnselectedR.svg'
+      }
+      {
+        key: 'NS'
+        tooltip: ProvinceAriaText @app, selectionProvince == 'NS', 'NS'
+        colour: if selectionProvince == 'NS' then '#333' else '#fff'
+        img:
+          if selectionProvince == 'NS'
+            'IMG/provinces/radio/NS_SelectedR.svg'
+          else
+            'IMG/provinces/radio/NS_UnselectedR.svg'
+      }
+      {
+        key: 'NT'
+        tooltip: ProvinceAriaText @app, selectionProvince == 'NT', 'NT'
+        colour: if selectionProvince == 'NT' then '#333' else '#fff'
+        img:
+          if selectionProvince == 'NT'
+            'IMG/provinces/radio/NT_SelectedR.svg'
+          else
+            'IMG/provinces/radio/NT_UnselectedR.svg'
+      }
+      {
+        key: 'NU'
+        tooltip: ProvinceAriaText @app, selectionProvince == 'NU', 'NU'
+        colour: if selectionProvince == 'NU' then '#333' else '#fff'
+        img:
+          if selectionProvince == 'NU'
+            'IMG/provinces/radio/NU_SelectedR.svg'
+          else
+            'IMG/provinces/radio/NU_UnselectedR.svg'
+      }
+      {
+        key: 'ON'
+        tooltip: ProvinceAriaText @app, selectionProvince == 'ON', 'ON'
+        colour: if selectionProvince == 'ON' then '#333' else '#fff'
+        img:
+          if selectionProvince == 'ON'
+            'IMG/provinces/radio/ON_SelectedR.svg'
+          else
+            'IMG/provinces/radio/ON_UnselectedR.svg'
+      }
+      {
+        key: 'PE'
+        tooltip: ProvinceAriaText @app, selectionProvince == 'PE', 'PE'
+        colour: if selectionProvince == 'PE' then '#333' else '#fff'
+        img:
+          if selectionProvince == 'PE'
+            'IMG/provinces/radio/PEI_SelectedR.svg'
+          else
+            'IMG/provinces/radio/PEI_UnselectedR.svg'
+      }
+      {
+        key: 'QC'
+        tooltip: ProvinceAriaText @app, selectionProvince == 'QC', 'QC'
+        colour: if selectionProvince == 'QC' then '#333' else '#fff'
+        img:
+          if selectionProvince == 'QC'
+            'IMG/provinces/radio/QC_SelectedR.svg'
+          else
+            'IMG/provinces/radio/QC_UnselectedR.svg'
+      }
+      {
+        key: 'SK'
+        tooltip: ProvinceAriaText @app, selectionProvince == 'SK', 'SK'
+        colour: if selectionProvince == 'SK' then '#333' else '#fff'
+        img:
+          if selectionProvince == 'SK'
+            'IMG/provinces/radio/Sask_SelectedR.svg'
+          else
+            'IMG/provinces/radio/Sask_UnselectedR.svg'
+      }
+      {
+        key: 'YT'
+        tooltip: ProvinceAriaText @app, selectionProvince == 'YT', 'YT'
+        colour: if selectionProvince == 'YT' then '#333' else '#fff'
+        img:
+          if selectionProvince == 'YT'
+            'IMG/provinces/radio/Yukon_SelectedR.svg'
+          else
+            'IMG/provinces/radio/Yukon_UnselectedR.svg'
+      }
+    ]
+
+#################
+  # Black and white non multi select menu.
+  buildLeftProvinceMenu: ->
+    @d3document.select '#leftProvinceMenuSVG'
+      .attr
+        width: @d3document.select('#leftProvincesSelector').node().getBoundingClientRect().width
+        height: @outerHeight
+
+    options =
+      onSelected: @leftProvinceSelected
+      groupId: 'leftProvinceMenu'
+      allSquareHandler: @selectAllProvince
+      # Popovers are not defined on server, so we use ?.
+      showHelpHandler: @provincesHelpPopover?.showPopoverCallback
+      helpButtonLabel: Tr.altText.regionsHelp[@app.language]
+      helpButtonId: 'provinceHelpButton'
+      getAllIcon: =>
+        if @config.leftProvince == 'all'
+          Tr.allSelectorButton.all[@app.language]
+        else
+          Tr.allSelectorButton.none[@app.language]
+      getAllLabel: =>
+        if @config.leftProvince == 'all'
+          Tr.altText.allButton.allCanadaSelected[@app.language]
+        else
+          Tr.altText.allButton.allCanadaUnselected[@app.language]
+      parentId: 'leftProvinceMenuSVG'
+
+    state =
+      size:
+        w: @d3document.select('#leftProvincesSelector').node().getBoundingClientRect().width
+        h: @height() - @d3document.select('span.titleLabel').node().getBoundingClientRect().height + @d3document.select('#xAxis').node().getBoundingClientRect().height
+      data: @dataForProvinceMenu(@config.leftProvince)
+
+    new SquareMenu @app, options, state
+
+  selectAllProvince: =>
+    newConfig = new @config.constructor @app
+    newConfig.copy @config
+    newConfig.setLeftProvince 'all'
+
+    update = =>
+      @config.setLeftProvince 'all'
+      @leftProvinceMenu.data @dataForProvinceMenu(@config.leftProvince)
+      @leftProvinceMenu.update()
+      
+      # TODO
+      # @renderYAxis()
+      # @renderGraph()
+      
+      @app.router.navigate @config.routerParams()
+
+    @app.datasetRequester.updateAndRequestIfRequired newConfig, update
+
+  leftProvinceSelected: (dataDictionaryItem) =>
+    newConfig = new @config.constructor @app
+    newConfig.copy @config
+    newConfig.setLeftProvince dataDictionaryItem.key
+
+    update = =>
+      @config.setLeftProvince dataDictionaryItem.key
+      @leftProvinceMenu.data @dataForProvinceMenu(@config.leftProvince)
+      @leftProvinceMenu.update()
+      
+      # TODO
+      # @renderYAxis()
+      # @renderGraph()
+      
+      @app.router.navigate @config.routerParams()
+
+    @app.datasetRequester.updateAndRequestIfRequired newConfig, update
+#################
+
+
+#################
+  # Black and white non multi select menu.
+  buildRightProvinceMenu: ->
+    @d3document.select '#rightProvinceMenuSVG'
+      .attr
+        width: @d3document.select('#rightProvincesSelector').node().getBoundingClientRect().width
+        height: @outerHeight
+
+    options =
+      onSelected: @rightProvinceSelected
+      groupId: 'rightProvinceMenu'
+      parentId: 'rightProvinceMenuSVG'
+
+    state =
+      size:
+        w: @d3document.select('#rightProvincesSelector').node().getBoundingClientRect().width
+        h: @height() - @d3document.select('span.titleLabel').node().getBoundingClientRect().height + @d3document.select('#xAxis').node().getBoundingClientRect().height
+      data: @dataForProvinceMenu(@config.rightProvince)
+
+    new SquareMenu @app, options, state
+
+  rightProvinceSelected: (dataDictionaryItem) =>
+    newConfig = new @config.constructor @app
+    newConfig.copy @config
+    newConfig.setRightProvince dataDictionaryItem.key
+
+    update = =>
+      @config.setRightProvince dataDictionaryItem.key
+      @rightProvinceMenu.data @dataForProvinceMenu(@config.rightProvince)
+      @rightProvinceMenu.update()
+      
+      # TODO
+      # @renderYAxis()
+      # @renderGraph()
+      
+      @app.router.navigate @config.routerParams()
+
+    @app.datasetRequester.updateAndRequestIfRequired newConfig, update
+#################
+
   render: ->
     @d3document.select '#graphSVG'
       .attr
@@ -146,10 +396,17 @@ class Visualization5
     # TODO
     # @renderXAxis()
     # @renderYAxis()
-    # if !@provinceMenu
+
+    if !@leftProvinceMenu
       # We only need to build once, but we need to build after the axis are built
       # for alignment
-      # @provinceMenu = @buildProvinceMenu()
+      @leftProvinceMenu = @buildLeftProvinceMenu()
+
+    if !@rightProvinceMenu
+      # We only need to build once, but we need to build after the axis are built
+      # for alignment
+      @rightProvinceMenu = @buildRightProvinceMenu()
+
 
     # Build a dot to serve as the accessible focus
     @buildAccessibleFocusDot()
@@ -167,6 +424,12 @@ class Visualization5
         .width
     else if Platform.name == 'server'
       Constants.viz4ServerSideGraphWidth
+
+  width: ->
+    @outerWidth() - @margin.left - @margin.right
+
+  height: ->
+    @outerHeight - @margin.top - @margin.bottom
 
   sectorSelectionData: ->
     [
@@ -449,9 +712,14 @@ class Visualization5
     # @renderYAxis false
     # @renderGraph() # TODO: This call used to pass in 0 for duration. Why?
     
-    @provinceMenu.size
-      w: @d3document.select('#provincesSelector').node().getBoundingClientRect().width
+    @leftProvinceMenu.size
+      w: @d3document.select('#leftProvincesSelector').node().getBoundingClientRect().width
       h: @height() - @d3document.select('span.titleLabel').node().getBoundingClientRect().height + @d3document.select('#xAxis').node().getBoundingClientRect().height
-    @provinceMenu.update()
+    @leftProvinceMenu.update()
+
+    @rightProvinceMenu.size
+      w: @d3document.select('#rightProvincesSelector').node().getBoundingClientRect().width
+      h: @height() - @d3document.select('span.titleLabel').node().getBoundingClientRect().height + @d3document.select('#xAxis').node().getBoundingClientRect().height
+    @rightProvinceMenu.update()
 
 module.exports = Visualization5
