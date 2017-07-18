@@ -357,9 +357,8 @@ class SquareMenu
           stroke: '#333333'
           'stroke-width': 1
 
-    # I am performing this check to make sure that we do not 
-    # draw the help icon for the right province menu on viz5.
-    if @options.groupId != 'rightProvinceMenu'
+    # Check the display help icon flag.
+    if @options.displayHelpIcon? && @options.displayHelpIcon
       @_group.append 'image'
         .attr
           class: 'menuLineBehind pointerCursor squareMenuHelpButton'

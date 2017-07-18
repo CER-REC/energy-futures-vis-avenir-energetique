@@ -1791,7 +1791,7 @@ module.exports =
       en: 'Use the arrow keys to navigate the chart.'
       fr: 'Utiliser les boutons flèches pour naviguer le graphique.'
     viz5GraphAccessibleInstructions:
-      en: 'Use the arrow kyes or the mouse to select chart elements.'
+      en: 'Use the arrow keys or the mouse to select chart elements.'
       fr: '<TODO>'
 
 

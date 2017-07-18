@@ -282,6 +282,7 @@ class Visualization5
       showHelpHandler: @provincesHelpPopover?.showPopoverCallback
       helpButtonLabel: Tr.altText.regionsHelp[@app.language]
       helpButtonId: 'provinceHelpButton'
+      displayHelpIcon: true
       getAllIcon: =>
         if @config.leftProvince == 'all'
           Tr.allSelectorButton.all[@app.language]
@@ -307,15 +308,15 @@ class Visualization5
     newConfig.copy @config
     newConfig.setLeftProvince 'all'
 
-    # Hide the right province menu when showing
-    # all provinces (Canada view).
-    @hideRightProvinceMenu()
-
     update = =>
       @config.setLeftProvince 'all'
       @leftProvinceMenu.data @dataForProvinceMenu(@config.leftProvince)
       @leftProvinceMenu.update()
       
+      # Hide the right province menu when showing
+      # all provinces (Canada view).
+      @hideRightProvinceMenu()
+
       # TODO
       # @renderYAxis()
       # @renderGraph()
@@ -357,6 +358,7 @@ class Visualization5
       onSelected: @rightProvinceSelected
       groupId: 'rightProvinceMenu'
       parentId: 'rightProvinceMenuSVG'
+      displayHelpIcon: false
 
     state =
       size:
@@ -414,9 +416,6 @@ class Visualization5
 
     if !@rightProvinceMenu
       @rightProvinceMenu = @buildRightProvinceMenu()
-
-    # Build a dot to serve as the accessible focus
-    @buildAccessibleFocusDot()
     
     # TODO: Render the graph
     # @renderGraph()
@@ -681,32 +680,6 @@ class Visualization5
     scenariosSelectors.exit()
       .on 'click', null
       .remove()
-
-  buildAccessibleFocusDot: ->
-    @d3document.select '#graphGroup'
-      .append 'g'
-      .attr
-        id: 'accessibleFocusDot'
-        class: 'accessibleFocus'
-
-    @accessibleFocusDot = @d3document.select '#accessibleFocusDot'
-    @accessibleFocusDotElement = @document.getElementById 'accessibleFocusDot'
-    
-    @d3document.select '#graphPanel'
-      .attr
-        'aria-activedescendant': 'accessibleFocusDot'
-
-    @accessibleFocusDot
-      .append 'circle'
-        .attr
-          r: 10
-          fill: 'red'
-          'fill-opacity': 0.5
-    @accessibleFocusDot
-      .append 'circle'
-        .attr
-          r: 5
-          fill: 'red'
 
   redraw: ->
     @d3document.select '#graphSVG'

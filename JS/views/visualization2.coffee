@@ -875,6 +875,7 @@ class Visualization2 extends visualization
   # Black and white non multi select menu.
   buildProvinceMenu: ->
     options =
+      displayHelpIcon: true
       parentId: 'provinceMenuSVG'
       groupId: 'provinceMenu'
       onSelected: @provinceSelected
@@ -905,6 +906,7 @@ class Visualization2 extends visualization
 
   buildSourceMenu: ->
     options =
+      displayHelpIcon: true
       parentId: 'powerSourceMenuSVG'
       groupId: 'stackMenu'
       onSelected: @menuSelect

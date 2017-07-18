@@ -615,6 +615,7 @@ class Visualization3 extends visualization
 
   buildProvinceMenu: ->
     options =
+      displayHelpIcon: true
       parentId: 'provinceMenuSVG'
       canDrag: false
       boxSize: 37.5
@@ -677,6 +678,7 @@ class Visualization3 extends visualization
 
   buildSourceMenu: ->
     options =
+      displayHelpIcon: true
       parentId: 'powerSourceMenuSVG'
       canDrag: false
       boxSize: 37.5

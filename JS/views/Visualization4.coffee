@@ -296,6 +296,7 @@ class Visualization4
         height: @outerHeight
 
     options =
+      displayHelpIcon: true
       onSelected: @provinceSelected
       groupId: 'provinceMenu'
       allSquareHandler: @selectAllProvince
