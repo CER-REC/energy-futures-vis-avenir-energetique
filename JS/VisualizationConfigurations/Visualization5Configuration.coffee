@@ -8,6 +8,14 @@ class Visualization5Configuration
   defaultOptions:
     dataset: Constants.datasets[1]
     scenario: 'reference'
+    scenarios: [
+      'reference'
+      'constrained'
+      'high'
+      'low'
+      'highLng'
+      'noLng'
+    ]
     baseYear: 2010 # bottom spinner
     comparisonYear: 2020 # top spinner
     leftProvince: 'all'
@@ -24,6 +32,11 @@ class Visualization5Configuration
 
     # one of: reference, constrained, high, low, highLng, noLng
     @setScenario options.scenario
+
+    # array, any of: reference, constrained, high, low, highLng, noLng
+    @scenarios = []
+    for scenario in options.scenarios
+      @addScenario scenario
 
     # baseYear, int between 2005 and 2040 inclusive
     @setBaseYear options.baseYear
@@ -93,6 +106,10 @@ class Visualization5Configuration
       @rightProvince = province
     else
       @rightProvince = @defaultOptions.rightProvince
+
+  addScenario: (scenario) ->
+    return unless Constants.datasetDefinitions[@dataset].scenarios.includes scenario
+    @scenarios.push scenario unless @scenarios.includes scenario
 
   setSector: (sector) ->
     if Constants.sectors.includes sector

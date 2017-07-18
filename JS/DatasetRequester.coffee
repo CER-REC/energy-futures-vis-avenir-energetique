@@ -198,7 +198,7 @@ class DatasetRequester
         # loading it.
         # We also download and load data for all of Canada ('all'), since the endpoint
         # sends it, even though it is not needed for viz5.
-        for province in Constants.provinceRadioSelectionOption
+        for province in Constants.provinceRadioSelectionOptions
           continue if @loadedStateViz2_5[configParams.dataset][configParams.sector][province] == true
 
           @loadedStateViz2_5[configParams.dataset][configParams.sector][province] = true

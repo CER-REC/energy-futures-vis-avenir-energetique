@@ -37,6 +37,10 @@ div.chartTooltip:after {
   content: "\00a0 \00a0 ";
 }
 
+#rightProvinceMenuSVG {
+  padding-top: 19px;
+}
+
 #canadasEnergyFutureVisualization .videoIframeContainer {
   position: relative;
   /* Approximate height of the video player elements. */
@@ -536,7 +540,17 @@ div.chartTooltip:after {
   float: left;
   box-sizing: border-box;
 }
+#canadasEnergyFutureVisualization .smallSelectorColumn_rightAligned {
+  width: 7%;
+  float: right;
+  box-sizing: border-box;
+}
 #canadasEnergyFutureVisualization .narrowVisualizationColumn {
+  width: 73%;
+  float: left;
+  box-sizing: border-box;
+}
+#canadasEnergyFutureVisualization .viz5VisualizationColumn {
   width: 73%;
   float: left;
   box-sizing: border-box;
@@ -734,6 +748,8 @@ div.chartTooltip:after {
 #canadasEnergyFutureVisualization .sectorSelectorGroup,
 #canadasEnergyFutureVisualization .viewBySelectorGroup,
 #canadasEnergyFutureVisualization #provincesSelector,
+#canadasEnergyFutureVisualization #leftProvincesSelector,
+#canadasEnergyFutureVisualization #rightProvincesSelector,
 #canadasEnergyFutureVisualization #powerSourceSelector {
   position: relative;
 }
