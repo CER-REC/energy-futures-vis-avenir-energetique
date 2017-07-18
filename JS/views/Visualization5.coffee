@@ -307,6 +307,10 @@ class Visualization5
     newConfig.copy @config
     newConfig.setLeftProvince 'all'
 
+    # Hide the right province menu when showing
+    # all provinces (Canada view).
+    @hideRightProvinceMenu()
+
     update = =>
       @config.setLeftProvince 'all'
       @leftProvinceMenu.data @dataForProvinceMenu(@config.leftProvince)
@@ -329,6 +333,10 @@ class Visualization5
       @config.setLeftProvince dataDictionaryItem.key
       @leftProvinceMenu.data @dataForProvinceMenu(@config.leftProvince)
       @leftProvinceMenu.update()
+
+      # Show the right province menu to allow the user
+      # to select the second province.
+      @showRightProvinceMenu()
       
       # TODO
       # @renderYAxis()
@@ -376,6 +384,15 @@ class Visualization5
 
     @app.datasetRequester.updateAndRequestIfRequired newConfig, update
 
+  showRightProvinceMenu: ->
+    d3.select '#rightProvincesSelector'
+      .classed 'hidden', false
+
+
+  hideRightProvinceMenu: ->
+    d3.select '#rightProvincesSelector'
+      .classed 'hidden', true
+
   render: ->
     @d3document.select '#graphSVG'
       .attr
@@ -397,7 +414,6 @@ class Visualization5
 
     if !@rightProvinceMenu
       @rightProvinceMenu = @buildRightProvinceMenu()
-
 
     # Build a dot to serve as the accessible focus
     @buildAccessibleFocusDot()
@@ -712,6 +728,13 @@ class Visualization5
       w: @d3document.select('#rightProvincesSelector').node().getBoundingClientRect().width
       h: @height() - @d3document.select('span.titleLabel').node().getBoundingClientRect().height + @d3document.select('#xAxis').node().getBoundingClientRect().height
     @rightProvinceMenu.update()
+
+    # Hide the right province menu when showing
+    # all provinces (Canada view). This is called
+    # here for the case when viz5 is first loaded
+    # with 'all' selected.
+    if @config.leftProvince == 'all'
+      @hideRightProvinceMenu()
 
   tearDown: ->
     # TODO: We might want to render with empty lists for buttons, so that
