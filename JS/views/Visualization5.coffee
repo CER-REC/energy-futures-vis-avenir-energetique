@@ -267,8 +267,7 @@ class Visualization5
       }
     ]
 
-#################
-  # Black and white non multi select menu.
+  # Left Province Menu: Black and white non multi select menu.
   buildLeftProvinceMenu: ->
     @d3document.select '#leftProvinceMenuSVG'
       .attr
@@ -338,11 +337,8 @@ class Visualization5
       @app.router.navigate @config.routerParams()
 
     @app.datasetRequester.updateAndRequestIfRequired newConfig, update
-#################
 
-
-#################
-  # Black and white non multi select menu.
+  # Right Province Menu: Black and white non multi select menu.
   buildRightProvinceMenu: ->
     @d3document.select '#rightProvinceMenuSVG'
       .attr
@@ -379,7 +375,6 @@ class Visualization5
       @app.router.navigate @config.routerParams()
 
     @app.datasetRequester.updateAndRequestIfRequired newConfig, update
-#################
 
   render: ->
     @d3document.select '#graphSVG'
@@ -398,13 +393,9 @@ class Visualization5
     # @renderYAxis()
 
     if !@leftProvinceMenu
-      # We only need to build once, but we need to build after the axis are built
-      # for alignment
       @leftProvinceMenu = @buildLeftProvinceMenu()
 
     if !@rightProvinceMenu
-      # We only need to build once, but we need to build after the axis are built
-      # for alignment
       @rightProvinceMenu = @buildRightProvinceMenu()
 
 
@@ -721,5 +712,10 @@ class Visualization5
       w: @d3document.select('#rightProvincesSelector').node().getBoundingClientRect().width
       h: @height() - @d3document.select('span.titleLabel').node().getBoundingClientRect().height + @d3document.select('#xAxis').node().getBoundingClientRect().height
     @rightProvinceMenu.update()
+
+  tearDown: ->
+    # TODO: We might want to render with empty lists for buttons, so that
+    # garbage collection of event handled dom nodes goes smoothly
+    @document.getElementById('visualizationContent').innerHTML = ''
 
 module.exports = Visualization5
