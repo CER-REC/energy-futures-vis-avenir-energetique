@@ -111,6 +111,13 @@ class Visualization5
       right: 70
       bottom: 50
       left: 10
+
+    @_margin =
+      top: 20
+      left: 10
+      right: 20
+      bottom: 70
+
     @document = @app.window.document
     @d3document = d3.select @document
     @accessibleStatusElement = @document.getElementById 'accessibleStatus'
@@ -396,10 +403,8 @@ class Visualization5
       .classed 'hidden', true
 
   render: ->
-    @d3document.select '#graphSVG'
-      .attr
-        width: @outerWidth()
-        height: @outerHeight
+    @svgResize()
+
     @d3document.select '#graphGroup'
       .attr 'transform', "translate(#{@margin.top},#{@margin.left})"
         
@@ -681,11 +686,22 @@ class Visualization5
       .on 'click', null
       .remove()
 
-  redraw: ->
+  svgResize: ->
+    @d3document.select '#sliderSVG'
+      .attr
+        width: @outerWidth()
+        height: Constants.viz3SliderHeight
+
     @d3document.select '#graphSVG'
       .attr
         width: @outerWidth()
-        height: @outerHeight
+        height: @height() - Constants.viz3SliderHeight/2
+
+  redraw: ->
+    @svgResize()
+
+    # Build the timeline slider.
+    @buildTimeline()
     
     # TODO
     # @renderXAxis false
@@ -708,6 +724,208 @@ class Visualization5
     # with 'all' selected.
     if @config.leftProvince == 'all'
       @hideRightProvinceMenu()
+
+  buildTimeline: ->
+    @buildYearAxis()
+    @buildSliderLabel()
+
+    # TODO: Build slider buttons
+    # @buildSliderButtons()
+
+  buildYearAxis: ->
+    axis = @d3document.select '#timelineAxis'
+      .attr
+        fill: '#333'
+        transform: "translate(0, #{@_margin.top + Constants.sliderLabelHeight})"
+      .call @yearAxis()
+
+    # We need a wider target for the click so we use a separate group
+    @d3document.select '#timeLineTouch'
+      .attr
+        class: 'pointerCursor'
+        'pointer-events': 'visible'
+        height: Constants.viz3SliderHeight
+        width: axis.node().getBoundingClientRect().width
+      .style
+        fill: 'none'
+      .on 'click', =>
+        element = @d3document.select('#timelineAxis').node()
+        newX = d3.mouse(element)[0]
+        if newX < Constants.timelineMargin then newX = Constants.timelineMargin
+        if newX > @timelineRightEnd() then newX = @timelineRightEnd()
+        baseYear = Math.round @yearScale().invert(newX)
+
+        return if baseYear == @config.baseYear
+        @updateSlider baseYear
+
+    axis.selectAll('text')
+      .style
+        'text-anchor': 'middle'
+      .attr
+        dy: '0.5em'
+        'fill': '#333'
+
+    axis.select 'path.domain'
+      .attr
+        fill: 'none'
+        stroke: '#333333'
+        'stroke-width': '2'
+        'shape-rendering': 'crispEdges'
+
+    axis.selectAll '.tick line'
+      .attr
+        transform: 'translate(0, -5)' # Center them around the line
+        fill: 'none'
+        stroke: '#333333'
+        'stroke-width': '2'
+        'shape-rendering': 'crispEdges'
+
+  buildSliderLabel: ->
+    @d3document.select('.sliderLabel').remove()
+    baseYear = @config.baseYear
+
+    #Drag Behaviour
+    drag = d3.behavior.drag()
+
+    drag.on 'dragstart', =>
+      baseYear = @config.baseYear
+
+    drag.on 'drag', =>
+      newX = d3.event.x
+      @d3document.select('#sliderLabel').attr 'transform', =>
+        if newX < Constants.timelineMargin then newX = Constants.timelineMargin
+        if newX > @timelineRightEnd() then newX = @timelineRightEnd()
+        "translate(#{newX}, #{@_margin.top - 5})"
+
+      baseYear = Math.round @yearScale().invert newX
+      if baseYear != @config.baseYear
+        @config.setBaseYear baseYear
+        @app.router.navigate @config.routerParams()
+        @d3document.select('#labelBox').text =>
+          @config.baseYear
+        @d3document.select '#sliderLabel'
+          .attr
+            'aria-valuenow': @config.baseYear
+
+        @render()
+
+    drag.on 'dragend', =>
+      if baseYear != @config.baseYear
+        newX = @yearScale()(baseYear)
+        @d3document.select('#sliderLabel').attr
+          transform: "translate(#{newX}, #{@_margin.top - 5})"
+
+        @d3document.select('#labelBox').selectAll('text').text =>
+          @config.baseYear
+        @d3document.select '#sliderLabel'
+          .attr
+            'aria-valuenow': @config.baseYear
+        @config.setBaseYear baseYear
+        @app.router.navigate @config.routerParams()
+        @render()
+
+    sliderWidth = 70
+
+    sliderLabel = @d3document.select('#sliderSVG')
+      .append 'g'
+      .attr
+        id: 'sliderLabel'
+        class: 'sliderLabel pointerCursor'
+        # Re the 5. It is because the ticks are moved
+        transform: "translate(#{@yearScale()(@config.baseYear)}, #{@_margin.top - 5})"
+        tabindex: '0'
+        role: 'slider'
+        'aria-label': Tr.altText.yearsSlider[@app.language]
+        'aria-orientation': 'horizontal'
+        'aria-valuemin': Constants.minYear
+        'aria-valuemax': Constants.minYear
+        'aria-valuenow': @config.baseYear
+      .on 'keydown', @handleSliderKeydown
+      .call drag
+
+    sliderLabel.append 'image'
+      .attr
+        class: 'tLTriangle'
+        'xlink:xlink:href': 'IMG/yearslider.svg'
+        x: -(sliderWidth / 2)
+        y: 0
+        width: sliderWidth
+        height: sliderWidth / 2
+
+
+    sliderLabel.append('text')
+      .attr
+        class: 'sliderLabel'
+        id: 'labelBox'
+        x: -(sliderWidth / 4) + 1.5 #the extra centers it with due to the font height
+        y: (sliderWidth / 4) - 1.5
+        fill: '#fff'
+      .text =>
+        @config.baseYear
+
+  yearScale: ->
+    d3.scale.linear()
+      .domain [Constants.minYear, Constants.maxYear]
+      .range [
+        Constants.timelineMargin
+        @timelineRightEnd()
+      ]
+
+  yearAxis: ->
+    d3.svg.axis()
+      .scale(@yearScale())
+      .tickSize(10,2)
+      .ticks(7)
+      .tickFormat (d) ->
+        if d == Constants.minYear or d == Constants.maxYear then d else ''
+      .orient 'bottom'
+
+  timelineRightEnd: ->
+    @outerWidth() - Constants.timelineMargin
+
+  # We want this menu to line up with the bottom of the x axis TICKS so those must be
+  # built before we can set this.
+  leftHandMenuHeight: ->
+    Constants.viz3Height - @_margin.top - @_margin.bottom + @d3document
+      .select('#timelineAxis')
+      .node()
+      .getBoundingClientRect()
+      .height
+
+  updateSlider: (value) ->
+    # Prevent arrow keys and home/end from scrolling the page while using the slider
+    d3.event.preventDefault()
+
+    newConfig = new @config.constructor @app
+    newConfig.copy @config
+    newConfig.setBaseYear value
+
+    update = =>
+      @config.setBaseYear value
+      @d3document.select('#sliderLabel').attr
+        transform: "translate(#{@yearScale()(@config.baseYear)}, #{@_margin.top - 5})"
+
+      @d3document.select '#labelBox'
+        .text @config.baseYear
+      @d3document.select '#sliderLabel'
+        .attr
+          'aria-valuenow': @config.baseYear
+
+      @render()
+      @app.router.navigate @config.routerParams()
+
+    @app.datasetRequester.updateAndRequestIfRequired newConfig, update
+
+  handleSliderKeydown: =>
+    switch d3.event.key
+      when 'ArrowRight', 'ArrowUp'
+        @updateSlider @config.baseYear + 1
+      when 'ArrowLeft', 'ArrowDown'
+        @updateSlider @config.baseYear - 1
+      when 'End'
+        @updateSlider Constants.maxYear
+      when 'Home'
+        @updateSlider Constants.minYear
 
   tearDown: ->
     # TODO: We might want to render with empty lists for buttons, so that
