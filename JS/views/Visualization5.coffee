@@ -800,6 +800,63 @@ class Visualization5
         @allCanadaRoseGroups[province] = group
 
   renderTwoRoses: ->
+    data = @graphData()
+
+    availableWidth = @outerWidth() - @margin.left - @margin.right - Constants.roseMargin
+    roseSize = availableWidth / 2
+    roseScale = roseSize / Constants.roseSize
+
+    leftXPos = @margin.left
+    leftYPos = @margin.top
+    rightXPos = @margin.left + (roseSize + Constants.roseMargin)
+    rightYPos = @margin.top
+
+
+    # TODO: This could be deduplicated, but I don't like what it would do to readability
+
+    if @leftRose?
+      # TODO: animate me!
+      @leftRoseGroup.attr
+        transform: "translate(#{leftXPos}, #{leftYPos}) scale(#{roseScale}, #{roseScale})"
+      @leftRose.setData data[@config.leftProvince]
+      @leftRose.update()
+    else
+      # TODO: animate rose arrivals too
+      group = @container.append 'g'
+      group.attr
+        transform: "translate(#{leftXPos}, #{leftYPos}) scale(#{roseScale}, #{roseScale})"
+
+      rose = new Rose @app,
+        container: group
+        data: data[@config.leftProvince]
+      rose.render()
+
+      @leftRose = rose
+      @leftRoseGroup = group
+
+
+    if @rightRose?
+      # TODO: animate me!
+      @rightRoseGroup.attr
+        transform: "translate(#{rightXPos}, #{rightYPos}) scale(#{roseScale}, #{roseScale})"
+
+      @rightRose.setData data[@config.rightProvince]
+      @rightRose.update()
+    else
+      # TODO: animate rose arrivals too
+      group = @container.append 'g'
+      group.attr
+        transform: "translate(#{rightXPos}, #{rightYPos}) scale(#{roseScale}, #{roseScale})"
+
+      rose = new Rose @app,
+        container: group
+        data: data[@config.rightProvince]
+      rose.render()
+
+      @rightRose = rose
+      @rightRoseGroup = group
+
+
 
 
   transitionToAllCanadaRoses: ->
