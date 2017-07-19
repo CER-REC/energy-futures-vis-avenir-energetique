@@ -28,13 +28,12 @@ class Rose
 
 
 
-
+  # Add all of the static elements, and set up petals for update.
   render: ->
 
-
-    # enter
-
-    # add a group to the world
+    # Add an inner group for internal transforms.
+    # The container which is passed to the rose has transforms which are managed by the
+    # viz5 instance.
     @innerContainer = @container
       .append 'g'
       .attr
@@ -42,12 +41,7 @@ class Rose
         transform: (d) =>
           "translate(#{Constants.roseOuterCircleRadius}, #{Constants.roseOuterCircleRadius})"
 
-
-    # add the static elements
-
-    # TODO: this all needs to be tweaked to operate only on enter...
-
-    # axes
+    # Axes
     for angle in Constants.roseAngles
       @innerContainer.append 'line'
         .attr
@@ -59,30 +53,27 @@ class Rose
           x2: Constants.roseOuterCircleRadius * Math.cos angle
           y2: Constants.roseOuterCircleRadius * Math.sin angle
 
-
-    # centre
+    # Centre circle
     @innerContainer.append 'circle'
       .attr
         class: 'roseCentreCircle'
         r: Constants.roseCentreCircleRadius
         fill: '#333'
 
-
-    # centre label
+    # Centre label
     @innerContainer.append 'text'
       .attr
         class: 'roseCentreLabel'
         fill: 'white'
-        transform: "translate(0, 5)" # TODO: Constant here
+        transform: "translate(0, 4.5)" # TODO: Constant here
         'text-anchor': 'middle'
       # TODO: should this be in a stylesheet?
       .style
-        'font-size': '16px'
+        'font-size': '13px'
       .text =>
         @options.data[0].province
 
-
-    # outer circle
+    # Outer circle
     @innerContainer.append 'circle'
       .attr
         class: 'roseOuterCircle'
@@ -91,9 +82,7 @@ class Rose
         'stroke-width': 1
         fill: 'none'
 
-
-
-    # tickmarks
+    # Tickmarks
     for angle in Constants.roseAngles
       for distance in Constants.roseTickDistances
 
@@ -113,19 +102,19 @@ class Rose
             x2: midpointX - Constants.roseTickLength / 2 * Math.cos(angle + Math.PI / 2)
             y2: midpointY - Constants.roseTickLength / 2 * Math.sin(angle + Math.PI / 2)
 
-    # petals
+    # Petals
     @innerContainer.selectAll '.petal'
       .data @options.data
       .enter()
       .append 'path'
       .attr
-        d: (d) =>
-          @petalPath d.value, Constants.viz5RoseData[d.source].startAngle
+        class: 'petal'
         fill: (d) ->
           Constants.viz5RoseData[d.source].colour
-        class: 'petal'
+        d: (d) =>
+          @petalPath d.value, Constants.viz5RoseData[d.source].startAngle
 
-    # baseline circle
+    # Baseline circle
     @innerContainer.append 'circle'
       .attr
         class: 'roseBaselineCircle'
@@ -138,18 +127,33 @@ class Rose
 
 
 
-    # update
-    #   petal sizes
-    #   thorn positions
-    #   thorn *directions*
 
-    #   potentially: position, scale
+
+
+
+  update: ->
+
+    @innerContainer.select '.roseCentreLabel'
+      .text =>
+        @options.data[0].province
+
+    # TODO: Check that this works
+    # TODO: Animate it
+    @innerContainer.selectAll '.petal'
+      .data @options.data
+      .select 'path'
+      .attr
+        d: (d) =>
+          @petalPath d.value, Constants.viz5RoseData[d.source].startAngle
+
+
+
 
 
   # Produce a string for use as the definition of a path element, which includes a petal
   # and thorn. The petal is always drawn as a 1/6 section of a circle.
   #   value: a number, positive or negative, the distance from the baseline
-  #   startAngle: a number, radians, how far from the x
+  #   startAngle: a number, in radians, rotation from the x axis clockwise.
   petalPath: (value, startAngle) ->
 
     # A petal is composed of an outer arc, which is broken in two by a thorn (a triangular
