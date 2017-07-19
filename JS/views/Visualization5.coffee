@@ -351,7 +351,7 @@ class Visualization5
     state =
       size:
         w: @d3document.select('#leftProvincesSelector').node().getBoundingClientRect().width
-        h: @height() - @d3document.select('span.titleLabel').node().getBoundingClientRect().height #+ @d3document.select('#xAxis').node().getBoundingClientRect().height
+        h: @height() - @d3document.select('span.titleLabel').node().getBoundingClientRect().height
       data: @dataForProvinceMenu(@config.leftProvince)
 
     new SquareMenu @app, options, state
@@ -410,11 +410,12 @@ class Visualization5
       groupId: 'rightProvinceMenu'
       parentId: 'rightProvinceMenuSVG'
       displayHelpIcon: false
+      addAllSquare: false
 
     state =
       size:
         w: @d3document.select('#rightProvincesSelector').node().getBoundingClientRect().width
-        h: @height() - @d3document.select('span.titleLabel').node().getBoundingClientRect().height #+ @d3document.select('#xAxis').node().getBoundingClientRect().height
+        h: @height() - @d3document.select('span.titleLabel').node().getBoundingClientRect().height
       data: @dataForProvinceMenu(@config.rightProvince)
 
     new SquareMenu @app, options, state
@@ -727,12 +728,12 @@ class Visualization5
     
     @leftProvinceMenu.size
       w: @d3document.select('#leftProvincesSelector').node().getBoundingClientRect().width
-      h: @height() - @d3document.select('span.titleLabel').node().getBoundingClientRect().height #+ @d3document.select('#xAxis').node().getBoundingClientRect().height
+      h: @height() - @d3document.select('span.titleLabel').node().getBoundingClientRect().height
     @leftProvinceMenu.update()
 
     @rightProvinceMenu.size
       w: @d3document.select('#rightProvincesSelector').node().getBoundingClientRect().width
-      h: @height() - @d3document.select('span.titleLabel').node().getBoundingClientRect().height #+ @d3document.select('#xAxis').node().getBoundingClientRect().height
+      h: @height() - @d3document.select('span.titleLabel').node().getBoundingClientRect().height
     @rightProvinceMenu.update()
 
     # Hide the right province menu when showing

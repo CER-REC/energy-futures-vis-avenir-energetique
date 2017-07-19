@@ -312,7 +312,9 @@ class SquareMenu
     @_size.h - @bottomSquareHeight() - 2 - Constants.questionMarkHeight
 
   itemCount: ->
-    if @_addAllSquare then (@_data.length + 1) else @_data.length
+    # For position computation purposes, we count the 'all' square in the length whether
+    # we display it or not.
+    @_data.length + 1
 
 
   # The height of the bottom square decoration, which is only drawn if the controls are
@@ -411,9 +413,8 @@ class SquareMenu
       class: (d, i) ->
         "menuItem menuRect#{i}"
       transform: (d, i) =>
-        # If the 'all' icon is present, the others are bumped down one spot
-        index = if @_addAllSquare then i + 1 else i
-        "translate(#{@getRectX()}, #{@getRectY(index)})"
+        # Bump icons down one spot, regardless of whether the 'all' button is drawn or not
+        "translate(#{@getRectX()}, #{@getRectY(i + 1)})"
     .call @_drag
 
     @_group.selectAll '.menuItem'
@@ -459,9 +460,8 @@ class SquareMenu
       .data @_data
       .attr
         transform: (d, i) =>
-          # If the 'all' icon is present, the others are bumped down one spot
-          index = if @_addAllSquare then i + 1 else i
-          "translate(#{@getRectX()}, #{@getRectY(index)})"
+          # Bump icons down one spot, regardless of whether the 'all' button is drawn or not
+          "translate(#{@getRectX()}, #{@getRectY(i + 1)})"
 
     menuItems.select 'image'
       .attr
