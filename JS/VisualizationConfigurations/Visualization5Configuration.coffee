@@ -80,7 +80,8 @@ class Visualization5Configuration
     else
       @baseYear = @defaultOptions.baseYear
 
-    @setComparisonYear @comparisonYear
+    if @baseYear > @comparisonYear
+      @baseYear = @comparisonYear
 
   setComparisonYear: (year) ->
     year = parseInt year, 10

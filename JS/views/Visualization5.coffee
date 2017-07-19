@@ -690,17 +690,17 @@ class Visualization5
     @d3document.select '#sliderSVG'
       .attr
         width: @outerWidth()
-        height: Constants.viz3SliderHeight
+        height: Constants.viz5SliderHeight
 
     @d3document.select '#graphSVG'
       .attr
         width: @outerWidth()
-        height: @height() - Constants.viz3SliderHeight/2
+        height: @height() - Constants.viz5SliderHeight/2
 
   redraw: ->
     @svgResize()
 
-    # Build the timeline slider.
+    # Build the timeline sliders.
     @buildTimeline()
     
     # TODO
@@ -727,7 +727,12 @@ class Visualization5
 
   buildTimeline: ->
     @buildYearAxis()
+    
+    # Build the comparison slider label
     @buildSliderLabel()
+
+    # Build the base slider label
+    @buildBaseSliderLabel()
 
     # TODO: Build slider buttons
     # @buildSliderButtons()
@@ -744,7 +749,7 @@ class Visualization5
       .attr
         class: 'pointerCursor'
         'pointer-events': 'visible'
-        height: Constants.viz3SliderHeight
+        height: Constants.viz5SliderHeight
         width: axis.node().getBoundingClientRect().width
       .style
         fill: 'none'
@@ -753,10 +758,20 @@ class Visualization5
         newX = d3.mouse(element)[0]
         if newX < Constants.timelineMargin then newX = Constants.timelineMargin
         if newX > @timelineRightEnd() then newX = @timelineRightEnd()
-        comparisonYear = Math.round @yearScale().invert(newX)
 
-        return if comparisonYear == @config.comparisonYear
-        @updateSlider comparisonYear
+        # Clicking on the timeline will cause the closest slider to move to the 
+        # clicked position in the timeline. 
+        selectedYear = Math.round @yearScale().invert(newX)
+
+        if selectedYear > @config.comparisonYear || Math.abs(selectedYear - @config.comparisonYear) < Math.abs(selectedYear - @config.baseYear)
+          comparisonYear = selectedYear
+          return if comparisonYear == @config.comparisonYear
+          @updateSlider comparisonYear
+        else
+          baseYear = selectedYear
+          return if baseYear == @config.baseYear
+          @updateBaseSlider baseYear
+
 
     axis.selectAll('text')
       .style
@@ -779,6 +794,132 @@ class Visualization5
         stroke: '#333333'
         'stroke-width': '2'
         'shape-rendering': 'crispEdges'
+
+###############
+  buildBaseSliderLabel: ->
+    @d3document.select('.baseSliderLabel').remove()
+    baseYear = @config.baseYear
+
+    #Drag Behaviour
+    drag = d3.behavior.drag()
+
+    drag.on 'dragstart', =>
+      baseYear = @config.baseYear
+
+    drag.on 'drag', =>
+      newX = d3.event.x
+      if newX < Constants.timelineMargin then newX = Constants.timelineMargin
+      if newX > @timelineRightEnd() then newX = @timelineRightEnd()
+      baseYear = Math.round @yearScale().invert newX
+      if baseYear > @config.comparisonYear
+        return
+
+      @d3document.select('#baseSliderLabel').attr 'transform', =>
+        if newX < Constants.timelineMargin then newX = Constants.timelineMargin
+        if newX > @timelineRightEnd() then newX = @timelineRightEnd()
+        "translate(#{newX}, #{@_margin.bottom - 5})"
+
+      baseYear = Math.round @yearScale().invert newX
+      if baseYear != @config.baseYear
+        @config.setBaseYear baseYear
+        @app.router.navigate @config.routerParams()
+        @d3document.select('#baseLabelBox').text =>
+          @config.baseYear
+        @d3document.select '#baseSliderLabel'
+          .attr
+            'aria-valuenow': @config.baseYear
+
+        @render()
+
+    drag.on 'dragend', =>
+      if baseYear != @config.baseYear && @config.comparisonYear > baseYear
+        newX = @yearScale()(baseYear)
+        @d3document.select('#baseSliderLabel').attr
+          transform: "translate(#{newX}, #{@_margin.bottom - 5})"
+
+        @d3document.select('#baseLabelBox').selectAll('text').text =>
+          @config.baseYear
+        @d3document.select '#baseSliderLabel'
+          .attr
+            'aria-valuenow': @config.baseYear
+        @config.setBaseYear baseYear
+        @app.router.navigate @config.routerParams()
+        @render()
+
+    sliderWidth = 70
+
+    sliderLabel = @d3document.select('#sliderSVG')
+      .append 'g'
+      .attr
+        id: 'baseSliderLabel'
+        class: 'baseSliderLabel pointerCursor'
+        # Re the 5. It is because the ticks are moved
+        transform: "translate(#{@yearScale()(@config.baseYear)}, #{@_margin.bottom - 5})"
+        tabindex: '0'
+        role: 'slider'
+        'aria-label': Tr.altText.yearsSlider[@app.language]
+        'aria-orientation': 'horizontal'
+        'aria-valuemin': Constants.minYear
+        'aria-valuemax': Constants.minYear
+        'aria-valuenow': @config.baseYear
+      .on 'keydown', @handleBasaeSliderKeydown
+      .call drag
+
+    sliderLabel.append 'image'
+      .attr
+        class: 'tLTriangle'
+        'xlink:xlink:href': 'IMG/baseYearSliderTemp.png'
+        x: -(sliderWidth / 2)
+        y: 0
+        width: sliderWidth
+        height: sliderWidth / 2
+
+
+    sliderLabel.append('text')
+      .attr
+        class: 'baseSliderLabel'
+        id: 'baseLabelBox'
+        x: -(sliderWidth / 4) + 1.5 #the extra centers it with due to the font height
+        y: (sliderWidth / 2) - 4
+        fill: '#fff'
+      .text =>
+        @config.baseYear
+
+  updateBaseSlider: (value) ->
+    # Prevent arrow keys and home/end from scrolling the page while using the slider
+    d3.event.preventDefault()
+
+    newConfig = new @config.constructor @app
+    newConfig.copy @config
+    newConfig.setBaseYear value
+
+    update = =>
+      @config.setBaseYear value
+      @d3document.select('#baseSliderLabel').attr
+        transform: "translate(#{@yearScale()(@config.baseYear)}, #{@_margin.bottom - 5})"
+
+      @d3document.select '#baseLabelBox'
+        .text @config.baseYear
+      @d3document.select '#baseSliderLabel'
+        .attr
+          'aria-valuenow': @config.baseYear
+
+      @render()
+      @app.router.navigate @config.routerParams()
+
+    @app.datasetRequester.updateAndRequestIfRequired newConfig, update
+
+  handleBasaeSliderKeydown: =>
+    switch d3.event.key
+      when 'ArrowRight', 'ArrowUp'
+        @updateBaseSlider @config.baseYear + 1
+      when 'ArrowLeft', 'ArrowDown'
+        @updateBaseSlider @config.baseYear - 1
+      when 'End'
+        @updateBaseSlider Constants.maxYear
+      when 'Home'
+        @updateBaseSlider Constants.minYear
+###############
 
   buildSliderLabel: ->
     @d3document.select('.sliderLabel').remove()

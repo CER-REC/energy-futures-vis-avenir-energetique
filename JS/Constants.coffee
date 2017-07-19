@@ -306,3 +306,4 @@ module.exports =
   viz3Height: 700
   viz3GraphHeight: 620 # px
   viz3SliderHeight: 80 # px
+  viz5SliderHeight: 100 # px
