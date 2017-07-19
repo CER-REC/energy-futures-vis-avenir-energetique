@@ -753,10 +753,10 @@ class Visualization5
         newX = d3.mouse(element)[0]
         if newX < Constants.timelineMargin then newX = Constants.timelineMargin
         if newX > @timelineRightEnd() then newX = @timelineRightEnd()
-        baseYear = Math.round @yearScale().invert(newX)
+        comparisonYear = Math.round @yearScale().invert(newX)
 
-        return if baseYear == @config.baseYear
-        @updateSlider baseYear
+        return if comparisonYear == @config.comparisonYear
+        @updateSlider comparisonYear
 
     axis.selectAll('text')
       .style
@@ -782,45 +782,51 @@ class Visualization5
 
   buildSliderLabel: ->
     @d3document.select('.sliderLabel').remove()
-    baseYear = @config.baseYear
+    comparisonYear = @config.comparisonYear
 
     #Drag Behaviour
     drag = d3.behavior.drag()
 
     drag.on 'dragstart', =>
-      baseYear = @config.baseYear
+      comparisonYear = @config.comparisonYear
 
     drag.on 'drag', =>
       newX = d3.event.x
+      if newX < Constants.timelineMargin then newX = Constants.timelineMargin
+      if newX > @timelineRightEnd() then newX = @timelineRightEnd()
+      comparisonYear = Math.round @yearScale().invert newX
+      if comparisonYear < @config.baseYear
+        return
+
       @d3document.select('#sliderLabel').attr 'transform', =>
         if newX < Constants.timelineMargin then newX = Constants.timelineMargin
         if newX > @timelineRightEnd() then newX = @timelineRightEnd()
         "translate(#{newX}, #{@_margin.top - 5})"
 
-      baseYear = Math.round @yearScale().invert newX
-      if baseYear != @config.baseYear
-        @config.setBaseYear baseYear
+      comparisonYear = Math.round @yearScale().invert newX
+      if comparisonYear != @config.comparisonYear
+        @config.setComparisonYear comparisonYear
         @app.router.navigate @config.routerParams()
         @d3document.select('#labelBox').text =>
-          @config.baseYear
+          @config.comparisonYear
         @d3document.select '#sliderLabel'
           .attr
-            'aria-valuenow': @config.baseYear
+            'aria-valuenow': @config.comparisonYear
 
         @render()
 
     drag.on 'dragend', =>
-      if baseYear != @config.baseYear
-        newX = @yearScale()(baseYear)
+      if comparisonYear != @config.comparisonYear && comparisonYear >= @config.baseYear
+        newX = @yearScale()(comparisonYear)
         @d3document.select('#sliderLabel').attr
           transform: "translate(#{newX}, #{@_margin.top - 5})"
 
         @d3document.select('#labelBox').selectAll('text').text =>
-          @config.baseYear
+          @config.comparisonYear
         @d3document.select '#sliderLabel'
           .attr
-            'aria-valuenow': @config.baseYear
-        @config.setBaseYear baseYear
+            'aria-valuenow': @config.comparisonYear
+        @config.setComparisonYear comparisonYear
         @app.router.navigate @config.routerParams()
         @render()
 
@@ -832,14 +838,14 @@ class Visualization5
         id: 'sliderLabel'
         class: 'sliderLabel pointerCursor'
         # Re the 5. It is because the ticks are moved
-        transform: "translate(#{@yearScale()(@config.baseYear)}, #{@_margin.top - 5})"
+        transform: "translate(#{@yearScale()(@config.comparisonYear)}, #{@_margin.top - 5})"
         tabindex: '0'
         role: 'slider'
         'aria-label': Tr.altText.yearsSlider[@app.language]
         'aria-orientation': 'horizontal'
         'aria-valuemin': Constants.minYear
         'aria-valuemax': Constants.minYear
-        'aria-valuenow': @config.baseYear
+        'aria-valuenow': @config.comparisonYear
       .on 'keydown', @handleSliderKeydown
       .call drag
 
@@ -861,7 +867,7 @@ class Visualization5
         y: (sliderWidth / 4) - 1.5
         fill: '#fff'
       .text =>
-        @config.baseYear
+        @config.comparisonYear
 
   yearScale: ->
     d3.scale.linear()
@@ -898,18 +904,18 @@ class Visualization5
 
     newConfig = new @config.constructor @app
     newConfig.copy @config
-    newConfig.setBaseYear value
+    newConfig.setComparisonYear value
 
     update = =>
-      @config.setBaseYear value
+      @config.setComparisonYear value
       @d3document.select('#sliderLabel').attr
-        transform: "translate(#{@yearScale()(@config.baseYear)}, #{@_margin.top - 5})"
+        transform: "translate(#{@yearScale()(@config.comparisonYear)}, #{@_margin.top - 5})"
 
       @d3document.select '#labelBox'
-        .text @config.baseYear
+        .text @config.comparisonYear
       @d3document.select '#sliderLabel'
         .attr
-          'aria-valuenow': @config.baseYear
+          'aria-valuenow': @config.comparisonYear
 
       @render()
       @app.router.navigate @config.routerParams()
@@ -919,9 +925,9 @@ class Visualization5
   handleSliderKeydown: =>
     switch d3.event.key
       when 'ArrowRight', 'ArrowUp'
-        @updateSlider @config.baseYear + 1
+        @updateSlider @config.comparisonYear + 1
       when 'ArrowLeft', 'ArrowDown'
-        @updateSlider @config.baseYear - 1
+        @updateSlider @config.comparisonYear - 1
       when 'End'
         @updateSlider Constants.maxYear
       when 'Home'
