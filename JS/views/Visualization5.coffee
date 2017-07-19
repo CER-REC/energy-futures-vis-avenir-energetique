@@ -95,6 +95,9 @@ class Visualization5
 
 
 
+  graphData: ->
+    @app.providers[@config.dataset].energyConsumptionProvider.dataForViz5 @config
+
 
   outerWidth: ->
     # getBoundingClientRect is not implemented in JSDOM, use fixed width on server
@@ -139,6 +142,8 @@ class Visualization5
 
   renderAllCanadaRoses: ->
 
+    data = @graphData()
+
     availableWidth = @outerWidth() - @margin.left - @margin.right - 5 * Constants.roseMargin # also derived from column count ...
     roseSize = availableWidth / 6 # TODO column count, should be constant?
     roseScale = roseSize / Constants.roseSize
@@ -154,10 +159,13 @@ class Visualization5
 
       rose = new Rose @app,
         container: group
+        data: data[province]
 
       rose.render()
 
       @allCanadaRoses[province] = rose
+
+
 
 
   renderTwoRoses: ->

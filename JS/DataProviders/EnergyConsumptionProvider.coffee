@@ -1,6 +1,8 @@
 d3 = require 'd3'
+_ = require 'lodash'
 
 UnitTransformation = require '../unit-transformation.coffee'
+Constants = require '../Constants.coffee'
 
 class EnergyConsumptionProvider
 
@@ -265,8 +267,101 @@ class EnergyConsumptionProvider
     filteredData
 
 
+  # Produces an object keyed by province, with each child being an array of data
+  # objects, like:
+  #   province: 'AB'
+  #   scenario: 'reference'
+  #   sector: 'total'
+  #   source: 'bio'
+  #   value: 39.2
+  # NB:
+  # - The 'year' field is absent
+  # - The value is the change (from base year to comparison year) in how much of the
+  #   energy mix of thr province has changed, as a percentage. E.g., if PEI's natural gas
+  #   use changed from 20% to 30%, the value for this comparison is +10%.
+  # - Data for all 13 provinces is returned regardless of whether all 13 are on
+  # display, according to the configuration.
+
   dataForViz5: (viz5config) ->
-    throw new Error 'todo!'
+    # Get data for the base and comparison years, for the selected scenario
+    # Aggregate the data by province and power source
+    # Express the difference between base and comparison data values as a percentage
+
+    scenarioData = @dataByScenario[viz5config.scenario]
+
+    baseData = scenarioData.filter (item) ->
+      item.year == viz5config.baseYear
+
+    comparisonData = scenarioData.filter (item) ->
+      item.year == viz5config.comparisonYear
+
+    baseDataAggregated = {}
+    comparisonDataAggregated = {}
+    percentageData = {}
+    for province in Constants.provinces
+      baseDataAggregated[province] = {}
+      comparisonDataAggregated[province] = {}
+      percentageData[province] = []
+
+    for item in baseData
+      continue if item.province == 'all'
+      baseDataAggregated[item.province][item.source] = item
+
+    for item in comparisonData
+      continue if item.province == 'all'
+      comparisonDataAggregated[item.province][item.source] = item
+
+    for province in Constants.provinces
+
+      # First, find the total power usage in both comparison and base years, for this
+      # province
+      baseTotal = 0
+      comparisonTotal = 0
+      for source in Constants.viz5SourcesInOrder
+        baseTotal += baseDataAggregated[province][source].value
+        comparisonTotal += comparisonDataAggregated[province][source].value
+      
+      # Then, find change in what perecntage of total demand each power source holds
+      for source in Constants.viz5SourcesInOrder
+        baseItem = baseDataAggregated[province][source]
+        comparisonItem = comparisonDataAggregated[province][source]
+        percentageItem = _.cloneDeep baseItem
+        delete percentageItem.year
+
+        # Express the amount of energy used in each comparison and base years as a ratio
+        # vs the total energy use. Take the difference between the comparison year and the
+        # base year, and express as a percentage.
+        percentageItem.value = ((comparisonItem.value / comparisonTotal) - (baseItem.value / baseTotal)) * 100
+        percentageData[province].push percentageItem
+
+    percentageData
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

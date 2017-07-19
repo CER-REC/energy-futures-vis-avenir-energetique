@@ -388,3 +388,36 @@ module.exports =
   viz5Height: 700 # px
 
   roseMargin: 11 # px
+
+  viz5SourcesInOrder: [
+    'electricity'
+    'naturalGas'
+    'bio'
+    'solarWindGeothermal'
+    'coal'
+    'oilProducts'
+  ]
+
+  viz5RoseData:
+    electricity:
+      colour: '#33cccc' # teal
+      startAngle: Math.PI * (0 / 3)
+    naturalGas:
+      colour: '#f16739' # orange
+      startAngle: Math.PI * (1 / 3)
+    bio:
+      colour: '#8d68ac' # purple
+      startAngle: Math.PI * (2 / 3)
+    solarWindGeothermal:
+      colour: '#339947' # green
+      startAngle: Math.PI * (3 / 3)
+    coal:
+      colour: '#996733' # brown
+      startAngle: Math.PI * (4 / 3)
+    oilProducts:
+      colour: '#cc6699' # pink
+      startAngle: Math.PI * (5 / 3)
+
+
+
+

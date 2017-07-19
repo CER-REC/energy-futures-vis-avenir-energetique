@@ -4,41 +4,8 @@ d3Path = require 'd3-path'
 
 Constants = require '../Constants.coffee'
 
-defaultOptions =
-  data:
-    province: 'AB'
-    petals: [ # better than this!
-      {
-        value: 15
-        color: '#33cccc' # teal, electricity
-        startAngle: Math.PI * (0 / 3)
-      }
-      {
-        value: -5
-        color: '#f16739' # orange, nat gas
-        startAngle: Math.PI * (1 / 3)
-      }
-      {
-        value: 5
-        color: '#8d68ac' # purple, biofuels
-        startAngle: Math.PI * (2 / 3)
-      }
-      {
-        value: -15
-        color: '#339947' # green, solar/wind/geo
-        startAngle: Math.PI * (3 / 3)
-      }
-      {
-        value: 10
-        color: '#996733' # brown, coal
-        startAngle: Math.PI * (4 / 3)
-      }
-      {
-        value: -10
-        color: '#cc6699' # pink, oil products
-        startAngle: Math.PI * (5 / 3)
-      }
-    ]
+defaultOptions = {}
+
 
 
 
@@ -112,7 +79,7 @@ class Rose
       .style
         'font-size': '16px'
       .text =>
-        @options.data.province
+        @options.data[0].province
 
 
     # outer circle
@@ -148,14 +115,14 @@ class Rose
 
     # petals
     @innerContainer.selectAll '.petal'
-      .data @options.data.petals
+      .data @options.data
       .enter()
       .append 'path'
       .attr
         d: (d) =>
-          @petalPath d.value, d.startAngle
+          @petalPath d.value, Constants.viz5RoseData[d.source].startAngle
         fill: (d) ->
-          d.color
+          Constants.viz5RoseData[d.source].colour
         class: 'petal'
 
     # baseline circle
