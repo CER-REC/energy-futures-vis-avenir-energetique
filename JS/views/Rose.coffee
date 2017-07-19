@@ -132,16 +132,15 @@ class Rose
 
 
   update: ->
-
     @innerContainer.select '.roseCentreLabel'
       .text =>
         @options.data[0].province
 
     # TODO: Check that this works
     # TODO: Animate it
+
     @innerContainer.selectAll '.petal'
       .data @options.data
-      .select 'path'
       .attr
         d: (d) =>
           @petalPath d.value, Constants.viz5RoseData[d.source].startAngle
@@ -168,6 +167,14 @@ class Rose
     else
       # pointed outward
       thornDistance = petalDistance + Constants.roseThornLength
+
+    if petalDistance < 0
+      # console.warn "negative petal radius #{petalDistance} for #{value}"
+      petalDistance = 0
+    
+    if thornDistance < 0
+      # console.warn "negative thorn radius #{thornDistance} for #{value}"
+      thornDistance = 0
 
     finalAngle = startAngle + Math.PI * 1 / 3
 
@@ -234,7 +241,8 @@ class Rose
     path.toString()
 
 
-
+  setData: (data) ->
+    @options.data = data
 
 
 

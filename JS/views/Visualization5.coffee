@@ -96,7 +96,7 @@ class Visualization5
     @config = config
     # TODO: Uncomment after creating the Viz5 Access Config.
     # @accessConfig = new Viz5AccessConfig @config
-    @margin = # TODO: these margins are used both for the roses panel and the graph layout as a whole, which did we mean? 
+    @margin = # TODO: these margins are used both for the roses panel and the graph layout as a whole, which did we mean?
       top: 20
       right: 20
       bottom: 50
@@ -119,8 +119,25 @@ class Visualization5
       QC: null
       SK: null
       YT: null
+    @allCanadaRoseGroups = 
+      AB: null
+      BC: null
+      MB: null
+      NB: null
+      NL: null
+      NS: null
+      NT: null
+      NU: null
+      ON: null
+      PE: null
+      QC: null
+      SK: null
+      YT: null
+
     @leftRose = null
     @rightRose = null
+    @leftRoseGroup = null
+    @rightRoseGroup = null
 
 
 
@@ -370,8 +387,7 @@ class Visualization5
       # all provinces (Canada view).
       @hideRightProvinceMenu()
 
-      # TODO
-      # @renderGraph()
+      @renderGraph()
       
       @app.router.navigate @config.routerParams()
 
@@ -391,8 +407,7 @@ class Visualization5
       # to select the second province.
       @showRightProvinceMenu()
       
-      # TODO
-      # @renderGraph()
+      @renderGraph()
       
       @app.router.navigate @config.routerParams()
 
@@ -430,8 +445,7 @@ class Visualization5
       @rightProvinceMenu.data @dataForProvinceMenu(@config.rightProvince)
       @rightProvinceMenu.update()
       
-      # TODO
-      # @renderGraph()
+      @renderGraph()
       
       @app.router.navigate @config.routerParams()
 
@@ -587,6 +601,8 @@ class Visualization5
         @config.setSector d.sectorName
         @addSectors()
 
+        @renderGraph()
+
         @app.router.navigate @config.routerParams()
         @app.window.document.querySelector('#sectorsSelector .selected').focus()
 
@@ -652,9 +668,7 @@ class Visualization5
             @renderScenariosSelector()
             @renderDatasetSelector()
             
-            # TODO
-            # @renderYAxis()
-            # @renderGraph()
+            @renderGraph()
             
             @app.router.navigate @config.routerParams()
 
@@ -694,13 +708,7 @@ class Visualization5
           # TODO: For efficiency, only rerender what's necessary.
           @renderScenariosSelector()
           
-          # TODO
-          # @renderYAxis()
-          # @renderGraph()
-          # @renderScenariosSelector()
-          
-          # TODO: Render the graph
-          # @renderGraph()
+          @renderGraph()
 
           @app.router.navigate @config.routerParams()
 
@@ -757,6 +765,8 @@ class Visualization5
       @renderTwoRoses()
 
 
+
+
   renderAllCanadaRoses: ->
     data = @graphData()
 
@@ -765,22 +775,29 @@ class Visualization5
     roseScale = roseSize / Constants.roseSize
 
     for province, rosePosition of Constants.rosePositions
-      group = @container.append 'g'
-
       xPos = @margin.left + (roseSize + Constants.roseMargin) * rosePosition.column
       yPos = @margin.top + (roseSize + Constants.roseMargin) * rosePosition.row
 
-      group.attr
-        transform: "translate(#{xPos}, #{yPos}) scale(#{roseScale}, #{roseScale})"
+      if @allCanadaRoses[province]?
+        # TODO: animate me!
+        @allCanadaRoseGroups[province].attr
+          transform: "translate(#{xPos}, #{yPos}) scale(#{roseScale}, #{roseScale})"
 
-      rose = new Rose @app,
-        container: group
-        data: data[province]
+        @allCanadaRoses[province].setData data[province]
+        @allCanadaRoses[province].update()
+      else
+        # TODO: animate rose arrivals too
+        group = @container.append 'g'
+        group.attr
+          transform: "translate(#{xPos}, #{yPos}) scale(#{roseScale}, #{roseScale})"
 
-      rose.render()
+        rose = new Rose @app,
+          container: group
+          data: data[province]
+        rose.render()
 
-      @allCanadaRoses[province] = rose
-
+        @allCanadaRoses[province] = rose
+        @allCanadaRoseGroups[province] = group
 
   renderTwoRoses: ->
 

@@ -290,10 +290,12 @@ class EnergyConsumptionProvider
     scenarioData = @dataByScenario[viz5config.scenario]
 
     baseData = scenarioData.filter (item) ->
-      item.year == viz5config.baseYear
+      item.year == viz5config.baseYear and
+      item.sector == viz5config.sector
 
     comparisonData = scenarioData.filter (item) ->
-      item.year == viz5config.comparisonYear
+      item.year == viz5config.comparisonYear and
+      item.sector == viz5config.sector
 
     baseDataAggregated = {}
     comparisonDataAggregated = {}
