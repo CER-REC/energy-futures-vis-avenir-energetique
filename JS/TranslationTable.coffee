@@ -1790,6 +1790,9 @@ module.exports =
     viz4GraphAccessibleInstructions:
       en: 'Use the arrow keys to navigate the chart.'
       fr: 'Utiliser les boutons flèches pour naviguer le graphique.'
+    viz5GraphAccessibleInstructions:
+      en: 'Use the arrow keys or the mouse to select chart elements.'
+      fr: '<TODO>'
 
 
     # TODO: French translations need validation
@@ -1831,6 +1834,9 @@ module.exports =
     viz4:
       en: 'Switched to "explore scenarios" page'
       fr: 'Navigation au page "exploration des scénarios"'
+    viz5:
+      en: 'Switched to "explore changing demand" page'
+      fr: '<TODO>'
 
 
 

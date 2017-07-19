@@ -1,16 +1,50 @@
 <div id="wideVisualizationPanel"> 
 
   <div id="buttonPanel" class="selectorColumn">
-    todo
+
+    <div class="sectorSelectorGroup">  
+      <span class="floatedTitleLabel">{{selectSectorLabel}}</span>
+      <img src="IMG/large_qmark.svg" class="helpIconButton pointerCursor" alt='{{ altText.sectorsHelp }}' tabindex='0' role='button' id='sectorSelectorHelpButton'>
+      <div class="selectorGroup">
+        <div id="sectorsSelector"> </div>
+        <div class="clearfix"> </div>
+      </div>
+    </div>
+    <div class="datasetSelectorGroup">
+      <span class="floatedTitleLabel">{{selectDatasetLabel}}</span>
+      <img src="IMG/large_qmark.svg" class="helpIconButton pointerCursor" alt='{{ altText.datasetsHelp }}' tabindex='0' role='button' id='datasetSelectorHelpButton'>
+      <div class="selectorGroup">
+        <div id="datasetSelector"></div>
+      </div>
+    </div>
+    <div class="scenarioSelectorGroup">  
+      <span class="floatedTitleLabel">{{selectScenarioLabel}}</span>
+      <img src="IMG/large_qmark.svg" class="helpIconButton pointerCursor" alt='{{ altText.scenariosHelp }}' tabindex='0' role='button' id='scenarioSelectorHelpButton'>
+      <div class="selectorGroup">
+        <div id="scenariosSelector"> </div>
+      </div>
+    </div>
   </div>
 
-  <div id="graphPanel" class="wideVisualizationColumn" tabindex='0' aria-description='{{ graphDescription }}'>
+  <div id="provincePanel" class="smallSelectorColumn">
+    <span class="titleLabel textCentre">{{selectRegionLabel}}</span>
+    <div id="leftProvincesSelector">
+      <svg id="leftProvinceMenuSVG" xmlns="http://www.w3.org/2000/svg" xmlns:xlink='http://www.w3.org/1999/xlink'>
+      </svg>
+    </div>
+  </div>
+  <div id="provincePanel" class="smallSelectorColumn_rightAligned">
+    <div id="rightProvincesSelector">
+      <svg id="rightProvinceMenuSVG" xmlns="http://www.w3.org/2000/svg" xmlns:xlink='http://www.w3.org/1999/xlink'>
+      </svg>
+    </div>
+  </div>
+
+
+  <div id="graphPanel" class="viz5VisualizationColumn" tabindex='0' aria-description='{{ graphDescription }}'>
     <svg id="graphSVG" xmlns="http://www.w3.org/2000/svg" xmlns:xlink='http://www.w3.org/1999/xlink'>
       <style> {{ svgStylesheet }} </style>
       <g id="graphGroup">
-        
-        <g id="target"></g>
-
       </g>
     </svg>
   </div>
@@ -18,7 +52,16 @@
   <div id='tooltip' class='chartTooltip'> </div>
 
 </div>
+        
+
 
 <div class="hidden"> 
-
+  <img src="IMG/sector/commercial_selected.svg" alt="commercial"> 
+  <img src="IMG/sector/commercial_unselected.svg" alt="commercial"> 
+  <img src="IMG/sector/industrial_selected.svg" alt="industrial"> 
+  <img src="IMG/sector/industrial_unselected.svg" alt="industrial"> 
+  <img src="IMG/sector/residential_selected.svg" alt="residential"> 
+  <img src="IMG/sector/residential_unselected.svg" alt="residential"> 
+  <img src="IMG/sector/transport_selected.svg" alt="transport"> 
+  <img src="IMG/sector/transport_unselected.svg" alt="transport"> 
 </div>
