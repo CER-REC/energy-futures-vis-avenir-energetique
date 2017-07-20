@@ -1034,8 +1034,10 @@ class Visualization5
       .tickSize(10,2)
       .ticks(7)
       .tickFormat (d) ->
-        if d == Constants.minYear or d == Constants.maxYear
-          if d != Constants.baseYear && d != Constants.comparisonYear then d else ''
+        if d == Constants.minYear
+          if Constants.hideBaseYearLabel.includes Constants.baseYear then '' else d
+        else if d == Constants.maxYear
+           if Constants.maxYear == Constants.comparisonYear then '' else d
         else ''
       .orient 'bottom'
 

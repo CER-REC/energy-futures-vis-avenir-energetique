@@ -296,6 +296,13 @@ module.exports =
   baseYearTimelineMargin: 50
   sliderLabelHeight: 28
 
+  hideBaseYearLabel: [
+    2005
+    2006
+    2007
+    2008
+  ]
+
   minYear: 2005
   maxYear: 2040
 
