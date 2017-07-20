@@ -342,6 +342,7 @@ module.exports =
 
   thornAngularWidth: Math.PI / 32
 
+  roseColumns: 6
   # Indexed from the top left
   rosePositions:
     YT:

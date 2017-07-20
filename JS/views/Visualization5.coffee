@@ -125,25 +125,9 @@ class Visualization5
       QC: null
       SK: null
       YT: null
-    @allCanadaRoseGroups =
-      AB: null
-      BC: null
-      MB: null
-      NB: null
-      NL: null
-      NS: null
-      NT: null
-      NU: null
-      ON: null
-      PE: null
-      QC: null
-      SK: null
-      YT: null
 
     @leftRose = null
     @rightRose = null
-    @leftRoseGroup = null
-    @rightRoseGroup = null
 
     @renderMode = if @config.leftProvince == 'all' then 'allCanadaRoses' else 'twoRoses'
 
@@ -157,10 +141,7 @@ class Visualization5
     @tooltipParent = @document.getElementById 'wideVisualizationPanel'
     @graphPanel = @document.getElementById 'graphPanel'
 
-    # preliminary stuff
-    # TODO: real numbers please!
     @container = @d3document.select '#graphSVG'
-
 
     @render()
     @redraw()
@@ -777,8 +758,9 @@ class Visualization5
   renderAllCanadaRoses: ->
     data = @graphData()
 
-    availableWidth = @graphWidth() - @graphMargin.left - @graphMargin.right - 5 * Constants.roseMargin # also derived from column count ...
-    roseSize = availableWidth / 6 # TODO column count, should be constant?
+    availableWidth = @graphWidth() - @graphMargin.left - @graphMargin.right -
+      (Constants.roseColumns - 1) * Constants.roseMargin
+    roseSize = availableWidth / Constants.roseColumns
     roseScale = roseSize / Constants.roseSize
 
     for province, rosePosition of Constants.rosePositions
@@ -786,26 +768,26 @@ class Visualization5
       yPos = @graphMargin.top + (roseSize + Constants.roseMargin) * rosePosition.row
 
       if @allCanadaRoses[province]?
-        @allCanadaRoseGroups[province].transition()
-          .duration Constants.animationDuration
-          .attr
-            transform: "translate(#{xPos}, #{yPos}) scale(#{roseScale}, #{roseScale})"
-
+        @allCanadaRoses[province].setPosition
+          x: xPos
+          y: yPos
+        @allCanadaRoses[province].setScale roseScale
         @allCanadaRoses[province].setData data[province]
         @allCanadaRoses[province].update()
       else
-        # TODO: animate rose arrivals too
-        group = @container.append 'g'
-        group.attr
-          transform: "translate(#{xPos}, #{yPos}) scale(#{roseScale}, #{roseScale})"
+        roseContainer = @container.append 'g'
 
         rose = new Rose @app,
-          container: group
+          container: roseContainer
           data: data[province]
+          scale: roseScale
+          position:
+            x: xPos
+            y: yPos
         rose.render()
 
         @allCanadaRoses[province] = rose
-        @allCanadaRoseGroups[province] = group
+
 
   renderTwoRoses: ->
     data = @graphData()
@@ -820,51 +802,48 @@ class Visualization5
     rightYPos = @graphMargin.top
 
 
-    # TODO: This could be deduplicated, but I don't like what it would do to readability
-
     if @leftRose?
-      @leftRoseGroup.transition()
-        .duration Constants.animationDuration
-        .attr
-          transform: "translate(#{leftXPos}, #{leftYPos}) scale(#{roseScale}, #{roseScale})"
+      @leftRose.setPosition
+        x: leftXPos
+        y: leftYPos
+      @leftRose.setScale roseScale
       @leftRose.setData data[@config.leftProvince]
       @leftRose.update()
     else
-      # TODO: animate rose arrivals too
-      group = @container.append 'g'
-      group.attr
-        transform: "translate(#{leftXPos}, #{leftYPos}) scale(#{roseScale}, #{roseScale})"
+      roseContainer = @container.append 'g'
 
       rose = new Rose @app,
-        container: group
+        container: roseContainer
         data: data[@config.leftProvince]
+        scale: roseScale
+        position:
+          x: leftXPos
+          y: leftYPos
       rose.render()
 
       @leftRose = rose
-      @leftRoseGroup = group
 
 
     if @rightRose?
-      @rightRoseGroup.transition()
-        .duration Constants.animationDuration
-        .attr
-          transform: "translate(#{rightXPos}, #{rightYPos}) scale(#{roseScale}, #{roseScale})"
-
+      @rightRose.setPosition
+        x: rightXPos
+        y: rightYPos
+      @rightRose.setScale roseScale
       @rightRose.setData data[@config.rightProvince]
       @rightRose.update()
     else
-      # TODO: animate rose arrivals too
-      group = @container.append 'g'
-      group.attr
-        transform: "translate(#{rightXPos}, #{rightYPos}) scale(#{roseScale}, #{roseScale})"
+      roseContainer = @container.append 'g'
 
       rose = new Rose @app,
-        container: group
+        container: roseContainer
         data: data[@config.rightProvince]
+        scale: roseScale
+        position:
+          x: rightXPos
+          y: rightYPos
       rose.render()
 
       @rightRose = rose
-      @rightRoseGroup = group
 
     @lastRenderedLeftRose = @config.leftProvince
     @lastRenderedRightRose = @config.rightProvince
@@ -877,19 +856,15 @@ class Visualization5
 
     # Always keep the left rose
     @allCanadaRoses[@lastRenderedLeftRose] = @leftRose
-    @allCanadaRoseGroups[@lastRenderedLeftRose] = @leftRoseGroup
 
     # If the right rose is different from the left, keep it too
     if @lastRenderedLeftRose != @lastRenderedRightRose
       @allCanadaRoses[@lastRenderedRightRose] = @rightRose
-      @allCanadaRoseGroups[@lastRenderedRightRose] = @rightRoseGroup
     else
       @rightRose.teardown()
 
     @leftRose = null
     @rightRose = null
-    @leftRoseGroup = null
-    @rightRoseGroup = null
 
     @renderAllCanadaRoses()
     
@@ -897,25 +872,20 @@ class Visualization5
 
     # Always keep the rose which will become the left rose
     @leftRose = @allCanadaRoses[@config.leftProvince]
-    @leftRoseGroup = @allCanadaRoseGroups[@config.leftProvince]
 
     @allCanadaRoses[@config.leftProvince] = null
-    @allCanadaRoseGroups[@config.leftProvince] = null
 
     # If the right rose is different from the left, keep it too
     if @config.leftProvince != @config.rightProvince
       @rightRose = @allCanadaRoses[@config.rightProvince]
-      @rightRoseGroup = @allCanadaRoseGroups[@config.rightProvince]
 
       @allCanadaRoses[@config.rightProvince] = null
-      @allCanadaRoseGroups[@config.rightProvince] = null
 
     # Destroy the other roses =(
     for province, rose of @allCanadaRoses
       continue unless rose?
       rose.teardown()
       @allCanadaRoses[province] = null
-      @allCanadaRoseGroups[province] = null
 
 
 
@@ -924,21 +894,4 @@ class Visualization5
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 module.exports = Visualization5
-
-
