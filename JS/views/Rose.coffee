@@ -246,6 +246,10 @@ class Rose
 
 
 
+  teardown: ->
+
+    # TODO: animate me
+    @container.remove()
 
 
 

@@ -119,7 +119,7 @@ class Visualization5
       QC: null
       SK: null
       YT: null
-    @allCanadaRoseGroups = 
+    @allCanadaRoseGroups =
       AB: null
       BC: null
       MB: null
@@ -139,6 +139,7 @@ class Visualization5
     @leftRoseGroup = null
     @rightRoseGroup = null
 
+    @renderMode = if @config.leftProvince == 'all' then 'allCanadaRoses' else 'twoRoses'
 
 
     if Platform.name == 'browser'
@@ -759,11 +760,20 @@ class Visualization5
 
 
   renderGraph: ->
-    if @config.leftProvince == 'all'
+    if @config.leftProvince == 'all' and @renderMode == 'allCanadaRoses'
+      # Update existing panel of 13 roses
       @renderAllCanadaRoses()
-    else
+    else if @config.leftProvince == 'all' and @renderMode == 'twoRoses'
+      # Need to switch to all 13 roses from 2
+      @renderMode = 'allCanadaRoses'
+      @transitionToAllCanadaRoses()
+    else if @config.leftProvince != 'all' and @renderMode == 'twoRoses'
+      # Update existing pair of roses
       @renderTwoRoses()
-
+    else if @config.leftProvince != 'all' and @renderMode == 'allCanadaRoses'
+      # Need to switch to 2 roses from all 13
+      @renderMode = 'twoRoses'
+      @transitionToTwoRoses()
 
 
 
@@ -779,9 +789,10 @@ class Visualization5
       yPos = @margin.top + (roseSize + Constants.roseMargin) * rosePosition.row
 
       if @allCanadaRoses[province]?
-        # TODO: animate me!
-        @allCanadaRoseGroups[province].attr
-          transform: "translate(#{xPos}, #{yPos}) scale(#{roseScale}, #{roseScale})"
+        @allCanadaRoseGroups[province].transition()
+          .duration Constants.animationDuration
+          .attr
+            transform: "translate(#{xPos}, #{yPos}) scale(#{roseScale}, #{roseScale})"
 
         @allCanadaRoses[province].setData data[province]
         @allCanadaRoses[province].update()
@@ -815,9 +826,10 @@ class Visualization5
     # TODO: This could be deduplicated, but I don't like what it would do to readability
 
     if @leftRose?
-      # TODO: animate me!
-      @leftRoseGroup.attr
-        transform: "translate(#{leftXPos}, #{leftYPos}) scale(#{roseScale}, #{roseScale})"
+      @leftRoseGroup.transition()
+        .duration Constants.animationDuration
+        .attr
+          transform: "translate(#{leftXPos}, #{leftYPos}) scale(#{roseScale}, #{roseScale})"
       @leftRose.setData data[@config.leftProvince]
       @leftRose.update()
     else
@@ -836,9 +848,10 @@ class Visualization5
 
 
     if @rightRose?
-      # TODO: animate me!
-      @rightRoseGroup.attr
-        transform: "translate(#{rightXPos}, #{rightYPos}) scale(#{roseScale}, #{roseScale})"
+      @rightRoseGroup.transition()
+        .duration Constants.animationDuration
+        .attr
+          transform: "translate(#{rightXPos}, #{rightYPos}) scale(#{roseScale}, #{roseScale})"
 
       @rightRose.setData data[@config.rightProvince]
       @rightRose.update()
@@ -856,20 +869,61 @@ class Visualization5
       @rightRose = rose
       @rightRoseGroup = group
 
+    @lastRenderedLeftRose = @config.leftProvince
+    @lastRenderedRightRose = @config.rightProvince
 
 
 
   transitionToAllCanadaRoses: ->
+    # NB: At this time, @config.leftProvince has already been set to 'all', and can't be
+    # used to discover which rose we were rendering in the left slot.
 
-    # figure out which roses to keep, if any
-    # transition them to their places
-    # animate in the other roses too
+    # Always keep the left rose
+    @allCanadaRoses[@lastRenderedLeftRose] = @leftRose
+    @allCanadaRoseGroups[@lastRenderedLeftRose] = @leftRoseGroup
+
+    # If the right rose is different from the left, keep it too
+    if @lastRenderedLeftRose != @lastRenderedRightRose
+      @allCanadaRoses[@lastRenderedRightRose] = @rightRose
+      @allCanadaRoseGroups[@lastRenderedRightRose] = @rightRoseGroup
+    else
+      @rightRose.teardown()
+
+    @leftRose = null
+    @rightRose = null
+    @leftRoseGroup = null
+    @rightRoseGroup = null
+
+    @renderAllCanadaRoses()
     
   transitionToTwoRoses: ->
 
-    # figure out which 1 or 2 roses to animate to
-    # transition the two roses
-    # animate out the other roses
+    # Always keep the rose which will become the left rose
+    @leftRose = @allCanadaRoses[@config.leftProvince]
+    @leftRoseGroup = @allCanadaRoseGroups[@config.leftProvince]
+
+    @allCanadaRoses[@config.leftProvince] = null
+    @allCanadaRoseGroups[@config.leftProvince] = null
+
+    # If the right rose is different from the left, keep it too
+    if @config.leftProvince != @config.rightProvince
+      @rightRose = @allCanadaRoses[@config.rightProvince]
+      @rightRoseGroup = @allCanadaRoseGroups[@config.rightProvince]
+
+      @allCanadaRoses[@config.rightProvince] = null
+      @allCanadaRoseGroups[@config.rightProvince] = null
+
+    # Destroy the other roses =(
+    for province, rose of @allCanadaRoses
+      continue unless rose?
+      rose.teardown()
+      @allCanadaRoses[province] = null
+      @allCanadaRoseGroups[province] = null
+
+
+
+    @renderTwoRoses()
+
 
 
 
