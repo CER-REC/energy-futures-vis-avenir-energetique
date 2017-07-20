@@ -422,6 +422,11 @@ class Visualization5
     if !@rightProvinceMenu
       @rightProvinceMenu = @buildRightProvinceMenu()
     
+    # We're building the yearAxis every time we render to make sure that the
+    # timeline year labels (2005 & 2040) are updated everytime the baseYear
+    # and/or the comparisonYear changes.
+    @buildYearAxis()
+
     # TODO: Render the graph
     # @renderGraph()
 
@@ -1019,12 +1024,19 @@ class Visualization5
       ]
 
   yearAxis: ->
+    # I am saving the current baseYear and comparisonYear in constans
+    # to have access to the config values from within tickFormat. Not an
+    # ideal solution and we should probably look into this further.
+    Constants.baseYear = @config.baseYear
+    Constants.comparisonYear = @config.comparisonYear
     d3.svg.axis()
       .scale(@yearScale())
       .tickSize(10,2)
       .ticks(7)
       .tickFormat (d) ->
-        if d == Constants.minYear or d == Constants.maxYear then d else ''
+        if d == Constants.minYear or d == Constants.maxYear
+          if d != Constants.baseYear && d != Constants.comparisonYear then d else ''
+        else ''
       .orient 'bottom'
 
   timelineRightEnd: ->
