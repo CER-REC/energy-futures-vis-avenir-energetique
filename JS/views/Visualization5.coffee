@@ -813,16 +813,16 @@ class Visualization5
 
     drag.on 'drag', =>
       newX = d3.event.x
-      if newX < Constants.timelineMargin then newX = Constants.timelineMargin
+      if newX < Constants.baseYearTimelineMargin then newX = Constants.baseYearTimelineMargin
       if newX > @timelineRightEnd() then newX = @timelineRightEnd()
       baseYear = Math.round @yearScale().invert newX
       if baseYear > @config.comparisonYear
         return
 
       @d3document.select('#baseSliderLabel').attr 'transform', =>
-        if newX < Constants.timelineMargin then newX = Constants.timelineMargin
+        if newX < Constants.baseYearTimelineMargin then newX = Constants.baseYearTimelineMargin
         if newX > @timelineRightEnd() then newX = @timelineRightEnd()
-        "translate(#{newX}, #{@_margin.bottom - 5})"
+        "translate(#{newX - 25}, #{@_margin.bottom - 20})"
 
       baseYear = Math.round @yearScale().invert newX
       if baseYear != @config.baseYear
@@ -840,7 +840,7 @@ class Visualization5
       if baseYear != @config.baseYear && @config.comparisonYear > baseYear
         newX = @yearScale()(baseYear)
         @d3document.select('#baseSliderLabel').attr
-          transform: "translate(#{newX}, #{@_margin.bottom - 5})"
+          transform: "translate(#{newX - 25}, #{@_margin.bottom - 20})"
 
         @d3document.select('#baseLabelBox').selectAll('text').text =>
           @config.baseYear
@@ -851,7 +851,7 @@ class Visualization5
         @app.router.navigate @config.routerParams()
         @render()
 
-    sliderWidth = 70
+    sliderWidth = 80
 
     sliderLabel = @d3document.select('#sliderSVG')
       .append 'g'
@@ -859,7 +859,7 @@ class Visualization5
         id: 'baseSliderLabel'
         class: 'baseSliderLabel pointerCursor'
         # Re the 5. It is because the ticks are moved
-        transform: "translate(#{@yearScale()(@config.baseYear)}, #{@_margin.bottom - 5})"
+        transform: "translate(#{@yearScale()(@config.baseYear) - 25}, #{@_margin.bottom - 20})"
         tabindex: '0'
         role: 'slider'
         'aria-label': Tr.altText.yearsSlider[@app.language]
@@ -873,8 +873,8 @@ class Visualization5
     sliderLabel.append 'image'
       .attr
         class: 'tLTriangle'
-        'xlink:xlink:href': 'IMG/baseYearSliderTemp.png'
-        x: -(sliderWidth / 2)
+        'xlink:xlink:href': 'IMG/baseyearslider.png'
+        x: -(sliderWidth / 2) + 2 #the extra centers it horizontally
         y: 0
         width: sliderWidth
         height: sliderWidth / 2
@@ -884,7 +884,7 @@ class Visualization5
       .attr
         class: 'baseSliderLabel'
         id: 'baseLabelBox'
-        x: -(sliderWidth / 4) + 1.5 #the extra centers it with due to the font height
+        x: -(sliderWidth / 4) + 5.5 #the extra centers it with due to the font height
         y: (sliderWidth / 2) - 4
         fill: '#fff'
       .text =>
@@ -901,7 +901,7 @@ class Visualization5
     update = =>
       @config.setBaseYear value
       @d3document.select('#baseSliderLabel').attr
-        transform: "translate(#{@yearScale()(@config.baseYear)}, #{@_margin.bottom - 5})"
+        transform: "translate(#{@yearScale()(@config.baseYear) - 25}, #{@_margin.bottom - 20})"
 
       @d3document.select '#baseLabelBox'
         .text @config.baseYear
@@ -938,14 +938,14 @@ class Visualization5
 
     drag.on 'drag', =>
       newX = d3.event.x
-      if newX < Constants.timelineMargin then newX = Constants.timelineMargin
+      if newX < Constants.baseYearTimelineMargin then newX = Constants.baseYearTimelineMargin
       if newX > @timelineRightEnd() then newX = @timelineRightEnd()
       comparisonYear = Math.round @yearScale().invert newX
       if comparisonYear < @config.baseYear
         return
 
       @d3document.select('#sliderLabel').attr 'transform', =>
-        if newX < Constants.timelineMargin then newX = Constants.timelineMargin
+        if newX < Constants.baseYearTimelineMargin then newX = Constants.baseYearTimelineMargin
         if newX > @timelineRightEnd() then newX = @timelineRightEnd()
         "translate(#{newX}, #{@_margin.top - 5})"
 
@@ -1019,7 +1019,7 @@ class Visualization5
     d3.scale.linear()
       .domain [Constants.minYear, Constants.maxYear]
       .range [
-        Constants.timelineMargin
+        Constants.baseYearTimelineMargin
         @timelineRightEnd()
       ]
 

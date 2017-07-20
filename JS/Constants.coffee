@@ -293,6 +293,7 @@ module.exports =
   boxesOffset: 46
 
   timelineMargin: 25
+  baseYearTimelineMargin: 50
   sliderLabelHeight: 28
 
   minYear: 2005
