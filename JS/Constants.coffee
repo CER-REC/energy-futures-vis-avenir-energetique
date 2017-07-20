@@ -420,5 +420,3 @@ module.exports =
       startAngle: Math.PI * (5 / 3)
 
 
-
-

@@ -96,7 +96,13 @@ class Visualization5
     @config = config
     # TODO: Uncomment after creating the Viz5 Access Config.
     # @accessConfig = new Viz5AccessConfig @config
-    @margin = # TODO: these margins are used both for the roses panel and the graph layout as a whole, which did we mean?
+
+    @margin =
+      top: 20
+      right: 70
+      bottom: 50
+      left: 10
+    @graphMargin =
       top: 20
       right: 20
       bottom: 50
@@ -154,9 +160,7 @@ class Visualization5
     # preliminary stuff
     # TODO: real numbers please!
     @container = @d3document.select '#graphSVG'
-    @container.attr
-      height: 1000
-      width: '100%'
+
 
     @render()
     @redraw()
@@ -169,7 +173,7 @@ class Visualization5
     @app.providers[@config.dataset].energyConsumptionProvider.dataForViz5 @config
 
 
-  outerWidth: ->
+  graphWidth: ->
     # getBoundingClientRect is not implemented in JSDOM, use fixed width on server
     # if Platform.name == 'browser'
       @d3document
@@ -462,12 +466,9 @@ class Visualization5
       .classed 'hidden', true
 
   render: ->
-    @d3document.select '#graphSVG'
-      .attr
-        width: @outerWidth()
-        height: Constants.viz5Height
-    @d3document.select '#graphGroup'
-      .attr 'transform', "translate(#{@margin.top},#{@margin.left})"
+    @container.attr
+      width: @graphWidth()
+      height: Constants.viz5Height
         
     @addSectors()
     @renderDatasetSelector()
@@ -482,9 +483,6 @@ class Visualization5
     @renderGraph()
 
 
-
-  width: ->
-    @outerWidth() - @margin.left - @margin.right
 
   height: ->
     Constants.viz5Height - @margin.top - @margin.bottom
@@ -728,10 +726,9 @@ class Visualization5
       .remove()
 
   redraw: ->
-    @d3document.select '#graphSVG'
-      .attr
-        width: @outerWidth()
-        height: Constants.viz5Height
+    @container.attr
+      width: @graphWidth()
+      height: Constants.viz5Height
     
     @renderGraph()
     
@@ -780,13 +777,13 @@ class Visualization5
   renderAllCanadaRoses: ->
     data = @graphData()
 
-    availableWidth = @outerWidth() - @margin.left - @margin.right - 5 * Constants.roseMargin # also derived from column count ...
+    availableWidth = @graphWidth() - @graphMargin.left - @graphMargin.right - 5 * Constants.roseMargin # also derived from column count ...
     roseSize = availableWidth / 6 # TODO column count, should be constant?
     roseScale = roseSize / Constants.roseSize
 
     for province, rosePosition of Constants.rosePositions
-      xPos = @margin.left + (roseSize + Constants.roseMargin) * rosePosition.column
-      yPos = @margin.top + (roseSize + Constants.roseMargin) * rosePosition.row
+      xPos = @graphMargin.left + (roseSize + Constants.roseMargin) * rosePosition.column
+      yPos = @graphMargin.top + (roseSize + Constants.roseMargin) * rosePosition.row
 
       if @allCanadaRoses[province]?
         @allCanadaRoseGroups[province].transition()
@@ -813,14 +810,14 @@ class Visualization5
   renderTwoRoses: ->
     data = @graphData()
 
-    availableWidth = @outerWidth() - @margin.left - @margin.right - Constants.roseMargin
+    availableWidth = @graphWidth() - @graphMargin.left - @graphMargin.right - Constants.roseMargin
     roseSize = availableWidth / 2
     roseScale = roseSize / Constants.roseSize
 
-    leftXPos = @margin.left
-    leftYPos = @margin.top
-    rightXPos = @margin.left + (roseSize + Constants.roseMargin)
-    rightYPos = @margin.top
+    leftXPos = @graphMargin.left
+    leftYPos = @graphMargin.top
+    rightXPos = @graphMargin.left + (roseSize + Constants.roseMargin)
+    rightYPos = @graphMargin.top
 
 
     # TODO: This could be deduplicated, but I don't like what it would do to readability

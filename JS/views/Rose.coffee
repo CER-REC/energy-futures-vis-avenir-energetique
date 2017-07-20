@@ -11,22 +11,12 @@ defaultOptions = {}
 
 class Rose
 
-
-  # Viz5 config
   constructor: (@app, options) ->
-
     @document = @app.window.document
     @d3document = d3.select @document
 
     @options = _.extend defaultOptions, options
     @container = @options.container
-
-
-
-
-
-
-
 
   # Add all of the static elements, and set up petals for update.
   render: ->
@@ -38,7 +28,7 @@ class Rose
       .append 'g'
       .attr
         class: 'rose'
-        transform: (d) =>
+        transform: ->
           "translate(#{Constants.roseOuterCircleRadius}, #{Constants.roseOuterCircleRadius})"
 
     # Axes
@@ -47,11 +37,12 @@ class Rose
         .attr
           class: 'roseAxisLine'
           stroke: '#ccc'
-          'stroke-width': 1
+          'stroke-width': 0.5
           x1: 0
           y1: 0
           x2: Constants.roseOuterCircleRadius * Math.cos angle
           y2: Constants.roseOuterCircleRadius * Math.sin angle
+          'stroke-dasharray': '1,1'
 
     # Centre circle
     @innerContainer.append 'circle'
@@ -65,7 +56,7 @@ class Rose
       .attr
         class: 'roseCentreLabel'
         fill: 'white'
-        transform: "translate(0, 4.5)" # TODO: Constant here
+        transform: 'translate(0, 4.5)'
         'text-anchor': 'middle'
       # TODO: should this be in a stylesheet?
       .style
@@ -83,24 +74,33 @@ class Rose
         fill: 'none'
 
     # Tickmarks
-    for angle in Constants.roseAngles
-      for distance in Constants.roseTickDistances
+    for distance in Constants.roseTickDistances
+      # Tickmarks are each the same length, but are drawn as tiny arcs.
+      # So, the angular width of the arc is different for each set of tickmarks
+      tickmarkRadius = Constants.roseBaselineCircleRadius + distance
+      tickmarkCircumference = 2 * Math.PI * tickmarkRadius
 
-        # Compute the midpoint of the tickmark, using a ray from the centre of the rose
-        midpointX = (Constants.roseBaselineCircleRadius + distance) * Math.cos angle
-        midpointY = (Constants.roseBaselineCircleRadius + distance) * Math.sin angle
+      for angle in Constants.roseAngles
+        angularWidth = Constants.roseTickLength / tickmarkCircumference * 2 * Math.PI
+        startAngle = angle - angularWidth / 2
+        endAngle = angle + angularWidth / 2
+        
+        # Compute the start point of the tickmark, using a ray from the centre of the rose
+        startX = tickmarkRadius * Math.cos startAngle
+        startY = tickmarkRadius * Math.sin startAngle
 
-        @innerContainer.append 'line'
+        path = d3Path.path()
+        path.moveTo startX, startY
+        path.arc 0, 0, tickmarkRadius, startAngle, endAngle
+
+
+        @innerContainer.append 'path'
           .attr
             class: 'roseTickMark'
             stroke: '#ccc'
             'stroke-width': 0.5
-            # To compute the endpoints of the tickmark, we start from the midpoint and
-            # use the line orthogonal to the ray from the centre of the rose
-            x1: midpointX + Constants.roseTickLength / 2 * Math.cos(angle + Math.PI / 2)
-            y1: midpointY + Constants.roseTickLength / 2 * Math.sin(angle + Math.PI / 2)
-            x2: midpointX - Constants.roseTickLength / 2 * Math.cos(angle + Math.PI / 2)
-            y2: midpointY - Constants.roseTickLength / 2 * Math.sin(angle + Math.PI / 2)
+            d: path.toString()
+            fill: 'none'
 
     # Petals
     @innerContainer.selectAll '.petal'
@@ -141,6 +141,8 @@ class Rose
 
     @innerContainer.selectAll '.petal'
       .data @options.data
+      .transition()
+      .duration Constants.animationDuration
       .attr
         d: (d) =>
           @petalPath d.value, Constants.viz5RoseData[d.source].startAngle
@@ -158,7 +160,8 @@ class Rose
     # A petal is composed of an outer arc, which is broken in two by a thorn (a triangular
     # point) in the middle, and an unbroken inner arc. The inner arc always lies along
     # the baseline circle of the rose, the outer arc may be closer to the origin or more
-    # distant (i.e. greater or lower radius) from it depending on the data value.
+    # distant (i.e. greater or lower radius) from the baseline depending on its data
+    # value.
 
     petalDistance = Constants.roseBaselineCircleRadius + value
     if petalDistance < Constants.roseBaselineCircleRadius
@@ -168,13 +171,14 @@ class Rose
       # pointed outward
       thornDistance = petalDistance + Constants.roseThornLength
 
-    if petalDistance < 0
-      # console.warn "negative petal radius #{petalDistance} for #{value}"
-      petalDistance = 0
+    # NB: It's important that the petal distance not be zero.
+    # If it is zero, the d3-path.arc function won't generate one of the arcs in the path.
+    # Then, since the path structure for this petal doesn't match the structure for paths
+    # with values higher than zero, the interpolation based path animations don't work
+    # correctly. For info about path animations: https://bost.ocks.org/mike/path/
+    petalDistance = 0.0000001 if petalDistance <= 0
     
-    if thornDistance < 0
-      # console.warn "negative thorn radius #{thornDistance} for #{value}"
-      thornDistance = 0
+    thornDistance = 0 if thornDistance < 0
 
     finalAngle = startAngle + Math.PI * 1 / 3
 
@@ -232,7 +236,7 @@ class Rose
     # Line to lower arc
     path.lineTo lowerArcX2, lowerArcY2
 
-    # Lower arc
+    # Lower arc, always lies along the baseline circle
     path.arc 0, 0, Constants.roseBaselineCircleRadius, finalAngle, startAngle, true
     
     # End!
