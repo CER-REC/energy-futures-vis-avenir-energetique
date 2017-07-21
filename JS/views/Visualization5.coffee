@@ -112,7 +112,7 @@ class Visualization5
       bottom: 50
       left: 10
 
-    @_margin =
+    @timelineMargin =
       top: 20
       left: 10
       right: 20
@@ -748,7 +748,7 @@ class Visualization5
     axis = @d3document.select '#timelineAxis'
       .attr
         fill: '#333'
-        transform: "translate(0, #{@_margin.top + Constants.sliderLabelHeight})"
+        transform: "translate(0, #{@timelineMargin.top + Constants.sliderLabelHeight})"
       .call @yearAxis()
 
     # We need a wider target for the click so we use a separate group
@@ -810,9 +810,9 @@ class Visualization5
         id: 'timelineHighlightedSection'
         class: 'timelineHighlightedSection pointerCursor'
         x1: "#{@yearScale()(@config.baseYear)}"
-        y1: "#{@_margin.top - 20}"
+        y1: "#{@timelineMargin.top - 20}"
         x2: "#{@yearScale()(@config.comparisonYear)}"
-        y2: "#{@_margin.top - 20}"
+        y2: "#{@timelineMargin.top - 20}"
 
 ###############
   buildBaseSliderLabel: ->
@@ -836,7 +836,7 @@ class Visualization5
       @d3document.select('#baseSliderLabel').attr 'transform', =>
         if newX < Constants.baseYearTimelineMargin then newX = Constants.baseYearTimelineMargin
         if newX > @timelineRightEnd() then newX = @timelineRightEnd()
-        "translate(#{newX - 25}, #{@_margin.bottom - 20})"
+        "translate(#{newX - 25}, #{@timelineMargin.bottom - 20})"
 
       baseYear = Math.round @yearScale().invert newX
       if baseYear != @config.baseYear
@@ -854,7 +854,7 @@ class Visualization5
       if baseYear != @config.baseYear && @config.comparisonYear > baseYear
         newX = @yearScale()(baseYear)
         @d3document.select('#baseSliderLabel').attr
-          transform: "translate(#{newX - 25}, #{@_margin.bottom - 20})"
+          transform: "translate(#{newX - 25}, #{@timelineMargin.bottom - 20})"
 
         @d3document.select('#baseLabelBox').selectAll('text').text =>
           @config.baseYear
@@ -863,7 +863,7 @@ class Visualization5
             'aria-valuenow': @config.baseYear
 
         @config.setBaseYear baseYear
-        
+
         @app.router.navigate @config.routerParams()
         @render()
 
@@ -872,7 +872,7 @@ class Visualization5
       .attr
         id: 'baseSliderLabel'
         class: 'baseSliderLabel pointerCursor'
-        transform: "translate(#{@yearScale()(@config.baseYear) - 25}, #{@_margin.bottom - 20})"
+        transform: "translate(#{@yearScale()(@config.baseYear) - 25}, #{@timelineMargin.bottom - 20})"
         tabindex: '0'
         role: 'slider'
         'aria-label': Tr.altText.yearsSlider[@app.language]
@@ -914,7 +914,7 @@ class Visualization5
     update = =>
       @config.setBaseYear value
       @d3document.select('#baseSliderLabel').attr
-        transform: "translate(#{@yearScale()(@config.baseYear) - 25}, #{@_margin.bottom - 20})"
+        transform: "translate(#{@yearScale()(@config.baseYear) - 25}, #{@timelineMargin.bottom - 20})"
 
       @d3document.select '#baseLabelBox'
         .text @config.baseYear
@@ -960,7 +960,7 @@ class Visualization5
       @d3document.select('#sliderLabel').attr 'transform', =>
         if newX < Constants.baseYearTimelineMargin then newX = Constants.baseYearTimelineMargin
         if newX > @timelineRightEnd() then newX = @timelineRightEnd()
-        "translate(#{newX}, #{@_margin.top - 5})"
+        "translate(#{newX}, #{@timelineMargin.top - 5})"
 
       comparisonYear = Math.round @yearScale().invert newX
       if comparisonYear != @config.comparisonYear
@@ -978,7 +978,7 @@ class Visualization5
       if comparisonYear != @config.comparisonYear && comparisonYear >= @config.baseYear
         newX = @yearScale()(comparisonYear)
         @d3document.select('#sliderLabel').attr
-          transform: "translate(#{newX}, #{@_margin.top - 5})"
+          transform: "translate(#{newX}, #{@timelineMargin.top - 5})"
 
         @d3document.select('#labelBox').selectAll('text').text =>
           @config.comparisonYear
@@ -994,7 +994,7 @@ class Visualization5
       .attr
         id: 'sliderLabel'
         class: 'sliderLabel pointerCursor'
-        transform: "translate(#{@yearScale()(@config.comparisonYear)}, #{@_margin.top - 5})"
+        transform: "translate(#{@yearScale()(@config.comparisonYear)}, #{@timelineMargin.top - 5})"
         tabindex: '0'
         role: 'slider'
         'aria-label': Tr.altText.yearsSlider[@app.language]
@@ -1052,7 +1052,7 @@ class Visualization5
   # We want this menu to line up with the bottom of the x axis TICKS so those must be
   # built before we can set this.
   leftHandMenuHeight: ->
-    Constants.viz5Height - @_margin.top - @_margin.bottom + @d3document
+    Constants.viz5Height - @timelineMargin.top - @timelineMargin.bottom + @d3document
       .select('#timelineAxis')
       .node()
       .getBoundingClientRect()
@@ -1069,7 +1069,7 @@ class Visualization5
     update = =>
       @config.setComparisonYear value
       @d3document.select('#sliderLabel').attr
-        transform: "translate(#{@yearScale()(@config.comparisonYear)}, #{@_margin.top - 5})"
+        transform: "translate(#{@yearScale()(@config.comparisonYear)}, #{@timelineMargin.top - 5})"
 
       @d3document.select '#labelBox'
         .text @config.comparisonYear
