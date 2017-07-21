@@ -78,9 +78,10 @@ class Visualization5Configuration
     else if year > Constants.maxYear
       @baseYear = Constants.maxYear
     else
-      @baseYear = @defaultOptions.baseYear
+      @baseYear = Constants.minYear
 
-    @setComparisonYear @comparisonYear
+    if @baseYear > @comparisonYear
+      @baseYear = @comparisonYear
 
   setComparisonYear: (year) ->
     year = parseInt year, 10

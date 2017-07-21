@@ -293,7 +293,18 @@ module.exports =
   boxesOffset: 46
 
   timelineMargin: 25
+  baseYearTimelineMargin: 50
   sliderLabelHeight: 28
+
+  comparisonSliderWidth: 70
+  baseSliderWidth: 80
+
+  hideBaseYearLabel: [
+    2005
+    2006
+    2007
+    2008
+  ]
 
   minYear: 2005
   maxYear: 2040
@@ -304,9 +315,9 @@ module.exports =
 
   # Viz3 height should total 700px
   viz3Height: 700
+  viz5Height: 700
   viz3GraphHeight: 620 # px
   viz3SliderHeight: 80 # px
-
 
   # Rose dimensions are normalized to a 112x112 canvas / group, which is re-scaled in the
   # visualization.
@@ -420,4 +431,4 @@ module.exports =
       colour: '#cc6699' # pink
       startAngle: Math.PI * (5 / 3)
 
-
+  viz5SliderHeight: 100 # px

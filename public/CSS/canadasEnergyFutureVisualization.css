@@ -1067,6 +1067,11 @@ svg { overflow: hidden; }
   outline: solid red 2px;
 }
 
+#canadasEnergyFutureVisualization .timelineHighlightedSection {
+  stroke-width: 4;
+  stroke: black;
+}
+
 #canadasEnergyFutureVisualization .float-right {
   float: right;
   height: 100%;
