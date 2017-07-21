@@ -306,3 +306,118 @@ module.exports =
   viz3Height: 700
   viz3GraphHeight: 620 # px
   viz3SliderHeight: 80 # px
+
+
+  # Rose dimensions are normalized to a 112x112 canvas / group, which is re-scaled in the
+  # visualization.
+  roseSize: 112 # px
+  roseOuterCircleRadius: 56 # px
+  roseBaselineCircleRadius: 33 # px
+  roseCentreCircleRadius: 10 # px
+
+  # All in radians
+  roseAngles: [
+    0
+    Math.PI * 1 / 3
+    Math.PI * 2 / 3
+    Math.PI * 3 / 3
+    Math.PI * 4 / 3
+    Math.PI * 5 / 3
+  ]
+
+  # All in px
+  # These distances are relative to the rose baseline circle, toward or away from the
+  # centre of the rose.
+  roseTickDistances: [
+    -15
+    -10
+    -5
+    5
+    10
+    15
+  ]
+
+  roseTickLength: 8 # px
+  roseThornLength: 4 # px
+
+  thornAngularWidth: Math.PI / 32
+
+  roseColumns: 6
+  # Indexed from the top left
+  rosePositions:
+    YT:
+      row: 0
+      column: 0
+    NT:
+      row: 0
+      column: 1
+    NU:
+      row: 0
+      column: 2
+    NL:
+      row: 0
+      column: 5
+
+    BC:
+      row: 1
+      column: 0
+    AB:
+      row: 1
+      column: 1
+    SK:
+      row: 1
+      column: 2
+    MB:
+      row: 1
+      column: 3
+    ON:
+      row: 1
+      column: 4
+    QC:
+      row: 1
+      column: 5
+
+    NB:
+      row: 2
+      column: 3
+    PE:
+      row: 2
+      column: 4
+    NS:
+      row: 2
+      column: 5
+
+  viz5Height: 700 # px
+
+  roseMargin: 11 # px
+
+  viz5SourcesInOrder: [
+    'electricity'
+    'naturalGas'
+    'bio'
+    'solarWindGeothermal'
+    'coal'
+    'oilProducts'
+  ]
+
+  viz5RoseData:
+    electricity:
+      colour: '#33cccc' # teal
+      startAngle: Math.PI * (0 / 3)
+    naturalGas:
+      colour: '#f16739' # orange
+      startAngle: Math.PI * (1 / 3)
+    bio:
+      colour: '#8d68ac' # purple
+      startAngle: Math.PI * (2 / 3)
+    solarWindGeothermal:
+      colour: '#339947' # green
+      startAngle: Math.PI * (3 / 3)
+    coal:
+      colour: '#996733' # brown
+      startAngle: Math.PI * (4 / 3)
+    oilProducts:
+      colour: '#cc6699' # pink
+      startAngle: Math.PI * (5 / 3)
+
+

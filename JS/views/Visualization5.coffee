@@ -1,10 +1,12 @@
 d3 = require 'd3'
+d3Path = require 'd3-path'
 Mustache = require 'mustache'
 
 Constants = require '../Constants.coffee'
 SquareMenu = require '../charts/SquareMenu.coffee'
 Tr = require '../TranslationTable.coffee'
 Platform = require '../Platform.coffee'
+Rose = require './Rose.coffee'
 
 ParamsToUrlString = require '../ParamsToUrlString.coffee'
 CommonControls = require './CommonControls.coffee'
@@ -89,31 +91,45 @@ class Visualization5
       analyticsElement: 'Viz5 region help'
       setupEvents: false
 
-  renderServerTemplate: ->
-    contentElement = @document.getElementById 'visualizationContent'
-    contentElement.innerHTML = Mustache.render @options.template,
-      svgStylesheet: @options.svgTemplate
-      title: Tr.visualization5Title[@config.mainSelection][@app.language]
-      description: @config.imageExportDescription()
-      energyFuturesSource: Tr.allPages.imageDownloadSource[@app.language]
-      bitlyLink: @app.bitlyLink
-      legendContent: @scenarioLegendData()
 
   constructor: (@app, config, @options) ->
     @config = config
-    
     # TODO: Uncomment after creating the Viz5 Access Config.
-    #@accessConfig = new Viz5AccessConfig @config
-    
-    @outerHeight = 700
+    # @accessConfig = new Viz5AccessConfig @config
+
     @margin =
       top: 20
       right: 70
       bottom: 50
       left: 10
+    @graphMargin =
+      top: 20
+      right: 20
+      bottom: 50
+      left: 20
     @document = @app.window.document
     @d3document = d3.select @document
     @accessibleStatusElement = @document.getElementById 'accessibleStatus'
+
+    @allCanadaRoses =
+      AB: null
+      BC: null
+      MB: null
+      NB: null
+      NL: null
+      NS: null
+      NT: null
+      NU: null
+      ON: null
+      PE: null
+      QC: null
+      SK: null
+      YT: null
+
+    @leftRose = null
+    @rightRose = null
+
+    @renderMode = if @config.leftProvince == 'all' then 'allCanadaRoses' else 'twoRoses'
 
 
     if Platform.name == 'browser'
@@ -125,11 +141,51 @@ class Visualization5
     @tooltipParent = @document.getElementById 'wideVisualizationPanel'
     @graphPanel = @document.getElementById 'graphPanel'
 
+    @container = @d3document.select '#graphSVG'
+
     @render()
     @redraw()
 
     # TODO: Setup graph events.
     # @setupGraphEvents()
+
+
+  graphData: ->
+    @app.providers[@config.dataset].energyConsumptionProvider.dataForViz5 @config
+
+
+  graphWidth: ->
+    # getBoundingClientRect is not implemented in JSDOM, use fixed width on server
+    # if Platform.name == 'browser'
+      @d3document
+        .select('#graphPanel')
+        .node()
+        .getBoundingClientRect()
+        .width
+    # else if Platform.name == 'server'
+    # TODO: check this constant, update if need be
+    #   Constants.viz4ServerSideGraphWidth
+
+
+
+
+
+
+
+  renderServerTemplate: ->
+    # TODO: This needs work!
+    contentElement = @document.getElementById 'visualizationContent'
+    contentElement.innerHTML = Mustache.render @options.template,
+      svgStylesheet: @options.svgTemplate
+      title: Tr.visualization5Title[@config.mainSelection][@app.language]
+      description: @config.imageExportDescription()
+      energyFuturesSource: Tr.allPages.imageDownloadSource[@app.language]
+      bitlyLink: @app.bitlyLink
+      legendContent: @scenarioLegendData()
+
+
+
+
 
 
   # Province menu stuff
@@ -272,7 +328,7 @@ class Visualization5
     @d3document.select '#leftProvinceMenuSVG'
       .attr
         width: @d3document.select('#leftProvincesSelector').node().getBoundingClientRect().width
-        height: @outerHeight
+        height: Constants.viz5Height
 
     options =
       onSelected: @leftProvinceSelected
@@ -298,7 +354,7 @@ class Visualization5
     state =
       size:
         w: @d3document.select('#leftProvincesSelector').node().getBoundingClientRect().width
-        h: @height() - @d3document.select('span.titleLabel').node().getBoundingClientRect().height + @d3document.select('#xAxis').node().getBoundingClientRect().height
+        h: @height() - @d3document.select('span.titleLabel').node().getBoundingClientRect().height
       data: @dataForProvinceMenu(@config.leftProvince)
 
     new SquareMenu @app, options, state
@@ -317,9 +373,7 @@ class Visualization5
       # all provinces (Canada view).
       @hideRightProvinceMenu()
 
-      # TODO
-      # @renderYAxis()
-      # @renderGraph()
+      @renderGraph()
       
       @app.router.navigate @config.routerParams()
 
@@ -339,9 +393,7 @@ class Visualization5
       # to select the second province.
       @showRightProvinceMenu()
       
-      # TODO
-      # @renderYAxis()
-      # @renderGraph()
+      @renderGraph()
       
       @app.router.navigate @config.routerParams()
 
@@ -352,18 +404,19 @@ class Visualization5
     @d3document.select '#rightProvinceMenuSVG'
       .attr
         width: @d3document.select('#rightProvincesSelector').node().getBoundingClientRect().width
-        height: @outerHeight
+        height: Constants.viz5Height
 
     options =
       onSelected: @rightProvinceSelected
       groupId: 'rightProvinceMenu'
       parentId: 'rightProvinceMenuSVG'
       displayHelpIcon: false
+      addAllSquare: false
 
     state =
       size:
         w: @d3document.select('#rightProvincesSelector').node().getBoundingClientRect().width
-        h: @height() - @d3document.select('span.titleLabel').node().getBoundingClientRect().height + @d3document.select('#xAxis').node().getBoundingClientRect().height
+        h: @height() - @d3document.select('span.titleLabel').node().getBoundingClientRect().height
       data: @dataForProvinceMenu(@config.rightProvince)
 
     new SquareMenu @app, options, state
@@ -378,9 +431,7 @@ class Visualization5
       @rightProvinceMenu.data @dataForProvinceMenu(@config.rightProvince)
       @rightProvinceMenu.update()
       
-      # TODO
-      # @renderYAxis()
-      # @renderGraph()
+      @renderGraph()
       
       @app.router.navigate @config.routerParams()
 
@@ -396,46 +447,26 @@ class Visualization5
       .classed 'hidden', true
 
   render: ->
-    @d3document.select '#graphSVG'
-      .attr
-        width: @outerWidth()
-        height: @outerHeight
-    @d3document.select '#graphGroup'
-      .attr 'transform', "translate(#{@margin.top},#{@margin.left})"
+    @container.attr
+      width: @graphWidth()
+      height: Constants.viz5Height
         
     @addSectors()
     @renderDatasetSelector()
     @renderScenariosSelector()
-    
-    # TODO
-    # @renderXAxis()
-    # @renderYAxis()
 
     if !@leftProvinceMenu
       @leftProvinceMenu = @buildLeftProvinceMenu()
 
     if !@rightProvinceMenu
       @rightProvinceMenu = @buildRightProvinceMenu()
-    
-    # TODO: Render the graph
-    # @renderGraph()
 
-  outerWidth: ->
-    # getBoundingClientRect is not implemented in JSDOM, use fixed width on server
-    if Platform.name == 'browser'
-      @d3document
-        .select('#graphPanel')
-        .node()
-        .getBoundingClientRect()
-        .width
-    else if Platform.name == 'server'
-      Constants.viz4ServerSideGraphWidth
+    @renderGraph()
 
-  width: ->
-    @outerWidth() - @margin.left - @margin.right
+
 
   height: ->
-    @outerHeight - @margin.top - @margin.bottom
+    Constants.viz5Height - @margin.top - @margin.bottom
 
   sectorSelectionData: ->
     [
@@ -550,6 +581,8 @@ class Visualization5
         @config.setSector d.sectorName
         @addSectors()
 
+        @renderGraph()
+
         @app.router.navigate @config.routerParams()
         @app.window.document.querySelector('#sectorsSelector .selected').focus()
 
@@ -615,9 +648,7 @@ class Visualization5
             @renderScenariosSelector()
             @renderDatasetSelector()
             
-            # TODO
-            # @renderYAxis()
-            # @renderGraph()
+            @renderGraph()
             
             @app.router.navigate @config.routerParams()
 
@@ -657,13 +688,7 @@ class Visualization5
           # TODO: For efficiency, only rerender what's necessary.
           @renderScenariosSelector()
           
-          # TODO
-          # @renderYAxis()
-          # @renderGraph()
-          # @renderScenariosSelector()
-          
-          # TODO: Render the graph
-          # @renderGraph()
+          @renderGraph()
 
           @app.router.navigate @config.routerParams()
 
@@ -682,24 +707,20 @@ class Visualization5
       .remove()
 
   redraw: ->
-    @d3document.select '#graphSVG'
-      .attr
-        width: @outerWidth()
-        height: @outerHeight
+    @container.attr
+      width: @graphWidth()
+      height: Constants.viz5Height
     
-    # TODO
-    # @renderXAxis false
-    # @renderYAxis false
-    # @renderGraph() # TODO: This call used to pass in 0 for duration. Why?
+    @renderGraph()
     
     @leftProvinceMenu.size
       w: @d3document.select('#leftProvincesSelector').node().getBoundingClientRect().width
-      h: @height() - @d3document.select('span.titleLabel').node().getBoundingClientRect().height + @d3document.select('#xAxis').node().getBoundingClientRect().height
+      h: @height() - @d3document.select('span.titleLabel').node().getBoundingClientRect().height
     @leftProvinceMenu.update()
 
     @rightProvinceMenu.size
       w: @d3document.select('#rightProvincesSelector').node().getBoundingClientRect().width
-      h: @height() - @d3document.select('span.titleLabel').node().getBoundingClientRect().height + @d3document.select('#xAxis').node().getBoundingClientRect().height
+      h: @height() - @d3document.select('span.titleLabel').node().getBoundingClientRect().height
     @rightProvinceMenu.update()
 
     # Hide the right province menu when showing
@@ -713,5 +734,164 @@ class Visualization5
     # TODO: We might want to render with empty lists for buttons, so that
     # garbage collection of event handled dom nodes goes smoothly
     @document.getElementById('visualizationContent').innerHTML = ''
+
+
+
+  renderGraph: ->
+    if @config.leftProvince == 'all' and @renderMode == 'allCanadaRoses'
+      # Update existing panel of 13 roses
+      @renderAllCanadaRoses()
+    else if @config.leftProvince == 'all' and @renderMode == 'twoRoses'
+      # Need to switch to all 13 roses from 2
+      @renderMode = 'allCanadaRoses'
+      @transitionToAllCanadaRoses()
+    else if @config.leftProvince != 'all' and @renderMode == 'twoRoses'
+      # Update existing pair of roses
+      @renderTwoRoses()
+    else if @config.leftProvince != 'all' and @renderMode == 'allCanadaRoses'
+      # Need to switch to 2 roses from all 13
+      @renderMode = 'twoRoses'
+      @transitionToTwoRoses()
+
+
+
+  renderAllCanadaRoses: ->
+    data = @graphData()
+
+    availableWidth = @graphWidth() - @graphMargin.left - @graphMargin.right -
+      (Constants.roseColumns - 1) * Constants.roseMargin
+    roseSize = availableWidth / Constants.roseColumns
+    roseScale = roseSize / Constants.roseSize
+
+    for province, rosePosition of Constants.rosePositions
+      xPos = @graphMargin.left + (roseSize + Constants.roseMargin) * rosePosition.column
+      yPos = @graphMargin.top + (roseSize + Constants.roseMargin) * rosePosition.row
+
+      if @allCanadaRoses[province]?
+        @allCanadaRoses[province].setPosition
+          x: xPos
+          y: yPos
+        @allCanadaRoses[province].setScale roseScale
+        @allCanadaRoses[province].setData data[province]
+        @allCanadaRoses[province].update()
+      else
+        roseContainer = @container.append 'g'
+
+        rose = new Rose @app,
+          container: roseContainer
+          data: data[province]
+          scale: roseScale
+          position:
+            x: xPos
+            y: yPos
+        rose.render()
+
+        @allCanadaRoses[province] = rose
+
+
+  renderTwoRoses: ->
+    data = @graphData()
+
+    availableWidth = @graphWidth() - @graphMargin.left - @graphMargin.right - Constants.roseMargin
+    roseSize = availableWidth / 2
+    roseScale = roseSize / Constants.roseSize
+
+    leftXPos = @graphMargin.left
+    leftYPos = @graphMargin.top
+    rightXPos = @graphMargin.left + (roseSize + Constants.roseMargin)
+    rightYPos = @graphMargin.top
+
+
+    if @leftRose?
+      @leftRose.setPosition
+        x: leftXPos
+        y: leftYPos
+      @leftRose.setScale roseScale
+      @leftRose.setData data[@config.leftProvince]
+      @leftRose.update()
+    else
+      roseContainer = @container.append 'g'
+
+      rose = new Rose @app,
+        container: roseContainer
+        data: data[@config.leftProvince]
+        scale: roseScale
+        position:
+          x: leftXPos
+          y: leftYPos
+      rose.render()
+
+      @leftRose = rose
+
+
+    if @rightRose?
+      @rightRose.setPosition
+        x: rightXPos
+        y: rightYPos
+      @rightRose.setScale roseScale
+      @rightRose.setData data[@config.rightProvince]
+      @rightRose.update()
+    else
+      roseContainer = @container.append 'g'
+
+      rose = new Rose @app,
+        container: roseContainer
+        data: data[@config.rightProvince]
+        scale: roseScale
+        position:
+          x: rightXPos
+          y: rightYPos
+      rose.render()
+
+      @rightRose = rose
+
+    @lastRenderedLeftRose = @config.leftProvince
+    @lastRenderedRightRose = @config.rightProvince
+
+
+
+  transitionToAllCanadaRoses: ->
+    # NB: At this time, @config.leftProvince has already been set to 'all', and can't be
+    # used to discover which rose we were rendering in the left slot.
+
+    # Always keep the left rose
+    @allCanadaRoses[@lastRenderedLeftRose] = @leftRose
+
+    # If the right rose is different from the left, keep it too
+    if @lastRenderedLeftRose != @lastRenderedRightRose
+      @allCanadaRoses[@lastRenderedRightRose] = @rightRose
+    else
+      @rightRose.teardown()
+
+    @leftRose = null
+    @rightRose = null
+
+    @renderAllCanadaRoses()
+    
+  transitionToTwoRoses: ->
+
+    # Always keep the rose which will become the left rose
+    @leftRose = @allCanadaRoses[@config.leftProvince]
+
+    @allCanadaRoses[@config.leftProvince] = null
+
+    # If the right rose is different from the left, keep it too
+    if @config.leftProvince != @config.rightProvince
+      @rightRose = @allCanadaRoses[@config.rightProvince]
+
+      @allCanadaRoses[@config.rightProvince] = null
+
+    # Destroy the other roses =(
+    for province, rose of @allCanadaRoses
+      continue unless rose?
+      rose.teardown()
+      @allCanadaRoses[province] = null
+
+
+
+    @renderTwoRoses()
+
+
+
 
 module.exports = Visualization5

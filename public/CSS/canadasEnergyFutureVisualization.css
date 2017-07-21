@@ -38,7 +38,8 @@ div.chartTooltip:after {
 }
 
 #rightProvinceMenuSVG {
-  padding-top: 19px;
+  /* TODO: This is not a great solution, vertical alignment may drift on resize */
+  padding-top: 21px;
 }
 
 #canadasEnergyFutureVisualization .videoIframeContainer {

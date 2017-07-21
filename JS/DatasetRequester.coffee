@@ -53,7 +53,7 @@ class DatasetRequester
         @loadedStateViz3[configParams.dataset][configParams.scenario] == true
       when 'viz5'
         # For a viz5 config: we require all of the data for an entire sector be to present
-        for province in Constants.provinces
+        for province in Constants.provinceRadioSelectionOptions
           if @loadedStateViz2_5[configParams.dataset][configParams.sector][province] == false
             return false
 
@@ -192,12 +192,10 @@ class DatasetRequester
         @app.providers[configParams.dataset].electricityProductionProvider.addData data.data
 
       when 'viz5'
-        # For viz5, we return 13 chunks per request, one per province.
+        # For viz5, we return 13 chunks per request, one per province plus 'all'.
         # Each of those chunks may be loaded individually by a request to the viz2 data
         # endpoint. So, we check for the presence of each chunk individually before
         # loading it.
-        # We also download and load data for all of Canada ('all'), since the endpoint
-        # sends it, even though it is not needed for viz5.
         for province in Constants.provinceRadioSelectionOptions
           continue if @loadedStateViz2_5[configParams.dataset][configParams.sector][province] == true
 

@@ -1,6 +1,7 @@
 <div id="wideVisualizationPanel"> 
 
   <div id="buttonPanel" class="selectorColumn">
+
     <div class="sectorSelectorGroup">  
       <span class="floatedTitleLabel">{{selectSectorLabel}}</span>
       <img src="IMG/large_qmark.svg" class="helpIconButton pointerCursor" alt='{{ altText.sectorsHelp }}' tabindex='0' role='button' id='sectorSelectorHelpButton'>
@@ -38,24 +39,19 @@
       </svg>
     </div>
   </div>
+
+
   <div id="graphPanel" class="viz5VisualizationColumn" tabindex='0' aria-description='{{ graphDescription }}'>
     <svg id="graphSVG" xmlns="http://www.w3.org/2000/svg" xmlns:xlink='http://www.w3.org/1999/xlink'>
       <style> {{ svgStylesheet }} </style>
-      <g id="graphGroup"> 
-        <defs> </defs>
-        <g id="xAxisGrid"> </g>
-        <g id="yAxisGrid"> </g>
-        <g id="xAxis"> </g>
-        <g id="yAxis"> </g>
-        <g id="areasAndLinesGroup"> </g>
-        <g id="referenceCaseLineGroup"> </g>
-      </g>
     </svg>
   </div>
 
   <div id='tooltip' class='chartTooltip'> </div>
 
 </div>
+        
+
 
 <div class="hidden"> 
   <img src="IMG/sector/commercial_selected.svg" alt="commercial"> 
