@@ -482,7 +482,19 @@ class Visualization5
     # Render the graph
     @renderGraph()
 
+  outerWidth: ->
+    # getBoundingClientRect is not implemented in JSDOM, use fixed width on server
+    if Platform.name == 'browser'
+      @d3document
+        .select('#graphPanel')
+        .node()
+        .getBoundingClientRect()
+        .width
+    else if Platform.name == 'server'
+      Constants.viz4ServerSideGraphWidth
 
+  width: ->
+    @outerWidth() - @margin.left - @margin.right
 
   height: ->
     Constants.viz5Height - @margin.top - @margin.bottom
