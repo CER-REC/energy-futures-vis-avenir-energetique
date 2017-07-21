@@ -420,4 +420,14 @@ module.exports =
       colour: '#cc6699' # pink
       startAngle: Math.PI * (5 / 3)
 
+  viz5LegendData: [
+      'IMG/sources/oil_products_selected.svg'
+      'IMG/sources/electricity_selected.svg'
+      'IMG/sources/naturalGas_selected.svg'
+      'IMG/sources/biomass_selected.svg'
+      'IMG/sources/solarWindGeo_selected.svg'
+      'IMG/sources/coal_selected.svg'
+    ]
+
+
 

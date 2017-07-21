@@ -161,17 +161,16 @@ class Rose
     # Ordinarily, transitions work fine on server with the duration set to zero, but not
     # this time.
     # TODO: Investigate, and remove this workaround.
+
     switch Platform.name
       when 'browser'
-        @container
-          .transition()
+        container = @container.transition()
           .duration @app.animationDuration
-          .attr
-            transform: "translate(#{@options.position.x}, #{@options.position.y}) scale(#{@options.scale}, #{@options.scale})"
       when 'server'
-        @container
-          .attr
-            transform: "translate(#{@options.position.x}, #{@options.position.y}) scale(#{@options.scale}, #{@options.scale})"
+        container = @container
+
+    container.attr
+      transform: "translate(#{@options.position.x}, #{@options.position.y}) scale(#{@options.scale}, #{@options.scale})"
 
 
     @innerContainer.select '.roseCentreLabel'

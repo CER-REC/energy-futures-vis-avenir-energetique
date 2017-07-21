@@ -179,6 +179,7 @@ class Visualization5
       description: @config.imageExportDescription()
       energyFuturesSource: Tr.allPages.imageDownloadSource[@app.language]
       bitlyLink: @app.bitlyLink
+      legendContent: Constants.viz5LegendData
 
 
 
@@ -886,8 +887,6 @@ class Visualization5
 
 
     @renderTwoRoses()
-
-
 
 
 module.exports = Visualization5

@@ -6,7 +6,11 @@
     </h1>
   </div>
 
-  {{! TODO: a legend? }}
+  <div class='legendColumn'>
+    {{#legendContent}}
+      <img src={{.}} class='legendItem'></img>
+    {{/legendContent}}
+  </div>
 
   <div class='graphColumn'>
     <div id="graphPanel">
