@@ -1374,6 +1374,7 @@ class Visualization4
 
   # TODO: Find a way to extract this? duplicated in viz2.
   buildAccessibleFocusDot: ->
+    return if Platform.name == 'server'
     @d3document.select '#graphGroup'
       .append 'g'
       .attr
