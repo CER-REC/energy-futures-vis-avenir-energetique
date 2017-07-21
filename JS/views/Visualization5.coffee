@@ -739,7 +739,6 @@ class Visualization5
     # Build the base slider label
     @buildBaseSliderLabel()
 
-    # TODO: Build slider buttons
     # @buildSliderButtons()
 
   buildYearAxis: ->
@@ -864,6 +863,7 @@ class Visualization5
             'aria-valuenow': @config.baseYear
 
         @config.setBaseYear baseYear
+        
         @app.router.navigate @config.routerParams()
         @render()
 
@@ -872,7 +872,6 @@ class Visualization5
       .attr
         id: 'baseSliderLabel'
         class: 'baseSliderLabel pointerCursor'
-        # Re the 5. It is because the ticks are moved
         transform: "translate(#{@yearScale()(@config.baseYear) - 25}, #{@_margin.bottom - 20})"
         tabindex: '0'
         role: 'slider'
