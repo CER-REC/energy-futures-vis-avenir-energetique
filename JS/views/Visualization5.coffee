@@ -743,6 +743,9 @@ class Visualization5
     # @buildSliderButtons()
 
   buildYearAxis: ->
+    # Build the highlighted portion of the timeline.
+    @buildTimelineHighlightedSection()
+
     axis = @d3document.select '#timelineAxis'
       .attr
         fill: '#333'
@@ -799,6 +802,25 @@ class Visualization5
         stroke: '#333333'
         'stroke-width': '2'
         'shape-rendering': 'crispEdges'
+
+  buildTimelineHighlightedSection: ->
+    @d3document.select('.timelineHighlightedSection').remove()
+    @d3document.select '#timelineAxis'
+      .append 'line'
+      .attr
+        id: 'timelineHighlightedSection'
+        class: 'timelineHighlightedSection pointerCursor'
+        x1: "#{@yearScale()(@config.baseYear)}"
+        y1: "#{@_margin.top - 20}"
+        x2: "#{@yearScale()(@config.comparisonYear)}"
+        y2: "#{@_margin.top - 20}"
+        role: 'slider'
+        'aria-label': Tr.altText.yearsSlider[@app.language]
+        'aria-orientation': 'horizontal'
+        'aria-valuemin': Constants.minYear
+        'aria-valuemax': Constants.minYear
+        # We might want to use something more readable rather than a closed interval (e.g. "2005 to/a 2010").
+        'aria-valuenow': "[#{@config.baseYear}, #{@config.comparisonYear}]"
 
 ###############
   buildBaseSliderLabel: ->
