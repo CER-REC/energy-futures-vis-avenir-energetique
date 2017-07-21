@@ -814,13 +814,6 @@ class Visualization5
         y1: "#{@_margin.top - 20}"
         x2: "#{@yearScale()(@config.comparisonYear)}"
         y2: "#{@_margin.top - 20}"
-        role: 'slider'
-        'aria-label': Tr.altText.yearsSlider[@app.language]
-        'aria-orientation': 'horizontal'
-        'aria-valuemin': Constants.minYear
-        'aria-valuemax': Constants.maxYear
-        # We might want to use something more readable rather than a closed interval (e.g. "2005 to/a 2010").
-        'aria-valuenow': "[#{@config.baseYear}, #{@config.comparisonYear}]"
 
 ###############
   buildBaseSliderLabel: ->
