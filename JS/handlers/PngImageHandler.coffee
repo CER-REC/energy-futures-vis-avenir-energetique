@@ -35,6 +35,7 @@ browserTools.phantomPromise.then ->
 
   # Horizontal spacing: 30px wide legend icons with 35px left-right margins, for 100px.
   # 1065px wide graph with 35px right margin, for 1100px. 1200px total.
+  # Phantom will extend the page vertically as needed, based on the content in the page.
   browserTools.webdriverSession.setViewportSize
     width: 1200
     height: 900
@@ -55,7 +56,7 @@ PngImageHandler = (req, res, options = {crop: false}) ->
 
   Logger.info "png_image (request P#{requestCounter}): #{url.parse(req.url).search}"
 
-  if not ['viz1', 'viz2', 'viz3', 'viz4'].includes req.query.page
+  if not ['viz1', 'viz2', 'viz3', 'viz4', 'viz5'].includes req.query.page
     res.writeHead 400
     res.end "HTTP 400 Visualization 'page' parameter not specified or not recognized."
     return

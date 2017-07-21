@@ -23,6 +23,8 @@ class ImageExporter
         config = @app.visualization3Configuration
       when 'viz4'
         config = @app.visualization4Configuration
+      when 'viz5'
+        config = @app.visualization5Configuration
         
     params = config.routerParams()
     params.language = @app.language
