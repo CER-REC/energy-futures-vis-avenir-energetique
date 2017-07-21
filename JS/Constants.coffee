@@ -296,6 +296,9 @@ module.exports =
   baseYearTimelineMargin: 50
   sliderLabelHeight: 28
 
+  comparisonSliderWidth: 70
+  baseSliderWidth: 80
+
   hideBaseYearLabel: [
     2005
     2006
@@ -312,6 +315,7 @@ module.exports =
 
   # Viz3 height should total 700px
   viz3Height: 700
+  viz5Height: 700
   viz3GraphHeight: 620 # px
   viz3SliderHeight: 80 # px
   viz5SliderHeight: 100 # px

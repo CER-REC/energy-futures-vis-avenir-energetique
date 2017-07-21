@@ -734,7 +734,7 @@ class Visualization5
     @buildYearAxis()
     
     # Build the comparison slider label
-    @buildSliderLabel()
+    @buildComparisonSliderLabel()
 
     # Build the base slider label
     @buildBaseSliderLabel()
@@ -818,7 +818,7 @@ class Visualization5
         'aria-label': Tr.altText.yearsSlider[@app.language]
         'aria-orientation': 'horizontal'
         'aria-valuemin': Constants.minYear
-        'aria-valuemax': Constants.minYear
+        'aria-valuemax': Constants.maxYear
         # We might want to use something more readable rather than a closed interval (e.g. "2005 to/a 2010").
         'aria-valuenow': "[#{@config.baseYear}, #{@config.comparisonYear}]"
 
@@ -869,11 +869,10 @@ class Visualization5
         @d3document.select '#baseSliderLabel'
           .attr
             'aria-valuenow': @config.baseYear
+
         @config.setBaseYear baseYear
         @app.router.navigate @config.routerParams()
         @render()
-
-    sliderWidth = 80
 
     sliderLabel = @d3document.select('#sliderSVG')
       .append 'g'
@@ -889,25 +888,25 @@ class Visualization5
         'aria-valuemin': Constants.minYear
         'aria-valuemax': Constants.minYear
         'aria-valuenow': @config.baseYear
-      .on 'keydown', @handleBasaeSliderKeydown
+      .on 'keydown', @handleBaseSliderKeydown
       .call drag
 
     sliderLabel.append 'image'
       .attr
         class: 'tLTriangle'
         'xlink:xlink:href': 'IMG/baseyearslider.png'
-        x: -(sliderWidth / 2) + 2 #the extra centers it horizontally
+        x: -(Constants.baseSliderWidth / 2) + 2 #the extra centers it horizontally
         y: 0
-        width: sliderWidth
-        height: sliderWidth / 2
+        width: Constants.baseSliderWidth
+        height: Constants.baseSliderWidth / 2
 
 
     sliderLabel.append('text')
       .attr
         class: 'baseSliderLabel'
         id: 'baseLabelBox'
-        x: -(sliderWidth / 4) + 5.5 #the extra centers it with due to the font height
-        y: (sliderWidth / 2) - 4
+        x: -(Constants.baseSliderWidth / 4) + 5.5 #the extra centers it with due to the font height
+        y: (Constants.baseSliderWidth / 2) - 4
         fill: '#fff'
       .text =>
         @config.baseYear
@@ -936,7 +935,7 @@ class Visualization5
 
     @app.datasetRequester.updateAndRequestIfRequired newConfig, update
 
-  handleBasaeSliderKeydown: =>
+  handleBaseSliderKeydown: =>
     switch d3.event.key
       when 'ArrowRight', 'ArrowUp'
         @updateBaseSlider @config.baseYear + 1
@@ -948,7 +947,7 @@ class Visualization5
         @updateBaseSlider Constants.minYear
 ###############
 
-  buildSliderLabel: ->
+  buildComparisonSliderLabel: ->
     @d3document.select('.sliderLabel').remove()
     comparisonYear = @config.comparisonYear
 
@@ -998,14 +997,11 @@ class Visualization5
         @app.router.navigate @config.routerParams()
         @render()
 
-    sliderWidth = 70
-
     sliderLabel = @d3document.select('#sliderSVG')
       .append 'g'
       .attr
         id: 'sliderLabel'
         class: 'sliderLabel pointerCursor'
-        # Re the 5. It is because the ticks are moved
         transform: "translate(#{@yearScale()(@config.comparisonYear)}, #{@_margin.top - 5})"
         tabindex: '0'
         role: 'slider'
@@ -1021,18 +1017,18 @@ class Visualization5
       .attr
         class: 'tLTriangle'
         'xlink:xlink:href': 'IMG/yearslider.svg'
-        x: -(sliderWidth / 2)
+        x: -(Constants.comparisonSliderWidth / 2)
         y: 0
-        width: sliderWidth
-        height: sliderWidth / 2
+        width: Constants.comparisonSliderWidth
+        height: Constants.comparisonSliderWidth / 2
 
 
     sliderLabel.append('text')
       .attr
         class: 'sliderLabel'
         id: 'labelBox'
-        x: -(sliderWidth / 4) + 1.5 #the extra centers it with due to the font height
-        y: (sliderWidth / 4) - 1.5
+        x: -(Constants.comparisonSliderWidth / 4) + 1.5 #the extra centers it with due to the font height
+        y: (Constants.comparisonSliderWidth / 4) - 1.5
         fill: '#fff'
       .text =>
         @config.comparisonYear
@@ -1046,20 +1042,15 @@ class Visualization5
       ]
 
   yearAxis: ->
-    # I am saving the current baseYear and comparisonYear in constans
-    # to have access to the config values from within tickFormat. Not an
-    # ideal solution and we should probably look into this further.
-    Constants.baseYear = @config.baseYear
-    Constants.comparisonYear = @config.comparisonYear
     d3.svg.axis()
       .scale(@yearScale())
       .tickSize(10,2)
       .ticks(7)
-      .tickFormat (d) ->
+      .tickFormat (d) =>
         if d == Constants.minYear
-          if Constants.hideBaseYearLabel.includes Constants.baseYear then '' else d
+          if Constants.hideBaseYearLabel.includes @config.baseYear then '' else d
         else if d == Constants.maxYear
-           if Constants.maxYear == Constants.comparisonYear then '' else d
+           if Constants.maxYear == @config.comparisonYear then '' else d
         else ''
       .orient 'bottom'
 
@@ -1069,7 +1060,7 @@ class Visualization5
   # We want this menu to line up with the bottom of the x axis TICKS so those must be
   # built before we can set this.
   leftHandMenuHeight: ->
-    Constants.viz3Height - @_margin.top - @_margin.bottom + @d3document
+    Constants.viz5Height - @_margin.top - @_margin.bottom + @d3document
       .select('#timelineAxis')
       .node()
       .getBoundingClientRect()
