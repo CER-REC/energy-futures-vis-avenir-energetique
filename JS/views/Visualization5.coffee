@@ -741,7 +741,7 @@ class Visualization5
       .remove()
 
   svgResize: ->
-    @d3document.select '#sliderSVG'
+    @d3document.select '#viz5SliderSVG'
       .attr
         width: @outerWidth()
         height: Constants.viz5SliderHeight
@@ -802,7 +802,7 @@ class Visualization5
       .call @yearAxis()
 
     # We need a wider target for the click so we use a separate group
-    @d3document.select '#timeLineTouch'
+    @d3document.select '#viz5timeLineTouch'
       .attr
         class: 'pointerCursor'
         'pointer-events': 'visible'
@@ -813,7 +813,7 @@ class Visualization5
       .on 'click', =>
         element = @d3document.select('#timelineAxis').node()
         newX = d3.mouse(element)[0]
-        if newX < Constants.timelineMargin then newX = Constants.timelineMargin
+        if newX < Constants.viz5timelineMargin then newX = Constants.viz5timelineMargin
         if newX > @timelineRightEnd() then newX = @timelineRightEnd()
 
         # Clicking on the timeline will cause the closest slider to move to the 
@@ -865,11 +865,11 @@ class Visualization5
         y2: "#{@timelineMargin.top - 20}"
 
   buildSliderButtons: ->
-    @d3document.select('#provincePanel .mediaButtons').remove()
-    div = @d3document.select '#provincePanel'
+    @d3document.select('#playPausePanel .viz5MediaButtons').remove()
+    div = @d3document.select '#playPausePanel'
       .append 'div'
         .attr
-          class: 'mediaButtons'
+          class: 'viz5MediaButtons'
     div.append 'div'
       .attr
         id: 'vizPlayButton'
@@ -1034,7 +1034,7 @@ class Visualization5
         @app.router.navigate @config.routerParams()
         @render()
 
-    sliderLabel = @d3document.select('#sliderSVG')
+    sliderLabel = @d3document.select('#viz5SliderSVG')
       .append 'g'
       .attr
         id: 'baseSliderLabel'
@@ -1156,7 +1156,7 @@ class Visualization5
         @app.router.navigate @config.routerParams()
         @render()
 
-    sliderLabel = @d3document.select('#sliderSVG')
+    sliderLabel = @d3document.select('#viz5SliderSVG')
       .append 'g'
       .attr
         id: 'sliderLabel'
@@ -1214,7 +1214,7 @@ class Visualization5
       .orient 'bottom'
 
   timelineRightEnd: ->
-    @outerWidth() - Constants.timelineMargin
+    @outerWidth() - Constants.viz5timelineMargin
 
   # We want this menu to line up with the bottom of the x axis TICKS so those must be
   # built before we can set this.

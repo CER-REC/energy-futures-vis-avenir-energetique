@@ -293,6 +293,7 @@ module.exports =
   boxesOffset: 46
 
   timelineMargin: 25
+  viz5timelineMargin: 30
   baseYearTimelineMargin: 50
   sliderLabelHeight: 28
 

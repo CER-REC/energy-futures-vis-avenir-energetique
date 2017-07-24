@@ -59,6 +59,23 @@ div.chartTooltip:after {
   border: none;
 }
 
+#canadasEnergyFutureVisualization #viz5TimelineControlsContainer {
+  width: 79%;
+  float: left;
+  box-sizing: border-box;
+}
+#canadasEnergyFutureVisualization .viz5TimelinePlayPausePanel {
+  width: 70px;
+  height: 55px;
+  float: right;
+  z-index: 10;
+  position: absolute;
+}
+
+#canadasEnergyFutureVisualization .viz5TimelineAxisContainer {
+  color: white;
+  margin-left: 30px;
+}
 
 #canadasEnergyFutureVisualization #mainPanel {
   position: relative;
@@ -541,8 +558,13 @@ div.chartTooltip:after {
   float: left;
   box-sizing: border-box;
 }
+#canadasEnergyFutureVisualization .smallSelectorColumn_leftAligned {
+  width: 4.49%;
+  float: left;
+  box-sizing: border-box;
+}
 #canadasEnergyFutureVisualization .smallSelectorColumn_rightAligned {
-  width: 7%;
+  width: 2.7%;
   float: right;
   box-sizing: border-box;
 }
@@ -552,7 +574,7 @@ div.chartTooltip:after {
   box-sizing: border-box;
 }
 #canadasEnergyFutureVisualization .viz5VisualizationColumn {
-  width: 73%;
+  width: 79%;
   float: left;
   box-sizing: border-box;
 }
@@ -904,6 +926,12 @@ div.chartTooltip:after {
   margin: 0;
 }
 
+#canadasEnergyFutureVisualization .viz5MediaButtons{
+  width: 100%;
+  position:absolute;
+  z-index: 10;
+  bottom: 0;
+}
 
 #canadasEnergyFutureVisualization .mediaButtons{
   width: 100%;
@@ -1065,6 +1093,18 @@ svg { overflow: hidden; }
 #canadasEnergyFutureVisualization #graphPanel:focus .accessibleFocus
 {
   outline: solid red 2px;
+}
+
+#canadasEnergyFutureVisualization #viz5SliderSVG {
+  z-index: 10;
+  position: absolute;
+}
+
+#canadasEnergyFutureVisualization #viz5timeLineTouch {
+  float:right;
+  z-index:5;
+  left: 10px;
+  position: relative;
 }
 
 #canadasEnergyFutureVisualization .timelineHighlightedSection {
