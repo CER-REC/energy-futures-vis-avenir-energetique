@@ -1046,6 +1046,7 @@ class Visualization2 extends visualization
 
 
   buildAccessibleFocusDot: ->
+    return if Platform.name == 'server'
     @d3document.select '#graphGroup'
       .append 'g'
       .attr

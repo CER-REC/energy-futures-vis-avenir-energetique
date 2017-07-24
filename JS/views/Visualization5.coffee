@@ -164,15 +164,14 @@ class Visualization5
 
   graphWidth: ->
     # getBoundingClientRect is not implemented in JSDOM, use fixed width on server
-    # if Platform.name == 'browser'
+    if Platform.name == 'browser'
       @d3document
         .select('#graphPanel')
         .node()
         .getBoundingClientRect()
         .width
-    # else if Platform.name == 'server'
-    # TODO: check this constant, update if need be
-    #   Constants.viz4ServerSideGraphWidth
+    else if Platform.name == 'server'
+      Constants.serverSideGraphWidth
 
 
 
@@ -181,15 +180,14 @@ class Visualization5
 
 
   renderServerTemplate: ->
-    # TODO: This needs work!
     contentElement = @document.getElementById 'visualizationContent'
     contentElement.innerHTML = Mustache.render @options.template,
       svgStylesheet: @options.svgTemplate
-      title: Tr.visualization5Title[@config.mainSelection][@app.language]
+      title: Tr.visualization5Title[@app.language]
       description: @config.imageExportDescription()
       energyFuturesSource: Tr.allPages.imageDownloadSource[@app.language]
       bitlyLink: @app.bitlyLink
-      legendContent: @scenarioLegendData()
+      legendContent: Constants.viz5LegendData
 
 
 
@@ -446,12 +444,12 @@ class Visualization5
     @app.datasetRequester.updateAndRequestIfRequired newConfig, update
 
   showRightProvinceMenu: ->
-    d3.select '#rightProvincesSelector'
+    @d3document.select '#rightProvincesSelector'
       .classed 'hidden', false
 
 
   hideRightProvinceMenu: ->
-    d3.select '#rightProvincesSelector'
+    @d3document.select '#rightProvincesSelector'
       .classed 'hidden', true
 
   render: ->
@@ -620,8 +618,7 @@ class Visualization5
       @app.datasetRequester.updateAndRequestIfRequired newConfig, update
 
     if @config.sector?
-      sectorsSelectors = d3.select(@app.window.document)
-        .select '#sectorsSelector'
+      sectorsSelectors = @d3document.select '#sectorsSelector'
         .selectAll '.sectorSelectorButton'
         .data @sectorSelectionData()
       
@@ -1300,8 +1297,6 @@ class Visualization5
 
 
     @renderTwoRoses()
-
-
 
 
 module.exports = Visualization5

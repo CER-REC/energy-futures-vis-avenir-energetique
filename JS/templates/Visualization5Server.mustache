@@ -1,0 +1,59 @@
+<div id="wideVisualizationPanel"> 
+
+  <div class="centreText"> 
+    <h1>
+      {{title}}
+    </h1>
+  </div>
+
+  <div class='legendColumn'>
+    {{#legendContent}}
+      <img src={{.}} class='legendItem'></img>
+    {{/legendContent}}
+  </div>
+
+  <div class='graphColumn'>
+    <div id="graphPanel">
+      <svg id="graphSVG" xmlns="http://www.w3.org/2000/svg" xmlns:xlink='http://www.w3.org/1999/xlink'>
+        <style> {{ svgStylesheet }} </style>
+      </svg>
+    </div>
+  </div>
+
+  
+  <div class="clearfix"> </div>  
+
+  <div class="informationContainer">
+    <p>
+      {{description}}
+    </p>
+    <p>
+      {{energyFuturesSource}}
+    </p>
+    <p>
+      {{bitlyLink}}
+    </p>
+  </div>
+
+  <img class="logoImage" src="IMG/NEB_Logos/logo large.jpg">
+
+</div>
+
+<div class="hidden"> 
+
+  <div id="provincePanel" class="smallSelectorColumn">
+    <span class="titleLabel textCentre">{{selectRegionLabel}}</span>
+    <div id="leftProvincesSelector">
+      <svg id="leftProvinceMenuSVG" xmlns="http://www.w3.org/2000/svg" xmlns:xlink='http://www.w3.org/1999/xlink'>
+      </svg>
+    </div>
+  </div>
+  
+  <div id="provincePanel" class="smallSelectorColumn_rightAligned">
+    <div id="rightProvincesSelector">
+      <svg id="rightProvinceMenuSVG" xmlns="http://www.w3.org/2000/svg" xmlns:xlink='http://www.w3.org/1999/xlink'>
+      </svg>
+    </div>
+  </div>
+
+</div>
