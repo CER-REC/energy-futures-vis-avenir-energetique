@@ -808,6 +808,7 @@ class Visualization5
         'pointer-events': 'visible'
         height: Constants.viz5SliderHeight
         width: axis.node().getBoundingClientRect().width
+        transform: "translate(#{Constants.baseYearTimelineMargin}, 0)"
       .style
         fill: 'none'
       .on 'click', =>
