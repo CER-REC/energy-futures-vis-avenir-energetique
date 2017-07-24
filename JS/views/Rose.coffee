@@ -4,13 +4,14 @@ d3Path = require 'd3-path'
 
 Constants = require '../Constants.coffee'
 RosePill = require './RosePill.coffee'
+Platform = require '../Platform.coffee'
 
 defaultOptions =
   position:
     x: 0
     y: 0
   scale: 1
-  # clickHandler may be null, for use with roses in comparison mode where pills are 
+  # clickHandler may be null, for use with roses in comparison mode where pills are
   # always displayed, and there is no click behaviour
   clickHandler: null
 
@@ -48,9 +49,9 @@ class Rose
       .attr
         transform: "translate(#{@options.position.x + containerOffset}, #{@options.position.y + containerOffset}) scale(0, 0)"
       .transition()
-        .duration Constants.animationDuration
-        .attr
-          transform: "translate(#{@options.position.x}, #{@options.position.y}) scale(#{@options.scale}, #{@options.scale})"
+      .duration @app.animationDuration
+      .attr
+        transform: "translate(#{@options.position.x}, #{@options.position.y}) scale(#{@options.scale}, #{@options.scale})"
 
 
     # Add an inner group for internal transforms.
@@ -176,11 +177,20 @@ class Rose
         else
           'rose'
 
+    # For reasons unknown, the transition here causes a crash in server side rendering
+    # Ordinarily, transitions work fine on server with the duration set to zero, but not
+    # this time.
+    # TODO: Investigate, and remove this workaround.
 
-    @container.transition()
-      .duration Constants.animationDuration
-      .attr
-        transform: "translate(#{@options.position.x}, #{@options.position.y}) scale(#{@options.scale}, #{@options.scale})"
+    switch Platform.name
+      when 'browser'
+        container = @container.transition()
+          .duration @app.animationDuration
+      when 'server'
+        container = @container
+
+    container.attr
+      transform: "translate(#{@options.position.x}, #{@options.position.y}) scale(#{@options.scale}, #{@options.scale})"
 
     @innerContainer.select '.roseCentreLabel'
       .text =>
@@ -189,7 +199,7 @@ class Rose
     @innerContainer.selectAll '.petal'
       .data @options.data
       .transition()
-      .duration Constants.animationDuration
+      .duration @app.animationDuration
       .attr
         d: (d) =>
           @petalPath d.value, Constants.viz5RoseData[d.source].startAngle
@@ -312,9 +322,9 @@ class Rose
     containerOffset = Constants.roseSize / 2 * @options.scale
     @container
       .transition()
-        .duration Constants.animationDuration
-        .attr
-          transform: "translate(#{@options.position.x + containerOffset}, #{@options.position.y + containerOffset}) scale(0, 0)"
+      .duration @app.animationDuration
+      .attr
+        transform: "translate(#{@options.position.x + containerOffset}, #{@options.position.y + containerOffset}) scale(0, 0)"
       .each 'end', =>
         @container.remove()
 

@@ -102,11 +102,19 @@ class Visualization5
       right: 70
       bottom: 50
       left: 10
+
     @graphMargin =
       top: 20
       right: 20
       bottom: 50
       left: 20
+
+    @timelineMargin =
+      top: 20
+      left: 10
+      right: 20
+      bottom: 70
+
     @document = @app.window.document
     @d3document = d3.select @document
     @accessibleStatusElement = @document.getElementById 'accessibleStatus'
@@ -156,15 +164,14 @@ class Visualization5
 
   graphWidth: ->
     # getBoundingClientRect is not implemented in JSDOM, use fixed width on server
-    # if Platform.name == 'browser'
+    if Platform.name == 'browser'
       @d3document
         .select('#graphPanel')
         .node()
         .getBoundingClientRect()
         .width
-    # else if Platform.name == 'server'
-    # TODO: check this constant, update if need be
-    #   Constants.viz4ServerSideGraphWidth
+    else if Platform.name == 'server'
+      Constants.serverSideGraphWidth
 
 
 
@@ -173,15 +180,14 @@ class Visualization5
 
 
   renderServerTemplate: ->
-    # TODO: This needs work!
     contentElement = @document.getElementById 'visualizationContent'
     contentElement.innerHTML = Mustache.render @options.template,
       svgStylesheet: @options.svgTemplate
-      title: Tr.visualization5Title[@config.mainSelection][@app.language]
+      title: Tr.visualization5Title[@app.language]
       description: @config.imageExportDescription()
       energyFuturesSource: Tr.allPages.imageDownloadSource[@app.language]
       bitlyLink: @app.bitlyLink
-      legendContent: @scenarioLegendData()
+      legendContent: Constants.viz5LegendData
 
 
 
@@ -438,18 +444,23 @@ class Visualization5
     @app.datasetRequester.updateAndRequestIfRequired newConfig, update
 
   showRightProvinceMenu: ->
-    d3.select '#rightProvincesSelector'
+    @d3document.select '#rightProvincesSelector'
       .classed 'hidden', false
 
 
   hideRightProvinceMenu: ->
-    d3.select '#rightProvincesSelector'
+    @d3document.select '#rightProvincesSelector'
       .classed 'hidden', true
 
   render: ->
     @container.attr
       width: @graphWidth()
       height: Constants.viz5Height
+
+    @svgResize()
+
+    @d3document.select '#graphGroup'
+      .attr 'transform', "translate(#{@margin.top},#{@margin.left})"
         
     @addSectors()
     @renderDatasetSelector()
@@ -460,10 +471,28 @@ class Visualization5
 
     if !@rightProvinceMenu
       @rightProvinceMenu = @buildRightProvinceMenu()
+    
+    # We're building the yearAxis every time we render to make sure that the
+    # timeline year labels (2005 & 2040) are updated everytime the baseYear
+    # and/or the comparisonYear changes.
+    @buildYearAxis()
 
+    # Render the graph
     @renderGraph()
 
+  outerWidth: ->
+    # getBoundingClientRect is not implemented in JSDOM, use fixed width on server
+    if Platform.name == 'browser'
+      @d3document
+        .select('#graphPanel')
+        .node()
+        .getBoundingClientRect()
+        .width
+    else if Platform.name == 'server'
+      Constants.viz4ServerSideGraphWidth
 
+  width: ->
+    @outerWidth() - @margin.left - @margin.right
 
   height: ->
     Constants.viz5Height - @margin.top - @margin.bottom
@@ -589,8 +618,7 @@ class Visualization5
       @app.datasetRequester.updateAndRequestIfRequired newConfig, update
 
     if @config.sector?
-      sectorsSelectors = d3.select(@app.window.document)
-        .select '#sectorsSelector'
+      sectorsSelectors = @d3document.select '#sectorsSelector'
         .selectAll '.sectorSelectorButton'
         .data @sectorSelectionData()
       
@@ -706,10 +734,26 @@ class Visualization5
       .on 'click', null
       .remove()
 
+  svgResize: ->
+    @d3document.select '#sliderSVG'
+      .attr
+        width: @outerWidth()
+        height: Constants.viz5SliderHeight
+
+    @d3document.select '#graphSVG'
+      .attr
+        width: @outerWidth()
+        height: @height() - Constants.viz5SliderHeight/2
+
   redraw: ->
     @container.attr
       width: @graphWidth()
       height: Constants.viz5Height
+
+    @svgResize()
+
+    # Build the timeline sliders.
+    @buildTimeline()
     
     @renderGraph()
     
@@ -729,6 +773,369 @@ class Visualization5
     # with 'all' selected.
     if @config.leftProvince == 'all'
       @hideRightProvinceMenu()
+
+  buildTimeline: ->
+    @buildYearAxis()
+    
+    # Build the comparison slider label
+    @buildComparisonSliderLabel()
+
+    # Build the base slider label
+    @buildBaseSliderLabel()
+
+    # @buildSliderButtons()
+
+  buildYearAxis: ->
+    # Build the highlighted portion of the timeline.
+    @buildTimelineHighlightedSection()
+
+    axis = @d3document.select '#timelineAxis'
+      .attr
+        fill: '#333'
+        transform: "translate(0, #{@timelineMargin.top + Constants.sliderLabelHeight})"
+      .call @yearAxis()
+
+    # We need a wider target for the click so we use a separate group
+    @d3document.select '#timeLineTouch'
+      .attr
+        class: 'pointerCursor'
+        'pointer-events': 'visible'
+        height: Constants.viz5SliderHeight
+        width: axis.node().getBoundingClientRect().width
+      .style
+        fill: 'none'
+      .on 'click', =>
+        element = @d3document.select('#timelineAxis').node()
+        newX = d3.mouse(element)[0]
+        if newX < Constants.timelineMargin then newX = Constants.timelineMargin
+        if newX > @timelineRightEnd() then newX = @timelineRightEnd()
+
+        # Clicking on the timeline will cause the closest slider to move to the 
+        # clicked position in the timeline. 
+        selectedYear = Math.round @yearScale().invert(newX)
+
+        if selectedYear > @config.comparisonYear || Math.abs(selectedYear - @config.comparisonYear) < Math.abs(selectedYear - @config.baseYear)
+          comparisonYear = selectedYear
+          return if comparisonYear == @config.comparisonYear
+          @updateSlider comparisonYear
+        else
+          baseYear = selectedYear
+          return if baseYear == @config.baseYear
+          @updateBaseSlider baseYear
+
+
+    axis.selectAll('text')
+      .style
+        'text-anchor': 'middle'
+      .attr
+        dy: '0.5em'
+        'fill': '#333'
+
+    axis.select 'path.domain'
+      .attr
+        fill: 'none'
+        stroke: '#333333'
+        'stroke-width': '2'
+        'shape-rendering': 'crispEdges'
+
+    axis.selectAll '.tick line'
+      .attr
+        transform: 'translate(0, -5)' # Center them around the line
+        fill: 'none'
+        stroke: '#333333'
+        'stroke-width': '2'
+        'shape-rendering': 'crispEdges'
+
+  buildTimelineHighlightedSection: ->
+    @d3document.select('.timelineHighlightedSection').remove()
+    @d3document.select '#timelineAxis'
+      .append 'line'
+      .attr
+        id: 'timelineHighlightedSection'
+        class: 'timelineHighlightedSection pointerCursor'
+        x1: "#{@yearScale()(@config.baseYear)}"
+        y1: "#{@timelineMargin.top - 20}"
+        x2: "#{@yearScale()(@config.comparisonYear)}"
+        y2: "#{@timelineMargin.top - 20}"
+
+###############
+  buildBaseSliderLabel: ->
+    @d3document.select('.baseSliderLabel').remove()
+    baseYear = @config.baseYear
+
+    #Drag Behaviour
+    drag = d3.behavior.drag()
+
+    drag.on 'dragstart', =>
+      baseYear = @config.baseYear
+
+    drag.on 'drag', =>
+      newX = d3.event.x
+      if newX < Constants.baseYearTimelineMargin then newX = Constants.baseYearTimelineMargin
+      if newX > @timelineRightEnd() then newX = @timelineRightEnd()
+      baseYear = Math.round @yearScale().invert newX
+      if baseYear > @config.comparisonYear
+        return
+
+      @d3document.select('#baseSliderLabel').attr 'transform', =>
+        if newX < Constants.baseYearTimelineMargin then newX = Constants.baseYearTimelineMargin
+        if newX > @timelineRightEnd() then newX = @timelineRightEnd()
+        "translate(#{newX - 25}, #{@timelineMargin.bottom - 20})"
+
+      baseYear = Math.round @yearScale().invert newX
+      if baseYear != @config.baseYear
+        @config.setBaseYear baseYear
+        @app.router.navigate @config.routerParams()
+        @d3document.select('#baseLabelBox').text =>
+          @config.baseYear
+        @d3document.select '#baseSliderLabel'
+          .attr
+            'aria-valuenow': @config.baseYear
+
+        @render()
+
+    drag.on 'dragend', =>
+      if baseYear != @config.baseYear && @config.comparisonYear > baseYear
+        newX = @yearScale()(baseYear)
+        @d3document.select('#baseSliderLabel').attr
+          transform: "translate(#{newX - 25}, #{@timelineMargin.bottom - 20})"
+
+        @d3document.select('#baseLabelBox').selectAll('text').text =>
+          @config.baseYear
+        @d3document.select '#baseSliderLabel'
+          .attr
+            'aria-valuenow': @config.baseYear
+
+        @config.setBaseYear baseYear
+
+        @app.router.navigate @config.routerParams()
+        @render()
+
+    sliderLabel = @d3document.select('#sliderSVG')
+      .append 'g'
+      .attr
+        id: 'baseSliderLabel'
+        class: 'baseSliderLabel pointerCursor'
+        transform: "translate(#{@yearScale()(@config.baseYear) - 25}, #{@timelineMargin.bottom - 20})"
+        tabindex: '0'
+        role: 'slider'
+        'aria-label': Tr.altText.yearsSlider[@app.language]
+        'aria-orientation': 'horizontal'
+        'aria-valuemin': Constants.minYear
+        'aria-valuemax': Constants.minYear
+        'aria-valuenow': @config.baseYear
+      .on 'keydown', @handleBaseSliderKeydown
+      .call drag
+
+    sliderLabel.append 'image'
+      .attr
+        class: 'tLTriangle'
+        'xlink:xlink:href': 'IMG/baseyearslider.png'
+        x: -(Constants.baseSliderWidth / 2) + 2 #the extra centers it horizontally
+        y: 0
+        width: Constants.baseSliderWidth
+        height: Constants.baseSliderWidth / 2
+
+
+    sliderLabel.append('text')
+      .attr
+        class: 'baseSliderLabel'
+        id: 'baseLabelBox'
+        x: -(Constants.baseSliderWidth / 4) + 5.5 #the extra centers it with due to the font height
+        y: (Constants.baseSliderWidth / 2) - 4
+        fill: '#fff'
+      .text =>
+        @config.baseYear
+
+  updateBaseSlider: (value) ->
+    # Prevent arrow keys and home/end from scrolling the page while using the slider
+    d3.event.preventDefault()
+
+    newConfig = new @config.constructor @app
+    newConfig.copy @config
+    newConfig.setBaseYear value
+
+    update = =>
+      @config.setBaseYear value
+      @d3document.select('#baseSliderLabel').attr
+        transform: "translate(#{@yearScale()(@config.baseYear) - 25}, #{@timelineMargin.bottom - 20})"
+
+      @d3document.select '#baseLabelBox'
+        .text @config.baseYear
+      @d3document.select '#baseSliderLabel'
+        .attr
+          'aria-valuenow': @config.baseYear
+
+      @render()
+      @app.router.navigate @config.routerParams()
+
+    @app.datasetRequester.updateAndRequestIfRequired newConfig, update
+
+  handleBaseSliderKeydown: =>
+    switch d3.event.key
+      when 'ArrowRight', 'ArrowUp'
+        @updateBaseSlider @config.baseYear + 1
+      when 'ArrowLeft', 'ArrowDown'
+        @updateBaseSlider @config.baseYear - 1
+      when 'End'
+        @updateBaseSlider Constants.maxYear
+      when 'Home'
+        @updateBaseSlider Constants.minYear
+###############
+
+  buildComparisonSliderLabel: ->
+    @d3document.select('.sliderLabel').remove()
+    comparisonYear = @config.comparisonYear
+
+    #Drag Behaviour
+    drag = d3.behavior.drag()
+
+    drag.on 'dragstart', =>
+      comparisonYear = @config.comparisonYear
+
+    drag.on 'drag', =>
+      newX = d3.event.x
+      if newX < Constants.baseYearTimelineMargin then newX = Constants.baseYearTimelineMargin
+      if newX > @timelineRightEnd() then newX = @timelineRightEnd()
+      comparisonYear = Math.round @yearScale().invert newX
+      if comparisonYear < @config.baseYear
+        return
+
+      @d3document.select('#sliderLabel').attr 'transform', =>
+        if newX < Constants.baseYearTimelineMargin then newX = Constants.baseYearTimelineMargin
+        if newX > @timelineRightEnd() then newX = @timelineRightEnd()
+        "translate(#{newX}, #{@timelineMargin.top - 5})"
+
+      comparisonYear = Math.round @yearScale().invert newX
+      if comparisonYear != @config.comparisonYear
+        @config.setComparisonYear comparisonYear
+        @app.router.navigate @config.routerParams()
+        @d3document.select('#labelBox').text =>
+          @config.comparisonYear
+        @d3document.select '#sliderLabel'
+          .attr
+            'aria-valuenow': @config.comparisonYear
+
+        @render()
+
+    drag.on 'dragend', =>
+      if comparisonYear != @config.comparisonYear && comparisonYear >= @config.baseYear
+        newX = @yearScale()(comparisonYear)
+        @d3document.select('#sliderLabel').attr
+          transform: "translate(#{newX}, #{@timelineMargin.top - 5})"
+
+        @d3document.select('#labelBox').selectAll('text').text =>
+          @config.comparisonYear
+        @d3document.select '#sliderLabel'
+          .attr
+            'aria-valuenow': @config.comparisonYear
+        @config.setComparisonYear comparisonYear
+        @app.router.navigate @config.routerParams()
+        @render()
+
+    sliderLabel = @d3document.select('#sliderSVG')
+      .append 'g'
+      .attr
+        id: 'sliderLabel'
+        class: 'sliderLabel pointerCursor'
+        transform: "translate(#{@yearScale()(@config.comparisonYear)}, #{@timelineMargin.top - 5})"
+        tabindex: '0'
+        role: 'slider'
+        'aria-label': Tr.altText.yearsSlider[@app.language]
+        'aria-orientation': 'horizontal'
+        'aria-valuemin': Constants.minYear
+        'aria-valuemax': Constants.minYear
+        'aria-valuenow': @config.comparisonYear
+      .on 'keydown', @handleSliderKeydown
+      .call drag
+
+    sliderLabel.append 'image'
+      .attr
+        class: 'tLTriangle'
+        'xlink:xlink:href': 'IMG/yearslider.svg'
+        x: -(Constants.comparisonSliderWidth / 2)
+        y: 0
+        width: Constants.comparisonSliderWidth
+        height: Constants.comparisonSliderWidth / 2
+
+
+    sliderLabel.append('text')
+      .attr
+        class: 'sliderLabel'
+        id: 'labelBox'
+        x: -(Constants.comparisonSliderWidth / 4) + 1.5 #the extra centers it with due to the font height
+        y: (Constants.comparisonSliderWidth / 4) - 1.5
+        fill: '#fff'
+      .text =>
+        @config.comparisonYear
+
+  yearScale: ->
+    d3.scale.linear()
+      .domain [Constants.minYear, Constants.maxYear]
+      .range [
+        Constants.baseYearTimelineMargin
+        @timelineRightEnd()
+      ]
+
+  yearAxis: ->
+    d3.svg.axis()
+      .scale(@yearScale())
+      .tickSize(10,2)
+      .ticks(7)
+      .tickFormat (d) =>
+        if d == Constants.minYear
+          if Constants.hideBaseYearLabel.includes @config.baseYear then '' else d
+        else if d == Constants.maxYear
+           if Constants.maxYear == @config.comparisonYear then '' else d
+        else ''
+      .orient 'bottom'
+
+  timelineRightEnd: ->
+    @outerWidth() - Constants.timelineMargin
+
+  # We want this menu to line up with the bottom of the x axis TICKS so those must be
+  # built before we can set this.
+  leftHandMenuHeight: ->
+    Constants.viz5Height - @timelineMargin.top - @timelineMargin.bottom + @d3document
+      .select('#timelineAxis')
+      .node()
+      .getBoundingClientRect()
+      .height
+
+  updateSlider: (value) ->
+    # Prevent arrow keys and home/end from scrolling the page while using the slider
+    d3.event.preventDefault()
+
+    newConfig = new @config.constructor @app
+    newConfig.copy @config
+    newConfig.setComparisonYear value
+
+    update = =>
+      @config.setComparisonYear value
+      @d3document.select('#sliderLabel').attr
+        transform: "translate(#{@yearScale()(@config.comparisonYear)}, #{@timelineMargin.top - 5})"
+
+      @d3document.select '#labelBox'
+        .text @config.comparisonYear
+      @d3document.select '#sliderLabel'
+        .attr
+          'aria-valuenow': @config.comparisonYear
+
+      @render()
+      @app.router.navigate @config.routerParams()
+
+    @app.datasetRequester.updateAndRequestIfRequired newConfig, update
+
+  handleSliderKeydown: =>
+    switch d3.event.key
+      when 'ArrowRight', 'ArrowUp'
+        @updateSlider @config.comparisonYear + 1
+      when 'ArrowLeft', 'ArrowDown'
+        @updateSlider @config.comparisonYear - 1
+      when 'End'
+        @updateSlider Constants.maxYear
+      when 'Home'
+        @updateSlider Constants.minYear
 
   tearDown: ->
     # TODO: We might want to render with empty lists for buttons, so that

@@ -23,11 +23,13 @@ Visualization1 = require '../views/visualization1.coffee'
 Visualization2 = require '../views/visualization2.coffee'
 Visualization3 = require '../views/visualization3.coffee'
 Visualization4 = require '../views/visualization4.coffee'
+Visualization5 = require '../views/visualization5.coffee'
 
 Visualization1Configuration = require '../VisualizationConfigurations/visualization1Configuration.coffee'
 Visualization2Configuration = require '../VisualizationConfigurations/visualization2Configuration.coffee'
 Visualization3Configuration = require '../VisualizationConfigurations/visualization3Configuration.coffee'
 Visualization4Configuration = require '../VisualizationConfigurations/visualization4Configuration.coffee'
+Visualization5Configuration = require '../VisualizationConfigurations/visualization5Configuration.coffee'
 
 ServerData = require '../server/ServerData.coffee'
 Constants = require '../Constants.coffee'
@@ -60,16 +62,18 @@ Vis1TemplatePromise = readFile "#{ApplicationRoot}/JS/templates/Visualization1Se
 Vis2TemplatePromise = readFile "#{ApplicationRoot}/JS/templates/Visualization2Server.mustache"
 Vis3TemplatePromise = readFile "#{ApplicationRoot}/JS/templates/Visualization3Server.mustache"
 Vis4TemplatePromise = readFile "#{ApplicationRoot}/JS/templates/Visualization4Server.mustache"
+Vis5TemplatePromise = readFile "#{ApplicationRoot}/JS/templates/Visualization5Server.mustache"
 SvgStylesheetPromise = readFile "#{ApplicationRoot}/JS/templates/SvgStylesheet.css"
 
 
-templatesPromise = Promise.join Vis1TemplatePromise, Vis2TemplatePromise, Vis3TemplatePromise, Vis4TemplatePromise, SvgStylesheetPromise, (vis1Template, vis2Template, vis3Template, vis4Template, svgTemplate) ->
+templatesPromise = Promise.join Vis1TemplatePromise, Vis2TemplatePromise, Vis3TemplatePromise, Vis4TemplatePromise, Vis5TemplatePromise, SvgStylesheetPromise, (vis1Template, vis2Template, vis3Template, vis4Template, vis5Template, svgTemplate) ->
 
   return {
     vis1Template: vis1Template.toString()
     vis2Template: vis2Template.toString()
     vis3Template: vis3Template.toString()
     vis4Template: vis4Template.toString()
+    vis5Template: vis5Template.toString()
     svgTemplate: svgTemplate.toString()
   }
 
@@ -158,6 +162,12 @@ ImageRequestHtmlWriter = (query, filename) ->
               config = new Visualization4Configuration serverApp, params
               new Visualization4 serverApp, config,
                 template: templates.vis4Template
+                svgTemplate: templates.svgTemplate
+
+            when 'viz5'
+              config = new Visualization5Configuration serverApp, params
+              new Visualization5 serverApp, config,
+                template: templates.vis5Template
                 svgTemplate: templates.svgTemplate
 
             else
