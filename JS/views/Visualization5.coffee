@@ -908,6 +908,10 @@ class Visualization5
     return if @playPauseStatus == 'playing'
     @playPauseStatus = 'playing'
 
+    # This is required to avoid redrawing the buttons even when
+    # the state has not changed.
+    return unless @config.comparisonYear < Constants.maxYear
+
     @d3document.select '#vizPlayButton'
       .html """
         <img src='IMG/play_pause/playbutton_selectedR.svg'
@@ -958,6 +962,8 @@ class Visualization5
             <img src='IMG/play_pause/playbutton_unselectedR.svg'
                  alt='#{Tr.altText.playAnimation[@app.language]}'/>
           """
+        # Simulate a pause button click.
+        @playPauseStatus = 'paused'
 
     @yearTimeout = window.setTimeout timeoutComplete, 0
     @app.analyticsReporter.reportEvent 'Electricity Play/Pause', 'Play'
