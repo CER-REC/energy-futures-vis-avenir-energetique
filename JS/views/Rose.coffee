@@ -15,6 +15,9 @@ defaultOptions =
   # always displayed, and there is no click behaviour
   clickHandler: null
 
+defaultDrawingOptions =
+  removePillsBeforeTransition: false
+  showPillsAfterTransition: false
 
 
 
@@ -34,9 +37,12 @@ class Rose
     @container = @options.container
 
     @rosePills = [] # TODO or should it be a hash?
+    @shadowPills = {}
 
   # Add all of the static elements, and set up petals for update.
-  render: ->
+  render: (options) ->
+    options = _.extend {}, defaultDrawingOptions, options
+
 
     # Apply an animation to the rose as it appears
     containerOffset = Constants.roseSize / 2 * @options.scale
@@ -52,6 +58,8 @@ class Rose
       .duration @app.animationDuration
       .attr
         transform: "translate(#{@options.position.x}, #{@options.position.y}) scale(#{@options.scale}, #{@options.scale})"
+      .each 'end', =>
+        @showPills() if options.showPillsAfterTransition
 
 
     # Add an inner group for internal transforms.
@@ -59,13 +67,18 @@ class Rose
       .append 'g'
       .attr
         class: =>
-          # TODO: is this the right place to put pointerCursor?
-          if @clickHandler?
+          # TODO: is this the right place to put pointerCursor and the click handler??
+          if @options.clickHandler?
             'rose pointerCursor'
           else
             'rose'
         transform: ->
           "translate(#{Constants.roseOuterCircleRadius}, #{Constants.roseOuterCircleRadius})"
+      .on 'click', =>
+        return unless @options.clickHandler?
+        @options.clickHandler @
+
+
 
     # Axes
     for angle in Constants.roseAngles
@@ -160,6 +173,32 @@ class Rose
         fill: 'none'
 
 
+    # Shadow pills
+    # Drawing the pills presents a problem because of the following two constraints:
+    # - We need to layer the pill popover dialogs beneath the pills, but above the roses.
+    # - The popover dialogs may need to exceed the bounds of the SVG element where we've
+    #   drawn the roses.
+    # Because of this, we can't render the pills or the dialogs as part of the SVG.
+    # Keeping the positions of the pills in sync with the SVG drawings then becomes a
+    # challenge, especially with the transforms and animations applied to the roses.
+    
+    # The approach here: render six invisible 'shadow pills' within the SVG, measure
+    # their positions in the HTML document, and use them to absolutely position the real
+    # pills (and their popovers).
+    # TODO: instead of a tiny circle, maybe render an object that resembles the footprint
+    # of the pill, to simplify the math later on...
+
+    for source, data of Constants.viz5RoseData
+      shadowPill = @innerContainer.append 'circle'
+        .attr
+          class: 'shadowPill'
+          r: 0
+          cx: Constants.roseOuterCircleRadius * Math.cos(data.startAngle + Math.PI / 6)
+          cy: Constants.roseOuterCircleRadius * Math.sin(data.startAngle + Math.PI / 6)
+          fill: 'none'
+          stroke: 'none'
+
+      @shadowPills[source] = shadowPill
 
 
 
@@ -167,7 +206,11 @@ class Rose
 
 
 
-  update: ->
+
+  update: (options) ->
+    options = _.extend {}, defaultDrawingOptions, options
+
+    @removePills() if options.removePillsBeforeTransition
 
     @innerContainer.attr
       class: =>
@@ -191,6 +234,9 @@ class Rose
 
     container.attr
       transform: "translate(#{@options.position.x}, #{@options.position.y}) scale(#{@options.scale}, #{@options.scale})"
+    .each 'end', =>
+      @showPills() if options.showPillsAfterTransition
+
 
     @innerContainer.select '.roseCentreLabel'
       .text =>
@@ -312,7 +358,7 @@ class Rose
     @options.scale = scale if typeof scale == 'number'
 
   setClickHandler: (handler) ->
-    @options.clickHandler = handler if typeof handler == 'function'
+    @options.clickHandler = handler if typeof handler == 'function' or handler == null
 
 
 
@@ -328,9 +374,21 @@ class Rose
       .each 'end', =>
         @container.remove()
 
+    @removePills()
 
 
-
+  showPills: ->
+    for item in @options.data
+      rosePill = new RosePill
+        data: item
+        shadowPill: @shadowPills[item.source]
+      rosePill.render()
+      @rosePills[item.source] = rosePill
+    
+  removePills: ->
+    for source in Constants.viz5SourcesInOrder
+      @rosePills[source].teardown()
+      @rosePills[source] = null
 
 
 module.exports = Rose

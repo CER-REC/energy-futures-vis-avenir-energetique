@@ -398,8 +398,6 @@ module.exports =
       row: 2
       column: 5
 
-  viz5Height: 700 # px
-
   roseMargin: 11 # px
 
   viz5SourcesInOrder: [

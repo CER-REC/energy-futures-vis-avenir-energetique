@@ -1123,3 +1123,99 @@ svg { overflow: hidden; }
   stroke-width: 3px;
   stroke: red;
 }
+
+
+#canadasEnergyFutureVisualization .rosePillBox {
+  position: absolute;
+  /* NB: To keep this element centrally aligned, keep the negative margin at half the element width. */
+  width: 50px;
+  margin-left: -27px;
+  border-style: solid;
+  border-width: 2px;
+  border-radius: 10px;
+  background-color: white;
+  color: white;
+  overflow: hidden;
+}
+
+#canadasEnergyFutureVisualization .rosePillIcon {
+  float: left;
+}
+
+#canadasEnergyFutureVisualization .rosePillText {
+  float: right;
+}
+
+
+
+#canadasEnergyFutureVisualization .rosePillBox.electricityText {
+  color: #33cccc;
+}
+#canadasEnergyFutureVisualization .rosePillBox.coalText {
+  color: #996733;
+}
+#canadasEnergyFutureVisualization .rosePillBox.naturalGasText {
+  color: #f16739;
+}
+#canadasEnergyFutureVisualization .rosePillBox.oilProductsText {
+  color: #cc6699;
+}
+#canadasEnergyFutureVisualization .rosePillBox.solarWindGeothermalText {
+  color: #339947;
+}
+#canadasEnergyFutureVisualization .rosePillBox.bioText {
+  color: #8d68ac;
+}
+
+
+#canadasEnergyFutureVisualization .rosePillBox.electricityBackground {
+  background-color: #33cccc;
+}
+#canadasEnergyFutureVisualization .rosePillBox.coalBackground {
+  background-color: #996733;
+}
+#canadasEnergyFutureVisualization .rosePillBox.naturalGasBackground {
+  background-color: #f16739;
+}
+#canadasEnergyFutureVisualization .rosePillBox.oilProductsBackground {
+  background-color: #cc6699;
+}
+#canadasEnergyFutureVisualization .rosePillBox.solarWindGeothermalBackground {
+  background-color: #339947;
+}
+#canadasEnergyFutureVisualization .rosePillBox.bioBackground {
+  background-color: #8d68ac;
+}
+
+
+
+#canadasEnergyFutureVisualization .rosePillBox.electricityBorder {
+  border-color: #33cccc;
+}
+#canadasEnergyFutureVisualization .rosePillBox.coalBorder {
+  border-color: #996733;
+}
+#canadasEnergyFutureVisualization .rosePillBox.naturalGasBorder {
+  border-color: #f16739;
+}
+#canadasEnergyFutureVisualization .rosePillBox.oilProductsBorder {
+  border-color: #cc6699;
+}
+#canadasEnergyFutureVisualization .rosePillBox.solarWindGeothermalBorder {
+  border-color: #339947;
+}
+#canadasEnergyFutureVisualization .rosePillBox.bioBorder {
+  border-color: #8d68ac;
+}
+
+
+
+
+
+
+
+
+
+
+
+

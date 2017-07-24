@@ -137,6 +137,8 @@ class Visualization5
     @leftRose = null
     @rightRose = null
 
+    @roseWithPillsOpen = null
+
     @renderMode = if @config.leftProvince == 'all' then 'allCanadaRoses' else 'twoRoses'
 
 
@@ -1180,7 +1182,9 @@ class Visualization5
           y: yPos
         @allCanadaRoses[province].setScale roseScale
         @allCanadaRoses[province].setData data[province]
-        @allCanadaRoses[province].update()
+        @allCanadaRoses[province].setClickHandler @roseClickHandler
+        @allCanadaRoses[province].update
+          removePillsBeforeTransition: true
       else
         roseContainer = @container.append 'g'
 
@@ -1216,7 +1220,9 @@ class Visualization5
         y: leftYPos
       @leftRose.setScale roseScale
       @leftRose.setData data[@config.leftProvince]
-      @leftRose.update()
+      @leftRose.setClickHandler null
+      @leftRose.update
+        showPillsAfterTransition: true
     else
       roseContainer = @container.append 'g'
 
@@ -1227,8 +1233,9 @@ class Visualization5
         position:
           x: leftXPos
           y: leftYPos
-        clickHandler: @roseClickHandler
-      rose.render()
+        clickHandler: null
+      rose.render
+        showPillsAfterTransition: true
 
       @leftRose = rose
 
@@ -1239,7 +1246,9 @@ class Visualization5
         y: rightYPos
       @rightRose.setScale roseScale
       @rightRose.setData data[@config.rightProvince]
-      @rightRose.update()
+      @rightRose.setClickHandler null
+      @rightRose.update
+        showPillsAfterTransition: true
     else
       roseContainer = @container.append 'g'
 
@@ -1250,8 +1259,9 @@ class Visualization5
         position:
           x: rightXPos
           y: rightYPos
-        clickHandler: @roseClickHandler
-      rose.render()
+        clickHandler: null
+      rose.render
+        showPillsAfterTransition: true
 
       @rightRose = rose
 
@@ -1302,13 +1312,18 @@ class Visualization5
     @renderTwoRoses()
 
 
-  roseClickHandler: =>
+  roseClickHandler: (rose) =>
+    # Pills are always displayed when we're in comparison mode, we shouldn't handle clicks
+    # that come to us in that mode.
+    return unless @config.leftProvince == 'all'
 
-    if @config.leftProvince == 'all'
-      # hide pills on any rose that had them on display
-      # display pills on the rose that had them to display
+    if rose == @roseWithPillsOpen
+      @roseWithPillsOpen.removePills()
+      @roseWithPillsOpen = null
     else
-      # this case shouldn't happen ...
+      @roseWithPillsOpen.removePills() if @roseWithPillsOpen?
+      rose.showPills()
+      @roseWithPillsOpen = rose
 
 
 
