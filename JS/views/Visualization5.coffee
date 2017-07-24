@@ -784,6 +784,7 @@ class Visualization5
           position:
             x: xPos
             y: yPos
+          clickHandler: @roseClickHandler
         rose.render()
 
         @allCanadaRoses[province] = rose
@@ -819,6 +820,7 @@ class Visualization5
         position:
           x: leftXPos
           y: leftYPos
+        clickHandler: @roseClickHandler
       rose.render()
 
       @leftRose = rose
@@ -841,6 +843,7 @@ class Visualization5
         position:
           x: rightXPos
           y: rightYPos
+        clickHandler: @roseClickHandler
       rose.render()
 
       @rightRose = rose
@@ -890,6 +893,20 @@ class Visualization5
 
 
     @renderTwoRoses()
+
+
+  roseClickHandler: =>
+
+    if @config.leftProvince == 'all'
+      # hide pills on any rose that had them on display
+      # display pills on the rose that had them to display
+    else
+      # this case shouldn't happen ...
+
+
+
+
+
 
 
 

@@ -3,12 +3,16 @@ d3 = require 'd3'
 d3Path = require 'd3-path'
 
 Constants = require '../Constants.coffee'
+RosePill = require './RosePill.coffee'
 
 defaultOptions =
   position:
     x: 0
     y: 0
   scale: 1
+  # clickHandler may be null, for use with roses in comparison mode where pills are 
+  # always displayed, and there is no click behaviour
+  clickHandler: null
 
 
 
@@ -20,12 +24,15 @@ class Rose
   #   data, six element array with source and value for petals
   #   containerPosition, with x, y for container placement in canvas
   #   scale, number, controls container sizing
+  #   clickHandler, function
   constructor: (@app, options) ->
     @document = @app.window.document
     @d3document = d3.select @document
 
     @options = _.extend {}, defaultOptions, options
     @container = @options.container
+
+    @rosePills = [] # TODO or should it be a hash?
 
   # Add all of the static elements, and set up petals for update.
   render: ->
@@ -50,7 +57,12 @@ class Rose
     @innerContainer = @container
       .append 'g'
       .attr
-        class: 'rose'
+        class: =>
+          # TODO: is this the right place to put pointerCursor?
+          if @clickHandler?
+            'rose pointerCursor'
+          else
+            'rose'
         transform: ->
           "translate(#{Constants.roseOuterCircleRadius}, #{Constants.roseOuterCircleRadius})"
 
@@ -102,9 +114,9 @@ class Rose
       # So, the angular width of the arc is different for each set of tickmarks
       tickmarkRadius = Constants.roseBaselineCircleRadius + distance
       tickmarkCircumference = 2 * Math.PI * tickmarkRadius
+      angularWidth = Constants.roseTickLength / tickmarkCircumference * 2 * Math.PI
 
       for angle in Constants.roseAngles
-        angularWidth = Constants.roseTickLength / tickmarkCircumference * 2 * Math.PI
         startAngle = angle - angularWidth / 2
         endAngle = angle + angularWidth / 2
         
@@ -155,6 +167,15 @@ class Rose
 
 
   update: ->
+
+    @innerContainer.attr
+      class: =>
+        # TODO: is this the right place to put pointerCursor?
+        if @clickHandler?
+          'rose pointerCursor'
+        else
+          'rose'
+
 
     @container.transition()
       .duration Constants.animationDuration
@@ -279,6 +300,11 @@ class Rose
 
   setScale: (scale) ->
     @options.scale = scale if typeof scale == 'number'
+
+  setClickHandler: (handler) ->
+    @options.clickHandler = handler if typeof handler == 'function'
+
+
 
 
   teardown: ->
