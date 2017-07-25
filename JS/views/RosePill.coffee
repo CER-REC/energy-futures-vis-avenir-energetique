@@ -1,8 +1,13 @@
 d3 = require 'd3'
 Mustache = require 'mustache'
+_ = require 'lodash'
 
 RosePillTemplate = require '../templates/RosePill.mustache'
 Constants = require '../Constants.coffee'
+PillPopover = require '../popovers/PillPopover.coffee'
+
+defaultOptions =
+  clickHandler: ->
 
 class RosePill
 
@@ -10,7 +15,15 @@ class RosePill
   # Options:
   #   data, a single data element as produced by the energy consumption provider
   #   shadowPill, a d3 wrapped DOM node that we will measure to position the pill
-  constructor: (@app, @options) ->
+  #   clickHander: a function for when the pill gets a click
+  constructor: (@app, options) ->
+    @options = _.extend {}, defaultOptions, options
+
+    @popover = new PillPopover @app,
+      data: @options.data
+      # Can't supply pillCentrePoint at creation time, we do it on update
+
+
 
 
   render: ->
@@ -22,11 +35,13 @@ class RosePill
     rootBounds = document.querySelector('#rosePillRoot').getBoundingClientRect()
     pillBounds = @options.shadowPill[0][0].getBoundingClientRect()
 
+    # TODO: put these pill measurements in constants
+    # TODO: document that they should be kept in sync with pill sizes in CSS
     @left = pillBounds.left - rootBounds.left - 35 + Constants.pagePadding
     @top = pillBounds.top - rootBounds.top - 13.5 + Constants.pagePadding
 
     # The pill always gets a border matching the source's colour
-    classString = "rosePillBox fadein #{@options.data.source}Border"
+    classString = "rosePillBox pointerCursor fadein #{@options.data.source}Border"
 
     # We default the background colour and font colour to white in the CSS for
     # .rosePillBox. Depending on whether the value is positive or negative, we set either
@@ -48,10 +63,18 @@ class RosePill
       style: "top: #{@top}px; left: #{@left}px;"
     .html pillHtml
 
+    @rosePillBox.on 'click', =>
+      @options.clickHandler @
+
+    # In addition, update the popover
+    @popover.setData @options.data
+    @popover.setPillCentrePoint
+      left: pillBounds.left - rootBounds.left + Constants.pagePadding
+      top: pillBounds.top - rootBounds.top + Constants.pagePadding
+
 
 
   teardown: ->
-
     @rosePillBox
       .classed 'fadein', false
       .classed 'fadeout', true

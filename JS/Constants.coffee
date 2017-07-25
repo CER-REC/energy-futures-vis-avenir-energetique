@@ -456,3 +456,10 @@ module.exports =
   pagePadding: 10 # px
   # NB: This value should be kept in sync with the padding style for #mainPanel > div
 
+  pillPopoverWidth: 220 # px
+  pillPopoverHeight: 150 # px
+
+  # NB: Keep this in sync with pill width - border radius
+  pillPopoverHorizontalOffset: 70/2 - 13.5 # px
+
+

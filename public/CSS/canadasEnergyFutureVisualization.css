@@ -1142,6 +1142,10 @@ svg { overflow: hidden; }
 
   animation-duration: 1s;
   animation-name: fadein;
+
+  /* Above the pill popover */
+  z-index: 2; 
+
 }
 
 
@@ -1261,6 +1265,70 @@ svg { overflow: hidden; }
 
 
 
+#canadasEnergyFutureVisualization .pillPopover {
+  position: absolute;
+  border-style: solid;
+  border-width: 2px;
+  border-radius: 5px;
+  padding: 7px;
+  background-color: white;
+
+  width: 220px;
+  height: 150px;
+
+  /* Beneath the pills */
+  z-index: 1; 
+
+}
+
+#canadasEnergyFutureVisualization .pillPopoverPaddingBottom {
+  /* Keep me in sync with pill height (half) */
+  padding-bottom: 15.5px; 
+}
+#canadasEnergyFutureVisualization .pillPopoverPaddingTop {
+  /* Keep me in sync with pill height (half) */
+  padding-top: 15.5px; 
+}
+#canadasEnergyFutureVisualization .pillPopoverHeading {
+  font-size: 18px;
+  margin: 0 0 10px 0;
+}
+#canadasEnergyFutureVisualization .pillPopoverText {
+  font-size: 16px;
+  display: inline-block;
+  margin: 0 0 0 10px;
+}
+#canadasEnergyFutureVisualization .pillPopoverTextSmall {
+  font-size: 12px;
+  display: inline-block;
+  margin: 0 0 10px 20px;
+}
+
+
+#canadasEnergyFutureVisualization .pillPopover.electricity {
+  color: #33cccc;
+  border-color: #33cccc;
+}
+#canadasEnergyFutureVisualization .pillPopover.naturalGas {
+  color: #f16739;
+  border-color: #f16739;
+}
+#canadasEnergyFutureVisualization .pillPopover.bio {
+  color: #8d68ac;
+  border-color: #8d68ac;
+}
+#canadasEnergyFutureVisualization .pillPopover.solarWindGeothermal {
+  color: #339947;
+  border-color: #339947;
+}
+#canadasEnergyFutureVisualization .pillPopover.coal {
+  color: #996733;
+  border-color: #996733;
+}
+#canadasEnergyFutureVisualization .pillPopover.oilProducts {
+  color: #cc6699;
+  border-color: #cc6699;
+}
 
 
 

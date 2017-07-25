@@ -14,6 +14,7 @@ defaultOptions =
   # clickHandler may be null, for use with roses in comparison mode where pills are
   # always displayed, and there is no click behaviour
   clickHandler: null
+  rosePillClickHandler: ->
 
 defaultDrawingOptions =
   removePillsBeforeTransition: false
@@ -29,6 +30,7 @@ class Rose
   #   containerPosition, with x, y for container placement in canvas
   #   scale, number, controls container sizing
   #   clickHandler, function
+  #   pillClickHandler, function, injected into pills we create
   constructor: (@app, options) ->
     @document = @app.window.document
     @d3document = d3.select @document
@@ -397,6 +399,7 @@ class Rose
       rosePill = new RosePill @app,
         data: item
         shadowPill: @shadowPills[item.source]
+        clickHandler: @options.pillClickHandler
       rosePill.render()
       @rosePills[item.source] = rosePill
 

@@ -1196,6 +1196,7 @@ class Visualization5
             x: xPos
             y: yPos
           clickHandler: @roseClickHandler
+          pillClickHandler: @rosePillClickHandler
         rose.render()
 
         @allCanadaRoses[province] = rose
@@ -1234,6 +1235,7 @@ class Visualization5
           x: leftXPos
           y: leftYPos
         clickHandler: null
+        pillClickHandler: @rosePillClickHandler
       rose.render
         showPillsAfterTransition: true
 
@@ -1260,6 +1262,7 @@ class Visualization5
           x: rightXPos
           y: rightYPos
         clickHandler: null
+        pillClickHandler: @rosePillClickHandler
       rose.render
         showPillsAfterTransition: true
 
@@ -1328,11 +1331,43 @@ class Visualization5
       @roseWithPillsOpen = rose
 
 
+  rosePillClickHandler: (rosePill) =>
+    # Prevent the click event from propagating and immediately closing the popover.
+    d3.event.preventDefault()
+    d3.event.stopPropagation()
+
+    if @config.leftProvince == 'all'
+      # When in showing roses for all of Canada, show just one popover
+      @app.popoverManager.showPopover rosePill.popover,
+        verticalAnchor: @verticalAnchor rosePill.options.data
+        horizontalAnchor: @horizontalAnchor rosePill.options.data
+
+    else
+      # When in showing two roses in comparison mode, show two popovers
+
+
+    # if 2 mode, show TWO popovers
+
+    # if the same thing was clicked as is open, close things
 
 
 
 
 
+  verticalAnchor: (dataItem) ->
+    switch dataItem.source
+      when 'solarWindGeothermal', 'coal', 'oilProducts'
+        'top'
+      when 'electricity', 'naturalGas', 'bio'
+        'bottom'
+
+  horizontalAnchor: (dataItem) ->
+    # TODO: add exception cases for rightmost roses in 13 mode
+    switch dataItem.source
+      when 'solarWindGeothermal', 'bio'
+        'left'
+      when 'electricity', 'naturalGas', 'coal', 'oilProducts'
+        'right'
 
 
 module.exports = Visualization5
