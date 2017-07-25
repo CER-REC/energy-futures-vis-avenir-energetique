@@ -36,8 +36,10 @@ class Rose
     @options = _.extend {}, defaultOptions, options
     @container = @options.container
 
-    @rosePills = [] # TODO or should it be a hash?
+    @rosePills = {}
     @shadowPills = {}
+
+    @pillsDisplayed = false
 
   # Add all of the static elements, and set up petals for update.
   render: (options) ->
@@ -212,6 +214,13 @@ class Rose
 
     @removePills() if options.removePillsBeforeTransition
 
+    if @pillsDisplayed
+      for item in @options.data
+        @rosePills[item.source].setData item
+        @rosePills[item.source].update()
+
+
+
     @innerContainer.attr
       class: =>
         # TODO: is this the right place to put pointerCursor?
@@ -378,14 +387,21 @@ class Rose
 
 
   showPills: ->
+    return if @pillsDisplayed
+    @pillsDisplayed = true
+
     for item in @options.data
       rosePill = new RosePill
         data: item
         shadowPill: @shadowPills[item.source]
       rosePill.render()
       @rosePills[item.source] = rosePill
+
     
   removePills: ->
+    return unless @pillsDisplayed
+    @pillsDisplayed = false
+
     for source in Constants.viz5SourcesInOrder
       @rosePills[source].teardown()
       @rosePills[source] = null

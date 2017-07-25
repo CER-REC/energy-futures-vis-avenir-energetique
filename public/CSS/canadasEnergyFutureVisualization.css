@@ -1127,23 +1127,33 @@ svg { overflow: hidden; }
 
 #canadasEnergyFutureVisualization .rosePillBox {
   position: absolute;
-  /* NB: To keep this element centrally aligned, keep the negative margin at half the element width. */
-  width: 50px;
-  margin-left: -27px;
-  border-style: solid;
+
+  box-sizing: border-box;
+  width: 70px;
+  height: 27px;
   border-width: 2px;
-  border-radius: 10px;
+  font-size: 18px;
+
+  border-style: solid;
+  border-radius: 13.5px;
   background-color: white;
   color: white;
   overflow: hidden;
 }
 
 #canadasEnergyFutureVisualization .rosePillIcon {
-  float: left;
+  height: 23px;
+  width: 23px;
+  border-radius: 0px 11.5px 11.5px 0px;
+  position: absolute;
+  z-index: 1;
 }
 
 #canadasEnergyFutureVisualization .rosePillText {
   float: right;
+  margin: 3.5px 5px 3.5px 0px;
+  z-index: 2;
+  position: relative;
 }
 
 

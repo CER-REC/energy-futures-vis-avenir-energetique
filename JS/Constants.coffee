@@ -398,7 +398,8 @@ module.exports =
       row: 2
       column: 5
 
-  roseMargin: 11 # px
+  allCanadaRoseMargin: 11 # px
+  comparisonRoseMargin: 25 # px
 
   viz5SourcesInOrder: [
     'electricity'
@@ -409,25 +410,37 @@ module.exports =
     'oilProducts'
   ]
 
+
+
+
   viz5RoseData:
     electricity:
       colour: '#33cccc' # teal
       startAngle: Math.PI * (0 / 3)
+      image: 'IMG/sources/electricity_selected.svg'
     naturalGas:
       colour: '#f16739' # orange
       startAngle: Math.PI * (1 / 3)
+      image: 'IMG/sources/naturalGas_selected.svg'
     bio:
       colour: '#8d68ac' # purple
       startAngle: Math.PI * (2 / 3)
+      image: 'IMG/sources/biomass_selected.svg'
     solarWindGeothermal:
       colour: '#339947' # green
       startAngle: Math.PI * (3 / 3)
+      image: 'IMG/sources/solarWindGeo_selected.svg'
     coal:
       colour: '#996733' # brown
       startAngle: Math.PI * (4 / 3)
+      image: 'IMG/sources/coal_selected.svg'
     oilProducts:
       colour: '#cc6699' # pink
       startAngle: Math.PI * (5 / 3)
+      image: 'IMG/sources/oil_products_selected.svg'
+
+
+
 
   viz5SliderHeight: 100 # px
 
@@ -440,5 +453,6 @@ module.exports =
       'IMG/sources/coal_selected.svg'
     ]
 
-
+  pagePadding: 10 # px
+  # NB: This value should be kept in sync with the padding style for #mainPanel > div
 

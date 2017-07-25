@@ -1168,13 +1168,13 @@ class Visualization5
     data = @graphData()
 
     availableWidth = @graphWidth() - @graphMargin.left - @graphMargin.right -
-      (Constants.roseColumns - 1) * Constants.roseMargin
+      (Constants.roseColumns - 1) * Constants.allCanadaRoseMargin
     roseSize = availableWidth / Constants.roseColumns
     roseScale = roseSize / Constants.roseSize
 
     for province, rosePosition of Constants.rosePositions
-      xPos = @graphMargin.left + (roseSize + Constants.roseMargin) * rosePosition.column
-      yPos = @graphMargin.top + (roseSize + Constants.roseMargin) * rosePosition.row
+      xPos = @graphMargin.left + (roseSize + Constants.allCanadaRoseMargin) * rosePosition.column
+      yPos = @graphMargin.top + (roseSize + Constants.allCanadaRoseMargin) * rosePosition.row
 
       if @allCanadaRoses[province]?
         @allCanadaRoses[province].setPosition
@@ -1204,13 +1204,13 @@ class Visualization5
   renderTwoRoses: ->
     data = @graphData()
 
-    availableWidth = @graphWidth() - @graphMargin.left - @graphMargin.right - Constants.roseMargin
+    availableWidth = @graphWidth() - @graphMargin.left - @graphMargin.right - Constants.comparisonRoseMargin
     roseSize = availableWidth / 2
     roseScale = roseSize / Constants.roseSize
 
     leftXPos = @graphMargin.left
     leftYPos = @graphMargin.top
-    rightXPos = @graphMargin.left + (roseSize + Constants.roseMargin)
+    rightXPos = @graphMargin.left + (roseSize + Constants.comparisonRoseMargin)
     rightYPos = @graphMargin.top
 
 
@@ -1292,12 +1292,14 @@ class Visualization5
 
     # Always keep the rose which will become the left rose
     @leftRose = @allCanadaRoses[@config.leftProvince]
+    @leftRose.removePills()
 
     @allCanadaRoses[@config.leftProvince] = null
 
     # If the right rose is different from the left, keep it too
     if @config.leftProvince != @config.rightProvince
       @rightRose = @allCanadaRoses[@config.rightProvince]
+      @rightRose.removePills()
 
       @allCanadaRoses[@config.rightProvince] = null
 
