@@ -216,10 +216,6 @@ class Rose
 
     @removePills() if options.removePillsBeforeTransition
 
-    if @pillsDisplayed
-      for item in @options.data
-        @rosePills[item.source].setData item
-        @rosePills[item.source].update()
 
 
 
@@ -246,6 +242,11 @@ class Rose
     container.attr
       transform: "translate(#{@options.position.x}, #{@options.position.y}) scale(#{@options.scale}, #{@options.scale})"
     .each 'end', =>
+      if @pillsDisplayed
+        for item in @options.data
+          @rosePills[item.source].setData item
+          @rosePills[item.source].update()
+
       @showPills() if options.showPillsAfterTransition
 
 
@@ -399,7 +400,7 @@ class Rose
       rosePill.render()
       @rosePills[item.source] = rosePill
 
-    
+
   removePills: ->
     return unless @pillsDisplayed
     @pillsDisplayed = false

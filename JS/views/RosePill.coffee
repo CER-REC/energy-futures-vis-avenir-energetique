@@ -48,9 +48,6 @@ class RosePill
       style: "top: #{@top}px; left: #{@left}px;"
     .html pillHtml
 
-    # TODO position it and fade in (css? d3? probably d3.)
-
-
 
 
   teardown: ->
