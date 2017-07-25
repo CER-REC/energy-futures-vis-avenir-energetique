@@ -1100,6 +1100,11 @@ svg { overflow: hidden; }
   height: 100%;
 }
 
+#canadasEnergyFutureVisualization #canadaMapSVG {
+  transform:rotate(-15deg);
+  transition: opacity 1s ease-in-out;
+}
+
 #canadasEnergyFutureVisualization .navbarTitle:focus {
   outline: solid red 2px;
 }

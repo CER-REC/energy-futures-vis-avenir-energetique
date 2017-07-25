@@ -28,8 +28,22 @@ class Rose
     @options = _.extend {}, defaultOptions, options
     @container = @options.container
 
+  transitionToGridPosition: =>
+    # Set the starting position to the grid position.
+    @setStartingPosition @options.position
+
+    # Animate the provinces to their grid positions.
+    @container
+      .transition()
+        .duration Constants.animationDuration
+        .attr
+          transform: "translate(#{@options.startingPosition.x}, #{@options.startingPosition.y}) scale(#{@options.scale}, #{@options.scale})"
+
+    # Render the full province rose in order.
+    @app.window.setTimeout @renderFullRose, Constants.fullRoseRenderingDelay[@options.data[0].province]
+
   # Add all of the static elements, and set up petals for update.
-  render: ->
+  render: ()->
 
     # Apply an animation to the rose as it appears
     containerOffset = Constants.roseSize / 2 * @options.scale
@@ -40,12 +54,11 @@ class Rose
       # scale animation the rose appears to scale up from its origin.
       # Otherwise the rose would scale up from the top left corner
       .attr
-        transform: "translate(#{@options.position.x + containerOffset}, #{@options.position.y + containerOffset}) scale(0, 0)"
+        transform: "translate(#{@options.startingPosition.x + containerOffset}, #{@options.startingPosition.y + containerOffset}) scale(0, 0)"
       .transition()
-      .duration @app.animationDuration
-      .attr
-        transform: "translate(#{@options.position.x}, #{@options.position.y}) scale(#{@options.scale}, #{@options.scale})"
-
+        .duration Constants.animationDuration
+        .attr
+          transform: "translate(#{@options.startingPosition.x}, #{@options.startingPosition.y}) scale(#{@options.scale}, #{@options.scale})"
 
     # Add an inner group for internal transforms.
     @innerContainer = @container
@@ -55,7 +68,8 @@ class Rose
         transform: ->
           "translate(#{Constants.roseOuterCircleRadius}, #{Constants.roseOuterCircleRadius})"
 
-    # Axes
+    # Draw the axes, but set its scale to zero so it is invesible. This is
+    # done here so that the axes are positioned behind the inner circle.
     for angle in Constants.roseAngles
       @innerContainer.append 'line'
         .attr
@@ -65,8 +79,8 @@ class Rose
           x1: 0
           y1: 0
           x2: Constants.roseOuterCircleRadius * Math.cos angle
-          y2: Constants.roseOuterCircleRadius * Math.sin angle
-          'stroke-dasharray': '2,2'
+          y2: Constants.roseOuterCircleRadius * Math.sin angle    
+          transform: "scale(0, 0)"
 
     # Centre circle
     @innerContainer.append 'circle'
@@ -88,6 +102,26 @@ class Rose
       .text =>
         @options.data[0].province
 
+    if @options.firstRun == true
+      @options.firstRun = false
+      @app.window.setTimeout @transitionToGridPosition, Constants.animationDuration
+    else
+      @renderFullRose()
+
+  # Renders the remaining part of the rose.
+  renderFullRose: =>
+    # Show the axes by scaling them back up.
+    for angle in Constants.roseAngles
+      @innerContainer.selectAll '.roseAxisLine'
+        .transition()
+          .duration Constants.rosePopUpDuration
+          .attr
+            transform: "scale(#{Constants.roseSlightlyBiggerScale},#{Constants.roseSlightlyBiggerScale})"
+        .transition()
+          .duration Constants.rosePopUpDuration
+          .attr
+            transform: "scale(#{Constants.roseFullScale},#{Constants.roseFullScale})"
+
     # Outer circle
     @innerContainer.append 'circle'
       .attr
@@ -96,7 +130,15 @@ class Rose
         stroke: '#ccc'
         'stroke-width': 1
         fill: 'none'
-
+        transform: "scale(0, 0)"
+      .transition()
+        .duration Constants.rosePopUpDuration
+        .attr
+          transform: "scale(#{Constants.roseSlightlyBiggerScale},#{Constants.roseSlightlyBiggerScale})"
+      .transition()
+        .duration Constants.rosePopUpDuration
+        .attr
+          transform: "scale(#{Constants.roseFullScale},#{Constants.roseFullScale})"
     # Tickmarks
     for distance in Constants.roseTickDistances
       # Tickmarks are each the same length, but are drawn as tiny arcs.
@@ -125,6 +167,15 @@ class Rose
             'stroke-width': 1
             d: path.toString()
             fill: 'none'
+            transform: "scale(0, 0)"
+          .transition()
+            .duration Constants.rosePopUpDuration
+            .attr
+              transform: "scale(#{Constants.roseSlightlyBiggerScale},#{Constants.roseSlightlyBiggerScale})"
+          .transition()
+            .duration Constants.rosePopUpDuration
+            .attr
+              transform: "scale(#{Constants.roseFullScale},#{Constants.roseFullScale})"
 
     # Petals
     @innerContainer.selectAll '.petal'
@@ -137,6 +188,15 @@ class Rose
           Constants.viz5RoseData[d.source].colour
         d: (d) =>
           @petalPath d.value, Constants.viz5RoseData[d.source].startAngle
+        transform: "scale(0, 0)"
+      .transition()
+        .duration Constants.rosePopUpDuration
+        .attr
+          transform: "scale(#{Constants.roseSlightlyBiggerScale},#{Constants.roseSlightlyBiggerScale})"
+      .transition()
+        .duration Constants.rosePopUpDuration
+        .attr
+          transform: "scale(#{Constants.roseFullScale},#{Constants.roseFullScale})"
 
     # Baseline circle
     @innerContainer.append 'circle'
@@ -146,17 +206,17 @@ class Rose
         stroke: '#333'
         'stroke-width': 1
         fill: 'none'
-
-
-
-
-
-
-
-
+        transform: "scale(0, 0)"
+      .transition()
+        .duration Constants.rosePopUpDuration
+        .attr
+          transform: "scale(#{Constants.roseSlightlyBiggerScale},#{Constants.roseSlightlyBiggerScale})"
+      .transition()
+        .duration Constants.rosePopUpDuration
+        .attr
+          transform: "scale(#{Constants.roseFullScale},#{Constants.roseFullScale})"
 
   update: ->
-
     # For reasons unknown, the transition here causes a crash in server side rendering
     # Ordinarily, transitions work fine on server with the duration set to zero, but not
     # this time.
@@ -169,9 +229,10 @@ class Rose
       when 'server'
         container = @container
 
-    container.attr
-      transform: "translate(#{@options.position.x}, #{@options.position.y}) scale(#{@options.scale}, #{@options.scale})"
-
+    @container.transition()
+      .duration Constants.animationDuration
+      .attr
+        transform: "translate(#{@options.startingPosition.x}, #{@options.startingPosition.y}) scale(#{@options.scale}, #{@options.scale})"
 
     @innerContainer.select '.roseCentreLabel'
       .text =>
@@ -288,6 +349,9 @@ class Rose
 
   setPosition: (position) ->
     @options.position = position if position?
+
+  setStartingPosition: (position) ->
+    @options.startingPosition = position if position?
 
   setScale: (scale) ->
     @options.scale = scale if typeof scale == 'number'
