@@ -119,6 +119,9 @@ class Visualization5
     @d3document = d3.select @document
     @accessibleStatusElement = @document.getElementById 'accessibleStatus'
 
+    # one of 'playing' or 'paused'
+    @playPauseStatus = 'paused'
+
     @allCanadaRoses =
       AB: null
       BC: null
@@ -735,7 +738,7 @@ class Visualization5
       .remove()
 
   svgResize: ->
-    @d3document.select '#sliderSVG'
+    @d3document.select '#viz5SliderSVG'
       .attr
         width: @outerWidth()
         height: Constants.viz5SliderHeight
@@ -783,7 +786,7 @@ class Visualization5
     # Build the base slider label
     @buildBaseSliderLabel()
 
-    # @buildSliderButtons()
+    @buildSliderButtons()
 
   buildYearAxis: ->
     # Build the highlighted portion of the timeline.
@@ -796,18 +799,19 @@ class Visualization5
       .call @yearAxis()
 
     # We need a wider target for the click so we use a separate group
-    @d3document.select '#timeLineTouch'
+    @d3document.select '#viz5timeLineTouch'
       .attr
         class: 'pointerCursor'
         'pointer-events': 'visible'
         height: Constants.viz5SliderHeight
         width: axis.node().getBoundingClientRect().width
+        transform: "translate(#{Constants.baseYearTimelineMargin}, 0)"
       .style
         fill: 'none'
       .on 'click', =>
         element = @d3document.select('#timelineAxis').node()
         newX = d3.mouse(element)[0]
-        if newX < Constants.timelineMargin then newX = Constants.timelineMargin
+        if newX < Constants.viz5timelineMargin then newX = Constants.viz5timelineMargin
         if newX > @timelineRightEnd() then newX = @timelineRightEnd()
 
         # Clicking on the timeline will cause the closest slider to move to the 
@@ -857,6 +861,129 @@ class Visualization5
         y1: "#{@timelineMargin.top - 20}"
         x2: "#{@yearScale()(@config.comparisonYear)}"
         y2: "#{@timelineMargin.top - 20}"
+
+  buildSliderButtons: ->
+    @d3document.select('#playPausePanel .viz5MediaButtons').remove()
+    div = @d3document.select '#playPausePanel'
+      .append 'div'
+        .attr
+          class: 'viz5MediaButtons'
+    div.append 'div'
+      .attr
+        id: 'vizPlayButton'
+        class: 'playPauseButton'
+        role: 'button'
+        tabindex: '0'
+        'aria-label': Tr.altText.playAnimation[@app.language]
+      .on 'click', @sliderPlayButtonCallback
+      .on 'keydown', =>
+        if d3.event.key == 'Enter' or d3.event.key == ' '
+          d3.event.preventDefault()
+          @sliderPlayButtonCallback()
+      .html """
+        <img src='IMG/play_pause/playbutton_unselectedR.svg'
+             alt='#{Tr.altText.playAnimation[@app.language]}'/>
+      """
+
+    div.append 'div'
+      .attr
+        id: 'vizPauseButton'
+        class: 'playPauseButton selected'
+        role: 'button'
+        tabindex: '0'
+        'aria-label': Tr.altText.pauseAnimation[@app.language]
+      .on 'click', @sliderPauseButtonCallback
+      .on 'keydown', =>
+        if d3.event.key == 'Enter' or d3.event.key == ' '
+          d3.event.preventDefault()
+          @sliderPauseButtonCallback()
+      .html """
+        <img src='IMG/play_pause/pausebutton_selectedR.svg'
+             alt='#{Tr.altText.pauseAnimation[@app.language]}'/>
+      """
+
+  sliderPlayButtonCallback: =>
+    return if @playPauseStatus == 'playing'
+    @playPauseStatus = 'playing'
+
+    # This is required to avoid redrawing the buttons even when
+    # the state has not changed.
+    return unless @config.comparisonYear < Constants.maxYear
+
+    @d3document.select '#vizPlayButton'
+      .html """
+        <img src='IMG/play_pause/playbutton_selectedR.svg'
+             alt='#{Tr.altText.playAnimation[@app.language]}'/>
+      """
+    @d3document.select '#vizPauseButton'
+      .html """
+        <img src='IMG/play_pause/pausebutton_unselectedR.svg'
+             alt='#{Tr.altText.pauseAnimation[@app.language]}'/>
+      """
+    if @yearTimeout then window.clearTimeout @yearTimeout
+    timeoutComplete = =>
+      #return unless @_chart?
+
+      if @config.comparisonYear < Constants.maxYear
+
+        newConfig = new @config.constructor @app
+        newConfig.copy @config
+        newConfig.setComparisonYear @config.comparisonYear + 1
+
+        update = =>
+          @config.setComparisonYear @config.comparisonYear + 1
+          @yearTimeout = window.setTimeout timeoutComplete, @app.animationDuration
+          @render()
+          @d3document.select '#sliderLabel'
+            .transition()
+              .attr
+                transform: "translate(#{@yearScale()(@config.comparisonYear)},#{@timelineMargin.top  - 5})"
+            .duration @app.animationDuration
+            .ease 'linear'
+          @d3document.select '#labelBox'
+            .text @config.comparisonYear
+          @d3document.select '#sliderLabel'
+            .attr
+              'aria-valuenow': @config.comparisonYear
+          @app.router.navigate @config.routerParams()
+
+        @app.datasetRequester.updateAndRequestIfRequired newConfig, update
+
+      else
+        @d3document.select '#vizPauseButton'
+          .html """
+            <img src='IMG/play_pause/pausebutton_selectedR.svg'
+                 alt='#{Tr.altText.pauseAnimation[@app.language]}'/>
+          """
+        @d3document.select '#vizPlayButton'
+          .html """
+            <img src='IMG/play_pause/playbutton_unselectedR.svg'
+                 alt='#{Tr.altText.playAnimation[@app.language]}'/>
+          """
+        # Simulate a pause button click.
+        @playPauseStatus = 'paused'
+
+    @yearTimeout = window.setTimeout timeoutComplete, 0
+    @app.analyticsReporter.reportEvent 'Electricity Play/Pause', 'Play'
+
+
+
+  sliderPauseButtonCallback: =>
+    return if @playPauseStatus == 'paused'
+    @playPauseStatus = 'paused'
+
+    @d3document.select '#vizPauseButton'
+      .html """
+        <img src='IMG/play_pause/pausebutton_selectedR.svg'
+             alt='#{Tr.altText.pauseAnimation[@app.language]}'/>
+      """
+    @d3document.select '#vizPlayButton'
+      .html """
+        <img src='IMG/play_pause/playbutton_unselectedR.svg'
+             alt='#{Tr.altText.playAnimation[@app.language]}'/>
+       """
+    if @yearTimeout then window.clearTimeout @yearTimeout
+    @app.analyticsReporter.reportEvent 'Electricity Play/Pause', 'Pause'
 
 ###############
   buildBaseSliderLabel: ->
@@ -911,7 +1038,7 @@ class Visualization5
         @app.router.navigate @config.routerParams()
         @render()
 
-    sliderLabel = @d3document.select('#sliderSVG')
+    sliderLabel = @d3document.select('#viz5SliderSVG')
       .append 'g'
       .attr
         id: 'baseSliderLabel'
@@ -1033,7 +1160,7 @@ class Visualization5
         @app.router.navigate @config.routerParams()
         @render()
 
-    sliderLabel = @d3document.select('#sliderSVG')
+    sliderLabel = @d3document.select('#viz5SliderSVG')
       .append 'g'
       .attr
         id: 'sliderLabel'
@@ -1091,7 +1218,7 @@ class Visualization5
       .orient 'bottom'
 
   timelineRightEnd: ->
-    @outerWidth() - Constants.timelineMargin
+    @outerWidth() - Constants.viz5timelineMargin
 
   # We want this menu to line up with the bottom of the x axis TICKS so those must be
   # built before we can set this.
@@ -1138,6 +1265,7 @@ class Visualization5
         @updateSlider Constants.minYear
 
   tearDown: ->
+    if @yearTimeout then window.clearTimeout @yearTimeout
     # TODO: We might want to render with empty lists for buttons, so that
     # garbage collection of event handled dom nodes goes smoothly
     @document.getElementById('visualizationContent').innerHTML = ''
