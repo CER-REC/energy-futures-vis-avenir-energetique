@@ -79,7 +79,8 @@ class Rose
           x1: 0
           y1: 0
           x2: Constants.roseOuterCircleRadius * Math.cos angle
-          y2: Constants.roseOuterCircleRadius * Math.sin angle    
+          y2: Constants.roseOuterCircleRadius * Math.sin angle
+          'stroke-dasharray': '2,2'
           transform: "scale(0, 0)"
 
     # Centre circle
