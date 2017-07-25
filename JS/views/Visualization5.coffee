@@ -1,5 +1,4 @@
 d3 = require 'd3'
-d3Path = require 'd3-path'
 Mustache = require 'mustache'
 
 Constants = require '../Constants.coffee'
@@ -8,7 +7,6 @@ Tr = require '../TranslationTable.coffee'
 Platform = require '../Platform.coffee'
 Rose = require './Rose.coffee'
 
-ParamsToUrlString = require '../ParamsToUrlString.coffee'
 CommonControls = require './CommonControls.coffee'
 
 if Platform.name == 'browser'
@@ -18,6 +16,8 @@ if Platform.name == 'browser'
 ControlsHelpPopover = require '../popovers/ControlsHelpPopover.coffee'
 
 ProvinceAriaText = require '../ProvinceAriaText.coffee'
+DoublePillPopover = require '../popovers/DoublePillPopover.coffee'
+
 # TODO: Create the Viz5 Access Config.
 # Viz5AccessConfig = require '../VisualizationConfigurations/Vis5AccessConfig.coffee'
 
@@ -138,6 +138,8 @@ class Visualization5
     @rightRose = null
 
     @roseWithPillsOpen = null
+
+    @doublePillPopover = null
 
     @renderMode = if @config.leftProvince == 'all' then 'allCanadaRoses' else 'twoRoses'
 
@@ -1337,18 +1339,53 @@ class Visualization5
     d3.event.stopPropagation()
 
     if @config.leftProvince == 'all'
+      if @app.popoverManager.currentPopover == rosePill.popover
+        @app.popoverManager.closePopover()
+        return
+
       # When in showing roses for all of Canada, show just one popover
       @app.popoverManager.showPopover rosePill.popover,
         verticalAnchor: @verticalAnchor rosePill.options.data
         horizontalAnchor: @horizontalAnchor rosePill.options.data
 
     else
+      source = rosePill.options.data.source
+      if @doublePillPopover?
+        # If we clicked on a pill for an open pair of popovers, we shouldn't open them
+        # anew, so return.
+        shouldReturn = source == @doublePillPopover.options.source
+        @app.popoverManager.closePopover()
+        @doublePillPopover = null
+        return if shouldReturn
+        
+
       # When in showing two roses in comparison mode, show two popovers
+      # Fetch both popovers, and initialize a new 'meta popover'
+      leftData = @leftRose.rosePills[source].options.data
+      rightData = @rightRose.rosePills[source].options.data
+
+      leftPopover = @leftRose.rosePills[source].popover
+      rightPopover = @rightRose.rosePills[source].popover
+
+      @doublePillPopover = new DoublePillPopover
+        leftPopover: leftPopover
+        rightPopover: rightPopover
+        closeCallback: =>
+          @doublePillPopover = null
+        source: source
+
+      @app.popoverManager.showPopover @doublePillPopover,
+        left:
+          verticalAnchor: @verticalAnchor leftData
+          horizontalAnchor: @horizontalAnchor leftData
+        right:
+          verticalAnchor: @verticalAnchor rightData
+          horizontalAnchor: @horizontalAnchor rightData
 
 
-    # if 2 mode, show TWO popovers
 
-    # if the same thing was clicked as is open, close things
+
+
 
 
 

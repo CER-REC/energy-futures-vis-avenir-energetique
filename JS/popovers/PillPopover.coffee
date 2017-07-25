@@ -2,7 +2,7 @@ _ = require 'lodash'
 d3 = require 'd3'
 Mustache = require 'mustache'
 
-RosePillPopoverTemplate = require '../templates/RosePillPopover.mustache'
+PillPopoverTemplate = require '../templates/PillPopover.mustache'
 Tr = require '../TranslationTable.coffee'
 Constants = require '../Constants.coffee'
 
@@ -61,7 +61,7 @@ class PillPopover
     # TODO: This display is based on the assumption that units are petajoules, always,
     # and never change. Validate this!
     data = @options.data
-    html = Mustache.render RosePillPopoverTemplate,
+    html = Mustache.render PillPopoverTemplate,
       headingText: Tr.sourceSelector.sources[data.source][@app.language]
       baseDemandText: "#{Math.round data.basePercentage}% #{Tr.viz5Pills.ofDemandIn[@app.language]} #{data.baseYear}"
       baseDemandAmounts: "#{Math.round data.baseValue} PJ / #{Math.round data.baseTotal} PJ"
