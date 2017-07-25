@@ -80,6 +80,16 @@ class Rose
         return unless @options.clickHandler?
         @options.clickHandler @
 
+    # Outer circle
+    @innerContainer.append 'circle'
+      .attr
+        class: 'roseOuterCircle'
+        r: Constants.roseOuterCircleRadius
+        stroke: '#ccc'
+        'stroke-width': 1
+        # NB: The fill on the outer circle interacts with the click handler, to make
+        # the whole rose clickable.
+        fill: 'white'
 
 
     # Axes
@@ -115,14 +125,6 @@ class Rose
       .text =>
         @options.data[0].province
 
-    # Outer circle
-    @innerContainer.append 'circle'
-      .attr
-        class: 'roseOuterCircle'
-        r: Constants.roseOuterCircleRadius
-        stroke: '#ccc'
-        'stroke-width': 1
-        fill: 'none'
 
     # Tickmarks
     for distance in Constants.roseTickDistances
@@ -224,7 +226,7 @@ class Rose
     @innerContainer.attr
       class: =>
         # TODO: is this the right place to put pointerCursor?
-        if @clickHandler?
+        if @options.clickHandler?
           'rose pointerCursor'
         else
           'rose'
@@ -391,7 +393,7 @@ class Rose
     @pillsDisplayed = true
 
     for item in @options.data
-      rosePill = new RosePill
+      rosePill = new RosePill @app,
         data: item
         shadowPill: @shadowPills[item.source]
       rosePill.render()

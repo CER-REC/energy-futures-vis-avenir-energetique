@@ -1126,20 +1126,55 @@ svg { overflow: hidden; }
 
 
 #canadasEnergyFutureVisualization .rosePillBox {
-  position: absolute;
-
   box-sizing: border-box;
+  position: absolute;
   width: 70px;
   height: 27px;
-  border-width: 2px;
-  font-size: 18px;
+  overflow: hidden;
 
+  border-width: 2px;
   border-style: solid;
   border-radius: 13.5px;
+
   background-color: white;
   color: white;
-  overflow: hidden;
+  font-size: 18px;
+
+  animation-duration: 1s;
+  animation-name: fadein;
 }
+
+
+
+/* Keep durations in sync with other rose animations */
+#canadasEnergyFutureVisualization .fadein {
+  animation-duration: 1s;
+  animation-name: fadein;
+}
+
+#canadasEnergyFutureVisualization .fadeout {
+  animation-duration: 1s;
+  animation-name: fadeout;
+}
+
+@keyframes fadein {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeout {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
 
 #canadasEnergyFutureVisualization .rosePillIcon {
   height: 23px;
@@ -1157,24 +1192,30 @@ svg { overflow: hidden; }
 }
 
 
-
+/* Regarding the linear-gradients: these are a workaround to a minor issue where the white background on pills with negative values bleeds around the edges of the border radius next to the source icon, with a slightly ugly result. */
 #canadasEnergyFutureVisualization .rosePillBox.electricityText {
   color: #33cccc;
+  background: linear-gradient(to right, #33cccc 14%, white 15%);
 }
 #canadasEnergyFutureVisualization .rosePillBox.coalText {
   color: #996733;
+  background: linear-gradient(to right, #996733 14%, white 15%);
 }
 #canadasEnergyFutureVisualization .rosePillBox.naturalGasText {
   color: #f16739;
+  background: linear-gradient(to right, #f16739 14%, white 15%);
 }
 #canadasEnergyFutureVisualization .rosePillBox.oilProductsText {
   color: #cc6699;
+  background: linear-gradient(to right, #cc6699 14%, white 15%);
 }
 #canadasEnergyFutureVisualization .rosePillBox.solarWindGeothermalText {
   color: #339947;
+  background: linear-gradient(to right, #339947 14%, white 15%);
 }
 #canadasEnergyFutureVisualization .rosePillBox.bioText {
   color: #8d68ac;
+  background: linear-gradient(to right, #8d68ac 14%, white 15%);
 }
 
 

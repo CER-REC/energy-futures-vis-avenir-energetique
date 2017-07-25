@@ -10,7 +10,7 @@ class RosePill
   # Options:
   #   data, a single data element as produced by the energy consumption provider
   #   shadowPill, a d3 wrapped DOM node that we will measure to position the pill
-  constructor: (@options) ->
+  constructor: (@app, @options) ->
 
 
   render: ->
@@ -26,7 +26,7 @@ class RosePill
     @top = pillBounds.top - rootBounds.top - 13.5 + Constants.pagePadding
 
     # The pill always gets a border matching the source's colour
-    classString = "rosePillBox #{@options.data.source}Border"
+    classString = "rosePillBox fadein #{@options.data.source}Border"
 
     # We default the background colour and font colour to white in the CSS for
     # .rosePillBox. Depending on whether the value is positive or negative, we set either
@@ -55,8 +55,13 @@ class RosePill
 
   teardown: ->
 
-    @rosePillBox[0][0].remove()
+    @rosePillBox
+      .classed 'fadein', false
+      .classed 'fadeout', true
 
+    window.setTimeout =>
+      @rosePillBox.remove()
+    , @app.animationDuration
 
 
 
