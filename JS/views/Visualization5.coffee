@@ -92,7 +92,7 @@ class Visualization5
       setupEvents: false
 
 
-  constructor: (@app, config, @options) ->
+  constructor: (@app, config, @options={}) ->
     @config = config
     # TODO: Uncomment after creating the Viz5 Access Config.
     # @accessConfig = new Viz5AccessConfig @config
@@ -1199,6 +1199,7 @@ class Visualization5
             y: yPos
           clickHandler: @roseClickHandler
           pillClickHandler: @rosePillClickHandler
+          rosePillTemplate: @options.rosePillTemplate # only defined on server
         rose.render()
 
         @allCanadaRoses[province] = rose
@@ -1238,6 +1239,7 @@ class Visualization5
           y: leftYPos
         clickHandler: null
         pillClickHandler: @rosePillClickHandler
+        rosePillTemplate: @options.rosePillTemplate # only defined on server
       rose.render
         showPillsAfterTransition: true
 
@@ -1265,6 +1267,7 @@ class Visualization5
           y: rightYPos
         clickHandler: null
         pillClickHandler: @rosePillClickHandler
+        rosePillTemplate: @options.rosePillTemplate # only defined on server
       rose.render
         showPillsAfterTransition: true
 
@@ -1381,13 +1384,6 @@ class Visualization5
         right:
           verticalAnchor: @verticalAnchor rightData
           horizontalAnchor: @horizontalAnchor rightData
-
-
-
-
-
-
-
 
 
 

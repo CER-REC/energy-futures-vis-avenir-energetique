@@ -1140,8 +1140,6 @@ svg { overflow: hidden; }
   color: white;
   font-size: 18px;
 
-  animation-duration: 1s;
-  animation-name: fadein;
 
   /* Above the pill popover */
   z-index: 2; 
@@ -1152,13 +1150,15 @@ svg { overflow: hidden; }
 
 /* Keep durations in sync with other rose animations */
 #canadasEnergyFutureVisualization .fadein {
-  animation-duration: 1s;
+  animation-duration: 0.3s;
   animation-name: fadein;
+  animation-fill-mode: forwards;
 }
 
 #canadasEnergyFutureVisualization .fadeout {
-  animation-duration: 1s;
+  animation-duration: 0.3s;
   animation-name: fadeout;
+  animation-fill-mode: forwards;
 }
 
 @keyframes fadein {

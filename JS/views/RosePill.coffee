@@ -2,7 +2,9 @@ d3 = require 'd3'
 Mustache = require 'mustache'
 _ = require 'lodash'
 
-RosePillTemplate = require '../templates/RosePill.mustache'
+Platform = require '../Platform.coffee'
+if Platform.name == 'browser'
+  RosePillTemplate = require '../templates/RosePill.mustache'
 Constants = require '../Constants.coffee'
 PillPopover = require '../popovers/PillPopover.coffee'
 
@@ -16,6 +18,7 @@ class RosePill
   #   data, a single data element as produced by the energy consumption provider
   #   shadowPill, a d3 wrapped DOM node that we will measure to position the pill
   #   clickHander: a function for when the pill gets a click
+  #   rosePillTemplate: function, injected template, only on server
   constructor: (@app, options) ->
     @options = _.extend {}, defaultOptions, options
 
@@ -54,10 +57,15 @@ class RosePill
       # A negative symbol is provided when we stringify a negative value
       changeSymbol = ''
 
-    pillHtml = Mustache.render RosePillTemplate,
+    switch Platform.name
+      when 'browser'
+        template = RosePillTemplate
+      when 'server'
+        template = @options.rosePillTemplate
+
+    pillHtml = Mustache.render template,
       text: "#{changeSymbol}#{Math.round @options.data.value}%"
       image: Constants.viz5RoseData[@options.data.source].image
-
     @rosePillBox.attr
       class: classString
       style: "top: #{@top}px; left: #{@left}px;"
@@ -81,7 +89,7 @@ class RosePill
 
     window.setTimeout =>
       @rosePillBox.remove()
-    , @app.animationDuration
+    , 300 # to match duration of pills animate in in CSS. TODO: constants me.
 
 
 

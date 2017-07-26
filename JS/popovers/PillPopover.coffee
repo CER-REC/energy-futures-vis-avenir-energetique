@@ -2,7 +2,10 @@ _ = require 'lodash'
 d3 = require 'd3'
 Mustache = require 'mustache'
 
-PillPopoverTemplate = require '../templates/PillPopover.mustache'
+Platform = require '../Platform.coffee'
+
+if Platform.name == 'browser'
+  PillPopoverTemplate = require '../templates/PillPopover.mustache'
 Tr = require '../TranslationTable.coffee'
 Constants = require '../Constants.coffee'
 
@@ -42,7 +45,7 @@ class PillPopover
     switch showOptions.verticalAnchor
       when 'top' then paddingClass = 'pillPopoverPaddingBottom'
       when 'bottom' then paddingClass = 'pillPopoverPaddingTop'
-    classString = "pillPopover #{@options.data.source} #{paddingClass}"
+    classString = "pillPopover fadein #{@options.data.source} #{paddingClass}"
 
     left = @options.pillCentrePoint.left
     switch showOptions.horizontalAnchor
@@ -77,8 +80,14 @@ class PillPopover
 
 
   close: ->
-    @popoverElement.remove()
-    @popoverElement = null
+    @popoverElement
+      .classed 'fadein', false
+      .classed 'fadeout', true
+
+    window.setTimeout =>
+      @popoverElement.remove()
+      @popoverElement = null
+    , 300 # to match duration of pills animate in in CSS. TODO: constants me.
 
 
   focus: ->

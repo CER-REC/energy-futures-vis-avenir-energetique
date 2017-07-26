@@ -64,9 +64,10 @@ Vis3TemplatePromise = readFile "#{ApplicationRoot}/JS/templates/Visualization3Se
 Vis4TemplatePromise = readFile "#{ApplicationRoot}/JS/templates/Visualization4Server.mustache"
 Vis5TemplatePromise = readFile "#{ApplicationRoot}/JS/templates/Visualization5Server.mustache"
 SvgStylesheetPromise = readFile "#{ApplicationRoot}/JS/templates/SvgStylesheet.css"
+RosePillPromise = readFile "#{ApplicationRoot}/JS/templates/RosePill.mustache"
 
 
-templatesPromise = Promise.join Vis1TemplatePromise, Vis2TemplatePromise, Vis3TemplatePromise, Vis4TemplatePromise, Vis5TemplatePromise, SvgStylesheetPromise, (vis1Template, vis2Template, vis3Template, vis4Template, vis5Template, svgTemplate) ->
+templatesPromise = Promise.join Vis1TemplatePromise, Vis2TemplatePromise, Vis3TemplatePromise, Vis4TemplatePromise, Vis5TemplatePromise, SvgStylesheetPromise, RosePillPromise, (vis1Template, vis2Template, vis3Template, vis4Template, vis5Template, svgTemplate, rosePillTemplate) ->
 
   return {
     vis1Template: vis1Template.toString()
@@ -75,6 +76,7 @@ templatesPromise = Promise.join Vis1TemplatePromise, Vis2TemplatePromise, Vis3Te
     vis4Template: vis4Template.toString()
     vis5Template: vis5Template.toString()
     svgTemplate: svgTemplate.toString()
+    rosePillTemplate: rosePillTemplate
   }
 
 
@@ -169,6 +171,7 @@ ImageRequestHtmlWriter = (query, filename) ->
               new Visualization5 serverApp, config,
                 template: templates.vis5Template
                 svgTemplate: templates.svgTemplate
+                rosePillTemplate: templates.rosePillTemplate
 
             else
               reject new Error "Visualization 'page' parameter not specified or not recognized."

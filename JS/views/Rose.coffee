@@ -31,6 +31,8 @@ class Rose
   #   scale, number, controls container sizing
   #   clickHandler, function
   #   pillClickHandler, function, injected into pills we create
+  #   rosePillTemplate, function, only defined on server
+
   constructor: (@app, options) ->
     @document = @app.window.document
     @d3document = d3.select @document
@@ -400,6 +402,7 @@ class Rose
         data: item
         shadowPill: @shadowPills[item.source]
         clickHandler: @options.pillClickHandler
+        rosePillTemplate: @options.rosePillTemplate
       rosePill.render()
       @rosePills[item.source] = rosePill
 
