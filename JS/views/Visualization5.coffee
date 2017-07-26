@@ -1354,8 +1354,8 @@ class Visualization5
         'xlink:xlink:href': 'IMG/CanadaMap.svg'
         width: '100%'
         height: '100%'
-        x: @outerWidth() * -0.1132
-        y: @graphHeight() * 0.224
+        x: @outerWidth() * -0.003
+        y: @graphHeight() * 0.045
 
   fadeOutCanadaMap: =>
     @d3document.select('#canadaMapSVG')

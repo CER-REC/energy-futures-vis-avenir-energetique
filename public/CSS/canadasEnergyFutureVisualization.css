@@ -1101,7 +1101,8 @@ svg { overflow: hidden; }
 }
 
 #canadasEnergyFutureVisualization #canadaMapSVG {
-  transform:rotate(-15deg);
+  max-width:100%
+  height:auto;
   transition: opacity 1s ease-in-out;
 }
 
