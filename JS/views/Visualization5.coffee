@@ -766,9 +766,7 @@ class Visualization5
 
     # Build the timeline sliders.
     @buildTimeline()
-    
-    #@renderGraph()
-    
+        
     @leftProvinceMenu.size
       w: @d3document.select('#leftProvincesSelector').node().getBoundingClientRect().width
       h: @height() - @d3document.select('span.titleLabel').node().getBoundingClientRect().height
