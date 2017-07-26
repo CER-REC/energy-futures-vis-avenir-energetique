@@ -40,6 +40,7 @@ class Rose
             .duration Constants.animationDuration
             .attr
               transform: "translate(#{@options.startingPosition.x}, #{@options.startingPosition.y}) scale(#{@options.scale}, #{@options.scale})"
+
         # Render the full province rose in order.
         @app.window.setTimeout @renderFullRose, Constants.fullRoseRenderingDelay[@options.data[0].province]      
       when 'server'
@@ -63,10 +64,6 @@ class Rose
     switch Platform.name
       when 'browser'
         @container
-          .attr
-            transform: "translate(#{@options.startingPosition.x + containerOffset}, #{@options.startingPosition.y + containerOffset}) scale(0, 0)"
-          .transition()
-            .duration Constants.animationDuration
             .attr
               transform: "translate(#{@options.startingPosition.x}, #{@options.startingPosition.y}) scale(#{@options.scale}, #{@options.scale})"
       when 'server'
@@ -257,10 +254,6 @@ class Rose
       .attr
         d: (d) =>
           @petalPath d.value, Constants.viz5RoseData[d.source].startAngle
-
-
-
-
 
   # Produce a string for use as the definition of a path element, which includes a petal
   # and thorn. The petal is always drawn as a 1/6 section of a circle.
