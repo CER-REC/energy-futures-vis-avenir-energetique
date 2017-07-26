@@ -13,10 +13,22 @@
   </div>
 
   <div class='graphColumn'>
-    <div id="graphPanel">
+    <div id="graphPanel" class="viz5VisualizationColumn" tabindex='0' aria-description='{{ graphDescription }}'>
       <svg id="graphSVG" xmlns="http://www.w3.org/2000/svg" xmlns:xlink='http://www.w3.org/1999/xlink'>
         <style> {{ svgStylesheet }} </style>
       </svg>
+    </div>
+
+    <div id="viz5TimelineControlsContainer">
+      <div class="viz5TimelineAxisContainer">
+        <svg id="viz5SliderSVG" xmlns="http://www.w3.org/2000/svg" xmlns:xlink='http://www.w3.org/1999/xlink'>
+          <style> {{ svgStylesheet }} </style>
+          <g id="timeline">
+            <g id="timelineAxis"> </g>
+            <rect id="viz5timeLineTouch"> </rect>
+          </g>
+        </svg>
+      </div>
     </div>
   </div>
 
