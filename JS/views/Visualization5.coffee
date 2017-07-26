@@ -1207,8 +1207,20 @@ class Visualization5
           rosePillTemplate: @options.rosePillTemplate # only defined on server
           # To demonstrate that pills will appear if the user clicks on a rose, we show
           # the pills for an arbitrary province on the first run.
-          showPillsOnFirstRun: @isFirstRun and province == 'AB'
+          showPillsOnFirstRun: province == 'AB'
+          showPillsCallback: (rose) =>
+            @roseWithPillsOpen.removePills() if @roseWithPillsOpen?
+            rose.showPills()
+            @roseWithPillsOpen = rose
+
           isFirstRun: @isFirstRun
+          showPopoverOnFirstRun: province == 'AB'
+          showPopoverCallback: (rose) =>
+            rosePill = rose.rosePills.naturalGas
+            @app.popoverManager.showPopover rosePill.popover,
+              verticalAnchor: @verticalAnchor rosePill.options.data
+              horizontalAnchor: @horizontalAnchor rosePill.options.data
+
         rose.render()
 
         @allCanadaRoses[province] = rose
@@ -1252,6 +1264,11 @@ class Visualization5
         rosePillTemplate: @options.rosePillTemplate # only defined on server
         showPillsOnFirstRun: true
         isFirstRun: @isFirstRun
+        showPopoverOnFirstRun: true
+        showPopoverCallback: =>
+          # On first run, we want to show a popover for one of the power sources, on first
+          # run. Wait until the pills have rendered and then put it on display.
+          @showDoublePillPopover 'naturalGas'
       rose.render
         showPillsAfterTransition: true
 
@@ -1282,6 +1299,7 @@ class Visualization5
         rosePillTemplate: @options.rosePillTemplate # only defined on server
         showPillsOnFirstRun: true
         isFirstRun: @isFirstRun
+        showPopoverOnFirstRun: false
       rose.render
         showPillsAfterTransition: true
 
@@ -1365,37 +1383,41 @@ class Visualization5
 
     else
       source = rosePill.options.data.source
-      if @doublePillPopover?
-        # If we clicked on a pill for an open pair of popovers, we shouldn't open them
-        # anew, so return.
-        shouldReturn = source == @doublePillPopover.options.source
-        @app.popoverManager.closePopover()
+      @showDoublePillPopover source
+
+
+
+  showDoublePillPopover: (source) ->
+    if @doublePillPopover?
+      # If we clicked on a pill for an open pair of popovers, we shouldn't open them
+      # anew, so return.
+      shouldReturn = source == @doublePillPopover.options.source
+      @app.popoverManager.closePopover()
+      @doublePillPopover = null
+      return if shouldReturn
+
+    # When in showing two roses in comparison mode, show two popovers
+    # Fetch both popovers, and initialize a new 'meta popover'
+    leftData = @leftRose.rosePills[source].options.data
+    rightData = @rightRose.rosePills[source].options.data
+
+    leftPopover = @leftRose.rosePills[source].popover
+    rightPopover = @rightRose.rosePills[source].popover
+
+    @doublePillPopover = new DoublePillPopover
+      leftPopover: leftPopover
+      rightPopover: rightPopover
+      closeCallback: =>
         @doublePillPopover = null
-        return if shouldReturn
-        
+      source: source
 
-      # When in showing two roses in comparison mode, show two popovers
-      # Fetch both popovers, and initialize a new 'meta popover'
-      leftData = @leftRose.rosePills[source].options.data
-      rightData = @rightRose.rosePills[source].options.data
-
-      leftPopover = @leftRose.rosePills[source].popover
-      rightPopover = @rightRose.rosePills[source].popover
-
-      @doublePillPopover = new DoublePillPopover
-        leftPopover: leftPopover
-        rightPopover: rightPopover
-        closeCallback: =>
-          @doublePillPopover = null
-        source: source
-
-      @app.popoverManager.showPopover @doublePillPopover,
-        left:
-          verticalAnchor: @verticalAnchor leftData
-          horizontalAnchor: @horizontalAnchor leftData
-        right:
-          verticalAnchor: @verticalAnchor rightData
-          horizontalAnchor: @horizontalAnchor rightData
+    @app.popoverManager.showPopover @doublePillPopover,
+      left:
+        verticalAnchor: @verticalAnchor leftData
+        horizontalAnchor: @horizontalAnchor leftData
+      right:
+        verticalAnchor: @verticalAnchor rightData
+        horizontalAnchor: @horizontalAnchor rightData
 
 
 

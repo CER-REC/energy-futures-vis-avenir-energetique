@@ -26,11 +26,13 @@ class RosePill
       data: @options.data
       # Can't supply pillCentrePoint at creation time, we do it on update
 
+    @tornDown = false
 
 
 
   render: (options={wait: 0}) ->
     window.setTimeout =>
+      return if @tornDown
       @rosePillBox = d3.select('#rosePillRoot').append 'div'
       @update()
     , options.wait
@@ -86,6 +88,8 @@ class RosePill
 
 
   teardown: ->
+    @tornDown = true
+
     @rosePillBox
       .classed 'fadein', false
       .classed 'fadeout', true

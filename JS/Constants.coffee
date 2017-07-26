@@ -399,7 +399,7 @@ module.exports =
       column: 5
 
   allCanadaRoseMargin: 11 # px
-  comparisonRoseMargin: 25 # px
+  comparisonRoseMargin: 135 # px
 
   viz5SourcesInOrder: [
     'electricity'
@@ -460,6 +460,7 @@ module.exports =
   pillPopoverHeight: 150 # px
 
   # NB: Keep this in sync with pill width - border radius
-  pillPopoverHorizontalOffset: 70/2 - 13.5 # px
+  pillPopoverHorizontalOffset: 70 / 2 - 13.5 # px
 
+  pillAnimationDuration: 100 # ms
 

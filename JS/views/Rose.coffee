@@ -16,7 +16,11 @@ defaultOptions =
   clickHandler: null
   rosePillClickHandler: ->
   showPillsOnFirstRun: false
+  showPillsCallback: ->
   isFirstRun: false
+  showPopoverOnFirstRun: false
+  showPopoverCallback: null
+
 
 defaultDrawingOptions =
   removePillsBeforeTransition: false
@@ -46,6 +50,7 @@ class Rose
     @shadowPills = {}
 
     @pillsDisplayed = false
+    @tornDown = false
 
   # Add all of the static elements, and set up petals for update.
   render: (options) ->
@@ -67,7 +72,8 @@ class Rose
       .attr
         transform: "translate(#{@options.position.x}, #{@options.position.y}) scale(#{@options.scale}, #{@options.scale})"
       .each 'end', =>
-        @showPills() if @options.isFirstRun and @options.showPillsOnFirstRun
+        if @options.isFirstRun and @options.showPillsOnFirstRun
+          @options.showPillsCallback @
         @showPills() if options.showPillsAfterTransition
 
 
@@ -381,6 +387,8 @@ class Rose
 
 
   teardown: ->
+    @tornDown = true
+    
     # Apply an animation to the rose as it is removed
     containerOffset = Constants.roseSize / 2 * @options.scale
     @container
@@ -408,8 +416,18 @@ class Rose
         clickHandler: @options.pillClickHandler
         rosePillTemplate: @options.rosePillTemplate
       rosePill.render
-        wait: i * 100 # TODO constants me
+        wait: i * Constants.pillAnimationDuration
       @rosePills[item.source] = rosePill
+
+    if @options.isFirstRun and @options.showPopoverOnFirstRun and @options.showPopoverCallback?
+
+      window.setTimeout =>
+        return if @tornDown
+        @options.showPopoverCallback @
+      , 9 * Constants.pillAnimationDuration
+
+    @options.isFirstRun = false
+
 
 
   removePills: ->
