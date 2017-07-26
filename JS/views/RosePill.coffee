@@ -19,6 +19,7 @@ class RosePill
   #   clickHander: a function for when the pill gets a click
   #   rosePillTemplate: function, injected template, only on server
   #   shadowPillBounds, an object with left, top, to locate the shadow pill
+  #   size, a string, 'large' or 'small'
   constructor: (@app, options) ->
     @options = _.extend {}, defaultOptions, options
     @document = @app.window.document
@@ -26,6 +27,7 @@ class RosePill
 
     @popover = new PillPopover @app,
       data: @options.data
+      pillSize: Constants.viz5PillSizes[@options.size]
       # Can't supply pillCentrePoint at creation time, we do it on update
 
     @tornDown = false
@@ -49,13 +51,17 @@ class RosePill
     # Measure the shadow pill's position in the DOM
     rootBounds = @document.querySelector('#rosePillRoot').getBoundingClientRect()
 
-    # TODO: put these pill measurements in constants
-    # TODO: document that they should be kept in sync with pill sizes in CSS
-    @left = @options.shadowPillBounds.left - rootBounds.left - 35 + @app.pagePadding
-    @top = @options.shadowPillBounds.top - rootBounds.top - 13.5 + @app.pagePadding
+    sizes = Constants.viz5PillSizes[@options.size]
+
+    centrePoint =
+      left: @options.shadowPillBounds.left - rootBounds.left + @app.pagePadding
+      top: @options.shadowPillBounds.top - rootBounds.top + @app.pagePadding
+
+    @left = centrePoint.left - sizes.width / 2
+    @top = centrePoint.top - sizes.height / 2
 
     # The pill always gets a border matching the source's colour
-    classString = "rosePillBox pointerCursor fadein #{@options.data.source}Border"
+    classString = "rosePillBox pointerCursor fadein #{@options.data.source}Border #{@options.size}"
 
     # We default the background colour and font colour to white in the CSS for
     # .rosePillBox. Depending on whether the value is positive or negative, we set either
@@ -87,10 +93,8 @@ class RosePill
 
     # In addition, update the popover
     @popover.setData @options.data
-    @popover.setPillCentrePoint
-      left: @options.shadowPillBounds.left - rootBounds.left + @app.pagePadding
-      top: @options.shadowPillBounds.top - rootBounds.top + @app.pagePadding
-
+    @popover.setPillCentrePoint centrePoint
+    @popover.setPillSize sizes
 
 
   teardown: ->

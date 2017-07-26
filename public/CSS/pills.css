@@ -3,24 +3,34 @@
 #canadasEnergyFutureVisualization .rosePillBox {
   box-sizing: border-box;
   position: absolute;
-  width: 70px;
-  height: 27px;
   overflow: hidden;
 
   border-width: 2px;
   border-style: solid;
-  border-radius: 13.5px;
 
   background-color: white;
   color: white;
-  font-size: 18px;
-
 
   /* Above the pill popover */
   z-index: 2; 
-
 }
 
+#canadasEnergyFutureVisualization .rosePillBox.large {
+  border-width: 2px;
+  width: 70px;
+  height: 27px;
+  border-radius: 13.5px;
+  font-size: 18px;
+}
+
+#canadasEnergyFutureVisualization .rosePillBox.small {
+  border-width: 1px;
+  width: 50px;
+  height: 20px;
+  border-radius: 10px;
+  font-size: 13px;
+  line-height: 13px;
+}
 
 
 /* Keep durations in sync with other rose animations */
@@ -55,7 +65,7 @@
 }
 
 
-#canadasEnergyFutureVisualization .rosePillIcon {
+#canadasEnergyFutureVisualization .large .rosePillIcon {
   height: 23px;
   width: 23px;
   border-radius: 0px 11.5px 11.5px 0px;
@@ -63,9 +73,24 @@
   z-index: 1;
 }
 
-#canadasEnergyFutureVisualization .rosePillText {
+#canadasEnergyFutureVisualization .large .rosePillText {
   float: right;
   margin: 3.5px 5px 3.5px 0px;
+  z-index: 2;
+  position: relative;
+}
+
+#canadasEnergyFutureVisualization .small .rosePillIcon {
+  height: 18px;
+  width: 18px;
+  border-radius: 0px 8.5px 8.5px 0px;
+  position: absolute;
+  z-index: 1;
+}
+
+#canadasEnergyFutureVisualization .small .rosePillText {
+  float: right;
+  margin: 2.5px 3.5px 2.5px 0px;
   z-index: 2;
   position: relative;
 }

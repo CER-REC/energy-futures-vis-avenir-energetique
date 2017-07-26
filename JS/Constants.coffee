@@ -460,8 +460,7 @@ module.exports =
   pillPopoverWidth: 220 # px
   pillPopoverHeight: 150 # px
 
-  # NB: Keep this in sync with pill width - border radius
-  pillPopoverHorizontalOffset: 70 / 2 - 13.5 # px
+
 
   pillAnimationDuration: 100 # ms
 
@@ -473,3 +472,14 @@ module.exports =
       left: 922.5
       top: 309.5
   viz5ServerSideRoseSize: 449
+
+  # Keep these sizes consistent with the dimensions in pills.css
+  viz5PillSizes: # all in px
+    large:
+      width: 70
+      height: 27
+    small:
+      width: 50
+      height: 20
+
+

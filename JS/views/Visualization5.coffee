@@ -1324,6 +1324,7 @@ class Visualization5
         @allCanadaRoses[province].setScale roseScale
         @allCanadaRoses[province].setData data[province]
         @allCanadaRoses[province].setClickHandler @roseClickHandler
+        @allCanadaRoses[province].setPillSize 'small'
         @allCanadaRoses[province].update
           removePillsBeforeTransition: true
       else
@@ -1354,6 +1355,7 @@ class Visualization5
             @app.popoverManager.showPopover rosePill.popover,
               verticalAnchor: @verticalAnchor rosePill.options.data
               horizontalAnchor: @horizontalAnchor rosePill.options.data
+          pillSize: 'small'
 
         rose.render()
 
@@ -1381,6 +1383,7 @@ class Visualization5
       @leftRose.setScale roseScale
       @leftRose.setData data[@config.leftProvince]
       @leftRose.setClickHandler null
+      @leftRose.setPillSize 'large'
       @leftRose.update
         showPillsAfterTransition: true
     else
@@ -1404,6 +1407,7 @@ class Visualization5
           # run. Wait until the pills have rendered and then put it on display.
           @showDoublePillPopover 'naturalGas'
         rosePosition: 'left' # server side use only
+        pillSize: 'large'
       rose.render
         showPillsAfterTransition: true
 
@@ -1417,6 +1421,7 @@ class Visualization5
       @rightRose.setScale roseScale
       @rightRose.setData data[@config.rightProvince]
       @rightRose.setClickHandler null
+      @rightRose.setPillSize 'large'
       @rightRose.update
         showPillsAfterTransition: true
     else
@@ -1436,6 +1441,7 @@ class Visualization5
         isFirstRun: @isFirstRun
         showPopoverOnFirstRun: false
         rosePosition: 'right' # server side use only
+        pillSize: 'large'
       rose.render
         showPillsAfterTransition: true
 

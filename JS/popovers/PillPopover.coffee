@@ -33,6 +33,9 @@ class PillPopover
   setPillCentrePoint: (pillCentrePoint) ->
     @options.pillCentrePoint = pillCentrePoint if pillCentrePoint?
 
+  setPillSize: (dimensions) ->
+    @options.pillSize = pillSize if pillSize?
+
 
 
   # showOptions:
@@ -49,13 +52,17 @@ class PillPopover
       when 'bottom' then paddingClass = 'pillPopoverPaddingTop'
     classString = "pillPopover fadein #{@options.data.source} #{paddingClass}"
 
+    # Half width, to place the popover at the far side of the pill
+    # Half height, because that is the width of the border radius
+    horizontalOffset = @options.pillSize.width / 2 - @options.pillSize.height / 2
+
     left = @options.pillCentrePoint.left
     switch showOptions.horizontalAnchor
       when 'left'
-        left += Constants.pillPopoverHorizontalOffset
+        left += horizontalOffset
         left -= Constants.pillPopoverWidth
       when 'right'
-        left -= Constants.pillPopoverHorizontalOffset
+        left -= horizontalOffset
 
     top = @options.pillCentrePoint.top
     if showOptions.verticalAnchor == 'top'

@@ -19,7 +19,8 @@ defaultOptions =
   showPillsCallback: ->
   isFirstRun: false
   showPopoverOnFirstRun: false
-  showPopoverCallback: null
+  showPopoverCallback: ->
+  pillSize: 'small' # 'small' or 'large'
 
 
 defaultDrawingOptions =
@@ -387,6 +388,8 @@ class Rose
   setClickHandler: (handler) ->
     @options.clickHandler = handler if typeof handler == 'function' or handler == null
 
+  setPillSize: (size) ->
+    @options.pillSize = size if size == 'large' or size == 'small'
 
 
 
@@ -426,11 +429,12 @@ class Rose
         clickHandler: @options.pillClickHandler
         rosePillTemplate: @options.rosePillTemplate
         shadowPillBounds: shadowPillBounds
+        size: @options.pillSize
       rosePill.render
         wait: i * @app.pillAnimationDuration
       @rosePills[item.source] = rosePill
 
-    if @options.isFirstRun and @options.showPopoverOnFirstRun and @options.showPopoverCallback?
+    if @options.isFirstRun and @options.showPopoverOnFirstRun
 
       window.setTimeout =>
         return if @tornDown
