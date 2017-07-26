@@ -484,15 +484,15 @@ class Visualization5
 
     if !@rightProvinceMenu
       @rightProvinceMenu = @buildRightProvinceMenu()
-    
-    # We're building the yearAxis every time we render to make sure that the
-    # timeline year labels (2005 & 2040) are updated everytime the baseYear
-    # and/or the comparisonYear changes.
-    @buildYearAxis()
+
+    # Build the timeline sliders.
+    @buildTimeline()
 
     # NB: Do not render the roses (renderGraph()) as part of render, just let them be
     # created as part of the first redraw() call. Roses need to have some special
     # behaviour on first run, rendering them more than once at first run messes that up.
+
+
 
   outerWidth: ->
     # getBoundingClientRect is not implemented in JSDOM, use fixed width on server
@@ -766,8 +766,10 @@ class Visualization5
 
     @svgResize()
 
-    # Build the timeline sliders.
-    @buildTimeline()
+    # We're building the yearAxis every time we render to make sure that the
+    # timeline year labels (2005 & 2040) are updated everytime the baseYear
+    # and/or the comparisonYear changes.
+    @buildYearAxis()
     
     @renderGraph()
     
@@ -944,7 +946,7 @@ class Visualization5
         update = =>
           @config.setComparisonYear @config.comparisonYear + 1
           @yearTimeout = window.setTimeout timeoutComplete, @app.animationDuration
-          @render()
+          @redraw()
           @d3document.select '#sliderLabel'
             .transition()
               .attr
@@ -1030,7 +1032,7 @@ class Visualization5
           .attr
             'aria-valuenow': @config.baseYear
 
-        @render()
+        @redraw()
 
     drag.on 'dragend', =>
       if baseYear != @config.baseYear && @config.comparisonYear > baseYear
@@ -1047,7 +1049,7 @@ class Visualization5
         @config.setBaseYear baseYear
 
         @app.router.navigate @config.routerParams()
-        @render()
+        @redraw()
 
     sliderLabel = @d3document.select('#viz5SliderSVG')
       .append 'g'
@@ -1104,7 +1106,7 @@ class Visualization5
         .attr
           'aria-valuenow': @config.baseYear
 
-      @render()
+      @redraw()
       @app.router.navigate @config.routerParams()
 
     @app.datasetRequester.updateAndRequestIfRequired newConfig, update
@@ -1154,7 +1156,7 @@ class Visualization5
           .attr
             'aria-valuenow': @config.comparisonYear
 
-        @render()
+        @redraw()
 
     drag.on 'dragend', =>
       if comparisonYear != @config.comparisonYear && comparisonYear >= @config.baseYear
@@ -1169,7 +1171,7 @@ class Visualization5
             'aria-valuenow': @config.comparisonYear
         @config.setComparisonYear comparisonYear
         @app.router.navigate @config.routerParams()
-        @render()
+        @redraw()
 
     sliderLabel = @d3document.select('#viz5SliderSVG')
       .append 'g'
@@ -1259,7 +1261,7 @@ class Visualization5
         .attr
           'aria-valuenow': @config.comparisonYear
 
-      @render()
+      @redraw()
       @app.router.navigate @config.routerParams()
 
     @app.datasetRequester.updateAndRequestIfRequired newConfig, update

@@ -40,7 +40,6 @@ div.chartTooltip:after {
 #rightProvinceMenuSVG {
   /* TODO: This is not a great solution, vertical alignment may drift on resize */
   padding-top: 21px;
-  z-index: 10;
   position: relative;
 }
 
