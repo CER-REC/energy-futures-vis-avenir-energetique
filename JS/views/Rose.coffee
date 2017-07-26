@@ -397,13 +397,17 @@ class Rose
     return if @pillsDisplayed
     @pillsDisplayed = true
 
-    for item in @options.data
+    # We use the order randomization to mix up the staggered arrival of the pills
+    data = _.shuffle @options.data
+
+    for item, i in data
       rosePill = new RosePill @app,
         data: item
         shadowPill: @shadowPills[item.source]
         clickHandler: @options.pillClickHandler
         rosePillTemplate: @options.rosePillTemplate
-      rosePill.render()
+      rosePill.render
+        wait: i * 100 # TODO constants me
       @rosePills[item.source] = rosePill
 
 

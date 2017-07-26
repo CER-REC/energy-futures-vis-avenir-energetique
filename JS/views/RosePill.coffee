@@ -29,9 +29,12 @@ class RosePill
 
 
 
-  render: ->
-    @rosePillBox = d3.select('#rosePillRoot').append 'div'
-    @update()
+  render: (options={wait: 0}) ->
+    window.setTimeout =>
+      @rosePillBox = d3.select('#rosePillRoot').append 'div'
+      @update()
+    , options.wait
+
 
   update: ->
     # Measure the shadow pill's position in the DOM
