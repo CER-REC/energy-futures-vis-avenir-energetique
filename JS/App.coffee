@@ -42,6 +42,8 @@ class App
     @window = window
 
     @animationDuration = Constants.animationDuration
+    @pillAnimationDuration = Constants.pillAnimationDuration
+    @pagePadding = Constants.pagePadding
 
     @loadFonts()
 

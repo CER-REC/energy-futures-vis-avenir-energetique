@@ -57,25 +57,30 @@ class Rose
     options = _.extend {}, defaultDrawingOptions, options
 
 
-    # Apply an animation to the rose as it appears
-    containerOffset = Constants.roseSize / 2 * @options.scale
-    @container
-      # The initial scale is set at zero, so that the rose scales from nothing up to full
-      # size
-      # The initial postion is offset by the radius of the rose, when combined with the
-      # scale animation the rose appears to scale up from its origin.
-      # Otherwise the rose would scale up from the top left corner
-      .attr
-        transform: "translate(#{@options.position.x + containerOffset}, #{@options.position.y + containerOffset}) scale(0, 0)"
-      .transition()
-      .duration @app.animationDuration
-      .attr
-        transform: "translate(#{@options.position.x}, #{@options.position.y}) scale(#{@options.scale}, #{@options.scale})"
-      .each 'end', =>
-        if @options.isFirstRun and @options.showPillsOnFirstRun
-          @options.showPillsCallback @
-        @showPills() if options.showPillsAfterTransition
+    switch Platform.name
+      when 'browser'
+        # Apply an animation to the rose as it appears
+        containerOffset = Constants.roseSize / 2 * @options.scale
+        @container
+          # The initial scale is set at zero, so that the rose scales from nothing up to
+          # full size
+          # The initial postion is offset by the radius of the rose, when combined with
+          # the scale animation the rose appears to scale up from its origin.
+          # Otherwise the rose would scale up from the top left corner
+          .attr
+            transform: "translate(#{@options.position.x + containerOffset}, #{@options.position.y + containerOffset}) scale(0, 0)"
+          .transition()
+          .duration @app.animationDuration
+          .attr
+            transform: "translate(#{@options.position.x}, #{@options.position.y}) scale(#{@options.scale}, #{@options.scale})"
+          .each 'end', =>
+            if @options.isFirstRun and @options.showPillsOnFirstRun
+              @options.showPillsCallback @
+            @showPills() if options.showPillsAfterTransition
 
+      when 'server'
+        @container.attr
+          transform: "translate(#{@options.position.x}, #{@options.position.y}) scale(#{@options.scale}, #{@options.scale})"
 
     # Add an inner group for internal transforms.
     @innerContainer = @container
@@ -217,6 +222,8 @@ class Rose
 
       @shadowPills[source] = shadowPill
 
+    if Platform.name == 'server'
+      @showPills() if options.showPillsAfterTransition
 
 
 
@@ -388,7 +395,7 @@ class Rose
 
   teardown: ->
     @tornDown = true
-    
+
     # Apply an animation to the rose as it is removed
     containerOffset = Constants.roseSize / 2 * @options.scale
     @container
@@ -409,14 +416,21 @@ class Rose
     # We use the order randomization to mix up the staggered arrival of the pills
     data = _.shuffle @options.data
 
+
     for item, i in data
+      switch Platform.name
+        when 'browser'
+          shadowPillBounds = @shadowPills[item.source][0][0].getBoundingClientRect()
+        when 'server'
+          shadowPillBounds = @generateServerSideShadowPositions item.source
+
       rosePill = new RosePill @app,
         data: item
-        shadowPill: @shadowPills[item.source]
         clickHandler: @options.pillClickHandler
         rosePillTemplate: @options.rosePillTemplate
+        shadowPillBounds: shadowPillBounds
       rosePill.render
-        wait: i * Constants.pillAnimationDuration
+        wait: i * @app.pillAnimationDuration
       @rosePills[item.source] = rosePill
 
     if @options.isFirstRun and @options.showPopoverOnFirstRun and @options.showPopoverCallback?
@@ -424,11 +438,22 @@ class Rose
       window.setTimeout =>
         return if @tornDown
         @options.showPopoverCallback @
-      , 9 * Constants.pillAnimationDuration
+      , 9 * @app.pillAnimationDuration
 
     @options.isFirstRun = false
 
 
+  generateServerSideShadowPositions: (source) ->
+    roseCentre = Constants.viz5ServerSideRosePositions["#{@options.rosePosition}Rose"]
+    angle = Constants.viz5RoseData[source].startAngle + Math.PI / 6
+
+    return {
+      left: roseCentre.left + Constants.viz5ServerSideRoseSize / 2 * Math.cos(angle)
+      top: roseCentre.top + Constants.viz5ServerSideRoseSize / 2 * Math.sin(angle)
+    }
+
+      
+      
 
   removePills: ->
     return unless @pillsDisplayed

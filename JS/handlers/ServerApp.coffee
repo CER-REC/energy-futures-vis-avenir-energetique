@@ -15,7 +15,8 @@ class ServerApp
 
     # Set animation duration to zero, so that we do not waste time animating
     @animationDuration = 0
-
+    @pillAnimationDuration = 0
+    @pagePadding = 0
 
   setLanguage: (language) ->
     @language = language if language == 'en' or language == 'fr'

@@ -464,3 +464,11 @@ module.exports =
 
   pillAnimationDuration: 100 # ms
 
+  viz5ServerSideRosePositions:
+    leftRose:
+      left: 342.5
+      top: 309.5
+    rightRose:
+      left: 922.5
+      top: 309.5
+  viz5ServerSideRoseSize: 449

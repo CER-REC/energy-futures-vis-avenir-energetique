@@ -22,8 +22,10 @@ class PillPopover
   #   pillCentrePoint, an object with top and left attributes, identifying the centre of
   #     the shadow pill
   constructor: (@app, options) ->
+    @d3document = d3.select @app.window.document
+
     @options = _.extend {}, defaultOptions, options
-    @rosePillRoot = d3.select '#rosePillRoot'
+    @rosePillRoot = @d3document.select '#rosePillRoot'
 
   setData: (data) ->
     @options.data = data if data?
@@ -84,7 +86,7 @@ class PillPopover
       .classed 'fadein', false
       .classed 'fadeout', true
 
-    window.setTimeout =>
+    @app.window.setTimeout =>
       @popoverElement.remove()
       @popoverElement = null
     , 300 # to match duration of pills animate in in CSS. TODO: constants me.

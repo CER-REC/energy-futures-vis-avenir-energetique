@@ -155,7 +155,11 @@ class Visualization5
 
     @container = @d3document.select '#graphSVG'
 
-    @isFirstRun = true
+    switch Platform.name
+      when 'browser'
+        @isFirstRun = true
+      when 'server'
+        @isFirstRun = false
 
     @render()
     @redraw()
@@ -496,7 +500,7 @@ class Visualization5
         .getBoundingClientRect()
         .width
     else if Platform.name == 'server'
-      Constants.viz4ServerSideGraphWidth
+      Constants.serverSideGraphWidth
 
   width: ->
     @outerWidth() - @margin.left - @margin.right
@@ -747,9 +751,9 @@ class Visualization5
         width: @outerWidth()
         height: Constants.viz5SliderHeight
 
-    @d3document.select '#graphSVG'
+    @container
       .attr
-        width: @outerWidth()
+        width: @graphWidth()
         height: @height() - Constants.viz5SliderHeight/2
 
   redraw: ->
@@ -1269,6 +1273,7 @@ class Visualization5
           # On first run, we want to show a popover for one of the power sources, on first
           # run. Wait until the pills have rendered and then put it on display.
           @showDoublePillPopover 'naturalGas'
+        rosePosition: 'left' # server side use only
       rose.render
         showPillsAfterTransition: true
 
@@ -1300,6 +1305,7 @@ class Visualization5
         showPillsOnFirstRun: true
         isFirstRun: @isFirstRun
         showPopoverOnFirstRun: false
+        rosePosition: 'right' # server side use only
       rose.render
         showPillsAfterTransition: true
 

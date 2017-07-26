@@ -16,11 +16,13 @@ class RosePill
 
   # Options:
   #   data, a single data element as produced by the energy consumption provider
-  #   shadowPill, a d3 wrapped DOM node that we will measure to position the pill
   #   clickHander: a function for when the pill gets a click
   #   rosePillTemplate: function, injected template, only on server
+  #   shadowPillBounds, an object with left, top, to locate the shadow pill
   constructor: (@app, options) ->
     @options = _.extend {}, defaultOptions, options
+    @document = @app.window.document
+    @d3document = d3.select @document
 
     @popover = new PillPopover @app,
       data: @options.data
@@ -31,22 +33,26 @@ class RosePill
 
 
   render: (options={wait: 0}) ->
-    window.setTimeout =>
-      return if @tornDown
-      @rosePillBox = d3.select('#rosePillRoot').append 'div'
+
+    if options.wait > 0
+      @app.window.setTimeout =>
+        return if @tornDown
+        @rosePillBox = @d3document.select('#rosePillRoot').append 'div'
+        @update()
+      , options.wait
+    else
+      @rosePillBox = @d3document.select('#rosePillRoot').append 'div'
       @update()
-    , options.wait
 
 
   update: ->
     # Measure the shadow pill's position in the DOM
-    rootBounds = document.querySelector('#rosePillRoot').getBoundingClientRect()
-    pillBounds = @options.shadowPill[0][0].getBoundingClientRect()
+    rootBounds = @document.querySelector('#rosePillRoot').getBoundingClientRect()
 
     # TODO: put these pill measurements in constants
     # TODO: document that they should be kept in sync with pill sizes in CSS
-    @left = pillBounds.left - rootBounds.left - 35 + Constants.pagePadding
-    @top = pillBounds.top - rootBounds.top - 13.5 + Constants.pagePadding
+    @left = @options.shadowPillBounds.left - rootBounds.left - 35 + @app.pagePadding
+    @top = @options.shadowPillBounds.top - rootBounds.top - 13.5 + @app.pagePadding
 
     # The pill always gets a border matching the source's colour
     classString = "rosePillBox pointerCursor fadein #{@options.data.source}Border"
@@ -82,8 +88,8 @@ class RosePill
     # In addition, update the popover
     @popover.setData @options.data
     @popover.setPillCentrePoint
-      left: pillBounds.left - rootBounds.left + Constants.pagePadding
-      top: pillBounds.top - rootBounds.top + Constants.pagePadding
+      left: @options.shadowPillBounds.left - rootBounds.left + @app.pagePadding
+      top: @options.shadowPillBounds.top - rootBounds.top + @app.pagePadding
 
 
 
@@ -94,7 +100,7 @@ class RosePill
       .classed 'fadein', false
       .classed 'fadeout', true
 
-    window.setTimeout =>
+    @app.window.setTimeout =>
       @rosePillBox.remove()
     , 300 # to match duration of pills animate in in CSS. TODO: constants me.
 

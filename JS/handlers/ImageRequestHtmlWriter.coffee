@@ -76,7 +76,7 @@ templatesPromise = Promise.join Vis1TemplatePromise, Vis2TemplatePromise, Vis3Te
     vis4Template: vis4Template.toString()
     vis5Template: vis5Template.toString()
     svgTemplate: svgTemplate.toString()
-    rosePillTemplate: rosePillTemplate
+    rosePillTemplate: rosePillTemplate.toString()
   }
 
 
