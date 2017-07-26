@@ -40,6 +40,8 @@ div.chartTooltip:after {
 #rightProvinceMenuSVG {
   /* TODO: This is not a great solution, vertical alignment may drift on resize */
   padding-top: 21px;
+  z-index: 10;
+  position: relative;
 }
 
 #canadasEnergyFutureVisualization .videoIframeContainer {
@@ -59,6 +61,21 @@ div.chartTooltip:after {
   border: none;
 }
 
+#canadasEnergyFutureVisualization #viz5TimelineControlsContainer {
+  width: 79%;
+  float: left;
+  box-sizing: border-box;
+}
+#canadasEnergyFutureVisualization .viz5TimelinePlayPausePanel {
+  width: 70px;
+  height: 55px;
+  float: right;
+  position: absolute;
+}
+
+#canadasEnergyFutureVisualization .viz5TimelineAxisContainer {
+  margin-left: 45%;
+}
 
 #canadasEnergyFutureVisualization #mainPanel {
   position: relative;
@@ -541,8 +558,13 @@ div.chartTooltip:after {
   float: left;
   box-sizing: border-box;
 }
+#canadasEnergyFutureVisualization .smallSelectorColumn_leftAligned {
+  width: 4.49%;
+  float: left;
+  box-sizing: border-box;
+}
 #canadasEnergyFutureVisualization .smallSelectorColumn_rightAligned {
-  width: 7%;
+  width: 2.7%;
   float: right;
   box-sizing: border-box;
 }
@@ -552,7 +574,7 @@ div.chartTooltip:after {
   box-sizing: border-box;
 }
 #canadasEnergyFutureVisualization .viz5VisualizationColumn {
-  width: 73%;
+  width: 79%;
   float: left;
   box-sizing: border-box;
 }
@@ -789,11 +811,6 @@ div.chartTooltip:after {
   cursor: pointer;
 }
 
-/*#canadasEnergyFutureVisualization #sectorsSelector {
-  margin: 0px 5px 0px 5px;
-}
-*/
-
 #canadasEnergyFutureVisualization .sectorSelectorButton.totalSectorButton {
   width: 100%;
 }
@@ -904,6 +921,12 @@ div.chartTooltip:after {
   margin: 0;
 }
 
+#canadasEnergyFutureVisualization .viz5MediaButtons{
+  width: 100%;
+  position:absolute;
+  z-index: 10;
+  bottom: 0;
+}
 
 #canadasEnergyFutureVisualization .mediaButtons{
   width: 100%;

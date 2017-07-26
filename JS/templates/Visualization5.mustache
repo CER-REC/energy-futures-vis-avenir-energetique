@@ -28,7 +28,7 @@
     </div>
   </div>
 
-  <div id="provincePanel" class="smallSelectorColumn">
+  <div id="provincePanel" class="smallSelectorColumn_leftAligned">
     <span class="titleLabel textCentre">{{selectRegionLabel}}</span>
     <div id="leftProvincesSelector">
       <svg id="leftProvinceMenuSVG" xmlns="http://www.w3.org/2000/svg" xmlns:xlink='http://www.w3.org/1999/xlink'>
@@ -49,14 +49,21 @@
     </svg>
   </div>
 
+  <div id="viz5TimelineControlsContainer">
+    <div id="playPausePanel" class="viz5TimelinePlayPausePanel"/>
+    <div class="viz5TimelineAxisContainer">
+      <svg id="viz5SliderSVG" xmlns="http://www.w3.org/2000/svg" xmlns:xlink='http://www.w3.org/1999/xlink'>
+        <style> {{ svgStylesheet }} </style>
+        <g id="timeline">
+          <g id="timelineAxis"> </g>
+          <rect id="viz5timeLineTouch"> </rect>
+        </g>
+      </svg>
+    </div>
+</div>
+
   <div class="narrowVisualizationColumn">
-    <svg id="sliderSVG" xmlns="http://www.w3.org/2000/svg" xmlns:xlink='http://www.w3.org/1999/xlink'>
-      <style> {{ svgStylesheet }} </style>
-      <g id="timeline">
-        <g id="timelineAxis"> </g>
-        <rect id="timeLineTouch"> </rect>
-      </g>
-    </svg>
+
   </div>
 
   <div id='tooltip' class='chartTooltip'> </div>
