@@ -247,6 +247,10 @@ module.exports =
 
 
   animationDuration: 1000 # in ms
+  rosePopUpDuration: 300 # in ms
+
+  roseFullScale: 1
+  roseSlightlyBiggerScale: 1.1
 
   serverSideGraphWidth: 1065 # px
   viz4ServerSideGraphWidth: 995 # 1065 - 70 extra pixels of width for viz4's wider legend
@@ -369,7 +373,6 @@ module.exports =
     NL:
       row: 0
       column: 5
-
     BC:
       row: 1
       column: 0
@@ -398,6 +401,63 @@ module.exports =
     NS:
       row: 2
       column: 5
+
+  roseStartingPositionOffsets:
+    YT:
+      x: 0.141
+      y: 0.497
+    NT:
+      x: 0.277
+      y: 0.497
+    NU:
+      x: 0.39
+      y: 0.497
+    NL:
+      x: 0.73
+      y: 0.497
+
+    BC:
+      x: 0.198
+      y: 0.703
+    AB:
+      x: 0.277
+      y: 0.703
+    SK:
+      x: 0.339
+      y: 0.703
+    MB:
+      x: 0.401
+      y: 0.703
+    ON:
+      x: 0.503
+      y: 0.703
+    QC:
+      x: 0.622
+      y: 0.703
+    NB:
+      x: 0.679
+      y: 0.703
+    PE:
+      x: 0.718
+      y: 0.634
+    NS:
+      x: 0.735
+      y: 0.703
+
+  fullRoseRenderingDelay:
+    YT: 800   #
+    NT: 1200  #
+    NU: 1520  #
+    NL: 1440  #
+    BC: 1280  #
+    AB: 880   #
+    SK: 1600  #
+    MB: 1040  #
+    ON: 1680  #
+    QC: 1120  #
+    NB: 1360  #
+    PE: 1760  #
+    NS: 960   #
 
   viz5Height: 700 # px
 

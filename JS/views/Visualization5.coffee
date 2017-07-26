@@ -154,6 +154,8 @@ class Visualization5
 
     @container = @d3document.select '#graphSVG'
 
+    @isFirstRun = true
+
     @render()
     @redraw()
 
@@ -164,6 +166,13 @@ class Visualization5
   graphData: ->
     @app.providers[@config.dataset].energyConsumptionProvider.dataForViz5 @config
 
+
+  graphHeight: ->
+    @d3document
+      .select('#graphPanel')
+      .node()
+      .getBoundingClientRect()
+      .height
 
   graphWidth: ->
     # getBoundingClientRect is not implemented in JSDOM, use fixed width on server
@@ -757,9 +766,7 @@ class Visualization5
 
     # Build the timeline sliders.
     @buildTimeline()
-    
-    @renderGraph()
-    
+        
     @leftProvinceMenu.size
       w: @d3document.select('#leftProvincesSelector').node().getBoundingClientRect().width
       h: @height() - @d3document.select('span.titleLabel').node().getBoundingClientRect().height
@@ -1306,6 +1313,9 @@ class Visualization5
         @allCanadaRoses[province].setPosition
           x: xPos
           y: yPos
+        @allCanadaRoses[province].setStartingPosition
+          x: xPos
+          y: yPos
         @allCanadaRoses[province].setScale roseScale
         @allCanadaRoses[province].setData data[province]
         @allCanadaRoses[province].update()
@@ -1316,15 +1326,46 @@ class Visualization5
           container: roseContainer
           data: data[province]
           scale: roseScale
+          startingPosition:
+            x: if @isFirstRun then @outerWidth() * Constants.roseStartingPositionOffsets[province].x else xPos
+            y: if @isFirstRun then @graphHeight() * Constants.roseStartingPositionOffsets[province].y else yPos
           position:
             x: xPos
             y: yPos
+          firstRun: @isFirstRun
         rose.render()
 
         @allCanadaRoses[province] = rose
 
+    # Render Canada's map, and fade it out quickly after the transition starts.
+    @fadeInCanadaMap()
+    @app.window.setTimeout @fadeOutCanadaMap, Constants.animationDuration
+
+    # Change the first run state to false.
+    @isFirstRun = false
+
+  fadeInCanadaMap: ->
+    # Only load the map when the app is started in the 'allCanadaRoses' mode.
+    return unless @isFirstRun
+    
+    # Render Canada's map.
+    @d3document.select('#canadaMapSVG')
+      .attr
+        'xlink:xlink:href': 'IMG/CanadaMap.svg'
+        width: '100%'
+        height: '100%'
+        x: @outerWidth() * -0.003
+        y: @graphHeight() * 0.045
+
+  fadeOutCanadaMap: =>
+    @d3document.select('#canadaMapSVG')
+      .attr
+        opacity: 0
 
   renderTwoRoses: ->
+    # Change the first run state to false.
+    @isFirstRun = false
+
     data = @graphData()
 
     availableWidth = @graphWidth() - @graphMargin.left - @graphMargin.right - Constants.roseMargin
@@ -1341,6 +1382,9 @@ class Visualization5
       @leftRose.setPosition
         x: leftXPos
         y: leftYPos
+      @leftRose.setStartingPosition
+        x: leftXPos
+        y: leftYPos
       @leftRose.setScale roseScale
       @leftRose.setData data[@config.leftProvince]
       @leftRose.update()
@@ -1354,6 +1398,10 @@ class Visualization5
         position:
           x: leftXPos
           y: leftYPos
+        startingPosition:
+          x: leftXPos
+          y: leftYPos          
+        firstRun: @isFirstRun
       rose.render()
 
       @leftRose = rose
@@ -1361,6 +1409,9 @@ class Visualization5
 
     if @rightRose?
       @rightRose.setPosition
+        x: rightXPos
+        y: rightYPos
+      @rightRose.setStartingPosition
         x: rightXPos
         y: rightYPos
       @rightRose.setScale roseScale
@@ -1376,14 +1427,16 @@ class Visualization5
         position:
           x: rightXPos
           y: rightYPos
+        startingPosition:
+          x: rightXPos
+          y: rightYPos
+        firstRun: @isFirstRun
       rose.render()
 
       @rightRose = rose
 
     @lastRenderedLeftRose = @config.leftProvince
     @lastRenderedRightRose = @config.rightProvince
-
-
 
   transitionToAllCanadaRoses: ->
     # NB: At this time, @config.leftProvince has already been set to 'all', and can't be
@@ -1422,7 +1475,8 @@ class Visualization5
       rose.teardown()
       @allCanadaRoses[province] = null
 
-
+    # Change the first run state to false.
+    @isFirstRun = false
 
     @renderTwoRoses()
 
