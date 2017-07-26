@@ -155,6 +155,8 @@ class Visualization5
 
     @container = @d3document.select '#graphSVG'
 
+    @isFirstRun = true
+
     @render()
     @redraw()
 
@@ -481,8 +483,9 @@ class Visualization5
     # and/or the comparisonYear changes.
     @buildYearAxis()
 
-    # Render the graph
-    @renderGraph()
+    # NB: Do not render the roses (renderGraph()) as part of render, just let them be
+    # created as part of the first redraw() call. Roses need to have some special
+    # behaviour on first run, rendering them more than once at first run messes that up.
 
   outerWidth: ->
     # getBoundingClientRect is not implemented in JSDOM, use fixed width on server
@@ -1164,6 +1167,8 @@ class Visualization5
       @renderMode = 'twoRoses'
       @transitionToTwoRoses()
 
+    @isFirstRun = false
+
 
 
   renderAllCanadaRoses: ->
@@ -1200,9 +1205,14 @@ class Visualization5
           clickHandler: @roseClickHandler
           pillClickHandler: @rosePillClickHandler
           rosePillTemplate: @options.rosePillTemplate # only defined on server
+          # To demonstrate that pills will appear if the user clicks on a rose, we show
+          # the pills for an arbitrary province on the first run.
+          showPillsOnFirstRun: @isFirstRun and province == 'AB'
+          isFirstRun: @isFirstRun
         rose.render()
 
         @allCanadaRoses[province] = rose
+
 
 
   renderTwoRoses: ->
@@ -1240,6 +1250,8 @@ class Visualization5
         clickHandler: null
         pillClickHandler: @rosePillClickHandler
         rosePillTemplate: @options.rosePillTemplate # only defined on server
+        showPillsOnFirstRun: true
+        isFirstRun: @isFirstRun
       rose.render
         showPillsAfterTransition: true
 
@@ -1268,6 +1280,8 @@ class Visualization5
         clickHandler: null
         pillClickHandler: @rosePillClickHandler
         rosePillTemplate: @options.rosePillTemplate # only defined on server
+        showPillsOnFirstRun: true
+        isFirstRun: @isFirstRun
       rose.render
         showPillsAfterTransition: true
 
@@ -1316,8 +1330,6 @@ class Visualization5
       continue unless rose?
       rose.teardown()
       @allCanadaRoses[province] = null
-
-
 
     @renderTwoRoses()
 

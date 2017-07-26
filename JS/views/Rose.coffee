@@ -15,6 +15,8 @@ defaultOptions =
   # always displayed, and there is no click behaviour
   clickHandler: null
   rosePillClickHandler: ->
+  showPillsOnFirstRun: false
+  isFirstRun: false
 
 defaultDrawingOptions =
   removePillsBeforeTransition: false
@@ -65,6 +67,7 @@ class Rose
       .attr
         transform: "translate(#{@options.position.x}, #{@options.position.y}) scale(#{@options.scale}, #{@options.scale})"
       .each 'end', =>
+        @showPills() if @options.isFirstRun and @options.showPillsOnFirstRun
         @showPills() if options.showPillsAfterTransition
 
 
@@ -266,9 +269,7 @@ class Rose
         d: (d) =>
           @petalPath d.value, Constants.viz5RoseData[d.source].startAngle
 
-
-
-
+    @options.isFirstRun = false
 
   # Produce a string for use as the definition of a path element, which includes a petal
   # and thorn. The petal is always drawn as a 1/6 section of a circle.
