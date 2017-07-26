@@ -88,7 +88,6 @@ class Rose
       .append 'g'
       .attr
         class: =>
-          # TODO: is this the right place to put pointerCursor and the click handler??
           if @options.clickHandler?
             'rose pointerCursor'
           else
@@ -138,7 +137,6 @@ class Rose
         fill: 'white'
         transform: 'translate(0, 4.5)'
         'text-anchor': 'middle'
-      # TODO: should this be in a stylesheet?
       .style
         'font-size': '13px'
       .text =>
@@ -208,8 +206,6 @@ class Rose
     # The approach here: render six invisible 'shadow pills' within the SVG, measure
     # their positions in the HTML document, and use them to absolutely position the real
     # pills (and their popovers).
-    # TODO: instead of a tiny circle, maybe render an object that resembles the footprint
-    # of the pill, to simplify the math later on...
 
     for source, data of Constants.viz5RoseData
       shadowPill = @innerContainer.append 'circle'

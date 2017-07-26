@@ -106,7 +106,7 @@ class RosePill
 
     @app.window.setTimeout =>
       @rosePillBox.remove()
-    , 300 # to match duration of pills animate in in CSS. TODO: constants me.
+    , Constants.viz5PillPopoverDuration
 
 
 

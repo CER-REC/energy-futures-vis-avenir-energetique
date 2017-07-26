@@ -70,8 +70,7 @@ class PillPopover
 
     styleString = "top: #{top}px; left: #{left}px;"
 
-    # TODO: This display is based on the assumption that units are petajoules, always,
-    # and never change. Validate this!
+    # This display is based on the assumption that units are petajoules
     data = @options.data
     html = Mustache.render PillPopoverTemplate,
       headingText: Tr.sourceSelector.sources[data.source][@app.language]
@@ -96,7 +95,7 @@ class PillPopover
     @app.window.setTimeout =>
       @popoverElement.remove()
       @popoverElement = null
-    , 300 # to match duration of pills animate in in CSS. TODO: constants me.
+    , Constants.viz5PillPopoverDuration
 
 
   focus: ->

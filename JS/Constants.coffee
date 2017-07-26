@@ -250,7 +250,6 @@ module.exports =
 
   serverSideGraphWidth: 1065 # px
   viz4ServerSideGraphWidth: 995 # 1065 - 70 extra pixels of width for viz4's wider legend
-  viz5ServerSideGraphWidth: 995 # TODO: Change this later.
 
   cacheDuration: 3600 # seconds
 
@@ -482,4 +481,7 @@ module.exports =
       width: 50
       height: 20
 
+  
+  # To match duration of pills animations in CSS.
+  viz5PillPopoverDuration: 300 # ms
 
