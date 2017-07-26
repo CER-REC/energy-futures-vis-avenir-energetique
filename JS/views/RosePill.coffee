@@ -112,7 +112,8 @@ class RosePill
   setData: (data) ->
     @options.data = data if data?
 
-
+  setShadowPillBounds: (bounds) ->
+    @options.shadowPillBounds = bounds if bounds?
 
 
 

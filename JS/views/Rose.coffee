@@ -236,12 +236,8 @@ class Rose
 
     @removePills() if options.removePillsBeforeTransition
 
-
-
-
     @innerContainer.attr
       class: =>
-        # TODO: is this the right place to put pointerCursor?
         if @options.clickHandler?
           'rose pointerCursor'
         else
@@ -265,6 +261,7 @@ class Rose
       if @pillsDisplayed
         for item in @options.data
           @rosePills[item.source].setData item
+          @rosePills[item.source].setShadowPillBounds @shadowPills[item.source][0][0].getBoundingClientRect()
           @rosePills[item.source].update()
 
       @showPills() if options.showPillsAfterTransition
