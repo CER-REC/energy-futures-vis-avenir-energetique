@@ -1,6 +1,6 @@
 {
   "name": "d3-neb",
-  "version": "1.1.7",
+  "version": "1.2.0",
   "description": "NEB project",
   "scripts": {
     "build": "browserify JS/App.coffee -p ./tasks/prod-dotenv-browserify-plugin.js -t coffeeify --extension='.coffee' -t [ stringify --extensions [.mustache .css] ] -t envify -g uglifyify -o dist/public/bundle.js",
@@ -23,6 +23,7 @@
     "coffee-script": "^1.11.1",
     "compression": "^1.6.2",
     "d3": "^3.5.17",
+    "d3-path": "^1.0.5",
     "dotenv": "^2.0.0",
     "express": "^4.14.0",
     "jsdom": "^9.6.0",
@@ -48,7 +49,6 @@
     "coffeelint-prefer-fewer-parens": "^0.1.0",
     "coffeescope2": "^0.4.5",
     "convert-source-map": "^1.3.0",
-    "d3-path": "^1.0.5",
     "debug": "~2.3.0",
     "domready": "^1.0.8",
     "envify": "^3.4.1",

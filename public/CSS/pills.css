@@ -12,7 +12,8 @@
   color: white;
 
   /* Above the pill popover */
-  z-index: 2; 
+  /* NB: Wet navbar is styled with z-index 500, and we desire for the popover to cover it if need be */
+  z-index: 2000; 
 }
 
 #canadasEnergyFutureVisualization .rosePillBox.large {
@@ -71,6 +72,8 @@
   border-radius: 0px 11.5px 11.5px 0px;
   position: absolute;
   z-index: 1;
+  /* WET override: */
+  margin: 0;
 }
 
 #canadasEnergyFutureVisualization .large .rosePillText {
@@ -86,6 +89,8 @@
   border-radius: 0px 8.5px 8.5px 0px;
   position: absolute;
   z-index: 1;
+  /* WET override: */
+  margin: 0;
 }
 
 #canadasEnergyFutureVisualization .small .rosePillText {

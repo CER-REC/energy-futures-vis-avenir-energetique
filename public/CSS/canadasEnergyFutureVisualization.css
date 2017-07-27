@@ -16,6 +16,10 @@
 #canadasEnergyFutureVisualization h5, 
 #canadasEnergyFutureVisualization h6 {
   font-weight: 400;
+  /* WET Overrides: */
+  border: none;
+  font-family: Avenir Next Demi Condensed, 'PT Sans Narrow', Arial Narrow, Arial, Verdana, sans-serif !important;
+  line-height: 1em;
 } 
 
 div.chartTooltip {
@@ -1165,8 +1169,10 @@ svg { overflow: hidden; }
   height: 150px;
 
   /* Beneath the pills */
-  z-index: 1; 
+  /* NB: Wet navbar is styled with z-index 500, and we desire for the popover to cover it if need be */
+  z-index: 1000; 
 
+  box-sizing: border-box;
 }
 
 #canadasEnergyFutureVisualization .pillPopoverPaddingBottom {
@@ -1183,38 +1189,44 @@ svg { overflow: hidden; }
 }
 #canadasEnergyFutureVisualization .pillPopoverText {
   font-size: 16px;
-  display: inline-block;
+  display: block;
   margin: 0 0 0 10px;
 }
 #canadasEnergyFutureVisualization .pillPopoverTextSmall {
   font-size: 12px;
-  display: inline-block;
+  display: block;
   margin: 0 0 10px 20px;
 }
 
-
-#canadasEnergyFutureVisualization .pillPopover.electricity {
-  color: #33cccc;
+/* The extra declaration for h1 is to override a WET style */
+#canadasEnergyFutureVisualization .pillPopover.electricity,
+#canadasEnergyFutureVisualization .pillPopover.electricity h1 {
+  color: #33cccc !important;
   border-color: #33cccc;
 }
-#canadasEnergyFutureVisualization .pillPopover.naturalGas {
+#canadasEnergyFutureVisualization .pillPopover.naturalGas, 
+#canadasEnergyFutureVisualization .pillPopover.naturalGas h1 {
   color: #f16739;
   border-color: #f16739;
 }
-#canadasEnergyFutureVisualization .pillPopover.bio {
-  color: #8d68ac;
+#canadasEnergyFutureVisualization .pillPopover.bio,
+#canadasEnergyFutureVisualization .pillPopover.bio h1 {
+  color: #8d68ac !important;
   border-color: #8d68ac;
 }
-#canadasEnergyFutureVisualization .pillPopover.solarWindGeothermal {
-  color: #339947;
+#canadasEnergyFutureVisualization .pillPopover.solarWindGeothermal,
+#canadasEnergyFutureVisualization .pillPopover.solarWindGeothermal h1 {
+  color: #339947 !important;
   border-color: #339947;
 }
-#canadasEnergyFutureVisualization .pillPopover.coal {
-  color: #996733;
+#canadasEnergyFutureVisualization .pillPopover.coal,
+#canadasEnergyFutureVisualization .pillPopover.coal h1 {
+  color: #996733 !important;
   border-color: #996733;
 }
-#canadasEnergyFutureVisualization .pillPopover.oilProducts {
-  color: #cc6699;
+#canadasEnergyFutureVisualization .pillPopover.oilProducts,
+#canadasEnergyFutureVisualization .pillPopover.oilProducts h1 {
+  color: #cc6699 !important;
   border-color: #cc6699;
 }
 
