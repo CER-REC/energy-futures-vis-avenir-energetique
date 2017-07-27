@@ -926,9 +926,11 @@ class Visualization5
     return if @playPauseStatus == 'playing'
     @playPauseStatus = 'playing'
 
-    # This is required to avoid redrawing the buttons even when
-    # the state has not changed.
-    return unless @config.comparisonYear < Constants.maxYear
+    # Set the timeline state to replay, and set the comparisonYear
+    # to the baseYear.
+    if @config.comparisonYear >= Constants.maxYear
+      @config.setComparisonYear @config.baseYear
+      isReplay = true
 
     @d3document.select '#vizPlayButton'
       .html """
@@ -943,15 +945,21 @@ class Visualization5
     if @yearTimeout then window.clearTimeout @yearTimeout
     timeoutComplete = =>
       #return unless @_chart?
-
       if @config.comparisonYear < Constants.maxYear
 
         newConfig = new @config.constructor @app
         newConfig.copy @config
-        newConfig.setComparisonYear @config.comparisonYear + 1
+        # Do not immediately increment the comparisonYear if in replay mode. This results
+        # in a prettier transition from 2040 to the baseYear.
+        if isReplay? && isReplay then newConfig.setComparisonYear @config.comparisonYear
+        else newConfig.setComparisonYear @config.comparisonYear + 1
 
         update = =>
-          @config.setComparisonYear @config.comparisonYear + 1
+          # Reset the replay mode after setting the comparisonYear to baseYear.
+          if isReplay? && isReplay
+            @config.setComparisonYear @config.comparisonYear
+            isReplay = false
+          else @config.setComparisonYear @config.comparisonYear + 1
           @yearTimeout = window.setTimeout timeoutComplete, @app.animationDuration
           @redraw()
           @d3document.select '#sliderLabel'
