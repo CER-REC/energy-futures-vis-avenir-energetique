@@ -7,6 +7,7 @@ Tr = require '../TranslationTable.coffee'
 Platform = require '../Platform.coffee'
 Rose = require './Rose.coffee'
 
+ParamsToUrlString = require '../ParamsToUrlString.coffee'
 CommonControls = require './CommonControls.coffee'
 
 if Platform.name == 'browser'
@@ -1326,7 +1327,10 @@ class Visualization5
 
     @isFirstRun = false
 
-
+    # update the csv data download link
+    @d3document.select('#dataDownloadLink')
+      .attr
+        href: "csv_data#{ParamsToUrlString(@config.routerParams())}"
 
   renderAllCanadaRoses: (options) ->
     data = @graphData()

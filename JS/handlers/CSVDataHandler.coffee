@@ -15,6 +15,7 @@ Visualization1Configuration = require '../VisualizationConfigurations/visualizat
 Visualization2Configuration = require '../VisualizationConfigurations/visualization2Configuration.coffee'
 Visualization3Configuration = require '../VisualizationConfigurations/visualization3Configuration.coffee'
 Visualization4Configuration = require '../VisualizationConfigurations/visualization4Configuration.coffee'
+Visualization5Configuration = require '../VisualizationConfigurations/visualization5Configuration.coffee'
 
 ServerData = require '../server/ServerData.coffee'
 Constants = require '../Constants.coffee'
@@ -56,6 +57,14 @@ CSVDataHandler = (req, res) ->
       valueKey: Tr.csvData['value'][language]
       unitKey: Tr.csvData['unit']['unit'][language]
       datasetKey: Tr.csvData['dataset']['dataset'][language]
+      baseYearKey: Tr.csvData['baseYear'][language]
+      comparisonYearKey: Tr.csvData['comparisonYear'][language]
+      baseValueKey: Tr.csvData['baseValue'][language]
+      comparisonValueKey: Tr.csvData['comparisonValue'][language]
+      baseTotalKey: Tr.csvData['baseTotal'][language]
+      comparisonTotalKey: Tr.csvData['comparisonTotal'][language]
+      basePercentageKey: Tr.csvData['basePercentage'][language]
+      comparisonPercentageKey: Tr.csvData['comparisonPercentage'][language]
 
     # Parse the parameters with a configuration object, and then hand them off to a
     # visualization object. The visualizations render the graphs in their constructors.
@@ -102,6 +111,11 @@ CSVDataHandler = (req, res) ->
             return
         csvData = generateArrayFromObject tempData, 'viz4', config, Keys
 
+      when 'viz5'
+        config = new Visualization5Configuration serverApp, params
+        tempData = serverApp.providers[config.dataset].energyConsumptionProvider.dataForViz5 config
+        csvData = generateArrayFromObject(tempData, 'viz5', config, Keys)
+
       else
         errorHandler req, res, new Error("Visualization 'page' parameter not specified or not recognized."), 400, counter
         return
@@ -138,12 +152,16 @@ generateArrayFromObject = (csvDataObject, viz, config, Keys) ->
         hashArray = hashArray.concat tempChild.children
       hashArray = filterViz3 hashArray, config, Keys
       break
+    when 'viz5'
+      for k,v of csvDataObject
+        hashArray = hashArray.concat filterViz5(v, config, Keys)
+      break
   
   return hashArray
   
 filterViz1andViz4 = (csvDataObject, config, Keys) ->
   filteredData = []
-  
+
   for k,v of csvDataObject
     item = {}
 
@@ -178,6 +196,35 @@ filterViz2 = (csvDataObject, config, Keys) ->
     item[Keys.unitKey] = Tr.csvData['unit'][config.unit][config.language]
     item[Keys.datasetKey] = Tr.csvData['dataset'][config.dataset][config.language]
   
+    filteredData.push item
+
+  return filteredData
+
+filterViz5 = (csvDataObject, config, Keys) ->
+  filteredData = []
+
+  for k,v of csvDataObject
+    item = {}
+
+    # Process all provinces only if in All Canada mode. Process the left and right provinces only otherwise. 
+    if config.leftProvince != 'all' and v.province != config.leftProvince and v.province != config.rightProvince then continue
+
+    if v.province? then item[Keys.provinceKey] = Tr.csvData['province'][v.province][config.language]
+    if v.sector? then item[Keys.sectorKey] = Tr.csvData['sector'][v.sector][config.language]
+    if v.source? then item[Keys.sourceKey] = Tr.csvData['source'][v.source][config.language]
+    if v.scenario? then item[Keys.scenarioKey] = Tr.csvData['scenario'][v.scenario][config.language]
+    if v.value? then item[Keys.valueKey] = v.value
+    if v.unit? then item[Keys.unitKey] = Tr.csvData['unit'][v.unit][config.language]
+    if v.baseValue? then item[Keys.baseValueKey] = v.baseValue
+    if v.comparisonValue? then item[Keys.comparisonValueKey] = v.comparisonValue
+    if v.baseTotal? then item[Keys.baseTotalKey] = v.baseTotal
+    if v.comparisonTotal? then item[Keys.comparisonTotalKey] = v.comparisonTotal
+    if v.basePercentage? then item[Keys.basePercentageKey] = v.basePercentage
+    if v.comparisonPercentage? then item[Keys.comparisonPercentageKey] = v.comparisonPercentage
+    if v.baseYear? then item[Keys.baseYearKey] = v.baseYear
+    if v.comparisonYear? then item[Keys.comparisonYearKey] = v.comparisonYear
+    item[Keys.datasetKey] = Tr.csvData['dataset'][config.dataset][config.language]
+
     filteredData.push item
 
   return filteredData
