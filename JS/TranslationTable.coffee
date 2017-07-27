@@ -1149,6 +1149,12 @@ module.exports =
     value:
       en: 'value'
       fr: 'valeur'
+    baseYear:
+      en: 'base year'
+      fr: '<TODO>'
+    comparisonYear:
+      en: 'comparison year'
+      fr: '<TODO>'
 
   forecastLabel:
     en: 'FORECAST'
