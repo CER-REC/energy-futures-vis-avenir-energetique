@@ -73,7 +73,7 @@ class EnergyConsumptionIngestor
     # Viz1 and 4 use exactly the same data subset, which is not broken out by source,
     # (scenarios * years * regions) (6 * 36 * 14) items, for 1512 items total.
 
-    # Viz2 uses a completely disjoint and much larger subset of data, broken out by
+    # Viz2 & 5 uses a completely disjoint and much larger subset of data, broken out by
     # sector and by source. (sectors * sources * scenarios * years * regions)
     # (5 * 6 * 6 * 36 * 14), 90720 items total.
 
@@ -83,7 +83,7 @@ class EnergyConsumptionIngestor
       for year in Constants.years
         @summarizedGroupedData[scenario][year] = {}
 
-    # Viz 2
+    # Viz 2 and 5
     for sector in Constants.sectors
       @detailedGroupedData[sector] = {}
       for source in Constants.viz2Sources

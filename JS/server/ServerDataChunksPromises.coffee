@@ -87,8 +87,8 @@ createDatasetPromise = (datasetName, datasetDefinition) ->
 
     for sector in Constants.sectors
       for province in Constants.provinceRadioSelectionOptions
-        if viz2And5Chunks[sector][province].length != (Constants.itemsPerViz2ChunkScenario * datasetDefinition.scenarios.length)
-          Logger.error "viz2/5 data not right for sector #{sector}, province #{province} (#{viz2And5Chunks[sector][province].length} != #{(Constants.itemsPerViz2ChunkScenario * datasetDefinition.scenarios.length)})"
+        if viz2And5Chunks[sector][province].length != (Constants.itemsPerViz2Viz5ChunkScenario * datasetDefinition.scenarios.length)
+          Logger.error "viz2/5 data not right for sector #{sector}, province #{province} (#{viz2And5Chunks[sector][province].length} != #{(Constants.itemsPerViz2Viz5ChunkScenario * datasetDefinition.scenarios.length)})"
 
 
     # Viz 3

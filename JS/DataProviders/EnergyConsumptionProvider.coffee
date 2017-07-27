@@ -355,6 +355,9 @@ class EnergyConsumptionProvider
         percentageItem.baseYear = baseItem.year
         percentageItem.comparisonYear = comparisonItem.year
 
+        # Fix the capitalization of the first letter of the unit problem.
+        if percentageItem.unit? then percentageItem.unit = percentageItem.unit.toLowerCase()
+
         percentageData[province].push percentageItem
 
     percentageData

@@ -56,6 +56,8 @@ class Visualization5Configuration
     # sector, one of: residential, commercial, industrial, transportation, total
     @setSector options.sector
 
+    @setLanguage @app.language || 'en'
+
   # Setters
 
   setDataset: (dataset) ->
@@ -118,7 +120,8 @@ class Visualization5Configuration
     else
       @sector = @defaultOptions.sector
 
-
+  setLanguage: (language) ->
+    @language = language if language == 'en' or language == 'fr'
   # Router integration
 
   routerParams: ->
