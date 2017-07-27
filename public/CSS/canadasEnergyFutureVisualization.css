@@ -338,7 +338,7 @@ div.chartTooltip:after {
   background-position:50% 50%;  /* Sets reference point to scale from */
 }
 #canadasEnergyFutureVisualization .viz5Img {
-  background-image: url("../IMG/doge.jpg"); /* TODO: Once we're ready to launch, put a real image here. */
+  background-image: url("../IMG/landingPageThumb/vis5.png");
   background-size: cover;
   background-position:50% 50%;  /* Sets reference point to scale from */
 }
