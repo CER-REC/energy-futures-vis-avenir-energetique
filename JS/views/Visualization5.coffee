@@ -1295,7 +1295,10 @@ class Visualization5
       @renderMode = 'twoRoses'
       @transitionToTwoRoses()
 
-
+    # update the csv data download link
+    @d3document.select('#dataDownloadLink')
+      .attr
+        href: "csv_data#{ParamsToUrlString(@config.routerParams())}"
 
   renderAllCanadaRoses: ->
     data = @graphData()

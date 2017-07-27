@@ -15,6 +15,7 @@ Visualization1Configuration = require '../VisualizationConfigurations/visualizat
 Visualization2Configuration = require '../VisualizationConfigurations/visualization2Configuration.coffee'
 Visualization3Configuration = require '../VisualizationConfigurations/visualization3Configuration.coffee'
 Visualization4Configuration = require '../VisualizationConfigurations/visualization4Configuration.coffee'
+Visualization5Configuration = require '../VisualizationConfigurations/visualization5Configuration.coffee'
 
 ServerData = require '../server/ServerData.coffee'
 Constants = require '../Constants.coffee'
@@ -102,6 +103,11 @@ CSVDataHandler = (req, res) ->
             return
         csvData = generateArrayFromObject tempData, 'viz4', config, Keys
 
+      when 'viz5'
+        config = new Visualization5Configuration serverApp, params
+        tempData = serverApp.providers[config.dataset].energyConsumptionProvider.dataForViz5 config
+        csvData = generateArrayFromObject(tempData, 'viz5', config, Keys)
+
       else
         errorHandler req, res, new Error("Visualization 'page' parameter not specified or not recognized."), 400, counter
         return
@@ -138,6 +144,8 @@ generateArrayFromObject = (csvDataObject, viz, config, Keys) ->
         hashArray = hashArray.concat tempChild.children
       hashArray = filterViz3 hashArray, config, Keys
       break
+    when 'viz5'
+      # TODO: Handle generating array for viz5
   
   return hashArray
   
