@@ -23,7 +23,10 @@ ShortLinkBitly = (app, callback) ->
       config = app.visualization4Configuration
       params = config.routerParams()
       requestUrl = "bitly_url#{ParamsToUrlString params}"
-
+    when 'viz5'
+      config = app.visualization5Configuration
+      params = config.routerParams()
+      requestUrl = "bitly_url#{ParamsToUrlString params}"
 
   http = new XMLHttpRequest()
   http.open 'GET', requestUrl

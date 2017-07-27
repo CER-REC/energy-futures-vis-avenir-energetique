@@ -61,3 +61,16 @@ describe 'CSV Data Endpoints', ->
       pattern = /^(?:(?:"((?:""|[^"])+)"|([^,]*))(?:$|,))+$/
       output = pattern.exec csvResponse
       output.should.be.ok
+
+  it 'Serves data for Visualization 5', ->
+    parameters = QueryString.stringify
+      dataset: 'oct2016'
+      page: 'viz5'
+      mainSelection: 'energyDemand'
+
+    Request "#{process.env.HOST}:#{process.env.PORT_NUMBER}/csv_data?#{parameters}"
+
+    .then (csvResponse) ->
+      pattern = /^(?:(?:"((?:""|[^"])+)"|([^,]*))(?:$|,))+$/
+      output = pattern.exec csvResponse
+      output.should.be.ok

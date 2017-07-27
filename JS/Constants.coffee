@@ -261,7 +261,7 @@ module.exports =
   itemsPerViz1Viz4ChunkScenario: 14 * 36
 
   # sources * years, must also be multiplied by scenario count
-  itemsPerViz2ChunkScenario: 6 * 36
+  itemsPerViz2Viz5ChunkScenario: 6 * 36
 
   # provinces * sources * years
   itemsPerViz3Chunk: 13 * 7 * 36
