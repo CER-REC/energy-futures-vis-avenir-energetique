@@ -7,6 +7,7 @@ Tr = require '../TranslationTable.coffee'
 Platform = require '../Platform.coffee'
 Rose = require './Rose.coffee'
 
+ParamsToUrlString = require '../ParamsToUrlString.coffee'
 CommonControls = require './CommonControls.coffee'
 
 if Platform.name == 'browser'

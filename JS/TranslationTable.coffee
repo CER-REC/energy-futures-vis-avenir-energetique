@@ -1155,6 +1155,24 @@ module.exports =
     comparisonYear:
       en: 'comparison year'
       fr: '<TODO>'
+    baseValue:
+      en: 'base value'
+      fr: '<TODO>'
+    comparisonValue:
+      en: 'comparison value'
+      fr: '<TODO>'
+    baseTotal:
+      en: 'base total'
+      fr: '<TODO>'
+    comparisonTotal:
+      en: 'comparison total'
+      fr: '<TODO>'
+    basePercentage:
+      en: 'base percentage'
+      fr: '<TODO>'
+    comparisonPercentage:
+      en: 'comparison percentage'
+      fr: '<TODO>'
 
   forecastLabel:
     en: 'FORECAST'
