@@ -361,7 +361,7 @@ div.chartTooltip:after {
   width: 65%;
   left: 20%;
   top: 5%;
-  z-index: 1000;
+  z-index: 3000;
   overflow: hidden;
   padding: 0px 15px 0px 15px;
   position: absolute;
