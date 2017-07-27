@@ -3,6 +3,7 @@ d3 = require 'd3'
 d3Path = require 'd3-path'
 
 Constants = require '../Constants.coffee'
+RosePill = require './RosePill.coffee'
 Platform = require '../Platform.coffee'
 
 defaultOptions =
@@ -10,7 +11,20 @@ defaultOptions =
     x: 0
     y: 0
   scale: 1
+  # clickHandler may be null, for use with roses in comparison mode where pills are
+  # always displayed, and there is no click behaviour
+  clickHandler: null
+  rosePillClickHandler: ->
+  showPillsOnFirstRun: false
+  showPillsCallback: ->
+  isFirstRun: false
+  showPopoverOnFirstRun: false
+  showPopoverCallback: ->
+  pillSize: 'small' # 'small' or 'large'
 
+  removePillsBeforeTransition: false
+  showPillsAfterTransition: false
+  showAllCanadaAnimationOnFirstRun: false
 
 
 
@@ -21,12 +35,22 @@ class Rose
   #   data, six element array with source and value for petals
   #   containerPosition, with x, y for container placement in canvas
   #   scale, number, controls container sizing
+  #   clickHandler, function
+  #   pillClickHandler, function, injected into pills we create
+  #   rosePillTemplate, function, only defined on server
+
   constructor: (@app, options) ->
     @document = @app.window.document
     @d3document = d3.select @document
 
     @options = _.extend {}, defaultOptions, options
     @container = @options.container
+
+    @rosePills = {}
+    @shadowPills = {}
+
+    @pillsDisplayed = false
+    @tornDown = false
 
   transitionToGridPosition: =>
     # Set the starting position to the grid position.
@@ -42,7 +66,7 @@ class Rose
               transform: "translate(#{@options.startingPosition.x}, #{@options.startingPosition.y}) scale(#{@options.scale}, #{@options.scale})"
 
         # Render the full province rose in order.
-        @app.window.setTimeout @renderFullRose, Constants.fullRoseRenderingDelay[@options.data[0].province]      
+        @app.window.setTimeout @renderFullRose, Constants.fullRoseRenderingDelay[@options.data[0].province]
       when 'server'
         @container
           .attr
@@ -50,35 +74,53 @@ class Rose
         # Render the full province rose
         @renderFullRose()
 
+
   # Add all of the static elements, and set up petals for update.
-  render: ()->
+  render: ->
 
-    # Apply an animation to the rose as it appears
-    containerOffset = Constants.roseSize / 2 * @options.scale
 
-    # The initial scale is set at zero, so that the rose scales from nothing up to full
-    # size
-    # The initial postion is offset by the radius of the rose, when combined with the
-    # scale animation the rose appears to scale up from its origin.
-    # Otherwise the rose would scale up from the top left corner
     switch Platform.name
       when 'browser'
-        @container
-            .attr
-              transform: "translate(#{@options.startingPosition.x}, #{@options.startingPosition.y}) scale(#{@options.scale}, #{@options.scale})"
+        @container.attr
+          transform: "translate(#{@options.startingPosition.x}, #{@options.startingPosition.y}) scale(#{@options.scale}, #{@options.scale})"
+
       when 'server'
-        @container
-          .attr
-            transform: "translate(#{@options.startingPosition.x}, #{@options.startingPosition.y}) scale(#{@options.scale}, #{@options.scale})"
+        @container.attr
+          transform: "translate(#{@options.startingPosition.x}, #{@options.startingPosition.y}) scale(#{@options.scale}, #{@options.scale})"
+
+
     # Add an inner group for internal transforms.
     @innerContainer = @container
       .append 'g'
       .attr
-        class: 'rose'
+        class: =>
+          if @options.clickHandler?
+            'rose pointerCursor'
+          else
+            'rose'
         transform: ->
           "translate(#{Constants.roseOuterCircleRadius}, #{Constants.roseOuterCircleRadius})"
+      .on 'click', =>
+        return unless @options.clickHandler?
+        @options.clickHandler @
 
-    # Draw the axes, but set its scale to zero so it is invesible. This is
+
+    # Outer circle
+    # Similar to the axes, make the scale of the outer circle zero, so that it is not
+    # visible
+    @innerContainer.append 'circle'
+      .attr
+        class: 'roseOuterCircle'
+        r: Constants.roseOuterCircleRadius
+        stroke: '#ccc'
+        'stroke-width': 1
+        # NB: The fill on the outer circle interacts with the click handler, to make
+        # the whole rose clickable.
+        fill: 'white'
+        transform: 'scale(0, 0)'
+
+
+    # Draw the axes, but set its scale to zero so it is invisible. This is
     # done here so that the axes are positioned behind the inner circle.
     for angle in Constants.roseAngles
       @innerContainer.append 'line'
@@ -91,7 +133,8 @@ class Rose
           x2: Constants.roseOuterCircleRadius * Math.cos angle
           y2: Constants.roseOuterCircleRadius * Math.sin angle
           'stroke-dasharray': '2,2'
-          transform: "scale(0, 0)"
+          transform: 'scale(0, 0)'
+
 
     # Centre circle
     @innerContainer.append 'circle'
@@ -107,14 +150,12 @@ class Rose
         fill: 'white'
         transform: 'translate(0, 4.5)'
         'text-anchor': 'middle'
-      # TODO: should this be in a stylesheet?
       .style
         'font-size': '13px'
       .text =>
         @options.data[0].province
 
-    if @options.firstRun == true
-      @options.firstRun = false
+    if @options.isFirstRun and @options.showAllCanadaAnimationOnFirstRun
       switch Platform.name
         when 'browser'
           @app.window.setTimeout @transitionToGridPosition, Constants.animationDuration
@@ -122,6 +163,8 @@ class Rose
           @transitionToGridPosition()
     else
       @renderFullRose()
+
+
 
   animateElement: (element) ->
     switch Platform.name
@@ -148,7 +191,7 @@ class Rose
     for angle in Constants.roseAngles
       switch Platform.name
         when 'browser'
-          @innerContainer.selectAll '.roseAxisLine'
+          @innerContainer.selectAll '.roseAxisLine, .roseOuterCircle'
             .transition()
               .duration Constants.rosePopUpDuration
               .attr
@@ -158,7 +201,7 @@ class Rose
               .attr
                 transform: "scale(#{Constants.roseFullScale},#{Constants.roseFullScale})"
         when 'server'
-          @innerContainer.selectAll '.roseAxisLine'
+          @innerContainer.selectAll '.roseAxisLine, .roseOuterCircle'
             .attr
               transform: "scale(#{Constants.roseFullScale},#{Constants.roseFullScale})"
 
@@ -178,9 +221,9 @@ class Rose
       # So, the angular width of the arc is different for each set of tickmarks
       tickmarkRadius = Constants.roseBaselineCircleRadius + distance
       tickmarkCircumference = 2 * Math.PI * tickmarkRadius
+      angularWidth = Constants.roseTickLength / tickmarkCircumference * 2 * Math.PI
 
       for angle in Constants.roseAngles
-        angularWidth = Constants.roseTickLength / tickmarkCircumference * 2 * Math.PI
         startAngle = angle - angularWidth / 2
         endAngle = angle + angularWidth / 2
         
@@ -223,9 +266,67 @@ class Rose
         stroke: '#333'
         'stroke-width': 1
         fill: 'none'
-    @animateElement baselineCircle
+
+    lastAnimation = @animateElement baselineCircle
+
+    switch Platform.name
+      when 'browser'
+        lastAnimation.each 'end', =>
+          if @options.isFirstRun and @options.showPillsOnFirstRun
+            @options.showPillsCallback @
+          @showPills() if @options.showPillsAfterTransition
+      when 'server'
+        # We rely on 'first run' behaviour to put pills on the comparison mode in its
+        # first run, and the showPillsAfterTransition setting when roses are shown after
+        # that, but first run is always set to false for server side
+        @showPills() if @options.showPillsOnFirstRun
+
+
+
+    # Shadow pills
+    # Drawing the pills presents a problem because of the following two constraints:
+    # - We need to layer the pill popover dialogs beneath the pills, but above the roses.
+    # - The popover dialogs may need to exceed the bounds of the SVG element where we've
+    #   drawn the roses.
+    # Because of this, we can't render the pills or the dialogs as part of the SVG.
+    # Keeping the positions of the pills in sync with the SVG drawings then becomes a
+    # challenge, especially with the transforms and animations applied to the roses.
+    
+    # The approach here: render six invisible 'shadow pills' within the SVG, measure
+    # their positions in the HTML document, and use them to absolutely position the real
+    # pills (and their popovers).
+
+    for source, data of Constants.viz5RoseData
+      shadowPill = @innerContainer.append 'circle'
+        .attr
+          class: 'shadowPill'
+          r: 0
+          cx: Constants.roseOuterCircleRadius * Math.cos(data.startAngle + Math.PI / 6)
+          cy: Constants.roseOuterCircleRadius * Math.sin(data.startAngle + Math.PI / 6)
+          fill: 'none'
+          stroke: 'none'
+
+      @shadowPills[source] = shadowPill
+
+    if Platform.name == 'server'
+      @showPills() if @options.showPillsAfterTransition
+
+
+
+
+
+
 
   update: ->
+    @removePills() if @options.removePillsBeforeTransition
+
+    @innerContainer.attr
+      class: =>
+        if @options.clickHandler?
+          'rose pointerCursor'
+        else
+          'rose'
+
     # For reasons unknown, the transition here causes a crash in server side rendering
     # Ordinarily, transitions work fine on server with the duration set to zero, but not
     # this time.
@@ -238,10 +339,16 @@ class Rose
       when 'server'
         container = @container
 
-    @container.transition()
-      .duration Constants.animationDuration
-      .attr
-        transform: "translate(#{@options.startingPosition.x}, #{@options.startingPosition.y}) scale(#{@options.scale}, #{@options.scale})"
+    container.attr
+      transform: "translate(#{@options.startingPosition.x}, #{@options.startingPosition.y}) scale(#{@options.scale}, #{@options.scale})"
+    .each 'end', =>
+      if @pillsDisplayed
+        for item in @options.data
+          @rosePills[item.source].setData item
+          @rosePills[item.source].setShadowPillBounds @shadowPills[item.source][0][0].getBoundingClientRect()
+          @rosePills[item.source].update()
+
+      @showPills() if @options.showPillsAfterTransition
 
     @innerContainer.select '.roseCentreLabel'
       .text =>
@@ -254,6 +361,8 @@ class Rose
       .attr
         d: (d) =>
           @petalPath d.value, Constants.viz5RoseData[d.source].startAngle
+
+    @options.isFirstRun = false
 
   # Produce a string for use as the definition of a path element, which includes a petal
   # and thorn. The petal is always drawn as a 1/6 section of a circle.
@@ -361,8 +470,21 @@ class Rose
   setScale: (scale) ->
     @options.scale = scale if typeof scale == 'number'
 
+  setClickHandler: (handler) ->
+    @options.clickHandler = handler if typeof handler == 'function' or handler == null
+
+  setPillSize: (size) ->
+    @options.pillSize = size if size == 'large' or size == 'small'
+
+  setShowPillsAfterTransition: (show) ->
+    @options.showPillsAfterTransition = show
+
+  setRemovePillsBeforeTransition: (remove) ->
+    @options.removePillsBeforeTransition = remove
 
   teardown: ->
+    @tornDown = true
+
     # Apply an animation to the rose as it is removed
     containerOffset = Constants.roseSize / 2 * @options.scale
     @container
@@ -373,9 +495,63 @@ class Rose
       .each 'end', =>
         @container.remove()
 
+    @removePills()
 
 
+  showPills: ->
+    return if @pillsDisplayed
+    @pillsDisplayed = true
 
+    # We use the order randomization to mix up the staggered arrival of the pills
+    data = _.shuffle @options.data
+
+
+    for item, i in data
+      switch Platform.name
+        when 'browser'
+          shadowPillBounds = @shadowPills[item.source][0][0].getBoundingClientRect()
+        when 'server'
+          shadowPillBounds = @generateServerSideShadowPositions item.source
+
+      rosePill = new RosePill @app,
+        data: item
+        clickHandler: @options.pillClickHandler
+        rosePillTemplate: @options.rosePillTemplate
+        shadowPillBounds: shadowPillBounds
+        size: @options.pillSize
+      rosePill.render
+        wait: i * @app.pillAnimationDuration
+      @rosePills[item.source] = rosePill
+
+    if @options.isFirstRun and @options.showPopoverOnFirstRun
+
+      window.setTimeout =>
+        return if @tornDown
+        @options.showPopoverCallback @
+      , 9 * @app.pillAnimationDuration
+
+    @options.isFirstRun = false
+
+
+  generateServerSideShadowPositions: (source) ->
+    roseCentre = Constants.viz5ServerSideRosePositions["#{@options.rosePosition}Rose"]
+    angle = Constants.viz5RoseData[source].startAngle + Math.PI / 6
+
+    return {
+      left: roseCentre.left + Constants.viz5ServerSideRoseSize / 2 * Math.cos(angle)
+      top: roseCentre.top + Constants.viz5ServerSideRoseSize / 2 * Math.sin(angle)
+    }
+
+      
+      
+
+  removePills: ->
+    return unless @pillsDisplayed
+    @pillsDisplayed = false
+
+    for source in Constants.viz5SourcesInOrder
+      @rosePills[source].teardown()
+      @rosePills[source] = null
 
 
 module.exports = Rose

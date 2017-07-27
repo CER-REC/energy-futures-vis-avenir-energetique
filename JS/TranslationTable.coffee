@@ -1792,7 +1792,7 @@ module.exports =
       fr: 'Utiliser les boutons flèches pour naviguer le graphique.'
     viz5GraphAccessibleInstructions:
       en: 'Use the arrow keys or the mouse to select chart elements.'
-      fr: '<TODO>'
+      fr: 'Utiliser les boutons flèches ou la souris pour naviguer le graphique.'
 
 
     # TODO: French translations need validation
@@ -1838,5 +1838,9 @@ module.exports =
       en: 'Switched to "explore changing demand" page'
       fr: '<TODO>'
 
+  viz5Pills:
+    ofDemandIn:
+      en: 'of demand in'
+      fr: '<TODO>'
 
 

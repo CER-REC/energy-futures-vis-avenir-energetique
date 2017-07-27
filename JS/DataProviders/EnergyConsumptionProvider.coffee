@@ -333,7 +333,28 @@ class EnergyConsumptionProvider
         # Express the amount of energy used in each comparison and base years as a ratio
         # vs the total energy use. Take the difference between the comparison year and the
         # base year, and express as a percentage.
-        percentageItem.value = ((comparisonItem.value / comparisonTotal) - (baseItem.value / baseTotal)) * 100
+        # TODO: would be nice to rename this to be 'percentage', for consistency with the
+        # new attributes.
+
+        # To avoid the percentages not adding up, we round them off early in the
+        # computation
+        baseFraction = (baseItem.value / baseTotal).toFixed 2
+        comparisonFraction = (comparisonItem.value / comparisonTotal).toFixed 2
+
+        percentageItem.value = ((comparisonFraction - baseFraction) * 100)
+
+        # In addition, we require a bunch of other detailed information for the pill
+        # popovers.
+        # TODO: document this stuff near function signature!
+        percentageItem.baseValue = baseItem.value
+        percentageItem.comparisonValue = comparisonItem.value
+        percentageItem.baseTotal = baseTotal
+        percentageItem.comparisonTotal = comparisonTotal
+        percentageItem.basePercentage = baseFraction * 100
+        percentageItem.comparisonPercentage = comparisonFraction * 100
+        percentageItem.baseYear = baseItem.year
+        percentageItem.comparisonYear = comparisonItem.year
+
         percentageData[province].push percentageItem
 
     percentageData

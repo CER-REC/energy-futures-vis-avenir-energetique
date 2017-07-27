@@ -1,0 +1,165 @@
+
+
+#canadasEnergyFutureVisualization .rosePillBox {
+  box-sizing: border-box;
+  position: absolute;
+  overflow: hidden;
+
+  border-width: 2px;
+  border-style: solid;
+
+  background-color: white;
+  color: white;
+
+  /* Above the pill popover */
+  z-index: 2; 
+}
+
+#canadasEnergyFutureVisualization .rosePillBox.large {
+  border-width: 2px;
+  width: 70px;
+  height: 27px;
+  border-radius: 13.5px;
+  font-size: 18px;
+}
+
+#canadasEnergyFutureVisualization .rosePillBox.small {
+  border-width: 1px;
+  width: 50px;
+  height: 20px;
+  border-radius: 10px;
+  font-size: 13px;
+  line-height: 13px;
+}
+
+
+/* Keep durations in sync with other rose animations */
+#canadasEnergyFutureVisualization .fadein {
+  animation-duration: 0.3s;
+  animation-name: fadein;
+  animation-fill-mode: forwards;
+}
+
+#canadasEnergyFutureVisualization .fadeout {
+  animation-duration: 0.3s;
+  animation-name: fadeout;
+  animation-fill-mode: forwards;
+}
+
+@keyframes fadein {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeout {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+
+#canadasEnergyFutureVisualization .large .rosePillIcon {
+  height: 23px;
+  width: 23px;
+  border-radius: 0px 11.5px 11.5px 0px;
+  position: absolute;
+  z-index: 1;
+}
+
+#canadasEnergyFutureVisualization .large .rosePillText {
+  float: right;
+  margin: 3.5px 5px 3.5px 0px;
+  z-index: 2;
+  position: relative;
+}
+
+#canadasEnergyFutureVisualization .small .rosePillIcon {
+  height: 18px;
+  width: 18px;
+  border-radius: 0px 8.5px 8.5px 0px;
+  position: absolute;
+  z-index: 1;
+}
+
+#canadasEnergyFutureVisualization .small .rosePillText {
+  float: right;
+  margin: 2.5px 3.5px 2.5px 0px;
+  z-index: 2;
+  position: relative;
+}
+
+
+/* Regarding the linear-gradients: these are a workaround to a minor issue where the white background on pills with negative values bleeds around the edges of the border radius next to the source icon, with a slightly ugly result. */
+#canadasEnergyFutureVisualization .rosePillBox.electricityText {
+  color: #33cccc;
+  background: linear-gradient(to right, #33cccc 14%, white 15%);
+}
+#canadasEnergyFutureVisualization .rosePillBox.coalText {
+  color: #996733;
+  background: linear-gradient(to right, #996733 14%, white 15%);
+}
+#canadasEnergyFutureVisualization .rosePillBox.naturalGasText {
+  color: #f16739;
+  background: linear-gradient(to right, #f16739 14%, white 15%);
+}
+#canadasEnergyFutureVisualization .rosePillBox.oilProductsText {
+  color: #cc6699;
+  background: linear-gradient(to right, #cc6699 14%, white 15%);
+}
+#canadasEnergyFutureVisualization .rosePillBox.solarWindGeothermalText {
+  color: #339947;
+  background: linear-gradient(to right, #339947 14%, white 15%);
+}
+#canadasEnergyFutureVisualization .rosePillBox.bioText {
+  color: #8d68ac;
+  background: linear-gradient(to right, #8d68ac 14%, white 15%);
+}
+
+
+#canadasEnergyFutureVisualization .rosePillBox.electricityBackground {
+  background-color: #33cccc;
+}
+#canadasEnergyFutureVisualization .rosePillBox.coalBackground {
+  background-color: #996733;
+}
+#canadasEnergyFutureVisualization .rosePillBox.naturalGasBackground {
+  background-color: #f16739;
+}
+#canadasEnergyFutureVisualization .rosePillBox.oilProductsBackground {
+  background-color: #cc6699;
+}
+#canadasEnergyFutureVisualization .rosePillBox.solarWindGeothermalBackground {
+  background-color: #339947;
+}
+#canadasEnergyFutureVisualization .rosePillBox.bioBackground {
+  background-color: #8d68ac;
+}
+
+
+
+#canadasEnergyFutureVisualization .rosePillBox.electricityBorder {
+  border-color: #33cccc;
+}
+#canadasEnergyFutureVisualization .rosePillBox.coalBorder {
+  border-color: #996733;
+}
+#canadasEnergyFutureVisualization .rosePillBox.naturalGasBorder {
+  border-color: #f16739;
+}
+#canadasEnergyFutureVisualization .rosePillBox.oilProductsBorder {
+  border-color: #cc6699;
+}
+#canadasEnergyFutureVisualization .rosePillBox.solarWindGeothermalBorder {
+  border-color: #339947;
+}
+#canadasEnergyFutureVisualization .rosePillBox.bioBorder {
+  border-color: #8d68ac;
+}
+

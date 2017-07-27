@@ -254,7 +254,6 @@ module.exports =
 
   serverSideGraphWidth: 1065 # px
   viz4ServerSideGraphWidth: 995 # 1065 - 70 extra pixels of width for viz4's wider legend
-  viz5ServerSideGraphWidth: 995 # TODO: Change this later.
 
   cacheDuration: 3600 # seconds
 
@@ -459,9 +458,8 @@ module.exports =
     PE: 1760  #
     NS: 960   #
 
-  viz5Height: 700 # px
-
-  roseMargin: 11 # px
+  allCanadaRoseMargin: 11 # px
+  comparisonRoseMargin: 135 # px
 
   viz5SourcesInOrder: [
     'electricity'
@@ -472,25 +470,37 @@ module.exports =
     'oilProducts'
   ]
 
+
+
+
   viz5RoseData:
     electricity:
       colour: '#33cccc' # teal
       startAngle: Math.PI * (0 / 3)
+      image: 'IMG/sources/electricity_selected.svg'
     naturalGas:
       colour: '#f16739' # orange
       startAngle: Math.PI * (1 / 3)
+      image: 'IMG/sources/naturalGas_selected.svg'
     bio:
       colour: '#8d68ac' # purple
       startAngle: Math.PI * (2 / 3)
+      image: 'IMG/sources/biomass_selected.svg'
     solarWindGeothermal:
       colour: '#339947' # green
       startAngle: Math.PI * (3 / 3)
+      image: 'IMG/sources/solarWindGeo_selected.svg'
     coal:
       colour: '#996733' # brown
       startAngle: Math.PI * (4 / 3)
+      image: 'IMG/sources/coal_selected.svg'
     oilProducts:
       colour: '#cc6699' # pink
       startAngle: Math.PI * (5 / 3)
+      image: 'IMG/sources/oil_products_selected.svg'
+
+
+
 
   viz5SliderHeight: 100 # px
 
@@ -503,5 +513,35 @@ module.exports =
       'IMG/sources/coal_selected.svg'
     ]
 
+  pagePadding: 10 # px
+  # NB: This value should be kept in sync with the padding style for #mainPanel > div
 
+  pillPopoverWidth: 220 # px
+  pillPopoverHeight: 150 # px
+
+
+
+  pillAnimationDuration: 100 # ms
+
+  viz5ServerSideRosePositions:
+    leftRose:
+      left: 342.5
+      top: 309.5
+    rightRose:
+      left: 922.5
+      top: 309.5
+  viz5ServerSideRoseSize: 449
+
+  # Keep these sizes consistent with the dimensions in pills.css
+  viz5PillSizes: # all in px
+    large:
+      width: 70
+      height: 27
+    small:
+      width: 50
+      height: 20
+
+  
+  # To match duration of pills animations in CSS.
+  viz5PillPopoverDuration: 300 # ms
 

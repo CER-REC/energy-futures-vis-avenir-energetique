@@ -1,5 +1,4 @@
 d3 = require 'd3'
-d3Path = require 'd3-path'
 Mustache = require 'mustache'
 
 Constants = require '../Constants.coffee'
@@ -8,7 +7,6 @@ Tr = require '../TranslationTable.coffee'
 Platform = require '../Platform.coffee'
 Rose = require './Rose.coffee'
 
-ParamsToUrlString = require '../ParamsToUrlString.coffee'
 CommonControls = require './CommonControls.coffee'
 
 if Platform.name == 'browser'
@@ -18,6 +16,8 @@ if Platform.name == 'browser'
 ControlsHelpPopover = require '../popovers/ControlsHelpPopover.coffee'
 
 ProvinceAriaText = require '../ProvinceAriaText.coffee'
+DoublePillPopover = require '../popovers/DoublePillPopover.coffee'
+
 # TODO: Create the Viz5 Access Config.
 # Viz5AccessConfig = require '../VisualizationConfigurations/Vis5AccessConfig.coffee'
 
@@ -92,7 +92,7 @@ class Visualization5
       setupEvents: false
 
 
-  constructor: (@app, config, @options) ->
+  constructor: (@app, config, @options={}) ->
     @config = config
     # TODO: Uncomment after creating the Viz5 Access Config.
     # @accessConfig = new Viz5AccessConfig @config
@@ -140,6 +140,10 @@ class Visualization5
     @leftRose = null
     @rightRose = null
 
+    @roseWithPillsOpen = null
+
+    @doublePillPopover = null
+
     @renderMode = if @config.leftProvince == 'all' then 'allCanadaRoses' else 'twoRoses'
 
 
@@ -154,7 +158,11 @@ class Visualization5
 
     @container = @d3document.select '#graphSVG'
 
-    @isFirstRun = true
+    switch Platform.name
+      when 'browser'
+        @isFirstRun = true
+      when 'server'
+        @isFirstRun = false
 
     @render()
     @redraw()
@@ -483,14 +491,15 @@ class Visualization5
 
     if !@rightProvinceMenu
       @rightProvinceMenu = @buildRightProvinceMenu()
-    
-    # We're building the yearAxis every time we render to make sure that the
-    # timeline year labels (2005 & 2040) are updated everytime the baseYear
-    # and/or the comparisonYear changes.
-    @buildYearAxis()
 
-    # Render the graph
-    @renderGraph()
+    # Build the timeline sliders.
+    @buildTimeline()
+
+    # NB: Do not render the roses (renderGraph()) as part of render, just let them be
+    # created as part of the first redraw() call. Roses need to have some special
+    # behaviour on first run, rendering them more than once at first run messes that up.
+
+
 
   outerWidth: ->
     # getBoundingClientRect is not implemented in JSDOM, use fixed width on server
@@ -501,7 +510,7 @@ class Visualization5
         .getBoundingClientRect()
         .width
     else if Platform.name == 'server'
-      Constants.viz4ServerSideGraphWidth
+      Constants.serverSideGraphWidth
 
   width: ->
     @outerWidth() - @margin.left - @margin.right
@@ -752,9 +761,9 @@ class Visualization5
         width: @outerWidth()
         height: Constants.viz5SliderHeight
 
-    @d3document.select '#graphSVG'
+    @container
       .attr
-        width: @outerWidth()
+        width: @graphWidth()
         height: @height() - Constants.viz5SliderHeight/2
 
   redraw: ->
@@ -764,9 +773,13 @@ class Visualization5
 
     @svgResize()
 
-    # Build the timeline sliders.
-    @buildTimeline()
-        
+    # We're building the yearAxis every time we render to make sure that the
+    # timeline year labels (2005 & 2040) are updated everytime the baseYear
+    # and/or the comparisonYear changes.
+    @buildYearAxis()
+    
+    @renderGraph()
+    
     @leftProvinceMenu.size
       w: @d3document.select('#leftProvincesSelector').node().getBoundingClientRect().width
       h: @height() - @d3document.select('span.titleLabel').node().getBoundingClientRect().height
@@ -940,7 +953,7 @@ class Visualization5
         update = =>
           @config.setComparisonYear @config.comparisonYear + 1
           @yearTimeout = window.setTimeout timeoutComplete, @app.animationDuration
-          @render()
+          @redraw()
           @d3document.select '#sliderLabel'
             .transition()
               .attr
@@ -1026,7 +1039,7 @@ class Visualization5
           .attr
             'aria-valuenow': @config.baseYear
 
-        @render()
+        @redraw()
 
     drag.on 'dragend', =>
       if baseYear != @config.baseYear && @config.comparisonYear > baseYear
@@ -1043,7 +1056,7 @@ class Visualization5
         @config.setBaseYear baseYear
 
         @app.router.navigate @config.routerParams()
-        @render()
+        @redraw()
 
     sliderLabel = @d3document.select('#viz5SliderSVG')
       .append 'g'
@@ -1100,7 +1113,7 @@ class Visualization5
         .attr
           'aria-valuenow': @config.baseYear
 
-      @render()
+      @redraw()
       @app.router.navigate @config.routerParams()
 
     @app.datasetRequester.updateAndRequestIfRequired newConfig, update
@@ -1150,7 +1163,7 @@ class Visualization5
           .attr
             'aria-valuenow': @config.comparisonYear
 
-        @render()
+        @redraw()
 
     drag.on 'dragend', =>
       if comparisonYear != @config.comparisonYear && comparisonYear >= @config.baseYear
@@ -1165,7 +1178,7 @@ class Visualization5
             'aria-valuenow': @config.comparisonYear
         @config.setComparisonYear comparisonYear
         @app.router.navigate @config.routerParams()
-        @render()
+        @redraw()
 
     sliderLabel = @d3document.select('#viz5SliderSVG')
       .append 'g'
@@ -1255,7 +1268,7 @@ class Visualization5
         .attr
           'aria-valuenow': @config.comparisonYear
 
-      @render()
+      @redraw()
       @app.router.navigate @config.routerParams()
 
     @app.datasetRequester.updateAndRequestIfRequired newConfig, update
@@ -1282,32 +1295,42 @@ class Visualization5
   renderGraph: ->
     if @config.leftProvince == 'all' and @renderMode == 'allCanadaRoses'
       # Update existing panel of 13 roses
-      @renderAllCanadaRoses()
+      @renderAllCanadaRoses
+        showPillsAfterTransition: false
+        removePillsBeforeTransition: false
     else if @config.leftProvince == 'all' and @renderMode == 'twoRoses'
-      # Need to switch to all 13 roses from 2
+      # Need to switch to 2 roses from all 13
       @renderMode = 'allCanadaRoses'
-      @transitionToAllCanadaRoses()
+      @transitionToAllCanadaRoses
+        showPillsAfterTransition: false
+        removePillsBeforeTransition: true
     else if @config.leftProvince != 'all' and @renderMode == 'twoRoses'
       # Update existing pair of roses
-      @renderTwoRoses()
+      @renderTwoRoses
+        showPillsAfterTransition: false
+        removePillsBeforeTransition: false
     else if @config.leftProvince != 'all' and @renderMode == 'allCanadaRoses'
-      # Need to switch to 2 roses from all 13
+      # Need to switch to all 13 roses from 2
       @renderMode = 'twoRoses'
-      @transitionToTwoRoses()
+      @transitionToTwoRoses
+        showPillsAfterTransition: true
+        removePillsBeforeTransition: true
+
+    @isFirstRun = false
 
 
 
-  renderAllCanadaRoses: ->
+  renderAllCanadaRoses: (options) ->
     data = @graphData()
 
     availableWidth = @graphWidth() - @graphMargin.left - @graphMargin.right -
-      (Constants.roseColumns - 1) * Constants.roseMargin
+      (Constants.roseColumns - 1) * Constants.allCanadaRoseMargin
     roseSize = availableWidth / Constants.roseColumns
     roseScale = roseSize / Constants.roseSize
 
     for province, rosePosition of Constants.rosePositions
-      xPos = @graphMargin.left + (roseSize + Constants.roseMargin) * rosePosition.column
-      yPos = @graphMargin.top + (roseSize + Constants.roseMargin) * rosePosition.row
+      xPos = @graphMargin.left + (roseSize + Constants.allCanadaRoseMargin) * rosePosition.column
+      yPos = @graphMargin.top + (roseSize + Constants.allCanadaRoseMargin) * rosePosition.row
 
       if @allCanadaRoses[province]?
         @allCanadaRoses[province].setPosition
@@ -1318,6 +1341,12 @@ class Visualization5
           y: yPos
         @allCanadaRoses[province].setScale roseScale
         @allCanadaRoses[province].setData data[province]
+        @allCanadaRoses[province].setClickHandler @roseClickHandler
+        @allCanadaRoses[province].setPillSize 'small'
+
+        @allCanadaRoses[province].setShowPillsAfterTransition options.showPillsAfterTransition
+        @allCanadaRoses[province].setRemovePillsBeforeTransition options.removePillsBeforeTransition
+
         @allCanadaRoses[province].update()
       else
         roseContainer = @container.append 'g'
@@ -1332,7 +1361,28 @@ class Visualization5
           position:
             x: xPos
             y: yPos
-          firstRun: @isFirstRun
+          clickHandler: @roseClickHandler
+          pillClickHandler: @rosePillClickHandler
+          rosePillTemplate: @options.rosePillTemplate # only defined on server
+          # To demonstrate that pills will appear if the user clicks on a rose, we show
+          # the pills for an arbitrary province on the first run.
+          showPillsOnFirstRun: province == 'AB' and Platform.name != 'server'
+          showPillsCallback: (rose) =>
+            @roseWithPillsOpen.removePills() if @roseWithPillsOpen?
+            rose.showPills()
+            @roseWithPillsOpen = rose
+
+          isFirstRun: @isFirstRun
+          showPopoverOnFirstRun: province == 'AB' and Platform.name != 'server'
+          showPopoverCallback: (rose) =>
+            rosePill = rose.rosePills.naturalGas
+            @app.popoverManager.showPopover rosePill.popover,
+              verticalAnchor: @verticalAnchor rosePill.options.data
+              horizontalAnchor: @horizontalAnchor rosePill.options.data
+          pillSize: 'small'
+          showPillsAfterTransition: options.showPillsAfterTransition
+          removePillsBeforeTransition: options.removePillsBeforeTransition
+          showAllCanadaAnimationOnFirstRun: true
         rose.render()
 
         @allCanadaRoses[province] = rose
@@ -1341,8 +1391,6 @@ class Visualization5
     @fadeInCanadaMap()
     @app.window.setTimeout @fadeOutCanadaMap, Constants.animationDuration
 
-    # Change the first run state to false.
-    @isFirstRun = false
 
   fadeInCanadaMap: ->
     # Only load the map when the app is started in the 'allCanadaRoses' mode.
@@ -1362,19 +1410,18 @@ class Visualization5
       .attr
         opacity: 0
 
-  renderTwoRoses: ->
-    # Change the first run state to false.
-    @isFirstRun = false
+
+  renderTwoRoses: (options) ->
 
     data = @graphData()
 
-    availableWidth = @graphWidth() - @graphMargin.left - @graphMargin.right - Constants.roseMargin
+    availableWidth = @graphWidth() - @graphMargin.left - @graphMargin.right - Constants.comparisonRoseMargin
     roseSize = availableWidth / 2
     roseScale = roseSize / Constants.roseSize
 
     leftXPos = @graphMargin.left
     leftYPos = @graphMargin.top
-    rightXPos = @graphMargin.left + (roseSize + Constants.roseMargin)
+    rightXPos = @graphMargin.left + (roseSize + Constants.comparisonRoseMargin)
     rightYPos = @graphMargin.top
 
 
@@ -1387,6 +1434,12 @@ class Visualization5
         y: leftYPos
       @leftRose.setScale roseScale
       @leftRose.setData data[@config.leftProvince]
+      @leftRose.setClickHandler null
+      @leftRose.setPillSize 'large'
+
+      @leftRose.setShowPillsAfterTransition options.showPillsAfterTransition
+      @leftRose.setRemovePillsBeforeTransition options.removePillsBeforeTransition
+
       @leftRose.update()
     else
       roseContainer = @container.append 'g'
@@ -1400,8 +1453,23 @@ class Visualization5
           y: leftYPos
         startingPosition:
           x: leftXPos
-          y: leftYPos          
-        firstRun: @isFirstRun
+          y: leftYPos
+        clickHandler: null
+        pillClickHandler: @rosePillClickHandler
+        rosePillTemplate: @options.rosePillTemplate # only defined on server
+        showPillsOnFirstRun: true
+        showPillsCallback: (rose) =>
+          rose.showPills()
+        isFirstRun: @isFirstRun
+        showPopoverOnFirstRun: true
+        showPopoverCallback: =>
+          # On first run, we want to show a popover for one of the power sources, on first
+          # run. Wait until the pills have rendered and then put it on display.
+          @showDoublePillPopover 'naturalGas'
+        rosePosition: 'left' # server side use only
+        pillSize: 'large'
+        showPillsAfterTransition: options.showPillsAfterTransition
+        removePillsBeforeTransition: options.removePillsBeforeTransition
       rose.render()
 
       @leftRose = rose
@@ -1416,6 +1484,12 @@ class Visualization5
         y: rightYPos
       @rightRose.setScale roseScale
       @rightRose.setData data[@config.rightProvince]
+      @rightRose.setClickHandler null
+      @rightRose.setPillSize 'large'
+
+      @rightRose.setShowPillsAfterTransition options.showPillsAfterTransition
+      @rightRose.setRemovePillsBeforeTransition options.removePillsBeforeTransition
+
       @rightRose.update()
     else
       roseContainer = @container.append 'g'
@@ -1430,7 +1504,18 @@ class Visualization5
         startingPosition:
           x: rightXPos
           y: rightYPos
-        firstRun: @isFirstRun
+        clickHandler: null
+        pillClickHandler: @rosePillClickHandler
+        rosePillTemplate: @options.rosePillTemplate # only defined on server
+        showPillsOnFirstRun: true
+        showPillsCallback: (rose) =>
+          rose.showPills()
+        isFirstRun: @isFirstRun
+        showPopoverOnFirstRun: false
+        rosePosition: 'right' # server side use only
+        pillSize: 'large'
+        showPillsAfterTransition: options.showPillsAfterTransition
+        removePillsBeforeTransition: options.removePillsBeforeTransition
       rose.render()
 
       @rightRose = rose
@@ -1438,7 +1523,7 @@ class Visualization5
     @lastRenderedLeftRose = @config.leftProvince
     @lastRenderedRightRose = @config.rightProvince
 
-  transitionToAllCanadaRoses: ->
+  transitionToAllCanadaRoses: (options) ->
     # NB: At this time, @config.leftProvince has already been set to 'all', and can't be
     # used to discover which rose we were rendering in the left slot.
 
@@ -1454,18 +1539,20 @@ class Visualization5
     @leftRose = null
     @rightRose = null
 
-    @renderAllCanadaRoses()
+    @renderAllCanadaRoses options
     
-  transitionToTwoRoses: ->
+  transitionToTwoRoses: (options) ->
 
     # Always keep the rose which will become the left rose
     @leftRose = @allCanadaRoses[@config.leftProvince]
+    @leftRose.removePills()
 
     @allCanadaRoses[@config.leftProvince] = null
 
     # If the right rose is different from the left, keep it too
     if @config.leftProvince != @config.rightProvince
       @rightRose = @allCanadaRoses[@config.rightProvince]
+      @rightRose.removePills()
 
       @allCanadaRoses[@config.rightProvince] = null
 
@@ -1475,10 +1562,92 @@ class Visualization5
       rose.teardown()
       @allCanadaRoses[province] = null
 
-    # Change the first run state to false.
-    @isFirstRun = false
+    @renderTwoRoses options
 
-    @renderTwoRoses()
+
+  roseClickHandler: (rose) =>
+    # Pills are always displayed when we're in comparison mode, we shouldn't handle clicks
+    # that come to us in that mode.
+    return unless @config.leftProvince == 'all'
+
+    if rose == @roseWithPillsOpen
+      @roseWithPillsOpen.removePills()
+      @roseWithPillsOpen = null
+    else
+      @roseWithPillsOpen.removePills() if @roseWithPillsOpen?
+      rose.showPills()
+      @roseWithPillsOpen = rose
+
+
+  rosePillClickHandler: (rosePill) =>
+    # Prevent the click event from propagating and immediately closing the popover.
+    d3.event.preventDefault()
+    d3.event.stopPropagation()
+
+    if @config.leftProvince == 'all'
+      if @app.popoverManager.currentPopover == rosePill.popover
+        @app.popoverManager.closePopover()
+        return
+
+      # When in showing roses for all of Canada, show just one popover
+      @app.popoverManager.showPopover rosePill.popover,
+        verticalAnchor: @verticalAnchor rosePill.options.data
+        horizontalAnchor: @horizontalAnchor rosePill.options.data
+
+    else
+      source = rosePill.options.data.source
+      @showDoublePillPopover source
+
+
+
+  showDoublePillPopover: (source) ->
+    if @doublePillPopover?
+      # If we clicked on a pill for an open pair of popovers, we shouldn't open them
+      # anew, so return.
+      shouldReturn = source == @doublePillPopover.options.source
+      @app.popoverManager.closePopover()
+      @doublePillPopover = null
+      return if shouldReturn
+
+    # When in showing two roses in comparison mode, show two popovers
+    # Fetch both popovers, and initialize a new 'meta popover'
+    leftData = @leftRose.rosePills[source].options.data
+    rightData = @rightRose.rosePills[source].options.data
+
+    leftPopover = @leftRose.rosePills[source].popover
+    rightPopover = @rightRose.rosePills[source].popover
+
+    @doublePillPopover = new DoublePillPopover
+      leftPopover: leftPopover
+      rightPopover: rightPopover
+      closeCallback: =>
+        @doublePillPopover = null
+      source: source
+
+    @app.popoverManager.showPopover @doublePillPopover,
+      left:
+        verticalAnchor: @verticalAnchor leftData
+        horizontalAnchor: @horizontalAnchor leftData
+      right:
+        verticalAnchor: @verticalAnchor rightData
+        horizontalAnchor: @horizontalAnchor rightData
+
+
+
+  verticalAnchor: (dataItem) ->
+    switch dataItem.source
+      when 'solarWindGeothermal', 'coal', 'oilProducts'
+        'top'
+      when 'electricity', 'naturalGas', 'bio'
+        'bottom'
+
+  horizontalAnchor: (dataItem) ->
+    # TODO: add exception cases for rightmost roses in 13 mode
+    switch dataItem.source
+      when 'solarWindGeothermal', 'bio'
+        'left'
+      when 'electricity', 'naturalGas', 'coal', 'oilProducts'
+        'right'
 
 
 module.exports = Visualization5
