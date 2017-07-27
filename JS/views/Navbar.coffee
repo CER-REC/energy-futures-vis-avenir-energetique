@@ -83,10 +83,10 @@ class Navbar
         {
           unselectedLabel: Tr.allPages.visualization5NavbarLink[@app.language]
           selectedLabel: Tr.visualization5Title[@app.language]
-          navbarHelpImageSelected: 'IMG/navbar_Icons/questionMark_ScenarioHighlighted.svg'
+          navbarHelpImageSelected: 'IMG/navbar_Icons/questionMark_DemandHighlighted.svg'
           infoPopoverText: Tr.navbarInfoText.viz5[@app.language]
           infoPopoverHeader: Tr.navbarInfoHeadings.viz5[@app.language]
-          navbarInfoImageSelected: 'IMG/navbar_Icons/explanationIcon_ScenarioHighlighted.svg'
+          navbarInfoImageSelected: 'IMG/navbar_Icons/explanationIcon_DemandHighlighted.svg'
           colour: 'rgb(204, 102, 102)'
           page: 'viz5'
           imageAUrl: Tr.howToImages.viz5A[@app.language]
