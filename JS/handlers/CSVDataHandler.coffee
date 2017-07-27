@@ -57,6 +57,8 @@ CSVDataHandler = (req, res) ->
       valueKey: Tr.csvData['value'][language]
       unitKey: Tr.csvData['unit']['unit'][language]
       datasetKey: Tr.csvData['dataset']['dataset'][language]
+      baseYearKey: Tr.csvData['baseYear'][language]
+      comparisonYearKey: Tr.csvData['comparisonYear'][language]
 
     # Parse the parameters with a configuration object, and then hand them off to a
     # visualization object. The visualizations render the graphs in their constructors.
@@ -145,13 +147,15 @@ generateArrayFromObject = (csvDataObject, viz, config, Keys) ->
       hashArray = filterViz3 hashArray, config, Keys
       break
     when 'viz5'
-      # TODO: Handle generating array for viz5
+      for k,v of csvDataObject
+        hashArray = hashArray.concat filterViz5(v, config, Keys)
+      break
   
   return hashArray
   
 filterViz1andViz4 = (csvDataObject, config, Keys) ->
   filteredData = []
-  
+
   for k,v of csvDataObject
     item = {}
 
@@ -186,6 +190,31 @@ filterViz2 = (csvDataObject, config, Keys) ->
     item[Keys.unitKey] = Tr.csvData['unit'][config.unit][config.language]
     item[Keys.datasetKey] = Tr.csvData['dataset'][config.dataset][config.language]
   
+    filteredData.push item
+
+  return filteredData
+
+filterViz5 = (csvDataObject, config, Keys) ->
+  filteredData = []
+
+  for k,v of csvDataObject
+    item = {}
+
+    if v.value == 0 then continue
+
+    # Process all provinces only if in All Canada mode. Process the left and right provinces only otherwise. 
+    if config.leftProvince != 'all' and v.province != config.leftProvince and v.province != config.rightProvince then continue
+
+    if v.province? then item[Keys.provinceKey] = Tr.csvData['province'][v.province][config.language]
+    if v.sector? then item[Keys.sectorKey] = Tr.csvData['sector'][v.sector][config.language]
+    if v.source? then item[Keys.sourceKey] = Tr.csvData['source'][v.source][config.language]
+    if v.scenario? then item[Keys.scenarioKey] = Tr.csvData['scenario'][v.scenario][config.language]
+    if v.value? then item[Keys.valueKey] = v.value
+    item[Keys.unitKey] = Tr.csvData['unit']['petajoules'][config.language]
+    item[Keys.baseYearKey] = config.baseYear
+    item[Keys.comparisonYearKey] = config.comparisonYear
+    item[Keys.datasetKey] = Tr.csvData['dataset'][config.dataset][config.language]
+
     filteredData.push item
 
   return filteredData
