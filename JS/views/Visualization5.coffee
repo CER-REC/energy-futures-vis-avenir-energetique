@@ -1318,7 +1318,10 @@ class Visualization5
 
     @isFirstRun = false
 
-
+    # update the csv data download link
+    @d3document.select('#dataDownloadLink')
+      .attr
+        href: "csv_data#{ParamsToUrlString(@config.routerParams())}"
 
   renderAllCanadaRoses: (options) ->
     data = @graphData()
