@@ -297,12 +297,20 @@ class Rose
     # pills (and their popovers).
 
     for source, data of Constants.viz5RoseData
-      shadowPill = @innerContainer.append 'circle'
+      # NB: We wrap each shadowPill in a group object to work around an issue in IE/Edge
+      # Their implementation of getClientBoundingBox is half broken for SVG: it is
+      # capable of measuring the position of groups, but apparently not circles.
+      shadowPill = @innerContainer.append 'g'
+        .attr
+          transform: "translate(#{Constants.roseOuterCircleRadius * Math.cos(data.startAngle + Math.PI / 6)}, #{Constants.roseOuterCircleRadius * Math.sin(data.startAngle + Math.PI / 6)})"
+        .append 'circle'
         .attr
           class: 'shadowPill'
           r: 0
-          cx: Constants.roseOuterCircleRadius * Math.cos(data.startAngle + Math.PI / 6)
-          cy: Constants.roseOuterCircleRadius * Math.sin(data.startAngle + Math.PI / 6)
+          # cx: Constants.roseOuterCircleRadius * Math.cos(data.startAngle + Math.PI / 6)
+          # cy: Constants.roseOuterCircleRadius * Math.sin(data.startAngle + Math.PI / 6)
+          cx: 0
+          cy: 0
           fill: 'none'
           stroke: 'none'
 
