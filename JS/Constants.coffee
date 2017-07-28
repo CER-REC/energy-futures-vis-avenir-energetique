@@ -296,6 +296,7 @@ module.exports =
   boxesOffset: 46
 
   timelineMargin: 25
+  allCanadaTimelineMargin: 30
   viz5timelineMargin: 45
   baseYearTimelineMargin: 80
   sliderLabelHeight: 28
@@ -403,45 +404,44 @@ module.exports =
 
   roseStartingPositionOffsets:
     YT:
-      x: 0.141
-      y: 0.497
+      x: 145
+      y: 285
     NT:
-      x: 0.277
-      y: 0.497
+      x: 255
+      y: 285
     NU:
-      x: 0.39
-      y: 0.497
+      x: 355
+      y: 285
     NL:
-      x: 0.73
-      y: 0.497
-
+      x: 668
+      y: 285
     BC:
-      x: 0.198
-      y: 0.703
+      x: 182
+      y: 405
     AB:
-      x: 0.277
-      y: 0.703
+      x: 255
+      y: 405
     SK:
-      x: 0.339
-      y: 0.703
+      x: 312
+      y: 405
     MB:
-      x: 0.401
-      y: 0.703
+      x: 374
+      y: 405
     ON:
-      x: 0.503
-      y: 0.703
+      x: 460
+      y: 405
     QC:
-      x: 0.622
-      y: 0.703
+      x: 565
+      y: 405
     NB:
-      x: 0.679
-      y: 0.703
+      x: 615
+      y: 405
     PE:
-      x: 0.718
-      y: 0.634
+      x: 650
+      y: 364
     NS:
-      x: 0.735
-      y: 0.703
+      x: 665
+      y: 405
 
   fullRoseRenderingDelay:
     YT: 800   #
