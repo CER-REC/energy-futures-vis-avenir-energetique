@@ -43,6 +43,7 @@ div.chartTooltip:after {
 
 #rightProvinceMenuSVG {
   /* TODO: This is not a great solution, vertical alignment may drift on resize */
+  z-index: 10;
   padding-top: 21px;
   position: relative;
 }
@@ -69,6 +70,7 @@ div.chartTooltip:after {
   float: left;
   box-sizing: border-box;
 }
+
 #canadasEnergyFutureVisualization .viz5TimelinePlayPausePanel {
   width: 70px;
   height: 55px;
@@ -576,7 +578,17 @@ div.chartTooltip:after {
   float: left;
   box-sizing: border-box;
 }
-#canadasEnergyFutureVisualization .viz5VisualizationColumn {
+/*#canadasEnergyFutureVisualization .viz5VisualizationColumn {
+  width: 79%;
+  float: left;
+  box-sizing: border-box;
+}*/
+#canadasEnergyFutureVisualization .allCanadaMode {
+  width: 82.51%;
+  float: left;
+  box-sizing: border-box;
+}
+#canadasEnergyFutureVisualization .twoProvincesMode {
   width: 79%;
   float: left;
   box-sizing: border-box;

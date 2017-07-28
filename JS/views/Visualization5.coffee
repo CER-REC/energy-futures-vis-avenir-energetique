@@ -106,9 +106,9 @@ class Visualization5
 
     @graphMargin =
       top: 20
-      right: 20
+      right: 10
       bottom: 50
-      left: 20
+      left: 10
 
     @timelineMargin =
       top: 20
@@ -167,6 +167,10 @@ class Visualization5
 
     @render()
     @redraw()
+
+    # Rebuild the timeline to fit the new graphPanel width and update the slider
+    # positions accordingly.
+    @buildTimeline()
 
     # TODO: Setup graph events.
     # @setupGraphEvents()
@@ -400,8 +404,13 @@ class Visualization5
       # all provinces (Canada view).
       @hideRightProvinceMenu()
 
-      @renderGraph()
-      
+      # Calling redraw here to: 1) render the graph, and 2) redraw the timeline to
+      # fit with the right province panel.
+      @redraw()
+
+      # Rebuild the timeline to fit the new graphPanel width and update the slider
+      # positions accordingly.
+      @buildTimeline()
       @app.router.navigate @config.routerParams()
 
     @app.datasetRequester.updateAndRequestIfRequired newConfig, update
@@ -420,8 +429,13 @@ class Visualization5
       # to select the second province.
       @showRightProvinceMenu()
       
-      @renderGraph()
-      
+      # Calling redraw here to: 1) render the graph, and 2) redraw the timeline to
+      # fit with the right province panel.
+      @redraw()
+
+      # Rebuild the timeline to fit the new graphPanel width and update the slider
+      # positions accordingly.
+      @buildTimeline()
       @app.router.navigate @config.routerParams()
 
     @app.datasetRequester.updateAndRequestIfRequired newConfig, update
@@ -768,19 +782,13 @@ class Visualization5
         height: @height() - Constants.viz5SliderHeight/2
 
   redraw: ->
-    @container.attr
-      width: @graphWidth()
-      height: Constants.viz5Height
-
-    @svgResize()
+    @renderGraph()
 
     # We're building the yearAxis every time we render to make sure that the
     # timeline year labels (2005 & 2040) are updated everytime the baseYear
     # and/or the comparisonYear changes.
     @buildYearAxis()
-    
-    @renderGraph()
-    
+
     @leftProvinceMenu.size
       w: @d3document.select('#leftProvincesSelector').node().getBoundingClientRect().width
       h: @height() - @d3document.select('span.titleLabel').node().getBoundingClientRect().height
@@ -1151,8 +1159,9 @@ class Visualization5
 
     drag.on 'drag', =>
       newX = d3.event.x
+      timelineRightEndMax = if @renderMode == 'allCanadaRoses' then @timelineRightEnd() - Constants.allCanadaTimelineMargin else @timelineRightEnd()
       if newX < Constants.baseYearTimelineMargin then newX = Constants.baseYearTimelineMargin
-      if newX > @timelineRightEnd() then newX = @timelineRightEnd()
+      if newX > timelineRightEndMax then newX = timelineRightEndMax
       comparisonYear = Math.round @yearScale().invert newX
       if comparisonYear < @config.baseYear
         return
@@ -1230,7 +1239,7 @@ class Visualization5
       .domain [Constants.minYear, Constants.maxYear]
       .range [
         Constants.baseYearTimelineMargin
-        @timelineRightEnd()
+        if @renderMode == 'allCanadaRoses' then @timelineRightEnd() - Constants.allCanadaTimelineMargin else @timelineRightEnd()
       ]
 
   yearAxis: ->
@@ -1333,6 +1342,10 @@ class Visualization5
         href: "csv_data#{ParamsToUrlString(@config.routerParams())}"
 
   renderAllCanadaRoses: (options) ->
+    @d3document.select '#graphPanel'
+      .attr
+        class: 'allCanadaMode'
+
     data = @graphData()
 
     availableWidth = @graphWidth() - @graphMargin.left - @graphMargin.right -
@@ -1368,8 +1381,8 @@ class Visualization5
           data: data[province]
           scale: roseScale
           startingPosition:
-            x: if @isFirstRun then @outerWidth() * Constants.roseStartingPositionOffsets[province].x else xPos
-            y: if @isFirstRun then @graphHeight() * Constants.roseStartingPositionOffsets[province].y else yPos
+            x: if @isFirstRun then Constants.roseStartingPositionOffsets[province].x else xPos
+            y: if @isFirstRun then Constants.roseStartingPositionOffsets[province].y else yPos
           position:
             x: xPos
             y: yPos
@@ -1424,6 +1437,10 @@ class Visualization5
 
 
   renderTwoRoses: (options) ->
+
+    @d3document.select '#graphPanel'
+      .attr
+        class: 'twoProvincesMode'
 
     data = @graphData()
 
