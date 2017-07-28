@@ -782,8 +782,6 @@ class Visualization5
         height: @height() - Constants.viz5SliderHeight/2
 
   redraw: ->
-    #@svgResize()
-
     @renderGraph()
 
     # We're building the yearAxis every time we render to make sure that the
