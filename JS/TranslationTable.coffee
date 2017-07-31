@@ -1865,4 +1865,3 @@ module.exports =
     ofDemandIn:
       en: 'of demand in'
       fr: 'de la demande en'
-
