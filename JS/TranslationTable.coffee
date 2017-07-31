@@ -85,7 +85,7 @@ module.exports =
       fr: 'SCÉNARIOS'
     visualization5NavbarLink:
       en: 'DEMAND'
-      fr: '<TODO>' # DEMANDE
+      fr: 'DEMANDE'
 
     imageDownloadLink:
       en: 'DOWNLOAD IMAGE'
@@ -1151,28 +1151,28 @@ module.exports =
       fr: 'valeur'
     baseYear:
       en: 'base year'
-      fr: '<TODO>'
+      fr: 'année de référence'
     comparisonYear:
       en: 'comparison year'
-      fr: '<TODO>'
+      fr: 'année de comparaison'
     baseValue:
       en: 'base value'
-      fr: '<TODO>'
+      fr: 'valeur de référence'
     comparisonValue:
       en: 'comparison value'
-      fr: '<TODO>'
+      fr: 'valeur de comparaison'
     baseTotal:
       en: 'base total'
-      fr: '<TODO>'
+      fr: 'total, référence'
     comparisonTotal:
       en: 'comparison total'
-      fr: '<TODO>'
+      fr: 'total, comparaison'
     basePercentage:
       en: 'base percentage'
-      fr: '<TODO>'
+      fr: 'pourcentage de référence'
     comparisonPercentage:
       en: 'comparison percentage'
-      fr: '<TODO>'
+      fr: 'pourcentage de comparaison'
 
   forecastLabel:
     en: 'FORECAST'
@@ -1203,7 +1203,7 @@ module.exports =
       fr: 'EXPLORATION DES SCÉNARIOS'
     viz5:
       en: 'EXPLORE CHANGING DEMAND'
-      fr: '<TODO>'
+      fr: "EXPLORER L'ÉVOLUTION DE LA DEMANDE"
 
 
   navbarInfoText:
@@ -1347,7 +1347,7 @@ module.exports =
 
   visualization5Title:
     en: 'CHANGING DEMAND'
-    fr: '<TODO>'
+    fr: 'ÉVOLUTION DE LA DEMANDE'
 
 
   imageExportText:
@@ -1418,11 +1418,11 @@ module.exports =
 
     demandIn:
       en: 'DEMAND IN'
-      fr: '<TODO>' # DEMANDE EN
+      fr: 'DEMANDE EN'
       
     relativeTo:
       en: 'RELATIVE TO'
-      fr: '<TODO>' # RÉLATIF A
+      fr: 'PAR RAPPORT À'
 
     and:
       en: 'AND'
@@ -1860,11 +1860,11 @@ module.exports =
       fr: 'Navigation au page "exploration des scénarios"'
     viz5:
       en: 'Switched to "explore changing demand" page'
-      fr: '<TODO>'
+      fr: 'Changé pour la page "évolution de la demande"'
 
   viz5Pills:
     ofDemandIn:
       en: 'of demand in'
-      fr: '<TODO>'
+      fr: 'de la demande en'
 
 
