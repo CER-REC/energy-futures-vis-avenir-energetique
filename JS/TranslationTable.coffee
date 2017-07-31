@@ -155,6 +155,10 @@ module.exports =
           <br>
           Technical: Stephanie Sachrajda, Patrick King, Alaa Azazi, Abhishek Sharma, Ben Cousins and Claudio Esperança
         </p>
+        <h2>THIRD PARTY LICENSES</h2>
+        <p>
+          <a href="https://commons.wikimedia.org/wiki/File:H1N1_Canada_map.svg">Map showing provinces and territories reporting 2009 swine flu (H1N1) cases in Canada</a> by <a href="https://commons.wikimedia.org/wiki/User:Fonadier">Fonadier</a> is licensed under <a href="https://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a> / Re-colored and rotated from original.
+        </p>
       """
       fr: '''
         <p>
@@ -190,6 +194,10 @@ module.exports =
           Chef technique à Vizworx
           <br>
           Aspect technique : Stephanie Sachrajda, Patrick King, Alaa Azazi, Abhishek Sharma, Ben Cousins et Claudio Esperança
+        </p>
+        <h2>TODO</h2>
+        <p>
+          <a href="https://commons.wikimedia.org/wiki/File:H1N1_Canada_map.svg">TODO</a> TODO <a href="https://commons.wikimedia.org/wiki/User:Fonadier">Fonadier</a> TODO <a href="https://creativecommons.org/licenses/by/3.0/">TODO</a> / TODO.
         </p>
         '''
 
