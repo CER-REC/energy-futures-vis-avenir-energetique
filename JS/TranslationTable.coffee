@@ -195,9 +195,9 @@ module.exports =
           <br>
           Aspect technique : Stephanie Sachrajda, Patrick King, Alaa Azazi, Abhishek Sharma, Ben Cousins et Claudio Esperança
         </p>
-        <h2>TODO</h2>
+        <h2>LICENCES TIERCES</h2>
         <p>
-          <a href="https://commons.wikimedia.org/wiki/File:H1N1_Canada_map.svg">TODO</a> TODO <a href="https://commons.wikimedia.org/wiki/User:Fonadier">Fonadier</a> TODO <a href="https://creativecommons.org/licenses/by/3.0/">TODO</a> / TODO.
+          <a href="https://commons.wikimedia.org/wiki/File:H1N1_Canada_map.svg">La carte montre les provinces et territoires selon les signalements de cas de grippe A (H1N1).</a> Elle a été créée par <a href="https://commons.wikimedia.org/wiki/User:Fonadier">Fonadier</a> et porte la licence <a href="https://creativecommons.org/licenses/by/3.0/">CC BY 3.0.</a> L’original a été recoloré et pivoté.
         </p>
         '''
 
