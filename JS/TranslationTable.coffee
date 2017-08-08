@@ -39,21 +39,19 @@ module.exports =
 
     visualization1Link:
       en: 'EXPLORE BY REGION'
-      fr: 'EXPLORATION PAR RÉGION'
+      fr: 'EXPLORER PAR RÉGION'
     visualization2Link:
       en: 'EXPLORE BY SECTOR'
-      fr: 'EXPLORATION PAR SECTEUR'
+      fr: 'EXPLORER PAR SECTEUR'
     visualization3Link:
-      # TODO: this was too long, need to validate shortened version with NEB
-      # en: 'EXPLORE ELECTRICITY GENERATION'
       en: 'EXPLORE ELECTRICITY'
-      fr: 'EXPLORATION DE L’ÉLECTRICITÉ'
+      fr: 'EXPLORER L’ÉLECTRICITÉ'
     visualization4Link:
       en: 'EXPLORE SCENARIOS'
-      fr: 'EXPLORATION DES SCÉNARIOS'
+      fr: 'EXPLORER LES SCÉNARIOS'
     visualization5Link:
       en: 'EXPLORE DEMAND'
-      fr: '<TODO>' # EXPLORATION DE LA DEMANDE
+      fr: 'EXPLORER LA DEMANDE'
 
 
 
@@ -1288,61 +1286,41 @@ module.exports =
 
   # Titles
 
-
-  # TODO: validate shortened titles with NEB
-
   visualization1Titles:
     energyDemand:
-      # en: 'TOTAL DEMAND BY REGION'
       en: 'TOTAL DEMAND'
-      # fr: 'DEMANDE TOTALE PAR RÉGION'
       fr: 'DEMANDE TOTALE'
     oilProduction:
-      # en: 'OIL PRODUCTION BY REGION'
       en: 'OIL PRODUCTION'
-      # fr: 'PRODUCTION DE PÉTROLE PAR RÉGION'
       fr: 'PRODUCTION DE PÉTROLE'
     gasProduction:
-      # en: 'GAS PRODUCTION BY REGION'
       en: 'GAS PRODUCTION'
-      # fr: 'PRODUCTION DE GAZ PAR RÉGION'
       fr: 'PRODUCTION DE GAZ'
     electricityGeneration:
-      # en: 'ELECTRICITY GENERATION BY REGION'
       en: 'ELECTRICITY GENERATION'
-      # fr: 'PRODUCTION D’ÉLECTRICITÉ PAR RÉGION'
       fr: 'PRODUCTION D’ÉLECTRICITÉ'
 
   visualization2Title:
-    # en: 'ENERGY DEMAND BY SOURCE & SECTOR'
     en: 'ENERGY DEMAND BY SECTOR'
     # fr: 'DEMANDE D’ÉNERGIE PAR SOURCE ET SECTEUR'
-    fr: 'DEMANDE PAR SECTEUR'
+    # TODO: this might still be too long? check
+    fr: 'DEMANDE D’ÉNERGIE PAR SECTEUR'
   visualization3Title:
     en: 'ELECTRICITY GENERATION'
     fr: 'PRODUCTION D’ÉLECTRICITÉ'
 
   visualization4Titles:
     energyDemand:
-      # en: 'COMPARING DEMAND SCENARIOS'
       en: 'DEMAND SCENARIOS'
       fr: 'SCÉNARIOS DE DEMANDE'
     oilProduction:
-      # en: 'COMPARING OIL PRODUCTION SCENARIOS'
       en: 'OIL PRODUCTION SCENARIOS'
-      # fr: 'SCÉNARIOS DE PRODUCTION PÉTROLIÈRE'
-      fr: 'SCÉNARIOS PÉTROLIÈRES'
+      fr: 'SCÉNARIOS DE PÉTROLE'
     gasProduction:
-      # en: 'COMPARING GAS PRODUCTION SCENARIOS'
-      # TODO: GAS PRODUCTION SCENARIOS is still too long at the minimum resolution
-      # we aim to support.
-      en: 'GAS PRODUCTION SCENARIOS'
-      # fr: 'SCÉNARIOS DE PRODUCTION GAZIÈRE'
-      fr: 'SCÉNARIOS GAZIÈRES'
+      en: 'GAS SCENARIOS'
+      fr: 'SCÉNARIOS DE GAZ'
     electricityGeneration:
-      # en: 'COMPARING ELECTRICITY SCENARIOS'
       en: 'ELECTRICITY SCENARIOS'
-      # fr: 'SCÉNARIOS DE PRODUCTION D’ÉLECTRICITÉ'
       fr: 'SCÉNARIOS D’ÉLECTRICITÉ'
 
   visualization5Title:
