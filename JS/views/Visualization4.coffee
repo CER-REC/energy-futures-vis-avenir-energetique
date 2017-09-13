@@ -463,6 +463,14 @@ class Visualization4
         key: 'noLng'
         colour: '#C7E9B4'
       }
+      {
+        key: 'technology'
+        colour: '#0C2C84'
+      }
+      {
+        key: 'hcp'
+        colour: '#7FCDBB'
+      }
     ]
     
 
@@ -492,6 +500,18 @@ class Visualization4
         tooltip: Tr.selectorTooltip.scenarioSelector.noLngButton[@app.language]
         key: 'noLng'
         colour: '#C7E9B4'
+      technology:
+        tooltip: Tr.selectorTooltip.scenarioSelector.technologyButton[@app.language]
+        key: 'technology'
+        colour: '#0C2C84'
+      htc:
+        tooltip: Tr.selectorTooltip.scenarioSelector.htcButton[@app.language]
+        key: 'htc'
+        colour: '#0C2C84'
+      hcp:
+        tooltip: Tr.selectorTooltip.scenarioSelector.hcpButton[@app.language]
+        key: 'hcp'
+        colour: '#7FCDBB'
 
     scenariosInSelection = Constants.datasetDefinitions[@config.dataset].scenariosPerSelection[@config.mainSelection]
 

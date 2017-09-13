@@ -39,7 +39,7 @@ class Visualization3Configuration
 
     province: 'all'
     source: 'total'
-    dataset: Constants.datasets[1]
+    dataset: Constants.datasets[2]
 
   constructor: (@app, options) ->
     @page = 'viz3'
@@ -286,6 +286,8 @@ class Visualization3Configuration
         "#{Tr.report[@app.language]}#{Tr.datasetSelector.jan2016Button[@app.language]}"
       when 'oct2016'
         "#{Tr.report[@app.language]}#{Tr.datasetSelector.oct2016Button[@app.language]}"
+      when 'oct2017'
+        "#{Tr.report[@app.language]}#{Tr.datasetSelector.oct2017Button[@app.language]}"
 
     description = ''
     description += "#{datasetText} - "

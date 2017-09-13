@@ -83,6 +83,7 @@ module.exports =
   datasets: [
     'jan2016'
     'oct2016'
+    'oct2017'
   ]
 
 
@@ -125,10 +126,11 @@ module.exports =
         oilProduction: ['high', 'reference', 'low']
         gasProduction: ['high', 'reference', 'low']
 
+
     oct2017:
       scenarios: [
         'reference'
-        #'htc'
+        'htc'
         'hcp'
         'technology'
       ]
@@ -150,7 +152,7 @@ module.exports =
   # But, there are some configurations where this ordering does not work. And since lines
   # in a line graph can and do cross each other, some configurations have no possible
   # ordering that can work.
-  scenarioDrawingOrder: ['high', 'highLng', 'reference', 'noLng', 'constrained', 'low']
+  scenarioDrawingOrder: ['high', 'highLng', 'reference', 'noLng', 'constrained', 'low', 'technology', 'htc', 'hcp']
 
 
   years: [
