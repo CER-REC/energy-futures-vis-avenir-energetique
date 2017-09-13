@@ -24,7 +24,11 @@ module.exports =
     'Newfoundland and Labrador': 'NL'
     'Prince Edward Island': 'PE'
     'Yukon': 'YT'
+    # NB: Yukon has a trailing space in some of the CSVs.
+    'Yukon ': 'YT'
     'Northwest Territories': 'NT'
+    # NB: Northwest Territories has a trailing space in some of the CSVs. 
+    'Northwest Territories ': 'NT'
     'Nunavut': 'NU'
     'Canada': 'all'
 
@@ -72,6 +76,9 @@ module.exports =
     # NB: The source data column in some of the CSVs has a trailing space in the string
     # 'Constrained ', this is NOT A TYPO
     'Constrained ': 'constrained'
+    'HCP': 'hcp'
+    'Technology': 'technology'
+    'HTC': 'htc'
 
   datasets: [
     'jan2016'
@@ -89,6 +96,11 @@ module.exports =
         'low'
         'noLng'
       ]
+      scenariosForIngestion:
+        energyDemand: ['high', 'highLng', 'reference', 'noLng', 'constrained', 'low']
+        electricityGeneration: ['high', 'highLng', 'reference', 'noLng', 'constrained', 'low']
+        oilProduction: ['high', 'highLng', 'reference', 'noLng', 'constrained', 'low']
+        gasProduction: ['high', 'highLng', 'reference', 'noLng', 'constrained', 'low']    
       scenariosPerSelection:
         energyDemand: ['high', 'highLng', 'reference', 'noLng', 'constrained', 'low']
         electricityGeneration: ['high', 'highLng', 'reference', 'noLng', 'constrained', 'low']
@@ -102,11 +114,34 @@ module.exports =
         'high'
         'low'
       ]
+      scenariosForIngestion:
+        energyDemand: ['high', 'reference', 'low']
+        electricityGeneration: ['high', 'reference', 'low']
+        oilProduction: ['high', 'reference', 'low']
+        gasProduction: ['high', 'reference', 'low']
       scenariosPerSelection:
         energyDemand: ['high', 'reference', 'low']
         electricityGeneration: ['high', 'reference', 'low']
         oilProduction: ['high', 'reference', 'low']
         gasProduction: ['high', 'reference', 'low']
+
+    oct2017:
+      scenarios: [
+        'reference'
+        #'htc'
+        'hcp'
+        'technology'
+      ]
+      scenariosForIngestion:
+        energyDemand: ['reference', 'technology', 'hcp']
+        electricityGeneration: ['reference', 'technology', 'hcp']
+        oilProduction: ['reference', 'htc', 'hcp']
+        gasProduction: ['reference', 'technology', 'hcp'] 
+      scenariosPerSelection:
+        energyDemand: ['reference', 'technology', 'hcp']
+        electricityGeneration: ['reference', 'technology', 'hcp']
+        oilProduction: ['reference', 'htc', 'hcp']
+        gasProduction: ['reference', 'technology', 'hcp']      
 
   # The order in which the scenarios are drawn, in viz4.
   # Generally, this order moves from highest to lowest. Since lower valued scenarios

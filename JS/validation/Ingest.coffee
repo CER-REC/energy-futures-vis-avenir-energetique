@@ -9,7 +9,41 @@ IngestGasProduction = require './IngestGasProduction.coffee'
 IngestElectricityProduction = require './IngestElectricityProduction.coffee'
 
 
+october2017Files = ->
+  # TODO: even more portable than passing filenames in would be to pass stream objects
+  # in, this would let us use the ingestor offline and also seamlessly as part of a
+  # server.
 
+  [
+    {
+      type: 'oil'
+      dataFilename: path.join ApplicationRoot, 'devPublic/rawCSV/crude oil production VIZ.EF.17.csv'
+      processedFilename: path.join ApplicationRoot, 'public/CSV/crude oil production VIZ.EF.17.csv'
+      dataset: 'oct2017'
+      logFilename: path.join ApplicationRoot, 'devPublic/rawCSV/log/crude oil production VIZ.EF.17.csv_ingestion_errors.log'
+    }
+    {
+      type: 'gas'
+      dataFilename: path.join ApplicationRoot, 'devPublic/rawCSV/Natural gas production VIZ.EF.2017.csv'
+      processedFilename: path.join ApplicationRoot, 'public/CSV/Natural gas production VIZ.EF.2017.csv'
+      dataset: 'oct2017'
+      logFilename: path.join ApplicationRoot, 'devPublic/rawCSV/log/2016-10-18_NaturalGasProduction.csv_ingestion_errors.log'
+    }
+    {
+      type: 'demand'
+      dataFilename: path.join ApplicationRoot, 'devPublic/rawCSV/Demand_EF2017Prelim_VIZ.csv'
+      processedFilename: path.join ApplicationRoot, 'public/CSV/Demand_EF2017Prelim_VIZ.csv'
+      dataset: 'oct2017'
+      logFilename: path.join ApplicationRoot, 'devPublic/rawCSV/log/Demand_EF2017Prelim_VIZ.csv_ingestion_errors.log'
+    }
+    {
+      type: 'electricity'
+      dataFilename: path.join ApplicationRoot, 'devPublic/rawCSV/ElectricityGeneration_VIZ.EF17.csv'
+      processedFilename: path.join ApplicationRoot, 'public/CSV/ElectricityGeneration_VIZ.EF17.csv'
+      dataset: 'oct2017'
+      logFilename: path.join ApplicationRoot, 'devPublic/rawCSV/log/ElectricityGeneration_VIZ.EF17.csv_ingestion_errors.log'
+    }
+  ]
 
 
 october2016Files = ->
@@ -115,6 +149,7 @@ ingest = (optionsList) ->
 
 ingest january2016Files()
 ingest october2016Files()
+ingest october2017Files()
 
 
 
