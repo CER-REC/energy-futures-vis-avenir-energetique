@@ -135,15 +135,15 @@ module.exports =
         'technology'
       ]
       scenariosForIngestion:
-        energyDemand: ['reference', 'technology', 'hcp']
+        energyDemand: ['reference', 'technology']
         electricityGeneration: ['reference', 'technology', 'hcp']
         oilProduction: ['reference', 'htc', 'hcp']
         gasProduction: ['reference', 'technology', 'hcp'] 
       scenariosPerSelection:
-        energyDemand: ['reference', 'technology', 'hcp']
+        energyDemand: ['reference', 'technology']
         electricityGeneration: ['reference', 'technology', 'hcp']
         oilProduction: ['reference', 'htc', 'hcp']
-        gasProduction: ['reference', 'technology', 'hcp']      
+        gasProduction: ['reference', 'technology', 'hcp']
 
   # The order in which the scenarios are drawn, in viz4.
   # Generally, this order moves from highest to lowest. Since lower valued scenarios

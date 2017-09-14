@@ -291,7 +291,7 @@ module.exports =
         en: '<TODO>'
         fr: '<TODO>'
       hcpButton:
-        en: '<TODO>'
+        en: 'HCP'
         fr: '<TODO>'
 
     viewBySelector:
@@ -738,10 +738,10 @@ module.exports =
       en: 'TECHNOLOGY'
       fr: '<TODO>'
     htcButton:
-      en: '<TODO> TODO'
+      en: 'HTC'
       fr: '<TODO>'
     hcpButton:
-      en: '<TODO> TODO'
+      en: 'HCP'
       fr: '<TODO>'
     scenarioSelectorHelpTitle:
       en: 'SCENARIOS'
@@ -835,10 +835,10 @@ module.exports =
         en: 'TECHNOLOGY'
         fr: '<TODO>'
       htc:
-        en: '<TODO>'
+        en: 'HTC'
         fr: '<TODO>'
       hcp:
-        en: '<TODO>'
+        en: 'HCP'
         fr: '<TODO>'
 
 
@@ -1703,10 +1703,10 @@ module.exports =
         en: 'Technology selected'
         fr: '<TODO>'
       htcSelected:
-        en: '<TODO>'
+        en: '<HTC selected>'
         fr: '<TODO>'
       hcpSelected:
-        en: '<TODO>'
+        en: 'HCP selected'
         fr: '<TODO>'
 
       referenceUnselected:
@@ -1731,10 +1731,10 @@ module.exports =
         en: 'Technology unselected'
         fr: '<TODO>'
       htcUnselected:
-        en: '<TODO>'
+        en: 'HTC unselected'
         fr: '<TODO>'
       hcpUnselected:
-        en: '<TODO>'
+        en: 'HCP unselected'
         fr: '<TODO>'
 
     viewBy:

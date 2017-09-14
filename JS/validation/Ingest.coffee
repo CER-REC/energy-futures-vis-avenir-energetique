@@ -17,31 +17,31 @@ october2017Files = ->
   [
     {
       type: 'oil'
-      dataFilename: path.join ApplicationRoot, 'devPublic/rawCSV/crude oil production VIZ.EF.17.csv'
-      processedFilename: path.join ApplicationRoot, 'public/CSV/crude oil production VIZ.EF.17.csv'
+      dataFilename: path.join ApplicationRoot, 'devPublic/rawCSV/2017-09_CrudeOilProduction.csv'
+      processedFilename: path.join ApplicationRoot, 'public/CSV/2017-09_CrudeOilProduction.csv'
       dataset: 'oct2017'
-      logFilename: path.join ApplicationRoot, 'devPublic/rawCSV/log/crude oil production VIZ.EF.17.csv_ingestion_errors.log'
+      logFilename: path.join ApplicationRoot, 'devPublic/rawCSV/log/2017-09_CrudeOilProduction.csv_ingestion_errors.log'
     }
     {
       type: 'gas'
-      dataFilename: path.join ApplicationRoot, 'devPublic/rawCSV/Natural gas production VIZ.EF.2017.csv'
-      processedFilename: path.join ApplicationRoot, 'public/CSV/Natural gas production VIZ.EF.2017.csv'
+      dataFilename: path.join ApplicationRoot, 'devPublic/rawCSV/2017-09_NaturalGasProduction.csv'
+      processedFilename: path.join ApplicationRoot, 'public/CSV/2017-09_NaturalGasProduction.csv'
       dataset: 'oct2017'
-      logFilename: path.join ApplicationRoot, 'devPublic/rawCSV/log/2016-10-18_NaturalGasProduction.csv_ingestion_errors.log'
+      logFilename: path.join ApplicationRoot, 'devPublic/rawCSV/log/2017-09_NaturalGasProduction.csv_ingestion_errors.log'
     }
     {
       type: 'demand'
-      dataFilename: path.join ApplicationRoot, 'devPublic/rawCSV/Demand_EF2017Prelim_VIZ.csv'
-      processedFilename: path.join ApplicationRoot, 'public/CSV/Demand_EF2017Prelim_VIZ.csv'
+      dataFilename: path.join ApplicationRoot, 'devPublic/rawCSV/2017-09_EnergyDemand.csv'
+      processedFilename: path.join ApplicationRoot, 'public/CSV/2017-09_EnergyDemand.csv'
       dataset: 'oct2017'
-      logFilename: path.join ApplicationRoot, 'devPublic/rawCSV/log/Demand_EF2017Prelim_VIZ.csv_ingestion_errors.log'
+      logFilename: path.join ApplicationRoot, 'devPublic/rawCSV/log/2017-09_EnergyDemand.csv_ingestion_errors.log'
     }
     {
       type: 'electricity'
-      dataFilename: path.join ApplicationRoot, 'devPublic/rawCSV/ElectricityGeneration_VIZ.EF17.csv'
-      processedFilename: path.join ApplicationRoot, 'public/CSV/ElectricityGeneration_VIZ.EF17.csv'
+      dataFilename: path.join ApplicationRoot, 'devPublic/rawCSV/2017-09_ElectricityGeneration.csv'
+      processedFilename: path.join ApplicationRoot, 'public/CSV/2017-09_ElectricityGeneration.csv'
       dataset: 'oct2017'
-      logFilename: path.join ApplicationRoot, 'devPublic/rawCSV/log/ElectricityGeneration_VIZ.EF17.csv_ingestion_errors.log'
+      logFilename: path.join ApplicationRoot, 'devPublic/rawCSV/log/2017-09_ElectricityGeneration.csv_ingestion_errors.log'
     }
   ]
 

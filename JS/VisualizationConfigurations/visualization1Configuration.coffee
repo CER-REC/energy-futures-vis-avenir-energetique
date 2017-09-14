@@ -108,7 +108,7 @@ class Visualization1Configuration
       @unit = allowableUnits[0]
 
   setScenario: (scenario) ->
-    if Constants.datasetDefinitions[@dataset].scenarios.includes scenario
+    if Constants.datasetDefinitions[@dataset]['scenariosPerSelection'][@mainSelection].includes scenario
       @scenario = scenario
     else
       @scenario = @defaultOptions.scenario

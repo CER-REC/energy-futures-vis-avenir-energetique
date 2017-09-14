@@ -10,11 +10,7 @@ class Visualization5Configuration
     scenario: 'reference'
     scenarios: [
       'reference'
-      'constrained'
-      'high'
-      'low'
-      'highLng'
-      'noLng'
+      'technology'
     ]
     baseYear: 2010 # bottom spinner
     comparisonYear: 2020 # top spinner

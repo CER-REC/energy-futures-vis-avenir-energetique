@@ -10,11 +10,8 @@ class Visualization4Configuration
 
     scenarios: [
       'reference'
-      'constrained'
-      'high'
-      'low'
-      'highLng'
-      'noLng'
+      'technology'
+      'hcp'
     ]
     province: 'all'
 

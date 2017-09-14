@@ -419,15 +419,16 @@ CommonControls =
 
     # TODO: not all visualizations have a 'main selection'.
     # This should be named differently.
-
     switch config.mainSelection
       when 'energyDemand', 'electricityGeneration'
         if config.dataset == 'jan2016'
           [reference, high, highLng, constrained, low, noLng]
         else if config.dataset == 'oct2016'
           [reference, high, low]
-        else if config.dataset == 'oct2017'
+        else if config.dataset == 'oct2017' && config.mainSelection == 'electricityGeneration'
           [reference, technology, hcp]
+        else if config.dataset == 'oct2017' && config.mainSelection == 'energyDemand'
+          [reference, technology]
       when 'oilProduction'
         if config.dataset == 'jan2016'
           [reference, high, constrained, low]
@@ -452,6 +453,6 @@ CommonControls =
         else if config.dataset == 'oct2016'
           [reference, high, low]
         else if config.dataset == 'oct2017'
-          [reference, technology, hcp]
+          [reference, technology]
 
 module.exports = CommonControls
