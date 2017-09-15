@@ -75,9 +75,9 @@ class PillPopover
     html = Mustache.render PillPopoverTemplate,
       headingText: Tr.sourceSelector.sources[data.source][@app.language]
       baseDemandText: "#{Math.round data.basePercentage}% #{Tr.viz5Pills.ofDemandIn[@app.language]} #{data.baseYear}"
-      baseDemandAmounts: "#{Math.round data.baseValue} PJ / #{Math.round data.baseTotal} PJ"
+      baseDemandAmounts: "#{Math.round data.baseValue} #{Tr.viz5Pills.of[@app.language]} #{Math.round data.baseTotal} PJ"
       comparisonDemandText: "#{Math.round data.comparisonPercentage}% #{Tr.viz5Pills.ofDemandIn[@app.language]} #{data.comparisonYear}"
-      comparisonDemandAmounts: "#{Math.round data.comparisonValue} PJ / #{Math.round data.comparisonTotal} PJ"
+      comparisonDemandAmounts: "#{Math.round data.comparisonValue} #{Tr.viz5Pills.of[@app.language]} #{Math.round data.comparisonTotal} PJ"
 
     @popoverElement = @rosePillRoot.append 'div'
       .attr

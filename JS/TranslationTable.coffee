@@ -1374,8 +1374,8 @@ module.exports =
       fr: 'SCÉNARIOS D’ÉLECTRICITÉ'
 
   visualization5Title:
-    en: 'CHANGING DEMAND'
-    fr: 'ÉVOLUTION DE LA DEMANDE'
+    en: 'CHANGING DEMAND SHARES'
+    fr: '<TODO>' #'ÉVOLUTION DE LA DEMANDE'
 
 
   imageExportText:
@@ -1445,8 +1445,8 @@ module.exports =
         fr: 'SOURCE'
 
     demandIn:
-      en: 'DEMAND IN'
-      fr: 'DEMANDE EN'
+      en: 'DEMAND SHARES IN'
+      fr: '<TODO>' #'DEMANDE EN'
       
     relativeTo:
       en: 'RELATIVE TO'
@@ -1917,3 +1917,6 @@ module.exports =
     ofDemandIn:
       en: 'of demand in'
       fr: 'de la demande en'
+    of:
+      en: 'of'
+      fr: 'de'
