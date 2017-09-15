@@ -169,6 +169,12 @@ class Visualization5Configuration
         Tr.scenarioSelector.highLngButton[@app.language]
       when 'noLng'
         Tr.scenarioSelector.noLngButton[@app.language]
+      when 'technology'
+        Tr.scenarioSelector.technologyButton[@app.language]
+      when 'htc'
+        Tr.scenarioSelector.htcButton[@app.language]
+      when 'hcp'
+        Tr.scenarioSelector.hcpButton[@app.language]
 
     yearText = "#{Tr.imageExportText.demandIn[@app.language]} #{@comparisonYear} #{Tr.imageExportText.relativeTo[@app.language]} #{@baseYear}"
 

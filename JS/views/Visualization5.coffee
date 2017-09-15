@@ -223,6 +223,16 @@ class Visualization5
   dataForProvinceMenu: (selectionProvince)->
     [
       {
+        key: 'Canada'
+        tooltip: ProvinceAriaText @app, selectionProvince == 'Canada', 'Canada'
+        colour: if selectionProvince == 'Canada' then '#333' else '#fff'
+        img:
+          if selectionProvince == 'Canada'
+            'IMG/provinces/radio/Canada_SelectedR.svg'
+          else
+            'IMG/provinces/radio/Canada_UnselectedR.svg'
+      }
+      {
         key: 'AB'
         tooltip: ProvinceAriaText @app, selectionProvince == 'AB', 'AB'
         colour: if selectionProvince == 'AB' then '#333' else '#fff'
