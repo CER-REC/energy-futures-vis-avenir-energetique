@@ -478,6 +478,10 @@ class Visualization4
         key: 'hcp'
         colour: '#7FCDBB'
       }
+      {
+        key: 'htc'
+        colour: '#0C2C84'
+      }
     ]
     
 
@@ -1090,7 +1094,7 @@ class Visualization4
       .style
         fill: (d) ->
           colour = d3.rgb d.colour
-          "url(#viz4gradPresent#{d.key}) rgba(#{colour.r}, #{colour.g}, #{colour.b}, 0.5)"
+          "url(#viz4gradPresent#{d.key})"
 
 
     graphAreaSelectors.transition()
@@ -1133,7 +1137,7 @@ class Visualization4
             value: 0
         fill: (d) ->
           colour = d3.rgb d.colour
-          "url(#viz4gradFuture#{d.key}) rgba(#{colour.r}, #{colour.g}, #{colour.b}, 0.2)"
+          "url(#viz4gradFuture#{d.key}"
 
     graphAreaGroups.order() #Keeps the order!!!
    
