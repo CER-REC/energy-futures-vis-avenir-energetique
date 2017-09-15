@@ -291,7 +291,7 @@ module.exports =
         en: '<TODO>'
         fr: '<TODO>'
       hcpButton:
-        en: 'HCP'
+        en: '<TODO>'
         fr: '<TODO>'
 
     viewBySelector:
@@ -776,6 +776,10 @@ module.exports =
             <p>
               The uncertainty related to eventual volumes of liquefied natural gas (LNG) exports is explored in two additional cases.
             </p>
+          <h2> Technology/HTC/HCP </h2>
+            <p>
+              TODO
+            </p>
         </div>
       """
       fr: """
@@ -807,6 +811,10 @@ module.exports =
           <h2> GNL </h2>
             <p>
               Deux autres scénarios explorent les incertitudes entourant les éventuelles exportations de gaz naturel liquéfié (GNL).
+            </p>
+          <h2> Technology/HTC/HCP </h2>
+            <p>
+              TODO
             </p>
         </div>
       """
@@ -1346,7 +1354,6 @@ module.exports =
   visualization2Title:
     en: 'ENERGY DEMAND BY SECTOR'
     # fr: 'DEMANDE D’ÉNERGIE PAR SOURCE ET SECTEUR'
-    # TODO: this might still be too long? check
     fr: 'DEMANDE D’ÉNERGIE PAR SECTEUR'
   visualization3Title:
     en: 'ELECTRICITY GENERATION'
