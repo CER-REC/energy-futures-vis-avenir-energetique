@@ -1002,7 +1002,7 @@ class Visualization4
       .attr
         class: 'presentLinearGradient'
         gradientUnits: 'objectBoundingBox'
-        id: (d) -> "viz4gradPresent#{d.key} rgba(#{colour.r}, #{colour.g}, #{colour.b}, 0.5)"
+        id: (d) -> "viz4gradPresent#{d.key}"
 
     enterGrads.append 'stop'
       .attr
@@ -1094,7 +1094,8 @@ class Visualization4
       .style
         fill: (d) ->
           colour = d3.rgb d.colour
-          "url(#viz4gradPresent#{d.key})"
+          # NB: The extra RGBA statement is a fallback for old IE
+          "url(#viz4gradPresent#{d.key}) rgba(#{colour.r}, #{colour.g}, #{colour.b}, 0.5)"
 
 
     graphAreaSelectors.transition()
@@ -1137,7 +1138,8 @@ class Visualization4
             value: 0
         fill: (d) ->
           colour = d3.rgb d.colour
-          "url(#viz4gradFuture#{d.key} rgba(#{colour.r}, #{colour.g}, #{colour.b}, 0.2)"
+          # NB: The extra RGBA statement is a fallback for old IE
+          "url(#viz4gradFuture#{d.key}) rgba(#{colour.r}, #{colour.g}, #{colour.b}, 0.2)"
 
     graphAreaGroups.order() #Keeps the order!!!
    
