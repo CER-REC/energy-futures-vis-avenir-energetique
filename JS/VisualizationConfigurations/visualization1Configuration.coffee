@@ -37,7 +37,7 @@ class Visualization1Configuration
       'SK'
       'YT'
     ]
-    dataset: Constants.datasets[1]
+    dataset: Constants.datasets[2]
 
   constructor: (@app, options) ->
     @page = 'viz1'
@@ -108,7 +108,7 @@ class Visualization1Configuration
       @unit = allowableUnits[0]
 
   setScenario: (scenario) ->
-    if Constants.datasetDefinitions[@dataset].scenarios.includes scenario
+    if Constants.datasetDefinitions[@dataset]['scenariosPerSelection'][@mainSelection].includes scenario
       @scenario = scenario
     else
       @scenario = @defaultOptions.scenario
@@ -235,6 +235,8 @@ class Visualization1Configuration
         "#{Tr.report[@app.language]}#{Tr.datasetSelector.jan2016Button[@app.language]}"
       when 'oct2016'
         "#{Tr.report[@app.language]}#{Tr.datasetSelector.oct2016Button[@app.language]}"
+      when 'oct2017'
+        "#{Tr.report[@app.language]}#{Tr.datasetSelector.oct2017Button[@app.language]}"
 
     description = ''
     description += "#{datasetText} - "

@@ -10,15 +10,12 @@ class Visualization4Configuration
 
     scenarios: [
       'reference'
-      'constrained'
-      'high'
-      'low'
-      'highLng'
-      'noLng'
+      'technology'
+      'hcp'
     ]
     province: 'all'
 
-    dataset: Constants.datasets[1]
+    dataset: Constants.datasets[2]
 
 
   constructor: (@app, options) ->
@@ -177,6 +174,8 @@ class Visualization4Configuration
         "#{Tr.report[@app.language]}#{Tr.datasetSelector.jan2016Button[@app.language]}"
       when 'oct2016'
         "#{Tr.report[@app.language]}#{Tr.datasetSelector.oct2016Button[@app.language]}"
+      when 'oct2017'
+        "#{Tr.report[@app.language]}#{Tr.datasetSelector.oct2017Button[@app.language]}"
 
     description = ''
     description += "#{datasetText} - "

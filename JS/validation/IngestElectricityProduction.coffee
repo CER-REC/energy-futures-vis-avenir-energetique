@@ -18,7 +18,7 @@ class ElectricityProductionIngestor
     @summarizedGroupedData = {}
     @detailedGroupedData = {}
     @extraData = []
-    @scenarios = Constants.datasetDefinitions[options.dataset].scenarios
+    @scenarios = Constants.datasetDefinitions[options.dataset].scenariosForIngestion['electricityGeneration']
 
 
     @normalize()

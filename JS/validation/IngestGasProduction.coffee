@@ -17,7 +17,7 @@ class GasProductionIngestor
     @unmappedData = d3.csv.parse rawData
     @summarizedGroupedData = {}
     @extraData = []
-    @scenarios = Constants.datasetDefinitions[options.dataset].scenarios
+    @scenarios = Constants.datasetDefinitions[options.dataset].scenariosForIngestion['gasProduction']
 
 
     @normalize()

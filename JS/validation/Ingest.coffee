@@ -9,7 +9,41 @@ IngestGasProduction = require './IngestGasProduction.coffee'
 IngestElectricityProduction = require './IngestElectricityProduction.coffee'
 
 
+october2017Files = ->
+  # TODO: even more portable than passing filenames in would be to pass stream objects
+  # in, this would let us use the ingestor offline and also seamlessly as part of a
+  # server.
 
+  [
+    {
+      type: 'oil'
+      dataFilename: path.join ApplicationRoot, 'devPublic/rawCSV/2017-09_CrudeOilProduction.csv'
+      processedFilename: path.join ApplicationRoot, 'public/CSV/2017-09_CrudeOilProduction.csv'
+      dataset: 'oct2017'
+      logFilename: path.join ApplicationRoot, 'devPublic/rawCSV/log/2017-09_CrudeOilProduction.csv_ingestion_errors.log'
+    }
+    {
+      type: 'gas'
+      dataFilename: path.join ApplicationRoot, 'devPublic/rawCSV/2017-09_NaturalGasProduction.csv'
+      processedFilename: path.join ApplicationRoot, 'public/CSV/2017-09_NaturalGasProduction.csv'
+      dataset: 'oct2017'
+      logFilename: path.join ApplicationRoot, 'devPublic/rawCSV/log/2017-09_NaturalGasProduction.csv_ingestion_errors.log'
+    }
+    {
+      type: 'demand'
+      dataFilename: path.join ApplicationRoot, 'devPublic/rawCSV/2017-09_EnergyDemand.csv'
+      processedFilename: path.join ApplicationRoot, 'public/CSV/2017-09_EnergyDemand.csv'
+      dataset: 'oct2017'
+      logFilename: path.join ApplicationRoot, 'devPublic/rawCSV/log/2017-09_EnergyDemand.csv_ingestion_errors.log'
+    }
+    {
+      type: 'electricity'
+      dataFilename: path.join ApplicationRoot, 'devPublic/rawCSV/2017-09_ElectricityGeneration.csv'
+      processedFilename: path.join ApplicationRoot, 'public/CSV/2017-09_ElectricityGeneration.csv'
+      dataset: 'oct2017'
+      logFilename: path.join ApplicationRoot, 'devPublic/rawCSV/log/2017-09_ElectricityGeneration.csv_ingestion_errors.log'
+    }
+  ]
 
 
 october2016Files = ->
@@ -115,6 +149,7 @@ ingest = (optionsList) ->
 
 ingest january2016Files()
 ingest october2016Files()
+ingest october2017Files()
 
 
 

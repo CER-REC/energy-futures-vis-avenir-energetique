@@ -51,6 +51,9 @@ class OilProductionProvider
       highLng: []
       noLng: []
       constrained: []
+      htc: []
+      hcp: []
+      technology: []
 
     for item in @data
       @dataByScenario[item.scenario].push item

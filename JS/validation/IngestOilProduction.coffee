@@ -8,7 +8,6 @@ IngestionMethods = require './IngestionMethods.coffee'
 class OilProductionIngestor
 
   process: (options) ->
-
     @setupFilenames options
 
     @logMessages = []
@@ -17,7 +16,7 @@ class OilProductionIngestor
     @unmappedData = d3.csv.parse rawData
     @summarizedGroupedData = {}
     @extraData = []
-    @scenarios = Constants.datasetDefinitions[options.dataset].scenarios
+    @scenarios = Constants.datasetDefinitions[options.dataset].scenariosForIngestion['oilProduction']
 
 
     @normalize()

@@ -207,6 +207,9 @@ module.exports =
       oct2016:
         en: 'CANADA ENERGY FUTURE 2016: UPDATE (October 2016). Presents reference, high, and low price cases. In the Reference Case, the crude oil price assumption is revised lower to US$90 per barrel by 2040. In addition to policies which were included in the January edition, such as Quebec’s cap and trade system and the carbon tax in B.C., most of the Alberta Climate Leadership Plan and the Ontario cap and trade program have been integrated into the forecast.'
         fr: 'Présente des scénarios de prix, bas et élevés, ainsi qu’un scénario de référence. Dans ce dernier cas, l’hypothèse de prix du pétrole brut a été revue à la baisse, à 90 $ US le baril en 2040. En plus des politiques déjà incluses précédemment, notamment le système de plafonnement et d’échange de droits d’émission au Québec et la taxe sur le carbone en Colombie-Britannique, les nouvelles prévisions tiennent compte, dans sa plus grande partie, du plan de leadership de l’Alberta en matière de changement climatique de même que du programme de plafonnement et d’échange de droits de l’Ontario.'
+      oct2017:
+        en: 'CANADA ENERGY FUTURE 2017 (October 2017). <TODO>'
+        fr: '<TODO>'
 
     mainSelector:
       totalDemandButton:
@@ -281,6 +284,15 @@ module.exports =
       highLngButton:
         en: 'High liquefied natural gas (LNG) exports.'
         fr: 'Exports de gaz naturel liquéfié (GNL) élevés'
+      technologyButton:
+        en: '<TODO>'
+        fr: '<TODO>'
+      htcButton:
+        en: '<TODO>'
+        fr: '<TODO>'
+      hcpButton:
+        en: 'HCP'
+        fr: '<TODO>'
 
     viewBySelector:
       viewByProvinceButton:
@@ -517,6 +529,9 @@ module.exports =
     oct2016Button:
       en: '2016 UPDATE'
       fr: 'MISE À JOUR 2016'
+    oct2017Button:
+      en: '2017'
+      fr: '2017'
     datasetSelectorHelpTitle:
       en: 'ENERGY FUTURES'
       fr: 'AVENIR ÉNERGÉTIQUE'
@@ -719,6 +734,15 @@ module.exports =
     highLngButton:
       en: 'HIGH LNG'
       fr: 'GNL ÉLEVÉ'
+    technologyButton:
+      en: 'TECHNOLOGY'
+      fr: '<TODO>'
+    htcButton:
+      en: 'HTC'
+      fr: '<TODO>'
+    hcpButton:
+      en: 'HCP'
+      fr: '<TODO>'
     scenarioSelectorHelpTitle:
       en: 'SCENARIOS'
       fr: 'SCÉNARIOS'
@@ -807,7 +831,15 @@ module.exports =
       highLng:
         en: 'HIGH LNG'
         fr: 'GNL ÉLEVÉ'
-
+      technology:
+        en: 'TECHNOLOGY'
+        fr: '<TODO>'
+      htc:
+        en: 'HTC'
+        fr: '<TODO>'
+      hcp:
+        en: 'HCP'
+        fr: '<TODO>'
 
 
   regionSelector:
@@ -1074,6 +1106,9 @@ module.exports =
       oct2016:
         en: '2016 UPDATE'
         fr: 'MISE À JOUR 2016'
+      oct2017:
+        en: '2017'
+        fr: '2017'
     sector:
       sector:
         en: 'sector'
@@ -1631,6 +1666,9 @@ module.exports =
       oct2016Selected:
         en: '2016 update selected'
         fr: 'Sélection - Mise à jour 2016'
+      oct2017Selected:
+        en: '2017 selected'
+        fr: 'Sélection - 2017'
 
       jan2016Unselected:
         en: '2016 unselected'
@@ -1638,6 +1676,9 @@ module.exports =
       oct2016Unselected:
         en: '2016 update unselected'
         fr: 'Désélection - Mise à jour 2016'
+      oct2017Unselected:
+        en: '2017 unselected'
+        fr: 'Désélection - 2017'
 
     scenario:
       referenceSelected:
@@ -1658,6 +1699,15 @@ module.exports =
       highLngSelected:
         en: 'High LNG selected'
         fr: 'Sélection - GNL élevé'
+      technologySelected:
+        en: 'Technology selected'
+        fr: '<TODO>'
+      htcSelected:
+        en: '<HTC selected>'
+        fr: '<TODO>'
+      hcpSelected:
+        en: 'HCP selected'
+        fr: '<TODO>'
 
       referenceUnselected:
         en: 'Reference unselected'
@@ -1677,6 +1727,15 @@ module.exports =
       highLngUnselected:
         en: 'High LNG unselected'
         fr: 'Désélection - GNL élevé'
+      technologyUnselected:
+        en: 'Technology unselected'
+        fr: '<TODO>'
+      htcUnselected:
+        en: 'HTC unselected'
+        fr: '<TODO>'
+      hcpUnselected:
+        en: 'HCP unselected'
+        fr: '<TODO>'
 
     viewBy:
       regionSelected:

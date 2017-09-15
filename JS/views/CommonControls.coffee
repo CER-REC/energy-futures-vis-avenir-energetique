@@ -33,8 +33,22 @@ CommonControls =
           Tr.altText.dataset.oct2016Selected[app.language]
         else
           Tr.altText.dataset.oct2016Unselected[app.language]
+    oct2017 =
+      label: Tr.datasetSelector.oct2017Button[app.language]
+      dataset: 'oct2017'
+      title: Tr.selectorTooltip.datasetSelector.oct2017[app.language]
+      class:
+        if config.dataset == 'oct2017'
+          'vizButton selected'
+        else
+          'vizButton'
+      ariaLabel:
+        if config.dataset == 'oct2017'
+          Tr.altText.dataset.oct2017Selected[app.language]
+        else
+          Tr.altText.dataset.oct2017Unselected[app.language]
 
-    [oct2016, jan2016]
+    [oct2017, oct2016, jan2016]
 
 
   mainSelectionData: (config, app) ->
@@ -342,26 +356,93 @@ CommonControls =
         else
           Tr.altText.scenario.noLngUnselected[app.language]
       colour: '#C7E9B4'
+    technology =
+      title: Tr.selectorTooltip.scenarioSelector.technologyButton[app.language]
+      label: Tr.scenarioSelector.technologyButton[app.language]
+      scenarioName: 'technology'
+      singleSelectClass:
+        if config.scenario == 'technology'
+          'vizButton selected'
+        else if Constants.datasetDefinitions[config.dataset].scenarios.includes 'technology'
+          'vizButton'
+      multipleSelectClass:
+        if config.scenarios?.includes 'technology'
+          'vizButton selected technology'
+        else if Constants.datasetDefinitions[config.dataset].scenarios.includes 'technology'
+          'vizButton technology'
+      ariaLabel:
+        if config.scenario == 'technology' or config.scenarios?.includes 'technology'
+          Tr.altText.scenario.technologySelected[app.language]
+        else
+          Tr.altText.scenario.technologyUnselected[app.language]
+      colour: '#0C2C84'
+    htc =
+      title: Tr.selectorTooltip.scenarioSelector.htcButton[app.language]
+      label: Tr.scenarioSelector.htcButton[app.language]
+      scenarioName: 'htc'
+      singleSelectClass:
+        if config.scenario == 'htc'
+          'vizButton selected'
+        else if Constants.datasetDefinitions[config.dataset].scenarios.includes 'htc'
+          'vizButton'
+      multipleSelectClass:
+        if config.scenarios?.includes 'htc'
+          'vizButton selected htc'
+        else if Constants.datasetDefinitions[config.dataset].scenarios.includes 'htc'
+          'vizButton htc'
+      ariaLabel:
+        if config.scenario == 'htc' or config.scenarios?.includes 'htc'
+          Tr.altText.scenario.htcSelected[app.language]
+        else
+          Tr.altText.scenario.htcUnselected[app.language]
+      colour: '#0C2C84'
+    hcp =
+      title: Tr.selectorTooltip.scenarioSelector.hcpButton[app.language]
+      label: Tr.scenarioSelector.hcpButton[app.language]
+      scenarioName: 'hcp'
+      singleSelectClass:
+        if config.scenario == 'hcp'
+          'vizButton selected'
+        else if Constants.datasetDefinitions[config.dataset].scenarios.includes 'hcp'
+          'vizButton'
+      multipleSelectClass:
+        if config.scenarios?.includes 'hcp'
+          'vizButton selected hcp'
+        else if Constants.datasetDefinitions[config.dataset].scenarios.includes 'hcp'
+          'vizButton hcp'
+      ariaLabel:
+        if config.scenario == 'hcp' or config.scenarios?.includes 'hcp'
+          Tr.altText.scenario.hcpSelected[app.language]
+        else
+          Tr.altText.scenario.hcpUnselected[app.language]
+      colour: '#7FCDBB'
 
     # TODO: not all visualizations have a 'main selection'.
     # This should be named differently.
-
     switch config.mainSelection
       when 'energyDemand', 'electricityGeneration'
         if config.dataset == 'jan2016'
           [reference, high, highLng, constrained, low, noLng]
-        else
+        else if config.dataset == 'oct2016'
           [reference, high, low]
+        else if config.dataset == 'oct2017' && config.mainSelection == 'electricityGeneration'
+          [reference, technology, hcp]
+        else if config.dataset == 'oct2017' && config.mainSelection == 'energyDemand'
+          [reference, technology]
       when 'oilProduction'
         if config.dataset == 'jan2016'
           [reference, high, constrained, low]
-        else
+        else if config.dataset == 'oct2016'
           [reference, high, low]
+        else if config.dataset == 'oct2017'
+          [reference, htc, hcp]
       when 'gasProduction'
         if config.dataset == 'jan2016'
           [reference, high, highLng, low, noLng]
-        else
+        else if config.dataset == 'oct2016'
           [reference, high, low]
+        else if config.dataset == 'oct2017'
+          [reference, technology, hcp]
       # This is the case when the scenarios list is requested by viz5. Because
       # viz5 config does not contain a main selection and since we currently
       # need to return the full list of scenarios, we are defaulting to return all
@@ -369,8 +450,9 @@ CommonControls =
       else
         if config.dataset == 'jan2016'
           [reference, high, highLng, constrained, low, noLng]
-        else
+        else if config.dataset == 'oct2016'
           [reference, high, low]
-
+        else if config.dataset == 'oct2017'
+          [reference, technology]
 
 module.exports = CommonControls

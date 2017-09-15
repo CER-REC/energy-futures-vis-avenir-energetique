@@ -6,15 +6,11 @@ Constants = require '../Constants.coffee'
 
 class Visualization5Configuration
   defaultOptions:
-    dataset: Constants.datasets[1]
+    dataset: Constants.datasets[2]
     scenario: 'reference'
     scenarios: [
       'reference'
-      'constrained'
-      'high'
-      'low'
-      'highLng'
-      'noLng'
+      'technology'
     ]
     baseYear: 2010 # bottom spinner
     comparisonYear: 2020 # top spinner
@@ -155,6 +151,8 @@ class Visualization5Configuration
         "#{Tr.report[@app.language]}#{Tr.datasetSelector.jan2016Button[@app.language]}"
       when 'oct2016'
         "#{Tr.report[@app.language]}#{Tr.datasetSelector.oct2016Button[@app.language]}"
+      when 'oct2017'
+        "#{Tr.report[@app.language]}#{Tr.datasetSelector.oct2017Button[@app.language]}"
 
     sectorText = Tr.imageExportText.sectors[@sector][@app.language]
 

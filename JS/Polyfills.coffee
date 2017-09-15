@@ -11,8 +11,8 @@ unless [].find?
   find.shim()
 
 # element.remove, not present in IE <= 11
-if Platform.name == 'browser'
-  unless Element.prototype.remove?
-    Element.prototype.remove = ->
-      @parentNode.removeChild @ if @parentNode
+#if Platform.name == 'browser'
+#  unless Element.prototype.remove?
+#    Element.prototype.remove = ->
+#      @parentNode.removeChild @ if @parentNode
 
