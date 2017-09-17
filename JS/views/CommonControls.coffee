@@ -422,7 +422,7 @@ CommonControls =
     switch config.mainSelection
       when 'energyDemand', 'electricityGeneration'
         if config.dataset == 'jan2016'
-          [reference, high, highLng, constrained, low, noLng]
+          [reference, high, low, constrained, highLng, noLng]
         else if config.dataset == 'oct2016'
           [reference, high, low]
         else if config.dataset == 'oct2017' && config.mainSelection == 'electricityGeneration'
@@ -431,14 +431,14 @@ CommonControls =
           [reference, technology]
       when 'oilProduction'
         if config.dataset == 'jan2016'
-          [reference, high, constrained, low]
+          [reference, high, low, constrained]
         else if config.dataset == 'oct2016'
           [reference, high, low]
         else if config.dataset == 'oct2017'
           [reference, htc, hcp]
       when 'gasProduction'
         if config.dataset == 'jan2016'
-          [reference, high, highLng, low, noLng]
+          [reference, high, low, highLng, noLng]
         else if config.dataset == 'oct2016'
           [reference, high, low]
         else if config.dataset == 'oct2017'
@@ -449,7 +449,7 @@ CommonControls =
       # the scenarios for each of the datasets.
       else
         if config.dataset == 'jan2016'
-          [reference, high, highLng, constrained, low, noLng]
+          [reference, high, low, constrained, highLng, noLng]
         else if config.dataset == 'oct2016'
           [reference, high, low]
         else if config.dataset == 'oct2017'
