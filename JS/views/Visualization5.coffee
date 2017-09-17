@@ -124,6 +124,7 @@ class Visualization5
     @playPauseStatus = 'paused'
 
     @allCanadaRoses =
+      Canada: null
       AB: null
       BC: null
       MB: null

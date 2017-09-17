@@ -95,13 +95,13 @@ class Visualization5Configuration
       @comparisonYear = @baseYear
 
   setLeftProvince: (province) ->
-    if Constants.provinceRadioSelectionOptions.includes province
+    if Constants.viz5leftProvinceMenuOption.includes province
       @leftProvince = province
     else
       @leftProvince = @defaultOptions.leftProvince
 
   setRightProvince: (province) ->
-    if Constants.provinces.includes province
+    if Constants.viz5rightProvinceMenuOption.includes province
       @rightProvince = province
     else
       @rightProvince = @defaultOptions.rightProvince
