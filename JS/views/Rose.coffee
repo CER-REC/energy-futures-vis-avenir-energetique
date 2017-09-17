@@ -143,17 +143,41 @@ class Rose
         r: Constants.roseCentreCircleRadius
         fill: '#333'
 
-    # Centre label
-    @innerContainer.append 'text'
-      .attr
-        class: 'roseCentreLabel'
-        fill: 'white'
-        transform: 'translate(0, 4.5)'
-        'text-anchor': 'middle'
-      .style
-        'font-size': '13px'
-      .text =>
-        @options.data[0].province
+    # Render the maple leaf instead of the text
+    # label for the Canada rose
+    if @options.data[0].province == 'Canada'
+      @innerContainer.append 'image'
+        .attr
+          class: 'pointerCursor'
+          id: 'mapleLeafSVG'
+          'xlink:href': 'IMG/mapleLeaf.svg'
+          x: "-#{Constants.roseCentreCircleRadius}px"
+          y: "-#{Constants.roseCentreCircleRadius}px"
+          width: Constants.roseCentreCircleRadius * 2
+          height: Constants.roseCentreCircleRadius * 2
+
+    else 
+      # Centre label
+      @innerContainer.append 'text'
+        .attr
+          class: 'roseCentreLabel'
+          fill: 'white'
+          transform: 'translate(0, 4.5)'
+          'text-anchor': 'middle'
+        .style
+          'font-size': '13px'
+        .text =>
+          @options.data[0].province
+
+      @innerContainer.append 'image'
+        .attr
+          class: 'hidden'
+          id: 'mapleLeafSVG'
+          'xlink:href': 'IMG/mapleLeaf.svg'
+          x: "-#{Constants.roseCentreCircleRadius}px"
+          y: "-#{Constants.roseCentreCircleRadius}px"
+          width: Constants.roseCentreCircleRadius * 2
+          height: Constants.roseCentreCircleRadius * 2
 
     if @options.isFirstRun and @options.showAllCanadaAnimationOnFirstRun
       switch Platform.name
@@ -358,9 +382,23 @@ class Rose
 
       @showPills() if @options.showPillsAfterTransition
 
-    @innerContainer.select '.roseCentreLabel'
-      .text =>
-        @options.data[0].province
+    # Render the maple leaf instead of the text
+    # label for the Canada rose
+    if @options.data[0].province == 'Canada'
+      @innerContainer.select '#mapleLeafSVG'
+        .attr
+          class: 'pointerCursor'
+
+    else 
+      @innerContainer.select '.roseCentreLabel'
+        .attr
+          class: 'roseCentreLabel'
+        .text =>
+          @options.data[0].province
+
+      @innerContainer.select '#mapleLeafSVG'
+        .attr
+          class: 'hidden'
 
     @innerContainer.selectAll '.petal'
       .data @options.data

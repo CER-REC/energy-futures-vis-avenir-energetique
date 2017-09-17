@@ -444,7 +444,7 @@ module.exports =
       column: 2
     Canada: 
       row: 0
-      column: 4
+      column: 3.5
     NL:
       row: 0
       column: 5
