@@ -11,6 +11,7 @@ class Visualization5Configuration
     scenarios: [
       'reference'
       'technology'
+      'hcp'
     ]
     baseYear: 2010 # bottom spinner
     comparisonYear: 2020 # top spinner

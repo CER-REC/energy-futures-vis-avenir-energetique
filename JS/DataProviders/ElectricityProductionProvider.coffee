@@ -63,7 +63,6 @@ class ElectricityProductionProvider
       highLng: []
       noLng: []
       constrained: []
-      htc: []
       hcp: []
       technology: []
 

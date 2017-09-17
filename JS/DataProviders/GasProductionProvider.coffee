@@ -51,7 +51,6 @@ class GasProductionProvider
       highLng: []
       noLng: []
       constrained: []
-      htc: []
       hcp: []
       technology: []
 

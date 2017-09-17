@@ -287,9 +287,6 @@ module.exports =
       technologyButton:
         en: '<TODO>'
         fr: '<TODO>'
-      htcButton:
-        en: '<TODO>'
-        fr: '<TODO>'
       hcpButton:
         en: 'HCP'
         fr: '<TODO>'
@@ -737,9 +734,6 @@ module.exports =
     technologyButton:
       en: 'TECHNOLOGY'
       fr: '<TODO>'
-    htcButton:
-      en: 'HTC'
-      fr: '<TODO>'
     hcpButton:
       en: 'HCP'
       fr: '<TODO>'
@@ -833,9 +827,6 @@ module.exports =
         fr: 'GNL ÉLEVÉ'
       technology:
         en: 'TECHNOLOGY'
-        fr: '<TODO>'
-      htc:
-        en: 'HTC'
         fr: '<TODO>'
       hcp:
         en: 'HCP'
@@ -1702,9 +1693,6 @@ module.exports =
       technologySelected:
         en: 'Technology selected'
         fr: '<TODO>'
-      htcSelected:
-        en: '<HTC selected>'
-        fr: '<TODO>'
       hcpSelected:
         en: 'HCP selected'
         fr: '<TODO>'
@@ -1729,9 +1717,6 @@ module.exports =
         fr: 'Désélection - GNL élevé'
       technologyUnselected:
         en: 'Technology unselected'
-        fr: '<TODO>'
-      htcUnselected:
-        en: 'HTC unselected'
         fr: '<TODO>'
       hcpUnselected:
         en: 'HCP unselected'

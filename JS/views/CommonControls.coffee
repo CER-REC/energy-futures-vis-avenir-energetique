@@ -376,26 +376,6 @@ CommonControls =
         else
           Tr.altText.scenario.technologyUnselected[app.language]
       colour: '#0C2C84'
-    htc =
-      title: Tr.selectorTooltip.scenarioSelector.htcButton[app.language]
-      label: Tr.scenarioSelector.htcButton[app.language]
-      scenarioName: 'htc'
-      singleSelectClass:
-        if config.scenario == 'htc'
-          'vizButton selected'
-        else if Constants.datasetDefinitions[config.dataset].scenarios.includes 'htc'
-          'vizButton'
-      multipleSelectClass:
-        if config.scenarios?.includes 'htc'
-          'vizButton selected htc'
-        else if Constants.datasetDefinitions[config.dataset].scenarios.includes 'htc'
-          'vizButton htc'
-      ariaLabel:
-        if config.scenario == 'htc' or config.scenarios?.includes 'htc'
-          Tr.altText.scenario.htcSelected[app.language]
-        else
-          Tr.altText.scenario.htcUnselected[app.language]
-      colour: '#0C2C84'
     hcp =
       title: Tr.selectorTooltip.scenarioSelector.hcpButton[app.language]
       label: Tr.scenarioSelector.hcpButton[app.language]
@@ -425,17 +405,15 @@ CommonControls =
           [reference, high, highLng, constrained, low, noLng]
         else if config.dataset == 'oct2016'
           [reference, high, low]
-        else if config.dataset == 'oct2017' && config.mainSelection == 'electricityGeneration'
+        else if config.dataset == 'oct2017'
           [reference, technology, hcp]
-        else if config.dataset == 'oct2017' && config.mainSelection == 'energyDemand'
-          [reference, technology]
       when 'oilProduction'
         if config.dataset == 'jan2016'
           [reference, high, constrained, low]
         else if config.dataset == 'oct2016'
           [reference, high, low]
         else if config.dataset == 'oct2017'
-          [reference, htc, hcp]
+          [reference, technology, hcp]
       when 'gasProduction'
         if config.dataset == 'jan2016'
           [reference, high, highLng, low, noLng]
@@ -453,6 +431,6 @@ CommonControls =
         else if config.dataset == 'oct2016'
           [reference, high, low]
         else if config.dataset == 'oct2017'
-          [reference, technology]
+          [reference, technology, hcp]
 
 module.exports = CommonControls
