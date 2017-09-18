@@ -31,10 +31,10 @@ october2017Files = ->
     }
     {
       type: 'demand'
-      dataFilename: path.join ApplicationRoot, 'devPublic/rawCSV/2017-09_EnergyDemand.csv'
-      processedFilename: path.join ApplicationRoot, 'public/CSV/2017-09_EnergyDemand.csv'
+      dataFilename: path.join ApplicationRoot, 'devPublic/rawCSV/2017-09_EnergyDemand_Updated.csv'
+      processedFilename: path.join ApplicationRoot, 'public/CSV/2017-09_EnergyDemand_Updated.csv'
       dataset: 'oct2017'
-      logFilename: path.join ApplicationRoot, 'devPublic/rawCSV/log/2017-09_EnergyDemand.csv_ingestion_errors.log'
+      logFilename: path.join ApplicationRoot, 'devPublic/rawCSV/log/2017-09_EnergyDemand_Updated.csv_ingestion_errors.log'
     }
     {
       type: 'electricity'
