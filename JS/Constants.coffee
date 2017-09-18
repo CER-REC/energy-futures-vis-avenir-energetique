@@ -234,6 +234,41 @@ module.exports =
     'YT'
   ]
 
+  viz5leftProvinceMenuOption: [
+    'all'
+    'Canada'
+    'AB'
+    'BC'
+    'MB'
+    'NB'
+    'NL'
+    'NS'
+    'NT'
+    'NU'
+    'ON'
+    'PE'
+    'QC'
+    'SK'
+    'YT'
+  ]
+
+  viz5rightProvinceMenuOption: [
+    'Canada'
+    'AB'
+    'BC'
+    'MB'
+    'NB'
+    'NL'
+    'NS'
+    'NT'
+    'NU'
+    'ON'
+    'PE'
+    'QC'
+    'SK'
+    'YT'
+  ]
+
   sectors: [
     'residential'
     'commercial'
@@ -406,6 +441,9 @@ module.exports =
     NU:
       row: 0
       column: 2
+    Canada: 
+      row: 0
+      column: 3.5
     NL:
       row: 0
       column: 5
@@ -448,6 +486,9 @@ module.exports =
     NU:
       x: 355
       y: 285
+    Canada: 
+      x: 555
+      y: 285
     NL:
       x: 668
       y: 285
@@ -480,6 +521,7 @@ module.exports =
       y: 405
 
   fullRoseRenderingDelay:
+    Canada: 400 #
     YT: 800   #
     NT: 1200  #
     NU: 1520  #

@@ -881,6 +881,9 @@ module.exports =
       all:
         en: 'Canada'
         fr: 'Canada'
+      Canada:
+        en: 'Canada'
+        fr: 'Canada'
 
 
 

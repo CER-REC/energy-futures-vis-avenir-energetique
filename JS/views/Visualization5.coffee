@@ -124,6 +124,7 @@ class Visualization5
     @playPauseStatus = 'paused'
 
     @allCanadaRoses =
+      Canada: null
       AB: null
       BC: null
       MB: null
@@ -222,6 +223,16 @@ class Visualization5
   # Province menu stuff
   dataForProvinceMenu: (selectionProvince)->
     [
+      {
+        key: 'Canada'
+        tooltip: ProvinceAriaText @app, selectionProvince == 'Canada', 'Canada'
+        colour: if selectionProvince == 'Canada' then '#333' else '#fff'
+        img:
+          if selectionProvince == 'Canada'
+            'IMG/provinces/radio/Canada_SelectedR.svg'
+          else
+            'IMG/provinces/radio/Canada_UnselectedR.svg'
+      }
       {
         key: 'AB'
         tooltip: ProvinceAriaText @app, selectionProvince == 'AB', 'AB'
