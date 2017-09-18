@@ -343,7 +343,7 @@ class Rose
     switch Platform.name
       when 'browser'
         container = @container.transition()
-          .duration @app.animationDuration
+          .duration Constants.viz5timelineDuration
       when 'server'
         container = @container
 
@@ -365,7 +365,7 @@ class Rose
     @innerContainer.selectAll '.petal'
       .data @options.data
       .transition()
-      .duration @app.animationDuration
+      .duration Constants.viz5timelineDuration
       .attr
         d: (d) =>
           @petalPath d.value, Constants.viz5RoseData[d.source].startAngle
@@ -497,7 +497,7 @@ class Rose
     containerOffset = Constants.roseSize / 2 * @options.scale
     @container
       .transition()
-      .duration @app.animationDuration
+      .duration Constants.viz5timelineDuration
       .attr
         transform: "translate(#{@options.position.x + containerOffset}, #{@options.position.y + containerOffset}) scale(0, 0)"
       .each 'end', =>
