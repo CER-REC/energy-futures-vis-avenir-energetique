@@ -980,13 +980,13 @@ class Visualization5
             @config.setComparisonYear @config.comparisonYear
             isReplay = false
           else @config.setComparisonYear @config.comparisonYear + 1
-          @yearTimeout = window.setTimeout timeoutComplete, @app.animationDuration
+          @yearTimeout = window.setTimeout timeoutComplete, Constants.viz5timelineDuration
           @redraw()
           @d3document.select '#sliderLabel'
             .transition()
               .attr
                 transform: "translate(#{@yearScale()(@config.comparisonYear)},#{@timelineMargin.top  - 5})"
-            .duration @app.animationDuration
+            .duration Constants.viz5timelineDuration
             .ease 'linear'
           @d3document.select '#labelBox'
             .text @config.comparisonYear

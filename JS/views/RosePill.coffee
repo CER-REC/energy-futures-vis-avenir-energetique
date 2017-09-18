@@ -66,13 +66,16 @@ class RosePill
     # We default the background colour and font colour to white in the CSS for
     # .rosePillBox. Depending on whether the value is positive or negative, we set either
     # the background colour or font colour to match the source.
-    if Math.round(@options.data.value) >= 0
+    if @options.data.value >= 0
       classString += " #{@options.data.source}Background"
       changeSymbol = '+'
     else
       classString += " #{@options.data.source}Text"
       # A negative symbol is provided when we stringify a negative value
       changeSymbol = ''
+
+    if @options.data.value > -1 && @options.data.value < 1
+      changeSymbol = '~'
 
     switch Platform.name
       when 'browser'
