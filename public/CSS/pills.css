@@ -1,4 +1,32 @@
+#canadasEnergyFutureVisualization .rosePillBorder {
+  box-sizing: border-box;
+  position: absolute;
+  overflow: hidden;
 
+  border-width: 5px;
+  border-style: solid;
+
+  background-color: white;
+  color: white;
+
+  /* Above the pill popover */
+  /* NB: Wet navbar is styled with z-index 500, and we desire for the popover to cover it if need be */
+  z-index: 1500;   
+}
+
+#canadasEnergyFutureVisualization .rosePillBorder.large {
+  border-width: 2px;
+  width: 74px;
+  height: 31px;
+  border-radius: 16.38px;
+}
+
+#canadasEnergyFutureVisualization .rosePillBorder.small {
+  border-width: 1px;
+  width: 53px;
+  height: 23px;
+  border-radius: 12.19px;
+}
 
 #canadasEnergyFutureVisualization .rosePillBox {
   box-sizing: border-box;

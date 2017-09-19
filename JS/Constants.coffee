@@ -323,6 +323,10 @@ module.exports =
   roseFullScale: 1
   roseSlightlyBiggerScale: 1.1
 
+  roseBorderOffset:
+    'small': 1.5 # in px
+    'large': 2 # in px
+
   serverSideGraphWidth: 1065 # px
   viz4ServerSideGraphWidth: 995 # 1065 - 70 extra pixels of width for viz4's wider legend
 

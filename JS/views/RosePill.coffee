@@ -40,10 +40,12 @@ class RosePill
       @app.window.setTimeout =>
         return if @tornDown
         @rosePillBox = @d3document.select('#rosePillRoot').append 'div'
+        @rosePillBorder = @d3document.select('#rosePillRoot').append 'div'
         @update()
       , options.wait
     else
       @rosePillBox = @d3document.select('#rosePillRoot').append 'div'
+      @rosePillBorder = @d3document.select('#rosePillRoot').append 'div'
       @update()
 
 
@@ -62,6 +64,7 @@ class RosePill
 
     # The pill always gets a border matching the source's colour
     classString = "rosePillBox pointerCursor fadein #{@options.data.source}Border #{@options.size}"
+    borderClassString = "rosePillBorder pointerCursor fadein #{@options.data.source}Border #{@options.size}"
 
     # We default the background colour and font colour to white in the CSS for
     # .rosePillBox. Depending on whether the value is positive or negative, we set either
@@ -91,6 +94,10 @@ class RosePill
       style: "top: #{@top}px; left: #{@left}px;"
     .html pillHtml
 
+    @rosePillBorder.attr
+      class: borderClassString
+      style: "top: #{@top - Constants.roseBorderOffset[@options.size]}px; left: #{@left - Constants.roseBorderOffset[@options.size]}px"
+
     @rosePillBox.on 'click', =>
       @options.clickHandler @
 
@@ -108,8 +115,13 @@ class RosePill
       .classed 'fadein', false
       .classed 'fadeout', true
 
+    @rosePillBorder
+      .classed 'fadein', false
+      .classed 'fadeout', true
+
     @app.window.setTimeout =>
       @rosePillBox.remove()
+      @rosePillBorder.remove()
     , Constants.viz5PillPopoverDuration
 
 
