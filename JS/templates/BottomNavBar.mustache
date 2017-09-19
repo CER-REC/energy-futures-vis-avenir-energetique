@@ -1,0 +1,43 @@
+<a tabindex='0' href="#" id="aboutLinkAnchor" role="button" class="leftItem">
+  {{ aboutLink }}
+</a>
+<a tabindex='0' href="{{ methodologyLinkUrl }}" target="_blank" id="methodologyLinkAnchor" class="leftItem">
+  {{ methodologyLinkText }}
+</a>
+
+
+<div class="float-right">
+
+  <a tabindex='0' id='imageDownloadLink' href="#" role="button" class="rightItem">
+    {{ imageDownloadLink }}
+  </a>
+
+  <div class="rightItem" id="dataDownloadLinkAnchor" role="button">  
+    <a tabindex='0' id='dataDownloadLink' data-ajax="false" href='#'>
+      {{ dataDownloadLink }}
+    </a>
+  </div>
+
+  <div class="rightItem spacer"></div>
+
+  <div aria-hidden="true" role="presentation" class="rightItem">{{ shareLabel }}</div>
+
+  <div class="emailItem"> 
+    <a tabindex='0' href="#" id="emailLinkAnchor" role="button">
+      <img src='IMG/social_media/email.svg' alt='{{ emailAltText }}'>
+    </a>
+  </div>
+  
+  <div class="linkedinItem">
+    <a tabindex='0' href="#" id="linkedInLinkAnchor" role="button">
+      <img src='IMG/social_media/linkedin.svg' alt='{{ linkedinAltText }}'>
+    </a>
+  </div>
+
+  <div class="twitterItem">
+    <a tabindex='0' href="#" id="twitterLinkAnchor" role="button">
+      <img src='IMG/social_media/twitter.svg' alt='{{ twitterAltText }}'>
+    </a>
+  </div>
+
+</div>

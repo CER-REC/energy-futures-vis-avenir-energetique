@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+
+<head> 
+  <meta charset="utf-8" />
+  <link rel="stylesheet" href="CSS/serverSideRenderingStyles.css">
+
+  <link rel="stylesheet" href="CSS/pills.css">
+
+  <!-- NB: The Avenir fonts were licensed for use with the NEB's site, but can't be distributed with the open source release. This stylesheet is not distributed with the open source release either. The Google font below serves as fallback. -->
+  <link rel="stylesheet" href="CSS/avenirFontsNoTracker.css">
+  
+  {{{ fallbackFontStylesheetLink }}}
+  
+</head>
+
+
+<body>
+  <div id="canadasEnergyFutureVisualization"> 
+
+    <nav id="vizNavbar">
+    </nav>
+
+    <div role="heading" id='landingPageHeading' class='hidden'></div>
+    <div class="clearfix"> </div>
+
+    <div id="mainPanel">
+
+      <div id="aboutModal" class="vizModal hidden"> </div>
+      <div id="imageDownloadModal" class="vizModal hidden"> </div>
+
+      <div id="visualizationContent"> </div>
+
+      <!-- Both landingPagePanel and bottomNavBar contents are laid out with floats, so
+            this clearfix element is necessary to keep them from interfering with each other. -->
+
+      <div class="clearfix"> </div>
+
+    </div>
+
+    <nav id='bottomNavBar' class="hidden"> </nav>
+
+  </div>
+</body>

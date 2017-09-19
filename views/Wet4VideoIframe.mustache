@@ -1,0 +1,50 @@
+<!-- NB: Once the NEB website is updated to WET4, it will be necessary to create an equivalent aspx page to bring in these WET dependencies and get the iframe working. See the setup for Wet3VideoIframe in this project and in the NEB deployment solution for a model to follow. -->
+
+
+<!DOCTYPE html>
+<!--[if lt IE 9]>
+
+<html class="no-js lt-ie9" lang="en" dir="ltr">
+
+<![endif]-->
+
+<!--[if gt IE 8]><!-->
+<html class="no-js" lang="en" dir="ltr">
+<!--<![endif]-->
+
+<head>
+  <!--[if gte IE 9 | !IE ]><!-->
+  <link href="./themes-dist-4.0.20-theme-gcwu-fegc/theme-gcwu-fegc/assets/favicon.ico" rel="icon" type="image/x-icon">
+  <link rel="stylesheet" href="./themes-dist-4.0.20-theme-gcwu-fegc/theme-gcwu-fegc/css/theme.min.css">
+  <!--<![endif]-->
+
+  <!--[if lt IE 9]>
+  <link href="./themes-dist-4.0.20-theme-gcwu-fegc/theme-gcwu-fegc/assets/favicon.ico" rel="shortcut icon" />
+  <link rel="stylesheet" href="./themes-dist-4.0.20-theme-gcwu-fegc/theme-gcwu-fegc/css/ie8-theme.min.css" />
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  <script src="./themes-dist-4.0.20-theme-gcwu-fegc/wet-boew/js/ie8-wet-boew.min.js"></script>
+  <![endif]-->
+
+  <noscript><link rel="stylesheet" href="./themes-dist-4.0.20-theme-gcwu-fegc/wet-boew/css/noscript.min.css" /></noscript>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+  {{> wet_video_reporter }}
+
+</head>
+<body>
+
+  {{> wet4_video_body }}
+
+
+  <!--[if gte IE 9 | !IE ]><!-->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.js"></script>
+
+  <script src="./themes-dist-4.0.20-theme-gcwu-fegc/wet-boew/js/wet-boew.min.js"></script>
+  <!--<![endif]-->
+  <!--[if lt IE 9]>
+  <script src="./themes-dist-4.0.20-theme-gcwu-fegc/wet-boew/js/ie8-wet-boew2.min.js"></script>
+
+  <![endif]-->
+  <script src="./themes-dist-4.0.20-theme-gcwu-fegc/theme-gcwu-fegc/js/theme.min.js"></script>
+</body>
+</html>

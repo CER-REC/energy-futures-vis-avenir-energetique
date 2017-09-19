@@ -1,93 +1,123 @@
 d3 = require 'd3'
+_ = require 'lodash'
+
 Tr = require '../TranslationTable.coffee'
-Templates = require '../templates.coffee'
-Mustache = require 'mustache'
+NavbarInfoPopover = require '../popovers/NavbarInfoPopover.coffee'
+NavbarHelpPopover = require '../popovers/NavbarHelpPopover.coffee'
 
 
-class Navbar 
+class Navbar
 
-  constructor: ->
-    # navbarState can be one of: landingPage, viz1, viz2, viz3, viz4
+  constructor: (@app) ->
+    # navbarState can be one of: landingPage, viz1, viz2, viz3, viz4, viz5
     @navbarState = null
 
+    @navbarInfoPopover = new NavbarInfoPopover @app
+    @navbarHelpPopover = new NavbarHelpPopover @app
 
-  # NB: This data is in REVERSE order on purpose
-  # We float the resulting divs to the right, which means they appear in the reverse
-  # of the order the data is in here
-  # We have to float right in order to achieve the desired drop shadowing appearance
+
   navbarData: ->
     if @navbarState == 'landingPage'
       []
     else
       [
         {
-          unselectedLabel: Tr.allPages.visualization4NavbarLink[app.language]
-          selectedLabel: Tr.visualization4Titles[app.visualization4Configuration.mainSelection][app.language]
-          navbarHelpImageSelected: 'IMG/navbar_Icons/questionMark_ScenarioHighlighted.svg'
-          navbarInfoText: Tr.visualization4NavbarHelp[app.language]
-          navbarInfoImageSelected: 'IMG/navbar_Icons/explanationIcon_ScenarioHighlighted.svg'
-          colour: 'rgb(202, 152, 48)'
-          page: 'viz4'
-          imageAUrl: Tr.howToImages.viz4A[app.language]
-          imageBUrl: Tr.howToImages.viz4B[app.language]
-        }
-        {
-          unselectedLabel: Tr.allPages.visualization3NavbarLink[app.language]
-          selectedLabel: Tr.visualization3Title[app.language]
-          navbarInfoText: Tr.visualization3NavbarHelp[app.language]
-          navbarHelpImageSelected: 'IMG/navbar_Icons/questionMark_ElectricityHighlighted.svg'
-          navbarInfoImageSelected: 'IMG/navbar_Icons/explanationIcon_ElectricityHighlighted.svg'
-          colour: 'rgb(54, 55, 150)'
-          page: 'viz3'
-          imageAUrl: Tr.howToImages.viz3A[app.language]
-          imageBUrl: Tr.howToImages.viz3B[app.language]
-        }
-        {
-          unselectedLabel: Tr.allPages.visualization2NavbarLink[app.language]
-          selectedLabel: Tr.visualization2Title[app.language]
-          navbarInfoText: Tr.visualization2NavbarHelp[app.language]
-          navbarHelpImageSelected: 'IMG/navbar_Icons/questionMark_SectorHighlighted.svg'
-          navbarInfoImageSelected: 'IMG/navbar_Icons/explanationIcon_SectorHighlighted.svg'
-          colour: 'rgb(52, 153, 153)'
-          page: 'viz2'
-          imageAUrl: Tr.howToImages.viz2A[app.language]
-          imageBUrl: Tr.howToImages.viz2B[app.language]
-        }
-        {
-          unselectedLabel: Tr.allPages.visualization1NavbarLink[app.language]
-          selectedLabel: Tr.visualization1Titles[app.visualization1Configuration.mainSelection][app.language]
-          navbarInfoText: Tr.visualization1NavbarHelp[app.language]
-          navbarHelpImageSelected: 'IMG/navbar_Icons/questionMark_RegionHighlighted.svg'
-          navbarInfoImageSelected: 'IMG/navbar_Icons/explanationIcon_RegionHighlighted.svg'
-          colour: 'rgb(103, 153, 204)'
-          page: 'viz1'
-          imageAUrl: Tr.howToImages.viz1A[app.language]
-          imageBUrl: Tr.howToImages.viz1B[app.language]
-        }
-        {
           img: 'IMG/home.svg'
           unselectedLabel: ''
           selectedLabel: ''
           colour: '#333'
           page: 'landingPage'
-        }    
+        }
+        {
+          unselectedLabel: Tr.allPages.visualization1NavbarLink[@app.language]
+          selectedLabel: Tr.visualization1Titles[@app.visualization1Configuration.mainSelection][@app.language]
+          infoPopoverText: Tr.navbarInfoText.viz1[@app.language]
+          infoPopoverHeader: Tr.navbarInfoHeadings.viz1[@app.language]
+          navbarHelpImageSelected: 'IMG/navbar_Icons/questionMark_RegionHighlighted.svg'
+          navbarInfoImageSelected: 'IMG/navbar_Icons/explanationIcon_RegionHighlighted.svg'
+          colour: 'rgb(103, 153, 204)'
+          page: 'viz1'
+          imageAUrl: Tr.howToImages.viz1A[@app.language]
+          imageBUrl: Tr.howToImages.viz1B[@app.language]
+          helpPopoverHeaderClass: 'viz1HelpTitle'
+        }
+        {
+          unselectedLabel: Tr.allPages.visualization2NavbarLink[@app.language]
+          selectedLabel: Tr.visualization2Title[@app.language]
+          infoPopoverText: Tr.navbarInfoText.viz2[@app.language]
+          infoPopoverHeader: Tr.navbarInfoHeadings.viz2[@app.language]
+          navbarHelpImageSelected: 'IMG/navbar_Icons/questionMark_SectorHighlighted.svg'
+          navbarInfoImageSelected: 'IMG/navbar_Icons/explanationIcon_SectorHighlighted.svg'
+          colour: 'rgb(52, 153, 153)'
+          page: 'viz2'
+          imageAUrl: Tr.howToImages.viz2A[@app.language]
+          imageBUrl: Tr.howToImages.viz2B[@app.language]
+          helpPopoverHeaderClass: 'viz2HelpTitle'
+        }
+        {
+          unselectedLabel: Tr.allPages.visualization3NavbarLink[@app.language]
+          selectedLabel: Tr.visualization3Title[@app.language]
+          infoPopoverText: Tr.navbarInfoText.viz3[@app.language]
+          infoPopoverHeader: Tr.navbarInfoHeadings.viz3[@app.language]
+          navbarHelpImageSelected: 'IMG/navbar_Icons/questionMark_ElectricityHighlighted.svg'
+          navbarInfoImageSelected: 'IMG/navbar_Icons/explanationIcon_ElectricityHighlighted.svg'
+          colour: 'rgb(54, 55, 150)'
+          page: 'viz3'
+          imageAUrl: Tr.howToImages.viz3A[@app.language]
+          imageBUrl: Tr.howToImages.viz3B[@app.language]
+          helpPopoverHeaderClass: 'viz3HelpTitle'
+        }
+        {
+          unselectedLabel: Tr.allPages.visualization4NavbarLink[@app.language]
+          selectedLabel: Tr.visualization4Titles[@app.visualization4Configuration.mainSelection][@app.language]
+          navbarHelpImageSelected: 'IMG/navbar_Icons/questionMark_ScenarioHighlighted.svg'
+          infoPopoverText: Tr.navbarInfoText.viz4[@app.language]
+          infoPopoverHeader: Tr.navbarInfoHeadings.viz4[@app.language]
+          navbarInfoImageSelected: 'IMG/navbar_Icons/explanationIcon_ScenarioHighlighted.svg'
+          colour: 'rgb(202, 152, 48)'
+          page: 'viz4'
+          imageAUrl: Tr.howToImages.viz4A[@app.language]
+          imageBUrl: Tr.howToImages.viz4B[@app.language]
+          helpPopoverHeaderClass: 'viz4HelpTitle'
+        }
+        {
+          unselectedLabel: Tr.allPages.visualization5NavbarLink[@app.language]
+          selectedLabel: Tr.visualization5Title[@app.language]
+          navbarHelpImageSelected: 'IMG/navbar_Icons/questionMark_DemandHighlighted.svg'
+          infoPopoverText: Tr.navbarInfoText.viz5[@app.language]
+          infoPopoverHeader: Tr.navbarInfoHeadings.viz5[@app.language]
+          navbarInfoImageSelected: 'IMG/navbar_Icons/explanationIcon_DemandHighlighted.svg'
+          colour: 'rgb(204, 102, 102)'
+          page: 'viz5'
+          imageAUrl: Tr.howToImages.viz5A[@app.language]
+          imageBUrl: Tr.howToImages.viz5B[@app.language]
+          helpPopoverHeaderClass: 'viz5HelpTitle'
+        }
       ]
 
 
-    
-  
 
-  setNavBarState: (newState) ->
-    
+
+
+  setNavBarState: (newState, options) ->
+    # We only select the navbar item if navgation was done by keyboard, and not by mouse
+    # click. This is a compromise between accessibility and preserving the appearance of
+    # the design for sighted users using a mouse.
+    options = _.merge {shouldSelectNavbarItem: true}, options
+
     oldState = @navbarState
     @navbarState = newState
 
     if @navbarState == 'landingPage'
-      d3.select('#vizNavbar').classed('hidden', true)
-      d3.select("#landingPageHeading").classed("hidden", false)
+      d3.select '#vizNavbar'
+        .classed 'hidden', true
+      d3.select '#landingPageHeading'
+        .classed 'hidden', false
     else
-      d3.select('#vizNavbar').classed('hidden', false)
-      d3.select("#landingPageHeading").classed("hidden", true)
+      d3.select '#vizNavbar'
+        .classed 'hidden', false
+      d3.select '#landingPageHeading'
+        .classed 'hidden', true
 
     # Whether we should animate the navbar depends on how we arrive on the page
     if oldState == newState
@@ -99,17 +129,19 @@ class Navbar
     else if oldState == 'landingPage' and @navbarState != 'landingPage'
       # Landing page -> Visualization page: no animation
       @renderWithoutAnimation()
+      @setVisualizationFocus() if options.shouldSelectNavbarItem
     else
       # Visualization page -> Visualization page: animate
       @renderWithAnimation()
+      @setVisualizationFocus() if options.shouldSelectNavbarItem
 
 
   # Internal Methods
 
   vizNavbar: ->
-    d3.select('#vizNavbar')
-      .selectAll('.vizNavbarItem')
-      .data(@navbarData())
+    d3.select '#navbarInnerContainer'
+      .selectAll '.vizNavbarItem'
+      .data @navbarData()
 
   renderWithoutAnimation: ->
     @renderEnter()
@@ -134,17 +166,29 @@ class Navbar
       .on 'click', (d) =>
         d3.event.preventDefault()
         if d.page != @navbarState
-          app.router.navigate
+          @app.router.navigate {
             page: d.page
-      .style 
+            language: @app.language
+          },
+            shouldSelectNavbarItem: false
+      .on 'keydown', (d) =>
+        if (d3.event.key == 'Enter' or d3.event.key == ' ') and d.page != @navbarState
+          d3.event.preventDefault()
+          d3.event.stopPropagation()
+          @app.router.navigate
+            page: d.page
+            language: @app.language
+
+
+      .style
         'background-color': (d) -> d.colour
-        width: (d) => 
+        width: (d) =>
           if d.page == 'landingPage'
             '4.2%'
           else if @navbarState == d.page
-            "66.1%"
+            '56.2%'
           else
-            "9.9%"
+            '9.9%'
 
   renderHtml: ->
     vizNavbar = @vizNavbar()
@@ -152,93 +196,91 @@ class Navbar
     vizNavbar
       .html (d) =>
         if d.page == 'landingPage'
-          "<div class='vizNavbarHomeButton'> </div>"
+          "<div class='vizNavbarHomeButton' tabindex='0' role='button' aria-label='#{Tr.home[@app.language]}'> </div>"
         else if @navbarState == d.page
-          "<div class='navbarSelectedItem'> 
-            <span>#{d.selectedLabel}</span>
-            <div class='navbarHelpIcon'>
-              <img src='IMG/navbar_Icons/questionMark_ColourBG.svg'>
+          "<div class='navbarSelectedItem'>
+            <span class='navbarTitle' role='button' tabindex='0'> #{d.selectedLabel} </span>
+
+            <div class='float-right'>
+              <div class='navbarMenuIcon navbarButton'
+                   role='button'
+                   aria-label='#{Tr.altText.explanationIcon_ColourBG[@app.language]}'
+                   tabindex='0'
+              >
+                <img src='IMG/navbar_Icons/explanationIcon_ColourBG.svg'
+                     alt='#{Tr.altText.explanationIcon_ColourBG[@app.language]}'
+                >
+              </div>
+              <div class='navbarHelpIcon navbarButton'
+                   role='button'
+                   aria-label='#{Tr.altText.questionMark_ColourBG[@app.language]}'
+                   tabindex='0'
+              >
+                <img src='IMG/navbar_Icons/questionMark_ColourBG.svg'
+                     alt='#{Tr.altText.questionMark_ColourBG[@app.language]}'
+                >
+              </div>
             </div>
-            <div class='navbarMenuIcon'>
-              <img src='IMG/navbar_Icons/explanationIcon_ColourBG.svg'>
+            <div class='vizModal navbarHelpSection hidden' role='dialog' aria-labelledby='navbarHelpPopoverHeading'>
             </div>
-            <div class='navbarHelpSection hidden'>
+            <div class='vizModal navbarInfoSection hidden' role='dialog' aria-labelledby='navbarInfoPopoverHeading'>
             </div>
           </div>
           "
         else
-          "<div class='navbarUnselectedItem'> 
-            <span>#{d.unselectedLabel}</span>
+          "<div class='navbarUnselectedItem'>
+            <span class='navbarTitle' role='button' tabindex='0'>#{d.unselectedLabel}</span>
           </div>"
 
-    
-    vizNavbar.select('.navbarHelpIcon')
-      .on 'click', (d) ->
-        # Set the content of the pop up        
-        d3.select('.navbarHelpSection').html (e) => Mustache.render Templates.howToPopoverContent, 
+
+    # TODO: would be good to unsubscribe these events on page navigation
+
+
+
+
+
+
+
+
+    helpButtonClick = (d) =>
+      d3.event.stopPropagation()
+      if @app.popoverManager.currentPopover == @navbarHelpPopover
+        @app.popoverManager.closePopover()
+      else
+        @app.popoverManager.showPopover @navbarHelpPopover,
           imageAUrl: d.imageAUrl
           imageBUrl: d.imageBUrl
+          navbarHelpImageSelected: d.navbarHelpImageSelected
+          helpPopoverHeaderClass: d.helpPopoverHeaderClass
+          elementToFocusOnClose: @app.window.document.querySelector('.navbarHelpIcon')
+        @app.analyticsReporter.reportEvent 'Navbar help', @navbarState
+    
+    vizNavbar.select('.navbarHelpIcon')
+      .on 'click', helpButtonClick
+      .on 'keydown', (d) ->
+        if d3.event.key == 'Enter' or d3.event.key == ' '
+          d3.event.preventDefault()
+          helpButtonClick d
 
-        # Set up event handlers to swap between the two help images
-        d3.select('.howToBackButton').on 'click', ->
-          d3.select('.imageAContainer').classed 'hidden', false
-          d3.select('.imageBContainer').classed 'hidden', true
-          
-          d3.select('.howToBackButton').attr 'disabled', 'disabled'
-          d3.select('.howToBackButton').html """
-            <img src="IMG/howto/light-left-arrow.png">
-          """
-          d3.select('.howToForwardButton').attr 'disabled', null
-          d3.select('.howToForwardButton').html """
-            <img src="IMG/howto/dark-right-arrow.png">
-          """
-
-
-        d3.select('.howToForwardButton').on 'click', ->
-          d3.select('.imageAContainer').classed 'hidden', true
-          d3.select('.imageBContainer').classed 'hidden', false
-
-          d3.select('.howToBackButton').attr 'disabled', null
-          d3.select('.howToBackButton').html """
-            <img src="IMG/howto/dark-left-arrow.png">
-          """
-          d3.select('.howToForwardButton').attr 'disabled', 'disabled'
-          d3.select('.howToForwardButton').html """
-            <img src="IMG/howto/light-right-arrow.png">
-          """
-
-        # Set up the help icon: depending on selection
-        d3.select('.navbarHelpIcon').classed('selected', !(d3.select('.navbarHelpIcon').classed('selected')))
-        if d3.select('.navbarHelpIcon').classed('selected') 
-          d3.select('.navbarHelpIcon').html "<img src='#{d.navbarHelpImageSelected}'>"
-        else
-          d3.select('.navbarHelpIcon').html "<img src='IMG/navbar_Icons/questionMark_ColourBG.svg'>"
-        
-        # Either way the explanation icon should be unselected
-        d3.select('.navbarMenuIcon').classed('selected', false)
-        d3.select('.navbarMenuIcon').html "<img src='IMG/navbar_Icons/explanationIcon_ColourBG.svg'>"
-        
-        # Determine whether to hide or show the element
-        d3.select('.navbarHelpSection').classed('hidden', !(d3.select('.navbarHelpIcon').classed('selected')))
+    infoButtonClick = (d) =>
+      d3.event.stopPropagation()
+      if @app.popoverManager.currentPopover == @navbarInfoPopover
+        @app.popoverManager.closePopover()
+      else
+        @app.popoverManager.showPopover @navbarInfoPopover,
+          navbarInfoImageSelected: d.navbarInfoImageSelected
+          infoPopoverText: d.infoPopoverText
+          infoPopoverHeader: d.infoPopoverHeader
+          infoPopoverHeaderClass: d.helpPopoverHeaderClass
+          elementToFocusOnClose: @app.window.document.querySelector('.navbarMenuIcon')
+        @app.analyticsReporter.reportEvent 'Navbar info', @navbarState
 
     vizNavbar.select('.navbarMenuIcon')
-      .on 'click', (d) ->
-        # Set the content of the pop up
-        d3.select('.navbarHelpSection').html (e) => d.navbarInfoText
-        
-        # Set up the info icon: depending on selection
-        d3.select('.navbarMenuIcon').classed('selected', !(d3.select('.navbarMenuIcon').classed('selected')))
-        if d3.select('.navbarMenuIcon').classed('selected') 
-          d3.select('.navbarMenuIcon').html "<img src='#{d.navbarInfoImageSelected}'>"
-        else
-          d3.select('.navbarMenuIcon').html "<img src='IMG/navbar_Icons/explanationIcon_ColourBG.svg'>"
-        
-        # Either way the explanation help should be unselected
-        d3.select('.navbarHelpIcon').classed('selected', false)
-        d3.select('.navbarHelpIcon').html "<img src='IMG/navbar_Icons/questionMark_ColourBG.svg'>"
-        
-        # Determine whether to hide or show the element
-        d3.select('.navbarHelpSection').classed('hidden', !(d3.select('.navbarMenuIcon').classed('selected')))
+      .on 'click', infoButtonClick
+      .on 'keydown', (d) ->
+        if d3.event.key == 'Enter' or d3.event.key == ' '
+          d3.event.preventDefault()
+          infoButtonClick d
 
 
 
@@ -255,25 +297,29 @@ class Navbar
     vizNavbar.each (d) ->
       d3.select(@).selectAll('span')
         .style
-          opacity: 
+          opacity:
             if self.navbarState == d.page then 0 else 1
     vizNavbar.selectAll('span').transition()
-      .duration 1000
+      .duration @app.animationDuration
       .style
         opacity: 1
 
     vizNavbar.transition()
-      .duration 1000
+      .duration @app.animationDuration
       .styleTween 'width', (d, i, a) ->
         return if d.page == 'landingPage'
         if self.navbarState == d.page
-          d3.interpolateString(@style.width, '66.1%')
+          d3.interpolateString @style.width, '56.2%'
         else
-          d3.interpolateString(@style.width, '9.9%')
+          d3.interpolateString @style.width, '9.9%'
 
   renderExit: ->
     @vizNavbar().exit().remove()
 
-
+  setVisualizationFocus: ->
+    # Manage focus when transitioning pages
+    focusTarget = @app.window.document.querySelector('.navbarSelectedItem .navbarTitle')
+    return unless focusTarget?
+    focusTarget.focus()
 
 module.exports = Navbar

@@ -1,0 +1,16 @@
+<script type="text/javascript">
+  document.addEventListener('DOMContentLoaded', function(){
+
+    if (parent.attachVideoAnalytics == null) {
+      console.warn('attachVideoAnalytics was not ready when video iframe loaded.');
+      return;
+    }
+
+    var videoElement = document.querySelector('video');
+    parent.attachVideoAnalytics(videoElement);
+
+  })
+</script>
+
+
+

@@ -1,78 +1,76 @@
 d3 = require 'd3'
-Constants = require '../Constants.coffee'
-UnitTransformation = require '../unit-transformation.coffee'
 
+UnitTransformation = require '../unit-transformation.coffee'
 
 class GasProductionProvider
 
+  constructor: ->
+    @data = []
 
+  # Parse all of a CSV's data
+  loadFromString: (dataString) ->
+    @data = d3.csv.parse dataString, @mapping
+    @parseData()
 
-  constructor: (loadedCallback) ->
+  # Add an array of data objects to the data store
+  addData: (data) ->
+    @data = @data.concat data
+    @parseData()
 
-    @data = null
-    @loadedCallback = loadedCallback
+  mapping: (d) ->
+    province: d.province
+    type: d.type
+    scenario: d.scenario
+    year: parseInt d.year
+    value: parseFloat d.value
+    unit: d.unit
 
-    d3.csv "CSV/Natural gas production VIZ.csv", @csvMapping, @parseData
-  
-
-
-
-
-  csvMapping: (d) ->
-    province: d.Area
-    type: d.Type
-    scenario: d.Case
-    year: parseInt(d.Year)
-    value: parseFloat(d.Data)
-
-  parseData: (error, data) =>
-    console.warn error if error?
-    @data = data
+  parseData: =>
     
-    # Normalize some of the data in the CSV, to make life easier later
-    # TODO: precompute some of these changes?
-
-    for item in @data
-      item.scenario = Constants.csvScenarioToScenarioNameMapping[item.scenario]
-
-    for item in @data
-      item.province = Constants.csvProvinceToProvinceCodeMapping[item.province]
-
-    @dataByProvince = 
-      'BC' : []
-      'AB' : []
-      'SK' : []
-      'MB' : []
-      'ON' :  []
-      'QC' : []
-      'NB' : []
-      'NS' : []
-      'NL' : []
-      'PE' : []
-      'YT' :  []
-      'NT' :  []
-      'NU' :  []
-      'all' : []
+    @dataByProvince =
+      BC: []
+      AB: []
+      SK: []
+      MB: []
+      ON: []
+      QC: []
+      NB: []
+      NS: []
+      NL: []
+      PE: []
+      YT: []
+      NT: []
+      NU: []
+      all: []
 
 
-    @dataByScenario = 
+    @dataByScenario =
       reference: []
       high: []
       low: []
       highLng: []
       noLng: []
       constrained: []
+      htc: []
+      hcp: []
+      technology: []
 
     for item in @data
       @dataByScenario[item.scenario].push item
       @dataByProvince[item.province].push item
     
-    @loadedCallback()
+    @loadedCallback() if @loadedCallback
 
 
-  # accessors note: this is never needed for viz 2 or 3!!
-  dataForViz1: (viz1config) ->
-    filteredProvinceData = {}    
+  # accessors note: GasProductionProvider is never needed for viz 2 or 3!!
+
+
+  # Returns a set of data corresponding to the given config object, except that
+  # it has not been filtered by scenario. In order to show a y-axis which does not change
+  # when the user switches the scenario, we need to take the maximum of all of the data
+  # across scenarios for a given configuration.
+  dataForAllViz1Scenarios: (viz1config) ->
+    filteredProvinceData = {}
 
     # Exclude data from provinces that aren't in the set
     for provinceName in Object.keys @dataByProvince
@@ -83,21 +81,16 @@ class GasProductionProvider
     for provinceName in Object.keys filteredProvinceData
       filteredProvinceData[provinceName] = filteredProvinceData[provinceName].filter (item) ->
         item.type == 'Total'
-
-    # Include only data for the current scenario
-    for provinceName in Object.keys filteredProvinceData
-      filteredProvinceData[provinceName] = filteredProvinceData[provinceName].filter (item) ->
-        item.scenario == viz1config.scenario
     
     # Finally, convert units
     return filteredProvinceData if viz1config.unit == 'millionCubicMetres'
 
-    if viz1config.unit == 'cubicFeet' 
+    if viz1config.unit == 'cubicFeet'
       unitConvertedProvinceData = {}
       for province in Object.keys filteredProvinceData
         unitConvertedProvinceData[province] = []
         for item in filteredProvinceData[province]
-          unitConvertedProvinceData[province].push 
+          unitConvertedProvinceData[province].push
             # TODO: This approach is pretty nasty, is there a better way?
             province: item.province
             sector: item.sector
@@ -108,16 +101,43 @@ class GasProductionProvider
       return unitConvertedProvinceData
 
 
-  dataForViz4: (viz4config) ->
-    filteredScenarioData = {}    
+  # Returns an object keyed by province short code (like "AB")
+  # Each entry has an array of objects in ascending order by year, like:
+  #   province: 'AB'
+  #   scenario: 'reference'
+  #   type: 'Total', or absent
+  #   sector: 'total', undefined, or absent
+  #   source: 'total', undefined, or absent
+  #   value: 234.929
+  #   year: 2005
+  # The attributes available vary from dataset to dataset, which is why some of them may
+  # or may not be present.
+  dataForViz1: (viz1config) ->
+    unfilteredData = @dataForAllViz1Scenarios viz1config
+    filteredData = {}
 
-    # Exclude data from scenarios that aren't in the set
+    for sourceName in Object.keys unfilteredData
+      filteredData[sourceName] = unfilteredData[sourceName].filter (item) ->
+        item.scenario == viz1config.scenario
+
+    filteredData
+
+
+
+  # Returns a set of data corresponding to the given config object, except that
+  # it has not been filtered by scenario. In order to show a y-axis which does not change
+  # when the user switches the scenario, we need to take the maximum of all of the data
+  # across scenarios for a given configuration.
+  dataForAllViz4Scenarios: (viz4config) ->
+    filteredScenarioData = {}
+
+    # Group data by scenario
     for scenarioName in Object.keys @dataByScenario
-      if viz4config.scenarios.includes scenarioName
-        filteredScenarioData[scenarioName] = @dataByScenario[scenarioName]
+      filteredScenarioData[scenarioName] = @dataByScenario[scenarioName]
 
     # We aren't interested in breakdowns by type, only the totals
-    # TODO: Since this will always be the case for viz4, cache the data with this filter applied?
+    # TODO: Since this will always be the case for viz4, cache the data with this filter
+    # applied?
     for scenarioName in Object.keys filteredScenarioData
       filteredScenarioData[scenarioName] = filteredScenarioData[scenarioName].filter (item) ->
         item.type == 'Total'
@@ -126,18 +146,16 @@ class GasProductionProvider
     for scenarioName in Object.keys filteredScenarioData
       filteredScenarioData[scenarioName] = filteredScenarioData[scenarioName].filter (item) ->
         item.province == viz4config.province
-
-
     
     # Finally, convert units
     return filteredScenarioData if viz4config.unit == 'millionCubicMetres'
 
-    if viz4config.unit == 'cubicFeet' 
+    if viz4config.unit == 'cubicFeet'
       unitConvertedScenarioData = {}
       for scenario in Object.keys filteredScenarioData
         unitConvertedScenarioData[scenario] = []
         for item in filteredScenarioData[scenario]
-          unitConvertedScenarioData[scenario].push 
+          unitConvertedScenarioData[scenario].push
             # TODO: This approach is pretty nasty, is there a better way?
             province: item.province
             sector: item.sector
@@ -147,8 +165,32 @@ class GasProductionProvider
             value: item.value * UnitTransformation.transformUnits('millionCubicMetres', 'cubicFeet')
       return unitConvertedScenarioData
 
-    # TODO: if we get to here something has gone horribly wrong, and we should do something else
+    # TODO: if we get to here something has gone horribly wrong, and we should do
+    # something else
     console.warn 'something has gone wrong'
+
+
+
+  # Returns an object keyed by scenario name (e.g. 'reference')
+  # Each entry has an array of objects in ascending order by year, like:
+  #   province: 'all'
+  #   scenario: 'constrained'
+  #   sector: 'total' or undefined
+  #   source: 'total' or undefined, or the attribute may be absent
+  #   value: 2161.98
+  #   year: 2005
+  # The attributes available vary from dataset to dataset, which is why some of them may
+  # or may not be present.
+  dataForViz4: (viz4config) ->
+    unfilteredData = @dataForAllViz4Scenarios viz4config
+    filteredData = {}
+
+    # Exclude data from scenarios that aren't in the set
+    for scenarioName in Object.keys unfilteredData
+      if viz4config.scenarios.includes scenarioName
+        filteredData[scenarioName] = unfilteredData[scenarioName]
+
+    filteredData
 
 
 

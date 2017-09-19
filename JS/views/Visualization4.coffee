@@ -1,477 +1,578 @@
 d3 = require 'd3'
-templates = require '../templates.coffee'
-Constants = require '../Constants.coffee'
-squareMenu = require '../charts/square-menu.coffee'
 Mustache = require 'mustache'
+
+Constants = require '../Constants.coffee'
+SquareMenu = require '../charts/SquareMenu.coffee'
 Tr = require '../TranslationTable.coffee'
+Platform = require '../Platform.coffee'
+
+ParamsToUrlString = require '../ParamsToUrlString.coffee'
+CommonControls = require './CommonControls.coffee'
+
+if Platform.name == 'browser'
+  Visualization4Template = require '../templates/Visualization4.mustache'
+  SvgStylesheetTemplate = require '../templates/SvgStylesheet.css'
+
+ControlsHelpPopover = require '../popovers/ControlsHelpPopover.coffee'
+
+ProvinceAriaText = require '../ProvinceAriaText.coffee'
+Viz4AccessConfig = require '../VisualizationConfigurations/Vis4AccessConfig.coffee'
+
 
 class Visualization4
 
+  renderBrowserTemplate: ->
+    contentElement = @document.getElementById 'visualizationContent'
+    contentElement.innerHTML = Mustache.render Visualization4Template,
+      selectDatasetLabel: Tr.datasetSelector.selectDatasetLabel[@app.language]
+      selectOneLabel: Tr.mainSelector.selectOneLabel[@app.language]
+      selectUnitLabel: Tr.unitSelector.selectUnitLabel[@app.language]
+      selectScenarioLabel: Tr.scenarioSelector.selectScenarioLabel[@app.language]
+      selectRegionLabel: Tr.regionSelector.selectRegionLabel[@app.language]
+      svgStylesheet: SvgStylesheetTemplate
+      graphDescription: Tr.altText.viz4GraphAccessibleInstructions[@app.language]
 
-  constructor: (config) ->
+      altText:
+        mainSelectionHelp: Tr.altText.mainSelectionHelp[@app.language]
+        unitsHelp: Tr.altText.unitsHelp[@app.language]
+        datasetsHelp: Tr.altText.datasetsHelp[@app.language]
+        scenariosHelp: Tr.altText.scenariosHelp[@app.language]
 
+    @datasetHelpPopover = new ControlsHelpPopover @app,
+      popoverButtonId: 'datasetSelectorHelpButton'
+      outerClasses: 'vizModal controlsHelpPopover datasetSelectorHelp'
+      innerClasses: 'viz4HelpTitle'
+      title: Tr.datasetSelector.datasetSelectorHelpTitle[@app.language]
+      content: => Tr.datasetSelector.datasetSelectorHelp[@app.language]
+      attachmentSelector: '.datasetSelectorGroup'
+      analyticsElement: 'Viz4 dataset help'
+
+    @mainSelectorHelpPopover = new ControlsHelpPopover @app,
+      popoverButtonId: 'mainSelectorHelpButton'
+      outerClasses: 'vizModal controlsHelpPopover mainSelectorHelp'
+      innerClasses: 'viz4HelpTitle'
+      title: Tr.mainSelector.selectOneLabel[@app.language]
+      content: => Tr.mainSelector.mainSelectorHelp[@app.language]
+      attachmentSelector: '.mainSelectorSection'
+      analyticsElement: 'Viz4 main selection help'
+
+    @unitsHelpPopover = new ControlsHelpPopover @app,
+      popoverButtonId: 'unitSelectorHelpButton'
+      outerClasses: 'vizModal controlsHelpPopover unitSelectorHelp'
+      innerClasses: 'viz4HelpTitle'
+      title: Tr.unitSelector.unitSelectorHelpTitle[@app.language]
+      content: => Tr.unitSelector.unitSelectorHelp[@app.language]
+      attachmentSelector: '.unitsSelectorGroup'
+      analyticsElement: 'Viz4 unit help'
+
+    @scenariosHelpPopover = new ControlsHelpPopover @app,
+      popoverButtonId: 'scenarioSelectorHelpButton'
+      outerClasses: 'vizModal controlsHelpPopover scenarioSelectorHelp'
+      innerClasses: 'viz4HelpTitle'
+      title: Tr.scenarioSelector.scenarioSelectorHelpTitle[@app.language]
+      content: => Tr.scenarioSelector.scenarioSelectorHelp[@app.language]
+      attachmentSelector: '.scenarioSelectorGroup'
+      analyticsElement: 'Viz4 scenario help'
+
+    @provincesHelpPopover = new ControlsHelpPopover @app,
+      popoverButtonId: 'provinceHelpButton'
+      outerClasses: 'vizModal controlsHelpPopover popOverSm provinceHelp'
+      title: Tr.regionSelector.selectRegionLabel[@app.language]
+      content: =>
+        #Grab the provinces in order for the string
+        contentString = ''
+        for province in @dataForProvinceMenu()
+          contentString = """
+            <div class="provinceLabel">
+              <h2> #{Tr.regionSelector.names[province.key][@app.language]} </h2>
+            </div>
+            #{contentString}
+          """
+        contentString
+      attachmentSelector: '#provincesSelector'
+      analyticsElement: 'Viz4 region help'
+      setupEvents: false
+
+
+
+  renderServerTemplate: ->
+    contentElement = @document.getElementById 'visualizationContent'
+    contentElement.innerHTML = Mustache.render @options.template,
+      svgStylesheet: @options.svgTemplate
+      title: Tr.visualization4Titles[@config.mainSelection][@app.language]
+      description: @config.imageExportDescription()
+      energyFuturesSource: Tr.allPages.imageDownloadSource[@app.language]
+      bitlyLink: @app.bitlyLink
+      legendContent: @scenarioLegendData()
+
+
+
+
+  constructor: (@app, config, @options) ->
     @config = config
-    
-    @outerHeight = 700 
-    @margin = 
+    @accessConfig = new Viz4AccessConfig @config
+    @outerHeight = 700
+    @margin =
       top: 20
       right: 70
-      bottom: 70
+      bottom: 50
       left: 10
+    @document = @app.window.document
+    @d3document = d3.select @document
+    @accessibleStatusElement = @document.getElementById 'accessibleStatus'
 
 
-    document.getElementById('visualizationContent').innerHTML = Mustache.render templates.visualization4Template,
-      selectOneLabel: Tr.mainSelector.selectOneLabel[app.language]
-      selectUnitLabel: Tr.unitSelector.selectUnitLabel[app.language]
-      selectScenarioLabel: Tr.scenarioSelector.selectScenarioLabel[app.language]
-      selectRegionLabel: Tr.regionSelector.selectRegionLabel[app.language]
-      svgStylesheet: templates.svgStylesheet
+    if Platform.name == 'browser'
+      @renderBrowserTemplate()
+    else if Platform.name == 'server'
+      @renderServerTemplate()
 
-    d3.select '.mainSelectorHelpButton'
-      .on 'click', ->
-        d3.event.preventDefault()
-        if d3.selectAll('.floatingPopover.mainSelectorHelp').empty()        
-          # Clear any other open popovers
-          d3.selectAll('.floatingPopover').remove()
-
-          # Build the popover
-          newEl = document.createElement 'div'
-          newEl.className = 'vizModal floatingPopover mainSelectorHelp'
-          newEl.innerHTML = Mustache.render templates.questionMarkPopoverTemplate, 
-                visClass: 'viz4HelpTitle'
-                popUpTitle: Tr.mainSelector.selectOneLabel[app.language]
-                popUpContent: Tr.mainSelector.mainSelectorHelp[app.language]
-          
-          # attach to correct element
-          d3.select('.mainSelectorSection').node().appendChild newEl
-
-          d3.select '.floatingPopover .closeButton'
-            .on 'click', ->
-              d3.selectAll('.floatingPopover').remove()
-        else 
-          d3.selectAll('.floatingPopover.mainSelectorHelp').remove()
-    
-    d3.select '.unitSelectorHelpButton'
-      .on 'click', ->
-        d3.event.preventDefault()
-        if d3.selectAll('.floatingPopover.unitSelectorHelp').empty()        
-          # Clear any other open popovers
-          d3.selectAll('.floatingPopover').remove()
-          
-          # Build the popover
-          newEl = document.createElement 'div'
-          newEl.className = 'vizModal floatingPopover unitSelectorHelp'
-          newEl.innerHTML = Mustache.render templates.questionMarkPopoverTemplate, 
-                visClass: 'viz4HelpTitle'
-                popUpTitle: Tr.unitSelector.unitSelectorHelpTitle[app.language]
-                popUpContent: Tr.unitSelector.unitSelectorHelp[app.language]
-          
-          # attach to correct element
-          d3.select('.unitsSelectorGroup').node().appendChild newEl
-
-          d3.select '.floatingPopover .closeButton'
-            .on 'click', ->
-              d3.selectAll('.floatingPopover').remove()
-        else 
-          d3.selectAll('.floatingPopover.unitSelectorHelp').remove()
-    
-    d3.select '.scenarioSelectorHelpButton'
-      .on 'click', ->
-        
-        d3.event.preventDefault()
-        if d3.selectAll('.floatingPopover.scenarioSelectorHelp').empty()        
-          # Clear any other open popovers
-          d3.selectAll('.floatingPopover').remove()
-          
-          # Build the popover
-          newEl = document.createElement 'div'
-          newEl.className = 'vizModal floatingPopover scenarioSelectorHelp'
-          newEl.innerHTML = Mustache.render templates.questionMarkPopoverTemplate, 
-                visClass: 'viz4HelpTitle'
-                popUpTitle: Tr.scenarioSelector.scenarioSelectorHelpTitle[app.language]
-                popUpContent: Tr.scenarioSelector.scenarioSelectorHelp[app.language]
-          
-          # attach to correct element
-          d3.select('.scenarioSelectorGroup').node().appendChild newEl
-
-          d3.select '.floatingPopover .closeButton'
-            .on 'click', ->
-              d3.selectAll('.floatingPopover').remove()
-        else 
-          d3.selectAll('.floatingPopover.scenarioSelectorHelp').remove()
+    @tooltip = @document.getElementById 'tooltip'
+    @tooltipParent = @document.getElementById 'wideVisualizationPanel'
+    @graphPanel = @document.getElementById 'graphPanel'
 
     @render()
-
+    @redraw()
+    @setupGraphEvents()
 
 
   redraw: ->
-    d3.select '#graphSVG'
+    @d3document.select '#graphSVG'
       .attr
         width: @outerWidth()
         height: @outerHeight
-    @renderXAxis(false)
-    @renderYAxis(false)
-    @renderGraph(0)
+    @renderXAxis false
+    @renderYAxis false
+    @renderGraph() # TODO: This call used to pass in 0 for duration. Why?
     @provinceMenu.size
-      w: d3.select('#provincesSelector').node().getBoundingClientRect().width
-      h: @height() - d3.select('span.titleLabel').node().getBoundingClientRect().height + d3.select('#xAxis').node().getBoundingClientRect().height
+      w: @d3document.select('#provincesSelector').node().getBoundingClientRect().width
+      h: @height() - @d3document.select('span.titleLabel').node().getBoundingClientRect().height + @d3document.select('#xAxis').node().getBoundingClientRect().height
+    @provinceMenu.update()
 
 
 
 
   # Province menu stuff
   dataForProvinceMenu: ->
-    [  
+    [
       {
         key: 'AB'
-        present: true
+        tooltip: ProvinceAriaText @app, @config.province == 'AB', 'AB'
         colour: if @config.province == 'AB' then '#333' else '#fff'
-        img: if @config.province == 'AB' then 'IMG/provinces/radio/AB_SelectedR.svg' else 'IMG/provinces/radio/AB_UnselectedR.svg'
+        img:
+          if @config.province == 'AB'
+            'IMG/provinces/radio/AB_SelectedR.svg'
+          else
+            'IMG/provinces/radio/AB_UnselectedR.svg'
       }
       {
         key: 'BC'
-        present: true
+        tooltip: ProvinceAriaText @app, @config.province == 'BC', 'BC'
         colour: if @config.province == 'BC' then '#333' else '#fff'
-        img: if @config.province == 'BC' then 'IMG/provinces/radio/BC_SelectedR.svg' else 'IMG/provinces/radio/BC_UnselectedR.svg'
+        img:
+          if @config.province == 'BC'
+            'IMG/provinces/radio/BC_SelectedR.svg'
+          else
+            'IMG/provinces/radio/BC_UnselectedR.svg'
       }
       {
         key: 'MB'
-        present: true
+        tooltip: ProvinceAriaText @app, @config.province == 'MB', 'MB'
         colour: if @config.province == 'MB' then '#333' else '#fff'
-        img: if @config.province == 'MB' then 'IMG/provinces/radio/MB_SelectedR.svg' else 'IMG/provinces/radio/MB_UnselectedR.svg'
-      }     
+        img:
+          if @config.province == 'MB'
+            'IMG/provinces/radio/MB_SelectedR.svg'
+          else
+            'IMG/provinces/radio/MB_UnselectedR.svg'
+      }
       {
         key: 'NB'
-        present: true
+        tooltip: ProvinceAriaText @app, @config.province == 'NB', 'NB'
         colour: if @config.province == 'NB' then '#333' else '#fff'
-        img: if @config.province == 'NB' then 'IMG/provinces/radio/NB_SelectedR.svg' else 'IMG/provinces/radio/NB_UnselectedR.svg'
+        img:
+          if @config.province == 'NB'
+            'IMG/provinces/radio/NB_SelectedR.svg'
+          else
+            'IMG/provinces/radio/NB_UnselectedR.svg'
       }
       {
         key : 'NL'
-        present: true
+        tooltip: ProvinceAriaText @app, @config.province == 'NL', 'NL'
         colour: if @config.province == 'NL' then '#333' else '#fff'
-        img: if @config.province == 'NL' then 'IMG/provinces/radio/NL_SelectedR.svg' else 'IMG/provinces/radio/NL_UnselectedR.svg'
+        img:
+          if @config.province == 'NL'
+            'IMG/provinces/radio/NL_SelectedR.svg'
+          else
+            'IMG/provinces/radio/NL_UnselectedR.svg'
       }
       {
         key: 'NS'
-        present: true
+        tooltip: ProvinceAriaText @app, @config.province == 'NS', 'NS'
         colour: if @config.province == 'NS' then '#333' else '#fff'
-        img: if @config.province == 'NS' then 'IMG/provinces/radio/NS_SelectedR.svg' else 'IMG/provinces/radio/NS_UnselectedR.svg'
+        img:
+          if @config.province == 'NS'
+            'IMG/provinces/radio/NS_SelectedR.svg'
+          else
+            'IMG/provinces/radio/NS_UnselectedR.svg'
       }
       {
         key: 'NT'
-        present: true
+        tooltip: ProvinceAriaText @app, @config.province == 'NT', 'NT'
         colour: if @config.province == 'NT' then '#333' else '#fff'
-        img: if @config.province == 'NT' then 'IMG/provinces/radio/NT_SelectedR.svg' else 'IMG/provinces/radio/NT_UnselectedR.svg'
+        img:
+          if @config.province == 'NT'
+            'IMG/provinces/radio/NT_SelectedR.svg'
+          else
+            'IMG/provinces/radio/NT_UnselectedR.svg'
       }
-      { 
+      {
         key: 'NU'
-        present: true
+        tooltip: ProvinceAriaText @app, @config.province == 'NU', 'NU'
         colour: if @config.province == 'NU' then '#333' else '#fff'
-        img: if @config.province == 'NU' then 'IMG/provinces/radio/NU_SelectedR.svg' else 'IMG/provinces/radio/NU_UnselectedR.svg'
+        img:
+          if @config.province == 'NU'
+            'IMG/provinces/radio/NU_SelectedR.svg'
+          else
+            'IMG/provinces/radio/NU_UnselectedR.svg'
       }
-      { 
+      {
         key: 'ON'
-        present: true
+        tooltip: ProvinceAriaText @app, @config.province == 'ON', 'ON'
         colour: if @config.province == 'ON' then '#333' else '#fff'
-        img: if @config.province == 'ON' then 'IMG/provinces/radio/ON_SelectedR.svg' else 'IMG/provinces/radio/ON_UnselectedR.svg'
+        img:
+          if @config.province == 'ON'
+            'IMG/provinces/radio/ON_SelectedR.svg'
+          else
+            'IMG/provinces/radio/ON_UnselectedR.svg'
       }
       {
         key: 'PE'
-        present: true
+        tooltip: ProvinceAriaText @app, @config.province == 'PE', 'PE'
         colour: if @config.province == 'PE' then '#333' else '#fff'
-        img: if @config.province == 'PE' then 'IMG/provinces/radio/PEI_SelectedR.svg' else 'IMG/provinces/radio/PEI_UnselectedR.svg'
+        img:
+          if @config.province == 'PE'
+            'IMG/provinces/radio/PEI_SelectedR.svg'
+          else
+            'IMG/provinces/radio/PEI_UnselectedR.svg'
       }
-      { 
+      {
         key: 'QC'
-        present: true
+        tooltip: ProvinceAriaText @app, @config.province == 'QC', 'QC'
         colour: if @config.province == 'QC' then '#333' else '#fff'
-        img: if @config.province == 'QC' then 'IMG/provinces/radio/QC_SelectedR.svg' else 'IMG/provinces/radio/QC_UnselectedR.svg'
+        img:
+          if @config.province == 'QC'
+            'IMG/provinces/radio/QC_SelectedR.svg'
+          else
+            'IMG/provinces/radio/QC_UnselectedR.svg'
       }
       {
         key: 'SK'
-        present: true
+        tooltip: ProvinceAriaText @app, @config.province == 'SK', 'SK'
         colour: if @config.province == 'SK' then '#333' else '#fff'
-        img: if @config.province == 'SK' then 'IMG/provinces/radio/Sask_SelectedR.svg' else 'IMG/provinces/radio/Sask_UnselectedR.svg'
+        img:
+          if @config.province == 'SK'
+            'IMG/provinces/radio/Sask_SelectedR.svg'
+          else
+            'IMG/provinces/radio/Sask_UnselectedR.svg'
       }
       {
         key: 'YT'
-        present: true
+        tooltip: ProvinceAriaText @app, @config.province == 'YT', 'YT'
         colour: if @config.province == 'YT' then '#333' else '#fff'
-        img: if @config.province == 'YT' then 'IMG/provinces/radio/Yukon_SelectedR.svg' else 'IMG/provinces/radio/Yukon_UnselectedR.svg'
+        img:
+          if @config.province == 'YT'
+            'IMG/provinces/radio/Yukon_SelectedR.svg'
+          else
+            'IMG/provinces/radio/Yukon_UnselectedR.svg'
       }
     ]
 
 
   # Black and white non multi select menu.
   buildProvinceMenu: ->
-    d3.select '#provinceMenuSVG'
+    @d3document.select '#provinceMenuSVG'
       .attr
-        width: d3.select('#provincesSelector').node().getBoundingClientRect().width
-        height: @outerHeight        
+        width: @d3document.select('#provincesSelector').node().getBoundingClientRect().width
+        height: @outerHeight
 
-    provinceOptions =
-      size: 
-          w: d3.select('#provincesSelector').node().getBoundingClientRect().width
-          h: @height() - d3.select('span.titleLabel').node().getBoundingClientRect().height + d3.select('#xAxis').node().getBoundingClientRect().height
-      margin:
-        left: 0
-        right: 0
-        top: 20
-        bottom: 20
-      canDrag: false
-      hasChart: false
-      parentClass: 'provinceMenu'
-      data: @dataForProvinceMenu()
+    options =
+      displayHelpIcon: true
       onSelected: @provinceSelected
-      allSelected: (@config.province == 'all')
-      addAllSquare: true
-      allSquareHandler: @selectAllProvince
-      showHelpHandler: @showProvinceNames
       groupId: 'provinceMenu'
-    new squareMenu('#provinceMenuSVG', provinceOptions) 
+      allSquareHandler: @selectAllProvince
+      # Popovers are not defined on server, so we use ?.
+      showHelpHandler: @provincesHelpPopover?.showPopoverCallback
+      helpButtonLabel: Tr.altText.regionsHelp[@app.language]
+      helpButtonId: 'provinceHelpButton'
+      getAllIcon: =>
+        if @config.province == 'all'
+          Tr.allSelectorButton.all[@app.language]
+        else
+          Tr.allSelectorButton.none[@app.language]
+      getAllLabel: =>
+        if @config.province == 'all'
+          Tr.altText.allButton.allCanadaSelected[@app.language]
+        else
+          Tr.altText.allButton.allCanadaUnselected[@app.language]
+      parentId: 'provinceMenuSVG'
 
-  selectAllProvince: (selecting) =>
-    @config.setProvince 'all'
-    @provinceMenu.allSelected(true)
-    @provinceMenu.data(@dataForProvinceMenu())
-    @renderYAxis()
-    @renderGraph()
+    state =
+      size:
+        w: @d3document.select('#provincesSelector').node().getBoundingClientRect().width
+        h: @height() - @d3document.select('span.titleLabel').node().getBoundingClientRect().height + @d3document.select('#xAxis').node().getBoundingClientRect().height
+      data: @dataForProvinceMenu()
 
+    new SquareMenu @app, options, state
 
-  provinceSelected: (key, regionIndex) =>
-    @provinceMenu.allSelected(false)
-    @config.setProvince key
-    @provinceMenu.data(@dataForProvinceMenu())
-    @renderYAxis()
-    @renderGraph()
+  selectAllProvince: =>
+    newConfig = new @config.constructor @app
+    newConfig.copy @config
+    newConfig.setProvince 'all'
 
-  showProvinceNames: =>
-    d3.event.preventDefault()
-    if d3.selectAll('.floatingPopover.provinceHelp').empty()
-      # Clear any other open popovers
-      d3.selectAll('.floatingPopover').remove()
-      
-      #Grab the provinces in order for the string
-      contentString = ""
-      # console.log Tr.regionSelector.names, @provinceMenuData()
-      for province in @dataForProvinceMenu()
-        contentString = """<div class="provinceLabel"> <h6> #{Tr.regionSelector.names[province.key][app.language]} </h6> </div>""" + contentString
+    update = =>
+      @config.setProvince 'all'
+      @provinceMenu.data @dataForProvinceMenu()
+      @provinceMenu.update()
+      @renderYAxis()
+      @renderGraph()
+      @app.router.navigate @config.routerParams()
 
-      # Build the popover
-      newEl = document.createElement 'div'
-      newEl.className = 'vizModal floatingPopover popOverSm provinceHelp'
-      newEl.innerHTML = Mustache.render templates.questionMarkPopoverTemplate, 
-            visClass: 'localHelpTitle'
-            popUpTitle: Tr.regionSelector.selectRegionLabel[app.language]
-            popUpContent: contentString
-      
-      # attach to correct element
-      d3.select('#provincesSelector').node().appendChild newEl
-
-      d3.select '.floatingPopover .closeButton'
-        .on 'click', ->
-          d3.selectAll('.floatingPopover').remove()
-    else 
-      d3.selectAll('.floatingPopover.provinceHelp').remove()
+    @app.datasetRequester.updateAndRequestIfRequired newConfig, update
 
 
+  provinceSelected: (dataDictionaryItem) =>
+    newConfig = new @config.constructor @app
+    newConfig.copy @config
+    newConfig.setProvince dataDictionaryItem.key
 
+    update = =>
+      @config.setProvince dataDictionaryItem.key
+      @provinceMenu.data @dataForProvinceMenu()
+      @provinceMenu.update()
+      @renderYAxis()
+      @renderGraph()
+      @app.router.navigate @config.routerParams()
 
-
-
-
-
-
+    @app.datasetRequester.updateAndRequestIfRequired newConfig, update
 
 
   # Data here
+  # TODO: merge graphdata and graphscenario data, its dumb =/
 
-  mainSelectionData: ->
-    [
-      {
-        label: Tr.mainSelector.totalDemandButton[app.language]
-        image: if @config.mainSelection == 'energyDemand' then 'IMG/main_selection/totalDemand_selected.png' else 'IMG/main_selection/totalDemand_unselected.png'
-        selectorName: 'energyDemand'
-      }
-      {
-        label: Tr.mainSelector.electricityGenerationButton[app.language]
-        image: if @config.mainSelection == 'electricityGeneration' then 'IMG/main_selection/electricity_selected.png' else 'IMG/main_selection/electricity_unselected.png'
-        selectorName: 'electricityGeneration'
-      }
-      {
-        label: Tr.mainSelector.oilProductionButton[app.language]
-        image: if @config.mainSelection == 'oilProduction' then 'IMG/main_selection/oil_selected.png' else 'IMG/main_selection/oil_unselected.png'
-        selectorName: 'oilProduction'
-      }
-      {
-        label: Tr.mainSelector.gasProductionButton[app.language]
-        image: if @config.mainSelection == 'gasProduction' then 'IMG/main_selection/gas_selected.png' else 'IMG/main_selection/gas_unselected.png'
-        selectorName: 'gasProduction'
-      }
-    ]
+  scenarioLegendData: ->
+    baseData =
+      reference:
+        label: Tr.scenarioSelector.referenceButton[@app.language]
+        class: 'reference'
+      high:
+        label: Tr.scenarioSelector.highPriceButton[@app.language]
+        class: 'high'
+      highLng:
+        label: Tr.scenarioSelector.highLngButton[@app.language]
+        class: 'highLng'
+      constrained:
+        label: Tr.scenarioSelector.constrainedButton[@app.language]
+        class: 'constrained'
+      low:
+        label: Tr.scenarioSelector.lowPriceButton[@app.language]
+        class: 'low'
+      noLng:
+        label: Tr.scenarioSelector.noLngButton[@app.language]
+        class: 'noLng'
+      technology:
+        label: Tr.scenarioSelector.technologyButton[@app.language]
+        class: 'technology'
+      hcp:
+        label: Tr.scenarioSelector.hcpButton[@app.language]
+        class: 'hcp'
 
-
-  unitSelectionData: ->
-    petajoules = 
-      label: Tr.unitSelector.petajoulesButton[app.language]
-      unitName: 'petajoules'
-      class: if @config.unit == 'petajoules' then 'vizButton selected' else 'vizButton'
-    kilobarrelEquivalents = 
-      label: Tr.unitSelector.kilobarrelEquivalentsButton[app.language]
-      unitName: 'kilobarrelEquivalents'
-      class: if @config.unit == 'kilobarrelEquivalents' then 'vizButton selected' else 'vizButton'
-    gigawattHours = 
-      label: Tr.unitSelector.gigawattHourButton[app.language]
-      unitName: 'gigawattHours'
-      class: if @config.unit == 'gigawattHours' then 'vizButton selected' else 'vizButton'
-    thousandCubicMetres = 
-      label: Tr.unitSelector.thousandCubicMetresButton[app.language]
-      unitName: 'thousandCubicMetres'
-      class: if @config.unit == 'thousandCubicMetres' then 'vizButton selected' else 'vizButton'
-    millionCubicMetres = 
-      label: Tr.unitSelector.millionCubicMetresButton[app.language]
-      unitName: 'millionCubicMetres'
-      class: if @config.unit == 'millionCubicMetres' then 'vizButton selected' else 'vizButton'
-    kilobarrels = 
-      label: Tr.unitSelector.kilobarrelsButton[app.language]
-      unitName: 'kilobarrels'
-      class: if @config.unit == 'kilobarrels' then 'vizButton selected' else 'vizButton'
-    cubicFeet  = 
-      label: Tr.unitSelector.cubicFeetButton[app.language]
-      unitName: 'cubicFeet'
-      class: if @config.unit == 'cubicFeet' then 'vizButton selected' else 'vizButton'
-
-    switch @config.mainSelection
+    availableScenarios = switch @config.mainSelection
       when 'energyDemand'
-        [petajoules, kilobarrelEquivalents]
+        ['reference', 'high', 'highLng', 'constrained', 'low', 'noLng', 'technology']
       when 'electricityGeneration'
-        [petajoules, gigawattHours, kilobarrelEquivalents]
+        ['reference', 'high', 'highLng', 'constrained', 'low', 'noLng', 'technology', 'hcp']
       when 'oilProduction'
-        [kilobarrels, thousandCubicMetres]
+        ['reference', 'high', 'constrained', 'low', 'htc', 'hcp']
       when 'gasProduction'
-        [cubicFeet, millionCubicMetres]
+        ['reference', 'high', 'highLng', 'low', 'noLng', 'hcp', 'technology']
+
+    data = []
+
+    for scenarioName in availableScenarios
+      data.push baseData[scenarioName] if @config.scenarios.includes scenarioName
+    data
 
 
 
-  scenariosSelectionData: ->
-    reference = 
-      label: Tr.scenarioSelector.referenceButton[app.language]
-      scenarioName: 'reference'
-      class: if @config.scenarios.includes 'reference' then 'vizButton selected reference' else 'vizButton reference'
-      colour: '#999999'
-    high = 
-      label: Tr.scenarioSelector.highPriceButton[app.language]
-      scenarioName: 'high'
-      class: if @config.scenarios.includes 'high' then 'vizButton selected high' else 'vizButton high'
-      colour: '#0C2C84'
-    highLng = 
-      label: Tr.scenarioSelector.highLngButton[app.language]
-      scenarioName: 'highLng'
-      class: if @config.scenarios.includes 'highLng' then 'vizButton selected highLng' else 'vizButton highLng'
-      colour: '#225EA8'
-    constrained = 
-      label: Tr.scenarioSelector.constrainedButton[app.language]
-      scenarioName: 'constrained'
-      class: if @config.scenarios.includes 'constrained' then 'vizButton selected constrained' else 'vizButton constrained'
-      colour: '#41B6C4'
-    low = 
-      label: Tr.scenarioSelector.lowPriceButton[app.language]
-      scenarioName: 'low'
-      class: if @config.scenarios.includes 'low' then 'vizButton selected low' else 'vizButton low'
-      colour: '#7FCDBB'
-    noLng = 
-      label: Tr.scenarioSelector.noLngButton[app.language]
-      scenarioName: 'noLng'
-      class: if @config.scenarios.includes 'noLng' then 'vizButton selected noLng' else 'vizButton noLng'
-      colour: '#C7E9B4'
 
-
-    switch @config.mainSelection
-      when 'energyDemand', 'electricityGeneration'
-        [reference, high, highLng, constrained, low, noLng]
-      when 'oilProduction'
-        [reference, high, constrained, low]
-      when 'gasProduction'
-        [reference, high, highLng, low, noLng]
-
-
-    # TODO: merge graphdata and graphscenario data, its dumb =/
 
   graphData: ->
     switch @config.mainSelection
       when 'energyDemand'
-        app.energyConsumptionProvider.dataForViz4 @config
+        @app.providers[@config.dataset]
+          .energyConsumptionProvider
+          .dataForViz4 @config
       when 'electricityGeneration'
-        app.electricityProductionProvider.dataForViz4 @config
+        @app.providers[@config.dataset]
+          .electricityProductionProvider
+          .dataForViz4 @config
       when 'oilProduction'
-        app.oilProductionProvider.dataForViz4 @config
+        @app.providers[@config.dataset]
+          .oilProductionProvider
+          .dataForViz4 @config
       when 'gasProduction'
-        app.gasProductionProvider.dataForViz4 @config
+        @app.providers[@config.dataset]
+          .gasProductionProvider
+          .dataForViz4 @config
 
+  yAxisData: ->
+    switch @config.mainSelection
+      when 'energyDemand'
+        @app.providers[@config.dataset]
+          .energyConsumptionProvider
+          .dataForAllViz4Scenarios @config
+      when 'electricityGeneration'
+        @app.providers[@config.dataset]
+          .electricityProductionProvider
+          .dataForAllViz4Scenarios @config
+      when 'oilProduction'
+        @app.providers[@config.dataset]
+          .oilProductionProvider
+          .dataForAllViz4Scenarios @config
+      when 'gasProduction'
+        @app.providers[@config.dataset]
+          .gasProductionProvider
+          .dataForAllViz4Scenarios @config
+
+  gradientData: ->
+    [
+      {
+        key: 'reference'
+        colour: '#999999'
+      }
+      {
+        key: 'high'
+        colour: '#0C2C84'
+      }
+      {
+        key: 'highLng'
+        colour: '#225EA8'
+      }
+      {
+        key: 'constrained'
+        colour: '#41B6C4'
+      }
+      {
+        key: 'low'
+        colour: '#7FCDBB'
+      }
+      {
+        key: 'noLng'
+        colour: '#C7E9B4'
+      }
+      {
+        key: 'technology'
+        colour: '#0C2C84'
+      }
+      {
+        key: 'hcp'
+        colour: '#7FCDBB'
+      }
+      {
+        key: 'htc'
+        colour: '#0C2C84'
+      }
+    ]
+    
 
   graphScenarioData: ->
-    reference=
-      key: 'reference'
-      colour: '#999999'
-    high=
-      key: 'high'
-      colour: '#0C2C84'
-    highLng=
-      key: 'highLng'
-      colour: '#225EA8'
-    constrained=
-      key: 'constrained'
-      colour: '#41B6C4'
-    low=
-      key: 'low'
-      colour: '#7FCDBB'
-    noLng=
-      key: 'noLng'
-      colour: '#C7E9B4'
+    scenarioData =
+      reference:
+        tooltip: Tr.selectorTooltip.scenarioSelector.referenceButton[@app.language]
+        key: 'reference'
+        colour: '#999999'
+      high:
+        tooltip: Tr.selectorTooltip.scenarioSelector.highPriceButton[@app.language]
+        key: 'high'
+        colour: '#0C2C84'
+      highLng:
+        tooltip: Tr.selectorTooltip.scenarioSelector.highLngButton[@app.language]
+        key: 'highLng'
+        colour: '#225EA8'
+      constrained:
+        tooltip: Tr.selectorTooltip.scenarioSelector.constrainedButton[@app.language]
+        key: 'constrained'
+        colour: '#41B6C4'
+      low:
+        tooltip: Tr.selectorTooltip.scenarioSelector.lowPriceButton[@app.language]
+        key: 'low'
+        colour: '#7FCDBB'
+      noLng:
+        tooltip: Tr.selectorTooltip.scenarioSelector.noLngButton[@app.language]
+        key: 'noLng'
+        colour: '#C7E9B4'
+      technology:
+        tooltip: Tr.selectorTooltip.scenarioSelector.technologyButton[@app.language]
+        key: 'technology'
+        colour: '#0C2C84'
+      htc:
+        tooltip: Tr.selectorTooltip.scenarioSelector.htcButton[@app.language]
+        key: 'htc'
+        colour: '#0C2C84'
+      hcp:
+        tooltip: Tr.selectorTooltip.scenarioSelector.hcpButton[@app.language]
+        key: 'hcp'
+        colour: '#7FCDBB'
 
-    switch @config.mainSelection
-      when 'energyDemand', 'electricityGeneration'
-        scenariosInOrder = [reference, high, highLng, constrained, low, noLng]
-      when 'oilProduction'
-        scenariosInOrder = [reference, high, constrained, low]
-      when 'gasProduction'
-        scenariosInOrder = [reference, high, highLng, low, noLng]
+    scenariosInSelection = Constants.datasetDefinitions[@config.dataset].scenariosPerSelection[@config.mainSelection]
+
 
     graphData = @graphData()
     currentGraphScenarioData = []
-    for scenario in scenariosInOrder
-      if @config.scenarios.includes scenario.key
-        scenario.data = graphData[scenario.key]
-        currentGraphScenarioData.push(scenario)
+    for scenarioName in Constants.scenarioDrawingOrder
+      if (@config.scenarios.includes scenarioName) and (scenariosInSelection.includes scenarioName)
+        scenario = scenarioData[scenarioName]
+        scenario.data = graphData[scenarioName]
+        currentGraphScenarioData.push scenario
     currentGraphScenarioData
     
 
   # We have one series of data for each scenario to graph simultaneously, so we need
   # to know what the maximum among all of them is for the y axis
   graphDataMaximum: ->
-    data = @graphData()
+    data = @yAxisData()
     maximums = []
     for key in Object.keys data
       maximums.push d3.max(data[key], (d) -> d.value)
-    d3.max maximums
+
+    if maximums.length > 0
+      d3.max maximums
+    else
+      0
+
 
 
   outerWidth: ->
-    d3.select('#graphPanel').node().getBoundingClientRect().width
+    # getBoundingClientRect is not implemented in JSDOM, use fixed width on server
+    if Platform.name == 'browser'
+      @d3document
+        .select('#graphPanel')
+        .node()
+        .getBoundingClientRect()
+        .width
+    else if Platform.name == 'server'
+      Constants.viz4ServerSideGraphWidth
 
   width: ->
     @outerWidth() - @margin.left - @margin.right
 
-  height: -> 
+  height: ->
     @outerHeight - @margin.top - @margin.bottom
 
-
   xAxisScale: ->
-    #TODO should the domain come from the data? 
-
+    #TODO should the domain come from the data?
     d3.scale.linear()
-      .domain [2005, 2040]
+      .domain [Constants.minYear, Constants.maxYear]
       .range [0, @width()]
 
   yAxisScale: ->
@@ -486,15 +587,15 @@ class Visualization4
       .tickValues [2005, 2010, 2015, 2020, 2025, 2030, 2035, 2040]
       .tickFormat(d3.format('g'))
       .tickSize(10, 0)
-      .orient "bottom"
+      .orient 'bottom'
 
   xAxisGridLines: ->
     d3.svg.axis()
       .scale @xAxisScale()
       .tickValues [2005, 2010, 2015, 2020, 2025, 2030, 2035, 2040]
-      .tickFormat("")
-      .tickSize(-1 * @height(), 0)
-      .orient "bottom"
+      .tickFormat ''
+      .tickSize -1 * @height(), 0
+      .orient 'bottom'
   
   yAxis: ->
     d3.svg.axis()
@@ -502,82 +603,172 @@ class Visualization4
       .ticks 15
       .tickFormat(d3.format('.3s'))
       .tickSize(10, 0)
-      .orient "right"
+      .orient 'right'
 
   yAxisGridLines: ->
     d3.svg.axis()
       .scale @yAxisScale()
       .ticks 15
-      .tickFormat("")
-      .tickSize(-1 * @width(), 0)
-      .orient "right"
+      .tickFormat ''
+      .tickSize -1 * @width(), 0
+      .orient 'right'
 
   # Render helpers here
 
   render: ->
-    d3.select '#graphSVG'
+    @d3document.select '#graphSVG'
       .attr
         width: @outerWidth()
         height: @outerHeight
-    d3.select '#graphGroup'
+    @d3document.select '#graphGroup'
       .attr 'transform', "translate(#{@margin.top},#{@margin.left})"
         
     @renderMainSelector()
+    @renderDatasetSelector()
     @renderUnitsSelector()
     @renderScenariosSelector()
     @renderXAxis()
     @renderYAxis()
-    if !@provinceMenu #We only need to build once, but we need to build after the axis are built for alignment
+    if !@provinceMenu
+      # We only need to build once, but we need to build after the axis are built
+      # for alignment
       @provinceMenu = @buildProvinceMenu()
+
+    # Build a dot to serve as the accessible focus
+    @buildAccessibleFocusDot()
     @renderGraph()
 
+  renderDatasetSelector: ->
+    if @config.dataset?
+      datasetSelectors = @d3document
+        .select('#datasetSelector')
+        .selectAll('.datasetSelectorButton')
+        .data CommonControls.datasetSelectionData(@config, @app)
+
+      datasetSelectors.enter()
+        .append('div')
+        .attr
+          class: 'datasetSelectorButton'
+        .on 'click', (d) =>
+          return if @config.dataset == d.dataset
+
+          newConfig = new @config.constructor @app
+          newConfig.copy @config
+          newConfig.setDataset d.dataset
+
+          update = =>
+            @config.setDataset d.dataset
+            @renderScenariosSelector()
+            @renderDatasetSelector()
+            @renderYAxis()
+            @renderGraph()
+            @app.router.navigate @config.routerParams()
+
+          @app.datasetRequester.updateAndRequestIfRequired newConfig, update
+
+      datasetSelectors.html (d) -> """
+        <button class='#{d.class}'
+                type='button'
+                title='#{d.title}'
+                aria-label='#{d.ariaLabel}'>
+          #{d.label}
+        </button>
+      """
+
+      datasetSelectors.exit().remove()
+
   renderMainSelector: ->
-    mainSelectors = d3.select('#mainSelector')
+    mainSelectorCallback = (d) =>
+      newConfig = new @config.constructor @app
+      newConfig.copy @config
+      newConfig.setMainSelection d.selectorName
+
+      update = =>
+        @config.setMainSelection d.selectorName
+        # TODO: For efficiency, only rerender what's necessary.
+        # We could just call render() ... but that would potentially rebuild a bunch
+        # of menus...
+        @renderMainSelector()
+        @renderDatasetSelector()
+        @renderUnitsSelector()
+        @renderScenariosSelector()
+        @renderYAxis()
+        @renderGraph()
+        @app.router.navigate @config.routerParams()
+
+      @app.datasetRequester.updateAndRequestIfRequired newConfig, update
+
+    mainSelectors = @d3document
+      .select('#mainSelector')
       .selectAll('.mainSelectorButton')
-      .data(@mainSelectionData())
+      .data CommonControls.mainSelectionData(@config, @app)
 
     mainSelectors.enter()
       .append('div')
       .attr
         class: 'mainSelectorButton'
-      .on 'click', (d) =>
-        @config.setMainSelection d.selectorName
-        # TODO: For efficiency, only rerender what's necessary.
-        # We could just call render() ... but that would potentially rebuild a bunch of menus... 
-        @renderMainSelector()
-        @renderUnitsSelector()
-        @renderScenariosSelector()
-        @renderYAxis()
-        @renderGraph()
+        tabindex: '0'
+        role: 'button'
+      .on 'click', mainSelectorCallback
+      .on 'keydown', (d) ->
+        mainSelectorCallback d if d3.event.key == 'Enter'
 
-    mainSelectors.html (d) ->
-      "<img src=#{d.image} class='mainSelectorImage'>
-       <span class='mainSelectorLabel'>#{d.label}</span>"
+    mainSelectors
+      .attr
+        'aria-label': (d) -> d.altText
+
+    mainSelectors.html (d) -> """
+      <img src=#{d.image}
+           class='mainSelectorImage'
+           title='#{d.title}'
+           alt='#{d.altText}'>
+      <span class='mainSelectorLabel' title='#{d.title}'>#{d.label}</span>
+    """
 
 
 
     mainSelectors.exit()
       .on 'click', null
+      .on 'keydown', null
       .remove()
 
 
   renderUnitsSelector: ->
-    unitsSelectors = d3.select('#unitsSelector')
+    unitsSelectors = @d3document
+      .select('#unitsSelector')
       .selectAll('.unitSelectorButton')
-      .data(@unitSelectionData())
+      .data CommonControls.unitSelectionData(@config, @app)
     
     unitsSelectors.enter()
       .append('div')
       .attr
         class: 'unitSelectorButton'
       .on 'click', (d) =>
-        @config.setUnit d.unitName
-        # TODO: For efficiency, only rerender what's necessary.
-        @renderUnitsSelector()
-        @renderYAxis()
 
-    unitsSelectors.html (d) ->
-      "<button class='#{d.class}' type='button'>#{d.label}</button>"
+        newConfig = new @config.constructor @app
+        newConfig.copy @config
+        newConfig.setUnit d.unitName
+
+        update = =>
+          @config.setUnit d.unitName
+          # TODO: For efficiency, only rerender what's necessary.
+          @renderUnitsSelector()
+          @renderYAxis()
+          @renderGraph()
+          @app.router.navigate @config.routerParams()
+
+        @app.datasetRequester.updateAndRequestIfRequired newConfig, update
+
+
+
+    unitsSelectors.html (d) -> """
+      <button class='#{d.class}'
+              type='button'
+              title='#{d.title}'
+              aria-label='#{d.ariaLabel}'>
+        #{d.label}
+      </button>
+    """
 
     unitsSelectors.exit()
       .on 'click', null
@@ -585,9 +776,10 @@ class Visualization4
 
 
   renderScenariosSelector: ->
-    scenariosSelectors = d3.select('#scenariosSelector')
+    scenariosSelectors = @d3document
+      .select('#scenariosSelector')
       .selectAll('.scenarioSelectorButton')
-      .data(@scenariosSelectionData())
+      .data CommonControls.scenariosSelectionData(@config, @app)
     
     scenariosSelectors.enter()
       .append('div')
@@ -595,56 +787,75 @@ class Visualization4
         class: 'scenarioSelectorButton'
       .on 'click', (d) =>
         selected = @config.scenarios.includes d.scenarioName
+
+        newConfig = new @config.constructor @app
+        newConfig.copy @config
         if selected
-          @config.removeScenario d.scenarioName
+          newConfig.removeScenario d.scenarioName
         else
-          @config.addScenario d.scenarioName
+          newConfig.addScenario d.scenarioName
 
-        # TODO: For efficiency, only rerender what's necessary.
-        @renderScenariosSelector()
-        @renderYAxis()
-        @renderGraph()
+        update = =>
+          if selected
+            @config.removeScenario d.scenarioName
+          else
+            @config.addScenario d.scenarioName
 
-    scenariosSelectors.html (d) ->
-      "<button class='#{d.class}' type='button'>#{d.label}</button>"
+          # TODO: For efficiency, only rerender what's necessary.
+          @renderScenariosSelector()
+          @renderYAxis()
+          @renderGraph()
+          @renderScenariosSelector()
+          @renderGraph()
+          @app.router.navigate @config.routerParams()
+
+        @app.datasetRequester.updateAndRequestIfRequired newConfig, update
+
+
+
+    scenariosSelectors.html (d) -> """
+      <button class='#{d.multipleSelectClass}' type='button' title='#{d.title}'>
+        <span aria-label='#{d.ariaLabel}'>#{d.label}</span>
+      </button>
+    """
 
     scenariosSelectors.exit()
       .on 'click', null
       .remove()
 
   renderXAxis: (transition = true) ->
-    d3.selectAll('.forecast').remove()
+    @d3document.selectAll('.forecast').remove()
 
     #Render the axis with the labels
-    axis = d3.select '#xAxis'
-      .attr 
-        transform: "translate(#{0},#{@height()})" 
-      .call @xAxis() 
+    axis = @d3document.select '#xAxis'
+      .attr
+        transform: "translate(#{0},#{@height()})"
+      .call @xAxis()
 
     axis.select 'path.domain'
       .attr
         fill: 'none'
         stroke: '#333333'
-        'stroke-width': "1"
+        'stroke-width': '1'
         'shape-rendering': 'crispEdges'
 
     axis.selectAll '.tick line'
       .attr
         fill: 'none'
         stroke: '#333333'
-        'stroke-width': "1"
+        'stroke-width': '1'
         'shape-rendering': 'crispEdges'
 
     #render the gridLines
-    gridLines = d3.select '#xAxisGrid'
-      .attr 
-        transform: "translate(#{0},#{@height()})" 
+    gridLines = @d3document.select '#xAxisGrid'
+      .attr
+        transform: "translate(#{0},#{@height()})"
       
-    if transition  
+    if transition
       gridLines.transition()
-        .ease "linear"
-        .duration 1000 
-          .call @xAxisGridLines()   
+        .ease 'linear'
+        .duration @app.animationDuration
+          .call @xAxisGridLines()
     else
       gridLines.call @xAxisGridLines()
 
@@ -652,35 +863,44 @@ class Visualization4
       .attr
         fill: 'none'
         stroke: '#333333'
-        'stroke-width': "1"
+        'stroke-width': '1'
         'shape-rendering': 'crispEdges'
 
     gridLines.selectAll '.tick line'
       .attr
         fill: 'none'
         stroke: '#E6E6E6'
-        'stroke-width': "1"
+        'stroke-width': '1'
         'shape-rendering': 'crispEdges'
 
     #render the future line
-    d3.select '#graphGroup' 
-      .append("text")
+
+
+
+    textX = @margin.left + @xAxisScale()(2015)
+    textY = @outerHeight - 16
+    @d3document.select '#graphGroup'
+      .append 'text'
         .attr
           class: 'forecast forecastLabel'
-          transform: "translate(#{@xAxisScale()(2015)},#{@height() + d3.select('#xAxis').node().getBoundingClientRect().height + d3.select('#xAxis text').node().getBoundingClientRect().height})" 
+          transform: "translate(#{textX},#{textY})"
           fill: '#999'
-        .style("text-anchor", "start")
-        .text(Tr.forecastLabel[app.language])
-    d3.select '#graphGroup'
-      .append("image")
+        .style 'text-anchor', 'start'
+        .text Tr.forecastLabel[@app.language]
+
+    arrowX = @margin.left + @xAxisScale()(2015) + 65
+    arrowY = @outerHeight - 27
+    @d3document.select '#graphGroup'
+      .append 'image'
         .attr
           class: 'forecast'
-          transform: "translate(#{@xAxisScale()(2015) + d3.select('#graphGroup .forecastLabel').node().getBoundingClientRect().width},#{@height() + d3.select('#xAxis').node().getBoundingClientRect().height + (d3.select('#xAxis text').node().getBoundingClientRect().height / 2)})" 
-          "xlink:href":  'IMG/forecast_arrow.svg'
+          transform: "translate(#{arrowX},#{arrowY})"
+          'xlink:xlink:href': 'IMG/forecast_arrow.svg'
           height: 9
           width: 200
-    d3.select '#graphGroup'
-      .append("line")
+
+    @d3document.select '#graphGroup'
+      .append 'line'
         .attr
           class: 'forecast'
           stroke: '#999'
@@ -688,223 +908,269 @@ class Visualization4
           x1: @xAxisScale()(2014)
           y1: @height()
           x2: @xAxisScale()(2014)
-          y2: @height() + d3.select('#xAxis').node().getBoundingClientRect().height + d3.select('#xAxis text').node().getBoundingClientRect().height
+          y2: @outerHeight - 16
   
   renderYAxis: (transition = true) ->
     # Render the axis
-    axis = d3.select '#yAxis'
-      .attr 
-        transform: "translate(#{@width()},0)" 
+    axis = @d3document.select '#yAxis'
+      .attr
+        transform: "translate(#{@width()},0)"
     
     axis.transition()
-      .duration 1000
-      .ease "linear"  
+      .duration @app.animationDuration
+      .ease 'linear'
       .call @yAxis()
 
     axis.select 'path.domain'
       .attr
         fill: 'none'
         stroke: '#333333'
-        'stroke-width': "1"
+        'stroke-width': '1'
         'shape-rendering': 'crispEdges'
 
     axis.selectAll '.tick line'
       .attr
         fill: 'none'
         stroke: '#333333'
-        'stroke-width': "1"
+        'stroke-width': '1'
         'shape-rendering': 'crispEdges'
 
     #render the gridLines
-    gridLines = d3.select '#yAxisGrid'
-      .attr 
-        transform: "translate(#{@width()},0)"  
+    gridLines = @d3document.select '#yAxisGrid'
+      .attr
+        transform: "translate(#{@width()},0)"
 
-    if transition  
+    if transition
       gridLines.transition()
-        .ease "linear"
-        .duration 1000  
-        .call @yAxisGridLines()   
-    else 
+        .ease 'linear'
+        .duration @app.animationDuration
+        .call @yAxisGridLines()
+    else
       gridLines.call @yAxisGridLines()
 
     gridLines.select 'path.domain'
       .attr
         fill: 'none'
         stroke: '#333333'
-        'stroke-width': "1"
+        'stroke-width': '1'
         'shape-rendering': 'crispEdges'
 
     gridLines.selectAll '.tick line'
       .attr
         fill: 'none'
         stroke: '#E6E6E6'
-        'stroke-width': "1"
+        'stroke-width': '1'
         'shape-rendering': 'crispEdges'
 
 
-  renderGraph: (duration = 1000) ->
+  renderGraph: (duration = @app.animationDuration) ->
     xAxisScale = @xAxisScale()
     yAxisScale = @yAxisScale()
 
     area = d3.svg.area()
-      .x (d) => 
+      .x (d) ->
         xAxisScale d.year
       .y0 @height()
-      .y1 (d) => 
+      .y1 (d) ->
         yAxisScale d.value
-      .defined (d) -> 
+      .defined (d) ->
         d.year <= 2014
 
     areaFuture = d3.svg.area()
-      .x (d) => 
+      .x (d) ->
         xAxisScale d.year
       .y0 @height()
-      .y1 (d) => 
+      .y1 (d) ->
         yAxisScale d.value
-      .defined (d) -> 
+      .defined (d) ->
         d.year >= 2014
 
     line = d3.svg.line()
-        .x (d) => 
-          xAxisScale d.year
-        .y (d) => 
-          yAxisScale d.value
+      .x (d) ->
+        xAxisScale d.year
+      .y (d) ->
+        yAxisScale d.value
+
+    grads = @d3document
+      .select('#graphGroup')
+      .select('defs')
+      .selectAll('.presentLinearGradient')
+      .data @gradientData(), (d) ->
+        d.key
+
+    enterGrads = grads.enter().append 'linearGradient'
+      .attr
+        class: 'presentLinearGradient'
+        gradientUnits: 'objectBoundingBox'
+        id: (d) -> "viz4gradPresent#{d.key}"
+
+    enterGrads.append 'stop'
+      .attr
+        offset: '0'
+      .style
+        'stop-color': (d) -> d.colour
+        'stop-opacity': '0.4'
+
+    enterGrads.append('stop')
+      .attr
+        offset: ->
+          xAxisScale(2010) / xAxisScale(2014)
+      .style
+        'stop-color': (d) -> d.colour
+        'stop-opacity': 0.4 * 0.9
+
+    enterGrads.append('stop')
+      .attr
+        offset: '100%'
+      .style
+        'stop-color': (d) -> d.colour
+        'stop-opacity': 0.4 * 0.7
+
+    enterFutureGrads = grads.enter().append('linearGradient')
+      .attr
+        class: 'futureLinearGradient'
+        gradientUnits: 'objectBoundingBox'
+        id: (d) -> "viz4gradFuture#{d.key}"
+
+    enterFutureGrads.append('stop')
+      .attr
+        offset: 0
+      .style
+        'stop-color': (d) -> d.colour
+        'stop-opacity': 0.4 * 0.7
+
+    enterFutureGrads.append('stop')
+      .attr
+        offset: '100%'
+      .style
+        'stop-color': (d) -> d.colour
+        'stop-opacity': 0.4 * 0.2
+
 
     graphScenarioData = @graphScenarioData()
 
-    grads = d3.select('#graphGroup').select("defs").selectAll(".presentLinearGradient")
-        .data(graphScenarioData, (d) -> d.key)
-    
-    futureGrads = d3.select('#graphGroup').select("defs").selectAll(".futureLinearGradient")
-        .data(graphScenarioData, (d) -> d.key)
-
-    enterGrads = grads.enter().append("linearGradient")
-        .attr
-          class:'presentLinearGradient'
-          gradientUnits: "objectBoundingBox"
-          cx: 0
-          cy: 0
-          r: "100%"
-          id: (d) -> "viz4gradPresent" + d.key
-
-    enterGrads.append("stop")
-          .attr
-            offset: "0"
-          .style
-            "stop-color": (d) -> d.colour
-            "stop-opacity": "0.4"
-
-    enterGrads.append('stop')
-          .attr
-            offset: (d) => xAxisScale(2010) / xAxisScale(2014)
-          .style
-            "stop-color": (d) -> d.colour
-            "stop-opacity": 0.4 * 0.9
-
-    enterGrads.append("stop")
-        .attr
-          offset: "100%"
-        .style
-          "stop-color": (d) -> d.colour
-          "stop-opacity":  0.4 * 0.7
-
-    enterFutureGrads = grads.enter().append("linearGradient")
-        .attr
-          class:'futureLinearGradient'
-          gradientUnits: "objectBoundingBox"
-          cx: 0
-          cy: 0
-          r: "100%"
-          id: (d) -> "viz4gradFuture" + d.key
-
-    enterFutureGrads.append("stop")
-        .attr
-          offset:  0
-        .style
-          "stop-color": (d) -> d.colour
-          "stop-opacity": 0.4 * 0.7
-
-    enterFutureGrads.append("stop")
-        .attr
-          offset: "100%"
-        .style
-          "stop-color": (d) -> d.colour
-          "stop-opacity": 0.4 * 0.2
-
-    grads.exit()
-      .transition()
-        .delay 1000
-      .remove()
-    futureGrads.exit()
-      .transition()
-        .delay 1000
-      .remove()
-
-    graphAreaGroups = d3.select '#areasAndLinesGroup'
-      .selectAll '.graphGroup' 
-      .data(graphScenarioData, (d) -> d.key)
+    graphAreaGroups = @d3document.select '#areasAndLinesGroup'
+      .selectAll '.graphGroup'
+      .data graphScenarioData, (d) ->
+        d.key
 
     # Enter Selection
     graphAreaGroups.enter()
-      .append "g"
+      .append 'g'
       .attr
-        class: "graphGroup"
+        class: 'graphGroup'
 
-    graphAreaSelectors =  graphAreaGroups.selectAll('.graphAreaPresent')
+    graphAreaSelectors = graphAreaGroups.selectAll('.graphAreaPresent')
       .data(((d) -> [d]), ((d) -> d.key))
-      
-    graphAreaSelectors.enter().append "path"
+      .on 'mouseover', (d) =>
+        coords = d3.mouse @tooltipParent # [x, y]
+        @tooltip.style.visibility = 'visible'
+        @tooltip.style.left = "#{coords[0] + 30}px"
+        @tooltip.style.top = "#{coords[1]}px"
+        @displayTooltip d.key
+      .on 'mousemove', (d) =>
+        coords = d3.mouse @tooltipParent # [x, y]
+        @tooltip.style.left = "#{coords[0] + 30}px"
+        @tooltip.style.top = "#{coords[1]}px"
+        @displayTooltip d.key
+      .on 'mouseout', =>
+        @tooltip.style.visibility = 'hidden'
+      .on 'click', (d) =>
+        graphPanel = @document.getElementById 'graphPanel'
+        coords = d3.mouse graphPanel
+
+        @accessConfig.setYear Math.floor(@xAxisScale().invert(coords[0]))
+        @accessConfig.setScenario d.key, @config.dataset
+
+        @updateAccessibleFocus()
+
+    graphAreaSelectors.enter().append 'path'
       .attr
-        class: "graphAreaPresent"
-        d: (d) -> 
-          area(d.data.map((val) -> {year: val.year, value: 0}))
-      .style  
-        fill: (d) -> colour = d3.rgb(d.colour); "url(#viz4gradPresent#{d.key}) rgba(#{colour.r}, #{colour.g}, #{colour.b}, 0.5)"
-   
+        class: 'graphAreaPresent pointerCursor'
+        d: (d) ->
+          area d.data.map (val) ->
+            year: val.year
+            value: 0
+      .style
+        fill: (d) ->
+          colour = d3.rgb d.colour
+          # NB: The extra RGBA statement is a fallback for old IE
+          "url(#viz4gradPresent#{d.key}) rgba(#{colour.r}, #{colour.g}, #{colour.b}, 0.5)"
+
+
     graphAreaSelectors.transition()
       .duration duration
       .attr
-        d: (d) -> area(d.data)
+        d: (d) ->
+          area d.data
 
-    graphFutureAreaSelectors =  graphAreaGroups.selectAll('.graphAreaFuture')
+    graphFutureAreaSelectors = graphAreaGroups.selectAll('.graphAreaFuture')
       .data(((d) -> [d]), ((d) -> d.key))
-      
-    graphFutureAreaSelectors.enter().append "path"
+      .on 'mouseover', (d) =>
+        coords = d3.mouse @tooltipParent # [x, y]
+        @tooltip.style.visibility = 'visible'
+        @tooltip.style.left = "#{coords[0] + 30}px"
+        @tooltip.style.top = "#{coords[1]}px"
+        @displayTooltip d.key
+      .on 'mousemove', (d) =>
+        coords = d3.mouse @tooltipParent # [x, y]
+        @tooltip.style.left = "#{coords[0] + 30}px"
+        @tooltip.style.top = "#{coords[1]}px"
+        @displayTooltip d.key
+      .on 'mouseout', =>
+        @tooltip.style.visibility = 'hidden'
+      .on 'click', (d) =>
+        graphPanel = @document.getElementById 'graphPanel'
+        coords = d3.mouse graphPanel
+
+        @accessConfig.setYear Math.floor(@xAxisScale().invert(coords[0]))
+        @accessConfig.setScenario d.key, @config.dataset
+
+        @updateAccessibleFocus()
+
+
+    graphFutureAreaSelectors.enter().append 'path'
       .attr
-        class: "graphAreaFuture"
-        d: (d) -> 
-          areaFuture(d.data.map((val) -> {year: val.year, value: 0}))
-        fill: (d) -> colour = d3.rgb(d.colour); "url(#viz4gradFuture#{d.key}) rgba(#{colour.r}, #{colour.g}, #{colour.b}, 0.2)"
+        class: 'graphAreaFuture pointerCursor'
+        d: (d) ->
+          areaFuture d.data.map (val) ->
+            year: val.year
+            value: 0
+        fill: (d) ->
+          colour = d3.rgb d.colour
+          # NB: The extra RGBA statement is a fallback for old IE
+          "url(#viz4gradFuture#{d.key}) rgba(#{colour.r}, #{colour.g}, #{colour.b}, 0.2)"
 
     graphAreaGroups.order() #Keeps the order!!!
    
     graphFutureAreaSelectors.transition()
       .duration duration
       .attr
-        d: (d) -> areaFuture(d.data)
+        d: (d) -> areaFuture d.data
 
     presentLine = graphAreaGroups.selectAll('.presentLine')
-      .data(((d) -> [d]), ((d) -> d.key))
+      .data ((d) -> [d]), ((d) -> d.key)
     
-    presentLine.enter().append("path")
-      .attr(
+    presentLine.enter().append 'path'
+      .attr
         class: 'presentLine'
         d: (d) ->
-          line(d.data.map((val) -> {year: val.year, value: 0}))
-        )
-      .style(
+          line d.data.map (val) ->
+            year: val.year
+            value: 0
+      .style
         stroke: (d) -> d.colour
         'stroke-width': 2
         fill: 'none'
-      )
+      
 
     presentLine.order()
 
     presentLine.transition()
       .duration duration
       .attr
-        d: (d) -> line(d.data)
+        d: (d) ->
+          line d.data
 
     exitSelection = graphAreaGroups.exit()
       
@@ -912,57 +1178,259 @@ class Visualization4
       .transition()
         .duration duration
         .attr
-          d: (d) -> 
-            area(d.data.map((val) -> {year: val.year, value: 0}))
+          d: (d) ->
+            area d.data.map (val) ->
+              year: val.year
+              value: 0
     exitSelection.selectAll('.graphAreaFuture')
       .transition()
         .duration duration
         .attr
-          d: (d) -> 
-            areaFuture(d.data.map((val) -> {year: val.year, value: 0}))
-    exitSelection.selectAll('.presentLine')  
+          d: (d) ->
+            areaFuture d.data.map (val) ->
+              year: val.year
+              value: 0
+    exitSelection.selectAll('.presentLine')
       .transition()
         .duration duration
         .attr
-          d: (d) -> 
-            line(d.data.map((val) -> {year: val.year, value: 0}))
+          d: (d) ->
+            line d.data.map (val) ->
+              year: val.year
+              value: 0
       .remove()
 
+    # update the csv data download link
+    @d3document.select('#dataDownloadLink')
+      .attr
+        href: "csv_data#{ParamsToUrlString(@config.routerParams())}"
 
-    #Add the reference case in front
-    #Since these cannot be reordered. Ref case is first if its present.
-    if @config.scenarios.includes('reference') && graphScenarioData.length > 0
-      refCaseLine = d3.select('#referenceCaseLineGroup').selectAll('#refCaseLine')
-          .data([graphScenarioData[0]])     
-      refCaseLine.enter().append('path')    
-          .attr
-            id: "refCaseLine"
-            d: (d) -> line(d.data.map((val) -> {year: val.year, value: 0}))
-          .style
-            stroke: (d) -> d.colour
-            'stroke-width': 6
-            fill: 'none'
+    # Stroke the reference line a second time, to ensure it is drawn on top of the others
+    # TODO: Not sure I like this approach, investigate controlling the draw order of the
+    # lines.
+    referenceData = graphScenarioData.find (item) -> item.key == 'reference'
+    if referenceData?
+      refCaseLine = d3.select @document
+        .select '#referenceCaseLineGroup'
+        .selectAll '#refCaseLine'
+        .data [referenceData]
+
+      refCaseLine.enter().append('path')
+        .attr
+          id: 'refCaseLine'
+          d: (d) ->
+            line d.data.map (val) ->
+              year: val.year
+              value: 0
+        .style
+          stroke: (d) -> d.colour
+          'stroke-width': 2
+          fill: 'none'
+
       refCaseLine.transition()
         .duration duration
         .attr
-          d: (d) -> line(d.data)
+          d: (d) ->
+            line d.data
     else
-      d3.select('#refCaseLine').transition()
+      @d3document.select('#refCaseLine').transition()
         .duration duration
         .attr
-          d: (d) -> line(d.data.map((val) -> {year: val.year, value: 0}))
+          d: (d) ->
+            line d.data.map (val) ->
+              year: val.year
+              value: 0
         .remove()
+
+    
+    # Draw 'dots' along the reference line, to add to its prominence
+    if referenceData?
+      refCaseDots = d3.select @document
+        .select '#referenceCaseLineGroup'
+        .selectAll '.refCaseDot'
+        .data referenceData.data
+
+      refCaseDots.enter().append 'circle'
+        .attr 'class', 'refCaseDot'
+        .attr 'r', 3.5
+        .attr 'cy', yAxisScale(0)
+        .style
+          fill: 'white'
+          stroke: '#999999'
+          'stroke-width': 2
+
+      refCaseDots.transition()
+        .duration duration
+        .attr
+          cx: (d) ->
+            xAxisScale d.year
+          cy: (d) ->
+            yAxisScale d.value
+    else
+      d3.select @document
+        .selectAll 'circle.refCaseDot'
+        .transition()
+        .duration duration
+        .attr 'cy', yAxisScale(0)
+        .remove()
+
+  # Take the mouse coordinates, and invert the scale we used to draw the graph to
+  # look up which year they correspond to. Combine with the name of the scenario to
+  # populate the contents of the mouseover tooltip. Should work at any resolution!
+  # We assume that this method is called during a d3 event handler
+  displayTooltip: (scenario) ->
+    # Mouse coordinates relative to the graph panel element, should be the same
+    # coordinate space that the scale is used to draw in.
+    coords = d3.mouse @graphPanel # [x, y]
+
+    # I hope that making a scale isn't too expensive to do on mousemove
+    scale = @xAxisScale()
+    year = Math.floor scale.invert(coords[0])
+
+    # I hope that fetching data isn't too expensive to do on mousemove either!
+    data = @graphData()
+
+    # This can happen during an animation where a scenario has been toggled off
+    return unless data[scenario]?
+
+    tooltipDatum = data[scenario].find (item) ->
+      item.year == year
+    return unless tooltipDatum
+
+    @tooltip.innerHTML = "#{Tr.scenarioSelector.names[scenario][@app.language]} (#{year}) #{tooltipDatum.value.toFixed(2)}"
+
+
+  displayTooltipKeyboard: (scenario, year, accessibleFocusDot) ->
+    data = @graphData()
+    return unless data[scenario]?
+
+    tooltipDatum = data[scenario].find (item) ->
+      item.year == year
+    return unless tooltipDatum
+
+
+    # First, find the position in absolute page coordinates where the tooltip should
+    # go
+    dotBounds = accessibleFocusDot.getBoundingClientRect()
+    xDest = dotBounds.right + window.scrollX + Constants.tooltipXOffset
+    yDest = dotBounds.top + window.scrollY + dotBounds.height / 2
+
+    # Second, calculate the offset for the tooltip element based on its parent
+    parentBounds = @tooltipParent.getBoundingClientRect()
+    xParentOffset = parentBounds.left + window.scrollX
+    yParentOffset = parentBounds.top + window.scrollY
+
+    # Third, place the tooltip
+    @tooltip.style.visibility = 'visible'
+    @tooltip.style.left = "#{xDest - xParentOffset}px"
+    @tooltip.style.top = "#{yDest - yParentOffset}px"
+
+    @tooltip.innerHTML = "#{Tr.scenarioSelector.names[scenario][@app.language]} (#{year}) #{tooltipDatum.value.toFixed(2)}"
+
 
   tearDown: ->
     # TODO: We might want to render with empty lists for buttons, so that
     # garbage collection of event handled dom nodes goes smoothly
-    document.getElementById('visualizationContent').innerHTML = ''
+    @document.getElementById('visualizationContent').innerHTML = ''
 
-Visualization4.resourcesLoaded = ->
-  app.loadedStatus.energyConsumptionProvider and
-  app.loadedStatus.oilProductionProvider and
-  app.loadedStatus.gasProductionProvider and
-  app.loadedStatus.electricityProductionProvider
 
+  setupGraphEvents: ->
+    graphElement = @document.getElementById 'graphPanel'
+
+    graphElement.addEventListener 'keydown', (event) =>
+
+      # Only process the input if there is at least one selected scenario
+      return if @config.scenarios.length == 0
+
+      switch event.key
+        when 'ArrowRight'
+          event.preventDefault()
+          @accessConfig.setYear @accessConfig.activeYear + 1
+          @updateAccessibleFocus()
+        when 'ArrowLeft'
+          event.preventDefault()
+          @accessConfig.setYear @accessConfig.activeYear - 1
+          @updateAccessibleFocus()
+        when 'ArrowUp'
+          event.preventDefault()
+          nextScenario = @config.nextActiveScenarioReverse @accessConfig.activeScenario
+          @accessConfig.setScenario nextScenario, @config.dataset
+          @updateAccessibleFocus()
+        when 'ArrowDown'
+          event.preventDefault()
+          nextScenario = @config.nextActiveScenarioForward @accessConfig.activeScenario
+          @accessConfig.setScenario nextScenario, @config.dataset
+          @updateAccessibleFocus()
+
+    graphElement.addEventListener 'focus', =>
+      # When we return to focusing the graph element, the graph sub element that the user
+      # had focused may have been toggled off (by removing the scenario).
+      # Calling validate ensures that the sub-focus element is positioned correctly
+      if @config.scenariosVisible()
+        @accessConfig.validate @config
+        @updateAccessibleFocus()
+      else
+        # If there are no active scenarios, we handle the special case
+        @d3document.select '#graphPanel'
+          .attr
+            'aria-label': Tr.altText.emptyScenarioSelection[@app.language]
+        @accessibleFocusDot.attr
+          transform: 'translate(-1000, -1000)'
+        @tooltip.style.visibility = 'hidden'
+
+
+  updateAccessibleFocus: ->
+    # The case where there is no active item is handled before the call to
+    # updateAccessibleFocus
+    data = @graphData()
+    scenarioData = data[@accessConfig.activeScenario]
+    return unless scenarioData?
+    item = scenarioData.find (scenarioDataItem) =>
+      scenarioDataItem.year == @accessConfig.activeYear
+    return unless item?
+
+    xCoord = @xAxisScale()(item.year)
+    yCoord = @yAxisScale()(item.value)
+    @accessibleFocusDot.attr
+      transform: "translate(#{xCoord}, #{yCoord})"
+
+    scenarioString = Tr.scenarioSelector.names[@accessConfig.activeScenario][@app.language]
+    unitString = Tr.altText.unitNames[@config.unit][@app.language]
+    description = "#{scenarioString} #{@accessConfig.activeYear}, #{item.value.toFixed 2} #{unitString}"
+    @d3document.select '#graphPanel'
+      .attr
+        'aria-label': description
+    @accessibleStatusElement.innerHTML = description
+
+    @displayTooltipKeyboard @accessConfig.activeScenario, @accessConfig.activeYear, @accessibleFocusDotElement
+
+
+  # TODO: Find a way to extract this? duplicated in viz2.
+  buildAccessibleFocusDot: ->
+    return if Platform.name == 'server'
+    @d3document.select '#graphGroup'
+      .append 'g'
+      .attr
+        id: 'accessibleFocusDot'
+        class: 'accessibleFocus'
+
+    @accessibleFocusDot = @d3document.select '#accessibleFocusDot'
+    @accessibleFocusDotElement = @document.getElementById 'accessibleFocusDot'
+    
+    @d3document.select '#graphPanel'
+      .attr
+        'aria-activedescendant': 'accessibleFocusDot'
+
+    @accessibleFocusDot
+      .append 'circle'
+        .attr
+          r: 10
+          fill: 'red'
+          'fill-opacity': 0.5
+    @accessibleFocusDot
+      .append 'circle'
+        .attr
+          r: 5
+          fill: 'red'
 
 module.exports = Visualization4

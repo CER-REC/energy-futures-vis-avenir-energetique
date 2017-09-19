@@ -1,0 +1,111 @@
+<div id="wideVisualizationPanel"> 
+
+  <div id="buttonPanel" class="selectorColumn">
+    <div class="mainSelectorSection">  
+      <span class="floatedTitleLabel">{{selectOneLabel}}</span>
+      <img src="IMG/large_qmark.svg" class="helpIconButton pointerCursor" alt='{{ altText.mainSelectionHelp }}' tabindex='0' role='button' id='mainSelectorHelpButton'>
+      <div class="clearfix"> </div>  
+      <div class="selectorGroup">
+        <div id="mainSelector"></div>
+        <div class="clearfix"> </div>
+      </div>
+    </div>
+    <div class="unitsSelectorGroup">  
+      <span class="floatedTitleLabel">{{selectUnitLabel}}</span>
+      <img src="IMG/large_qmark.svg" class="helpIconButton pointerCursor" alt='{{ altText.unitsHelp }}' tabindex='0' role='button' id='unitSelectorHelpButton'>
+      <div class="selectorGroup">
+        <div id="unitsSelector"> </div>    
+      </div>
+    </div>
+    <div class="datasetSelectorGroup">
+      <span class="floatedTitleLabel">{{selectDatasetLabel}}</span>
+      <img src="IMG/large_qmark.svg" class="helpIconButton pointerCursor" alt='{{ altText.datasetsHelp }}' tabindex='0' role='button' id='datasetSelectorHelpButton'>
+      <div class="selectorGroup">
+        <div id="datasetSelector"></div>
+      </div>
+    </div>
+    <div class="scenarioSelectorGroup">    
+      <span class="floatedTitleLabel">{{selectScenarioLabel}}</span>
+      <img src="IMG/large_qmark.svg" class="helpIconButton pointerCursor" alt='{{ altText.scenariosHelp }}' tabindex='0' role='button' id='scenarioSelectorHelpButton'>
+      <div class="selectorGroup">
+        <div id="scenariosSelector"> </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="provincePanel" class="smallSelectorColumn">
+    <span class="titleLabel textCentre">{{selectRegionLabel}}</span>
+    <div id="provincesSelector">
+      <svg id="provinceMenuSVG" xmlns="http://www.w3.org/2000/svg" xmlns:xlink='http://www.w3.org/1999/xlink'>
+      </svg>
+    </div>
+  </div>
+  <div id="graphPanel" class="wideVisualizationColumn" tabindex='0' aria-description='{{ graphDescription }}'>
+    <svg id="graphSVG" xmlns="http://www.w3.org/2000/svg" xmlns:xlink='http://www.w3.org/1999/xlink'>
+      <style> {{ svgStylesheet }} </style>
+        <g id="xAxis"> 
+          <g id="xAxisForLabels"> </g>
+          <g id="xAxisForTicks"> </g>
+        </g>
+        <g id="yAxis"> </g>
+        <g id="graphGroup">  </g>
+      </g>
+    </svg>
+  </div>
+
+  <div id='tooltip' class='chartTooltip'> </div>
+
+</div>
+
+<div class="hidden"> 
+  <img src="IMG/main_selection/electricity_selected.png" alt="Electricity"> 
+  <img src="IMG/main_selection/electricity_unselected.png" alt="Electricity"> 
+  <img src="IMG/main_selection/gas_selected.png" alt="Gas"> 
+  <img src="IMG/main_selection/gas_unselected.png" alt="Gas"> 
+  <img src="IMG/main_selection/oil_selected.png" alt="Oil"> 
+  <img src="IMG/main_selection/oil_unselected.png" alt="Oil"> 
+  <img src="IMG/main_selection/totalDemand_selected.png" alt="Total demand"> 
+  <img src="IMG/main_selection/totalDemand_unselected.png" alt="Total demand"> 
+
+  <img src="IMG/provinces/colour/AB_Selected.svg" alt="AB">
+  <img src="IMG/provinces/colour/BC_Selected.svg" alt="BC">
+  <img src="IMG/provinces/colour/MB_Selected.svg" alt="MB">
+  <img src="IMG/provinces/colour/NB_Selected.svg" alt="NB">
+  <img src="IMG/provinces/colour/NL_Selected.svg" alt="NL">
+  <img src="IMG/provinces/colour/NS_Selected.svg" alt="NS">
+  <img src="IMG/provinces/colour/NT_Selected.svg" alt="NT">
+  <img src="IMG/provinces/colour/NU_Selected.svg" alt="NU">
+  <img src="IMG/provinces/colour/ON_Selected.svg" alt="ON">
+  <img src="IMG/provinces/colour/PEI_Selected.svg" alt="PE">
+  <img src="IMG/provinces/colour/QC_Selected.svg" alt="QC">
+  <img src="IMG/provinces/colour/Sask_Selected.svg" alt="SK">
+  <img src="IMG/provinces/colour/Yukon_Selected.svg" alt="YT">
+
+  <img src="IMG/provinces/colour/AB_Unselected.svg" alt="AB">
+  <img src="IMG/provinces/colour/BC_Unselected.svg" alt="BC">
+  <img src="IMG/provinces/colour/MB_Unselected.svg" alt="MB">
+  <img src="IMG/provinces/colour/NB_Unselected.svg" alt="NB">
+  <img src="IMG/provinces/colour/NL_Unselected.svg" alt="NL">
+  <img src="IMG/provinces/colour/NS_Unselected.svg" alt="NS">
+  <img src="IMG/provinces/colour/NT_Unselected.svg" alt="NT">
+  <img src="IMG/provinces/colour/NU_Unselected.svg" alt="NU">
+  <img src="IMG/provinces/colour/ON_Unselected.svg" alt="ON">
+  <img src="IMG/provinces/colour/PEI_Unselected.svg" alt="PE">
+  <img src="IMG/provinces/colour/QC_Unselected.svg" alt="QC">
+  <img src="IMG/provinces/colour/Sask_Unselected.svg" alt="SK">
+  <img src="IMG/provinces/colour/Yukon_Unselected.svg" alt="YT">
+
+  <img src="IMG/provinces/DataUnavailable/AB_Unavailable.svg" alt="AB">
+  <img src="IMG/provinces/DataUnavailable/BC_Unavailable.svg" alt="BC">
+  <img src="IMG/provinces/DataUnavailable/MB_Unavailable.svg" alt="MB">
+  <img src="IMG/provinces/DataUnavailable/NB_Unavailable.svg" alt="NB">
+  <img src="IMG/provinces/DataUnavailable/NL_Unavailable.svg" alt="NL">
+  <img src="IMG/provinces/DataUnavailable/NS_Unavailable.svg" alt="NS">
+  <img src="IMG/provinces/DataUnavailable/NT_Unavailable.svg" alt="NT">
+  <img src="IMG/provinces/DataUnavailable/NU_Unavailable.svg" alt="NU">
+  <img src="IMG/provinces/DataUnavailable/ON_Unavailable.svg" alt="ON">
+  <img src="IMG/provinces/DataUnavailable/PEI_Unavailable.svg" alt="PE">
+  <img src="IMG/provinces/DataUnavailable/QC_Unavailable.svg" alt="QC">
+  <img src="IMG/provinces/DataUnavailable/SK_Unavailable.svg" alt="SK">
+  <img src="IMG/provinces/DataUnavailable/Yukon_Unavailable.svg" alt="YT">
+</div>
