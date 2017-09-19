@@ -424,6 +424,7 @@ class Rose
 
     # Cap the petals at the inner and outer circles to prevent them from extending 
     # too much outside the rose or too much inwards that they cover the province label.
+    cappedValue = value
     if value > 0 && value > (Constants.roseOuterCircleRadius/2 - Constants.roseThornLength)
       cappedValue = (Constants.roseOuterCircleRadius/2 - Constants.roseThornLength)
     else if value < 0 && value < -(Constants.roseOuterCircleRadius/2 - Constants.roseThornLength)
