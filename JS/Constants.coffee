@@ -78,7 +78,7 @@ module.exports =
     'Constrained ': 'constrained'
     'HCP': 'hcp'
     'Technology': 'technology'
-    'HTC': 'htc'
+    'HTC': 'technology'
 
   datasets: [
     'jan2016'
@@ -130,19 +130,18 @@ module.exports =
     oct2017:
       scenarios: [
         'reference'
-        'htc'
         'hcp'
         'technology'
       ]
       scenariosForIngestion:
-        energyDemand: ['reference', 'technology']
+        energyDemand: ['reference', 'technology', 'hcp']
         electricityGeneration: ['reference', 'technology', 'hcp']
-        oilProduction: ['reference', 'htc', 'hcp']
+        oilProduction: ['reference', 'technology', 'hcp']
         gasProduction: ['reference', 'technology', 'hcp'] 
       scenariosPerSelection:
-        energyDemand: ['reference', 'technology']
+        energyDemand: ['reference', 'technology', 'hcp']
         electricityGeneration: ['reference', 'technology', 'hcp']
-        oilProduction: ['reference', 'htc', 'hcp']
+        oilProduction: ['reference', 'technology', 'hcp']
         gasProduction: ['reference', 'technology', 'hcp']
 
   # The order in which the scenarios are drawn, in viz4.
@@ -152,7 +151,7 @@ module.exports =
   # But, there are some configurations where this ordering does not work. And since lines
   # in a line graph can and do cross each other, some configurations have no possible
   # ordering that can work.
-  scenarioDrawingOrder: ['high', 'highLng', 'reference', 'noLng', 'constrained', 'low', 'technology', 'htc', 'hcp']
+  scenarioDrawingOrder: ['high', 'highLng', 'reference', 'noLng', 'constrained', 'low', 'technology', 'hcp']
 
 
   years: [
@@ -220,6 +219,41 @@ module.exports =
 
   provinceRadioSelectionOptions: [
     'all'
+    'AB'
+    'BC'
+    'MB'
+    'NB'
+    'NL'
+    'NS'
+    'NT'
+    'NU'
+    'ON'
+    'PE'
+    'QC'
+    'SK'
+    'YT'
+  ]
+
+  viz5leftProvinceMenuOption: [
+    'all'
+    'Canada'
+    'AB'
+    'BC'
+    'MB'
+    'NB'
+    'NL'
+    'NS'
+    'NT'
+    'NU'
+    'ON'
+    'PE'
+    'QC'
+    'SK'
+    'YT'
+  ]
+
+  viz5rightProvinceMenuOption: [
+    'Canada'
     'AB'
     'BC'
     'MB'
@@ -337,6 +371,7 @@ module.exports =
   viz5timelineMargin: 45
   baseYearTimelineMargin: 80
   sliderLabelHeight: 28
+  viz5timelineDuration: 500
 
   comparisonSliderWidth: 70
   baseSliderWidth: 80
@@ -407,6 +442,9 @@ module.exports =
     NU:
       row: 0
       column: 2
+    Canada: 
+      row: 0
+      column: 3.5
     NL:
       row: 0
       column: 5
@@ -449,6 +487,9 @@ module.exports =
     NU:
       x: 355
       y: 285
+    Canada: 
+      x: 555
+      y: 285
     NL:
       x: 668
       y: 285
@@ -481,6 +522,7 @@ module.exports =
       y: 405
 
   fullRoseRenderingDelay:
+    Canada: 400 #
     YT: 800   #
     NT: 1200  #
     NU: 1520  #

@@ -53,7 +53,6 @@ class EnergyConsumptionProvider
       highLng: []
       noLng: []
       constrained: []
-      htc: []
       hcp: []
       technology: []
 
@@ -308,13 +307,24 @@ class EnergyConsumptionProvider
       comparisonDataAggregated[province] = {}
       percentageData[province] = []
 
+    # Canada Rose data aggregation
+    baseDataAggregated['Canada'] = {}
+    comparisonDataAggregated['Canada'] = {}
+    percentageData['Canada'] = []
+
     for item in baseData
       continue if item.province == 'all'
       baseDataAggregated[item.province][item.source] = item
+      if(!baseDataAggregated['Canada'][item.source]?)
+        baseDataAggregated['Canada'][item.source] = []
+      baseDataAggregated['Canada'][item.source].push item
 
     for item in comparisonData
       continue if item.province == 'all'
       comparisonDataAggregated[item.province][item.source] = item
+      if(!comparisonDataAggregated['Canada'][item.source]?)
+        comparisonDataAggregated['Canada'][item.source] = []
+      comparisonDataAggregated['Canada'][item.source].push item
 
     for province in Constants.provinces
 
@@ -362,6 +372,52 @@ class EnergyConsumptionProvider
         if percentageItem.unit? then percentageItem.unit = percentageItem.unit.toLowerCase()
 
         percentageData[province].push percentageItem
+
+
+    # Compute the percentage item for Canada
+    baseTotal = 0
+    comparisonTotal = 0
+    for source in Constants.viz5SourcesInOrder
+      for item in baseDataAggregated['Canada'][source]
+        baseTotal += item.value
+      for item in comparisonDataAggregated['Canada'][source]
+        comparisonTotal += item.value
+ 
+    for source in Constants.viz5SourcesInOrder
+      baseItem = baseDataAggregated['Canada'][source]
+      comparisonItem = comparisonDataAggregated['Canada'][source]
+      percentageItem = {}
+
+      baseItemValue = 0
+      comparisonItemValue = 0
+      for item in baseItem
+        baseItemValue += item.value
+        percentageItem.unit = item.unit
+      for item in comparisonItem
+        comparisonItemValue += item.value
+
+      baseFraction = (baseItemValue / baseTotal).toFixed 2
+      comparisonFraction = (comparisonItemValue / comparisonTotal).toFixed 2
+
+      percentageItem.value = ((comparisonFraction - baseFraction) * 100)
+
+      percentageItem.province = 'Canada'
+      percentageItem.scenario = viz5config.scenario
+      percentageItem.sector = viz5config.sector
+      percentageItem.source = source
+      percentageItem.baseValue = baseItemValue
+      percentageItem.comparisonValue = comparisonItemValue
+      percentageItem.baseTotal = baseTotal
+      percentageItem.comparisonTotal = comparisonTotal
+      percentageItem.basePercentage = baseFraction * 100
+      percentageItem.comparisonPercentage = comparisonFraction * 100
+      percentageItem.baseYear = viz5config.baseYear
+      percentageItem.comparisonYear = viz5config.comparisonYear
+
+      # Fix the capitalization of the first letter of the unit problem.
+      if percentageItem.unit? then percentageItem.unit = percentageItem.unit.toLowerCase()
+
+      percentageData['Canada'].push percentageItem
 
     percentageData
 

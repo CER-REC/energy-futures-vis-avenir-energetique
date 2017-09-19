@@ -124,6 +124,7 @@ class Visualization5
     @playPauseStatus = 'paused'
 
     @allCanadaRoses =
+      Canada: null
       AB: null
       BC: null
       MB: null
@@ -222,6 +223,16 @@ class Visualization5
   # Province menu stuff
   dataForProvinceMenu: (selectionProvince)->
     [
+      {
+        key: 'Canada'
+        tooltip: ProvinceAriaText @app, selectionProvince == 'Canada', 'Canada'
+        colour: if selectionProvince == 'Canada' then '#333' else '#fff'
+        img:
+          if selectionProvince == 'Canada'
+            'IMG/provinces/radio/Canada_SelectedR.svg'
+          else
+            'IMG/provinces/radio/Canada_UnselectedR.svg'
+      }
       {
         key: 'AB'
         tooltip: ProvinceAriaText @app, selectionProvince == 'AB', 'AB'
@@ -969,13 +980,13 @@ class Visualization5
             @config.setComparisonYear @config.comparisonYear
             isReplay = false
           else @config.setComparisonYear @config.comparisonYear + 1
-          @yearTimeout = window.setTimeout timeoutComplete, @app.animationDuration
+          @yearTimeout = window.setTimeout timeoutComplete, Constants.viz5timelineDuration
           @redraw()
           @d3document.select '#sliderLabel'
             .transition()
               .attr
                 transform: "translate(#{@yearScale()(@config.comparisonYear)},#{@timelineMargin.top  - 5})"
-            .duration @app.animationDuration
+            .duration Constants.viz5timelineDuration
             .ease 'linear'
           @d3document.select '#labelBox'
             .text @config.comparisonYear

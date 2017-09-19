@@ -143,17 +143,41 @@ class Rose
         r: Constants.roseCentreCircleRadius
         fill: '#333'
 
-    # Centre label
-    @innerContainer.append 'text'
-      .attr
-        class: 'roseCentreLabel'
-        fill: 'white'
-        transform: 'translate(0, 4.5)'
-        'text-anchor': 'middle'
-      .style
-        'font-size': '13px'
-      .text =>
-        @options.data[0].province
+    # Render the maple leaf instead of the text
+    # label for the Canada rose
+    if @options.data[0].province == 'Canada'
+      @innerContainer.append 'image'
+        .attr
+          class: 'pointerCursor'
+          id: 'mapleLeafSVG'
+          'xlink:href': 'IMG/mapleLeaf.svg'
+          x: "-#{Constants.roseCentreCircleRadius}px"
+          y: "-#{Constants.roseCentreCircleRadius}px"
+          width: Constants.roseCentreCircleRadius * 2
+          height: Constants.roseCentreCircleRadius * 2
+
+    else 
+      # Centre label
+      @innerContainer.append 'text'
+        .attr
+          class: 'roseCentreLabel'
+          fill: 'white'
+          transform: 'translate(0, 4.5)'
+          'text-anchor': 'middle'
+        .style
+          'font-size': '13px'
+        .text =>
+          @options.data[0].province
+
+      @innerContainer.append 'image'
+        .attr
+          class: 'hidden'
+          id: 'mapleLeafSVG'
+          'xlink:href': 'IMG/mapleLeaf.svg'
+          x: "-#{Constants.roseCentreCircleRadius}px"
+          y: "-#{Constants.roseCentreCircleRadius}px"
+          width: Constants.roseCentreCircleRadius * 2
+          height: Constants.roseCentreCircleRadius * 2
 
     if @options.isFirstRun and @options.showAllCanadaAnimationOnFirstRun
       switch Platform.name
@@ -343,7 +367,7 @@ class Rose
     switch Platform.name
       when 'browser'
         container = @container.transition()
-          .duration @app.animationDuration
+          .duration Constants.viz5timelineDuration
       when 'server'
         container = @container
 
@@ -358,14 +382,28 @@ class Rose
 
       @showPills() if @options.showPillsAfterTransition
 
-    @innerContainer.select '.roseCentreLabel'
-      .text =>
-        @options.data[0].province
+    # Render the maple leaf instead of the text
+    # label for the Canada rose
+    if @options.data[0].province == 'Canada'
+      @innerContainer.select '#mapleLeafSVG'
+        .attr
+          class: 'pointerCursor'
+
+    else 
+      @innerContainer.select '.roseCentreLabel'
+        .attr
+          class: 'roseCentreLabel'
+        .text =>
+          @options.data[0].province
+
+      @innerContainer.select '#mapleLeafSVG'
+        .attr
+          class: 'hidden'
 
     @innerContainer.selectAll '.petal'
       .data @options.data
       .transition()
-      .duration @app.animationDuration
+      .duration Constants.viz5timelineDuration
       .attr
         d: (d) =>
           @petalPath d.value, Constants.viz5RoseData[d.source].startAngle
@@ -497,7 +535,7 @@ class Rose
     containerOffset = Constants.roseSize / 2 * @options.scale
     @container
       .transition()
-      .duration @app.animationDuration
+      .duration Constants.viz5timelineDuration
       .attr
         transform: "translate(#{@options.position.x + containerOffset}, #{@options.position.y + containerOffset}) scale(0, 0)"
       .each 'end', =>

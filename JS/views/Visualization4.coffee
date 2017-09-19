@@ -388,11 +388,11 @@ class Visualization4
 
     availableScenarios = switch @config.mainSelection
       when 'energyDemand'
-        ['reference', 'high', 'highLng', 'constrained', 'low', 'noLng', 'technology']
+        ['reference', 'high', 'highLng', 'constrained', 'low', 'noLng', 'technology', 'hcp']
       when 'electricityGeneration'
         ['reference', 'high', 'highLng', 'constrained', 'low', 'noLng', 'technology', 'hcp']
       when 'oilProduction'
-        ['reference', 'high', 'constrained', 'low', 'htc', 'hcp']
+        ['reference', 'high', 'constrained', 'low', 'technology', 'hcp']
       when 'gasProduction'
         ['reference', 'high', 'highLng', 'low', 'noLng', 'hcp', 'technology']
 
@@ -514,10 +514,6 @@ class Visualization4
       technology:
         tooltip: Tr.selectorTooltip.scenarioSelector.technologyButton[@app.language]
         key: 'technology'
-        colour: '#0C2C84'
-      htc:
-        tooltip: Tr.selectorTooltip.scenarioSelector.htcButton[@app.language]
-        key: 'htc'
         colour: '#0C2C84'
       hcp:
         tooltip: Tr.selectorTooltip.scenarioSelector.hcpButton[@app.language]
