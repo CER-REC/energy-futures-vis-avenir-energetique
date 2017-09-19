@@ -422,7 +422,14 @@ class Rose
     # distant (i.e. greater or lower radius) from the baseline depending on its data
     # value.
 
-    petalDistance = Constants.roseBaselineCircleRadius + value
+    # Cap the petals at the inner and outer circles to prevent them from extending 
+    # too much outside the rose or too much inwards that they cover the province label.
+    if value > 0 && value > (Constants.roseOuterCircleRadius/2 - Constants.roseThornLength)
+      cappedValue = (Constants.roseOuterCircleRadius/2 - Constants.roseThornLength)
+    else if value < 0 && value < -(Constants.roseOuterCircleRadius/2 - Constants.roseThornLength)
+      cappedValue = -(Constants.roseOuterCircleRadius/2 - Constants.roseThornLength)
+
+    petalDistance = Constants.roseBaselineCircleRadius + cappedValue
     if petalDistance < Constants.roseBaselineCircleRadius
       # pointed inward
       thornDistance = petalDistance - Constants.roseThornLength
