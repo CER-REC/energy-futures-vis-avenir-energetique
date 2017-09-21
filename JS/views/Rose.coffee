@@ -113,7 +113,7 @@ class Rose
         class: 'roseOuterCircle'
         r: Constants.roseOuterCircleRadius
         stroke: '#ccc'
-        'stroke-width': 1
+        'stroke-width': 0.5
         # NB: The fill on the outer circle interacts with the click handler, to make
         # the whole rose clickable.
         fill: 'white'
@@ -155,6 +155,18 @@ class Rose
           y: "-#{Constants.roseCentreCircleRadius}px"
           width: Constants.roseCentreCircleRadius * 2
           height: Constants.roseCentreCircleRadius * 2
+
+      # Centre label
+      @innerContainer.append 'text'
+        .attr
+          class: 'roseCentreLabel hidden'
+          fill: 'white'
+          transform: 'translate(0, 4.5)'
+          'text-anchor': 'middle'
+        .style
+          'font-size': '13px'
+        .text =>
+          @options.data[0].province
 
     else 
       # Centre label
@@ -235,7 +247,7 @@ class Rose
         class: 'roseOuterCircle'
         r: Constants.roseOuterCircleRadius
         stroke: '#ccc'
-        'stroke-width': 1
+        'stroke-width': 0.5
         fill: 'none'
     @animateElement circleElement
 
@@ -264,7 +276,7 @@ class Rose
           .attr
             class: 'roseTickMark'
             stroke: '#ccc'
-            'stroke-width': 1
+            'stroke-width': 0.5
             d: path.toString()
             fill: 'none'
         @animateElement pathElement
@@ -288,7 +300,7 @@ class Rose
         class: 'roseBaselineCircle'
         r: Constants.roseBaselineCircleRadius
         stroke: '#333'
-        'stroke-width': 1
+        'stroke-width': 0.75
         fill: 'none'
 
     lastAnimation = @animateElement baselineCircle
@@ -388,6 +400,10 @@ class Rose
       @innerContainer.select '#mapleLeafSVG'
         .attr
           class: 'pointerCursor'
+
+      @innerContainer.select '.roseCentreLabel'
+        .attr
+          class: 'roseCentreLabel hidden'
 
     else 
       @innerContainer.select '.roseCentreLabel'

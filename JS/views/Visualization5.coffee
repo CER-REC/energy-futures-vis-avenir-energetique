@@ -106,9 +106,9 @@ class Visualization5
 
     @graphMargin =
       top: 20
-      right: 10
+      right: 45
       bottom: 50
-      left: 10
+      left: 45
 
     @timelineMargin =
       top: 20
@@ -501,7 +501,7 @@ class Visualization5
   render: ->
     @container.attr
       width: @graphWidth()
-      height: Constants.viz5Height
+      height: 538
 
     @svgResize()
 
@@ -790,7 +790,7 @@ class Visualization5
     @container
       .attr
         width: @graphWidth()
-        height: @height() - Constants.viz5SliderHeight/2
+        height: 538
 
   redraw: ->
     @renderGraph()

@@ -402,10 +402,10 @@ module.exports =
 
   # Rose dimensions are normalized to a 112x112 canvas / group, which is re-scaled in the
   # visualization.
-  roseSize: 112 # px
-  roseOuterCircleRadius: 56 # px
-  roseBaselineCircleRadius: 33 # px
-  roseCentreCircleRadius: 10 # px
+  roseSize: 118 # px
+  roseOuterCircleRadius: 53 # px
+  roseBaselineCircleRadius: 31 # px
+  roseCentreCircleRadius: 12 # px
 
   # All in radians
   roseAngles: [
@@ -438,47 +438,47 @@ module.exports =
   # Indexed from the top left
   rosePositions:
     YT:
-      row: 0
+      row: 0.25
       column: 0
     NT:
-      row: 0
+      row: 0.25
       column: 1
     NU:
-      row: 0
+      row: 0.25
       column: 2
     Canada: 
-      row: 0
+      row: 0.25
       column: 3.5
     NL:
-      row: 0
+      row: 0.25
       column: 5
     BC:
-      row: 1
+      row: 1.25
       column: 0
     AB:
-      row: 1
+      row: 1.25
       column: 1
     SK:
-      row: 1
-      column: 2
+      row: 1.25
+      column:2
     MB:
-      row: 1
+      row: 1.25
       column: 3
     ON:
-      row: 1
+      row: 1.25
       column: 4
     QC:
-      row: 1
+      row: 1.25
       column: 5
 
     NB:
-      row: 2
+      row: 2.25
       column: 3
     PE:
-      row: 2
+      row: 2.25
       column: 4
     NS:
-      row: 2
+      row: 2.25
       column: 5
 
   roseStartingPositionOffsets:
@@ -542,7 +542,7 @@ module.exports =
     NS: 960   #
 
   allCanadaRoseMargin: 11 # px
-  comparisonRoseMargin: 135 # px
+  comparisonRoseMargin: 65 # px
 
   viz5SourcesInOrder: [
     'electricity'
@@ -618,11 +618,11 @@ module.exports =
   # Keep these sizes consistent with the dimensions in pills.css
   viz5PillSizes: # all in px
     large:
-      width: 70
-      height: 27
+      width: 77
+      height: 29.7
     small:
-      width: 50
-      height: 20
+      width: 52.5
+      height: 21
 
   
   # To match duration of pills animations in CSS.
