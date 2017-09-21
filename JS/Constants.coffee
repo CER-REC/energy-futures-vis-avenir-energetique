@@ -603,7 +603,7 @@ module.exports =
   # NB: This value should be kept in sync with the padding style for #mainPanel > div
 
   pillPopoverWidth: 220 # px
-  pillPopoverHeight: 150 # px
+  pillPopoverHeight: 125 # px
 
 
 

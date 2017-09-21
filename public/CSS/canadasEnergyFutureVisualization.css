@@ -1194,7 +1194,7 @@ svg { overflow: hidden; }
   background-color: white;
 
   width: 220px;
-  height: 150px;
+  height: 125px;
 
   /* Beneath the pills */
   /* NB: Wet navbar is styled with z-index 500, and we desire for the popover to cover it if need be */
