@@ -324,7 +324,7 @@ module.exports =
   roseSlightlyBiggerScale: 1.1
 
   roseBorderOffset:
-    'small': 1.5 # in px
+    'small': 2 # in px
     'large': 2 # in px
 
   serverSideGraphWidth: 1065 # px
