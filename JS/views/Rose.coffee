@@ -444,7 +444,7 @@ class Rose
     if value > 0 && value > (Constants.roseOuterCircleRadius/2 - Constants.roseThornLength)
       cappedValue = (Constants.roseOuterCircleRadius/2 - Constants.roseThornLength)
     else if value < 0 && value < -(Constants.roseOuterCircleRadius/2 - Constants.roseThornLength)
-      cappedValue = -(Constants.roseOuterCircleRadius/2 - Constants.roseThornLength)
+      cappedValue = -(Constants.roseOuterCircleRadius/2 - Constants.roseThornLength*2)
 
     petalDistance = Constants.roseBaselineCircleRadius + cappedValue
     if petalDistance < Constants.roseBaselineCircleRadius
