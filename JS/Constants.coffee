@@ -627,7 +627,22 @@ module.exports =
       width: 52.5
       height: 21
 
-  
+  viz5PillAlignmentMargins:
+    large:
+      coal: 0
+      naturalGas: 0
+      bio: 0
+      solarWindGeothermal: 0
+      electricity: 0
+      oilProducts: 0
+    small:
+      coal: 0
+      naturalGas: 0
+      bio: -10
+      solarWindGeothermal: -10
+      electricity: 10
+      oilProducts: 10
+
   # To match duration of pills animations in CSS.
   viz5PillPopoverDuration: 300 # ms
 

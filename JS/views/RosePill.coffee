@@ -54,9 +54,9 @@ class RosePill
     rootBounds = @document.querySelector('#rosePillRoot').getBoundingClientRect()
 
     sizes = Constants.viz5PillSizes[@options.size]
-
+    alignmentMargin = Constants.viz5PillAlignmentMargins[@options.size][@options.data.source]
     centrePoint =
-      left: @options.shadowPillBounds.left - rootBounds.left + @app.pagePadding
+      left: @options.shadowPillBounds.left - rootBounds.left + @app.pagePadding + alignmentMargin
       top: @options.shadowPillBounds.top - rootBounds.top + @app.pagePadding
 
     @left = centrePoint.left - sizes.width / 2
