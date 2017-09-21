@@ -407,6 +407,9 @@ module.exports =
   roseBaselineCircleRadius: 31 # px
   roseCentreCircleRadius: 12 # px
 
+  twoRoseTopMargin: 100
+  viz5GraphSVGHeight: 538
+
   # All in radians
   roseAngles: [
     0

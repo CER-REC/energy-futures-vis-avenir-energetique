@@ -501,7 +501,7 @@ class Visualization5
   render: ->
     @container.attr
       width: @graphWidth()
-      height: 538
+      height: Constants.viz5GraphSVGHeight
 
     @svgResize()
 
@@ -790,7 +790,7 @@ class Visualization5
     @container
       .attr
         width: @graphWidth()
-        height: 538
+        height: Constants.viz5GraphSVGHeight
 
   redraw: ->
     @renderGraph()
@@ -1460,9 +1460,9 @@ class Visualization5
     roseScale = roseSize / Constants.roseSize
 
     leftXPos = @graphMargin.left
-    leftYPos = @graphMargin.top
+    leftYPos = Constants.twoRoseTopMargin
     rightXPos = @graphMargin.left + (roseSize + Constants.comparisonRoseMargin)
-    rightYPos = @graphMargin.top
+    rightYPos = Constants.twoRoseTopMargin
 
 
     if @leftRose?
