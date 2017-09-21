@@ -110,6 +110,9 @@ class Visualization5
       bottom: 50
       left: 45
 
+    @twoRoseMargin = 
+      left: 64
+
     @timelineMargin =
       top: 20
       left: 10
@@ -1459,9 +1462,9 @@ class Visualization5
     roseSize = availableWidth / 2
     roseScale = roseSize / Constants.roseSize
 
-    leftXPos = @graphMargin.left
+    leftXPos = @twoRoseMargin.left
     leftYPos = Constants.twoRoseTopMargin
-    rightXPos = @graphMargin.left + (roseSize + Constants.comparisonRoseMargin)
+    rightXPos = @twoRoseMargin.left + (roseSize + Constants.comparisonRoseMargin)
     rightYPos = Constants.twoRoseTopMargin
 
 
