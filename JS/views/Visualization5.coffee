@@ -924,29 +924,16 @@ class Visualization5
           d3.event.preventDefault()
           @sliderPlayButtonCallback()
       .html """
-        <img src='IMG/play_pause/playbutton_unselectedR.svg'
+        <img src='IMG/play_pause/playbutton_selectedR.svg'
              alt='#{Tr.altText.playAnimation[@app.language]}'/>
       """
 
-    # div.append 'div'
-    #   .attr
-    #     id: 'vizPauseButton'
-    #     class: 'playPauseButton selected'
-    #     role: 'button'
-    #     tabindex: '0'
-    #     'aria-label': Tr.altText.pauseAnimation[@app.language]
-    #   .on 'click', @sliderPauseButtonCallback
-    #   .on 'keydown', =>
-    #     if d3.event.key == 'Enter' or d3.event.key == ' '
-    #       d3.event.preventDefault()
-    #       @sliderPauseButtonCallback()
-    #   .html """
-    #     <img src='IMG/play_pause/pausebutton_selectedR.svg'
-    #          alt='#{Tr.altText.pauseAnimation[@app.language]}'/>
-    #   """
-
   sliderPlayButtonCallback: =>
-    return if @playPauseStatus == 'playing'
+    # Pause the animation if it is already playing
+    if @playPauseStatus == 'playing'
+      console.log 'clicked pause'
+      @sliderPauseButtonCallback()
+      return 
     @playPauseStatus = 'playing'
 
     # Set the timeline state to replay, and set the comparisonYear
@@ -957,14 +944,10 @@ class Visualization5
 
     @d3document.select '#vizPlayButton'
       .html """
-        <img src='IMG/play_pause/playbutton_selectedR.svg'
+        <img src='IMG/play_pause/pausebutton_selectedR.svg'
              alt='#{Tr.altText.playAnimation[@app.language]}'/>
       """
-    @d3document.select '#vizPauseButton'
-      .html """
-        <img src='IMG/play_pause/pausebutton_unselectedR.svg'
-             alt='#{Tr.altText.pauseAnimation[@app.language]}'/>
-      """
+
     if @yearTimeout then window.clearTimeout @yearTimeout
     timeoutComplete = =>
       #return unless @_chart?
@@ -1001,14 +984,9 @@ class Visualization5
         @app.datasetRequester.updateAndRequestIfRequired newConfig, update
 
       else
-        @d3document.select '#vizPauseButton'
-          .html """
-            <img src='IMG/play_pause/pausebutton_selectedR.svg'
-                 alt='#{Tr.altText.pauseAnimation[@app.language]}'/>
-          """
         @d3document.select '#vizPlayButton'
           .html """
-            <img src='IMG/play_pause/playbutton_unselectedR.svg'
+            <img src='IMG/play_pause/playbutton_selectedR.svg'
                  alt='#{Tr.altText.playAnimation[@app.language]}'/>
           """
         # Simulate a pause button click.
@@ -1020,17 +998,11 @@ class Visualization5
 
 
   sliderPauseButtonCallback: =>
-    return if @playPauseStatus == 'paused'
     @playPauseStatus = 'paused'
 
-    @d3document.select '#vizPauseButton'
-      .html """
-        <img src='IMG/play_pause/pausebutton_selectedR.svg'
-             alt='#{Tr.altText.pauseAnimation[@app.language]}'/>
-      """
     @d3document.select '#vizPlayButton'
       .html """
-        <img src='IMG/play_pause/playbutton_unselectedR.svg'
+        <img src='IMG/play_pause/playbutton_selectedR.svg'
              alt='#{Tr.altText.playAnimation[@app.language]}'/>
        """
     if @yearTimeout then window.clearTimeout @yearTimeout
