@@ -114,7 +114,7 @@ class Visualization5
       left: 64
 
     @timelineMargin =
-      top: 20
+      top: 22
       left: 10
       right: 20
       bottom: 70
@@ -928,22 +928,22 @@ class Visualization5
              alt='#{Tr.altText.playAnimation[@app.language]}'/>
       """
 
-    div.append 'div'
-      .attr
-        id: 'vizPauseButton'
-        class: 'playPauseButton selected'
-        role: 'button'
-        tabindex: '0'
-        'aria-label': Tr.altText.pauseAnimation[@app.language]
-      .on 'click', @sliderPauseButtonCallback
-      .on 'keydown', =>
-        if d3.event.key == 'Enter' or d3.event.key == ' '
-          d3.event.preventDefault()
-          @sliderPauseButtonCallback()
-      .html """
-        <img src='IMG/play_pause/pausebutton_selectedR.svg'
-             alt='#{Tr.altText.pauseAnimation[@app.language]}'/>
-      """
+    # div.append 'div'
+    #   .attr
+    #     id: 'vizPauseButton'
+    #     class: 'playPauseButton selected'
+    #     role: 'button'
+    #     tabindex: '0'
+    #     'aria-label': Tr.altText.pauseAnimation[@app.language]
+    #   .on 'click', @sliderPauseButtonCallback
+    #   .on 'keydown', =>
+    #     if d3.event.key == 'Enter' or d3.event.key == ' '
+    #       d3.event.preventDefault()
+    #       @sliderPauseButtonCallback()
+    #   .html """
+    #     <img src='IMG/play_pause/pausebutton_selectedR.svg'
+    #          alt='#{Tr.altText.pauseAnimation[@app.language]}'/>
+    #   """
 
   sliderPlayButtonCallback: =>
     return if @playPauseStatus == 'playing'
@@ -1094,7 +1094,7 @@ class Visualization5
       .attr
         id: 'baseSliderLabel'
         class: 'baseSliderLabel pointerCursor'
-        transform: "translate(#{@yearScale()(@config.baseYear) - 25}, #{@timelineMargin.bottom - 20})"
+        transform: "translate(#{@yearScale()(@config.baseYear) - 25}, #{@timelineMargin.bottom - 18})"
         tabindex: '0'
         role: 'slider'
         'aria-label': Tr.altText.yearsSlider[@app.language]
@@ -1136,7 +1136,7 @@ class Visualization5
     update = =>
       @config.setBaseYear value
       @d3document.select('#baseSliderLabel').attr
-        transform: "translate(#{@yearScale()(@config.baseYear) - 25}, #{@timelineMargin.bottom - 20})"
+        transform: "translate(#{@yearScale()(@config.baseYear) - 25}, #{@timelineMargin.bottom - 18})"
 
       @d3document.select '#baseLabelBox'
         .text @config.baseYear

@@ -373,7 +373,7 @@ module.exports =
   timelineMargin: 25
   allCanadaTimelineMargin: 30
   viz5timelineMargin: 45
-  baseYearTimelineMargin: 80
+  baseYearTimelineMargin: 45
   sliderLabelHeight: 28
   viz5timelineDuration: 500
 
