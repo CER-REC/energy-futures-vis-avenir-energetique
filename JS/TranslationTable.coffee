@@ -1041,7 +1041,7 @@ module.exports =
       en:
         'RENEWABLES'
       fr:
-        'RESOURCES RENOUVELABLES'
+        'RESSOURCES RENOUVELABLES'
     hydro:
       en:
         'HYDRO'

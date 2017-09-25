@@ -950,7 +950,6 @@ class Visualization5
   sliderPlayButtonCallback: =>
     # Pause the animation if it is already playing
     if @playPauseStatus == 'playing'
-      console.log 'clicked pause'
       @sliderPauseButtonCallback()
       return 
     @playPauseStatus = 'playing'
