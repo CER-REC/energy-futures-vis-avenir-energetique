@@ -74,7 +74,7 @@ class Visualization1 extends visualization
       outerClasses: 'vizModal controlsHelpPopover scenarioSelectorHelp'
       innerClasses: 'viz1HelpTitle'
       title: Tr.scenarioSelector.scenarioSelectorHelpTitle[@app.language]
-      content: => Tr.scenarioSelector.scenarioSelectorHelp[@app.language]
+      content: => Tr.scenarioSelector.scenarioSelectorHelp[@config.dataset][@app.language]
       attachmentSelector: '.scenarioSelectorGroup'
       analyticsEvent: 'Viz1 scenario help'
 

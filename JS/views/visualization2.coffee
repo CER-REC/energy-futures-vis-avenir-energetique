@@ -76,7 +76,7 @@ class Visualization2 extends visualization
       outerClasses: 'vizModal controlsHelpPopover scenarioSelectorHelp'
       innerClasses: 'viz2HelpTitle'
       title: Tr.scenarioSelector.scenarioSelectorHelpTitle[@app.language]
-      content: => Tr.scenarioSelector.scenarioSelectorHelp[@app.language]
+      content: => Tr.scenarioSelector.scenarioSelectorHelp[@config.dataset][@app.language]
       attachmentSelector: '.scenarioSelectorGroup'
       analyticsEvent: 'Viz2 scenario help'
 

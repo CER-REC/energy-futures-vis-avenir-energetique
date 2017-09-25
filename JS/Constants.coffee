@@ -78,7 +78,7 @@ module.exports =
     'Constrained ': 'constrained'
     'HCP': 'hcp'
     'Technology': 'technology'
-    'HTC': 'htc'
+    'HTC': 'technology'
 
   datasets: [
     'jan2016'
@@ -130,19 +130,18 @@ module.exports =
     oct2017:
       scenarios: [
         'reference'
-        'htc'
         'hcp'
         'technology'
       ]
       scenariosForIngestion:
-        energyDemand: ['reference', 'technology']
+        energyDemand: ['reference', 'technology', 'hcp']
         electricityGeneration: ['reference', 'technology', 'hcp']
-        oilProduction: ['reference', 'htc', 'hcp']
+        oilProduction: ['reference', 'technology', 'hcp']
         gasProduction: ['reference', 'technology', 'hcp'] 
       scenariosPerSelection:
-        energyDemand: ['reference', 'technology']
+        energyDemand: ['reference', 'technology', 'hcp']
         electricityGeneration: ['reference', 'technology', 'hcp']
-        oilProduction: ['reference', 'htc', 'hcp']
+        oilProduction: ['reference', 'technology', 'hcp']
         gasProduction: ['reference', 'technology', 'hcp']
 
   # The order in which the scenarios are drawn, in viz4.
@@ -152,7 +151,7 @@ module.exports =
   # But, there are some configurations where this ordering does not work. And since lines
   # in a line graph can and do cross each other, some configurations have no possible
   # ordering that can work.
-  scenarioDrawingOrder: ['high', 'highLng', 'reference', 'noLng', 'constrained', 'low', 'technology', 'htc', 'hcp']
+  scenarioDrawingOrder: ['high', 'highLng', 'reference', 'noLng', 'constrained', 'low', 'technology', 'hcp']
 
 
   years: [

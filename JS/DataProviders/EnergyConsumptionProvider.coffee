@@ -53,7 +53,6 @@ class EnergyConsumptionProvider
       highLng: []
       noLng: []
       constrained: []
-      htc: []
       hcp: []
       technology: []
 

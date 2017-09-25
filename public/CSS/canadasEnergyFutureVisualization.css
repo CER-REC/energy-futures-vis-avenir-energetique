@@ -898,14 +898,6 @@ div.chartTooltip:after {
   background-color: #0C2C84;
   color: white;
 }
-#canadasEnergyFutureVisualization .vizButton.htc {
-  color: #0C2C84;
-  border-color: #0C2C84;
-}
-#canadasEnergyFutureVisualization .vizButton.htc.selected {
-  background-color: #0C2C84;
-  color: white;
-}
 #canadasEnergyFutureVisualization .vizButton.hcp {
   color: #7FCDBB;
   border-color: #7FCDBB;
