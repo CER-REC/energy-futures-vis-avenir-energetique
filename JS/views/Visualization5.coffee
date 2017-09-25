@@ -514,6 +514,7 @@ class Visualization5
     @addSectors()
     @renderDatasetSelector()
     @renderScenariosSelector()
+    @renderLegend()
 
     if !@leftProvinceMenu
       @leftProvinceMenu = @buildLeftProvinceMenu()
@@ -772,8 +773,6 @@ class Visualization5
 
         @app.datasetRequester.updateAndRequestIfRequired newConfig, update
 
-
-
     scenariosSelectors.html (d) -> """
       <button class='#{d.singleSelectClass}' type='button' title='#{d.title}'>
         <span aria-label='#{d.ariaLabel}'>#{d.label}</span>
@@ -783,6 +782,26 @@ class Visualization5
     scenariosSelectors.exit()
       .on 'click', null
       .remove()
+
+  renderLegend: ->
+    legendSelector = @d3document
+      .select('#legendSelector')
+      .selectAll('.legendLabel')
+      .data CommonControls.legendData(@app)
+
+    legendSelector.enter()
+      .append('div')
+      .attr
+        class: 'legendLabel'
+
+    legendSelector.html (d) -> """
+      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink='http://www.w3.org/1999/xlink' width='#{Constants.viz5LegendIconSize}' height='#{Constants.viz5LegendIconSize}'>
+        <image xlink:href=#{d.image} width='#{Constants.viz5LegendIconSize}' height='#{Constants.viz5LegendIconSize}' aria-label='#{d.title}'>
+          <title>#{d.title}</title>
+        </image>
+      </svg>
+      <span aria-label='#{d.ariaLabel}' class="legendTitle" style="color:#{d.colour}">#{d.title}</span>
+    """
 
   svgResize: ->
     @d3document.select '#viz5SliderSVG'

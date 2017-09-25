@@ -1001,6 +1001,57 @@ module.exports =
         fr:
           'TOUTES LES SOURCES'
 
+  legendSources:
+    crudeOil:
+      en:
+        'CRUDE OIL'
+      fr:
+        'PÉTROLE BRUT'
+    oilProducts:
+      en:
+        'OIL PRODUCTS'
+      fr:
+        'PRODUITS PÉTROLIERS'
+    naturalGas:
+      en:
+        'NATURAL GAS'
+      fr:
+        'GAZ NATUREL'
+    coal:
+      en:
+        'COAL'
+      fr:
+        'CHARBON'
+    nuclear:
+      en:
+        'NUCLEAR'
+      fr:
+        'ÉNERGIE NUCLÉAIRE'
+    bio:
+      en:
+        'BIOMASS AND BIOFUELS'
+      fr:
+        'BIOMASSE ET BIOCARBURANTS'
+    electricity:
+      en:
+        'ELECTRICITY'
+      fr:
+        'ÉLECTRICITÉ'
+    renewables:
+      en:
+        'RENEWABLES'
+      fr:
+        '<TODO>'
+    hydro:
+      en:
+        'HYDRO'
+      fr:
+        'HYDROÉLECTRICITÉ'
+    total:
+      en:
+        'ALL SOURCES'
+      fr:
+        'TOUTES LES SOURCES'
 
   csvData:
     province:

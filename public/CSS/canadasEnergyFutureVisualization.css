@@ -41,6 +41,15 @@ div.chartTooltip:after {
   content: "\00a0 \00a0 ";
 }
 
+#canadasEnergyFutureVisualization span.legendTitle {
+  position: absolute; 
+  width: 120px; 
+  margin-top:4px; 
+  margin-left:10px; 
+  font-family: Avenir Next Demi Condensed, Arial Bold, Arial, Verdana, sans-serif;
+  font-size: 14px;  
+}
+
 #rightProvinceMenuSVG {
   /* TODO: This is not a great solution, vertical alignment may drift on resize */
   z-index: 10;
@@ -788,7 +797,8 @@ div.chartTooltip:after {
 #canadasEnergyFutureVisualization #provincesSelector,
 #canadasEnergyFutureVisualization #leftProvincesSelector,
 #canadasEnergyFutureVisualization #rightProvincesSelector,
-#canadasEnergyFutureVisualization #powerSourceSelector {
+#canadasEnergyFutureVisualization #powerSourceSelector
+#canadasEnergyFutureVisualization #legendGroup {
   position: relative;
 }
 

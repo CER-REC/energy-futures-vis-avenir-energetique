@@ -376,6 +376,7 @@ module.exports =
   baseYearTimelineMargin: 45
   sliderLabelHeight: 28
   viz5timelineDuration: 500
+  viz5LegendIconSize: 25
 
   comparisonSliderWidth: 70
   baseSliderWidth: 80
