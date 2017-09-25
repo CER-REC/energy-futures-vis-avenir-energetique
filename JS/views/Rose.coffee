@@ -142,6 +142,7 @@ class Rose
         class: 'roseCentreCircle'
         r: Constants.roseCentreCircleRadius
         fill: '#333'
+        stroke: '#fff'
 
     # Render the maple leaf instead of the text
     # label for the Canada rose
