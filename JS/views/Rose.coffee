@@ -113,7 +113,7 @@ class Rose
         class: 'roseOuterCircle'
         r: Constants.roseOuterCircleRadius
         stroke: '#ccc'
-        'stroke-width': 1
+        'stroke-width': 0.5
         # NB: The fill on the outer circle interacts with the click handler, to make
         # the whole rose clickable.
         fill: 'white'
@@ -142,18 +142,55 @@ class Rose
         class: 'roseCentreCircle'
         r: Constants.roseCentreCircleRadius
         fill: '#333'
+        stroke: '#fff'
 
-    # Centre label
-    @innerContainer.append 'text'
-      .attr
-        class: 'roseCentreLabel'
-        fill: 'white'
-        transform: 'translate(0, 4.5)'
-        'text-anchor': 'middle'
-      .style
-        'font-size': '13px'
-      .text =>
-        @options.data[0].province
+    # Render the maple leaf instead of the text
+    # label for the Canada rose
+    if @options.data[0].province == 'Canada'
+      @innerContainer.append 'image'
+        .attr
+          class: 'pointerCursor'
+          id: 'mapleLeafSVG'
+          'xlink:href': 'IMG/mapleLeaf.svg'
+          x: "-#{Constants.roseCentreCircleRadius}px"
+          y: "-#{Constants.roseCentreCircleRadius}px"
+          width: Constants.roseCentreCircleRadius * 2
+          height: Constants.roseCentreCircleRadius * 2
+
+      # Centre label
+      @innerContainer.append 'text'
+        .attr
+          class: 'roseCentreLabel hidden'
+          fill: 'white'
+          transform: 'translate(0, 4.5)'
+          'text-anchor': 'middle'
+        .style
+          'font-size': '13px'
+        .text =>
+          @options.data[0].province
+
+    else 
+      # Centre label
+      @innerContainer.append 'text'
+        .attr
+          class: 'roseCentreLabel'
+          fill: 'white'
+          transform: 'translate(0, 4.5)'
+          'text-anchor': 'middle'
+        .style
+          'font-size': '13px'
+        .text =>
+          @options.data[0].province
+
+      @innerContainer.append 'image'
+        .attr
+          class: 'hidden'
+          id: 'mapleLeafSVG'
+          'xlink:href': 'IMG/mapleLeaf.svg'
+          x: "-#{Constants.roseCentreCircleRadius}px"
+          y: "-#{Constants.roseCentreCircleRadius}px"
+          width: Constants.roseCentreCircleRadius * 2
+          height: Constants.roseCentreCircleRadius * 2
 
     if @options.isFirstRun and @options.showAllCanadaAnimationOnFirstRun
       switch Platform.name
@@ -211,7 +248,7 @@ class Rose
         class: 'roseOuterCircle'
         r: Constants.roseOuterCircleRadius
         stroke: '#ccc'
-        'stroke-width': 1
+        'stroke-width': 0.5
         fill: 'none'
     @animateElement circleElement
 
@@ -240,7 +277,7 @@ class Rose
           .attr
             class: 'roseTickMark'
             stroke: '#ccc'
-            'stroke-width': 1
+            'stroke-width': 0.5
             d: path.toString()
             fill: 'none'
         @animateElement pathElement
@@ -264,7 +301,7 @@ class Rose
         class: 'roseBaselineCircle'
         r: Constants.roseBaselineCircleRadius
         stroke: '#333'
-        'stroke-width': 1
+        'stroke-width': 0.75
         fill: 'none'
 
     lastAnimation = @animateElement baselineCircle
@@ -343,7 +380,7 @@ class Rose
     switch Platform.name
       when 'browser'
         container = @container.transition()
-          .duration @app.animationDuration
+          .duration Constants.viz5timelineDuration
       when 'server'
         container = @container
 
@@ -358,14 +395,32 @@ class Rose
 
       @showPills() if @options.showPillsAfterTransition
 
-    @innerContainer.select '.roseCentreLabel'
-      .text =>
-        @options.data[0].province
+    # Render the maple leaf instead of the text
+    # label for the Canada rose
+    if @options.data[0].province == 'Canada'
+      @innerContainer.select '#mapleLeafSVG'
+        .attr
+          class: 'pointerCursor'
+
+      @innerContainer.select '.roseCentreLabel'
+        .attr
+          class: 'roseCentreLabel hidden'
+
+    else 
+      @innerContainer.select '.roseCentreLabel'
+        .attr
+          class: 'roseCentreLabel'
+        .text =>
+          @options.data[0].province
+
+      @innerContainer.select '#mapleLeafSVG'
+        .attr
+          class: 'hidden'
 
     @innerContainer.selectAll '.petal'
       .data @options.data
       .transition()
-      .duration @app.animationDuration
+      .duration Constants.viz5timelineDuration
       .attr
         d: (d) =>
           @petalPath d.value, Constants.viz5RoseData[d.source].startAngle
@@ -384,7 +439,15 @@ class Rose
     # distant (i.e. greater or lower radius) from the baseline depending on its data
     # value.
 
-    petalDistance = Constants.roseBaselineCircleRadius + value
+    # Cap the petals at the inner and outer circles to prevent them from extending 
+    # too much outside the rose or too much inwards that they cover the province label.
+    cappedValue = value
+    if value > 0 && value > (Constants.roseOuterCircleRadius/2 - Constants.roseThornLength)
+      cappedValue = (Constants.roseOuterCircleRadius/2 - Constants.roseThornLength)
+    else if value < 0 && value < -(Constants.roseOuterCircleRadius/2 - Constants.roseThornLength)
+      cappedValue = -(Constants.roseOuterCircleRadius/2 - Constants.roseThornLength*2)
+
+    petalDistance = Constants.roseBaselineCircleRadius + cappedValue
     if petalDistance < Constants.roseBaselineCircleRadius
       # pointed inward
       thornDistance = petalDistance - Constants.roseThornLength
@@ -497,7 +560,7 @@ class Rose
     containerOffset = Constants.roseSize / 2 * @options.scale
     @container
       .transition()
-      .duration @app.animationDuration
+      .duration Constants.viz5timelineDuration
       .attr
         transform: "translate(#{@options.position.x + containerOffset}, #{@options.position.y + containerOffset}) scale(0, 0)"
       .each 'end', =>

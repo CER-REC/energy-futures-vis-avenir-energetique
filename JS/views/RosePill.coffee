@@ -40,10 +40,12 @@ class RosePill
       @app.window.setTimeout =>
         return if @tornDown
         @rosePillBox = @d3document.select('#rosePillRoot').append 'div'
+        @rosePillBorder = @d3document.select('#rosePillRoot').append 'div'
         @update()
       , options.wait
     else
       @rosePillBox = @d3document.select('#rosePillRoot').append 'div'
+      @rosePillBorder = @d3document.select('#rosePillRoot').append 'div'
       @update()
 
 
@@ -52,9 +54,9 @@ class RosePill
     rootBounds = @document.querySelector('#rosePillRoot').getBoundingClientRect()
 
     sizes = Constants.viz5PillSizes[@options.size]
-
+    alignmentMargin = Constants.viz5PillAlignmentMargins[@options.size][@options.data.source]
     centrePoint =
-      left: @options.shadowPillBounds.left - rootBounds.left + @app.pagePadding
+      left: @options.shadowPillBounds.left - rootBounds.left + @app.pagePadding + alignmentMargin
       top: @options.shadowPillBounds.top - rootBounds.top + @app.pagePadding
 
     @left = centrePoint.left - sizes.width / 2
@@ -62,6 +64,7 @@ class RosePill
 
     # The pill always gets a border matching the source's colour
     classString = "rosePillBox pointerCursor fadein #{@options.data.source}Border #{@options.size}"
+    borderClassString = "rosePillBorder pointerCursor fadein #{@options.data.source}Border #{@options.size}"
 
     # We default the background colour and font colour to white in the CSS for
     # .rosePillBox. Depending on whether the value is positive or negative, we set either
@@ -73,6 +76,9 @@ class RosePill
       classString += " #{@options.data.source}Text"
       # A negative symbol is provided when we stringify a negative value
       changeSymbol = ''
+
+    if Math.round(@options.data.value) > -1 && Math.round(@options.data.value) < 1
+      changeSymbol = '~'
 
     switch Platform.name
       when 'browser'
@@ -87,6 +93,10 @@ class RosePill
       class: classString
       style: "top: #{@top}px; left: #{@left}px;"
     .html pillHtml
+
+    @rosePillBorder.attr
+      class: borderClassString
+      style: "top: #{@top - Constants.roseBorderOffset[@options.size]}px; left: #{@left - Constants.roseBorderOffset[@options.size]}px"
 
     @rosePillBox.on 'click', =>
       @options.clickHandler @
@@ -105,8 +115,13 @@ class RosePill
       .classed 'fadein', false
       .classed 'fadeout', true
 
+    @rosePillBorder
+      .classed 'fadein', false
+      .classed 'fadeout', true
+
     @app.window.setTimeout =>
       @rosePillBox.remove()
+      @rosePillBorder.remove()
     , Constants.viz5PillPopoverDuration
 
 

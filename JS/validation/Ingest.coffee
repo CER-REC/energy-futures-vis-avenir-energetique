@@ -1,7 +1,6 @@
 path = require 'path'
 
 ApplicationRoot = require '../../ApplicationRoot.coffee'
-require '../Polyfills.coffee'
 
 IngestEnergyConsumption = require './IngestEnergyConsumption.coffee'
 IngestOilProduction = require './IngestOilProduction.coffee'
@@ -17,10 +16,10 @@ october2017Files = ->
   [
     {
       type: 'oil'
-      dataFilename: path.join ApplicationRoot, 'devPublic/rawCSV/2017-09_CrudeOilProduction.csv'
-      processedFilename: path.join ApplicationRoot, 'public/CSV/2017-09_CrudeOilProduction.csv'
+      dataFilename: path.join ApplicationRoot, 'devPublic/rawCSV/2017-09_CrudeOilProduction_Updated.csv'
+      processedFilename: path.join ApplicationRoot, 'public/CSV/2017-09_CrudeOilProduction_Updated.csv'
       dataset: 'oct2017'
-      logFilename: path.join ApplicationRoot, 'devPublic/rawCSV/log/2017-09_CrudeOilProduction.csv_ingestion_errors.log'
+      logFilename: path.join ApplicationRoot, 'devPublic/rawCSV/log/2017-09_CrudeOilProduction_Updated.csv_ingestion_errors.log'
     }
     {
       type: 'gas'
@@ -31,10 +30,10 @@ october2017Files = ->
     }
     {
       type: 'demand'
-      dataFilename: path.join ApplicationRoot, 'devPublic/rawCSV/2017-09_EnergyDemand.csv'
-      processedFilename: path.join ApplicationRoot, 'public/CSV/2017-09_EnergyDemand.csv'
+      dataFilename: path.join ApplicationRoot, 'devPublic/rawCSV/2017-09_EnergyDemand_Updated.csv'
+      processedFilename: path.join ApplicationRoot, 'public/CSV/2017-09_EnergyDemand_Updated.csv'
       dataset: 'oct2017'
-      logFilename: path.join ApplicationRoot, 'devPublic/rawCSV/log/2017-09_EnergyDemand.csv_ingestion_errors.log'
+      logFilename: path.join ApplicationRoot, 'devPublic/rawCSV/log/2017-09_EnergyDemand_Updated.csv_ingestion_errors.log'
     }
     {
       type: 'electricity'

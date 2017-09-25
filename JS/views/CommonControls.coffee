@@ -402,23 +402,21 @@ CommonControls =
     switch config.mainSelection
       when 'energyDemand', 'electricityGeneration'
         if config.dataset == 'jan2016'
-          [reference, high, highLng, constrained, low, noLng]
+          [reference, high, low, constrained, highLng, noLng]
         else if config.dataset == 'oct2016'
           [reference, high, low]
-        else if config.dataset == 'oct2017' && config.mainSelection == 'electricityGeneration'
+        else if config.dataset == 'oct2017'
           [reference, technology, hcp]
-        else if config.dataset == 'oct2017' && config.mainSelection == 'energyDemand'
-          [reference, technology]
       when 'oilProduction'
         if config.dataset == 'jan2016'
-          [reference, high, constrained, low]
+          [reference, high, low, constrained]
         else if config.dataset == 'oct2016'
           [reference, high, low]
         else if config.dataset == 'oct2017'
           [reference, technology, hcp]
       when 'gasProduction'
         if config.dataset == 'jan2016'
-          [reference, high, highLng, low, noLng]
+          [reference, high, low, highLng, noLng]
         else if config.dataset == 'oct2016'
           [reference, high, low]
         else if config.dataset == 'oct2017'
@@ -429,10 +427,49 @@ CommonControls =
       # the scenarios for each of the datasets.
       else
         if config.dataset == 'jan2016'
-          [reference, high, highLng, constrained, low, noLng]
+          [reference, high, low, constrained, highLng, noLng]
         else if config.dataset == 'oct2016'
           [reference, high, low]
         else if config.dataset == 'oct2017'
-          [reference, technology]
+          [reference, technology, hcp]
+
+  legendData: (app) ->
+    renewables =
+      title: Tr.legendSources.renewables[app.language]
+      ariaLabel: Tr.legendSources.renewables[app.language]
+      image: 'IMG/sources/legend/solarWindGeo.svg'
+      colour: '#339947'
+
+    coal = 
+      title: Tr.legendSources.coal[app.language]
+      ariaLabel: Tr.legendSources.coal[app.language]
+      image: 'IMG/sources/legend/coal.svg'
+      colour: '#996733'
+
+    oilProducts =
+      title: Tr.legendSources.oilProducts[app.language]
+      ariaLabel: Tr.legendSources.oilProducts[app.language]
+      image: 'IMG/sources/legend/oilProducts.svg'
+      colour: '#cc6699'
+
+    electricity = 
+      title: Tr.legendSources.electricity[app.language]
+      ariaLabel: Tr.legendSources.electricity[app.language]
+      image: 'IMG/sources/legend/electricity.svg'
+      colour: '#33cccc'
+
+    naturalGas = 
+      title: Tr.legendSources.naturalGas[app.language]
+      ariaLabel: Tr.legendSources.naturalGas[app.language]
+      image: 'IMG/sources/legend/naturalGas.svg'
+      colour: '#f16739'
+
+    bio = 
+      title: Tr.legendSources.bio[app.language]
+      ariaLabel: Tr.legendSources.bio[app.language]
+      image: 'IMG/sources/legend/biomass.svg'
+      colour: '#8d68ac'
+
+    [renewables, coal, oilProducts, electricity, naturalGas, bio]
 
 module.exports = CommonControls

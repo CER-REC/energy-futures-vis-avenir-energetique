@@ -11,9 +11,10 @@ class Visualization5Configuration
     scenarios: [
       'reference'
       'technology'
+      'hcp'
     ]
-    baseYear: 2010 # bottom spinner
-    comparisonYear: 2020 # top spinner
+    baseYear: 2015 # bottom spinner
+    comparisonYear: 2040 # top spinner
     leftProvince: 'all'
     rightProvince: 'AB'
     sector: 'total'
@@ -95,13 +96,13 @@ class Visualization5Configuration
       @comparisonYear = @baseYear
 
   setLeftProvince: (province) ->
-    if Constants.provinceRadioSelectionOptions.includes province
+    if Constants.viz5leftProvinceMenuOption.includes province
       @leftProvince = province
     else
       @leftProvince = @defaultOptions.leftProvince
 
   setRightProvince: (province) ->
-    if Constants.provinces.includes province
+    if Constants.viz5rightProvinceMenuOption.includes province
       @rightProvince = province
     else
       @rightProvince = @defaultOptions.rightProvince
@@ -169,6 +170,12 @@ class Visualization5Configuration
         Tr.scenarioSelector.highLngButton[@app.language]
       when 'noLng'
         Tr.scenarioSelector.noLngButton[@app.language]
+      when 'technology'
+        Tr.scenarioSelector.technologyButton[@app.language]
+      when 'htc'
+        Tr.scenarioSelector.htcButton[@app.language]
+      when 'hcp'
+        Tr.scenarioSelector.hcpButton[@app.language]
 
     yearText = "#{Tr.imageExportText.demandIn[@app.language]} #{@comparisonYear} #{Tr.imageExportText.relativeTo[@app.language]} #{@baseYear}"
 
