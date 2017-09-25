@@ -534,6 +534,12 @@ module.exports =
       fr: 'AVENIR ÉNERGÉTIQUE'
     datasetSelectorHelp:
       en: """
+        <h1> CANADA’S ENERGY FUTURE 2017 </h1>
+        <h2> October 2017 </h2>
+        <p>
+          EF 2017 explores how possible energy futures might unfold for Canadians over the long term. It considers three scenarios that explore how future climate policy and technological development might impact Canada’s energy system. The Reference Case is based on a current economic outlook, a moderate view of energy prices, and climate and energy policies announced at the time of analysis. The Higher Carbon Price Case considers the impact on the Canadian energy system of higher carbon pricing than in the Reference Case in the longer term. The Technology Case considers, in addition to higher carbon prices, the impact on the Canadian energy system of greater adoption of select emerging production and consumption energy technologies.
+          <br><a href='http://www.neb-one.gc.ca/nrg/ntgrtd/ftr/2016/index-eng.html' target='_blank'>View the report</a>
+        </p>
         <h1> CANADA’S ENERGY FUTURE 2016: UPDATE </h1>
         <h2> October 2016 </h2>
         <p>
@@ -549,6 +555,12 @@ module.exports =
         </p>
       """
       fr: """
+        <h1> AVENIR ÉNERGÉTIQUE DU CANADA EN 2017 </h1>
+        <h2> Octobre 2017 </h2>
+        <p>
+          AE 2017 examine comment divers scénarios possibles d’avenir énergétique pourraient se dérouler à long terme pour les Canadiens. Le rapport porte sur trois scénarios montrant comment les politiques climatiques futures et le développement technologique pourraient influer sur la filière énergétique du Canada. Le scénario de référence s’appuie sur les perspectives économiques actuelles, une vision modérée des prix de l’énergie et les politiques énergétiques ou climatiques déjà annoncées au moment de l’analyse. Le scénario de tarification du carbone élevée rend compte des répercussions à long terme sur la filière énergétique canadienne de prix plus élevés pour le carbone que dans le scénario de référence. Le scénario des avancées technologiques tient non seulement compte d’une tarification du carbone élevée sur la filière énergétique canadienne mais également des incidences qu’aurait l’adoption plus massive de certaines technologies émergentes liées à la production ou à la consommation d’énergie.
+          <br><a href='http://www.neb-one.gc.ca/nrg/ntgrtd/ftr/2016/index-fra.html' target='_blank'>Voir le rapport</a>
+        </p>
         <h1> AVENIR ÉNERGÉTIQUE DU CANADA EN 2016 – MISE À JOUR </h1>
         <h2> Octobre 2016 </h2>
         <p>
