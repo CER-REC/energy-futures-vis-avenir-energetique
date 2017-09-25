@@ -323,6 +323,10 @@ module.exports =
   roseFullScale: 1
   roseSlightlyBiggerScale: 1.1
 
+  roseBorderOffset:
+    'small': 2 # in px
+    'large': 2 # in px
+
   serverSideGraphWidth: 1065 # px
   viz4ServerSideGraphWidth: 995 # 1065 - 70 extra pixels of width for viz4's wider legend
 
@@ -369,9 +373,10 @@ module.exports =
   timelineMargin: 25
   allCanadaTimelineMargin: 30
   viz5timelineMargin: 45
-  baseYearTimelineMargin: 80
+  baseYearTimelineMargin: 45
   sliderLabelHeight: 28
   viz5timelineDuration: 500
+  viz5LegendIconSize: 25
 
   comparisonSliderWidth: 70
   baseSliderWidth: 80
@@ -398,10 +403,13 @@ module.exports =
 
   # Rose dimensions are normalized to a 112x112 canvas / group, which is re-scaled in the
   # visualization.
-  roseSize: 112 # px
-  roseOuterCircleRadius: 56 # px
-  roseBaselineCircleRadius: 33 # px
-  roseCentreCircleRadius: 10 # px
+  roseSize: 118 # px
+  roseOuterCircleRadius: 53 # px
+  roseBaselineCircleRadius: 31 # px
+  roseCentreCircleRadius: 12 # px
+
+  twoRoseTopMargin: 100
+  viz5GraphSVGHeight: 538
 
   # All in radians
   roseAngles: [
@@ -434,47 +442,47 @@ module.exports =
   # Indexed from the top left
   rosePositions:
     YT:
-      row: 0
+      row: 0.25
       column: 0
     NT:
-      row: 0
+      row: 0.25
       column: 1
     NU:
-      row: 0
+      row: 0.25
       column: 2
     Canada: 
-      row: 0
+      row: 0.25
       column: 3.5
     NL:
-      row: 0
+      row: 0.25
       column: 5
     BC:
-      row: 1
+      row: 1.25
       column: 0
     AB:
-      row: 1
+      row: 1.25
       column: 1
     SK:
-      row: 1
-      column: 2
+      row: 1.25
+      column:2
     MB:
-      row: 1
+      row: 1.25
       column: 3
     ON:
-      row: 1
+      row: 1.25
       column: 4
     QC:
-      row: 1
+      row: 1.25
       column: 5
 
     NB:
-      row: 2
+      row: 2.25
       column: 3
     PE:
-      row: 2
+      row: 2.25
       column: 4
     NS:
-      row: 2
+      row: 2.25
       column: 5
 
   roseStartingPositionOffsets:
@@ -538,7 +546,7 @@ module.exports =
     NS: 960   #
 
   allCanadaRoseMargin: 11 # px
-  comparisonRoseMargin: 135 # px
+  comparisonRoseMargin: 65 # px
 
   viz5SourcesInOrder: [
     'electricity'
@@ -596,7 +604,7 @@ module.exports =
   # NB: This value should be kept in sync with the padding style for #mainPanel > div
 
   pillPopoverWidth: 220 # px
-  pillPopoverHeight: 150 # px
+  pillPopoverHeight: 125 # px
 
 
 
@@ -614,13 +622,28 @@ module.exports =
   # Keep these sizes consistent with the dimensions in pills.css
   viz5PillSizes: # all in px
     large:
-      width: 70
-      height: 27
+      width: 77
+      height: 29.7
     small:
-      width: 50
-      height: 20
+      width: 52.5
+      height: 21
 
-  
+  viz5PillAlignmentMargins:
+    large:
+      coal: 0
+      naturalGas: 0
+      bio: 0
+      solarWindGeothermal: 0
+      electricity: 0
+      oilProducts: 0
+    small:
+      coal: 0
+      naturalGas: 0
+      bio: -10
+      solarWindGeothermal: -10
+      electricity: 10
+      oilProducts: 10
+
   # To match duration of pills animations in CSS.
   viz5PillPopoverDuration: 300 # ms
 

@@ -13,8 +13,8 @@ class Visualization5Configuration
       'technology'
       'hcp'
     ]
-    baseYear: 2010 # bottom spinner
-    comparisonYear: 2020 # top spinner
+    baseYear: 2015 # bottom spinner
+    comparisonYear: 2040 # top spinner
     leftProvince: 'all'
     rightProvince: 'AB'
     sector: 'total'
