@@ -336,27 +336,27 @@ div.chartTooltip:after {
 
 
 #canadasEnergyFutureVisualization .viz1Img {
-  background-image: url("../IMG/landingPageThumb/october-2017/Explore_Regions.png");
+  background-image: url("../IMG/landingPageThumb/old/Explore_Regions.png");
   background-size: cover;
   background-position:50% 50%;  /* Sets reference point to scale from */
 }
 #canadasEnergyFutureVisualization .viz2Img {
-  background-image: url("../IMG/landingPageThumb/october-2017/Explore_Sectors.png");
+  background-image: url("../IMG/landingPageThumb/old/Explore_Sectors.png");
   background-size: cover;
   background-position:50% 50%;  /* Sets reference point to scale from */
 }
 #canadasEnergyFutureVisualization .viz3Img {
-  background-image: url("../IMG/landingPageThumb/october-2017/Explore_Electricity.png");
+  background-image: url("../IMG/landingPageThumb/old/Explore_Electricity.png");
   background-size: cover;
   background-position:50% 50%;  /* Sets reference point to scale from */
 }
 #canadasEnergyFutureVisualization .viz4Img {
-  background-image: url("../IMG/landingPageThumb/october-2017/Explore_Scenarios.png");
+  background-image: url("../IMG/landingPageThumb/old/Explore_Scenarios.png");
   background-size: cover;
   background-position:50% 50%;  /* Sets reference point to scale from */
 }
 #canadasEnergyFutureVisualization .viz5Img {
-  background-image: url("../IMG/landingPageThumb/october-2017/Changing_Demand.png");
+  background-image: url("../IMG/landingPageThumb/old/Changing_Demand.png");
   background-size: cover;
   background-position:50% 50%;  /* Sets reference point to scale from */
 }
