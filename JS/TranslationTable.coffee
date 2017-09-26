@@ -151,7 +151,7 @@ module.exports =
           <br>
           Lead Technical: Vizworx
           <br>
-          Technical: Stephanie Sachrajda, Patrick King, Alaa Azazi, Abhishek Sharma, Ben Cousins and Claudio Esperança
+          Technical: Stephanie Sachrajda, Patrick King, Alaa Azazi, Charlie Cheung, Abhishek Sharma, Ben Cousins and Claudio Esperança
         </p>
         <h2>THIRD PARTY LICENSES</h2>
         <p>
@@ -191,7 +191,7 @@ module.exports =
           <br>
           Chef technique à Vizworx
           <br>
-          Aspect technique : Stephanie Sachrajda, Patrick King, Alaa Azazi, Abhishek Sharma, Ben Cousins et Claudio Esperança
+          Aspect technique : Stephanie Sachrajda, Patrick King, Alaa Azazi, Charlie Cheung, Abhishek Sharma, Ben Cousins et Claudio Esperança
         </p>
         <h2>LICENCES TIERCES</h2>
         <p>
