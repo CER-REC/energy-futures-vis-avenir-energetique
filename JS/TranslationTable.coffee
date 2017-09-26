@@ -288,7 +288,7 @@ module.exports =
         en: 'Technology: The Technology Case considers higher carbon prices than the Reference Case and greater adoption of select emerging production and consumption energy technologies.'
         fr: 'Avancées technologiques: Le scénario des avancées technologiques suppose des prix du carbone plus élevés que ceux du scénario de référence et l’adoption plus massive de certaines technologies énergétiques émergentes liées à la production ou à la consommation.'
       hcpButton:
-        en: 'Higher Carbon Price (Higher C02 Price): The Higher Carbon Price Case explores the impact of higher carbon pricing than in the Reference Case in the longer term.'
+        en: 'Higher Carbon Price (Higher CO2 Price): The Higher Carbon Price Case explores the impact of higher carbon pricing than in the Reference Case in the longer term.'
         fr: 'Tarification du carbone élevée : Le scénario de tarification du carbone élevée évalue les répercussions à long terme de prix plus élevés pour le carbone que ce qui est prévu dans le scénario de référence.'
 
     viewBySelector:
@@ -747,7 +747,7 @@ module.exports =
       en: 'TECHNOLOGY'
       fr: 'AVANCÉES TECHNOLOGIQUES'
     hcpButton:
-      en: 'HIGH C02 PRICE'
+      en: 'HIGH CO2 PRICE'
       fr: 'TARIFICATION DU CARBONE ÉLEVÉE'
     scenarioSelectorHelpTitle:
       en: 'SCENARIOS'
@@ -895,7 +895,7 @@ module.exports =
               </p>
           </div>
           <div class="columnRight">
-            <h2> HIGH C02 PRICE </h2>
+            <h2> HIGH CO2 PRICE </h2>
               <p>
                 The Higher Carbon Price Case explores the impact of higher carbon pricing than in the Reference Case in the longer term.
               </p>
@@ -946,7 +946,7 @@ module.exports =
         en: 'TECHNOLOGY'
         fr: 'AVANCÉES TECHNOLOGIQUES'
       hcp:
-        en: 'HIGH C02 PRICE'
+        en: 'HIGH CO2 PRICE'
         fr: 'TARIFICATION DU CARBONE ÉLEVÉE'
 
 
@@ -1884,7 +1884,7 @@ module.exports =
         en: 'Technology selected'
         fr: 'Sélection - Avancées technologiques'
       hcpSelected:
-        en: 'High C02 Price selected'
+        en: 'High CO2 Price selected'
         fr: 'Sélection - Tarification du carbone élevée'
 
       referenceUnselected:
@@ -1909,7 +1909,7 @@ module.exports =
         en: 'Technology unselected'
         fr: 'Désélection - Avancées technologiques'
       hcpUnselected:
-        en: 'High C02 Price unselected'
+        en: 'High CO2 Price unselected'
         fr: 'Désélection - Tarification du carbone élevée'
 
     viewBy:
