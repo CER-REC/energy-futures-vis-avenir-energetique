@@ -76,7 +76,7 @@ class Visualization3 extends visualization
       outerClasses: 'vizModal controlsHelpPopover scenarioSelectorHelp'
       innerClasses: 'viz3HelpTitle'
       title: Tr.scenarioSelector.scenarioSelectorHelpTitle[@app.language]
-      content: => Tr.scenarioSelector.scenarioSelectorHelp[@app.language]
+      content: => Tr.scenarioSelector.scenarioSelectorHelp[@config.dataset][@app.language]
       attachmentSelector: '.scenarioSelectorGroup'
       analyticsEvent: 'Viz3 scenario help'
 

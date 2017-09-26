@@ -70,7 +70,7 @@ class Visualization4
       outerClasses: 'vizModal controlsHelpPopover scenarioSelectorHelp'
       innerClasses: 'viz4HelpTitle'
       title: Tr.scenarioSelector.scenarioSelectorHelpTitle[@app.language]
-      content: => Tr.scenarioSelector.scenarioSelectorHelp[@app.language]
+      content: => Tr.scenarioSelector.scenarioSelectorHelp[@config.dataset][@app.language]
       attachmentSelector: '.scenarioSelectorGroup'
       analyticsElement: 'Viz4 scenario help'
 

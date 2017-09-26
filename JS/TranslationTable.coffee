@@ -208,8 +208,8 @@ module.exports =
         en: 'CANADA ENERGY FUTURE 2016: UPDATE (October 2016). Presents reference, high, and low price cases. In the Reference Case, the crude oil price assumption is revised lower to US$90 per barrel by 2040. In addition to policies which were included in the January edition, such as Quebec’s cap and trade system and the carbon tax in B.C., most of the Alberta Climate Leadership Plan and the Ontario cap and trade program have been integrated into the forecast.'
         fr: 'Présente des scénarios de prix, bas et élevés, ainsi qu’un scénario de référence. Dans ce dernier cas, l’hypothèse de prix du pétrole brut a été revue à la baisse, à 90 $ US le baril en 2040. En plus des politiques déjà incluses précédemment, notamment le système de plafonnement et d’échange de droits d’émission au Québec et la taxe sur le carbone en Colombie-Britannique, les nouvelles prévisions tiennent compte, dans sa plus grande partie, du plan de leadership de l’Alberta en matière de changement climatique de même que du programme de plafonnement et d’échange de droits de l’Ontario.'
       oct2017:
-        en: 'CANADA ENERGY FUTURE 2017 (October 2017). <TODO>'
-        fr: '<TODO>'
+        en: 'October 2017. EF 2017 explores how possible energy futures might unfold for Canadians over the long term. It considers three scenarios that explore how future climate policy and technological development might impact Canada’s energy system. The Reference Case is based on a current economic outlook, a moderate view of energy prices, and climate and energy policies announced at the time of analysis. The Higher Carbon Price Case considers the impact on the Canadian energy system of higher carbon pricing than in the Reference Case in the longer term. The Technology Case considers, in addition to higher carbon prices, the impact on the Canadian energy system of greater adoption of select emerging production and consumption energy technologies.'
+        fr: 'Octobre 2017. AE 2017 examine comment divers scénarios possibles d’avenir énergétique pourraient se dérouler à long terme pour les Canadiens. Le rapport porte sur trois scénarios montrant comment les politiques climatiques futures et le développement technologique pourraient influer sur la filière énergétique du Canada. Le scénario de référence s’appuie sur les perspectives économiques actuelles, une vision modérée des prix de l’énergie et les politiques énergétiques ou climatiques déjà annoncées au moment de l’analyse. Le scénario de tarification du carbone élevée rend compte des répercussions à long terme sur la filière énergétique canadienne de prix plus élevés pour le carbone que dans le scénario de référence. Le scénario des avancées technologiques tient non seulement compte d’une tarification du carbone élevée sur la filière énergétique canadienne mais également des incidences qu’aurait l’adoption plus massive de certaines technologies émergentes liées à la production ou à la consommation d’énergie.'
 
     mainSelector:
       totalDemandButton:
@@ -267,8 +267,8 @@ module.exports =
 
     scenarioSelector:
       referenceButton:
-        en: 'The Reference Case provides a baseline outlook, based on a moderate view of future energy prices and economic growth.'
-        fr: 'Le scénario de référence offre une perspective de base et mise sur une projection modérée des prix de l’énergie et de la croissance de l’économie dans les années à venir.'
+        en: 'Reference: The Reference Case provides a baseline outlook with a moderate view of energy prices and economic growth, and climate and energy policies announced at the time of analysis.'
+        fr: 'Référence: Le scénario de référence offre une perspective de base et mise sur une projection modérée des prix de l’énergie et de la croissance de l’économie dans les années à venir.'
       lowPriceButton:
         en: 'A price case with lower oil and natural gas prices captures some of the uncertainty related to future energy prices.'
         fr: 'Un second scénario lié aux prix table sur des prix du pétrole et du gaz naturel moins élevés et intègre certaines incertitudes concernant les prix futurs de l’énergie.'
@@ -285,11 +285,11 @@ module.exports =
         en: 'High liquefied natural gas (LNG) exports.'
         fr: 'Exports de gaz naturel liquéfié (GNL) élevés'
       technologyButton:
-        en: '<TODO>'
-        fr: '<TODO>'
+        en: 'Technology: The Technology Case considers higher carbon prices than the Reference Case and greater adoption of select emerging production and consumption energy technologies.'
+        fr: 'Avancées technologiques: Le scénario des avancées technologiques suppose des prix du carbone plus élevés que ceux du scénario de référence et l’adoption plus massive de certaines technologies énergétiques émergentes liées à la production ou à la consommation.'
       hcpButton:
-        en: 'HCP'
-        fr: '<TODO>'
+        en: 'Higher Carbon Price (Higher CO2 Price): The Higher Carbon Price Case explores the impact of higher carbon pricing than in the Reference Case in the longer term.'
+        fr: 'Tarification du carbone élevée : Le scénario de tarification du carbone élevée évalue les répercussions à long terme de prix plus élevés pour le carbone que ce qui est prévu dans le scénario de référence.'
 
     viewBySelector:
       viewByProvinceButton:
@@ -534,6 +534,12 @@ module.exports =
       fr: 'AVENIR ÉNERGÉTIQUE'
     datasetSelectorHelp:
       en: """
+        <h1> CANADA’S ENERGY FUTURE 2017 </h1>
+        <h2> October 2017 </h2>
+        <p>
+          EF 2017 explores how possible energy futures might unfold for Canadians over the long term. It considers three scenarios that explore how future climate policy and technological development might impact Canada’s energy system. The Reference Case is based on a current economic outlook, a moderate view of energy prices, and climate and energy policies announced at the time of analysis. The Higher Carbon Price Case considers the impact on the Canadian energy system of higher carbon pricing than in the Reference Case in the longer term. The Technology Case considers, in addition to higher carbon prices, the impact on the Canadian energy system of greater adoption of select emerging production and consumption energy technologies.
+          <br><a href='http://www.neb-one.gc.ca/nrg/ntgrtd/ftr/2016/index-eng.html' target='_blank'>View the report</a>
+        </p>
         <h1> CANADA’S ENERGY FUTURE 2016: UPDATE </h1>
         <h2> October 2016 </h2>
         <p>
@@ -549,6 +555,12 @@ module.exports =
         </p>
       """
       fr: """
+        <h1> AVENIR ÉNERGÉTIQUE DU CANADA EN 2017 </h1>
+        <h2> Octobre 2017 </h2>
+        <p>
+          AE 2017 examine comment divers scénarios possibles d’avenir énergétique pourraient se dérouler à long terme pour les Canadiens. Le rapport porte sur trois scénarios montrant comment les politiques climatiques futures et le développement technologique pourraient influer sur la filière énergétique du Canada. Le scénario de référence s’appuie sur les perspectives économiques actuelles, une vision modérée des prix de l’énergie et les politiques énergétiques ou climatiques déjà annoncées au moment de l’analyse. Le scénario de tarification du carbone élevée rend compte des répercussions à long terme sur la filière énergétique canadienne de prix plus élevés pour le carbone que dans le scénario de référence. Le scénario des avancées technologiques tient non seulement compte d’une tarification du carbone élevée sur la filière énergétique canadienne mais également des incidences qu’aurait l’adoption plus massive de certaines technologies émergentes liées à la production ou à la consommation d’énergie.
+          <br><a href='http://www.neb-one.gc.ca/nrg/ntgrtd/ftr/2016/index-fra.html' target='_blank'>Voir le rapport</a>
+        </p>
         <h1> AVENIR ÉNERGÉTIQUE DU CANADA EN 2016 – MISE À JOUR </h1>
         <h2> Octobre 2016 </h2>
         <p>
@@ -733,78 +745,183 @@ module.exports =
       fr: 'GNL ÉLEVÉ'
     technologyButton:
       en: 'TECHNOLOGY'
-      fr: '<TODO>'
+      fr: 'AVANCÉES TECHNOLOGIQUES'
     hcpButton:
-      en: 'HCP'
-      fr: '<TODO>'
+      en: 'HIGH CO2 PRICE'
+      fr: 'TARIFICATION DU CARBONE ÉLEVÉE'
     scenarioSelectorHelpTitle:
       en: 'SCENARIOS'
       fr: 'SCÉNARIOS'
 
 
     scenarioSelectorHelp:
-      en: """
-        <p>
-          The projections in EF 2016 include a Reference Case, two price sensitivity cases and three supplemental sensitivity cases:
-        </p>
-        <div class="columnLeft">
-          <h2> REFERENCE </h2>
-            <p>
-              The Reference Case provides a baseline outlook, based on a moderate view of future energy prices and economic growth.
-            </p>
-          <h2> HIGH PRICE </h2>
-            <p>
-              A price case with higher oil and natural gas prices captures some of the uncertainty related to future energy prices.
-            </p>
-          <h2> LOW PRICE </h2>
-            <p>
-              A price case with lower oil and natural gas prices captures some of the uncertainty related to future energy prices.
-            </p>
-        </div>
-        <div class="columnRight">
-          <h2> CONSTRAINED </h2>
-            <p>
-              The EF 2016 report considers a case where no new major oil pipelines are built over the projection period to address uncertainties related to future oil export infrastructure.
-            </p>
-          <h2> LNG </h2>
-            <p>
-              The uncertainty related to eventual volumes of liquefied natural gas (LNG) exports is explored in two additional cases.
-            </p>
-        </div>
-      """
-      fr: """
-        <p>
-          Le rapport AE 2016 renferme une projection de l’évolution de l’offre et de la demande énergétique future au Canada. Pour prendre en compte les multiples incertitudes et facteurs pouvant influer sur cette évolution, le rapport AE 2016 explore six scénarios prévisionnels bâtis à partir de diverses hypothèses. Cette analyse démontre les incidences des divers facteurs sur l’évolution de la filière énergétique, ainsi que les répercussions possibles des incertitudes actuelles sur les résultats à long terme.
-        </p>
-        <p>
-          Les projections du rapport AE comprennent un scénario de référence, cinq scénarios de sensibilité, dont deux liés au prix :
-        </p>
-        <div class="columnLeft">
-          <h2> RÉFÉRENCE </h2>
-            <p>
-              Le scénario de référence offre une perspective de base et mise sur une projection modérée des prix de l’énergie et de la croissance de l’économie dans les années à venir.
-            </p>
-          <h2> PRIX ÉLEVÉ </h2>
-            <p>
-              Un premier scénario lié aux prix prévoit des prix du pétrole et du gaz naturel plus élevés et prend en compte certaines incertitudes qui ont trait aux prix futurs de l’énergie.
-            </p>
-          <h2> PRIX BAS </h2>
-            <p>
-              Un second scénario lié aux prix table sur des prix du pétrole et du gaz naturel moins élevés et intègre certaines incertitudes concernant les prix futurs de l’énergie.
-            </p>
-        </div>
-        <div class="columnRight">
-          <h2> CAPACITÉ LIMITÉE </h2>
-            <p>
-              Le rapport AE 2016 prend aussi en considération des incertitudes relatives à l’infrastructure d’exportation du pétrole et propose un scénario dans lequel aucun pipeline d’envergure n’est construit durant la période de projection.
-            </p>
-          <h2> GNL </h2>
-            <p>
-              Deux autres scénarios explorent les incertitudes entourant les éventuelles exportations de gaz naturel liquéfié (GNL).
-            </p>
-        </div>
-      """
-
+      jan2016:
+        en: """
+          <p>
+            The projections in EF 2016 include a Reference Case, two price sensitivity cases and three supplemental sensitivity cases:
+          </p>
+          <div class="columnLeft">
+            <h2> REFERENCE </h2>
+              <p>
+                The Reference Case provides a baseline outlook, based on a moderate view of future energy prices and economic growth.
+              </p>
+            <h2> HIGH PRICE </h2>
+              <p>
+                A price case with higher oil and natural gas prices captures some of the uncertainty related to future energy prices.
+              </p>
+            <h2> LOW PRICE </h2>
+              <p>
+                A price case with lower oil and natural gas prices captures some of the uncertainty related to future energy prices.
+              </p>
+          </div>
+          <div class="columnRight">
+            <h2> CONSTRAINED </h2>
+              <p>
+                The EF 2016 report considers a case where no new major oil pipelines are built over the projection period to address uncertainties related to future oil export infrastructure.
+              </p>
+            <h2> LNG </h2>
+              <p>
+                The uncertainty related to eventual volumes of liquefied natural gas (LNG) exports is explored in two additional cases.
+              </p>
+          </div>
+        """
+        fr: """
+          <p>
+            Le rapport AE 2016 renferme une projection de l’évolution de l’offre et de la demande énergétique future au Canada. Pour prendre en compte les multiples incertitudes et facteurs pouvant influer sur cette évolution, le rapport AE 2016 explore six scénarios prévisionnels bâtis à partir de diverses hypothèses. Cette analyse démontre les incidences des divers facteurs sur l’évolution de la filière énergétique, ainsi que les répercussions possibles des incertitudes actuelles sur les résultats à long terme.
+          </p>
+          <p>
+            Les projections du rapport AE comprennent un scénario de référence, cinq scénarios de sensibilité, dont deux liés au prix :
+          </p>
+          <div class="columnLeft">
+            <h2> RÉFÉRENCE </h2>
+              <p>
+                Le scénario de référence offre une perspective de base et mise sur une projection modérée des prix de l’énergie et de la croissance de l’économie dans les années à venir.
+              </p>
+            <h2> PRIX ÉLEVÉ </h2>
+              <p>
+                Un premier scénario lié aux prix prévoit des prix du pétrole et du gaz naturel plus élevés et prend en compte certaines incertitudes qui ont trait aux prix futurs de l’énergie.
+              </p>
+            <h2> PRIX BAS </h2>
+              <p>
+                Un second scénario lié aux prix table sur des prix du pétrole et du gaz naturel moins élevés et intègre certaines incertitudes concernant les prix futurs de l’énergie.
+              </p>
+          </div>
+          <div class="columnRight">
+            <h2> CAPACITÉ LIMITÉE </h2>
+              <p>
+                Le rapport AE 2016 prend aussi en considération des incertitudes relatives à l’infrastructure d’exportation du pétrole et propose un scénario dans lequel aucun pipeline d’envergure n’est construit durant la période de projection.
+              </p>
+            <h2> GNL </h2>
+              <p>
+                Deux autres scénarios explorent les incertitudes entourant les éventuelles exportations de gaz naturel liquéfié (GNL).
+              </p>
+          </div>
+        """
+      oct2016:
+        en: """
+          <p>
+            The projections in EF 2016 include a Reference Case, two price sensitivity cases and three supplemental sensitivity cases:
+          </p>
+          <div class="columnLeft">
+            <h2> REFERENCE </h2>
+              <p>
+                The Reference Case provides a baseline outlook, based on a moderate view of future energy prices and economic growth.
+              </p>
+            <h2> HIGH PRICE </h2>
+              <p>
+                A price case with higher oil and natural gas prices captures some of the uncertainty related to future energy prices.
+              </p>
+            <h2> LOW PRICE </h2>
+              <p>
+                A price case with lower oil and natural gas prices captures some of the uncertainty related to future energy prices.
+              </p>
+          </div>
+          <div class="columnRight">
+            <h2> CONSTRAINED </h2>
+              <p>
+                The EF 2016 report considers a case where no new major oil pipelines are built over the projection period to address uncertainties related to future oil export infrastructure.
+              </p>
+            <h2> LNG </h2>
+              <p>
+                The uncertainty related to eventual volumes of liquefied natural gas (LNG) exports is explored in two additional cases.
+              </p>
+          </div>
+        """
+        fr: """
+          <p>
+            Le rapport AE 2016 renferme une projection de l’évolution de l’offre et de la demande énergétique future au Canada. Pour prendre en compte les multiples incertitudes et facteurs pouvant influer sur cette évolution, le rapport AE 2016 explore six scénarios prévisionnels bâtis à partir de diverses hypothèses. Cette analyse démontre les incidences des divers facteurs sur l’évolution de la filière énergétique, ainsi que les répercussions possibles des incertitudes actuelles sur les résultats à long terme.
+          </p>
+          <p>
+            Les projections du rapport AE comprennent un scénario de référence, cinq scénarios de sensibilité, dont deux liés au prix :
+          </p>
+          <div class="columnLeft">
+            <h2> RÉFÉRENCE </h2>
+              <p>
+                Le scénario de référence offre une perspective de base et mise sur une projection modérée des prix de l’énergie et de la croissance de l’économie dans les années à venir.
+              </p>
+            <h2> PRIX ÉLEVÉ </h2>
+              <p>
+                Un premier scénario lié aux prix prévoit des prix du pétrole et du gaz naturel plus élevés et prend en compte certaines incertitudes qui ont trait aux prix futurs de l’énergie.
+              </p>
+            <h2> PRIX BAS </h2>
+              <p>
+                Un second scénario lié aux prix table sur des prix du pétrole et du gaz naturel moins élevés et intègre certaines incertitudes concernant les prix futurs de l’énergie.
+              </p>
+          </div>
+          <div class="columnRight">
+            <h2> CAPACITÉ LIMITÉE </h2>
+              <p>
+                Le rapport AE 2016 prend aussi en considération des incertitudes relatives à l’infrastructure d’exportation du pétrole et propose un scénario dans lequel aucun pipeline d’envergure n’est construit durant la période de projection.
+              </p>
+            <h2> GNL </h2>
+              <p>
+                Deux autres scénarios explorent les incertitudes entourant les éventuelles exportations de gaz naturel liquéfié (GNL).
+              </p>
+          </div>
+        """        
+      oct2017:
+        en: """
+          <p>
+            EF 2017 explores how possible energy futures might unfold for Canadians over the long term. It considers three scenarios that explore how future climate policy and technological development might impact Canada’s energy system.
+          </p>
+          <div class="columnLeft">
+            <h2> REFERENCE </h2>
+              <p>
+                The Reference Case provides a baseline outlook with a moderate view of energy prices and economic growth, and climate and energy policies announced at the time of analysis.
+              </p>
+            <h2> TECHNOLOGY </h2>
+              <p>
+                The Technology Case considers higher carbon prices than the Reference Case and greater adoption of select emerging production and consumption energy technologies.
+              </p>
+          </div>
+          <div class="columnRight">
+            <h2> HIGH CO2 PRICE </h2>
+              <p>
+                The Higher Carbon Price Case explores the impact of higher carbon pricing than in the Reference Case in the longer term.
+              </p>
+          </div>
+        """
+        fr: """
+          <p>
+            AE 2017 examine comment divers scénarios possibles d’avenir énergétique pourraient se dérouler à long terme pour les Canadiens. Le rapport porte sur trois scénarios montrant comment les politiques climatiques futures et le développement technologique pourraient influer sur la filière énergétique du Canada.
+          </p>
+          <div class="columnLeft">
+            <h2> RÉFÉRENCE </h2>
+              <p>
+                Le scénario de référence offre une perspective de base et mise sur une projection modérée des prix de l’énergie et de la croissance de l’économie dans les années à venir.
+              </p>
+            <h2> AVANCÉES TECHNOLOGIQUES </h2>
+              <p>
+                Le scénario des avancées technologiques suppose des prix du carbone plus élevés que ceux du scénario de référence et l’adoption plus massive de certaines technologies énergétiques émergentes liées à la production ou à la consommation.
+              </p>
+          </div>
+          <div class="columnRight">
+            <h2> TARIFICATION DU CARBONE ÉLEVÉE </h2>
+              <p>
+                Le scénario de tarification du carbone élevée évalue les répercussions à long terme de prix plus élevés pour le carbone que ce qui est prévu dans le scénario de référence.
+              </p>
+          </div>
+        """
 
     names:
       reference:
@@ -827,10 +944,10 @@ module.exports =
         fr: 'GNL ÉLEVÉ'
       technology:
         en: 'TECHNOLOGY'
-        fr: '<TODO>'
+        fr: 'AVANCÉES TECHNOLOGIQUES'
       hcp:
-        en: 'HCP'
-        fr: '<TODO>'
+        en: 'HIGH CO2 PRICE'
+        fr: 'TARIFICATION DU CARBONE ÉLEVÉE'
 
 
   regionSelector:
@@ -1313,7 +1430,7 @@ module.exports =
     viz2:
       en: """
         <p>
-          Explore how energy source mixes from different sectors have evolved in recent history, and how they are projected to evolve in the EF 2016 scenarios.
+          Explore how energy source mixes from different sectors have evolved in recent history, and how they are projected to evolve in the Energy Futures scenarios.
         </p>
         <p>
           Select a province or territory, and choose between residential, commercial, transportation, industrial or total energy use.
@@ -1321,7 +1438,7 @@ module.exports =
       """
       fr: """
         <p>
-          Examinez l’évolution de la consommation des divers produits énergétiques par différents secteurs depuis quelques années, et découvrez l’évolution que proposent les scénarios du rapport AE 2016.
+          Examinez l’évolution récente des sources énergétiques de différents secteurs et ce que projettent les scénarios du rapport sur l’avenir énergétique à cet égard.
         </p>
         <p>
           Sélectionnez une province ou un territoire, puis consultez la consommation énergétique des secteurs résidentiel, commercial, industriel ou des transports, ou encore la consommation totale d’énergie.
@@ -1356,7 +1473,7 @@ module.exports =
           Directly compare the scenarios.
         </p>
         <p>
-          Explore the impact of key uncertainties on future energy trends, such as higher or lower energy prices, higher LNG exports or no LNG exports, or not building crude oil export pipelines.
+          Explore the impact of key uncertainties on future energy trends, including technological development, climate policy initiatives such as carbon pricing, higher or lower energy prices, higher LNG exports or no LNG exports, or not building crude oil export pipelines.
         </p>
       """
       fr: """
@@ -1364,12 +1481,32 @@ module.exports =
           Comparez directement les scénarios.
         </p>
         <p>
-          Analysez l’incidence des principales incertitudes sur l’évolution future de l’énergie, par exemple en fonction de prix plus élevés ou plus bas, d’exportations plus élevées de GNL, ou l’absence d’exportations de GNL, ou encore l’absence de nouveaux de pipelines d’exportation de pétrole brut.
+          Comparez l’incidence des principales incertitudes sur l’évolution future de l’énergie, notamment : développement technologique; initiatives de politique climatique comme la tarification du carbone; prix de l’énergie plus élevés ou plus bas; exportations plus élevées de GNL ou absence d’exportations de GNL, ou encore absence de nouveaux pipelines d’exportation de pétrole brut.
         </p>
       """
     viz5:
-      en: '<TODO>'
-      fr: '<TODO>'
+      en: """
+        <p>
+          Compare how the energy mix evolves over time across Canada’s provinces and territories. Choose a base year, and see how the shares of various end-use energy sources change in a future year.
+        </p>
+        <p>
+          The charts provide the difference in the % share of demand in the future year versus the base year.
+        </p>
+        <p>
+          Choose “All” under region to see the change for all provinces and territories, or choose two regions to compare against.
+        </p>
+      """
+      fr: """
+        <p>
+          Comparez l’évolution au fil du temps du bouquet énergétique dans les provinces et territoires du Canada. Choisissez une année d’essai et voyez comment la part des diverses sources d’énergie change dans la consommation finale pour les années futures.
+        </p>
+        <p>
+          Les graphiques montrent la différence dans le % de la part de la demande entre l’année d’essai et les années futures.
+        </p>
+        <p>
+          Sélectionnez TOUS sous RÉGION pour voir le changement dans l’ensemble des provinces et territoires, ou sélectionnez deux régions pour comparer.
+        </p>
+      """
 
 
   # Titles
@@ -1391,7 +1528,6 @@ module.exports =
   visualization2Title:
     en: 'ENERGY DEMAND BY SECTOR'
     # fr: 'DEMANDE D’ÉNERGIE PAR SOURCE ET SECTEUR'
-    # TODO: this might still be too long? check
     fr: 'DEMANDE D’ÉNERGIE PAR SECTEUR'
   visualization3Title:
     en: 'ELECTRICITY GENERATION'
@@ -1412,7 +1548,7 @@ module.exports =
       fr: 'SCÉNARIOS D’ÉLECTRICITÉ'
 
   visualization5Title:
-    en: 'CHANGING DEMAND'
+    en: 'CHANGING DEMAND SHARES'
     fr: 'ÉVOLUTION DE LA DEMANDE'
 
 
@@ -1483,8 +1619,8 @@ module.exports =
         fr: 'SOURCE'
 
     demandIn:
-      en: 'DEMAND IN'
-      fr: 'DEMANDE EN'
+      en: 'DEMAND SHARES IN'
+      fr: 'PARTS DE LA DEMANDE EN'
       
     relativeTo:
       en: 'RELATIVE TO'
@@ -1746,10 +1882,10 @@ module.exports =
         fr: 'Sélection - GNL élevé'
       technologySelected:
         en: 'Technology selected'
-        fr: '<TODO>'
+        fr: 'Sélection - Avancées technologiques'
       hcpSelected:
-        en: 'HCP selected'
-        fr: '<TODO>'
+        en: 'High CO2 Price selected'
+        fr: 'Sélection - Tarification du carbone élevée'
 
       referenceUnselected:
         en: 'Reference unselected'
@@ -1771,10 +1907,10 @@ module.exports =
         fr: 'Désélection - GNL élevé'
       technologyUnselected:
         en: 'Technology unselected'
-        fr: '<TODO>'
+        fr: 'Désélection - Avancées technologiques'
       hcpUnselected:
-        en: 'HCP unselected'
-        fr: '<TODO>'
+        en: 'High CO2 Price unselected'
+        fr: 'Désélection - Tarification du carbone élevée'
 
     viewBy:
       regionSelected:
@@ -1949,3 +2085,6 @@ module.exports =
     ofDemandIn:
       en: 'of demand in'
       fr: 'de la demande en'
+    of:
+      en: 'of'
+      fr: 'de'
