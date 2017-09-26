@@ -1549,7 +1549,7 @@ module.exports =
 
   visualization5Title:
     en: 'CHANGING DEMAND SHARES'
-    fr: 'ÉVOLUTION DES PARTS DE LA DEMANDE'
+    fr: 'ÉVOLUTION DE LA DEMANDE'
 
 
   imageExportText:
