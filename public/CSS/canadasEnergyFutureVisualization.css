@@ -41,6 +41,18 @@ div.chartTooltip:after {
   content: "\00a0 \00a0 ";
 }
 
+#canadasEnergyFutureVisualization .legendLabel {
+  margin-bottom: 1px;
+}
+#canadasEnergyFutureVisualization span.legendTitle {
+  position: absolute; 
+  width: 120px; 
+  margin-top:4px; 
+  margin-left:10px; 
+  font-family: Avenir Next Demi Condensed, Arial Bold, Arial, Verdana, sans-serif;
+  font-size: 14px;  
+}
+
 #rightProvinceMenuSVG {
   /* TODO: This is not a great solution, vertical alignment may drift on resize */
   z-index: 10;
@@ -66,7 +78,7 @@ div.chartTooltip:after {
 }
 
 #canadasEnergyFutureVisualization #viz5TimelineControlsContainer {
-  width: 79%;
+  width: 77.5%;
   float: left;
   box-sizing: border-box;
 }
@@ -324,27 +336,27 @@ div.chartTooltip:after {
 
 
 #canadasEnergyFutureVisualization .viz1Img {
-  background-image: url("../IMG/landingPageThumb/vis1_808.png");
+  background-image: url("../IMG/landingPageThumb/old/Explore_Regions.png");
   background-size: cover;
   background-position:50% 50%;  /* Sets reference point to scale from */
 }
 #canadasEnergyFutureVisualization .viz2Img {
-  background-image: url("../IMG/landingPageThumb/vis2_808.png");
+  background-image: url("../IMG/landingPageThumb/old/Explore_Sectors.png");
   background-size: cover;
   background-position:50% 50%;  /* Sets reference point to scale from */
 }
 #canadasEnergyFutureVisualization .viz3Img {
-  background-image: url("../IMG/landingPageThumb/vis3_808.png");
+  background-image: url("../IMG/landingPageThumb/old/Explore_Electricity.png");
   background-size: cover;
   background-position:50% 50%;  /* Sets reference point to scale from */
 }
 #canadasEnergyFutureVisualization .viz4Img {
-  background-image: url("../IMG/landingPageThumb/vis4_808.png");
+  background-image: url("../IMG/landingPageThumb/old/Explore_Scenarios.png");
   background-size: cover;
   background-position:50% 50%;  /* Sets reference point to scale from */
 }
 #canadasEnergyFutureVisualization .viz5Img {
-  background-image: url("../IMG/landingPageThumb/vis5.png");
+  background-image: url("../IMG/landingPageThumb/old/Changing_Demand.png");
   background-size: cover;
   background-position:50% 50%;  /* Sets reference point to scale from */
 }
@@ -564,7 +576,7 @@ div.chartTooltip:after {
   box-sizing: border-box;
 }
 #canadasEnergyFutureVisualization .smallSelectorColumn_leftAligned {
-  width: 4.49%;
+  width: 6%;
   float: left;
   box-sizing: border-box;
 }
@@ -584,12 +596,12 @@ div.chartTooltip:after {
   box-sizing: border-box;
 }*/
 #canadasEnergyFutureVisualization .allCanadaMode {
-  width: 82.51%;
+  width: 81%;
   float: left;
   box-sizing: border-box;
 }
 #canadasEnergyFutureVisualization .twoProvincesMode {
-  width: 79%;
+  width: 77.5%;
   float: left;
   box-sizing: border-box;
 }
@@ -788,7 +800,8 @@ div.chartTooltip:after {
 #canadasEnergyFutureVisualization #provincesSelector,
 #canadasEnergyFutureVisualization #leftProvincesSelector,
 #canadasEnergyFutureVisualization #rightProvincesSelector,
-#canadasEnergyFutureVisualization #powerSourceSelector {
+#canadasEnergyFutureVisualization #powerSourceSelector
+#canadasEnergyFutureVisualization #legendGroup {
   position: relative;
 }
 
@@ -1194,7 +1207,7 @@ svg { overflow: hidden; }
   background-color: white;
 
   width: 220px;
-  height: 150px;
+  height: 125px;
 
   /* Beneath the pills */
   /* NB: Wet navbar is styled with z-index 500, and we desire for the popover to cover it if need be */
@@ -1217,11 +1230,13 @@ svg { overflow: hidden; }
 }
 #canadasEnergyFutureVisualization .pillPopoverText {
   font-size: 16px;
+  font-family: Avenir Next Demi, Arial Narrow, Arial, Verdana, sans-serif;
   display: block;
   margin: 0 0 0 10px;
 }
 #canadasEnergyFutureVisualization .pillPopoverTextSmall {
   font-size: 12px;
+  font-family: Avenir Next Demi, Arial Narrow, Arial, Verdana, sans-serif;
   display: block;
   margin: 0 0 10px 20px;
 }

@@ -69,7 +69,7 @@ class Visualization5
       outerClasses: 'vizModal controlsHelpPopover scenarioSelectorHelp'
       innerClasses: 'viz5HelpTitle'
       title: Tr.scenarioSelector.scenarioSelectorHelpTitle[@app.language]
-      content: => Tr.scenarioSelector.scenarioSelectorHelp[@app.language]
+      content: => Tr.scenarioSelector.scenarioSelectorHelp[@config.dataset][@app.language]
       attachmentSelector: '.scenarioSelectorGroup'
       analyticsElement: 'Viz5 scenario help'
 
@@ -106,12 +106,15 @@ class Visualization5
 
     @graphMargin =
       top: 20
-      right: 10
+      right: 45
       bottom: 50
-      left: 10
+      left: 45
+
+    @twoRoseMargin = 
+      left: 64
 
     @timelineMargin =
-      top: 20
+      top: 22
       left: 10
       right: 20
       bottom: 70
@@ -501,7 +504,7 @@ class Visualization5
   render: ->
     @container.attr
       width: @graphWidth()
-      height: Constants.viz5Height
+      height: Constants.viz5GraphSVGHeight
 
     @svgResize()
 
@@ -511,6 +514,7 @@ class Visualization5
     @addSectors()
     @renderDatasetSelector()
     @renderScenariosSelector()
+    @renderLegend()
 
     if !@leftProvinceMenu
       @leftProvinceMenu = @buildLeftProvinceMenu()
@@ -769,8 +773,6 @@ class Visualization5
 
         @app.datasetRequester.updateAndRequestIfRequired newConfig, update
 
-
-
     scenariosSelectors.html (d) -> """
       <button class='#{d.singleSelectClass}' type='button' title='#{d.title}'>
         <span aria-label='#{d.ariaLabel}'>#{d.label}</span>
@@ -781,6 +783,26 @@ class Visualization5
       .on 'click', null
       .remove()
 
+  renderLegend: ->
+    legendSelector = @d3document
+      .select('#legendSelector')
+      .selectAll('.legendLabel')
+      .data CommonControls.legendData(@app)
+
+    legendSelector.enter()
+      .append('div')
+      .attr
+        class: 'legendLabel'
+
+    legendSelector.html (d) -> """
+      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink='http://www.w3.org/1999/xlink' width='#{Constants.viz5LegendIconSize}' height='#{Constants.viz5LegendIconSize}'>
+        <image xlink:href=#{d.image} width='#{Constants.viz5LegendIconSize}' height='#{Constants.viz5LegendIconSize}' aria-label='#{d.title}'>
+          <title>#{d.title}</title>
+        </image>
+      </svg>
+      <span aria-label='#{d.ariaLabel}' class="legendTitle" style="color:#{d.colour}">#{d.title}</span>
+    """
+
   svgResize: ->
     @d3document.select '#viz5SliderSVG'
       .attr
@@ -790,7 +812,7 @@ class Visualization5
     @container
       .attr
         width: @graphWidth()
-        height: @height() - Constants.viz5SliderHeight/2
+        height: Constants.viz5GraphSVGHeight
 
   redraw: ->
     @renderGraph()
@@ -921,29 +943,15 @@ class Visualization5
           d3.event.preventDefault()
           @sliderPlayButtonCallback()
       .html """
-        <img src='IMG/play_pause/playbutton_unselectedR.svg'
+        <img src='IMG/play_pause/playbutton_selectedR.svg'
              alt='#{Tr.altText.playAnimation[@app.language]}'/>
       """
 
-    div.append 'div'
-      .attr
-        id: 'vizPauseButton'
-        class: 'playPauseButton selected'
-        role: 'button'
-        tabindex: '0'
-        'aria-label': Tr.altText.pauseAnimation[@app.language]
-      .on 'click', @sliderPauseButtonCallback
-      .on 'keydown', =>
-        if d3.event.key == 'Enter' or d3.event.key == ' '
-          d3.event.preventDefault()
-          @sliderPauseButtonCallback()
-      .html """
-        <img src='IMG/play_pause/pausebutton_selectedR.svg'
-             alt='#{Tr.altText.pauseAnimation[@app.language]}'/>
-      """
-
   sliderPlayButtonCallback: =>
-    return if @playPauseStatus == 'playing'
+    # Pause the animation if it is already playing
+    if @playPauseStatus == 'playing'
+      @sliderPauseButtonCallback()
+      return 
     @playPauseStatus = 'playing'
 
     # Set the timeline state to replay, and set the comparisonYear
@@ -954,14 +962,10 @@ class Visualization5
 
     @d3document.select '#vizPlayButton'
       .html """
-        <img src='IMG/play_pause/playbutton_selectedR.svg'
+        <img src='IMG/play_pause/pausebutton_selectedR.svg'
              alt='#{Tr.altText.playAnimation[@app.language]}'/>
       """
-    @d3document.select '#vizPauseButton'
-      .html """
-        <img src='IMG/play_pause/pausebutton_unselectedR.svg'
-             alt='#{Tr.altText.pauseAnimation[@app.language]}'/>
-      """
+
     if @yearTimeout then window.clearTimeout @yearTimeout
     timeoutComplete = =>
       #return unless @_chart?
@@ -998,14 +1002,9 @@ class Visualization5
         @app.datasetRequester.updateAndRequestIfRequired newConfig, update
 
       else
-        @d3document.select '#vizPauseButton'
-          .html """
-            <img src='IMG/play_pause/pausebutton_selectedR.svg'
-                 alt='#{Tr.altText.pauseAnimation[@app.language]}'/>
-          """
         @d3document.select '#vizPlayButton'
           .html """
-            <img src='IMG/play_pause/playbutton_unselectedR.svg'
+            <img src='IMG/play_pause/playbutton_selectedR.svg'
                  alt='#{Tr.altText.playAnimation[@app.language]}'/>
           """
         # Simulate a pause button click.
@@ -1017,17 +1016,11 @@ class Visualization5
 
 
   sliderPauseButtonCallback: =>
-    return if @playPauseStatus == 'paused'
     @playPauseStatus = 'paused'
 
-    @d3document.select '#vizPauseButton'
-      .html """
-        <img src='IMG/play_pause/pausebutton_selectedR.svg'
-             alt='#{Tr.altText.pauseAnimation[@app.language]}'/>
-      """
     @d3document.select '#vizPlayButton'
       .html """
-        <img src='IMG/play_pause/playbutton_unselectedR.svg'
+        <img src='IMG/play_pause/playbutton_selectedR.svg'
              alt='#{Tr.altText.playAnimation[@app.language]}'/>
        """
     if @yearTimeout then window.clearTimeout @yearTimeout
@@ -1091,7 +1084,7 @@ class Visualization5
       .attr
         id: 'baseSliderLabel'
         class: 'baseSliderLabel pointerCursor'
-        transform: "translate(#{@yearScale()(@config.baseYear) - 25}, #{@timelineMargin.bottom - 20})"
+        transform: "translate(#{@yearScale()(@config.baseYear) - 25}, #{@timelineMargin.bottom - 18})"
         tabindex: '0'
         role: 'slider'
         'aria-label': Tr.altText.yearsSlider[@app.language]
@@ -1133,7 +1126,7 @@ class Visualization5
     update = =>
       @config.setBaseYear value
       @d3document.select('#baseSliderLabel').attr
-        transform: "translate(#{@yearScale()(@config.baseYear) - 25}, #{@timelineMargin.bottom - 20})"
+        transform: "translate(#{@yearScale()(@config.baseYear) - 25}, #{@timelineMargin.bottom - 18})"
 
       @d3document.select '#baseLabelBox'
         .text @config.baseYear
@@ -1459,10 +1452,10 @@ class Visualization5
     roseSize = availableWidth / 2
     roseScale = roseSize / Constants.roseSize
 
-    leftXPos = @graphMargin.left
-    leftYPos = @graphMargin.top
-    rightXPos = @graphMargin.left + (roseSize + Constants.comparisonRoseMargin)
-    rightYPos = @graphMargin.top
+    leftXPos = @twoRoseMargin.left
+    leftYPos = Constants.twoRoseTopMargin
+    rightXPos = @twoRoseMargin.left + (roseSize + Constants.comparisonRoseMargin)
+    rightYPos = Constants.twoRoseTopMargin
 
 
     if @leftRose?

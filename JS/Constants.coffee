@@ -323,6 +323,10 @@ module.exports =
   roseFullScale: 1
   roseSlightlyBiggerScale: 1.1
 
+  roseBorderOffset:
+    'small': 2 # in px
+    'large': 2 # in px
+
   serverSideGraphWidth: 1065 # px
   viz4ServerSideGraphWidth: 995 # 1065 - 70 extra pixels of width for viz4's wider legend
 
@@ -369,9 +373,10 @@ module.exports =
   timelineMargin: 25
   allCanadaTimelineMargin: 30
   viz5timelineMargin: 45
-  baseYearTimelineMargin: 80
+  baseYearTimelineMargin: 45
   sliderLabelHeight: 28
   viz5timelineDuration: 500
+  viz5LegendIconSize: 25
 
   comparisonSliderWidth: 70
   baseSliderWidth: 80
@@ -398,10 +403,13 @@ module.exports =
 
   # Rose dimensions are normalized to a 112x112 canvas / group, which is re-scaled in the
   # visualization.
-  roseSize: 112 # px
-  roseOuterCircleRadius: 56 # px
-  roseBaselineCircleRadius: 33 # px
-  roseCentreCircleRadius: 10 # px
+  roseSize: 118 # px
+  roseOuterCircleRadius: 53 # px
+  roseBaselineCircleRadius: 31 # px
+  roseCentreCircleRadius: 12 # px
+
+  twoRoseTopMargin: 100
+  viz5GraphSVGHeight: 538
 
   # All in radians
   roseAngles: [
@@ -434,47 +442,47 @@ module.exports =
   # Indexed from the top left
   rosePositions:
     YT:
-      row: 0
+      row: 0.25
       column: 0
     NT:
-      row: 0
+      row: 0.25
       column: 1
     NU:
-      row: 0
+      row: 0.25
       column: 2
     Canada: 
-      row: 0
+      row: 0.25
       column: 3.5
     NL:
-      row: 0
+      row: 0.25
       column: 5
     BC:
-      row: 1
+      row: 1.25
       column: 0
     AB:
-      row: 1
+      row: 1.25
       column: 1
     SK:
-      row: 1
-      column: 2
+      row: 1.25
+      column:2
     MB:
-      row: 1
+      row: 1.25
       column: 3
     ON:
-      row: 1
+      row: 1.25
       column: 4
     QC:
-      row: 1
+      row: 1.25
       column: 5
 
     NB:
-      row: 2
+      row: 2.25
       column: 3
     PE:
-      row: 2
+      row: 2.25
       column: 4
     NS:
-      row: 2
+      row: 2.25
       column: 5
 
   roseStartingPositionOffsets:
@@ -538,7 +546,7 @@ module.exports =
     NS: 960   #
 
   allCanadaRoseMargin: 11 # px
-  comparisonRoseMargin: 135 # px
+  comparisonRoseMargin: 65 # px
 
   viz5SourcesInOrder: [
     'electricity'
@@ -596,7 +604,7 @@ module.exports =
   # NB: This value should be kept in sync with the padding style for #mainPanel > div
 
   pillPopoverWidth: 220 # px
-  pillPopoverHeight: 150 # px
+  pillPopoverHeight: 125 # px
 
 
 
@@ -604,23 +612,45 @@ module.exports =
 
   viz5ServerSideRosePositions:
     leftRose:
-      left: 342.5
-      top: 309.5
+      left: 370
+      top: 370
     rightRose:
-      left: 922.5
-      top: 309.5
-  viz5ServerSideRoseSize: 449
+      left: 890
+      top: 370
+  viz5ServerSideRoseSize: 410
 
   # Keep these sizes consistent with the dimensions in pills.css
   viz5PillSizes: # all in px
     large:
-      width: 70
-      height: 27
+      width: 77
+      height: 29.7
     small:
-      width: 50
-      height: 20
+      width: 52.5
+      height: 21
 
-  
+  viz5PillAlignmentMargins:
+    large:
+      coal: 0
+      naturalGas: 0
+      bio: 0
+      solarWindGeothermal: 0
+      electricity: 0
+      oilProducts: 0
+    small:
+      coal: 0
+      naturalGas: 0
+      bio: -10
+      solarWindGeothermal: -10
+      electricity: 10
+      oilProducts: 10
+
+
+  mapleLeafCenterOffset: 2
+  mapleLeafCircleRadius: 11.5
+  mapleLeafCircleStroke: 0.5
+  mapleLeafScale: 0.065
+  mapleLeafPath: "m 154.99433,0 -25.06359,46.7528 c -2.844,5.08126 -7.93959,4.60996 -13.03517,1.77192 l -18.14538,-9.39723 13.52402,71.81132 c 2.844,13.11953 -6.28082,13.11953 -10.78395,7.44687 L 69.82305,82.93015 64.68194,100.93531 c -0.59287,2.36446 -3.19957,4.84789 -7.11025,4.25649 l -40.04353,-8.42033 10.51769,38.24325 c 2.25156,8.50956 4.00782,12.03281 -2.27304,14.27716 L 11.5,156.00092 80.43236,211.99997 c 2.72839,2.11737 4.10687,5.92775 3.13555,9.37778 l -6.03305,19.8011 c 23.73443,-2.73623 45.00085,-6.85284 68.74731,-9.38813 2.09632,-0.22382 5.60582,3.23618 5.59142,5.66585 L 148.72882,310 l 11.5398,0 -1.81651,-72.38785 c -0.0145,-2.42967 3.16938,-6.04525 5.26571,-5.82143 23.74645,2.5353 45.0129,6.6519 68.74732,9.38813 l -6.03303,-19.8011 c -0.97132,-3.45003 0.40715,-7.26041 3.13554,-9.37778 L 298.5,156.00092 284.2272,149.29188 c -6.28088,-2.24435 -4.52461,-5.7676 -2.27305,-14.27716 l 10.51772,-38.24325 -40.04357,8.42033 c -3.91067,0.5914 -6.51737,-1.89203 -7.11026,-4.25649 l -5.1411,-18.00516 -31.6672,35.45553 c -4.50314,5.67266 -13.62798,5.67266 -10.78397,-7.44687 l 13.524,-71.81132 -18.14534,9.39723 c -5.09571,2.83804 -10.19117,3.30934 -13.03518,-1.77192"
+
   # To match duration of pills animations in CSS.
   viz5PillPopoverDuration: 300 # ms
 
