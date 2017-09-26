@@ -146,16 +146,27 @@ class Rose
 
     # Render the maple leaf instead of the text
     # label for the Canada rose
+    # This is kind of a hack. For some reason, I can't seem to get an <image> tag
+    # to render on the server for the image download, which causes the maple leaf
+    # not to show on the image. This works, but is a bit messy.
     if @options.data[0].province == 'Canada'
-      @innerContainer.append 'image'
+      @innerContainer.append 'circle'
         .attr
           class: 'pointerCursor'
-          id: 'mapleLeafSVG'
-          'xlink:href': 'IMG/mapleLeaf.svg'
-          x: "-#{Constants.roseCentreCircleRadius}px"
-          y: "-#{Constants.roseCentreCircleRadius}px"
-          width: Constants.roseCentreCircleRadius * 2
-          height: Constants.roseCentreCircleRadius * 2
+          id: 'mapleLeafCircle'
+          r: Constants.mapleLeafCircleRadius
+          'stroke-width': Constants.mapleLeafCircleStroke
+          fill: '#fff' 
+          stroke: '#f00'
+      @innerContainer.append 'g'
+        .attr
+          transform: "translate(-#{Constants.roseCentreCircleRadius - 2}, -#{Constants.roseCentreCircleRadius - 2}) scale(#{Constants.mapleLeafScale}, #{Constants.mapleLeafScale})"
+        .append 'path'
+          .attr
+            class: 'pointerCursor'
+            id: 'mapleLeafSVG'
+            fill: '#f00'
+            d: Constants.mapleLeafPath
 
       # Centre label
       @innerContainer.append 'text'
@@ -182,15 +193,23 @@ class Rose
         .text =>
           @options.data[0].province
 
-      @innerContainer.append 'image'
+      @innerContainer.append 'circle'
         .attr
           class: 'hidden'
-          id: 'mapleLeafSVG'
-          'xlink:href': 'IMG/mapleLeaf.svg'
-          x: "-#{Constants.roseCentreCircleRadius}px"
-          y: "-#{Constants.roseCentreCircleRadius}px"
-          width: Constants.roseCentreCircleRadius * 2
-          height: Constants.roseCentreCircleRadius * 2
+          id: 'mapleLeafCircle'
+          r: Constants.mapleLeafCircleRadius
+          'stroke-width': Constants.mapleLeafCircleStroke
+          fill: '#fff' 
+          stroke: '#f00'
+      @innerContainer.append 'g'
+        .attr
+          transform: "translate(-#{Constants.roseCentreCircleRadius - 2}, -#{Constants.roseCentreCircleRadius - 2}) scale(#{Constants.mapleLeafScale}, #{Constants.mapleLeafScale})"
+        .append 'path'
+          .attr
+            class: 'pointerCursor hidden'
+            id: 'mapleLeafSVG'
+            fill: '#f00'
+            d: Constants.mapleLeafPath
 
     if @options.isFirstRun and @options.showAllCanadaAnimationOnFirstRun
       switch Platform.name
@@ -398,6 +417,9 @@ class Rose
     # Render the maple leaf instead of the text
     # label for the Canada rose
     if @options.data[0].province == 'Canada'
+      @innerContainer.select '#mapleLeafCircle'
+        .attr
+          class: 'pointerCursor'
       @innerContainer.select '#mapleLeafSVG'
         .attr
           class: 'pointerCursor'
@@ -413,6 +435,9 @@ class Rose
         .text =>
           @options.data[0].province
 
+      @innerContainer.select '#mapleLeafCircle'
+        .attr
+          class: 'hidden'
       @innerContainer.select '#mapleLeafSVG'
         .attr
           class: 'hidden'
