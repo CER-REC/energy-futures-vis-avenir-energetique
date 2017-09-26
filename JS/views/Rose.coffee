@@ -160,7 +160,7 @@ class Rose
           stroke: '#f00'
       @innerContainer.append 'g'
         .attr
-          transform: "translate(-#{Constants.roseCentreCircleRadius - 2}, -#{Constants.roseCentreCircleRadius - 2}) scale(#{Constants.mapleLeafScale}, #{Constants.mapleLeafScale})"
+          transform: "translate(-#{Constants.roseCentreCircleRadius - Constants.mapleLeafCenterOffset}, -#{Constants.roseCentreCircleRadius - Constants.mapleLeafCenterOffset}) scale(#{Constants.mapleLeafScale}, #{Constants.mapleLeafScale})"
         .append 'path'
           .attr
             class: 'pointerCursor'

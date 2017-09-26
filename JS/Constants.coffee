@@ -645,6 +645,7 @@ module.exports =
       oilProducts: 10
 
 
+  mapleLeafCenterOffset: 2
   mapleLeafCircleRadius: 11.5
   mapleLeafCircleStroke: 0.5
   mapleLeafScale: 0.065
