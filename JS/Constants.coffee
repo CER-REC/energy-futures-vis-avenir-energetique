@@ -496,7 +496,7 @@ module.exports =
       x: 355
       y: 285
     Canada: 
-      x: 555
+      x: 440
       y: 285
     NL:
       x: 668
