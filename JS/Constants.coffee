@@ -487,47 +487,47 @@ module.exports =
 
   roseStartingPositionOffsets:
     YT:
-      x: 145
-      y: 285
+      x: 165
+      y: 265
     NT:
-      x: 255
-      y: 285
+      x: 275
+      y: 265
     NU:
-      x: 355
-      y: 285
+      x: 370
+      y: 265
     Canada: 
       x: 440
       y: 285
     NL:
-      x: 668
-      y: 285
+      x: 648
+      y: 265
     BC:
-      x: 182
-      y: 405
+      x: 207
+      y: 385
     AB:
-      x: 255
-      y: 405
+      x: 270
+      y: 385
     SK:
-      x: 312
-      y: 405
+      x: 327
+      y: 385
     MB:
-      x: 374
-      y: 405
+      x: 384
+      y: 385
     ON:
       x: 460
-      y: 405
+      y: 385
     QC:
-      x: 565
-      y: 405
+      x: 555
+      y: 385
     NB:
-      x: 615
-      y: 405
+      x: 605
+      y: 385
     PE:
-      x: 650
-      y: 364
+      x: 640
+      y: 344
     NS:
-      x: 665
-      y: 405
+      x: 650
+      y: 385
 
   fullRoseRenderingDelay:
     Canada: 400 #
