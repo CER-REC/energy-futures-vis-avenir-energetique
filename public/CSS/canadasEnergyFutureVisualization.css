@@ -730,7 +730,9 @@ div.chartTooltip:after {
   box-shadow: inset 0px 0px 0px 3px #F00;
 }
 
-
+#canadasEnergyFutureVisualization #legendSelector {
+  padding-top: 25px;
+}
 
 #canadasEnergyFutureVisualization .vizButton {
   border-style: solid;
@@ -800,8 +802,8 @@ div.chartTooltip:after {
 #canadasEnergyFutureVisualization #provincesSelector,
 #canadasEnergyFutureVisualization #leftProvincesSelector,
 #canadasEnergyFutureVisualization #rightProvincesSelector,
-#canadasEnergyFutureVisualization #powerSourceSelector
-#canadasEnergyFutureVisualization #legendGroup {
+#canadasEnergyFutureVisualization #powerSourceSelector,
+#canadasEnergyFutureVisualization .legendGroup {
   position: relative;
 }
 
