@@ -1659,11 +1659,11 @@ module.exports =
       en: 'IMG/howto/Visualization_HowTo_4B-EN.png'
       fr: 'IMG/howto/Visualization_HowTo_4B-FR.png'
     viz5A:
-      en: '<TODO>'
-      fr: '<TODO>'
+      en: 'IMG/howto/Visualization_HowTo_5A-EN.png'
+      fr: 'IMG/howto/Visualization_HowTo_5A-FR.png'
     viz5B:
-      en: '<TODO>'
-      fr: '<TODO>'
+      en: 'IMG/howto/Visualization_HowTo_5B-EN.png'
+      fr: 'IMG/howto/Visualization_HowTo_5B-FR.png'
 
   contactEmail:
     body:
