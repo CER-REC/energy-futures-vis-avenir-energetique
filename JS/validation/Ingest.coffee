@@ -37,10 +37,10 @@ october2017Files = ->
     }
     {
       type: 'electricity'
-      dataFilename: path.join ApplicationRoot, 'devPublic/rawCSV/2017-09_ElectricityGeneration.csv'
-      processedFilename: path.join ApplicationRoot, 'public/CSV/2017-09_ElectricityGeneration.csv'
+      dataFilename: path.join ApplicationRoot, 'devPublic/rawCSV/2017-09_ElectricityGeneration_Updated.csv'
+      processedFilename: path.join ApplicationRoot, 'public/CSV/2017-09_ElectricityGeneration_Updated.csv'
       dataset: 'oct2017'
-      logFilename: path.join ApplicationRoot, 'devPublic/rawCSV/log/2017-09_ElectricityGeneration.csv_ingestion_errors.log'
+      logFilename: path.join ApplicationRoot, 'devPublic/rawCSV/log/2017-09_ElectricityGeneration_Updated.csv_ingestion_errors.log'
     }
   ]
 
