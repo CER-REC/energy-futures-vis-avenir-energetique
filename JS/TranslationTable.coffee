@@ -53,7 +53,9 @@ module.exports =
       en: 'EXPLORE DEMAND'
       fr: 'EXPLORER LA DEMANDE'
 
-
+    landingPageImage:
+      en: '<img src="IMG/landingPageThumb/Canada Rose EN Gas-HI-RES.png"/>'
+      fr: '<img src="IMG/landingPageThumb/Canada Rose FR Gas-HI-RES.png"/>'
 
 
   allPages:
@@ -120,10 +122,7 @@ module.exports =
     aboutContent:
       en: """
         <p>
-          The National Energy Board (NEB) teamed up with leading data visualization experts in both academia and industry to create the Exploring Canada’s Energy Future interactive online tool. This pilot concept, based on our flagship publication – <a href="http://www.neb-one.gc.ca/nrg/ntgrtd/ftr/index-eng.html" target="_blank">Canada’s Energy Future</a>, has shaped a new initiative that will transform the way the NEB will share data going forward.
-        </p>
-        <p>
-          Our objective is to present quality data from our two most recent energy outlooks in an interactive graphic format that is user-friendly and clarifies complex information into “visualizations” that are easily understood. This way you can explore Canada’s energy future right from your own computer. In the months and years to come, we will use this innovative format to share our pipeline safety data, energy data series, energy infrastructure information, and a host of other topical data.
+          This Exploring Canada’s Energy Future interactive online tool is part of the National Energy Board’s (NEB) Data Visualization Initiative (DVI) . The DVI is a three-year initiative to transform how the NEB structures and shares data. The objective is to enable evidence-based decision making and remove barriers to understanding Canada’s energy and pipeline systems through the use of user-friendly interactive visualizations. This visualization is based on our flagship publication – <a href="http://www.neb-one.gc.ca/nrg/ntgrtd/ftr/index-eng.html" target="_blank">Canada’s Energy Future</a>. You can explore Canada’s energy future right from your own computer. In the months and years to come we will use this innovative format to share our pipeline safety data, energy data series, energy infrastructure information, and a host of other topical data.
         </p>
         <p>
           If you want to use the data for research and undertake your own review, all the data is downloadable and shareable. The chart images are also downloadable, and if you are interested in the source code for the visualizations, it is available on the government’s Open Government portal: <a href="http://open.canada.ca" target="_blank">open.canada.ca</a>.
@@ -141,32 +140,29 @@ module.exports =
         </p>
         <h2> COORDINATION: </h2>
         <p>
-          Annette Hester (Concept and Coordination); Katherine Murphy (Project Manager); Stephen Chow (Data Coordination); Garth Rowe (Web Lead); Jim Chisholm (Information Management and Technology)
+          Annette Hester (Concept and Coordination); Katherine Murphy (Project Manager); Faiza Hussain (Administrative support); Stephen Chow (Data Coordination); Garth Rowe (Web Lead); Jim Chisholm (Information Management and Technology)
         </p>
         <h2> DATA VISUALIZATION: </h2>
         <p>
-          Lead Design Research: Sheelagh Carpendale and Wesley Willett, InnoVis, University of Calgary.
+          Lead Design Research: Sheelagh Carpendale and Wesley Willett, iLab, University of Calgary.
           <br>
-          Design: Lindsay MacDonald, Charles Perin and Jo Vermeulen as well as Doris Kosminsky
+          Design: Lindsay MacDonald, Charles Perin, Jo Vermeulen, Doris Kosminsky, Søren Knudsen, Lien Quach, Peter Buk, Shreya Chopra, Katrina Tabuli and Claudia Maurer
           <br>
-          Lead Technical: Vizworx
+          Lead Technical: VizworX
           <br>
-          Technical: Stephanie Sachrajda, Patrick King, Alaa Azazi, Charlie Cheung, Abhishek Sharma, Ben Cousins and Claudio Esperança
+          Technical: Stephanie Sachrajda, Patrick King, Alaa Azazi, Abhishek Sharma, Ben Cousins and Claudio Esperança
         </p>
-        <h2>THIRD PARTY LICENSES</h2>
+        <h1>THIRD PARTY LICENSES</h1>
         <p>
           <a href="https://commons.wikimedia.org/wiki/File:H1N1_Canada_map.svg">Map showing provinces and territories reporting 2009 swine flu (H1N1) cases in Canada</a> by <a href="https://commons.wikimedia.org/wiki/User:Fonadier">Fonadier</a> is licensed under <a href="https://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a> / Re-colored and rotated from original.
         </p>
       """
       fr: '''
         <p>
-          Pour créer l’outil interactif Explorer l’avenir énergétique du Canada, l’Office national de l’énergie s’est associé à des experts de la visualisation des données du milieu universitaire et de l’industrie. Fondé sur la publication phare qu’est le <a href="http://www.neb-one.gc.ca/nrg/ntgrtd/ftr/index-fra.html" target="_blank">Rapport sur l’avenir énergétique du Canada</a>, cet outil avant-gardiste ouvre la voie à une transformation du mode de diffusion des données qu’utilisera désormais l’Office.
+          L’outil interactif Explorer l’avenir énergétique du Canada fait partie de l’initiative de visualisation de données de l’Office national de l’énergie. Échelonnée sur trois ans, cette dernière vise à transformer la manière dont l’Office structure et diffuse ses données. L’objectif est de soutenir un processus décisionnel fondé sur la preuve et d’éliminer les obstacles à la compréhension des réseaux énergétiques et pipeliniers canadiens grâce à des visualisations interactives faciles à utiliser. L’outil repose sur la publication phare de l’Office, <a href="http://www.neb-one.gc.ca/nrg/ntgrtd/ftr/index-fra.html" target="_blank">Avenir énergétique du Canada</a>; il vous permet d’explorer l’avenir énergétique du Canada à partir de votre propre ordinateur. Au cours des mois et des années à venir, l’Office utilisera ce format novateur pour diffuser ses données sur la sécurité des pipelines et sur l’énergie, l’information qu’il possède sur l’infrastructure énergétique et une foule d’autres renseignements spécialisés.
         </p>
         <p>
-          Notre objectif consiste à présenter des données de qualité tirées des deux plus récentes perspectives énergétiques de l’Office dans un format visuel interactif et convivial, qui clarifie une information complexe grâce à des visualisations faciles à comprendre. Vous pouvez ainsi explorer l’avenir énergétique du Canada à partir de votre propre ordinateur. Au cours des mois et des années à venir, l’Office utilisera ce format novateur pour diffuser ses données sur la sécurité des pipelines et sur l’énergie, l’information qu’il possède sur l’infrastructure énergétique et une foule d’autres renseignements spécialisés.
-        </p>
-        <p>
-          Si vous souhaitez utiliser les données pour vos recherches ou pour en faire votre propre analyse, vous pouvez les télécharger et les partager. Les graphiques peuvent aussi être téléchargés. Quant au code source des visualisations, il est accessible sur le portail du « gouvernement ouvert » à l’adresse <a href="http://ouvert.canada.ca" target="_blank">ouvert.canada.ca</a>.
+          Si vous souhaitez utiliser les données pour vos recherches ou pour en faire votre propre analyse, vous pouvez les télécharger et les partager. Les graphiques peuvent aussi être téléchargés. Quant au code source des visualisations, il est accessible sur le portail du « gouvernement ouvert » à l’adresse <a href="http://ouvert.canada.ca" target="_blank">ouvert.canada.ca</a>.
         </p>
         <p>
           Nous espérons avoir atteint notre objectif. Votre rétroaction est essentielle.
@@ -181,19 +177,19 @@ module.exports =
         </p>
         <h2> COORDINATION </h2>
         <p>
-          Annette Hester (conception et coordination); Katherine Murphy (gestionnaire de projet); Stephen Chow (coordination des données); Garth Rowe (responsable du Web); Jim Chisholm (gestion de l’information et technologie)
+          Annette Hester (conception et coordination); Katherine Murphy (gestionnaire de projet); Faiza Hussain (Soutien administratif); Stephen Chow (coordination des données); Garth Rowe (responsable du Web); Jim Chisholm (gestion de l’information et technologie)
         </p>
         <h2> VISUALISATION DES DONNÉES </h2>
         <p>
-          Recherche conceptuelle sous la direction de Sheelagh Carpendale et Wesley Willett, InnoVis, Université de Calgary
+          Recherche conceptuelle sous la direction de Sheelagh Carpendale et Wesley Willett, iLab, Université de Calgary
           <br>
-          Conception : Lindsay MacDonald, Charles Perin et Jo Vermeulen ainsi que Doris Kosminsky
+          Conception : Lindsay MacDonald, Charles Perin, Jo Vermeulen, Doris Kosminsky, Søren Knudsen, Lien Quach, Peter Buk, Shreya Chopra, Katrina Tabuli et Claudia Maurer
           <br>
-          Chef technique à Vizworx
+          Chef technique à VizworX
           <br>
-          Aspect technique : Stephanie Sachrajda, Patrick King, Alaa Azazi, Charlie Cheung, Abhishek Sharma, Ben Cousins et Claudio Esperança
+          Aspect technique : Stephanie Sachrajda, Patrick King, Alaa Azazi, Abhishek Sharma, Ben Cousins et Claudio Esperança
         </p>
-        <h2>LICENCES TIERCES</h2>
+        <h1>LICENCES TIERCES</h1>
         <p>
           <a href="https://commons.wikimedia.org/wiki/File:H1N1_Canada_map.svg">La carte montre les provinces et territoires selon les signalements de cas de grippe A (H1N1).</a> Elle a été créée par <a href="https://commons.wikimedia.org/wiki/User:Fonadier">Fonadier</a> et porte la licence <a href="https://creativecommons.org/licenses/by/3.0/">CC BY 3.0.</a> L’original a été recoloré et pivoté.
         </p>
@@ -538,7 +534,7 @@ module.exports =
         <h2> October 2017 </h2>
         <p>
           EF 2017 explores how possible energy futures might unfold for Canadians over the long term. It considers three scenarios that explore how future climate policy and technological development might impact Canada’s energy system. The Reference Case is based on a current economic outlook, a moderate view of energy prices, and climate and energy policies announced at the time of analysis. The Higher Carbon Price Case considers the impact on the Canadian energy system of higher carbon pricing than in the Reference Case in the longer term. The Technology Case considers, in addition to higher carbon prices, the impact on the Canadian energy system of greater adoption of select emerging production and consumption energy technologies.
-          <br><a href='http://www.neb-one.gc.ca/nrg/ntgrtd/ftr/2016/index-eng.html' target='_blank'>View the report</a>
+          <br><a href='http://www.neb-one.gc.ca/nrg/ntgrtd/ftr/2017/index-eng.html' target='_blank'>View the report</a>
         </p>
         <h1> CANADA’S ENERGY FUTURE 2016: UPDATE </h1>
         <h2> October 2016 </h2>
@@ -559,7 +555,7 @@ module.exports =
         <h2> Octobre 2017 </h2>
         <p>
           AE 2017 examine comment divers scénarios possibles d’avenir énergétique pourraient se dérouler à long terme pour les Canadiens. Le rapport porte sur trois scénarios montrant comment les politiques climatiques futures et le développement technologique pourraient influer sur la filière énergétique du Canada. Le scénario de référence s’appuie sur les perspectives économiques actuelles, une vision modérée des prix de l’énergie et les politiques énergétiques ou climatiques déjà annoncées au moment de l’analyse. Le scénario de tarification du carbone élevée rend compte des répercussions à long terme sur la filière énergétique canadienne de prix plus élevés pour le carbone que dans le scénario de référence. Le scénario des avancées technologiques tient non seulement compte d’une tarification du carbone élevée sur la filière énergétique canadienne mais également des incidences qu’aurait l’adoption plus massive de certaines technologies émergentes liées à la production ou à la consommation d’énergie.
-          <br><a href='http://www.neb-one.gc.ca/nrg/ntgrtd/ftr/2016/index-fra.html' target='_blank'>Voir le rapport</a>
+          <br><a href='http://www.neb-one.gc.ca/nrg/ntgrtd/ftr/2017/index-fra.html' target='_blank'>Voir le rapport</a>
         </p>
         <h1> AVENIR ÉNERGÉTIQUE DU CANADA EN 2016 – MISE À JOUR </h1>
         <h2> Octobre 2016 </h2>
@@ -1657,11 +1653,11 @@ module.exports =
       en: 'IMG/howto/Visualization_HowTo_4B-EN.png'
       fr: 'IMG/howto/Visualization_HowTo_4B-FR.png'
     viz5A:
-      en: '<TODO>'
-      fr: '<TODO>'
+      en: 'IMG/howto/Visualization_HowTo_5A-EN.png'
+      fr: 'IMG/howto/Visualization_HowTo_5A-FR.png'
     viz5B:
-      en: '<TODO>'
-      fr: '<TODO>'
+      en: 'IMG/howto/Visualization_HowTo_5B-EN.png'
+      fr: 'IMG/howto/Visualization_HowTo_5B-FR.png'
 
   contactEmail:
     body:

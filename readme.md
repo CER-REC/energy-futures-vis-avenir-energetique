@@ -4,11 +4,9 @@ La version française suit.
 
 ## About This Project
 
-> The National Energy Board (NEB) worked together with leading data visualization experts in both academia and industry to create the [Exploring Canada’s Energy Future](http://apps2.neb-one.gc.ca/dvs) interactive online tool. This pilot concept, based on our flagship publication – [Canada’s Energy Future 2016: Energy Supply and Demand Projections to 2040](http://www.neb-one.gc.ca/nrg/ntgrtd/ftr/index-eng.html), will give Canadians a taste of the exciting new way the NEB will share data going forward.
+> This Exploring Canada’s Energy Future interactive online tool is part of the National Energy Board’s (NEB) Data Visualization Initiative (DVI) . The DVI is a three-year initiative to transform how the NEB structures and shares data. The objective is to enable evidence-based decision making and remove barriers to understanding Canada’s energy and pipeline systems through the use of user-friendly interactive visualizations. This visualization is based on our flagship publication – [Canada’s Energy Future](http://www.neb-one.gc.ca/nrg/ntgrtd/ftr/index-eng.html). You can explore Canada’s energy future right from your own computer. In the months and years to come we will use this innovative format to share our pipeline safety data, energy data series, energy infrastructure information, and a host of other topical data.
 
-> Our objective is to present quality data from our most recent energy outlook in an interactive graphic format that is user-friendly and clarifies complex information into “visualizations” that are easily understood,  so you can explore Canada’s energy future right from your own computer. In the months and years to come, we will use this innovative format to share our pipeline safety data, energy data series, energy infrastructure information, and a host of other topical data.
-
-> If you want to use the data for research and undertake your own review, all the data is downloadable and sharable. The chart images are also downloadable, and if you are interested in the source code for the visualizations, it will be available on the government’s Open Government portal: [open.canada.ca](http://open.canada.ca). 
+> If you want to use the data for research and undertake your own review, all the data is downloadable and shareable. The chart images are also downloadable, and if you are interested in the source code for the visualizations, it is available on the government’s Open Government portal: [open.canada.ca](http://open.canada.ca). 
 
 > We hope we are hitting the mark. Your feedback is essential. 
 
@@ -18,12 +16,17 @@ La version française suit.
 > ### Contributors
 > 
 > #### Data Source:
-> Abha Bhargava (Director), Matthew Hansen (Market Analyst), Bryce van Sluys (Market Analyst) 
+> Abha Bhargava (Director), Matthew Hansen (Market Analyst), Bryce van Sluys (Market Analyst), Chris Doleman (Market Analyst), Michael Nadew (Market Analyst) 
 > #### Coordination: 
-> Annette Hester (Concept and Coordination); Katherine Murphy (Project Manager); Stephen Chow (Data Coordination); Garth Rowe (Web Lead); Jim Chisholm (Information Management and Technology)
+> Annette Hester (Concept and Coordination); Katherine Murphy (Project Manager); Faiza Hussain (Administrative support); Stephen Chow (Data Coordination); Garth Rowe (Web Lead); Jim Chisholm (Information Management and Technology)
 > #### Data Visualization: 
-> Design: Lindsay MacDonald, Charles Perin, Jo Vermeulen and Doris Kosminsky
-> Technical: Stephanie Sachrajda, Patrick King, Alaa Azazi, Ben Cousins, Gerald McNulty and Claudio Esperança
+> Lead Design Research: Sheelagh Carpendale and Wesley Willett, iLab, University of Calgary.  
+> Design: Lindsay MacDonald, Charles Perin, Jo Vermeulen, Doris Kosminsky, Søren Knudsen, Lien Quach, Peter Buk, Shreya Chopra, Katrina Tabuli and Claudia Maurer  
+> Lead Technical: Vizworx  
+> Technical: Stephanie Sachrajda, Patrick King, Alaa Azazi, Abhishek Sharma, Ben Cousins and Claudio Esperança  
+> ### THIRD PARTY LICENSES
+> [Map showing provinces and territories reporting 2009 swine flu (H1N1) cases in Canada](https://commons.wikimedia.org/wiki/File:H1N1_Canada_map.svg) by [Fonadier](https://commons.wikimedia.org/wiki/User:Fonadier) is licensed under [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/) / Re-colored and rotated from original.
+
 
 ## About this Repository
 The repository includes all the code needed to run the Energy Futures Visualizations as a single page browser application. The app consists of four visualizations, driven by four sets of data on energy production and consumption in Canada. 
@@ -134,26 +137,28 @@ We're the development team with VizworX who put this project together for the NE
 
 ## Le projet
 
-> Pour créer l’outil interactif [Explorer l’avenir énergétique du Canada](http://apps2.neb-one.gc.ca/dvs), l’Office national de l’énergie s’est associé à des experts de la visualisation des données du milieu universitaire et de l’industrie. Fondé sur la publication phare [Avenir énergétique du Canada en 2016 –  Offre et demande énergétiques à l’horizon 2040](http://www.neb-one.gc.ca/nrg/ntgrtd/ftr/index-fra.html), ce projet donnera aux Canadiens un avant-goût du nouveau et fabuleux moyen qu’utilisera désormais l’Office pour diffuser ses données.
+> L’outil interactif Explorer l’avenir énergétique du Canada fait partie de l’initiative de visualisation de données de l’Office national de l’énergie. Échelonnée sur trois ans, cette dernière vise à transformer la manière dont l’Office structure et diffuse ses données. L’objectif est de soutenir un processus décisionnel fondé sur la preuve et d’éliminer les obstacles à la compréhension des réseaux énergétiques et pipeliniers canadiens grâce à des visualisations interactives faciles à utiliser. L’outil repose sur la publication phare de l’Office, [Avenir énergétique du Canada](http://www.neb-one.gc.ca/nrg/ntgrtd/ftr/index-fra.html); il vous permet d’explorer l’avenir énergétique du Canada à partir de votre propre ordinateur. Au cours des mois et des années à venir, l’Office utilisera ce format novateur pour diffuser ses données sur la sécurité des pipelines et sur l’énergie, l’information qu’il possède sur l’infrastructure énergétique et une foule d’autres renseignements spécialisés.  
 
-> Notre objectif consiste à présenter des données de qualité provenant de notre plus récente perspective énergétique dans un format interactif visuel qui est convivial et qui clarifie une information complexe grâce à des visualisations faciles à comprendre, afin que vous puissiez explorer par vous-même l’avenir énergétique du Canada à partir de votre propre ordinateur. Au cours des mois et des années à venir, l’Office utilisera ce format novateur pour diffuser ses données sur la sécurité des pipelines et sur l’énergie, l’information qu’il possède sur l’infrastructure énergétique et une foule d’autres renseignements spécialisés.
+> Si vous souhaitez utiliser les données pour vos recherches ou pour en faire votre propre analyse, vous pouvez les télécharger et les partager. Les graphiques peuvent aussi être téléchargés. Quant au code source des visualisations, il est accessible sur le portail du « gouvernement ouvert » à l’adresse [ouvert.canada.ca](http://ouvert.canada.ca/).
 
-> Si vous désirez utiliser les données pour vos recherches ou pour en faire votre propre analyse, vous pouvez les télécharger et les partager. Les graphiques peuvent aussi être téléchargés. Quant au code source des visualisations, il sera accessible sur le portail du « gouvernement ouvert » à l’adresse [open.canada.ca] (http://open.canada.ca). 
+> Nous espérons avoir atteint notre objectif. Votre rétroaction est essentielle.  
 
-> Nous espérons avoir atteint notre objectif. Votre rétroaction est essentielle. 
-
-> Vous pouvez nous faire parvenir vos commentaires et vos suggestions à l’adresse [conception-energie@neb-one.gc.ca](mailto:conception-energie@neb-one.gc.ca). Nous attendons vos commentaires avec impatience.
+> Vous pouvez nous la faire parvenir, ainsi que vos suggestions, à l’adresse [conceptionenergie@neb-one.gc.ca](mailto:conceptionenergie@neb-one.gc.ca). Votre opinion compte.
 
 
 > ### Collaborateurs
 > 
 > #### Source des données :
-Abha Bhargava (directrice), Matthew Hansen (analyste de marchés), Bryce van Sluys (analyste de marchés) 
+Abha Bhargava (directrice) et Matthew Hansen, Bryce van Sluys, Chris Doleman et Michael Nadew (analystes de marchés)    
 > #### Coordination : 
-Annette Hester (conception et coordination); Katherine Murphy (gestionnaire de projet); Stephen Chow (coordination des données); Garth Rowe (responsable du Web); Jim Chisholm (gestion de l’information et technologie)
+Annette Hester (conception et coordination); Katherine Murphy (gestionnaire de projet); Faiza Hussain (Soutien administratif); Stephen Chow (coordination des données); Garth Rowe (responsable du Web); Jim Chisholm (gestion de l’information et technologie)   
 > #### Visualisation des données : 
-> Conception : Lindsay MacDonald, Charles Perin, Jo Vermeulen et Doris Kosminsky
-> Aspect technique : Stephanie Sachrajda, Patrick King, Alaa Azazi, Ben Cousins, Gerald McNulty et Claudio Esperança
+> Recherche conceptuelle sous la direction de Sheelagh Carpendale et Wesley Willett, iLab, Université de Calgary   
+> Conception : Lindsay MacDonald, Charles Perin, Jo Vermeulen, Doris Kosminsky, Søren Knudsen, Lien Quach, Peter Buk, Shreya Chopra, Katrina Tabuli et Claudia Maurer   
+> Chef technique à VizworX   
+> Aspect technique : Stephanie Sachrajda, Patrick King, Alaa Azazi, Abhishek Sharma, Ben Cousins et Claudio Esperança   
+> ### LICENCES TIERCES
+> [La carte montre les provinces et territoires selon les signalements de cas de grippe A (H1N1).](https://commons.wikimedia.org/wiki/File:H1N1_Canada_map.svg) Elle a été créée par [Fonadier](https://commons.wikimedia.org/wiki/User:Fonadier) et porte la licence [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/)</a>. L’original a été recoloré et pivoté.
 
 ## Le référentiel
 Le référentiel renferme le code nécessaire à l’exécution des visualisations d’Avenir énergétique dans un navigateur basé sur le concept SPA (single page application). L’application comporte quatre visualisations, alimentées par quatre ensembles de données portant sur la production et la consommation d’énergie au Canada. 

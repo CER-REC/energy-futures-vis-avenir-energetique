@@ -40,11 +40,13 @@ class Visualization5
     selectRegionLabel: Tr.regionSelector.selectRegionLabel[@app.language]
     svgStylesheet: SvgStylesheetTemplate
     graphDescription: Tr.altText.viz5GraphAccessibleInstructions[@app.language]
+    sourcesLabel: Tr.sourceSelector.selectSourceLabel[@app.language]
 
     altText:
       sectorsHelp: Tr.altText.sectorsHelp[@app.language]
       datasetsHelp: Tr.altText.datasetsHelp[@app.language]
       scenariosHelp: Tr.altText.scenariosHelp[@app.language]
+      sourcesHelp: Tr.altText.sourcesHelp[@app.language]
 
     @datasetHelpPopover = new ControlsHelpPopover @app,
       popoverButtonId: 'datasetSelectorHelpButton'
@@ -72,6 +74,28 @@ class Visualization5
       content: => Tr.scenarioSelector.scenarioSelectorHelp[@config.dataset][@app.language]
       attachmentSelector: '.scenarioSelectorGroup'
       analyticsElement: 'Viz5 scenario help'
+
+    @sourcesHelpPopover = new ControlsHelpPopover @app,
+      popoverButtonId: 'sourceHelpButton'
+      outerClasses: 'vizModal controlsHelpPopover popOverLg sourceSelectorHelp'
+      innerClasses: 'viz5HelpTitle'
+      title: Tr.sourceSelector.selectSourceLabel[@app.language]
+      content: =>
+        images = @sourceColorIcons()
+        contentString = ''
+        for source in Constants.viz3Sources
+          contentString = """
+            <div class="#{'sourceLabel sourceLabel' + source}">
+              <img class="sourceIcon" src="#{images[source].img}" alt="#{Tr.altText.sources[source][@app.language]}">
+              <h2> #{Tr.sourceSelector.sources[source][@app.language]} </h2>
+              <div class="clearfix"> </div>
+              <p> #{Tr.sourceSelector.sourceSelectorHelp[source][@app.language]} </p>
+            </div>
+            """ + contentString
+        contentString = Tr.sourceSelector.sourceSelectorHelp.generalHelp[@app.language] + contentString
+        contentString
+      attachmentSelector: '.legendGroup'
+      analyticsElement: 'Viz5 source help'
 
     @provincesHelpPopover = new ControlsHelpPopover @app,
       popoverButtonId: 'provinceHelpButton'
@@ -179,6 +203,24 @@ class Visualization5
     # TODO: Setup graph events.
     # @setupGraphEvents()
 
+  # sourceColorIcons is only used for the sources help popover
+  # NB: There is no equivalent provinceColorIcons, because we do not show region icons
+  # on the help popover for regions
+  sourceColorIcons: ->
+    hydro:
+      img: 'IMG/sources/hydro_selected.svg'
+    solarWindGeothermal:
+      img: 'IMG/sources/solarWindGeo_selected.svg'
+    coal:
+      img: 'IMG/sources/coal_selected.svg'
+    naturalGas:
+      img: 'IMG/sources/naturalGas_selected.svg'
+    bio:
+      img: 'IMG/sources/biomass_selected.svg'
+    oilProducts:
+      img: 'IMG/sources/oil_products_selected.svg'
+    nuclear:
+      img: 'IMG/sources/nuclear_selected.svg'
 
   graphData: ->
     @app.providers[@config.dataset].energyConsumptionProvider.dataForViz5 @config

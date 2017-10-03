@@ -730,7 +730,9 @@ div.chartTooltip:after {
   box-shadow: inset 0px 0px 0px 3px #F00;
 }
 
-
+#canadasEnergyFutureVisualization #legendSelector {
+  padding-top: 25px;
+}
 
 #canadasEnergyFutureVisualization .vizButton {
   border-style: solid;
@@ -800,8 +802,8 @@ div.chartTooltip:after {
 #canadasEnergyFutureVisualization #provincesSelector,
 #canadasEnergyFutureVisualization #leftProvincesSelector,
 #canadasEnergyFutureVisualization #rightProvincesSelector,
-#canadasEnergyFutureVisualization #powerSourceSelector
-#canadasEnergyFutureVisualization #legendGroup {
+#canadasEnergyFutureVisualization #powerSourceSelector,
+#canadasEnergyFutureVisualization .legendGroup {
   position: relative;
 }
 
@@ -941,7 +943,7 @@ div.chartTooltip:after {
 
 #canadasEnergyFutureVisualization .selectorGroup {
   margin-bottom: 25px;
-  padding: 0px 5px 0px 5px;
+  padding: 0px 0px 0px 0px;
 }
 
 #canadasEnergyFutureVisualization span.titleLabel {
