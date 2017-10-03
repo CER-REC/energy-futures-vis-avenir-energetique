@@ -27,7 +27,7 @@ class LandingPage
         visualization3Link: Tr.landingPage.visualization3Link[@app.language]
         visualization4Link: Tr.landingPage.visualization4Link[@app.language]
         visualization5Link: Tr.landingPage.visualization5Link[@app.language]
-        panelRightContent: Mustache.render(Wet3VideoTemplate)
+        panelRightContent: Tr.landingPage.landingPageImage[@app.language]
         # panelRightContent: Mustache.render(Wet4VideoTemplate)
     
     @addEventListeners()
