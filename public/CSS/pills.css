@@ -95,13 +95,13 @@
 
 
 #canadasEnergyFutureVisualization .large .rosePillIcon {
-  height: 23px;
-  width: 23px;
-  border-radius: 0px 11.5px 11.5px 0px;
+  height: 27px;
+  width: 27px;
+  border-radius: 0px 13.5px 13.5px 0px;
   position: absolute;
   z-index: 1;
   /* WET override: */
-  margin: 0;
+  margin: -0.5px 0 0 0;
 }
 
 #canadasEnergyFutureVisualization .large .rosePillText {
@@ -112,8 +112,8 @@
 }
 
 #canadasEnergyFutureVisualization .small .rosePillIcon {
-  height: 18px;
-  width: 18px;
+  height: 19px;
+  width: 19px;
   border-radius: 0px 8.5px 8.5px 0px;
   position: absolute;
   z-index: 1;
