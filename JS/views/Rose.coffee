@@ -362,7 +362,7 @@ class Rose
         .append 'circle'
         .attr
           class: 'shadowPill'
-          r: 0
+          r: 0.0001   # This needs to be slightly greater than zero to render correctly on Firefox.
           # cx: Constants.roseOuterCircleRadius * Math.cos(data.startAngle + Math.PI / 6)
           # cy: Constants.roseOuterCircleRadius * Math.sin(data.startAngle + Math.PI / 6)
           cx: 0
