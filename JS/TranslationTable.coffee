@@ -54,8 +54,8 @@ module.exports =
       fr: 'EXPLORER LA DEMANDE'
 
     landingPageImage:
-      en: '<img src="IMG/landingPageThumb/Canada Rose EN Gas-HI-RES.png"/>'
-      fr: '<img src="IMG/landingPageThumb/Canada Rose FR Gas-HI-RES.png"/>'
+      en: '<img src="IMG/landingPageThumb/Canada Rose Final Image.png"/>'
+      fr: '<img src="IMG/landingPageThumb/Canada Rose Final Image.png"/>'
 
 
   allPages:
