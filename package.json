@@ -1,6 +1,6 @@
 {
   "name": "d3-neb",
-  "version": "1.2.5",
+  "version": "1.2.6",
   "description": "NEB project",
   "scripts": {
     "build": "browserify JS/App.coffee -p ./tasks/prod-dotenv-browserify-plugin.js -t coffeeify --extension='.coffee' -t [ stringify --extensions [.mustache .css] ] -t envify -g uglifyify -o dist/public/bundle.js",
