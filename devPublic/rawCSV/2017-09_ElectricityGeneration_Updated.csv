@@ -226,11 +226,11 @@ N/A,Oil Products,Canada,HCP,2012,4209.3968,GW.h
 N/A,Oil Products,Canada,HCP,2013,4016.1559,GW.h
 N/A,Oil Products,Canada,HCP,2014,3226.4817,GW.h
 N/A,Oil Products,Canada,HCP,2015,4041.0582,GW.h
-N/A,Oil Products,Canada,HCP,2016,3327.32,GW.h
-N/A,Oil Products,Canada,HCP,2017,3505.7348,GW.h
-N/A,Oil Products,Canada,HCP,2018,3514.5044,GW.h
+N/A,Oil Products,Canada,HCP,2016,3347.32,GW.h
+N/A,Oil Products,Canada,HCP,2017,3525.7348,GW.h
+N/A,Oil Products,Canada,HCP,2018,3534.5044,GW.h
 N/A,Oil Products,Canada,HCP,2019,3802.9203,GW.h
-N/A,Oil Products,Canada,HCP,2020,2119.1661,GW.h
+N/A,Oil Products,Canada,HCP,2020,2139.1661,GW.h
 N/A,Oil Products,Canada,HCP,2021,2157.5726,GW.h
 N/A,Oil Products,Canada,HCP,2022,2388.2035,GW.h
 N/A,Oil Products,Canada,HCP,2023,2376.8775,GW.h
@@ -334,11 +334,11 @@ N/A,Total Generation,Canada,HCP,2012,623308.2768,GW.h
 N/A,Total Generation,Canada,HCP,2013,643421.1819,GW.h
 N/A,Total Generation,Canada,HCP,2014,645579.2938,GW.h
 N/A,Total Generation,Canada,HCP,2015,645981.1789,GW.h
-N/A,Total Generation,Canada,HCP,2016,646317.7601,GW.h
-N/A,Total Generation,Canada,HCP,2017,645741.7326,GW.h
-N/A,Total Generation,Canada,HCP,2018,650413.624,GW.h
+N/A,Total Generation,Canada,HCP,2016,646337.7601,GW.h
+N/A,Total Generation,Canada,HCP,2017,645761.7326,GW.h
+N/A,Total Generation,Canada,HCP,2018,650433.624,GW.h
 N/A,Total Generation,Canada,HCP,2019,652539.8944,GW.h
-N/A,Total Generation,Canada,HCP,2020,658678.6156,GW.h
+N/A,Total Generation,Canada,HCP,2020,658698.6156,GW.h
 N/A,Total Generation,Canada,HCP,2021,664590.1666,GW.h
 N/A,Total Generation,Canada,HCP,2022,660691.9517,GW.h
 N/A,Total Generation,Canada,HCP,2023,659868.5271,GW.h
@@ -1151,15 +1151,15 @@ N/A,Solar/Wind/Geothermal,Manitoba,HCP,2037,1949.986,GW.h
 N/A,Solar/Wind/Geothermal,Manitoba,HCP,2038,1949.986,GW.h
 N/A,Solar/Wind/Geothermal,Manitoba,HCP,2039,1949.986,GW.h
 N/A,Solar/Wind/Geothermal,Manitoba,HCP,2040,1949.987,GW.h
-N/A,Biofuels/Biomass,Manitoba,HCP,2005,0,GW.h
-N/A,Biofuels/Biomass,Manitoba,HCP,2006,0,GW.h
-N/A,Biofuels/Biomass,Manitoba,HCP,2007,0,GW.h
-N/A,Biofuels/Biomass,Manitoba,HCP,2008,0,GW.h
+N/A,Biofuels/Biomass,Manitoba,HCP,2005,27.33,GW.h
+N/A,Biofuels/Biomass,Manitoba,HCP,2006,32,GW.h
+N/A,Biofuels/Biomass,Manitoba,HCP,2007,27,GW.h
+N/A,Biofuels/Biomass,Manitoba,HCP,2008,38,GW.h
 N/A,Biofuels/Biomass,Manitoba,HCP,2009,0,GW.h
 N/A,Biofuels/Biomass,Manitoba,HCP,2010,0,GW.h
 N/A,Biofuels/Biomass,Manitoba,HCP,2011,0,GW.h
-N/A,Biofuels/Biomass,Manitoba,HCP,2012,0,GW.h
-N/A,Biofuels/Biomass,Manitoba,HCP,2013,0,GW.h
+N/A,Biofuels/Biomass,Manitoba,HCP,2012,39,GW.h
+N/A,Biofuels/Biomass,Manitoba,HCP,2013,42,GW.h
 N/A,Biofuels/Biomass,Manitoba,HCP,2014,57,GW.h
 N/A,Biofuels/Biomass,Manitoba,HCP,2015,100,GW.h
 N/A,Biofuels/Biomass,Manitoba,HCP,2016,78.286,GW.h
@@ -3674,12 +3674,12 @@ N/A,Solar/Wind/Geothermal,Prince Edward Island,HCP,2040,1127.437,GW.h
 N/A,Biofuels/Biomass,Prince Edward Island,HCP,2005,0,GW.h
 N/A,Biofuels/Biomass,Prince Edward Island,HCP,2006,0,GW.h
 N/A,Biofuels/Biomass,Prince Edward Island,HCP,2007,0,GW.h
-N/A,Biofuels/Biomass,Prince Edward Island,HCP,2008,0,GW.h
-N/A,Biofuels/Biomass,Prince Edward Island,HCP,2009,0,GW.h
-N/A,Biofuels/Biomass,Prince Edward Island,HCP,2010,0,GW.h
-N/A,Biofuels/Biomass,Prince Edward Island,HCP,2011,0,GW.h
-N/A,Biofuels/Biomass,Prince Edward Island,HCP,2012,0,GW.h
-N/A,Biofuels/Biomass,Prince Edward Island,HCP,2013,0,GW.h
+N/A,Biofuels/Biomass,Prince Edward Island,HCP,2008,5,GW.h
+N/A,Biofuels/Biomass,Prince Edward Island,HCP,2009,5,GW.h
+N/A,Biofuels/Biomass,Prince Edward Island,HCP,2010,5,GW.h
+N/A,Biofuels/Biomass,Prince Edward Island,HCP,2011,5,GW.h
+N/A,Biofuels/Biomass,Prince Edward Island,HCP,2012,5,GW.h
+N/A,Biofuels/Biomass,Prince Edward Island,HCP,2013,5,GW.h
 N/A,Biofuels/Biomass,Prince Edward Island,HCP,2014,7,GW.h
 N/A,Biofuels/Biomass,Prince Edward Island,HCP,2015,4,GW.h
 N/A,Biofuels/Biomass,Prince Edward Island,HCP,2016,5.068,GW.h
@@ -4906,11 +4906,11 @@ N/A,Oil Products,Yukon ,HCP,2012,24.365,GW.h
 N/A,Oil Products,Yukon ,HCP,2013,23.291,GW.h
 N/A,Oil Products,Yukon ,HCP,2014,22.684,GW.h
 N/A,Oil Products,Yukon ,HCP,2015,20.712,GW.h
-N/A,Oil Products,Yukon ,HCP,2016,0.3579,GW.h
-N/A,Oil Products,Yukon ,HCP,2017,0.7996,GW.h
-N/A,Oil Products,Yukon ,HCP,2018,0.4039,GW.h
+N/A,Oil Products,Yukon ,HCP,2016,20.3579,GW.h
+N/A,Oil Products,Yukon ,HCP,2017,20.7996,GW.h
+N/A,Oil Products,Yukon ,HCP,2018,20.4039,GW.h
 N/A,Oil Products,Yukon ,HCP,2019,18.5943,GW.h
-N/A,Oil Products,Yukon ,HCP,2020,10.9868,GW.h
+N/A,Oil Products,Yukon ,HCP,2020,30.9868,GW.h
 N/A,Oil Products,Yukon ,HCP,2021,38.053,GW.h
 N/A,Oil Products,Yukon ,HCP,2022,33.7642,GW.h
 N/A,Oil Products,Yukon ,HCP,2023,33.0077,GW.h
@@ -5014,11 +5014,11 @@ N/A,Total Generation,Yukon ,HCP,2012,455.004,GW.h
 N/A,Total Generation,Yukon ,HCP,2013,370.755,GW.h
 N/A,Total Generation,Yukon ,HCP,2014,358.506,GW.h
 N/A,Total Generation,Yukon ,HCP,2015,442.8187,GW.h
-N/A,Total Generation,Yukon ,HCP,2016,428.9016,GW.h
-N/A,Total Generation,Yukon ,HCP,2017,419.7425,GW.h
-N/A,Total Generation,Yukon ,HCP,2018,391.7974,GW.h
+N/A,Total Generation,Yukon ,HCP,2016,448.9016,GW.h
+N/A,Total Generation,Yukon ,HCP,2017,439.7425,GW.h
+N/A,Total Generation,Yukon ,HCP,2018,411.7974,GW.h
 N/A,Total Generation,Yukon ,HCP,2019,427.9178,GW.h
-N/A,Total Generation,Yukon ,HCP,2020,454.9585,GW.h
+N/A,Total Generation,Yukon ,HCP,2020,474.9585,GW.h
 N/A,Total Generation,Yukon ,HCP,2021,456.7527,GW.h
 N/A,Total Generation,Yukon ,HCP,2022,473.2144,GW.h
 N/A,Total Generation,Yukon ,HCP,2023,481.3598,GW.h
@@ -5266,13 +5266,13 @@ N/A,Oil Products,Canada,Technology,2012,4209.3968,GW.h
 N/A,Oil Products,Canada,Technology,2013,4016.1559,GW.h
 N/A,Oil Products,Canada,Technology,2014,3226.4817,GW.h
 N/A,Oil Products,Canada,Technology,2015,4041.0582,GW.h
-N/A,Oil Products,Canada,Technology,2016,3333.2385,GW.h
-N/A,Oil Products,Canada,Technology,2017,3524.7574,GW.h
-N/A,Oil Products,Canada,Technology,2018,3533.8582,GW.h
-N/A,Oil Products,Canada,Technology,2019,3774.0583,GW.h
-N/A,Oil Products,Canada,Technology,2020,2112.7384,GW.h
-N/A,Oil Products,Canada,Technology,2021,2135.2516,GW.h
-N/A,Oil Products,Canada,Technology,2022,2379.0069,GW.h
+N/A,Oil Products,Canada,Technology,2016,3353.2385,GW.h
+N/A,Oil Products,Canada,Technology,2017,3544.7574,GW.h
+N/A,Oil Products,Canada,Technology,2018,3553.8582,GW.h
+N/A,Oil Products,Canada,Technology,2019,3794.0583,GW.h
+N/A,Oil Products,Canada,Technology,2020,2132.7384,GW.h
+N/A,Oil Products,Canada,Technology,2021,2145.2516,GW.h
+N/A,Oil Products,Canada,Technology,2022,2389.0069,GW.h
 N/A,Oil Products,Canada,Technology,2023,2486.1981,GW.h
 N/A,Oil Products,Canada,Technology,2024,2706.7774,GW.h
 N/A,Oil Products,Canada,Technology,2025,2759.407,GW.h
@@ -5374,13 +5374,13 @@ N/A,Total Generation,Canada,Technology,2012,623308.2768,GW.h
 N/A,Total Generation,Canada,Technology,2013,643421.1819,GW.h
 N/A,Total Generation,Canada,Technology,2014,645579.2938,GW.h
 N/A,Total Generation,Canada,Technology,2015,645981.1789,GW.h
-N/A,Total Generation,Canada,Technology,2016,646355.3069,GW.h
-N/A,Total Generation,Canada,Technology,2017,645636.368,GW.h
-N/A,Total Generation,Canada,Technology,2018,650565.8815,GW.h
-N/A,Total Generation,Canada,Technology,2019,652324.372,GW.h
-N/A,Total Generation,Canada,Technology,2020,658540.2326,GW.h
-N/A,Total Generation,Canada,Technology,2021,664574.3145,GW.h
-N/A,Total Generation,Canada,Technology,2022,660760.5829,GW.h
+N/A,Total Generation,Canada,Technology,2016,646375.3069,GW.h
+N/A,Total Generation,Canada,Technology,2017,645656.368,GW.h
+N/A,Total Generation,Canada,Technology,2018,650585.8815,GW.h
+N/A,Total Generation,Canada,Technology,2019,652344.372,GW.h
+N/A,Total Generation,Canada,Technology,2020,658560.2326,GW.h
+N/A,Total Generation,Canada,Technology,2021,664584.3145,GW.h
+N/A,Total Generation,Canada,Technology,2022,660770.5829,GW.h
 N/A,Total Generation,Canada,Technology,2023,660117.955,GW.h
 N/A,Total Generation,Canada,Technology,2024,656432.3894,GW.h
 N/A,Total Generation,Canada,Technology,2025,660622.2922,GW.h
@@ -6191,15 +6191,15 @@ N/A,Solar/Wind/Geothermal,Manitoba,Technology,2037,1949.987,GW.h
 N/A,Solar/Wind/Geothermal,Manitoba,Technology,2038,1949.986,GW.h
 N/A,Solar/Wind/Geothermal,Manitoba,Technology,2039,1949.987,GW.h
 N/A,Solar/Wind/Geothermal,Manitoba,Technology,2040,1949.986,GW.h
-N/A,Biofuels/Biomass,Manitoba,Technology,2005,0,GW.h
-N/A,Biofuels/Biomass,Manitoba,Technology,2006,0,GW.h
-N/A,Biofuels/Biomass,Manitoba,Technology,2007,0,GW.h
-N/A,Biofuels/Biomass,Manitoba,Technology,2008,0,GW.h
+N/A,Biofuels/Biomass,Manitoba,Technology,2005,27.33,GW.h
+N/A,Biofuels/Biomass,Manitoba,Technology,2006,32,GW.h
+N/A,Biofuels/Biomass,Manitoba,Technology,2007,27,GW.h
+N/A,Biofuels/Biomass,Manitoba,Technology,2008,38,GW.h
 N/A,Biofuels/Biomass,Manitoba,Technology,2009,0,GW.h
 N/A,Biofuels/Biomass,Manitoba,Technology,2010,0,GW.h
 N/A,Biofuels/Biomass,Manitoba,Technology,2011,0,GW.h
-N/A,Biofuels/Biomass,Manitoba,Technology,2012,0,GW.h
-N/A,Biofuels/Biomass,Manitoba,Technology,2013,0,GW.h
+N/A,Biofuels/Biomass,Manitoba,Technology,2012,39,GW.h
+N/A,Biofuels/Biomass,Manitoba,Technology,2013,42,GW.h
 N/A,Biofuels/Biomass,Manitoba,Technology,2014,57,GW.h
 N/A,Biofuels/Biomass,Manitoba,Technology,2015,100,GW.h
 N/A,Biofuels/Biomass,Manitoba,Technology,2016,78.286,GW.h
@@ -8714,12 +8714,12 @@ N/A,Solar/Wind/Geothermal,Prince Edward Island,Technology,2040,1127.437,GW.h
 N/A,Biofuels/Biomass,Prince Edward Island,Technology,2005,0,GW.h
 N/A,Biofuels/Biomass,Prince Edward Island,Technology,2006,0,GW.h
 N/A,Biofuels/Biomass,Prince Edward Island,Technology,2007,0,GW.h
-N/A,Biofuels/Biomass,Prince Edward Island,Technology,2008,0,GW.h
-N/A,Biofuels/Biomass,Prince Edward Island,Technology,2009,0,GW.h
-N/A,Biofuels/Biomass,Prince Edward Island,Technology,2010,0,GW.h
-N/A,Biofuels/Biomass,Prince Edward Island,Technology,2011,0,GW.h
-N/A,Biofuels/Biomass,Prince Edward Island,Technology,2012,0,GW.h
-N/A,Biofuels/Biomass,Prince Edward Island,Technology,2013,0,GW.h
+N/A,Biofuels/Biomass,Prince Edward Island,Technology,2008,5,GW.h
+N/A,Biofuels/Biomass,Prince Edward Island,Technology,2009,5,GW.h
+N/A,Biofuels/Biomass,Prince Edward Island,Technology,2010,5,GW.h
+N/A,Biofuels/Biomass,Prince Edward Island,Technology,2011,5,GW.h
+N/A,Biofuels/Biomass,Prince Edward Island,Technology,2012,5,GW.h
+N/A,Biofuels/Biomass,Prince Edward Island,Technology,2013,5,GW.h
 N/A,Biofuels/Biomass,Prince Edward Island,Technology,2014,7,GW.h
 N/A,Biofuels/Biomass,Prince Edward Island,Technology,2015,4,GW.h
 N/A,Biofuels/Biomass,Prince Edward Island,Technology,2016,5.068,GW.h
@@ -9946,13 +9946,13 @@ N/A,Oil Products,Yukon ,Technology,2012,24.365,GW.h
 N/A,Oil Products,Yukon ,Technology,2013,23.291,GW.h
 N/A,Oil Products,Yukon ,Technology,2014,22.684,GW.h
 N/A,Oil Products,Yukon ,Technology,2015,20.712,GW.h
-N/A,Oil Products,Yukon ,Technology,2016,0,GW.h
-N/A,Oil Products,Yukon ,Technology,2017,0,GW.h
-N/A,Oil Products,Yukon ,Technology,2018,0,GW.h
-N/A,Oil Products,Yukon ,Technology,2019,0.5699,GW.h
-N/A,Oil Products,Yukon ,Technology,2020,2.9193,GW.h
-N/A,Oil Products,Yukon ,Technology,2021,9.5452,GW.h
-N/A,Oil Products,Yukon ,Technology,2022,7.9515,GW.h
+N/A,Oil Products,Yukon ,Technology,2016,20,GW.h
+N/A,Oil Products,Yukon ,Technology,2017,20,GW.h
+N/A,Oil Products,Yukon ,Technology,2018,20,GW.h
+N/A,Oil Products,Yukon ,Technology,2019,20.5699,GW.h
+N/A,Oil Products,Yukon ,Technology,2020,22.9193,GW.h
+N/A,Oil Products,Yukon ,Technology,2021,19.5452,GW.h
+N/A,Oil Products,Yukon ,Technology,2022,17.9515,GW.h
 N/A,Oil Products,Yukon ,Technology,2023,28.5302,GW.h
 N/A,Oil Products,Yukon ,Technology,2024,62.8041,GW.h
 N/A,Oil Products,Yukon ,Technology,2025,94.3688,GW.h
@@ -10054,13 +10054,13 @@ N/A,Total Generation,Yukon ,Technology,2012,455.004,GW.h
 N/A,Total Generation,Yukon ,Technology,2013,370.755,GW.h
 N/A,Total Generation,Yukon ,Technology,2014,358.506,GW.h
 N/A,Total Generation,Yukon ,Technology,2015,442.8187,GW.h
-N/A,Total Generation,Yukon ,Technology,2016,428.9016,GW.h
-N/A,Total Generation,Yukon ,Technology,2017,419.7425,GW.h
-N/A,Total Generation,Yukon ,Technology,2018,391.7974,GW.h
-N/A,Total Generation,Yukon ,Technology,2019,429.4152,GW.h
-N/A,Total Generation,Yukon ,Technology,2020,454.8706,GW.h
-N/A,Total Generation,Yukon ,Technology,2021,459.9413,GW.h
-N/A,Total Generation,Yukon ,Technology,2022,478.7391,GW.h
+N/A,Total Generation,Yukon ,Technology,2016,448.9016,GW.h
+N/A,Total Generation,Yukon ,Technology,2017,439.7425,GW.h
+N/A,Total Generation,Yukon ,Technology,2018,411.7974,GW.h
+N/A,Total Generation,Yukon ,Technology,2019,449.4152,GW.h
+N/A,Total Generation,Yukon ,Technology,2020,474.8706,GW.h
+N/A,Total Generation,Yukon ,Technology,2021,469.9413,GW.h
+N/A,Total Generation,Yukon ,Technology,2022,488.7391,GW.h
 N/A,Total Generation,Yukon ,Technology,2023,482.4987,GW.h
 N/A,Total Generation,Yukon ,Technology,2024,655.3267,GW.h
 N/A,Total Generation,Yukon ,Technology,2025,720.3694,GW.h
@@ -10306,11 +10306,11 @@ N/A,Oil Products,Canada,Reference,2012,4209.3968,GW.h
 N/A,Oil Products,Canada,Reference,2013,4016.1559,GW.h
 N/A,Oil Products,Canada,Reference,2014,3226.4817,GW.h
 N/A,Oil Products,Canada,Reference,2015,4041.0582,GW.h
-N/A,Oil Products,Canada,Reference,2016,3327.32,GW.h
-N/A,Oil Products,Canada,Reference,2017,3505.9525,GW.h
-N/A,Oil Products,Canada,Reference,2018,3514.7706,GW.h
+N/A,Oil Products,Canada,Reference,2016,3347.32,GW.h
+N/A,Oil Products,Canada,Reference,2017,3525.9525,GW.h
+N/A,Oil Products,Canada,Reference,2018,3534.7706,GW.h
 N/A,Oil Products,Canada,Reference,2019,3803.1701,GW.h
-N/A,Oil Products,Canada,Reference,2020,2119.5686,GW.h
+N/A,Oil Products,Canada,Reference,2020,2129.5686,GW.h
 N/A,Oil Products,Canada,Reference,2021,2158.4774,GW.h
 N/A,Oil Products,Canada,Reference,2022,2386.4952,GW.h
 N/A,Oil Products,Canada,Reference,2023,2368.8737,GW.h
@@ -10414,11 +10414,11 @@ N/A,Total Generation,Canada,Reference,2012,623308.2768,GW.h
 N/A,Total Generation,Canada,Reference,2013,643421.1819,GW.h
 N/A,Total Generation,Canada,Reference,2014,645579.2938,GW.h
 N/A,Total Generation,Canada,Reference,2015,645981.1789,GW.h
-N/A,Total Generation,Canada,Reference,2016,646315.1491,GW.h
-N/A,Total Generation,Canada,Reference,2017,645813.3185,GW.h
-N/A,Total Generation,Canada,Reference,2018,650544.3633,GW.h
+N/A,Total Generation,Canada,Reference,2016,646335.1491,GW.h
+N/A,Total Generation,Canada,Reference,2017,645833.3185,GW.h
+N/A,Total Generation,Canada,Reference,2018,650564.3633,GW.h
 N/A,Total Generation,Canada,Reference,2019,652644.1507,GW.h
-N/A,Total Generation,Canada,Reference,2020,658792.4198,GW.h
+N/A,Total Generation,Canada,Reference,2020,658802.4198,GW.h
 N/A,Total Generation,Canada,Reference,2021,664740.8124,GW.h
 N/A,Total Generation,Canada,Reference,2022,660921.2384,GW.h
 N/A,Total Generation,Canada,Reference,2023,660685.1153,GW.h
@@ -11231,15 +11231,15 @@ N/A,Solar/Wind/Geothermal,Manitoba,Reference,2037,1949.986,GW.h
 N/A,Solar/Wind/Geothermal,Manitoba,Reference,2038,1949.985,GW.h
 N/A,Solar/Wind/Geothermal,Manitoba,Reference,2039,1949.987,GW.h
 N/A,Solar/Wind/Geothermal,Manitoba,Reference,2040,1949.987,GW.h
-N/A,Biofuels/Biomass,Manitoba,Reference,2005,0,GW.h
-N/A,Biofuels/Biomass,Manitoba,Reference,2006,0,GW.h
-N/A,Biofuels/Biomass,Manitoba,Reference,2007,0,GW.h
-N/A,Biofuels/Biomass,Manitoba,Reference,2008,0,GW.h
+N/A,Biofuels/Biomass,Manitoba,Reference,2005,27.33,GW.h
+N/A,Biofuels/Biomass,Manitoba,Reference,2006,32,GW.h
+N/A,Biofuels/Biomass,Manitoba,Reference,2007,27,GW.h
+N/A,Biofuels/Biomass,Manitoba,Reference,2008,38,GW.h
 N/A,Biofuels/Biomass,Manitoba,Reference,2009,0,GW.h
 N/A,Biofuels/Biomass,Manitoba,Reference,2010,0,GW.h
 N/A,Biofuels/Biomass,Manitoba,Reference,2011,0,GW.h
-N/A,Biofuels/Biomass,Manitoba,Reference,2012,0,GW.h
-N/A,Biofuels/Biomass,Manitoba,Reference,2013,0,GW.h
+N/A,Biofuels/Biomass,Manitoba,Reference,2012,39,GW.h
+N/A,Biofuels/Biomass,Manitoba,Reference,2013,42,GW.h
 N/A,Biofuels/Biomass,Manitoba,Reference,2014,57,GW.h
 N/A,Biofuels/Biomass,Manitoba,Reference,2015,100,GW.h
 N/A,Biofuels/Biomass,Manitoba,Reference,2016,78.286,GW.h
@@ -13754,12 +13754,12 @@ N/A,Solar/Wind/Geothermal,Prince Edward Island,Reference,2040,1127.437,GW.h
 N/A,Biofuels/Biomass,Prince Edward Island,Reference,2005,0,GW.h
 N/A,Biofuels/Biomass,Prince Edward Island,Reference,2006,0,GW.h
 N/A,Biofuels/Biomass,Prince Edward Island,Reference,2007,0,GW.h
-N/A,Biofuels/Biomass,Prince Edward Island,Reference,2008,0,GW.h
-N/A,Biofuels/Biomass,Prince Edward Island,Reference,2009,0,GW.h
-N/A,Biofuels/Biomass,Prince Edward Island,Reference,2010,0,GW.h
-N/A,Biofuels/Biomass,Prince Edward Island,Reference,2011,0,GW.h
-N/A,Biofuels/Biomass,Prince Edward Island,Reference,2012,0,GW.h
-N/A,Biofuels/Biomass,Prince Edward Island,Reference,2013,0,GW.h
+N/A,Biofuels/Biomass,Prince Edward Island,Reference,2008,5,GW.h
+N/A,Biofuels/Biomass,Prince Edward Island,Reference,2009,5,GW.h
+N/A,Biofuels/Biomass,Prince Edward Island,Reference,2010,5,GW.h
+N/A,Biofuels/Biomass,Prince Edward Island,Reference,2011,5,GW.h
+N/A,Biofuels/Biomass,Prince Edward Island,Reference,2012,5,GW.h
+N/A,Biofuels/Biomass,Prince Edward Island,Reference,2013,5,GW.h
 N/A,Biofuels/Biomass,Prince Edward Island,Reference,2014,7,GW.h
 N/A,Biofuels/Biomass,Prince Edward Island,Reference,2015,4,GW.h
 N/A,Biofuels/Biomass,Prince Edward Island,Reference,2016,5.068,GW.h
@@ -14986,11 +14986,11 @@ N/A,Oil Products,Yukon ,Reference,2012,24.365,GW.h
 N/A,Oil Products,Yukon ,Reference,2013,23.291,GW.h
 N/A,Oil Products,Yukon ,Reference,2014,22.684,GW.h
 N/A,Oil Products,Yukon ,Reference,2015,20.712,GW.h
-N/A,Oil Products,Yukon ,Reference,2016,0.3579,GW.h
-N/A,Oil Products,Yukon ,Reference,2017,0.7996,GW.h
-N/A,Oil Products,Yukon ,Reference,2018,0.4039,GW.h
+N/A,Oil Products,Yukon ,Reference,2016,20.3579,GW.h
+N/A,Oil Products,Yukon ,Reference,2017,20.7996,GW.h
+N/A,Oil Products,Yukon ,Reference,2018,20.4039,GW.h
 N/A,Oil Products,Yukon ,Reference,2019,18.5943,GW.h
-N/A,Oil Products,Yukon ,Reference,2020,10.9868,GW.h
+N/A,Oil Products,Yukon ,Reference,2020,20.9868,GW.h
 N/A,Oil Products,Yukon ,Reference,2021,38.053,GW.h
 N/A,Oil Products,Yukon ,Reference,2022,33.7642,GW.h
 N/A,Oil Products,Yukon ,Reference,2023,33.0033,GW.h
@@ -15094,11 +15094,11 @@ N/A,Total Generation,Yukon ,Reference,2012,455.004,GW.h
 N/A,Total Generation,Yukon ,Reference,2013,370.755,GW.h
 N/A,Total Generation,Yukon ,Reference,2014,358.506,GW.h
 N/A,Total Generation,Yukon ,Reference,2015,442.8187,GW.h
-N/A,Total Generation,Yukon ,Reference,2016,428.9016,GW.h
-N/A,Total Generation,Yukon ,Reference,2017,419.7425,GW.h
-N/A,Total Generation,Yukon ,Reference,2018,391.7974,GW.h
+N/A,Total Generation,Yukon ,Reference,2016,448.9016,GW.h
+N/A,Total Generation,Yukon ,Reference,2017,439.7425,GW.h
+N/A,Total Generation,Yukon ,Reference,2018,411.7974,GW.h
 N/A,Total Generation,Yukon ,Reference,2019,427.9178,GW.h
-N/A,Total Generation,Yukon ,Reference,2020,454.9585,GW.h
+N/A,Total Generation,Yukon ,Reference,2020,464.9585,GW.h
 N/A,Total Generation,Yukon ,Reference,2021,456.7528,GW.h
 N/A,Total Generation,Yukon ,Reference,2022,473.2144,GW.h
 N/A,Total Generation,Yukon ,Reference,2023,481.3598,GW.h
