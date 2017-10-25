@@ -1232,13 +1232,13 @@ svg { overflow: hidden; }
 }
 #canadasEnergyFutureVisualization .pillPopoverText {
   font-size: 16px;
-  font-family: Avenir Next Demi, Arial Narrow, Arial, Verdana, sans-serif;
+  font-family: Avenir Next Demi Condensed, Arial Narrow, Arial, Verdana, sans-serif;
   display: block;
   margin: 0 0 0 10px;
 }
 #canadasEnergyFutureVisualization .pillPopoverTextSmall {
   font-size: 12px;
-  font-family: Avenir Next Demi, Arial Narrow, Arial, Verdana, sans-serif;
+  font-family: Avenir Next Demi Condensed, Arial Narrow, Arial, Verdana, sans-serif;
   display: block;
   margin: 0 0 10px 20px;
 }
