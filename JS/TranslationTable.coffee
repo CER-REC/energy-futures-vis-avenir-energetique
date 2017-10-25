@@ -1213,6 +1213,9 @@ module.exports =
       all:
         en: 'Canada'
         fr: 'Canada'
+      Canada:
+        en: 'Canada'
+        fr: 'Canada'
     mainSelection:
       mainSelection:
         en: 'selection'
@@ -1342,6 +1345,13 @@ module.exports =
       highLng:
         en: 'HIGH LNG'
         fr: 'GNL ÉLEVÉ'
+      technology:
+        en: 'TECHNOLOGY'
+        fr: 'AVANCÉES TECHNOLOGIQUES'
+      hcp:
+        en: 'HIGH CO2 PRICE'
+        fr: 'TARIFICATION DU CARBONE ÉLEVÉE'
+
     year:
       en: 'year'
       fr: 'an'
