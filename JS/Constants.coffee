@@ -405,8 +405,11 @@ module.exports =
   # visualization.
   roseSize: 118 # px
   roseOuterCircleRadius: 53 # px
-  roseBaselineCircleRadius: 31 # px
+  roseBaselineCircleRadius: 33 # px
   roseCentreCircleRadius: 12 # px
+
+  roseOuterCircleDataRadius: 20 # px
+  roseCentreCircleDataRadius: -20 # px
 
   twoRoseTopMargin: 100
   viz5GraphSVGHeight: 538
