@@ -314,74 +314,6 @@ class Rose
           @petalPath1 d.value, Constants.viz5RoseData[d.source].startAngle, d.source
     @animateElement petalElement
 
-#    # Petals
-#    petalElement = @innerContainer.selectAll '.petal2'
-#      .data @options.data
-#      .enter()
-#      .append 'path'
-#      .attr
-#        class: 'petal2'
-#        fill: (d) ->
-#          d3.hsl(Constants.viz5RoseData[d.source].colour).darker(0.5)
-#        d: (d) =>
-#          if d.value > 0 && d.value > (Constants.roseOuterCircleDataRadius/2 - Constants.roseThornLength)
-#            @petalPath2 d.value - (Constants.roseOuterCircleDataRadius/2 - Constants.roseThornLength), Constants.viz5RoseData[d.source].startAngle, d.source
-#          else
-#            ""
-#    @animateElement petalElement
-#
-#    # Petals
-#    petalElement = @innerContainer.selectAll '.petal3'
-#      .data @options.data
-#      .enter()
-#      .append 'path'
-#      .attr
-#        class: 'petal3'
-#        fill: (d) ->
-#          d3.hsl(Constants.viz5RoseData[d.source].colour).darker()
-#        d: (d) =>
-#          if d.value > 0 && d.value > 2*(Constants.roseOuterCircleDataRadius/2 - Constants.roseThornLength)
-#            @petalPath2 d.value - 2*(Constants.roseOuterCircleDataRadius/2 - Constants.roseThornLength), Constants.viz5RoseData[d.source].startAngle, d.source
-#          else
-#            ""
-#    @animateElement petalElement
-
-#    # Clipmarks
-#    roseClipMarkOuter = @innerContainer.selectAll 'path.roseClipMarkOuter'
-#      .data @options.data
-#      .enter()
-#      .append 'path'
-#      .attr
-#        class: (d) ->
-#          'roseClipMarkOuter ' + d.source
-#        stroke: '#FFF0'
-#        'stroke-width': 3.25
-#        d: (d) =>
-#          @ClipMarkPath 24.25, Constants.viz5RoseData[d.source].startAngle
-#        fill: 'none'
-#    @animateElement roseClipMarkOuter
-
-#    # Clipmarks
-#    roseClipMarkInner = @innerContainer.selectAll 'path.roseClipMarkInner'
-#      .data @options.data
-#      .enter()
-#      .append 'path'
-#      .attr
-#        class: (d) ->
-#          'roseClipMarkInner ' + d.source
-#        stroke: '#FFF0'
-#        'stroke-width': 3.23
-#        d: (d) =>
-#          @ClipMarkPath -15, Constants.viz5RoseData[d.source].startAngle
-#        fill: 'none'
-#    @animateElement roseClipMarkInner
-
-#    # Update petals to update clipmarks
-#    @innerContainer.selectAll '.petal'
-#      .data @options.data
-#      .attr
-#        d: (d) =>
-#          @petalPath1 d.value, Constants.viz5RoseData[d.source].startAngle, d.source
 
     # Baseline circle
     baselineCircle = @innerContainer.append 'circle'
@@ -405,8 +337,6 @@ class Rose
         # first run, and the showPillsAfterTransition setting when roses are shown after
         # that, but first run is always set to false for server side
         @showPills() if @options.showPillsOnFirstRun
-
-
 
     # Shadow pills
     # Drawing the pills presents a problem because of the following two constraints:
@@ -519,28 +449,6 @@ class Rose
         d: (d) =>
           @petalPath1 d.value, Constants.viz5RoseData[d.source].startAngle, d.source
 
-#    @innerContainer.selectAll '.petal2'
-#      .data @options.data
-#      .transition()
-#      .duration Constants.viz5timelineDuration
-#      .attr
-#        d: (d) =>
-#          if d.value > 0 && d.value > (Constants.roseOuterCircleDataRadius/2 - Constants.roseThornLength)
-#            @petalPath2 d.value - (Constants.roseOuterCircleDataRadius/2 - Constants.roseThornLength), Constants.viz5RoseData[d.source].startAngle, d.source
-#          else if d.value < 0 && d.value < (Constants.roseOuterCircleDataRadius/2 - Constants.roseThornLength)
-#            @petalPath2 d.value - (Constants.roseOuterCircleDataRadius/2 - Constants.roseThornLength), Constants.viz5RoseData[d.source].startAngle, d.source
-#            ""
-#
-#    @innerContainer.selectAll '.petal3'
-#      .data @options.data
-#      .transition()
-#      .duration Constants.viz5timelineDuration
-#      .attr
-#        d: (d) =>
-#          if d.value > 0 && d.value > 2*(Constants.roseOuterCircleDataRadius/2 - Constants.roseThornLength)
-#            @petalPath2 d.value - 2*(Constants.roseOuterCircleDataRadius/2 - Constants.roseThornLength), Constants.viz5RoseData[d.source].startAngle, d.source
-#          else
-#            ""
 
     @options.isFirstRun = false
 
@@ -559,32 +467,13 @@ class Rose
 # Cap the petals at the inner and outer circles to prevent them from extending 
 # too much outside the rose or too much inwards that they cover the province label.
     cappedValue = value
-    console.log(value)
-#    if value > 0 && value > (Constants.roseOuterCircleDataRadius - Constants.roseThornLength)
     if value > 0 && value > (Constants.roseOuterCircleDataRadius)
-#      cappedValue = (Constants.roseOuterCircleDataRadius - Constants.roseThornLength)
       cappedValue = (Constants.roseOuterCircleDataRadius)
-      #      @innerContainer.selectAll 'path.roseClipMarkOuter.' + source
-      #        .attr
-      #          stroke: '#333'
       capped = true
-    #    else
-    #      @innerContainer.selectAll 'path.roseClipMarkOuter.' + source
-    #        .attr
-    #          stroke: '#FFF0'
 
-#    if value < 0 && value < (Constants.roseCentreCircleDataRadius + Constants.roseThornLength)
     if value < 0 && value < (Constants.roseCentreCircleDataRadius)
-#      cappedValue = (Constants.roseCentreCircleDataRadius + Constants.roseThornLength)
       cappedValue = (Constants.roseCentreCircleDataRadius)
-      #      @innerContainer.selectAll 'path.roseClipMarkInner.' + source
-      #        .attr
-      #          stroke: '#333'
       capped = true
-    #    else
-    #      @innerContainer.selectAll 'path.roseClipMarkInner.' + source
-    #        .attr
-    #          stroke: '#FFF0'
 
     petalDistance = Constants.roseBaselineCircleRadius + cappedValue
     if petalDistance < Constants.roseBaselineCircleRadius
@@ -608,126 +497,6 @@ class Rose
 
     finalAngle = startAngle + Math.PI * 1 / 3
 
-    thornAngle = startAngle + Math.PI * 1 / 6
-    thornBaseStartAngle = thornAngle - Constants.thornAngularWidth
-    thornBaseEndAngle = thornAngle + Constants.thornAngularWidth
-
-
-    # First, we compute all of the points with which we will be drawing lines
-
-    # First point in the first outer arc
-    outerArc1X1 = petalDistance * Math.cos startAngle
-    outerArc1Y1 = petalDistance * Math.sin startAngle
-
-    # Second point in the first outer arc, base of the thorn
-    # outerArc1X2 = petalDistance * Math.cos thornBaseStartAngle
-    # outerArc1Y2 = petalDistance * Math.sin thornBaseStartAngle
-
-    # Point of the thorn
-    thornPointX = thornDistance * Math.cos thornAngle
-    thornPointY = thornDistance * Math.sin thornAngle
-
-    # First point in the second outer arc, base of the thorn
-    outerArc2X1 = petalDistance * Math.cos thornBaseEndAngle
-    outerArc2Y1 = petalDistance * Math.sin thornBaseEndAngle
-
-    # Second point in the second outer arc
-    # outerArc2X2 = petalDistance * Math.cos finalAngle
-    # outerArc2Y2 = petalDistance * Math.sin finalAngle
-
-    # Points defining the lower arc
-    # lowerArcX1 = Constants.roseBaselineCircleRadius * Math.cos startAngle
-    # lowerArcY1 = Constants.roseBaselineCircleRadius * Math.sin startAngle
-
-    lowerArcX2 = Constants.roseBaselineCircleRadius * Math.cos finalAngle
-    lowerArcY2 = Constants.roseBaselineCircleRadius * Math.sin finalAngle
-
-
-
-    path = d3Path.path()
-
-    # First outer arc
-    path.moveTo outerArc1X1, outerArc1Y1
-    path.arc 0, 0, petalDistance, startAngle, thornBaseStartAngle
-
-    # Thorn leg 1
-    path.lineTo thornPointX, thornPointY
-
-    # Thorn leg 2
-    path.lineTo outerArc2X1, outerArc2Y1
-
-    # Second outer arc
-    path.arc 0, 0, petalDistance, thornBaseEndAngle, finalAngle
-
-    # Line to lower arc
-    path.lineTo lowerArcX2, lowerArcY2
-
-    # Lower arc, always lies along the baseline circle
-    path.arc 0, 0, Constants.roseBaselineCircleRadius, finalAngle, startAngle, true
-
-    # End!
-    path.closePath()
-
-    path.toString()
-
-# Produce a string for use as the definition of a path element, which includes a petal
-# and thorn. The petal is always drawn as a 1/6 section of a circle.
-#   value: a number, positive or negative, the distance from the baseline
-#   startAngle: a number, in radians, rotation from the x axis clockwise.
-  petalPath2: (value, startAngle, source) ->
-
-# A petal is composed of an outer arc, which is broken in two by a thorn (a triangular
-# point) in the middle, and an unbroken inner arc. The inner arc always lies along
-# the baseline circle of the rose, the outer arc may be closer to the origin or more
-# distant (i.e. greater or lower radius) from the baseline depending on its data
-# value.
-
-# Cap the petals at the inner and outer circles to prevent them from extending 
-# too much outside the rose or too much inwards that they cover the province label.
-    cappedValue = value
-    if value > 0 && value > (Constants.roseOuterCircleDataRadius/2 - Constants.roseThornLength)
-      cappedValue = (Constants.roseOuterCircleDataRadius/2 - Constants.roseThornLength)-2
-      #      @innerContainer.selectAll 'path.roseClipMarkOuter.' + source
-      #        .attr
-      #          stroke: '#333'
-      capped = true
-    #    else 
-    #      @innerContainer.selectAll 'path.roseClipMarkOuter.' + source
-    #        .attr
-    #          stroke: '#FFF0'
-
-    if value < 0 && value < (Constants.roseCentreCircleDataRadius/2 - Constants.roseThornLength)
-      cappedValue = -(Constants.roseCentreCircleDataRadius/2 - Constants.roseThornLength)+2
-      #      @innerContainer.selectAll 'path.roseClipMarkInner.' + source
-      #        .attr
-      #          stroke: '#333'
-      capped = true
-    #    else 
-    #      @innerContainer.selectAll 'path.roseClipMarkInner.' + source
-    #        .attr
-    #          stroke: '#FFF0'
-
-    petalDistance = Constants.roseBaselineCircleRadius + cappedValue
-    if petalDistance < Constants.roseBaselineCircleRadius
-# pointed inward
-      thornDistance = petalDistance - Constants.roseThornLength
-    else
-# pointed outward
-      thornDistance = petalDistance + Constants.roseThornLength
-
-    if capped
-      thornDistance = petalDistance
-
-    # NB: It's important that the petal distance not be zero.
-    # If it is zero, the d3-path.arc function won't generate one of the arcs in the path.
-    # Then, since the path structure for this petal doesn't match the structure for paths
-    # with values higher than zero, the interpolation based path animations don't work
-    # correctly. For info about path animations: https://bost.ocks.org/mike/path/
-    petalDistance = 0.0000001 if petalDistance <= 0
-
-    thornDistance = 0 if thornDistance < 0
-
-    finalAngle = startAngle + Math.PI * 1 / 3
 
     thornAngle = startAngle + Math.PI * 1 / 6
     thornBaseStartAngle = thornAngle - Constants.thornAngularWidth
@@ -763,8 +532,6 @@ class Rose
     lowerArcX2 = Constants.roseBaselineCircleRadius * Math.cos finalAngle
     lowerArcY2 = Constants.roseBaselineCircleRadius * Math.sin finalAngle
 
-
-
     path = d3Path.path()
 
     # First outer arc
@@ -788,26 +555,6 @@ class Rose
 
     # End!
     path.closePath()
-
-    path.toString()
-
-  ClipMarkPath: (value, angle) ->
-    # Clipmarks are each the same length, but are drawn as tiny arcs.
-    # So, the angular width of the arc is different for each set of tickmarks
-    tickmarkRadius = Constants.roseBaselineCircleRadius + value
-    tickmarkCircumference = 2 * Math.PI * 21
-    angularWidth = 2 * Math.PI / 6
-
-    startAngle = angle
-    endAngle = angle + angularWidth 
-    
-    # Compute the start point of the tickmark, using a ray from the centre of the rose
-    startX = tickmarkRadius * Math.cos startAngle
-    startY = tickmarkRadius * Math.sin startAngle
-
-    path = d3Path.path()
-    path.moveTo startX, startY
-    path.arc 0, 0, tickmarkRadius, startAngle, endAngle
 
     path.toString()
 
