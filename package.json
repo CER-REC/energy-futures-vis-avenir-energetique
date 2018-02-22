@@ -4,6 +4,7 @@
   "description": "NEB project",
   "scripts": {
     "build": "browserify JS/App.coffee -p ./tasks/prod-dotenv-browserify-plugin.js -t coffeeify --extension='.coffee' -t [ stringify --extensions [.mustache .css] ] -t envify -g uglifyify -o dist/public/bundle.js",
+    "builddev": "browserify JS/App.coffee -p ./tasks/dev-dotenv-browserify-plugin.js -t coffeeify --extension='.coffee' -t [ stringify --extensions [.mustache .css] ] -t envify -o public/bundle.js --debug --verbose",
     "watch": "watchify JS/App.coffee -p ./tasks/dev-dotenv-browserify-plugin.js -t coffeeify --extension='.coffee' -t [ stringify --extensions [.mustache .css] ] -t envify -o public/bundle.js --debug --verbose",
     "distribute": "node ./tasks/distribute.js",
     "start": "node ./JS/servers/DevelopmentServer/DevelopmentServer.js",
