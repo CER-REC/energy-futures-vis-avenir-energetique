@@ -404,8 +404,8 @@ module.exports =
   # Rose dimensions are normalized to a 112x112 canvas / group, which is re-scaled in the
   # visualization.
   roseSize: 118 # px
-  roseOuterCircleRadius: 53 # px
-  roseBaselineCircleRadius: 33 # px
+  roseOuterCircleRadius: 55 # px
+  roseBaselineCircleRadius: 35 # px
   roseCentreCircleRadius: 12 # px
 
   roseOuterCircleDataRadius: 20 # px

@@ -1,6 +1,7 @@
 _ = require 'lodash'
 d3 = require 'd3'
 d3Path = require 'd3-path'
+d3Selection = require 'd3-selection'
 
 Constants = require '../Constants.coffee'
 RosePill = require './RosePill.coffee'
@@ -112,13 +113,12 @@ class Rose
       .attr
         class: 'roseOuterCircle'
         r: Constants.roseOuterCircleRadius
-        stroke: '#ccc'
+        stroke: 'none'
         'stroke-width': 0.5
-        # NB: The fill on the outer circle interacts with the click handler, to make
-        # the whole rose clickable.
+# NB: The fill on the outer circle interacts with the click handler, to make
+# the whole rose clickable.
         fill: 'white'
         transform: 'scale(0, 0)'
-
 
     # Draw the axes, but set its scale to zero so it is invisible. This is
     # done here so that the axes are positioned behind the inner circle.
@@ -143,6 +143,7 @@ class Rose
         r: Constants.roseCentreCircleRadius
         fill: '#333'
         stroke: '#fff'
+        'stroke-width': 1.0
 
     # Render the maple leaf instead of the text
     # label for the Canada rose
@@ -156,11 +157,13 @@ class Rose
           id: 'mapleLeafCircle'
           r: Constants.mapleLeafCircleRadius
           'stroke-width': Constants.mapleLeafCircleStroke
-          fill: '#fff' 
+          fill: '#fff'
           stroke: '#f00'
       @innerContainer.append 'g'
         .attr
           transform: "translate(-#{Constants.roseCentreCircleRadius - Constants.mapleLeafCenterOffset}, -#{Constants.roseCentreCircleRadius - Constants.mapleLeafCenterOffset}) scale(#{Constants.mapleLeafScale}, #{Constants.mapleLeafScale})"
+          class: 'pointerCursor'
+          id: 'mapleLeafSVGgroup'
         .append 'path'
           .attr
             class: 'pointerCursor'
@@ -180,7 +183,7 @@ class Rose
         .text =>
           @options.data[0].province
 
-    else 
+    else
       # Centre label
       @innerContainer.append 'text'
         .attr
@@ -199,7 +202,7 @@ class Rose
           id: 'mapleLeafCircle'
           r: Constants.mapleLeafCircleRadius
           'stroke-width': Constants.mapleLeafCircleStroke
-          fill: '#fff' 
+          fill: '#fff'
           stroke: '#f00'
       @innerContainer.append 'g'
         .attr
@@ -221,8 +224,11 @@ class Rose
       @renderFullRose()
 
 
-
-  animateElement: (element) ->
+    
+  animateElement: (element, petalIndex) ->
+    animateDelay = 0
+    if (typeof petalIndex != "undefined" && petalIndex != null)
+      animateDelay = petalIndex * Constants.rosePopUpDuration
     switch Platform.name
       when 'browser'
         element
@@ -230,10 +236,12 @@ class Rose
             transform: "scale(0, 0)"
           .transition()
             .duration Constants.rosePopUpDuration
+            .delay animateDelay
             .attr
               transform: "scale(#{Constants.roseSlightlyBiggerScale},#{Constants.roseSlightlyBiggerScale})"
           .transition()
             .duration Constants.rosePopUpDuration
+            .delay animateDelay
             .attr
               transform: "scale(#{Constants.roseFullScale},#{Constants.roseFullScale})"
       when 'server'
@@ -264,7 +272,7 @@ class Rose
     # Outer circle
     circleElement = @innerContainer.append 'circle'
       .attr
-        class: 'roseOuterCircle'
+        class: 'roseOuterCircleStroke'
         r: Constants.roseOuterCircleRadius
         stroke: '#ccc'
         'stroke-width': 0.5
@@ -322,7 +330,7 @@ class Rose
       .attr
         class: 'petal2'
         fill: (d) ->
-          d3.hsl(Constants.viz5RoseData[d.source].colour).darker(0.75)
+          d3.hsl(Constants.viz5RoseData[d.source].colour).darker(0.9)
         d: (d) =>
           if d.value > 0 && d.value > Constants.roseOuterCircleDataRadius
             @petalPath d.value - Constants.roseOuterCircleDataRadius, Constants.viz5RoseData[d.source].startAngle, 2
@@ -330,7 +338,8 @@ class Rose
             @petalPath d.value - Constants.roseCentreCircleDataRadius, Constants.viz5RoseData[d.source].startAngle, 2
           else
             ""
-    @animateElement petalElement
+    @animateElement petalElement, 2
+    
 
     # Petals
     petalElement = @innerContainer.selectAll '.petal3'
@@ -340,7 +349,7 @@ class Rose
       .attr
         class: 'petal3'
         fill: (d) ->
-          d3.hsl(Constants.viz5RoseData[d.source].colour).darker(1.5)
+          d3.hsl(Constants.viz5RoseData[d.source].colour).darker(1.8)
         d: (d) =>
           if d.value > 0 && d.value > 2*Constants.roseOuterCircleDataRadius
             @petalPath d.value - 2*Constants.roseOuterCircleDataRadius, Constants.viz5RoseData[d.source].startAngle, 3
@@ -348,7 +357,7 @@ class Rose
             @petalPath d.value - 2*Constants.roseCentreCircleDataRadius, Constants.viz5RoseData[d.source].startAngle, 3
           else
             ""
-    @animateElement petalElement
+    @animateElement petalElement, 3
 
     # Petals
     petalElement = @innerContainer.selectAll '.petal4'
@@ -358,7 +367,7 @@ class Rose
       .attr
         class: 'petal4'
         fill: (d) ->
-          d3.hsl(Constants.viz5RoseData[d.source].colour).darker(2.25)
+          d3.hsl(Constants.viz5RoseData[d.source].colour).darker(2.7)
         d: (d) =>
           if d.value > 0 && d.value > 3*Constants.roseOuterCircleDataRadius
             @petalPath d.value - 3*Constants.roseOuterCircleDataRadius, Constants.viz5RoseData[d.source].startAngle, 3
@@ -376,6 +385,13 @@ class Rose
         stroke: '#333'
         'stroke-width': 0.75
         fill: 'none'
+
+#    d3Selection.selectAll("circle.roseOuterCircleStroke").raise();
+    d3Selection.selectAll("circle.roseCentreCircle").raise();
+    d3Selection.selectAll("circle#mapleLeafCircle").raise();
+    d3Selection.selectAll("text.roseCentreLabel").raise();
+    d3Selection.selectAll("g#mapleLeafSVGgroup.pointerCursor").raise();
+    d3Selection.selectAll("g.rose.pointerCursor").raise();
 
     lastAnimation = @animateElement baselineCircle
 
@@ -540,9 +556,6 @@ class Rose
             @petalPath d.value - 3*Constants.roseCentreCircleDataRadius, Constants.viz5RoseData[d.source].startAngle, 3
           else
             ""
-
-    d3.selectAll(".roseCentreCircle").raise
-    d3.selectAll(".roseCentreLabel").raise
 
     @options.isFirstRun = false
 
