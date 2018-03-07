@@ -33,8 +33,8 @@ class Navbar
           selectedLabel: Tr.visualization1Titles[@app.visualization1Configuration.mainSelection][@app.language]
           infoPopoverText: Tr.navbarInfoText.viz1[@app.language]
           infoPopoverHeader: Tr.navbarInfoHeadings.viz1[@app.language]
-          navbarHelpImageSelected: 'IMG/navbar_Icons/questionMark_RegionHighlighted.svg'
-          navbarInfoImageSelected: 'IMG/navbar_Icons/explanationIcon_RegionHighlighted.svg'
+          navbarHelpImageSelected: 'IMG/navbar_icons/questionMark_RegionHighlighted.svg'
+          navbarInfoImageSelected: 'IMG/navbar_icons/explanationIcon_RegionHighlighted.svg'
           colour: 'rgb(103, 153, 204)'
           page: 'viz1'
           imageAUrl: Tr.howToImages.viz1A[@app.language]
@@ -46,8 +46,8 @@ class Navbar
           selectedLabel: Tr.visualization2Title[@app.language]
           infoPopoverText: Tr.navbarInfoText.viz2[@app.language]
           infoPopoverHeader: Tr.navbarInfoHeadings.viz2[@app.language]
-          navbarHelpImageSelected: 'IMG/navbar_Icons/questionMark_SectorHighlighted.svg'
-          navbarInfoImageSelected: 'IMG/navbar_Icons/explanationIcon_SectorHighlighted.svg'
+          navbarHelpImageSelected: 'IMG/navbar_icons/questionMark_SectorHighlighted.svg'
+          navbarInfoImageSelected: 'IMG/navbar_icons/explanationIcon_SectorHighlighted.svg'
           colour: 'rgb(52, 153, 153)'
           page: 'viz2'
           imageAUrl: Tr.howToImages.viz2A[@app.language]
@@ -59,8 +59,8 @@ class Navbar
           selectedLabel: Tr.visualization3Title[@app.language]
           infoPopoverText: Tr.navbarInfoText.viz3[@app.language]
           infoPopoverHeader: Tr.navbarInfoHeadings.viz3[@app.language]
-          navbarHelpImageSelected: 'IMG/navbar_Icons/questionMark_ElectricityHighlighted.svg'
-          navbarInfoImageSelected: 'IMG/navbar_Icons/explanationIcon_ElectricityHighlighted.svg'
+          navbarHelpImageSelected: 'IMG/navbar_icons/questionMark_ElectricityHighlighted.svg'
+          navbarInfoImageSelected: 'IMG/navbar_icons/explanationIcon_ElectricityHighlighted.svg'
           colour: 'rgb(54, 55, 150)'
           page: 'viz3'
           imageAUrl: Tr.howToImages.viz3A[@app.language]
@@ -70,10 +70,10 @@ class Navbar
         {
           unselectedLabel: Tr.allPages.visualization4NavbarLink[@app.language]
           selectedLabel: Tr.visualization4Titles[@app.visualization4Configuration.mainSelection][@app.language]
-          navbarHelpImageSelected: 'IMG/navbar_Icons/questionMark_ScenarioHighlighted.svg'
+          navbarHelpImageSelected: 'IMG/navbar_icons/questionMark_ScenarioHighlighted.svg'
           infoPopoverText: Tr.navbarInfoText.viz4[@app.language]
           infoPopoverHeader: Tr.navbarInfoHeadings.viz4[@app.language]
-          navbarInfoImageSelected: 'IMG/navbar_Icons/explanationIcon_ScenarioHighlighted.svg'
+          navbarInfoImageSelected: 'IMG/navbar_icons/explanationIcon_ScenarioHighlighted.svg'
           colour: 'rgb(202, 152, 48)'
           page: 'viz4'
           imageAUrl: Tr.howToImages.viz4A[@app.language]
@@ -83,10 +83,10 @@ class Navbar
         {
           unselectedLabel: Tr.allPages.visualization5NavbarLink[@app.language]
           selectedLabel: Tr.visualization5Title[@app.language]
-          navbarHelpImageSelected: 'IMG/navbar_Icons/questionMark_DemandHighlighted.svg'
+          navbarHelpImageSelected: 'IMG/navbar_icons/questionMark_DemandHighlighted.svg'
           infoPopoverText: Tr.navbarInfoText.viz5[@app.language]
           infoPopoverHeader: Tr.navbarInfoHeadings.viz5[@app.language]
-          navbarInfoImageSelected: 'IMG/navbar_Icons/explanationIcon_DemandHighlighted.svg'
+          navbarInfoImageSelected: 'IMG/navbar_icons/explanationIcon_DemandHighlighted.svg'
           colour: 'rgb(204, 102, 102)'
           page: 'viz5'
           imageAUrl: Tr.howToImages.viz5A[@app.language]
@@ -207,7 +207,7 @@ class Navbar
                    aria-label='#{Tr.altText.explanationIcon_ColourBG[@app.language]}'
                    tabindex='0'
               >
-                <img src='IMG/navbar_Icons/explanationIcon_ColourBG.svg'
+                <img src='IMG/navbar_icons/explanationIcon_ColourBG.svg'
                      alt='#{Tr.altText.explanationIcon_ColourBG[@app.language]}'
                 >
               </div>
@@ -216,7 +216,7 @@ class Navbar
                    aria-label='#{Tr.altText.questionMark_ColourBG[@app.language]}'
                    tabindex='0'
               >
-                <img src='IMG/navbar_Icons/questionMark_ColourBG.svg'
+                <img src='IMG/navbar_icons/questionMark_ColourBG.svg'
                      alt='#{Tr.altText.questionMark_ColourBG[@app.language]}'
                 >
               </div>
