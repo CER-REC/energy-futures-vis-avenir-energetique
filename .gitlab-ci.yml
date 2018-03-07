@@ -60,6 +60,7 @@ deploy to production:
   script:
 #  - npm install
   - scp -P 22 -r ./* ci_energy-futures@192.168.15.85:/opt/node/energy-futures/
-  - ssh -t ci_energy-futures@192.168.15.85 "cd /opt/node/energy-futures/ && npm install && npm run builddev"
+  - ssh ci_energy-futures@192.168.15.85 "cd /opt/node/energy-futures/ && npm install"
+  - ssh ci_energy-futures@192.168.15.85 "cd /opt/node/energy-futures/ && npm run builddev"
   only:
   - master
