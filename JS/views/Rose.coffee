@@ -296,74 +296,11 @@ class Rose
             fill: 'none'
         @animateRoseElementCreation pathElement
 
-    # Petals
-    petalElement = @innerContainer.selectAll '.petal1'
-      .data @options.data
-      .enter()
-      .append 'path'
-      .attr
-        class: 'petal1'
-        fill: (d) ->
-          Constants.viz5RoseData[d.source].colour
-        d: (d) =>
-          @petalPath d.value, Constants.viz5RoseData[d.source].startAngle, 1
-    @animateRoseElementCreation petalElement
 
     # Petals
-    petalElement = @innerContainer.selectAll '.petal2'
-      .data @options.data
-      .enter()
-      .append 'path'
-      .attr
-        class: 'petal2'
-        fill: (d) ->
-          d3.hsl(Constants.viz5RoseData[d.source].colour).darker 0.9
-        d: (d) =>
-          if d.value > 0 && d.value > Constants.roseOuterCircleDataRadius
-            @petalPath d.value - Constants.roseOuterCircleDataRadius, Constants.viz5RoseData[d.source].startAngle, 2
-          else if d.value < 0 && d.value < Constants.roseCentreCircleDataRadius
-            @petalPath d.value - Constants.roseCentreCircleDataRadius, Constants.viz5RoseData[d.source].startAngle, 2
-          else
-            ''
-    @animateRoseElementCreation petalElement, 2
-    
+    for petalLayer in Constants.petalLayers
+      @renderPetalLayer petalLayer
 
-    # Petals
-    petalElement = @innerContainer.selectAll '.petal3'
-      .data @options.data
-      .enter()
-      .append 'path'
-      .attr
-        class: 'petal3'
-        fill: (d) ->
-          d3.hsl(Constants.viz5RoseData[d.source].colour).darker 1.8
-        d: (d) =>
-          if d.value > 0 && d.value > 2 * Constants.roseOuterCircleDataRadius
-            @petalPath d.value - 2 * Constants.roseOuterCircleDataRadius, Constants.viz5RoseData[d.source].startAngle, 3
-          else if d.value < 0 && d.value < 2 * Constants.roseCentreCircleDataRadius
-            @petalPath d.value - 2 * Constants.roseCentreCircleDataRadius, Constants.viz5RoseData[d.source].startAngle, 3
-          else
-            ''
-    @animateRoseElementCreation petalElement, 3
-
-    # Petals
-    petalElement = @innerContainer.selectAll '.petal4'
-      .data @options.data
-      .enter()
-      .append 'path'
-      .attr
-        class: 'petal4'
-        fill: (d) ->
-          d3.hsl(Constants.viz5RoseData[d.source].colour).darker 2.7
-        d: (d) =>
-          if d.value > 0 && d.value > 3 * Constants.roseOuterCircleDataRadius
-            @petalPath d.value - 3 * Constants.roseOuterCircleDataRadius, Constants.viz5RoseData[d.source].startAngle, 3
-          else if d.value < 0 && d.value < 3 * Constants.roseCentreCircleDataRadius
-            @petalPath d.value - 3 * Constants.roseCentreCircleDataRadius, Constants.viz5RoseData[d.source].startAngle, 3
-          else
-            ''
-
-    @animateRoseElementCreation petalElement
 
     # Baseline circle
     baselineCircle = @innerContainer.append 'circle'
@@ -426,11 +363,34 @@ class Rose
 
 
 
+  renderPetalLayer: (petalLayer) =>
+
+    petalElement = @innerContainer.selectAll ".#{petalLayer.class}"
+      .data @options.data
+      .enter()
+      .append 'path'
+      .attr
+        class: petalLayer.class
+        fill: (d) ->
+          d3.hsl(Constants.viz5RoseData[d.source].colour).darker petalLayer.darken
+        d: (d) =>
+          value = @petalLayerData petalLayer, d
+          @petalPath value, Constants.viz5RoseData[d.source].startAngle, petalLayer.layer
+
+    @animateRoseElementCreation petalElement
 
 
 
-
-
+  # Based on the layer, compute how big the given petal will be
+  # Petal layer: one of the objects in Constants.petalLayers
+  # d: a petal data element
+  petalLayerData: (petalLayer, d) ->
+    if d.value > 0 && d.value > petalLayer.layer * Constants.roseOuterCircleDataRadius
+      d.value - petalLayer.layer * Constants.roseOuterCircleDataRadius
+    else if d.value < 0 && d.value < petalLayer.layer * Constants.roseCentreCircleDataRadius
+      d.value - petalLayer.layer * Constants.roseCentreCircleDataRadius
+    else
+      0
 
 
   update: ->
@@ -588,9 +548,9 @@ class Rose
     # Then, since the path structure for this petal doesn't match the structure for paths
     # with values higher than zero, the interpolation based path animations don't work
     # correctly. For info about path animations: https://bost.ocks.org/mike/path/
-#    petalDistance = 0.0000001 if petalDistance <= 0
+    petalDistance = 0.0000001 if petalDistance <= 0
 
-#    thornDistance = 0 if thornDistance < 0
+    thornDistance = 0 if thornDistance < 0
 
     finalAngle = startAngle + Math.PI * 1 / 3
 

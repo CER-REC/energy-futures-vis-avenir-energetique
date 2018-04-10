@@ -657,3 +657,28 @@ module.exports =
   # To match duration of pills animations in CSS.
   viz5PillPopoverDuration: 300 # ms
 
+
+  petalLayers: [
+    {
+      layer: 0
+      class: 'petal1'
+      darken: 0
+    }
+    {
+      layer: 1
+      class: 'petal2'
+      darken: 0.9
+    }
+    {
+      layer: 2
+      class: 'petal3'
+      darken: 1.8
+    }
+    {
+      layer: 3
+      class: 'petal4'
+      darken: 2.7
+    }
+
+  ]
+
