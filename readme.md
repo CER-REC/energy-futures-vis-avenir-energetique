@@ -67,16 +67,6 @@ In the `energy-futures-visualization` folder:
 
 The `start` and `watch` commands both need to run at the same time. You'll need two separate shell windows to do so. With both commands running, visit [http://localhost:3000/dvs](http://localhost:3000/dvs) to see the app in action.
 
-#### Adding New Modules Under Windows
-For compatibility with Windows, the project is now configured to use Yarn in addition to NPM to install modules. These additional steps are necessary to enable smooth automated deployment on Windows. Non-NEB users running the project standalone, without IIS integration, can ignore these instructions.
-
-* Ensure that [Yarn](https://yarnpkg.com/docs/install) is installed.
-* When adding modules to the package, use `yarn install <module name> --flat`.
-* You may need to select one version from several choices, for some packages.
-* Be sure to commit the updated `yarn.lock`.
-
-These instructions install node dependencies with a flat file hierarchy under `node_modules`, rather than the nested hierarchy that NPM will produce. This is necessary to avoid encountering the 260 characters per path limit of most programs on Windows.
-
 ### Testing
 You can run the tests with `npm run test`.
 
@@ -101,36 +91,7 @@ We're the development team with VizworX who put this project together for the NE
 ## Known Issues
 
 * This application was *not* designed to work resolutions much smaller than 1024*768, it won't look very good on your smartphone. We have attempted to apply responsive design principles throughout, but mobiles were out of scope. 
-* Opera is unique among browsers we've tested in having severe usability issues with this approach, especially with regard to downloading all of the images needed to populate menus. 
 
-## Changelog
-
-* 2017-03-27 - Fix "jump to main content" link.
-* 2017-03-24 - Add improved and more granular analytics collection.
-* 2017-03-02 - Bugs fixed: address an issue with touch and popovers in Edge, address an issue with history and mobile Safari, address loading spinner styling in IE/Edge.
-* 2017-01-24 - Add dots to the reference line for visualization 4, to add emphasis to the reference case.
-* 2017-01-18 - Address an issue with language detection.
-* 2017-01-16 - Fix a hang that would occur on the image generation endpoint, only under IIS.
-* 2016-12-22 - Improve the thumbnail used when sharing the site on social media.
-* 2016-12-16 - Add alternative text, and address other validation issues: the application output now passes W3C HTML validation.
-* 2016-12-14 - Correct an issue where the app could not be shared on social media in French.
-* 2016-11-30 - Added the dataset selector buttons in the left button panel. 
-* 2016-11-30 - Unsupported scenarios for a dataset will be hidden. The scenarios will only show for supported datasets. 
-* 2016-11-18 - The province & power source buttons on visualizations 1 & 2 will now animate out of the way as the user drags one of them up or down.
-* 2016-11-17 - Added a data ingestion and validation routine. Raw data should be placed under `public/rawCSV`, valiated data is written to `public/CSV`, and the tool can be run with `npm run ingest`. See `JS/validation/Ingest.coffee`.
-* 2016-11-17 - Resolved a memory leak related to JSDOM.
-* 2016-11-07 - Fixed the overlapping bubbles problem in visualization #3, and decreased the inner bubble padding to reduce empty spaces.
-* 2016-11-07 - Created a server side component for image rendering, which eliminates any possibility of browser-side rendering bugs and addresses several known issues.
-* 2016-10-31 - Adjusted the time slider (on Visualization 3) to use a better quality PNG image that doesn't degrade in quality when zoomed in.
-* 2016-10-20 - Installed an updated set of Canada's Energy Future 2016 data. This is an early release of the new update, which does not include the LNG and Constrained scenarios. The user interface for these scenarios has been temporarily hidden. The previous generation data remains available in the repository, but is not integrated into the app right now.
-* 2016-10-05 - The query url is now kept consistent as users navigate back and forth between the different visualizations as well as when the order of the provinces (in visualization 1) and the sources (in visualization 2) change.
-* 2016-10-05 - Modified the timeline slider to use an svg image instead of the previously used png image.
-* 2016-10-05 - Changed the height and font size of the title bar on the landing page to match the navigation bar for the visualization pages.
-* 2016-10-05 - You can only have one popover open at once, and clicking outside of a popover will close it.
-* 2016-10-04 - Added the NEB's introductory video to the landing page of the visualization. NB: Currently the templates which include the video depend heavily on the WET assets included in the development environment! That will need to change before we can deploy this version. See: `views/Wet3VideoIframe.mustache` and `views/Wet4VideoIframe.mustache` Also: it was necessary to use iframes to load the video each time we visit the landing page, as the player only initializes properly on page load.
-* 2016-10-03 - Refactored the app to break each Mustache template into its own file, rather than storing them all together in `templates.coffee`. 
-* 2016-10-03 - Worked around a browser bug in Firefox, Chrome and Safari causing certain gradients to disappear from the visualization with interacting with it. This change introduces an iframe to contain the application, and which has some consequences for how the app integrates into the containing page.
-* 2016-09-29 - Adjusted the y-axes so that they no longer re-scale when the user changes the scenario(s) in the first, second, and fourth visualizations. This way, it's easier to compare data across scenarios
 
 
 # Visualisation d’Explorer l’avenir énergétique du Canada
@@ -223,29 +184,4 @@ L’équipe de développement de VizworX a réalisé ce projet pour le compte de
 ## Problèmes connus
 
 * Cette application n’est *pas* conçue pour des résolutions d’écran inférieures à 1024*768; le résultat ne sera pas très intéressant sur un téléphone intelligent. Nous nous sommes efforcés d’appliquer des principes de conception adaptés partout, mais les appareils mobiles ne faisaient pas partie du mandat. 
-* Parmi les navigateurs que nous avons mis à l’essai, Opera est le seul qui a posé de sérieux problèmes d’utilisation avec notre démarche, en particulier pour le téléchargement des images nécessaires pour remplir les menus. 
-
-## Liste de modifications
-
-* 2016-12-16 – Ajout de texte optionnel et résolution d’autres problèmes de validation : la sortie de l’application réussit maintenant la validation W3C HTML.
-* 2016-12-14 – Correction d’un problème empêchant la communication de l’application dans les médias sociaux en français
-* 2016-11-30 – Ajout du sélecteur d’ensemble de données à l’écran utilitaire du bouton de gauche 
-* 2016-11-30 – Les scénarios non reconnus d’un ensemble de données sont cachés. Les scénarios ne montreront que les ensembles de données reconnus. 
-* 2016-11-18 – Les boutons indiquant la province et la source d’énergie sur les visualisations 1 et 2 s’escamoteront dorénavant à mesure que l’utilisateur les fera glisser vers le haut ou vers le bas.
-* 2016-11-17 – Ajout d’une routine d’ingestion et de validation de données Les données brutes sont placées sous `public/rawCSV`, les données validées sont inscrites sous `public/CSV`, et l’outil peut être utilisé à l’aide de l’instruction `npm run ingest`. Voir `JS/validation/Ingest.coffee`
-* 2016-11-17 – Correction d’une perte de mémoire reliée à JSDOM
-* 2016-11-07 – Correction d’un problème de bulles chevauchantes dans la visualisation 3 et diminution du remplissage de la bulle interne pour réduire les espaces vides
-* 2016-11-07 – Création d’un élément côté serveur pour le rendu d’image pour éliminer toute possibilité d’erreur dans le rendu côté navigateur et corriger plusieurs problèmes connus
-* 2016-10-31 – Réglage du curseur temporel (visualisation 3) pour utiliser une image PNG de meilleure qualité qui ne se détériore pas à l’agrandissement.
-* 2016-10-20 – Installation d’un ensemble mis à jour de données sur l’Avenir énergétique du Canada en 2016 Il s’agit d’une version anticipée de la nouvelle mise à jour qui n’inclut pas les scénarios sur le GNL et de capacité limitée. L’interface utilisateur pour ces scénarios a été cachée temporairement. Les données de génération précédentes restent disponibles dans le référentiel, mais elles ne sont pas intégrées dans l’application pour le moment.
-* 2016-10-05 – L’URL de requête reste la même tandis que les utilisateurs naviguent entre les visualisations, et quand l’ordre des provinces (dans la visualisation 1) et des sources (dans la visualisation 2) change.
-* 2016-10-05 – Modification du curseur temporel de manière à utiliser une image SVG au lieu de l’image PNG utilisée précédemment
-* 2016-10-05 – Changement de la hauteur et de la taille de la police de caractères dans la barre de titre sur la page de destination pour les faire correspondre à la barre de navigation des pages de visualisation
-* 2016-10-05 – Il ne peut y avoir qu’un seul champ éclair à la fois, qui se ferme quand on clique à l’extérieur.
-* 2016-10-04 – Ajout de la vidéo préliminaire de l’Office à la page de destination de la visualisation N.B. : À l’heure actuelle, les modèles qui renferment la vidéo dépendent beaucoup des ressources logicielles de la BOEW dans l’environnement de développement. Cela doit changer avant de pouvoir déployer cette version. Voir ce qui suit : `views/Wet3VideoIframe.mustache` et `views/Wet4VideoIframe.mustache`. Il a fallu également utiliser Iframes pour télécharger la vidéo chaque fois que nous consultions la page de destination, car le lecteur initialise correctement au chargement de pages seulement.
-* 2016-10-03 – Restructuration de l’application de manière à créer un fichier pour chaque modèle Mustache, au lieu de les classer tous ensemble dans `templates.coffee` 
-* 2016-10-03 – Solution de rechange à une erreur dans Firefox, Chrome et Safari causant la disparition de certains gradients de la visualisation pendant l’interaction Ce changement introduit un Iframe pour contenir l’application, ce qui a des conséquences sur la façon dont l’application s’intègre dans la page principale.
-* 2016-09-29 – Réglage des axes y de sorte qu’ils ne remettent plus à l’échelle quand l’utilisateur change les scénarios dans la première, la seconde et la quatrième visualisation. Il est ainsi plus facile de comparer les données entre les scénarios.
-
-
 
