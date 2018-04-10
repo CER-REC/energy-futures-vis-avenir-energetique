@@ -225,6 +225,14 @@ class Rose
   # - Rose destruction / disappearance, in teardown
 
   # element is d3 wrapped
+  # This function animates the exact same petal elements which are then animated
+  # when the user changes the data on display. If the user manages to change the data
+  # during this element creation animation, it is cancelled, and the petals are rendered
+  # in an inconsistent state.
+  # Also, we call this function a bunch of times, once for each element to be scaled on
+  # creation.
+  # TODO: restructure the SVG so that we can call this just once on a group containing
+  # all the elements, address both of these.
   animateRoseElementCreation: (element) ->
     switch Platform.name
       when 'browser'
@@ -299,7 +307,18 @@ class Rose
 
     # Petals
     for petalLayer in Constants.petalLayers
-      @renderPetalLayer petalLayer
+      petalElement = @innerContainer.selectAll ".#{petalLayer.class}"
+        .data @options.data
+        .enter()
+        .append 'path'
+        .attr
+          class: petalLayer.class
+          fill: (d) ->
+            d3.hsl(Constants.viz5RoseData[d.source].colour).darker petalLayer.darken
+          d: (d) =>
+            @petalPath d.value, Constants.viz5RoseData[d.source].startAngle, petalLayer
+
+      @animateRoseElementCreation petalElement
 
 
     # Baseline circle
@@ -360,37 +379,6 @@ class Rose
     if Platform.name == 'server'
       @showPills() if @options.showPillsAfterTransition
 
-
-
-
-  renderPetalLayer: (petalLayer) =>
-
-    petalElement = @innerContainer.selectAll ".#{petalLayer.class}"
-      .data @options.data
-      .enter()
-      .append 'path'
-      .attr
-        class: petalLayer.class
-        fill: (d) ->
-          d3.hsl(Constants.viz5RoseData[d.source].colour).darker petalLayer.darken
-        d: (d) =>
-          value = @petalLayerData petalLayer, d
-          @petalPath value, Constants.viz5RoseData[d.source].startAngle, petalLayer.layer
-
-    @animateRoseElementCreation petalElement
-
-
-
-  # Based on the layer, compute how big the given petal will be
-  # Petal layer: one of the objects in Constants.petalLayers
-  # d: a petal data element
-  petalLayerData: (petalLayer, d) ->
-    if d.value > 0 && d.value > petalLayer.layer * Constants.roseOuterCircleDataRadius
-      d.value - petalLayer.layer * Constants.roseOuterCircleDataRadius
-    else if d.value < 0 && d.value < petalLayer.layer * Constants.roseCentreCircleDataRadius
-      d.value - petalLayer.layer * Constants.roseCentreCircleDataRadius
-    else
-      0
 
 
   update: ->
@@ -462,8 +450,7 @@ class Rose
         .duration Constants.viz5timelineDuration
         .attr
           d: (d) =>
-            value = @petalLayerData petalLayer, d
-            @petalPath value, Constants.viz5RoseData[d.source].startAngle, petalLayer.layer
+            @petalPath d.value, Constants.viz5RoseData[d.source].startAngle, petalLayer
 
 
 
@@ -472,28 +459,40 @@ class Rose
 
   # Produce a string for use as the definition of a path element, which includes a petal
   # and thorn. The petal is always drawn as a 1/6 section of a circle.
-  #   value: a number, positive or negative, the distance from the baseline
+  #   rawValue: a number, positive or negative, the percentage change in this attribute
   #   startAngle: a number, in radians, rotation from the x axis clockwise.
-  petalPath: (value, startAngle, pathLayer) ->
-
+  #   petalLayer: one of the objects in Constants.petalLayers
+  petalPath: (rawValue, startAngle, petalLayer) ->
     # A petal is composed of an outer arc, which is broken in two by a thorn (a triangular
     # point) in the middle, and an unbroken inner arc. The inner arc always lies along
     # the baseline circle of the rose, the outer arc may be closer to the origin or more
     # distant (i.e. greater or lower radius) from the baseline depending on its data
     # value.
 
+    # Based on the raw data value, and the layer we are currently in, compute how big this
+    # petal layer actually is.
+    if rawValue > 0 && rawValue > petalLayer.layer * Constants.roseOuterCircleDataRadius
+      value = rawValue - petalLayer.layer * Constants.roseOuterCircleDataRadius
+      renderThorn = true
+    else if rawValue < 0 && rawValue < petalLayer.layer * Constants.roseCentreCircleDataRadius
+      value = rawValue - petalLayer.layer * Constants.roseCentreCircleDataRadius
+      renderThorn = true
+    else
+      value = 0
+      renderThorn = false
+
     # Cap the petals at the inner and outer circles to prevent them from extending
     # too much outside the rose or too much inwards that they cover the province label.
     cappedValue = value
     if value > 0 && value > (Constants.roseOuterCircleDataRadius)
-      if pathLayer == 1
+      if petalLayer.layer == 0
         cappedValue = Constants.roseOuterCircleDataRadius + 2
       else
         cappedValue = Constants.roseOuterCircleDataRadius
       capped = true
 
     if value < 0 && value < (Constants.roseCentreCircleDataRadius)
-      if pathLayer == 1
+      if petalLayer.layer == 0
         cappedValue = Constants.roseCentreCircleDataRadius - 2
       else
         cappedValue = Constants.roseCentreCircleDataRadius
@@ -507,7 +506,7 @@ class Rose
       # pointed outward
       thornDistance = petalDistance + Constants.roseThornLength
 
-    if capped
+    if capped or not renderThorn
       thornDistance = petalDistance
 
     # NB: It's important that the petal distance not be zero.
@@ -517,6 +516,7 @@ class Rose
     # correctly. For info about path animations: https://bost.ocks.org/mike/path/
     petalDistance = 0.0000001 if petalDistance <= 0
 
+    # TODO: why this?
     thornDistance = 0 if thornDistance < 0
 
     finalAngle = startAngle + Math.PI * 1 / 3
@@ -668,8 +668,8 @@ class Rose
       top: roseCentre.top + Constants.viz5ServerSideRoseSize / 2 * Math.sin angle
     }
 
-      
-      
+
+
 
   removePills: ->
     return unless @pillsDisplayed
