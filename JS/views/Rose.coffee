@@ -227,13 +227,13 @@ class Rose
     
   animateElement: (element, petalIndex) ->
     animateDelay = 0
-    if (typeof petalIndex != "undefined" && petalIndex != null)
+    if typeof petalIndex != 'undefined' && petalIndex != null
       animateDelay = petalIndex * Constants.rosePopUpDuration
     switch Platform.name
       when 'browser'
         element
           .attr
-            transform: "scale(0, 0)"
+            transform: 'scale(0, 0)'
           .transition()
             .duration Constants.rosePopUpDuration
             .delay animateDelay
@@ -330,14 +330,14 @@ class Rose
       .attr
         class: 'petal2'
         fill: (d) ->
-          d3.hsl(Constants.viz5RoseData[d.source].colour).darker(0.9)
+          d3.hsl(Constants.viz5RoseData[d.source].colour).darker 0.9
         d: (d) =>
           if d.value > 0 && d.value > Constants.roseOuterCircleDataRadius
             @petalPath d.value - Constants.roseOuterCircleDataRadius, Constants.viz5RoseData[d.source].startAngle, 2
           else if d.value < 0 && d.value < Constants.roseCentreCircleDataRadius
             @petalPath d.value - Constants.roseCentreCircleDataRadius, Constants.viz5RoseData[d.source].startAngle, 2
           else
-            ""
+            ''
     @animateElement petalElement, 2
     
 
@@ -349,14 +349,14 @@ class Rose
       .attr
         class: 'petal3'
         fill: (d) ->
-          d3.hsl(Constants.viz5RoseData[d.source].colour).darker(1.8)
+          d3.hsl(Constants.viz5RoseData[d.source].colour).darker 1.8
         d: (d) =>
-          if d.value > 0 && d.value > 2*Constants.roseOuterCircleDataRadius
-            @petalPath d.value - 2*Constants.roseOuterCircleDataRadius, Constants.viz5RoseData[d.source].startAngle, 3
-          else if d.value < 0 && d.value < 2*Constants.roseCentreCircleDataRadius
-            @petalPath d.value - 2*Constants.roseCentreCircleDataRadius, Constants.viz5RoseData[d.source].startAngle, 3
+          if d.value > 0 && d.value > 2 * Constants.roseOuterCircleDataRadius
+            @petalPath d.value - 2 * Constants.roseOuterCircleDataRadius, Constants.viz5RoseData[d.source].startAngle, 3
+          else if d.value < 0 && d.value < 2 * Constants.roseCentreCircleDataRadius
+            @petalPath d.value - 2 * Constants.roseCentreCircleDataRadius, Constants.viz5RoseData[d.source].startAngle, 3
           else
-            ""
+            ''
     @animateElement petalElement, 3
 
     # Petals
@@ -367,14 +367,14 @@ class Rose
       .attr
         class: 'petal4'
         fill: (d) ->
-          d3.hsl(Constants.viz5RoseData[d.source].colour).darker(2.7)
+          d3.hsl(Constants.viz5RoseData[d.source].colour).darker 2.7
         d: (d) =>
-          if d.value > 0 && d.value > 3*Constants.roseOuterCircleDataRadius
-            @petalPath d.value - 3*Constants.roseOuterCircleDataRadius, Constants.viz5RoseData[d.source].startAngle, 3
-          else if d.value < 0 && d.value < 3*Constants.roseCentreCircleDataRadius
-            @petalPath d.value - 3*Constants.roseCentreCircleDataRadius, Constants.viz5RoseData[d.source].startAngle, 3
+          if d.value > 0 && d.value > 3 * Constants.roseOuterCircleDataRadius
+            @petalPath d.value - 3 * Constants.roseOuterCircleDataRadius, Constants.viz5RoseData[d.source].startAngle, 3
+          else if d.value < 0 && d.value < 3 * Constants.roseCentreCircleDataRadius
+            @petalPath d.value - 3 * Constants.roseCentreCircleDataRadius, Constants.viz5RoseData[d.source].startAngle, 3
           else
-            ""
+            ''
     @animateElement petalElement
 
     # Baseline circle
@@ -386,12 +386,12 @@ class Rose
         'stroke-width': 0.75
         fill: 'none'
 
-#    d3Selection.selectAll("circle.roseOuterCircleStroke").raise();
-    d3Selection.selectAll("circle.roseCentreCircle").raise();
-    d3Selection.selectAll("circle#mapleLeafCircle").raise();
-    d3Selection.selectAll("text.roseCentreLabel").raise();
-    d3Selection.selectAll("g#mapleLeafSVGgroup.pointerCursor").raise();
-    d3Selection.selectAll("g.rose.pointerCursor").raise();
+#    d3Selection.selectAll("circle.roseOuterCircleStroke").raise()
+    d3Selection.selectAll('circle.roseCentreCircle').raise()
+    d3Selection.selectAll('circle#mapleLeafCircle').raise()
+    d3Selection.selectAll('text.roseCentreLabel').raise()
+    d3Selection.selectAll('g#mapleLeafSVGgroup.pointerCursor').raise()
+    d3Selection.selectAll('g.rose.pointerCursor').raise()
 
     lastAnimation = @animateElement baselineCircle
 
@@ -430,7 +430,8 @@ class Rose
         .append 'circle'
         .attr
           class: 'shadowPill'
-          r: 0.0001   # This needs to be slightly greater than zero to render correctly on Firefox.
+          # This needs to be slightly greater than zero to render correctly on Firefox.
+          r: 0.0001
           # cx: Constants.roseOuterCircleRadius * Math.cos(data.startAngle + Math.PI / 6)
           # cy: Constants.roseOuterCircleRadius * Math.sin(data.startAngle + Math.PI / 6)
           cx: 0
@@ -496,7 +497,7 @@ class Rose
         .attr
           class: 'roseCentreLabel hidden'
 
-    else 
+    else
       @innerContainer.select '.roseCentreLabel'
         .attr
           class: 'roseCentreLabel'
@@ -529,7 +530,7 @@ class Rose
           else if d.value < 0 && d.value < Constants.roseCentreCircleDataRadius
             @petalPath d.value - Constants.roseCentreCircleDataRadius, Constants.viz5RoseData[d.source].startAngle, 2
           else
-            ""
+            ''
 
     @innerContainer.selectAll '.petal3'
       .data @options.data
@@ -537,12 +538,12 @@ class Rose
       .duration Constants.viz5timelineDuration
       .attr
         d: (d) =>
-          if d.value > 0 && d.value > 2*Constants.roseOuterCircleDataRadius
-            @petalPath d.value - 2*Constants.roseOuterCircleDataRadius, Constants.viz5RoseData[d.source].startAngle, 3
-          else if d.value < 0 && d.value < 2*Constants.roseCentreCircleDataRadius
-            @petalPath d.value - 2*Constants.roseCentreCircleDataRadius, Constants.viz5RoseData[d.source].startAngle, 3
+          if d.value > 0 && d.value > 2 * Constants.roseOuterCircleDataRadius
+            @petalPath d.value - 2 * Constants.roseOuterCircleDataRadius, Constants.viz5RoseData[d.source].startAngle, 3
+          else if d.value < 0 && d.value < 2 * Constants.roseCentreCircleDataRadius
+            @petalPath d.value - 2 * Constants.roseCentreCircleDataRadius, Constants.viz5RoseData[d.source].startAngle, 3
           else
-            ""
+            ''
 
     @innerContainer.selectAll '.petal4'
       .data @options.data
@@ -550,29 +551,29 @@ class Rose
       .duration Constants.viz5timelineDuration
       .attr
         d: (d) =>
-          if d.value > 0 && d.value > 3*Constants.roseOuterCircleDataRadius
-            @petalPath d.value - 3*Constants.roseOuterCircleDataRadius, Constants.viz5RoseData[d.source].startAngle, 3
-          else if d.value < 0 && d.value < 3*Constants.roseCentreCircleDataRadius
-            @petalPath d.value - 3*Constants.roseCentreCircleDataRadius, Constants.viz5RoseData[d.source].startAngle, 3
+          if d.value > 0 && d.value > 3 * Constants.roseOuterCircleDataRadius
+            @petalPath d.value - 3 * Constants.roseOuterCircleDataRadius, Constants.viz5RoseData[d.source].startAngle, 3
+          else if d.value < 0 && d.value < 3 * Constants.roseCentreCircleDataRadius
+            @petalPath d.value - 3 * Constants.roseCentreCircleDataRadius, Constants.viz5RoseData[d.source].startAngle, 3
           else
-            ""
+            ''
 
     @options.isFirstRun = false
 
-# Produce a string for use as the definition of a path element, which includes a petal
-# and thorn. The petal is always drawn as a 1/6 section of a circle.
-#   value: a number, positive or negative, the distance from the baseline
-#   startAngle: a number, in radians, rotation from the x axis clockwise.
+  # Produce a string for use as the definition of a path element, which includes a petal
+  # and thorn. The petal is always drawn as a 1/6 section of a circle.
+  #   value: a number, positive or negative, the distance from the baseline
+  #   startAngle: a number, in radians, rotation from the x axis clockwise.
   petalPath: (value, startAngle, pathLayer) ->
 
-# A petal is composed of an outer arc, which is broken in two by a thorn (a triangular
-# point) in the middle, and an unbroken inner arc. The inner arc always lies along
-# the baseline circle of the rose, the outer arc may be closer to the origin or more
-# distant (i.e. greater or lower radius) from the baseline depending on its data
-# value.
+  # A petal is composed of an outer arc, which is broken in two by a thorn (a triangular
+  # point) in the middle, and an unbroken inner arc. The inner arc always lies along
+  # the baseline circle of the rose, the outer arc may be closer to the origin or more
+  # distant (i.e. greater or lower radius) from the baseline depending on its data
+  # value.
 
-# Cap the petals at the inner and outer circles to prevent them from extending 
-# too much outside the rose or too much inwards that they cover the province label.
+  # Cap the petals at the inner and outer circles to prevent them from extending
+  # too much outside the rose or too much inwards that they cover the province label.
     cappedValue = value
     if value > 0 && value > (Constants.roseOuterCircleDataRadius)
       if pathLayer == 1
@@ -613,8 +614,8 @@ class Rose
     thornWidth = 8
 
     thornAngle = startAngle + Math.PI * 1 / 6
-    angleWidth = (petalDistance-thornDistance)/4+2
-    thornAngularWidth = Math.acos (Math.sqrt(petalDistance*petalDistance - thornWidth/2*thornWidth/2)/petalDistance)
+    # angleWidth = (petalDistance - thornDistance) / 4 + 2
+    thornAngularWidth = Math.acos (Math.sqrt(petalDistance * petalDistance - thornWidth / 2 * thornWidth / 2) / petalDistance)
     thornBaseStartAngle = thornAngle - thornAngularWidth
     thornBaseEndAngle = thornAngle + thornAngularWidth
 
@@ -754,8 +755,8 @@ class Rose
     angle = Constants.viz5RoseData[source].startAngle + Math.PI / 6
 
     return {
-      left: roseCentre.left + Constants.viz5ServerSideRoseSize / 2 * Math.cos(angle)
-      top: roseCentre.top + Constants.viz5ServerSideRoseSize / 2 * Math.sin(angle)
+      left: roseCentre.left + Constants.viz5ServerSideRoseSize / 2 * Math.cos angle
+      top: roseCentre.top + Constants.viz5ServerSideRoseSize / 2 * Math.sin angle
     }
 
       
