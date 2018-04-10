@@ -114,8 +114,8 @@ class Rose
         r: Constants.roseOuterCircleRadius
         stroke: 'none'
         'stroke-width': 0.5
-# NB: The fill on the outer circle interacts with the click handler, to make
-# the whole rose clickable.
+        # NB: The fill on the outer circle interacts with the click handler, to make
+        # the whole rose clickable.
         fill: 'white'
         transform: 'scale(0, 0)'
 
@@ -223,8 +223,16 @@ class Rose
       @renderFullRose()
 
 
-    
-  animateElement: (element, petalIndex) ->
+  # There are a few major categories for rose animation
+  # - Rose translations, which are handled by the parent view, for moving roses around the
+  #   svg canvas.
+  # - Rose petal size changes, which are handled in update
+  # - Rose element creation, which is animated independently for each rose element by in
+  #   animateRoseElementCreation, called from renderFullRose
+  # - Rose destruction / disappearance, in teardown
+
+  # element is d3 wrapped
+  animateRoseElementCreation: (element, petalIndex) ->
     animateDelay = 0
     if typeof petalIndex != 'undefined' && petalIndex != null
       animateDelay = petalIndex * Constants.rosePopUpDuration
@@ -249,24 +257,16 @@ class Rose
             transform: "scale(#{Constants.roseFullScale},#{Constants.roseFullScale})"
 
   # Renders the remaining part of the rose.
+  # NB: in SVG, the order in which elements are added to the DOM is the order in which
+  # will be rendered, bottop to top. The order that we create these elements is important
+  # so that they are layered correctly on top of each other in the output.
   renderFullRose: =>
-    # Show the axes by scaling them back up.
-    for angle in Constants.roseAngles
-      switch Platform.name
-        when 'browser'
-          @innerContainer.selectAll '.roseAxisLine, .roseOuterCircle'
-            .transition()
-              .duration Constants.rosePopUpDuration
-              .attr
-                transform: "scale(#{Constants.roseSlightlyBiggerScale},#{Constants.roseSlightlyBiggerScale})"
-            .transition()
-              .duration Constants.rosePopUpDuration
-              .attr
-                transform: "scale(#{Constants.roseFullScale},#{Constants.roseFullScale})"
-        when 'server'
-          @innerContainer.selectAll '.roseAxisLine, .roseOuterCircle'
-            .attr
-              transform: "scale(#{Constants.roseFullScale},#{Constants.roseFullScale})"
+
+    self = @
+    @innerContainer.selectAll '.roseAxisLine, .roseOuterCircle'
+      # NB: 'this' is set by d3 to be the element in question
+      .each ->
+        self.animateRoseElementCreation d3.select @
 
     # Outer circle
     circleElement = @innerContainer.append 'circle'
@@ -276,7 +276,7 @@ class Rose
         stroke: '#ccc'
         'stroke-width': 0.5
         fill: 'none'
-    @animateElement circleElement
+    @animateRoseElementCreation circleElement
 
     # Tickmarks
     for distance in Constants.roseTickDistances
@@ -306,7 +306,7 @@ class Rose
             'stroke-width': 0.5
             d: path.toString()
             fill: 'none'
-        @animateElement pathElement
+        @animateRoseElementCreation pathElement
 
     # Petals
     petalElement = @innerContainer.selectAll '.petal1'
@@ -319,7 +319,7 @@ class Rose
           Constants.viz5RoseData[d.source].colour
         d: (d) =>
           @petalPath d.value, Constants.viz5RoseData[d.source].startAngle, 1
-    @animateElement petalElement
+    @animateRoseElementCreation petalElement
 
     # Petals
     petalElement = @innerContainer.selectAll '.petal2'
@@ -337,7 +337,7 @@ class Rose
             @petalPath d.value - Constants.roseCentreCircleDataRadius, Constants.viz5RoseData[d.source].startAngle, 2
           else
             ''
-    @animateElement petalElement, 2
+    @animateRoseElementCreation petalElement, 2
     
 
     # Petals
@@ -356,7 +356,7 @@ class Rose
             @petalPath d.value - 2 * Constants.roseCentreCircleDataRadius, Constants.viz5RoseData[d.source].startAngle, 3
           else
             ''
-    @animateElement petalElement, 3
+    @animateRoseElementCreation petalElement, 3
 
     # Petals
     petalElement = @innerContainer.selectAll '.petal4'
@@ -374,7 +374,8 @@ class Rose
             @petalPath d.value - 3 * Constants.roseCentreCircleDataRadius, Constants.viz5RoseData[d.source].startAngle, 3
           else
             ''
-    @animateElement petalElement
+
+    @animateRoseElementCreation petalElement
 
     # Baseline circle
     baselineCircle = @innerContainer.append 'circle'
@@ -385,7 +386,7 @@ class Rose
         'stroke-width': 0.75
         fill: 'none'
 
-    lastAnimation = @animateElement baselineCircle
+    lastAnimation = @animateRoseElementCreation baselineCircle
 
     switch Platform.name
       when 'browser'
@@ -424,8 +425,6 @@ class Rose
           class: 'shadowPill'
           # This needs to be slightly greater than zero to render correctly on Firefox.
           r: 0.0001
-          # cx: Constants.roseOuterCircleRadius * Math.cos(data.startAngle + Math.PI / 6)
-          # cy: Constants.roseOuterCircleRadius * Math.sin(data.startAngle + Math.PI / 6)
           cx: 0
           cy: 0
           fill: 'none'
