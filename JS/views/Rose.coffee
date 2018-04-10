@@ -454,52 +454,19 @@ class Rose
         .attr
           class: 'hidden'
 
-    @innerContainer.selectAll '.petal1'
-      .data @options.data
-      .transition()
-      .duration Constants.viz5timelineDuration
-      .attr
-        d: (d) =>
-          @petalPath d.value, Constants.viz5RoseData[d.source].startAngle, 1
+    for petalLayer in Constants.petalLayers
 
-    @innerContainer.selectAll '.petal2'
-      .data @options.data
-      .transition()
-      .duration Constants.viz5timelineDuration
-      .attr
-        d: (d) =>
-          if d.value > 0 && d.value > Constants.roseOuterCircleDataRadius
-            @petalPath d.value - Constants.roseOuterCircleDataRadius, Constants.viz5RoseData[d.source].startAngle, 2
-          else if d.value < 0 && d.value < Constants.roseCentreCircleDataRadius
-            @petalPath d.value - Constants.roseCentreCircleDataRadius, Constants.viz5RoseData[d.source].startAngle, 2
-          else
-            ''
+      @innerContainer.selectAll ".#{petalLayer.class}"
+        .data @options.data
+        .transition()
+        .duration Constants.viz5timelineDuration
+        .attr
+          d: (d) =>
+            value = @petalLayerData petalLayer, d
+            @petalPath value, Constants.viz5RoseData[d.source].startAngle, petalLayer.layer
 
-    @innerContainer.selectAll '.petal3'
-      .data @options.data
-      .transition()
-      .duration Constants.viz5timelineDuration
-      .attr
-        d: (d) =>
-          if d.value > 0 && d.value > 2 * Constants.roseOuterCircleDataRadius
-            @petalPath d.value - 2 * Constants.roseOuterCircleDataRadius, Constants.viz5RoseData[d.source].startAngle, 3
-          else if d.value < 0 && d.value < 2 * Constants.roseCentreCircleDataRadius
-            @petalPath d.value - 2 * Constants.roseCentreCircleDataRadius, Constants.viz5RoseData[d.source].startAngle, 3
-          else
-            ''
 
-    @innerContainer.selectAll '.petal4'
-      .data @options.data
-      .transition()
-      .duration Constants.viz5timelineDuration
-      .attr
-        d: (d) =>
-          if d.value > 0 && d.value > 3 * Constants.roseOuterCircleDataRadius
-            @petalPath d.value - 3 * Constants.roseOuterCircleDataRadius, Constants.viz5RoseData[d.source].startAngle, 3
-          else if d.value < 0 && d.value < 3 * Constants.roseCentreCircleDataRadius
-            @petalPath d.value - 3 * Constants.roseCentreCircleDataRadius, Constants.viz5RoseData[d.source].startAngle, 3
-          else
-            ''
+
 
     @options.isFirstRun = false
 
