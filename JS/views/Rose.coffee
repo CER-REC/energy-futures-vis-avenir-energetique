@@ -1,7 +1,6 @@
 _ = require 'lodash'
 d3 = require 'd3'
 d3Path = require 'd3-path'
-d3Selection = require 'd3-selection'
 
 Constants = require '../Constants.coffee'
 RosePill = require './RosePill.coffee'
@@ -385,13 +384,6 @@ class Rose
         stroke: '#333'
         'stroke-width': 0.75
         fill: 'none'
-
-#    d3Selection.selectAll("circle.roseOuterCircleStroke").raise()
-    d3Selection.selectAll('circle.roseCentreCircle').raise()
-    d3Selection.selectAll('circle#mapleLeafCircle').raise()
-    d3Selection.selectAll('text.roseCentreLabel').raise()
-    d3Selection.selectAll('g#mapleLeafSVGgroup.pointerCursor').raise()
-    d3Selection.selectAll('g.rose.pointerCursor').raise()
 
     lastAnimation = @animateElement baselineCircle
 
