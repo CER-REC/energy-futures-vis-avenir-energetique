@@ -78,15 +78,8 @@ class Rose
   # Add all of the static elements, and set up petals for update.
   render: ->
 
-
-    switch Platform.name
-      when 'browser'
-        @container.attr
-          transform: "translate(#{@options.startingPosition.x}, #{@options.startingPosition.y}) scale(#{@options.scale}, #{@options.scale})"
-
-      when 'server'
-        @container.attr
-          transform: "translate(#{@options.startingPosition.x}, #{@options.startingPosition.y}) scale(#{@options.scale}, #{@options.scale})"
+    @container.attr
+      transform: "translate(#{@options.startingPosition.x}, #{@options.startingPosition.y}) scale(#{@options.scale}, #{@options.scale})"
 
 
     # Add an inner group for internal transforms.
@@ -232,10 +225,7 @@ class Rose
   # - Rose destruction / disappearance, in teardown
 
   # element is d3 wrapped
-  animateRoseElementCreation: (element, petalIndex) ->
-    animateDelay = 0
-    if typeof petalIndex != 'undefined' && petalIndex != null
-      animateDelay = petalIndex * Constants.rosePopUpDuration
+  animateRoseElementCreation: (element) ->
     switch Platform.name
       when 'browser'
         element
@@ -243,12 +233,10 @@ class Rose
             transform: 'scale(0, 0)'
           .transition()
             .duration Constants.rosePopUpDuration
-            .delay animateDelay
             .attr
               transform: "scale(#{Constants.roseSlightlyBiggerScale},#{Constants.roseSlightlyBiggerScale})"
           .transition()
             .duration Constants.rosePopUpDuration
-            .delay animateDelay
             .attr
               transform: "scale(#{Constants.roseFullScale},#{Constants.roseFullScale})"
       when 'server'
@@ -441,6 +429,10 @@ class Rose
 
 
 
+
+
+
+
   update: ->
     @removePills() if @options.removePillsBeforeTransition
 
@@ -557,14 +549,14 @@ class Rose
   #   startAngle: a number, in radians, rotation from the x axis clockwise.
   petalPath: (value, startAngle, pathLayer) ->
 
-  # A petal is composed of an outer arc, which is broken in two by a thorn (a triangular
-  # point) in the middle, and an unbroken inner arc. The inner arc always lies along
-  # the baseline circle of the rose, the outer arc may be closer to the origin or more
-  # distant (i.e. greater or lower radius) from the baseline depending on its data
-  # value.
+    # A petal is composed of an outer arc, which is broken in two by a thorn (a triangular
+    # point) in the middle, and an unbroken inner arc. The inner arc always lies along
+    # the baseline circle of the rose, the outer arc may be closer to the origin or more
+    # distant (i.e. greater or lower radius) from the baseline depending on its data
+    # value.
 
-  # Cap the petals at the inner and outer circles to prevent them from extending
-  # too much outside the rose or too much inwards that they cover the province label.
+    # Cap the petals at the inner and outer circles to prevent them from extending
+    # too much outside the rose or too much inwards that they cover the province label.
     cappedValue = value
     if value > 0 && value > (Constants.roseOuterCircleDataRadius)
       if pathLayer == 1
@@ -605,7 +597,6 @@ class Rose
     thornWidth = 8
 
     thornAngle = startAngle + Math.PI * 1 / 6
-    # angleWidth = (petalDistance - thornDistance) / 4 + 2
     thornAngularWidth = Math.acos (Math.sqrt(petalDistance * petalDistance - thornWidth / 2 * thornWidth / 2) / petalDistance)
     thornBaseStartAngle = thornAngle - thornAngularWidth
     thornBaseEndAngle = thornAngle + thornAngularWidth
