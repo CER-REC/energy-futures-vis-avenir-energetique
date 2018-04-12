@@ -408,8 +408,8 @@ module.exports =
   roseBaselineCircleRadius: 35 # px
   roseCentreCircleRadius: 12 # px
 
-  roseOuterCircleDataRadius: 20 # px
-  roseCentreCircleDataRadius: -20 # px
+  roseRadiusCap: 20
+
 
   twoRoseTopMargin: 100
   viz5GraphSVGHeight: 538
@@ -439,7 +439,7 @@ module.exports =
   roseTickLength: 8 # px
   roseThornLength: 4 # px
 
-  thornAngularWidth: Math.PI / 32
+  thornWidth: 8
 
   roseColumns: 6
   # Indexed from the top left
@@ -679,6 +679,8 @@ module.exports =
       class: 'petal4'
       darken: 2.7
     }
-
   ]
+
+  # pixels, normalized to rose canvas
+  petalCapOverhang: 2
 

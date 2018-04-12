@@ -463,51 +463,79 @@ class Rose
   #   startAngle: a number, in radians, rotation from the x axis clockwise.
   #   petalLayer: one of the objects in Constants.petalLayers
   petalPath: (rawValue, startAngle, petalLayer) ->
-    # A petal is composed of an outer arc, which is broken in two by a thorn (a triangular
-    # point) in the middle, and an unbroken inner arc. The inner arc always lies along
-    # the baseline circle of the rose, the outer arc may be closer to the origin or more
-    # distant (i.e. greater or lower radius) from the baseline depending on its data
-    # value.
 
-    # Based on the raw data value, and the layer we are currently in, compute how big this
-    # petal layer actually is.
-    if rawValue > 0 && rawValue > petalLayer.layer * Constants.roseOuterCircleDataRadius
-      value = rawValue - petalLayer.layer * Constants.roseOuterCircleDataRadius
-      renderThorn = true
-    else if rawValue < 0 && rawValue < petalLayer.layer * Constants.roseCentreCircleDataRadius
-      value = rawValue - petalLayer.layer * Constants.roseCentreCircleDataRadius
-      renderThorn = true
-    else
-      value = 0
-      renderThorn = false
+    #### First part: compute how large the petal and thorn are
 
-    # Cap the petals at the inner and outer circles to prevent them from extending
-    # too much outside the rose or too much inwards that they cover the province label.
-    cappedValue = value
-    if value > 0 && value > (Constants.roseOuterCircleDataRadius)
-      if petalLayer.layer == 0
-        cappedValue = Constants.roseOuterCircleDataRadius + 2
+    # Each petal layer is responsible for rendering values in a certain range.
+    # There are three cases:
+    # 1 The value exceeds the range of this layer: render the petal at maximum size with
+    #   no thorn.
+    # 2 The value falls within the range this layer is responsible for: render the petal
+    #   at part of its full length, with a thorn
+    # 3 The value is too small to reach this layer: we render nothing
+
+    # To avoid repeating ourselves, we do all the math as though the value were positive,
+    # and flip the sign if needed at the end.
+    # NB also: Math.floor with negative numbers behaves in a way some find unexpected
+    # e.g. Math.floor(1.5) === 1 but Math.floor(-1.5) === -2
+
+    absValue = Math.abs rawValue
+
+    # This is the petal layer which handles case 2 above
+    partialLayer = Math.floor (absValue / Constants.roseRadiusCap)
+
+    # In all cases, we begin with the petal distance set at the baseline, which if used
+    # to draw a path would result in a petal with zero size.
+    petalDistance = Constants.roseBaselineCircleRadius
+
+    if petalLayer.layer < partialLayer
+      # Draw this petal at full size with no thorn
+      if rawValue > 0
+        petalDistance += Constants.roseRadiusCap
       else
-        cappedValue = Constants.roseOuterCircleDataRadius
+        petalDistance -= Constants.roseRadiusCap
       capped = true
+      thorn = false
 
-    if value < 0 && value < (Constants.roseCentreCircleDataRadius)
-      if petalLayer.layer == 0
-        cappedValue = Constants.roseCentreCircleDataRadius - 2
+    else if petalLayer.layer == partialLayer
+      # Draw this petal at partial size, with thorn
+      value = absValue - petalLayer.layer * Constants.roseRadiusCap
+      if rawValue > 0
+        petalDistance += value
       else
-        cappedValue = Constants.roseCentreCircleDataRadius
-      capped = true
+        petalDistance -= value
+      capped = false
+      thorn = true
 
-    petalDistance = Constants.roseBaselineCircleRadius + cappedValue
-    if petalDistance < Constants.roseBaselineCircleRadius
+    else if petalLayer.layer > partialLayer
+      # Don't draw this petal layer or thorn
+      capped = false
+      thorn = false
+
+
+    # Special handling for the first layer thorn: we always want there to be one thorn,
+    # but when the data is at zero, no petal layers or thorns would be drawn.
+    if petalLayer.layer == 0 and rawValue == 0
+      thorn = true
+
+    # Special handling for the first layer: if this layer is at maximum value, we extend
+    # the petal just a little bit, so that the base colour of the petal remains visible
+    # alongside the darker petal layers.
+    if petalLayer.layer == 0 and capped
+      if rawValue > 0
+        petalDistance += Constants.petalCapOverhang
+      else
+        petalDistance -= Constants.petalCapOverhang
+
+
+    if not thorn
+      thornDistance = petalDistance
+    else if petalDistance < Constants.roseBaselineCircleRadius
       # pointed inward
       thornDistance = petalDistance - Constants.roseThornLength
     else
       # pointed outward
       thornDistance = petalDistance + Constants.roseThornLength
-
-    if capped or not renderThorn
-      thornDistance = petalDistance
 
     # NB: It's important that the petal distance not be zero.
     # If it is zero, the d3-path.arc function won't generate one of the arcs in the path.
@@ -516,15 +544,24 @@ class Rose
     # correctly. For info about path animations: https://bost.ocks.org/mike/path/
     petalDistance = 0.0000001 if petalDistance <= 0
 
-    # TODO: why this?
-    thornDistance = 0 if thornDistance < 0
+    # In practice, this means that 'absent' layers are actually rendered as extremely
+    # tiny petals, which are hidden by the baseline stroke, as it is layered above them.
+
+
+
+    #### Second part: compute points for the petal's path and the path string
+
+    # A petal is composed of an outer arc, which is broken in two by a thorn (a triangular
+    # point) in the middle, and an unbroken inner arc. The inner arc always lies along
+    # the baseline circle of the rose, the outer arc may be closer to the origin or more
+    # distant (i.e. greater or lower radius) from the baseline depending on its data
+    # value.
 
     finalAngle = startAngle + Math.PI * 1 / 3
 
-    thornWidth = 8
-
     thornAngle = startAngle + Math.PI * 1 / 6
-    thornAngularWidth = Math.acos (Math.sqrt(petalDistance * petalDistance - thornWidth / 2 * thornWidth / 2) / petalDistance)
+
+    thornAngularWidth = Math.acos (Math.sqrt(petalDistance * petalDistance - Constants.thornWidth / 2 * Constants.thornWidth / 2) / petalDistance)
     thornBaseStartAngle = thornAngle - thornAngularWidth
     thornBaseEndAngle = thornAngle + thornAngularWidth
 
