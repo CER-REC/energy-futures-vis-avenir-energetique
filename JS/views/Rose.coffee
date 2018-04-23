@@ -52,6 +52,16 @@ class Rose
     @pillsDisplayed = false
     @tornDown = false
 
+    # d3 can only animate attributes on DOM elements, and not on plain old javascript
+    # objects. But, in order to make certain animations work correctly, we need to record
+    # the currently displayed value as it is animated. To do this, we use the slightly
+    # hacky workaround of an element with data attributes held by the view instance,
+    # as a target for d3.transition later. This seems preferable to storing this state in
+    # the DOM.
+    @animationState = d3.select @document.createElement 'div'
+    for source in Constants.viz5SourcesInOrder
+      @animationState.attr "data-view-value-#{source}", 0
+
   transitionToGridPosition: =>
     # Set the starting position to the grid position.
     @setStartingPosition @options.position
@@ -312,10 +322,12 @@ class Rose
         .enter()
         .append 'path'
         .attr
-          class: petalLayer.class
+          class: (d) ->
+            "petalLayer #{petalLayer.class} #{d.source}"
           fill: (d) ->
             d3.hsl(Constants.viz5RoseData[d.source].colour).darker petalLayer.darken
           d: (d) =>
+            @animationState.attr "data-view-value-#{d.source}", d.value
             @petalPath d.value, Constants.viz5RoseData[d.source].startAngle, petalLayer
 
       @animateRoseElementCreation petalElement
@@ -442,20 +454,127 @@ class Rose
         .attr
           class: 'hidden'
 
-    for petalLayer in Constants.petalLayers
-
-      @innerContainer.selectAll ".#{petalLayer.class}"
-        .data @options.data
-        .transition()
-        .duration Constants.viz5timelineDuration
-        .attr
-          d: (d) =>
-            @petalPath d.value, Constants.viz5RoseData[d.source].startAngle, petalLayer
-
+    for d in @options.data
+      @animatePetalLayers d
 
 
 
     @options.isFirstRun = false
+
+
+
+
+  # Animate the four petal layers for one data item (the data for one energy source)
+  animatePetalLayers: (d) ->
+
+    # NB: This function is designed to make the following guarantees:
+    # - If the petals are not animating, they will animate correctly and arrive at the
+    #   correct final position
+    # - If the petals are currently animating, they will arrive at the new correct final
+    #   position (but might not animate correctly to get there!)
+    # Mainly, because of all the layers moving around and because of the special behaviour
+    # needed around a sign change in the value, it's really difficult to figure out a new
+    # animation that will behave correctly when an old animation is interrupted. But this
+    # should be rare, and once the animations are over the petals will be in a correct
+    # position, so this should not be a large issue.
+
+    # Interrupt all existing petal animations
+    @innerContainer.selectAll "petalLayer #{d.source}"
+      .interrupt()
+    @animationState.interrupt d.source
+
+
+    # If we have a sign change between the old value and the new, we schedule an animation
+    # to first collapse all the petals to the baseline, and schedule another call to this
+    # function (which will then animate petal layers from baseline to final positions)
+    dataViewValue = @animationState.attr "data-view-value-#{d.source}"
+    if (d.value < 0 and dataViewValue > 0) or (d.value > 0 and dataViewValue < 0)
+      @animationState.attr "data-view-value-#{d.source}", 0
+
+      # TODO: I'm not confident that this data bind will work correctly, it needs to line
+      # up each petalLayer with the right DOM element.
+
+      transition = @innerContainer.selectAll ".petalLayer.#{d.source}"
+        .data Constants.petalLayers
+        .transition()
+        # TODO: Theoretically, this duration is a problem. All petal transitions need to
+        # complete in the span of one timeline tick, given by
+        # Constants.viz5timelineDuration. This collapse animation and the petal extension
+        # animation should both complete within this span of time. Not sure if this is
+        # actually an issue in practice.
+        .duration Constants.viz5CollapseToBaselineDuration
+        .attr (petalLayer) =>
+          d: @petalPath 0, Constants.viz5RoseData[d.source].startAngle, petalLayer
+        .each 'end', =>
+          # TODO: Verify that this function is only called *once* at the end of the above
+          # animation, and not once per layer!
+          # it's once per animation. we will need to fix this.
+          @animatePetalLayers d
+
+      return
+
+
+    # At this point we know: the value we're currently representing, the value we need to
+    # animate to, and we know that both of these values have the same sign.
+    # We need to find out: the direction of the animation (elongating/adding layers or
+    # shrinking/removing layers) and which layers are affected. Then we can schedule
+    # the animations.
+
+    # As before, work with absolute values to deduplicate this logic
+    absStartValue = Math.abs dataViewValue
+    absEndValue = Math.abs d.value
+
+    # Determine the layers affected by this transition
+    startLayer = Math.floor absStartValue / Constants.roseRadiusCap
+    endLayer = Math.floor absEndValue / Constants.roseRadiusCap
+
+    affectedLayers = []
+    for layer in [startLayer..endLayer]
+      affectedLayers.push layer
+
+
+    # Petal animations
+    duration = Constants.viz5timelineDuration / affectedLayers.length
+
+    for layer, index in affectedLayers
+      petalLayer = Constants.petalLayers[layer]
+      @innerContainer.selectAll ".petalLayer.#{petalLayer.class}.#{d.source}"
+        .transition()
+        .delay index * duration
+        .duration duration
+        .attr
+          d: @petalPath d.value, Constants.viz5RoseData[d.source].startAngle, petalLayer
+
+    # Data value animation
+    @animationState.transition d.source
+      .duration Constants.viz5timelineDuration
+      .attr "data-view-value-#{d.source}", d.value
+
+
+    # The above animations cover all of the elements which are affected by the change from
+    # the old value to the new value. E.g., if the user triggers an animation that results
+    # in layer 2 extending to its cap and layer 3 appearing for one source, the above will
+    # handle it. But, the user can interrupt animations at any time by choosing new data
+    # values. In the example above, we have not animated layers 1 and 4, but we are not
+    # guaranteed that they are in the state we would expect them to be in (i.e. layer 1
+    # extended to its cap and layer 4 not shown / collapsed at the baseline.)
+
+    # Since we aim to guarantee that all of the elements this function manages are in a
+    # correct state by the end of the animation, we also schedule animations for all of
+    # the other layers to where they should be, just in case.
+
+    nonAffectedLayers = _.difference [0, 1, 2, 3], affectedLayers
+
+    for layer in nonAffectedLayers
+      petalLayer = Constants.petalLayers[layer]
+      @innerContainer.select "petalLayer #{petalLayer.class} #{d.source}"
+        .transition()
+        .duration Constants.viz5timelineDuration
+        .attr
+          d: @petalPath d.value, Constants.viz5RoseData[d.source].startAngle, petalLayer
+
+
+
 
   # Produce a string for use as the definition of a path element, which includes a petal
   # and thorn. The petal is always drawn as a 1/6 section of a circle.

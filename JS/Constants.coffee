@@ -684,3 +684,5 @@ module.exports =
   # pixels, normalized to rose canvas
   petalCapOverhang: 2
 
+  viz5CollapseToBaselineDuration: 100 # ms
+
