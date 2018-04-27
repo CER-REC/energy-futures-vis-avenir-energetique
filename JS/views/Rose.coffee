@@ -1,6 +1,7 @@
 _ = require 'lodash'
 d3 = require 'd3'
 d3Path = require 'd3-path'
+Promise = require 'bluebird'
 
 Constants = require '../Constants.coffee'
 RosePill = require './RosePill.coffee'
@@ -479,7 +480,7 @@ class Rose
     # position, so this should not be a large issue.
 
     # Interrupt all existing petal animations
-    @innerContainer.selectAll "petalLayer #{d.source}"
+    @innerContainer.selectAll ".petalLayer.#{d.source}"
       .interrupt()
     @animationState.interrupt d.source
 
@@ -491,26 +492,28 @@ class Rose
     if (d.value < 0 and dataViewValue > 0) or (d.value > 0 and dataViewValue < 0)
       @animationState.attr "data-view-value-#{d.source}", 0
 
-      # TODO: I'm not confident that this data bind will work correctly, it needs to line
-      # up each petalLayer with the right DOM element.
+      # After this collapse animation, we want to sequence the petal extension animations.
+      # The idiomatic way to do this in D3 is with .each(), but because of the per-element
+      # logic we perform later to set up petal layer timing, this doesn't work for us.
+      # Instead, we use promises to trigger one callback when all of the petal layer
+      # animations have completed.
 
-      transition = @innerContainer.selectAll ".petalLayer.#{d.source}"
-        .data Constants.petalLayers
-        .transition()
-        # TODO: Theoretically, this duration is a problem. All petal transitions need to
-        # complete in the span of one timeline tick, given by
-        # Constants.viz5timelineDuration. This collapse animation and the petal extension
-        # animation should both complete within this span of time. Not sure if this is
-        # actually an issue in practice.
-        .duration Constants.viz5CollapseToBaselineDuration
-        .attr (petalLayer) =>
-          d: @petalPath 0, Constants.viz5RoseData[d.source].startAngle, petalLayer
-        .each 'end', =>
-          # TODO: Verify that this function is only called *once* at the end of the above
-          # animation, and not once per layer!
-          # it's once per animation. we will need to fix this.
+      collapsePromises = Constants.petalLayers.map (petalLayer) =>
+        new Promise (resolve) =>
+          ###
+          TODO: Theoretically, this duration is a problem. All petal transitions need to complete in the span of one timeline tick, given by Constants.viz5timelineDuration. This collapse animation and the petal extension animation should both complete within this span of time. Not sure if this is actually an issue in practice.
+          ###
+          @innerContainer.select ".petalLayer.#{petalLayer.class}.#{d.source}"
+            .transition()
+            .duration Constants.viz5CollapseToBaselineDuration
+            .attr
+              d: @petalPath 0, Constants.viz5RoseData[d.source].startAngle, petalLayer
+            .each 'end', resolve
+
+
+      Promise.all collapsePromises
+        .then =>
           @animatePetalLayers d
-
       return
 
 
@@ -531,6 +534,8 @@ class Rose
     affectedLayers = []
     for layer in [startLayer..endLayer]
       affectedLayers.push layer
+    # affectedLayers now contains the set of affected layers ids, in the order in which
+    # they should be animated.
 
 
     # Petal animations
@@ -562,12 +567,14 @@ class Rose
     # Since we aim to guarantee that all of the elements this function manages are in a
     # correct state by the end of the animation, we also schedule animations for all of
     # the other layers to where they should be, just in case.
+    # We do this in a separate section here, because these non-affected layers should
+    # not have their animations scheduled in sequence with the 'real' animations above.
 
     nonAffectedLayers = _.difference [0, 1, 2, 3], affectedLayers
 
     for layer in nonAffectedLayers
       petalLayer = Constants.petalLayers[layer]
-      @innerContainer.select "petalLayer #{petalLayer.class} #{d.source}"
+      @innerContainer.select ".petalLayer.#{petalLayer.class}.#{d.source}"
         .transition()
         .duration Constants.viz5timelineDuration
         .attr
