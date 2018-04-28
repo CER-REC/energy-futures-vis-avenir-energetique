@@ -235,7 +235,6 @@ class Rose
   #   animateRoseElementCreation, called from renderFullRose
   # - Rose destruction / disappearance, in teardown
 
-  # element is d3 wrapped
   # This function animates the exact same petal elements which are then animated
   # when the user changes the data on display. If the user manages to change the data
   # during this element creation animation, it is cancelled, and the petals are rendered
@@ -244,6 +243,7 @@ class Rose
   # creation.
   # TODO: restructure the SVG so that we can call this just once on a group containing
   # all the elements, address both of these.
+  # element is d3 wrapped
   animateRoseElementCreation: (element) ->
     switch Platform.name
       when 'browser'
