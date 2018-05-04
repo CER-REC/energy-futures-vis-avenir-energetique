@@ -2,10 +2,13 @@ _ = require 'lodash'
 d3 = require 'd3'
 d3Path = require 'd3-path'
 Promise = require 'bluebird'
+d3Ease = require 'd3-ease'
 
 Constants = require '../Constants.coffee'
 RosePill = require './RosePill.coffee'
 Platform = require '../Platform.coffee'
+
+
 
 defaultOptions =
   position:
@@ -505,6 +508,11 @@ class Rose
           ###
           @innerContainer.select ".petalLayer.#{petalLayer.class}.#{d.source}"
             .transition()
+            .ease (t) ->
+              # I don't know why, but D3 will call this with t > 1
+              # We need to clamp it at 1 to prevent serious graphical glitches
+              t = 1 if t > 1
+              d3Ease.easePolyOut t, 6
             .duration Constants.viz5CollapseToBaselineDuration
             .attr
               d: @petalPath 0, Constants.viz5RoseData[d.source].startAngle, petalLayer
@@ -531,6 +539,9 @@ class Rose
     startLayer = Math.floor absStartValue / Constants.roseRadiusCap
     endLayer = Math.floor absEndValue / Constants.roseRadiusCap
 
+    startLayer = Math.min startLayer, 3
+    endLayer = Math.min endLayer, 3
+
     affectedLayers = []
     for layer in [startLayer..endLayer]
       affectedLayers.push layer
@@ -545,6 +556,11 @@ class Rose
       petalLayer = Constants.petalLayers[layer]
       @innerContainer.selectAll ".petalLayer.#{petalLayer.class}.#{d.source}"
         .transition()
+        .ease (t) ->
+          # I don't know why, but D3 will call this with t > 1
+          # We need to clamp it at 1 to prevent serious graphical glitches
+          t = 1 if t > 1
+          d3Ease.easePolyOut t, 6
         .delay index * duration
         .duration duration
         .attr
@@ -656,7 +672,7 @@ class Rose
 
     if not thorn
       thornDistance = petalDistance
-    else if petalDistance < Constants.roseBaselineCircleRadius
+    else if rawValue < 0
       # pointed inward
       thornDistance = petalDistance - Constants.roseThornLength
     else

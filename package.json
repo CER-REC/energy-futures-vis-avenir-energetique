@@ -5,7 +5,7 @@
   "scripts": {
     "build": "browserify JS/App.coffee -p ./tasks/prod-dotenv-browserify-plugin.js -t coffeeify --extension='.coffee' -t [ stringify --extensions [.mustache .css] ] -t envify -g uglifyify -o dist/public/bundle.js",
     "builddev": "browserify JS/App.coffee -p ./tasks/dev-dotenv-browserify-plugin.js -t coffeeify --extension='.coffee' -t [ stringify --extensions [.mustache .css] ] -t envify -o public/bundle.js --debug --verbose",
-    "watch": "watchify JS/App.coffee -p ./tasks/dev-dotenv-browserify-plugin.js -t coffeeify --extension='.coffee' -t [ stringify --extensions [.mustache .css] ] -t envify -o public/bundle.js --debug --verbose",
+    "watch": "watchify JS/App.coffee -p ./tasks/dev-dotenv-browserify-plugin.js -t coffeeify --extension='.coffee' -t [ stringify --extensions [.mustache .css] ] -t envify -o public/bundle.js --verbose",
     "distribute": "node ./tasks/distribute.js",
     "start": "node ./JS/servers/DevelopmentServer/DevelopmentServer.js",
     "debug": "nodemon --debug ./JS/servers/DevelopmentServer/DevelopmentServer.js",
@@ -24,6 +24,7 @@
     "coffee-script": "^1.11.1",
     "compression": "^1.6.2",
     "d3": "^3.5.17",
+    "d3-ease": "^1.0.3",
     "d3-path": "^1.0.5",
     "dotenv": "^2.0.0",
     "express": "^4.14.0",
