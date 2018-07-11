@@ -72,7 +72,7 @@ h1 {
   color: white;
 }
 
-.scenarioLegend .high {
+.scenarioLegend .high, .scenarioLegend .technology {
   background-color: #0C2C84;
   color: white;
 }
@@ -87,7 +87,7 @@ h1 {
   color: white;
 }
 
-.scenarioLegend .low {
+.scenarioLegend .low, .scenarioLegend .hcp {
   background-color: #7FCDBB;
   color: white;
 }

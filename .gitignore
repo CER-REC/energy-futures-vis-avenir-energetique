@@ -10,6 +10,7 @@ lib-cov
 node_modules
 d3-neb.sublime-project
 d3-neb.sublime-workspace
+energy-future-visualization.sublime-workspace
 /dist/
 public/bundle.js
 
