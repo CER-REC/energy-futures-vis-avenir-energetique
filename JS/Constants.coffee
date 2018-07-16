@@ -404,9 +404,12 @@ module.exports =
   # Rose dimensions are normalized to a 112x112 canvas / group, which is re-scaled in the
   # visualization.
   roseSize: 118 # px
-  roseOuterCircleRadius: 53 # px
-  roseBaselineCircleRadius: 31 # px
+  roseOuterCircleRadius: 55 # px
+  roseBaselineCircleRadius: 35 # px
   roseCentreCircleRadius: 12 # px
+
+  roseRadiusCap: 20
+
 
   twoRoseTopMargin: 100
   viz5GraphSVGHeight: 538
@@ -436,7 +439,7 @@ module.exports =
   roseTickLength: 8 # px
   roseThornLength: 4 # px
 
-  thornAngularWidth: Math.PI / 32
+  thornWidth: 8
 
   roseColumns: 6
   # Indexed from the top left
@@ -653,4 +656,33 @@ module.exports =
 
   # To match duration of pills animations in CSS.
   viz5PillPopoverDuration: 300 # ms
+
+
+  petalLayers: [
+    {
+      layer: 0
+      class: 'petal1'
+      darken: 0
+    }
+    {
+      layer: 1
+      class: 'petal2'
+      darken: 0.9
+    }
+    {
+      layer: 2
+      class: 'petal3'
+      darken: 1.8
+    }
+    {
+      layer: 3
+      class: 'petal4'
+      darken: 2.7
+    }
+  ]
+
+  # pixels, normalized to rose canvas
+  petalCapOverhang: 2
+
+  viz5CollapseToBaselineDuration: 100 # ms
 
