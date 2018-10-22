@@ -172,8 +172,6 @@ class Visualization5Configuration
         Tr.scenarioSelector.noLngButton[@app.language]
       when 'technology'
         Tr.scenarioSelector.technologyButton[@app.language]
-      when 'htc'
-        Tr.scenarioSelector.htcButton[@app.language]
       when 'hcp'
         Tr.scenarioSelector.hcpButton[@app.language]
 

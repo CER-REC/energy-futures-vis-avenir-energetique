@@ -229,6 +229,10 @@ class Visualization1Configuration
         Tr.scenarioSelector.highLngButton[@app.language]
       when 'noLng'
         Tr.scenarioSelector.noLngButton[@app.language]
+      when 'technology'
+        Tr.scenarioSelector.technologyButton[@app.language]
+      when 'hcp'
+        Tr.scenarioSelector.hcpButton[@app.language]
 
     datasetText = switch @dataset
       when 'jan2016'
