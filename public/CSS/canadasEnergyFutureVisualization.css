@@ -906,11 +906,11 @@ div.chartTooltip:after {
   color: white;
 }
 #canadasEnergyFutureVisualization .vizButton.technology {
-  color: #0C2C84;
-  border-color: #0C2C84;
+  color: #C7E9B4;
+  border-color: #C7E9B4;
 }
 #canadasEnergyFutureVisualization .vizButton.technology.selected {
-  background-color: #0C2C84;
+  background-color: #C7E9B4;
   color: white;
 }
 #canadasEnergyFutureVisualization .vizButton.hcp {

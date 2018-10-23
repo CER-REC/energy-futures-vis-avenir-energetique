@@ -472,7 +472,7 @@ class Visualization4
       }
       {
         key: 'technology'
-        colour: '#0C2C84'
+        colour: '#C7E9B4'
       }
       {
         key: 'hcp'
@@ -514,7 +514,7 @@ class Visualization4
       technology:
         tooltip: Tr.selectorTooltip.scenarioSelector.technologyButton[@app.language]
         key: 'technology'
-        colour: '#0C2C84'
+        colour: '#C7E9B4'
       hcp:
         tooltip: Tr.selectorTooltip.scenarioSelector.hcpButton[@app.language]
         key: 'hcp'
