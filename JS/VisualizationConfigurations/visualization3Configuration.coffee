@@ -39,7 +39,7 @@ class Visualization3Configuration
 
     province: 'all'
     source: 'total'
-    dataset: Constants.datasets[2]
+    dataset: Constants.datasets[Constants.datasets.length - 1]
 
   constructor: (@app, options) ->
     @page = 'viz3'

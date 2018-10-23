@@ -32,6 +32,24 @@ module.exports =
     'Nunavut': 'NU'
     'Canada': 'all'
 
+    'AB': 'AB'
+    'BC': 'BC'
+    'MB': 'MB'
+    'NB': 'NB'
+    'NL': 'NL'
+    'NS': 'NS'
+    'NT': 'NT'
+    'NWT': 'NT' # yes really.
+    'NU': 'NU'
+    'ON': 'ON'
+    'PE': 'PE'
+    'PEI': 'PE' # yes really.
+    'QC': 'QC'
+    'SK': 'SK'
+    'YT': 'YT'
+    'YK': 'YT' # yes really.
+
+
   csvSourceToSourceNameMapping:
     'Hydro': 'hydro'
     'Solar/Wind/Geothermal' : 'solarWindGeothermal'
@@ -63,7 +81,9 @@ module.exports =
   csvScenarioToScenarioNameMapping:
     'Reference': 'reference'
     'High': 'high'
+    'High Price': 'high'
     'Low': 'low'
+    'Low Price': 'low'
     'HighLNG': 'highLng'
     # NB: The source data column in some of the CSVs has a trailing space in the string
     # 'HighLNG ', this is NOT A TYPO
@@ -82,8 +102,10 @@ module.exports =
 
   datasets: [
     'jan2016'
-    'oct2016'
+    # 2016 update dataset removed as part of 2018 update
+    # 'oct2016'
     'oct2017'
+    'oct2018'
   ]
 
 
@@ -109,22 +131,23 @@ module.exports =
         gasProduction: ['high', 'highLng', 'reference', 'noLng', 'low']
 
 
-    oct2016:
-      scenarios: [
-        'reference'
-        'high'
-        'low'
-      ]
-      scenariosForIngestion:
-        energyDemand: ['high', 'reference', 'low']
-        electricityGeneration: ['high', 'reference', 'low']
-        oilProduction: ['high', 'reference', 'low']
-        gasProduction: ['high', 'reference', 'low']
-      scenariosPerSelection:
-        energyDemand: ['high', 'reference', 'low']
-        electricityGeneration: ['high', 'reference', 'low']
-        oilProduction: ['high', 'reference', 'low']
-        gasProduction: ['high', 'reference', 'low']
+    # 2016 update dataset removed as part of 2018 update
+    # oct2016:
+    #   scenarios: [
+    #     'reference'
+    #     'high'
+    #     'low'
+    #   ]
+    #   scenariosForIngestion:
+    #     energyDemand: ['high', 'reference', 'low']
+    #     electricityGeneration: ['high', 'reference', 'low']
+    #     oilProduction: ['high', 'reference', 'low']
+    #     gasProduction: ['high', 'reference', 'low']
+    #   scenariosPerSelection:
+    #     energyDemand: ['high', 'reference', 'low']
+    #     electricityGeneration: ['high', 'reference', 'low']
+    #     oilProduction: ['high', 'reference', 'low']
+    #     gasProduction: ['high', 'reference', 'low']
 
 
     oct2017:
@@ -143,6 +166,25 @@ module.exports =
         electricityGeneration: ['reference', 'technology', 'hcp']
         oilProduction: ['reference', 'technology', 'hcp']
         gasProduction: ['reference', 'technology', 'hcp']
+
+    oct2018:
+      scenarios: [
+        'reference'
+        'technology'
+        'high'
+        'low'
+      ]
+      scenariosForIngestion:
+        energyDemand: ['reference', 'technology', 'high', 'low']
+        electricityGeneration: ['reference', 'technology', 'high', 'low']
+        oilProduction: ['reference', 'technology', 'high', 'low']
+        gasProduction: ['reference', 'technology', 'high', 'low']
+      scenariosPerSelection:
+        energyDemand: ['reference', 'technology', 'high', 'low']
+        electricityGeneration: ['reference', 'technology', 'high', 'low']
+        oilProduction: ['reference', 'technology', 'high', 'low']
+        gasProduction: ['reference', 'technology', 'high', 'low']
+
 
   # The order in which the scenarios are drawn, in viz4.
   # Generally, this order moves from highest to lowest. Since lower valued scenarios

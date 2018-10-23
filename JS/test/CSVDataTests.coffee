@@ -12,7 +12,7 @@ describe 'CSV Data Endpoints', ->
 
   it 'Serves data for Visualization 1', ->
     parameters = QueryString.stringify
-      dataset: 'oct2016'
+      dataset: 'jan2016'
       page: 'viz1'
       mainSelection: 'energyDemand'
 
@@ -25,7 +25,7 @@ describe 'CSV Data Endpoints', ->
 
   it 'Serves data for Visualization 2', ->
     parameters = QueryString.stringify
-      dataset: 'oct2016'
+      dataset: 'jan2016'
       page: 'viz2'
       mainSelection: 'energyDemand'
 
@@ -38,7 +38,7 @@ describe 'CSV Data Endpoints', ->
   
   it 'Serves data for Visualization 3', ->
     parameters = QueryString.stringify
-      dataset: 'oct2016'
+      dataset: 'jan2016'
       page: 'viz3'
       mainSelection: 'electricityGeneration'
 
@@ -51,7 +51,7 @@ describe 'CSV Data Endpoints', ->
   
   it 'Serves data for Visualization 4', ->
     parameters = QueryString.stringify
-      dataset: 'oct2016'
+      dataset: 'jan2016'
       page: 'viz4'
       mainSelection: 'energyDemand'
 
@@ -64,7 +64,7 @@ describe 'CSV Data Endpoints', ->
 
   it 'Serves data for Visualization 5', ->
     parameters = QueryString.stringify
-      dataset: 'oct2016'
+      dataset: 'jan2016'
       page: 'viz5'
       mainSelection: 'energyDemand'
 

@@ -65,7 +65,7 @@ class OilProductionIngestor
 
   sortData: ->
     for item in @mappedData
-      if item.type == 'Total'
+      if item.type == 'Total' or item.type == 'Total Canada'
         @summarizedAddAndDetectDuplicate item
       else
         @extraData.push item
@@ -104,6 +104,8 @@ class OilProductionIngestor
     for scenario in @scenarios
       for year in Constants.years
         for province in Constants.provinceRadioSelectionOptions
+          # Errors for missing data are logged in 'validateRequiredData'
+          continue if @summarizedGroupedData[scenario][year][province] == undefined
           results.push @summarizedGroupedData[scenario][year][province]
 
     results = d3.csv.format results

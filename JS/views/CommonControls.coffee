@@ -19,20 +19,23 @@ CommonControls =
           Tr.altText.dataset.jan2016Selected[app.language]
         else
           Tr.altText.dataset.jan2016Unselected[app.language]
-    oct2016 =
-      label: Tr.datasetSelector.oct2016Button[app.language]
-      dataset: 'oct2016'
-      title: Tr.selectorTooltip.datasetSelector.oct2016[app.language]
-      class:
-        if config.dataset == 'oct2016'
-          'vizButton selected'
-        else
-          'vizButton'
-      ariaLabel:
-        if config.dataset == 'oct2016'
-          Tr.altText.dataset.oct2016Selected[app.language]
-        else
-          Tr.altText.dataset.oct2016Unselected[app.language]
+
+    # 2016 update dataset removed as part of 2018 update
+    # oct2016 =
+    #   label: Tr.datasetSelector.oct2016Button[app.language]
+    #   dataset: 'oct2016'
+    #   title: Tr.selectorTooltip.datasetSelector.oct2016[app.language]
+    #   class:
+    #     if config.dataset == 'oct2016'
+    #       'vizButton selected'
+    #     else
+    #       'vizButton'
+    #   ariaLabel:
+    #     if config.dataset == 'oct2016'
+    #       Tr.altText.dataset.oct2016Selected[app.language]
+    #     else
+    #       Tr.altText.dataset.oct2016Unselected[app.language]
+
     oct2017 =
       label: Tr.datasetSelector.oct2017Button[app.language]
       dataset: 'oct2017'
@@ -48,7 +51,7 @@ CommonControls =
         else
           Tr.altText.dataset.oct2017Unselected[app.language]
 
-    [oct2017, oct2016, jan2016]
+    [oct2017, jan2016]
 
 
   mainSelectionData: (config, app) ->

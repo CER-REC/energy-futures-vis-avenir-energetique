@@ -15,7 +15,7 @@ class Visualization4Configuration
     ]
     province: 'all'
 
-    dataset: Constants.datasets[2]
+    dataset: Constants.datasets[Constants.datasets.length - 1]
 
 
   constructor: (@app, options) ->

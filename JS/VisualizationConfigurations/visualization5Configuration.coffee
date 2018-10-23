@@ -6,7 +6,7 @@ Constants = require '../Constants.coffee'
 
 class Visualization5Configuration
   defaultOptions:
-    dataset: Constants.datasets[2]
+    dataset: Constants.datasets[Constants.datasets.length - 1]
     scenario: 'reference'
     scenarios: [
       'reference'
