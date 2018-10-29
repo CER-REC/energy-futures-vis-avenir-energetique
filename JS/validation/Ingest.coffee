@@ -13,10 +13,10 @@ october2018Files = ->
   [
     {
       type: 'oil'
-      dataFilename: path.join ApplicationRoot, 'devPublic/rawCSV/2018-10-23_crude oil production VIZ.EF18.Oct23.csv'
-      processedFilename: path.join ApplicationRoot, 'public/CSV/2018-10-23_CrudeOilProduction.csv'
+      dataFilename: path.join ApplicationRoot, 'devPublic/rawCSV/2018-10-26 data/2018-10-26_crude oil production VIZ.EF18.Oct26R.csv'
+      processedFilename: path.join ApplicationRoot, 'public/CSV/2018-10-26_CrudeOilProduction.csv'
       dataset: 'oct2018'
-      logFilename: path.join ApplicationRoot, 'devPublic/rawCSV/log/2018-10-23_CrudeOilProduction.csv_ingestion_errors.log'
+      logFilename: path.join ApplicationRoot, 'devPublic/rawCSV/log/2018-10-26_CrudeOilProduction.csv_ingestion_errors.log'
     }
     {
       type: 'gas'
@@ -27,17 +27,17 @@ october2018Files = ->
     }
     {
       type: 'demand'
-      dataFilename: path.join ApplicationRoot, 'devPublic/rawCSV/2018-10-16_Demand For Viz. EF18.Oct16.csv'
-      processedFilename: path.join ApplicationRoot, 'public/CSV/2018-10-16_EnergyDemand.csv'
+      dataFilename: path.join ApplicationRoot, 'devPublic/rawCSV/2018-10-26 data/2018-10-26_Demand For Viz. EF18.Oct26.csv'
+      processedFilename: path.join ApplicationRoot, 'public/CSV/2018-10-26_EnergyDemand.csv'
       dataset: 'oct2018'
-      logFilename: path.join ApplicationRoot, 'devPublic/rawCSV/log/2018-10-16_EnergyDemand.csv_ingestion_errors.log'
+      logFilename: path.join ApplicationRoot, 'devPublic/rawCSV/log/2018-10-26_EnergyDemand.csv_ingestion_errors.log'
     }
     {
       type: 'electricity'
-      dataFilename: path.join ApplicationRoot, 'devPublic/rawCSV/2018-10-22_ElectricityGeneration_VIZ.EF18.Oct.22.csv'
-      processedFilename: path.join ApplicationRoot, 'public/CSV/2018-10-22_ElectricityGeneration.csv'
+      dataFilename: path.join ApplicationRoot, 'devPublic/rawCSV/2018-10-26 data/2018-10-26_ElectricityGeneration_VIZ.EF18.Oct.26.csv'
+      processedFilename: path.join ApplicationRoot, 'public/CSV/2018-10-26_ElectricityGeneration.csv'
       dataset: 'oct2018'
-      logFilename: path.join ApplicationRoot, 'devPublic/rawCSV/log/2018-10-22_ElectricityGeneration.csv_ingestion_errors.log'
+      logFilename: path.join ApplicationRoot, 'devPublic/rawCSV/log/2018-10-26_ElectricityGeneration.csv_ingestion_errors.log'
     }
   ]
 
