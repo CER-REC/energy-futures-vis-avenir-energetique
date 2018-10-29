@@ -798,6 +798,7 @@ class Visualization4
             @config.addScenario d.scenarioName
 
           # TODO: For efficiency, only rerender what's necessary.
+          # TODO: why are these calls in here twice?
           @renderScenariosSelector()
           @renderYAxis()
           @renderGraph()

@@ -469,7 +469,7 @@ CommonControls =
       image: 'IMG/sources/legend/solarWindGeo.svg'
       colour: '#339947'
 
-    coal = 
+    coal =
       title: Tr.legendSources.coal[app.language]
       ariaLabel: Tr.legendSources.coal[app.language]
       image: 'IMG/sources/legend/coal.svg'
@@ -481,19 +481,19 @@ CommonControls =
       image: 'IMG/sources/legend/oilProducts.svg'
       colour: '#cc6699'
 
-    electricity = 
+    electricity =
       title: Tr.legendSources.electricity[app.language]
       ariaLabel: Tr.legendSources.electricity[app.language]
       image: 'IMG/sources/legend/electricity.svg'
       colour: '#33cccc'
 
-    naturalGas = 
+    naturalGas =
       title: Tr.legendSources.naturalGas[app.language]
       ariaLabel: Tr.legendSources.naturalGas[app.language]
       image: 'IMG/sources/legend/naturalGas.svg'
       colour: '#f16739'
 
-    bio = 
+    bio =
       title: Tr.legendSources.bio[app.language]
       ariaLabel: Tr.legendSources.bio[app.language]
       image: 'IMG/sources/legend/biomass.svg'

@@ -207,8 +207,8 @@ module.exports =
         en: 'October 2017. EF 2017 explores how possible energy futures might unfold for Canadians over the long term. It considers three scenarios that explore how future climate policy and technological development might impact Canada’s energy system. The Reference Case is based on a current economic outlook, a moderate view of energy prices, and climate and energy policies announced at the time of analysis. The Higher Carbon Price Case considers the impact on the Canadian energy system of higher carbon pricing than in the Reference Case in the longer term. The Technology Case considers, in addition to higher carbon prices, the impact on the Canadian energy system of greater adoption of select emerging production and consumption energy technologies.'
         fr: 'Octobre 2017. AE 2017 examine comment divers scénarios possibles d’avenir énergétique pourraient se dérouler à long terme pour les Canadiens. Le rapport porte sur trois scénarios montrant comment les politiques climatiques futures et le développement technologique pourraient influer sur la filière énergétique du Canada. Le scénario de référence s’appuie sur les perspectives économiques actuelles, une vision modérée des prix de l’énergie et les politiques énergétiques ou climatiques déjà annoncées au moment de l’analyse. Le scénario de tarification du carbone élevée rend compte des répercussions à long terme sur la filière énergétique canadienne de prix plus élevés pour le carbone que dans le scénario de référence. Le scénario des avancées technologiques tient non seulement compte d’une tarification du carbone élevée sur la filière énergétique canadienne mais également des incidences qu’aurait l’adoption plus massive de certaines technologies émergentes liées à la production ou à la consommation d’énergie.'
       oct2018:
-        en: '<TODO>'
-        fr: '<TODO>'
+        en: 'October 2018. EF 2018 explores how possible energy futures might unfold for Canadians over the long term. It considers four scenarios that explore how future commodity prices and technological development might impact Canada’s energy system. '
+        fr: 'Octobre 2018. Le rapport de 2018 examine comment divers scénarios possibles d’avenir énergétique pourraient se dérouler à long terme pour les Canadiens. Il porte sur quatre scénarios montrant comment les politiques climatiques futures et le développement technologique pourraient influer sur la filière énergétique du Canada.'
 
     mainSelector:
       totalDemandButton:
@@ -538,7 +538,9 @@ module.exports =
       en: """
         <h1> CANADA’S ENERGY FUTURE 2018 </h1>
         <h2> October 2018 </h2>
-        <p> TODO </p>
+        <p> EF 2018 explores how possible energy futures might unfold for Canadians over the long term. It considers four scenarios that explore how future commodity prices and technological development might impact Canada’s energy system. The Reference Case is based on a current economic outlook, a moderate view of energy prices and technology development, and climate and energy policies announced at the time of analysis. The High and Low Price Cases address the uncertainty of future crude oil and natural gas prices. The Technology Case pushes past the policy and technology boundaries specific to the Reference Case and includes greater global climate policy ambition and market outcomes. It provides one potential view of what a faster transition enabled by stronger long term carbon policy, faster uptake of technologies such as electric vehicles, and lower cost of renewables would mean for Canada’s energy future.
+          <br><a href='http://www.neb-one.gc.ca/nrg/ntgrtd/ftr/2018/index-eng.html' target='_blank'>View the report</a>
+        </p>
 
         <h1> CANADA’S ENERGY FUTURE 2017 </h1>
         <h2> October 2017 </h2>
@@ -556,7 +558,9 @@ module.exports =
       fr: """
         <h1> AVENIR ÉNERGÉTIQUE DU CANADA EN 2018 </h1>
         <h2> Octobre 2018 </h2>
-        <p> TODO </p>
+        <p> Le rapport de 2018 examine comment divers scénarios possibles d’avenir énergétique pourraient se dérouler à long terme pour les Canadiens. Il porte sur quatre scénarios montrant comment les politiques climatiques futures et le développement technologique pourraient influer sur la filière énergétique du Canada. Le scénario de référence s’appuie sur les perspectives économiques actuelles, une vision modérée des prix de l’énergie et les politiques énergétiques ou climatiques déjà annoncées au moment de l’analyse. Les scénarios de prix élevés et de prix bas tiennent compte, eux, des incertitudes liées aux prix futurs du pétrole brut et de gaz naturel. Le scénario des avancées technologiques va au-delà des limites en la matière ou des politiques définies dans celui de référence et tient compte de mesures plus généralisées sur la scène mondiale, qui touchent le climat et qui se répercutent sur le marché. Il présente l’avenir énergétique sur lequel le Canada pourrait s’ouvrir en présence d’une transition plus rapide découlant de politiques à long terme sur le carbone qui seraient plus robustes, d’une dissémination plus rapide de technologies comme les véhicules électriques et de coûts moindres associés aux énergies renouvelables.
+          <br><a href='http://www.neb-one.gc.ca/nrg/ntgrtd/ftr/2018/index-fra.html' target='_blank'>Voir le rapport</a>
+        </p>
 
         <h1> AVENIR ÉNERGÉTIQUE DU CANADA EN 2017 </h1>
         <h2> Octobre 2017 </h2>
@@ -629,7 +633,7 @@ module.exports =
             <p>
               Number of cubic metres of crude oil produced per day. One barrel of oil is equal to 0.159 cubic metres.
             </p>
-          <h2> MILLION CUBIC FEET PER DAY (Mcf/d) </h2>
+          <h2> THOUSAND CUBIC FEET PER DAY (Mcf/d) </h2>
             <p>
               Number of cubic feet of natural gas produced per day.
             </p>
@@ -646,7 +650,7 @@ module.exports =
             Depending on the value, the y-axis may be scaled with a multiplier k, m or µ.
           </p>
           <p>
-            k=1000. For example, 15.0k Mcf/d equals 15.0 billion cubic feet per day, or 6.0k kB/d equals 6 million barrels per day.
+            k=1000. For example, 15.0k Mcf/d equals 15.0 million cubic feet per day, or 6.0k kB/d equals 6 million barrels per day.
           </p>
         </div>
         <div class="columnRight">
@@ -701,7 +705,7 @@ module.exports =
             Selon la valeur, un multiplicateur k, m ou µ peut être appliqué à l’axe y.
           </p>
           <p>
-            k=1000. Par exemple, 15,0k Mpi³/j équivaut à 15,0 milliards de pieds cubes par jour, ou 6,0k kb/j est égal à 6 millions de barils par jour.
+            k=1000. Par exemple, 15,0k Mpi³/j équivaut à 15,0 millions de pieds cubes par jour, ou 6,0k kb/j est égal à 6 millions de barils par jour.
           </p>
         </div>
         <div class="columnRight">
