@@ -23,7 +23,10 @@ class ElectricityProductionIngestor
 
     @normalize()
     @validateLineByLine()
-    @calculateTotalsForCanada()
+
+    # NB: This step was no longer needed for the 2018 data, which came with precomputed totals for us.
+    # @calculateTotalsForCanada()
+
     @createGroupedDataStructure()
     @sortData()
     @validateRequiredData()
@@ -144,7 +147,6 @@ class ElectricityProductionIngestor
         message: "Note: #{@extraData.length} un-needed items were filtered out."
         line: null
         lineNumber: null
-      
 
   validateRequiredData: ->
     count = 0
@@ -179,7 +181,6 @@ class ElectricityProductionIngestor
         message: "Error: Sanity check failed, the number of items in required data (#{count}) and extra data (#{@extraData.length}) don't sum up to the number of items in mapped data (#{@mappedData.length})"
         line: null
         lineNumber: null
-    
 
   writeResult: ->
     results = []
@@ -211,8 +212,11 @@ class ElectricityProductionIngestor
     if @detailedGroupedData[item.source][item.scenario][item.year][item.province]?
       @logMessages.push
         message: 'Duplicate item detected'
-        line: item
+        line: "#{item.source}, #{item.scenario}, #{item.year}, #{item.province}"
         lineNumber: null
+    else if item.province is 'all'
+      # The 2018 data includes aggregates for all of canada for each of the power sources, which are not used in any of our visualizations. We count these as extra data.
+      @extraData.push item
     else
       @detailedGroupedData[item.source][item.scenario][item.year][item.province] = item
 
@@ -222,7 +226,7 @@ ElectricityProductionIngestor.csvMapping = (d) ->
   source: d.Source
   scenario: d.Case
   year: parseInt d.Year
-  value: parseFloat d.Data.replace(',','')
+  value: parseFloat d.Data #.replace(',','')
   unit: d.Unit
 
 

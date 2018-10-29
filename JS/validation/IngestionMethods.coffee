@@ -31,7 +31,8 @@ IngestionMethods =
     if @summarizedGroupedData[item.scenario][item.year][item.province]?
       @logMessages.push
         message: 'Duplicate item detected'
-        line: item
+        line: "#{item.source}, #{item.scenario}, #{item.year}, #{item.province}"
+        # line: item
         lineNumber: null
     else
       @summarizedGroupedData[item.scenario][item.year][item.province] = item
