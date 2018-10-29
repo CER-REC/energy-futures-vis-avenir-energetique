@@ -10,8 +10,8 @@ require('coffee-script').register();
 fs.mkdirsSync('./dist/public/HTML');
 
 // Run the Node Security Project check against our current dependencies.
-console.log("Node Security Project known vulnerabilities check:")
-execSync('nsp check', {stdio: [0,1,2]})
+//console.log("Node Security Project known vulnerabilities check:")
+//execSync('nsp check', {stdio: [0,1,2]})
 
 // Build the javascript bundle for production
 execSync("npm run build");
