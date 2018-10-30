@@ -13,10 +13,10 @@ october2018Files = ->
   [
     {
       type: 'oil'
-      dataFilename: path.join ApplicationRoot, 'devPublic/rawCSV/2018_10_30-crude oil production VIZ.EF18.Oct30.csv'
-      processedFilename: path.join ApplicationRoot, 'public/CSV/2018-10-30_CrudeOilProduction.csv'
+      dataFilename: path.join ApplicationRoot, 'devPublic/rawCSV/2018-10-29_crude oil production VIZ.EF18.Oct29.csv'
+      processedFilename: path.join ApplicationRoot, 'public/CSV/2018-10-29_CrudeOilProduction.csv'
       dataset: 'oct2018'
-      logFilename: path.join ApplicationRoot, 'devPublic/rawCSV/log/2018-10-30_CrudeOilProduction.csv_ingestion_errors.log'
+      logFilename: path.join ApplicationRoot, 'devPublic/rawCSV/log/2018-10-29_CrudeOilProduction.csv_ingestion_errors.log'
     }
     {
       type: 'gas'
