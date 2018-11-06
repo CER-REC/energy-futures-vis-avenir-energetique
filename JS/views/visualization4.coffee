@@ -493,31 +493,31 @@ class Visualization4
       }
       {
         key: 'high'
-        colour: '#715bf0'
+        colour: '#6C5AEB'
       }
       {
         key: 'highLng'
-        colour: '#0f6862'
+        colour: '#2B6762'
       }
       {
         key: 'constrained'
-        colour: '#0357be'
+        colour: '#0B3CB4'
       }
       {
         key: 'low'
-        colour: '#022447'
+        colour: '#082346'
       }
       {
         key: 'noLng'
-        colour: '#fbed03'
+        colour: '#FAEE3D'
       }
       {
         key: 'technology'
-        colour: '#fbed03'
+        colour: '#FAEE3D'
       }
       {
         key: 'hcp'
-        colour: '#0357be'
+        colour: '#0B3CB4'
       }
     ]
 
@@ -567,31 +567,31 @@ class Visualization4
       high:
         tooltip: Tr.selectorTooltip.scenarioSelector.highPriceButton[@app.language]
         key: 'high'
-        colour: '#715bf0'
+        colour: '#6C5AEB'
       highLng:
         tooltip: Tr.selectorTooltip.scenarioSelector.highLngButton[@app.language]
         key: 'highLng'
-        colour: '#0f6862'
+        colour: '#2B6762'
       constrained:
         tooltip: Tr.selectorTooltip.scenarioSelector.constrainedButton[@app.language]
         key: 'constrained'
-        colour: '#0357be'
+        colour: '#0B3CB4'
       low:
         tooltip: Tr.selectorTooltip.scenarioSelector.lowPriceButton[@app.language]
         key: 'low'
-        colour: '#022447'
+        colour: '#082346'
       noLng:
         tooltip: Tr.selectorTooltip.scenarioSelector.noLngButton[@app.language]
         key: 'noLng'
-        colour: '#fbed03'
+        colour: '#FAEE3D'
       technology:
         tooltip: Tr.selectorTooltip.scenarioSelector.technologyButton[@app.language]
         key: 'technology'
-        colour: '#fbed03'
+        colour: '#FAEE3D'
       hcp:
         tooltip: Tr.selectorTooltip.scenarioSelector.hcpButton[@app.language]
         key: 'hcp'
-        colour: '#0357be'
+        colour: '#0B3CB4'
 
     scenariosInSelection = Constants.datasetDefinitions[@config.dataset].scenariosPerSelection[@config.mainSelection]
 
