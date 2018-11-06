@@ -193,7 +193,7 @@ module.exports =
   # But, there are some configurations where this ordering does not work. And since lines
   # in a line graph can and do cross each other, some configurations have no possible
   # ordering that can work.
-  scenarioDrawingOrder: ['high', 'highLng', 'reference', 'noLng', 'constrained', 'low', 'technology', 'hcp']
+  scenarioDrawingOrder: ['high', 'highLng', 'reference', 'noLng', 'constrained', 'low','hcp', 'technology']
 
 
   years: [

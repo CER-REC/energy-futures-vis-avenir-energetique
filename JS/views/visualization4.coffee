@@ -445,6 +445,47 @@ class Visualization4
           .dataForAllViz4Scenarios @config
 
   gradientData: ->
+    # 1st gen colours:
+    # [
+    #   {
+    #     key: 'reference'
+    #     colour: '#999999'
+    #   }
+    #   {
+    #     key: 'high'
+    #     colour: '#0C2C84'
+    #   }
+    #   {
+    #     key: 'highLng'
+    #     colour: '#225EA8'
+    #   }
+    #   {
+    #     key: 'constrained'
+    #     colour: '#41B6C4'
+    #   }
+    #   {
+    #     key: 'low'
+    #     colour: '#7FCDBB'
+    #   }
+    #   {
+    #     key: 'noLng'
+    #     colour: '#C7E9B4'
+    #   }
+    #   {
+    #     key: 'technology'
+    #     colour: '#C7E9B4'
+    #   }
+    #   {
+    #     key: 'hcp'
+    #     colour: '#7FCDBB'
+    #   }
+    #   {
+    #     key: 'htc'
+    #     colour: '#0C2C84'
+    #   }
+    # ]
+    
+    # 2nd gen colours
     [
       {
         key: 'reference'
@@ -452,41 +493,73 @@ class Visualization4
       }
       {
         key: 'high'
-        colour: '#0C2C84'
+        colour: '#715bf0'
       }
       {
         key: 'highLng'
-        colour: '#225EA8'
+        colour: '#0f6862'
       }
       {
         key: 'constrained'
-        colour: '#41B6C4'
+        colour: '#0357be'
       }
       {
         key: 'low'
-        colour: '#7FCDBB'
+        colour: '#022447'
       }
       {
         key: 'noLng'
-        colour: '#C7E9B4'
+        colour: '#fbed03'
       }
       {
         key: 'technology'
-        colour: '#C7E9B4'
+        colour: '#fbed03'
       }
       {
         key: 'hcp'
-        colour: '#7FCDBB'
-      }
-      {
-        key: 'htc'
-        colour: '#0C2C84'
+        colour: '#0357be'
       }
     ]
-    
+
+
 
   graphScenarioData: ->
     scenarioData =
+      # 1st gen colours
+      # reference:
+      #   tooltip: Tr.selectorTooltip.scenarioSelector.referenceButton[@app.language]
+      #   key: 'reference'
+      #   colour: '#999999'
+      # high:
+      #   tooltip: Tr.selectorTooltip.scenarioSelector.highPriceButton[@app.language]
+      #   key: 'high'
+      #   colour: '#0C2C84'
+      # highLng:
+      #   tooltip: Tr.selectorTooltip.scenarioSelector.highLngButton[@app.language]
+      #   key: 'highLng'
+      #   colour: '#225EA8'
+      # constrained:
+      #   tooltip: Tr.selectorTooltip.scenarioSelector.constrainedButton[@app.language]
+      #   key: 'constrained'
+      #   colour: '#41B6C4'
+      # low:
+      #   tooltip: Tr.selectorTooltip.scenarioSelector.lowPriceButton[@app.language]
+      #   key: 'low'
+      #   colour: '#7FCDBB'
+      # noLng:
+      #   tooltip: Tr.selectorTooltip.scenarioSelector.noLngButton[@app.language]
+      #   key: 'noLng'
+      #   colour: '#C7E9B4'
+      # technology:
+      #   tooltip: Tr.selectorTooltip.scenarioSelector.technologyButton[@app.language]
+      #   key: 'technology'
+      #   colour: '#C7E9B4'
+      # hcp:
+      #   tooltip: Tr.selectorTooltip.scenarioSelector.hcpButton[@app.language]
+      #   key: 'hcp'
+      #   colour: '#7FCDBB'
+
+      # 2nd gen colours
       reference:
         tooltip: Tr.selectorTooltip.scenarioSelector.referenceButton[@app.language]
         key: 'reference'
@@ -494,31 +567,31 @@ class Visualization4
       high:
         tooltip: Tr.selectorTooltip.scenarioSelector.highPriceButton[@app.language]
         key: 'high'
-        colour: '#0C2C84'
+        colour: '#715bf0'
       highLng:
         tooltip: Tr.selectorTooltip.scenarioSelector.highLngButton[@app.language]
         key: 'highLng'
-        colour: '#225EA8'
+        colour: '#0f6862'
       constrained:
         tooltip: Tr.selectorTooltip.scenarioSelector.constrainedButton[@app.language]
         key: 'constrained'
-        colour: '#41B6C4'
+        colour: '#0357be'
       low:
         tooltip: Tr.selectorTooltip.scenarioSelector.lowPriceButton[@app.language]
         key: 'low'
-        colour: '#7FCDBB'
+        colour: '#022447'
       noLng:
         tooltip: Tr.selectorTooltip.scenarioSelector.noLngButton[@app.language]
         key: 'noLng'
-        colour: '#C7E9B4'
+        colour: '#fbed03'
       technology:
         tooltip: Tr.selectorTooltip.scenarioSelector.technologyButton[@app.language]
         key: 'technology'
-        colour: '#C7E9B4'
+        colour: '#fbed03'
       hcp:
         tooltip: Tr.selectorTooltip.scenarioSelector.hcpButton[@app.language]
         key: 'hcp'
-        colour: '#7FCDBB'
+        colour: '#0357be'
 
     scenariosInSelection = Constants.datasetDefinitions[@config.dataset].scenariosPerSelection[@config.mainSelection]
 
@@ -798,11 +871,12 @@ class Visualization4
             @config.addScenario d.scenarioName
 
           # TODO: For efficiency, only rerender what's necessary.
+          # TODO: why were these calls in here twice?
           @renderScenariosSelector()
           @renderYAxis()
           @renderGraph()
-          @renderScenariosSelector()
-          @renderGraph()
+          # @renderScenariosSelector()
+          # @renderGraph()
           @app.router.navigate @config.routerParams()
 
         @app.datasetRequester.updateAndRequestIfRequired newConfig, update
@@ -1013,14 +1087,14 @@ class Visualization4
           xAxisScale(2010) / xAxisScale(2014)
       .style
         'stop-color': (d) -> d.colour
-        'stop-opacity': 0.4 * 0.9
+        'stop-opacity': 0.4 * 0.9 # 36%
 
     enterGrads.append('stop')
       .attr
         offset: '100%'
       .style
         'stop-color': (d) -> d.colour
-        'stop-opacity': 0.4 * 0.7
+        'stop-opacity': 0.4 * 0.7 # 28%
 
     enterFutureGrads = grads.enter().append('linearGradient')
       .attr
@@ -1033,14 +1107,16 @@ class Visualization4
         offset: 0
       .style
         'stop-color': (d) -> d.colour
-        'stop-opacity': 0.4 * 0.7
+        'stop-opacity': 0.4 * 0.7 # 28%
 
     enterFutureGrads.append('stop')
       .attr
         offset: '100%'
       .style
         'stop-color': (d) -> d.colour
-        'stop-opacity': 0.4 * 0.2
+        'stop-opacity': 0.4 * 0.2 # 8%
+
+    # NB: regarding opacity, we have 3-6 layers which combine together. 8% opacity is pretty low for one visual element, but with 6 layers we're still only just below 50% opacity all together.
 
 
     graphScenarioData = @graphScenarioData()
@@ -1137,7 +1213,8 @@ class Visualization4
           # NB: The extra RGBA statement is a fallback for old IE
           "url(#viz4gradFuture#{d.key}) rgba(#{colour.r}, #{colour.g}, #{colour.b}, 0.2)"
 
-    graphAreaGroups.order() #Keeps the order!!!
+    # d3 function, causes DOM element order to match data order
+    graphAreaGroups.order()
    
     graphFutureAreaSelectors.transition()
       .duration duration
@@ -1156,7 +1233,7 @@ class Visualization4
             value: 0
       .style
         stroke: (d) -> d.colour
-        'stroke-width': 2
+        'stroke-width': 2.5
         fill: 'none'
       
 
