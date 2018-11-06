@@ -8,6 +8,40 @@ IngestGasProduction = require './IngestGasProduction.coffee'
 IngestElectricityProduction = require './IngestElectricityProduction.coffee'
 
 
+october2018Files = ->
+
+  [
+    {
+      type: 'oil'
+      dataFilename: path.join ApplicationRoot, 'devPublic/rawCSV/2018-10-29_crude oil production VIZ.EF18.Oct29.csv'
+      processedFilename: path.join ApplicationRoot, 'public/CSV/2018-10-29_CrudeOilProduction.csv'
+      dataset: 'oct2018'
+      logFilename: path.join ApplicationRoot, 'devPublic/rawCSV/log/2018-10-29_CrudeOilProduction.csv_ingestion_errors.log'
+    }
+    {
+      type: 'gas'
+      dataFilename: path.join ApplicationRoot, 'devPublic/rawCSV/2018-10-16_Natural gas production VIZ.EF18.Oct.16.csv'
+      processedFilename: path.join ApplicationRoot, 'public/CSV/2018-10-16_NaturalGasProduction.csv'
+      dataset: 'oct2018'
+      logFilename: path.join ApplicationRoot, 'devPublic/rawCSV/log/2018-10-16_NaturalGasProduction.csv_ingestion_errors.log'
+    }
+    {
+      type: 'demand'
+      dataFilename: path.join ApplicationRoot, 'devPublic/rawCSV/2018-10-26 data/2018-10-26_Demand For Viz. EF18.Oct26.csv'
+      processedFilename: path.join ApplicationRoot, 'public/CSV/2018-10-26_EnergyDemand.csv'
+      dataset: 'oct2018'
+      logFilename: path.join ApplicationRoot, 'devPublic/rawCSV/log/2018-10-26_EnergyDemand.csv_ingestion_errors.log'
+    }
+    {
+      type: 'electricity'
+      dataFilename: path.join ApplicationRoot, 'devPublic/rawCSV/2018-10-26 data/2018-10-26_ElectricityGeneration_VIZ.EF18.Oct.26.csv'
+      processedFilename: path.join ApplicationRoot, 'public/CSV/2018-10-26_ElectricityGeneration.csv'
+      dataset: 'oct2018'
+      logFilename: path.join ApplicationRoot, 'devPublic/rawCSV/log/2018-10-26_ElectricityGeneration.csv_ingestion_errors.log'
+    }
+  ]
+
+
 october2017Files = ->
   # TODO: even more portable than passing filenames in would be to pass stream objects
   # in, this would let us use the ingestor offline and also seamlessly as part of a
@@ -45,41 +79,42 @@ october2017Files = ->
   ]
 
 
-october2016Files = ->
-  # TODO: even more portable than passing filenames in would be to pass stream objects
-  # in, this would let us use the ingestor offline and also seamlessly as part of a
-  # server.
+# 2016 update dataset removed as part of 2018 update
+# october2016Files = ->
+#   # TODO: even more portable than passing filenames in would be to pass stream objects
+#   # in, this would let us use the ingestor offline and also seamlessly as part of a
+#   # server.
 
-  [
-    {
-      type: 'oil'
-      dataFilename: path.join ApplicationRoot, 'devPublic/rawCSV/2016-10-18_CrudeOilProduction.csv'
-      processedFilename: path.join ApplicationRoot, 'public/CSV/2016-10-18_CrudeOilProduction.csv'
-      dataset: 'oct2016'
-      logFilename: path.join ApplicationRoot, 'devPublic/rawCSV/log/2016-10-18_CrudeOilProduction.csv_ingestion_errors.log'
-    }
-    {
-      type: 'gas'
-      dataFilename: path.join ApplicationRoot, 'devPublic/rawCSV/2016-10-18_NaturalGasProduction.csv'
-      processedFilename: path.join ApplicationRoot, 'public/CSV/2016-10-18_NaturalGasProduction.csv'
-      dataset: 'oct2016'
-      logFilename: path.join ApplicationRoot, 'devPublic/rawCSV/log/2016-10-18_NaturalGasProduction.csv_ingestion_errors.log'
-    }
-    {
-      type: 'demand'
-      dataFilename: path.join ApplicationRoot, 'devPublic/rawCSV/2016-10-18_EnergyDemand.csv'
-      processedFilename: path.join ApplicationRoot, 'public/CSV/2016-10-18_EnergyDemand.csv'
-      dataset: 'oct2016'
-      logFilename: path.join ApplicationRoot, 'devPublic/rawCSV/log/2016-10-18_EnergyDemand.csv_ingestion_errors.log'
-    }
-    {
-      type: 'electricity'
-      dataFilename: path.join ApplicationRoot, 'devPublic/rawCSV/2016-10-27_ElectricityGeneration.csv'
-      processedFilename: path.join ApplicationRoot, 'public/CSV/2016-10-27_ElectricityGeneration.csv'
-      dataset: 'oct2016'
-      logFilename: path.join ApplicationRoot, 'devPublic/rawCSV/log/2016-10-27_ElectricityGeneration.csv_ingestion_errors.log'
-    }
-  ]
+#   [
+#     {
+#       type: 'oil'
+#       dataFilename: path.join ApplicationRoot, 'devPublic/rawCSV/2016-10-18_CrudeOilProduction.csv'
+#       processedFilename: path.join ApplicationRoot, 'public/CSV/2016-10-18_CrudeOilProduction.csv'
+#       dataset: 'oct2016'
+#       logFilename: path.join ApplicationRoot, 'devPublic/rawCSV/log/2016-10-18_CrudeOilProduction.csv_ingestion_errors.log'
+#     }
+#     {
+#       type: 'gas'
+#       dataFilename: path.join ApplicationRoot, 'devPublic/rawCSV/2016-10-18_NaturalGasProduction.csv'
+#       processedFilename: path.join ApplicationRoot, 'public/CSV/2016-10-18_NaturalGasProduction.csv'
+#       dataset: 'oct2016'
+#       logFilename: path.join ApplicationRoot, 'devPublic/rawCSV/log/2016-10-18_NaturalGasProduction.csv_ingestion_errors.log'
+#     }
+#     {
+#       type: 'demand'
+#       dataFilename: path.join ApplicationRoot, 'devPublic/rawCSV/2016-10-18_EnergyDemand.csv'
+#       processedFilename: path.join ApplicationRoot, 'public/CSV/2016-10-18_EnergyDemand.csv'
+#       dataset: 'oct2016'
+#       logFilename: path.join ApplicationRoot, 'devPublic/rawCSV/log/2016-10-18_EnergyDemand.csv_ingestion_errors.log'
+#     }
+#     {
+#       type: 'electricity'
+#       dataFilename: path.join ApplicationRoot, 'devPublic/rawCSV/2016-10-27_ElectricityGeneration.csv'
+#       processedFilename: path.join ApplicationRoot, 'public/CSV/2016-10-27_ElectricityGeneration.csv'
+#       dataset: 'oct2016'
+#       logFilename: path.join ApplicationRoot, 'devPublic/rawCSV/log/2016-10-27_ElectricityGeneration.csv_ingestion_errors.log'
+#     }
+#   ]
 
 
 january2016Files = ->
@@ -146,9 +181,10 @@ ingest = (optionsList) ->
 
 
 
-ingest january2016Files()
-ingest october2016Files()
-ingest october2017Files()
+# ingest january2016Files()
+# ingest october2016Files()
+# ingest october2017Files()
+ingest october2018Files()
 
 
 

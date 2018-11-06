@@ -10,6 +10,7 @@
       [
         "devPublic/themes-dist-4.0.20-theme-gcwu-fegc",
         "devPublic/wet_NEB",
+        "devPublic",
         "dist",
       ],
       "path": "."

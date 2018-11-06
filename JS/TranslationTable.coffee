@@ -136,11 +136,11 @@ module.exports =
         <h1> CONTRIBUTORS </h1>
         <h2> DATA SOURCE: </h2>
         <p>
-          Abha Bhargava (Director), Matthew Hansen (Market Analyst), Bryce van Sluys (Market Analyst), Chris Doleman (Market Analyst), Michael Nadew (Market Analyst)
+          Abha Bhargava (Director), Matthew Hansen (Market Analyst), Bryce van Sluys (Market Analyst), Chris Doleman (Market Analyst), Michael Nadew (Market Analyst), Lukas Hansen (Market Analyst), Mantaj Hundal (Market Analyst), Ryan Safton (Market Analyst)
         </p>
         <h2> COORDINATION: </h2>
         <p>
-          Annette Hester (Concept and Coordination); Katherine Murphy (Project Manager); Faiza Hussain (Administrative support); Stephen Chow (Data Coordination); Garth Rowe (Web Lead); Jim Chisholm (Information Management and Technology)
+          Annette Hester (Concept and Coordination); Katherine Murphy (Project Manager); Amanda Harwood (Project Manager); Faiza Hussain (Administrative support); Stephen Chow (Data Coordination); Garth Rowe (Web Lead); Jim Chisholm (Information Management and Technology)
         </p>
         <h2> DATA VISUALIZATION: </h2>
         <p>
@@ -173,11 +173,11 @@ module.exports =
         <h1> LES CONTRIBUTEURS </h1>
         <h2> SOURCE DES DONNÉES </h2>
         <p>
-          Abha Bhargava (directrice) et Matthew Hansen, Bryce van Sluys, Chris Doleman et Michael Nadew (analystes de marchés)
+          Abha Bhargava (directrice) et Matthew Hansen, Bryce van Sluys, Chris Doleman, Michael Nadew, Lukas Hansen, Mantaj Hundal, Ryan Safton (analystes de marchés)
         </p>
         <h2> COORDINATION </h2>
         <p>
-          Annette Hester (conception et coordination); Katherine Murphy (gestionnaire de projet); Faiza Hussain (Soutien administratif); Stephen Chow (coordination des données); Garth Rowe (responsable du Web); Jim Chisholm (gestion de l’information et technologie)
+          Annette Hester (conception et coordination); Katherine Murphy et Amanda Harwood (gestionnaires de projet); Faiza Hussain (Soutien administratif); Stephen Chow (coordination des données); Garth Rowe (responsable du Web); Jim Chisholm (gestion de l’information et technologie)
         </p>
         <h2> VISUALISATION DES DONNÉES </h2>
         <p>
@@ -206,6 +206,9 @@ module.exports =
       oct2017:
         en: 'October 2017. EF 2017 explores how possible energy futures might unfold for Canadians over the long term. It considers three scenarios that explore how future climate policy and technological development might impact Canada’s energy system. The Reference Case is based on a current economic outlook, a moderate view of energy prices, and climate and energy policies announced at the time of analysis. The Higher Carbon Price Case considers the impact on the Canadian energy system of higher carbon pricing than in the Reference Case in the longer term. The Technology Case considers, in addition to higher carbon prices, the impact on the Canadian energy system of greater adoption of select emerging production and consumption energy technologies.'
         fr: 'Octobre 2017. AE 2017 examine comment divers scénarios possibles d’avenir énergétique pourraient se dérouler à long terme pour les Canadiens. Le rapport porte sur trois scénarios montrant comment les politiques climatiques futures et le développement technologique pourraient influer sur la filière énergétique du Canada. Le scénario de référence s’appuie sur les perspectives économiques actuelles, une vision modérée des prix de l’énergie et les politiques énergétiques ou climatiques déjà annoncées au moment de l’analyse. Le scénario de tarification du carbone élevée rend compte des répercussions à long terme sur la filière énergétique canadienne de prix plus élevés pour le carbone que dans le scénario de référence. Le scénario des avancées technologiques tient non seulement compte d’une tarification du carbone élevée sur la filière énergétique canadienne mais également des incidences qu’aurait l’adoption plus massive de certaines technologies émergentes liées à la production ou à la consommation d’énergie.'
+      oct2018:
+        en: 'October 2018. EF 2018 explores how possible energy futures might unfold for Canadians over the long term. It considers four scenarios that explore how future commodity prices and technological development might impact Canada’s energy system. '
+        fr: 'Octobre 2018. Le rapport de 2018 examine comment divers scénarios possibles d’avenir énergétique pourraient se dérouler à long terme pour les Canadiens. Il porte sur quatre scénarios montrant comment les politiques climatiques futures et le développement technologique pourraient influer sur la filière énergétique du Canada.'
 
     mainSelector:
       totalDemandButton:
@@ -525,24 +528,26 @@ module.exports =
     oct2017Button:
       en: '2017'
       fr: '2017'
+    oct2018Button:
+      en: '2018'
+      fr: '2018'
     datasetSelectorHelpTitle:
       en: 'ENERGY FUTURES'
       fr: 'AVENIR ÉNERGÉTIQUE'
     datasetSelectorHelp:
       en: """
+        <h1> CANADA’S ENERGY FUTURE 2018 </h1>
+        <h2> October 2018 </h2>
+        <p> EF 2018 explores how possible energy futures might unfold for Canadians over the long term. It considers four scenarios that explore how future commodity prices and technological development might impact Canada’s energy system. The Reference Case is based on a current economic outlook, a moderate view of energy prices and technology development, and climate and energy policies announced at the time of analysis. The High and Low Price Cases address the uncertainty of future crude oil and natural gas prices. The Technology Case pushes past the policy and technology boundaries specific to the Reference Case and includes greater global climate policy ambition and market outcomes. It provides one potential view of what a faster transition enabled by stronger long term carbon policy, faster uptake of technologies such as electric vehicles, and lower cost of renewables would mean for Canada’s energy future.
+          <br><a href='http://www.neb-one.gc.ca/nrg/ntgrtd/ftr/2018/index-eng.html' target='_blank'>View the report</a>
+        </p>
+
         <h1> CANADA’S ENERGY FUTURE 2017 </h1>
         <h2> October 2017 </h2>
         <p>
           EF 2017 explores how possible energy futures might unfold for Canadians over the long term. It considers three scenarios that explore how future climate policy and technological development might impact Canada’s energy system. The Reference Case is based on a current economic outlook, a moderate view of energy prices, and climate and energy policies announced at the time of analysis. The Higher Carbon Price Case considers the impact on the Canadian energy system of higher carbon pricing than in the Reference Case in the longer term. The Technology Case considers, in addition to higher carbon prices, the impact on the Canadian energy system of greater adoption of select emerging production and consumption energy technologies.
           <br><a href='http://www.neb-one.gc.ca/nrg/ntgrtd/ftr/2017/index-eng.html' target='_blank'>View the report</a>
         </p>
-        <h1> CANADA’S ENERGY FUTURE 2016: UPDATE </h1>
-        <h2> October 2016 </h2>
-        <p>
-          Presents reference, high, and low price cases. In the Reference Case, the crude oil price assumption is revised lower to US$90 per barrel by 2040. In addition to policies which were included in the January edition, such as Quebec’s cap and trade system and the carbon tax in B.C., most of the Alberta Climate Leadership Plan and the Ontario cap and trade program have been integrated into the forecast.
-          <br><a href='http://www.neb-one.gc.ca/nrg/ntgrtd/ftr/2016updt/index-eng.html' target='_blank'>View the report</a>
-        </p>
-
         <h1> CANADA’S ENERGY FUTURE 2016 </h1>
         <h2> January 2016 </h2>
         <p>
@@ -551,17 +556,17 @@ module.exports =
         </p>
       """
       fr: """
+        <h1> AVENIR ÉNERGÉTIQUE DU CANADA EN 2018 </h1>
+        <h2> Octobre 2018 </h2>
+        <p> Le rapport de 2018 examine comment divers scénarios possibles d’avenir énergétique pourraient se dérouler à long terme pour les Canadiens. Il porte sur quatre scénarios montrant comment les politiques climatiques futures et le développement technologique pourraient influer sur la filière énergétique du Canada. Le scénario de référence s’appuie sur les perspectives économiques actuelles, une vision modérée des prix de l’énergie et les politiques énergétiques ou climatiques déjà annoncées au moment de l’analyse. Les scénarios de prix élevés et de prix bas tiennent compte, eux, des incertitudes liées aux prix futurs du pétrole brut et de gaz naturel. Le scénario des avancées technologiques va au-delà des limites en la matière ou des politiques définies dans celui de référence et tient compte de mesures plus généralisées sur la scène mondiale, qui touchent le climat et qui se répercutent sur le marché. Il présente l’avenir énergétique sur lequel le Canada pourrait s’ouvrir en présence d’une transition plus rapide découlant de politiques à long terme sur le carbone qui seraient plus robustes, d’une dissémination plus rapide de technologies comme les véhicules électriques et de coûts moindres associés aux énergies renouvelables.
+          <br><a href='http://www.neb-one.gc.ca/nrg/ntgrtd/ftr/2018/index-fra.html' target='_blank'>Voir le rapport</a>
+        </p>
+
         <h1> AVENIR ÉNERGÉTIQUE DU CANADA EN 2017 </h1>
         <h2> Octobre 2017 </h2>
         <p>
           AE 2017 examine comment divers scénarios possibles d’avenir énergétique pourraient se dérouler à long terme pour les Canadiens. Le rapport porte sur trois scénarios montrant comment les politiques climatiques futures et le développement technologique pourraient influer sur la filière énergétique du Canada. Le scénario de référence s’appuie sur les perspectives économiques actuelles, une vision modérée des prix de l’énergie et les politiques énergétiques ou climatiques déjà annoncées au moment de l’analyse. Le scénario de tarification du carbone élevée rend compte des répercussions à long terme sur la filière énergétique canadienne de prix plus élevés pour le carbone que dans le scénario de référence. Le scénario des avancées technologiques tient non seulement compte d’une tarification du carbone élevée sur la filière énergétique canadienne mais également des incidences qu’aurait l’adoption plus massive de certaines technologies émergentes liées à la production ou à la consommation d’énergie.
           <br><a href='http://www.neb-one.gc.ca/nrg/ntgrtd/ftr/2017/index-fra.html' target='_blank'>Voir le rapport</a>
-        </p>
-        <h1> AVENIR ÉNERGÉTIQUE DU CANADA EN 2016 – MISE À JOUR </h1>
-        <h2> Octobre 2016 </h2>
-        <p>
-          Présente des scénarios de prix, bas et élevés, ainsi qu’un scénario de référence. Dans ce dernier cas, l’hypothèse de prix du pétrole brut a été revue à la baisse, à 90 $ US le baril en 2040. En plus des politiques déjà incluses précédemment, notamment le système de plafonnement et d’échange de droits d’émission au Québec et la taxe sur le carbone en Colombie-Britannique, les nouvelles prévisions tiennent compte, dans sa plus grande partie, du plan de leadership de l’Alberta en matière de changement climatique de même que du programme de plafonnement et d’échange de droits de l’Ontario.
-          <br><a href='http://www.neb-one.gc.ca/nrg/ntgrtd/ftr/2016updt/index-fra.html' target='_blank'>Consulter le rapport</a>
         </p>
 
         <h1> AVENIR ÉNERGÉTIQUE DU CANADA EN 2016 </h1>
@@ -628,7 +633,7 @@ module.exports =
             <p>
               Number of cubic metres of crude oil produced per day. One barrel of oil is equal to 0.159 cubic metres.
             </p>
-          <h2> MILLION CUBIC FEET PER DAY (Mcf/d) </h2>
+          <h2> THOUSAND CUBIC FEET PER DAY (Mcf/d) </h2>
             <p>
               Number of cubic feet of natural gas produced per day.
             </p>
@@ -645,7 +650,7 @@ module.exports =
             Depending on the value, the y-axis may be scaled with a multiplier k, m or µ.
           </p>
           <p>
-            k=1000. For example, 15.0k Mcf/d equals 15.0 billion cubic feet per day, or 6.0k kB/d equals 6 million barrels per day.
+            k=1000. For example, 15.0k Mcf/d equals 15.0 million cubic feet per day, or 6.0k kB/d equals 6 million barrels per day.
           </p>
         </div>
         <div class="columnRight">
@@ -700,7 +705,7 @@ module.exports =
             Selon la valeur, un multiplicateur k, m ou µ peut être appliqué à l’axe y.
           </p>
           <p>
-            k=1000. Par exemple, 15,0k Mpi³/j équivaut à 15,0 milliards de pieds cubes par jour, ou 6,0k kb/j est égal à 6 millions de barils par jour.
+            k=1000. Par exemple, 15,0k Mpi³/j équivaut à 15,0 millions de pieds cubes par jour, ou 6,0k kb/j est égal à 6 millions de barils par jour.
           </p>
         </div>
         <div class="columnRight">
@@ -916,6 +921,57 @@ module.exports =
               <p>
                 Le scénario de tarification du carbone élevée évalue les répercussions à long terme de prix plus élevés pour le carbone que ce qui est prévu dans le scénario de référence.
               </p>
+          </div>
+        """
+      oct2018:
+        en: """
+          <p>
+            EF 2018 explores how possible energy futures might unfold for Canadians over the long term. It considers four scenarios that explore how future prices and technological development might impact Canada’s energy system.
+          </p>
+          <div class="columnLeft">
+            <h2> REFERENCE </h2>
+            <p>
+              The Reference Case provides a baseline outlook with a moderate view of energy prices and economic growth, and climate and energy policies announced at the time of analysis.
+            </p>
+            <h2> TECHNOLOGY </h2>
+            <p>
+              The Technology Case considers higher carbon prices than the Reference Case and greater adoption of select emerging production and consumption energy technologies.
+            </p>
+          </div>
+          <div class="columnRight">
+            <h2> HIGH PRICE </h2>
+            <p>
+              A price case with higher oil and natural gas prices captures some of the uncertainty related to future energy prices.
+            </p>
+            <h2> LOW PRICE </h2>
+            <p>
+              A price case with lower oil and natural gas prices captures some of the uncertainty related to future energy prices.
+            </p>
+          </div>
+        """
+        fr: """
+          <p>
+            AE 2018 examine comment divers scénarios possibles d’avenir énergétique pourraient se dérouler à long terme pour les Canadiens. Le rapport porte sur quatre scénarios montrant comment les prix futurs et le développement technologique pourraient influer sur la filière énergétique du Canada.
+          </p>
+          <div class="columnLeft">
+            <h2> RÉFÉRENCE </h2>
+            <p>
+              Le scénario de référence offre une perspective de base et mise sur une projection modérée des prix de l’énergie et de la croissance de l’économie dans les années à venir.
+            </p>
+            <h2> AVANCÉES TECHNOLOGIQUES </h2>
+            <p>
+              Le scénario des avancées technologiques suppose des prix du carbone plus élevés que ceux du scénario de référence et l’adoption plus massive de certaines technologies énergétiques émergentes liées à la production ou à la consommation.
+            </p>
+          </div>
+          <div class="columnRight">
+            <h2> PRIX ÉLEVÉ </h2>
+            <p>
+              Un premier scénario lié aux prix prévoit des prix du pétrole et du gaz naturel plus élevés et prend en compte certaines incertitudes qui ont trait aux prix futurs de l’énergie.
+            </p>
+            <h2> PRIX BAS </h2>
+            <p>
+              Un second scénario lié aux prix table sur des prix du pétrole et du gaz naturel moins élevés et intègre certaines incertitudes concernant les prix futurs de l’énergie.
+            </p>
           </div>
         """
 
@@ -1270,6 +1326,9 @@ module.exports =
       oct2017:
         en: '2017'
         fr: '2017'
+      oct2018:
+        en: '2018'
+        fr: '2018'
     sector:
       sector:
         en: 'sector'
@@ -1856,6 +1915,9 @@ module.exports =
       oct2017Selected:
         en: '2017 selected'
         fr: 'Sélection - 2017'
+      oct2018Selected:
+        en: '2018 selected'
+        fr: 'Sélection - 2018'
 
       jan2016Unselected:
         en: '2016 unselected'
@@ -1866,6 +1928,9 @@ module.exports =
       oct2017Unselected:
         en: '2017 unselected'
         fr: 'Désélection - 2017'
+      oct2018Unselected:
+        en: '2018 unselected'
+        fr: 'Désélection - 2018'
 
     scenario:
       referenceSelected:

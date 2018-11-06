@@ -67,12 +67,14 @@ h1 {
   padding-bottom: 0.5em;  
 }
 
-.scenarioLegend .reference {
+/* 1st gen colours */
+
+/*.scenarioLegend .reference {
   background-color: #999999;
   color: white;
 }
 
-.scenarioLegend .high, .scenarioLegend .technology {
+.scenarioLegend .high {
   background-color: #0C2C84;
   color: white;
 }
@@ -82,7 +84,7 @@ h1 {
   color: white;
 }
 
-.scenarioLegend .constrained {
+.scenarioLegend .constrained{
   background-color: #41B6C4;
   color: white;
 }
@@ -92,9 +94,51 @@ h1 {
   color: white;
 }
 
-.scenarioLegend .noLng {
+.scenarioLegend .noLng, .scenarioLegend .technology  {
   background-color: #C7E9B4;
   color: white;
+}*/
+
+/* 2nd gen colours */
+
+.scenarioLegend .reference {
+  background-color: #999999;
+  color: white;
+}
+
+.scenarioLegend .high {
+  background-color: #715bf0;
+  color: white;
+}
+
+.scenarioLegend .highLng {
+  background-color: #0f6862;
+  color: white;
+}
+
+.scenarioLegend .constrained{
+  background-color: #0357be;
+  color: white;
+}
+
+.scenarioLegend .low {
+  background-color: #022447;
+  color: white;
+}
+
+.scenarioLegend .hcp {
+  background-color: #0357be;
+  color: white;
+}
+
+.scenarioLegend .noLng {
+  background-color: #fbed03;
+  color: black;
+}
+
+.scenarioLegend .technology {
+  background-color: #fbed03;
+  color: black;
 }
 
 

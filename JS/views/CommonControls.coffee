@@ -19,20 +19,23 @@ CommonControls =
           Tr.altText.dataset.jan2016Selected[app.language]
         else
           Tr.altText.dataset.jan2016Unselected[app.language]
-    oct2016 =
-      label: Tr.datasetSelector.oct2016Button[app.language]
-      dataset: 'oct2016'
-      title: Tr.selectorTooltip.datasetSelector.oct2016[app.language]
-      class:
-        if config.dataset == 'oct2016'
-          'vizButton selected'
-        else
-          'vizButton'
-      ariaLabel:
-        if config.dataset == 'oct2016'
-          Tr.altText.dataset.oct2016Selected[app.language]
-        else
-          Tr.altText.dataset.oct2016Unselected[app.language]
+
+    # 2016 update dataset removed as part of 2018 update
+    # oct2016 =
+    #   label: Tr.datasetSelector.oct2016Button[app.language]
+    #   dataset: 'oct2016'
+    #   title: Tr.selectorTooltip.datasetSelector.oct2016[app.language]
+    #   class:
+    #     if config.dataset == 'oct2016'
+    #       'vizButton selected'
+    #     else
+    #       'vizButton'
+    #   ariaLabel:
+    #     if config.dataset == 'oct2016'
+    #       Tr.altText.dataset.oct2016Selected[app.language]
+    #     else
+    #       Tr.altText.dataset.oct2016Unselected[app.language]
+
     oct2017 =
       label: Tr.datasetSelector.oct2017Button[app.language]
       dataset: 'oct2017'
@@ -48,7 +51,24 @@ CommonControls =
         else
           Tr.altText.dataset.oct2017Unselected[app.language]
 
-    [oct2017, oct2016, jan2016]
+    oct2018 =
+      label: Tr.datasetSelector.oct2018Button[app.language]
+      dataset: 'oct2018'
+      title: Tr.selectorTooltip.datasetSelector.oct2018[app.language]
+      class:
+        if config.dataset == 'oct2018'
+          'vizButton selected'
+        else
+          'vizButton'
+      ariaLabel:
+        if config.dataset == 'oct2018'
+          Tr.altText.dataset.oct2018Selected[app.language]
+        else
+          Tr.altText.dataset.oct2018Unselected[app.language]
+
+
+
+    [oct2018, oct2017, jan2016]
 
 
   mainSelectionData: (config, app) ->
@@ -403,24 +423,31 @@ CommonControls =
       when 'energyDemand', 'electricityGeneration'
         if config.dataset == 'jan2016'
           [reference, high, low, constrained, highLng, noLng]
-        else if config.dataset == 'oct2016'
-          [reference, high, low]
+        # else if config.dataset == 'oct2016'
+        #   [reference, high, low]
         else if config.dataset == 'oct2017'
           [reference, technology, hcp]
+        else if config.dataset == 'oct2018'
+          [reference, technology, high, low]
       when 'oilProduction'
         if config.dataset == 'jan2016'
           [reference, high, low, constrained]
-        else if config.dataset == 'oct2016'
-          [reference, high, low]
+        # else if config.dataset == 'oct2016'
+        #   [reference, high, low]
         else if config.dataset == 'oct2017'
           [reference, technology, hcp]
+        else if config.dataset == 'oct2018'
+          [reference, technology, high, low]
       when 'gasProduction'
         if config.dataset == 'jan2016'
           [reference, high, low, highLng, noLng]
-        else if config.dataset == 'oct2016'
-          [reference, high, low]
+        # else if config.dataset == 'oct2016'
+        #   [reference, high, low]
         else if config.dataset == 'oct2017'
           [reference, technology, hcp]
+        else if config.dataset == 'oct2018'
+          [reference, technology, high, low]
+
       # This is the case when the scenarios list is requested by viz5. Because
       # viz5 config does not contain a main selection and since we currently
       # need to return the full list of scenarios, we are defaulting to return all
@@ -432,6 +459,8 @@ CommonControls =
           [reference, high, low]
         else if config.dataset == 'oct2017'
           [reference, technology, hcp]
+        else if config.dataset == 'oct2018'
+          [reference, technology, high, low]
 
   legendData: (app) ->
     renewables =
@@ -440,7 +469,7 @@ CommonControls =
       image: 'IMG/sources/legend/solarWindGeo.svg'
       colour: '#339947'
 
-    coal = 
+    coal =
       title: Tr.legendSources.coal[app.language]
       ariaLabel: Tr.legendSources.coal[app.language]
       image: 'IMG/sources/legend/coal.svg'
@@ -452,19 +481,19 @@ CommonControls =
       image: 'IMG/sources/legend/oilProducts.svg'
       colour: '#cc6699'
 
-    electricity = 
+    electricity =
       title: Tr.legendSources.electricity[app.language]
       ariaLabel: Tr.legendSources.electricity[app.language]
       image: 'IMG/sources/legend/electricity.svg'
       colour: '#33cccc'
 
-    naturalGas = 
+    naturalGas =
       title: Tr.legendSources.naturalGas[app.language]
       ariaLabel: Tr.legendSources.naturalGas[app.language]
       image: 'IMG/sources/legend/naturalGas.svg'
       colour: '#f16739'
 
-    bio = 
+    bio =
       title: Tr.legendSources.bio[app.language]
       ariaLabel: Tr.legendSources.bio[app.language]
       image: 'IMG/sources/legend/biomass.svg'

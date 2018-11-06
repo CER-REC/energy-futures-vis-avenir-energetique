@@ -6,7 +6,7 @@ Constants = require '../Constants.coffee'
 
 class Visualization5Configuration
   defaultOptions:
-    dataset: Constants.datasets[2]
+    dataset: Constants.datasets[Constants.datasets.length - 1]
     scenario: 'reference'
     scenarios: [
       'reference'
@@ -150,10 +150,12 @@ class Visualization5Configuration
     datasetText = switch @dataset
       when 'jan2016'
         "#{Tr.report[@app.language]}#{Tr.datasetSelector.jan2016Button[@app.language]}"
-      when 'oct2016'
-        "#{Tr.report[@app.language]}#{Tr.datasetSelector.oct2016Button[@app.language]}"
+      # when 'oct2016'
+      #   "#{Tr.report[@app.language]}#{Tr.datasetSelector.oct2016Button[@app.language]}"
       when 'oct2017'
         "#{Tr.report[@app.language]}#{Tr.datasetSelector.oct2017Button[@app.language]}"
+      when 'oct2018'
+        "#{Tr.report[@app.language]}#{Tr.datasetSelector.oct2018Button[@app.language]}"
 
     sectorText = Tr.imageExportText.sectors[@sector][@app.language]
 

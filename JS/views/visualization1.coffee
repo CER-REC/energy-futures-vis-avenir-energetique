@@ -146,6 +146,7 @@ class Visualization1 extends visualization
     # TODO: Consider garbage collection and event listeners
     @document.getElementById('visualizationContent').innerHTML = ''
 
+  # Called only for window size changes, see App.coffee
   redraw: ->
     @svgResize()
     @buildXAxis()

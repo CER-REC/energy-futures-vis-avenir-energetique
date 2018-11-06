@@ -37,7 +37,7 @@ class Visualization1Configuration
       'SK'
       'YT'
     ]
-    dataset: Constants.datasets[2]
+    dataset: Constants.datasets[Constants.datasets.length - 1]
 
   constructor: (@app, options) ->
     @page = 'viz1'
@@ -237,10 +237,12 @@ class Visualization1Configuration
     datasetText = switch @dataset
       when 'jan2016'
         "#{Tr.report[@app.language]}#{Tr.datasetSelector.jan2016Button[@app.language]}"
-      when 'oct2016'
-        "#{Tr.report[@app.language]}#{Tr.datasetSelector.oct2016Button[@app.language]}"
+      # when 'oct2016'
+      #   "#{Tr.report[@app.language]}#{Tr.datasetSelector.oct2016Button[@app.language]}"
       when 'oct2017'
         "#{Tr.report[@app.language]}#{Tr.datasetSelector.oct2017Button[@app.language]}"
+      when 'oct2018'
+        "#{Tr.report[@app.language]}#{Tr.datasetSelector.oct2018Button[@app.language]}"
 
     description = ''
     description += "#{datasetText} - "
