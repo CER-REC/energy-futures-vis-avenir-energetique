@@ -40,6 +40,9 @@ class StackedBarChart extends BarChart
     @_data = data
     @generateStackData()
 
+  forecastFromYear: (year) ->
+    @options.forecastFromYear = year
+
   # When dragging we want a shorter duration
   dragStart: =>
     @_duration = 500
@@ -127,12 +130,8 @@ class StackedBarChart extends BarChart
           y: @_size.h
           height: 0
           class: 'bar'
-          'fill-opacity': (d, i) =>
-            if d.data.x > 2014
-              1 - i / (@_x.domain().length + 5)
           id: (d) ->
             "barElement-#{d.data.x}-#{d.name}"
-
 
       rect.attr
         x: (d) =>
@@ -140,6 +139,11 @@ class StackedBarChart extends BarChart
         width: @_barSize
         class: (d) =>
           "bar pointerCursor #{@options.barClass d}"
+        'fill-opacity': (d, i) =>
+          if d.data.x >= @options.forecastFromYear
+            1 - i / (@_x.domain().length + 5)
+          else
+            1
       rect.exit().remove()
       rect.transition()
         .duration =>

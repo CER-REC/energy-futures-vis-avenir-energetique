@@ -18,11 +18,16 @@ class StackedAreaChart extends StackedBarChart
     @_strokeWidth = @options.strokeWidth
     @areaElementClick = @options.areaElementClick
     super @app, parent, x, y, @options
+    @setupGradients()
     @redraw()
 
     @tooltip = @app.window.document.getElementById 'tooltip'
     @tooltipParent = @app.window.document.getElementById 'wideVisualizationPanel'
     @graphPanel = @app.window.document.getElementById 'graphPanel'
+
+
+  dataset: (dataset) =>
+    @options.dataset = dataset
 
   # When dragging we want a shorter duration
   dragStart: =>
@@ -31,92 +36,71 @@ class StackedAreaChart extends StackedBarChart
   dragEnd: =>
     @_duration = @options.duration
 
+  setupGradients: ->
+    gradients = @_parent.select 'defs'
+
+    for datasetName, datasetDefinition of Constants.datasetDefinitions
+      for source in Constants.viz2Sources
+
+        gradient = gradients.append 'linearGradient'
+          .attr
+            class: 'vizPresentLinearGradient'
+            gradientUnits: 'objectBoundingBox'
+            id: "viz2grad-#{source}-#{datasetName}"
+
+        gradient.append 'stop'
+          .attr
+            offset: '0'
+          .style
+            'stop-color': Constants.viz2SourceColours[source]
+            'stop-opacity': '0.6'
+
+        gradient.append 'stop'
+          .attr
+            offset: "#{@_x(datasetDefinition.forecastFromYear)/@_x(2040)*100}%"
+          .style
+            'stop-color': Constants.viz2SourceColours[source]
+            'stop-opacity': 0.6 * 0.9
+
+        # The forecast transparency is phased in over a three year span to make the shift a bit less abrupt.
+        gradient.append 'stop'
+          .attr
+            offset: "#{@_x(datasetDefinition.forecastFromYear + 3)/@_x(2040)*100}%"
+          .style
+            'stop-color': Constants.viz2SourceColours[source]
+            'stop-opacity': 0.6 * 0.7
+
+        gradient.append 'stop'
+          .attr
+            offset: '100%'
+          .style
+            'stop-color': Constants.viz2SourceColours[source]
+            'stop-opacity': 0.6 * 0.2
+
+
   redraw: ->
     if (@_y != undefined) and (@_x != undefined)
-      grads = @_parent.select 'defs'
-        .selectAll '.vizPresentLinearGradient'
-        .data @_mapping, (d) -> d.key
-      gradsFuture = @_parent.select 'defs'
-        .selectAll '.vizFutureLinearGradient'
-        .data @_mapping, (d) -> d.key
-      enterPresentGrads = grads.enter()
-        .append 'linearGradient'
-        .attr
-          class: 'vizPresentLinearGradient'
-          gradientUnits: 'objectBoundingBox'
-          id: (d) -> 'viz2gradPresent' + d.key
-      enterPresentGrads.append 'stop'
-        .attr
-          offset: '0'
-        .style
-          'stop-color': (d) -> d.colour
-          'stop-opacity': '0.6'
 
-      enterPresentGrads.append 'stop'
-        .attr
-          offset: => "#{@_x(2011) / @_x(2014)}"
-        .style
-          'stop-color': (d) -> d.colour
-          'stop-opacity': 0.6 * 0.9
-
-      enterPresentGrads.append 'stop'
-        .attr
-          offset: '100%'
-        .style
-          'stop-color': (d) -> d.colour
-          'stop-opacity': 0.6 * 0.7
-
-      enterFutureGrads = gradsFuture.enter().append 'linearGradient'
-        .attr
-          class: 'vizFutureLinearGradient'
-          gradientUnits: 'objectBoundingBox'
-          id: (d) -> "viz2gradFuture#{d.key}"
-
-      enterFutureGrads.append 'stop'
-        .attr
-          offset: '0%'
-        .style
-          'stop-color': (d) -> d.colour
-          'stop-opacity': 0.6 * 0.7
-
-      enterFutureGrads.append 'stop'
-        .attr
-          offset: '100%'
-        .style
-          'stop-color': (d) -> d.colour
-          'stop-opacity': 0.6 * 0.2
-
-      grads.exit().remove()
       area = d3.svg.area()
         .x (d) =>
           @_x d.x
         .y0 (d) =>
           @_y d.y0
         .y1 (d) =>
-          @_y(d.y0 + d.y)
-        .defined (d) -> d.x <= 2014
-
-      areaFuture = d3.svg.area()
-        .x (d) =>
-          @_x d.x
-        .y0 (d) =>
-          @_y d.y0
-        .y1 (d) =>
-          @_y(d.y0 + d.y)
-        .defined (d) -> d.x >= 2014
+          @_y d.y0 + d.y
 
       line = d3.svg.line()
         .x (d) =>
           @_x d.x
         .y (d) =>
-          @_y(d.y0 + d.y)
+          @_y d.y0 + d.y
         .defined (d) -> d.x <= 2014
 
       futureLineFunction = d3.svg.line()
         .x (d) =>
           @_x d.x
         .y (d) =>
-          @_y(d.y0 + d.y)
+          @_y d.y0 + d.y
         .defined (d) -> d.x >= 2014
 
       presentArea = @_group.selectAll '.presentArea'
@@ -144,46 +128,7 @@ class StackedAreaChart extends StackedBarChart
               x: data.x
               y: 0
               y0: 0
-
-        .style
-          fill: (d) ->
-            colour = d3.rgb d.colour
-            "url(#viz2gradPresent#{d.key}) rgba(#{colour.r}, #{colour.g}, #{colour.b}, 0.6)"
-
       presentArea.exit().remove()
-
-      futureArea = @_group.selectAll '.futureArea'
-        .data(@_mapping, (d) -> d.key)
-        .on 'mouseover', (d) =>
-          coords = d3.mouse @tooltipParent # [x, y]
-          @tooltip.style.visibility = 'visible'
-          @tooltip.style.left = "#{coords[0] + 30}px"
-          @tooltip.style.top = "#{coords[1]}px"
-          @displayTooltip d.key
-        .on 'mousemove', (d) =>
-          coords = d3.mouse @tooltipParent # [x, y]
-          @tooltip.style.left = "#{coords[0] + 30}px"
-          @tooltip.style.top = "#{coords[1]}px"
-          @displayTooltip d.key
-        .on 'mouseout', =>
-          @tooltip.style.visibility = 'hidden'
-        .on 'click', @areaElementClick
-
-      futureArea.enter().append 'path'
-        .attr
-          class: 'futureArea pointerCursor'
-          d: (d) =>
-            areaFuture @_stackDictionary[d.key].values.map (data) ->
-              x: data.x
-              y: 0
-              y0: 0
-
-        .style
-          fill: (d) ->
-            colour = d3.rgb d.colour
-            "url(#viz2gradFuture#{d.key}) rgba(#{colour.r}, #{colour.g}, #{colour.b}, 0.4)"
-
-      futureArea.exit().remove()
 
       presentLine = @_group.selectAll '.presentLine'
         .data @_mapping, (d) -> d.key
@@ -230,15 +175,10 @@ class StackedAreaChart extends StackedBarChart
               y: data.y
               y0: data.y0
 
-      futureArea.transition()
-        .duration( =>
-          if @_duration then @_duration else 0)
-        .attr
-          d: (d) =>
-            areaFuture @_stackDictionary[d.key].values.map (data) ->
-              x: data.x
-              y: data.y
-              y0: data.y0
+      presentArea.style
+        fill: (d) =>
+          colour = d3.rgb d.colour
+          "url(#viz2grad-#{d.key}-#{@options.dataset}) rgba(#{colour.r}, #{colour.g}, #{colour.b}, 0.6)"
 
       presentLine.transition()
         .duration  =>

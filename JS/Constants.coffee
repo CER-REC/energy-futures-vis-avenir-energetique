@@ -27,7 +27,7 @@ module.exports =
     # NB: Yukon has a trailing space in some of the CSVs.
     'Yukon ': 'YT'
     'Northwest Territories': 'NT'
-    # NB: Northwest Territories has a trailing space in some of the CSVs. 
+    # NB: Northwest Territories has a trailing space in some of the CSVs.
     'Northwest Territories ': 'NT'
     'Nunavut': 'NU'
     'Canada': 'all'
@@ -123,12 +123,13 @@ module.exports =
         energyDemand: ['high', 'highLng', 'reference', 'noLng', 'constrained', 'low']
         electricityGeneration: ['high', 'highLng', 'reference', 'noLng', 'constrained', 'low']
         oilProduction: ['high', 'highLng', 'reference', 'noLng', 'constrained', 'low']
-        gasProduction: ['high', 'highLng', 'reference', 'noLng', 'constrained', 'low']    
+        gasProduction: ['high', 'highLng', 'reference', 'noLng', 'constrained', 'low']
       scenariosPerSelection:
         energyDemand: ['high', 'highLng', 'reference', 'noLng', 'constrained', 'low']
         electricityGeneration: ['high', 'highLng', 'reference', 'noLng', 'constrained', 'low']
         oilProduction: ['high', 'reference', 'constrained', 'low']
         gasProduction: ['high', 'highLng', 'reference', 'noLng', 'low']
+      forecastFromYear: 2014
 
 
     # 2016 update dataset removed as part of 2018 update
@@ -148,6 +149,7 @@ module.exports =
     #     electricityGeneration: ['high', 'reference', 'low']
     #     oilProduction: ['high', 'reference', 'low']
     #     gasProduction: ['high', 'reference', 'low']
+    #  forecastFromYear: 2014
 
 
     oct2017:
@@ -160,12 +162,13 @@ module.exports =
         energyDemand: ['reference', 'technology', 'hcp']
         electricityGeneration: ['reference', 'technology', 'hcp']
         oilProduction: ['reference', 'technology', 'hcp']
-        gasProduction: ['reference', 'technology', 'hcp'] 
+        gasProduction: ['reference', 'technology', 'hcp']
       scenariosPerSelection:
         energyDemand: ['reference', 'technology', 'hcp']
         electricityGeneration: ['reference', 'technology', 'hcp']
         oilProduction: ['reference', 'technology', 'hcp']
         gasProduction: ['reference', 'technology', 'hcp']
+      forecastFromYear: 2015
 
     oct2018:
       scenarios: [
@@ -184,6 +187,8 @@ module.exports =
         electricityGeneration: ['reference', 'technology', 'high', 'low']
         oilProduction: ['reference', 'technology', 'high', 'low']
         gasProduction: ['reference', 'technology', 'high', 'low']
+      forecastFromYear: 2016
+
 
 
   # The order in which the scenarios are drawn, in viz4.
@@ -327,6 +332,14 @@ module.exports =
     'coal'
     'solarWindGeothermal'
   ]
+
+  viz2SourceColours:
+    electricity: '#33cccc' # teal
+    oilProducts: '#cc6699' # pink
+    bio: '#8d68ac' # purple
+    naturalGas: '#f16739' # orange
+    coal: '#996733' # brown
+    solarWindGeothermal: '#339947' # green
 
   viz3Sources: [
     'hydro'
@@ -495,7 +508,7 @@ module.exports =
     NU:
       row: 0.25
       column: 2
-    Canada: 
+    Canada:
       row: 0.25
       column: 3.5
     NL:
@@ -540,7 +553,7 @@ module.exports =
     NU:
       x: 370
       y: 265
-    Canada: 
+    Canada:
       x: 440
       y: 285
     NL:

@@ -1462,8 +1462,8 @@ class Visualization4
       scenarioDataItem.year == @accessConfig.activeYear
     return unless item?
 
-    xCoord = @xAxisScale()(item.year)
-    yCoord = @yAxisScale()(item.value)
+    xCoord = @xAxisScale() item.year
+    yCoord = @yAxisScale() item.value
     @accessibleFocusDot.attr
       transform: "translate(#{xCoord}, #{yCoord})"
 
