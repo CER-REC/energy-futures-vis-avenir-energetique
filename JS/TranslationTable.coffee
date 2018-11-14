@@ -104,8 +104,8 @@ module.exports =
       en: 'To interact with this visualization, visit: '
       fr: 'Pour manipuler cette visualisation, visitez: '
     imageDownloadSource:
-      en: 'Canada’s Energy Future 2016 – National Energy Board'
-      fr: 'Avenir énergétique du Canada en 2016 – Office national de l’énergie'
+      en: 'Canada’s Energy Future – National Energy Board'
+      fr: 'Avenir énergétique du Canada – Office national de l’énergie'
 
     helpPopoverHeader:
       en: 'HELP'
