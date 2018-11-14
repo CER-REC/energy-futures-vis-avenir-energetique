@@ -965,20 +965,20 @@ div.chartTooltip:after {
   color: white;
 }
 #canadasEnergyFutureVisualization .vizButton.noLng {
-  color: #FAEE3D;
-  border-color: #FAEE3D;
+  color: #3692fa;
+  border-color: #3692fa;
 }
 #canadasEnergyFutureVisualization .vizButton.noLng.selected {
-  background-color: #FAEE3D;
-  color: black;
+  background-color: #3692fa;
+  color: white;
 }
 #canadasEnergyFutureVisualization .vizButton.technology {
-  color: #FAEE3D;
-  border-color: #FAEE3D;
+  color: #3692fa;
+  border-color: #3692fa;
 }
 #canadasEnergyFutureVisualization .vizButton.technology.selected {
-  background-color: #FAEE3D;
-  color: black;
+  background-color: #3692fa;
+  color: white;
 }
 #canadasEnergyFutureVisualization .vizButton.hcp {
   color: #0B3CB4;

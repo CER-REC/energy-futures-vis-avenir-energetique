@@ -511,11 +511,11 @@ class Visualization4
       }
       {
         key: 'noLng'
-        colour: '#FAEE3D'
+        colour: '#3692fa'
       }
       {
         key: 'technology'
-        colour: '#FAEE3D'
+        colour: '#3692fa'
       }
       {
         key: 'hcp'
@@ -596,11 +596,11 @@ class Visualization4
       noLng:
         tooltip: Tr.selectorTooltip.scenarioSelector.noLngButton[@app.language]
         key: 'noLng'
-        colour: '#FAEE3D'
+        colour: '#3692fa'
       technology:
         tooltip: Tr.selectorTooltip.scenarioSelector.technologyButton[@app.language]
         key: 'technology'
-        colour: '#FAEE3D'
+        colour: '#3692fa'
       hcp:
         tooltip: Tr.selectorTooltip.scenarioSelector.hcpButton[@app.language]
         key: 'hcp'
