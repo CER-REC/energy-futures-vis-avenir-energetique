@@ -713,7 +713,8 @@ class Visualization2 extends visualization
   buildForecast: ->
     @d3document.selectAll('.forecast').remove()
 
-    forecastYear = Constants.datasetDefinitions[@config.dataset].forecastFromYear
+    # NB: see Constants.datasetDefinitions for info about forecastFromYear
+    forecastYear = Constants.datasetDefinitions[@config.dataset].forecastFromYear - 1
 
     textX = @_margin.left + @xScale()(forecastYear) + 10
     textY = height - 16

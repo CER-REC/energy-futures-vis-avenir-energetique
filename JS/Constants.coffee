@@ -109,6 +109,16 @@ module.exports =
   ]
 
 
+  ###
+  NB: regarding forecast from year: the forecast year in the constants is inclusive of when the forecast begins. E.g. for the 2016 report data, the last year of historical data is 2014, the first year of forecast data is 2015.
+  
+  However, the decision has been made that the line on viz2 and viz4 indicating the beginning of the forecast should land on the last year of historical data, not the first year of forecast data. It's a matter of interpretation which of these two years the forecast indicator should land on. If this were grade school and we were drawing number lines, we would be using an open dot ...
+
+  For this reason, we subtract 1 from the forecast year given here in viz2 and viz4.
+  
+  Viz1 is different, because the tickmarks actually fall between years, we can represent the forecast more accurately, and we use the forecast year as listed in the constants.
+  ###
+
   datasetDefinitions:
     jan2016:
       scenarios: [
@@ -129,7 +139,7 @@ module.exports =
         electricityGeneration: ['high', 'highLng', 'reference', 'noLng', 'constrained', 'low']
         oilProduction: ['high', 'reference', 'constrained', 'low']
         gasProduction: ['high', 'highLng', 'reference', 'noLng', 'low']
-      forecastFromYear: 2014
+      forecastFromYear: 2015
 
 
     # 2016 update dataset removed as part of 2018 update
@@ -168,7 +178,7 @@ module.exports =
         electricityGeneration: ['reference', 'technology', 'hcp']
         oilProduction: ['reference', 'technology', 'hcp']
         gasProduction: ['reference', 'technology', 'hcp']
-      forecastFromYear: 2015
+      forecastFromYear: 2016
 
     oct2018:
       scenarios: [
@@ -187,7 +197,7 @@ module.exports =
         electricityGeneration: ['reference', 'technology', 'high', 'low']
         oilProduction: ['reference', 'technology', 'high', 'low']
         gasProduction: ['reference', 'technology', 'high', 'low']
-      forecastFromYear: 2016
+      forecastFromYear: 2017
 
 
 

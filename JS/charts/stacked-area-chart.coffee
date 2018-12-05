@@ -57,7 +57,8 @@ class StackedAreaChart extends StackedBarChart
 
         gradient.append 'stop'
           .attr
-            offset: "#{@_x(datasetDefinition.forecastFromYear)/@_x(2040)*100}%"
+            # NB: see Constants.datasetDefinitions for info about forecastFromYear
+            offset: "#{@_x(datasetDefinition.forecastFromYear - 1)/@_x(2040)*100}%"
           .style
             'stop-color': Constants.viz2SourceColours[source]
             'stop-opacity': 0.6 * 0.9
@@ -65,7 +66,8 @@ class StackedAreaChart extends StackedBarChart
         # The forecast transparency is phased in over a three year span to make the shift a bit less abrupt.
         gradient.append 'stop'
           .attr
-            offset: "#{@_x(datasetDefinition.forecastFromYear + 3)/@_x(2040)*100}%"
+            # NB: see Constants.datasetDefinitions for info about forecastFromYear
+            offset: "#{@_x(datasetDefinition.forecastFromYear - 1 + 3)/@_x(2040)*100}%"
           .style
             'stop-color': Constants.viz2SourceColours[source]
             'stop-opacity': 0.6 * 0.7
@@ -78,8 +80,53 @@ class StackedAreaChart extends StackedBarChart
             'stop-opacity': 0.6 * 0.2
 
 
+
+        # A separate set of gradients for the line which traces the top of the area.
+        # These gradients have a much sharper colour dropoff
+
+        gradient = gradients.append 'linearGradient'
+          .attr
+            class: 'vizPresentLinearGradient'
+            gradientUnits: 'objectBoundingBox'
+            id: "viz2lineGrad-#{source}-#{datasetName}"
+
+        gradient.append 'stop'
+          .attr
+            offset: '0'
+          .style
+            'stop-color': Constants.viz2SourceColours[source]
+            'stop-opacity': '0.6'
+
+        gradient.append 'stop'
+          .attr
+            # NB: see Constants.datasetDefinitions for info about forecastFromYear
+            offset: "#{@_x(datasetDefinition.forecastFromYear - 1)/@_x(2040)*100}%"
+          .style
+            'stop-color': Constants.viz2SourceColours[source]
+            'stop-opacity': 0.6 * 0.9
+
+        gradient.append 'stop'
+          .attr
+            # NB: see Constants.datasetDefinitions for info about forecastFromYear
+            offset: "#{@_x(datasetDefinition.forecastFromYear - 1 + 0.1)/@_x(2040)*100}%"
+          .style
+            'stop-color': Constants.viz2SourceColours[source]
+            'stop-opacity': 0.6 * 0.2
+
+        gradient.append 'stop'
+          .attr
+            offset: '100%'
+          .style
+            'stop-color': Constants.viz2SourceColours[source]
+            'stop-opacity': 0.6 * 0.2
+
+
+
+
   redraw: ->
     if (@_y != undefined) and (@_x != undefined)
+
+      datasetDefinition = Constants.datasetDefinitions[@options.dataset]
 
       area = d3.svg.area()
         .x (d) =>
@@ -94,14 +141,6 @@ class StackedAreaChart extends StackedBarChart
           @_x d.x
         .y (d) =>
           @_y d.y0 + d.y
-        .defined (d) -> d.x <= 2014
-
-      futureLineFunction = d3.svg.line()
-        .x (d) =>
-          @_x d.x
-        .y (d) =>
-          @_y d.y0 + d.y
-        .defined (d) -> d.x >= 2014
 
       presentArea = @_group.selectAll '.presentArea'
         .data(@_mapping, (d) -> d.key)
@@ -143,27 +182,11 @@ class StackedAreaChart extends StackedBarChart
 
         .style
           stroke: (d) =>
-            if @_mapping then d.colour else '#333333'
+            colour = d3.rgb d.colour
+            "url(#viz2lineGrad-#{d.key}-#{@options.dataset}) rgba(#{colour.r}, #{colour.g}, #{colour.b}, 0.6)"
           'stroke-width': @_strokeWidth
           fill: 'none'
 
-      futureLine = @_group.selectAll '.futureLine'
-        .data @_mapping, (d) -> d.key
-      futureLine.enter().append 'path'
-        .attr
-          class: 'futureLine'
-          d: (d) =>
-            futureLineFunction @_stackDictionary[d.key].values.map (data) ->
-              x: data.x
-              y: 0
-              y0: 0
-            
-        .style
-          stroke: (d) =>
-            if @_mapping then d.colour else '#333333'
-          'stroke-width': @_strokeWidth
-          'stroke-opacity': 0.4
-          fill: 'none'
 
       presentArea.transition()
         .duration =>
@@ -190,16 +213,13 @@ class StackedAreaChart extends StackedBarChart
               y: data.y
               y0: data.y0
 
-      futureLine.transition()
-        .duration( =>
-          if @_duration then @_duration else 0)
-        .attr
-          d: (d) =>
-            futureLineFunction @_stackDictionary[d.key].values.map (data) ->
-              x: data.x
-              y: data.y
-              y0: data.y0
-            
+      presentLine
+        .style
+          stroke: (d) =>
+            colour = d3.rgb d.colour
+            "url(#viz2lineGrad-#{d.key}-#{@options.dataset}) rgba(#{colour.r}, #{colour.g}, #{colour.b}, 0.6)"
+          'stroke-width': @_strokeWidth
+
 
     this
 

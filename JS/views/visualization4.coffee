@@ -956,7 +956,7 @@ class Visualization4
 
     #render the future line
 
-    forecastYear = Constants.datasetDefinitions[@config.dataset].forecastFromYear
+    forecastYear = Constants.datasetDefinitions[@config.dataset].forecastFromYear - 1
 
     textX = @margin.left + @xAxisScale()(forecastYear) + 10
     textY = @outerHeight - 16
@@ -1097,7 +1097,7 @@ class Visualization4
   renderGraph: (duration = @app.animationDuration) ->
     xAxisScale = @xAxisScale()
     yAxisScale = @yAxisScale()
-    forecastYear = Constants.datasetDefinitions[@config.dataset].forecastFromYear
+    forecastYear = Constants.datasetDefinitions[@config.dataset].forecastFromYear - 1
 
     area = d3.svg.area()
       .x (d) ->
