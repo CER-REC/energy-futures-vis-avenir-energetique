@@ -4,6 +4,7 @@ _ = require 'lodash'
 Chart =  require './chart.coffee'
 Platform = require '../Platform.coffee'
 Constants = require '../Constants.coffee'
+Tr = require '../TranslationTable.coffee'
 
 class BubbleChart extends Chart
   bubbleChartDefaults:
@@ -111,8 +112,15 @@ class BubbleChart extends Chart
   mouseMoveHandler: (d, coords) =>
     @tooltip.style.left = "#{coords[0] + Constants.tooltipXOffset}px"
     @tooltip.style.top = "#{coords[1]}px"
-    @tooltip.innerHTML = "#{d.name} (#{@_year}): #{d.size.toFixed(2)}"
+    @tooltip.innerHTML = @tooltipString d.name, d.value
 
+
+  tooltipString: (name, value) ->
+    formatter = d3.formatPrefix value
+    value = formatter.scale(value).toFixed 2
+    unitString = Tr.unitSelector["#{@config.unit}Button"][@app.language]
+
+    "#{name} (#{@_year}): #{value} #{formatter.symbol} #{unitString}"
 
 
   redraw: ->
@@ -231,8 +239,7 @@ class BubbleChart extends Chart
             'font-size': 14
           .style
             'font-family': 'Avenir Next Condensed, Arial Narrow, Arial, Verdana, sans-serif'
-          .text ->
-            "#{d.name}: #{d3.format('.3f')(d.size)}"
+          .text => @tooltipString d.name, d.value
         
         d3.select(element.parentNode).insert 'rect', 'text'
           .attr

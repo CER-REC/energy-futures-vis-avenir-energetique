@@ -245,7 +245,7 @@ module.exports =
       petajoulesButton:
         en: 'A measure of energy that is a quadrillion (e+15) joules. According to Statistics Canada, a petajoule is the approximate amount of energy it takes to run the Montreal Metro for one year.'
         fr: 'Mesure d’énergie correspondant à un quadrillion (e+15) de joules. Selon Statistique Canada, un pétajoule représente l’énergie requise pour faire fonctionner le métro de Montréal pendant un an.'
-      gigawattHourButton:
+      gigawattHoursButton:
         en: 'A measure of electric energy that is a billion (e+9) watt hours of electric energy per year. One GW.h is equal to 0.0036 petajoules and 0.0016 kBOE/d.'
         fr: 'Mesure de puissance énergétique correspondant à un milliard (e+9) de wattheures d’énergie électrique par année. Un gigawatt équivaut à 0,0036 pétajoule et à 0,0016 kBEP/j.'
       kilobarrelEquivalentsButton:
@@ -585,7 +585,7 @@ module.exports =
     petajoulesButton:
       en: 'PETAJOULE'
       fr: 'PÉTAJOULE'
-    gigawattHourButton:
+    gigawattHoursButton:
       en: 'GW.h'
       fr: 'GWh'
     kilobarrelEquivalentsButton:

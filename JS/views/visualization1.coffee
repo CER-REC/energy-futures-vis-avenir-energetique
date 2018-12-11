@@ -641,6 +641,7 @@ class Visualization1 extends visualization
       forecastFromYear: Constants.datasetDefinitions[@config.dataset].forecastFromYear
 
     @_chart = new stackedBarChart @app, '#graphSVG', @xScale(), @yScale(), stackedOptions
+    @_chart.config = @config
 
     menuOptions =
       displayHelpIcon: true

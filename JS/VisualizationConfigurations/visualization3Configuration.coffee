@@ -255,7 +255,7 @@ class Visualization3Configuration
     #   when 'kilobarrelEquivalents'
     #     Tr.unitSelector.kilobarrelEquivalentsButton[@app.language]
     #   when 'gigawattHours'
-    #     Tr.unitSelector.gigawattHourButton[@app.language]
+    #     Tr.unitSelector.gigawattHoursButton[@app.language]
 
 
     scenarioText = switch @scenario

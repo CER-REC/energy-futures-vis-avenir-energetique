@@ -206,7 +206,7 @@ class Visualization1Configuration
       when 'kilobarrelEquivalents'
         Tr.unitSelector.kilobarrelEquivalentsButton[@app.language]
       when 'gigawattHours'
-        Tr.unitSelector.gigawattHourButton[@app.language]
+        Tr.unitSelector.gigawattHoursButton[@app.language]
       when 'thousandCubicMetres'
         Tr.unitSelector.thousandCubicMetresButton[@app.language]
       when 'millionCubicMetres'
