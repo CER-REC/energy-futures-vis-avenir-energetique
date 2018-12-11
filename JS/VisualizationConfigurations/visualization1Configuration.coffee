@@ -57,7 +57,7 @@ class Visualization1Configuration
     # thousandCubicMetres - thousand cubic metres per day, m^3/day (oil)
     # millionCubicMetres - million cubic metres per day, m^3/day (gas)
     # kilobarrels - kilobarrels of oil per day, kB/day
-    # cubicFeet - million cubic feet per day, Mcf/day
+    # cubicFeet - billion cubic feet per day, Bcf/day
     @setUnit options.unit
 
     # one of: reference, constrained, high, low, highLng, noLng
