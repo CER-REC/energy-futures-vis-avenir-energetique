@@ -564,8 +564,9 @@ class Visualization1 extends visualization
   buildForecast: ->
     @d3document.selectAll('.forecast').remove()
 
+    forecastYear = Constants.datasetDefinitions[@config.dataset].forecastFromYear
 
-    textX = @_margin.left + @xScale()(2015)
+    textX = @_margin.left + @xScale()(forecastYear) + 10
     textY = height - 16
     @d3document.select '#graphSVG'
       .append 'text'
@@ -577,9 +578,7 @@ class Visualization1 extends visualization
           'text-anchor': 'start'
         .text Tr.forecastLabel[@app.language]
 
-
-
-    arrowX = @_margin.left + @xScale()(2015) + 65
+    arrowX = @_margin.left + @xScale()(forecastYear) + 65
     arrowY = height - 27
     @d3document.select '#graphSVG'
       .append 'image'
@@ -593,19 +592,16 @@ class Visualization1 extends visualization
           height: 9
           width: 200
 
-
     @d3document.select '#graphSVG'
       .append 'line'
         .attr
           class: 'forecast'
           stroke: '#999'
           'stroke-width': 2
-          #We want the line in the middle of the years
-          x1: @_margin.left + ((@xScale()(2014) + @xScale()(2015)) / 2 - @_barMargin)
-          y1: @height() + @_margin.top
-          #We want the line in the middle of the years
-          x2: @_margin.left + ((@xScale()(2014) + @xScale()(2015)) / 2 - @_barMargin)
-          y2: height - 16
+          x1: @_margin.left + (@xScale()(forecastYear) - @_barMargin)
+          y1: height - 30
+          x2: @_margin.left + (@xScale()(forecastYear) - @_barMargin)
+          y2: height - 14
 
   #build viz: run the first time only: adds the bottom axis, assigns the chart
   buildViz: ->
@@ -642,6 +638,7 @@ class Visualization1 extends visualization
           ''
       onAccessibleFocus: @onAccessibleFocus
       chartElementClick: @chartElementClick
+      forecastFromYear: Constants.datasetDefinitions[@config.dataset].forecastFromYear
 
     @_chart = new stackedBarChart @app, '#graphSVG', @xScale(), @yScale(), stackedOptions
 
@@ -684,6 +681,7 @@ class Visualization1 extends visualization
 
   #called for adjustments: basically to avoid rebuilding the x axis and the chart object
   adjustViz: ->
+    @_chart.forecastFromYear Constants.datasetDefinitions[@config.dataset].forecastFromYear
     @_chart.mapping @provinceMenuData()
     @_chart.data @seriesData
 

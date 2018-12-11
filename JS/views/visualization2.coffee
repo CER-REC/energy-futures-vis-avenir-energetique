@@ -713,7 +713,10 @@ class Visualization2 extends visualization
   buildForecast: ->
     @d3document.selectAll('.forecast').remove()
 
-    textX = @_margin.left + @xScale()(2015)
+    # NB: see Constants.datasetDefinitions for info about forecastFromYear
+    forecastYear = Constants.datasetDefinitions[@config.dataset].forecastFromYear - 1
+
+    textX = @_margin.left + @xScale()(forecastYear) + 10
     textY = height - 16
     @d3document.select('#graphSVG')
       .append 'text'
@@ -724,7 +727,7 @@ class Visualization2 extends visualization
         .style 'text-anchor', 'start'
         .text Tr.forecastLabel[@app.language]
 
-    arrowX = @_margin.left + @xScale()(2015) + 65
+    arrowX = @_margin.left + @xScale()(forecastYear) + 65
     arrowY = height - 27
     @d3document.select('#graphSVG')
       .append 'image'
@@ -741,12 +744,10 @@ class Visualization2 extends visualization
           class: 'forecast'
           stroke: '#999'
           'stroke-width': 2
-          # We want the line in the middle of the years
-          x1: @_margin.left + @xScale()(2014)
-          y1: @height() + @_margin.top
-          # We want the line in the middle of the years
-          x2: @_margin.left + @xScale()(2014)
-          y2: height - 16
+          x1: @_margin.left + @xScale() forecastYear
+          y1: height - 30
+          x2: @_margin.left + @xScale() forecastYear
+          y2: height - 14
 
   buildViz:  ->
     @buildYAxis()
@@ -779,6 +780,8 @@ class Visualization2 extends visualization
 
         @updateAccessibleFocus()
 
+      dataset: @config.dataset
+
 
 
     @_chart = new stackedAreaChart @app, '#graphSVG', @xScale(), @yScale(), stackedOptions
@@ -792,6 +795,7 @@ class Visualization2 extends visualization
 
 
   adjustViz: ->
+    @_chart.dataset @config.dataset
     @_chart.mapping @sourceMenuData()
     @_chart.data @seriesData
     @_chart.y @yScale()
