@@ -239,8 +239,13 @@ class StackedAreaChart extends StackedBarChart
       item.x == year
     return unless tooltipDatum
 
-    @tooltip.innerHTML = "#{Tr.sourceSelector.sources[powerSource][@app.language]} (#{year}) #{tooltipDatum.y.toFixed(2)}"
+    formatter = d3.formatPrefix tooltipDatum.y
+    value = formatter.scale(tooltipDatum.y).toFixed 2
+    unitString = Tr.unitSelector["#{@config.unit}Button"][@app.language]
 
+    @tooltip.innerHTML = "#{Tr.sourceSelector.sources[powerSource][@app.language]} (#{year}) #{value} #{formatter.symbol} #{unitString}"
+ 
+ 
 
   displayTooltipKeyboard: (source, year, value, accessibleFocusDot) ->
 
@@ -260,7 +265,13 @@ class StackedAreaChart extends StackedBarChart
     @tooltip.style.left = "#{xDest - xParentOffset}px"
     @tooltip.style.top = "#{yDest - yParentOffset}px"
 
-    @tooltip.innerHTML = "#{Tr.sourceSelector.sources[source][@app.language]} (#{year}) #{value.toFixed 2}"
+    formatter = d3.formatPrefix value
+    value = formatter.scale(value).toFixed 2
+    unitString = Tr.unitSelector["#{@config.unit}Button"][@app.language]
+
+    @tooltip.innerHTML = "#{Tr.sourceSelector.sources[source][@app.language]} (#{year}) #{value} #{formatter.symbol} #{unitString}"
+ 
+ 
 
 
   getStackDictionaryInfoForAccessibility: (name, xValue) ->

@@ -785,6 +785,7 @@ class Visualization2 extends visualization
 
 
     @_chart = new stackedAreaChart @app, '#graphSVG', @xScale(), @yScale(), stackedOptions
+    @_chart.config = @config
 
     @_provinceMenu = @buildProvinceMenu()
     @sourceMenu = @buildSourceMenu()

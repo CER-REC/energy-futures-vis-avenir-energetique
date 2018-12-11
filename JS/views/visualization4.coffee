@@ -1315,7 +1315,14 @@ class Visualization4
       item.year == year
     return unless tooltipDatum
 
-    @tooltip.innerHTML = "#{Tr.scenarioSelector.names[scenario][@app.language]} (#{year}) #{tooltipDatum.value.toFixed(2)}"
+    # @tooltip.innerHTML = "#{Tr.scenarioSelector.names[scenario][@app.language]} (#{year}) #{tooltipDatum.value.toFixed(2)}"
+
+    formatter = d3.formatPrefix tooltipDatum.value
+    value = formatter.scale(tooltipDatum.value).toFixed 2
+    unitString = Tr.unitSelector["#{@config.unit}Button"][@app.language]
+
+    @tooltip.innerHTML = "#{Tr.scenarioSelector.names[scenario][@app.language]} (#{year}) #{value} #{formatter.symbol} #{unitString}"
+
 
 
   displayTooltipKeyboard: (scenario, year, accessibleFocusDot) ->
@@ -1343,7 +1350,14 @@ class Visualization4
     @tooltip.style.left = "#{xDest - xParentOffset}px"
     @tooltip.style.top = "#{yDest - yParentOffset}px"
 
-    @tooltip.innerHTML = "#{Tr.scenarioSelector.names[scenario][@app.language]} (#{year}) #{tooltipDatum.value.toFixed(2)}"
+    # @tooltip.innerHTML = "#{Tr.scenarioSelector.names[scenario][@app.language]} (#{year}) #{tooltipDatum.value.toFixed(2)}"
+
+    formatter = d3.formatPrefix tooltipDatum.value
+    value = formatter.scale(tooltipDatum.value).toFixed 2
+    unitString = Tr.unitSelector["#{@config.unit}Button"][@app.language]
+
+    @tooltip.innerHTML = "#{Tr.scenarioSelector.names[scenario][@app.language]} (#{year}) #{value} #{formatter.symbol} #{unitString}"
+ 
 
 
   tearDown: ->

@@ -3,6 +3,7 @@ _ = require 'lodash'
 
 BarChart = require './bar-chart.coffee'
 Constants = require '../Constants.coffee'
+Tr = require '../TranslationTable.coffee'
 
 class StackedBarChart extends BarChart
   stackedChartDefaults:
@@ -75,6 +76,16 @@ class StackedBarChart extends BarChart
       @_stackDictionary[province.name] = province
     @redraw()
 
+
+  tooltipString: (d, unit) ->
+    formatter = d3.formatPrefix d.data.y
+    value = formatter.scale(d.data.y).toFixed 2
+    unitString = Tr.unitSelector["#{unit}Button"][@app.language]
+
+    "#{d.name} (#{d.data.x}): #{value} #{formatter.symbol} #{unitString}"
+
+
+
   redraw: ->
     if @_y != undefined and @_x != undefined
       layer = @_group.selectAll '.layer'
@@ -93,13 +104,13 @@ class StackedBarChart extends BarChart
           @tooltip.style.visibility = 'visible'
           @tooltip.style.left = "#{coords[0] + Constants.tooltipXOffset}px"
           @tooltip.style.top = "#{coords[1]}px"
-          @tooltip.innerHTML = "#{d.name} (#{d.data.x}): #{d.data.y.toFixed(2)}"
+          @tooltip.innerHTML = @tooltipString d, @config.unit, @app
 
         .on 'mousemove', (d) =>
           coords = d3.mouse @tooltipParent # [x, y]
           @tooltip.style.left = "#{coords[0] + Constants.tooltipXOffset}px"
           @tooltip.style.top = "#{coords[1]}px"
-          @tooltip.innerHTML = "#{d.name} (#{d.data.x}): #{d.data.y.toFixed(2)}"
+          @tooltip.innerHTML = @tooltipString d, @config.unit, @app
         .on 'mouseout', =>
           @tooltip.style.visibility = 'hidden'
 
@@ -119,7 +130,7 @@ class StackedBarChart extends BarChart
           @tooltip.style.visibility = 'visible'
           @tooltip.style.left = "#{xDest - xParentOffset}px"
           @tooltip.style.top = "#{yDest - yParentOffset}px"
-          @tooltip.innerHTML = "#{d.name} (#{d.data.x}): #{d.data.y.toFixed(2)}"
+          @tooltip.innerHTML = @tooltipString d, @config.unit, @app
 
           @options.onAccessibleFocus d
 

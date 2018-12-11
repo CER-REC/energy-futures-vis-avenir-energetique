@@ -245,12 +245,12 @@ module.exports =
       petajoulesButton:
         en: 'A measure of energy that is a quadrillion (e+15) joules. According to Statistics Canada, a petajoule is the approximate amount of energy it takes to run the Montreal Metro for one year.'
         fr: 'Mesure d’énergie correspondant à un quadrillion (e+15) de joules. Selon Statistique Canada, un pétajoule représente l’énergie requise pour faire fonctionner le métro de Montréal pendant un an.'
-      gigawattHourButton:
+      gigawattHoursButton:
         en: 'A measure of electric energy that is a billion (e+9) watt hours of electric energy per year. One GW.h is equal to 0.0036 petajoules and 0.0016 kBOE/d.'
-        fr: 'Mesure de puissance énergétique correspondant à un milliard (e+9) de wattheures d’énergie électrique par année. Un gigawatt équivaut à 0,0036 pétajoule et à 0,0016 kbep/j.'
+        fr: 'Mesure de puissance énergétique correspondant à un milliard (e+9) de wattheures d’énergie électrique par année. Un gigawatt équivaut à 0,0036 pétajoule et à 0,0016 kBEP/j.'
       kilobarrelEquivalentsButton:
-        en: 'A measure of energy normalized to the equivalent energy content of a barrel of light crude oil. One barrel of oil equivalent is equal to 6.811 joules , while one petajoule is equal to 0.4475 kBOE/d.'
-        fr: 'Mesure d’énergie normalisée à l’équivalent de la teneur en énergie d’un baril de pétrole brut léger. Un baril d’équivalent pétrole équivaut à 6,811 joules ; et un pétajoule est égal à 0,4475 kbep/j.'
+        en: 'A measure of energy normalized to the equivalent energy content of a barrel of light crude oil. One barrel of oil equivalent is equal to 6.811 gigajoules , while one petajoule is equal to 0.4475 kBOE/d.'
+        fr: 'Mesure d’énergie normalisée à l’équivalent de la teneur en énergie d’un baril de pétrole brut léger. Un baril d’équivalent pétrole équivaut à 6,811 gigajoules ; et un pétajoule est égal à 0,4475 kBEP/j.'
       thousandCubicMetresButton:
         en: 'Number of cubic metres of crude oil produced per day. One barrel of oil is equal to 0.159 cubic metres.'
         fr: 'Nombre de mètres cubes de pétrole brut produits par jour. Un baril de pétrole équivaut à 0,159 mètre cube.'
@@ -585,7 +585,7 @@ module.exports =
     petajoulesButton:
       en: 'PETAJOULE'
       fr: 'PÉTAJOULE'
-    gigawattHourButton:
+    gigawattHoursButton:
       en: 'GW.h'
       fr: 'GWh'
     kilobarrelEquivalentsButton:
@@ -601,8 +601,8 @@ module.exports =
       en: 'kB/d'
       fr: 'kB/j'
     cubicFeetButton:
-      en: 'Mcf/d'
-      fr: 'Mpi³/j'
+      en: 'Bcf/d'
+      fr: 'Bpi³/j'
     unitSelectorHelpTitle:
       en: 'UNITS'
       fr: 'UNITÉS'
@@ -616,7 +616,7 @@ module.exports =
               </p>
             <h2> THOUSAND BARRELS OF OIL EQUIVALENT PER DAY (kBOE/d) </h2>
               <p>
-                A measure of energy normalized to the equivalent energy content of a barrel of light crude oil. One barrel of oil equivalent is equal to 6.811 joules, while one petajoule is equal to 0.4475 kBOE/d.
+                A measure of energy normalized to the equivalent energy content of a barrel of light crude oil. One barrel of oil equivalent is equal to 6.811 gigajoules, while one petajoule is equal to 0.4475 kBOE/d.
               </p>
             <h2> GW.h </h2>
               <p>
@@ -625,19 +625,19 @@ module.exports =
         </div>
         <div class="columnRight">
           <h1> VOLUMETRIC UNITS</h1>
-          <h2> THOUSAND BARRELS PER DAY (kb/d) </h2>
+          <h2> THOUSAND BARRELS PER DAY (kB/d) </h2>
             <p>
                Number of barrels of crude oil produced per day.
             </p>
-          <h2> THOUSAND CUBIC METRES PER DAY (10<sup>3</sup>m<sup>3</sup>/d) </h2>
+          <h2> THOUSAND CUBIC METRES PER DAY (km<sup>3</sup>/d) </h2>
             <p>
               Number of cubic metres of crude oil produced per day. One barrel of oil is equal to 0.159 cubic metres.
             </p>
-          <h2> THOUSAND CUBIC FEET PER DAY (Mcf/d) </h2>
+          <h2> BILLION CUBIC FEET PER DAY (Bcf/d) </h2>
             <p>
               Number of cubic feet of natural gas produced per day.
             </p>
-          <h2> MILLION CUBIC METRES PER DAY (10<sup>6</sup>m<sup>3</sup>/d) </h2>
+          <h2> MILLION CUBIC METRES PER DAY (Mm<sup>3</sup>/d) </h2>
             <p>
               Number of cubic metres of natural gas produced per day. One cubic foot of natural gas is equal to 0.0283 cubic metres.
             </p>
@@ -650,7 +650,7 @@ module.exports =
             Depending on the value, the y-axis may be scaled with a multiplier k, m or µ.
           </p>
           <p>
-            k=1000. For example, 15.0k Mcf/d equals 15.0 million cubic feet per day, or 6.0k kB/d equals 6 million barrels per day.
+            k=1000. For example, 6.0k kB/d equals 6 million barrels per day.
           </p>
         </div>
         <div class="columnRight">
@@ -669,26 +669,26 @@ module.exports =
             <p>
                Mesure d’énergie correspondant à un quadrillion (10<sup>15</sup>) de joules. Selon Statistique Canada, un pétajoule représente l’énergie requise pour faire fonctionner le métro de Montréal pendant un an.
             </p>
-          <h2> MILLIER DE BARILS D’ÉQUIVALENT PÉTROLE PAR JOUR (kbep/j) </h2>
+          <h2> MILLIER DE BARILS D’ÉQUIVALENT PÉTROLE PAR JOUR (kBEP/j) </h2>
             <p>
-              Mesure d’énergie normalisée à l’équivalent de la teneur en énergie d’un baril de pétrole brut léger. Un baril d’équivalent pétrole équivaut à 6,811 joules ; et un pétajoule est égal à 0,4475 kbep/j.
+              Mesure d’énergie normalisée à l’équivalent de la teneur en énergie d’un baril de pétrole brut léger. Un baril d’équivalent pétrole équivaut à 6,811 gigajoules ; et un pétajoule est égal à 0,4475 kBEP/j.
             </p>
           <h2> GIGAWATTHEURE (GWh) </h2>
             <p>
-              Mesure de puissance énergétique correspondant à un milliard (10<sup>9</sup>) de wattheures d’énergie électrique par année. Un gigawatt équivaut à 0,0036 pétajoule et à 0,0016 kbep/j.
+              Mesure de puissance énergétique correspondant à un milliard (10<sup>9</sup>) de wattheures d’énergie électrique par année. Un gigawatt équivaut à 0,0036 pétajoule et à 0,0016 kBEP/j.
             </p>
         </div>
         <div class="columnRight">
           <h1> UNITÉS VOLUMÉTRIQUES </h1>
-          <h2> MILLIER DE BARILS PAR JOUR (kb/j) </h2>
+          <h2> MILLIER DE BARILS PAR JOUR (kB/j) </h2>
             <p>
               Nombre de barils de pétrole brut produits par jour.
             </p>
-          <h2> MILLIER DE MÈTRES CUBES PAR JOUR (10<sup>3</sup>m<sup>3</sup>/j) </h2>
+          <h2> MILLIER DE MÈTRES CUBES PAR JOUR (km<sup>3</sup>/j) </h2>
             <p>
               Nombre de mètres cubes de pétrole brut produits par jour. Un baril de pétrole équivaut à 0,159 mètre cube.
             </p>
-          <h2> MILLIER DE PIEDS CUBES PAR JOUR (Mpi<sup>3</sup>/j) </h2>
+          <h2> MILLIARD DE PIEDS CUBES PAR JOUR (Bpi<sup>3</sup>/j) </h2>
             <p>
               Nombre de pieds cubes de gaz naturel produits par jour.
             </p>
@@ -705,7 +705,7 @@ module.exports =
             Selon la valeur, un multiplicateur k, m ou µ peut être appliqué à l’axe y.
           </p>
           <p>
-            k=1000. Par exemple, 15,0k Mpi³/j équivaut à 15,0 millions de pieds cubes par jour, ou 6,0k kb/j est égal à 6 millions de barils par jour.
+            k=1000. Par exemple, 6,0k kb/j est égal à 6 millions de barils par jour.
           </p>
         </div>
         <div class="columnRight">
@@ -1311,8 +1311,8 @@ module.exports =
         en: 'kB/d'
         fr: 'kB/j'
       cubicFeet:
-        en: 'Mcf/d'
-        fr: 'Mpi³/j'
+        en: 'Bcf/d'
+        fr: 'Bpi³/j'
     dataset:
       dataset:
         en: 'dataset'
@@ -1877,8 +1877,8 @@ module.exports =
         en: 'Thousand barrels per day selected'
         fr: 'Sélection - Millier de barils par jour'
       cubicFeetSelected:
-        en: 'Thousand cubic feet per day selected'
-        fr: 'Sélection - Millier de pieds cubes par jour'
+        en: 'Billion cubic feet per day selected'
+        fr: 'Sélection - Milliard de pieds cubes par jour'
 
       petajoulesUnselected:
         en: 'Petajoule unselected'
@@ -1899,8 +1899,8 @@ module.exports =
         en: 'Thousand barrels per day unselected'
         fr: 'Désélection - Millier de barils par jour'
       cubicFeetUnselected:
-        en: 'Thousand cubic feet per day unselected'
-        fr: 'Désélection - Millier de pieds cubes par jour'
+        en: 'Billion cubic feet per day unselected'
+        fr: 'Désélection - Milliard de pieds cubes par jour'
 
 
     
@@ -2091,8 +2091,8 @@ module.exports =
         en: 'Thousand barrels per day'
         fr: 'Millier de barils par jour'
       cubicFeet:
-        en: 'Thousand cubic feet per day'
-        fr: 'Millier de pieds cubes par jour'
+        en: 'Billion cubic feet per day'
+        fr: 'Milliard de pieds cubes par jour'
 
     viz1GraphAccessibleInstructions:
       en: 'Use the arrow keys or the mouse to select chart elements.'
