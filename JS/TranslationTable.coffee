@@ -602,7 +602,7 @@ module.exports =
       fr: 'kB/j'
     cubicFeetButton:
       en: 'Bcf/d'
-      fr: 'Bpi³/j'
+      fr: 'Gpi³/j'
     unitSelectorHelpTitle:
       en: 'UNITS'
       fr: 'UNITÉS'
@@ -688,7 +688,7 @@ module.exports =
             <p>
               Nombre de mètres cubes de pétrole brut produits par jour. Un baril de pétrole équivaut à 0,159 mètre cube.
             </p>
-          <h2> MILLIARD DE PIEDS CUBES PAR JOUR (Bpi<sup>3</sup>/j) </h2>
+          <h2> MILLIARD DE PIEDS CUBES PAR JOUR (Gpi<sup>3</sup>/j) </h2>
             <p>
               Nombre de pieds cubes de gaz naturel produits par jour.
             </p>
@@ -1312,7 +1312,7 @@ module.exports =
         fr: 'kB/j'
       cubicFeet:
         en: 'Bcf/d'
-        fr: 'Bpi³/j'
+        fr: 'Gpi³/j'
     dataset:
       dataset:
         en: 'dataset'
