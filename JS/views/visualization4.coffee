@@ -131,6 +131,8 @@ class Visualization4
     @tooltipParent = @document.getElementById 'wideVisualizationPanel'
     @graphPanel = @document.getElementById 'graphPanel'
 
+    @renderGradients()
+
     @render()
     @redraw()
     @setupGraphEvents()
@@ -486,40 +488,51 @@ class Visualization4
     # ]
     
     # 2nd gen colours
-    [
+    baseData = [
       {
         key: 'reference'
         colour: '#999999'
       }
       {
         key: 'high'
-        colour: '#715bf0'
+        colour: '#6C5AEB'
       }
       {
         key: 'highLng'
-        colour: '#0f6862'
+        colour: '#2B6762'
       }
       {
         key: 'constrained'
-        colour: '#0357be'
+        colour: '#0B3CB4'
       }
       {
         key: 'low'
-        colour: '#022447'
+        colour: '#082346'
       }
       {
         key: 'noLng'
-        colour: '#fbed03'
+        colour: '#3692fa'
       }
       {
         key: 'technology'
-        colour: '#fbed03'
+        colour: '#3692fa'
       }
       {
         key: 'hcp'
-        colour: '#0357be'
+        colour: '#0B3CB4'
       }
     ]
+
+    fullData = []
+    for datasetName, datasetDefinition of Constants.datasetDefinitions
+      for item in baseData
+        fullData.push
+          key: item.key
+          colour: item.colour
+          dataset: datasetName
+          forecastYear: datasetDefinition.forecastFromYear
+
+    fullData
 
 
 
@@ -567,31 +580,31 @@ class Visualization4
       high:
         tooltip: Tr.selectorTooltip.scenarioSelector.highPriceButton[@app.language]
         key: 'high'
-        colour: '#715bf0'
+        colour: '#6C5AEB'
       highLng:
         tooltip: Tr.selectorTooltip.scenarioSelector.highLngButton[@app.language]
         key: 'highLng'
-        colour: '#0f6862'
+        colour: '#2B6762'
       constrained:
         tooltip: Tr.selectorTooltip.scenarioSelector.constrainedButton[@app.language]
         key: 'constrained'
-        colour: '#0357be'
+        colour: '#0B3CB4'
       low:
         tooltip: Tr.selectorTooltip.scenarioSelector.lowPriceButton[@app.language]
         key: 'low'
-        colour: '#022447'
+        colour: '#082346'
       noLng:
         tooltip: Tr.selectorTooltip.scenarioSelector.noLngButton[@app.language]
         key: 'noLng'
-        colour: '#fbed03'
+        colour: '#3692fa'
       technology:
         tooltip: Tr.selectorTooltip.scenarioSelector.technologyButton[@app.language]
         key: 'technology'
-        colour: '#fbed03'
+        colour: '#3692fa'
       hcp:
         tooltip: Tr.selectorTooltip.scenarioSelector.hcpButton[@app.language]
         key: 'hcp'
-        colour: '#0357be'
+        colour: '#0B3CB4'
 
     scenariosInSelection = Constants.datasetDefinitions[@config.dataset].scenariosPerSelection[@config.mainSelection]
 
@@ -730,6 +743,7 @@ class Visualization4
             @renderScenariosSelector()
             @renderDatasetSelector()
             @renderYAxis()
+            @renderXAxis()
             @renderGraph()
             @app.router.navigate @config.routerParams()
 
@@ -871,12 +885,9 @@ class Visualization4
             @config.addScenario d.scenarioName
 
           # TODO: For efficiency, only rerender what's necessary.
-          # TODO: why were these calls in here twice?
           @renderScenariosSelector()
           @renderYAxis()
           @renderGraph()
-          # @renderScenariosSelector()
-          # @renderGraph()
           @app.router.navigate @config.routerParams()
 
         @app.datasetRequester.updateAndRequestIfRequired newConfig, update
@@ -945,9 +956,9 @@ class Visualization4
 
     #render the future line
 
+    forecastYear = Constants.datasetDefinitions[@config.dataset].forecastFromYear - 1
 
-
-    textX = @margin.left + @xAxisScale()(2015)
+    textX = @margin.left + @xAxisScale()(forecastYear) + 10
     textY = @outerHeight - 16
     @d3document.select '#graphGroup'
       .append 'text'
@@ -958,7 +969,7 @@ class Visualization4
         .style 'text-anchor', 'start'
         .text Tr.forecastLabel[@app.language]
 
-    arrowX = @margin.left + @xAxisScale()(2015) + 65
+    arrowX = @margin.left + @xAxisScale()(forecastYear) + 65
     arrowY = @outerHeight - 27
     @d3document.select '#graphGroup'
       .append 'image'
@@ -975,10 +986,10 @@ class Visualization4
           class: 'forecast'
           stroke: '#999'
           'stroke-width': 2
-          x1: @xAxisScale()(2014)
-          y1: @height()
-          x2: @xAxisScale()(2014)
-          y2: @outerHeight - 16
+          x1: @xAxisScale() forecastYear
+          y1: @outerHeight - 30
+          x2: @xAxisScale() forecastYear
+          y2: @outerHeight - 14
   
   renderYAxis: (transition = true) ->
     # Render the axis
@@ -1033,46 +1044,20 @@ class Visualization4
         'shape-rendering': 'crispEdges'
 
 
-  renderGraph: (duration = @app.animationDuration) ->
+  renderGradients: ->
     xAxisScale = @xAxisScale()
-    yAxisScale = @yAxisScale()
-
-    area = d3.svg.area()
-      .x (d) ->
-        xAxisScale d.year
-      .y0 @height()
-      .y1 (d) ->
-        yAxisScale d.value
-      .defined (d) ->
-        d.year <= 2014
-
-    areaFuture = d3.svg.area()
-      .x (d) ->
-        xAxisScale d.year
-      .y0 @height()
-      .y1 (d) ->
-        yAxisScale d.value
-      .defined (d) ->
-        d.year >= 2014
-
-    line = d3.svg.line()
-      .x (d) ->
-        xAxisScale d.year
-      .y (d) ->
-        yAxisScale d.value
 
     grads = @d3document
-      .select('#graphGroup')
-      .select('defs')
-      .selectAll('.presentLinearGradient')
-      .data @gradientData(), (d) ->
-        d.key
+      .select '#graphGroup'
+      .select 'defs'
+      .selectAll '.presentLinearGradient'
+      .data @gradientData()
 
     enterGrads = grads.enter().append 'linearGradient'
       .attr
         class: 'presentLinearGradient'
         gradientUnits: 'objectBoundingBox'
-        id: (d) -> "viz4gradPresent#{d.key}"
+        id: (d) -> "viz4grad-#{d.key}-#{d.dataset}"
 
     enterGrads.append 'stop'
       .attr
@@ -1081,35 +1066,25 @@ class Visualization4
         'stop-color': (d) -> d.colour
         'stop-opacity': '0.4'
 
+    # We phase in the forecast transparency over three years to make the transition less abrupt
+
     enterGrads.append('stop')
       .attr
-        offset: ->
-          xAxisScale(2010) / xAxisScale(2014)
+        offset: (d) ->
+          xAxisScale(d.forecastYear) / xAxisScale(2040)
       .style
         'stop-color': (d) -> d.colour
         'stop-opacity': 0.4 * 0.9 # 36%
 
     enterGrads.append('stop')
       .attr
-        offset: '100%'
+        offset: (d) ->
+          xAxisScale(d.forecastYear + 3) / xAxisScale(2040)
       .style
         'stop-color': (d) -> d.colour
         'stop-opacity': 0.4 * 0.7 # 28%
 
-    enterFutureGrads = grads.enter().append('linearGradient')
-      .attr
-        class: 'futureLinearGradient'
-        gradientUnits: 'objectBoundingBox'
-        id: (d) -> "viz4gradFuture#{d.key}"
-
-    enterFutureGrads.append('stop')
-      .attr
-        offset: 0
-      .style
-        'stop-color': (d) -> d.colour
-        'stop-opacity': 0.4 * 0.7 # 28%
-
-    enterFutureGrads.append('stop')
+    enterGrads.append 'stop'
       .attr
         offset: '100%'
       .style
@@ -1118,6 +1093,24 @@ class Visualization4
 
     # NB: regarding opacity, we have 3-6 layers which combine together. 8% opacity is pretty low for one visual element, but with 6 layers we're still only just below 50% opacity all together.
 
+
+  renderGraph: (duration = @app.animationDuration) ->
+    xAxisScale = @xAxisScale()
+    yAxisScale = @yAxisScale()
+    forecastYear = Constants.datasetDefinitions[@config.dataset].forecastFromYear - 1
+
+    area = d3.svg.area()
+      .x (d) ->
+        xAxisScale d.year
+      .y0 @height()
+      .y1 (d) ->
+        yAxisScale d.value
+
+    line = d3.svg.line()
+      .x (d) ->
+        xAxisScale d.year
+      .y (d) ->
+        yAxisScale d.value
 
     graphScenarioData = @graphScenarioData()
 
@@ -1163,12 +1156,13 @@ class Visualization4
           area d.data.map (val) ->
             year: val.year
             value: 0
-      .style
-        fill: (d) ->
-          colour = d3.rgb d.colour
-          # NB: The extra RGBA statement is a fallback for old IE
-          "url(#viz4gradPresent#{d.key}) rgba(#{colour.r}, #{colour.g}, #{colour.b}, 0.5)"
 
+    graphAreaSelectors.style
+      fill: (d) =>
+        colour = d3.rgb d.colour
+        # NB: The extra RGBA statement is a fallback for old IE
+        # "url(#viz4grad-#{d.key}-#{@config.dataset})"
+        "url(#viz4grad-#{d.key}-#{@config.dataset}) rgba(#{colour.r}, #{colour.g}, #{colour.b}, 0.5)"
 
     graphAreaSelectors.transition()
       .duration duration
@@ -1176,51 +1170,9 @@ class Visualization4
         d: (d) ->
           area d.data
 
-    graphFutureAreaSelectors = graphAreaGroups.selectAll('.graphAreaFuture')
-      .data(((d) -> [d]), ((d) -> d.key))
-      .on 'mouseover', (d) =>
-        coords = d3.mouse @tooltipParent # [x, y]
-        @tooltip.style.visibility = 'visible'
-        @tooltip.style.left = "#{coords[0] + 30}px"
-        @tooltip.style.top = "#{coords[1]}px"
-        @displayTooltip d.key
-      .on 'mousemove', (d) =>
-        coords = d3.mouse @tooltipParent # [x, y]
-        @tooltip.style.left = "#{coords[0] + 30}px"
-        @tooltip.style.top = "#{coords[1]}px"
-        @displayTooltip d.key
-      .on 'mouseout', =>
-        @tooltip.style.visibility = 'hidden'
-      .on 'click', (d) =>
-        graphPanel = @document.getElementById 'graphPanel'
-        coords = d3.mouse graphPanel
-
-        @accessConfig.setYear Math.floor(@xAxisScale().invert(coords[0]))
-        @accessConfig.setScenario d.key, @config.dataset
-
-        @updateAccessibleFocus()
-
-
-    graphFutureAreaSelectors.enter().append 'path'
-      .attr
-        class: 'graphAreaFuture pointerCursor'
-        d: (d) ->
-          areaFuture d.data.map (val) ->
-            year: val.year
-            value: 0
-        fill: (d) ->
-          colour = d3.rgb d.colour
-          # NB: The extra RGBA statement is a fallback for old IE
-          "url(#viz4gradFuture#{d.key}) rgba(#{colour.r}, #{colour.g}, #{colour.b}, 0.2)"
-
     # d3 function, causes DOM element order to match data order
     graphAreaGroups.order()
    
-    graphFutureAreaSelectors.transition()
-      .duration duration
-      .attr
-        d: (d) -> areaFuture d.data
-
     presentLine = graphAreaGroups.selectAll('.presentLine')
       .data ((d) -> [d]), ((d) -> d.key)
     
@@ -1255,14 +1207,7 @@ class Visualization4
             area d.data.map (val) ->
               year: val.year
               value: 0
-    exitSelection.selectAll('.graphAreaFuture')
-      .transition()
-        .duration duration
-        .attr
-          d: (d) ->
-            areaFuture d.data.map (val) ->
-              year: val.year
-              value: 0
+
     exitSelection.selectAll('.presentLine')
       .transition()
         .duration duration
@@ -1370,7 +1315,14 @@ class Visualization4
       item.year == year
     return unless tooltipDatum
 
-    @tooltip.innerHTML = "#{Tr.scenarioSelector.names[scenario][@app.language]} (#{year}) #{tooltipDatum.value.toFixed(2)}"
+    # @tooltip.innerHTML = "#{Tr.scenarioSelector.names[scenario][@app.language]} (#{year}) #{tooltipDatum.value.toFixed(2)}"
+
+    formatter = d3.formatPrefix tooltipDatum.value
+    value = formatter.scale(tooltipDatum.value).toFixed 2
+    unitString = Tr.unitSelector["#{@config.unit}Button"][@app.language]
+
+    @tooltip.innerHTML = "#{Tr.scenarioSelector.names[scenario][@app.language]} (#{year}) #{value} #{formatter.symbol} #{unitString}"
+
 
 
   displayTooltipKeyboard: (scenario, year, accessibleFocusDot) ->
@@ -1398,7 +1350,14 @@ class Visualization4
     @tooltip.style.left = "#{xDest - xParentOffset}px"
     @tooltip.style.top = "#{yDest - yParentOffset}px"
 
-    @tooltip.innerHTML = "#{Tr.scenarioSelector.names[scenario][@app.language]} (#{year}) #{tooltipDatum.value.toFixed(2)}"
+    # @tooltip.innerHTML = "#{Tr.scenarioSelector.names[scenario][@app.language]} (#{year}) #{tooltipDatum.value.toFixed(2)}"
+
+    formatter = d3.formatPrefix tooltipDatum.value
+    value = formatter.scale(tooltipDatum.value).toFixed 2
+    unitString = Tr.unitSelector["#{@config.unit}Button"][@app.language]
+
+    @tooltip.innerHTML = "#{Tr.scenarioSelector.names[scenario][@app.language]} (#{year}) #{value} #{formatter.symbol} #{unitString}"
+ 
 
 
   tearDown: ->
@@ -1462,8 +1421,8 @@ class Visualization4
       scenarioDataItem.year == @accessConfig.activeYear
     return unless item?
 
-    xCoord = @xAxisScale()(item.year)
-    yCoord = @yAxisScale()(item.value)
+    xCoord = @xAxisScale() item.year
+    yCoord = @yAxisScale() item.value
     @accessibleFocusDot.attr
       transform: "translate(#{xCoord}, #{yCoord})"
 

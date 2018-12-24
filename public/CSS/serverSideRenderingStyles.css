@@ -107,38 +107,38 @@ h1 {
 }
 
 .scenarioLegend .high {
-  background-color: #715bf0;
+  background-color: #6C5AEB;
   color: white;
 }
 
 .scenarioLegend .highLng {
-  background-color: #0f6862;
+  background-color: #2B6762;
   color: white;
 }
 
 .scenarioLegend .constrained{
-  background-color: #0357be;
+  background-color: #0B3CB4;
   color: white;
 }
 
 .scenarioLegend .low {
-  background-color: #022447;
+  background-color: #082346;
   color: white;
 }
 
 .scenarioLegend .hcp {
-  background-color: #0357be;
+  background-color: #0B3CB4;
   color: white;
 }
 
 .scenarioLegend .noLng {
-  background-color: #fbed03;
-  color: black;
+  background-color: #3692fa;
+  color: white;
 }
 
 .scenarioLegend .technology {
-  background-color: #fbed03;
-  color: black;
+  background-color: #3692fa;
+  color: white;
 }
 
 

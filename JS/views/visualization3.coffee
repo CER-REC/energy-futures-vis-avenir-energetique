@@ -278,7 +278,7 @@ class Visualization3 extends visualization
           displayTooltip: false
 
     @_chart = new BubbleChart @app, '#graphSVG', bubbleChartOptions
-
+    @_chart.config = @config
 
 
   updateViz: ->

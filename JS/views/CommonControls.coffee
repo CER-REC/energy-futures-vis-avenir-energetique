@@ -168,8 +168,8 @@ CommonControls =
           Tr.altText.unit.kilobarrelEquivalentsUnselected[app.language]
 
     gigawattHours =
-      title: Tr.selectorTooltip.unitSelector.gigawattHourButton[app.language]
-      label: Tr.unitSelector.gigawattHourButton[app.language]
+      title: Tr.selectorTooltip.unitSelector.gigawattHoursButton[app.language]
+      label: Tr.unitSelector.gigawattHoursButton[app.language]
       unitName: 'gigawattHours'
       class:
         if config.unit == 'gigawattHours'

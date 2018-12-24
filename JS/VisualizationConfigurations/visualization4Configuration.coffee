@@ -39,7 +39,7 @@ class Visualization4Configuration
     # thousandCubicMetres - thousand cubic metres per day, m^3/day (oil)
     # millionCubicMetres - million cubic metres per day, m^3/day (gas)
     # kilobarrels - kilobarrels of oil per day, kB/day
-    # cubicFeet - million cubic feet per day, Mcf/day
+    # cubicFeet - billion cubic feet per day, Bcf/day
     @setUnit options.unit
 
     # array, any of: reference, constrained, high, low, highLng, noLng
@@ -153,7 +153,7 @@ class Visualization4Configuration
       when 'kilobarrelEquivalents'
         Tr.unitSelector.kilobarrelEquivalentsButton[@app.language]
       when 'gigawattHours'
-        Tr.unitSelector.gigawattHourButton[@app.language]
+        Tr.unitSelector.gigawattHoursButton[@app.language]
       when 'thousandCubicMetres'
         Tr.unitSelector.thousandCubicMetresButton[@app.language]
       when 'millionCubicMetres'

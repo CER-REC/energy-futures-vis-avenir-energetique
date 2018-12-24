@@ -136,6 +136,7 @@ class Visualization
 
             @getDataAndRender()
             if @buildYAxis? then @buildYAxis()
+            if @buildForecast? then @buildForecast()
             @app.router.navigate @config.routerParams()
 
           @app.datasetRequester.updateAndRequestIfRequired newConfig, update

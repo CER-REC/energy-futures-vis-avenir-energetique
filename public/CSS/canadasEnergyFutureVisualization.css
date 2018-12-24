@@ -933,59 +933,59 @@ div.chartTooltip:after {
   color: white;
 }
 #canadasEnergyFutureVisualization .vizButton.high {
-  color: #715bf0;
-  border-color: #715bf0;
+  color: #6C5AEB;
+  border-color: #6C5AEB;
 }
 #canadasEnergyFutureVisualization .vizButton.high.selected {
-  background-color: #715bf0;
+  background-color: #6C5AEB;
   color: white;
 }
 #canadasEnergyFutureVisualization .vizButton.highLng {
-  color: #0f6862;
-  border-color: #0f6862;
+  color: #2B6762;
+  border-color: #2B6762;
 }
 #canadasEnergyFutureVisualization .vizButton.highLng.selected {
-  background-color: #0f6862;
+  background-color: #2B6762;
   color: white;
 }
 #canadasEnergyFutureVisualization .vizButton.constrained {
-  color: #0357be;
-  border-color: #0357be;
+  color: #0B3CB4;
+  border-color: #0B3CB4;
 }
 #canadasEnergyFutureVisualization .vizButton.constrained.selected {
-  background-color: #0357be;
+  background-color: #0B3CB4;
   color: white;
 }
 #canadasEnergyFutureVisualization .vizButton.low {
-  color: #022447;
-  border-color: #022447;
+  color: #082346;
+  border-color: #082346;
 }
 #canadasEnergyFutureVisualization .vizButton.low.selected {
-  background-color: #022447;
+  background-color: #082346;
   color: white;
 }
 #canadasEnergyFutureVisualization .vizButton.noLng {
-  color: #fbed03;
-  border-color: #fbed03;
+  color: #3692fa;
+  border-color: #3692fa;
 }
 #canadasEnergyFutureVisualization .vizButton.noLng.selected {
-  background-color: #fbed03;
-  color: black;
+  background-color: #3692fa;
+  color: white;
 }
 #canadasEnergyFutureVisualization .vizButton.technology {
-  color: #fbed03;
-  border-color: #fbed03;
+  color: #3692fa;
+  border-color: #3692fa;
 }
 #canadasEnergyFutureVisualization .vizButton.technology.selected {
-  background-color: #fbed03;
-  color: black;
+  background-color: #3692fa;
+  color: white;
 }
 #canadasEnergyFutureVisualization .vizButton.hcp {
-  color: #0357be;
-  border-color: #0357be;
+  color: #0B3CB4;
+  border-color: #0B3CB4;
 }
 #canadasEnergyFutureVisualization .vizButton.hcp.selected {
-  background-color: #0357be;
+  background-color: #0B3CB4;
   color: white;
 }
 
