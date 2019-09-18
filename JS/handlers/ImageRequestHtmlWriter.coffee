@@ -38,7 +38,7 @@ htmlFilePromise = readFile "#{ApplicationRoot}/JS/handlers/image.mustache"
 htmlPromise = htmlFilePromise.then (data) ->
   template = data.toString()
 
-  # The NEB production server has firewalled internet access, so it will time out if it
+  # The CER production server has firewalled internet access, so it will time out if it
   # attempts to load the fallback Google fonts. Don't load fallback fonts in production.
 
   if process.env.USE_SERVERSIDE_FALLBACK_FONTS == 'true'
@@ -52,8 +52,8 @@ htmlPromise = htmlFilePromise.then (data) ->
 
   html
 
-  
-  
+
+
 
 
 
@@ -200,10 +200,9 @@ ImageRequestHtmlWriter = (query, filename) ->
       catch error
         reject error
 
-      
+
 
 
 
 
 module.exports = ImageRequestHtmlWriter
-

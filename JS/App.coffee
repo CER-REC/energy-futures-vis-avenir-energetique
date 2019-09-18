@@ -127,7 +127,7 @@ class App
     http.onreadystatechange = ->
       if http.readyState == XMLHttpRequest.DONE
         if http.status == 200
-          # If we're running on the NEB server, we load some privately purchased fonts
+          # If we're running on the CER server, we load some privately purchased fonts
           # The Avenir fonts and the stylesheet to load them are not included in the
           # public distribution.
           lnk = document.createElement 'link'
@@ -136,7 +136,7 @@ class App
           lnk.href = 'CSS/avenirFonts.css'
           document.getElementsByTagName('head')[0].appendChild lnk
         else
-          # If we're not running on the NEB server, we load up some less pretty google
+          # If we're not running on the CER server, we load up some less pretty google
           # fonts
           lnk = document.createElement 'link'
           lnk.type = 'text/css'
@@ -180,17 +180,3 @@ Domready ->
   app = new App()
   # window.app = app
   app.setup()
-  
-
-  
-
-
-
-
-
-
-
-
-
-
-

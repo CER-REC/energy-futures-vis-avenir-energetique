@@ -367,7 +367,7 @@ class Visualization2 extends visualization
   # selected and show the de-selected icon when de-selected.
   # The desired behaviour is to show the zeroed out icon at all times, selected or not.
   # Fixing this will mean changing or adding to the data that the energy demand provider
-  # returns. See NEBV-405
+  # returns. See CERV-405
   zeroedOut: (key) ->
     if !(@seriesData) or !(@seriesData[key]) then return false
     nonZeroVals = @seriesData[key].filter (item) -> item.value != 0
@@ -523,7 +523,7 @@ class Visualization2 extends visualization
   getDataAndRender: ->
     @getData()
     @render()
-    
+
   getData: ->
     provider = @app.providers[@config.dataset].energyConsumptionProvider
     @seriesData = provider.dataForViz2 @config
@@ -576,12 +576,12 @@ class Visualization2 extends visualization
     axis = @d3document.select('#yAxis')
       .attr
         transform: "translate(#{@width() + @_margin.left}, #{@_margin.top})"
-    
+
     axis.transition()
         .duration @app.animationDuration
         .ease 'linear'
         .call @yAxis()
-    
+
     axis.select 'path.domain'
       .attr
         fill: 'none'
@@ -599,7 +599,7 @@ class Visualization2 extends visualization
     gridLines = @d3document.select('#yAxisGrid')
       .attr
         transform: "translate(#{@width() + @_margin.left}, #{@_margin.top})"
-      
+
     if transition
       gridLines.transition()
           .duration @app.animationDuration
@@ -676,7 +676,7 @@ class Visualization2 extends visualization
     gridLines = @d3document.select '#xAxisGrid'
       .attr
         transform: "translate(#{@_margin.left}, #{@height() + @_margin.top})"
-      
+
     if transition
       gridLines.transition()
         .ease 'linear'
@@ -752,7 +752,7 @@ class Visualization2 extends visualization
   buildViz:  ->
     @buildYAxis()
     @buildXAxis()
-    
+
     # Build the forecast
     @buildForecast()
 
@@ -823,7 +823,7 @@ class Visualization2 extends visualization
 
 
 
-    
+
   menuSelect: (dataDictionaryItem) =>
 
     newConfig = new @config.constructor @app
@@ -1060,7 +1060,7 @@ class Visualization2 extends visualization
 
     @accessibleFocusDot = @d3document.select '#accessibleFocusDot'
     @accessibleFocusDotElement = @document.getElementById 'accessibleFocusDot'
-    
+
     @d3document.select '#graphPanel'
       .attr
         'aria-activedescendant': 'accessibleFocusDot'
