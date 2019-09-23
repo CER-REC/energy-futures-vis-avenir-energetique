@@ -29,7 +29,7 @@ class Router
     @navbar = new Navbar @app
     @app.window.onpopstate = @onHistoryPopState
     @accessibleStatusElement = @app.window.document.getElementById 'accessibleStatus'
-    
+
     params = Router.parseQueryParams()
 
     @setInitialParamConfiguration params
@@ -84,7 +84,7 @@ class Router
 
 
 
-    
+
 
 
   fulfillNavigation: (params, options) ->
@@ -105,10 +105,8 @@ class Router
   updateBottomNavBar: ->
     if @app.page == 'landingPage'
       d3.select('#dataDownloadLink').classed 'hidden', true
-      d3.select('#imageDownloadLink').classed 'hidden', true
     else
       d3.select('#dataDownloadLink').classed 'hidden', false
-      d3.select('#imageDownloadLink').classed 'hidden', false
 
 
   # We replace page history for every interaction with visualization controls. Browsers
@@ -220,7 +218,7 @@ class Router
 
 
 
-   
+
   updateStatusElement: (page) ->
     @accessibleStatusElement.innerHTML = Tr.navigation[page][@app.language]
 

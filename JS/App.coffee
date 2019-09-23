@@ -19,11 +19,8 @@ OilProductionProvider = require './DataProviders/OilProductionProvider.coffee'
 GasProductionProvider = require './DataProviders/GasProductionProvider.coffee'
 ElectricityProductionProvider = require './DataProviders/ElectricityProductionProvider.coffee'
 
-ImageExporter = require './ImageExporter.coffee'
-
 PopoverManager = require './PopoverManager.coffee'
 AboutThisProjectPopover = require './popovers/AboutThisProjectPopover.coffee'
-ImageDownloadPopover = require './popovers/ImageDownloadPopover.coffee'
 
 Constants = require './Constants.coffee'
 
@@ -61,10 +58,6 @@ class App
 
     @popoverManager = new PopoverManager @
     @aboutThisProjectPopover = new AboutThisProjectPopover @
-    @imageDownloadPopover = new ImageDownloadPopover @
-
-    @imageExporter = new ImageExporter @
-
 
     @bottomNavbar = new BottomNavbar @
 

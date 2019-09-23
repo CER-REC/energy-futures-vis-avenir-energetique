@@ -87,9 +87,6 @@ module.exports =
       en: 'DEMAND'
       fr: 'DEMANDE'
 
-    imageDownloadLink:
-      en: 'DOWNLOAD IMAGE'
-      fr: 'TÉLÉCHARGEMENT D’IMAGE'
     dataDownloadLink:
       en: 'DOWNLOAD DATA'
       fr: 'TÉLÉCHARGEMENT DES DONNÉES'
