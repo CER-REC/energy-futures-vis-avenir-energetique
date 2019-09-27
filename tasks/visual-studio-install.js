@@ -18,10 +18,7 @@ iisNodeAppDirectory = path.join(iisRepositoryDirectory, 'node_app');
 // First, run the distribute script, to prepare the fileserver assets
 execSync('node tasks/distribute.js', {stdio: [0,1,2]});
 
-
-// Remove the existing deployment
-fs.removeSync(iisPublicDirectory);
-fs.removeSync(iisNodeAppDirectory);
+console.log('Copying the visualization to the IIS server...');
 
 fs.mkdirsSync(iisPublicDirectory);
 fs.mkdirsSync(iisNodeAppDirectory);
@@ -51,7 +48,7 @@ fs.writeFile(path.join(iisNodeAppDirectory, "VERSION"), pjson.version, function(
   if(err) {
     throw err;
   }
-}); 
+});
 
 var git_last_modified_date = execSync('git show -s --format=%cd HEAD --date=short')
 
@@ -59,10 +56,7 @@ fs.writeFile(path.join(iisNodeAppDirectory, "LAST_MODIFIED"), git_last_modified_
   if(err) {
     throw err;
   }
-}); 
-
-
+});
 
 console.log("Visual-studio-install done!");
-console.log("NB: For Web Deploy to work properly, you MUST add all the contents of the IIS project's 'public' and 'node_app' directories to the project in Visual Studio. Otherwise, the files aren't copied on deploy.");
-
+console.log("NB: For Web Deploy to work properly, you MUST add all the contents of the IIS project's 'public' and 'node_app' directories to the project in Visual Studio. Otherwise, the files aren't copied on deploy. Don't forget to \'npm install --only=prod\' in \'/DVWeb/node_apps/\'!");

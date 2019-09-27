@@ -5,14 +5,13 @@ Platform.name = 'server'
 require '../Polyfills.coffee'
 
 express = require 'express'
-Compression = require 'compression'
 
 Logger = require '../Logger.coffee'
 
 
 
 Server = (middlewares) ->
-  
+
   rootApp = express()
 
   if process.env.APP_PATH_PREFIX
@@ -20,9 +19,7 @@ Server = (middlewares) ->
     rootApp.use process.env.APP_PATH_PREFIX, app
   else
     app = rootApp
-  
-  app.use Compression()
-  
+
   for middleware in middlewares
     app.use middleware
 
