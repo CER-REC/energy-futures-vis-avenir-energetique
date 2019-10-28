@@ -367,7 +367,7 @@ class Visualization2 extends visualization
   # selected and show the de-selected icon when de-selected.
   # The desired behaviour is to show the zeroed out icon at all times, selected or not.
   # Fixing this will mean changing or adding to the data that the energy demand provider
-  # returns. See CERV-405
+  # returns. See NEBV-405
   zeroedOut: (key) ->
     if !(@seriesData) or !(@seriesData[key]) then return false
     nonZeroVals = @seriesData[key].filter (item) -> item.value != 0

@@ -100,9 +100,6 @@ module.exports =
     bitlyLinkInstructions:
       en: 'To interact with this visualization, visit: '
       fr: 'Pour manipuler cette visualisation, visitez: '
-    imageDownloadSource:
-      en: 'Canada’s Energy Future – Canada Energy Regulator'
-      fr: 'Avenir énergétique du Canada – Office national de l’énergie'
 
     helpPopoverHeader:
       en: 'HELP'
