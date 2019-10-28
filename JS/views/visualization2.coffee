@@ -7,13 +7,12 @@ stackedAreaChart = require '../charts/stacked-area-chart.coffee'
 SquareMenu = require '../charts/SquareMenu.coffee'
 Constants = require '../Constants.coffee'
 Tr = require '../TranslationTable.coffee'
-Platform = require '../Platform.coffee'
+
 
 ParamsToUrlString = require '../ParamsToUrlString.coffee'
 
-if Platform.name == 'browser'
-  Visualization2Template = require '../templates/Visualization2.mustache'
-  SvgStylesheetTemplate = require '../templates/SvgStylesheet.css'
+Visualization2Template = require '../templates/Visualization2.mustache'
+SvgStylesheetTemplate = require '../templates/SvgStylesheet.css'
 
 ControlsHelpPopover = require '../popovers/ControlsHelpPopover.coffee'
 
@@ -121,15 +120,6 @@ class Visualization2 extends visualization
       setupEvents: false
 
 
-  renderServerTemplate: ->
-    contentElement = @document.getElementById 'visualizationContent'
-    contentElement.innerHTML = Mustache.render @options.template,
-      svgStylesheet: @options.svgTemplate
-      title: Tr.visualization2Title[@app.language]
-      description: @config.imageExportDescription()
-      energyFuturesSource: Tr.allPages.imageDownloadSource[@app.language]
-      bitlyLink: @app.bitlyLink
-      legendContent: @sourceLegendData()
 
 
   constructor: (@app, config, @options) ->
@@ -142,11 +132,8 @@ class Visualization2 extends visualization
 
 
     @getData()
+    @renderBrowserTemplate()
 
-    if Platform.name == 'browser'
-      @renderBrowserTemplate()
-    else if Platform.name == 'server'
-      @renderServerTemplate()
 
     @addDatasetToggle()
 
@@ -206,19 +193,11 @@ class Visualization2 extends visualization
 
   #the graph's width
   width: ->
-    # getBoundingClientRect is not implemented in JSDOM, use fixed width on server
-    if Platform.name == 'browser'
-      @d3document.select('#graphPanel').node().getBoundingClientRect().width - @_margin.left - @_margin.right
-    else if Platform.name == 'server'
-      Constants.serverSideGraphWidth - @_margin.left - @_margin.right
+    @d3document.select('#graphPanel').node().getBoundingClientRect().width - @_margin.left - @_margin.right
 
 
   svgResize: ->
-    # getBoundingClientRect is not implemented in JSDOM, use fixed width on server
-    if Platform.name == 'browser'
-      svgWidth = @d3document.select('#graphPanel').node().getBoundingClientRect().width
-    else if Platform.name == 'server'
-      svgWidth = Constants.serverSideGraphWidth
+    svgWidth = @d3document.select('#graphPanel').node().getBoundingClientRect().width
 
     @d3document.select '#graphSVG'
       .attr
@@ -1051,7 +1030,6 @@ class Visualization2 extends visualization
 
 
   buildAccessibleFocusDot: ->
-    return if Platform.name == 'server'
     @d3document.select '#graphGroup'
       .append 'g'
       .attr

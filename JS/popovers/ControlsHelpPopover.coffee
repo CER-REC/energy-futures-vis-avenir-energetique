@@ -2,14 +2,8 @@ d3 = require 'd3'
 Mustache = require 'mustache'
 _ = require 'lodash'
 
-Platform = require '../Platform.coffee'
 Tr = require '../TranslationTable.coffee'
-
-
-if Platform.name == 'browser'
-  ControlsHelpPopoverTemplate = require '../templates/ControlsHelpPopover.mustache'
-
-
+ControlsHelpPopoverTemplate = require '../templates/ControlsHelpPopover.mustache'
 
 class ControlsHelpPopover
 
