@@ -16,7 +16,7 @@ We used [git-flow](https://github.com/nvie/gitflow) to manage our branching stra
 
 ## The Application
 
-The visualization application has two major parts: a web application, and a server. The web app runs in the browser and is responsible for everything you see on the screen: the visualization, the buttons and controls for changing it, the landing page and the navigation bars. The server is responsible for serving the web app's HTML and Javascript, for serving other static resources like images and fonts, for providing data to the visualizations, and for creating image and CSV downloads for a visualization.
+The visualization application has two major parts: a web application, and a server. The web app runs in the browser and is responsible for everything you see on the screen: the visualization, the buttons and controls for changing it, the landing page and the navigation bars. The server is responsible for serving the web app's HTML and Javascript, for serving other static resources like images and fonts, for providing data to the visualizations, and for creating CSV downloads for a visualization.
 
 ### The Web Application
 The web application is made up of:
@@ -98,7 +98,7 @@ Nous nous servons de [git-flow](https://github.com/nvie/gitflow) pour gérer nos
 
 ## L’application
 
-L’application de visualisation comporte deux parties principales : une application Web et un serveur. L’application Web est exécutée dans le navigateur et est responsable de tout ce que vous voyez à l’écran : la visualisation, les boutons et les instructions pour faire des changements, la page de destination et les barres de navigation. Le serveur est responsable 1) du langage HTML et Javascript de l’application Web, 2) d’autres ressources statiques comme les images et les polices de caractères, 3) des données nécessaires pour les visualisations et 4) de la création de téléchargements d’images et de fichiers CSV pour les visualisations.
+L’application de visualisation comporte deux parties principales : une application Web et un serveur. L’application Web est exécutée dans le navigateur et est responsable de tout ce que vous voyez à l’écran : la visualisation, les boutons et les instructions pour faire des changements, la page de destination et les barres de navigation. Le serveur est responsable 1) du langage HTML et Javascript de l’application Web, 2) d’autres ressources statiques comme les images et les polices de caractères, 3) des données nécessaires pour les visualisations et 4) de la création de téléchargements de fichiers CSV pour les visualisations.
 
 ### L’application Web
 L’application Web comprend ce qui suit :

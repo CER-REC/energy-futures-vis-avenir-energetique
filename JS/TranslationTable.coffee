@@ -94,9 +94,6 @@ module.exports =
       en: 'DOWNLOAD'
       fr: 'TÉLÉCHARGER'
 
-    imageDownloadHeader:
-      en: 'IMAGE DOWNLOAD'
-      fr: 'TÉLÉCHARGEMENT D’IMAGE'
     bitlyLinkInstructions:
       en: 'To interact with this visualization, visit: '
       fr: 'Pour manipuler cette visualisation, visitez: '
@@ -119,7 +116,7 @@ module.exports =
           This Exploring Canada’s Energy Future interactive online tool is part of the Canada Energy Regulator’s (CER) Data Visualization Initiative (DVI) . The DVI is a three-year initiative to transform how the CER structures and shares data. The objective is to enable evidence-based decision making and remove barriers to understanding Canada’s energy and pipeline systems through the use of user-friendly interactive visualizations. This visualization is based on our flagship publication – <a href="http://www.cer-rec.gc.ca/nrg/ntgrtd/ftr/index-eng.html" target="_blank">Canada’s Energy Future</a>. You can explore Canada’s energy future right from your own computer. In the months and years to come we will use this innovative format to share our pipeline safety data, energy data series, energy infrastructure information, and a host of other topical data.
         </p>
         <p>
-          If you want to use the data for research and undertake your own review, all the data is downloadable and shareable. The chart images are also downloadable, and if you are interested in the source code for the visualizations, it is available on the government’s Open Government portal: <a href="http://open.canada.ca" target="_blank">open.canada.ca</a>.
+          If you want to use the data for research and undertake your own review, all the data is downloadable and shareable. If you are interested in the source code for the visualizations, it is available on the government’s Open Government portal: <a href="http://open.canada.ca" target="_blank">open.canada.ca</a>.
         </p>
         <p>
           We hope we are hitting the mark. Your feedback is essential.
@@ -156,7 +153,7 @@ module.exports =
           L’outil interactif Explorer l’avenir énergétique du Canada fait partie de l’initiative de visualisation de données de la Régie de l’énergie du Canada. Échelonnée sur trois ans, cette dernière vise à transformer la manière dont la Régie structure et diffuse ses données. L’objectif est de soutenir un processus décisionnel fondé sur la preuve et d’éliminer les obstacles à la compréhension des réseaux énergétiques et pipeliniers canadiens grâce à des visualisations interactives faciles à utiliser. L’outil repose sur la publication phare de la Régie, <a href="http://www.cer-rec.gc.ca/nrg/ntgrtd/ftr/index-fra.html" target="_blank">Avenir énergétique du Canada</a>; il vous permet d’explorer l’avenir énergétique du Canada à partir de votre propre ordinateur. Au cours des mois et des années à venir, la Régie utilisera ce format novateur pour diffuser ses données sur la sécurité des pipelines et sur l’énergie, l’information qu’il possède sur l’infrastructure énergétique et une foule d’autres renseignements spécialisés.
         </p>
         <p>
-          Si vous souhaitez utiliser les données pour vos recherches ou pour en faire votre propre analyse, vous pouvez les télécharger et les partager. Les graphiques peuvent aussi être téléchargés. Quant au code source des visualisations, il est accessible sur le portail du « gouvernement ouvert » à l’adresse <a href="http://ouvert.canada.ca" target="_blank">ouvert.canada.ca</a>.
+          Si vous souhaitez utiliser les données pour vos recherches ou pour en faire votre propre analyse, vous pouvez les télécharger et les partager. Quant au code source des visualisations, il est accessible sur le portail du « gouvernement ouvert » à l’adresse <a href="http://ouvert.canada.ca" target="_blank">ouvert.canada.ca</a>.
         </p>
         <p>
           Nous espérons avoir atteint notre objectif. Votre rétroaction est essentielle.
