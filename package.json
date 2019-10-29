@@ -11,8 +11,8 @@
     "debug": "nodemon --debug ./JS/servers/DevelopmentServer/DevelopmentServer.js",
     "start-production": "nodemon ./JS/servers/ProductionServer/ProductionServer.js",
     "ingest": "node ./JS/validation/Ingest.js",
-    "test": "mocha --recursive JS/test --compilers coffee:coffee-script/register",
-    "test-watch": "mocha --recursive JS/test --compilers coffee:coffee-script/register --watch test",
+    "test": "mocha --recursive JS/test/**/*.coffee --require coffeescript/register --exit",
+    "test-watch": "mocha --recursive JS/test/**/*.coffee --require coffeescript/register --watch test",
     "visual-studio-install": "node ./tasks/visual-studio-install.js",
     "clean-vs": "node tasks/clean-vs.js"
   },
