@@ -17,7 +17,6 @@ class BottomNavbar
       methodologyLinkUrl: Tr.allPages.methodologyLinkUrl[@app.language]
       shareLabel: Tr.allPages.shareLabel[@app.language]
       dataDownloadLink: Tr.allPages.dataDownloadLink[@app.language]
-      imageDownloadLink: Tr.allPages.imageDownloadLink[@app.language]
       twitterAltText: Tr.altText.twitter[@app.language]
       linkedinAltText: Tr.altText.linkedin[@app.language]
       emailAltText: Tr.altText.email[@app.language]
@@ -40,13 +39,6 @@ class BottomNavbar
       if d3.event.key == 'Enter' # Links are not triggered on space
         # Don't prevent default, we want the default behaviour here
         @methodologyClickHandler()
-
-    @imageDownloadLink = d3.select '#imageDownloadLink'
-    @imageDownloadLink.on 'click', @imageDownloadClickHandler
-    @imageDownloadLink.on 'keydown', =>
-      if d3.event.key == 'Enter' or d3.event.key == ' '
-        d3.event.preventDefault()
-        @imageDownloadClickHandler()
 
     @dataDownloadLinkAnchor = d3.select '#dataDownloadLinkAnchor'
     @dataDownloadLinkAnchor.on 'click', @dataDownloadClickHandler
@@ -90,13 +82,6 @@ class BottomNavbar
   methodologyClickHandler: =>
     @app.analyticsReporter.reportEvent 'Downloads', 'Methodology PDF download'
 
-  imageDownloadClickHandler: =>
-    d3.event.preventDefault()
-    # Prevents the popover from being immediately closed:
-    d3.event.stopPropagation()
-    @app.imageExporter.createImage()
-    @app.analyticsReporter.reportEvent 'Downloads', 'Open image download modal'
-
   dataDownloadClickHandler: =>
     @app.analyticsReporter.reportEvent 'Downloads', 'Data CSV download'
 
@@ -123,7 +108,7 @@ class BottomNavbar
       """
 
       @app.window.location.href = emailUrl
-      
+
     @app.analyticsReporter.reportEvent 'Social', 'Email bottom bar button click'
 
 

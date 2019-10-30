@@ -6,13 +6,11 @@ BubbleChart = require '../charts/bubble-chart.coffee'
 Constants = require '../Constants.coffee'
 SquareMenu = require '../charts/SquareMenu.coffee'
 Tr = require '../TranslationTable.coffee'
-Platform = require '../Platform.coffee'
 
 ParamsToUrlString = require '../ParamsToUrlString.coffee'
 
-if Platform.name == 'browser'
-  Visualization3Template = require '../templates/Visualization3.mustache'
-  SvgStylesheetTemplate = require '../templates/SvgStylesheet.css'
+Visualization3Template = require '../templates/Visualization3.mustache'
+SvgStylesheetTemplate = require '../templates/SvgStylesheet.css'
 
 
 ControlsHelpPopover = require '../popovers/ControlsHelpPopover.coffee'
@@ -122,23 +120,6 @@ class Visualization3 extends visualization
 
 
 
-  renderServerTemplate: ->
-    if @config.viewBy == 'province'
-      legendContent = @sourceLegendData()
-    else if @config.viewBy == 'source'
-      legendContent = @provinceLegendData()
-
-    contentElement = @document.getElementById 'visualizationContent'
-    contentElement.innerHTML = Mustache.render @options.template,
-      svgStylesheet: @options.svgTemplate
-      title: Tr.visualization3Title[@app.language]
-      description: @config.imageExportDescription()
-      energyFuturesSource: Tr.allPages.imageDownloadSource[@app.language]
-      bitlyLink: @app.bitlyLink
-      legendContent: legendContent
-
-
-
   constructor: (@app, config, @options) ->
     @config = config
     @_chart = null
@@ -154,10 +135,7 @@ class Visualization3 extends visualization
     @getData()
     @accessConfig = new Vis3AccessConfig @config, @seriesData
 
-    if Platform.name == 'browser'
-      @renderBrowserTemplate()
-    else if Platform.name == 'server'
-      @renderServerTemplate()
+    @renderBrowserTemplate()
 
     @_margin =
       top: 20
@@ -1233,32 +1211,22 @@ class Visualization3 extends visualization
 
   # the graph's width
   width: ->
-    # getBoundingClientRect is not implemented in JSDOM, use fixed width on server
-    if Platform.name == 'browser'
-      @d3document
-        .select('#graphPanel')
-        .node()
-        .getBoundingClientRect()
-        .width - @_margin.left - @_margin.right
-    else if Platform.name == 'server'
-      Constants.serverSideGraphWidth - @_margin.left - @_margin.right
+    @d3document
+      .select('#graphPanel')
+      .node()
+      .getBoundingClientRect()
+      .width - @_margin.left - @_margin.right
 
 
   timelineRightEnd: ->
     @getSvgWidth() - Constants.timelineMargin
 
   getSvgWidth: ->
-    # getBoundingClientRect is not implemented in JSDOM, use fixed width on server
-    if Platform.name == 'browser'
-      svgWidth = @d3document
-        .select('#graphPanel')
-        .node()
-        .getBoundingClientRect()
-        .width
-    else if Platform.name == 'server'
-      svgWidth = Constants.serverSideGraphWidth
-
-    svgWidth
+    @d3document
+      .select('#graphPanel')
+      .node()
+      .getBoundingClientRect()
+      .width
 
 
   # The 'correct' scale used by the graph

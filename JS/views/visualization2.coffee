@@ -7,13 +7,12 @@ stackedAreaChart = require '../charts/stacked-area-chart.coffee'
 SquareMenu = require '../charts/SquareMenu.coffee'
 Constants = require '../Constants.coffee'
 Tr = require '../TranslationTable.coffee'
-Platform = require '../Platform.coffee'
+
 
 ParamsToUrlString = require '../ParamsToUrlString.coffee'
 
-if Platform.name == 'browser'
-  Visualization2Template = require '../templates/Visualization2.mustache'
-  SvgStylesheetTemplate = require '../templates/SvgStylesheet.css'
+Visualization2Template = require '../templates/Visualization2.mustache'
+SvgStylesheetTemplate = require '../templates/SvgStylesheet.css'
 
 ControlsHelpPopover = require '../popovers/ControlsHelpPopover.coffee'
 
@@ -121,15 +120,6 @@ class Visualization2 extends visualization
       setupEvents: false
 
 
-  renderServerTemplate: ->
-    contentElement = @document.getElementById 'visualizationContent'
-    contentElement.innerHTML = Mustache.render @options.template,
-      svgStylesheet: @options.svgTemplate
-      title: Tr.visualization2Title[@app.language]
-      description: @config.imageExportDescription()
-      energyFuturesSource: Tr.allPages.imageDownloadSource[@app.language]
-      bitlyLink: @app.bitlyLink
-      legendContent: @sourceLegendData()
 
 
   constructor: (@app, config, @options) ->
@@ -142,11 +132,8 @@ class Visualization2 extends visualization
 
 
     @getData()
+    @renderBrowserTemplate()
 
-    if Platform.name == 'browser'
-      @renderBrowserTemplate()
-    else if Platform.name == 'server'
-      @renderServerTemplate()
 
     @addDatasetToggle()
 
@@ -206,19 +193,11 @@ class Visualization2 extends visualization
 
   #the graph's width
   width: ->
-    # getBoundingClientRect is not implemented in JSDOM, use fixed width on server
-    if Platform.name == 'browser'
-      @d3document.select('#graphPanel').node().getBoundingClientRect().width - @_margin.left - @_margin.right
-    else if Platform.name == 'server'
-      Constants.serverSideGraphWidth - @_margin.left - @_margin.right
+    @d3document.select('#graphPanel').node().getBoundingClientRect().width - @_margin.left - @_margin.right
 
 
   svgResize: ->
-    # getBoundingClientRect is not implemented in JSDOM, use fixed width on server
-    if Platform.name == 'browser'
-      svgWidth = @d3document.select('#graphPanel').node().getBoundingClientRect().width
-    else if Platform.name == 'server'
-      svgWidth = Constants.serverSideGraphWidth
+    svgWidth = @d3document.select('#graphPanel').node().getBoundingClientRect().width
 
     @d3document.select '#graphSVG'
       .attr
@@ -523,7 +502,7 @@ class Visualization2 extends visualization
   getDataAndRender: ->
     @getData()
     @render()
-    
+
   getData: ->
     provider = @app.providers[@config.dataset].energyConsumptionProvider
     @seriesData = provider.dataForViz2 @config
@@ -576,12 +555,12 @@ class Visualization2 extends visualization
     axis = @d3document.select('#yAxis')
       .attr
         transform: "translate(#{@width() + @_margin.left}, #{@_margin.top})"
-    
+
     axis.transition()
         .duration @app.animationDuration
         .ease 'linear'
         .call @yAxis()
-    
+
     axis.select 'path.domain'
       .attr
         fill: 'none'
@@ -599,7 +578,7 @@ class Visualization2 extends visualization
     gridLines = @d3document.select('#yAxisGrid')
       .attr
         transform: "translate(#{@width() + @_margin.left}, #{@_margin.top})"
-      
+
     if transition
       gridLines.transition()
           .duration @app.animationDuration
@@ -676,7 +655,7 @@ class Visualization2 extends visualization
     gridLines = @d3document.select '#xAxisGrid'
       .attr
         transform: "translate(#{@_margin.left}, #{@height() + @_margin.top})"
-      
+
     if transition
       gridLines.transition()
         .ease 'linear'
@@ -752,7 +731,7 @@ class Visualization2 extends visualization
   buildViz:  ->
     @buildYAxis()
     @buildXAxis()
-    
+
     # Build the forecast
     @buildForecast()
 
@@ -823,7 +802,7 @@ class Visualization2 extends visualization
 
 
 
-    
+
   menuSelect: (dataDictionaryItem) =>
 
     newConfig = new @config.constructor @app
@@ -1051,7 +1030,6 @@ class Visualization2 extends visualization
 
 
   buildAccessibleFocusDot: ->
-    return if Platform.name == 'server'
     @d3document.select '#graphGroup'
       .append 'g'
       .attr
@@ -1060,7 +1038,7 @@ class Visualization2 extends visualization
 
     @accessibleFocusDot = @d3document.select '#accessibleFocusDot'
     @accessibleFocusDotElement = @document.getElementById 'accessibleFocusDot'
-    
+
     @d3document.select '#graphPanel'
       .attr
         'aria-activedescendant': 'accessibleFocusDot'

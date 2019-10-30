@@ -6,7 +6,6 @@ require('dotenv').config
 
 Server = require '../Server.coffee'
 PublicFilesMiddleware = require '../../middleware/PublicFilesMiddleware.coffee'
-ImageGenerationMiddleware = require '../../middleware/ImageGenerationMiddleware.coffee'
 DevelopmentPageMiddleware = require '../../middleware/DevelopmentPageMiddleware.coffee'
 JsonDataMiddleware = require '../../middleware/JsonDataMiddleware.coffee'
 CSVDataMiddleware = require '../../middleware/CSVDataMiddleware.coffee'
@@ -14,7 +13,6 @@ BitlyMiddleware = require '../../middleware/BitlyMiddleware.coffee'
 
 Server [
   PublicFilesMiddleware()
-  ImageGenerationMiddleware()
   JsonDataMiddleware()
   DevelopmentPageMiddleware()
   CSVDataMiddleware()

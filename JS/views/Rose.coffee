@@ -6,7 +6,6 @@ d3Ease = require 'd3-ease'
 
 Constants = require '../Constants.coffee'
 RosePill = require './RosePill.coffee'
-Platform = require '../Platform.coffee'
 
 
 
@@ -41,7 +40,6 @@ class Rose
   #   scale, number, controls container sizing
   #   clickHandler, function
   #   pillClickHandler, function, injected into pills we create
-  #   rosePillTemplate, function, only defined on server
 
   constructor: (@app, options) ->
     @document = @app.window.document
@@ -71,22 +69,14 @@ class Rose
     @setStartingPosition @options.position
 
     # Animate the provinces to their grid positions.
-    switch Platform.name
-      when 'browser'
-        @container
-          .transition()
-            .duration Constants.animationDuration
-            .attr
-              transform: "translate(#{@options.startingPosition.x}, #{@options.startingPosition.y}) scale(#{@options.scale}, #{@options.scale})"
+    @container
+      .transition()
+        .duration Constants.animationDuration
+        .attr
+          transform: "translate(#{@options.startingPosition.x}, #{@options.startingPosition.y}) scale(#{@options.scale}, #{@options.scale})"
 
-        # Render the full province rose in order.
-        @app.window.setTimeout @renderFullRose, Constants.fullRoseRenderingDelay[@options.data[0].province]
-      when 'server'
-        @container
-          .attr
-            transform: "translate(#{@options.startingPosition.x}, #{@options.startingPosition.y}) scale(#{@options.scale}, #{@options.scale})"
-        # Render the full province rose
-        @renderFullRose()
+    # Render the full province rose in order.
+    @app.window.setTimeout @renderFullRose, Constants.fullRoseRenderingDelay[@options.data[0].province]
 
 
   # Add all of the static elements, and set up petals for update.
@@ -221,11 +211,7 @@ class Rose
             d: Constants.mapleLeafPath
 
     if @options.isFirstRun and @options.showAllCanadaAnimationOnFirstRun
-      switch Platform.name
-        when 'browser'
-          @app.window.setTimeout @transitionToGridPosition, Constants.animationDuration
-        when 'server'
-          @transitionToGridPosition()
+      @app.window.setTimeout @transitionToGridPosition, Constants.animationDuration
     else
       @renderFullRose()
 
@@ -234,7 +220,7 @@ class Rose
   # - Rose translations, which are handled by the parent view, for moving roses around the
   #   svg canvas.
   # - Rose petal size changes, which are handled in update
-  # - Rose element creation, which is animated independently for each rose element by in
+  # - Rose element creation, which is animated independently for each rose element by
   #   animateRoseElementCreation, called from renderFullRose
   # - Rose destruction / disappearance, in teardown
 
@@ -248,23 +234,17 @@ class Rose
   # all the elements, address both of these.
   # element is d3 wrapped
   animateRoseElementCreation: (element) ->
-    switch Platform.name
-      when 'browser'
-        element
-          .attr
-            transform: 'scale(0, 0)'
-          .transition()
-            .duration Constants.rosePopUpDuration
-            .attr
-              transform: "scale(#{Constants.roseSlightlyBiggerScale},#{Constants.roseSlightlyBiggerScale})"
-          .transition()
-            .duration Constants.rosePopUpDuration
-            .attr
-              transform: "scale(#{Constants.roseFullScale},#{Constants.roseFullScale})"
-      when 'server'
-        element
-          .attr
-            transform: "scale(#{Constants.roseFullScale},#{Constants.roseFullScale})"
+    element
+      .attr
+        transform: 'scale(0, 0)'
+      .transition()
+        .duration Constants.rosePopUpDuration
+        .attr
+          transform: "scale(#{Constants.roseSlightlyBiggerScale},#{Constants.roseSlightlyBiggerScale})"
+      .transition()
+        .duration Constants.rosePopUpDuration
+        .attr
+          transform: "scale(#{Constants.roseFullScale},#{Constants.roseFullScale})"
 
   # Renders the remaining part of the rose.
   # NB: in SVG, the order in which elements are added to the DOM is the order in which
@@ -348,17 +328,10 @@ class Rose
 
     lastAnimation = @animateRoseElementCreation baselineCircle
 
-    switch Platform.name
-      when 'browser'
-        lastAnimation.each 'end', =>
-          if @options.isFirstRun and @options.showPillsOnFirstRun
-            @options.showPillsCallback @
-          @showPills() if @options.showPillsAfterTransition
-      when 'server'
-        # We rely on 'first run' behaviour to put pills on the comparison mode in its
-        # first run, and the showPillsAfterTransition setting when roses are shown after
-        # that, but first run is always set to false for server side
-        @showPills() if @options.showPillsOnFirstRun
+    lastAnimation.each 'end', =>
+      if @options.isFirstRun and @options.showPillsOnFirstRun
+        @options.showPillsCallback @
+      @showPills() if @options.showPillsAfterTransition
 
     # Shadow pills
     # Drawing the pills presents a problem because of the following two constraints:
@@ -392,8 +365,6 @@ class Rose
 
       @shadowPills[source] = shadowPill
 
-    if Platform.name == 'server'
-      @showPills() if @options.showPillsAfterTransition
 
 
 
@@ -407,17 +378,8 @@ class Rose
         else
           'rose'
 
-    # For reasons unknown, the transition here causes a crash in server side rendering
-    # Ordinarily, transitions work fine on server with the duration set to zero, but not
-    # this time.
-    # TODO: Investigate, and remove this workaround.
-
-    switch Platform.name
-      when 'browser'
-        container = @container.transition()
-          .duration Constants.viz5timelineDuration
-      when 'server'
-        container = @container
+    container = @container.transition()
+      .duration Constants.viz5timelineDuration
 
     container.attr
       transform: "translate(#{@options.startingPosition.x}, #{@options.startingPosition.y}) scale(#{@options.scale}, #{@options.scale})"
@@ -812,16 +774,11 @@ class Rose
 
 
     for item, i in data
-      switch Platform.name
-        when 'browser'
-          shadowPillBounds = @shadowPills[item.source][0][0].getBoundingClientRect()
-        when 'server'
-          shadowPillBounds = @generateServerSideShadowPositions item.source
+      shadowPillBounds = @shadowPills[item.source][0][0].getBoundingClientRect()
 
       rosePill = new RosePill @app,
         data: item
         clickHandler: @options.pillClickHandler
-        rosePillTemplate: @options.rosePillTemplate
         shadowPillBounds: shadowPillBounds
         size: @options.pillSize
       rosePill.render
@@ -836,16 +793,6 @@ class Rose
       , 9 * @app.pillAnimationDuration
 
     @options.isFirstRun = false
-
-
-  generateServerSideShadowPositions: (source) ->
-    roseCentre = Constants.viz5ServerSideRosePositions["#{@options.rosePosition}Rose"]
-    angle = Constants.viz5RoseData[source].startAngle + Math.PI / 6
-
-    return {
-      left: roseCentre.left + Constants.viz5ServerSideRoseSize / 2 * Math.cos angle
-      top: roseCentre.top + Constants.viz5ServerSideRoseSize / 2 * Math.sin angle
-    }
 
 
 

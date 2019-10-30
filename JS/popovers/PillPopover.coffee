@@ -2,10 +2,7 @@ _ = require 'lodash'
 d3 = require 'd3'
 Mustache = require 'mustache'
 
-Platform = require '../Platform.coffee'
-
-if Platform.name == 'browser'
-  PillPopoverTemplate = require '../templates/PillPopover.mustache'
+PillPopoverTemplate = require '../templates/PillPopover.mustache'
 Tr = require '../TranslationTable.coffee'
 Constants = require '../Constants.coffee'
 

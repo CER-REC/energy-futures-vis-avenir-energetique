@@ -1,5 +1,3 @@
-Platform = require './Platform.coffee'
-
 # Shim for array.includes, which isn't present in IE.
 unless [].includes?
   includes = require 'array-includes'
@@ -11,8 +9,7 @@ unless [].find?
   find.shim()
 
 # element.remove, not present in IE <= 11
-if Platform.name == 'browser'
- unless Element.prototype.remove?
-   Element.prototype.remove = ->
-     @parentNode.removeChild @ if @parentNode
+unless Element.prototype.remove?
+ Element.prototype.remove = ->
+   @parentNode.removeChild @ if @parentNode
 

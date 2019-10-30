@@ -1,6 +1,6 @@
 Constants = require './Constants.coffee'
 
-# Google analytics reporting integration, tailored for the NEB.
+# Google analytics reporting integration, tailored for the CER.
 class AnalyticsReporter
 
   constructor: (@app) ->
@@ -33,7 +33,7 @@ class AnalyticsReporter
 
   reportPage: (params) ->
     return unless @ga?
-    
+
     ###
       The following custom dimensions need to be set up for this app in Google Analytics
       See also: Constants.googleAnalyticsCustomDimensions for index assignments

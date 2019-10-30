@@ -6,13 +6,12 @@ fs = require 'fs'
 ApplicationRoot = require '../ApplicationRoot'
 
 
-winston.emitErrs = true
 logDirectory = process.env.LOG_DIRECTORY || path.join ApplicationRoot, 'log'
 fs.existsSync(logDirectory) || fs.mkdirSync logDirectory
 logfileName =  "#{process.env.LOG_FILENAME}.log"
 
 
-logger = new winston.Logger
+logger = winston.createLogger
   exitOnError: false
   transports: [
     new winston.transports.DailyRotateFile
@@ -20,18 +19,19 @@ logger = new winston.Logger
       level: process.env.FILE_LOGLEVEL
       filename: path.join logDirectory, logfileName
       handleExceptions: true
-      json: true
-      colorize: true
       humanReadableUnhandledException: true
       prepend: true
+      format: winston.format.json()
 
     new winston.transports.Console
       name: 'consoleError'
       level: process.env.CONSOLE_LOGLEVEL
       handleExceptions: true
-      json: false
-      colorize: true
       humanReadableUnhandledException: true
+      format: winston.format.combine(
+        winston.format.colorize(),
+        winston.format.simple()
+      )
   ]
 
 module.exports = logger

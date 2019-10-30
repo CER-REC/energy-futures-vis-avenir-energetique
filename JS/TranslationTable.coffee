@@ -60,8 +60,8 @@ module.exports =
 
   allPages:
     metaDescription:
-      en: 'Exploring Canada’s Energy Future interactive online tool created by The National Energy Board (NEB) together with leading data visualization experts in both academia and industry.'
-      fr: 'L’outil interactif Explorer l’avenir énergétique du Canada créer par l’Office national de l’énergie créé en partenariat avec des experts de la visualisation des données du milieu universitaire et de l’industrie.'
+      en: 'Exploring Canada’s Energy Future interactive online tool created by The Canada Energy Regulator (CER) together with leading data visualization experts in both academia and industry.'
+      fr: 'L’outil interactif Explorer l’avenir énergétique du Canada créer par la Régie de l’énergie du Canada créé en partenariat avec des experts de la visualisation des données du milieu universitaire et de l’industrie.'
     aboutLink:
       en: 'ABOUT THIS PROJECT'
       fr: 'LE PROJET'
@@ -87,9 +87,6 @@ module.exports =
       en: 'DEMAND'
       fr: 'DEMANDE'
 
-    imageDownloadLink:
-      en: 'DOWNLOAD IMAGE'
-      fr: 'TÉLÉCHARGEMENT D’IMAGE'
     dataDownloadLink:
       en: 'DOWNLOAD DATA'
       fr: 'TÉLÉCHARGEMENT DES DONNÉES'
@@ -97,15 +94,9 @@ module.exports =
       en: 'DOWNLOAD'
       fr: 'TÉLÉCHARGER'
 
-    imageDownloadHeader:
-      en: 'IMAGE DOWNLOAD'
-      fr: 'TÉLÉCHARGEMENT D’IMAGE'
     bitlyLinkInstructions:
       en: 'To interact with this visualization, visit: '
       fr: 'Pour manipuler cette visualisation, visitez: '
-    imageDownloadSource:
-      en: 'Canada’s Energy Future – National Energy Board'
-      fr: 'Avenir énergétique du Canada – Office national de l’énergie'
 
     helpPopoverHeader:
       en: 'HELP'
@@ -122,16 +113,16 @@ module.exports =
     aboutContent:
       en: """
         <p>
-          This Exploring Canada’s Energy Future interactive online tool is part of the National Energy Board’s (NEB) Data Visualization Initiative (DVI) . The DVI is a three-year initiative to transform how the NEB structures and shares data. The objective is to enable evidence-based decision making and remove barriers to understanding Canada’s energy and pipeline systems through the use of user-friendly interactive visualizations. This visualization is based on our flagship publication – <a href="http://www.neb-one.gc.ca/nrg/ntgrtd/ftr/index-eng.html" target="_blank">Canada’s Energy Future</a>. You can explore Canada’s energy future right from your own computer. In the months and years to come we will use this innovative format to share our pipeline safety data, energy data series, energy infrastructure information, and a host of other topical data.
+          This Exploring Canada’s Energy Future interactive online tool is part of the Canada Energy Regulator’s (CER) Data Visualization Initiative (DVI) . The DVI is a three-year initiative to transform how the CER structures and shares data. The objective is to enable evidence-based decision making and remove barriers to understanding Canada’s energy and pipeline systems through the use of user-friendly interactive visualizations. This visualization is based on our flagship publication – <a href="http://www.cer-rec.gc.ca/nrg/ntgrtd/ftr/index-eng.html" target="_blank">Canada’s Energy Future</a>. You can explore Canada’s energy future right from your own computer. In the months and years to come we will use this innovative format to share our pipeline safety data, energy data series, energy infrastructure information, and a host of other topical data.
         </p>
         <p>
-          If you want to use the data for research and undertake your own review, all the data is downloadable and shareable. The chart images are also downloadable, and if you are interested in the source code for the visualizations, it is available on the government’s Open Government portal: <a href="http://open.canada.ca" target="_blank">open.canada.ca</a>.
+          If you want to use the data for research and undertake your own review, all the data is downloadable and shareable. If you are interested in the source code for the visualizations, it is available on the government’s Open Government portal: <a href="http://open.canada.ca" target="_blank">open.canada.ca</a>.
         </p>
         <p>
           We hope we are hitting the mark. Your feedback is essential.
         </p>
         <p>
-          Email us with your comments and ideas: <a href="mailto:energyindesign@neb-one.gc.ca">energyindesign@neb-one.gc.ca</a>. We look forward to hearing from you.
+          Email us with your comments and ideas: <a href="mailto:energyindesign@cer-rec.gc.ca">energyindesign@cer-rec.gc.ca</a>. We look forward to hearing from you.
         </p>
         <h1> CONTRIBUTORS </h1>
         <h2> DATA SOURCE: </h2>
@@ -159,16 +150,16 @@ module.exports =
       """
       fr: '''
         <p>
-          L’outil interactif Explorer l’avenir énergétique du Canada fait partie de l’initiative de visualisation de données de l’Office national de l’énergie. Échelonnée sur trois ans, cette dernière vise à transformer la manière dont l’Office structure et diffuse ses données. L’objectif est de soutenir un processus décisionnel fondé sur la preuve et d’éliminer les obstacles à la compréhension des réseaux énergétiques et pipeliniers canadiens grâce à des visualisations interactives faciles à utiliser. L’outil repose sur la publication phare de l’Office, <a href="http://www.neb-one.gc.ca/nrg/ntgrtd/ftr/index-fra.html" target="_blank">Avenir énergétique du Canada</a>; il vous permet d’explorer l’avenir énergétique du Canada à partir de votre propre ordinateur. Au cours des mois et des années à venir, l’Office utilisera ce format novateur pour diffuser ses données sur la sécurité des pipelines et sur l’énergie, l’information qu’il possède sur l’infrastructure énergétique et une foule d’autres renseignements spécialisés.
+          L’outil interactif Explorer l’avenir énergétique du Canada fait partie de l’initiative de visualisation de données de la Régie de l’énergie du Canada. Échelonnée sur trois ans, cette dernière vise à transformer la manière dont la Régie structure et diffuse ses données. L’objectif est de soutenir un processus décisionnel fondé sur la preuve et d’éliminer les obstacles à la compréhension des réseaux énergétiques et pipeliniers canadiens grâce à des visualisations interactives faciles à utiliser. L’outil repose sur la publication phare de la Régie, <a href="http://www.cer-rec.gc.ca/nrg/ntgrtd/ftr/index-fra.html" target="_blank">Avenir énergétique du Canada</a>; il vous permet d’explorer l’avenir énergétique du Canada à partir de votre propre ordinateur. Au cours des mois et des années à venir, la Régie utilisera ce format novateur pour diffuser ses données sur la sécurité des pipelines et sur l’énergie, l’information qu’il possède sur l’infrastructure énergétique et une foule d’autres renseignements spécialisés.
         </p>
         <p>
-          Si vous souhaitez utiliser les données pour vos recherches ou pour en faire votre propre analyse, vous pouvez les télécharger et les partager. Les graphiques peuvent aussi être téléchargés. Quant au code source des visualisations, il est accessible sur le portail du « gouvernement ouvert » à l’adresse <a href="http://ouvert.canada.ca" target="_blank">ouvert.canada.ca</a>.
+          Si vous souhaitez utiliser les données pour vos recherches ou pour en faire votre propre analyse, vous pouvez les télécharger et les partager. Quant au code source des visualisations, il est accessible sur le portail du « gouvernement ouvert » à l’adresse <a href="http://ouvert.canada.ca" target="_blank">ouvert.canada.ca</a>.
         </p>
         <p>
           Nous espérons avoir atteint notre objectif. Votre rétroaction est essentielle.
         </p>
         <p>
-          Vous pouvez nous la faire parvenir, ainsi que vos suggestions, à l’adresse <a href="mailto:conceptionenergie@neb-one.gc.ca">conceptionenergie@neb-one.gc.ca</a>. Votre opinion compte.
+          Vous pouvez nous la faire parvenir, ainsi que vos suggestions, à l’adresse <a href="mailto:conceptionenergie@cer-rec.gc.ca">conceptionenergie@cer-rec.gc.ca</a>. Votre opinion compte.
         </p>
         <h1> LES CONTRIBUTEURS </h1>
         <h2> SOURCE DES DONNÉES </h2>
@@ -539,41 +530,41 @@ module.exports =
         <h1> CANADA’S ENERGY FUTURE 2018 </h1>
         <h2> October 2018 </h2>
         <p> EF 2018 explores how possible energy futures might unfold for Canadians over the long term. It considers four scenarios that explore how future commodity prices and technological development might impact Canada’s energy system. The Reference Case is based on a current economic outlook, a moderate view of energy prices and technology development, and climate and energy policies announced at the time of analysis. The High and Low Price Cases address the uncertainty of future crude oil and natural gas prices. The Technology Case pushes past the policy and technology boundaries specific to the Reference Case and includes greater global climate policy ambition and market outcomes. It provides one potential view of what a faster transition enabled by stronger long term carbon policy, faster uptake of technologies such as electric vehicles, and lower cost of renewables would mean for Canada’s energy future.
-          <br><a href='http://www.neb-one.gc.ca/nrg/ntgrtd/ftr/2018/index-eng.html' target='_blank'>View the report</a>
+          <br><a href='http://www.cer-rec.gc.ca/nrg/ntgrtd/ftr/2018/index-eng.html' target='_blank'>View the report</a>
         </p>
 
         <h1> CANADA’S ENERGY FUTURE 2017 </h1>
         <h2> October 2017 </h2>
         <p>
           EF 2017 explores how possible energy futures might unfold for Canadians over the long term. It considers three scenarios that explore how future climate policy and technological development might impact Canada’s energy system. The Reference Case is based on a current economic outlook, a moderate view of energy prices, and climate and energy policies announced at the time of analysis. The Higher Carbon Price Case considers the impact on the Canadian energy system of higher carbon pricing than in the Reference Case in the longer term. The Technology Case considers, in addition to higher carbon prices, the impact on the Canadian energy system of greater adoption of select emerging production and consumption energy technologies.
-          <br><a href='http://www.neb-one.gc.ca/nrg/ntgrtd/ftr/2017/index-eng.html' target='_blank'>View the report</a>
+          <br><a href='http://www.cer-rec.gc.ca/nrg/ntgrtd/ftr/2017/index-eng.html' target='_blank'>View the report</a>
         </p>
         <h1> CANADA’S ENERGY FUTURE 2016 </h1>
         <h2> January 2016 </h2>
         <p>
           A continuation of the Energy Futures series. In addition to our usual baseline long-term outlook, we explore key uncertainties for Canadian energy such robustness of global LNG markets and availability of crude oil transportation infrastructure.
-          <br><a href='http://www.neb-one.gc.ca/nrg/ntgrtd/ftr/2016/index-eng.html' target='_blank'>View the report</a>
+          <br><a href='http://www.cer-rec.gc.ca/nrg/ntgrtd/ftr/2016/index-eng.html' target='_blank'>View the report</a>
         </p>
       """
       fr: """
         <h1> AVENIR ÉNERGÉTIQUE DU CANADA EN 2018 </h1>
         <h2> Octobre 2018 </h2>
         <p> Le rapport de 2018 examine comment divers scénarios possibles d’avenir énergétique pourraient se dérouler à long terme pour les Canadiens. Il porte sur quatre scénarios montrant comment les politiques climatiques futures et le développement technologique pourraient influer sur la filière énergétique du Canada. Le scénario de référence s’appuie sur les perspectives économiques actuelles, une vision modérée des prix de l’énergie et les politiques énergétiques ou climatiques déjà annoncées au moment de l’analyse. Les scénarios de prix élevés et de prix bas tiennent compte, eux, des incertitudes liées aux prix futurs du pétrole brut et de gaz naturel. Le scénario des avancées technologiques va au-delà des limites en la matière ou des politiques définies dans celui de référence et tient compte de mesures plus généralisées sur la scène mondiale, qui touchent le climat et qui se répercutent sur le marché. Il présente l’avenir énergétique sur lequel le Canada pourrait s’ouvrir en présence d’une transition plus rapide découlant de politiques à long terme sur le carbone qui seraient plus robustes, d’une dissémination plus rapide de technologies comme les véhicules électriques et de coûts moindres associés aux énergies renouvelables.
-          <br><a href='http://www.neb-one.gc.ca/nrg/ntgrtd/ftr/2018/index-fra.html' target='_blank'>Voir le rapport</a>
+          <br><a href='http://www.cer-rec.gc.ca/nrg/ntgrtd/ftr/2018/index-fra.html' target='_blank'>Voir le rapport</a>
         </p>
 
         <h1> AVENIR ÉNERGÉTIQUE DU CANADA EN 2017 </h1>
         <h2> Octobre 2017 </h2>
         <p>
           AE 2017 examine comment divers scénarios possibles d’avenir énergétique pourraient se dérouler à long terme pour les Canadiens. Le rapport porte sur trois scénarios montrant comment les politiques climatiques futures et le développement technologique pourraient influer sur la filière énergétique du Canada. Le scénario de référence s’appuie sur les perspectives économiques actuelles, une vision modérée des prix de l’énergie et les politiques énergétiques ou climatiques déjà annoncées au moment de l’analyse. Le scénario de tarification du carbone élevée rend compte des répercussions à long terme sur la filière énergétique canadienne de prix plus élevés pour le carbone que dans le scénario de référence. Le scénario des avancées technologiques tient non seulement compte d’une tarification du carbone élevée sur la filière énergétique canadienne mais également des incidences qu’aurait l’adoption plus massive de certaines technologies émergentes liées à la production ou à la consommation d’énergie.
-          <br><a href='http://www.neb-one.gc.ca/nrg/ntgrtd/ftr/2017/index-fra.html' target='_blank'>Voir le rapport</a>
+          <br><a href='http://www.cer-rec.gc.ca/nrg/ntgrtd/ftr/2017/index-fra.html' target='_blank'>Voir le rapport</a>
         </p>
 
         <h1> AVENIR ÉNERGÉTIQUE DU CANADA EN 2016 </h1>
         <h2> Janvier 2016 </h2>
         <p>
           La suite de la série sur l’avenir énergétique. En plus des perspectives à long terme habituelles, nous explorons certaines incertitudes de fond dans le secteur de l’énergie au Canada, qu’il s’agisse par exemple de celles découlant du degré de robustesse des marchés mondiaux du GNL ou de la disponibilité d’une infrastructure pour l’acheminement de pétrole brut.
-          <br><a href='http://www.neb-one.gc.ca/nrg/ntgrtd/ftr/2016/index-fra.html' target='_blank'>Consulter le rapport</a>
+          <br><a href='http://www.cer-rec.gc.ca/nrg/ntgrtd/ftr/2016/index-fra.html' target='_blank'>Consulter le rapport</a>
         </p>
       """
 
@@ -879,7 +870,7 @@ module.exports =
                 Deux autres scénarios explorent les incertitudes entourant les éventuelles exportations de gaz naturel liquéfié (GNL).
               </p>
           </div>
-        """        
+        """
       oct2017:
         en: """
           <p>
@@ -1686,7 +1677,7 @@ module.exports =
     demandIn:
       en: 'DEMAND SHARES IN'
       fr: 'PARTS DE LA DEMANDE EN'
-      
+
     relativeTo:
       en: 'RELATIVE TO'
       fr: 'PAR RAPPORT À'
@@ -1730,8 +1721,8 @@ module.exports =
 
   contactEmail:
     body:
-      en: 'The National Energy Board (NEB) worked together with leading data visualization experts in both academia and industry to create the Exploring Canada’s Energy Future interactive online tool. This pilot concept, based on our flagship publication – Canada’s Energy Future 2016: Energy Supply and Demand Projections to 2040, will give Canadians a taste of the exciting new way the NEB will share data going forward.'
-      fr: 'Pour créer l’outil interactif Explorer l’avenir énergétique du Canada, l’Office national de l’énergie s’est associé à des experts de la visualisation des données du milieu universitaire et de l’industrie. Fondé sur la publication phare Avenir énergétique du Canada en 2016 – Offre et demande énergétiques à l’horizon 2040, ce projet pilote donnera aux Canadiens un avant-goût du nouveau et fabuleux moyen qu’utilisera désormais l’Office pour diffuser ses données.'
+      en: 'The Canada Energy Regulator (CER) worked together with leading data visualization experts in both academia and industry to create the Exploring Canada’s Energy Future interactive online tool. This pilot concept, based on our flagship publication – Canada’s Energy Future 2016: Energy Supply and Demand Projections to 2040, will give Canadians a taste of the exciting new way the CER will share data going forward.'
+      fr: 'Pour créer l’outil interactif Explorer l’avenir énergétique du Canada, la Régie de l’énergie du Canada s’est associé à des experts de la visualisation des données du milieu universitaire et de l’industrie. Fondé sur la publication phare Avenir énergétique du Canada en 2016 – Offre et demande énergétiques à l’horizon 2040, ce projet pilote donnera aux Canadiens un avant-goût du nouveau et fabuleux moyen qu’utilisera désormais la Régie pour diffuser ses données.'
     subject:
       en: 'Canada’s Energy Future'
       fr: 'l%E2%80%99avenir%20%C3%A9nerg%C3%A9tique%20du%20Canada'
@@ -1903,7 +1894,7 @@ module.exports =
         fr: 'Désélection - Milliard de pieds cubes par jour'
 
 
-    
+
 
     dataset:
       jan2016Selected:
@@ -2029,7 +2020,7 @@ module.exports =
     howToImage:
       en: 'Usage instructions'
       fr: 'Guide d’utilisation'
-      
+
     playAnimation:
       en: 'Play'
       fr: 'Lire'
