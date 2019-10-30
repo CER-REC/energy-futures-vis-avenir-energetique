@@ -8,6 +8,17 @@ IngestGasProduction = require './IngestGasProduction.coffee'
 IngestElectricityProduction = require './IngestElectricityProduction.coffee'
 
 
+october2019_updateOf2018Electricity = -> 
+  [
+    {
+      type: 'electricity'
+      dataFilename: path.join ApplicationRoot, 'devPublic/rawCSV/ElectricityGeneration_VIZ.EF18.May.21.2019.csv'
+      processedFilename: path.join ApplicationRoot, 'public/CSV/2018_ElectricityGeneration_2019_10_28.csv'
+      dataset: 'oct2018'
+      logFilename: path.join ApplicationRoot, 'devPublic/rawCSV/log/2018_ElectricityGeneration_2019_10_28.csv_ingestion_errors.log'
+    }
+  ]
+
 october2018Files = ->
 
   [
@@ -184,7 +195,8 @@ ingest = (optionsList) ->
 # ingest january2016Files()
 # ingest october2016Files()
 # ingest october2017Files()
-ingest october2018Files()
+# ingest october2018Files()
+ingest october2019_updateOf2018Electricity()
 
 
 
