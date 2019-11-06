@@ -2,7 +2,7 @@
 
 module.exports =
 
-  appHost: 'https://www.cer-rec.gc.ca/dvs'
+  appHost: 'https://apps2.cer-rec.gc.ca/dvs'
 
   mainSelections: [
     'energyDemand'
