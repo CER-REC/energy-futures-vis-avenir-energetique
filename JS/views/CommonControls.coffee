@@ -66,9 +66,24 @@ CommonControls =
         else
           Tr.altText.dataset.oct2018Unselected[app.language]
 
+    nov2019 =
+      label: Tr.datasetSelector.nov2019Button[app.language]
+      dataset: 'nov2019'
+      title: Tr.selectorTooltip.datasetSelector.nov2019[app.language]
+      class:
+        if config.dataset == 'nov2019'
+          'vizButton selected'
+        else
+          'vizButton'
+      ariaLabel:
+        if config.dataset == 'nov2019'
+          Tr.altText.dataset.nov2019Selected[app.language]
+        else
+          Tr.altText.dataset.nov2019Unselected[app.language]
 
 
-    [oct2018, oct2017, jan2016]
+
+    [nov2019, oct2018, oct2017, jan2016]
 
 
   mainSelectionData: (config, app) ->
@@ -429,6 +444,8 @@ CommonControls =
           [reference, technology, hcp]
         else if config.dataset == 'oct2018'
           [reference, technology, high, low]
+        else if config.dataset == 'nov2019'
+          [reference]
       when 'oilProduction'
         if config.dataset == 'jan2016'
           [reference, high, low, constrained]
@@ -438,6 +455,8 @@ CommonControls =
           [reference, technology, hcp]
         else if config.dataset == 'oct2018'
           [reference, technology, high, low]
+        else if config.dataset == 'nov2019'
+          [reference]
       when 'gasProduction'
         if config.dataset == 'jan2016'
           [reference, high, low, highLng, noLng]
@@ -447,6 +466,8 @@ CommonControls =
           [reference, technology, hcp]
         else if config.dataset == 'oct2018'
           [reference, technology, high, low]
+        else if config.dataset == 'nov2019'
+          [reference]
 
       # This is the case when the scenarios list is requested by viz5. Because
       # viz5 config does not contain a main selection and since we currently
@@ -461,6 +482,8 @@ CommonControls =
           [reference, technology, hcp]
         else if config.dataset == 'oct2018'
           [reference, technology, high, low]
+        else if config.dataset == 'nov2019'
+          [reference]
 
   legendData: (app) ->
     renewables =

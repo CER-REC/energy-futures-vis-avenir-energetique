@@ -31,6 +31,7 @@ module.exports =
     'Northwest Territories ': 'NT'
     'Nunavut': 'NU'
     'Canada': 'all'
+    'CN': 'all'
 
     'AB': 'AB'
     'BC': 'BC'
@@ -49,6 +50,21 @@ module.exports =
     'YT': 'YT'
     'YK': 'YT' # yes really.
 
+    'cn': 'all'
+    'ab': 'AB'
+    'bc': 'BC'
+    'mb': 'MB'
+    'nb': 'NB'
+    'nl': 'NL'
+    'ns': 'NS'
+    'nt': 'NT'
+    'nu': 'NU'
+    'on': 'ON'
+    'pe': 'PE'
+    'qc': 'QC'
+    'sk': 'SK'
+    'yt': 'YT'
+
 
   csvSourceToSourceNameMapping:
     'Hydro': 'hydro'
@@ -57,12 +73,15 @@ module.exports =
     'Natural Gas': 'naturalGas'
     'Biofuels/Biomass' : 'bio'
     'Biomass and Biofuels' : 'bio' # In some CSVs
+    'Biofuels & Emerging Energy' : 'bio' # In some CSVs
     'Nuclear': 'nuclear'
     'Oil Products' : 'oilProducts'
     'Crude Oil' : 'crudeOil'
     'Electricity' : 'electricity'
+    # NB: The total column is labeled differently in certain CSVs
+    'Total' : 'total'
     'Total Generation' : 'total'
-    'Total' : 'total' # NB: The total column is labeled differently in certain CSVs
+    'Total End-Use' : 'total'
 
 
   sources: [
@@ -106,6 +125,7 @@ module.exports =
     # 'oct2016'
     'oct2017'
     'oct2018'
+    'nov2019'
   ]
 
 
@@ -199,6 +219,20 @@ module.exports =
         gasProduction: ['reference', 'technology', 'high', 'low']
       forecastFromYear: 2017
 
+    nov2019:
+      scenarios: ['reference']
+      scenariosForIngestion:
+        energyDemand: ['reference']
+        electricityGeneration: ['reference']
+        oilProduction: ['reference']
+        gasProduction: ['reference']
+      scenariosPerSelection:
+        energyDemand: ['reference']
+        electricityGeneration: ['reference']
+        oilProduction: ['reference']
+        gasProduction: ['reference']
+      forecastFromYear: 2018
+
 
 
   # The order in which the scenarios are drawn, in viz4.
@@ -252,10 +286,15 @@ module.exports =
 
   csvSectorToSectorNameMapping:
     'Total End Use': 'total'
+    'Total End-Use': 'total'
     'Residential Sector': 'residential'
+    'Residential': 'residential'
     'Commercial Sector': 'commercial'
+    'Commercial': 'commercial'
     'Industrial Sector': 'industrial'
+    'Industrial': 'industrial'
     'Transportation Sector': 'transportation'
+    'Transportation': 'transportation'
 
 
   provinces: [
