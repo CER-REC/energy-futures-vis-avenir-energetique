@@ -35,8 +35,7 @@ DatasetFiles =
     energyDemand: path.join ApplicationRoot, csvDir, '2019-11-08_EnergyDemand.csv'
     oilProduction: path.join ApplicationRoot, csvDir, '2019-11-08_CrudeOilProduction.csv'
     electricityGeneration: path.join ApplicationRoot, csvDir, '2019-11-08_ElectricityGeneration.csv'
-    # TODO: swap me out with new natgas data
-    gasProduction: path.join ApplicationRoot, csvDir, '2018-10-16_NaturalGasProduction.csv'
+    gasProduction: path.join ApplicationRoot, csvDir, '2019-11-08_NaturalGasProduction.csv'
 
 
 

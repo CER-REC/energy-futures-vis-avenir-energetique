@@ -21,6 +21,7 @@ module.exports =
     'Quebec': 'QC'
     'New Brunswick': 'NB'
     'Nova Scotia': 'NS'
+    'Newfoundland': 'NL'
     'Newfoundland and Labrador': 'NL'
     'Prince Edward Island': 'PE'
     'Yukon': 'YT'

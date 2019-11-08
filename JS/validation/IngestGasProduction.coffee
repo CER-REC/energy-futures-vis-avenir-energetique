@@ -115,7 +115,7 @@ class GasProductionIngestor
 
 GasProductionIngestor.csvMapping = (d) ->
   province: d.Area
-  type: d.Source
+  type: d.Type
   scenario: d.Case
   year: parseInt d.Year
   value: parseFloat d.Data
