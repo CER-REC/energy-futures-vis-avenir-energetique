@@ -415,23 +415,6 @@ module.exports =
   pngRenderSleepTime: 50 # ms
 
 
-  googleAnalyticsCustomDimensions:
-    unit: 'dimension1'
-    page: 'dimension2'
-    mainSelection: 'dimension3'
-    scenario: 'dimension4'
-    provinces: 'dimension5'
-    provincesInOrder: 'dimension6'
-    dataset: 'dimension7'
-    sector: 'dimension8'
-    sources: 'dimension9'
-    sourcesInOrder: 'dimension10'
-    province: 'dimension11'
-    viewBy: 'dimension12'
-    year: 'dimension13'
-    source: 'dimension14'
-    scenarios: 'dimension15'
-
   questionMarkHeight: 23
   boxesOffset: 46
 
