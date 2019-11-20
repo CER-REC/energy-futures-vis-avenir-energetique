@@ -6,29 +6,10 @@ class AnalyticsReporter
   constructor: (@app) ->
     if @app.window.ga?
       @ga = @app.window.ga
-      @setupVideoAnalytics()
     else
       console.warn 'Google analytics object not found.'
 
-  setupVideoAnalytics: ->
 
-    # We want to instrument the video player with analytics, but it lives in an iframe.
-    # Communication can only be initiated from the iframe to the parent window.
-    # So, we add a global function to do the reporting, to be called in the iframe's
-    # context. See views/wet_video_reporter.mustache
-    @app.window.attachVideoAnalytics = (videoElement) =>
-
-      videoElement.addEventListener 'timeupdate', =>
-        @reportEvent 'Video', "Played: #{videoElement.currentTime}s"
-
-      videoElement.addEventListener 'play', =>
-        @reportEvent 'Video', 'Play'
-
-      videoElement.addEventListener 'pause', =>
-        @reportEvent 'Video', 'Pause'
-
-      videoElement.addEventListener 'ended', =>
-        @reportEvent 'Video', 'Ended'
 
 
   reportPage: (params) ->

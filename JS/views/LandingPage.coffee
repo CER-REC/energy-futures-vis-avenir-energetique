@@ -3,14 +3,6 @@ Mustache = require 'mustache'
 
 LandingPageTemplate = require '../templates/LandingPage.mustache'
 
-# A WET 4 compatible video template was built in anticipation of an eventual upgrade to
-# WET 4. The WET 4 video template was built to work in the stock WET 4 distribution
-# template, if the production version of WET 4 at the CER is similar enough to the stock
-# version, then swapping out the WET 3 video for the WET 4 video should just work.
-
-Wet3VideoTemplate = require '../templates/Wet3Video.mustache'
-# Wet4VideoTemplate = require '../templates/Wet4Video.mustache'
-
 
 class LandingPage
 
@@ -28,7 +20,6 @@ class LandingPage
         visualization4Link: Tr.landingPage.visualization4Link[@app.language]
         visualization5Link: Tr.landingPage.visualization5Link[@app.language]
         panelRightContent: Tr.landingPage.landingPageImage[@app.language]
-        # panelRightContent: Mustache.render(Wet4VideoTemplate)
 
     @addEventListeners()
 
