@@ -1,68 +1,75 @@
-Constants = require './Constants.coffee'
+V1 = require 'uuid/v1'
+BrowserCookies = require 'browser-cookies'
 
-# Google analytics reporting integration, tailored for the CER.
+# Constants = require './Constants.coffee'
+
+# Google Tag Manager reporting integration, tailored for the CER.
 class AnalyticsReporter
 
   constructor: (@app) ->
-    if @app.window.ga?
-      @ga = @app.window.ga
+    if @app.window.dataLayer?
+      @dataLayer = @app.window.dataLayer
+
+      @userUuid = BrowserCookies.get 'energy-futures-UUID'
+      if @userUuid == null
+        @userUuid = V1()
+        BrowserCookies.set 'energy-futures-UUID', @userUuid
+
     else
-      console.warn 'Google analytics object not found.'
+      console.warn 'Google Tag Manager dataLayer not found.'
 
 
 
 
-  reportPage: (params) ->
-    return unless @ga?
+  # reportPage: (params) ->
+  #   return unless @dataLayer?
 
-    ###
-      The following custom dimensions need to be set up for this app in Google Analytics
-      See also: Constants.googleAnalyticsCustomDimensions for index assignments
+  #   dataObject = {}
 
-      vis_page
-      vis_mainSelection
-      vis_unit
-      vis_dataset
-      vis_sector
-      vis_viewBy
-      vis_year
-      vis_scenario
-      vis_scenarios
-      vis_source
-      vis_sources
-      vis_sourcesInOrder
-      vis_province
-      vis_provinces
-      vis_provincesInOrder
-    ###
+  #   for paramName, param of params
+  #     dimensionName = Constants.googleAnalyticsCustomDimensions[paramName]
+  #     dataObject[dimensionName] = param
 
-    # We'll rely on Google Analytics' language detection feature instead of our parameter
-    delete params.language if params.language?
+  #   # We want to track the URL without the long string of URL parameters.
+  #   location = @app.window.document.location
+  #   @dataLayer 'energyFutures.set', 'page', "#{location.protocol}//#{location.host}#{location.pathname}"
 
-    gaMessage = {}
+  #   @dataLayer 'energyFutures.send', 'pageview', dataObject
 
-    for paramName, param of params
-      dimensionName = Constants.googleAnalyticsCustomDimensions[paramName]
-      gaMessage[dimensionName] = param
+  # reportEvent: (category, action) ->
+  #   return unless @dataLayer?
 
-    # We want to track the URL without the long string of URL parameters.
-    location = @app.window.document.location
-    @ga 'energyFutures.set', 'page', "#{location.protocol}//#{location.host}#{location.pathname}"
-
-    @ga 'energyFutures.send', 'pageview', gaMessage
+  #   @dataLayer 'energyFutures.send',
+  #     hitType: 'event'
+  #     eventCategory: category
+  #     eventAction: action
 
 
-  reportEvent: (category, action) ->
-    return unless @ga?
+# eventOptions, an object with the following attributes, all strings
+#   visualizationMode: Required, the current visualization page. one of:
+#     landingPage, viz1, viz2, viz3, viz4, viz5
+#   action: Required, the action the user took. one of:
+#     click, enter, drag. TODO: this list may be incomplete
+#   category: Required, a string for the category of the event
+#   action: Optional, a string with more detail about the event
 
-    @ga 'energyFutures.send',
-      hitType: 'event'
-      eventCategory: category
-      eventAction: action
+# For details about the possible category/action values, see the drive spreadsheet:
+# Energy Futures Analytics Events
 
-    # unused, available attributes:
-      # eventLabel:
-      # eventValue:
+  reportEvent: (eventOptions) ->
+    return unless @dataLayer?
+
+    unless eventOptions.label?
+      eventOptions.label = ''
+
+    window.dataLayer.push
+      event: 'energy futures interaction'
+      userID: @userUuid
+      visualizationMode: eventOptions.visualizationMode
+      action: eventOptions.action
+      category: eventOptions.category
+      label: eventOptions.label
+
 
 
 

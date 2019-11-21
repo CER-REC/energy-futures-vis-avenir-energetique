@@ -88,6 +88,13 @@ class Router
 
 
   fulfillNavigation: (params, options) ->
+
+    @app.analyticsReporter.reportPage
+      visualizationMode: @app.page
+      action: 
+      category: 'Navigation'
+      label: params.page
+
     @app.page = params.page
     @navbar.setNavBarState params.page, options
     @updateBottomNavBar options
