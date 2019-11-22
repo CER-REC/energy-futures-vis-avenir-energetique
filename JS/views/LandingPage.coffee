@@ -61,12 +61,15 @@ class LandingPage
         language: @app.language
       },
         shouldSelectNavbarItem: false
+        action: event.type
     @viz1LinkEnterHandler = (event) =>
       if event.key == 'Enter' or event.key == ' '
         event.preventDefault()
-        @app.router.navigate
+        @app.router.navigate {
           page: 'viz1'
           language: @app.language
+        },
+          action: event.type
 
     @viz1Link.addEventListener 'click', @viz1LinkClickHandler
     @viz1Link.addEventListener 'keydown', @viz1LinkEnterHandler
@@ -80,12 +83,15 @@ class LandingPage
         language: @app.language
       },
         shouldSelectNavbarItem: false
+        action: event.type
     @viz2LinkEnterHandler = (event) =>
       if event.key == 'Enter' or event.key == ' '
         event.preventDefault()
-        @app.router.navigate
+        @app.router.navigate {
           page: 'viz2'
           language: @app.language
+        },
+          action: event.type
     @viz2Link.addEventListener 'keydown', @viz2LinkEnterHandler
     @viz2Link.addEventListener 'click', @viz2LinkClickHandler
 
@@ -98,12 +104,15 @@ class LandingPage
         language: @app.language
       },
         shouldSelectNavbarItem: false
+        action: event.type
     @viz3LinkEnterHandler = (event) =>
       if event.key == 'Enter' or event.key == ' '
         event.preventDefault()
-        @app.router.navigate
+        @app.router.navigate {
           page: 'viz3'
           language: @app.language
+        },
+          action: event.type
     @viz3Link.addEventListener 'click', @viz3LinkClickHandler
     @viz3Link.addEventListener 'keydown', @viz3LinkEnterHandler
 
@@ -116,12 +125,15 @@ class LandingPage
         language: @app.language
       },
         shouldSelectNavbarItem: false
+        action: event.type
     @viz4LinkEnterHandler = (event) =>
       if event.key == 'Enter' or event.key == ' '
         event.preventDefault()
-        @app.router.navigate
+        @app.router.navigate {
           page: 'viz4'
           language: @app.language
+        },
+          action: event.type
     @viz4Link.addEventListener 'click', @viz4LinkClickHandler
     @viz4Link.addEventListener 'keydown', @viz4LinkEnterHandler
 
@@ -135,12 +147,15 @@ class LandingPage
         language: @app.language
       },
         shouldSelectNavbarItem: false
+        action: event.type
     @viz5LinkEnterHandler = (event) =>
       if event.key == 'Enter' or event.key == ' '
         event.preventDefault()
-        @app.router.navigate
+        @app.router.navigate {
           page: 'viz5'
           language: @app.language
+        },
+          action: event.type
     @viz5Link.addEventListener 'click', @viz5LinkClickHandler
     @viz5Link.addEventListener 'keydown', @viz5LinkEnterHandler
 

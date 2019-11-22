@@ -171,13 +171,16 @@ class Navbar
             language: @app.language
           },
             shouldSelectNavbarItem: false
+            action: d3.event.type
       .on 'keydown', (d) =>
         if (d3.event.key == 'Enter' or d3.event.key == ' ') and d.page != @navbarState
           d3.event.preventDefault()
           d3.event.stopPropagation()
-          @app.router.navigate
+          @app.router.navigate {
             page: d.page
             language: @app.language
+          },
+            action: d3.event.type
 
 
       .style

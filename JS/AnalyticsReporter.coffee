@@ -1,8 +1,6 @@
 V1 = require 'uuid/v1'
 BrowserCookies = require 'browser-cookies'
 
-# Constants = require './Constants.coffee'
-
 # Google Tag Manager reporting integration, tailored for the CER.
 class AnalyticsReporter
 
@@ -20,6 +18,9 @@ class AnalyticsReporter
 
 
 
+  # TODO: remove me once we're through
+  reportEvent: (eventOptions) ->
+    console.log 'got a reportevent'
 
   # reportPage: (params) ->
   #   return unless @dataLayer?
@@ -45,30 +46,41 @@ class AnalyticsReporter
   #     eventAction: action
 
 
-# eventOptions, an object with the following attributes, all strings
-#   visualizationMode: Required, the current visualization page. one of:
-#     landingPage, viz1, viz2, viz3, viz4, viz5
-#   action: Required, the action the user took. one of:
-#     click, enter, drag. TODO: this list may be incomplete
-#   category: Required, a string for the category of the event
-#   action: Optional, a string with more detail about the event
+  # options, an object with the following attributes, all strings
+  #   visualizationMode: Required, the current visualization page. one of:
+  #     landingPage, viz1, viz2, viz3, viz4, viz5
+  #   action: Required, the action the user took. one of:
+  #     click, enter, drag. TODO: this list may be incomplete
+  #   category: Required, a string for the category of the event
+  #   action: Optional, a string with more detail about the event
 
-# For details about the possible category/action values, see the drive spreadsheet:
-# Energy Futures Analytics Events
+  # For details about the possible category/action values, see the drive spreadsheet:
+  # Energy Futures Analytics Events
 
-  reportEvent: (eventOptions) ->
+  # TODO: rename me to reportEvent once done, using this as a tool to help grep for
+  # reportEvent calls not upgraded yet.
+
+  reportedEvent: (options) ->
     return unless @dataLayer?
+    unless options.label?
+      options.label = ''
 
-    unless eventOptions.label?
-      eventOptions.label = ''
+    console.log "#{options.label} #{options.action}"
+
+    unless options.visualizationMode
+      console.error 'Missing analytics visualizationMode', options
+    unless options.action
+      console.error 'Missing analytics action', options
+    unless options.category
+      console.error 'Missing analytics category', options
 
     window.dataLayer.push
       event: 'energy futures interaction'
       userID: @userUuid
-      visualizationMode: eventOptions.visualizationMode
-      action: eventOptions.action
-      category: eventOptions.category
-      label: eventOptions.label
+      visualizationMode: options.visualizationMode
+      action: options.action
+      category: options.category
+      label: options.label
 
 
 
