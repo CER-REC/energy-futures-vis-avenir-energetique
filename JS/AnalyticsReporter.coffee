@@ -65,7 +65,7 @@ class AnalyticsReporter
     unless options.label?
       options.label = ''
 
-    console.log "#{options.label} #{options.action}"
+    console.log "#{options.visualizationMode} - #{options.category} - #{options.label} - #{options.action}"
 
     unless options.visualizationMode
       console.error 'Missing analytics visualizationMode', options
