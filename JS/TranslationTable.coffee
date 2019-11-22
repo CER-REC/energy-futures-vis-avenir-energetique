@@ -971,6 +971,9 @@ module.exports =
             </p>
           </div>
         """
+      nov2019:
+        en: 'TODO'
+        fr: 'TODO'
 
     names:
       reference:
