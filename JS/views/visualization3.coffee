@@ -49,7 +49,7 @@ class Visualization3 extends visualization
       title: Tr.datasetSelector.datasetSelectorHelpTitle[@app.language]
       content: => Tr.datasetSelector.datasetSelectorHelp[@app.language]
       attachmentSelector: '.datasetSelectorGroup'
-      analyticsEvent: 'Viz3 dataset help'
+      analyticsEvent: 'Energy Futures (Dataset)'
 
     @viewByHelpPopover = new ControlsHelpPopover @app,
       popoverButtonId: 'viewBySelectorHelpButton'
@@ -58,7 +58,7 @@ class Visualization3 extends visualization
       title: Tr.viewBySelector.viewBySelectorHelpTitle[@app.language]
       content: => Tr.viewBySelector.viewBySelectorHelp[@app.language]
       attachmentSelector: '.viewBySelectorGroup'
-      analyticsEvent: 'Viz3 view by help'
+      analyticsEvent: 'View By (Region/Source)'
 
     @unitsHelpPopover = new ControlsHelpPopover @app,
       popoverButtonId: 'unitSelectorHelpButton'
@@ -67,7 +67,7 @@ class Visualization3 extends visualization
       title: Tr.unitSelector.unitSelectorHelpTitle[@app.language]
       content: => Tr.unitSelector.unitSelectorHelp[@app.language]
       attachmentSelector: '.unitsSelectorGroup'
-      analyticsEvent: 'Viz3 unit help'
+      analyticsEvent: 'Select Unit'
 
     @scenariosHelpPopover = new ControlsHelpPopover @app,
       popoverButtonId: 'scenarioSelectorHelpButton'
@@ -76,7 +76,7 @@ class Visualization3 extends visualization
       title: Tr.scenarioSelector.scenarioSelectorHelpTitle[@app.language]
       content: => Tr.scenarioSelector.scenarioSelectorHelp[@config.dataset][@app.language]
       attachmentSelector: '.scenarioSelectorGroup'
-      analyticsEvent: 'Viz3 scenario help'
+      analyticsEvent: 'Select Scenario'
 
     @sourcesHelpPopover = new ControlsHelpPopover @app,
       popoverButtonId: 'sourceHelpButton'
@@ -100,7 +100,7 @@ class Visualization3 extends visualization
         contentString = Tr.sourceSelector.sourceSelectorHelp.generalHelp[@app.language] + contentString
         contentString
       attachmentSelector: '#powerSourceSelector'
-      analyticsEvent: 'Viz3 source help'
+      analyticsEvent: 'Sources'
       setupEvents: false
 
     @provincesHelpPopover = new ControlsHelpPopover @app,
@@ -114,7 +114,7 @@ class Visualization3 extends visualization
           contentString = """<div class="#{if @config.viewBy == 'province' then 'provinceLabel' else 'provinceLabel provinceLabel' + province}"> <h2> #{Tr.regionSelector.names[province][@app.language]} </h2> </div>""" + contentString
         contentString
       attachmentSelector: '#provincesSelector'
-      analyticsEvent: 'Viz3 region help'
+      analyticsEvent: 'Regions'
       setupEvents: false
 
 

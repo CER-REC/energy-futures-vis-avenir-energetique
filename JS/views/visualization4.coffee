@@ -43,7 +43,7 @@ class Visualization4
       title: Tr.datasetSelector.datasetSelectorHelpTitle[@app.language]
       content: => Tr.datasetSelector.datasetSelectorHelp[@app.language]
       attachmentSelector: '.datasetSelectorGroup'
-      analyticsElement: 'Viz4 dataset help'
+      analyticsEvent: 'Energy Futures (Dataset)'
 
     @mainSelectorHelpPopover = new ControlsHelpPopover @app,
       popoverButtonId: 'mainSelectorHelpButton'
@@ -52,7 +52,7 @@ class Visualization4
       title: Tr.mainSelector.selectOneLabel[@app.language]
       content: => Tr.mainSelector.mainSelectorHelp[@app.language]
       attachmentSelector: '.mainSelectorSection'
-      analyticsElement: 'Viz4 main selection help'
+      analyticsEvent: 'Select One (Main Selection)'
 
     @unitsHelpPopover = new ControlsHelpPopover @app,
       popoverButtonId: 'unitSelectorHelpButton'
@@ -61,7 +61,7 @@ class Visualization4
       title: Tr.unitSelector.unitSelectorHelpTitle[@app.language]
       content: => Tr.unitSelector.unitSelectorHelp[@app.language]
       attachmentSelector: '.unitsSelectorGroup'
-      analyticsElement: 'Viz4 unit help'
+      analyticsEvent: 'Select Unit'
 
     @scenariosHelpPopover = new ControlsHelpPopover @app,
       popoverButtonId: 'scenarioSelectorHelpButton'
@@ -70,7 +70,7 @@ class Visualization4
       title: Tr.scenarioSelector.scenarioSelectorHelpTitle[@app.language]
       content: => Tr.scenarioSelector.scenarioSelectorHelp[@config.dataset][@app.language]
       attachmentSelector: '.scenarioSelectorGroup'
-      analyticsElement: 'Viz4 scenario help'
+      analyticsEvent: 'Select Scenario'
 
     @provincesHelpPopover = new ControlsHelpPopover @app,
       popoverButtonId: 'provinceHelpButton'
@@ -88,7 +88,7 @@ class Visualization4
           """
         contentString
       attachmentSelector: '#provincesSelector'
-      analyticsElement: 'Viz4 region help'
+      analyticsEvent: 'Regions'
       setupEvents: false
 
 

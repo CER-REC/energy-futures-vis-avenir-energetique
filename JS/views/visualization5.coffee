@@ -53,7 +53,7 @@ class Visualization5
       title: Tr.datasetSelector.datasetSelectorHelpTitle[@app.language]
       content: => Tr.datasetSelector.datasetSelectorHelp[@app.language]
       attachmentSelector: '.datasetSelectorGroup'
-      analyticsElement: 'Viz5 dataset help'
+      analyticsEvent: 'Energy Futures (Dataset)'
 
     @sectorsSelectorHelpPopover = new ControlsHelpPopover @app,
       popoverButtonId: 'sectorSelectorHelpButton'
@@ -62,7 +62,7 @@ class Visualization5
       title: Tr.sectorSelector.sectorSelectorHelpTitle[@app.language]
       content: => Tr.sectorSelector.sectorSelectorHelp[@app.language]
       attachmentSelector: '.sectorSelectorGroup'
-      analyticsEvent: 'Viz5 sector help'
+      analyticsEvent: 'Select Sector'
 
     @scenariosHelpPopover = new ControlsHelpPopover @app,
       popoverButtonId: 'scenarioSelectorHelpButton'
@@ -71,7 +71,7 @@ class Visualization5
       title: Tr.scenarioSelector.scenarioSelectorHelpTitle[@app.language]
       content: => Tr.scenarioSelector.scenarioSelectorHelp[@config.dataset][@app.language]
       attachmentSelector: '.scenarioSelectorGroup'
-      analyticsElement: 'Viz5 scenario help'
+      analyticsEvent: 'Select Scenario'
 
     @sourcesHelpPopover = new ControlsHelpPopover @app,
       popoverButtonId: 'sourceHelpButton'
@@ -93,7 +93,7 @@ class Visualization5
         contentString = Tr.sourceSelector.sourceSelectorHelp.generalHelp[@app.language] + contentString
         contentString
       attachmentSelector: '.legendGroup'
-      analyticsElement: 'Viz5 source help'
+      analyticsEvent: 'Sources'
 
     @provincesHelpPopover = new ControlsHelpPopover @app,
       popoverButtonId: 'provinceHelpButton'
@@ -111,7 +111,7 @@ class Visualization5
           """
         contentString
       attachmentSelector: '#leftProvincesSelector'
-      analyticsElement: 'Viz5 region help'
+      analyticsEvent: 'Regions'
       setupEvents: false
 
 

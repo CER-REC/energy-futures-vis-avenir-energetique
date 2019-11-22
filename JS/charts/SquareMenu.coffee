@@ -374,12 +374,12 @@ class SquareMenu
           id: @options.helpButtonId
         .on 'click', =>
           d3.event.stopPropagation()
-          @_showHelpHandler()
+          @_showHelpHandler d3.event
         .on 'keydown', =>
           if d3.event.key == 'Enter' or d3.event.key == ' '
             d3.event.preventDefault()
             d3.event.stopPropagation()
-            @_showHelpHandler()
+            @_showHelpHandler d3.event
 
 
     if @_addAllSquare

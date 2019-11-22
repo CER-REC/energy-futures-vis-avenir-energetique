@@ -50,7 +50,7 @@ class Visualization2 extends visualization
       title: Tr.datasetSelector.datasetSelectorHelpTitle[@app.language]
       content: => Tr.datasetSelector.datasetSelectorHelp[@app.language]
       attachmentSelector: '.datasetSelectorGroup'
-      analyticsEvent: 'Viz2 dataset help'
+      analyticsEvent: 'Energy Futures (Dataset)'
 
     @sectorsSelectorHelpPopover = new ControlsHelpPopover @app,
       popoverButtonId: 'sectorSelectorHelpButton'
@@ -59,7 +59,7 @@ class Visualization2 extends visualization
       title: Tr.sectorSelector.sectorSelectorHelpTitle[@app.language]
       content: => Tr.sectorSelector.sectorSelectorHelp[@app.language]
       attachmentSelector: '.sectorSelectorGroup'
-      analyticsEvent: 'Viz2 sector help'
+      analyticsEvent: 'Select Sector'
 
     @unitsHelpPopover = new ControlsHelpPopover @app,
       popoverButtonId: 'unitSelectorHelpButton'
@@ -68,7 +68,7 @@ class Visualization2 extends visualization
       title: Tr.unitSelector.unitSelectorHelpTitle[@app.language]
       content: => Tr.unitSelector.unitSelectorHelp[@app.language]
       attachmentSelector: '.unitsSelectorGroup'
-      analyticsEvent: 'Viz2 unit help'
+      analyticsEvent: 'Select Unit'
 
     @scenariosHelpPopover = new ControlsHelpPopover @app,
       popoverButtonId: 'scenarioSelectorHelpButton'
@@ -77,7 +77,7 @@ class Visualization2 extends visualization
       title: Tr.scenarioSelector.scenarioSelectorHelpTitle[@app.language]
       content: => Tr.scenarioSelector.scenarioSelectorHelp[@config.dataset][@app.language]
       attachmentSelector: '.scenarioSelectorGroup'
-      analyticsEvent: 'Viz2 scenario help'
+      analyticsEvent: 'Select Scenario'
 
     @sourcesHelpPopover = new ControlsHelpPopover @app,
       popoverButtonId: 'sourceHelpButton'
@@ -97,7 +97,7 @@ class Visualization2 extends visualization
         contentString = Tr.sourceSelector.sourceSelectorHelp.generalHelp[@app.language] + contentString
         contentString
       attachmentSelector: '#powerSourceSelector'
-      analyticsEvent: 'Viz2 source help'
+      analyticsEvent: 'Sources'
       setupEvents: false
 
 
@@ -116,7 +116,7 @@ class Visualization2 extends visualization
           """ + contentString
         contentString
       attachmentSelector: '#provincesSelector'
-      analyticsEvent: 'Viz2 region help'
+      analyticsEvent: 'Regions'
       setupEvents: false
 
 
