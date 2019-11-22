@@ -521,7 +521,12 @@ class Visualization3 extends visualization
         @playPauseStatus = 'paused'
 
     @yearTimeout = window.setTimeout timeoutComplete, 0
-    @app.analyticsReporter.reportEvent 'Electricity Play/Pause', 'Play'
+
+    @app.analyticsReporter.reportedEvent
+      visualizationMode: @app.page
+      action: d3.event.type
+      category: 'Time-Sequence Playback'
+      label: 'Play'
 
 
 
@@ -540,7 +545,12 @@ class Visualization3 extends visualization
              alt='#{Tr.altText.playAnimation[@app.language]}'/>
        """
     if @yearTimeout then window.clearTimeout @yearTimeout
-    @app.analyticsReporter.reportEvent 'Electricity Play/Pause', 'Pause'
+
+    @app.analyticsReporter.reportedEvent
+      visualizationMode: @app.page
+      action: d3.event.type
+      category: 'Time-Sequence Playback'
+      label: 'Pause'
 
 
   # I'm adding them to the left hand side for simplicity, we can move them later

@@ -32,23 +32,43 @@ class LandingPage
       event.stopPropagation()
       @app.popoverManager.showPopover @app.aboutThisProjectPopover,
         elementToFocusOnClose: @aboutHyperlink
-      @app.analyticsReporter.reportEvent 'Information', 'About modal'
+      @app.analyticsReporter.reportedEvent
+        visualizationMode: @app.page
+        action: event.type
+        category: 'Landing Page Body Links'
+        label: 'About'
+
     @aboutHyperlinkEnterHandler = (event) =>
       if event.key == 'Enter' or event.key == ' '
         event.preventDefault()
         event.stopPropagation()
         @app.popoverManager.showPopover @app.aboutThisProjectPopover,
           elementToFocusOnClose: @aboutHyperlink
-        @app.analyticsReporter.reportEvent 'Information', 'About modal'
+        @app.analyticsReporter.reportedEvent
+          visualizationMode: @app.page
+          action: event.type
+          category: 'Landing Page Body Links'
+          label: 'About'
+
     @aboutHyperlink.addEventListener 'click', @aboutHyperlinkClickHandler
     @aboutHyperlink.addEventListener 'keydown', @aboutHyperlinkEnterHandler
 
     @methodologyLink = @app.window.document.getElementById 'landingPageMethodologyHyperlink'
-    @methodologyLinkClickHandler = =>
-      @app.analyticsReporter.reportEvent 'Downloads', 'Methodology PDF download'
+    @methodologyLinkClickHandler = (event) =>
+      @app.analyticsReporter.reportedEvent
+        visualizationMode: @app.page
+        action: event.type
+        category: 'Landing Page Body Links'
+        label: 'Download Methodology'
+
     @methodologyLinkEnterHandler = (event) =>
       if event.key == 'Enter' # Ordinary links are not triggered by space
-        @app.analyticsReporter.reportEvent 'Downloads', 'Methodology PDF download'
+        @app.analyticsReporter.reportedEvent
+          visualizationMode: @app.page
+          action: event.type
+          category: 'Landing Page Body Links'
+          label: 'Download Methodology'
+
     @methodologyLink.addEventListener 'click', @methodologyLinkClickHandler
     @methodologyLink.addEventListener 'keydown', @methodologyLinkEnterHandler
 

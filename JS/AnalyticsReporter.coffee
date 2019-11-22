@@ -17,35 +17,6 @@ class AnalyticsReporter
       console.warn 'Google Tag Manager dataLayer not found.'
 
 
-
-  # TODO: remove me once we're through
-  reportEvent: (eventOptions) ->
-    console.log 'got a reportevent'
-
-  # reportPage: (params) ->
-  #   return unless @dataLayer?
-
-  #   dataObject = {}
-
-  #   for paramName, param of params
-  #     dimensionName = Constants.googleAnalyticsCustomDimensions[paramName]
-  #     dataObject[dimensionName] = param
-
-  #   # We want to track the URL without the long string of URL parameters.
-  #   location = @app.window.document.location
-  #   @dataLayer 'energyFutures.set', 'page', "#{location.protocol}//#{location.host}#{location.pathname}"
-
-  #   @dataLayer 'energyFutures.send', 'pageview', dataObject
-
-  # reportEvent: (category, action) ->
-  #   return unless @dataLayer?
-
-  #   @dataLayer 'energyFutures.send',
-  #     hitType: 'event'
-  #     eventCategory: category
-  #     eventAction: action
-
-
   # options, an object with the following attributes, all strings
   #   visualizationMode: Required, the current visualization page. one of:
   #     landingPage, viz1, viz2, viz3, viz4, viz5

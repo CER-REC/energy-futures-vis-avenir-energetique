@@ -956,7 +956,7 @@ class Visualization5
     # Pause the animation if it is already playing
     if @playPauseStatus == 'playing'
       @sliderPauseButtonCallback()
-      return 
+      return
     @playPauseStatus = 'playing'
 
     # Set the timeline state to replay, and set the comparisonYear
@@ -1016,7 +1016,12 @@ class Visualization5
         @playPauseStatus = 'paused'
 
     @yearTimeout = window.setTimeout timeoutComplete, 0
-    @app.analyticsReporter.reportEvent 'Electricity Play/Pause', 'Play'
+
+    @app.analyticsReporter.reportedEvent
+      visualizationMode: @app.page
+      action: d3.event.type
+      category: 'Time-Sequence Playback'
+      label: 'Play'
 
 
 
@@ -1029,7 +1034,14 @@ class Visualization5
              alt='#{Tr.altText.playAnimation[@app.language]}'/>
        """
     if @yearTimeout then window.clearTimeout @yearTimeout
-    @app.analyticsReporter.reportEvent 'Electricity Play/Pause', 'Pause'
+
+    @app.analyticsReporter.reportedEvent
+      visualizationMode: @app.page
+      action: d3.event.type
+      category: 'Time-Sequence Playback'
+      label: 'Pause'
+
+
 
 ###############
   buildBaseSliderLabel: ->
