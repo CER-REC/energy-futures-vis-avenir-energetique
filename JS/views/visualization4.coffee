@@ -314,6 +314,12 @@ class Visualization4
     newConfig.copy @config
     newConfig.setProvince 'all'
 
+    @app.analyticsReporter.reportedEvent
+      visualizationMode: @app.page
+      action: d3.event.type
+      category: 'Set Region'
+      label: 'all'
+
     update = =>
       @config.setProvince 'all'
       @provinceMenu.data @dataForProvinceMenu()
@@ -329,6 +335,12 @@ class Visualization4
     newConfig = new @config.constructor @app
     newConfig.copy @config
     newConfig.setProvince dataDictionaryItem.key
+
+    @app.analyticsReporter.reportedEvent
+      visualizationMode: @app.page
+      action: d3.event.type
+      category: 'Set Region'
+      label: dataDictionaryItem.key
 
     update = =>
       @config.setProvince dataDictionaryItem.key

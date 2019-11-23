@@ -418,6 +418,12 @@ class Visualization5
     newConfig.copy @config
     newConfig.setLeftProvince 'all'
 
+    @app.analyticsReporter.reportedEvent
+      visualizationMode: @app.page
+      action: d3.event.type
+      category: 'Set Region'
+      label: 'all'
+
     update = =>
       @config.setLeftProvince 'all'
       @leftProvinceMenu.data @dataForProvinceMenu(@config.leftProvince)
@@ -442,6 +448,12 @@ class Visualization5
     newConfig = new @config.constructor @app
     newConfig.copy @config
     newConfig.setLeftProvince dataDictionaryItem.key
+
+    @app.analyticsReporter.reportedEvent
+      visualizationMode: @app.page
+      action: d3.event.type
+      category: 'Set Region'
+      label: dataDictionaryItem.key
 
     update = =>
       @config.setLeftProvince dataDictionaryItem.key
@@ -489,6 +501,12 @@ class Visualization5
     newConfig = new @config.constructor @app
     newConfig.copy @config
     newConfig.setRightProvince dataDictionaryItem.key
+
+    @app.analyticsReporter.reportedEvent
+      visualizationMode: @app.page
+      action: d3.event.type
+      category: 'Set Comparison Region'
+      label: dataDictionaryItem.key
 
     update = =>
       @config.setRightProvince dataDictionaryItem.key
@@ -733,6 +751,12 @@ class Visualization5
           newConfig.copy @config
           newConfig.setDataset d.dataset
 
+          @app.analyticsReporter.reportedEvent
+            visualizationMode: @app.page
+            action: d3.event.type
+            category: 'Set Dataset'
+            label: d.dataset
+
           update = =>
             @config.setDataset d.dataset
             @renderScenariosSelector()
@@ -893,8 +917,8 @@ class Visualization5
         if newX < Constants.viz5timelineMargin then newX = Constants.viz5timelineMargin
         if newX > @timelineRightEnd() then newX = @timelineRightEnd()
 
-        # Clicking on the timeline will cause the closest slider to move to the 
-        # clicked position in the timeline. 
+        # Clicking on the timeline will cause the closest slider to move to the
+        # clicked position in the timeline.
         selectedYear = Math.round @yearScale().invert(newX)
 
         if selectedYear > @config.comparisonYear || Math.abs(selectedYear - @config.comparisonYear) < Math.abs(selectedYear - @config.baseYear)
@@ -1082,6 +1106,11 @@ class Visualization5
       baseYear = Math.round @yearScale().invert newX
       if baseYear != @config.baseYear
         @config.setBaseYear baseYear
+        @app.analyticsReporter.reportedEvent
+          visualizationMode: @app.page
+          action: d3.event.type
+          category: 'Set Base Year'
+          label: baseYear
         @app.router.navigate @config.routerParams()
         @d3document.select('#baseLabelBox').text =>
           @config.baseYear
@@ -1152,6 +1181,12 @@ class Visualization5
     newConfig.copy @config
     newConfig.setBaseYear value
 
+    @app.analyticsReporter.reportedEvent
+      visualizationMode: @app.page
+      action: d3.event.type
+      category: 'Set Base Year'
+      label: value
+
     update = =>
       @config.setBaseYear value
       @d3document.select('#baseSliderLabel').attr
@@ -1207,6 +1242,11 @@ class Visualization5
       comparisonYear = Math.round @yearScale().invert newX
       if comparisonYear != @config.comparisonYear
         @config.setComparisonYear comparisonYear
+        @app.analyticsReporter.reportedEvent
+          visualizationMode: @app.page
+          action: d3.event.type
+          category: 'Set Comparison Year'
+          label: comparisonYear
         @app.router.navigate @config.routerParams()
         @d3document.select('#labelBox').text =>
           @config.comparisonYear
@@ -1284,7 +1324,7 @@ class Visualization5
         if d == Constants.minYear
           if Constants.hideBaseYearLabel.includes @config.baseYear then '' else d
         else if d == Constants.maxYear
-           if Constants.maxYear == @config.comparisonYear then '' else d
+          if Constants.maxYear == @config.comparisonYear then '' else d
         else ''
       .orient 'bottom'
 
@@ -1307,6 +1347,12 @@ class Visualization5
     newConfig = new @config.constructor @app
     newConfig.copy @config
     newConfig.setComparisonYear value
+
+    @app.analyticsReporter.reportedEvent
+      visualizationMode: @app.page
+      action: d3.event.type
+      category: 'Set Comparison Year'
+      label: value
 
     update = =>
       @config.setComparisonYear value
@@ -1652,10 +1698,21 @@ class Visualization5
       @app.popoverManager.showPopover rosePill.popover,
         verticalAnchor: @verticalAnchor rosePill.options.data
         horizontalAnchor: @horizontalAnchor rosePill.options.data
+      @app.analyticsReporter.reportedEvent
+        visualizationMode: @app.page
+        action: d3.event.type
+        category: 'Open Pill Popover'
+        label: rosePill.options.data.source
 
     else
       source = rosePill.options.data.source
       @showDoublePillPopover source
+      @app.analyticsReporter.reportedEvent
+        visualizationMode: @app.page
+        action: d3.event.type
+        category: 'Open Pill Popover'
+        label: rosePill.options.data.source
+
 
 
 

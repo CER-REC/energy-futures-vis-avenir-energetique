@@ -785,10 +785,16 @@ class Visualization2 extends visualization
     @sourceMenu.update()
 
 
-  orderChanged: (newOrder) =>
+  orderChanged: (newOrder, changedSource) =>
     newConfig = new @config.constructor @app
     newConfig.copy @config
     newConfig.setSourcesInOrder newOrder
+
+    @app.analyticsReporter.reportedEvent
+      visualizationMode: @app.page
+      action: d3.event.type
+      category: 'Reorder Source'
+      label: changedSource
 
     update = =>
       @config.setSourcesInOrder newOrder
@@ -808,6 +814,16 @@ class Visualization2 extends visualization
     newConfig = new @config.constructor @app
     newConfig.copy @config
     newConfig.flipSource dataDictionaryItem.key
+
+    if @config.sources.includes dataDictionaryItem.key
+      category = 'Remove Source'
+    else
+      category = 'Add Source'
+    @app.analyticsReporter.reportedEvent
+      visualizationMode: @app.page
+      action: d3.event.type
+      category: category
+      label: dataDictionaryItem.key
 
     update = =>
       @config.flipSource dataDictionaryItem.key
@@ -829,12 +845,24 @@ class Visualization2 extends visualization
     if @config.sources.length == Constants.viz2Sources.length
       # If all sources are present, select none
       newConfig.resetSources false
+      @app.analyticsReporter.reportedEvent
+        visualizationMode: @app.page
+        action: d3.event.type
+        category: 'Remove All Sources'
     else if @config.sources.length > 0
       # If some sources are selected, select all
       newConfig.resetSources true
+      @app.analyticsReporter.reportedEvent
+        visualizationMode: @app.page
+        action: d3.event.type
+        category: 'Add All Sources'
     else if @config.sources.length == 0
       # If no sources are selected, select all
       newConfig.resetSources true
+      @app.analyticsReporter.reportedEvent
+        visualizationMode: @app.page
+        action: d3.event.type
+        category: 'Add All Sources'
 
     update = =>
       if @config.sources.length == Constants.viz2Sources.length
@@ -935,6 +963,12 @@ class Visualization2 extends visualization
     newConfig.copy @config
     newConfig.setProvince 'all'
 
+    @app.analyticsReporter.reportedEvent
+      visualizationMode: @app.page
+      action: d3.event.type
+      category: 'Set Region'
+      label: 'all'
+
     update = =>
       @config.setProvince 'all'
       @_provinceMenu.data @dataForProvinceMenu()
@@ -951,6 +985,12 @@ class Visualization2 extends visualization
     newConfig = new @config.constructor @app
     newConfig.copy @config
     newConfig.setProvince dataDictionaryItem.key
+
+    @app.analyticsReporter.reportedEvent
+      visualizationMode: @app.page
+      action: d3.event.type
+      category: 'Set Region'
+      label: dataDictionaryItem.key
 
     update = =>
       @config.setProvince dataDictionaryItem.key

@@ -308,6 +308,12 @@ class Visualization3 extends visualization
           newConfig.copy @config
           newConfig.setViewBy d.viewByName
 
+          @app.analyticsReporter.reportedEvent
+            visualizationMode: @app.page
+            action: d3.event.type
+            category: 'Set View By'
+            label: d.viewByName
+
           update = =>
             @config.setViewBy d.viewByName
             @buildProvinceVsSourceToggle()
@@ -395,6 +401,11 @@ class Visualization3 extends visualization
       year = Math.round @yearScale().invert newX
       if year != @config.year
         @config.setYear year
+        @app.analyticsReporter.reportedEvent
+          visualizationMode: @app.page
+          action: d3.event.type
+          category: 'Set Year'
+          label: year
         @app.router.navigate @config.routerParams()
         @d3document.select('#labelBox').text =>
           @config.year
@@ -1249,6 +1260,12 @@ class Visualization3 extends visualization
     newConfig = new @config.constructor @app
     newConfig.copy @config
     newConfig.setYear value
+
+    @app.analyticsReporter.reportedEvent
+      visualizationMode: @app.page
+      action: d3.event.type
+      category: 'Set Year'
+      label: value
 
     update = =>
       @config.setYear value
