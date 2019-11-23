@@ -718,6 +718,12 @@ class Visualization4
           newConfig.copy @config
           newConfig.setDataset d.dataset
 
+          @app.analyticsReporter.reportedEvent
+            visualizationMode: @app.page
+            action: d3.event.type
+            category: 'Set Dataset'
+            label: d.dataset
+
           update = =>
             @config.setDataset d.dataset
             @renderScenariosSelector()
@@ -745,6 +751,12 @@ class Visualization4
       newConfig = new @config.constructor @app
       newConfig.copy @config
       newConfig.setMainSelection d.selectorName
+
+      @app.analyticsReporter.reportedEvent
+        visualizationMode: @app.page
+        action: d3.event.type
+        category: 'Set Main Selection'
+        label: d.selectorName
 
       update = =>
         @config.setMainSelection d.selectorName
@@ -812,6 +824,12 @@ class Visualization4
         newConfig.copy @config
         newConfig.setUnit d.unitName
 
+        @app.analyticsReporter.reportedEvent
+          visualizationMode: @app.page
+          action: d3.event.type
+          category: 'Set Unit'
+          label: d.unitName
+
         update = =>
           @config.setUnit d.unitName
           # TODO: For efficiency, only rerender what's necessary.
@@ -855,8 +873,19 @@ class Visualization4
         newConfig.copy @config
         if selected
           newConfig.removeScenario d.scenarioName
+          @app.analyticsReporter.reportedEvent
+            visualizationMode: @app.page
+            action: d3.event.type
+            category: 'Remove Scenario'
+            label: d.scenarioName
         else
           newConfig.addScenario d.scenarioName
+          @app.analyticsReporter.reportedEvent
+            visualizationMode: @app.page
+            action: d3.event.type
+            category: 'Add Scenario'
+            label: d.scenarioName
+
 
         update = =>
           if selected

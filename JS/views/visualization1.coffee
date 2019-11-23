@@ -108,8 +108,6 @@ class Visualization1 extends visualization
 
     @renderBrowserTemplate()
 
-    @addDatasetToggle()
-
     @_margin =
       top: 20
       bottom: 70
@@ -672,12 +670,24 @@ class Visualization1 extends visualization
     if @config.provinces.length == Constants.provinces.length
       # If all provinces are present, select none
       newConfig.resetProvinces false
+      @app.analyticsReporter.reportedEvent
+        visualizationMode: @app.page
+        action: d3.event.type
+        category: 'Remove All Regions'
     else if @config.provinces.length > 0
       # If some provinces are selected, select all
       newConfig.resetProvinces true
+      @app.analyticsReporter.reportedEvent
+        visualizationMode: @app.page
+        action: d3.event.type
+        category: 'Add All Regions'
     else if @config.provinces.length == 0
       # If no provinces are selected, select all
       newConfig.resetProvinces true
+      @app.analyticsReporter.reportedEvent
+        visualizationMode: @app.page
+        action: d3.event.type
+        category: 'Add All Regions'
 
     update = =>
       if @config.provinces.length == Constants.provinces.length
@@ -698,10 +708,16 @@ class Visualization1 extends visualization
 
 
 
-  orderChanged: (newOrder) =>
+  orderChanged: (newOrder, changedProvince) =>
     newConfig = new @config.constructor @app
     newConfig.copy @config
     newConfig.setProvincesInOrder newOrder
+
+    @app.analyticsReporter.reportedEvent
+      visualizationMode: @app.page
+      action: d3.event.type
+      category: 'Reorder Region'
+      label: changedProvince
 
     update = =>
       @config.setProvincesInOrder newOrder
@@ -717,6 +733,16 @@ class Visualization1 extends visualization
     newConfig = new @config.constructor @app
     newConfig.copy @config
     newConfig.flipProvince dataDictionaryItem.key
+
+    if @config.provinces.includes dataDictionaryItem.key
+      category = 'Remove Region'
+    else
+      category = 'Add Region'
+    @app.analyticsReporter.reportedEvent
+      visualizationMode: @app.page
+      action: d3.event.type
+      category: category
+      label: dataDictionaryItem.key
 
     update = =>
       @config.flipProvince dataDictionaryItem.key

@@ -1,7 +1,6 @@
 _ = require 'lodash'
 
 Constants = require '../Constants.coffee'
-Tr = require '../TranslationTable.coffee'
 
 class Visualization4Configuration
   defaultOptions:

@@ -1,6 +1,5 @@
 _ = require 'lodash'
 
-Tr = require '../TranslationTable.coffee'
 Constants = require '../Constants.coffee'
 
 # Note: since this has a 'viewBy' option sometimes we can multi select provinces

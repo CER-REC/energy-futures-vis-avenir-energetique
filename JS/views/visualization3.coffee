@@ -1031,6 +1031,12 @@ class Visualization3 extends visualization
     newConfig.copy @config
     newConfig.setProvince 'all'
 
+    @app.analyticsReporter.reportedEvent
+      visualizationMode: @app.page
+      action: d3.event.type
+      category: 'Set Region'
+      label: 'all'
+
     update = =>
       @config.setProvince 'all'
       @getDataAndRender()
@@ -1045,12 +1051,24 @@ class Visualization3 extends visualization
     if @config.provinces.length == Constants.provinces.length
       # If all provinces are present, select none
       newConfig.resetProvinces false
+      @app.analyticsReporter.reportedEvent
+        visualizationMode: @app.page
+        action: d3.event.type
+        category: 'Remove All Regions'
     else if @config.provinces.length > 0
       # If some provinces are selected, select all
       newConfig.resetProvinces true
+      @app.analyticsReporter.reportedEvent
+        visualizationMode: @app.page
+        action: d3.event.type
+        category: 'Add All Regions'
     else if @config.provinces.length == 0
       # If no provinces are selected, select all
       newConfig.resetProvinces true
+      @app.analyticsReporter.reportedEvent
+        visualizationMode: @app.page
+        action: d3.event.type
+        category: 'Add All Regions'
 
     update = =>
       if @config.provinces.length == Constants.provinces.length
@@ -1074,6 +1092,12 @@ class Visualization3 extends visualization
     newConfig.copy @config
     newConfig.setSource 'total'
 
+    @app.analyticsReporter.reportedEvent
+      visualizationMode: @app.page
+      action: d3.event.type
+      category: 'Set Source'
+      label: 'total'
+
     update = =>
       @config.setSource 'total'
       @getDataAndRender()
@@ -1088,12 +1112,24 @@ class Visualization3 extends visualization
     if @config.sources.length == Constants.viz3Sources.length
       # If all sources are present, select none
       newConfig.resetSources false
+      @app.analyticsReporter.reportedEvent
+        visualizationMode: @app.page
+        action: d3.event.type
+        category: 'Remove All Sources'
     else if @config.sources.length > 0
       # If some sources are selected, select all
       newConfig.resetSources true
+      @app.analyticsReporter.reportedEvent
+        visualizationMode: @app.page
+        action: d3.event.type
+        category: 'Add All Sources'
     else if @config.sources.length == 0
       # If no sources are selected, select all
       newConfig.resetSources true
+      @app.analyticsReporter.reportedEvent
+        visualizationMode: @app.page
+        action: d3.event.type
+        category: 'Add All Sources'
 
     update = =>
       if @config.sources.length == Constants.viz3Sources.length
@@ -1117,6 +1153,12 @@ class Visualization3 extends visualization
     newConfig.copy @config
     newConfig.setProvince dataDictionaryItem.key
 
+    @app.analyticsReporter.reportedEvent
+      visualizationMode: @app.page
+      action: d3.event.type
+      category: 'Set Region'
+      label: dataDictionaryItem.key
+
     update = =>
       @config.setProvince dataDictionaryItem.key
       @getDataAndRender()
@@ -1128,6 +1170,16 @@ class Visualization3 extends visualization
     newConfig = new @config.constructor @app
     newConfig.copy @config
     newConfig.flipProvince dataDictionaryItem.key
+
+    if @config.provinces.includes dataDictionaryItem.key
+      category = 'Remove Region'
+    else
+      category = 'Add Region'
+    @app.analyticsReporter.reportedEvent
+      visualizationMode: @app.page
+      action: d3.event.type
+      category: category
+      label: dataDictionaryItem.key
 
     update = =>
       @config.flipProvince dataDictionaryItem.key
@@ -1142,6 +1194,12 @@ class Visualization3 extends visualization
     newConfig.copy @config
     newConfig.setSource dataDictionaryItem.key
 
+    @app.analyticsReporter.reportedEvent
+      visualizationMode: @app.page
+      action: d3.event.type
+      category: 'Set Source'
+      label: dataDictionaryItem.key
+
     update = =>
       @config.setSource dataDictionaryItem.key
       @getDataAndRender()
@@ -1154,6 +1212,16 @@ class Visualization3 extends visualization
     newConfig = new @config.constructor @app
     newConfig.copy @config
     newConfig.flipSource dataDictionaryItem.key
+
+    if @config.sources.includes dataDictionaryItem.key
+      category = 'Remove Source'
+    else
+      category = 'Add Source'
+    @app.analyticsReporter.reportedEvent
+      visualizationMode: @app.page
+      action: d3.event.type
+      category: category
+      label: dataDictionaryItem.key
 
     update = =>
       @config.flipSource dataDictionaryItem.key

@@ -124,6 +124,12 @@ class Visualization
           newConfig.setDataset d.dataset
           newConfig.setScenario @config.scenario
 
+          @app.analyticsReporter.reportedEvent
+            visualizationMode: @app.page
+            action: d3.event.type
+            category: 'Set Dataset'
+            label: d.dataset
+
           update = =>
             @config.setDataset d.dataset
 
@@ -173,6 +179,12 @@ class Visualization
           newConfig.copy @config
           newConfig.setUnit d.unitName
 
+          @app.analyticsReporter.reportedEvent
+            visualizationMode: @app.page
+            action: d3.event.type
+            category: 'Set Unit'
+            label: d.unitName
+
           update = =>
             @config.setUnit d.unitName
             # TODO: For efficiency, only rerender what's necessary.
@@ -213,6 +225,12 @@ class Visualization
           newConfig.copy @config
           newConfig.setScenario d.scenarioName
 
+          @app.analyticsReporter.reportedEvent
+            visualizationMode: @app.page
+            action: d3.event.type
+            category: 'Set Scenario'
+            label: d.scenarioName
+
           update = =>
             @config.setScenario d.scenarioName
             # TODO: For efficiency, only rerender what's necessary.
@@ -242,6 +260,12 @@ class Visualization
       newConfig = new @config.constructor @app
       newConfig.copy @config
       newConfig.setSector d.sectorName
+
+      @app.analyticsReporter.reportedEvent
+        visualizationMode: @app.page
+        action: d3.event.type
+        category: 'Set Sector'
+        label: d.sectorName
 
       update = =>
         @config.setSector d.sectorName
@@ -297,6 +321,12 @@ class Visualization
       newConfig = new @config.constructor @app
       newConfig.copy @config
       newConfig.setMainSelection d.selectorName
+
+      @app.analyticsReporter.reportedEvent
+        visualizationMode: @app.page
+        action: d3.event.type
+        category: 'Set Main Selection'
+        label: d.selectorName
 
       update = =>
         @config.setMainSelection d.selectorName

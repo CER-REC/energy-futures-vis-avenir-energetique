@@ -662,6 +662,12 @@ class Visualization5
       newConfig.copy @config
       newConfig.setSector d.sectorName
 
+      @app.analyticsReporter.reportedEvent
+        visualizationMode: @app.page
+        action: d3.event.type
+        category: 'Set Sector'
+        label: d.sectorName
+
       update = =>
         @config.setSector d.sectorName
         @addSectors()
@@ -765,6 +771,12 @@ class Visualization5
         newConfig = new @config.constructor @app
         newConfig.copy @config
         newConfig.setScenario d.scenarioName
+
+        @app.analyticsReporter.reportedEvent
+          visualizationMode: @app.page
+          action: d3.event.type
+          category: 'Set Scenario'
+          label: d.scenarioName
 
         update = =>
           @config.setScenario d.scenarioName
