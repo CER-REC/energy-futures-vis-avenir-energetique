@@ -200,6 +200,9 @@ module.exports =
       oct2018:
         en: 'October 2018. EF 2018 explores how possible energy futures might unfold for Canadians over the long term. It considers four scenarios that explore how future commodity prices and technological development might impact Canada’s energy system. '
         fr: 'Octobre 2018. Le rapport de 2018 examine comment divers scénarios possibles d’avenir énergétique pourraient se dérouler à long terme pour les Canadiens. Il porte sur quatre scénarios montrant comment les politiques climatiques futures et le développement technologique pourraient influer sur la filière énergétique du Canada.'
+      nov2019:
+        en: 'TODO'
+        fr: 'TODO'
 
     mainSelector:
       totalDemandButton:
@@ -522,6 +525,9 @@ module.exports =
     oct2018Button:
       en: '2018'
       fr: '2018'
+    nov2019Button:
+      en: '2019'
+      fr: '2019'
     datasetSelectorHelpTitle:
       en: 'ENERGY FUTURES'
       fr: 'AVENIR ÉNERGÉTIQUE'
@@ -965,6 +971,9 @@ module.exports =
             </p>
           </div>
         """
+      nov2019:
+        en: 'TODO'
+        fr: 'TODO'
 
     names:
       reference:
@@ -1320,6 +1329,9 @@ module.exports =
       oct2018:
         en: '2018'
         fr: '2018'
+      nov2019:
+        en: '2019'
+        fr: '2019'
     sector:
       sector:
         en: 'sector'
@@ -1909,6 +1921,9 @@ module.exports =
       oct2018Selected:
         en: '2018 selected'
         fr: 'Sélection - 2018'
+      nov2019Selected:
+        en: '2019 selected'
+        fr: 'Sélection - 2019'
 
       jan2016Unselected:
         en: '2016 unselected'
@@ -1922,6 +1937,9 @@ module.exports =
       oct2018Unselected:
         en: '2018 unselected'
         fr: 'Désélection - 2018'
+      nov2019Unselected:
+        en: '2019 unselected'
+        fr: 'Désélection - 2019'
 
     scenario:
       referenceSelected:
