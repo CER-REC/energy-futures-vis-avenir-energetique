@@ -31,6 +31,12 @@ DatasetFiles =
     electricityGeneration: path.join ApplicationRoot, csvDir, '2018_ElectricityGeneration_2019_10_28.csv'
     gasProduction: path.join ApplicationRoot, csvDir, '2018-10-16_NaturalGasProduction.csv'
 
+  nov2019:
+    energyDemand: path.join ApplicationRoot, csvDir, '2019-11-08_EnergyDemand.csv'
+    oilProduction: path.join ApplicationRoot, csvDir, '2019-11-08_CrudeOilProduction.csv'
+    electricityGeneration: path.join ApplicationRoot, csvDir, '2019-11-08_ElectricityGeneration.csv'
+    gasProduction: path.join ApplicationRoot, csvDir, '2019-11-08_NaturalGasProduction.csv'
+
 
 
 module.exports = DatasetFiles
