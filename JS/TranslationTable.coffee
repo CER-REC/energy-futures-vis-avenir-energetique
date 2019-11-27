@@ -14,7 +14,7 @@ module.exports =
       Based on data from our Energy Futures reports, this interactive tool allows you to explore energy production and consumption trends and forecast them into the future. You can explore the data from the most recent report, or refer to previous reports.
       </p>
       <p>
-      <a href='PDF/Methodology_ENG.PDF' id="landingPageMethodologyHyperlink" target="_blank">Methodology</a>
+      <a href='PDF/CER_Energy_Futures_Methodology_ENG.PDF' id="landingPageMethodologyHyperlink" target="_blank">Methodology</a>
       <br>
       <a href='#' id="aboutHyperlink">About</a>
       </p>
@@ -31,7 +31,7 @@ module.exports =
           Vous avez le loisir de vous en tenir au rapport le plus récent ou d’aller voir ce que disaient de précédents rapports.
         </p>
         <p>
-        <a href='PDF/Methodology_FRA.PDF' id="landingPageMethodologyHyperlink" target="_blank">Méthodologie</a>
+        <a href="PDF/REC_Explorer_l'avenir_énergétique_méthodologie_FRA.PDF" id="landingPageMethodologyHyperlink" target="_blank">Méthodologie</a>
         <br>
         <a href='#' id="aboutHyperlink">À propos de l’outil</a>
         </p>
@@ -69,8 +69,8 @@ module.exports =
       en: 'METHODOLOGY'
       fr: 'MÉTHODOLOGIE'
     methodologyLinkUrl:
-      en: 'PDF/Methodology_ENG.PDF'
-      fr: 'PDF/Methodology_FRA.PDF'
+      en: 'PDF/CER_Energy_Futures_Methodology_ENG.PDF'
+      fr: "PDF/REC_Explorer_l'avenir_énergétique_méthodologie_FRA.PDF"
     visualization1NavbarLink:
       en: 'BY REGION'
       fr: 'PAR RÉGION'
