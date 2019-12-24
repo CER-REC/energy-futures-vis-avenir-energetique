@@ -314,7 +314,7 @@ class Visualization4
     newConfig.copy @config
     newConfig.setProvince 'all'
 
-    @app.analyticsReporter.reportedEvent
+    @app.analyticsReporter.reportEvent
       visualizationMode: @app.page
       action: d3.event.type
       category: 'Set Region'
@@ -336,7 +336,7 @@ class Visualization4
     newConfig.copy @config
     newConfig.setProvince dataDictionaryItem.key
 
-    @app.analyticsReporter.reportedEvent
+    @app.analyticsReporter.reportEvent
       visualizationMode: @app.page
       action: d3.event.type
       category: 'Set Region'
@@ -730,7 +730,7 @@ class Visualization4
           newConfig.copy @config
           newConfig.setDataset d.dataset
 
-          @app.analyticsReporter.reportedEvent
+          @app.analyticsReporter.reportEvent
             visualizationMode: @app.page
             action: d3.event.type
             category: 'Set Dataset'
@@ -764,7 +764,7 @@ class Visualization4
       newConfig.copy @config
       newConfig.setMainSelection d.selectorName
 
-      @app.analyticsReporter.reportedEvent
+      @app.analyticsReporter.reportEvent
         visualizationMode: @app.page
         action: d3.event.type
         category: 'Set Main Selection'
@@ -836,7 +836,7 @@ class Visualization4
         newConfig.copy @config
         newConfig.setUnit d.unitName
 
-        @app.analyticsReporter.reportedEvent
+        @app.analyticsReporter.reportEvent
           visualizationMode: @app.page
           action: d3.event.type
           category: 'Set Unit'
@@ -885,14 +885,14 @@ class Visualization4
         newConfig.copy @config
         if selected
           newConfig.removeScenario d.scenarioName
-          @app.analyticsReporter.reportedEvent
+          @app.analyticsReporter.reportEvent
             visualizationMode: @app.page
             action: d3.event.type
             category: 'Remove Scenario'
             label: d.scenarioName
         else
           newConfig.addScenario d.scenarioName
-          @app.analyticsReporter.reportedEvent
+          @app.analyticsReporter.reportEvent
             visualizationMode: @app.page
             action: d3.event.type
             category: 'Add Scenario'

@@ -418,7 +418,7 @@ class Visualization5
     newConfig.copy @config
     newConfig.setLeftProvince 'all'
 
-    @app.analyticsReporter.reportedEvent
+    @app.analyticsReporter.reportEvent
       visualizationMode: @app.page
       action: d3.event.type
       category: 'Set Region'
@@ -449,7 +449,7 @@ class Visualization5
     newConfig.copy @config
     newConfig.setLeftProvince dataDictionaryItem.key
 
-    @app.analyticsReporter.reportedEvent
+    @app.analyticsReporter.reportEvent
       visualizationMode: @app.page
       action: d3.event.type
       category: 'Set Region'
@@ -502,7 +502,7 @@ class Visualization5
     newConfig.copy @config
     newConfig.setRightProvince dataDictionaryItem.key
 
-    @app.analyticsReporter.reportedEvent
+    @app.analyticsReporter.reportEvent
       visualizationMode: @app.page
       action: d3.event.type
       category: 'Set Comparison Region'
@@ -680,7 +680,7 @@ class Visualization5
       newConfig.copy @config
       newConfig.setSector d.sectorName
 
-      @app.analyticsReporter.reportedEvent
+      @app.analyticsReporter.reportEvent
         visualizationMode: @app.page
         action: d3.event.type
         category: 'Set Sector'
@@ -751,7 +751,7 @@ class Visualization5
           newConfig.copy @config
           newConfig.setDataset d.dataset
 
-          @app.analyticsReporter.reportedEvent
+          @app.analyticsReporter.reportEvent
             visualizationMode: @app.page
             action: d3.event.type
             category: 'Set Dataset'
@@ -796,7 +796,7 @@ class Visualization5
         newConfig.copy @config
         newConfig.setScenario d.scenarioName
 
-        @app.analyticsReporter.reportedEvent
+        @app.analyticsReporter.reportEvent
           visualizationMode: @app.page
           action: d3.event.type
           category: 'Set Scenario'
@@ -1053,7 +1053,7 @@ class Visualization5
 
     @yearTimeout = window.setTimeout timeoutComplete, 0
 
-    @app.analyticsReporter.reportedEvent
+    @app.analyticsReporter.reportEvent
       visualizationMode: @app.page
       action: d3.event.type
       category: 'Time-Sequence Playback'
@@ -1071,7 +1071,7 @@ class Visualization5
        """
     if @yearTimeout then window.clearTimeout @yearTimeout
 
-    @app.analyticsReporter.reportedEvent
+    @app.analyticsReporter.reportEvent
       visualizationMode: @app.page
       action: d3.event.type
       category: 'Time-Sequence Playback'
@@ -1106,7 +1106,7 @@ class Visualization5
       baseYear = Math.round @yearScale().invert newX
       if baseYear != @config.baseYear
         @config.setBaseYear baseYear
-        @app.analyticsReporter.reportedEvent
+        @app.analyticsReporter.reportEvent
           visualizationMode: @app.page
           action: d3.event.type
           category: 'Set Base Year'
@@ -1181,7 +1181,7 @@ class Visualization5
     newConfig.copy @config
     newConfig.setBaseYear value
 
-    @app.analyticsReporter.reportedEvent
+    @app.analyticsReporter.reportEvent
       visualizationMode: @app.page
       action: d3.event.type
       category: 'Set Base Year'
@@ -1242,7 +1242,7 @@ class Visualization5
       comparisonYear = Math.round @yearScale().invert newX
       if comparisonYear != @config.comparisonYear
         @config.setComparisonYear comparisonYear
-        @app.analyticsReporter.reportedEvent
+        @app.analyticsReporter.reportEvent
           visualizationMode: @app.page
           action: d3.event.type
           category: 'Set Comparison Year'
@@ -1348,7 +1348,7 @@ class Visualization5
     newConfig.copy @config
     newConfig.setComparisonYear value
 
-    @app.analyticsReporter.reportedEvent
+    @app.analyticsReporter.reportEvent
       visualizationMode: @app.page
       action: d3.event.type
       category: 'Set Comparison Year'
@@ -1698,7 +1698,7 @@ class Visualization5
       @app.popoverManager.showPopover rosePill.popover,
         verticalAnchor: @verticalAnchor rosePill.options.data
         horizontalAnchor: @horizontalAnchor rosePill.options.data
-      @app.analyticsReporter.reportedEvent
+      @app.analyticsReporter.reportEvent
         visualizationMode: @app.page
         action: d3.event.type
         category: 'Open Pill Popover'
@@ -1707,7 +1707,7 @@ class Visualization5
     else
       source = rosePill.options.data.source
       @showDoublePillPopover source
-      @app.analyticsReporter.reportedEvent
+      @app.analyticsReporter.reportEvent
         visualizationMode: @app.page
         action: d3.event.type
         category: 'Open Pill Popover'

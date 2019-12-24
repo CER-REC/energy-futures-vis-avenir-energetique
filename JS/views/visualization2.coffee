@@ -790,7 +790,7 @@ class Visualization2 extends visualization
     newConfig.copy @config
     newConfig.setSourcesInOrder newOrder
 
-    @app.analyticsReporter.reportedEvent
+    @app.analyticsReporter.reportEvent
       visualizationMode: @app.page
       action: d3.event.type
       category: 'Reorder Source'
@@ -819,7 +819,7 @@ class Visualization2 extends visualization
       category = 'Remove Source'
     else
       category = 'Add Source'
-    @app.analyticsReporter.reportedEvent
+    @app.analyticsReporter.reportEvent
       visualizationMode: @app.page
       action: d3.event.type
       category: category
@@ -845,21 +845,21 @@ class Visualization2 extends visualization
     if @config.sources.length == Constants.viz2Sources.length
       # If all sources are present, select none
       newConfig.resetSources false
-      @app.analyticsReporter.reportedEvent
+      @app.analyticsReporter.reportEvent
         visualizationMode: @app.page
         action: d3.event.type
         category: 'Remove All Sources'
     else if @config.sources.length > 0
       # If some sources are selected, select all
       newConfig.resetSources true
-      @app.analyticsReporter.reportedEvent
+      @app.analyticsReporter.reportEvent
         visualizationMode: @app.page
         action: d3.event.type
         category: 'Add All Sources'
     else if @config.sources.length == 0
       # If no sources are selected, select all
       newConfig.resetSources true
-      @app.analyticsReporter.reportedEvent
+      @app.analyticsReporter.reportEvent
         visualizationMode: @app.page
         action: d3.event.type
         category: 'Add All Sources'
@@ -963,7 +963,7 @@ class Visualization2 extends visualization
     newConfig.copy @config
     newConfig.setProvince 'all'
 
-    @app.analyticsReporter.reportedEvent
+    @app.analyticsReporter.reportEvent
       visualizationMode: @app.page
       action: d3.event.type
       category: 'Set Region'
@@ -986,7 +986,7 @@ class Visualization2 extends visualization
     newConfig.copy @config
     newConfig.setProvince dataDictionaryItem.key
 
-    @app.analyticsReporter.reportedEvent
+    @app.analyticsReporter.reportEvent
       visualizationMode: @app.page
       action: d3.event.type
       category: 'Set Region'

@@ -308,7 +308,7 @@ class Visualization3 extends visualization
           newConfig.copy @config
           newConfig.setViewBy d.viewByName
 
-          @app.analyticsReporter.reportedEvent
+          @app.analyticsReporter.reportEvent
             visualizationMode: @app.page
             action: d3.event.type
             category: 'Set View By'
@@ -401,7 +401,7 @@ class Visualization3 extends visualization
       year = Math.round @yearScale().invert newX
       if year != @config.year
         @config.setYear year
-        @app.analyticsReporter.reportedEvent
+        @app.analyticsReporter.reportEvent
           visualizationMode: @app.page
           action: d3.event.type
           category: 'Set Year'
@@ -533,7 +533,7 @@ class Visualization3 extends visualization
 
     @yearTimeout = window.setTimeout timeoutComplete, 0
 
-    @app.analyticsReporter.reportedEvent
+    @app.analyticsReporter.reportEvent
       visualizationMode: @app.page
       action: d3.event.type
       category: 'Time-Sequence Playback'
@@ -557,7 +557,7 @@ class Visualization3 extends visualization
        """
     if @yearTimeout then window.clearTimeout @yearTimeout
 
-    @app.analyticsReporter.reportedEvent
+    @app.analyticsReporter.reportEvent
       visualizationMode: @app.page
       action: d3.event.type
       category: 'Time-Sequence Playback'
@@ -1042,7 +1042,7 @@ class Visualization3 extends visualization
     newConfig.copy @config
     newConfig.setProvince 'all'
 
-    @app.analyticsReporter.reportedEvent
+    @app.analyticsReporter.reportEvent
       visualizationMode: @app.page
       action: d3.event.type
       category: 'Set Region'
@@ -1062,21 +1062,21 @@ class Visualization3 extends visualization
     if @config.provinces.length == Constants.provinces.length
       # If all provinces are present, select none
       newConfig.resetProvinces false
-      @app.analyticsReporter.reportedEvent
+      @app.analyticsReporter.reportEvent
         visualizationMode: @app.page
         action: d3.event.type
         category: 'Remove All Regions'
     else if @config.provinces.length > 0
       # If some provinces are selected, select all
       newConfig.resetProvinces true
-      @app.analyticsReporter.reportedEvent
+      @app.analyticsReporter.reportEvent
         visualizationMode: @app.page
         action: d3.event.type
         category: 'Add All Regions'
     else if @config.provinces.length == 0
       # If no provinces are selected, select all
       newConfig.resetProvinces true
-      @app.analyticsReporter.reportedEvent
+      @app.analyticsReporter.reportEvent
         visualizationMode: @app.page
         action: d3.event.type
         category: 'Add All Regions'
@@ -1103,7 +1103,7 @@ class Visualization3 extends visualization
     newConfig.copy @config
     newConfig.setSource 'total'
 
-    @app.analyticsReporter.reportedEvent
+    @app.analyticsReporter.reportEvent
       visualizationMode: @app.page
       action: d3.event.type
       category: 'Set Source'
@@ -1123,21 +1123,21 @@ class Visualization3 extends visualization
     if @config.sources.length == Constants.viz3Sources.length
       # If all sources are present, select none
       newConfig.resetSources false
-      @app.analyticsReporter.reportedEvent
+      @app.analyticsReporter.reportEvent
         visualizationMode: @app.page
         action: d3.event.type
         category: 'Remove All Sources'
     else if @config.sources.length > 0
       # If some sources are selected, select all
       newConfig.resetSources true
-      @app.analyticsReporter.reportedEvent
+      @app.analyticsReporter.reportEvent
         visualizationMode: @app.page
         action: d3.event.type
         category: 'Add All Sources'
     else if @config.sources.length == 0
       # If no sources are selected, select all
       newConfig.resetSources true
-      @app.analyticsReporter.reportedEvent
+      @app.analyticsReporter.reportEvent
         visualizationMode: @app.page
         action: d3.event.type
         category: 'Add All Sources'
@@ -1164,7 +1164,7 @@ class Visualization3 extends visualization
     newConfig.copy @config
     newConfig.setProvince dataDictionaryItem.key
 
-    @app.analyticsReporter.reportedEvent
+    @app.analyticsReporter.reportEvent
       visualizationMode: @app.page
       action: d3.event.type
       category: 'Set Region'
@@ -1186,7 +1186,7 @@ class Visualization3 extends visualization
       category = 'Remove Region'
     else
       category = 'Add Region'
-    @app.analyticsReporter.reportedEvent
+    @app.analyticsReporter.reportEvent
       visualizationMode: @app.page
       action: d3.event.type
       category: category
@@ -1205,7 +1205,7 @@ class Visualization3 extends visualization
     newConfig.copy @config
     newConfig.setSource dataDictionaryItem.key
 
-    @app.analyticsReporter.reportedEvent
+    @app.analyticsReporter.reportEvent
       visualizationMode: @app.page
       action: d3.event.type
       category: 'Set Source'
@@ -1228,7 +1228,7 @@ class Visualization3 extends visualization
       category = 'Remove Source'
     else
       category = 'Add Source'
-    @app.analyticsReporter.reportedEvent
+    @app.analyticsReporter.reportEvent
       visualizationMode: @app.page
       action: d3.event.type
       category: category
@@ -1261,7 +1261,7 @@ class Visualization3 extends visualization
     newConfig.copy @config
     newConfig.setYear value
 
-    @app.analyticsReporter.reportedEvent
+    @app.analyticsReporter.reportEvent
       visualizationMode: @app.page
       action: d3.event.type
       category: 'Set Year'

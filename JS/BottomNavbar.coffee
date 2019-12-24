@@ -78,21 +78,21 @@ class BottomNavbar
     @app.popoverManager.showPopover @app.aboutThisProjectPopover,
       elementToFocusOnClose: @app.window.document.getElementById('aboutLinkAnchor')
 
-    @app.analyticsReporter.reportedEvent
+    @app.analyticsReporter.reportEvent
       visualizationMode: @app.page
       action: d3.event.type
       category: 'Bottom Navbar'
       label: 'About'
 
   methodologyClickHandler: =>
-    @app.analyticsReporter.reportedEvent
+    @app.analyticsReporter.reportEvent
       visualizationMode: @app.page
       action: d3.event.type
       category: 'Bottom Navbar'
       label: 'Download Methodology'
 
   dataDownloadClickHandler: =>
-    @app.analyticsReporter.reportedEvent
+    @app.analyticsReporter.reportEvent
       visualizationMode: @app.page
       action: d3.event.type
       category: 'Bottom Navbar'
@@ -102,7 +102,7 @@ class BottomNavbar
     d3.event.preventDefault()
     ShortLinkBitly @app, (url) =>
       @app.window.open "https://twitter.com/intent/tweet?url=#{url}", 'targetWindow', 'width=650,height=650'
-    @app.analyticsReporter.reportedEvent
+    @app.analyticsReporter.reportEvent
       visualizationMode: @app.page
       action: d3.event.type
       category: 'Bottom Navbar'
@@ -112,7 +112,7 @@ class BottomNavbar
     d3.event.preventDefault()
     ShortLinkBitly @app, (url) =>
       @app.window.open "https://www.linkedin.com/shareArticle?mini=true&url=#{url}&summary=#{url}", 'targetWindow', 'width=650,height=650'
-    @app.analyticsReporter.reportedEvent
+    @app.analyticsReporter.reportEvent
       visualizationMode: @app.page
       action: d3.event.type
       category: 'Bottom Navbar'
@@ -130,7 +130,7 @@ class BottomNavbar
 
       @app.window.location.href = emailUrl
 
-    @app.analyticsReporter.reportedEvent
+    @app.analyticsReporter.reportEvent
       visualizationMode: @app.page
       action: d3.event.type
       category: 'Bottom Navbar'

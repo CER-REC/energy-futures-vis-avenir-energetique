@@ -32,7 +32,7 @@ class LandingPage
       event.stopPropagation()
       @app.popoverManager.showPopover @app.aboutThisProjectPopover,
         elementToFocusOnClose: @aboutHyperlink
-      @app.analyticsReporter.reportedEvent
+      @app.analyticsReporter.reportEvent
         visualizationMode: @app.page
         action: event.type
         category: 'Landing Page Body Links'
@@ -44,7 +44,7 @@ class LandingPage
         event.stopPropagation()
         @app.popoverManager.showPopover @app.aboutThisProjectPopover,
           elementToFocusOnClose: @aboutHyperlink
-        @app.analyticsReporter.reportedEvent
+        @app.analyticsReporter.reportEvent
           visualizationMode: @app.page
           action: event.type
           category: 'Landing Page Body Links'
@@ -55,7 +55,7 @@ class LandingPage
 
     @methodologyLink = @app.window.document.getElementById 'landingPageMethodologyHyperlink'
     @methodologyLinkClickHandler = (event) =>
-      @app.analyticsReporter.reportedEvent
+      @app.analyticsReporter.reportEvent
         visualizationMode: @app.page
         action: event.type
         category: 'Landing Page Body Links'
@@ -63,7 +63,7 @@ class LandingPage
 
     @methodologyLinkEnterHandler = (event) =>
       if event.key == 'Enter' # Ordinary links are not triggered by space
-        @app.analyticsReporter.reportedEvent
+        @app.analyticsReporter.reportEvent
           visualizationMode: @app.page
           action: event.type
           category: 'Landing Page Body Links'

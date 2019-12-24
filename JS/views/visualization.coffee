@@ -124,7 +124,7 @@ class Visualization
           newConfig.setDataset d.dataset
           newConfig.setScenario @config.scenario
 
-          @app.analyticsReporter.reportedEvent
+          @app.analyticsReporter.reportEvent
             visualizationMode: @app.page
             action: d3.event.type
             category: 'Set Dataset'
@@ -179,7 +179,7 @@ class Visualization
           newConfig.copy @config
           newConfig.setUnit d.unitName
 
-          @app.analyticsReporter.reportedEvent
+          @app.analyticsReporter.reportEvent
             visualizationMode: @app.page
             action: d3.event.type
             category: 'Set Unit'
@@ -225,7 +225,7 @@ class Visualization
           newConfig.copy @config
           newConfig.setScenario d.scenarioName
 
-          @app.analyticsReporter.reportedEvent
+          @app.analyticsReporter.reportEvent
             visualizationMode: @app.page
             action: d3.event.type
             category: 'Set Scenario'
@@ -261,7 +261,7 @@ class Visualization
       newConfig.copy @config
       newConfig.setSector d.sectorName
 
-      @app.analyticsReporter.reportedEvent
+      @app.analyticsReporter.reportEvent
         visualizationMode: @app.page
         action: d3.event.type
         category: 'Set Sector'
@@ -322,7 +322,7 @@ class Visualization
       newConfig.copy @config
       newConfig.setMainSelection d.selectorName
 
-      @app.analyticsReporter.reportedEvent
+      @app.analyticsReporter.reportEvent
         visualizationMode: @app.page
         action: d3.event.type
         category: 'Set Main Selection'

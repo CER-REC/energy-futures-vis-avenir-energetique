@@ -670,21 +670,21 @@ class Visualization1 extends visualization
     if @config.provinces.length == Constants.provinces.length
       # If all provinces are present, select none
       newConfig.resetProvinces false
-      @app.analyticsReporter.reportedEvent
+      @app.analyticsReporter.reportEvent
         visualizationMode: @app.page
         action: d3.event.type
         category: 'Remove All Regions'
     else if @config.provinces.length > 0
       # If some provinces are selected, select all
       newConfig.resetProvinces true
-      @app.analyticsReporter.reportedEvent
+      @app.analyticsReporter.reportEvent
         visualizationMode: @app.page
         action: d3.event.type
         category: 'Add All Regions'
     else if @config.provinces.length == 0
       # If no provinces are selected, select all
       newConfig.resetProvinces true
-      @app.analyticsReporter.reportedEvent
+      @app.analyticsReporter.reportEvent
         visualizationMode: @app.page
         action: d3.event.type
         category: 'Add All Regions'
@@ -713,7 +713,7 @@ class Visualization1 extends visualization
     newConfig.copy @config
     newConfig.setProvincesInOrder newOrder
 
-    @app.analyticsReporter.reportedEvent
+    @app.analyticsReporter.reportEvent
       visualizationMode: @app.page
       action: d3.event.type
       category: 'Reorder Region'
@@ -738,7 +738,7 @@ class Visualization1 extends visualization
       category = 'Remove Region'
     else
       category = 'Add Region'
-    @app.analyticsReporter.reportedEvent
+    @app.analyticsReporter.reportEvent
       visualizationMode: @app.page
       action: d3.event.type
       category: category

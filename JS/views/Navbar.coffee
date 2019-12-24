@@ -256,7 +256,7 @@ class Navbar
           navbarHelpImageSelected: d.navbarHelpImageSelected
           helpPopoverHeaderClass: d.helpPopoverHeaderClass
           elementToFocusOnClose: @app.window.document.querySelector('.navbarHelpIcon')
-        @app.analyticsReporter.reportedEvent
+        @app.analyticsReporter.reportEvent
           visualizationMode: @app.page
           action: d3.event.type
           category: 'Top Navbar'
@@ -280,7 +280,7 @@ class Navbar
           infoPopoverHeader: d.infoPopoverHeader
           infoPopoverHeaderClass: d.helpPopoverHeaderClass
           elementToFocusOnClose: @app.window.document.querySelector('.navbarMenuIcon')
-        @app.analyticsReporter.reportedEvent
+        @app.analyticsReporter.reportEvent
           visualizationMode: @app.page
           action: d3.event.type
           category: 'Top Navbar'

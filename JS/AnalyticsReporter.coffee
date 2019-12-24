@@ -28,10 +28,7 @@ class AnalyticsReporter
   # For details about the possible category/action values, see the drive spreadsheet:
   # Energy Futures Analytics Events
 
-  # TODO: rename me to reportEvent once done, using this as a tool to help grep for
-  # reportEvent calls not upgraded yet.
-
-  reportedEvent: (options) ->
+  reportEvent: (options) ->
     return unless @dataLayer?
     unless options.label?
       options.label = ''

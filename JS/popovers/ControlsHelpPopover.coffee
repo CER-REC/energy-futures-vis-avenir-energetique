@@ -47,7 +47,7 @@ class ControlsHelpPopover
     else
       @app.popoverManager.showPopover @,
         elementToFocusOnClose: @document.getElementById @options.popoverButtonId
-      @app.analyticsReporter.reportedEvent
+      @app.analyticsReporter.reportEvent
         visualizationMode: @app.page
         action: event.type
         category: 'Help Popovers'
