@@ -2,7 +2,7 @@
 
 module.exports =
 
-  appHost: 'https://apps2.neb-one.gc.ca/dvs'
+  appHost: 'https://apps2.cer-rec.gc.ca/dvs'
 
   mainSelections: [
     'energyDemand'
@@ -21,6 +21,7 @@ module.exports =
     'Quebec': 'QC'
     'New Brunswick': 'NB'
     'Nova Scotia': 'NS'
+    'Newfoundland': 'NL'
     'Newfoundland and Labrador': 'NL'
     'Prince Edward Island': 'PE'
     'Yukon': 'YT'
@@ -31,6 +32,7 @@ module.exports =
     'Northwest Territories ': 'NT'
     'Nunavut': 'NU'
     'Canada': 'all'
+    'CN': 'all'
 
     'AB': 'AB'
     'BC': 'BC'
@@ -49,6 +51,21 @@ module.exports =
     'YT': 'YT'
     'YK': 'YT' # yes really.
 
+    'cn': 'all'
+    'ab': 'AB'
+    'bc': 'BC'
+    'mb': 'MB'
+    'nb': 'NB'
+    'nl': 'NL'
+    'ns': 'NS'
+    'nt': 'NT'
+    'nu': 'NU'
+    'on': 'ON'
+    'pe': 'PE'
+    'qc': 'QC'
+    'sk': 'SK'
+    'yt': 'YT'
+
 
   csvSourceToSourceNameMapping:
     'Hydro': 'hydro'
@@ -57,12 +74,15 @@ module.exports =
     'Natural Gas': 'naturalGas'
     'Biofuels/Biomass' : 'bio'
     'Biomass and Biofuels' : 'bio' # In some CSVs
+    'Biofuels & Emerging Energy' : 'bio' # In some CSVs
     'Nuclear': 'nuclear'
     'Oil Products' : 'oilProducts'
     'Crude Oil' : 'crudeOil'
     'Electricity' : 'electricity'
+    # NB: The total column is labeled differently in certain CSVs
+    'Total' : 'total'
     'Total Generation' : 'total'
-    'Total' : 'total' # NB: The total column is labeled differently in certain CSVs
+    'Total End-Use' : 'total'
 
 
   sources: [
@@ -106,16 +126,17 @@ module.exports =
     # 'oct2016'
     'oct2017'
     'oct2018'
+    'nov2019'
   ]
 
 
   ###
   NB: regarding forecast from year: the forecast year in the constants is inclusive of when the forecast begins. E.g. for the 2016 report data, the last year of historical data is 2014, the first year of forecast data is 2015.
-  
+
   However, the decision has been made that the line on viz2 and viz4 indicating the beginning of the forecast should land on the last year of historical data, not the first year of forecast data. It's a matter of interpretation which of these two years the forecast indicator should land on. If this were grade school and we were drawing number lines, we would be using an open dot ...
 
   For this reason, we subtract 1 from the forecast year given here in viz2 and viz4.
-  
+
   Viz1 is different, because the tickmarks actually fall between years, we can represent the forecast more accurately, and we use the forecast year as listed in the constants.
   ###
 
@@ -199,6 +220,20 @@ module.exports =
         gasProduction: ['reference', 'technology', 'high', 'low']
       forecastFromYear: 2017
 
+    nov2019:
+      scenarios: ['reference']
+      scenariosForIngestion:
+        energyDemand: ['reference']
+        electricityGeneration: ['reference']
+        oilProduction: ['reference']
+        gasProduction: ['reference']
+      scenariosPerSelection:
+        energyDemand: ['reference']
+        electricityGeneration: ['reference']
+        oilProduction: ['reference']
+        gasProduction: ['reference']
+      forecastFromYear: 2018
+
 
 
   # The order in which the scenarios are drawn, in viz4.
@@ -252,10 +287,15 @@ module.exports =
 
   csvSectorToSectorNameMapping:
     'Total End Use': 'total'
+    'Total End-Use': 'total'
     'Residential Sector': 'residential'
+    'Residential': 'residential'
     'Commercial Sector': 'commercial'
+    'Commercial': 'commercial'
     'Industrial Sector': 'industrial'
+    'Industrial': 'industrial'
     'Transportation Sector': 'transportation'
+    'Transportation': 'transportation'
 
 
   provinces: [
@@ -750,4 +790,3 @@ module.exports =
   petalCapOverhang: 2
 
   viz5CollapseToBaselineDuration: 100 # ms
-

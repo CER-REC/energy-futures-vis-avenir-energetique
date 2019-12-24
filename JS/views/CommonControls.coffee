@@ -66,9 +66,24 @@ CommonControls =
         else
           Tr.altText.dataset.oct2018Unselected[app.language]
 
+    nov2019 =
+      label: Tr.datasetSelector.nov2019Button[app.language]
+      dataset: 'nov2019'
+      title: Tr.selectorTooltip.datasetSelector.nov2019[app.language]
+      class:
+        if config.dataset == 'nov2019'
+          'vizButton selected'
+        else
+          'vizButton'
+      ariaLabel:
+        if config.dataset == 'nov2019'
+          Tr.altText.dataset.nov2019Selected[app.language]
+        else
+          Tr.altText.dataset.nov2019Unselected[app.language]
 
 
-    [oct2018, oct2017, jan2016]
+
+    [nov2019, oct2018, oct2017, jan2016]
 
 
   mainSelectionData: (config, app) ->
@@ -421,46 +436,52 @@ CommonControls =
     # This should be named differently.
     switch config.mainSelection
       when 'energyDemand', 'electricityGeneration'
-        if config.dataset == 'jan2016'
-          [reference, high, low, constrained, highLng, noLng]
-        # else if config.dataset == 'oct2016'
-        #   [reference, high, low]
-        else if config.dataset == 'oct2017'
-          [reference, technology, hcp]
-        else if config.dataset == 'oct2018'
-          [reference, technology, high, low]
+        switch config.dataset
+          when 'jan2016'
+            [reference, high, low, constrained, highLng, noLng]
+          when 'oct2017'
+            [reference, technology, hcp]
+          when 'oct2018'
+            [reference, technology, high, low]
+          when 'nov2019'
+            [reference]
       when 'oilProduction'
-        if config.dataset == 'jan2016'
-          [reference, high, low, constrained]
-        # else if config.dataset == 'oct2016'
-        #   [reference, high, low]
-        else if config.dataset == 'oct2017'
-          [reference, technology, hcp]
-        else if config.dataset == 'oct2018'
-          [reference, technology, high, low]
+        switch config.dataset
+          when'jan2016'
+            [reference, high, low, constrained]
+          when'oct2017'
+            [reference, technology, hcp]
+          when'oct2018'
+            [reference, technology, high, low]
+          when'nov2019'
+            [reference]
       when 'gasProduction'
-        if config.dataset == 'jan2016'
-          [reference, high, low, highLng, noLng]
-        # else if config.dataset == 'oct2016'
-        #   [reference, high, low]
-        else if config.dataset == 'oct2017'
-          [reference, technology, hcp]
-        else if config.dataset == 'oct2018'
-          [reference, technology, high, low]
+        switch config.dataset
+          when 'jan2016'
+            [reference, high, low, highLng, noLng]
+          when 'oct2017'
+            [reference, technology, hcp]
+          when 'oct2018'
+            [reference, technology, high, low]
+          when 'nov2019'
+            [reference]
 
       # This is the case when the scenarios list is requested by viz5. Because
       # viz5 config does not contain a main selection and since we currently
       # need to return the full list of scenarios, we are defaulting to return all
       # the scenarios for each of the datasets.
       else
-        if config.dataset == 'jan2016'
-          [reference, high, low, constrained, highLng, noLng]
-        else if config.dataset == 'oct2016'
-          [reference, high, low]
-        else if config.dataset == 'oct2017'
-          [reference, technology, hcp]
-        else if config.dataset == 'oct2018'
-          [reference, technology, high, low]
+        switch config.dataset
+          when 'jan2016'
+            [reference, high, low, constrained, highLng, noLng]
+          when 'oct2016'
+            [reference, high, low]
+          when 'oct2017'
+            [reference, technology, hcp]
+          when 'oct2018'
+            [reference, technology, high, low]
+          when 'nov2019'
+            [reference]
 
   legendData: (app) ->
     renewables =

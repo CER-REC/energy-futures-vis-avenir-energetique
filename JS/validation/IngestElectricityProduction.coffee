@@ -24,7 +24,7 @@ class ElectricityProductionIngestor
     @normalize()
     @validateLineByLine()
 
-    # NB: This step was no longer needed for the 2018 data, which came with precomputed totals for us.
+    # NB: This step was no longer needed for the 2018 data, which came with precomputed totals for us. Looks like this continues in 2019.
     # @calculateTotalsForCanada()
 
     @createGroupedDataStructure()

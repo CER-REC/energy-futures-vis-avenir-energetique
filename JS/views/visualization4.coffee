@@ -4,14 +4,12 @@ Mustache = require 'mustache'
 Constants = require '../Constants.coffee'
 SquareMenu = require '../charts/SquareMenu.coffee'
 Tr = require '../TranslationTable.coffee'
-Platform = require '../Platform.coffee'
 
 ParamsToUrlString = require '../ParamsToUrlString.coffee'
 CommonControls = require './CommonControls.coffee'
 
-if Platform.name == 'browser'
-  Visualization4Template = require '../templates/Visualization4.mustache'
-  SvgStylesheetTemplate = require '../templates/SvgStylesheet.css'
+Visualization4Template = require '../templates/Visualization4.mustache'
+SvgStylesheetTemplate = require '../templates/SvgStylesheet.css'
 
 ControlsHelpPopover = require '../popovers/ControlsHelpPopover.coffee'
 
@@ -95,18 +93,6 @@ class Visualization4
 
 
 
-  renderServerTemplate: ->
-    contentElement = @document.getElementById 'visualizationContent'
-    contentElement.innerHTML = Mustache.render @options.template,
-      svgStylesheet: @options.svgTemplate
-      title: Tr.visualization4Titles[@config.mainSelection][@app.language]
-      description: @config.imageExportDescription()
-      energyFuturesSource: Tr.allPages.imageDownloadSource[@app.language]
-      bitlyLink: @app.bitlyLink
-      legendContent: @scenarioLegendData()
-
-
-
 
   constructor: (@app, config, @options) ->
     @config = config
@@ -122,10 +108,7 @@ class Visualization4
     @accessibleStatusElement = @document.getElementById 'accessibleStatus'
 
 
-    if Platform.name == 'browser'
-      @renderBrowserTemplate()
-    else if Platform.name == 'server'
-      @renderServerTemplate()
+    @renderBrowserTemplate()
 
     @tooltip = @document.getElementById 'tooltip'
     @tooltipParent = @document.getElementById 'wideVisualizationPanel'
@@ -635,15 +618,12 @@ class Visualization4
 
 
   outerWidth: ->
-    # getBoundingClientRect is not implemented in JSDOM, use fixed width on server
-    if Platform.name == 'browser'
-      @d3document
-        .select('#graphPanel')
-        .node()
-        .getBoundingClientRect()
-        .width
-    else if Platform.name == 'server'
-      Constants.viz4ServerSideGraphWidth
+    @d3document
+      .select('#graphPanel')
+      .node()
+      .getBoundingClientRect()
+      .width
+
 
   width: ->
     @outerWidth() - @margin.left - @margin.right
@@ -1439,7 +1419,6 @@ class Visualization4
 
   # TODO: Find a way to extract this? duplicated in viz2.
   buildAccessibleFocusDot: ->
-    return if Platform.name == 'server'
     @d3document.select '#graphGroup'
       .append 'g'
       .attr

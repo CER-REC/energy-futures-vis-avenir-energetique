@@ -4,15 +4,13 @@ Mustache = require 'mustache'
 Constants = require '../Constants.coffee'
 SquareMenu = require '../charts/SquareMenu.coffee'
 Tr = require '../TranslationTable.coffee'
-Platform = require '../Platform.coffee'
 Rose = require './Rose.coffee'
 
 ParamsToUrlString = require '../ParamsToUrlString.coffee'
 CommonControls = require './CommonControls.coffee'
 
-if Platform.name == 'browser'
-  Visualization5Template = require '../templates/Visualization5.mustache'
-  SvgStylesheetTemplate = require '../templates/SvgStylesheet.css'
+Visualization5Template = require '../templates/Visualization5.mustache'
+SvgStylesheetTemplate = require '../templates/SvgStylesheet.css'
 
 ControlsHelpPopover = require '../popovers/ControlsHelpPopover.coffee'
 
@@ -175,11 +173,7 @@ class Visualization5
 
     @renderMode = if @config.leftProvince == 'all' then 'allCanadaRoses' else 'twoRoses'
 
-
-    if Platform.name == 'browser'
-      @renderBrowserTemplate()
-    else if Platform.name == 'server'
-      @renderServerTemplate()
+    @renderBrowserTemplate()
 
     @tooltip = @document.getElementById 'tooltip'
     @tooltipParent = @document.getElementById 'wideVisualizationPanel'
@@ -187,11 +181,7 @@ class Visualization5
 
     @container = @d3document.select '#graphSVG'
 
-    switch Platform.name
-      when 'browser'
-        @isFirstRun = true
-      when 'server'
-        @isFirstRun = false
+    @isFirstRun = true
 
     @render()
     @redraw()
@@ -234,34 +224,11 @@ class Visualization5
       .height
 
   graphWidth: ->
-    # getBoundingClientRect is not implemented in JSDOM, use fixed width on server
-    if Platform.name == 'browser'
-      @d3document
-        .select('#graphPanel')
-        .node()
-        .getBoundingClientRect()
-        .width
-    else if Platform.name == 'server'
-      Constants.serverSideGraphWidth
-
-
-
-
-
-
-
-  renderServerTemplate: ->
-    contentElement = @document.getElementById 'visualizationContent'
-    contentElement.innerHTML = Mustache.render @options.template,
-      svgStylesheet: @options.svgTemplate
-      title: Tr.visualization5Title[@app.language]
-      description: @config.imageExportDescription()
-      energyFuturesSource: Tr.allPages.imageDownloadSource[@app.language]
-      bitlyLink: @app.bitlyLink
-      legendContent: Constants.viz5LegendData
-
-
-
+    @d3document
+      .select('#graphPanel')
+      .node()
+      .getBoundingClientRect()
+      .width
 
 
 
@@ -574,15 +541,11 @@ class Visualization5
 
 
   outerWidth: ->
-    # getBoundingClientRect is not implemented in JSDOM, use fixed width on server
-    if Platform.name == 'browser'
-      @d3document
-        .select('#graphPanel')
-        .node()
-        .getBoundingClientRect()
-        .width
-    else if Platform.name == 'server'
-      Constants.serverSideGraphWidth
+    @d3document
+      .select('#graphPanel')
+      .node()
+      .getBoundingClientRect()
+      .width
 
   width: ->
     @outerWidth() - @margin.left - @margin.right
@@ -1434,17 +1397,16 @@ class Visualization5
             y: yPos
           clickHandler: @roseClickHandler
           pillClickHandler: @rosePillClickHandler
-          rosePillTemplate: @options.rosePillTemplate # only defined on server
           # To demonstrate that pills will appear if the user clicks on a rose, we show
           # the pills for an arbitrary province on the first run.
-          showPillsOnFirstRun: province == 'AB' and Platform.name != 'server'
+          showPillsOnFirstRun: province == 'AB'
           showPillsCallback: (rose) =>
             @roseWithPillsOpen.removePills() if @roseWithPillsOpen?
             rose.showPills()
             @roseWithPillsOpen = rose
 
           isFirstRun: @isFirstRun
-          showPopoverOnFirstRun: province == 'AB' and Platform.name != 'server'
+          showPopoverOnFirstRun: province == 'AB'
           showPopoverCallback: (rose) =>
             rosePill = rose.rosePills.naturalGas
             @app.popoverManager.showPopover rosePill.popover,
@@ -1531,7 +1493,6 @@ class Visualization5
           y: leftYPos
         clickHandler: null
         pillClickHandler: @rosePillClickHandler
-        rosePillTemplate: @options.rosePillTemplate # only defined on server
         showPillsOnFirstRun: true
         showPillsCallback: (rose) =>
           rose.showPills()
@@ -1581,7 +1542,6 @@ class Visualization5
           y: rightYPos
         clickHandler: null
         pillClickHandler: @rosePillClickHandler
-        rosePillTemplate: @options.rosePillTemplate # only defined on server
         showPillsOnFirstRun: true
         showPillsCallback: (rose) =>
           rose.showPills()

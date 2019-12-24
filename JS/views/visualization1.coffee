@@ -7,13 +7,11 @@ stackedBarChart = require '../charts/stacked-bar-chart.coffee'
 SquareMenu = require '../charts/SquareMenu.coffee'
 Constants = require '../Constants.coffee'
 Tr = require '../TranslationTable.coffee'
-Platform = require '../Platform.coffee'
 
 ParamsToUrlString = require '../ParamsToUrlString.coffee'
 
-if Platform.name == 'browser'
-  Visualization1Template = require '../templates/Visualization1.mustache'
-  SvgStylesheetTemplate = require '../templates/SvgStylesheet.css'
+Visualization1Template = require '../templates/Visualization1.mustache'
+SvgStylesheetTemplate = require '../templates/SvgStylesheet.css'
 
 ControlsHelpPopover = require '../popovers/ControlsHelpPopover.coffee'
 ProvinceAriaText = require '../ProvinceAriaText.coffee'
@@ -93,20 +91,6 @@ class Visualization1 extends visualization
       attachmentSelector: '#provincesSelector'
       setupEvents: false
 
-    
-
-
-  renderServerTemplate: ->
-    contentElement = @document.getElementById 'visualizationContent'
-    contentElement.innerHTML = Mustache.render @options.template,
-      svgStylesheet: @options.svgTemplate
-      title: Tr.visualization1Titles[@config.mainSelection][@app.language]
-      description: @config.imageExportDescription()
-      energyFuturesSource: Tr.allPages.imageDownloadSource[@app.language]
-      bitlyLink: @app.bitlyLink
-      legendContent: @provinceLegendData()
-
-
 
 
   constructor: (@app, config, @options) ->
@@ -121,10 +105,7 @@ class Visualization1 extends visualization
 
     @getData()
 
-    if Platform.name == 'browser'
-      @renderBrowserTemplate()
-    else if Platform.name == 'server'
-      @renderServerTemplate()
+    @renderBrowserTemplate()
 
     @addDatasetToggle()
 
@@ -192,26 +173,18 @@ class Visualization1 extends visualization
 
   # the graph's width
   width: ->
-    # getBoundingClientRect is not implemented in JSDOM, use fixed width on server
-    if Platform.name == 'browser'
-      @d3document
-        .select('#graphPanel')
-        .node()
-        .getBoundingClientRect()
-        .width - @_margin.left - @_margin.right
-    else if Platform.name == 'server'
-      Constants.serverSideGraphWidth - @_margin.left - @_margin.right
+    @d3document
+      .select('#graphPanel')
+      .node()
+      .getBoundingClientRect()
+      .width - @_margin.left - @_margin.right
 
   svgResize: ->
-    # getBoundingClientRect is not implemented in JSDOM, use fixed width on server
-    if Platform.name == 'browser'
-      svgWidth = @d3document
-        .select('#graphPanel')
-        .node()
-        .getBoundingClientRect()
-        .width
-    else if Platform.name == 'server'
-      svgWidth = Constants.serverSideGraphWidth
+    svgWidth = @d3document
+      .select('#graphPanel')
+      .node()
+      .getBoundingClientRect()
+      .width
 
     @d3document.select '#graphSVG'
       .attr

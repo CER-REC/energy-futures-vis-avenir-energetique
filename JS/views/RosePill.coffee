@@ -2,9 +2,8 @@ d3 = require 'd3'
 Mustache = require 'mustache'
 _ = require 'lodash'
 
-Platform = require '../Platform.coffee'
-if Platform.name == 'browser'
-  RosePillTemplate = require '../templates/RosePill.mustache'
+
+RosePillTemplate = require '../templates/RosePill.mustache'
 Constants = require '../Constants.coffee'
 PillPopover = require '../popovers/PillPopover.coffee'
 
@@ -17,7 +16,6 @@ class RosePill
   # Options:
   #   data, a single data element as produced by the energy consumption provider
   #   clickHander: a function for when the pill gets a click
-  #   rosePillTemplate: function, injected template, only on server
   #   shadowPillBounds, an object with left, top, to locate the shadow pill
   #   size, a string, 'large' or 'small'
   constructor: (@app, options) ->
@@ -80,13 +78,7 @@ class RosePill
     if Math.round(@options.data.value) > -1 && Math.round(@options.data.value) < 1
       changeSymbol = '~'
 
-    switch Platform.name
-      when 'browser'
-        template = RosePillTemplate
-      when 'server'
-        template = @options.rosePillTemplate
-
-    pillHtml = Mustache.render template,
+    pillHtml = Mustache.render RosePillTemplate,
       text: "#{changeSymbol}#{Math.round @options.data.value}%"
       image: Constants.viz5RoseData[@options.data.source].image
     @rosePillBox.attr

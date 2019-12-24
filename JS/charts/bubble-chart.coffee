@@ -2,7 +2,6 @@ d3 = require 'd3'
 _ = require 'lodash'
 
 Chart =  require './chart.coffee'
-Platform = require '../Platform.coffee'
 Constants = require '../Constants.coffee'
 Tr = require '../TranslationTable.coffee'
 
@@ -378,52 +377,25 @@ class BubbleChart extends Chart
         dy = parent.y - parent.y0
         "translate(#{d.x + dx},#{d.y + dy})"
 
-      if Platform.name == 'server'
-        # On server, we need to avoid scheduling bubble animations entirely for
-        # compatibility with jsdom. D3 uses a part of the SVG spec that is not
-        # implemented in jsdom, which results in a crash when we try to run animations
-        # of any length on the server.
-        
-        node.select('circle')
+      node.select('circle')
+        .transition()
+          .duration e.alpha * 10000 #this makes the transitions more linear
+          .ease 'linear'
           .attr
             r: circle_radius_function
 
-        node.select('g')
-          .attr
-            transform: group_transform_function
-
-        node.attr
-          transform: node_transform_function
-      
-      else if Platform.name == 'browser'
-        node.select('circle')
-          .transition()
-            .duration e.alpha * 10000 #this makes the transitions more linear
-            .ease 'linear'
-            .attr
-              r: circle_radius_function
-
-        node.select('g')
-          .transition()
-            .duration e.alpha * 10000
-            .ease 'linear'
-            .attr
-              transform: group_transform_function
-
-        node.transition()
+      node.select('g')
+        .transition()
           .duration e.alpha * 10000
           .ease 'linear'
           .attr
-            transform: node_transform_function
+            transform: group_transform_function
 
-    # For server side rendering, we set animation duration to 0. We still need to produce
-    # an acceptable bubble graph layout, without actually running the animation.
-    # Run 100 'ticks' worth of force iterations, all at once.
-    if Platform.name == 'server'
-      for i in [0..100]
-        @force.tick
-          alpha: 0.05
-      @force.stop()
+      node.transition()
+        .duration e.alpha * 10000
+        .ease 'linear'
+        .attr
+          transform: node_transform_function
 
     this
 

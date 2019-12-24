@@ -7,6 +7,58 @@ IngestOilProduction = require './IngestOilProduction.coffee'
 IngestGasProduction = require './IngestGasProduction.coffee'
 IngestElectricityProduction = require './IngestElectricityProduction.coffee'
 
+# coffeelint: disable=max_line_length
+
+
+november2019Files = ->
+
+  [
+    {
+      type: 'oil'
+      dataFilename: path.join ApplicationRoot, 'devPublic/rawCSV/2019-11-08 data/oil_produciton_viz.csv'
+      processedFilename: path.join ApplicationRoot, 'public/CSV/2019-11-08_CrudeOilProduction.csv'
+      dataset: 'nov2019'
+      logFilename: path.join ApplicationRoot, 'devPublic/rawCSV/log/2019-11-08_CrudeOilProduction.csv_ingestion_errors.log'
+    }
+    {
+      type: 'gas'
+      dataFilename: path.join ApplicationRoot, 'devPublic/rawCSV/2019-11-08 data/natural_gas_production_viz.csv'
+      processedFilename: path.join ApplicationRoot, 'public/CSV/2019-11-08_NaturalGasProduction.csv'
+      dataset: 'nov2019'
+      logFilename: path.join ApplicationRoot, 'devPublic/rawCSV/log/2019-11-08_NaturalGasProduction.csv_ingestion_errors.log'
+    }
+    {
+      type: 'demand'
+      dataFilename: path.join ApplicationRoot, 'devPublic/rawCSV/Demand_2019-11-25.csv'
+      processedFilename: path.join ApplicationRoot, 'public/CSV/2019-11-25_EnergyDemand.csv'
+      dataset: 'nov2019'
+      logFilename: path.join ApplicationRoot, 'devPublic/rawCSV/log/2019-11-25_EnergyDemand.csv_ingestion_errors.log'
+    }
+    {
+      type: 'electricity'
+      dataFilename: path.join ApplicationRoot, 'devPublic/rawCSV/electricity_generation_2019-11-25.csv'
+      processedFilename: path.join ApplicationRoot, 'public/CSV/2019-11-25_ElectricityGeneration.csv'
+      dataset: 'nov2019'
+      logFilename: path.join ApplicationRoot, 'devPublic/rawCSV/log/2019-11-25_ElectricityGeneration.csv_ingestion_errors.log'
+    }
+  ]
+
+
+
+
+
+
+
+october2019_updateOf2018Electricity = ->
+  [
+    {
+      type: 'electricity'
+      dataFilename: path.join ApplicationRoot, 'devPublic/rawCSV/ElectricityGeneration_VIZ.EF18.May.21.2019.csv'
+      processedFilename: path.join ApplicationRoot, 'public/CSV/2018_ElectricityGeneration_2019_10_28.csv'
+      dataset: 'oct2018'
+      logFilename: path.join ApplicationRoot, 'devPublic/rawCSV/log/2018_ElectricityGeneration_2019_10_28.csv_ingestion_errors.log'
+    }
+  ]
 
 october2018Files = ->
 
@@ -184,7 +236,9 @@ ingest = (optionsList) ->
 # ingest january2016Files()
 # ingest october2016Files()
 # ingest october2017Files()
-ingest october2018Files()
+# ingest october2018Files()
+# ingest october2019_updateOf2018Electricity()
+ingest november2019Files()
 
 
 

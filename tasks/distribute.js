@@ -3,6 +3,8 @@ var pjson = require('../package.json');
 var fs = require('fs-extra');
 require('coffee-script').register();
 
+console.log('Building the visualization...');
+
 // NB: the distribute folders are not erased here anymore, as removing directories doesn't reliably complete synchronously. Use the package.json task 'clean-vs'.
 
 // We exclusively use the Node fs API here, to maintain portability with Windows
@@ -40,6 +42,3 @@ try {
 catch (error) {
   console.warn("Avenir font not included in deployment package.");
 }
-
-
-
