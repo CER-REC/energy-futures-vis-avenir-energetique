@@ -14,7 +14,7 @@ module.exports =
       Based on data from our Energy Futures reports, this interactive tool allows you to explore energy production and consumption trends and forecast them into the future. You can explore the data from the most recent report, or refer to previous reports.
       </p>
       <p>
-      <a href='PDF/Methodology_ENG.PDF' id="landingPageMethodologyHyperlink" target="_blank">Methodology</a>
+      <a href='PDF/CER_Energy_Futures_Methodology_ENG.PDF' id="landingPageMethodologyHyperlink" target="_blank">Methodology</a>
       <br>
       <a href='#' id="aboutHyperlink">About</a>
       </p>
@@ -31,7 +31,7 @@ module.exports =
           Vous avez le loisir de vous en tenir au rapport le plus récent ou d’aller voir ce que disaient de précédents rapports.
         </p>
         <p>
-        <a href='PDF/Methodology_FRA.PDF' id="landingPageMethodologyHyperlink" target="_blank">Méthodologie</a>
+        <a href="PDF/REC_Explorer_l'avenir_énergétique_méthodologie_FRA.PDF" id="landingPageMethodologyHyperlink" target="_blank">Méthodologie</a>
         <br>
         <a href='#' id="aboutHyperlink">À propos de l’outil</a>
         </p>
@@ -69,8 +69,8 @@ module.exports =
       en: 'METHODOLOGY'
       fr: 'MÉTHODOLOGIE'
     methodologyLinkUrl:
-      en: 'PDF/Methodology_ENG.PDF'
-      fr: 'PDF/Methodology_FRA.PDF'
+      en: 'PDF/CER_Energy_Futures_Methodology_ENG.PDF'
+      fr: "PDF/REC_Explorer_l'avenir_énergétique_méthodologie_FRA.PDF"
     visualization1NavbarLink:
       en: 'BY REGION'
       fr: 'PAR RÉGION'
@@ -201,8 +201,8 @@ module.exports =
         en: 'October 2018. EF 2018 explores how possible energy futures might unfold for Canadians over the long term. It considers four scenarios that explore how future commodity prices and technological development might impact Canada’s energy system. '
         fr: 'Octobre 2018. Le rapport de 2018 examine comment divers scénarios possibles d’avenir énergétique pourraient se dérouler à long terme pour les Canadiens. Il porte sur quatre scénarios montrant comment les politiques climatiques futures et le développement technologique pourraient influer sur la filière énergétique du Canada.'
       nov2019:
-        en: 'TODO'
-        fr: 'TODO'
+        en: 'December 2019. EF2019 explores how possible energy futures might unfold for Canadians over the long term. It provides an update to the Reference Case and is based on a current economic outlook, a moderate view of energy prices and technological improvements, and climate and energy policies announced and sufficiently detailed for modeling at the time of analysis. EF2019 uses economic and energy models to make these projections, and includes assumptions about technology, energy and climate policies, human behaviour and the economy.'
+        fr: 'Décembre 2019. L’Avenir énergétique 2019 examine divers scénarios susceptibles de s’offrir aux Canadiens à long terme. Le rapport de 2019 actualise le scénario de référence. Il s’appuie sur les perspectives économiques actuelles, sur une vision modérée des prix de l’énergie et des améliorations technologiques ainsi que sur les politiques énergétiques ou climatiques qui ont déjà été annoncées au moment de l’analyse et qui sont suffisamment détaillées pour les besoins de la modélisation. L’Avenir énergétique 2019 mise sur des modèles économiques et énergétiques pour faire des projections fondées sur un ensemble d’hypothèses quant aux technologies, aux politiques sur l’énergie et les changements climatiques, aux comportements humains et à l’économie.'
 
     mainSelector:
       totalDemandButton:
@@ -533,6 +533,12 @@ module.exports =
       fr: 'AVENIR ÉNERGÉTIQUE'
     datasetSelectorHelp:
       en: """
+        <h1> CANADA’S ENERGY FUTURE 2019 </h1>
+        <h2> December 2019 </h2>
+        <p>EF2019 explores how possible energy futures might unfold for Canadians over the long term. It provides an update to the Reference Case and is based on a current economic outlook, a moderate view of energy prices and technological improvements, and climate and energy policies announced and sufficiently detailed for modeling at the time of analysis. EF2019 uses economic and energy models to make these projections, and includes assumptions about technology, energy and climate policies, human behaviour and the economy.
+          <br><a href='http://www.cer-rec.gc.ca/nrg/ntgrtd/ftr/2019/index-eng.html' target='_blank'>View the report</a>
+        </p>
+
         <h1> CANADA’S ENERGY FUTURE 2018 </h1>
         <h2> October 2018 </h2>
         <p> EF 2018 explores how possible energy futures might unfold for Canadians over the long term. It considers four scenarios that explore how future commodity prices and technological development might impact Canada’s energy system. The Reference Case is based on a current economic outlook, a moderate view of energy prices and technology development, and climate and energy policies announced at the time of analysis. The High and Low Price Cases address the uncertainty of future crude oil and natural gas prices. The Technology Case pushes past the policy and technology boundaries specific to the Reference Case and includes greater global climate policy ambition and market outcomes. It provides one potential view of what a faster transition enabled by stronger long term carbon policy, faster uptake of technologies such as electric vehicles, and lower cost of renewables would mean for Canada’s energy future.
@@ -553,6 +559,12 @@ module.exports =
         </p>
       """
       fr: """
+        <h1> AVENIR ÉNERGÉTIQUE DU CANADA EN 2019 </h1>
+        <h2> Décembre 2019 </h2>
+        <p>L’Avenir énergétique 2019 examine divers scénarios susceptibles de s’offrir aux Canadiens à long terme. Le rapport de 2019 actualise le scénario de référence. Il s’appuie sur les perspectives économiques actuelles, sur une vision modérée des prix de l’énergie et des améliorations technologiques ainsi que sur les politiques énergétiques ou climatiques qui ont déjà été annoncées au moment de l’analyse et qui sont suffisamment détaillées pour les besoins de la modélisation. L’Avenir énergétique 2019 mise sur des modèles économiques et énergétiques pour faire des projections fondées sur un ensemble d’hypothèses quant aux technologies, aux politiques sur l’énergie et les changements climatiques, aux comportements humains et à l’économie.
+          <br><a href='http://www.cer-rec.gc.ca/nrg/ntgrtd/ftr/2019/index-fra.html' target='_blank'>Voir le rapport</a
+        </p>
+
         <h1> AVENIR ÉNERGÉTIQUE DU CANADA EN 2018 </h1>
         <h2> Octobre 2018 </h2>
         <p> Le rapport de 2018 examine comment divers scénarios possibles d’avenir énergétique pourraient se dérouler à long terme pour les Canadiens. Il porte sur quatre scénarios montrant comment les politiques climatiques futures et le développement technologique pourraient influer sur la filière énergétique du Canada. Le scénario de référence s’appuie sur les perspectives économiques actuelles, une vision modérée des prix de l’énergie et les politiques énergétiques ou climatiques déjà annoncées au moment de l’analyse. Les scénarios de prix élevés et de prix bas tiennent compte, eux, des incertitudes liées aux prix futurs du pétrole brut et de gaz naturel. Le scénario des avancées technologiques va au-delà des limites en la matière ou des politiques définies dans celui de référence et tient compte de mesures plus généralisées sur la scène mondiale, qui touchent le climat et qui se répercutent sur le marché. Il présente l’avenir énergétique sur lequel le Canada pourrait s’ouvrir en présence d’une transition plus rapide découlant de politiques à long terme sur le carbone qui seraient plus robustes, d’une dissémination plus rapide de technologies comme les véhicules électriques et de coûts moindres associés aux énergies renouvelables.
@@ -972,8 +984,30 @@ module.exports =
           </div>
         """
       nov2019:
-        en: 'TODO'
-        fr: 'TODO'
+        en: """
+          <p>
+            EF2019 explores how possible energy futures might unfold for Canadians over the long term. It provides an update to the Reference Case.
+          </p>
+          <div class="columnLeft">
+            <h2> REFERENCE </h2>
+            <p>
+              The Reference Case provides a baseline outlook with a moderate view of energy prices and economic growth, and climate and energy policies announced at the time of analysis.
+            </p>
+
+          </div>
+
+        """
+        fr: """
+          <p>
+            L’Avenir énergétique 2019 examine divers scénarios susceptibles de s’offrir aux Canadiens à long terme. Le rapport de 2019 actualise le scénario de référence.
+          </p>
+          <div class="columnLeft">
+            <h2> RÉFÉRENCE </h2>
+            <p>
+              Le scénario de référence fournit des perspectives de base fondées sur une vision modérée des prix de l’énergie et de la croissance économique ainsi que sur les politiques énergétiques et climatiques déjà annoncées au moment de l’analyse.
+            </p>
+          </div>
+        """
 
     names:
       reference:

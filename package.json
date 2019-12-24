@@ -1,6 +1,6 @@
 {
   "name": "d3-neb",
-  "version": "1.3.2",
+  "version": "1.4.0",
   "description": "CER project",
   "scripts": {
     "build": "browserify JS/App.coffee -p ./tasks/prod-dotenv-browserify-plugin.js -t coffeeify --extension='.coffee' -t [ stringify --extensions [.mustache .css] ] -t envify -g uglifyify -o dist/public/bundle.js",

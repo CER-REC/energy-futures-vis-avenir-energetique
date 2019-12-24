@@ -29,17 +29,17 @@ november2019Files = ->
     }
     {
       type: 'demand'
-      dataFilename: path.join ApplicationRoot, 'devPublic/rawCSV/2019-11-08 data/Demand_for_viz.csv'
-      processedFilename: path.join ApplicationRoot, 'public/CSV/2019-11-08_EnergyDemand.csv'
+      dataFilename: path.join ApplicationRoot, 'devPublic/rawCSV/Demand_2019-11-25.csv'
+      processedFilename: path.join ApplicationRoot, 'public/CSV/2019-11-25_EnergyDemand.csv'
       dataset: 'nov2019'
-      logFilename: path.join ApplicationRoot, 'devPublic/rawCSV/log/2019-11-08_EnergyDemand.csv_ingestion_errors.log'
+      logFilename: path.join ApplicationRoot, 'devPublic/rawCSV/log/2019-11-25_EnergyDemand.csv_ingestion_errors.log'
     }
     {
       type: 'electricity'
-      dataFilename: path.join ApplicationRoot, 'devPublic/rawCSV/2019-11-08 data/electricity_generation_viz.csv'
-      processedFilename: path.join ApplicationRoot, 'public/CSV/2019-11-08_ElectricityGeneration.csv'
+      dataFilename: path.join ApplicationRoot, 'devPublic/rawCSV/electricity_generation_2019-11-25.csv'
+      processedFilename: path.join ApplicationRoot, 'public/CSV/2019-11-25_ElectricityGeneration.csv'
       dataset: 'nov2019'
-      logFilename: path.join ApplicationRoot, 'devPublic/rawCSV/log/2019-11-08_ElectricityGeneration.csv_ingestion_errors.log'
+      logFilename: path.join ApplicationRoot, 'devPublic/rawCSV/log/2019-11-25_ElectricityGeneration.csv_ingestion_errors.log'
     }
   ]
 
