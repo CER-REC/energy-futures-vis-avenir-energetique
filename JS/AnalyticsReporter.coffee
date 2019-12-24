@@ -18,12 +18,23 @@ class AnalyticsReporter
 
 
   # options, an object with the following attributes, all strings
-  #   visualizationMode: Required, the current visualization page. one of:
-  #     landingPage, viz1, viz2, viz3, viz4, viz5
-  #   action: Required, the action the user took. one of:
-  #     click, enter, drag. TODO: this list may be incomplete
-  #   category: Required, a string for the category of the event
-  #   action: Optional, a string with more detail about the event
+
+  # category: Required, a string for the category of the event/
+  # 'menu' 'media' 'feature - <featuretype>' 'help' 'graph poi'
+  # <featuretype> is one of the selector types, for configuring graphs.
+
+  # action: Required, the action the user took.
+  # 'click' 'keydown' 'pageLoad' 'pageHistory' 'drag'
+
+  # label: Optional, provides more detail.
+  # 'visualization' 'footer' '<specific value on a selector>' 'help'
+
+  # value: Optional, provides more detail.
+  # '<subvisualization>' '<footer item>' '<popover text>'
+
+  # subVisualization: Required, the current visualization page.
+  # 'none' 'by region', 'by sector', 'electricity generation', 'scenarios', 'demand'
+
 
   # For details about the possible category/action values, see the drive spreadsheet:
   # Energy Futures Analytics Events
@@ -33,22 +44,24 @@ class AnalyticsReporter
     unless options.label?
       options.label = ''
 
-    console.log "#{options.visualizationMode} - #{options.category} - #{options.label} - #{options.action}"
+    console.log "#{options.subVisualization} - #{options.category} - #{options.label} - #{options.action}"
 
-    unless options.visualizationMode
-      console.error 'Missing analytics visualizationMode', options
-    unless options.action
-      console.error 'Missing analytics action', options
     unless options.category
       console.error 'Missing analytics category', options
+    unless options.action
+      console.error 'Missing analytics action', options
+    unless options.subVisualization
+      console.error 'Missing analytics subVisualization', options
 
     window.dataLayer.push
-      event: 'energy futures interaction'
-      userID: @userUuid
-      visualizationMode: options.visualizationMode
-      action: options.action
+      event: 'energy future interaction'
       category: options.category
+      action: options.action
       label: options.label
+      userID: @userUuid
+      value: options.value
+      visualization: 'energy future'
+      subVisualization: options.subVisualization
 
 
 
