@@ -10,6 +10,6 @@ unless [].find?
 
 # element.remove, not present in IE <= 11
 unless Element.prototype.remove?
- Element.prototype.remove = ->
-   @parentNode.removeChild @ if @parentNode
+  Element.prototype.remove = ->
+    @parentNode.removeChild @ if @parentNode
 

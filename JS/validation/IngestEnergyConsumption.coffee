@@ -186,12 +186,12 @@ class EnergyConsumptionIngestor
 
 
 EnergyConsumptionIngestor.csvMapping = (d) ->
-  province: d.Area
+  province: d.Region
   sector: d.Sector
-  source: d.Source
+  source: d.Category
   scenario: d.Case
   year: parseInt d.Year
-  value: parseFloat d.Data
+  value: parseFloat d.Value
   unit: d.Unit
 
 

@@ -117,9 +117,9 @@ class OilProductionIngestor
 
 
 OilProductionIngestor.csvMapping = (d) ->
-  province: d.Area
+  province: d.Region
   type: d.Type
-  scenario: d.Case
+  scenario: d.Scenario
   year: parseInt d.Year
   value: parseFloat d.Data
   unit: d.Unit
