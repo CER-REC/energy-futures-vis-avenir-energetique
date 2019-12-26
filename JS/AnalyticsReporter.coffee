@@ -24,16 +24,15 @@ class AnalyticsReporter
   # <featuretype> is one of the selector types, for configuring graphs.
 
   # action: Required, the action the user took.
-  # 'click' 'keydown' 'pageLoad' 'pageHistory' 'drag'
+  # 'click' 'keydown' 'drag'
 
   # label: Optional, provides more detail.
-  # 'visualization' 'footer' '<specific value on a selector>' 'help'
 
   # value: Optional, provides more detail.
   # '<subvisualization>' '<footer item>' '<popover text>'
 
   # subVisualization: Required, the current visualization page.
-  # 'none' 'by region', 'by sector', 'electricity generation', 'scenarios', 'demand'
+  # 'landing page' 'by region', 'by sector', 'electricity generation', 'scenarios', 'demand'
 
 
   # For details about the possible category/action values, see the drive spreadsheet:
@@ -44,7 +43,13 @@ class AnalyticsReporter
     unless options.label?
       options.label = ''
 
-    console.log "#{options.subVisualization} - #{options.category} - #{options.label} - #{options.action}"
+    # TODO: Delete this
+    console.log '*** event'
+    console.log "Category: #{options.category}"
+    console.log "Action: #{options.action}"
+    console.log "Label: #{options.label}"
+    console.log "Value: #{options.value}"
+    console.log "Subvisualization: #{options.subVisualization}"
 
     unless options.category
       console.error 'Missing analytics category', options
@@ -52,6 +57,9 @@ class AnalyticsReporter
       console.error 'Missing analytics action', options
     unless options.subVisualization
       console.error 'Missing analytics subVisualization', options
+
+    # We've decided not to track analytics for back/forward navigation
+    return if options.action is 'pageHistory'
 
     window.dataLayer.push
       event: 'energy future interaction'

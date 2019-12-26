@@ -132,12 +132,6 @@ class Router
       @app.currentView = new LandingPage @app
       @replaceState params, options
 
-      @app.analyticsReporter.reportEvent
-        visualizationMode: @app.page
-        action: 'pageLoad'
-        category: 'Navigation'
-        label: @app.page
-
     else if not (@app.currentView instanceof LandingPage)
       @app.popoverManager.closePopover()
       @app.currentView.tearDown()
@@ -158,11 +152,6 @@ class Router
       @app.currentView = new Visualization1 @app, @app.visualization1Configuration
       @replaceState params, options
 
-      @app.analyticsReporter.reportEvent
-        visualizationMode: @app.page
-        action: 'pageLoad'
-        category: 'Navigation'
-        label: @app.page
     else if not (@app.currentView instanceof Visualization1)
       @app.popoverManager.closePopover()
       @app.currentView.tearDown()
@@ -187,11 +176,6 @@ class Router
       @app.currentView = new Visualization2 @app, @app.visualization2Configuration
       @replaceState params, options
 
-      @app.analyticsReporter.reportEvent
-        visualizationMode: @app.page
-        action: 'pageLoad'
-        category: 'Navigation'
-        label: @app.page
     else if not (@app.currentView instanceof Visualization2)
       @app.popoverManager.closePopover()
       @app.currentView.tearDown()
@@ -215,11 +199,6 @@ class Router
       @app.currentView = new Visualization3 @app, @app.visualization3Configuration
       @replaceState params, options
 
-      @app.analyticsReporter.reportEvent
-        visualizationMode: @app.page
-        action: 'pageLoad'
-        category: 'Navigation'
-        label: @app.page
     else if not (@app.currentView instanceof Visualization3)
       @app.popoverManager.closePopover()
       @app.currentView.tearDown()
@@ -243,11 +222,6 @@ class Router
       @app.currentView = new Visualization4 @app, @app.visualization4Configuration
       @replaceState params, options
 
-      @app.analyticsReporter.reportEvent
-        visualizationMode: @app.page
-        action: 'pageLoad'
-        category: 'Navigation'
-        label: @app.page
     else if not (@app.currentView instanceof Visualization4)
       @app.popoverManager.closePopover()
       @app.currentView.tearDown()
@@ -271,11 +245,6 @@ class Router
       @app.currentView = new Visualization5 @app, @app.visualization5Configuration
       @replaceState params, options
 
-      @app.analyticsReporter.reportEvent
-        visualizationMode: @app.page
-        action: 'pageLoad'
-        category: 'Navigation'
-        label: @app.page
     else if not (@app.currentView instanceof Visualization5)
       @app.popoverManager.closePopover()
       @app.currentView.tearDown()

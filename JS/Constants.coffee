@@ -773,3 +773,11 @@ module.exports =
   petalCapOverhang: 2
 
   viz5CollapseToBaselineDuration: 100 # ms
+
+  analyticsPageMapping:
+    landingPage: 'landing page'
+    viz1: 'by region'
+    viz2: 'by sector'
+    viz3: 'electricity generation'
+    viz4: 'scenarios'
+    viz5: 'demand'
