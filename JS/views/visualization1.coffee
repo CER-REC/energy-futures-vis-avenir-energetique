@@ -47,7 +47,7 @@ class Visualization1 extends visualization
       title: Tr.datasetSelector.datasetSelectorHelpTitle[@app.language]
       content: => Tr.datasetSelector.datasetSelectorHelp[@app.language]
       attachmentSelector: '.datasetSelectorGroup'
-      analyticsEvent: 'Energy Futures (Dataset)'
+      analyticsLabel: 'energy futures'
 
     @mainSelectorHelpPopover = new ControlsHelpPopover @app,
       popoverButtonId: 'mainSelectorHelpButton'
@@ -56,7 +56,7 @@ class Visualization1 extends visualization
       title: Tr.mainSelector.selectOneLabel[@app.language]
       content: => Tr.mainSelector.mainSelectorHelp[@app.language]
       attachmentSelector: '.mainSelectorSection'
-      analyticsEvent: 'Select One (Main Selection)'
+      analyticsLabel: 'select one'
 
     @unitsHelpPopover = new ControlsHelpPopover @app,
       popoverButtonId: 'unitSelectorHelpButton'
@@ -65,7 +65,7 @@ class Visualization1 extends visualization
       title: Tr.unitSelector.unitSelectorHelpTitle[@app.language]
       content: => Tr.unitSelector.unitSelectorHelp[@app.language]
       attachmentSelector: '.unitsSelectorGroup'
-      analyticsEvent: 'Select Unit'
+      analyticsLabel: 'unit'
 
     @scenariosHelpPopover = new ControlsHelpPopover @app,
       popoverButtonId: 'scenarioSelectorHelpButton'
@@ -74,7 +74,7 @@ class Visualization1 extends visualization
       title: Tr.scenarioSelector.scenarioSelectorHelpTitle[@app.language]
       content: => Tr.scenarioSelector.scenarioSelectorHelp[@config.dataset][@app.language]
       attachmentSelector: '.scenarioSelectorGroup'
-      analyticsEvent: 'Select Scenario'
+      analyticsLabel: 'scenario'
 
     @provincesHelpPopover = new ControlsHelpPopover @app,
       popoverButtonId: 'provinceHelpButton'
@@ -90,7 +90,7 @@ class Visualization1 extends visualization
         contentString
       attachmentSelector: '#provincesSelector'
       setupEvents: false
-      analyticsEvent: 'Region'
+      analyticsLabel: 'region'
 
 
 
@@ -671,21 +671,18 @@ class Visualization1 extends visualization
       # If all provinces are present, select none
       newConfig.resetProvinces false
       @app.analyticsReporter.reportEvent
-        visualizationMode: @app.page
         action: d3.event.type
         category: 'Remove All Regions'
     else if @config.provinces.length > 0
       # If some provinces are selected, select all
       newConfig.resetProvinces true
       @app.analyticsReporter.reportEvent
-        visualizationMode: @app.page
         action: d3.event.type
         category: 'Add All Regions'
     else if @config.provinces.length == 0
       # If no provinces are selected, select all
       newConfig.resetProvinces true
       @app.analyticsReporter.reportEvent
-        visualizationMode: @app.page
         action: d3.event.type
         category: 'Add All Regions'
 
@@ -714,7 +711,6 @@ class Visualization1 extends visualization
     newConfig.setProvincesInOrder newOrder
 
     @app.analyticsReporter.reportEvent
-      visualizationMode: @app.page
       action: d3.event.type
       category: 'Reorder Region'
       label: changedProvince
@@ -739,7 +735,6 @@ class Visualization1 extends visualization
     else
       category = 'Add Region'
     @app.analyticsReporter.reportEvent
-      visualizationMode: @app.page
       action: d3.event.type
       category: category
       label: dataDictionaryItem.key

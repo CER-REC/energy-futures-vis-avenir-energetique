@@ -43,7 +43,7 @@ class Visualization4
       title: Tr.datasetSelector.datasetSelectorHelpTitle[@app.language]
       content: => Tr.datasetSelector.datasetSelectorHelp[@app.language]
       attachmentSelector: '.datasetSelectorGroup'
-      analyticsEvent: 'Energy Futures (Dataset)'
+      analyticsLabel: 'energy futures'
 
     @mainSelectorHelpPopover = new ControlsHelpPopover @app,
       popoverButtonId: 'mainSelectorHelpButton'
@@ -52,7 +52,7 @@ class Visualization4
       title: Tr.mainSelector.selectOneLabel[@app.language]
       content: => Tr.mainSelector.mainSelectorHelp[@app.language]
       attachmentSelector: '.mainSelectorSection'
-      analyticsEvent: 'Select One (Main Selection)'
+      analyticsLabel: 'select one'
 
     @unitsHelpPopover = new ControlsHelpPopover @app,
       popoverButtonId: 'unitSelectorHelpButton'
@@ -61,7 +61,7 @@ class Visualization4
       title: Tr.unitSelector.unitSelectorHelpTitle[@app.language]
       content: => Tr.unitSelector.unitSelectorHelp[@app.language]
       attachmentSelector: '.unitsSelectorGroup'
-      analyticsEvent: 'Select Unit'
+      analyticsLabel: 'unit'
 
     @scenariosHelpPopover = new ControlsHelpPopover @app,
       popoverButtonId: 'scenarioSelectorHelpButton'
@@ -70,7 +70,7 @@ class Visualization4
       title: Tr.scenarioSelector.scenarioSelectorHelpTitle[@app.language]
       content: => Tr.scenarioSelector.scenarioSelectorHelp[@config.dataset][@app.language]
       attachmentSelector: '.scenarioSelectorGroup'
-      analyticsEvent: 'Select Scenario'
+      analyticsLabel: 'scenario'
 
     @provincesHelpPopover = new ControlsHelpPopover @app,
       popoverButtonId: 'provinceHelpButton'
@@ -88,7 +88,7 @@ class Visualization4
           """
         contentString
       attachmentSelector: '#provincesSelector'
-      analyticsEvent: 'Regions'
+      analyticsLabel: 'region'
       setupEvents: false
 
 
@@ -315,7 +315,6 @@ class Visualization4
     newConfig.setProvince 'all'
 
     @app.analyticsReporter.reportEvent
-      visualizationMode: @app.page
       action: d3.event.type
       category: 'Set Region'
       label: 'all'
@@ -337,7 +336,6 @@ class Visualization4
     newConfig.setProvince dataDictionaryItem.key
 
     @app.analyticsReporter.reportEvent
-      visualizationMode: @app.page
       action: d3.event.type
       category: 'Set Region'
       label: dataDictionaryItem.key
@@ -731,7 +729,6 @@ class Visualization4
           newConfig.setDataset d.dataset
 
           @app.analyticsReporter.reportEvent
-            visualizationMode: @app.page
             action: d3.event.type
             category: 'Set Dataset'
             label: d.dataset
@@ -765,7 +762,6 @@ class Visualization4
       newConfig.setMainSelection d.selectorName
 
       @app.analyticsReporter.reportEvent
-        visualizationMode: @app.page
         action: d3.event.type
         category: 'Set Main Selection'
         label: d.selectorName
@@ -837,7 +833,6 @@ class Visualization4
         newConfig.setUnit d.unitName
 
         @app.analyticsReporter.reportEvent
-          visualizationMode: @app.page
           action: d3.event.type
           category: 'Set Unit'
           label: d.unitName
@@ -886,14 +881,12 @@ class Visualization4
         if selected
           newConfig.removeScenario d.scenarioName
           @app.analyticsReporter.reportEvent
-            visualizationMode: @app.page
             action: d3.event.type
             category: 'Remove Scenario'
             label: d.scenarioName
         else
           newConfig.addScenario d.scenarioName
           @app.analyticsReporter.reportEvent
-            visualizationMode: @app.page
             action: d3.event.type
             category: 'Add Scenario'
             label: d.scenarioName

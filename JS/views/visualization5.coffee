@@ -53,7 +53,7 @@ class Visualization5
       title: Tr.datasetSelector.datasetSelectorHelpTitle[@app.language]
       content: => Tr.datasetSelector.datasetSelectorHelp[@app.language]
       attachmentSelector: '.datasetSelectorGroup'
-      analyticsEvent: 'Energy Futures (Dataset)'
+      analyticsLabel: 'energy futures'
 
     @sectorsSelectorHelpPopover = new ControlsHelpPopover @app,
       popoverButtonId: 'sectorSelectorHelpButton'
@@ -62,7 +62,7 @@ class Visualization5
       title: Tr.sectorSelector.sectorSelectorHelpTitle[@app.language]
       content: => Tr.sectorSelector.sectorSelectorHelp[@app.language]
       attachmentSelector: '.sectorSelectorGroup'
-      analyticsEvent: 'Select Sector'
+      analyticsLabel: 'sector'
 
     @scenariosHelpPopover = new ControlsHelpPopover @app,
       popoverButtonId: 'scenarioSelectorHelpButton'
@@ -71,7 +71,7 @@ class Visualization5
       title: Tr.scenarioSelector.scenarioSelectorHelpTitle[@app.language]
       content: => Tr.scenarioSelector.scenarioSelectorHelp[@config.dataset][@app.language]
       attachmentSelector: '.scenarioSelectorGroup'
-      analyticsEvent: 'Select Scenario'
+      analyticsLabel: 'scenario'
 
     @sourcesHelpPopover = new ControlsHelpPopover @app,
       popoverButtonId: 'sourceHelpButton'
@@ -93,7 +93,7 @@ class Visualization5
         contentString = Tr.sourceSelector.sourceSelectorHelp.generalHelp[@app.language] + contentString
         contentString
       attachmentSelector: '.legendGroup'
-      analyticsEvent: 'Sources'
+      analyticsLabel: 'source'
 
     @provincesHelpPopover = new ControlsHelpPopover @app,
       popoverButtonId: 'provinceHelpButton'
@@ -111,7 +111,7 @@ class Visualization5
           """
         contentString
       attachmentSelector: '#leftProvincesSelector'
-      analyticsEvent: 'Regions'
+      analyticsLabel: 'region'
       setupEvents: false
 
 
@@ -419,7 +419,6 @@ class Visualization5
     newConfig.setLeftProvince 'all'
 
     @app.analyticsReporter.reportEvent
-      visualizationMode: @app.page
       action: d3.event.type
       category: 'Set Region'
       label: 'all'
@@ -450,7 +449,6 @@ class Visualization5
     newConfig.setLeftProvince dataDictionaryItem.key
 
     @app.analyticsReporter.reportEvent
-      visualizationMode: @app.page
       action: d3.event.type
       category: 'Set Region'
       label: dataDictionaryItem.key
@@ -503,7 +501,6 @@ class Visualization5
     newConfig.setRightProvince dataDictionaryItem.key
 
     @app.analyticsReporter.reportEvent
-      visualizationMode: @app.page
       action: d3.event.type
       category: 'Set Comparison Region'
       label: dataDictionaryItem.key
@@ -681,7 +678,6 @@ class Visualization5
       newConfig.setSector d.sectorName
 
       @app.analyticsReporter.reportEvent
-        visualizationMode: @app.page
         action: d3.event.type
         category: 'Set Sector'
         label: d.sectorName
@@ -752,7 +748,6 @@ class Visualization5
           newConfig.setDataset d.dataset
 
           @app.analyticsReporter.reportEvent
-            visualizationMode: @app.page
             action: d3.event.type
             category: 'Set Dataset'
             label: d.dataset
@@ -797,7 +792,6 @@ class Visualization5
         newConfig.setScenario d.scenarioName
 
         @app.analyticsReporter.reportEvent
-          visualizationMode: @app.page
           action: d3.event.type
           category: 'Set Scenario'
           label: d.scenarioName
@@ -1054,7 +1048,6 @@ class Visualization5
     @yearTimeout = window.setTimeout timeoutComplete, 0
 
     @app.analyticsReporter.reportEvent
-      visualizationMode: @app.page
       action: d3.event.type
       category: 'Time-Sequence Playback'
       label: 'Play'
@@ -1072,7 +1065,6 @@ class Visualization5
     if @yearTimeout then window.clearTimeout @yearTimeout
 
     @app.analyticsReporter.reportEvent
-      visualizationMode: @app.page
       action: d3.event.type
       category: 'Time-Sequence Playback'
       label: 'Pause'
@@ -1107,7 +1099,6 @@ class Visualization5
       if baseYear != @config.baseYear
         @config.setBaseYear baseYear
         @app.analyticsReporter.reportEvent
-          visualizationMode: @app.page
           action: d3.event.type
           category: 'Set Base Year'
           label: baseYear
@@ -1182,7 +1173,6 @@ class Visualization5
     newConfig.setBaseYear value
 
     @app.analyticsReporter.reportEvent
-      visualizationMode: @app.page
       action: d3.event.type
       category: 'Set Base Year'
       label: value
@@ -1243,7 +1233,6 @@ class Visualization5
       if comparisonYear != @config.comparisonYear
         @config.setComparisonYear comparisonYear
         @app.analyticsReporter.reportEvent
-          visualizationMode: @app.page
           action: d3.event.type
           category: 'Set Comparison Year'
           label: comparisonYear
@@ -1349,7 +1338,6 @@ class Visualization5
     newConfig.setComparisonYear value
 
     @app.analyticsReporter.reportEvent
-      visualizationMode: @app.page
       action: d3.event.type
       category: 'Set Comparison Year'
       label: value
@@ -1699,7 +1687,6 @@ class Visualization5
         verticalAnchor: @verticalAnchor rosePill.options.data
         horizontalAnchor: @horizontalAnchor rosePill.options.data
       @app.analyticsReporter.reportEvent
-        visualizationMode: @app.page
         action: d3.event.type
         category: 'Open Pill Popover'
         label: rosePill.options.data.source
@@ -1708,7 +1695,6 @@ class Visualization5
       source = rosePill.options.data.source
       @showDoublePillPopover source
       @app.analyticsReporter.reportEvent
-        visualizationMode: @app.page
         action: d3.event.type
         category: 'Open Pill Popover'
         label: rosePill.options.data.source

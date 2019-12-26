@@ -49,7 +49,7 @@ class Visualization3 extends visualization
       title: Tr.datasetSelector.datasetSelectorHelpTitle[@app.language]
       content: => Tr.datasetSelector.datasetSelectorHelp[@app.language]
       attachmentSelector: '.datasetSelectorGroup'
-      analyticsEvent: 'Energy Futures (Dataset)'
+      analyticsLabel: 'energy futures'
 
     @viewByHelpPopover = new ControlsHelpPopover @app,
       popoverButtonId: 'viewBySelectorHelpButton'
@@ -58,7 +58,7 @@ class Visualization3 extends visualization
       title: Tr.viewBySelector.viewBySelectorHelpTitle[@app.language]
       content: => Tr.viewBySelector.viewBySelectorHelp[@app.language]
       attachmentSelector: '.viewBySelectorGroup'
-      analyticsEvent: 'View By (Region/Source)'
+      analyticsLabel: 'view by'
 
     @unitsHelpPopover = new ControlsHelpPopover @app,
       popoverButtonId: 'unitSelectorHelpButton'
@@ -67,7 +67,7 @@ class Visualization3 extends visualization
       title: Tr.unitSelector.unitSelectorHelpTitle[@app.language]
       content: => Tr.unitSelector.unitSelectorHelp[@app.language]
       attachmentSelector: '.unitsSelectorGroup'
-      analyticsEvent: 'Select Unit'
+      analyticsLabel: 'unit'
 
     @scenariosHelpPopover = new ControlsHelpPopover @app,
       popoverButtonId: 'scenarioSelectorHelpButton'
@@ -76,7 +76,7 @@ class Visualization3 extends visualization
       title: Tr.scenarioSelector.scenarioSelectorHelpTitle[@app.language]
       content: => Tr.scenarioSelector.scenarioSelectorHelp[@config.dataset][@app.language]
       attachmentSelector: '.scenarioSelectorGroup'
-      analyticsEvent: 'Select Scenario'
+      analyticsLabel: 'scenario'
 
     @sourcesHelpPopover = new ControlsHelpPopover @app,
       popoverButtonId: 'sourceHelpButton'
@@ -100,7 +100,7 @@ class Visualization3 extends visualization
         contentString = Tr.sourceSelector.sourceSelectorHelp.generalHelp[@app.language] + contentString
         contentString
       attachmentSelector: '#powerSourceSelector'
-      analyticsEvent: 'Sources'
+      analyticsLabel: 'source'
       setupEvents: false
 
     @provincesHelpPopover = new ControlsHelpPopover @app,
@@ -114,7 +114,7 @@ class Visualization3 extends visualization
           contentString = """<div class="#{if @config.viewBy == 'province' then 'provinceLabel' else 'provinceLabel provinceLabel' + province}"> <h2> #{Tr.regionSelector.names[province][@app.language]} </h2> </div>""" + contentString
         contentString
       attachmentSelector: '#provincesSelector'
-      analyticsEvent: 'Regions'
+      analyticsLabel: 'region'
       setupEvents: false
 
 
@@ -309,7 +309,6 @@ class Visualization3 extends visualization
           newConfig.setViewBy d.viewByName
 
           @app.analyticsReporter.reportEvent
-            visualizationMode: @app.page
             action: d3.event.type
             category: 'Set View By'
             label: d.viewByName
@@ -402,7 +401,6 @@ class Visualization3 extends visualization
       if year != @config.year
         @config.setYear year
         @app.analyticsReporter.reportEvent
-          visualizationMode: @app.page
           action: d3.event.type
           category: 'Set Year'
           label: year
@@ -534,7 +532,6 @@ class Visualization3 extends visualization
     @yearTimeout = window.setTimeout timeoutComplete, 0
 
     @app.analyticsReporter.reportEvent
-      visualizationMode: @app.page
       action: d3.event.type
       category: 'Time-Sequence Playback'
       label: 'Play'
@@ -558,7 +555,6 @@ class Visualization3 extends visualization
     if @yearTimeout then window.clearTimeout @yearTimeout
 
     @app.analyticsReporter.reportEvent
-      visualizationMode: @app.page
       action: d3.event.type
       category: 'Time-Sequence Playback'
       label: 'Pause'
@@ -1043,7 +1039,6 @@ class Visualization3 extends visualization
     newConfig.setProvince 'all'
 
     @app.analyticsReporter.reportEvent
-      visualizationMode: @app.page
       action: d3.event.type
       category: 'Set Region'
       label: 'all'
@@ -1063,21 +1058,18 @@ class Visualization3 extends visualization
       # If all provinces are present, select none
       newConfig.resetProvinces false
       @app.analyticsReporter.reportEvent
-        visualizationMode: @app.page
         action: d3.event.type
         category: 'Remove All Regions'
     else if @config.provinces.length > 0
       # If some provinces are selected, select all
       newConfig.resetProvinces true
       @app.analyticsReporter.reportEvent
-        visualizationMode: @app.page
         action: d3.event.type
         category: 'Add All Regions'
     else if @config.provinces.length == 0
       # If no provinces are selected, select all
       newConfig.resetProvinces true
       @app.analyticsReporter.reportEvent
-        visualizationMode: @app.page
         action: d3.event.type
         category: 'Add All Regions'
 
@@ -1104,7 +1096,6 @@ class Visualization3 extends visualization
     newConfig.setSource 'total'
 
     @app.analyticsReporter.reportEvent
-      visualizationMode: @app.page
       action: d3.event.type
       category: 'Set Source'
       label: 'total'
@@ -1124,21 +1115,18 @@ class Visualization3 extends visualization
       # If all sources are present, select none
       newConfig.resetSources false
       @app.analyticsReporter.reportEvent
-        visualizationMode: @app.page
         action: d3.event.type
         category: 'Remove All Sources'
     else if @config.sources.length > 0
       # If some sources are selected, select all
       newConfig.resetSources true
       @app.analyticsReporter.reportEvent
-        visualizationMode: @app.page
         action: d3.event.type
         category: 'Add All Sources'
     else if @config.sources.length == 0
       # If no sources are selected, select all
       newConfig.resetSources true
       @app.analyticsReporter.reportEvent
-        visualizationMode: @app.page
         action: d3.event.type
         category: 'Add All Sources'
 
@@ -1165,7 +1153,6 @@ class Visualization3 extends visualization
     newConfig.setProvince dataDictionaryItem.key
 
     @app.analyticsReporter.reportEvent
-      visualizationMode: @app.page
       action: d3.event.type
       category: 'Set Region'
       label: dataDictionaryItem.key
@@ -1187,7 +1174,6 @@ class Visualization3 extends visualization
     else
       category = 'Add Region'
     @app.analyticsReporter.reportEvent
-      visualizationMode: @app.page
       action: d3.event.type
       category: category
       label: dataDictionaryItem.key
@@ -1206,7 +1192,6 @@ class Visualization3 extends visualization
     newConfig.setSource dataDictionaryItem.key
 
     @app.analyticsReporter.reportEvent
-      visualizationMode: @app.page
       action: d3.event.type
       category: 'Set Source'
       label: dataDictionaryItem.key
@@ -1229,7 +1214,6 @@ class Visualization3 extends visualization
     else
       category = 'Add Source'
     @app.analyticsReporter.reportEvent
-      visualizationMode: @app.page
       action: d3.event.type
       category: category
       label: dataDictionaryItem.key
@@ -1262,7 +1246,6 @@ class Visualization3 extends visualization
     newConfig.setYear value
 
     @app.analyticsReporter.reportEvent
-      visualizationMode: @app.page
       action: d3.event.type
       category: 'Set Year'
       label: value

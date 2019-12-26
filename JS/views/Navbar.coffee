@@ -257,10 +257,9 @@ class Navbar
           helpPopoverHeaderClass: d.helpPopoverHeaderClass
           elementToFocusOnClose: @app.window.document.querySelector('.navbarHelpIcon')
         @app.analyticsReporter.reportEvent
-          visualizationMode: @app.page
+          category: 'help'
           action: d3.event.type
-          category: 'Top Navbar'
-          label: 'Visualization Information'
+          label: 'visualization help'
 
     vizNavbar.select('.navbarHelpIcon')
       .on 'click', helpButtonClick
@@ -281,10 +280,9 @@ class Navbar
           infoPopoverHeaderClass: d.helpPopoverHeaderClass
           elementToFocusOnClose: @app.window.document.querySelector('.navbarMenuIcon')
         @app.analyticsReporter.reportEvent
-          visualizationMode: @app.page
+          category: 'help'
           action: d3.event.type
-          category: 'Top Navbar'
-          label: 'Help'
+          label: 'visualization information'
 
 
     vizNavbar.select('.navbarMenuIcon')

@@ -50,7 +50,7 @@ class Visualization2 extends visualization
       title: Tr.datasetSelector.datasetSelectorHelpTitle[@app.language]
       content: => Tr.datasetSelector.datasetSelectorHelp[@app.language]
       attachmentSelector: '.datasetSelectorGroup'
-      analyticsEvent: 'Energy Futures (Dataset)'
+      analyticsLabel: 'energy futures'
 
     @sectorsSelectorHelpPopover = new ControlsHelpPopover @app,
       popoverButtonId: 'sectorSelectorHelpButton'
@@ -59,7 +59,7 @@ class Visualization2 extends visualization
       title: Tr.sectorSelector.sectorSelectorHelpTitle[@app.language]
       content: => Tr.sectorSelector.sectorSelectorHelp[@app.language]
       attachmentSelector: '.sectorSelectorGroup'
-      analyticsEvent: 'Select Sector'
+      analyticsLabel: 'sector'
 
     @unitsHelpPopover = new ControlsHelpPopover @app,
       popoverButtonId: 'unitSelectorHelpButton'
@@ -68,7 +68,7 @@ class Visualization2 extends visualization
       title: Tr.unitSelector.unitSelectorHelpTitle[@app.language]
       content: => Tr.unitSelector.unitSelectorHelp[@app.language]
       attachmentSelector: '.unitsSelectorGroup'
-      analyticsEvent: 'Select Unit'
+      analyticsLabel: 'unit'
 
     @scenariosHelpPopover = new ControlsHelpPopover @app,
       popoverButtonId: 'scenarioSelectorHelpButton'
@@ -77,7 +77,7 @@ class Visualization2 extends visualization
       title: Tr.scenarioSelector.scenarioSelectorHelpTitle[@app.language]
       content: => Tr.scenarioSelector.scenarioSelectorHelp[@config.dataset][@app.language]
       attachmentSelector: '.scenarioSelectorGroup'
-      analyticsEvent: 'Select Scenario'
+      analyticsLabel: 'scenario'
 
     @sourcesHelpPopover = new ControlsHelpPopover @app,
       popoverButtonId: 'sourceHelpButton'
@@ -97,7 +97,7 @@ class Visualization2 extends visualization
         contentString = Tr.sourceSelector.sourceSelectorHelp.generalHelp[@app.language] + contentString
         contentString
       attachmentSelector: '#powerSourceSelector'
-      analyticsEvent: 'Sources'
+      analyticsLabel: 'source'
       setupEvents: false
 
 
@@ -116,7 +116,7 @@ class Visualization2 extends visualization
           """ + contentString
         contentString
       attachmentSelector: '#provincesSelector'
-      analyticsEvent: 'Regions'
+      analyticsLabel: 'region'
       setupEvents: false
 
 
@@ -791,7 +791,6 @@ class Visualization2 extends visualization
     newConfig.setSourcesInOrder newOrder
 
     @app.analyticsReporter.reportEvent
-      visualizationMode: @app.page
       action: d3.event.type
       category: 'Reorder Source'
       label: changedSource
@@ -820,7 +819,6 @@ class Visualization2 extends visualization
     else
       category = 'Add Source'
     @app.analyticsReporter.reportEvent
-      visualizationMode: @app.page
       action: d3.event.type
       category: category
       label: dataDictionaryItem.key
@@ -846,21 +844,18 @@ class Visualization2 extends visualization
       # If all sources are present, select none
       newConfig.resetSources false
       @app.analyticsReporter.reportEvent
-        visualizationMode: @app.page
         action: d3.event.type
         category: 'Remove All Sources'
     else if @config.sources.length > 0
       # If some sources are selected, select all
       newConfig.resetSources true
       @app.analyticsReporter.reportEvent
-        visualizationMode: @app.page
         action: d3.event.type
         category: 'Add All Sources'
     else if @config.sources.length == 0
       # If no sources are selected, select all
       newConfig.resetSources true
       @app.analyticsReporter.reportEvent
-        visualizationMode: @app.page
         action: d3.event.type
         category: 'Add All Sources'
 
@@ -964,7 +959,6 @@ class Visualization2 extends visualization
     newConfig.setProvince 'all'
 
     @app.analyticsReporter.reportEvent
-      visualizationMode: @app.page
       action: d3.event.type
       category: 'Set Region'
       label: 'all'
@@ -987,7 +981,6 @@ class Visualization2 extends visualization
     newConfig.setProvince dataDictionaryItem.key
 
     @app.analyticsReporter.reportEvent
-      visualizationMode: @app.page
       action: d3.event.type
       category: 'Set Region'
       label: dataDictionaryItem.key

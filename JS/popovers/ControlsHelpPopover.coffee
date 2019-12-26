@@ -17,7 +17,7 @@ class ControlsHelpPopover
     #   title: main heading text, a string
     #   content: body content of the popover, a string containing HTML
     #   attachmentSelector: element where the popover should be attached to, in the DOM
-    #   analyticsEvent: string describing the popover opening to be passed to analytics
+    #   analyticsLabel: string describing the popover opening to be passed to analytics
 
     # TODO: check that all required options are passed?
 
@@ -48,10 +48,9 @@ class ControlsHelpPopover
       @app.popoverManager.showPopover @,
         elementToFocusOnClose: @document.getElementById @options.popoverButtonId
       @app.analyticsReporter.reportEvent
-        visualizationMode: @app.page
+        category: 'help'
         action: event.type
-        category: 'Help Popovers'
-        label: @options.analyticsEvent
+        label: @options.analyticsLabel
 
 
   # The second part of opening a popover, called by the popover manager

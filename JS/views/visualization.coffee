@@ -125,7 +125,6 @@ class Visualization
           newConfig.setScenario @config.scenario
 
           @app.analyticsReporter.reportEvent
-            visualizationMode: @app.page
             action: d3.event.type
             category: 'Set Dataset'
             label: d.dataset
@@ -180,7 +179,6 @@ class Visualization
           newConfig.setUnit d.unitName
 
           @app.analyticsReporter.reportEvent
-            visualizationMode: @app.page
             action: d3.event.type
             category: 'Set Unit'
             label: d.unitName
@@ -226,7 +224,6 @@ class Visualization
           newConfig.setScenario d.scenarioName
 
           @app.analyticsReporter.reportEvent
-            visualizationMode: @app.page
             action: d3.event.type
             category: 'Set Scenario'
             label: d.scenarioName
@@ -262,7 +259,6 @@ class Visualization
       newConfig.setSector d.sectorName
 
       @app.analyticsReporter.reportEvent
-        visualizationMode: @app.page
         action: d3.event.type
         category: 'Set Sector'
         label: d.sectorName
@@ -323,7 +319,6 @@ class Visualization
       newConfig.setMainSelection d.selectorName
 
       @app.analyticsReporter.reportEvent
-        visualizationMode: @app.page
         action: d3.event.type
         category: 'Set Main Selection'
         label: d.selectorName
