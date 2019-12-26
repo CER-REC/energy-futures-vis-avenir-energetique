@@ -92,6 +92,7 @@ class Router
 
   fulfillNavigation: (params, options) ->
 
+    options.originatingPage = @app.page
     @app.page = params.page
     @navbar.setNavBarState params.page, options
     @updateBottomNavBar options
@@ -139,11 +140,8 @@ class Router
       @app.window.history.pushState params, '', ParamsToUrlString(params) if options.shouldUpdateHistory
       @updateStatusElement params.page
 
-      @app.analyticsReporter.reportEvent
-        visualizationMode: @app.page
-        action: options.action
-        category: 'Navigation'
-        label: 'landingPage'
+      @reportNavigationEvent options
+
 
 
 
@@ -160,11 +158,7 @@ class Router
       @app.window.history.pushState params, '', ParamsToUrlString(params) if options.shouldUpdateHistory
       @updateStatusElement params.page
 
-      @app.analyticsReporter.reportEvent
-        visualizationMode: @app.page
-        action: options.action
-        category: 'Navigation'
-        label: 'viz1'
+      @reportNavigationEvent options
     else
       @replaceState params, options
 
@@ -184,11 +178,7 @@ class Router
       @app.window.history.pushState params, '', ParamsToUrlString(params) if options.shouldUpdateHistory
       @updateStatusElement params.page
 
-      @app.analyticsReporter.reportEvent
-        visualizationMode: @app.page
-        action: options.action
-        category: 'Navigation'
-        label: 'viz2'
+      @reportNavigationEvent options
     else
       @replaceState params, options
 
@@ -207,11 +197,7 @@ class Router
       @app.window.history.pushState params, '', ParamsToUrlString(params) if options.shouldUpdateHistory
       @updateStatusElement params.page
 
-      @app.analyticsReporter.reportEvent
-        visualizationMode: @app.page
-        action: options.action
-        category: 'Navigation'
-        label: 'viz3'
+      @reportNavigationEvent options
     else
       @replaceState params, options
 
@@ -230,11 +216,7 @@ class Router
       @app.window.history.pushState params, '', ParamsToUrlString(params) if options.shouldUpdateHistory
       @updateStatusElement params.page
 
-      @app.analyticsReporter.reportEvent
-        visualizationMode: @app.page
-        action: options.action
-        category: 'Navigation'
-        label: 'viz4'
+      @reportNavigationEvent options
     else
       @replaceState params, options
 
@@ -253,11 +235,7 @@ class Router
       @app.window.history.pushState params, '', ParamsToUrlString(params) if options.shouldUpdateHistory
       @updateStatusElement params.page
 
-      @app.analyticsReporter.reportEvent
-        visualizationMode: @app.page
-        action: options.action
-        category: 'Navigation'
-        label: 'viz5'
+      @reportNavigationEvent options
     else
       @replaceState params, options
 
@@ -266,6 +244,15 @@ class Router
 
   updateStatusElement: (page) ->
     @accessibleStatusElement.innerHTML = Tr.navigation[page][@app.language]
+
+  reportNavigationEvent: (options) ->
+    @app.analyticsReporter.reportEvent
+      category: 'menu'
+      action: options.action
+      label: 'visualization'
+      value: Constants.analyticsPageMapping[@app.page]
+      subVisualization: Constants.analyticsPageMapping[options.originatingPage]
+
 
 
 Router.parseQueryParams = ->

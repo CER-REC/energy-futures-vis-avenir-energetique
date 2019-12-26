@@ -4,7 +4,8 @@
     {
       "file_exclude_patterns":
       [
-        "energy-future-visualization.sublime-workspace"
+        "energy-future-visualization.sublime-workspace",
+        "public/bundle.js"
       ],
       "folder_exclude_patterns":
       [
