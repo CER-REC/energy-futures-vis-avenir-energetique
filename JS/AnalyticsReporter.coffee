@@ -59,15 +59,6 @@ class AnalyticsReporter
 
     unless options.subVisualization?
       options.subVisualization = Constants.analyticsPageMapping[@app.page]
-
-    # TODO: Delete this
-    console.log '*** event'
-    console.log "Category: #{options.category}"
-    console.log "Action: #{options.action}"
-    console.log "Label: #{options.label}"
-    console.log "Value: #{options.value}"
-    console.log "Subvisualization: #{options.subVisualization}"
-
     unless options.category
       console.error 'Missing analytics category', options
     unless options.action
