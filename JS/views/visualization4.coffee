@@ -1162,6 +1162,7 @@ class Visualization4
         @accessConfig.setScenario d.key, @config.dataset
 
         @updateAccessibleFocus()
+        @reportPointOfInterestEvent 'click'
 
     graphAreaSelectors.enter().append 'path'
       .attr
@@ -1393,20 +1394,24 @@ class Visualization4
           event.preventDefault()
           @accessConfig.setYear @accessConfig.activeYear + 1
           @updateAccessibleFocus()
+          @reportPointOfInterestEvent event.type
         when 'ArrowLeft'
           event.preventDefault()
           @accessConfig.setYear @accessConfig.activeYear - 1
           @updateAccessibleFocus()
+          @reportPointOfInterestEvent event.type
         when 'ArrowUp'
           event.preventDefault()
           nextScenario = @config.nextActiveScenarioReverse @accessConfig.activeScenario
           @accessConfig.setScenario nextScenario, @config.dataset
           @updateAccessibleFocus()
+          @reportPointOfInterestEvent event.type
         when 'ArrowDown'
           event.preventDefault()
           nextScenario = @config.nextActiveScenarioForward @accessConfig.activeScenario
           @accessConfig.setScenario nextScenario, @config.dataset
           @updateAccessibleFocus()
+          @reportPointOfInterestEvent event.type
 
     graphElement.addEventListener 'focus', =>
       # When we return to focusing the graph element, the graph sub element that the user
@@ -1477,5 +1482,12 @@ class Visualization4
         .attr
           r: 5
           fill: 'red'
+
+  reportPointOfInterestEvent: (action) ->
+    @app.analyticsReporter.reportEvent
+      category: 'graph poi'
+      action: action
+      value: @accessibleStatusElement.innerHTML
+
 
 module.exports = Visualization4

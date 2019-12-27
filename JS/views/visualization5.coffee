@@ -1671,6 +1671,11 @@ class Visualization5
       rose.showPills()
       @roseWithPillsOpen = rose
 
+    @app.analyticsReporter.reportEvent
+      category: 'graph poi'
+      action: d3.event.type
+      label: rose.options.data[0].province
+
 
   rosePillClickHandler: (rosePill) =>
     # Prevent the click event from propagating and immediately closing the popover.

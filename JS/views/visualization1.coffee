@@ -762,18 +762,22 @@ class Visualization1 extends visualization
           event.preventDefault()
           @accessConfig.setYear @accessConfig.activeYear + 1
           @updateAccessibleFocus()
+          @reportPointOfInterestEvent event.type
         when 'ArrowLeft'
           event.preventDefault()
           @accessConfig.setYear @accessConfig.activeYear - 1
           @updateAccessibleFocus()
+          @reportPointOfInterestEvent event.type
         when 'ArrowUp'
           event.preventDefault()
           @accessConfig.setProvince @config.nextActiveProvinceForward(@accessConfig.activeProvince)
           @updateAccessibleFocus()
+          @reportPointOfInterestEvent event.type
         when 'ArrowDown'
           event.preventDefault()
           @accessConfig.setProvince @config.nextActiveProvinceReverse(@accessConfig.activeProvince)
           @updateAccessibleFocus()
+          @reportPointOfInterestEvent event.type
 
     graphElement.addEventListener 'focus', =>
       # When we return to focusing the graph element, the graph sub element that the user
@@ -820,6 +824,14 @@ class Visualization1 extends visualization
     @accessConfig.setYear d.data.x
     @accessConfig.setProvince d.name
     @updateAccessibleFocus()
+
+    @reportPointOfInterestEvent d3.event.type
+
+  reportPointOfInterestEvent: (action) ->
+    @app.analyticsReporter.reportEvent
+      category: 'graph poi'
+      action: action
+      value: @accessibleStatusElement.innerHTML
 
 
 

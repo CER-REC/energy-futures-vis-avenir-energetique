@@ -758,6 +758,7 @@ class Visualization2 extends visualization
         @accessConfig.setSource d.key
 
         @updateAccessibleFocus()
+        @reportPointOfInterestEvent d3.event.type
 
       dataset: @config.dataset
 
@@ -1009,18 +1010,22 @@ class Visualization2 extends visualization
           event.preventDefault()
           @accessConfig.setYear @accessConfig.activeYear + 1
           @updateAccessibleFocus()
+          @reportPointOfInterestEvent event.type
         when 'ArrowLeft'
           event.preventDefault()
           @accessConfig.setYear @accessConfig.activeYear - 1
           @updateAccessibleFocus()
+          @reportPointOfInterestEvent event.type
         when 'ArrowUp'
           event.preventDefault()
           @accessConfig.setSource @config.nextActiveSourceForward(@accessConfig.activeSource)
           @updateAccessibleFocus()
+          @reportPointOfInterestEvent event.type
         when 'ArrowDown'
           event.preventDefault()
           @accessConfig.setSource @config.nextActiveSourceReverse(@accessConfig.activeSource)
           @updateAccessibleFocus()
+          @reportPointOfInterestEvent event.type
 
     graphElement.addEventListener 'focus', =>
       # When we return to focusing the graph element, the graph sub element that the user
@@ -1088,5 +1093,11 @@ class Visualization2 extends visualization
           r: 5
           fill: 'red'
 
+
+  reportPointOfInterestEvent: (action) ->
+    @app.analyticsReporter.reportEvent
+      category: 'graph poi'
+      action: action
+      value: @accessibleStatusElement.innerHTML
 
 module.exports = Visualization2

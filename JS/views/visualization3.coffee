@@ -255,6 +255,8 @@ class Visualization3 extends visualization
         @updateAccessibleFocus
           displayTooltip: false
 
+        @reportPointOfInterestEvent 'click'
+
     @_chart = new BubbleChart @app, '#graphSVG', bubbleChartOptions
     @_chart.config = @config
 
@@ -759,24 +761,28 @@ class Visualization3 extends visualization
           return unless nextConfig?
           @accessConfig.setState nextConfig.province, nextConfig.source, @seriesData
           @updateAccessibleFocus()
+          @reportPointOfInterestEvent event.type
         when 'ArrowLeft'
           event.preventDefault()
           nextConfig = @findNextOuterBubble 'reverse'
           return unless nextConfig?
           @accessConfig.setState nextConfig.province, nextConfig.source, @seriesData
           @updateAccessibleFocus()
+          @reportPointOfInterestEvent event.type
         when 'ArrowUp'
           event.preventDefault()
           nextConfig = @findNextInnerBubble 'reverse'
           return unless nextConfig?
           @accessConfig.setState nextConfig.province, nextConfig.source, @seriesData
           @updateAccessibleFocus()
+          @reportPointOfInterestEvent event.type
         when 'ArrowDown'
           event.preventDefault()
           nextConfig = @findNextInnerBubble 'forward'
           return unless nextConfig?
           @accessConfig.setState nextConfig.province, nextConfig.source, @seriesData
           @updateAccessibleFocus()
+          @reportPointOfInterestEvent event.type
 
     graphElement.addEventListener 'focus', =>
       # When we return to focusing the graph element, the graph sub element that the user
@@ -1990,6 +1996,10 @@ class Visualization3 extends visualization
 
 
 
-
+  reportPointOfInterestEvent: (action) ->
+    @app.analyticsReporter.reportEvent
+      category: 'graph poi'
+      action: action
+      value: @accessibleStatusElement.innerHTML
 
 module.exports = Visualization3
