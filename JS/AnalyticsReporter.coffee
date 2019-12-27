@@ -16,13 +16,17 @@ class AnalyticsReporter
         BrowserCookies.set 'energy-futures-UUID', @userUuid
 
       # For integration with the page language switch system.
-      # language: one of 'en' or 'fr'
-      # action: one of 'click' or 'keydown'
-      window.reportLanguageEvent = (language, action) =>
+      window.reportLanguageEvent = =>
+
+        if @app.language is 'en'
+          language = 'fr'
+        else
+          language = 'en'
+
         @reportEvent
           category: 'menu'
-          action: action
-          label: 'langauge'
+          action: 'click'
+          label: 'language'
           value: language
 
     else
