@@ -315,8 +315,8 @@ class Visualization4
     newConfig.setProvince 'all'
 
     @app.analyticsReporter.reportEvent
+      category: 'feature - set region'
       action: d3.event.type
-      category: 'Set Region'
       label: 'all'
 
     update = =>
@@ -336,8 +336,8 @@ class Visualization4
     newConfig.setProvince dataDictionaryItem.key
 
     @app.analyticsReporter.reportEvent
+      category: 'feature - set region'
       action: d3.event.type
-      category: 'Set Region'
       label: dataDictionaryItem.key
 
     update = =>
@@ -729,8 +729,8 @@ class Visualization4
           newConfig.setDataset d.dataset
 
           @app.analyticsReporter.reportEvent
+            category: 'feature - dataset'
             action: d3.event.type
-            category: 'Set Dataset'
             label: d.dataset
 
           update = =>
@@ -762,8 +762,8 @@ class Visualization4
       newConfig.setMainSelection d.selectorName
 
       @app.analyticsReporter.reportEvent
+        category: 'feature - main selection'
         action: d3.event.type
-        category: 'Set Main Selection'
         label: d.selectorName
 
       update = =>
@@ -833,8 +833,8 @@ class Visualization4
         newConfig.setUnit d.unitName
 
         @app.analyticsReporter.reportEvent
+          category: 'feature - unit'
           action: d3.event.type
-          category: 'Set Unit'
           label: d.unitName
 
         update = =>
@@ -881,14 +881,14 @@ class Visualization4
         if selected
           newConfig.removeScenario d.scenarioName
           @app.analyticsReporter.reportEvent
+            category: 'feature - remove scenario'
             action: d3.event.type
-            category: 'Remove Scenario'
             label: d.scenarioName
         else
           newConfig.addScenario d.scenarioName
           @app.analyticsReporter.reportEvent
+            category: 'feature - add scenario'
             action: d3.event.type
-            category: 'Add Scenario'
             label: d.scenarioName
 
 

@@ -419,8 +419,8 @@ class Visualization5
     newConfig.setLeftProvince 'all'
 
     @app.analyticsReporter.reportEvent
+      category: 'feature - set region'
       action: d3.event.type
-      category: 'Set Region'
       label: 'all'
 
     update = =>
@@ -449,8 +449,8 @@ class Visualization5
     newConfig.setLeftProvince dataDictionaryItem.key
 
     @app.analyticsReporter.reportEvent
+      category: 'feature - set region'
       action: d3.event.type
-      category: 'Set Region'
       label: dataDictionaryItem.key
 
     update = =>
@@ -501,8 +501,8 @@ class Visualization5
     newConfig.setRightProvince dataDictionaryItem.key
 
     @app.analyticsReporter.reportEvent
+      category: 'feature - comparison region'
       action: d3.event.type
-      category: 'Set Comparison Region'
       label: dataDictionaryItem.key
 
     update = =>
@@ -678,8 +678,8 @@ class Visualization5
       newConfig.setSector d.sectorName
 
       @app.analyticsReporter.reportEvent
+        category: 'feature - sector'
         action: d3.event.type
-        category: 'Set Sector'
         label: d.sectorName
 
       update = =>
@@ -748,8 +748,8 @@ class Visualization5
           newConfig.setDataset d.dataset
 
           @app.analyticsReporter.reportEvent
+            category: 'feature - dataset'
             action: d3.event.type
-            category: 'Set Dataset'
             label: d.dataset
 
           update = =>
@@ -792,8 +792,8 @@ class Visualization5
         newConfig.setScenario d.scenarioName
 
         @app.analyticsReporter.reportEvent
+          category: 'feature - set scenario'
           action: d3.event.type
-          category: 'Set Scenario'
           label: d.scenarioName
 
         update = =>
@@ -1048,9 +1048,9 @@ class Visualization5
     @yearTimeout = window.setTimeout timeoutComplete, 0
 
     @app.analyticsReporter.reportEvent
+      category: 'media'
       action: d3.event.type
-      category: 'Time-Sequence Playback'
-      label: 'Play'
+      label: 'play'
 
 
 
@@ -1065,9 +1065,9 @@ class Visualization5
     if @yearTimeout then window.clearTimeout @yearTimeout
 
     @app.analyticsReporter.reportEvent
+      category: 'media'
       action: d3.event.type
-      category: 'Time-Sequence Playback'
-      label: 'Pause'
+      label: 'pause'
 
 
 
@@ -1099,8 +1099,8 @@ class Visualization5
       if baseYear != @config.baseYear
         @config.setBaseYear baseYear
         @app.analyticsReporter.reportEvent
+          category: 'feature - base year'
           action: d3.event.type
-          category: 'Set Base Year'
           label: baseYear
         @app.router.navigate @config.routerParams()
         @d3document.select('#baseLabelBox').text =>
@@ -1173,8 +1173,8 @@ class Visualization5
     newConfig.setBaseYear value
 
     @app.analyticsReporter.reportEvent
+      category: 'feature - base year'
       action: d3.event.type
-      category: 'Set Base Year'
       label: value
 
     update = =>
@@ -1233,8 +1233,8 @@ class Visualization5
       if comparisonYear != @config.comparisonYear
         @config.setComparisonYear comparisonYear
         @app.analyticsReporter.reportEvent
+          category: 'feature - comparison year'
           action: d3.event.type
-          category: 'Set Comparison Year'
           label: comparisonYear
         @app.router.navigate @config.routerParams()
         @d3document.select('#labelBox').text =>
@@ -1338,8 +1338,8 @@ class Visualization5
     newConfig.setComparisonYear value
 
     @app.analyticsReporter.reportEvent
+      category: 'feature - comparison year'
       action: d3.event.type
-      category: 'Set Comparison Year'
       label: value
 
     update = =>
@@ -1687,17 +1687,19 @@ class Visualization5
         verticalAnchor: @verticalAnchor rosePill.options.data
         horizontalAnchor: @horizontalAnchor rosePill.options.data
       @app.analyticsReporter.reportEvent
+        category: 'graph poi'
         action: d3.event.type
-        category: 'Open Pill Popover'
-        label: rosePill.options.data.source
+        label: rosePill.options.data.province
+        value: rosePill.options.data.source
 
     else
       source = rosePill.options.data.source
       @showDoublePillPopover source
       @app.analyticsReporter.reportEvent
+        category: 'graph poi'
         action: d3.event.type
-        category: 'Open Pill Popover'
-        label: rosePill.options.data.source
+        label: rosePill.options.data.province
+        value: rosePill.options.data.source
 
 
 

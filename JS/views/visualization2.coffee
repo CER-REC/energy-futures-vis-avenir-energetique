@@ -791,8 +791,8 @@ class Visualization2 extends visualization
     newConfig.setSourcesInOrder newOrder
 
     @app.analyticsReporter.reportEvent
+      category: 'feature - reorder source'
       action: d3.event.type
-      category: 'Reorder Source'
       label: changedSource
 
     update = =>
@@ -815,12 +815,12 @@ class Visualization2 extends visualization
     newConfig.flipSource dataDictionaryItem.key
 
     if @config.sources.includes dataDictionaryItem.key
-      category = 'Remove Source'
+      category = 'feature - remove source'
     else
-      category = 'Add Source'
+      category = 'feature - add source'
     @app.analyticsReporter.reportEvent
-      action: d3.event.type
       category: category
+      action: d3.event.type
       label: dataDictionaryItem.key
 
     update = =>
@@ -844,20 +844,20 @@ class Visualization2 extends visualization
       # If all sources are present, select none
       newConfig.resetSources false
       @app.analyticsReporter.reportEvent
+        category: 'feature - remove all sources'
         action: d3.event.type
-        category: 'Remove All Sources'
     else if @config.sources.length > 0
       # If some sources are selected, select all
       newConfig.resetSources true
       @app.analyticsReporter.reportEvent
+        category: 'feature - add all sources'
         action: d3.event.type
-        category: 'Add All Sources'
     else if @config.sources.length == 0
       # If no sources are selected, select all
       newConfig.resetSources true
       @app.analyticsReporter.reportEvent
+        category: 'feature - add all sources'
         action: d3.event.type
-        category: 'Add All Sources'
 
     update = =>
       if @config.sources.length == Constants.viz2Sources.length
@@ -959,8 +959,8 @@ class Visualization2 extends visualization
     newConfig.setProvince 'all'
 
     @app.analyticsReporter.reportEvent
+      category: 'feature - set region'
       action: d3.event.type
-      category: 'Set Region'
       label: 'all'
 
     update = =>
@@ -981,8 +981,8 @@ class Visualization2 extends visualization
     newConfig.setProvince dataDictionaryItem.key
 
     @app.analyticsReporter.reportEvent
+      category: 'feature - set region'
       action: d3.event.type
-      category: 'Set Region'
       label: dataDictionaryItem.key
 
     update = =>

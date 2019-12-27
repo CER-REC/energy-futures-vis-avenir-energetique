@@ -125,8 +125,8 @@ class Visualization
           newConfig.setScenario @config.scenario
 
           @app.analyticsReporter.reportEvent
+            category: 'feature - dataset'
             action: d3.event.type
-            category: 'Set Dataset'
             label: d.dataset
 
           update = =>
@@ -179,8 +179,8 @@ class Visualization
           newConfig.setUnit d.unitName
 
           @app.analyticsReporter.reportEvent
+            category: 'feature - unit'
             action: d3.event.type
-            category: 'Set Unit'
             label: d.unitName
 
           update = =>
@@ -224,8 +224,8 @@ class Visualization
           newConfig.setScenario d.scenarioName
 
           @app.analyticsReporter.reportEvent
+            category: 'feature - set scenario'
             action: d3.event.type
-            category: 'Set Scenario'
             label: d.scenarioName
 
           update = =>
@@ -259,8 +259,8 @@ class Visualization
       newConfig.setSector d.sectorName
 
       @app.analyticsReporter.reportEvent
+        category: 'feature - sector'
         action: d3.event.type
-        category: 'Set Sector'
         label: d.sectorName
 
       update = =>
@@ -319,8 +319,8 @@ class Visualization
       newConfig.setMainSelection d.selectorName
 
       @app.analyticsReporter.reportEvent
+        category: 'feature - main selection'
         action: d3.event.type
-        category: 'Set Main Selection'
         label: d.selectorName
 
       update = =>
