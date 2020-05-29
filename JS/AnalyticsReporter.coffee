@@ -69,7 +69,7 @@ class AnalyticsReporter
       console.error 'Missing analytics action', options
 
     data =
-      event: 'energy future interaction'
+      event: 'visualization interaction'
       category: options.category
       action: options.action
       userID: @userUuid
