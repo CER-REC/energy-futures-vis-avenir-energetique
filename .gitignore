@@ -1,21 +1,22 @@
-lib-cov
-*.seed
-*.log
-*.dat
-*.out
-*.pid
-*.gz
-/*.zip
+# Node files
+node_modules/
+npm-debug.log
+.cache/
 
-node_modules
-d3-neb.sublime-workspace
-energy-future-visualization.sublime-workspace
-/dist/
-public/bundle.js
+# IDE files
+.vscode/
+*.sublime-workspace
 
-iisnode/
-/JS/servers/ProductionServer/.env
-/log
+# Generated files that don't need tracking
+LAST_MODIFIED
+VERSION
+storybook-static
+public/script/
 
-Thumbs.db
+# System files
 .DS_Store
+*.~lock*
+
+# Test results
+coverage/
+test-reports/
