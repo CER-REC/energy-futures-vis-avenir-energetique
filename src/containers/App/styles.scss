@@ -1,0 +1,286 @@
+@import '../../styles/colors';
+@import '../../styles/fontVariables.scss';
+@import "./transitions.scss";
+
+.App {
+  $defaultTransition: 1s ease-in-out;
+
+  $fastEnd: 1s cubic-bezier(0.8, 0, 1, 0.2);
+  $fastestEnd: 1s cubic-bezier(1, 0, 1, 0);
+
+  $fastStart: 1s cubic-bezier(0, 0.8, 0.2, 1);
+  $fastestStart: 1s cubic-bezier(0, 1, 0, 1);
+
+  .DateUpdated {
+    position: absolute;
+    bottom: 0;
+    left: 5px;
+  }
+
+  .guideWrapper {
+    z-index: 999;
+    pointer-events: none;
+  }
+
+  .selectedKeywordTranslate {
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    font-family: $fira-sans-condensed-light;
+    font-size: 16px;
+
+    color: $SearchKeyword;
+    text-shadow: 1px 1px 1px $SearchKeyword;
+
+    pointer-events: none;
+
+    transition: translate $defaultTransition opacity $fastestStart;
+  }
+
+  .guideTranslate {
+    position: absolute;
+
+    // Guide = 156px  / 2 = 78px
+    left: -78px;
+    top: -78px;
+
+    width: 100%;
+    height: 100%;
+
+    transform: translate(0px, 0px);
+
+    transition: all $defaultTransition;
+
+    .CircleContainer {
+      transition: background-color $defaultTransition;
+
+      span {
+        transition: opacity $defaultTransition;
+
+        &.hidden {
+          transition: opacity $defaultTransition, visibility 0s 1s;
+        }
+      }
+    }
+  }
+
+  .appControls {
+    z-index: 999;
+    position: absolute;
+    top: 90%;
+    left: 0;
+
+    height: 40px;
+
+    pointer-events: none;
+
+    transition: transform $defaultTransition;
+    .BrowseBy {
+      transition: opacity $defaultTransition;
+
+      .arrowWrapper {
+        transition:
+          background-color $defaultTransition,
+          margin-right $defaultTransition,
+          color $defaultTransition,
+          width $defaultTransition,
+          opacity $defaultTransition;
+
+        opacity: 1;
+
+        &::after {
+          transition: border-color $defaultTransition;
+        }
+      }
+
+      .company {
+        overflow-x: visible;
+        white-space: nowrap;
+      }
+
+      .location,
+      .company {
+        transition:
+          opacity $defaultTransition,
+          width $defaultTransition,
+          transform $defaultTransition;
+
+        opacity: 1
+      }
+    }
+
+    .GuideTransport {
+      opacity: 0;
+      visibility: hidden;
+
+      position: absolute;
+
+      left: 340px;
+      top: 11px;
+
+      transition: opacity $fastStart, visibility 0s 1s, left $defaultTransition;
+    }
+
+  }
+
+
+  .ViewOne {
+    .introduction {
+      transform: translateY(0px);
+      transition: transform $defaultTransition;
+    }
+    .explorer {
+      transform: translateY(0px);
+      transition: transform $defaultTransition;
+    }
+
+    .infoBar {
+      transition: opacity $defaultTransition;
+      opacity: 1;
+    }
+  }
+
+  .ViewTwo {
+    opacity: 1;
+
+    transition: opacity $fastestEnd;
+
+    .header,
+    .wheel .MovingContainer,
+    .wheel .pullToSpinContainer,
+    .wheel .listContainer,
+    .wheel .labelContainer,
+    .wheel .GreyPipe,
+    .wheel .DotLegend,
+    .companyBreakdown,
+    .menus,
+    .legend {
+      transition: opacity $defaultTransition;
+    }
+
+    .menus .keywordExplorerCircle {
+      transition: opacity $fastestEnd;
+    }
+  }
+
+  .ViewThree {
+    opacity: 0;
+
+    transition: opacity $defaultTransition;
+  }
+
+  .conditions {
+    overflow: visible !important;
+    pointer-events: none;
+
+    .Modal { pointer-events: auto; }
+
+    .ConditionDetails {
+      .ConditionList .List,
+      .listPane .List-Item,
+      .listPane .CircleContainer,
+      .ProjectHeader,
+      .contentPane {
+        transition: opacity $defaultTransition;
+      }
+    }
+  }
+
+  .Footer {
+    visibility: hidden;
+    transition: opacity $defaultTransition, height $defaultTransition, visibility 0s 1s;
+  }
+
+  .transitionWrapper {
+    &.transition-state-8 {
+      .Guide {
+        transition:
+          opacity $fastestEnd,
+          transform $defaultTransition,
+          background-color $defaultTransition,
+          visibility 0s 1s;
+      }
+    }
+
+    // Snapping back from View 2 to View 1, using different curves to make it look decent
+    &.transition-state-9 {
+      .guideTranslate {
+        transition: opacity $fastestEnd;
+      }
+
+      .appControls {
+        transition: transform $fastStart;
+
+        .BrowseBy {
+          transition:
+            opacity $fastEnd,
+            color $fastEnd,
+            background-color $fastEnd,
+            margin-right $fastEnd;
+
+          &::after {
+            transition: border-color $fastEnd;
+          }
+        }
+
+        .BrowseByBtn.location {
+          transition: opacity $fastEnd;
+        }
+
+        .GuideTransport {
+          opacity: 0;
+          visibility: hidden;
+
+          transition: opacity $fastEnd, visibility 0s 1s;
+        }
+      }
+
+
+      .ViewOne {
+        .row {
+          &.intro {
+            transition: transform $defaultTransition;
+          }
+          &.explorer {
+            transition: transform $defaultTransition;
+          }
+          &.buttons {
+
+            .ShortcutInfoBar {
+              transition: opacity $fastEnd;
+            }
+          }
+        }
+      }
+
+      .ViewTwo {
+        transition: opacity $fastStart;
+
+        .header,
+        .wheel,
+        .companyBreakdown,
+        .menus {
+          transition: opacity $fastStart;
+        }
+      }
+
+      .ViewThree {
+        transition: opacity $fastStart;
+      }
+
+      .ConditionDetails {
+        .ConditionList .List,
+        .listPane,
+        .ProjectHeader,
+        .contentPane {
+          transition: opacity $fastStart;
+        }
+      }
+
+      .Footer {
+        transition: opacity $fastStart, visibility 0s 1s;
+      }
+    }
+  }
+}

@@ -1,0 +1,25 @@
+@import "../../styles/fontVariables.scss";
+@import "../../styles/colors.scss";
+
+.ErrorBoundary {
+  text-align: center;
+  padding: 10% 0;
+  .errorMessage {
+    h1 {
+      font-family: $fira-sans-condensed-bold;
+      font-size: 24px;
+      color: $Black51;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+  }
+  .details {
+    details {
+      text-align: left;
+      display: inline-block;
+      padding-top: 1em;
+      visibility: visible;
+      white-space: pre-wrap;
+    }
+  }
+}

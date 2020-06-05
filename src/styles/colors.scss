@@ -1,0 +1,51 @@
+/*#region TypographyColors */
+
+$Black19: rgb(19,28,43);
+$Black51: rgb(51,51,51);
+$Black77: rgb(77, 77, 77);
+$VeryDarkGray: rgb(96,96,96);
+$general-text-2: rgb(128, 128, 128);
+$DarkGray: rgb(153,153,153);
+$Gray160: rgb(161,168,167);
+$MidGray: rgb(204, 204, 204);
+$LightGray: rgb(230,230,230);
+
+
+/*#regionend*/
+$Guide: rgb(80, 80, 234);
+$GuideFaded: rgb(185, 185, 246);
+/*#region Common */
+
+$LinksTextButtons: rgb(209, 5, 122);
+$AccessibilitySurround: rgb(56,7,177);
+$LightGreyBackground: rgb(228,228,228);
+
+
+// Projects/conditions will have the following general styling:
+$MainOrange: rgb(238,97,41);
+$ProjectDotBase: rgb(161,168,167);
+// Color oh so ever slightly different in search???
+$SearchKeyword: rgb(241,90,36);
+$FilteredSearchKeyword: rgb(247, 166, 144);
+$Filtered: rgb(208, 211, 211);
+
+$White: rgb(255,255,255);
+
+/*#regionend*/
+
+/*#region CompanyWheel */
+  $Outline: rgb(209,5,122); // outline, inner colour 1 of company wheel
+  $InnerColourCompany1: rgb(64,84,183); // label company wheel
+  $InnerColourCompany2  : rgb(48,41,140); // inner colour 2 company wheel
+  $InnerColourLocation1: rgb(239,182,82); // location inner colour 1
+  $InnerColourLocation2: rgb(242,207,102); // location inner colour 2
+
+/*#regionend*/
+
+// To use any of the get____Colors functions, pass it the constant for that feature
+@function getThemeColors($key) { @return map-get(getFeatureColors('theme'), $key); }
+@function getPhaseColors($key) { @return map-get(getFeatureColors('phase'), $key); }
+@function getStatusColors($key) { @return map-get(getFeatureColors('status'), $key); }
+@function getTypeColors($key) { @return map-get(getFeatureColors('type'), $key); }
+@function getInstrumentColors($key) { @return map-get(getFeatureColors('instrument'), $key); }
+@function getFilingColors($key) { @return map-get(getFeatureColors('filing'), $key); }

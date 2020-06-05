@@ -1,0 +1,7 @@
+@import './colors.scss';
+
+$list-width: 1px;
+$list-style: solid;
+$list-selected-color: $LinksTextButtons;
+
+$list-selected: $list-width $list-style $list-selected-color;

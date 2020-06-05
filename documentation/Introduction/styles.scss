@@ -1,0 +1,34 @@
+.ProgressMatrix {
+  padding: 24px;
+
+  h1, h2 { padding: 8px 0; }
+  h1 { font-size: 22px; }
+  h2 { font-size: 18px; }
+
+  table {
+    border-collapse: collapse;
+
+    th, td { border: 1px solid #777; }
+
+    td {
+      &.pending { background: #f44336; }
+      &.started { background: #ff9800; }
+      &.halfway { background: #ffeb3b; }
+      &.mostly { background: #aed581; }
+      &.finished { background: #4caf50; }
+    }
+  }
+
+  .column {
+    display: inline-block;
+    vertical-align: top;
+  }
+
+  .ColorTable {
+    padding: 8px;
+
+    &.key {
+      th:first-child, td:first-child, tfoot { display: none; }
+    }
+  }
+}

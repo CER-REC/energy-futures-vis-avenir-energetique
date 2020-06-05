@@ -1,0 +1,26 @@
+@import "../../styles/fontVariables.scss";
+@import "../../styles/colors.scss";
+
+.UnsupportedWarning {
+  max-width: 750px;
+  margin: 12px auto;
+  padding: 16px;
+
+  text-align: center;
+
+  svg {
+    width: 150px;
+    height: auto;
+
+    stroke: $MidGray;
+    fill: $MidGray;
+    stroke-linejoin: round;
+    stroke-linecap: round;
+  }
+
+  p {
+    font-size: 16px;
+    color: $general-text-2;
+    margin-top: 1em;
+  }
+}

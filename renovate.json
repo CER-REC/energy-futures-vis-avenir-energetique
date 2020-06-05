@@ -1,0 +1,8 @@
+{
+  "extends": [
+    "config:base"
+  ],
+  "labels": ["Dependency", "Awaiting Review"],
+  "pin": { "automerge": true },
+  "supportPolicy": ["lts_latest"]
+}

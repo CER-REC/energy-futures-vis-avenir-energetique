@@ -1,0 +1,14 @@
+@mixin safariOnly {
+  @media not all and (min-resolution:.001dpcm) //Safari 
+    { @supports (-webkit-appearance:none) {
+      @content;
+    }
+  }
+
+}
+
+@mixin firefoxOnly {
+  @media screen and (min--moz-device-pixel-ratio:0) {
+    @content;
+  }
+}
