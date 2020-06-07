@@ -84,9 +84,9 @@ const Prototype = () => {
           // labelSkipWidth={12}
           // labelSkipHeight={12}
           // labelTextColor={{ from: 'color', modifiers: [ [ 'darker', 1.6 ] ] }}
-          animate={false}
-          // motionStiffness={90}
-          // motionDamping={15}
+          animate={true}
+          motionStiffness={90}
+          motionDamping={15}
         />
       </Grid>
     </Grid>
