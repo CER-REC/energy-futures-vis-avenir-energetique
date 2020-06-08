@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import enLocaleData from 'react-intl/locale-data/en';
 import frLocaleData from 'react-intl/locale-data/fr';
 import { IntlProvider, addLocaleData } from 'react-intl';
@@ -24,13 +24,13 @@ export default class AppWrapper extends React.PureComponent {
   }
 
   render() {
-    const content = (!this.state.supportedResolution && <UnsupportedWarning type="resolution" />)
-      || (!this.state.supportedBrowser && <UnsupportedWarning type="browser" />)
-      || (
-        <>
-          <React.Suspense fallback={null}><LazyApp /></React.Suspense>
-          {/* <LoadingIndicator text="loading" fullHeight /> */}
-        </>
+    const content =
+      (!this.state.supportedResolution && <UnsupportedWarning type="resolution" />) ||
+      (!this.state.supportedBrowser && <UnsupportedWarning type="browser" />) ||
+      (
+        <Suspense fallback={<LoadingIndicator text="loading" fullHeight />}>
+          <LazyApp />
+        </Suspense>
       );
 
     return (
