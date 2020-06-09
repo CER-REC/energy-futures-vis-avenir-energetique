@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 // import { ApolloClient } from 'apollo-client';
 // import { ApolloProvider } from 'react-apollo';
 // import { InMemoryCache } from 'apollo-cache-inmemory';
@@ -13,7 +13,8 @@ import React from 'react';
 // import allKeywordsQuery from '../../queries/allKeywords';
 // import { allCompaniesQuery, allRegionsQuery } from '../../queries/wheel';
 // import ComposedQuery from '../../components/ComposedQuery';
-import Prototype from '../../components/Prototype';
+import ByRegion from '../../pages/ByRegion';
+import Nav from '../../components/Nav';
 
 // const cache = new InMemoryCache();
 // const link = new HttpLink({
@@ -43,4 +44,12 @@ import Prototype from '../../components/Prototype';
 //   </ApolloProvider>
 // );
 
-export default () => <Prototype />;
+export default () => {
+  const [tab, setTab] = useState(0);
+  return (
+    <>
+      <Nav tab={tab} onChange={(_, tab) => setTab(tab)} />
+      {tab === 0 && <ByRegion />}
+    </>
+  );
+};

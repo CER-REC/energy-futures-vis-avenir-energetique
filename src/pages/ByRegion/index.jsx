@@ -1,18 +1,17 @@
 import React, { useState, useEffect } from 'react';
+import { makeStyles, Grid } from '@material-ui/core';
 import { ResponsiveBar } from '@nivo/bar';
 import rawData from './data';
-import {
-  Grid, AppBar, Tabs, Tab,
-} from '@material-ui/core';
 
-import Control from '../Control/index';
-import Region from '../Region/index';
+import Control from '../../components/Control';
+import Region from '../../components/Region';
 
 
 const PROVINCES = ['AB', 'BC', 'MB', 'NB', 'NL', 'NS', 'NT', 'NU', 'ON', 'PE', 'QC', 'SK', 'YT'];
 
-const Prototype = () => {
-  const [tab, setTab] = useState(0);
+const ByRegion = () => {
+  const classes = useStyles();
+
   const [data, setData] = useState(undefined); // year : object
 
   useEffect(() => {
@@ -32,29 +31,19 @@ const Prototype = () => {
     setData(readyData);
   }, []);
 
-  const handleTabChange = (_, tab) => setTab(tab);
+  if (!data) {
+    return null;
+  }
 
-  const tabs = (
-    <AppBar position="static">
-      <Tabs value={tab} onChange={handleTabChange}>
-        <Tab label="Total Demand" />
-        <Tab label="By Sector" />
-        <Tab label="Electricity" />
-        <Tab label="Senarios" />
-        <Tab label="Demand" />
-      </Tabs>
-    </AppBar>
-  );
-
-  const content = data && (
-    <Grid container wrap="nowrap" spacing={1} style={{ padding: 16 }}>
-      <Grid item style={{ width: 180 }}>
-        <Control />
+  return (
+    <Grid container wrap="nowrap" spacing={2} className={classes.root}>
+      <Grid item>
+        <Control width={180} />
       </Grid>
       <Grid item>
         <Region />
       </Grid>
-      <Grid item style={{ flexGrow: 1, height: 560 }}>
+      <Grid item className={classes.graph}>
         <ResponsiveBar
           data={data}
           keys={PROVINCES}
@@ -91,13 +80,17 @@ const Prototype = () => {
       </Grid>
     </Grid>
   );
-
-  return (
-    <>
-      {tabs}
-      {content}
-    </>
-  );
 };
 
-export default Prototype;
+const useStyles = makeStyles(theme => ({
+  root: {
+    padding: theme.spacing(2),
+    backgroundColor: theme.palette.background.paper,
+  },
+  graph: {
+    flexGrow: 1,
+    height: 700,
+  },
+}));
+
+export default ByRegion;

@@ -2,9 +2,11 @@ import requireContext from 'require-context.macro';
 import React from 'react';
 import { setIntlConfig, withIntl } from 'storybook-addon-intl';
 import { addDecorator, configure, addParameters } from '@storybook/react';
+import { themes } from '@storybook/theming/create';
 import Adapter from 'enzyme-adapter-react-16';
 import { configure as enzyme } from 'enzyme';
 import { addReadme, configureReadme } from 'storybook-readme';
+
 
 // Load Locale Data
 import { addLocaleData } from 'react-intl';
@@ -57,8 +59,8 @@ addParameters({ viewport: { viewports, defaultViewport: 'fullscreen' } });
 
 addParameters({
   options: {
-    brandTitle: 'Conditions DevDoc',
-    panelPosition: 'right',
+    brandTitle: 'Energy Future 2.0 DevDoc',
+    panelPosition: 'bottom',
   },
 });
 

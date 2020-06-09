@@ -8,6 +8,6 @@ describe('Components|LoadingIndicator', () => {
   describe('with default props', () => {
     const wrapper = shallow(<LoadingIndicator />);
 
-    shouldBehaveLikeAComponent(LoadingGuide, () => wrapper);
+    shouldBehaveLikeAComponent(LoadingIndicator, () => wrapper);
   });
 });
