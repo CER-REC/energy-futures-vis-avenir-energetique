@@ -2,7 +2,6 @@ import requireContext from 'require-context.macro';
 import React from 'react';
 import { setIntlConfig, withIntl } from 'storybook-addon-intl';
 import { addDecorator, configure, addParameters } from '@storybook/react';
-import { themes } from '@storybook/theming/create';
 import Adapter from 'enzyme-adapter-react-16';
 import { configure as enzyme } from 'enzyme';
 import { addReadme, configureReadme } from 'storybook-readme';
@@ -16,7 +15,6 @@ import frLocaleData from 'react-intl/locale-data/fr';
 import { lang } from '../src/constants';
 import i18nMessages from '../src/i18n';
 
-import '../src/styles.scss';
 
 addLocaleData(enLocaleData);
 addLocaleData(frLocaleData);
