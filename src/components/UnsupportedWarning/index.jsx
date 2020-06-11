@@ -1,9 +1,11 @@
 import React from 'react';
+import {
+  makeStyles, createStyles,
+} from '@material-ui/core';
 import propTypes from 'prop-types';
 import AdvancedFormattedMessage from '../AdvancedFormattedMessage';
 import TranslatedParagraphs from '../TranslatedParagraphs';
 
-import './styles.scss';
 
 const screenPath = (
   <path
@@ -58,21 +60,50 @@ const iconPath = (
   />
 );
 
-const UnsupportedWarning = ({ type }) => (
-  <div className="UnsupportedWarning">
-    <svg viewBox="282 400 200 150">
-      <g>
-        {screenPath}
-        {iconPath}
-      </g>
-    </svg>
-    {/* <FormattedMessage id={`components.unsupportedWarning.${type}.title`} tagName="h1" /> */}
-    <AdvancedFormattedMessage
-      id={`components.unsupportedWarning.${type}`}
-      tag={TranslatedParagraphs}
-    />
-  </div>
-);
+const UnsupportedWarning = ({ type }) => {
+  const classes = useStyles();
+
+  return (
+    <div className={classes.root}>
+      <svg viewBox="282 400 200 150">
+        <g>
+          {screenPath}
+          {iconPath}
+        </g>
+      </svg>
+      <AdvancedFormattedMessage
+        id={`components.unsupportedWarning.${type}`}
+        tag={TranslatedParagraphs}
+      />
+    </div>
+  );
+};
+
+const useStyles = makeStyles(theme => createStyles({
+  root: {
+    maxWidth: 750,
+    margin: `${theme.spacing(1.5)}px auto`,
+    padding: theme.spacing(2),
+    textAlign: 'center',
+
+    '& svg': {
+      width: 150,
+      height: 'auto',
+
+      stroke: theme.palette.grey[600],
+      fill: theme.palette.grey[600],
+      strokeLinejoin: 'round',
+      strokeLinecap: 'round',
+    },
+
+    '& p': {
+      fontSize: 16,
+      fontFamily: 'FiraSansCondensedLight',
+      color: theme.palette.grey[800],
+      marginTop: '1em',
+    },
+  },
+}));
 
 UnsupportedWarning.propTypes = {
   type: propTypes.oneOf(['resolution', 'browser']).isRequired,

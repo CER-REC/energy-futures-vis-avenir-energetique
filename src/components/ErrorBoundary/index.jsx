@@ -1,8 +1,31 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/core/styles';
 import { FormattedMessage } from 'react-intl';
 
-import './styles.scss';
+const styles = {
+  root: {
+    textAlign: 'center',
+    padding: '10% 0',
+  },
+  errorMessage: {
+    '& h1': {
+      fontFamily: 'FiraSansCondensedBold,sans-serif',
+      fontSize: '24px',
+      textTransform: 'uppercase',
+      marginBottom: 4,
+    },
+  },
+  details: {
+    '& details': {
+      textAlign: 'left',
+      display: 'inline-block',
+      paddingTop: '1em',
+      visibility: 'visible',
+      whiteSpace: 'pre-wrap',
+    },
+  },
+};
 
 class ErrorBoundary extends React.PureComponent {
   static propTypes = {
@@ -20,9 +43,6 @@ class ErrorBoundary extends React.PureComponent {
       error,
       errorInfo,
     });
-    // Dispatch an event to tell the LoadingGuide that we're mounted
-    const event = new CustomEvent('LoadingGuide.enabled', { detail: false });
-    window.dispatchEvent(event);
   }
 
   getRestoreLink = () => document.location.href;
@@ -37,8 +57,8 @@ class ErrorBoundary extends React.PureComponent {
         ...(this.state.error.graphQLErrors || []),
       ].filter(v => v);
       return (
-        <section className="ErrorBoundary">
-          <section className="errorMessage">
+        <section className={this.props.classes.root}>
+          <section className={this.props.classes.errorMessage}>
             <FormattedMessage id="components.errorBoundary.errorMessage" tagName="h1" />
           </section>
           <section className="restoreLink">
@@ -54,7 +74,7 @@ class ErrorBoundary extends React.PureComponent {
               <FormattedMessage id="components.errorBoundary.resetLinkText" />
             </a>
           </section>
-          <section className="details">
+          <section className={this.props.classes.details}>
             <details>
               {this.state.error && this.state.error.toString()}
               {details.map((v, i) => (
@@ -69,4 +89,4 @@ class ErrorBoundary extends React.PureComponent {
   }
 }
 
-export default ErrorBoundary;
+export default withStyles(styles)(ErrorBoundary);
