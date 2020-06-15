@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { makeStyles, Grid } from '@material-ui/core';
 import { ResponsiveLine } from '@nivo/line';
-import rawData from './data';
+import data from './data';
 
 import Control from '../../components/Control';
 import Region from '../../components/Region';
@@ -9,26 +9,6 @@ import Region from '../../components/Region';
 
 const ByScenario = () => {
   const classes = useStyles();
-
-  const [data, setData] = useState(undefined); // year : object
-
-  useEffect(() => {
-    const processedData = {};
-    (rawData || []).map(seg => {
-      if (!seg.year || !seg.value) {
-        return;
-      }
-      !processedData[seg.year] && (processedData[seg.year] = 0);
-      processedData[seg.year] += seg.value;
-    });
-
-    const readyData = [{
-      id: 'value',
-      data: Object.keys(processedData).map(year => ({ x: year, y: processedData[year] || 0 })),
-    }];
-
-    setData(readyData);
-  }, []);
 
   if (!data) {
     return null;

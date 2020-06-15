@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { makeStyles, Grid } from '@material-ui/core';
 import { ResponsiveBar } from '@nivo/bar';
-import rawData from './data';
+import data from './data';
 
 import Control from '../../components/Control';
 import Region from '../../components/Region';
@@ -11,25 +11,6 @@ const PROVINCES = ['AB', 'BC', 'MB', 'NB', 'NL', 'NS', 'NT', 'NU', 'ON', 'PE', '
 
 const ByRegion = () => {
   const classes = useStyles();
-
-  const [data, setData] = useState(undefined); // year : object
-
-  useEffect(() => {
-    const processedData = {};
-    (rawData || []).map(seg => {
-      if (!seg.year || !seg.province || !seg.value) {
-        return;
-      }
-      !processedData[seg.year] && (processedData[seg.year] = {});
-      !processedData[seg.year][seg.province] && (processedData[seg.year][seg.province] = 0);
-      processedData[seg.year][seg.province] += seg.value;
-    });
-
-    const readyData = Object.keys(processedData).map(year =>
-      PROVINCES.reduce((accu, province) => ({ ...accu, [province]: processedData[year][province] }), { year }));
-
-    setData(readyData);
-  }, []);
 
   if (!data) {
     return null;

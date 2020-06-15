@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { makeStyles, Grid } from '@material-ui/core';
 import { ResponsiveLine } from '@nivo/line';
-import rawData from './data';
+import data from './data';
 
 import Control from '../../components/Control';
 import Region from '../../components/Region';
@@ -11,27 +11,6 @@ const SOURCES = ['electricity', 'oilProducts', 'bio', 'naturalGas', 'coal', 'sol
 
 const BySector = () => {
   const classes = useStyles();
-
-  const [data, setData] = useState(undefined); // year : object
-
-  useEffect(() => {
-    const processedData = {};
-    (rawData || []).map(seg => {
-      if (!seg.year || !seg.source || !seg.value) {
-        return;
-      }
-      !processedData[seg.year] && (processedData[seg.year] = {});
-      !processedData[seg.year][seg.source] && (processedData[seg.year][seg.source] = 0);
-      processedData[seg.year][seg.source] += seg.value;
-    });
-
-    const readyData = SOURCES.map(source => ({
-      id: source,
-      data: Object.keys(processedData).map(year => ({ x: year, y: processedData[year][source] || 0 })),
-    }));
-
-    setData(readyData);
-  }, []);
 
   if (!data) {
     return null;
