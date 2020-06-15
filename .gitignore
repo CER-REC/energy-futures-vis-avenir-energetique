@@ -11,6 +11,7 @@ npm-debug.log
 LAST_MODIFIED
 VERSION
 storybook-static
+.storybook/__snapshots__/
 public/script/
 
 # System files
