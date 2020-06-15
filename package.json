@@ -7,7 +7,7 @@
     "ci:test": "npm run test -- --ci --reporters=default --reporters=jest-junit && codecov",
     "cz": "git-cz",
     "lint": "eslint -f gitlab --ext .js,.jsx .",
-    "test": "cross-env NODE_ENV=test jest",
+    "test": "cross-env NODE_ENV=test jest -u",
     "test:showcoverage": "open-cli coverage/lcov-report/index.html",
     "start": "npm run storybook",
     "storybook": "start-storybook -s ./src/images -s ./.storybook/wet-template -p 6006",

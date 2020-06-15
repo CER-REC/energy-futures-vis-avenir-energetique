@@ -8,7 +8,7 @@ const LoadingIndicator = ({ text, fullHeight }) => {
   const classes = useStyles({ text, fullHeight });
 
   return (
-    <Grid container className={classes.container}>
+    <Grid container className={`${classes.container} LoadingIndicator`}>
       <Grid container direction="column" justify="space-around" alignItems="center">
         <CircularProgress color="primary" size={66} />
         {text && <Typography variant="h6" color="primary">{text}</Typography>}

@@ -64,7 +64,7 @@ const UnsupportedWarning = ({ type }) => {
   const classes = useStyles();
 
   return (
-    <div className={classes.root}>
+    <div className={`${classes.root} UnsupportedWarning`}>
       <svg viewBox="282 400 200 150">
         <g>
           {screenPath}

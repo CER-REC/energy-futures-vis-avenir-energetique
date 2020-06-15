@@ -32,7 +32,7 @@ describe('Components|ErrorBoundary', () => {
     });
     describe('Should not fail and render the childs', () => {
       test('Good Child is there', () => {
-        expect(goodChildWrapper.type()).toEqual(GoodChild);
+        expect(goodChildWrapper.childAt(0).type()).toEqual(GoodChild);
       });
     });
   });
