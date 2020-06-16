@@ -17,7 +17,7 @@ module.exports = {
   },
   output: {
     path: BUILD_DIR,
-    publicPath: '/conditions/script/',
+    publicPath: '/energy-future/script/',
     filename: '[name].js',
   },
   devtool: devMode ? 'cheap-module-eval-source-map' : 'none',
