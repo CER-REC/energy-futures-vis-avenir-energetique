@@ -7,7 +7,7 @@ import { HttpLink } from 'apollo-link-http';
 import { lang } from '../../src/constants';
 
 const cache = new InMemoryCache();
-const link = new HttpLink({ uri: `/conditions/graphql?lang=${lang}` });
+const link = new HttpLink({ uri: `/energy-future/graphql?lang=${lang}` });
 const client = new ApolloClient({ cache, link, fetch });
 
 const addGQL = (storyFn, context) => (

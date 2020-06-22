@@ -1,20 +1,36 @@
 import React from 'react';
 import { makeStyles, Grid } from '@material-ui/core';
 import { ResponsiveBar } from '@nivo/bar';
-import data from './data';
+import { useQuery } from '@apollo/react-hooks';
+import gql from 'graphql-tag';
+// import data from './data';
 
 import Control from '../../components/Control';
 import Region from '../../components/Region';
 
+
+const RESOURCES = gql`
+  query {
+    energyDemands {
+      region
+      value: quantity
+      year
+    }
+  }
+`;
 
 const PROVINCES = ['AB', 'BC', 'MB', 'NB', 'NL', 'NS', 'NT', 'NU', 'ON', 'PE', 'QC', 'SK', 'YT'];
 
 const ByRegion = () => {
   const classes = useStyles();
 
-  if (!data) {
-    return null;
-  }
+  const { loading, error, data } = useQuery(RESOURCES);
+
+  console.log(loading, error, data);
+
+  // if (!rawData) {
+  //   return null;
+  // }
 
   return (
     <Grid container wrap="nowrap" spacing={2} className={classes.root}>
@@ -26,7 +42,7 @@ const ByRegion = () => {
       </Grid>
       <Grid item className={classes.graph}>
         <ResponsiveBar
-          data={data}
+          data={[]}
           keys={PROVINCES}
           indexBy="year"
           margin={{ top: 50, right: 0, bottom: 50, left: 80 }}
