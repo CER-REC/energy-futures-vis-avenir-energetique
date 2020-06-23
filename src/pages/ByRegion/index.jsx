@@ -1,36 +1,62 @@
-import React from 'react';
+import React, { useContext, useMemo, useCallback } from 'react';
 import { makeStyles, Grid } from '@material-ui/core';
 import { ResponsiveBar } from '@nivo/bar';
-import { useQuery } from '@apollo/react-hooks';
-import gql from 'graphql-tag';
-// import data from './data';
+// import { useQuery } from '@apollo/react-hooks';
+// import gql from 'graphql-tag';
+import { data as dataEnergyDemand } from './dataEnergyDemand';
+import { data as dataElectricityGeneration } from './dataElectricityGeneration';
+import { data as dataOilProduction } from './dataOilProduction';
+import { data as dataGasProduction } from './dataGasProduction';
 
+import { ConfigContext } from '../../containers/App/lazy';
+import { CONFIG_REPRESENTATION } from '../../types';
 import Control from '../../components/Control';
 import Region from '../../components/Region';
 
 
-const RESOURCES = gql`
-  query {
-    energyDemands {
-      region
-      value: quantity
-      year
-    }
-  }
-`;
-
-const PROVINCES = ['AB', 'BC', 'MB', 'NB', 'NL', 'NS', 'NT', 'NU', 'ON', 'PE', 'QC', 'SK', 'YT'];
+// const RESOURCES = gql`
+//   query {
+//     energyDemands {
+//       region
+//       value: quantity
+//       year
+//     }
+//   }
+// `;
 
 const ByRegion = () => {
   const classes = useStyles();
 
-  const { loading, error, data } = useQuery(RESOURCES);
+  const { config } = useContext(ConfigContext);
 
-  console.log(loading, error, data);
+  // const { loading, error, data } = useQuery(RESOURCES);
 
-  // if (!rawData) {
-  //   return null;
-  // }
+  const data = useMemo(() => {
+    switch (config.mainSelection) {
+      case 'energyDemand': return dataEnergyDemand;
+      case 'electricityGeneration': return dataElectricityGeneration;
+      case 'oilProduction': return dataOilProduction;
+      case 'gasProduction': default: return dataGasProduction;
+    }
+  }, [config.mainSelection]);
+
+  const configFilter = useCallback(row =>
+    config.regions.indexOf(row.province) > -1 &&
+    (!row.unit || row.unit.toLowerCase() === CONFIG_REPRESENTATION[config.unit].toLowerCase()) &&
+    (!row.scenario || row.scenario === config.scenario)
+  , [config]);
+
+  const processedData = useMemo(() => {
+    const byYear = data
+      .filter(configFilter)
+      .reduce((accu, curr) => {
+        !accu[curr.year] && (accu[curr.year] = {});
+        !accu[curr.year][curr.province] && (accu[curr.year][curr.province] = 0);
+        accu[curr.year][curr.province] += curr.value;
+        return accu;
+      }, {});
+    return Object.keys(byYear).map(year => ({ year, ...byYear[year] }));
+  }, [data, configFilter]);
 
   return (
     <Grid container wrap="nowrap" spacing={2} className={classes.root}>
@@ -42,8 +68,8 @@ const ByRegion = () => {
       </Grid>
       <Grid item className={classes.graph}>
         <ResponsiveBar
-          data={[]}
-          keys={PROVINCES}
+          data={processedData || []}
+          keys={config.regions}
           indexBy="year"
           margin={{ top: 50, right: 0, bottom: 50, left: 80 }}
           padding={0.1}
