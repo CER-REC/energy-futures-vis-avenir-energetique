@@ -50,7 +50,7 @@ class Visualization2 extends visualization
       title: Tr.datasetSelector.datasetSelectorHelpTitle[@app.language]
       content: => Tr.datasetSelector.datasetSelectorHelp[@app.language]
       attachmentSelector: '.datasetSelectorGroup'
-      analyticsEvent: 'Viz2 dataset help'
+      analyticsLabel: 'energy futures'
 
     @sectorsSelectorHelpPopover = new ControlsHelpPopover @app,
       popoverButtonId: 'sectorSelectorHelpButton'
@@ -59,7 +59,7 @@ class Visualization2 extends visualization
       title: Tr.sectorSelector.sectorSelectorHelpTitle[@app.language]
       content: => Tr.sectorSelector.sectorSelectorHelp[@app.language]
       attachmentSelector: '.sectorSelectorGroup'
-      analyticsEvent: 'Viz2 sector help'
+      analyticsLabel: 'sector'
 
     @unitsHelpPopover = new ControlsHelpPopover @app,
       popoverButtonId: 'unitSelectorHelpButton'
@@ -68,7 +68,7 @@ class Visualization2 extends visualization
       title: Tr.unitSelector.unitSelectorHelpTitle[@app.language]
       content: => Tr.unitSelector.unitSelectorHelp[@app.language]
       attachmentSelector: '.unitsSelectorGroup'
-      analyticsEvent: 'Viz2 unit help'
+      analyticsLabel: 'unit'
 
     @scenariosHelpPopover = new ControlsHelpPopover @app,
       popoverButtonId: 'scenarioSelectorHelpButton'
@@ -77,7 +77,7 @@ class Visualization2 extends visualization
       title: Tr.scenarioSelector.scenarioSelectorHelpTitle[@app.language]
       content: => Tr.scenarioSelector.scenarioSelectorHelp[@config.dataset][@app.language]
       attachmentSelector: '.scenarioSelectorGroup'
-      analyticsEvent: 'Viz2 scenario help'
+      analyticsLabel: 'scenario'
 
     @sourcesHelpPopover = new ControlsHelpPopover @app,
       popoverButtonId: 'sourceHelpButton'
@@ -97,7 +97,7 @@ class Visualization2 extends visualization
         contentString = Tr.sourceSelector.sourceSelectorHelp.generalHelp[@app.language] + contentString
         contentString
       attachmentSelector: '#powerSourceSelector'
-      analyticsEvent: 'Viz2 source help'
+      analyticsLabel: 'source'
       setupEvents: false
 
 
@@ -116,7 +116,7 @@ class Visualization2 extends visualization
           """ + contentString
         contentString
       attachmentSelector: '#provincesSelector'
-      analyticsEvent: 'Viz2 region help'
+      analyticsLabel: 'region'
       setupEvents: false
 
 
@@ -758,6 +758,7 @@ class Visualization2 extends visualization
         @accessConfig.setSource d.key
 
         @updateAccessibleFocus()
+        @reportPointOfInterestEvent d3.event.type
 
       dataset: @config.dataset
 
@@ -785,10 +786,15 @@ class Visualization2 extends visualization
     @sourceMenu.update()
 
 
-  orderChanged: (newOrder) =>
+  orderChanged: (newOrder, changedSource) =>
     newConfig = new @config.constructor @app
     newConfig.copy @config
     newConfig.setSourcesInOrder newOrder
+
+    @app.analyticsReporter.reportEvent
+      category: 'feature - reorder source'
+      action: d3.event.type
+      label: changedSource
 
     update = =>
       @config.setSourcesInOrder newOrder
@@ -808,6 +814,15 @@ class Visualization2 extends visualization
     newConfig = new @config.constructor @app
     newConfig.copy @config
     newConfig.flipSource dataDictionaryItem.key
+
+    if @config.sources.includes dataDictionaryItem.key
+      category = 'feature - remove source'
+    else
+      category = 'feature - add source'
+    @app.analyticsReporter.reportEvent
+      category: category
+      action: d3.event.type
+      label: dataDictionaryItem.key
 
     update = =>
       @config.flipSource dataDictionaryItem.key
@@ -829,12 +844,21 @@ class Visualization2 extends visualization
     if @config.sources.length == Constants.viz2Sources.length
       # If all sources are present, select none
       newConfig.resetSources false
+      @app.analyticsReporter.reportEvent
+        category: 'feature - remove all sources'
+        action: d3.event.type
     else if @config.sources.length > 0
       # If some sources are selected, select all
       newConfig.resetSources true
+      @app.analyticsReporter.reportEvent
+        category: 'feature - add all sources'
+        action: d3.event.type
     else if @config.sources.length == 0
       # If no sources are selected, select all
       newConfig.resetSources true
+      @app.analyticsReporter.reportEvent
+        category: 'feature - add all sources'
+        action: d3.event.type
 
     update = =>
       if @config.sources.length == Constants.viz2Sources.length
@@ -935,6 +959,11 @@ class Visualization2 extends visualization
     newConfig.copy @config
     newConfig.setProvince 'all'
 
+    @app.analyticsReporter.reportEvent
+      category: 'feature - set region'
+      action: d3.event.type
+      label: 'all'
+
     update = =>
       @config.setProvince 'all'
       @_provinceMenu.data @dataForProvinceMenu()
@@ -951,6 +980,11 @@ class Visualization2 extends visualization
     newConfig = new @config.constructor @app
     newConfig.copy @config
     newConfig.setProvince dataDictionaryItem.key
+
+    @app.analyticsReporter.reportEvent
+      category: 'feature - set region'
+      action: d3.event.type
+      label: dataDictionaryItem.key
 
     update = =>
       @config.setProvince dataDictionaryItem.key
@@ -976,18 +1010,22 @@ class Visualization2 extends visualization
           event.preventDefault()
           @accessConfig.setYear @accessConfig.activeYear + 1
           @updateAccessibleFocus()
+          @reportPointOfInterestEvent event.type
         when 'ArrowLeft'
           event.preventDefault()
           @accessConfig.setYear @accessConfig.activeYear - 1
           @updateAccessibleFocus()
+          @reportPointOfInterestEvent event.type
         when 'ArrowUp'
           event.preventDefault()
           @accessConfig.setSource @config.nextActiveSourceForward(@accessConfig.activeSource)
           @updateAccessibleFocus()
+          @reportPointOfInterestEvent event.type
         when 'ArrowDown'
           event.preventDefault()
           @accessConfig.setSource @config.nextActiveSourceReverse(@accessConfig.activeSource)
           @updateAccessibleFocus()
+          @reportPointOfInterestEvent event.type
 
     graphElement.addEventListener 'focus', =>
       # When we return to focusing the graph element, the graph sub element that the user
@@ -1055,5 +1093,11 @@ class Visualization2 extends visualization
           r: 5
           fill: 'red'
 
+
+  reportPointOfInterestEvent: (action) ->
+    @app.analyticsReporter.reportEvent
+      category: 'graph poi'
+      action: action
+      value: @accessibleStatusElement.innerHTML
 
 module.exports = Visualization2

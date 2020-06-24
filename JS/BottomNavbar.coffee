@@ -77,25 +77,48 @@ class BottomNavbar
     d3.event.stopPropagation()
     @app.popoverManager.showPopover @app.aboutThisProjectPopover,
       elementToFocusOnClose: @app.window.document.getElementById('aboutLinkAnchor')
-    @app.analyticsReporter.reportEvent 'Information', 'About modal'
+
+    @app.analyticsReporter.reportEvent
+      category: 'menu'
+      action: d3.event.type
+      label: 'footer'
+      value: 'about this project'
 
   methodologyClickHandler: =>
-    @app.analyticsReporter.reportEvent 'Downloads', 'Methodology PDF download'
+    # NB: This is an ordinary link to a PDF, do not preventDefault here.
+    @app.analyticsReporter.reportEvent
+      category: 'menu'
+      action: d3.event.type
+      label: 'footer'
+      value: 'methodology'
 
   dataDownloadClickHandler: =>
-    @app.analyticsReporter.reportEvent 'Downloads', 'Data CSV download'
+    # NB: This is a link to a server CSV endpoint, do not preventDefault here.
+    @app.analyticsReporter.reportEvent
+      category: 'menu'
+      action: d3.event.type
+      label: 'footer'
+      value: 'download data'
 
   twitterClickHandler: =>
     d3.event.preventDefault()
     ShortLinkBitly @app, (url) =>
       @app.window.open "https://twitter.com/intent/tweet?url=#{url}", 'targetWindow', 'width=650,height=650'
-    @app.analyticsReporter.reportEvent 'Social', 'Twitter bottom bar button click'
+    @app.analyticsReporter.reportEvent
+      category: 'menu'
+      action: d3.event.type
+      label: 'footer'
+      value: 'twitter'
 
   linkedinClickHandler: =>
     d3.event.preventDefault()
     ShortLinkBitly @app, (url) =>
       @app.window.open "https://www.linkedin.com/shareArticle?mini=true&url=#{url}&summary=#{url}", 'targetWindow', 'width=650,height=650'
-    @app.analyticsReporter.reportEvent 'Social', 'LinkedIn bottom bar button click'
+    @app.analyticsReporter.reportEvent
+      category: 'menu'
+      action: d3.event.type
+      label: 'footer'
+      value: 'linkedin'
 
   emailClickHandler: =>
     d3.event.preventDefault()
@@ -109,28 +132,11 @@ class BottomNavbar
 
       @app.window.location.href = emailUrl
 
-    @app.analyticsReporter.reportEvent 'Social', 'Email bottom bar button click'
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    @app.analyticsReporter.reportEvent
+      category: 'menu'
+      action: d3.event.type
+      label: 'footer'
+      value: 'mail'
 
 
 module.exports = BottomNavbar

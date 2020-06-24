@@ -1,6 +1,5 @@
 _ = require 'lodash'
 
-Tr = require '../TranslationTable.coffee'
 Constants = require '../Constants.coffee'
 
 class Visualization2Configuration
@@ -156,81 +155,7 @@ class Visualization2Configuration
     @dataset = configParams.dataset
 
 
-  # Description for PNG export
 
-  imageExportDescription: ->
-
-    sectorText = Tr.imageExportText.sectors[@sector][@app.language]
- 
-    unitText = switch @unit
-      when 'petajoules'
-        Tr.unitSelector.petajoulesButton[@app.language]
-      when 'kilobarrelEquivalents'
-        Tr.unitSelector.kilobarrelEquivalentsButton[@app.language]
-
-    scenarioText = switch @scenario
-      when 'reference'
-        Tr.scenarioSelector.referenceButton[@app.language]
-      when 'constrained'
-        Tr.scenarioSelector.constrainedButton[@app.language]
-      when 'high'
-        Tr.scenarioSelector.highPriceButton[@app.language]
-      when 'low'
-        Tr.scenarioSelector.lowPriceButton[@app.language]
-      when 'highLng'
-        Tr.scenarioSelector.highLngButton[@app.language]
-      when 'noLng'
-        Tr.scenarioSelector.noLngButton[@app.language]
-      when 'technology'
-        Tr.scenarioSelector.technologyButton[@app.language]
-      when 'hcp'
-        Tr.scenarioSelector.hcpButton[@app.language]
-
-
-    regionText = if @province == 'all'
-      'CANADA'
-    else
-      "#{Tr.viewBySelector.viewByProvinceButton[@app.language]}: #{@province}"
-   
-    datasetText = switch @dataset
-      when 'jan2016'
-        "#{Tr.report[@app.language]}#{Tr.datasetSelector.jan2016Button[@app.language]}"
-      # when 'oct2016'
-      #   "#{Tr.report[@app.language]}#{Tr.datasetSelector.oct2016Button[@app.language]}"
-      when 'oct2017'
-        "#{Tr.report[@app.language]}#{Tr.datasetSelector.oct2017Button[@app.language]}"
-      when 'oct2018'
-        "#{Tr.report[@app.language]}#{Tr.datasetSelector.oct2018Button[@app.language]}"
-   
-    description = ''
-    description += "#{datasetText} - "
-    description += "#{Tr.mainSelector.totalDemandButton[@app.language]} - "
-    description += "#{Tr.imageExportText.sector[@app.language]}: #{sectorText} - "
-    description += "#{Tr.imageExportText.unit[@app.language]}: #{unitText} - "
-    description += "#{Tr.imageExportText.scenario[@app.language]}: #{scenarioText} - "
-    description += "#{regionText}"
-
-    description
-
-
-  pngFileName: ->
-
-    region = if @province == 'all'
-      'CANADA'
-    else
-      @province
-
-    components = [
-      Tr.landingPage.mainHeader[@app.language]
-      Tr.visualization2Title[@app.language]
-      Tr.imageExportText.sectors[@sector][@app.language]
-      Tr.scenarioSelector.names[@scenario][@app.language]
-      region
-    ]
-
-    filename = components.join ' - '
-    filename += '.png'
-    filename
 
 
   isValidSourcesInOrder: (newOrder) ->

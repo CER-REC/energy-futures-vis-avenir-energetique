@@ -47,7 +47,7 @@ class Visualization1 extends visualization
       title: Tr.datasetSelector.datasetSelectorHelpTitle[@app.language]
       content: => Tr.datasetSelector.datasetSelectorHelp[@app.language]
       attachmentSelector: '.datasetSelectorGroup'
-      analyticsEvent: 'Viz1 dataset help'
+      analyticsLabel: 'energy futures'
 
     @mainSelectorHelpPopover = new ControlsHelpPopover @app,
       popoverButtonId: 'mainSelectorHelpButton'
@@ -56,7 +56,7 @@ class Visualization1 extends visualization
       title: Tr.mainSelector.selectOneLabel[@app.language]
       content: => Tr.mainSelector.mainSelectorHelp[@app.language]
       attachmentSelector: '.mainSelectorSection'
-      analyticsEvent: 'Viz1 main selection help'
+      analyticsLabel: 'select one'
 
     @unitsHelpPopover = new ControlsHelpPopover @app,
       popoverButtonId: 'unitSelectorHelpButton'
@@ -65,7 +65,7 @@ class Visualization1 extends visualization
       title: Tr.unitSelector.unitSelectorHelpTitle[@app.language]
       content: => Tr.unitSelector.unitSelectorHelp[@app.language]
       attachmentSelector: '.unitsSelectorGroup'
-      analyticsEvent: 'Viz1 unit help'
+      analyticsLabel: 'unit'
 
     @scenariosHelpPopover = new ControlsHelpPopover @app,
       popoverButtonId: 'scenarioSelectorHelpButton'
@@ -74,7 +74,7 @@ class Visualization1 extends visualization
       title: Tr.scenarioSelector.scenarioSelectorHelpTitle[@app.language]
       content: => Tr.scenarioSelector.scenarioSelectorHelp[@config.dataset][@app.language]
       attachmentSelector: '.scenarioSelectorGroup'
-      analyticsEvent: 'Viz1 scenario help'
+      analyticsLabel: 'scenario'
 
     @provincesHelpPopover = new ControlsHelpPopover @app,
       popoverButtonId: 'provinceHelpButton'
@@ -90,6 +90,7 @@ class Visualization1 extends visualization
         contentString
       attachmentSelector: '#provincesSelector'
       setupEvents: false
+      analyticsLabel: 'region'
 
 
 
@@ -106,8 +107,6 @@ class Visualization1 extends visualization
     @getData()
 
     @renderBrowserTemplate()
-
-    @addDatasetToggle()
 
     @_margin =
       top: 20
@@ -671,12 +670,21 @@ class Visualization1 extends visualization
     if @config.provinces.length == Constants.provinces.length
       # If all provinces are present, select none
       newConfig.resetProvinces false
+      @app.analyticsReporter.reportEvent
+        category: 'feature - remove all regions'
+        action: d3.event.type
     else if @config.provinces.length > 0
       # If some provinces are selected, select all
       newConfig.resetProvinces true
+      @app.analyticsReporter.reportEvent
+        category: 'feature - add all regions'
+        action: d3.event.type
     else if @config.provinces.length == 0
       # If no provinces are selected, select all
       newConfig.resetProvinces true
+      @app.analyticsReporter.reportEvent
+        category: 'feature - add all regions'
+        action: d3.event.type
 
     update = =>
       if @config.provinces.length == Constants.provinces.length
@@ -697,10 +705,15 @@ class Visualization1 extends visualization
 
 
 
-  orderChanged: (newOrder) =>
+  orderChanged: (newOrder, changedProvince) =>
     newConfig = new @config.constructor @app
     newConfig.copy @config
     newConfig.setProvincesInOrder newOrder
+
+    @app.analyticsReporter.reportEvent
+      category: 'feature - reorder region'
+      action: d3.event.type
+      label: changedProvince
 
     update = =>
       @config.setProvincesInOrder newOrder
@@ -716,6 +729,15 @@ class Visualization1 extends visualization
     newConfig = new @config.constructor @app
     newConfig.copy @config
     newConfig.flipProvince dataDictionaryItem.key
+
+    if @config.provinces.includes dataDictionaryItem.key
+      category = 'feature - remove region'
+    else
+      category = 'feature - add region'
+    @app.analyticsReporter.reportEvent
+      category: category
+      action: d3.event.type
+      label: dataDictionaryItem.key
 
     update = =>
       @config.flipProvince dataDictionaryItem.key
@@ -740,18 +762,22 @@ class Visualization1 extends visualization
           event.preventDefault()
           @accessConfig.setYear @accessConfig.activeYear + 1
           @updateAccessibleFocus()
+          @reportPointOfInterestEvent event.type
         when 'ArrowLeft'
           event.preventDefault()
           @accessConfig.setYear @accessConfig.activeYear - 1
           @updateAccessibleFocus()
+          @reportPointOfInterestEvent event.type
         when 'ArrowUp'
           event.preventDefault()
           @accessConfig.setProvince @config.nextActiveProvinceForward(@accessConfig.activeProvince)
           @updateAccessibleFocus()
+          @reportPointOfInterestEvent event.type
         when 'ArrowDown'
           event.preventDefault()
           @accessConfig.setProvince @config.nextActiveProvinceReverse(@accessConfig.activeProvince)
           @updateAccessibleFocus()
+          @reportPointOfInterestEvent event.type
 
     graphElement.addEventListener 'focus', =>
       # When we return to focusing the graph element, the graph sub element that the user
@@ -798,6 +824,14 @@ class Visualization1 extends visualization
     @accessConfig.setYear d.data.x
     @accessConfig.setProvince d.name
     @updateAccessibleFocus()
+
+    @reportPointOfInterestEvent d3.event.type
+
+  reportPointOfInterestEvent: (action) ->
+    @app.analyticsReporter.reportEvent
+      category: 'graph poi'
+      action: action
+      value: @accessibleStatusElement.innerHTML
 
 
 

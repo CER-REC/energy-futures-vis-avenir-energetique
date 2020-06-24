@@ -56,7 +56,7 @@ class NavbarInfoPopover
     @closeButton.on 'keydown', null
 
     d3.select('.navbarMenuIcon').classed 'selected', false
-    d3.select('.navbarMenuIcon').html "<img src='IMG/navbar_Icons/explanationIcon_ColourBG.svg' alt='#{Tr.altText.explanationIcon_ColourBG[@app.language]}'>"
+    d3.select('.navbarMenuIcon').html "<img src='IMG/navbar_icons/explanationIcon_ColourBG.svg' alt='#{Tr.altText.explanationIcon_ColourBG[@app.language]}'>"
     d3.select('.navbarInfoSection').classed 'hidden', true
 
 

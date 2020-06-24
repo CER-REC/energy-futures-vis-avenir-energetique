@@ -244,7 +244,7 @@ class SquareMenu
     newDisplayOrder.reverse()
 
     # Notify the rest of the app that the order for this menu has changed
-    @_orderChangedHandler newDisplayOrder
+    @_orderChangedHandler newDisplayOrder, @draggedIcon
 
 
 
@@ -374,12 +374,12 @@ class SquareMenu
           id: @options.helpButtonId
         .on 'click', =>
           d3.event.stopPropagation()
-          @_showHelpHandler()
+          @_showHelpHandler d3.event
         .on 'keydown', =>
           if d3.event.key == 'Enter' or d3.event.key == ' '
             d3.event.preventDefault()
             d3.event.stopPropagation()
-            @_showHelpHandler()
+            @_showHelpHandler d3.event
 
 
     if @_addAllSquare
@@ -482,6 +482,7 @@ class SquareMenu
       .focus()
 
   # Swap two menu items, update the app, and then update the menu display
+  # This is used exclusively by keyboard input, arrow keys
   swapItems: (currentBin, newBin) ->
     return unless @_canDrag
     return if newBin < 0 or newBin >= @_data.length
@@ -489,6 +490,7 @@ class SquareMenu
     newOrder = @_data.map (item) ->
       item.key
 
+    swappedKey = newOrder[currentBin]
     temp = newOrder[newBin]
     newOrder[newBin] = newOrder[currentBin]
     newOrder[currentBin] = temp
@@ -499,7 +501,7 @@ class SquareMenu
     # reverse the order back to what it used to be.
     newOrder.reverse()
 
-    @_orderChangedHandler newOrder
+    @_orderChangedHandler newOrder, swappedKey
     @update()
     @placeFocus newBin
 

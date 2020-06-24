@@ -1,6 +1,5 @@
 _ = require 'lodash'
 Constants = require '../Constants.coffee'
-Tr = require '../TranslationTable.coffee'
 
 class Visualization1Configuration
   defaultOptions:
@@ -187,83 +186,7 @@ class Visualization1Configuration
     @dataset = configParams.dataset
 
 
-  # Description for PNG export
-  imageExportDescription: ->
 
-    mainSelectionText = switch @mainSelection
-      when 'energyDemand'
-        Tr.mainSelector.totalDemandButton[@app.language]
-      when 'electricityGeneration'
-        Tr.mainSelector.electricityGenerationButton[@app.language]
-      when 'oilProduction'
-        Tr.mainSelector.oilProductionButton[@app.language]
-      when 'gasProduction'
-        Tr.mainSelector.gasProductionButton[@app.language]
-
-    unitText = switch @unit
-      when 'petajoules'
-        Tr.unitSelector.petajoulesButton[@app.language]
-      when 'kilobarrelEquivalents'
-        Tr.unitSelector.kilobarrelEquivalentsButton[@app.language]
-      when 'gigawattHours'
-        Tr.unitSelector.gigawattHoursButton[@app.language]
-      when 'thousandCubicMetres'
-        Tr.unitSelector.thousandCubicMetresButton[@app.language]
-      when 'millionCubicMetres'
-        Tr.unitSelector.millionCubicMetresButton[@app.language]
-      when 'kilobarrels'
-        Tr.unitSelector.kilobarrelsButton[@app.language]
-      when 'cubicFeet'
-        Tr.unitSelector.cubicFeetButton[@app.language]
-
-    scenarioText = switch @scenario
-      when 'reference'
-        Tr.scenarioSelector.referenceButton[@app.language]
-      when 'constrained'
-        Tr.scenarioSelector.constrainedButton[@app.language]
-      when 'high'
-        Tr.scenarioSelector.highPriceButton[@app.language]
-      when 'low'
-        Tr.scenarioSelector.lowPriceButton[@app.language]
-      when 'highLng'
-        Tr.scenarioSelector.highLngButton[@app.language]
-      when 'noLng'
-        Tr.scenarioSelector.noLngButton[@app.language]
-      when 'technology'
-        Tr.scenarioSelector.technologyButton[@app.language]
-      when 'hcp'
-        Tr.scenarioSelector.hcpButton[@app.language]
-
-    datasetText = switch @dataset
-      when 'jan2016'
-        "#{Tr.report[@app.language]}#{Tr.datasetSelector.jan2016Button[@app.language]}"
-      # when 'oct2016'
-      #   "#{Tr.report[@app.language]}#{Tr.datasetSelector.oct2016Button[@app.language]}"
-      when 'oct2017'
-        "#{Tr.report[@app.language]}#{Tr.datasetSelector.oct2017Button[@app.language]}"
-      when 'oct2018'
-        "#{Tr.report[@app.language]}#{Tr.datasetSelector.oct2018Button[@app.language]}"
-
-    description = ''
-    description += "#{datasetText} - "
-    description += "#{mainSelectionText} - "
-    description += "#{Tr.imageExportText.unit[@app.language]}: #{unitText} - "
-    description += "#{Tr.imageExportText.scenario[@app.language]}: #{scenarioText}"
-
-    description
-
-
-  pngFileName: ->
-
-    components = [
-      Tr.landingPage.mainHeader[@app.language]
-      Tr.visualization1Titles[@mainSelection][@app.language]
-      Tr.scenarioSelector.names[@scenario][@app.language]
-    ]
-
-    filename = components.join ' - '
-    filename += '.png'
-    filename
 
 
   isValidProvincesInOrder: (newOrder) ->

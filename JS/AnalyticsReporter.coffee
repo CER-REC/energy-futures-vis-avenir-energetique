@@ -1,87 +1,85 @@
+V1 = require 'uuid/v1'
+BrowserCookies = require 'browser-cookies'
+
 Constants = require './Constants.coffee'
 
-# Google analytics reporting integration, tailored for the CER.
+# Google Tag Manager reporting integration, tailored for the CER.
 class AnalyticsReporter
 
   constructor: (@app) ->
-    if @app.window.ga?
-      @ga = @app.window.ga
-      @setupVideoAnalytics()
+    if @app.window.dataLayer?
+      @dataLayer = @app.window.dataLayer
+
+      @userUuid = BrowserCookies.get 'energy-futures-UUID'
+      if @userUuid == null
+        @userUuid = V1()
+        BrowserCookies.set 'energy-futures-UUID', @userUuid
+
+      # For integration with the page language switch system.
+      window.reportLanguageEvent = =>
+
+        if @app.language is 'en'
+          language = 'fr'
+        else
+          language = 'en'
+
+        @reportEvent
+          category: 'menu'
+          action: 'click'
+          label: 'language'
+          value: language
+
     else
-      console.warn 'Google analytics object not found.'
-
-  setupVideoAnalytics: ->
-
-    # We want to instrument the video player with analytics, but it lives in an iframe.
-    # Communication can only be initiated from the iframe to the parent window.
-    # So, we add a global function to do the reporting, to be called in the iframe's
-    # context. See views/wet_video_reporter.mustache
-    @app.window.attachVideoAnalytics = (videoElement) =>
-
-      videoElement.addEventListener 'timeupdate', =>
-        @reportEvent 'Video', "Played: #{videoElement.currentTime}s"
-
-      videoElement.addEventListener 'play', =>
-        @reportEvent 'Video', 'Play'
-
-      videoElement.addEventListener 'pause', =>
-        @reportEvent 'Video', 'Pause'
-
-      videoElement.addEventListener 'ended', =>
-        @reportEvent 'Video', 'Ended'
+      console.warn 'Google Tag Manager dataLayer not found.'
 
 
-  reportPage: (params) ->
-    return unless @ga?
 
-    ###
-      The following custom dimensions need to be set up for this app in Google Analytics
-      See also: Constants.googleAnalyticsCustomDimensions for index assignments
+  # options, an object with the following attributes, all strings
 
-      vis_page
-      vis_mainSelection
-      vis_unit
-      vis_dataset
-      vis_sector
-      vis_viewBy
-      vis_year
-      vis_scenario
-      vis_scenarios
-      vis_source
-      vis_sources
-      vis_sourcesInOrder
-      vis_province
-      vis_provinces
-      vis_provincesInOrder
-    ###
+  # category: Required, a string for the category of the event/
+  # 'menu' 'media' 'feature - <featuretype>' 'help' 'graph poi'
+  # <featuretype> is one of the selector types, for configuring graphs.
 
-    # We'll rely on Google Analytics' language detection feature instead of our parameter
-    delete params.language if params.language?
+  # action: Required, the action the user took.
+  # 'click' 'keydown' 'drag'
 
-    gaMessage = {}
+  # label: Optional, provides more detail.
 
-    for paramName, param of params
-      dimensionName = Constants.googleAnalyticsCustomDimensions[paramName]
-      gaMessage[dimensionName] = param
+  # value: Optional, provides more detail.
+  # '<subvisualization>' '<footer item>' '<popover text>'
 
-    # We want to track the URL without the long string of URL parameters.
-    location = @app.window.document.location
-    @ga 'energyFutures.set', 'page', "#{location.protocol}//#{location.host}#{location.pathname}"
+  # subVisualization: Optional, the current visualization page.
+  # If this option is not given, we use @app.page.
+  # 'landing page' 'by region', 'by sector', 'electricity generation', 'scenarios', 'demand'
 
-    @ga 'energyFutures.send', 'pageview', gaMessage
+  # For details about the possible category/action values, see the drive spreadsheet:
+  # Energy Futures Analytics Events
 
+  reportEvent: (options) ->
+    return unless @dataLayer?
 
-  reportEvent: (category, action) ->
-    return unless @ga?
+    # We've decided not to track analytics for back/forward navigation
+    return if options.action is 'pageHistory'
 
-    @ga 'energyFutures.send',
-      hitType: 'event'
-      eventCategory: category
-      eventAction: action
+    unless options.subVisualization?
+      options.subVisualization = Constants.analyticsPageMapping[@app.page]
+    unless options.category
+      console.error 'Missing analytics category', options
+    unless options.action
+      console.error 'Missing analytics action', options
 
-    # unused, available attributes:
-      # eventLabel:
-      # eventValue:
+    data =
+      event: 'visualization interaction'
+      category: options.category
+      action: options.action
+      userID: @userUuid
+      visualization: 'energy future'
+      subVisualization: options.subVisualization
+
+    data.label = options.label if options.label?
+    data.value = options.value if options.value?
+
+    window.dataLayer.push data
 
 
 

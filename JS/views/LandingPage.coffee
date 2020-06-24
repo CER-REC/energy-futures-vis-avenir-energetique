@@ -3,14 +3,6 @@ Mustache = require 'mustache'
 
 LandingPageTemplate = require '../templates/LandingPage.mustache'
 
-# A WET 4 compatible video template was built in anticipation of an eventual upgrade to
-# WET 4. The WET 4 video template was built to work in the stock WET 4 distribution
-# template, if the production version of WET 4 at the CER is similar enough to the stock
-# version, then swapping out the WET 3 video for the WET 4 video should just work.
-
-Wet3VideoTemplate = require '../templates/Wet3Video.mustache'
-# Wet4VideoTemplate = require '../templates/Wet4Video.mustache'
-
 
 class LandingPage
 
@@ -28,7 +20,6 @@ class LandingPage
         visualization4Link: Tr.landingPage.visualization4Link[@app.language]
         visualization5Link: Tr.landingPage.visualization5Link[@app.language]
         panelRightContent: Tr.landingPage.landingPageImage[@app.language]
-        # panelRightContent: Mustache.render(Wet4VideoTemplate)
 
     @addEventListeners()
 
@@ -41,23 +32,43 @@ class LandingPage
       event.stopPropagation()
       @app.popoverManager.showPopover @app.aboutThisProjectPopover,
         elementToFocusOnClose: @aboutHyperlink
-      @app.analyticsReporter.reportEvent 'Information', 'About modal'
+      @app.analyticsReporter.reportEvent
+        category: 'menu'
+        action: event.type
+        label: 'link'
+        value: 'about this project'
+
     @aboutHyperlinkEnterHandler = (event) =>
       if event.key == 'Enter' or event.key == ' '
         event.preventDefault()
         event.stopPropagation()
         @app.popoverManager.showPopover @app.aboutThisProjectPopover,
           elementToFocusOnClose: @aboutHyperlink
-        @app.analyticsReporter.reportEvent 'Information', 'About modal'
+        @app.analyticsReporter.reportEvent
+          category: 'menu'
+          action: event.type
+          label: 'link'
+          value: 'about this project'
+
     @aboutHyperlink.addEventListener 'click', @aboutHyperlinkClickHandler
     @aboutHyperlink.addEventListener 'keydown', @aboutHyperlinkEnterHandler
 
     @methodologyLink = @app.window.document.getElementById 'landingPageMethodologyHyperlink'
-    @methodologyLinkClickHandler = =>
-      @app.analyticsReporter.reportEvent 'Downloads', 'Methodology PDF download'
+    @methodologyLinkClickHandler = (event) =>
+      @app.analyticsReporter.reportEvent
+        category: 'menu'
+        action: event.type
+        label: 'link'
+        value: 'methodology'
+
     @methodologyLinkEnterHandler = (event) =>
       if event.key == 'Enter' # Ordinary links are not triggered by space
-        @app.analyticsReporter.reportEvent 'Downloads', 'Methodology PDF download'
+        @app.analyticsReporter.reportEvent
+          category: 'menu'
+          action: event.type
+          label: 'link'
+          value: 'methodology'
+
     @methodologyLink.addEventListener 'click', @methodologyLinkClickHandler
     @methodologyLink.addEventListener 'keydown', @methodologyLinkEnterHandler
 
@@ -70,12 +81,15 @@ class LandingPage
         language: @app.language
       },
         shouldSelectNavbarItem: false
+        action: event.type
     @viz1LinkEnterHandler = (event) =>
       if event.key == 'Enter' or event.key == ' '
         event.preventDefault()
-        @app.router.navigate
+        @app.router.navigate {
           page: 'viz1'
           language: @app.language
+        },
+          action: event.type
 
     @viz1Link.addEventListener 'click', @viz1LinkClickHandler
     @viz1Link.addEventListener 'keydown', @viz1LinkEnterHandler
@@ -89,12 +103,15 @@ class LandingPage
         language: @app.language
       },
         shouldSelectNavbarItem: false
+        action: event.type
     @viz2LinkEnterHandler = (event) =>
       if event.key == 'Enter' or event.key == ' '
         event.preventDefault()
-        @app.router.navigate
+        @app.router.navigate {
           page: 'viz2'
           language: @app.language
+        },
+          action: event.type
     @viz2Link.addEventListener 'keydown', @viz2LinkEnterHandler
     @viz2Link.addEventListener 'click', @viz2LinkClickHandler
 
@@ -107,12 +124,15 @@ class LandingPage
         language: @app.language
       },
         shouldSelectNavbarItem: false
+        action: event.type
     @viz3LinkEnterHandler = (event) =>
       if event.key == 'Enter' or event.key == ' '
         event.preventDefault()
-        @app.router.navigate
+        @app.router.navigate {
           page: 'viz3'
           language: @app.language
+        },
+          action: event.type
     @viz3Link.addEventListener 'click', @viz3LinkClickHandler
     @viz3Link.addEventListener 'keydown', @viz3LinkEnterHandler
 
@@ -125,12 +145,15 @@ class LandingPage
         language: @app.language
       },
         shouldSelectNavbarItem: false
+        action: event.type
     @viz4LinkEnterHandler = (event) =>
       if event.key == 'Enter' or event.key == ' '
         event.preventDefault()
-        @app.router.navigate
+        @app.router.navigate {
           page: 'viz4'
           language: @app.language
+        },
+          action: event.type
     @viz4Link.addEventListener 'click', @viz4LinkClickHandler
     @viz4Link.addEventListener 'keydown', @viz4LinkEnterHandler
 
@@ -144,12 +167,15 @@ class LandingPage
         language: @app.language
       },
         shouldSelectNavbarItem: false
+        action: event.type
     @viz5LinkEnterHandler = (event) =>
       if event.key == 'Enter' or event.key == ' '
         event.preventDefault()
-        @app.router.navigate
+        @app.router.navigate {
           page: 'viz5'
           language: @app.language
+        },
+          action: event.type
     @viz5Link.addEventListener 'click', @viz5LinkClickHandler
     @viz5Link.addEventListener 'keydown', @viz5LinkEnterHandler
 

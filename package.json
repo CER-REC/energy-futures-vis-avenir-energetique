@@ -29,6 +29,7 @@
     "query-string": "^6.8.3",
     "request": "^2.88.0",
     "request-promise": "^4.2.4",
+    "uuid": "^3.3.3",
     "winston": "^3.2.1",
     "d3": "3.5.17",
     "lodash": "^4.17.15",

@@ -88,7 +88,7 @@ class NavbarHelpPopover
     @closeButton.on 'keydown', null
 
     d3.select('.navbarHelpIcon').classed 'selected', false
-    d3.select('.navbarHelpIcon').html "<img src='IMG/navbar_Icons/questionMark_ColourBG.svg' alt='#{Tr.altText.questionMark_ColourBG[@app.language]}'>"
+    d3.select('.navbarHelpIcon').html "<img src='IMG/navbar_icons/questionMark_ColourBG.svg' alt='#{Tr.altText.questionMark_ColourBG[@app.language]}'>"
     d3.select('.navbarHelpSection').classed 'hidden', true
 
 

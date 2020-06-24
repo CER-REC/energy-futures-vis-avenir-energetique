@@ -124,6 +124,11 @@ class Visualization
           newConfig.setDataset d.dataset
           newConfig.setScenario @config.scenario
 
+          @app.analyticsReporter.reportEvent
+            category: 'feature - dataset'
+            action: d3.event.type
+            label: d.dataset
+
           update = =>
             @config.setDataset d.dataset
 
@@ -173,6 +178,11 @@ class Visualization
           newConfig.copy @config
           newConfig.setUnit d.unitName
 
+          @app.analyticsReporter.reportEvent
+            category: 'feature - unit'
+            action: d3.event.type
+            label: d.unitName
+
           update = =>
             @config.setUnit d.unitName
             # TODO: For efficiency, only rerender what's necessary.
@@ -213,6 +223,11 @@ class Visualization
           newConfig.copy @config
           newConfig.setScenario d.scenarioName
 
+          @app.analyticsReporter.reportEvent
+            category: 'feature - set scenario'
+            action: d3.event.type
+            label: d.scenarioName
+
           update = =>
             @config.setScenario d.scenarioName
             # TODO: For efficiency, only rerender what's necessary.
@@ -242,6 +257,11 @@ class Visualization
       newConfig = new @config.constructor @app
       newConfig.copy @config
       newConfig.setSector d.sectorName
+
+      @app.analyticsReporter.reportEvent
+        category: 'feature - sector'
+        action: d3.event.type
+        label: d.sectorName
 
       update = =>
         @config.setSector d.sectorName
@@ -297,6 +317,11 @@ class Visualization
       newConfig = new @config.constructor @app
       newConfig.copy @config
       newConfig.setMainSelection d.selectorName
+
+      @app.analyticsReporter.reportEvent
+        category: 'feature - main selection'
+        action: d3.event.type
+        label: d.selectorName
 
       update = =>
         @config.setMainSelection d.selectorName

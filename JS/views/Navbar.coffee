@@ -171,13 +171,16 @@ class Navbar
             language: @app.language
           },
             shouldSelectNavbarItem: false
+            action: d3.event.type
       .on 'keydown', (d) =>
         if (d3.event.key == 'Enter' or d3.event.key == ' ') and d.page != @navbarState
           d3.event.preventDefault()
           d3.event.stopPropagation()
-          @app.router.navigate
+          @app.router.navigate {
             page: d.page
             language: @app.language
+          },
+            action: d3.event.type
 
 
       .style
@@ -253,8 +256,11 @@ class Navbar
           navbarHelpImageSelected: d.navbarHelpImageSelected
           helpPopoverHeaderClass: d.helpPopoverHeaderClass
           elementToFocusOnClose: @app.window.document.querySelector('.navbarHelpIcon')
-        @app.analyticsReporter.reportEvent 'Navbar help', @navbarState
-    
+        @app.analyticsReporter.reportEvent
+          category: 'help'
+          action: d3.event.type
+          label: 'visualization help'
+
     vizNavbar.select('.navbarHelpIcon')
       .on 'click', helpButtonClick
       .on 'keydown', (d) ->
@@ -273,7 +279,11 @@ class Navbar
           infoPopoverHeader: d.infoPopoverHeader
           infoPopoverHeaderClass: d.helpPopoverHeaderClass
           elementToFocusOnClose: @app.window.document.querySelector('.navbarMenuIcon')
-        @app.analyticsReporter.reportEvent 'Navbar info', @navbarState
+        @app.analyticsReporter.reportEvent
+          category: 'help'
+          action: d3.event.type
+          label: 'visualization information'
+
 
     vizNavbar.select('.navbarMenuIcon')
       .on 'click', infoButtonClick

@@ -1,6 +1,5 @@
 _ = require 'lodash'
 
-Tr = require '../TranslationTable.coffee'
 Constants = require '../Constants.coffee'
 
 
@@ -144,77 +143,6 @@ class Visualization5Configuration
     @rightProvince = configParams.rightProvince
     @sector = configParams.sector
 
-
-  # Description for PNG export
-  imageExportDescription: ->
-    datasetText = switch @dataset
-      when 'jan2016'
-        "#{Tr.report[@app.language]}#{Tr.datasetSelector.jan2016Button[@app.language]}"
-      # when 'oct2016'
-      #   "#{Tr.report[@app.language]}#{Tr.datasetSelector.oct2016Button[@app.language]}"
-      when 'oct2017'
-        "#{Tr.report[@app.language]}#{Tr.datasetSelector.oct2017Button[@app.language]}"
-      when 'oct2018'
-        "#{Tr.report[@app.language]}#{Tr.datasetSelector.oct2018Button[@app.language]}"
-
-    sectorText = Tr.imageExportText.sectors[@sector][@app.language]
-
-    scenarioText = switch @scenario
-      when 'reference'
-        Tr.scenarioSelector.referenceButton[@app.language]
-      when 'constrained'
-        Tr.scenarioSelector.constrainedButton[@app.language]
-      when 'high'
-        Tr.scenarioSelector.highPriceButton[@app.language]
-      when 'low'
-        Tr.scenarioSelector.lowPriceButton[@app.language]
-      when 'highLng'
-        Tr.scenarioSelector.highLngButton[@app.language]
-      when 'noLng'
-        Tr.scenarioSelector.noLngButton[@app.language]
-      when 'technology'
-        Tr.scenarioSelector.technologyButton[@app.language]
-      when 'hcp'
-        Tr.scenarioSelector.hcpButton[@app.language]
-
-    yearText = "#{Tr.imageExportText.demandIn[@app.language]} #{@comparisonYear} #{Tr.imageExportText.relativeTo[@app.language]} #{@baseYear}"
-
-    # TODO: What to do when both provinces are the same?
-    regionText = if @leftProvince == 'all'
-      'CANADA'
-    else
-      "#{Tr.regionSelector.names[@leftProvince][@app.language]} #{Tr.imageExportText.and[@app.language]} #{Tr.regionSelector.names[@rightProvince][@app.language]}"
-
-    description = ''
-    description += "#{datasetText} - "
-    description += "#{Tr.imageExportText.sector[@app.language]}: #{sectorText} - "
-    description += "#{Tr.imageExportText.scenario[@app.language]}: #{scenarioText} - "
-    description += "#{yearText} - "
-    description += "#{regionText}"
-
-    description
-
-
-
-  pngFileName: ->
-    region = if @leftProvince == 'all'
-      'CANADA'
-    else
-      "#{@leftProvince} - #{@rightProvince}"
-
-    components = [
-      Tr.landingPage.mainHeader[@app.language]
-      Tr.visualization5Title[@app.language]
-      Tr.imageExportText.sectors[@sector][@app.language]
-      Tr.scenarioSelector.names[@scenario][@app.language]
-      @comparisonYear
-      @baseYear
-      region
-    ]
-
-    filename = components.join ' - '
-    filename += '.png'
-    filename
 
 
 

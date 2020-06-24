@@ -1,6 +1,5 @@
 _ = require 'lodash'
 
-Tr = require '../TranslationTable.coffee'
 Constants = require '../Constants.coffee'
 
 # Note: since this has a 'viewBy' option sometimes we can multi select provinces
@@ -241,91 +240,6 @@ class Visualization3Configuration
 
 
 
-
-  # Description for PNG export
-  imageExportDescription: ->
-
-    # Given that there are no axes, and no way to inspect the numeric quantities behind
-    # each bubble in a PNG, does it make sense to include the units on the graph
-    # description at all? My tilt is no.
-
-    # unitText = switch @unit
-    #   when 'petajoules'
-    #     Tr.unitSelector.petajoulesButton[@app.language]
-    #   when 'kilobarrelEquivalents'
-    #     Tr.unitSelector.kilobarrelEquivalentsButton[@app.language]
-    #   when 'gigawattHours'
-    #     Tr.unitSelector.gigawattHoursButton[@app.language]
-
-
-    scenarioText = switch @scenario
-      when 'reference'
-        Tr.scenarioSelector.referenceButton[@app.language]
-      when 'constrained'
-        Tr.scenarioSelector.constrainedButton[@app.language]
-      when 'high'
-        Tr.scenarioSelector.highPriceButton[@app.language]
-      when 'low'
-        Tr.scenarioSelector.lowPriceButton[@app.language]
-      when 'highLng'
-        Tr.scenarioSelector.highLngButton[@app.language]
-      when 'noLng'
-        Tr.scenarioSelector.noLngButton[@app.language]
-      when 'technology'
-        Tr.scenarioSelector.technologyButton[@app.language]
-      when 'hcp'
-        Tr.scenarioSelector.hcpButton[@app.language]
-
-    sourceOrProvinceText = if @viewBy == 'province'
-      if @province == 'all'
-        'CANADA'
-      else
-        "#{Tr.viewBySelector.viewByProvinceButton[@app.language]}: " +
-        "#{Tr.regionSelector.names[@province][@app.language]}"
-    else if @viewBy == 'source'
-      Tr.sourceSelector.sources[@source][@app.language]
-
-    datasetText = switch @dataset
-      when 'jan2016'
-        "#{Tr.report[@app.language]}#{Tr.datasetSelector.jan2016Button[@app.language]}"
-      # when 'oct2016'
-      #   "#{Tr.report[@app.language]}#{Tr.datasetSelector.oct2016Button[@app.language]}"
-      when 'oct2017'
-        "#{Tr.report[@app.language]}#{Tr.datasetSelector.oct2017Button[@app.language]}"
-      when 'oct2018'
-        "#{Tr.report[@app.language]}#{Tr.datasetSelector.oct2018Button[@app.language]}"
-
-    description = ''
-    description += "#{datasetText} - "
-    description += "#{Tr.mainSelector.electricityGenerationButton[@app.language]} - "
-    # description += "#{Tr.imageExportText.unit[@app.language]}: #{unitText} - "
-    description += "#{Tr.imageExportText.scenario[@app.language]}: #{scenarioText} - "
-    description += "#{sourceOrProvinceText}"
-
-    description
-
-
-  pngFileName: ->
-
-    if @viewBy == 'source'
-      viewByItem = Tr.sourceSelector.sources[@source][@app.language]
-    else if @viewBy == 'province'
-      viewByItem = if @province == 'all'
-        'CANADA'
-      else
-        @province
-
-    components = [
-      Tr.landingPage.mainHeader[@app.language]
-      Tr.visualization3Title[@app.language]
-      Tr.scenarioSelector.names[@scenario][@app.language]
-      viewByItem
-      @year
-    ]
-
-    filename = components.join ' - '
-    filename += '.png'
-    filename
 
 
 

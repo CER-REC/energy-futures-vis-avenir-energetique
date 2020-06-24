@@ -27,11 +27,6 @@ fs.copySync("public/PDF", "dist/public/PDF");
 fs.copySync("views/app_container_body.mustache", "dist/public/HTML/app_container_body.html");
 fs.copySync("views/app_styles.mustache", "dist/public/HTML/app_styles.html");
 
-fs.copySync("views/wet3_video_body.mustache", "dist/public/HTML/wet3_video_body.html");
-fs.copySync("views/wet3_video_styles.mustache", "dist/public/HTML/wet3_video_styles.html");
-fs.copySync("views/wet4_video_body.mustache", "dist/public/HTML/wet4_video_body.html");
-
-fs.copySync("views/wet_video_reporter.mustache", "dist/public/HTML/wet_video_reporter.html");
 
 // The paid-up fonts are optional, the build is fine to continue without them.
 try {

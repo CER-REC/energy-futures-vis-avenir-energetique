@@ -53,7 +53,7 @@ class Visualization5
       title: Tr.datasetSelector.datasetSelectorHelpTitle[@app.language]
       content: => Tr.datasetSelector.datasetSelectorHelp[@app.language]
       attachmentSelector: '.datasetSelectorGroup'
-      analyticsElement: 'Viz5 dataset help'
+      analyticsLabel: 'energy futures'
 
     @sectorsSelectorHelpPopover = new ControlsHelpPopover @app,
       popoverButtonId: 'sectorSelectorHelpButton'
@@ -62,7 +62,7 @@ class Visualization5
       title: Tr.sectorSelector.sectorSelectorHelpTitle[@app.language]
       content: => Tr.sectorSelector.sectorSelectorHelp[@app.language]
       attachmentSelector: '.sectorSelectorGroup'
-      analyticsEvent: 'Viz5 sector help'
+      analyticsLabel: 'sector'
 
     @scenariosHelpPopover = new ControlsHelpPopover @app,
       popoverButtonId: 'scenarioSelectorHelpButton'
@@ -71,7 +71,7 @@ class Visualization5
       title: Tr.scenarioSelector.scenarioSelectorHelpTitle[@app.language]
       content: => Tr.scenarioSelector.scenarioSelectorHelp[@config.dataset][@app.language]
       attachmentSelector: '.scenarioSelectorGroup'
-      analyticsElement: 'Viz5 scenario help'
+      analyticsLabel: 'scenario'
 
     @sourcesHelpPopover = new ControlsHelpPopover @app,
       popoverButtonId: 'sourceHelpButton'
@@ -93,7 +93,7 @@ class Visualization5
         contentString = Tr.sourceSelector.sourceSelectorHelp.generalHelp[@app.language] + contentString
         contentString
       attachmentSelector: '.legendGroup'
-      analyticsElement: 'Viz5 source help'
+      analyticsLabel: 'source'
 
     @provincesHelpPopover = new ControlsHelpPopover @app,
       popoverButtonId: 'provinceHelpButton'
@@ -111,7 +111,7 @@ class Visualization5
           """
         contentString
       attachmentSelector: '#leftProvincesSelector'
-      analyticsElement: 'Viz5 region help'
+      analyticsLabel: 'region'
       setupEvents: false
 
 
@@ -418,6 +418,11 @@ class Visualization5
     newConfig.copy @config
     newConfig.setLeftProvince 'all'
 
+    @app.analyticsReporter.reportEvent
+      category: 'feature - set region'
+      action: d3.event.type
+      label: 'all'
+
     update = =>
       @config.setLeftProvince 'all'
       @leftProvinceMenu.data @dataForProvinceMenu(@config.leftProvince)
@@ -442,6 +447,11 @@ class Visualization5
     newConfig = new @config.constructor @app
     newConfig.copy @config
     newConfig.setLeftProvince dataDictionaryItem.key
+
+    @app.analyticsReporter.reportEvent
+      category: 'feature - set region'
+      action: d3.event.type
+      label: dataDictionaryItem.key
 
     update = =>
       @config.setLeftProvince dataDictionaryItem.key
@@ -489,6 +499,11 @@ class Visualization5
     newConfig = new @config.constructor @app
     newConfig.copy @config
     newConfig.setRightProvince dataDictionaryItem.key
+
+    @app.analyticsReporter.reportEvent
+      category: 'feature - comparison region'
+      action: d3.event.type
+      label: dataDictionaryItem.key
 
     update = =>
       @config.setRightProvince dataDictionaryItem.key
@@ -662,6 +677,11 @@ class Visualization5
       newConfig.copy @config
       newConfig.setSector d.sectorName
 
+      @app.analyticsReporter.reportEvent
+        category: 'feature - sector'
+        action: d3.event.type
+        label: d.sectorName
+
       update = =>
         @config.setSector d.sectorName
         @addSectors()
@@ -727,6 +747,11 @@ class Visualization5
           newConfig.copy @config
           newConfig.setDataset d.dataset
 
+          @app.analyticsReporter.reportEvent
+            category: 'feature - dataset'
+            action: d3.event.type
+            label: d.dataset
+
           update = =>
             @config.setDataset d.dataset
             @renderScenariosSelector()
@@ -765,6 +790,11 @@ class Visualization5
         newConfig = new @config.constructor @app
         newConfig.copy @config
         newConfig.setScenario d.scenarioName
+
+        @app.analyticsReporter.reportEvent
+          category: 'feature - set scenario'
+          action: d3.event.type
+          label: d.scenarioName
 
         update = =>
           @config.setScenario d.scenarioName
@@ -881,8 +911,8 @@ class Visualization5
         if newX < Constants.viz5timelineMargin then newX = Constants.viz5timelineMargin
         if newX > @timelineRightEnd() then newX = @timelineRightEnd()
 
-        # Clicking on the timeline will cause the closest slider to move to the 
-        # clicked position in the timeline. 
+        # Clicking on the timeline will cause the closest slider to move to the
+        # clicked position in the timeline.
         selectedYear = Math.round @yearScale().invert(newX)
 
         if selectedYear > @config.comparisonYear || Math.abs(selectedYear - @config.comparisonYear) < Math.abs(selectedYear - @config.baseYear)
@@ -956,7 +986,7 @@ class Visualization5
     # Pause the animation if it is already playing
     if @playPauseStatus == 'playing'
       @sliderPauseButtonCallback()
-      return 
+      return
     @playPauseStatus = 'playing'
 
     # Set the timeline state to replay, and set the comparisonYear
@@ -1016,7 +1046,11 @@ class Visualization5
         @playPauseStatus = 'paused'
 
     @yearTimeout = window.setTimeout timeoutComplete, 0
-    @app.analyticsReporter.reportEvent 'Electricity Play/Pause', 'Play'
+
+    @app.analyticsReporter.reportEvent
+      category: 'media'
+      action: d3.event.type
+      label: 'play'
 
 
 
@@ -1029,7 +1063,13 @@ class Visualization5
              alt='#{Tr.altText.playAnimation[@app.language]}'/>
        """
     if @yearTimeout then window.clearTimeout @yearTimeout
-    @app.analyticsReporter.reportEvent 'Electricity Play/Pause', 'Pause'
+
+    @app.analyticsReporter.reportEvent
+      category: 'media'
+      action: d3.event.type
+      label: 'pause'
+
+
 
 ###############
   buildBaseSliderLabel: ->
@@ -1058,6 +1098,10 @@ class Visualization5
       baseYear = Math.round @yearScale().invert newX
       if baseYear != @config.baseYear
         @config.setBaseYear baseYear
+        @app.analyticsReporter.reportEvent
+          category: 'feature - base year'
+          action: d3.event.type
+          label: baseYear
         @app.router.navigate @config.routerParams()
         @d3document.select('#baseLabelBox').text =>
           @config.baseYear
@@ -1128,6 +1172,11 @@ class Visualization5
     newConfig.copy @config
     newConfig.setBaseYear value
 
+    @app.analyticsReporter.reportEvent
+      category: 'feature - base year'
+      action: d3.event.type
+      label: value
+
     update = =>
       @config.setBaseYear value
       @d3document.select('#baseSliderLabel').attr
@@ -1183,6 +1232,10 @@ class Visualization5
       comparisonYear = Math.round @yearScale().invert newX
       if comparisonYear != @config.comparisonYear
         @config.setComparisonYear comparisonYear
+        @app.analyticsReporter.reportEvent
+          category: 'feature - comparison year'
+          action: d3.event.type
+          label: comparisonYear
         @app.router.navigate @config.routerParams()
         @d3document.select('#labelBox').text =>
           @config.comparisonYear
@@ -1260,7 +1313,7 @@ class Visualization5
         if d == Constants.minYear
           if Constants.hideBaseYearLabel.includes @config.baseYear then '' else d
         else if d == Constants.maxYear
-           if Constants.maxYear == @config.comparisonYear then '' else d
+          if Constants.maxYear == @config.comparisonYear then '' else d
         else ''
       .orient 'bottom'
 
@@ -1283,6 +1336,11 @@ class Visualization5
     newConfig = new @config.constructor @app
     newConfig.copy @config
     newConfig.setComparisonYear value
+
+    @app.analyticsReporter.reportEvent
+      category: 'feature - comparison year'
+      action: d3.event.type
+      label: value
 
     update = =>
       @config.setComparisonYear value
@@ -1613,6 +1671,11 @@ class Visualization5
       rose.showPills()
       @roseWithPillsOpen = rose
 
+    @app.analyticsReporter.reportEvent
+      category: 'graph poi'
+      action: d3.event.type
+      label: rose.options.data[0].province
+
 
   rosePillClickHandler: (rosePill) =>
     # Prevent the click event from propagating and immediately closing the popover.
@@ -1628,10 +1691,21 @@ class Visualization5
       @app.popoverManager.showPopover rosePill.popover,
         verticalAnchor: @verticalAnchor rosePill.options.data
         horizontalAnchor: @horizontalAnchor rosePill.options.data
+      @app.analyticsReporter.reportEvent
+        category: 'graph poi'
+        action: d3.event.type
+        label: rosePill.options.data.province
+        value: rosePill.options.data.source
 
     else
       source = rosePill.options.data.source
       @showDoublePillPopover source
+      @app.analyticsReporter.reportEvent
+        category: 'graph poi'
+        action: d3.event.type
+        label: rosePill.options.data.province
+        value: rosePill.options.data.source
+
 
 
 

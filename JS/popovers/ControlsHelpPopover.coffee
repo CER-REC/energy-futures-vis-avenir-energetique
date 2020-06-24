@@ -17,7 +17,7 @@ class ControlsHelpPopover
     #   title: main heading text, a string
     #   content: body content of the popover, a string containing HTML
     #   attachmentSelector: element where the popover should be attached to, in the DOM
-    #   analyticsEvent: string describing the popover opening to be passed to analytics
+    #   analyticsLabel: string describing the popover opening to be passed to analytics
 
     # TODO: check that all required options are passed?
 
@@ -33,21 +33,24 @@ class ControlsHelpPopover
       .on 'click', =>
         d3.event.stopPropagation()
         d3.event.preventDefault()
-        @showPopoverCallback()
+        @showPopoverCallback d3.event
       .on 'keydown', =>
         if d3.event.key == 'Enter' or d3.event.key == ' '
           d3.event.preventDefault()
-          @showPopoverCallback()
+          @showPopoverCallback d3.event
 
 
   # The first part of opening a popover, the callback from user interaction
-  showPopoverCallback: =>
+  showPopoverCallback: (event) =>
     if @app.popoverManager.currentPopover == @
       @app.popoverManager.closePopover()
     else
       @app.popoverManager.showPopover @,
         elementToFocusOnClose: @document.getElementById @options.popoverButtonId
-      @app.analyticsReporter.reportEvent 'Controls help', @options.analyticsEvent
+      @app.analyticsReporter.reportEvent
+        category: 'help'
+        action: event.type
+        label: @options.analyticsLabel
 
 
   # The second part of opening a popover, called by the popover manager

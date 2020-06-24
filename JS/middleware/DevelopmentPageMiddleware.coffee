@@ -30,12 +30,6 @@ DevelopmentPageMiddleware = ->
     res.render 'WET4',
       title: 'WET 4.0.20'
 
-  router.get '/Wet3VideoIframe', (req, res) ->
-    res.render 'Wet3VideoIframe'
-
-  router.get '/Wet4VideoIframe', (req, res) ->
-    res.render 'Wet4VideoIframe'
-  
   app.use router
 
   # Turn off caching!

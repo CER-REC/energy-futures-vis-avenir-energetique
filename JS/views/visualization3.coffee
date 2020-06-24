@@ -49,7 +49,7 @@ class Visualization3 extends visualization
       title: Tr.datasetSelector.datasetSelectorHelpTitle[@app.language]
       content: => Tr.datasetSelector.datasetSelectorHelp[@app.language]
       attachmentSelector: '.datasetSelectorGroup'
-      analyticsEvent: 'Viz3 dataset help'
+      analyticsLabel: 'energy futures'
 
     @viewByHelpPopover = new ControlsHelpPopover @app,
       popoverButtonId: 'viewBySelectorHelpButton'
@@ -58,7 +58,7 @@ class Visualization3 extends visualization
       title: Tr.viewBySelector.viewBySelectorHelpTitle[@app.language]
       content: => Tr.viewBySelector.viewBySelectorHelp[@app.language]
       attachmentSelector: '.viewBySelectorGroup'
-      analyticsEvent: 'Viz3 view by help'
+      analyticsLabel: 'view by'
 
     @unitsHelpPopover = new ControlsHelpPopover @app,
       popoverButtonId: 'unitSelectorHelpButton'
@@ -67,7 +67,7 @@ class Visualization3 extends visualization
       title: Tr.unitSelector.unitSelectorHelpTitle[@app.language]
       content: => Tr.unitSelector.unitSelectorHelp[@app.language]
       attachmentSelector: '.unitsSelectorGroup'
-      analyticsEvent: 'Viz3 unit help'
+      analyticsLabel: 'unit'
 
     @scenariosHelpPopover = new ControlsHelpPopover @app,
       popoverButtonId: 'scenarioSelectorHelpButton'
@@ -76,7 +76,7 @@ class Visualization3 extends visualization
       title: Tr.scenarioSelector.scenarioSelectorHelpTitle[@app.language]
       content: => Tr.scenarioSelector.scenarioSelectorHelp[@config.dataset][@app.language]
       attachmentSelector: '.scenarioSelectorGroup'
-      analyticsEvent: 'Viz3 scenario help'
+      analyticsLabel: 'scenario'
 
     @sourcesHelpPopover = new ControlsHelpPopover @app,
       popoverButtonId: 'sourceHelpButton'
@@ -100,7 +100,7 @@ class Visualization3 extends visualization
         contentString = Tr.sourceSelector.sourceSelectorHelp.generalHelp[@app.language] + contentString
         contentString
       attachmentSelector: '#powerSourceSelector'
-      analyticsEvent: 'Viz3 source help'
+      analyticsLabel: 'source'
       setupEvents: false
 
     @provincesHelpPopover = new ControlsHelpPopover @app,
@@ -114,7 +114,7 @@ class Visualization3 extends visualization
           contentString = """<div class="#{if @config.viewBy == 'province' then 'provinceLabel' else 'provinceLabel provinceLabel' + province}"> <h2> #{Tr.regionSelector.names[province][@app.language]} </h2> </div>""" + contentString
         contentString
       attachmentSelector: '#provincesSelector'
-      analyticsEvent: 'Viz3 region help'
+      analyticsLabel: 'region'
       setupEvents: false
 
 
@@ -255,6 +255,8 @@ class Visualization3 extends visualization
         @updateAccessibleFocus
           displayTooltip: false
 
+        @reportPointOfInterestEvent 'click'
+
     @_chart = new BubbleChart @app, '#graphSVG', bubbleChartOptions
     @_chart.config = @config
 
@@ -307,6 +309,11 @@ class Visualization3 extends visualization
           newConfig = new @config.constructor @app
           newConfig.copy @config
           newConfig.setViewBy d.viewByName
+
+          @app.analyticsReporter.reportEvent
+            category: 'feature - view by'
+            action: d3.event.type
+            label: d.viewByName
 
           update = =>
             @config.setViewBy d.viewByName
@@ -395,6 +402,10 @@ class Visualization3 extends visualization
       year = Math.round @yearScale().invert newX
       if year != @config.year
         @config.setYear year
+        @app.analyticsReporter.reportEvent
+          category: 'feature - year'
+          action: d3.event.type
+          label: year
         @app.router.navigate @config.routerParams()
         @d3document.select('#labelBox').text =>
           @config.year
@@ -521,7 +532,11 @@ class Visualization3 extends visualization
         @playPauseStatus = 'paused'
 
     @yearTimeout = window.setTimeout timeoutComplete, 0
-    @app.analyticsReporter.reportEvent 'Electricity Play/Pause', 'Play'
+
+    @app.analyticsReporter.reportEvent
+      category: 'media'
+      action: d3.event.type
+      label: 'play'
 
 
 
@@ -540,7 +555,11 @@ class Visualization3 extends visualization
              alt='#{Tr.altText.playAnimation[@app.language]}'/>
        """
     if @yearTimeout then window.clearTimeout @yearTimeout
-    @app.analyticsReporter.reportEvent 'Electricity Play/Pause', 'Pause'
+
+    @app.analyticsReporter.reportEvent
+      category: 'media'
+      action: d3.event.type
+      label: 'pause'
 
 
   # I'm adding them to the left hand side for simplicity, we can move them later
@@ -742,24 +761,28 @@ class Visualization3 extends visualization
           return unless nextConfig?
           @accessConfig.setState nextConfig.province, nextConfig.source, @seriesData
           @updateAccessibleFocus()
+          @reportPointOfInterestEvent event.type
         when 'ArrowLeft'
           event.preventDefault()
           nextConfig = @findNextOuterBubble 'reverse'
           return unless nextConfig?
           @accessConfig.setState nextConfig.province, nextConfig.source, @seriesData
           @updateAccessibleFocus()
+          @reportPointOfInterestEvent event.type
         when 'ArrowUp'
           event.preventDefault()
           nextConfig = @findNextInnerBubble 'reverse'
           return unless nextConfig?
           @accessConfig.setState nextConfig.province, nextConfig.source, @seriesData
           @updateAccessibleFocus()
+          @reportPointOfInterestEvent event.type
         when 'ArrowDown'
           event.preventDefault()
           nextConfig = @findNextInnerBubble 'forward'
           return unless nextConfig?
           @accessConfig.setState nextConfig.province, nextConfig.source, @seriesData
           @updateAccessibleFocus()
+          @reportPointOfInterestEvent event.type
 
     graphElement.addEventListener 'focus', =>
       # When we return to focusing the graph element, the graph sub element that the user
@@ -1021,6 +1044,11 @@ class Visualization3 extends visualization
     newConfig.copy @config
     newConfig.setProvince 'all'
 
+    @app.analyticsReporter.reportEvent
+      category: 'feature - set region'
+      action: d3.event.type
+      label: 'all'
+
     update = =>
       @config.setProvince 'all'
       @getDataAndRender()
@@ -1035,12 +1063,21 @@ class Visualization3 extends visualization
     if @config.provinces.length == Constants.provinces.length
       # If all provinces are present, select none
       newConfig.resetProvinces false
+      @app.analyticsReporter.reportEvent
+        category: 'feature - remove all regions'
+        action: d3.event.type
     else if @config.provinces.length > 0
       # If some provinces are selected, select all
       newConfig.resetProvinces true
+      @app.analyticsReporter.reportEvent
+        category: 'feature - add all regions'
+        action: d3.event.type
     else if @config.provinces.length == 0
       # If no provinces are selected, select all
       newConfig.resetProvinces true
+      @app.analyticsReporter.reportEvent
+        category: 'feature - add all regions'
+        action: d3.event.type
 
     update = =>
       if @config.provinces.length == Constants.provinces.length
@@ -1064,6 +1101,11 @@ class Visualization3 extends visualization
     newConfig.copy @config
     newConfig.setSource 'total'
 
+    @app.analyticsReporter.reportEvent
+      category: 'feature - set source'
+      action: d3.event.type
+      label: 'total'
+
     update = =>
       @config.setSource 'total'
       @getDataAndRender()
@@ -1078,12 +1120,21 @@ class Visualization3 extends visualization
     if @config.sources.length == Constants.viz3Sources.length
       # If all sources are present, select none
       newConfig.resetSources false
+      @app.analyticsReporter.reportEvent
+        category: 'feature - remove all sources'
+        action: d3.event.type
     else if @config.sources.length > 0
       # If some sources are selected, select all
       newConfig.resetSources true
+      @app.analyticsReporter.reportEvent
+        category: 'feature - add all sources'
+        action: d3.event.type
     else if @config.sources.length == 0
       # If no sources are selected, select all
       newConfig.resetSources true
+      @app.analyticsReporter.reportEvent
+        category: 'feature - add all sources'
+        action: d3.event.type
 
     update = =>
       if @config.sources.length == Constants.viz3Sources.length
@@ -1107,6 +1158,11 @@ class Visualization3 extends visualization
     newConfig.copy @config
     newConfig.setProvince dataDictionaryItem.key
 
+    @app.analyticsReporter.reportEvent
+      category: 'feature - set region'
+      action: d3.event.type
+      label: dataDictionaryItem.key
+
     update = =>
       @config.setProvince dataDictionaryItem.key
       @getDataAndRender()
@@ -1118,6 +1174,15 @@ class Visualization3 extends visualization
     newConfig = new @config.constructor @app
     newConfig.copy @config
     newConfig.flipProvince dataDictionaryItem.key
+
+    if @config.provinces.includes dataDictionaryItem.key
+      category = 'feature - remove region'
+    else
+      category = 'feature - add region'
+    @app.analyticsReporter.reportEvent
+      category: category
+      action: d3.event.type
+      label: dataDictionaryItem.key
 
     update = =>
       @config.flipProvince dataDictionaryItem.key
@@ -1132,6 +1197,11 @@ class Visualization3 extends visualization
     newConfig.copy @config
     newConfig.setSource dataDictionaryItem.key
 
+    @app.analyticsReporter.reportEvent
+      category: 'feature - set source'
+      action: d3.event.type
+      label: dataDictionaryItem.key
+
     update = =>
       @config.setSource dataDictionaryItem.key
       @getDataAndRender()
@@ -1144,6 +1214,15 @@ class Visualization3 extends visualization
     newConfig = new @config.constructor @app
     newConfig.copy @config
     newConfig.flipSource dataDictionaryItem.key
+
+    if @config.sources.includes dataDictionaryItem.key
+      category = 'feature - remove source'
+    else
+      category = 'feature - add source'
+    @app.analyticsReporter.reportEvent
+      category: category
+      action: d3.event.type
+      label: dataDictionaryItem.key
 
     update = =>
       @config.flipSource dataDictionaryItem.key
@@ -1171,6 +1250,11 @@ class Visualization3 extends visualization
     newConfig = new @config.constructor @app
     newConfig.copy @config
     newConfig.setYear value
+
+    @app.analyticsReporter.reportEvent
+      category: 'feature - year'
+      action: d3.event.type
+      label: value
 
     update = =>
       @config.setYear value
@@ -1912,6 +1996,10 @@ class Visualization3 extends visualization
 
 
 
-
+  reportPointOfInterestEvent: (action) ->
+    @app.analyticsReporter.reportEvent
+      category: 'graph poi'
+      action: action
+      value: @accessibleStatusElement.innerHTML
 
 module.exports = Visualization3

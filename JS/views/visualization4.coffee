@@ -43,7 +43,7 @@ class Visualization4
       title: Tr.datasetSelector.datasetSelectorHelpTitle[@app.language]
       content: => Tr.datasetSelector.datasetSelectorHelp[@app.language]
       attachmentSelector: '.datasetSelectorGroup'
-      analyticsElement: 'Viz4 dataset help'
+      analyticsLabel: 'energy futures'
 
     @mainSelectorHelpPopover = new ControlsHelpPopover @app,
       popoverButtonId: 'mainSelectorHelpButton'
@@ -52,7 +52,7 @@ class Visualization4
       title: Tr.mainSelector.selectOneLabel[@app.language]
       content: => Tr.mainSelector.mainSelectorHelp[@app.language]
       attachmentSelector: '.mainSelectorSection'
-      analyticsElement: 'Viz4 main selection help'
+      analyticsLabel: 'select one'
 
     @unitsHelpPopover = new ControlsHelpPopover @app,
       popoverButtonId: 'unitSelectorHelpButton'
@@ -61,7 +61,7 @@ class Visualization4
       title: Tr.unitSelector.unitSelectorHelpTitle[@app.language]
       content: => Tr.unitSelector.unitSelectorHelp[@app.language]
       attachmentSelector: '.unitsSelectorGroup'
-      analyticsElement: 'Viz4 unit help'
+      analyticsLabel: 'unit'
 
     @scenariosHelpPopover = new ControlsHelpPopover @app,
       popoverButtonId: 'scenarioSelectorHelpButton'
@@ -70,7 +70,7 @@ class Visualization4
       title: Tr.scenarioSelector.scenarioSelectorHelpTitle[@app.language]
       content: => Tr.scenarioSelector.scenarioSelectorHelp[@config.dataset][@app.language]
       attachmentSelector: '.scenarioSelectorGroup'
-      analyticsElement: 'Viz4 scenario help'
+      analyticsLabel: 'scenario'
 
     @provincesHelpPopover = new ControlsHelpPopover @app,
       popoverButtonId: 'provinceHelpButton'
@@ -88,7 +88,7 @@ class Visualization4
           """
         contentString
       attachmentSelector: '#provincesSelector'
-      analyticsElement: 'Viz4 region help'
+      analyticsLabel: 'region'
       setupEvents: false
 
 
@@ -314,6 +314,11 @@ class Visualization4
     newConfig.copy @config
     newConfig.setProvince 'all'
 
+    @app.analyticsReporter.reportEvent
+      category: 'feature - set region'
+      action: d3.event.type
+      label: 'all'
+
     update = =>
       @config.setProvince 'all'
       @provinceMenu.data @dataForProvinceMenu()
@@ -329,6 +334,11 @@ class Visualization4
     newConfig = new @config.constructor @app
     newConfig.copy @config
     newConfig.setProvince dataDictionaryItem.key
+
+    @app.analyticsReporter.reportEvent
+      category: 'feature - set region'
+      action: d3.event.type
+      label: dataDictionaryItem.key
 
     update = =>
       @config.setProvince dataDictionaryItem.key
@@ -718,6 +728,11 @@ class Visualization4
           newConfig.copy @config
           newConfig.setDataset d.dataset
 
+          @app.analyticsReporter.reportEvent
+            category: 'feature - dataset'
+            action: d3.event.type
+            label: d.dataset
+
           update = =>
             @config.setDataset d.dataset
             @renderScenariosSelector()
@@ -745,6 +760,11 @@ class Visualization4
       newConfig = new @config.constructor @app
       newConfig.copy @config
       newConfig.setMainSelection d.selectorName
+
+      @app.analyticsReporter.reportEvent
+        category: 'feature - main selection'
+        action: d3.event.type
+        label: d.selectorName
 
       update = =>
         @config.setMainSelection d.selectorName
@@ -812,6 +832,11 @@ class Visualization4
         newConfig.copy @config
         newConfig.setUnit d.unitName
 
+        @app.analyticsReporter.reportEvent
+          category: 'feature - unit'
+          action: d3.event.type
+          label: d.unitName
+
         update = =>
           @config.setUnit d.unitName
           # TODO: For efficiency, only rerender what's necessary.
@@ -855,8 +880,17 @@ class Visualization4
         newConfig.copy @config
         if selected
           newConfig.removeScenario d.scenarioName
+          @app.analyticsReporter.reportEvent
+            category: 'feature - remove scenario'
+            action: d3.event.type
+            label: d.scenarioName
         else
           newConfig.addScenario d.scenarioName
+          @app.analyticsReporter.reportEvent
+            category: 'feature - add scenario'
+            action: d3.event.type
+            label: d.scenarioName
+
 
         update = =>
           if selected
@@ -1128,6 +1162,7 @@ class Visualization4
         @accessConfig.setScenario d.key, @config.dataset
 
         @updateAccessibleFocus()
+        @reportPointOfInterestEvent 'click'
 
     graphAreaSelectors.enter().append 'path'
       .attr
@@ -1359,20 +1394,24 @@ class Visualization4
           event.preventDefault()
           @accessConfig.setYear @accessConfig.activeYear + 1
           @updateAccessibleFocus()
+          @reportPointOfInterestEvent event.type
         when 'ArrowLeft'
           event.preventDefault()
           @accessConfig.setYear @accessConfig.activeYear - 1
           @updateAccessibleFocus()
+          @reportPointOfInterestEvent event.type
         when 'ArrowUp'
           event.preventDefault()
           nextScenario = @config.nextActiveScenarioReverse @accessConfig.activeScenario
           @accessConfig.setScenario nextScenario, @config.dataset
           @updateAccessibleFocus()
+          @reportPointOfInterestEvent event.type
         when 'ArrowDown'
           event.preventDefault()
           nextScenario = @config.nextActiveScenarioForward @accessConfig.activeScenario
           @accessConfig.setScenario nextScenario, @config.dataset
           @updateAccessibleFocus()
+          @reportPointOfInterestEvent event.type
 
     graphElement.addEventListener 'focus', =>
       # When we return to focusing the graph element, the graph sub element that the user
@@ -1443,5 +1482,12 @@ class Visualization4
         .attr
           r: 5
           fill: 'red'
+
+  reportPointOfInterestEvent: (action) ->
+    @app.analyticsReporter.reportEvent
+      category: 'graph poi'
+      action: action
+      value: @accessibleStatusElement.innerHTML
+
 
 module.exports = Visualization4

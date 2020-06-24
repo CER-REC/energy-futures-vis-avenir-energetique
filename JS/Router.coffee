@@ -41,7 +41,9 @@ class Router
     # We will assume that if we see a null event, that it is this page load, and avoid
     # navigating
     return unless event.state?
-    @navigate event.state, {shouldUpdateHistory: false}
+    @navigate event.state,
+      shouldUpdateHistory: false
+      action: 'pageHistory'
 
   setInitialParamConfiguration: (params) ->
     # Initialize the application based on the queryparams
@@ -59,6 +61,7 @@ class Router
 
   navigate: (params, options = {}) ->
     options = _.merge {shouldUpdateHistory: true}, options
+
     params.page = 'landingPage' unless Constants.pages.includes params.page
     return unless params? and params.page?
     switch params.page
@@ -88,6 +91,8 @@ class Router
 
 
   fulfillNavigation: (params, options) ->
+
+    options.originatingPage = @app.page
     @app.page = params.page
     @navbar.setNavBarState params.page, options
     @updateBottomNavBar options
@@ -127,6 +132,7 @@ class Router
     if not @app.currentView?
       @app.currentView = new LandingPage @app
       @replaceState params, options
+
     else if not (@app.currentView instanceof LandingPage)
       @app.popoverManager.closePopover()
       @app.currentView.tearDown()
@@ -134,11 +140,16 @@ class Router
       @app.window.history.pushState params, '', ParamsToUrlString(params) if options.shouldUpdateHistory
       @updateStatusElement params.page
 
+      @reportNavigationEvent options
+
+
+
 
   viz1Handler: (params, options) ->
     if not @app.currentView?
       @app.currentView = new Visualization1 @app, @app.visualization1Configuration
       @replaceState params, options
+
     else if not (@app.currentView instanceof Visualization1)
       @app.popoverManager.closePopover()
       @app.currentView.tearDown()
@@ -146,15 +157,19 @@ class Router
       params = @app.visualization1Configuration.routerParams()
       @app.window.history.pushState params, '', ParamsToUrlString(params) if options.shouldUpdateHistory
       @updateStatusElement params.page
+
+      @reportNavigationEvent options
     else
       @replaceState params, options
 
-    @app.analyticsReporter.reportPage @app.visualization1Configuration.routerParams()
+
+      
 
   viz2Handler: (params, options) ->
     if not @app.currentView?
       @app.currentView = new Visualization2 @app, @app.visualization2Configuration
       @replaceState params, options
+
     else if not (@app.currentView instanceof Visualization2)
       @app.popoverManager.closePopover()
       @app.currentView.tearDown()
@@ -162,15 +177,18 @@ class Router
       params = @app.visualization2Configuration.routerParams()
       @app.window.history.pushState params, '', ParamsToUrlString(params) if options.shouldUpdateHistory
       @updateStatusElement params.page
+
+      @reportNavigationEvent options
     else
       @replaceState params, options
 
-    @app.analyticsReporter.reportPage @app.visualization2Configuration.routerParams()
+
 
   viz3Handler: (params, options) ->
     if not @app.currentView?
       @app.currentView = new Visualization3 @app, @app.visualization3Configuration
       @replaceState params, options
+
     else if not (@app.currentView instanceof Visualization3)
       @app.popoverManager.closePopover()
       @app.currentView.tearDown()
@@ -178,15 +196,18 @@ class Router
       params = @app.visualization3Configuration.routerParams()
       @app.window.history.pushState params, '', ParamsToUrlString(params) if options.shouldUpdateHistory
       @updateStatusElement params.page
+
+      @reportNavigationEvent options
     else
       @replaceState params, options
 
-    @app.analyticsReporter.reportPage @app.visualization3Configuration.routerParams()
+
 
   viz4Handler: (params, options) ->
     if not @app.currentView?
       @app.currentView = new Visualization4 @app, @app.visualization4Configuration
       @replaceState params, options
+
     else if not (@app.currentView instanceof Visualization4)
       @app.popoverManager.closePopover()
       @app.currentView.tearDown()
@@ -194,16 +215,18 @@ class Router
       params = @app.visualization4Configuration.routerParams()
       @app.window.history.pushState params, '', ParamsToUrlString(params) if options.shouldUpdateHistory
       @updateStatusElement params.page
+
+      @reportNavigationEvent options
     else
       @replaceState params, options
 
-    @app.analyticsReporter.reportPage @app.visualization4Configuration.routerParams()
 
 
   viz5Handler: (params, options) ->
     if not @app.currentView?
       @app.currentView = new Visualization5 @app, @app.visualization5Configuration
       @replaceState params, options
+
     else if not (@app.currentView instanceof Visualization5)
       @app.popoverManager.closePopover()
       @app.currentView.tearDown()
@@ -211,16 +234,25 @@ class Router
       params = @app.visualization5Configuration.routerParams()
       @app.window.history.pushState params, '', ParamsToUrlString(params) if options.shouldUpdateHistory
       @updateStatusElement params.page
+
+      @reportNavigationEvent options
     else
       @replaceState params, options
-
-    @app.analyticsReporter.reportPage @app.visualization5Configuration.routerParams()
 
 
 
 
   updateStatusElement: (page) ->
     @accessibleStatusElement.innerHTML = Tr.navigation[page][@app.language]
+
+  reportNavigationEvent: (options) ->
+    @app.analyticsReporter.reportEvent
+      category: 'menu'
+      action: options.action
+      label: 'visualization'
+      value: Constants.analyticsPageMapping[@app.page]
+      subVisualization: Constants.analyticsPageMapping[options.originatingPage]
+
 
 
 Router.parseQueryParams = ->

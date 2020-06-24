@@ -32,7 +32,7 @@ class RosePill
 
 
 
-  render: (options={wait: 0}) ->
+  render: (options = {wait: 0}) ->
 
     if options.wait > 0
       @app.window.setTimeout =>
