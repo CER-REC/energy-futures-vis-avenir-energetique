@@ -36,10 +36,10 @@ november2019Files = ->
     }
     {
       type: 'electricity'
-      dataFilename: path.join ApplicationRoot, 'devPublic/rawCSV/electricity_generation_2019-11-25.csv'
-      processedFilename: path.join ApplicationRoot, 'public/CSV/2019-11-25_ElectricityGeneration.csv'
+      dataFilename: path.join ApplicationRoot, 'devPublic/rawCSV/2020_05_04_electricity_generation_viz_r_09_01_2020.csv'
+      processedFilename: path.join ApplicationRoot, 'public/CSV/2020-05-04_ElectricityGeneration.csv'
       dataset: 'nov2019'
-      logFilename: path.join ApplicationRoot, 'devPublic/rawCSV/log/2019-11-25_ElectricityGeneration.csv_ingestion_errors.log'
+      logFilename: path.join ApplicationRoot, 'devPublic/rawCSV/log/2020-05-04_ElectricityGeneration.csv_ingestion_errors.log'
     }
   ]
 
