@@ -39,8 +39,9 @@
     "history": "^5.0.0",
     "prop-types": "15.7.2",
     "query-string": "^6.13.1",
-    "react": "^16.8.3",
+    "react": "^16.13.1",
     "react-apollo": "^3.0.0",
+    "react-beautiful-dnd": "^13.0.0",
     "react-dom": "^16.8.3",
     "react-intl": "^2.7.2",
     "whatwg-fetch": "^3.0.0"

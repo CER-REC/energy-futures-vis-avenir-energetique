@@ -40,11 +40,12 @@ const ByRegion = () => {
     }
   }, [config.mainSelection]);
 
-  const configFilter = useCallback(row =>
-    config.regions.indexOf(row.province) > -1 &&
-    (!row.unit || row.unit.toLowerCase() === CONFIG_REPRESENTATION[config.unit].toLowerCase()) &&
-    (!row.scenario || row.scenario === config.scenario)
-  , [config]);
+  const configFilter = useCallback(
+    row => config.provinces.indexOf(row.province) > -1 &&
+      (!row.unit || row.unit.toLowerCase() === CONFIG_REPRESENTATION[config.unit].toLowerCase()) &&
+      (!row.scenario || row.scenario === config.scenario),
+    [config],
+  );
 
   const processedData = useMemo(() => {
     const byYear = data
@@ -69,7 +70,7 @@ const ByRegion = () => {
       <Grid item className={classes.graph}>
         <ResponsiveBar
           data={processedData || []}
-          keys={config.regions}
+          keys={config.provinces}
           indexBy="year"
           margin={{ top: 50, right: 0, bottom: 50, left: 80 }}
           padding={0.1}

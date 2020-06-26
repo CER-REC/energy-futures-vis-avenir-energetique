@@ -3,6 +3,10 @@ import ElectricityIcon from '@material-ui/icons/FlashOn';
 import OilIcon from '@material-ui/icons/Opacity';
 import GasIcon from '@material-ui/icons/LocalGasStation';
 
+import {
+  red, purple, deepPurple, blue, lightBlue, teal, green, lightGreen, lime, yellow, amber, orange, deepOrange,
+} from '@material-ui/core/colors';
+
 export const CONFIG_REPRESENTATION = {
   energyDemand: {
     name: 'Total Demand',
@@ -34,12 +38,44 @@ export const CONFIG_REPRESENTATION = {
   hcp: 'HIGH CO2 PRICE',
 };
 
-export const REGIONS = ['YT', 'SK', 'QC', 'PE', 'ON', 'NU', 'NT', 'NS', 'NL', 'NB', 'MB', 'BC', 'AB'];
+export const PROVINCES = ['YT', 'SK', 'QC', 'PE', 'ON', 'NU', 'NT', 'NS', 'NL', 'NB', 'MB', 'BC', 'AB'];
+
+// export const REGION_COLOR = {
+//   'YT': 'rgb(31, 119, 180)',
+//   'SK': 'rgb(174, 199, 232)',
+//   'QC': 'rgb(255, 127, 14)',
+//   'PE': 'rgb(255, 187, 120)',
+//   'ON': 'rgb(44, 160, 44)',
+//   'NU': 'rgb(152, 223, 138)',
+//   'NT': 'rgb(214, 39, 40)',
+//   'NS': 'rgb(255, 152, 150)',
+//   'NL': 'rgb(148, 103, 189)',
+//   'NB': 'rgb(197, 176, 213)',
+//   'MB': 'rgb(140, 86, 75)',
+//   'BC': 'rgb(196, 156, 148)',
+//   'AB': 'rgb(227, 119, 194)',
+// };
+export const REGION_COLOR = {
+  'YT': red,
+  'SK': purple,
+  'QC': deepPurple,
+  'PE': blue,
+  'ON': lightBlue,
+  'NU': teal,
+  'NT': green,
+  'NS': lightGreen,
+  'NL': lime,
+  'NB': yellow,
+  'MB': amber,
+  'BC': orange,
+  'AB': deepOrange,
+};
 
 export const DEFAULT_CONFIG = {
   mainSelection: 'energyDemand', // e.g. electricityGeneration, oilProduction, gasProduction
   unit: 'petajoules', // e.g. kilobarrelEquivalents, gigawattHours, kilobarrels, thousandCubicMetres, cubicFeet, millionCubicMetres
   year: 2019,
   scenario: 'reference', // e.g. technology, hcp
-  regions: REGIONS,
+  provinces: PROVINCES,
+  provinceOrder: PROVINCES,
 };
