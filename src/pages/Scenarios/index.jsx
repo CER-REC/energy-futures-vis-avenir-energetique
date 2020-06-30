@@ -7,7 +7,7 @@ import Control from '../../components/Control';
 import Region from '../../components/Region';
 
 
-const ByScenario = () => {
+const Scenarios = () => {
   const classes = useStyles();
 
   if (!data) {
@@ -77,4 +77,4 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default ByScenario;
+export default Scenarios;

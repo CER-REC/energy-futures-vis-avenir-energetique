@@ -13,6 +13,7 @@ VERSION
 storybook-static
 .storybook/__snapshots__/
 public/script/
+.env
 
 # System files
 .DS_Store

@@ -72,6 +72,7 @@ export const REGION_COLOR = {
 };
 
 export const DEFAULT_CONFIG = {
+  page: 'landing', // e.g. by-region, by-sector, electricity, senarios, demand
   mainSelection: 'energyDemand', // e.g. electricityGeneration, oilProduction, gasProduction
   unit: 'petajoules', // e.g. kilobarrelEquivalents, gigawattHours, kilobarrels, thousandCubicMetres, cubicFeet, millionCubicMetres
   year: 2019,

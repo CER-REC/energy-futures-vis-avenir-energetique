@@ -1,8 +1,8 @@
 import React, { useContext, useMemo, useCallback } from 'react';
 import { makeStyles, Grid } from '@material-ui/core';
 import { ResponsiveBar } from '@nivo/bar';
-// import { useQuery } from '@apollo/react-hooks';
-// import gql from 'graphql-tag';
+import { useQuery } from '@apollo/react-hooks';
+import gql from 'graphql-tag';
 import { data as dataEnergyDemand } from './dataEnergyDemand';
 import { data as dataElectricityGeneration } from './dataElectricityGeneration';
 import { data as dataOilProduction } from './dataOilProduction';
@@ -14,22 +14,23 @@ import Control from '../../components/Control';
 import Region from '../../components/Region';
 
 
-// const RESOURCES = gql`
-//   query {
-//     energyDemands {
-//       region
-//       value: quantity
-//       year
-//     }
-//   }
-// `;
+const RESOURCES = gql`
+  query {
+    energyDemands {
+      region
+      value: quantity
+      year
+    }
+  }
+`;
 
 const ByRegion = () => {
   const classes = useStyles();
 
   const { config } = useContext(ConfigContext);
 
-  // const { loading, error, data } = useQuery(RESOURCES);
+  //const { loading, error, data: response } = useQuery(RESOURCES);
+  //console.log('GraphQL example:', loading, error, response);
 
   const data = useMemo(() => {
     switch (config.mainSelection) {

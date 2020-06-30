@@ -6,7 +6,7 @@ import Nav from './index';
 
 describe('Components|Nav', () => {
   describe('with default props', () => {
-    const wrapper = shallow(<Nav tab={0} />);
+    const wrapper = shallow(<Nav page="by-region" />);
 
     shouldBehaveLikeAComponent(Nav, () => wrapper);
   });

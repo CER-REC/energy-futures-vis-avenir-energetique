@@ -12,3 +12,31 @@ export const lang = (typeof document !== 'undefined'
     && window.localStorage
     && window.localStorage.getItem('dev-lang') === 'fr')
   ? 'fr' : 'en';
+
+export const TABS = [
+  {
+    label: 'By Region',
+    page: 'by-region',
+    bg: '#6799CC',
+  },
+  {
+    label: 'By Sector',
+    page: 'by-sector',
+    bg: '#349999',
+  },
+  {
+    label: 'Electricity',
+    page: 'electricity',
+    bg: '#363796',
+  },
+  {
+    label: 'Scenarios',
+    page: 'scenarios',
+    bg: '#CA9830',
+  },
+  {
+    label: 'Demand',
+    page: 'demand',
+    bg: '#CC6666',
+  },
+];

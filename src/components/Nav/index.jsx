@@ -1,14 +1,20 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { AppBar, Tabs, Tab } from '@material-ui/core';
+import { TABS } from '../../constants';
 
-const TABS = ['Total Demand', 'By Sector', 'Electricity', 'Senarios', 'Demand'];
+const Nav = ({ page, onChange }) => {
+  const tab = useMemo(() => TABS.findIndex(tab => tab.page === page), [page]);
+  if (tab < 0) {
+    return null;
+  }
 
-const Nav = ({ tab, onChange }) => (
-  <AppBar position="static" className="Nav">
-    <Tabs value={tab} onChange={onChange}>
-      {TABS.map((label, i) => <Tab key={`nav-tab-${i}`} label={label} />)}
-    </Tabs>
-  </AppBar>
-);
+  return (
+    <AppBar position="static" className="Nav">
+      <Tabs value={tab} onChange={onChange}>
+        {TABS.map((tab) => <Tab key={`nav-tab-${tab.page}`} label={tab.label} />)}
+      </Tabs>
+    </AppBar>
+  );
+};
 
 export default Nav;

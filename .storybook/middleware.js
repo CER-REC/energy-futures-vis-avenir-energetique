@@ -1,6 +1,6 @@
 const proxy = require('http-proxy-middleware');
+require('dotenv').config();
 
 module.exports = (router) => {
-  // router.use('/conditions/graphql', proxy('http://178.128.239.141'));
-  router.use('/energy-future/graphql', proxy('http://localhost'));
+  router.use('/energy-future/graphql', proxy(process.env.MIDDLEWARE_PROXY_ADDRESS));
 };

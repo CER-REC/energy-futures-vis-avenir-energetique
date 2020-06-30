@@ -12,10 +12,12 @@ import queryString from 'query-string';
 import { lang } from '../../constants';
 import { DEFAULT_CONFIG, PROVINCES } from '../../types';
 
+import { TABS } from '../../constants';
 import Nav from '../../components/Nav';
+import Landing from '../../pages/Landing';
 import ByRegion from '../../pages/ByRegion';
 import BySector from '../../pages/BySector';
-import ByScenario from '../../pages/ByScenario';
+import Scenarios from '../../pages/Scenarios';
 
 /**
  * GraphQL API related infrastructures.
@@ -51,7 +53,6 @@ export const ConfigContext = createContext({
 
 export default () => {
   const [config, setConfig] = useState(DEFAULT_CONFIG);
-  const [tab, setTab] = useState(0);
 
   /**
    * URL parachuting.
@@ -73,6 +74,7 @@ export default () => {
     history.replace({
       pathname: '/energy-future/',
       search: `?\
+page=${config.page}&\
 mainSelection=${config.mainSelection}&\
 unit=${config.unit}&\
 year=${config.year}&\
@@ -88,12 +90,14 @@ provinceOrder=${config.provinceOrder.join(',')}\
       <ThemeProvider theme={theme}>
         <ConfigContext.Provider value={{ config, setConfig }}>
           <CssBaseline />
-          <Grid container>
-            <Nav tab={tab} onChange={(_, tab) => setTab(tab)} />
-            {tab === 0 && <ByRegion />}
-            {tab === 1 && <BySector />}
-            {tab === 3 && <ByScenario />}
-          </Grid>
+          {config.page === 'landing' ? <Landing /> : (
+            <Grid container>
+              <Nav page={config.page} onChange={(_, tab) => setConfig({ ...config, page: TABS[tab].page })} />
+              {config.page === 'by-region' && <ByRegion />}
+              {config.page === 'by-sector' && <BySector />}
+              {config.page === 'scenarios' && <Scenarios />}
+            </Grid>
+          )}
         </ConfigContext.Provider>
       </ThemeProvider>
     </ApolloProvider>
