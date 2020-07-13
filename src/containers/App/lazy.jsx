@@ -18,6 +18,7 @@ import Landing from '../../pages/Landing';
 import ByRegion from '../../pages/ByRegion';
 import BySector from '../../pages/BySector';
 import Scenarios from '../../pages/Scenarios';
+import Electricity from '../../pages/Electricity';
 
 /**
  * GraphQL API related infrastructures.
@@ -95,6 +96,7 @@ provinceOrder=${config.provinceOrder.join(',')}\
               <Nav page={config.page} onChange={(_, tab) => setConfig({ ...config, page: TABS[tab].page })} />
               {config.page === 'by-region' && <ByRegion />}
               {config.page === 'by-sector' && <BySector />}
+              {config.page === 'electricity' && <Electricity />}
               {config.page === 'scenarios' && <Scenarios />}
             </Grid>
           )}

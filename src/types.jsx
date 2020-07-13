@@ -38,6 +38,8 @@ export const CONFIG_REPRESENTATION = {
   hcp: 'HIGH CO2 PRICE',
 };
 
+export const SOURCES = ['oilProducts', 'nuclear', 'bio', 'naturalGas', 'coal', 'solarWindGeothermal', 'hydro'];
+
 export const PROVINCES = ['YT', 'SK', 'QC', 'PE', 'ON', 'NU', 'NT', 'NS', 'NL', 'NB', 'MB', 'BC', 'AB'];
 
 // export const REGION_COLOR = {
