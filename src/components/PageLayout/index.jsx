@@ -1,5 +1,6 @@
 import React from 'react';
 import { makeStyles, Grid } from '@material-ui/core';
+import YearSelect from '../YearSelect';
 import ControlHorizontal from '../ControlHorizontal';
 import Control from '../Control';
 import Region from '../Region';
@@ -10,6 +11,7 @@ const PageLayout = ({ children, showRegion = false /* boolean */ }) => {
 
   return (
     <Grid container spacing={4} className={classes.root}>
+      <Grid item xs={12}><YearSelect /></Grid>
       <Grid item xs={12}><ControlHorizontal /></Grid>
       <Grid item><Control width={180} /></Grid>
       {showRegion && <Grid item><Region /></Grid>}

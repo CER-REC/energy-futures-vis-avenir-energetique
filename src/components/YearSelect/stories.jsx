@@ -4,5 +4,5 @@ import { storiesForComponent } from '../../../.storybook/utils';
 import ControlHorizontal from './index';
 import ReadMe from './README.md';
 
-storiesForComponent('Components|Control Horizontal', module, ReadMe)
+storiesForComponent('Components|Year Select', module, ReadMe)
   .add('default', () => <Grid container style={{ padding: 16 }}><ControlHorizontal /></Grid>);
