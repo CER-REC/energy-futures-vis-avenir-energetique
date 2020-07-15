@@ -40,3 +40,28 @@ export const TABS = [
     bg: '#CC6666',
   },
 ];
+
+export const YEARS = ['2019', '2018', '2017', '2016', '2016 Extra'];
+
+export const CONFIG_LAYOUT = {
+  energyDemand: {
+    unit: ['petajoules', 'kilobarrelEquivalents'],
+    year: YEARS,
+    scenario: ['reference', 'technology', 'hcp'],
+  },
+  electricityGeneration: {
+    unit: ['petajoules', 'gigawattHours', 'kilobarrelEquivalents'],
+    year: YEARS,
+    scenario: ['reference', 'technology', 'hcp'],
+  },
+  oilProduction: {
+    unit: ['kilobarrels', 'thousandCubicMetres'],
+    year: YEARS,
+    scenario: ['reference', 'technology', 'hcp'],
+  },
+  gasProduction: {
+    unit: ['cubicFeet', 'millionCubicMetres'],
+    year: YEARS,
+    scenario: ['reference', 'technology', 'hcp'],
+  },
+};

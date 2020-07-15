@@ -10,10 +10,8 @@ import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 
 import { ConfigContext } from '../../containers/App/lazy';
 import { CONFIG_REPRESENTATION } from '../../types';
-import { TABS } from '../../constants';
+import { TABS, YEARS } from '../../constants';
 
-
-const YEARS = ['2019', '2018', '2017', '2016'];
 
 const YearSelect = () => {
   const classes = useStyles();
@@ -39,7 +37,7 @@ const YearSelect = () => {
   const handleToggleYear = (event, year) => YEARS.indexOf(year) > -1 && handleConfigUpdate('year', year);
 
   return (
-    <Grid container alignItems="center" spacing={4}>
+    <Grid container alignItems="center" wrap="nowrap" spacing={4}>
       <Grid item>
         <Typography variant="h5" color="primary">
           {TABS.find(tab => tab.page === config.page)?.label} / {CONFIG_REPRESENTATION[config.mainSelection].name}:
@@ -65,7 +63,7 @@ const YearSelect = () => {
             exclusive size="small" classes={{ grouped: classes.grouped }}
           >
             {YEARS.map(year => (
-              <ToggleButton key={`year-toggle-${year}`} value={year}  classes={{ selected: classes.selected }}>
+              <ToggleButton key={`year-toggle-${year}`} value={year || YEARS[0]} classes={{ selected: classes.selected }}>
                 <Typography variant="body1" color={year === config.year ? 'primary' : 'textSecondary'}>{year}</Typography>
               </ToggleButton>
             ))}
@@ -80,6 +78,7 @@ const useStyles = makeStyles(theme => createStyles({
   root: {
     border: `2px solid ${theme.palette.divider}`,
     borderRadius: theme.shape.borderRadius,
+    flexGrow: 1,
   },
   grouped: {
     minWidth: 100,

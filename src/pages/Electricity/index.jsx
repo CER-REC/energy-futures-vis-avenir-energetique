@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { ResponsiveBubble } from '@nivo/circle-packing'
+import { ResponsiveBubble } from '@nivo/circle-packing';
 import data from './data';
 import { PROVINCES } from '../../types';
 import PageLayout from '../../components/PageLayout';
@@ -31,7 +31,7 @@ const Electricity = () => {
       color: '#FFF',
       children: Object.values(DEFAULT[province]),
     }));
-  }, [data]);
+  }, []);
 
   if (!data) {
     return null;

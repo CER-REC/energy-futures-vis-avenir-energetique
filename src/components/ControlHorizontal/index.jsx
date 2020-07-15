@@ -6,30 +6,8 @@ import ArrowDropIcon from '@material-ui/icons/ArrowDropDown';
 
 import { ConfigContext } from '../../containers/App/lazy';
 import { CONFIG_REPRESENTATION } from '../../types';
+import { CONFIG_LAYOUT } from '../../constants';
 
-
-const CONFIG_LAYOUT = {
-  energyDemand: {
-    unit: ['petajoules', 'kilobarrelEquivalents'],
-    year: ['2019', '2018', '2017', '2016'],
-    scenario: ['reference', 'technology', 'hcp'],
-  },
-  electricityGeneration: {
-    unit: ['petajoules', 'gigawattHours', 'kilobarrelEquivalents'],
-    year: ['2019', '2018', '2017', '2016'],
-    scenario: ['reference', 'technology', 'hcp'],
-  },
-  oilProduction: {
-    unit: ['kilobarrels', 'thousandCubicMetres'],
-    year: ['2019', '2018', '2017', '2016'],
-    scenario: ['reference', 'technology', 'hcp'],
-  },
-  gasProduction: {
-    unit: ['cubicFeet', 'millionCubicMetres'],
-    year: ['2019', '2018', '2017', '2016'],
-    scenario: ['reference', 'technology', 'hcp'],
-  },
-};
 
 const ControlHorizontal = () => {
   const { config, setConfig } = useContext(ConfigContext);

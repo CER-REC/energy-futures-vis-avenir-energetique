@@ -8,8 +8,8 @@ const Landing = () => {
 
   const { config, setConfig } = useContext(ConfigContext);
 
-  const handleRedirect = (page) => () => setConfig({ ...config, page  });
-  
+  const handleRedirect = (page) => () => setConfig({ ...config, page });
+
   return (
     <Grid container spacing={2}>
       <Grid item xs={12}>

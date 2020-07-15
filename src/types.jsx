@@ -4,7 +4,8 @@ import OilIcon from '@material-ui/icons/Opacity';
 import GasIcon from '@material-ui/icons/LocalGasStation';
 
 import {
-  red, purple, deepPurple, blue, lightBlue, teal, green, lightGreen, lime, yellow, amber, orange, deepOrange,
+  red, purple, deepPurple, blue, lightBlue, teal, green,
+  lightGreen, lime, yellow, amber, orange, deepOrange,
 } from '@material-ui/core/colors';
 
 export const CONFIG_REPRESENTATION = {
@@ -58,26 +59,26 @@ export const PROVINCES = ['YT', 'SK', 'QC', 'PE', 'ON', 'NU', 'NT', 'NS', 'NL', 
 //   'AB': 'rgb(227, 119, 194)',
 // };
 export const REGION_COLOR = {
-  'YT': red,
-  'SK': purple,
-  'QC': deepPurple,
-  'PE': blue,
-  'ON': lightBlue,
-  'NU': teal,
-  'NT': green,
-  'NS': lightGreen,
-  'NL': lime,
-  'NB': yellow,
-  'MB': amber,
-  'BC': orange,
-  'AB': deepOrange,
+  YT: red,
+  SK: purple,
+  QC: deepPurple,
+  PE: blue,
+  ON: lightBlue,
+  NU: teal,
+  NT: green,
+  NS: lightGreen,
+  NL: lime,
+  NB: yellow,
+  MB: amber,
+  BC: orange,
+  AB: deepOrange,
 };
 
 export const DEFAULT_CONFIG = {
   page: 'landing', // e.g. by-region, by-sector, electricity, senarios, demand
   mainSelection: 'energyDemand', // e.g. electricityGeneration, oilProduction, gasProduction
   unit: 'petajoules', // e.g. kilobarrelEquivalents, gigawattHours, kilobarrels, thousandCubicMetres, cubicFeet, millionCubicMetres
-  year: 2019,
+  year: '2019',
   scenario: 'reference', // e.g. technology, hcp
   provinces: PROVINCES,
   provinceOrder: PROVINCES,
