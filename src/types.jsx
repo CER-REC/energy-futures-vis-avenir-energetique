@@ -36,7 +36,12 @@ export const CONFIG_REPRESENTATION = {
 
   reference: 'REFERENCE',
   technology: 'TECHNOLOGY',
+  highPrice: 'HIGH PRICE',
+  lowPrice: 'LOW PRICE',
   hcp: 'HIGH CO2 PRICE',
+  constrained: 'CONSTRAINED',
+  highLng: 'HIGH LNG',
+  noLng: 'NO LNG',
 };
 
 export const SOURCES = ['oilProducts', 'nuclear', 'bio', 'naturalGas', 'coal', 'solarWindGeothermal', 'hydro'];

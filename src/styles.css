@@ -22,6 +22,13 @@
   url('./fonts/FiraSansCondensed-Light.woff') format('woff'),;
 }
 
+/* roboto-regular - latin */
+@font-face {
+  font-family: 'Roboto';
+  src: url('./fonts/roboto-condensed-regular.woff2') format('woff2'),
+       url('./fonts/roboto-condensed-regular.woff') format('woff');
+}
+
 /* Adapted From https://gist.github.com/IceCreamYou/cd517596e5847a88e2bb0a091da43fb4 */
 .force-show-scrollbars::-webkit-scrollbar-track:vertical {
   border-left: 1px solid #E7E7E7;

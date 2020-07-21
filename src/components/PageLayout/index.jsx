@@ -22,7 +22,7 @@ const PageLayout = ({ children, showRegion = false /* boolean */ }) => {
 
 const useStyles = makeStyles(theme => ({
   root: {
-    padding: theme.spacing(2),
+    padding: theme.spacing(4, 0),
     backgroundColor: theme.palette.background.paper,
   },
   graph: {
