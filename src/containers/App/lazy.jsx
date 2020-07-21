@@ -19,6 +19,7 @@ import ByRegion from '../../pages/ByRegion';
 import BySector from '../../pages/BySector';
 import Scenarios from '../../pages/Scenarios';
 import Electricity from '../../pages/Electricity';
+import Demand from '../../pages/Demand';
 
 /**
  * GraphQL API related infrastructures.
@@ -98,6 +99,7 @@ provinceOrder=${config.provinceOrder.join(',')}\
               {config.page === 'by-sector' && <BySector />}
               {config.page === 'electricity' && <Electricity />}
               {config.page === 'scenarios' && <Scenarios />}
+              {config.page === 'demand' && <Demand />}
             </Grid>
           )}
         </ConfigContext.Provider>
