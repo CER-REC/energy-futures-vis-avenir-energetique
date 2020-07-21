@@ -109,7 +109,7 @@ const YearSelect = () => {
       <Grid item className={classes.report}>
         <Grid container alignItems="flex-end" wrap="nowrap">
           <Typography variant="overline" style={{ color: TEXT_COLOR }}>read report</Typography>
-          <img src={img_report} />
+          <img src={String(img_report).startsWith('/') ? img_report : `/${img_report}`} />
         </Grid>
       </Grid>
     </Grid>
@@ -117,7 +117,11 @@ const YearSelect = () => {
 };
 
 const useStyles = makeStyles(theme => createStyles({
-  root: { position: 'relative' },
+  root: {
+    position: 'relative',
+    paddingRight: 150,
+    '& > div:first-of-type': { marginRight: theme.spacing(2) },
+  },
   title: {
     color: TEXT_COLOR,
     textTransform: 'uppercase',
@@ -164,10 +168,10 @@ const useStyles = makeStyles(theme => createStyles({
     transform: 'translateY(-50%)',
     '& img': { height: 60 },
     '& span': {
-      width: 40,
+      width: 50,
       margin: 2,
       lineHeight: 1,
-      fontSize: '.7rem',
+      fontSize: 10,
       textAlign: 'right',
     },
   },
