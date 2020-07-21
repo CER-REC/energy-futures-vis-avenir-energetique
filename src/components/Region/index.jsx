@@ -1,12 +1,12 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import {
-  makeStyles, Grid, Typography, Checkbox,
+  makeStyles, Grid, Typography,
 } from '@material-ui/core';
 import DragIcon from '@material-ui/icons/DragIndicator';
 
 import { ConfigContext } from '../../containers/App/lazy';
-import { PROVINCES, REGION_COLOR } from '../../types';
+import { PROVINCES, REGION_COLOR, REGION_LABEL } from '../../types';
 
 const reorder = (list, startIndex, endIndex) => {
   const result = Array.from(list);
@@ -15,14 +15,50 @@ const reorder = (list, startIndex, endIndex) => {
   return result;
 };
 
-const ColoredCheckbox = ({ color, ...props }) => {
-  const classes = makeStyles(() => ({
+const ColoredProvinceBox = ({ province, color, selected, ...props }) => {
+  const classes = makeStyles(theme => ({
     root: {
-      color: color[400],
-      '&:checked': { color: color[600] },
+      position: 'absolute',
+      height: 36,
+      width: 36,
+      backgroundColor: theme.palette.common.white,
+      border: `1px solid ${color[600]}`,
+      transition: 'box-shadow .25s ease-in-out',
+      '& > p': {
+        margin: 'auto',
+        color: color[800],
+      },
+      '&.selected': { backgroundColor: color[600] },
+      '&.selected > p': { color: theme.palette.common.white },
+      '&:hover': { boxShadow: theme.shadows[6] },
+
+      '& > div': {
+        position: 'absolute',
+        left: 40,
+        top: '50%',
+        color: '#666',
+        opacity: 0,
+        transition: 'opacity .25s ease-in-out',
+        transform: 'translateY(-50%)',
+      },
+      '&:hover > div': { opacity: 1 },
+
+      '& > div > svg': { marginRight: 4 },
+      '& > div > span': {
+        lineHeight: 1,
+        backgroundColor: 'rgba(255, 255, 255, .75)',
+      },
     },
   }))();
-  return <Checkbox color="default" {...props} className={classes.root} />
+  return (
+    <Grid container {...props} className={`${classes.root} ${selected && 'selected'}`}>
+      <Typography variant="body2">{province}</Typography>
+      <Grid container alignItems="center" wrap="nowrap">
+        <DragIcon fontSize="small" />
+        <Typography variant="overline">{REGION_LABEL[province]}</Typography>
+      </Grid>
+    </Grid>
+  );
 };
 
 const Region = ({ width }) => {
@@ -65,41 +101,32 @@ const Region = ({ width }) => {
 
   return (
     <DragDropContext onDragEnd={handleDragEnd}>
+      <Typography variant="h6" gutterBottom>Region</Typography>
       <Droppable droppableId="droppable">
         {(provided, snapshot) => (
           <Grid
-            container direction="column" spacing={2}
+            container direction="column" alignItems="center" spacing={2}
             {...provided.droppableProps} ref={provided.innerRef}
             className={`${classes.root} ${snapshot.isDraggingOver && classes.dark}`}
           >
-            <Grid item>
-              <Typography variant="h6">Region</Typography>
-            </Grid>
             {provinceOrder.map((province, index) => (
               <Draggable key={`region-btn-${province}`} draggableId={province} index={index}>
                 {(provided, snapshot) => (
-                  <Grid item>
+                  <>
                     <Grid
-                      container ref={provided.innerRef}
+                      ref={provided.innerRef}
                       {...provided.draggableProps}
                       {...provided.dragHandleProps}
-                      alignItems="center"
-                      wrap="nowrap"
-                      spacing={1}
-                      className={`${classes.region} ${snapshot.isDragging && classes.dragging}`}
+                      onClick={handleToggleRegion(province)}
+                      className={classes.province}
                     >
-                      <Grid item style={{ display: 'flex' }}><DragIcon /></Grid>
-                      <Grid item style={{ flexGrow: 1 }}><Typography variant="body2">{province}</Typography></Grid>
-                      <Grid item style={{ display: 'flex' }}>
-                        <ColoredCheckbox
-                          color={REGION_COLOR[province]}
-                          checked={provinces.indexOf(province) > -1}
-                          onChange={handleToggleRegion(province)}
-                          classes={{ root: classes.color }}
-                        />
-                      </Grid>
+                      <ColoredProvinceBox
+                        province={province}
+                        color={REGION_COLOR[province]}
+                        selected={provinces.indexOf(province) > -1}
+                      />
                     </Grid>
-                  </Grid>
+                  </>
                 )}
               </Draggable>
             ))}
@@ -113,26 +140,32 @@ const Region = ({ width }) => {
 
 const useStyles = makeStyles(theme => ({
   root: props => ({
+    position: 'relative',
     width: props.width || `calc(100% + ${theme.spacing(2)}px)`,
     padding: theme.spacing(1),
     border: '1px dashed transparent',
     borderRadius: theme.shape.borderRadius,
-  }),
-  dark: { border: `1px dashed ${theme.palette.divider} !important` },
-  region: {
-    width: 125,
-    padding: theme.spacing(0, .5),
-    border: '1px solid #EEE',
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: 'white',
-    transition: 'background-color .25s ease-in-out, box-shadow .25s ease-in-out',
-    '&:hover': {
-      boxShadow: theme.shadows[1],
+    '&:after': {
+      content: '""',
+      position: 'absolute',
+      top: 0,
+      bottom: 0,
+      left: '50%',
+      width: 1,
+      zIndex: 1,
+      borderLeft: '1px solid #666',
     },
-  },
-  dragging: {
-    backgroundColor: '#EFEFEF',
-    boxShadow: theme.shadows[4],
+  }),
+  // dark: { border: `1px dashed ${theme.palette.divider} !important` },
+  province: {
+    position: 'relative',
+    height: 48,
+    width: 48,
+    zIndex: 2,
+    padding: 6,
+    backgroundColor: 'transparent',
+    border: 'none',
+    cursor: 'pointer',
   },
 }));
 

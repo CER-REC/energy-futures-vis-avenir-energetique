@@ -41,7 +41,7 @@ export const TABS = [
   },
 ];
 
-export const YEARS = ['2019', '2018', '2017', '2016', '2016 Extra'];
+export const YEARS = ['2019', '2018', '2017', '2016', '2016 Updated'];
 
 export const CONFIG_LAYOUT = {
   energyDemand: {
