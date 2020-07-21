@@ -35,6 +35,8 @@
     "apollo-cache-inmemory": "^1.6.2",
     "apollo-client": "^2.6.3",
     "apollo-link-http": "^1.5.15",
+    "d3": "^5.16.0",
+    "d3-path": "^1.0.9",
     "domready": "^1.0.8",
     "graphql": "^14.2.1",
     "graphql-tag": "^2.10.0",
