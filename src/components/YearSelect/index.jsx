@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect, useMemo } from 'react';
 import {
   makeStyles, createStyles, fade,
-  Grid, Typography, Button, Menu, MenuItem, Tooltip,
+  Grid, Typography, Button, Menu, MenuItem, Tooltip, Hidden,
 } from '@material-ui/core';
 import ArrowDropIcon from '@material-ui/icons/KeyboardArrowDown';
 
@@ -54,9 +54,16 @@ const YearSelect = () => {
       <Grid item style={{ marginRight: 16 }}>
         <Grid container alignItems="center" wrap="nowrap" spacing={1}>
           <Grid item>
-            <Typography variant="h6" color="primary" className={classes.title}>
-              Energy Futures From
-            </Typography>
+            <Hidden lgUp>
+              <Typography variant="body1" color="primary" className={classes.title}>
+                Energy Futures From
+              </Typography>
+            </Hidden>
+            <Hidden mdDown>
+              <Typography variant="h6" color="primary" className={classes.title}>
+                Energy Futures From
+              </Typography>
+            </Hidden>
           </Grid>
 
           <Grid item>
@@ -85,9 +92,16 @@ const YearSelect = () => {
       <Grid item>
         <Grid container alignItems="center" wrap="nowrap" spacing={1}>
           <Grid item>
-            <Typography variant="h6" color="primary" className={classes.title}>
-              Senarios
-            </Typography>
+            <Hidden lgUp>
+              <Typography variant="body1" color="primary" className={classes.title}>
+                Scenarios
+              </Typography>
+            </Hidden>
+            <Hidden mdDown>
+              <Typography variant="h6" color="primary" className={classes.title}>
+                Scenarios
+              </Typography>
+            </Hidden>
           </Grid>
 
           {layoutScenario.map(scenario => (
@@ -119,7 +133,6 @@ const YearSelect = () => {
 const useStyles = makeStyles(theme => createStyles({
   root: {
     position: 'relative',
-    paddingRight: 150,
     '& > div:first-of-type': { marginRight: theme.spacing(2) },
   },
   title: {
@@ -141,6 +154,7 @@ const useStyles = makeStyles(theme => createStyles({
       backgroundColor: '#647A90',
       boxShadow: theme.shadows[4],
     },
+    [theme.breakpoints.down('md')]: { minWidth: 60 },
   },
   btnBlueSelected: {
     padding: theme.spacing(0, .5),

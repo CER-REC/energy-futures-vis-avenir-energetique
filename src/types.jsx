@@ -5,7 +5,7 @@ import GasIcon from '@material-ui/icons/LocalGasStation';
 
 import {
   red, purple, deepPurple, blue, lightBlue, teal, green,
-  lightGreen, lime, yellow, amber, orange, deepOrange,
+  lightGreen, lime, yellow, amber, orange, deepOrange, grey,
 } from '@material-ui/core/colors';
 
 export const CONFIG_REPRESENTATION = {
@@ -39,7 +39,7 @@ export const CONFIG_REPRESENTATION = {
   highPrice: 'HIGH PRICE',
   lowPrice: 'LOW PRICE',
   hcp: 'HIGH CO2 PRICE',
-  constrained: 'CONSTRAINED',
+  constrained: 'CONSTRND',
   highLng: 'HIGH LNG',
   noLng: 'NO LNG',
 };
@@ -64,6 +64,7 @@ export const PROVINCES = ['YT', 'SK', 'QC', 'PE', 'ON', 'NU', 'NT', 'NS', 'NL', 
 //   'AB': 'rgb(227, 119, 194)',
 // };
 export const REGION_COLOR = {
+  ALL: grey,
   YT: red,
   SK: purple,
   QC: deepPurple,

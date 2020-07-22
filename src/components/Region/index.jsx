@@ -34,7 +34,7 @@ const ColoredProvinceBox = ({ province, color, selected, ...props }) => {
 
       '& > div': {
         position: 'absolute',
-        left: 40,
+        left: 36,
         top: '50%',
         color: '#666',
         opacity: 0,
@@ -42,21 +42,23 @@ const ColoredProvinceBox = ({ province, color, selected, ...props }) => {
         transform: 'translateY(-50%)',
       },
       '&:hover > div': { opacity: 1 },
-
-      '& > div > svg': { marginRight: 4 },
       '& > div > span': {
+        padding: 4,
         lineHeight: 1,
-        backgroundColor: 'rgba(255, 255, 255, .75)',
+        backgroundColor: theme.palette.common.white,
+        border: '1px solid #AAA',
       },
     },
   }))();
   return (
     <Grid container {...props} className={`${classes.root} ${selected && 'selected'}`}>
       <Typography variant="body2">{province}</Typography>
-      <Grid container alignItems="center" wrap="nowrap">
-        <DragIcon fontSize="small" />
-        <Typography variant="overline">{REGION_LABEL[province]}</Typography>
-      </Grid>
+      {province !== 'ALL' && (
+        <Grid container alignItems="center" wrap="nowrap">
+          <DragIcon fontSize="small" />
+          <Typography variant="overline">{REGION_LABEL[province]}</Typography>
+        </Grid>
+      )}
     </Grid>
   );
 };
@@ -85,6 +87,10 @@ const Region = ({ width }) => {
   }, [config]);
 
   const handleToggleRegion = province => () => {
+    if (province === 'ALL') {
+      setProvinces(PROVINCES); // default values
+      return;
+    }
     if (provinces.indexOf(province) > -1) {
       setProvinces(provinces.filter(p => p !== province));
     } else {
@@ -109,6 +115,16 @@ const Region = ({ width }) => {
             {...provided.droppableProps} ref={provided.innerRef}
             className={`${classes.root} ${snapshot.isDraggingOver && classes.dark}`}
           >
+            <Grid
+              onClick={handleToggleRegion('ALL')}
+              className={classes.province}
+            >
+              <ColoredProvinceBox
+                province="ALL"
+                color={REGION_COLOR['ALL']}
+                selected={provinces.length === PROVINCES.length}
+              />
+            </Grid>
             {provinceOrder.map((province, index) => (
               <Draggable key={`region-btn-${province}`} draggableId={province} index={index}>
                 {(provided, snapshot) => (
@@ -148,21 +164,20 @@ const useStyles = makeStyles(theme => ({
     '&:after': {
       content: '""',
       position: 'absolute',
-      top: 0,
-      bottom: 0,
+      top: 16,
+      bottom: 16,
       left: '50%',
       width: 1,
       zIndex: 1,
-      borderLeft: '1px solid #666',
+      borderLeft: '2px solid #888',
     },
   }),
-  // dark: { border: `1px dashed ${theme.palette.divider} !important` },
   province: {
     position: 'relative',
-    height: 48,
-    width: 48,
+    height: 44,
+    width: 44,
     zIndex: 2,
-    padding: 6,
+    padding: 4,
     backgroundColor: 'transparent',
     border: 'none',
     cursor: 'pointer',

@@ -10,12 +10,16 @@ const PageLayout = ({ children, showRegion = false /* boolean */ }) => {
   const classes = useStyles();
 
   return (
-    <Grid container spacing={4} className={classes.root}>
-      <Grid item xs={12}><YearSelect /></Grid>
-      <Grid item xs={12}><ControlHorizontal /></Grid>
-      <Grid item><Control width={180} /></Grid>
-      {showRegion && <Grid item><Region /></Grid>}
-      {children && <Grid item className={classes.graph}>{children}</Grid>}
+    <Grid container direction="column" spacing={4} className={classes.root}>
+      <Grid item><YearSelect /></Grid>
+      <Grid item><ControlHorizontal /></Grid>
+      <Grid item>
+        <Grid container wrap="nowrap" spacing={2}>
+          <Grid item><Control width={180} /></Grid>
+          {showRegion && <Grid item><Region /></Grid>}
+          {children && <Grid item className={classes.graph}>{children}</Grid>}
+        </Grid>
+      </Grid>
     </Grid>
   );
 };
