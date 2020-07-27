@@ -23,19 +23,19 @@ const PageLayout = ({
       <Grid item><ControlHorizontal /></Grid>
       <Grid item>
         <Grid container wrap="nowrap" spacing={2}>
-        <Grid item><LowerHorizontalControl /></Grid>
 
           {showRegion && (
             <Grid item>
               <DraggableVerticalList
                 title="Region"
-                left dense
+                left
+                dense
                 items={config.provinces}
                 itemOrder={config.provinceOrder}
                 defaultItems={REGIONS}
                 defaultItemOrder={REGION_ORDER}
-                setItems={(provinces) => setConfig({ ...config, provinces })}
-                setItemOrder={(provinceOrder) => setConfig({ ...config, provinceOrder })}
+                setItems={provinces => setConfig({ ...config, provinces })}
+                setItemOrder={provinceOrder => setConfig({ ...config, provinceOrder })}
               />
             </Grid>
           )}
@@ -48,12 +48,15 @@ const PageLayout = ({
                 itemOrder={config.sourceOrder}
                 defaultItems={SOURCES}
                 defaultItemOrder={SOURCE_ORDER}
-                setItems={(sources) => setConfig({ ...config, sources })}
-                setItemOrder={(sourceOrder) => setConfig({ ...config, sourceOrder })}
+                setItems={sources => setConfig({ ...config, sources })}
+                setItemOrder={sourceOrder => setConfig({ ...config, sourceOrder })}
               />
             </Grid>
           )}
-          {children && <Grid item className={classes.graph}>{children}</Grid>}
+          <Grid container direction='column'>
+            <Grid item><LowerHorizontalControl /></Grid>
+
+            {children && <Grid item className={classes.graph}>{children}</Grid>}
           </Grid>
         </Grid>
       </Grid>
