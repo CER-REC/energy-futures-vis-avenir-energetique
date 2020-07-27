@@ -10,7 +10,7 @@ import { fetch } from 'whatwg-fetch';
 import { createBrowserHistory } from 'history';
 import queryString from 'query-string';
 import { lang } from '../../constants';
-import { DEFAULT_CONFIG, PROVINCES } from '../../types';
+import { DEFAULT_CONFIG, REGION_ORDER, SOURCE_ORDER } from '../../types';
 
 import { TABS } from '../../constants';
 import Nav from '../../components/Nav';
@@ -64,8 +64,10 @@ export default () => {
     setConfig({
       ...DEFAULT_CONFIG,
       ...query,
-      provinces: query.provinces ? query.provinces.split(',') : PROVINCES,
-      provinceOrder: query.provinceOrder ? query.provinceOrder.split(',') : PROVINCES,
+      provinces: query.provinces ? query.provinces.split(',') : REGION_ORDER,
+      provinceOrder: query.provinceOrder ? query.provinceOrder.split(',') : REGION_ORDER,
+      sources: query.sources ? query.sources.split(',') : SOURCE_ORDER,
+      sourceOrder: query.sourceOrder ? query.sourceOrder.split(',') : SOURCE_ORDER,
     });
   }, []);
 
@@ -82,7 +84,9 @@ unit=${config.unit}&\
 year=${config.year || '2019'}&\
 scenario=${config.scenario}&\
 provinces=${config.provinces.join(',')}&\
-provinceOrder=${config.provinceOrder.join(',')}\
+provinceOrder=${config.provinceOrder.join(',')}&\
+sources=${config.sources.join(',')}&\
+sourceOrder=${config.sourceOrder.join(',')}\
       `,
     });
   }, [config]);

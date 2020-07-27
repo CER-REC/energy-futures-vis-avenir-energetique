@@ -1,11 +1,11 @@
 import React, { useMemo } from 'react';
 import { ResponsiveBubble } from '@nivo/circle-packing';
 import data from './data';
-import { PROVINCES } from '../../types';
+import { REGION_ORDER } from '../../types';
 import PageLayout from '../../components/PageLayout';
 
 
-const DEFAULT = PROVINCES.reduce((result, province) => ({
+const DEFAULT = REGION_ORDER.reduce((result, province) => ({
   ...result,
   [province]: {
     oilProducts: { name: 'oilProducts', color: '#B56696', value: 0 },
@@ -26,7 +26,7 @@ const Electricity = () => {
       }
     });
 
-    return PROVINCES.map(province => ({
+    return REGION_ORDER.map(province => ({
       name: province,
       color: '#FFF',
       children: Object.values(DEFAULT[province]),
