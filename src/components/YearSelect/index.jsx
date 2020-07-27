@@ -3,6 +3,7 @@ import {
   makeStyles, createStyles, fade,
   Grid, Typography, Button, Menu, MenuItem, Tooltip, Hidden,
 } from '@material-ui/core';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 import ArrowDropIcon from '@material-ui/icons/KeyboardArrowDown';
 
 import { ConfigContext } from '../../containers/App/lazy';
@@ -17,16 +18,31 @@ const YearSelect = () => {
 
   const { config, setConfig } = useContext(ConfigContext);
 
-  const [anchorYear, setAnchorYear] = useState(null);
+  /**
+   * CER template turns to the tablet mode at width = 992px.
+   */
+  const desktop = useMediaQuery('(min-width: 992px)');
 
   /**
    * Control methods for the year drop-down.
    */
+  const [anchorYear, setAnchorYear] = useState(null);
   const onOpenMenuYear = (event) => setAnchorYear(event.currentTarget);
   const onCloseMenuYear = () => setAnchorYear(null);
   const onChangeMenuYear = (year) => () => {
     onCloseMenuYear();
     handleConfigUpdate('year', year);
+  };
+
+  /**
+   * Control methods for the scenario drop-down (only on small screens).
+   */
+  const [anchorScenario, setAnchorScenario] = useState(null);
+  const onOpenMenuScenario = (event) => setAnchorScenario(event.currentTarget);
+  const onCloseMenuScenario = () => setAnchorScenario(null);
+  const onChangeMenuScenario = (scenario) => () => {
+    onCloseMenuScenario();
+    handleConfigUpdate('scenario', scenario);
   };
 
   /**
@@ -53,6 +69,8 @@ const YearSelect = () => {
     <Grid container alignItems="center" className={classes.root}>
       <Grid item style={{ marginRight: 16 }}>
         <Grid container alignItems="center" wrap="nowrap" spacing={1}>
+
+          {/* year select */}
           <Grid item>
             <Hidden lgUp>
               <Typography variant="body1" color="primary" className={classes.title}>
@@ -89,6 +107,7 @@ const YearSelect = () => {
         </Grid>
       </Grid>
 
+      {/* scenario select */}
       <Grid item>
         <Grid container alignItems="center" wrap="nowrap" spacing={1}>
           <Grid item>
@@ -104,7 +123,7 @@ const YearSelect = () => {
             </Hidden>
           </Grid>
 
-          {layoutScenario.map(scenario => (
+          {desktop ? layoutScenario.map(scenario => (
             <Grid item key={`config-scenario-${scenario}`}>
               <Tooltip title={SCENARIO_TOOPTIP[scenario]} classes={{ tooltip: classes.tooltip }}>
                 <Button
@@ -116,7 +135,28 @@ const YearSelect = () => {
                 </Button>
               </Tooltip>
             </Grid>
-          ))}
+          )) : (
+            <Grid item>
+              <Button
+                variant="outlined" color="primary" size="small"
+                endIcon={<ArrowDropIcon />} onClick={onOpenMenuScenario}
+                className={classes.btnBlueSelected}
+              >
+                {CONFIG_REPRESENTATION[config.scenario]}
+              </Button>
+              <Menu anchorEl={anchorScenario} open={!!anchorScenario} onClose={onCloseMenuScenario}>
+                {layoutScenario.map(scenario => (
+                  <MenuItem
+                    key={`config-scenario-${scenario}`} dense
+                    disabled={config.scenario === scenario}
+                    onClick={onChangeMenuScenario(scenario)}
+                  >
+                    {CONFIG_REPRESENTATION[scenario]}
+                  </MenuItem>
+                ))}
+              </Menu>
+            </Grid>
+          )}
         </Grid>
       </Grid>
 
