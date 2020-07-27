@@ -98,7 +98,7 @@ const LowerHorizontalControl = () => {
     return (
       <ToggleButton
         value={unit}
-        style={styles}
+        className={styles}
       >
         {CONFIG_REPRESENTATION[unit]}
       </ToggleButton>
