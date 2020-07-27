@@ -3,6 +3,7 @@ import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import {
   makeStyles, Grid, Typography,
 } from '@material-ui/core';
+import ClearIcon from '@material-ui/icons/Clear';
 import DragIcon from '@material-ui/icons/DragIndicator';
 
 import { ConfigContext } from '../../containers/App/lazy';
@@ -15,7 +16,7 @@ const reorder = (list, startIndex, endIndex) => {
   return result;
 };
 
-const ColoredProvinceBox = ({ province, color, selected, ...props }) => {
+const ColoredProvinceBox = ({ province, color, selected, clear, ...props }) => {
   const classes = makeStyles(theme => ({
     root: {
       position: 'absolute',
@@ -49,10 +50,14 @@ const ColoredProvinceBox = ({ province, color, selected, ...props }) => {
         border: '1px solid #AAA',
       },
     },
+    btnClear: {
+      margin: 'auto',
+      color: theme.palette.common.white,
+    },
   }))();
   return (
     <Grid container {...props} className={`${classes.root} ${selected && 'selected'}`}>
-      <Typography variant="body2">{province}</Typography>
+      {clear ? <ClearIcon className={classes.btnClear} /> : <Typography variant="body2">{province}</Typography>}
       {province !== 'ALL' && (
         <Grid container alignItems="center" wrap="nowrap">
           <DragIcon fontSize="small" />
@@ -88,7 +93,7 @@ const Region = ({ width }) => {
 
   const handleToggleRegion = province => () => {
     if (province === 'ALL') {
-      setProvinces(PROVINCES); // default values
+      setProvinces(provinces.length === PROVINCES.length ? [] : PROVINCES); // default values
       return;
     }
     if (provinces.indexOf(province) > -1) {
@@ -122,7 +127,8 @@ const Region = ({ width }) => {
               <ColoredProvinceBox
                 province="ALL"
                 color={REGION_COLOR['ALL']}
-                selected={provinces.length === PROVINCES.length}
+                selected={provinces.length > 1}
+                clear={provinces.length === PROVINCES.length}
               />
             </Grid>
             {provinceOrder.map((province, index) => (

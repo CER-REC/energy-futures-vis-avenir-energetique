@@ -123,7 +123,7 @@ const YearSelect = () => {
             </Hidden>
           </Grid>
 
-          {desktop ? layoutScenario.map(scenario => (
+          {(desktop || layoutScenario.length < 2) ? layoutScenario.map(scenario => (
             <Grid item key={`config-scenario-${scenario}`}>
               <Tooltip title={SCENARIO_TOOPTIP[scenario]} classes={{ tooltip: classes.tooltip }}>
                 <Button
