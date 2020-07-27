@@ -3,11 +3,11 @@ import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import {
   makeStyles, Grid, Typography,
 } from '@material-ui/core';
+import { grey } from '@material-ui/core/colors';
 import ClearIcon from '@material-ui/icons/Clear';
 import DragIcon from '@material-ui/icons/DragIndicator';
 
 import { ConfigContext } from '../../containers/App/lazy';
-import { PROVINCES, REGION_COLOR, REGION_LABEL } from '../../types';
 
 const reorder = (list, startIndex, endIndex) => {
   const result = Array.from(list);
@@ -16,7 +16,7 @@ const reorder = (list, startIndex, endIndex) => {
   return result;
 };
 
-const ColoredProvinceBox = ({ province, color, selected, clear, ...props }) => {
+const ColoredItemBox = ({ item, label, icon, color, selected, clear, round, left, ...props }) => {
   const classes = makeStyles(theme => ({
     root: {
       position: 'absolute',
@@ -24,18 +24,20 @@ const ColoredProvinceBox = ({ province, color, selected, clear, ...props }) => {
       width: 36,
       backgroundColor: theme.palette.common.white,
       border: `1px solid ${color[600]}`,
+      borderRadius: round ? '50%' : 0,
       transition: 'box-shadow .25s ease-in-out',
-      '& > p': {
+      '& > p, & > svg': {
         margin: 'auto',
         color: color[800],
       },
       '&.selected': { backgroundColor: color[600] },
-      '&.selected > p': { color: theme.palette.common.white },
+      '&.selected > p, &.selected > svg': { color: theme.palette.common.white },
       '&:hover': { boxShadow: theme.shadows[6] },
 
       '& > div': {
         position: 'absolute',
-        left: 36,
+        left: left ? 'auto' : 36,
+        right: left ? 36 : 'auto',
         top: '50%',
         color: '#666',
         opacity: 0,
@@ -50,56 +52,64 @@ const ColoredProvinceBox = ({ province, color, selected, clear, ...props }) => {
         border: '1px solid #AAA',
       },
     },
-    btnClear: {
-      margin: 'auto',
-      color: theme.palette.common.white,
-    },
+    btn: { margin: 'auto' },
   }))();
+  const Icon = icon;
   return (
     <Grid container {...props} className={`${classes.root} ${selected && 'selected'}`}>
-      {clear ? <ClearIcon className={classes.btnClear} /> : <Typography variant="body2">{province}</Typography>}
-      {province !== 'ALL' && (
-        <Grid container alignItems="center" wrap="nowrap">
+      {clear
+        ? <ClearIcon className={classes.btn} />
+        : icon ? <Icon className={classes.btn} /> : <Typography variant="body2">{item}</Typography>}
+      {label && (
+        <Grid container direction={left ? 'row-reverse' : 'row'} alignItems="center" wrap="nowrap">
           <DragIcon fontSize="small" />
-          <Typography variant="overline">{REGION_LABEL[province]}</Typography>
+          <Typography variant="overline">{label}</Typography>
         </Grid>
       )}
     </Grid>
   );
 };
 
-const Region = ({ width }) => {
-  const classes = useStyles({ width });
+const DraggableVerticalList = ({
+  title, width, round, left, dense,
+  items /* array of strings */,
+  defaultItems /* object */,
+  itemOrder /* array of strings */,
+  defaultItemOrder /* array of strings */,
+  setItems /* (localItems) => void */,
+  setItemOrder /* (localItemOrder) => void */,
+}) => {
+  const classes = useStyles({ width, dense });
 
-  const { config, setConfig } = useContext(ConfigContext);
+  const { config } = useContext(ConfigContext);
 
-  const [provinces, setProvinces] = useState(config.provinces || PROVINCES);
-  const [provinceOrder, setProvinceOrder] = useState(config.provinceOrder || PROVINCES);
+  const [localItems, setLocalItems] = useState(items || Object.keys(defaultItems));
+  const [localItemOrder, setLocalItemOrder] = useState(itemOrder || defaultItemOrder);
 
   /**
    * Update the global store if the local copy modified.
    */
-  useEffect(() => { setConfig({ ...config, provinces }) }, [provinces]);
-  useEffect(() => { setConfig({ ...config, provinceOrder }) }, [provinceOrder]);
+  useEffect(() => { setItems && setItems(localItems) }, [localItems]);
+  useEffect(() => { setItemOrder && setItemOrder(localItemOrder) }, [localItemOrder]);
 
   /**
    * The global and local stores should be synced all the time.
    * If there is a misalignment then simply replace the local copy with the global one.
    */
   useEffect(() => {
-    config.provinces.join() !== provinces.join() && setProvinces(config.provinces);
-    config.provinceOrder.join() !== provinceOrder.join() && setProvinceOrder(config.provinceOrder);
+    items.join() !== localItems.join() && setLocalItems(items);
+    itemOrder.join() !== localItemOrder.join() && setLocalItemOrder(itemOrder);
   }, [config]);
 
-  const handleToggleRegion = province => () => {
-    if (province === 'ALL') {
-      setProvinces(provinces.length === PROVINCES.length ? [] : PROVINCES); // default values
+  const handleToggleItem = toggledItem => () => {
+    if (toggledItem === 'ALL') {
+      setLocalItems(localItems.length === Object.keys(defaultItems).length ? [] : Object.keys(defaultItems)); // default values
       return;
     }
-    if (provinces.indexOf(province) > -1) {
-      setProvinces(provinces.filter(p => p !== province));
+    if (localItems.indexOf(toggledItem) > -1) {
+      setLocalItems(localItems.filter(i => i !== toggledItem));
     } else {
-      setProvinces([...provinces, province]);
+      setLocalItems([...localItems, toggledItem]);
     }
   };
   
@@ -107,12 +117,12 @@ const Region = ({ width }) => {
     if (!result.destination) {
       return;
     }
-    setProvinceOrder(reorder(provinceOrder, result.source.index, result.destination.index));
+    setLocalItemOrder(reorder(localItemOrder, result.source.index, result.destination.index));
   };
 
   return (
     <DragDropContext onDragEnd={handleDragEnd}>
-      <Typography variant="h6" gutterBottom>Region</Typography>
+      <Typography variant="h6" gutterBottom>{title}</Typography>
       <Droppable droppableId="droppable">
         {(provided, snapshot) => (
           <Grid
@@ -121,31 +131,33 @@ const Region = ({ width }) => {
             className={`${classes.root} ${snapshot.isDraggingOver && classes.dark}`}
           >
             <Grid
-              onClick={handleToggleRegion('ALL')}
-              className={classes.province}
+              onClick={handleToggleItem('ALL')}
+              className={classes.item}
             >
-              <ColoredProvinceBox
-                province="ALL"
-                color={REGION_COLOR['ALL']}
-                selected={provinces.length > 1}
-                clear={provinces.length === PROVINCES.length}
+              <ColoredItemBox
+                item="ALL" round={round} left={left}
+                color={grey}
+                selected={localItems.length > 0}
+                clear={localItems.length === Object.keys(defaultItems).length}
               />
             </Grid>
-            {provinceOrder.map((province, index) => (
-              <Draggable key={`region-btn-${province}`} draggableId={province} index={index}>
+            {localItemOrder.map((item, index) => (
+              <Draggable key={`region-btn-${item}`} draggableId={item} index={index}>
                 {(provided, snapshot) => (
                   <>
                     <Grid
                       ref={provided.innerRef}
                       {...provided.draggableProps}
                       {...provided.dragHandleProps}
-                      onClick={handleToggleRegion(province)}
-                      className={classes.province}
+                      onClick={handleToggleItem(item)}
+                      className={classes.item}
                     >
-                      <ColoredProvinceBox
-                        province={province}
-                        color={REGION_COLOR[province]}
-                        selected={provinces.indexOf(province) > -1}
+                      <ColoredItemBox
+                        item={item} round={round} left={left}
+                        label={defaultItems[item].label}
+                        icon={defaultItems[item].icon}
+                        color={defaultItems[item].color || grey}
+                        selected={localItems.indexOf(item) > -1}
                       />
                     </Grid>
                   </>
@@ -165,6 +177,7 @@ const useStyles = makeStyles(theme => ({
     position: 'relative',
     width: props.width || `calc(100% + ${theme.spacing(2)}px)`,
     padding: theme.spacing(1),
+    marginTop: props.dense ? 0 : -4,
     border: '1px dashed transparent',
     borderRadius: theme.shape.borderRadius,
     '&:after': {
@@ -172,22 +185,22 @@ const useStyles = makeStyles(theme => ({
       position: 'absolute',
       top: 16,
       bottom: 16,
-      left: '50%',
+      left: 'calc(50% - 1px)',
       width: 1,
       zIndex: 1,
       borderLeft: '2px solid #888',
     },
   }),
-  province: {
+  item: props => ({
     position: 'relative',
-    height: 44,
-    width: 44,
+    height: props.dense ? 44 : 52,
+    width: props.dense ? 44 : 52,
     zIndex: 2,
-    padding: 4,
+    padding: props.dense ? 4 : 8,
     backgroundColor: 'transparent',
     border: 'none',
     cursor: 'pointer',
-  },
+  }),
 }));
 
-export default Region;
+export default DraggableVerticalList;
