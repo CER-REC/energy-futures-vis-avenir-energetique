@@ -38,7 +38,10 @@ const Electricity = () => {
   }
 
   return (
-    <PageLayout showRegion>
+    <PageLayout
+      showRegion disableDraggableRegion singleSelectRegion
+      showSource disableDraggableSource
+    >
       <ResponsiveBubble
         root={{ name: 'root', color: '#FFF', children: processedData }}
         margin={{ top: 20, right: 20, bottom: 20, left: 20 }}

@@ -12,7 +12,10 @@ const BySector = () => {
   }
 
   return (
-    <PageLayout showRegion>
+    <PageLayout
+      showRegion disableDraggableRegion singleSelectRegion
+      showSource
+    >
       <ResponsiveLine
         data={data}
         keys={SOURCES}

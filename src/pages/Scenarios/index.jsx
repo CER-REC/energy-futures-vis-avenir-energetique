@@ -10,7 +10,7 @@ const Scenarios = () => {
   }
 
   return (
-    <PageLayout showRegion>
+    <PageLayout showRegion disableDraggableRegion singleSelectRegion>
       <ResponsiveLine
         data={data}
         margin={{ top: 50, right: 50, bottom: 50, left: 80 }}

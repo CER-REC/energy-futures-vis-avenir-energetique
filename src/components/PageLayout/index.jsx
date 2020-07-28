@@ -10,8 +10,12 @@ import { REGIONS, REGION_ORDER, SOURCES, SOURCE_ORDER } from '../../types';
 
 const PageLayout = ({
   children,
-  showRegion = true /* boolean */,
-  showSource = true /* boolean */,
+  showRegion = false /* boolean */,
+  showSource = false /* boolean */,
+  disableDraggableRegion = false /* boolean */,
+  disableDraggableSource = false /* boolean */,
+  singleSelectRegion = false /* boolean */,
+  singleSelectSource = false /* boolean */,
 }) => {
   const classes = useStyles();
 
@@ -22,14 +26,15 @@ const PageLayout = ({
       <Grid item><YearSelect /></Grid>
       <Grid item><ControlHorizontal /></Grid>
       <Grid item>
-        <Grid container wrap="nowrap" spacing={2}>
-
+        <Grid container wrap="nowrap" spacing={4}>
           {showRegion && (
             <Grid item>
               <DraggableVerticalList
                 title="Region"
                 left
                 dense
+                disabled={disableDraggableRegion}
+                singleSelect={singleSelectRegion}
                 items={config.provinces}
                 itemOrder={config.provinceOrder}
                 defaultItems={REGIONS}
@@ -44,6 +49,8 @@ const PageLayout = ({
               <DraggableVerticalList
                 title="Source"
                 round
+                disabled={disableDraggableSource}
+                singleSelect={singleSelectSource}
                 items={config.sources}
                 itemOrder={config.sourceOrder}
                 defaultItems={SOURCES}
@@ -53,7 +60,7 @@ const PageLayout = ({
               />
             </Grid>
           )}
-          <Grid container direction='column'>
+          <Grid container direction='column' spacing={2}>
             <Grid item><LowerHorizontalControl /></Grid>
 
             {children && <Grid item className={classes.graph}>{children}</Grid>}
