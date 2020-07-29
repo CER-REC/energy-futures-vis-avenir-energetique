@@ -15,9 +15,13 @@ const SunBurstChart = () => {
     if (!allRoses) {
       updateRoses();
     }
-  });
+  }, []);
 
-  return <PageLayout showRegion>{allRoses}</PageLayout>;
+  return (
+    <PageLayout showRegion disableDraggableRegion singleSelectRegion>
+      {allRoses}
+    </PageLayout>
+  );
 };
 
 export default SunBurstChart;

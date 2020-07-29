@@ -72,6 +72,8 @@ const ColoredItemBox = ({ item, label, icon, color, selected, clear, round, left
 
 const DraggableVerticalList = ({
   title, width, round, left, dense,
+  singleSelect = false, /* multi-select or single select */
+  disabled = false, /* disable drag-n-drop */
   items /* array of strings */,
   defaultItems /* object */,
   itemOrder /* array of strings */,
@@ -79,7 +81,7 @@ const DraggableVerticalList = ({
   setItems /* (localItems) => void */,
   setItemOrder /* (localItemOrder) => void */,
 }) => {
-  const classes = useStyles({ width, dense });
+  const classes = useStyles({ width, dense, disabled });
 
   const { config } = useContext(ConfigContext);
 
@@ -97,11 +99,20 @@ const DraggableVerticalList = ({
    * If there is a misalignment then simply replace the local copy with the global one.
    */
   useEffect(() => {
-    items.join() !== localItems.join() && setLocalItems(items);
+    items.join() !== localItems.join() && setLocalItems(singleSelect ? ['ALL'] : items);
     itemOrder.join() !== localItemOrder.join() && setLocalItemOrder(itemOrder);
   }, [config]);
 
+  /**
+   * Switch between single- vs. multi-select.
+   */
+  useEffect(() => { singleSelect && setLocalItems(['ALL']) }, [singleSelect]);
+
   const handleToggleItem = toggledItem => () => {
+    if (singleSelect) {
+      setLocalItems([toggledItem]);
+      return;
+    }
     if (toggledItem === 'ALL') {
       setLocalItems(localItems.length === Object.keys(defaultItems).length ? [] : Object.keys(defaultItems)); // default values
       return;
@@ -123,7 +134,7 @@ const DraggableVerticalList = ({
   return (
     <DragDropContext onDragEnd={handleDragEnd}>
       <Typography variant="h6" gutterBottom>{title}</Typography>
-      <Droppable droppableId="droppable">
+      <Droppable droppableId="droppable" isDropDisabled={disabled}>
         {(provided, snapshot) => (
           <Grid
             container direction="column" alignItems="center" spacing={2}
@@ -137,12 +148,12 @@ const DraggableVerticalList = ({
               <ColoredItemBox
                 item="ALL" round={round} left={left}
                 color={grey}
-                selected={localItems.length > 0}
+                selected={singleSelect ? localItems[0] === 'ALL' : localItems.length > 0}
                 clear={localItems.length === Object.keys(defaultItems).length}
               />
             </Grid>
             {localItemOrder.map((item, index) => (
-              <Draggable key={`region-btn-${item}`} draggableId={item} index={index}>
+              <Draggable key={`region-btn-${item}`} draggableId={item} index={index} isDragDisabled={disabled}>
                 {(provided, snapshot) => (
                   <>
                     <Grid
@@ -182,6 +193,7 @@ const useStyles = makeStyles(theme => ({
     borderRadius: theme.shape.borderRadius,
     '&:after': {
       content: '""',
+      display: props.disabled ? 'none' : 'block',
       position: 'absolute',
       top: 16,
       bottom: 16,
