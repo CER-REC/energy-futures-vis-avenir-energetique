@@ -1,9 +1,12 @@
+/* eslint-disable import/no-cycle */
+/* eslint-disable no-use-before-define */
+/* eslint-disable react/prop-types */
 import React, { useContext } from 'react';
 import { makeStyles, Grid } from '@material-ui/core';
 import YearSelect from '../YearSelect';
 import ControlHorizontal from '../ControlHorizontal';
 import DraggableVerticalList from '../DraggableVerticalList';
-import LowerHorizontalControl from '../LowerHorizontalControl';
+import HorizontalControlBar from '../HorizontalControlBar';
 
 import { ConfigContext } from '../../containers/App/lazy';
 import { REGIONS, REGION_ORDER, SOURCES, SOURCE_ORDER } from '../../types';
@@ -54,7 +57,7 @@ const PageLayout = ({
             </Grid>
           )}
           <Grid container direction='column'>
-            <Grid item><LowerHorizontalControl /></Grid>
+            <HorizontalControlBar />
 
             {children && <Grid item className={classes.graph}>{children}</Grid>}
           </Grid>
