@@ -7,6 +7,7 @@ import YearSelect from '../YearSelect';
 import ControlHorizontal from '../ControlHorizontal';
 import DraggableVerticalList from '../DraggableVerticalList';
 import HorizontalControlBar from '../HorizontalControlBar';
+import PageSelect from '../PageSelect';
 
 import { ConfigContext } from '../../containers/App/lazy';
 import { REGIONS, REGION_ORDER, SOURCES, SOURCE_ORDER } from '../../types';
@@ -29,6 +30,7 @@ const PageLayout = ({
       <Grid item><YearSelect /></Grid>
       <Grid item><ControlHorizontal /></Grid>
       <Grid item>
+        <Grid><PageSelect /></Grid>
         <Grid container wrap="nowrap" spacing={4}>
           {showRegion && (
             <Grid item>

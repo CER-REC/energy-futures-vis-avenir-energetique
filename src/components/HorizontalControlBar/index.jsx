@@ -72,7 +72,7 @@ const useStyles = makeStyles(theme => createStyles({
   },
 }));
 
-const LowerHorizontalControl = () => {
+const HorizontalControlBar = () => {
   const classes = useStyles();
   const { config, setConfig } = useContext(ConfigContext);
   const layout = useMemo(() => CONFIG_LAYOUT[config.mainSelection], [config.mainSelection]);
@@ -116,6 +116,7 @@ const LowerHorizontalControl = () => {
       <ToggleButton
         value={unit}
         className={styles}
+        key={`${unit}-button`}
       >
         {CONFIG_REPRESENTATION[unit]}
       </ToggleButton>
@@ -151,4 +152,4 @@ const LowerHorizontalControl = () => {
   );
 };
 
-export default LowerHorizontalControl;
+export default HorizontalControlBar;
