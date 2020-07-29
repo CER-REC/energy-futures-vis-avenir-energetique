@@ -82,14 +82,16 @@ const LowerHorizontalControl = () => {
    * If the current selected unit is no longer available under the new source,
    * then select the default unit.
    */
-  // eslint-disable-next-line max-len
-  useEffect(() => layout.unit.indexOf(config.unit) === -1 && setConfig({ ...config, unit: layout.unit[0] }), [config, config.mainSelection, layout.unit, setConfig]);
+  useEffect(() => {
+    // eslint-disable-next-line no-unused-expressions
+    layout.unit.indexOf(config.unit) === -1 && setConfig({ ...config, unit: layout.unit[0] });
+  }, [config, config.mainSelection, layout.unit, setConfig]);
 
   if (!layout) {
     return null;
   }
   // #region Buttons
-  const productionButtons = Object.keys(CONFIG_LAYOUT).map((source) => {
+  const demandButtons = Object.keys(CONFIG_LAYOUT).map((source) => {
     const Icon = CONFIG_REPRESENTATION[source].icon;
     return (
       config.mainSelection === source ? (
@@ -132,9 +134,9 @@ const LowerHorizontalControl = () => {
       <Grid item><Typography variant="body1" style={{ fontSize: 25 }}>OR</Typography></Grid>
       <Grid item><Typography variant="body1" className={classes.chooseProdLabel}>CHOOSE PRODUCTION</Typography></Grid>
 
-      <Grid item>{productionButtons[1]}</Grid>
-      <Grid item>{productionButtons[2]}</Grid>
-      <Grid item>{productionButtons[3]}</Grid>
+      <Grid item>{demandButtons[1]}</Grid>
+      <Grid item>{demandButtons[2]}</Grid>
+      <Grid item>{demandButtons[3]}</Grid>
       <Grid item>
         <Typography variant="body1" className={classes.selectUnitLabel}>SELECT UNIT</Typography>
       </Grid>
