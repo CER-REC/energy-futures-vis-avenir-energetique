@@ -28,9 +28,7 @@ const PageLayout = ({
   return (
     <Grid container direction="column" spacing={4} className={classes.root}>
       <Grid item><YearSelect /></Grid>
-      <Grid item><ControlHorizontal /></Grid>
       <Grid item>
-        <Grid><PageSelect /></Grid>
         <Grid container wrap="nowrap" spacing={4}>
           {showRegion && (
             <Grid item>
@@ -79,6 +77,7 @@ const PageLayout = ({
 const useStyles = makeStyles(theme => ({
   root: {
     padding: theme.spacing(4, 0),
+    marginBottom: theme.spacing(2),
     backgroundColor: theme.palette.background.paper,
   },
   graph: {

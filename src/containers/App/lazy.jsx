@@ -12,8 +12,7 @@ import queryString from 'query-string';
 import { lang } from '../../constants';
 import { DEFAULT_CONFIG, REGION_ORDER, SOURCE_ORDER } from '../../types';
 
-import { TABS } from '../../constants';
-import Nav from '../../components/Nav';
+import PageSelect from '../../components/PageSelect';
 import Landing from '../../pages/Landing';
 import ByRegion from '../../pages/ByRegion';
 import BySector from '../../pages/BySector';
@@ -96,16 +95,16 @@ sourceOrder=${config.sourceOrder.join(',')}\
       <ThemeProvider theme={theme}>
         <ConfigContext.Provider value={{ config, setConfig }}>
           <CssBaseline />
-          {config.page === 'landing' ? <Landing /> : (
-            <Grid container>
-              <Nav page={config.page} onChange={(_, tab) => setConfig({ ...config, page: TABS[tab].page })} />
-              {config.page === 'by-region' && <ByRegion />}
-              {config.page === 'by-sector' && <BySector />}
-              {config.page === 'electricity' && <Electricity />}
-              {config.page === 'scenarios' && <Scenarios />}
-              {config.page === 'demand' && <Demand />}
-            </Grid>
-          )}
+
+          {config.page !== 'landing' && <PageSelect />}
+          <Grid container>
+            {config.page === 'landing' && <Landing />}
+            {config.page === 'by-region' && <ByRegion />}
+            {config.page === 'by-sector' && <BySector />}
+            {config.page === 'electricity' && <Electricity />}
+            {config.page === 'scenarios' && <Scenarios />}
+            {config.page === 'demand' && <Demand />}
+          </Grid>
         </ConfigContext.Provider>
       </ThemeProvider>
     </ApolloProvider>

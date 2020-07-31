@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { makeStyles, createStyles, Grid, ButtonBase, Typography } from '@material-ui/core';
-import { TABS } from '../../constants';
+import { PAGES } from '../../constants';
 import { ConfigContext } from '../../containers/App/lazy';
 
 const Landing = () => {
@@ -15,10 +15,10 @@ const Landing = () => {
       <Grid item xs={12}>
         <Typography variant="h5">Landing Page</Typography>
       </Grid>
-      {TABS.map(tab => (
-        <Grid key={`landing-box-${tab.page}`} item xs={12} sm={6} md={4} lg={3} className={classes.box}>
-          <ButtonBase onClick={handleRedirect(tab.page)} style={{ backgroundColor: tab.bg }}>
-            <Typography variant="h4">{tab.label}</Typography>
+      {PAGES.map(page => page.id !== 'landing' && (
+        <Grid key={`landing-box-${page.id}`} item xs={12} sm={6} md={4} lg={3} className={classes.box}>
+          <ButtonBase onClick={handleRedirect(page.id)} style={{ backgroundColor: page.bg }}>
+            <Typography variant="h4">{page.label}</Typography>
           </ButtonBase>
         </Grid>
       ))}

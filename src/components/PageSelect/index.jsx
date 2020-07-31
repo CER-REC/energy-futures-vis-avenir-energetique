@@ -1,85 +1,50 @@
 /* eslint-disable react/prop-types */
-import React, { useState } from 'react';
+import React, { useContext } from 'react';
 import {
   makeStyles, createStyles,
-  Grid, Typography, Button,
+  Grid, Typography, ButtonBase, Hidden,
 } from '@material-ui/core';
+import { PAGES } from '../../constants';
+import { ConfigContext } from '../../containers/App/lazy';
 
 const useStyles = makeStyles(theme => createStyles({
-  root: props => ({
-    width: props.width || '100%',
-    '& > div': { textAlign: 'center' },
-    marginLeft: '20px',
-    marginBottom: '10px',
-    paddingTop: '12px',
-    height: '70px',
-  }),
-  pageButtonCommon: {
-    backgroundColor: 'dodgerblue',
-    marginBottom: 30,
-    marginRight: 10,
-    height: '100%',
-  },
-  pageButtonUnselected: {
-    width: '10%',
-  },
-  pageButtonSelected: {
-    width: '40%',
-  },
-  pageButton: {
-    width: '100%',
-    height: '100%',
+  button: {
+    transition: 'flex-grow .25s ease-in-out',
+    '& > button': {
+      width: '100%',
+      minHeight: 50,
+      padding: theme.spacing(2),
+      color: theme.palette.common.white,
+      backgroundColor: '#344C81',
+      '& h6, & p': { textTransform: 'uppercase' },
+    },
   },
 }));
 
-const PageSelect = (props) => {
+const PageSelect = () => {
   const classes = useStyles();
-  const [selectedPage, setSelectedPage] = useState('By Region');
 
-  const pages = props.pages || [
-    'Home',
-    'By Region',
-    'By Sector',
-    'Electricity',
-    'Scenarios',
-    'Demand',
-  ];
+  const { config, setConfig } = useContext(ConfigContext);
 
-  const pageButtons = pages.map((page) => {
-    if (page === selectedPage) {
-      return (
-        <Grid
-          key={page}
-          item
-          style={{ width: '40%' }}
-          className={classes.pageButtonCommon}
-        >
-          <Button
-            className={classes.pageButton}
-            onClick={() => setSelectedPage(page)}
-          ><Typography>{page}</Typography>
-          </Button>
-        </Grid>
-      );
-    }
-    return (
-      <Grid
-        key={page}
-        item
-        style={{ width: '10%' }}
-        className={classes.pageButtonCommon}
+  const pageButtons = PAGES.map((page) => (
+    <Grid
+      key={`page-${page.id}`}
+      item
+      className={classes.button}
+      style={{ flexGrow: page.id === config.page ? 1 : 0 }}
+    >
+      <ButtonBase
+        centerRipple
+        onClick={() => setConfig({ ...config, page: page.id })}
       >
-        <Button
-          className={classes.pageButton}
-          onClick={() => setSelectedPage(page)}
-        ><Typography>{page}</Typography>
-        </Button>
-      </Grid>
-    );
-  });
+        <Hidden mdUp><Typography variant="body2">{page.label}</Typography></Hidden>
+        <Hidden smDown><Typography variant="h6">{page.label}</Typography></Hidden>
+      </ButtonBase>
+    </Grid>
+  ));
 
   return (
-    <Grid container alignItems="center" wrap='nowrap' className={classes.root}>
+    <Grid container alignItems="center" wrap='nowrap' spacing={1}>
       {pageButtons}
     </Grid>
   );
