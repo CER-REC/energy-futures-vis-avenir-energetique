@@ -23,14 +23,14 @@ const ColoredItemBox = ({ item, label, icon, color, selected, clear, round, left
       height: 36,
       width: 36,
       backgroundColor: theme.palette.common.white,
-      border: `1px solid ${color[600]}`,
+      border: `1px solid ${color ? color[600] : theme.palette.secondary.main}`,
       borderRadius: round ? '50%' : 0,
       transition: 'box-shadow .25s ease-in-out',
       '& > p, & > svg': {
         margin: 'auto',
-        color: color[800],
+        color: color ? color[800] : theme.palette.secondary.main,
       },
-      '&.selected': { backgroundColor: color[600] },
+      '&.selected': { backgroundColor: color ? color[600] : theme.palette.secondary.main },
       '&.selected > p, &.selected > svg': { color: theme.palette.common.white },
       '&:hover': { boxShadow: theme.shadows[6] },
 
@@ -133,7 +133,7 @@ const DraggableVerticalList = ({
 
   return (
     <DragDropContext onDragEnd={handleDragEnd}>
-      <Typography variant="h6" gutterBottom>{title}</Typography>
+      <Typography variant="h6" color="secondary" gutterBottom>{title}</Typography>
       <Droppable droppableId="droppable" isDropDisabled={disabled}>
         {(provided, snapshot) => (
           <Grid
@@ -167,7 +167,7 @@ const DraggableVerticalList = ({
                         item={item} round={round} left={left}
                         label={defaultItems[item].label}
                         icon={defaultItems[item].icon}
-                        color={defaultItems[item].color || grey}
+                        color={defaultItems[item].color}
                         selected={localItems.indexOf(item) > -1}
                       />
                     </Grid>
@@ -200,7 +200,7 @@ const useStyles = makeStyles(theme => ({
       left: 'calc(50% - 1px)',
       width: 1,
       zIndex: 1,
-      borderLeft: '2px solid #888',
+      borderLeft: `2px solid ${theme.palette.secondary.main}`,
     },
   }),
   item: props => ({

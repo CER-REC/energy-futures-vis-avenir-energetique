@@ -34,11 +34,65 @@ const history = createBrowserHistory();
 /**
  * Customize the look-and-feel of UI components here.
  */
+const defaultTheme = createMuiTheme({
+  palette: {
+    primary: { main: '#4A93C7' },
+    secondary: {
+      main: '#5D5D5D',
+      light: '#83868E',
+    },
+  },
+});
 const theme = createMuiTheme({
+  palette: {
+    primary: { main: defaultTheme.palette.primary.main },
+    secondary: {
+      main: defaultTheme.palette.secondary.main,
+      light: defaultTheme.palette.secondary.light,
+    },
+  },
   overrides: {
     MuiCssBaseline: {
       '@global': {
         html: { fontSize: '16px !important' }, // reset font-size that has been overwritten by the WET template
+      },
+    },
+    MuiTypography: {
+      h5: { fontSize: '22px' },
+      h6: {
+        fontSize: '20px',
+        fontWeight: 700,
+        textTransform: 'uppercase',
+      },
+      body1: { fontSize: '14px' },
+    },
+    MuiButton: {
+      root: {
+        height: 23,
+        width: 73,
+        borderRadius: 0,
+      },
+      containedPrimary: {
+        fontWeight: 700,
+        color: defaultTheme.palette.common.white,
+        backgroundColor: defaultTheme.palette.primary.main,
+        border: `1px solid ${defaultTheme.palette.primary.main}`,
+        boxShadow: defaultTheme.shadows[0],
+        '&:hover': {
+          border: '1px solid #33668b',
+        },
+      },
+      outlinedPrimary: {
+        fontWeight: 500,
+        color: defaultTheme.palette.secondary.light,
+        backgroundColor: defaultTheme.palette.common.white,
+        border: `1px solid ${defaultTheme.palette.secondary.light}`,
+        boxShadow: defaultTheme.shadows[0],
+        '&:hover': {
+          color: defaultTheme.palette.secondary.main,
+          border: `1px solid ${defaultTheme.palette.secondary.main}`,
+          boxShadow: defaultTheme.shadows[2],
+        },
       },
     },
   },

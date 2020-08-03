@@ -66,12 +66,12 @@ export const REGIONS = {
 export const REGION_ORDER = ['YT', 'SK', 'QC', 'PE', 'ON', 'NU', 'NT', 'NS', 'NL', 'NB', 'MB', 'BC', 'AB'];
 
 export const SOURCES = {
-  oilProducts: { color: blueGrey, label: 'Oil Products', icon: OilIcon },
-  nuclear: { color: deepOrange, label: 'Nuclear', icon: NuclearIcon },
-  bio: { color: lightGreen, label: 'Bio', icon: BioIcon },
-  naturalGas: { color: yellow, label: 'Natural Gas', icon: GasIcon },
-  coal: { color: brown, label: 'Coal', icon: CoalIcon },
-  solarWindGeothermal: { color: green, label: 'Solar, Wind, Geothermal', icon: WindIcon },
+  oilProducts: { label: 'Oil Products', icon: OilIcon },
+  nuclear: { label: 'Nuclear', icon: NuclearIcon },
+  bio: { label: 'Bio', icon: BioIcon },
+  naturalGas: { label: 'Natural Gas', icon: GasIcon },
+  coal: { label: 'Coal', icon: CoalIcon },
+  solarWindGeothermal: { label: 'Solar, Wind, Geothermal', icon: WindIcon },
 };
 
 export const SOURCE_ORDER = ['oilProducts', 'nuclear', 'bio', 'naturalGas', 'coal', 'solarWindGeothermal'];
