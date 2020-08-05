@@ -9,7 +9,6 @@ import { data as dataGasProduction } from './dataGasProduction';
 
 import { ConfigContext } from '../../containers/App/lazy';
 import { CONFIG_REPRESENTATION } from '../../types';
-import PageLayout from '../../components/PageLayout';
 
 
 const RESOURCES = gql`
@@ -57,41 +56,39 @@ const ByRegion = () => {
   }, [data, configFilter]);
 
   return (
-    <PageLayout showRegion>
-      <ResponsiveBar
-        data={processedData || []}
-        keys={config.provinces}
-        indexBy="year"
-        margin={{ top: 50, right: 0, bottom: 50, left: 80 }}
-        padding={0.1}
-        colors={{ scheme: 'nivo' }}
-        borderColor={{ from: 'color', modifiers: [ [ 'darker', 1.6 ] ] }}
-        axisTop={null}
-        axisRight={null}
-        axisBottom={{
-          tickSize: 5,
-          tickPadding: 5,
-          tickRotation: 0,
-          legendPosition: 'middle',
-          legendOffset: 32,
-          format: year => (year % 5) ? '' : year,
-        }}
-        axisLeft={{
-          tickSize: 5,
-          tickPadding: 5,
-          tickRotation: 0,
-          legendPosition: 'middle',
-          legendOffset: -40,
-        }}
-        enableLabel={false}
-        // labelSkipWidth={12}
-        // labelSkipHeight={12}
-        // labelTextColor={{ from: 'color', modifiers: [ [ 'darker', 1.6 ] ] }}
-        animate={true}
-        motionStiffness={90}
-        motionDamping={15}
-      />
-    </PageLayout>
+    <ResponsiveBar
+      data={processedData || []}
+      keys={config.provinces}
+      indexBy="year"
+      margin={{ top: 50, right: 0, bottom: 50, left: 80 }}
+      padding={0.1}
+      colors={{ scheme: 'nivo' }}
+      borderColor={{ from: 'color', modifiers: [ [ 'darker', 1.6 ] ] }}
+      axisTop={null}
+      axisRight={null}
+      axisBottom={{
+        tickSize: 5,
+        tickPadding: 5,
+        tickRotation: 0,
+        legendPosition: 'middle',
+        legendOffset: 32,
+        format: year => (year % 5) ? '' : year,
+      }}
+      axisLeft={{
+        tickSize: 5,
+        tickPadding: 5,
+        tickRotation: 0,
+        legendPosition: 'middle',
+        legendOffset: -40,
+      }}
+      enableLabel={false}
+      // labelSkipWidth={12}
+      // labelSkipHeight={12}
+      // labelTextColor={{ from: 'color', modifiers: [ [ 'darker', 1.6 ] ] }}
+      animate={true}
+      motionStiffness={90}
+      motionDamping={15}
+    />
   );
 };
 

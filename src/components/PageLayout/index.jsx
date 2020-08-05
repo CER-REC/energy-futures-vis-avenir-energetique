@@ -4,6 +4,7 @@
 import React, { useContext } from 'react';
 import { makeStyles, Grid, Typography } from '@material-ui/core';
 import YearSelect from '../YearSelect';
+import PageSelect from '../PageSelect';
 import ScenarioSelect from '../ScenarioSelect';
 import DraggableVerticalList from '../DraggableVerticalList';
 import HorizontalControlBar from '../HorizontalControlBar';
@@ -27,11 +28,9 @@ const PageLayout = ({
   return (
     <Grid container spacing={4} className={classes.root}>
       <Grid item xs={12}><YearSelect /></Grid>
-      <Grid item xs={12} md={4} style={{ border: '2px dashed #EEE' }}>
-        <Typography variant="h6">Page Select</Typography>
-      </Grid>
-      <Grid item xs={12} md={8}>
-        <Grid container direction="column" wrap="nowrap" spacing={2}>
+      <Grid item style={{ width: 400 }}><PageSelect /></Grid>
+      <Grid item style={{ flexGrow: 1 }}>
+        <Grid container direction="column" wrap="nowrap" spacing={1}>
           <Grid item><ScenarioSelect /></Grid>
           <Grid item><HorizontalControlBar /></Grid>
         </Grid>

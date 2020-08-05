@@ -2,8 +2,6 @@ import React, { useMemo } from 'react';
 import { ResponsiveBubble } from '@nivo/circle-packing';
 import data from './data';
 import { REGION_ORDER } from '../../types';
-import PageLayout from '../../components/PageLayout';
-
 
 const DEFAULT = REGION_ORDER.reduce((result, province) => ({
   ...result,
@@ -38,28 +36,23 @@ const Electricity = () => {
   }
 
   return (
-    <PageLayout
-      showRegion disableDraggableRegion singleSelectRegion
-      showSource disableDraggableSource
-    >
-      <ResponsiveBubble
-        root={{ name: 'root', color: '#FFF', children: processedData }}
-        margin={{ top: 20, right: 20, bottom: 20, left: 20 }}
-        identity="name"
-        value="value"
-        colors={d => d.color}
-        colorBy="name"
-        padding={4}
-        borderWidth={1}
-        borderColor={d => d.color === 'rgb(255,255,255)' ? '#666' : d.color}
-        enableLabel={false}
-        tooltip={t => t.data.value && `${t.data.name} (2005) ${(t.data.value / 1000).toFixed(2)} k GW.h`}
-        isZoomable={false}
-        animate={true}
-        motionStiffness={90}
-        motionDamping={12}
-      />
-    </PageLayout>
+    <ResponsiveBubble
+      root={{ name: 'root', color: '#FFF', children: processedData }}
+      margin={{ top: 20, right: 20, bottom: 20, left: 20 }}
+      identity="name"
+      value="value"
+      colors={d => d.color}
+      colorBy="name"
+      padding={4}
+      borderWidth={1}
+      borderColor={d => d.color === 'rgb(255,255,255)' ? '#666' : d.color}
+      enableLabel={false}
+      tooltip={t => t.data.value && `${t.data.name} (2005) ${(t.data.value / 1000).toFixed(2)} k GW.h`}
+      isZoomable={false}
+      animate={true}
+      motionStiffness={90}
+      motionDamping={12}
+    />
   );
 };
 

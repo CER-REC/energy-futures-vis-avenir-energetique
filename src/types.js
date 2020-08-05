@@ -8,8 +8,8 @@ import BioIcon from '@material-ui/icons/Waves';
 import NuclearIcon from '@material-ui/icons/PanoramaVerticalOutlined';
 
 import {
-  brown, red, purple, deepPurple, blueGrey, blue, lightBlue,
-  teal, green, lightGreen, lime, yellow, amber, orange, deepOrange,
+  red, purple, deepPurple, blue, lightBlue, teal, green,
+  lightGreen, lime, yellow, amber, orange, deepOrange,
 } from '@material-ui/core/colors';
 
 export const CONFIG_REPRESENTATION = {
@@ -81,6 +81,7 @@ export const DEFAULT_CONFIG = {
   mainSelection: 'energyDemand', // e.g. electricityGeneration, oilProduction, gasProduction
   unit: 'petajoules', // e.g. kilobarrelEquivalents, gigawattHours, kilobarrels, thousandCubicMetres, cubicFeet, millionCubicMetres
   year: '2019',
+  view: 'region', // e.g. region or source
   scenario: 'reference', // e.g. technology, hcp
   provinces: REGION_ORDER,
   provinceOrder: REGION_ORDER,

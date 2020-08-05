@@ -1,13 +1,106 @@
 /* eslint-disable react/prop-types */
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import {
   makeStyles, createStyles,
-  Grid, Typography, ButtonBase, Hidden,
+  Grid, ButtonBase, Typography,
 } from '@material-ui/core';
 import { PAGES } from '../../constants';
 import { ConfigContext } from '../../containers/App/lazy';
 
+import {
+  PageIconBar, PageIconBubble, PageIconFlower, PageIconLine, PageIconStackedArea,
+} from './PageIcons';
+
+const getPageIcon = (id) => {
+  switch(id) {
+    case 'by-region': return <PageIconBar />;
+    case 'by-sector': return <PageIconStackedArea />;
+    case 'electricity': return <PageIconBubble />;
+    case 'scenarios': return <PageIconLine />;
+    case 'demand': return <PageIconFlower />;
+    default: return null;
+  }
+};
+
+const toFront = (pages, id) => pages.sort((a, b) => a.id === id ? -1 : b.id === id ? 1 : 0);
+
+const PageSelect = () => {
+  const classes = useStyles();
+
+  const { config, setConfig } = useContext(ConfigContext);
+
+  const [pages, setPages] = useState(PAGES.filter(page => page.id !== 'landing'));
+
+  const handleSelect = (id) => {
+    if (id === config.page) {
+      return;
+    }
+    setPages(toFront([...pages], id));
+    setConfig({ ...config, page: id });
+  };
+
+  const pageButtons = PAGES.filter(page => page.id !== 'landing').map(page => {
+    const index = pages.findIndex(p => p.id === page.id) || 0;
+    return (
+      <ButtonBase
+        key={`page-${page.id}`}
+        centerRipple
+        onClick={() => handleSelect(page.id)}
+        classes={{ root: classes.box }}
+        style={{
+          top: index * 64 + 10,
+          padding: index === 0 ? '0 8px' : 0,
+        }}
+      >
+        <div className={classes.label} style={{ width: index === 0 ? 300 : 0 }}>
+          <Typography variant="h5" color="primary" style={{ opacity: index === 0 ? 1 : 0 }}>
+            {page.label}
+          </Typography>
+          <Typography variant="h5" color="primary" style={{ opacity: index === 0 ? 1 : 0 }}>
+            By {config.view}
+          </Typography>
+        </div>
+        <div className={classes.icon}>{getPageIcon(page.id)}</div>
+      </ButtonBase>
+    );
+  });
+
+  return (
+    <Grid container alignItems="center" wrap="nowrap" className={classes.root}>
+      {pageButtons}
+    </Grid>
+  );
+};
+
 const useStyles = makeStyles(theme => createStyles({
+  root: { position: 'relative' },
+  box: {
+    position: 'absolute',
+    left: 0,
+    height: 60,
+    backgroundColor: '#F3EFEF',
+    boxShadow: theme.shadows[4],
+    zIndex: 1001,
+    transition: 'top .5s ease-in-out, padding .5s ease-in-out',
+  },
+  icon: {
+    height: 60,
+    width: 60,
+    '& > svg': { height: 60 },
+  },
+  label: {
+    textAlign: 'left',
+    transition: 'width .5s ease-in-out',
+    '& > h5': {
+      margin: theme.spacing(0, .5),
+      transition: 'opacity .5s ease-in-out',
+    },
+    '& > h5:first-of-type': {
+      fontWeight: 700,
+    },
+  },
+
+
   button: {
     transition: 'flex-grow .25s ease-in-out',
     '& > button': {
@@ -20,34 +113,5 @@ const useStyles = makeStyles(theme => createStyles({
     },
   },
 }));
-
-const PageSelect = () => {
-  const classes = useStyles();
-
-  const { config, setConfig } = useContext(ConfigContext);
-
-  const pageButtons = PAGES.map((page) => (
-    <Grid
-      key={`page-${page.id}`}
-      item
-      className={classes.button}
-      style={{ flexGrow: page.id === config.page ? 1 : 0 }}
-    >
-      <ButtonBase
-        centerRipple
-        onClick={() => setConfig({ ...config, page: page.id })}
-      >
-        <Hidden mdUp><Typography variant="body2">{page.label}</Typography></Hidden>
-        <Hidden smDown><Typography variant="h6">{page.label}</Typography></Hidden>
-      </ButtonBase>
-    </Grid>
-  ));
-
-  return (
-    <Grid container alignItems="center" wrap='nowrap' spacing={1}>
-      {pageButtons}
-    </Grid>
-  );
-};
 
 export default PageSelect;

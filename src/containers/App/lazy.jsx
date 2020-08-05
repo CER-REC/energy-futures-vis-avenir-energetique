@@ -1,5 +1,5 @@
 import React, { createContext, useState, useEffect } from 'react';
-import { ThemeProvider, createMuiTheme, Grid } from '@material-ui/core';
+import { ThemeProvider, createMuiTheme } from '@material-ui/core';
 import CssBaseline from '@material-ui/core/CssBaseline';
 
 import { ApolloClient } from 'apollo-client';
@@ -12,13 +12,13 @@ import queryString from 'query-string';
 import { lang } from '../../constants';
 import { DEFAULT_CONFIG, REGION_ORDER, SOURCE_ORDER } from '../../types';
 
-import PageSelect from '../../components/PageSelect';
 import Landing from '../../pages/Landing';
 import ByRegion from '../../pages/ByRegion';
 import BySector from '../../pages/BySector';
 import Scenarios from '../../pages/Scenarios';
 import Electricity from '../../pages/Electricity';
 import Demand from '../../pages/Demand';
+import PageLayout from '../../components/PageLayout';
 
 /**
  * GraphQL API related infrastructures.
@@ -69,7 +69,8 @@ const theme = createMuiTheme({
     MuiButton: {
       root: {
         height: 23,
-        width: 73,
+        minWidth: 73,
+        padding: defaultTheme.spacing(0, .5),
         borderRadius: 0,
       },
       containedPrimary: {
@@ -134,6 +135,7 @@ export default () => {
 page=${config.page}&\
 mainSelection=${config.mainSelection}&\
 unit=${config.unit}&\
+view=${config.view}&\
 year=${config.year || '2019'}&\
 scenario=${config.scenario}&\
 provinces=${config.provinces.join(',')}&\
@@ -150,15 +152,21 @@ sourceOrder=${config.sourceOrder.join(',')}\
         <ConfigContext.Provider value={{ config, setConfig }}>
           <CssBaseline />
 
-          {config.page !== 'landing' && <PageSelect />}
-          <Grid container>
-            {config.page === 'landing' && <Landing />}
-            {config.page === 'by-region' && <ByRegion />}
-            {config.page === 'by-sector' && <BySector />}
-            {config.page === 'electricity' && <Electricity />}
-            {config.page === 'scenarios' && <Scenarios />}
-            {config.page === 'demand' && <Demand />}
-          </Grid>
+          {config.page === 'landing' ? <Landing /> : (
+            <PageLayout
+              showRegion
+              disableDraggableRegion={['by-sector', 'electricity', 'scenarios', 'demand'].includes(config.page)}
+              singleSelectRegion={['by-sector', 'electricity', 'scenarios', 'demand'].includes(config.page)}
+              showSource={['by-sector', 'electricity'].includes(config.page)}
+              disableDraggableSource={['electricity'].includes(config.page)}
+            >
+              {config.page === 'by-region' && <ByRegion />}
+              {config.page === 'by-sector' && <BySector />}
+              {config.page === 'electricity' && <Electricity />}
+              {config.page === 'scenarios' && <Scenarios />}
+              {config.page === 'demand' && <Demand />}
+            </PageLayout>
+          )}
         </ConfigContext.Provider>
       </ThemeProvider>
     </ApolloProvider>

@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from 'react';
 import Rose from './Rose';
 import data from './data/data';
-import PageLayout from '../../components/PageLayout';
 
 const SunBurstChart = () => {
   const [allRoses, allRosesSet] = useState(null);
@@ -17,11 +16,7 @@ const SunBurstChart = () => {
     }
   }, []);
 
-  return (
-    <PageLayout showRegion disableDraggableRegion singleSelectRegion>
-      {allRoses}
-    </PageLayout>
-  );
+  return allRoses;
 };
 
 export default SunBurstChart;
