@@ -29,7 +29,7 @@ const PageLayout = ({
     <Grid container spacing={4} className={classes.root}>
       <Grid item xs={12}><YearSelect /></Grid>
       <Grid item style={{ width: 400 }}><PageSelect /></Grid>
-      <Grid item style={{ flexGrow: 1 }}>
+      <Grid item style={{ width: 'calc(100% - 400px)' }}>
         <Grid container direction="column" wrap="nowrap" spacing={1}>
           <Grid item><ScenarioSelect /></Grid>
           <Grid item><HorizontalControlBar /></Grid>

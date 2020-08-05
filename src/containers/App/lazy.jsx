@@ -70,7 +70,7 @@ const theme = createMuiTheme({
       root: {
         height: 23,
         minWidth: 73,
-        padding: defaultTheme.spacing(0, .5),
+        padding: `${defaultTheme.spacing(0, .5)} !important`,
         borderRadius: 0,
       },
       containedPrimary: {

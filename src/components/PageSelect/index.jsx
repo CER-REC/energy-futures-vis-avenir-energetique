@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import {
   makeStyles, createStyles,
   Grid, ButtonBase, Typography,
@@ -31,6 +31,14 @@ const PageSelect = () => {
 
   const [pages, setPages] = useState(PAGES.filter(page => page.id !== 'landing'));
 
+  /**
+   * Auto-sync the selected page.
+   */
+  useEffect(() => {
+    config.page && config.page !== pages[0] && toFront(pages, config.page) },
+    [config.page],
+  );
+
   const handleSelect = (id) => {
     if (id === config.page) {
       return;
@@ -52,7 +60,10 @@ const PageSelect = () => {
           padding: index === 0 ? '0 8px' : 0,
         }}
       >
-        <div className={classes.label} style={{ width: index === 0 ? 300 : 0 }}>
+        <div className={classes.label} style={{
+          height: index === 0 ? 60 : 0,
+          width: index === 0 ? 300 : 0,
+        }}>
           <Typography variant="h5" color="primary" style={{ opacity: index === 0 ? 1 : 0 }}>
             {page.label}
           </Typography>
@@ -90,7 +101,7 @@ const useStyles = makeStyles(theme => createStyles({
   },
   label: {
     textAlign: 'left',
-    transition: 'width .5s ease-in-out',
+    transition: 'height .5s ease-in-out, width .5s ease-in-out',
     '& > h5': {
       margin: theme.spacing(0, .5),
       transition: 'opacity .5s ease-in-out',

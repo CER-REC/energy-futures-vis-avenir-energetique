@@ -54,7 +54,7 @@ const HorizontalControlBar = () => {
         <Grid item key={`config-view-${view}`}>
           <Button
             variant={config.view === view ? 'contained' : 'outlined'}
-            color="primary"
+            color="primary" size="small"
             onClick={() => handleConfigUpdate('view', view)}
           >
             {view}
@@ -69,7 +69,7 @@ const HorizontalControlBar = () => {
         <Grid item key={`config-unit-${unit}`}>
           <Button
             variant={config.unit === unit ? 'contained' : 'outlined'}
-            color="primary"
+            color="primary" size="small"
             onClick={() => handleConfigUpdate('unit', unit)}
           >
             {CONFIG_REPRESENTATION[unit]}
