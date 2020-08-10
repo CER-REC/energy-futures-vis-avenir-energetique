@@ -12,10 +12,12 @@ query {
 const ENERGY_DEMAND = gql`
   query ($scenario: String!, $iteration: ID!, $sector: String!, $source: EnergySource!){
     energyDemands(scenarios: [$scenario],iterationIds: [$iteration], sectors: [$sector], sources:[$source]) {
-      region
+      province: region
       year
-      quantity
+      value: quantity
       source
+      scenario
+      sector
     }}
     `;
 
