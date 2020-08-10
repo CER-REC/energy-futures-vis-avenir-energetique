@@ -1,5 +1,6 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import PropTypes from 'prop-types';
 import {
   makeStyles, Grid, Typography,
 } from '@material-ui/core';
@@ -7,7 +8,7 @@ import { grey } from '@material-ui/core/colors';
 import ClearIcon from '@material-ui/icons/Clear';
 import DragIcon from '@material-ui/icons/DragIndicator';
 
-import { ConfigContext } from '../../containers/App/lazy';
+import { ConfigContext } from '../../utilities/configContext';
 
 const reorder = (list, startIndex, endIndex) => {
   const result = Array.from(list);
@@ -16,7 +17,9 @@ const reorder = (list, startIndex, endIndex) => {
   return result;
 };
 
-const ColoredItemBox = ({ item, label, icon, color, selected, clear, round, left, ...props }) => {
+const ColoredItemBox = ({
+  item, label, icon, color, selected, clear, round, left, ...props
+}) => {
   const classes = makeStyles(theme => ({
     root: {
       position: 'absolute',
@@ -57,9 +60,9 @@ const ColoredItemBox = ({ item, label, icon, color, selected, clear, round, left
   const Icon = icon;
   return (
     <Grid container {...props} className={`${classes.root} ${selected && 'selected'}`}>
-      {clear
-        ? <ClearIcon className={classes.btn} />
-        : icon ? <Icon className={classes.btn} /> : <Typography variant="body2">{item}</Typography>}
+      {clear && <ClearIcon className={classes.btn} />}
+      {!clear && icon && <Icon className={classes.btn} />}
+      {!clear && !icon && <Typography variant="body2">{item}</Typography>}
       {label && (
         <Grid container direction={left ? 'row-reverse' : 'row'} alignItems="center" wrap="nowrap">
           <DragIcon fontSize="small" />
@@ -70,117 +73,25 @@ const ColoredItemBox = ({ item, label, icon, color, selected, clear, round, left
   );
 };
 
-const DraggableVerticalList = ({
-  title, width, round, left, dense,
-  singleSelect = false, /* multi-select or single select */
-  disabled = false, /* disable drag-n-drop */
-  items /* array of strings */,
-  defaultItems /* object */,
-  itemOrder /* array of strings */,
-  defaultItemOrder /* array of strings */,
-  setItems /* (localItems) => void */,
-  setItemOrder /* (localItemOrder) => void */,
-}) => {
-  const classes = useStyles({ width, dense, disabled });
+ColoredItemBox.propTypes = {
+  item: PropTypes.string.isRequired,
+  label: PropTypes.string,
+  icon: PropTypes.object, // eslint-disable-line react/forbid-prop-types
+  color: PropTypes.object, // eslint-disable-line react/forbid-prop-types
+  selected: PropTypes.bool,
+  clear: PropTypes.bool,
+  round: PropTypes.bool,
+  left: PropTypes.bool,
+};
 
-  const { config } = useContext(ConfigContext);
-
-  const [localItems, setLocalItems] = useState(items || Object.keys(defaultItems));
-  const [localItemOrder, setLocalItemOrder] = useState(itemOrder || defaultItemOrder);
-
-  /**
-   * Update the global store if the local copy modified.
-   */
-  useEffect(() => { setItems && setItems(localItems) }, [localItems]);
-  useEffect(() => { setItemOrder && setItemOrder(localItemOrder) }, [localItemOrder]);
-
-  /**
-   * The global and local stores should be synced all the time.
-   * If there is a misalignment then simply replace the local copy with the global one.
-   */
-  useEffect(() => {
-    items.join() !== localItems.join() && setLocalItems(singleSelect ? ['ALL'] : items);
-    itemOrder.join() !== localItemOrder.join() && setLocalItemOrder(itemOrder);
-  }, [config]);
-
-  /**
-   * Switch between single- vs. multi-select.
-   */
-  useEffect(() => { singleSelect && setLocalItems(['ALL']) }, [singleSelect]);
-
-  const handleToggleItem = toggledItem => () => {
-    if (singleSelect) {
-      setLocalItems([toggledItem]);
-      return;
-    }
-    if (toggledItem === 'ALL') {
-      setLocalItems(localItems.length === Object.keys(defaultItems).length ? [] : Object.keys(defaultItems)); // default values
-      return;
-    }
-    if (localItems.indexOf(toggledItem) > -1) {
-      setLocalItems(localItems.filter(i => i !== toggledItem));
-    } else {
-      setLocalItems([...localItems, toggledItem]);
-    }
-  };
-  
-  const handleDragEnd = (result) => {
-    if (!result.destination) {
-      return;
-    }
-    setLocalItemOrder(reorder(localItemOrder, result.source.index, result.destination.index));
-  };
-
-  return (
-    <DragDropContext onDragEnd={handleDragEnd}>
-      <Typography variant="h6" color="secondary" gutterBottom>{title}</Typography>
-      <Droppable droppableId="droppable" isDropDisabled={disabled}>
-        {(provided, snapshot) => (
-          <Grid
-            container direction="column" alignItems="center" spacing={2}
-            {...provided.droppableProps} ref={provided.innerRef}
-            className={`${classes.root} ${snapshot.isDraggingOver && classes.dark}`}
-          >
-            <Grid
-              onClick={handleToggleItem('ALL')}
-              className={classes.item}
-            >
-              <ColoredItemBox
-                item="ALL" round={round} left={left}
-                color={grey}
-                selected={singleSelect ? localItems[0] === 'ALL' : localItems.length > 0}
-                clear={localItems.length === Object.keys(defaultItems).length}
-              />
-            </Grid>
-            {localItemOrder.map((item, index) => (
-              <Draggable key={`region-btn-${item}`} draggableId={item} index={index} isDragDisabled={disabled}>
-                {(provided, snapshot) => (
-                  <>
-                    <Grid
-                      ref={provided.innerRef}
-                      {...provided.draggableProps}
-                      {...provided.dragHandleProps}
-                      onClick={handleToggleItem(item)}
-                      className={classes.item}
-                    >
-                      <ColoredItemBox
-                        item={item} round={round} left={left}
-                        label={defaultItems[item].label}
-                        icon={defaultItems[item].icon}
-                        color={defaultItems[item].color}
-                        selected={localItems.indexOf(item) > -1}
-                      />
-                    </Grid>
-                  </>
-                )}
-              </Draggable>
-            ))}
-            {provided.placeholder}
-          </Grid>
-        )}
-      </Droppable>
-    </DragDropContext>
-  );
+ColoredItemBox.defaultProps = {
+  label: '',
+  icon: undefined,
+  color: undefined,
+  selected: false,
+  clear: false,
+  round: false,
+  left: false,
 };
 
 const useStyles = makeStyles(theme => ({
@@ -214,5 +125,177 @@ const useStyles = makeStyles(theme => ({
     cursor: 'pointer',
   }),
 }));
+
+const DraggableVerticalList = ({
+  title, width, round, left, dense,
+  singleSelect = false, /* multi-select or single select */
+  disabled = false, /* disable drag-n-drop */
+  items /* array of strings */,
+  defaultItems /* object */,
+  itemOrder /* array of strings */,
+  defaultItemOrder /* array of strings */,
+  setItems /* (localItems) => void */,
+  setItemOrder /* (localItemOrder) => void */,
+}) => {
+  const classes = useStyles({ width, dense, disabled });
+
+  const { config } = useContext(ConfigContext);
+
+  const [localItems, setLocalItems] = useState(items || Object.keys(defaultItems));
+  const [localItemOrder, setLocalItemOrder] = useState(itemOrder || defaultItemOrder);
+
+  /**
+   * Update the global store if the local copy modified.
+   */
+  useEffect(
+    () => { if (setItems) { setItems(localItems); } },
+    [localItems], // eslint-disable-line react-hooks/exhaustive-deps
+  );
+  useEffect(
+    () => { if (setItemOrder) { setItemOrder(localItemOrder); } },
+    [localItemOrder], // eslint-disable-line react-hooks/exhaustive-deps
+  );
+
+  /**
+   * The global and local stores should be synced all the time.
+   * If there is a misalignment then simply replace the local copy with the global one.
+   */
+  useEffect(
+    () => {
+      if (items.join() !== localItems.join()) {
+        setLocalItems(singleSelect ? ['ALL'] : items);
+      }
+      if (itemOrder.join() !== localItemOrder.join()) {
+        setLocalItemOrder(itemOrder);
+      }
+    },
+    [config], // eslint-disable-line react-hooks/exhaustive-deps
+  );
+
+  /**
+   * Switch between single- vs. multi-select.
+   */
+  useEffect(() => {
+    if (singleSelect) {
+      setLocalItems(['ALL']);
+    }
+  }, [singleSelect]);
+
+  const handleToggleItem = toggledItem => () => {
+    if (singleSelect) {
+      setLocalItems([toggledItem]);
+      return;
+    }
+    if (toggledItem === 'ALL') {
+      setLocalItems(localItems.length === Object.keys(defaultItems).length
+        ? []
+        : Object.keys(defaultItems)); // default values
+      return;
+    }
+    if (localItems.indexOf(toggledItem) > -1) {
+      setLocalItems(localItems.filter(i => i !== toggledItem));
+    } else {
+      setLocalItems([...localItems, toggledItem]);
+    }
+  };
+
+  const handleDragEnd = (result) => {
+    if (!result.destination) {
+      return;
+    }
+    setLocalItemOrder(reorder(localItemOrder, result.source.index, result.destination.index));
+  };
+
+  return (
+    <DragDropContext onDragEnd={handleDragEnd}>
+      <Typography variant="h6" color="secondary" gutterBottom>{title}</Typography>
+      <Droppable droppableId="droppable" isDropDisabled={disabled}>
+        {(provided, snapshot) => (
+          <Grid
+            container
+            direction="column"
+            alignItems="center"
+            spacing={2}
+            {...provided.droppableProps}
+            ref={provided.innerRef}
+            className={`${classes.root} ${snapshot.isDraggingOver && classes.dark}`}
+          >
+            <Grid
+              onClick={handleToggleItem('ALL')}
+              className={classes.item}
+            >
+              <ColoredItemBox
+                item="ALL"
+                round={round}
+                left={left}
+                color={grey}
+                selected={singleSelect ? localItems[0] === 'ALL' : localItems.length > 0}
+                clear={localItems.length === Object.keys(defaultItems).length}
+              />
+            </Grid>
+            {localItemOrder.map((item, index) => (
+              <Draggable key={`region-btn-${item}`} draggableId={item} index={index} isDragDisabled={disabled}>
+                {providedItem => (
+                  <>
+                    <Grid
+                      ref={providedItem.innerRef}
+                      {...providedItem.draggableProps}
+                      {...providedItem.dragHandleProps}
+                      onClick={handleToggleItem(item)}
+                      className={classes.item}
+                    >
+                      <ColoredItemBox
+                        item={item}
+                        round={round}
+                        left={left}
+                        label={defaultItems[item].label}
+                        icon={defaultItems[item].icon}
+                        color={defaultItems[item].color}
+                        selected={localItems.indexOf(item) > -1}
+                      />
+                    </Grid>
+                  </>
+                )}
+              </Draggable>
+            ))}
+            {provided.placeholder}
+          </Grid>
+        )}
+      </Droppable>
+    </DragDropContext>
+  );
+};
+
+DraggableVerticalList.propTypes = {
+  title: PropTypes.string,
+  width: PropTypes.number,
+  round: PropTypes.bool,
+  left: PropTypes.bool,
+  dense: PropTypes.bool,
+  singleSelect: PropTypes.bool,
+  disabled: PropTypes.bool,
+  items: PropTypes.arrayOf(PropTypes.string),
+  defaultItems: PropTypes.object, // eslint-disable-line react/forbid-prop-types
+  itemOrder: PropTypes.arrayOf(PropTypes.string),
+  defaultItemOrder: PropTypes.arrayOf(PropTypes.string),
+  setItems: PropTypes.func,
+  setItemOrder: PropTypes.func,
+};
+
+DraggableVerticalList.defaultProps = {
+  title: '',
+  width: undefined,
+  round: false,
+  left: false,
+  dense: false,
+  singleSelect: false,
+  disabled: false,
+  items: [],
+  defaultItems: {},
+  itemOrder: [],
+  defaultItemOrder: [],
+  setItems: undefined,
+  setItemOrder: undefined,
+};
 
 export default DraggableVerticalList;

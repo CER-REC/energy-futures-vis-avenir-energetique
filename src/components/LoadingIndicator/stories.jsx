@@ -1,5 +1,5 @@
 import React from 'react';
-import { withKnobs, text, boolean } from "@storybook/addon-knobs";
+import { withKnobs, text, boolean } from '@storybook/addon-knobs';
 import { storiesForComponent } from '../../../.storybook/utils';
 import LoadingIndicator from './index';
 import ReadMe from './README.md';

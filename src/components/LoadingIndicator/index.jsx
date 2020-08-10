@@ -3,6 +3,16 @@ import {
   makeStyles, createStyles,
   Grid, Typography, CircularProgress,
 } from '@material-ui/core';
+import propTypes from 'prop-types';
+
+const useStyles = makeStyles(theme => createStyles({
+  container: props => ({
+    height: props.fullHeight ? '100vh' : 'auto',
+    minHeight: 250,
+    '& > div': { margin: 'auto' },
+    '& h6': { marginTop: theme.spacing(2) },
+  }),
+}));
 
 const LoadingIndicator = ({ text, fullHeight }) => {
   const classes = useStyles({ text, fullHeight });
@@ -17,13 +27,14 @@ const LoadingIndicator = ({ text, fullHeight }) => {
   );
 };
 
-const useStyles = makeStyles(theme => createStyles({
-  container: props => ({
-    height: props.fullHeight ? '100vh' : 'auto',
-    minHeight: 250,
-    '& > div': { margin: 'auto' },
-    '& h6': { marginTop: theme.spacing(2) }
-  }),
-}));
+LoadingIndicator.propTypes = {
+  text: propTypes.string,
+  fullHeight: propTypes.bool,
+};
+
+LoadingIndicator.defaultProps = {
+  text: '',
+  fullHeight: false,
+};
 
 export default LoadingIndicator;

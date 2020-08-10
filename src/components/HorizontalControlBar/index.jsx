@@ -1,19 +1,18 @@
 // #region imports
-import React, { useContext, useMemo, useEffect, useState } from 'react';
+import React, { useContext, useMemo, useEffect } from 'react';
 import {
   makeStyles, createStyles,
   Grid, Typography, Button,
 } from '@material-ui/core';
 
-// eslint-disable-next-line import/no-cycle
-import { ConfigContext } from '../../containers/App/lazy';
+import { ConfigContext } from '../../utilities/configContext';
 import { CONFIG_REPRESENTATION } from '../../types';
 import { CONFIG_LAYOUT } from '../../constants';
 // #endregion
 
 const useStyles = makeStyles(theme => createStyles({
   root: {
-    padding: theme.spacing(.5, 2),
+    padding: theme.spacing(0.5, 2),
     backgroundColor: '#F3EFEF',
     '& p': {
       marginRight: theme.spacing(1),
@@ -54,7 +53,8 @@ const HorizontalControlBar = () => {
         <Grid item key={`config-view-${view}`}>
           <Button
             variant={config.view === view ? 'contained' : 'outlined'}
-            color="primary" size="small"
+            color="primary"
+            size="small"
             onClick={() => handleConfigUpdate('view', view)}
           >
             {view}
@@ -69,7 +69,8 @@ const HorizontalControlBar = () => {
         <Grid item key={`config-unit-${unit}`}>
           <Button
             variant={config.unit === unit ? 'contained' : 'outlined'}
-            color="primary" size="small"
+            color="primary"
+            size="small"
             onClick={() => handleConfigUpdate('unit', unit)}
           >
             {CONFIG_REPRESENTATION[unit]}

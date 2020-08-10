@@ -6,7 +6,7 @@ import { data as dataElectricityGeneration } from './dataElectricityGeneration';
 import { data as dataOilProduction } from './dataOilProduction';
 import { data as dataGasProduction } from './dataGasProduction';
 
-import { ConfigContext } from '../../containers/App/lazy';
+import { ConfigContext } from '../../utilities/configContext';
 import { CONFIG_REPRESENTATION } from '../../types';
 
 const ByRegion = () => {
@@ -35,10 +35,15 @@ const ByRegion = () => {
     const byYear = data
       .filter(configFilter)
       .reduce((accu, curr) => {
-        !accu[curr.year] && (accu[curr.year] = {});
-        !accu[curr.year][curr.province] && (accu[curr.year][curr.province] = 0);
-        accu[curr.year][curr.province] += curr.value;
-        return accu;
+        const result = { ...accu };
+        if (!result[curr.year]) {
+          result[curr.year] = {};
+        }
+        if (!result[curr.year][curr.province]) {
+          result[curr.year][curr.province] = 0;
+        }
+        result[curr.year][curr.province] += curr.value;
+        return result;
       }, {});
     return Object.keys(byYear).map(year => ({ year, ...byYear[year] }));
   }, [data, configFilter]);
