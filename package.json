@@ -2,7 +2,7 @@
   "name": "cer-energy-futures-visualization-2.0",
   "version": "2.0.0",
   "description": "A visualization of data collected since 2010 about conditions on energy projects that the CER creates as part of their regulatory process. ",
-  "main": "src/index.js",
+  "main": "src/index.jsx",
   "scripts": {
     "ci:test": "npm run test -- --ci --reporters=default --reporters=jest-junit && codecov",
     "cz": "git-cz",

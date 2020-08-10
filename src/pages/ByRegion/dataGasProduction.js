@@ -1,3 +1,4 @@
+/* eslint-disable */
 export const data = [
   {
     "province":"all",

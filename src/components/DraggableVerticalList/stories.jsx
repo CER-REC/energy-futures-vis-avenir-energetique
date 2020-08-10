@@ -10,7 +10,8 @@ storiesForComponent('Components|DraggableVerticalList', module, ReadMe)
     <Grid container wrap="nowrap" spacing={2} style={{ margin: 16 }}>
       <Grid item>
         <DraggableVerticalList
-          title="Region" left
+          title="Region"
+          left
           items={REGION_ORDER}
           itemOrder={REGION_ORDER}
           defaultItems={REGIONS}
@@ -19,7 +20,8 @@ storiesForComponent('Components|DraggableVerticalList', module, ReadMe)
       </Grid>
       <Grid item>
         <DraggableVerticalList
-          title="Source" round
+          title="Source"
+          round
           items={SOURCE_ORDER}
           itemOrder={SOURCE_ORDER}
           defaultItems={SOURCES}

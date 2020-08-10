@@ -24,10 +24,9 @@ export default class AppWrapper extends React.PureComponent {
   }
 
   render() {
-    const content =
-      (!this.state.supportedResolution && <UnsupportedWarning type="resolution" />) ||
-      (!this.state.supportedBrowser && <UnsupportedWarning type="browser" />) ||
-      (
+    const content = (!this.state.supportedResolution && <UnsupportedWarning type="resolution" />)
+      || (!this.state.supportedBrowser && <UnsupportedWarning type="browser" />)
+      || (
         <Suspense fallback={<LoadingIndicator text="loading" fullHeight />}>
           <LazyApp />
         </Suspense>

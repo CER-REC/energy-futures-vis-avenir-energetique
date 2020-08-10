@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ThemeProvider, createMuiTheme } from '@material-ui/core';
 import CssBaseline from '@material-ui/core/CssBaseline';
 
@@ -11,6 +11,7 @@ import { createBrowserHistory } from 'history';
 import queryString from 'query-string';
 import { lang } from '../../constants';
 import { DEFAULT_CONFIG, REGION_ORDER, SOURCE_ORDER } from '../../types';
+import { ConfigContext } from '../../utilities/configContext';
 
 import Landing from '../../pages/Landing';
 import ByRegion from '../../pages/ByRegion';
@@ -70,7 +71,7 @@ const theme = createMuiTheme({
       root: {
         height: 23,
         minWidth: 73,
-        padding: `${defaultTheme.spacing(0, .5)} !important`,
+        padding: `${defaultTheme.spacing(0, 0.5)} !important`,
         borderRadius: 0,
       },
       containedPrimary: {
@@ -97,14 +98,6 @@ const theme = createMuiTheme({
       },
     },
   },
-});
-
-/**
- * A global store of the current state of the control setting.
- */
-export const ConfigContext = createContext({
-  config: DEFAULT_CONFIG,
-  setConfig: () => {},
 });
 
 export default () => {

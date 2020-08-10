@@ -6,7 +6,6 @@ import propTypes from 'prop-types';
 import AdvancedFormattedMessage from '../AdvancedFormattedMessage';
 import TranslatedParagraphs from '../TranslatedParagraphs';
 
-
 const screenPath = (
   <path
     d="
@@ -60,25 +59,6 @@ const iconPath = (
   />
 );
 
-const UnsupportedWarning = ({ type }) => {
-  const classes = useStyles();
-
-  return (
-    <div className={`${classes.root} UnsupportedWarning`}>
-      <svg viewBox="282 400 200 150">
-        <g>
-          {screenPath}
-          {iconPath}
-        </g>
-      </svg>
-      <AdvancedFormattedMessage
-        id={`components.unsupportedWarning.${type}`}
-        tag={TranslatedParagraphs}
-      />
-    </div>
-  );
-};
-
 const useStyles = makeStyles(theme => createStyles({
   root: {
     maxWidth: 750,
@@ -104,6 +84,25 @@ const useStyles = makeStyles(theme => createStyles({
     },
   },
 }));
+
+const UnsupportedWarning = ({ type }) => {
+  const classes = useStyles();
+
+  return (
+    <div className={`${classes.root} UnsupportedWarning`}>
+      <svg viewBox="282 400 200 150">
+        <g>
+          {screenPath}
+          {iconPath}
+        </g>
+      </svg>
+      <AdvancedFormattedMessage
+        id={`components.unsupportedWarning.${type}`}
+        tag={TranslatedParagraphs}
+      />
+    </div>
+  );
+};
 
 UnsupportedWarning.propTypes = {
   type: propTypes.oneOf(['resolution', 'browser']).isRequired,
