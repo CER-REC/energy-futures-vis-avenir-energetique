@@ -18,7 +18,7 @@ const BySector = () => {
       yScale={{ type: 'linear', min: 0, max: 'auto', stacked: true, reverse: false }}
       colors={{ scheme: 'nivo' }}
       enablePoints={false}
-      enableArea={true}
+      enableArea
       axisTop={null}
       axisRight={null}
       axisBottom={{
@@ -27,7 +27,7 @@ const BySector = () => {
         tickRotation: 0,
         legendPosition: 'middle',
         legendOffset: 32,
-        format: year => (year % 5) ? '' : year,
+        format: year => ((year % 5) ? '' : year),
       }}
       axisLeft={{
         tickSize: 5,
@@ -40,10 +40,10 @@ const BySector = () => {
       // labelSkipWidth={12}
       // labelSkipHeight={12}
       // labelTextColor={{ from: 'color', modifiers: [ [ 'darker', 1.6 ] ] }}
-      animate={true}
+      animate
       motionStiffness={90}
       motionDamping={15}
-      useMesh={true}
+      useMesh
     />
   );
 };

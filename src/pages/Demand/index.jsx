@@ -14,7 +14,7 @@ const SunBurstChart = () => {
     if (!allRoses) {
       updateRoses();
     }
-  }, []);
+  }, [allRoses]);
 
   return allRoses;
 };

@@ -18,7 +18,7 @@ const DEFAULT = REGION_ORDER.reduce((result, province) => ({
 
 const Electricity = () => {
   const processedData = useMemo(() => {
-    (data || []).filter(entry => entry.year === 2005).forEach(entry => {
+    (data || []).filter(entry => entry.year === 2005).forEach((entry) => {
       if (DEFAULT[entry.province] && DEFAULT[entry.province][entry.source]) {
         DEFAULT[entry.province][entry.source].value += entry.value;
       }
@@ -45,11 +45,11 @@ const Electricity = () => {
       colorBy="name"
       padding={4}
       borderWidth={1}
-      borderColor={d => d.color === 'rgb(255,255,255)' ? '#666' : d.color}
+      borderColor={d => (d.color === 'rgb(255,255,255)' ? '#666' : d.color)}
       enableLabel={false}
       tooltip={t => t.data.value && `${t.data.name} (2005) ${(t.data.value / 1000).toFixed(2)} k GW.h`}
       isZoomable={false}
-      animate={true}
+      animate
       motionStiffness={90}
       motionDamping={12}
     />

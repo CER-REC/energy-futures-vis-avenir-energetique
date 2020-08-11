@@ -4,20 +4,12 @@ import {
 } from '@material-ui/core';
 import ArrowDropIcon from '@material-ui/icons/ArrowDropDown';
 
-import { ConfigContext } from '../../containers/App/lazy';
+import { ConfigContext } from '../../utilities/configContext';
 import { CONFIG_REPRESENTATION } from '../../types';
 import { CONFIG_LAYOUT } from '../../constants';
 
-
 const ControlHorizontal = () => {
   const { config, setConfig } = useContext(ConfigContext);
-
-  /**
-    * If the current selected unit is no longer available under the new source, then select the default unit.
-    */
-  useEffect(() => {
-    layout.unit.indexOf(config.unit) === -1 && setConfig({ ...config, unit: layout.unit[0] });
-  }, [config.mainSelection]);
 
   /**
    * Memorize the current menu structure based on the config.
@@ -25,9 +17,30 @@ const ControlHorizontal = () => {
   const layout = useMemo(() => CONFIG_LAYOUT[config.mainSelection], [config.mainSelection]);
 
   /**
+   * Update the config.
+   */
+  const handleConfigUpdate = (field, value) => setConfig({ ...config, [field]: value });
+
+  /**
+    * If the current selected unit is no longer available under the new source,
+    * then select the default unit.
+    */
+  useEffect(
+    () => {
+      if (layout.unit.indexOf(config.unit) === -1) {
+        setConfig({ ...config, unit: layout.unit[0] });
+      }
+    },
+    [config.mainSelection], // eslint-disable-line react-hooks/exhaustive-deps
+  );
+
+  /**
    * Icon of the selected source.
    */
-  const SourceIcon = useMemo(() => CONFIG_REPRESENTATION[config.mainSelection].icon, [config.mainSelection]);
+  const SourceIcon = useMemo(
+    () => CONFIG_REPRESENTATION[config.mainSelection].icon,
+    [config.mainSelection],
+  );
 
   const [anchorSource, setAnchorSource] = useState(null);
   const [anchorUnit, setAnchorUnit] = useState(null);
@@ -38,38 +51,33 @@ const ControlHorizontal = () => {
     return null;
   }
 
-  const onOpenMenuSource = (event) => setAnchorSource(event.currentTarget);
+  const onOpenMenuSource = event => setAnchorSource(event.currentTarget);
   const onCloseMenuSource = () => setAnchorSource(null);
-  const onChangeMenuSource = (source) => () => {
+  const onChangeMenuSource = source => () => {
     onCloseMenuSource();
     handleConfigUpdate('mainSelection', source);
   };
 
-  const onOpenMenuUnit = (event) => setAnchorUnit(event.currentTarget);
+  const onOpenMenuUnit = event => setAnchorUnit(event.currentTarget);
   const onCloseMenuUnit = () => setAnchorUnit(null);
-  const onChangeMenuUnit = (unit) => () => {
+  const onChangeMenuUnit = unit => () => {
     onCloseMenuUnit();
     handleConfigUpdate('unit', unit);
   };
 
-  const onOpenMenuYear = (event) => setAnchorYear(event.currentTarget);
+  const onOpenMenuYear = event => setAnchorYear(event.currentTarget);
   const onCloseMenuYear = () => setAnchorYear(null);
-  const onChangeMenuYear = (year) => () => {
+  const onChangeMenuYear = year => () => {
     onCloseMenuYear();
     handleConfigUpdate('year', year);
   };
 
-  const onOpenMenuScenario = (event) => setAnchorScenario(event.currentTarget);
+  const onOpenMenuScenario = event => setAnchorScenario(event.currentTarget);
   const onCloseMenuScenario = () => setAnchorScenario(null);
-  const onChangeMenuScenario = (scenario) => () => {
+  const onChangeMenuScenario = scenario => () => {
     onCloseMenuScenario();
     handleConfigUpdate('scenario', scenario);
   };
-
-  /**
-   * Update the config.
-   */
-  const handleConfigUpdate = (field, value) => setConfig({ ...config, [field]: value });
 
   return (
     <Grid container alignItems="center" spacing={2}>
@@ -77,7 +85,8 @@ const ControlHorizontal = () => {
 
       <Grid item>
         <Button
-          variant="outlined" color="secondary"
+          variant="outlined"
+          color="secondary"
           startIcon={<SourceIcon />}
           endIcon={<ArrowDropIcon />}
           onClick={onOpenMenuSource}
@@ -85,11 +94,12 @@ const ControlHorizontal = () => {
           Source: {CONFIG_REPRESENTATION[config.mainSelection].name}
         </Button>
         <Menu anchorEl={anchorSource} open={!!anchorSource} onClose={onCloseMenuSource}>
-          {Object.keys(CONFIG_LAYOUT).map(source => {
+          {Object.keys(CONFIG_LAYOUT).map((source) => {
             const Icon = CONFIG_REPRESENTATION[source].icon;
             return (
               <MenuItem
-                key={`config-source-${source}`} dense
+                key={`config-source-${source}`}
+                dense
                 disabled={config.mainSelection === source}
                 onClick={onChangeMenuSource(source)}
               >
@@ -110,7 +120,8 @@ const ControlHorizontal = () => {
         <Menu anchorEl={anchorUnit} open={!!anchorUnit} onClose={onCloseMenuUnit}>
           {layout.unit.map(unit => (
             <MenuItem
-              key={`config-unit-${unit}`} dense
+              key={`config-unit-${unit}`}
+              dense
               disabled={config.unit === unit}
               onClick={onChangeMenuUnit(unit)}
             >
@@ -127,7 +138,8 @@ const ControlHorizontal = () => {
         <Menu anchorEl={anchorYear} open={!!anchorYear} onClose={onCloseMenuYear}>
           {layout.year.map(year => (
             <MenuItem
-              key={`config-year-${year}`} dense
+              key={`config-year-${year}`}
+              dense
               disabled={config.year === year}
               onClick={onChangeMenuYear(year)}
             >
@@ -144,7 +156,8 @@ const ControlHorizontal = () => {
         <Menu anchorEl={anchorScenario} open={!!anchorScenario} onClose={onCloseMenuScenario}>
           {layout.scenario.map(scenario => (
             <MenuItem
-              key={`config-scenario-${scenario}`} dense
+              key={`config-scenario-${scenario}`}
+              dense
               disabled={config.scenario === scenario}
               onClick={onChangeMenuScenario(scenario)}
             >

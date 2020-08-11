@@ -1,3 +1,4 @@
+/* eslint-disable */
 const data = [
    {
       "province":"AB",

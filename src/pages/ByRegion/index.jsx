@@ -8,9 +8,8 @@ import { ConfigContext } from '../../containers/App/lazy';
 const ByRegion = () => {
   const { config } = useContext(ConfigContext);
 
-  const gqlConfig = { page: 'energyDemand', scenario: 'reference', iteration: 1, sector: 'total end-use', source: 'ALL' };
-  // console.log(useEnergyFutureData(gqlConfig));
-  const { loading, error, response } = useEnergyFutureData(gqlConfig);
+  const { loading, error, data } = useEnergyFutureData();
+  console.log(data);
 
   const configFilter = useCallback(
     row => config.provinces.indexOf(row.province) > -1
@@ -21,7 +20,7 @@ const ByRegion = () => {
 
   const processedData = useMemo(() => {
     if (!loading) {
-      const byYear = response.energyDemands
+      const byYear = data.energyDemands
         .filter(configFilter)
         .reduce((accu, curr) => {
           !accu[curr.year] && (accu[curr.year] = {});
@@ -31,7 +30,7 @@ const ByRegion = () => {
         }, {});
       return Object.keys(byYear).map(year => ({ year, ...byYear[year] }));
     }
-  }, [loading, response, configFilter]);
+  }, [loading, data.energyDemands, configFilter]);
 
   return (
     <ResponsiveBar

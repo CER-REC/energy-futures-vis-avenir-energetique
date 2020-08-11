@@ -31,6 +31,15 @@ class ErrorBoundary extends React.PureComponent {
   static propTypes = {
     // Default children props from react
     children: PropTypes.element.isRequired,
+    classes: PropTypes.shape({
+      root: PropTypes.string,
+      errorMessage: PropTypes.string,
+      details: PropTypes.string,
+    }),
+  };
+
+  static defaultProps = {
+    classes: {},
   };
 
   constructor(props) {

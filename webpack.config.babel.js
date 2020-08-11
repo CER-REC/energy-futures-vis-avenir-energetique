@@ -13,7 +13,7 @@ const devMode = process.env.NODE_ENV !== 'production';
 module.exports = {
   mode: process.env.NODE_ENV || 'development',
   entry: {
-    bundle: './src/index.js',
+    bundle: './src/index.jsx',
   },
   output: {
     path: BUILD_DIR,

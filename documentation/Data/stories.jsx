@@ -5,4 +5,4 @@ import information from './information.md';
 
 storiesOf('Documentation|Data', module)
   .add('GraphQL', doc(GraphQL))
-  .add('Information', doc(information))
+  .add('Information', doc(information));
