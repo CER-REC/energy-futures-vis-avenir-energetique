@@ -4,13 +4,14 @@ import gql from 'graphql-tag';
 import { ConfigContext } from '../utilities/configContext';
 
 const ENERGY_DEMAND = gql`
-query ($iteration: ID!, $regions: [Region!], $scenarios: [String!]) {
-  energyDemands(iterationIds: [$iteration], regions: $regions, scenarios: $scenarios, sources: [ALL], sectors: ["total end-use"]) {
-    province: region
-    year
-    value: quantity
+  query ($iteration: ID!, $regions: [Region!], $scenarios: [String!]) {
+    energyDemands(iterationIds: [$iteration], regions: $regions, scenarios: $scenarios, sources: [ALL], sectors: ["total end-use"]) {
+      province: region
+      year
+      value: quantity
+    }
   }
-}`;
+`;
 
 const yearToIteration = {
   2016: 1,
@@ -20,12 +21,18 @@ const yearToIteration = {
   2019: 5,
 };
 
+const DEFAULT_RETURN = {
+  loading: undefined,
+  error: undefined,
+  data: undefined,
+};
+
 export default function () {
   const { config } = useContext(ConfigContext);
   let query;
   let queryVariables;
 
-  if (config.page === 'by-region') {
+  if ((config.page === 'by-region') && (config.provinces.length)) {
     if (config.mainSelection === 'energyDemand') {
       query = ENERGY_DEMAND;
       queryVariables = {
@@ -39,5 +46,5 @@ export default function () {
     const { loading, error, data } = useQuery(query, { variables: queryVariables });
     return { loading, error, data };
   }
-  return null;
+  return DEFAULT_RETURN;
 }

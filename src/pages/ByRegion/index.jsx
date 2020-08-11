@@ -1,6 +1,5 @@
 import React, { useContext, useMemo, useCallback } from 'react';
 import { ResponsiveBar } from '@nivo/bar';
-// import useEnergyFutureData from '../../useEnergyFutureData';
 import { data as dataEnergyDemand } from './dataEnergyDemand';
 import { data as dataElectricityGeneration } from './dataElectricityGeneration';
 import { data as dataOilProduction } from './dataOilProduction';
@@ -11,9 +10,6 @@ import { CONFIG_REPRESENTATION } from '../../types';
 
 const ByRegion = () => {
   const { config } = useContext(ConfigContext);
-
-  // const gqlConfig = { page: 'energyDemand', scenario: 'reference', iteration: 1, sector: 'total end-use', source: 'ALL' };
-  // console.log(useEnergyFutureData(gqlConfig));
 
   const data = useMemo(() => {
     switch (config.mainSelection) {
