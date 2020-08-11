@@ -1,15 +1,15 @@
 import React, { useContext, useMemo, useCallback } from 'react';
 import { ResponsiveBar } from '@nivo/bar';
-import useEnergyFutureData from '../../useEnergyFutureData';
+import useEnergyFutureData from '../../hooks/useEnergyFutureData';
+import convertUnit from '../../utilities/convertUnit';
 
-import { ConfigContext } from '../../containers/App/lazy';
+import { ConfigContext } from '../../utilities/configContext';
 // import { CONFIG_REPRESENTATION } from '../../types';
 
 const ByRegion = () => {
   const { config } = useContext(ConfigContext);
 
   const { loading, error, data } = useEnergyFutureData();
-  console.log(data);
 
   const configFilter = useCallback(
     row => config.provinces.indexOf(row.province) > -1
@@ -25,12 +25,12 @@ const ByRegion = () => {
         .reduce((accu, curr) => {
           !accu[curr.year] && (accu[curr.year] = {});
           !accu[curr.year][curr.province] && (accu[curr.year][curr.province] = 0);
-          accu[curr.year][curr.province] += curr.value;
+          accu[curr.year][curr.province] += (curr.value * convertUnit('petajoules', config.unit));
           return accu;
         }, {});
       return Object.keys(byYear).map(year => ({ year, ...byYear[year] }));
     }
-  }, [loading, data.energyDemands, configFilter]);
+  }, [config.unit, loading, data, configFilter]);
 
   return (
     <ResponsiveBar
