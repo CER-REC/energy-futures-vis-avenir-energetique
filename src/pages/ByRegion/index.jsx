@@ -1,7 +1,5 @@
 import React, { useContext, useMemo, useCallback } from 'react';
 import { ResponsiveBar } from '@nivo/bar';
-// import { useQuery } from '@apollo/react-hooks';
-// import gql from 'graphql-tag';
 import { data as dataEnergyDemand } from './dataEnergyDemand';
 import { data as dataElectricityGeneration } from './dataElectricityGeneration';
 import { data as dataOilProduction } from './dataOilProduction';
@@ -10,21 +8,8 @@ import { data as dataGasProduction } from './dataGasProduction';
 import { ConfigContext } from '../../utilities/configContext';
 import { CONFIG_REPRESENTATION } from '../../types';
 
-// const RESOURCES = gql`
-//   query {
-//     energyDemands {
-//       region
-//       value: quantity
-//       year
-//     }
-//   }
-// `;
-
 const ByRegion = () => {
   const { config } = useContext(ConfigContext);
-
-  // const { loading, error, data: response } = useQuery(RESOURCES);
-  // console.log('GraphQL example:', loading, error, response);
 
   const data = useMemo(() => {
     switch (config.mainSelection) {
