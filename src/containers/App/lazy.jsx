@@ -129,6 +129,7 @@ page=${config.page}&\
 mainSelection=${config.mainSelection}&\
 unit=${config.unit}&\
 view=${config.view}&\
+sector=${config.sector}&\
 year=${config.year || '2019'}&\
 scenario=${config.scenario}&\
 provinces=${config.provinces.join(',')}&\
