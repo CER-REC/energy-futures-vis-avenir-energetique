@@ -2,7 +2,7 @@ import React, { useContext, useState, useEffect } from 'react';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import PropTypes from 'prop-types';
 import {
-  makeStyles, Grid, Typography,
+  makeStyles, Grid, Typography, Tooltip,
 } from '@material-ui/core';
 import { grey } from '@material-ui/core/colors';
 import ClearIcon from '@material-ui/icons/Clear';
@@ -18,7 +18,7 @@ const reorder = (list, startIndex, endIndex) => {
 };
 
 const ColoredItemBox = ({
-  item, label, icon, color, selected, clear, round, left, ...props
+  item, label, icon, color, selected, clear, round, ...props
 }) => {
   const classes = makeStyles(theme => ({
     root: {
@@ -36,40 +36,39 @@ const ColoredItemBox = ({
       '&.selected': { backgroundColor: color ? color[600] : theme.palette.secondary.main },
       '&.selected > p, &.selected > svg': { color: theme.palette.common.white },
       '&:hover': { boxShadow: theme.shadows[6] },
-
-      '& > div': {
-        position: 'absolute',
-        left: left ? 'auto' : 36,
-        right: left ? 36 : 'auto',
-        top: '50%',
-        color: '#666',
-        opacity: 0,
-        transition: 'opacity .25s ease-in-out',
-        transform: 'translateY(-50%)',
-      },
-      '&:hover > div': { opacity: 1 },
-      '& > div > span': {
-        padding: 4,
-        lineHeight: 1,
-        backgroundColor: theme.palette.common.white,
-        border: '1px solid #AAA',
-      },
     },
     btn: { margin: 'auto' },
+    tooltip: {
+      margin: theme.spacing(0, 1),
+      paddingLeft: 0,
+      fontSize: 10,
+      lineHeight: 1,
+      color: '#999',
+      backgroundColor: theme.palette.common.white,
+      border: '1px solid #AAA',
+      borderRadius: 0,
+      boxShadow: theme.shadows[1],
+      '& span': { marginLeft: theme.spacing(0.5) },
+    },
   }))();
   const Icon = icon;
   return (
-    <Grid container {...props} className={`${classes.root} ${selected && 'selected'}`}>
-      {clear && <ClearIcon className={classes.btn} />}
-      {!clear && icon && <Icon className={classes.btn} />}
-      {!clear && !icon && <Typography variant="body2">{item}</Typography>}
-      {label && (
-        <Grid container direction={left ? 'row-reverse' : 'row'} alignItems="center" wrap="nowrap">
+    <Tooltip
+      title={label && (
+        <Grid container alignItems="center" wrap="nowrap">
           <DragIcon fontSize="small" />
           <Typography variant="overline">{label}</Typography>
         </Grid>
       )}
-    </Grid>
+      placement="right"
+      classes={{ tooltip: classes.tooltip }}
+    >
+      <Grid container {...props} className={`${classes.root} ${selected && 'selected'}`}>
+        {clear && <ClearIcon className={classes.btn} />}
+        {!clear && icon && <Icon className={classes.btn} />}
+        {!clear && !icon && <Typography variant="body2">{item}</Typography>}
+      </Grid>
+    </Tooltip>
   );
 };
 
@@ -81,7 +80,6 @@ ColoredItemBox.propTypes = {
   selected: PropTypes.bool,
   clear: PropTypes.bool,
   round: PropTypes.bool,
-  left: PropTypes.bool,
 };
 
 ColoredItemBox.defaultProps = {
@@ -91,7 +89,6 @@ ColoredItemBox.defaultProps = {
   selected: false,
   clear: false,
   round: false,
-  left: false,
 };
 
 const useStyles = makeStyles(theme => ({
@@ -127,7 +124,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const DraggableVerticalList = ({
-  title, width, round, left, dense,
+  title, width, round, dense,
   singleSelect = false, /* multi-select or single select */
   disabled = false, /* disable drag-n-drop */
   items /* array of strings */,
@@ -227,7 +224,6 @@ const DraggableVerticalList = ({
               <ColoredItemBox
                 item="ALL"
                 round={round}
-                left={left}
                 color={grey}
                 selected={singleSelect ? localItems[0] === 'ALL' : localItems.length > 0}
                 clear={localItems.length === Object.keys(defaultItems).length}
@@ -247,7 +243,6 @@ const DraggableVerticalList = ({
                       <ColoredItemBox
                         item={item}
                         round={round}
-                        left={left}
                         label={defaultItems[item].label}
                         icon={defaultItems[item].icon}
                         color={defaultItems[item].color}
@@ -270,7 +265,6 @@ DraggableVerticalList.propTypes = {
   title: PropTypes.string,
   width: PropTypes.number,
   round: PropTypes.bool,
-  left: PropTypes.bool,
   dense: PropTypes.bool,
   singleSelect: PropTypes.bool,
   disabled: PropTypes.bool,
@@ -286,7 +280,6 @@ DraggableVerticalList.defaultProps = {
   title: '',
   width: undefined,
   round: false,
-  left: false,
   dense: false,
   singleSelect: false,
   disabled: false,

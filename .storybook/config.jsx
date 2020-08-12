@@ -6,7 +6,6 @@ import Adapter from 'enzyme-adapter-react-16';
 import { configure as enzyme } from 'enzyme';
 import { addReadme, configureReadme } from 'storybook-readme';
 
-
 // Load Locale Data
 import { addLocaleData } from 'react-intl';
 import enLocaleData from 'react-intl/locale-data/en';
@@ -14,7 +13,6 @@ import frLocaleData from 'react-intl/locale-data/fr';
 
 import { lang } from '../src/constants';
 import i18nMessages from '../src/i18n';
-
 
 addLocaleData(enLocaleData);
 addLocaleData(frLocaleData);

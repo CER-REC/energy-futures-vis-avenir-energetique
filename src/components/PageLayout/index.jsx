@@ -42,7 +42,6 @@ const PageLayout = ({
               <DraggableVerticalList
                 title="Source"
                 round
-                left={!!showRegion}
                 disabled={disableDraggableSource}
                 singleSelect={singleSelectSource}
                 items={config.sources}

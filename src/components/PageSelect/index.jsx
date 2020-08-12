@@ -2,7 +2,7 @@
 import React, { useContext, useState, useEffect } from 'react';
 import {
   makeStyles, createStyles,
-  Grid, ButtonBase, Typography,
+  Grid, ButtonBase, Typography, Tooltip,
 } from '@material-ui/core';
 import { PAGES } from '../../constants';
 import { ConfigContext } from '../../utilities/configContext';
@@ -34,7 +34,9 @@ const useStyles = makeStyles(theme => createStyles({
     backgroundColor: '#F3EFEF',
     boxShadow: theme.shadows[4],
     zIndex: 1001,
-    transition: 'top .5s ease-in-out, padding .5s ease-in-out',
+    border: '2px solid transparent',
+    transition: 'top .5s ease-in-out, padding .5s ease-in-out, border-color .25s ease-in-out',
+    '&:hover': { border: `2px solid ${theme.palette.primary.main}` },
   },
   icon: {
     height: 60,
@@ -43,26 +45,22 @@ const useStyles = makeStyles(theme => createStyles({
   },
   label: {
     textAlign: 'left',
+    overflow: 'hidden',
     transition: 'height .5s ease-in-out, width .5s ease-in-out',
-    '& > h5': {
-      margin: theme.spacing(0, 0.5),
-      transition: 'opacity .5s ease-in-out',
-    },
+    '& > h5': { transition: 'opacity .5s ease-in-out' },
     '& > h5:first-of-type': {
       fontWeight: 700,
     },
   },
-
-  button: {
-    transition: 'flex-grow .25s ease-in-out',
-    '& > button': {
-      width: '100%',
-      minHeight: 50,
-      padding: theme.spacing(2),
-      color: theme.palette.common.white,
-      backgroundColor: '#344C81',
-      '& h6, & p': { textTransform: 'uppercase' },
-    },
+  tooltip: {
+    margin: theme.spacing(0, 1),
+    fontSize: 14,
+    lineHeight: 1,
+    color: '#999',
+    backgroundColor: theme.palette.common.white,
+    border: '1px solid #AAA',
+    borderRadius: 0,
+    boxShadow: theme.shadows[1],
   },
 }));
 
@@ -72,6 +70,7 @@ const PageSelect = () => {
   const { config, setConfig } = useContext(ConfigContext);
 
   const [pages, setPages] = useState(PAGES.filter(page => page.id !== 'landing'));
+  const [loading, setLoading] = useState(false);
 
   /**
    * Auto-sync the selected page.
@@ -86,42 +85,50 @@ const PageSelect = () => {
   );
 
   const handleSelect = (id) => {
-    if (id === config.page) {
+    if (loading || id === config.page) {
       return;
     }
+    setLoading(true);
     setPages(toFront([...pages], id));
     setConfig({ ...config, page: id });
+    setTimeout(() => setLoading(false), 800);
   };
 
   const pageButtons = PAGES.filter(page => page.id !== 'landing').map((page) => {
     const index = pages.findIndex(p => p.id === page.id) || 0;
     return (
-      <ButtonBase
+      <Tooltip
         key={`page-${page.id}`}
-        centerRipple
-        onClick={() => handleSelect(page.id)}
-        classes={{ root: classes.box }}
-        style={{
-          top: index * 64 + 10,
-          padding: index === 0 ? '0 8px' : 0,
-        }}
+        title={loading || index === 0 ? '' : page.label}
+        placement="right"
+        classes={{ tooltip: classes.tooltip }}
       >
-        <div
-          className={classes.label}
+        <ButtonBase
+          centerRipple
+          onClick={() => handleSelect(page.id)}
+          classes={{ root: classes.box }}
           style={{
-            height: index === 0 ? 60 : 0,
-            width: index === 0 ? 300 : 0,
+            top: index * 64 + 10,
+            padding: index === 0 ? '0 8px' : 0,
           }}
         >
-          <Typography variant="h5" color="primary" style={{ opacity: index === 0 ? 1 : 0 }}>
-            {page.label}
-          </Typography>
-          <Typography variant="h5" color="primary" style={{ opacity: index === 0 ? 1 : 0 }}>
-            By {config.view}
-          </Typography>
-        </div>
-        <div className={classes.icon}>{getPageIcon(page.id)}</div>
-      </ButtonBase>
+          <div
+            className={classes.label}
+            style={{
+              height: index === 0 ? 60 : 0,
+              width: index === 0 ? 300 : 0,
+            }}
+          >
+            <Typography variant="h5" color="primary" style={{ opacity: index === 0 ? 1 : 0 }}>
+              {page.label}
+            </Typography>
+            <Typography variant="h5" color="primary" style={{ opacity: index === 0 ? 1 : 0 }}>
+              By-{config.view}
+            </Typography>
+          </div>
+          <div className={classes.icon}>{getPageIcon(page.id)}</div>
+        </ButtonBase>
+      </Tooltip>
     );
   });
 
