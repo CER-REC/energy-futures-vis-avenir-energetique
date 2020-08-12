@@ -4,7 +4,7 @@ import {
   makeStyles, createStyles,
   Grid, ButtonBase, Typography, Tooltip,
 } from '@material-ui/core';
-import { PAGES } from '../../constants';
+import { PAGES, CONFIG_LAYOUT, SECTOR_LAYOUT } from '../../constants';
 import { ConfigContext } from '../../utilities/configContext';
 
 import {
@@ -30,18 +30,18 @@ const useStyles = makeStyles(theme => createStyles({
   box: {
     position: 'absolute',
     left: 0,
-    height: 60,
+    height: 64,
     backgroundColor: '#F3EFEF',
     boxShadow: theme.shadows[4],
-    zIndex: 1001,
+    zIndex: 9,
     border: '2px solid transparent',
     transition: 'top .5s ease-in-out, padding .5s ease-in-out, border-color .25s ease-in-out',
     '&:hover': { border: `2px solid ${theme.palette.primary.main}` },
   },
   icon: {
-    height: 60,
-    width: 60,
-    '& > svg': { height: 60 },
+    height: 64,
+    width: 64,
+    '& > svg': { height: 64 },
   },
   label: {
     textAlign: 'left',
@@ -108,8 +108,8 @@ const PageSelect = () => {
           onClick={() => handleSelect(page.id)}
           classes={{ root: classes.box }}
           style={{
-            top: index * 64 + 10,
-            padding: index === 0 ? '0 8px' : 0,
+            top: index * 68 + 10,
+            padding: index === 0 ? '2px 8px' : 0,
           }}
         >
           <div
@@ -123,7 +123,9 @@ const PageSelect = () => {
               {page.label}
             </Typography>
             <Typography variant="h5" color="primary" style={{ opacity: index === 0 ? 1 : 0 }}>
-              By-{config.view}
+              {['by-region', 'scenarios'].includes(config.page) && CONFIG_LAYOUT[config.mainSelection]?.name}
+              {['by-sector', 'demand'].includes(config.page) && SECTOR_LAYOUT[config.sector]?.name}
+              {config.page === 'electricity' && `By ${config.view}`}
             </Typography>
           </div>
           <div className={classes.icon}>{getPageIcon(page.id)}</div>

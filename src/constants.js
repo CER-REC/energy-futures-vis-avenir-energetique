@@ -1,3 +1,12 @@
+import TotalIcon from '@material-ui/icons/DataUsage';
+import ElectricityIcon from '@material-ui/icons/FlashOn';
+import OilIcon from '@material-ui/icons/Opacity';
+import GasIcon from '@material-ui/icons/LocalGasStation';
+import ResidentialIcon from '@material-ui/icons/HouseOutlined';
+import CommercialIcon from '@material-ui/icons/ApartmentOutlined';
+import IndustrialIcon from '@material-ui/icons/BuildOutlined';
+import TransportIcon from '@material-ui/icons/LocalShippingOutlined';
+
 export const applicationPath = {
   en: 'energy-future',
   fr: 'avenir-energetique',
@@ -50,24 +59,55 @@ export const YEARS = ['2019', '2018', '2017', '2016*', '2016'];
 
 export const CONFIG_LAYOUT = {
   energyDemand: {
+    name: 'Total Demand',
+    icon: TotalIcon,
     unit: ['petajoules', 'kilobarrelEquivalents'],
     year: YEARS,
     scenario: ['reference', 'technology', 'hcp'],
   },
   electricityGeneration: {
+    name: 'Electricity',
+    icon: ElectricityIcon,
     unit: ['petajoules', 'gigawattHours', 'kilobarrelEquivalents'],
     year: YEARS,
     scenario: ['reference', 'technology', 'hcp'],
   },
   oilProduction: {
+    name: 'Oil Production',
+    icon: OilIcon,
     unit: ['kilobarrels', 'thousandCubicMetres'],
     year: YEARS,
     scenario: ['reference', 'technology', 'hcp'],
   },
   gasProduction: {
+    name: 'Gas Production',
+    icon: GasIcon,
     unit: ['cubicFeet', 'millionCubicMetres'],
     year: YEARS,
     scenario: ['reference', 'technology', 'hcp'],
+  },
+};
+
+export const SECTOR_LAYOUT = {
+  total: {
+    name: 'Total Demand',
+    icon: TotalIcon,
+  },
+  residential: {
+    name: 'Residential',
+    icon: ResidentialIcon,
+  },
+  commercial: {
+    name: 'Commercial',
+    icon: CommercialIcon,
+  },
+  industrial: {
+    name: 'Industrial',
+    icon: IndustrialIcon,
+  },
+  transportation: {
+    name: 'Transportation',
+    icon: TransportIcon,
   },
 };
 
