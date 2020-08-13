@@ -1,40 +1,17 @@
 import React, { useContext, useMemo, useCallback } from 'react';
 import { ResponsiveBar } from '@nivo/bar';
 import useEnergyFutureData from '../../hooks/useEnergyFutureData';
-import convertUnit from '../../utilities/convertUnit';
 
 import { ConfigContext } from '../../utilities/configContext';
 // import { CONFIG_REPRESENTATION } from '../../types';
 
 const ByRegion = () => {
   const { config } = useContext(ConfigContext);
-
-  const { loading, error, data } = useEnergyFutureData();
-
-  const configFilter = useCallback(
-    row => config.provinces.indexOf(row.province) > -1
-      // && (!row.unit || row.unit.toLowerCase() === CONFIG_REPRESENTATION[config.unit].toLowerCase())
-      && (!row.scenario || row.scenario.toLowerCase() === config.scenario),
-    [config],
-  );
-
-  const processedData = useMemo(() => {
-    if (!loading) {
-      const byYear = data.energyDemands
-        .filter(configFilter)
-        .reduce((accu, curr) => {
-          !accu[curr.year] && (accu[curr.year] = {});
-          !accu[curr.year][curr.province] && (accu[curr.year][curr.province] = 0);
-          accu[curr.year][curr.province] += (curr.value * convertUnit('petajoules', config.unit));
-          return accu;
-        }, {});
-      return Object.keys(byYear).map(year => ({ year, ...byYear[year] }));
-    }
-  }, [config.unit, loading, data, configFilter]);
+  const { loading, error, processedData } = useEnergyFutureData();
 
   return (
     <ResponsiveBar
-      data={processedData || []}
+      data={processedData?.energyData || []}
       keys={config.provinces}
       indexBy="year"
       margin={{ top: 50, right: 0, bottom: 50, left: 80 }}
