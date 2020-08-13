@@ -174,9 +174,9 @@ const DraggableVerticalList = ({
    */
   useEffect(() => {
     if (singleSelect) {
-      setLocalItems(['ALL']);
+      setLocalItems(localItems.length === 1 ? localItems : ['ALL']);
     }
-  }, [singleSelect]);
+  }, [singleSelect]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleToggleItem = toggledItem => () => {
     if (singleSelect) {

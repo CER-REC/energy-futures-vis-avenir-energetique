@@ -1,16 +1,29 @@
-import React, { useContext, useMemo, useCallback } from 'react';
+import React, { useContext, useEffect, useMemo, useCallback } from 'react';
 import { ResponsiveBar } from '@nivo/bar';
+
+// TODO: remove the following references once the data hook is ready
 import { data as dataEnergyDemand } from './dataEnergyDemand';
 import { data as dataElectricityGeneration } from './dataElectricityGeneration';
 import { data as dataOilProduction } from './dataOilProduction';
 import { data as dataGasProduction } from './dataGasProduction';
 
 import { ConfigContext } from '../../utilities/configContext';
-import { CONFIG_REPRESENTATION } from '../../types';
+import { CONFIG_REPRESENTATION, REGION_ORDER } from '../../types';
 
 const ByRegion = () => {
-  const { config } = useContext(ConfigContext);
+  const { config, setConfig } = useContext(ConfigContext);
 
+  /**
+   * A "hacky" but sufficient way to reselect all regions after
+   * being redirected from other pages but none of the regions is currently selected.
+   */
+  useEffect(() => {
+    if (config.page === 'by-region' && JSON.stringify(config.provinces || []) === '["ALL"]') {
+      setConfig({ ...config, provinces: REGION_ORDER });
+    }
+  }, [config]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // TODO: remove this after the data hook is ready
   const data = useMemo(() => {
     switch (config.mainSelection) {
       case 'energyDemand': return dataEnergyDemand;
@@ -20,6 +33,7 @@ const ByRegion = () => {
     }
   }, [config.mainSelection]);
 
+  // TODO: remove this after the data hook is ready
   const configFilter = useCallback(
     row => config.provinces.indexOf(row.province) > -1
       && (!row.unit || row.unit.toLowerCase() === CONFIG_REPRESENTATION[config.unit].toLowerCase())
@@ -27,6 +41,7 @@ const ByRegion = () => {
     [config],
   );
 
+  // TODO: remove this after the data hook is ready
   const processedData = useMemo(() => {
     const byYear = data
       .filter(configFilter)
