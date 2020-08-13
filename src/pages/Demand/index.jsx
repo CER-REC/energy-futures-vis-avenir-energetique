@@ -7,7 +7,7 @@ const SunBurstChart = () => {
   const [allRoses, allRosesSet] = useState(null);
 
   const updateRoses = () => {
-    allRosesSet(Object.keys(data).map(province => <Rose provinceData={data[province]} />));
+    allRosesSet(Object.keys(data).map(province => <Rose key={`rose-vis-${province}`} provinceData={data[province]} />));
   };
 
   useEffect(() => {

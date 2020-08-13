@@ -64,7 +64,7 @@ const HorizontalControlBar = () => {
   const selections = ['by-region', 'scenarios'].includes(config.page) && (
     <>
       <Grid item>
-        <Typography variant="body1" color="primary">ORIGIN</Typography>
+        <Typography variant="body1" color="primary">SOURCE</Typography>
       </Grid>
       {Object.keys(CONFIG_LAYOUT).map((selection) => {
         const Icon = CONFIG_LAYOUT[selection]?.icon;

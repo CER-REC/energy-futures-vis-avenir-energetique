@@ -1,13 +1,22 @@
-import React, { useContext, useMemo, useCallback } from 'react';
+import React, { useContext, useEffect, useMemo, useCallback } from 'react';
 import { ResponsiveBar } from '@nivo/bar';
 import useEnergyFutureData from '../../hooks/useEnergyFutureData';
-
 import { ConfigContext } from '../../utilities/configContext';
-// import { CONFIG_REPRESENTATION } from '../../types';
+import { CONFIG_REPRESENTATION, REGION_ORDER } from '../../types';
 
 const ByRegion = () => {
-  const { config } = useContext(ConfigContext);
+  const { config, setConfig } = useContext(ConfigContext);
   const { loading, error, processedData } = useEnergyFutureData();
+
+  /**
+   * A "hacky" but sufficient way to reselect all regions after
+   * being redirected from other pages but none of the regions is currently selected.
+   */
+  useEffect(() => {
+    if (config.page === 'by-region' && JSON.stringify(config.provinces || []) === '["ALL"]') {
+      setConfig({ ...config, provinces: REGION_ORDER });
+    }
+  }, [config]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <ResponsiveBar
