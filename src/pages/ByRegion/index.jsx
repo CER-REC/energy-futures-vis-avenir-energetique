@@ -1,8 +1,8 @@
-import React, { useContext, useEffect, useMemo, useCallback } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { ResponsiveBar } from '@nivo/bar';
 import useEnergyFutureData from '../../hooks/useEnergyFutureData';
 import { ConfigContext } from '../../utilities/configContext';
-import { CONFIG_REPRESENTATION, REGION_ORDER } from '../../types';
+import { REGION_ORDER } from '../../types';
 
 const ByRegion = () => {
   const { config, setConfig } = useContext(ConfigContext);
@@ -20,7 +20,7 @@ const ByRegion = () => {
 
   return (
     <ResponsiveBar
-      data={processedData?.energyData || []}
+      data={(loading || error) ? [] : processedData.energyData}
       keys={config.provinces}
       indexBy="year"
       margin={{ top: 50, right: 0, bottom: 50, left: 80 }}
