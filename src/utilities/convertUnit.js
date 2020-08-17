@@ -22,9 +22,8 @@ const conversionTable = {
 
 export default (prevUnit, newUnit) => {
   if (prevUnit && newUnit) {
-    if (prevUnit === newUnit) { return 1; }
-    return conversionTable[prevUnit][newUnit];
+    if (prevUnit !== newUnit) { return conversionTable[prevUnit][newUnit]; }
   }
-  return null;
+  return 1;
 };
 

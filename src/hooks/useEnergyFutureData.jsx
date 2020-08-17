@@ -137,5 +137,5 @@ export default function () {
     };
   }, [config.mainSelection, config.unit, configFilter, data, defaultUnit, loading]);
 
-  return { loading, error, processedData };
+  return { loading, error, data: processedData };
 }

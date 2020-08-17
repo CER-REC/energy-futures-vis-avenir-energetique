@@ -6,7 +6,7 @@ import { REGION_ORDER } from '../../types';
 
 const ByRegion = () => {
   const { config, setConfig } = useContext(ConfigContext);
-  const { loading, error, processedData } = useEnergyFutureData();
+  const { loading, error, data } = useEnergyFutureData();
 
   /**
    * A "hacky" but sufficient way to reselect all regions after
@@ -20,7 +20,7 @@ const ByRegion = () => {
 
   return (
     <ResponsiveBar
-      data={(loading || error) ? [] : processedData.energyData}
+      data={(loading || error) ? [] : data.energyData}
       keys={config.provinces}
       indexBy="year"
       margin={{ top: 50, right: 0, bottom: 50, left: 80 }}
