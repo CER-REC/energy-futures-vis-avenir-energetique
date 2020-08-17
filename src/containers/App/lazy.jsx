@@ -9,7 +9,7 @@ import { HttpLink } from 'apollo-link-http';
 import { fetch } from 'whatwg-fetch';
 import { createBrowserHistory } from 'history';
 import queryString from 'query-string';
-import { lang } from '../../constants';
+import { lang, SCENARIO_LAYOUT } from '../../constants';
 import { DEFAULT_CONFIG, REGION_ORDER, SOURCE_ORDER } from '../../types';
 import { ConfigContext } from '../../utilities/configContext';
 
@@ -111,6 +111,7 @@ export default () => {
     setConfig({
       ...DEFAULT_CONFIG,
       ...query,
+      scenario: query.scenario ? query.scenario.split(',') : SCENARIO_LAYOUT.default,
       provinces: query.provinces ? query.provinces.split(',') : REGION_ORDER,
       provinceOrder: query.provinceOrder ? query.provinceOrder.split(',') : REGION_ORDER,
       sources: query.sources ? query.sources.split(',') : SOURCE_ORDER,
@@ -131,7 +132,7 @@ unit=${config.unit}&\
 view=${config.view}&\
 sector=${config.sector}&\
 year=${config.year || '2019'}&\
-scenario=${config.scenario}&\
+scenario=${config.scenario.join(',')}&\
 provinces=${config.provinces.join(',')}&\
 provinceOrder=${config.provinceOrder.join(',')}&\
 sources=${config.sources.join(',')}&\
@@ -149,6 +150,7 @@ sourceOrder=${config.sourceOrder.join(',')}\
           {config.page === 'landing' ? <Landing /> : (
             <PageLayout
               showRegion
+              multiSelectScenario={config.page === 'scenarios'}
               disableDraggableRegion={['by-sector', 'electricity', 'scenarios', 'demand'].includes(config.page)}
               singleSelectRegion={['by-sector', 'electricity', 'scenarios', 'demand'].includes(config.page)}
               showSource={['by-sector', 'electricity'].includes(config.page)}

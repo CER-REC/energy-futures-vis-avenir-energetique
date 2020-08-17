@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useMemo } from 'react';
+import PropTypes from 'prop-types';
 import {
   makeStyles, createStyles,
   Grid, Typography, Button, Tooltip,
@@ -22,15 +23,25 @@ const useStyles = makeStyles(theme => createStyles({
   },
 }));
 
-const ScenarioSelect = () => {
+const SCENARIO_COLOR = {
+  technology: '#3692FA',
+  hcp: '#0B3CB4',
+  highPrice: '#6C5AEB',
+  lowPrice: '#082346',
+  constrained: '#333333',
+  highLng: '#2B6762',
+  noLng: '#3692FA',
+};
+
+const ScenarioSelect = ({ multiSelect }) => {
   const classes = useStyles();
 
   const { config, setConfig } = useContext(ConfigContext);
 
   /**
-   * Update the config.
+   * Update the config.scenario.
    */
-  const handleConfigUpdate = (field, value) => setConfig({ ...config, [field]: value });
+  const handleScenarioUpdate = scenario => setConfig({ ...config, scenario });
 
   /**
    * If the previous selected scenario is no longer available after the year change,
@@ -38,12 +49,15 @@ const ScenarioSelect = () => {
    */
   useEffect(
     () => {
+      if (multiSelect) {
+        return;
+      }
       const scenarios = SCENARIO_LAYOUT[config.year] || SCENARIO_LAYOUT.default;
-      if (scenarios.indexOf(config.scenario) < 0) {
-        handleConfigUpdate('scenario', scenarios[0]);
+      if (config.scenario.length > 1 || scenarios.indexOf(config.scenario[0]) < 0) {
+        handleScenarioUpdate([scenarios[0]]);
       }
     },
-    [config.year], // eslint-disable-line react-hooks/exhaustive-deps
+    [multiSelect, config], // eslint-disable-line react-hooks/exhaustive-deps
   );
 
   /**
@@ -53,6 +67,20 @@ const ScenarioSelect = () => {
     () => SCENARIO_LAYOUT[config.year] || SCENARIO_LAYOUT.default,
     [config.year],
   );
+
+  /**
+   * When a scenario button is pressed.
+   */
+  const handleScenarioSelect = (scenario) => {
+    if (!multiSelect) {
+      handleScenarioUpdate([scenario]);
+      return;
+    }
+    const updated = config.scenario.indexOf(scenario) > -1
+      ? [...config.scenario].filter(s => s !== scenario)
+      : [...config.scenario, scenario];
+    handleScenarioUpdate(updated);
+  };
 
   return (
     <Grid container alignItems="center" wrap="nowrap" spacing={1} className={classes.root}>
@@ -64,11 +92,15 @@ const ScenarioSelect = () => {
         <Grid item key={`config-scenario-${scenario}`}>
           <Tooltip title={SCENARIO_TOOPTIP[scenario]} classes={{ tooltip: classes.tooltip }}>
             <Button
-              variant={config.scenario === scenario ? 'contained' : 'outlined'}
+              variant={config.scenario.indexOf(scenario) > -1 ? 'contained' : 'outlined'}
               color="primary"
               size="small"
               fullWidth
-              onClick={() => handleConfigUpdate('scenario', scenario)}
+              onClick={() => handleScenarioSelect(scenario)}
+              style={multiSelect && config.scenario.indexOf(scenario) > -1 ? {
+                backgroundColor: SCENARIO_COLOR[scenario],
+                borderColor: SCENARIO_COLOR[scenario],
+              } : {}}
             >
               {CONFIG_REPRESENTATION[scenario]}
             </Button>
@@ -77,6 +109,14 @@ const ScenarioSelect = () => {
       ))}
     </Grid>
   );
+};
+
+ScenarioSelect.propTypes = {
+  multiSelect: PropTypes.bool,
+};
+
+ScenarioSelect.defaultProps = {
+  multiSelect: false,
 };
 
 export default ScenarioSelect;
