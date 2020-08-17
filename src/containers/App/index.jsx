@@ -1,15 +1,17 @@
 import React, { Suspense } from 'react';
-import enLocaleData from 'react-intl/locale-data/en';
-import frLocaleData from 'react-intl/locale-data/fr';
-import { IntlProvider, addLocaleData } from 'react-intl';
+import { IntlProvider } from 'react-intl';
+import '@formatjs/intl-pluralrules/polyfill';
+import '@formatjs/intl-pluralrules/locale-data/en';
+import '@formatjs/intl-pluralrules/locale-data/fr';
+import '@formatjs/intl-relativetimeformat/polyfill';
+import '@formatjs/intl-relativetimeformat/locale-data/en';
+import '@formatjs/intl-relativetimeformat/locale-data/fr';
+
 import i18nMessages from '../../i18n';
 import { lang } from '../../constants';
 import ErrorBoundary from '../../components/ErrorBoundary';
 import UnsupportedWarning from '../../components/UnsupportedWarning';
 import LoadingIndicator from '../../components/LoadingIndicator/index';
-
-addLocaleData(enLocaleData);
-addLocaleData(frLocaleData);
 
 const LazyApp = React.lazy(() => import('./lazy'));
 
