@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useMemo } from 'react';
+import React, { useContext, useEffect, useCallback, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import {
   makeStyles, createStyles,
@@ -23,6 +23,11 @@ const useStyles = makeStyles(theme => createStyles({
   },
 }));
 
+/**
+ * TODO: replace it with
+ * 1) real terms defined in the database, and;
+ * 2) real colors from UI designers.
+ */
 const SCENARIO_COLOR = {
   technology: '#3692FA',
   hcp: '#0B3CB4',
@@ -41,7 +46,10 @@ const ScenarioSelect = ({ multiSelect }) => {
   /**
    * Update the config.scenario.
    */
-  const handleScenarioUpdate = scenario => setConfig({ ...config, scenario });
+  const handleScenarioUpdate = useCallback(
+    scenario => setConfig({ ...config, scenario }),
+    [config, setConfig],
+  );
 
   /**
    * If the previous selected scenario is no longer available after the year change,
@@ -57,21 +65,13 @@ const ScenarioSelect = ({ multiSelect }) => {
         handleScenarioUpdate([scenarios[0]]);
       }
     },
-    [multiSelect, config], // eslint-disable-line react-hooks/exhaustive-deps
-  );
-
-  /**
-   * Memorize the current menu structure based on the config.
-   */
-  const layoutScenario = useMemo(
-    () => SCENARIO_LAYOUT[config.year] || SCENARIO_LAYOUT.default,
-    [config.year],
+    [multiSelect, config, handleScenarioUpdate],
   );
 
   /**
    * When a scenario button is pressed.
    */
-  const handleScenarioSelect = (scenario) => {
+  const handleScenarioSelect = useCallback((scenario) => {
     if (!multiSelect) {
       handleScenarioUpdate([scenario]);
       return;
@@ -80,7 +80,15 @@ const ScenarioSelect = ({ multiSelect }) => {
       ? [...config.scenario].filter(s => s !== scenario)
       : [...config.scenario, scenario];
     handleScenarioUpdate(updated);
-  };
+  }, [multiSelect, config.scenario, handleScenarioUpdate]);
+
+  /**
+   * Memorize the current menu structure based on the config.
+   */
+  const layoutScenario = useMemo(
+    () => SCENARIO_LAYOUT[config.year] || SCENARIO_LAYOUT.default,
+    [config.year],
+  );
 
   return (
     <Grid container alignItems="center" wrap="nowrap" spacing={1} className={classes.root}>
