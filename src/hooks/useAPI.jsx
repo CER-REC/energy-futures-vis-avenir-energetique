@@ -12,19 +12,19 @@ const CONFIG = gql`
   }
 `;
 
-const getYearNameIterations = iterations => (
-  iterations.reduce((yearNameIterations, iteration) => {
-    let yearName = iteration.year ? iteration.year.toString() : '';
+const getYearIdIterations = iterations => (
+  iterations.reduce((yearIdIterations, iteration) => {
+    let yearId = iteration.year ? iteration.year.toString() : '';
 
     // Iterations are returned in ascending order of their year, month date
-    while (yearNameIterations[yearName]) {
-      yearName += '*';
+    while (yearIdIterations[yearId]) {
+      yearId += '*';
     }
 
     // eslint-disable-next-line no-param-reassign
-    yearNameIterations[yearName] = iteration;
+    yearIdIterations[yearId] = iteration;
 
-    return yearNameIterations;
+    return yearIdIterations;
   }, {})
 );
 
@@ -37,7 +37,7 @@ export default () => {
     }
 
     return {
-      yearNameIterations: getYearNameIterations(data.iterations),
+      yearIdIterations: getYearIdIterations(data.iterations),
     };
   }, [data]);
 
