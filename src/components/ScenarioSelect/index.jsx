@@ -65,7 +65,7 @@ const ScenarioSelect = ({ multiSelect }) => {
         handleScenarioUpdate([scenarios[0]]);
       }
     },
-    [multiSelect, config, handleScenarioUpdate],
+    [multiSelect, config.year, config.scenario, handleScenarioUpdate],
   );
 
   /**
