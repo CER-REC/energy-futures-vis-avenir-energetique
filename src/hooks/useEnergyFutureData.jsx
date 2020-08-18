@@ -4,6 +4,8 @@ import gql from 'graphql-tag';
 import { ConfigContext } from '../utilities/configContext';
 import convertUnit from '../utilities/convertUnit';
 
+// These queries are not DRY in anticipation of changes
+// to the individual queries
 const ENERGY_DEMAND = gql`
   query ($iteration: ID!, $regions: [Region!], $scenarios: [String!]) {
     energyDemands(iterationIds: [$iteration], regions: $regions, scenarios: $scenarios, sources: [ALL], sectors: ["total end-use"]) {
@@ -32,6 +34,15 @@ query ($iteration: ID!, $regions: [Region!], $scenarios: [String!]) {
   }
 }
 `;
+const OIL_PRODUCTIONS = gql`
+query ($iteration: ID!, $regions: [Region!], $scenarios: [String!]) {
+  oilProductions(iterationIds: [$iteration], regions: $regions, scenarios: $scenarios) {
+    province: region
+    year
+    value: quantity
+  }
+}
+`;
 
 const yearToIteration = {
   2016: 1,
@@ -45,36 +56,46 @@ const yearToIteration = {
 // This function isn't very DRY because I am anticipating the
 // queries to be different for each selection
 const getQueryVariables = (config) => {
-  if ((config.page === 'by-region') && (config.provinces.length)) {
-    if (config.mainSelection === 'energyDemand') {
-      return {
-        query: ENERGY_DEMAND,
-        queryVariables: {
-          scenarios: config.scenario,
-          iteration: yearToIteration[config.year],
-          regions: config.provinces,
-        },
-      };
-    }
-    if (config.mainSelection === 'gasProduction') {
-      return {
-        query: GAS_PRODUCTIONS,
-        queryVariables: {
-          scenarios: config.scenario,
-          iteration: yearToIteration[config.year],
-          regions: config.provinces,
-        },
-      };
-    }
-    if (config.mainSelection === 'electricityGeneration') {
-      return {
-        query: ELECTRICITY_GENERATIONS,
-        queryVariables: {
-          scenarios: config.scenario,
-          iteration: yearToIteration[config.year],
-          regions: config.provinces,
-        },
-      };
+  if ((config.page === 'by-region') && (config.provinces)) {
+    switch (config.mainSelection) {
+      case 'oilProduction':
+        return {
+          query: OIL_PRODUCTIONS,
+          queryVariables: {
+            scenarios: config.scenario,
+            iteration: yearToIteration[config.year],
+            regions: config.provinces,
+          },
+        };
+      case 'energyDemand':
+        return {
+          query: ENERGY_DEMAND,
+          queryVariables: {
+            scenarios: config.scenario,
+            iteration: yearToIteration[config.year],
+            regions: config.provinces,
+          },
+        };
+      case 'gasProduction':
+        return {
+          query: GAS_PRODUCTIONS,
+          queryVariables: {
+            scenarios: config.scenario,
+            iteration: yearToIteration[config.year],
+            regions: config.provinces,
+          },
+        };
+      case 'electricityGeneration':
+        return {
+          query: ELECTRICITY_GENERATIONS,
+          queryVariables: {
+            scenarios: config.scenario,
+            iteration: yearToIteration[config.year],
+            regions: config.provinces,
+          },
+        };
+      default:
+        break;
     }
   }
   return { query: undefined, queryVariables: undefined };
