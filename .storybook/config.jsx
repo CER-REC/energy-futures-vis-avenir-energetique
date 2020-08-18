@@ -7,15 +7,15 @@ import { configure as enzyme } from 'enzyme';
 import { addReadme, configureReadme } from 'storybook-readme';
 
 // Load Locale Data
-import { addLocaleData } from 'react-intl';
-import enLocaleData from 'react-intl/locale-data/en';
-import frLocaleData from 'react-intl/locale-data/fr';
+import '@formatjs/intl-pluralrules/polyfill';
+import '@formatjs/intl-pluralrules/locale-data/en';
+import '@formatjs/intl-pluralrules/locale-data/fr';
+import '@formatjs/intl-relativetimeformat/polyfill';
+import '@formatjs/intl-relativetimeformat/locale-data/en';
+import '@formatjs/intl-relativetimeformat/locale-data/fr';
 
 import { lang } from '../src/constants';
 import i18nMessages from '../src/i18n';
-
-addLocaleData(enLocaleData);
-addLocaleData(frLocaleData);
 
 setIntlConfig({
   locales: ['en', 'fr'],
