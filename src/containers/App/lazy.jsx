@@ -1,15 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { ThemeProvider, createMuiTheme } from '@material-ui/core';
 import CssBaseline from '@material-ui/core/CssBaseline';
-
-import { ApolloClient } from 'apollo-client';
-import { ApolloProvider } from '@apollo/react-hooks';
-import { InMemoryCache } from 'apollo-cache-inmemory';
-import { HttpLink } from 'apollo-link-http';
-import { fetch } from 'whatwg-fetch';
 import { createBrowserHistory } from 'history';
 import queryString from 'query-string';
-import { lang } from '../../constants';
+
 import { DEFAULT_CONFIG, REGION_ORDER, SOURCE_ORDER } from '../../types';
 import { ConfigContext } from '../../utilities/configContext';
 
@@ -21,15 +15,6 @@ import Electricity from '../../pages/Electricity';
 import Demand from '../../pages/Demand';
 import PageLayout from '../../components/PageLayout';
 
-/**
- * GraphQL API related infrastructures.
- */
-const cache = new InMemoryCache();
-const link = new HttpLink({
-  uri: `/energy-future/graphql?lang=${lang}`,
-  credentials: 'same-origin',
-});
-const client = new ApolloClient({ cache, link, fetch });
 const history = createBrowserHistory();
 
 /**
@@ -141,28 +126,26 @@ sourceOrder=${config.sourceOrder.join(',')}\
   }, [config]);
 
   return (
-    <ApolloProvider client={client}>
-      <ThemeProvider theme={theme}>
-        <ConfigContext.Provider value={{ config, setConfig }}>
-          <CssBaseline />
+    <ThemeProvider theme={theme}>
+      <ConfigContext.Provider value={{ config, setConfig }}>
+        <CssBaseline />
 
-          {config.page === 'landing' ? <Landing /> : (
-            <PageLayout
-              showRegion
-              disableDraggableRegion={['by-sector', 'electricity', 'scenarios', 'demand'].includes(config.page)}
-              singleSelectRegion={['by-sector', 'electricity', 'scenarios', 'demand'].includes(config.page)}
-              showSource={['by-sector', 'electricity'].includes(config.page)}
-              disableDraggableSource={['electricity'].includes(config.page)}
-            >
-              {config.page === 'by-region' && <ByRegion />}
-              {config.page === 'by-sector' && <BySector />}
-              {config.page === 'electricity' && <Electricity />}
-              {config.page === 'scenarios' && <Scenarios />}
-              {config.page === 'demand' && <Demand />}
-            </PageLayout>
-          )}
-        </ConfigContext.Provider>
-      </ThemeProvider>
-    </ApolloProvider>
+        {config.page === 'landing' ? <Landing /> : (
+          <PageLayout
+            showRegion
+            disableDraggableRegion={['by-sector', 'electricity', 'scenarios', 'demand'].includes(config.page)}
+            singleSelectRegion={['by-sector', 'electricity', 'scenarios', 'demand'].includes(config.page)}
+            showSource={['by-sector', 'electricity'].includes(config.page)}
+            disableDraggableSource={['electricity'].includes(config.page)}
+          >
+            {config.page === 'by-region' && <ByRegion />}
+            {config.page === 'by-sector' && <BySector />}
+            {config.page === 'electricity' && <Electricity />}
+            {config.page === 'scenarios' && <Scenarios />}
+            {config.page === 'demand' && <Demand />}
+          </PageLayout>
+        )}
+      </ConfigContext.Provider>
+    </ThemeProvider>
   );
 };
