@@ -1,8 +1,7 @@
 const conversionTable = {
-  petajoules:
-    {
-      kilobarrelEquivalents: 0.447507,
-    },
+  petajoules: {
+    kilobarrelEquivalents: 0.447507,
+  },
 
   gigawattHours: {
     petajoules: 0.0036,
@@ -12,11 +11,12 @@ const conversionTable = {
   thousandCubicMetres: {
     kilobarrels: (1 / 0.159),
   },
+
   millionCubicMetres: {
-    // This conversion factor takes us from millions of cubic metres (Mm3) to billions of cubic feet (BCF)
+    // This conversion factor takes us from millions of cubic metres (Mm3) to
+    // billions of cubic feet (BCF)
     // Mm3 * (35.3147 CF / m3) * (10^6 / M) * (B / 10^9) = BCF
     cubicFeet: 35.3147 / 1000,
-    // cubicFeet: 35.3147 * 1000 to MCF (thousands of cubic feet)}
   },
 };
 

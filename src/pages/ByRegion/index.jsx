@@ -20,7 +20,7 @@ const ByRegion = () => {
 
   return (
     <ResponsiveBar
-      data={(loading || error) ? [] : data.energyData}
+      data={(loading || error) ? [] : data}
       keys={config.provinces}
       indexBy="year"
       margin={{ top: 50, right: 0, bottom: 50, left: 80 }}
