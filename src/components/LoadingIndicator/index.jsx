@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import {
   makeStyles, createStyles,
   Grid, Typography, CircularProgress,
 } from '@material-ui/core';
 import propTypes from 'prop-types';
+import { useIntl } from 'react-intl';
 
 const useStyles = makeStyles(theme => createStyles({
   container: props => ({
@@ -14,26 +15,30 @@ const useStyles = makeStyles(theme => createStyles({
   }),
 }));
 
-const LoadingIndicator = ({ text, fullHeight }) => {
-  const classes = useStyles({ text, fullHeight });
+const LoadingIndicator = ({ type, fullHeight }) => {
+  const classes = useStyles({ fullHeight });
+  const intl = useIntl();
+  const message = useMemo(
+    () => intl.formatMessage({ id: `components.loadingIndicator.${type}` }),
+    [intl, type],
+  );
 
   return (
     <Grid container className={`${classes.container} LoadingIndicator`}>
       <Grid container direction="column" justify="space-around" alignItems="center">
         <CircularProgress color="primary" size={66} />
-        {text && <Typography variant="h6" color="primary">{text}</Typography>}
+        <Typography variant="h6" color="primary">{message}</Typography>
       </Grid>
     </Grid>
   );
 };
 
 LoadingIndicator.propTypes = {
-  text: propTypes.string,
   fullHeight: propTypes.bool,
+  type: propTypes.oneOf(['api', 'app']).isRequired,
 };
 
 LoadingIndicator.defaultProps = {
-  text: '',
   fullHeight: false,
 };
 
