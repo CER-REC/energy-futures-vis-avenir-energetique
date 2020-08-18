@@ -1,11 +1,11 @@
-import React, { useContext, useEffect, useMemo } from 'react';
+import React, { useCallback, useContext, useEffect, useMemo } from 'react';
 import {
   makeStyles, createStyles,
   Grid, Typography, Button,
 } from '@material-ui/core';
 
+import useAPI from '../../hooks/useAPI';
 import { ConfigContext } from '../../utilities/configContext';
-import { CONFIG_LAYOUT, SCENARIO_LAYOUT } from '../../constants';
 import ImgReport from '../../images/report-link.png';
 
 const useStyles = makeStyles(theme => createStyles({
@@ -50,13 +50,16 @@ const useStyles = makeStyles(theme => createStyles({
 
 const YearSelect = () => {
   const classes = useStyles();
-
+  const { data: { yearIdIterations } } = useAPI();
   const { config, setConfig } = useContext(ConfigContext);
 
   /**
    * Update the config.
    */
-  const handleConfigUpdate = (field, value) => setConfig({ ...config, [field]: value });
+  const handleConfigUpdate = useCallback(
+    (field, value) => setConfig({ ...config, [field]: value }),
+    [setConfig, config],
+  );
 
   /**
    * If the previous selected scenario is no longer available after the year change,
@@ -64,18 +67,18 @@ const YearSelect = () => {
    */
   useEffect(
     () => {
-      const scenarios = SCENARIO_LAYOUT[config.year] || SCENARIO_LAYOUT.default;
+      const { scenarios } = yearIdIterations[config.year];
       if (scenarios.indexOf(config.scenario) < 0) {
         handleConfigUpdate('scenario', scenarios[0]);
       }
     },
-    [config.year], // eslint-disable-line react-hooks/exhaustive-deps
+    [yearIdIterations, config.year, config.scenario, handleConfigUpdate],
   );
 
-  /**
-   * Memorize the current menu structure based on the config.
-   */
-  const layoutConfig = useMemo(() => CONFIG_LAYOUT[config.mainSelection], [config.mainSelection]);
+  const yearNames = useMemo(
+    () => Object.keys(yearIdIterations).sort().reverse(),
+    [yearIdIterations],
+  );
 
   return (
     <Grid container alignItems="center" spacing={1} className={classes.root}>
@@ -83,7 +86,7 @@ const YearSelect = () => {
         <Typography variant="h5" color="primary" className={classes.title}>Energy Futures From</Typography>
       </Grid>
 
-      {layoutConfig.year.map(year => (
+      {yearNames.map(year => (
         <Grid item key={`year-select-option-${year}`}>
           <Button
             variant={config.year === year ? 'contained' : 'outlined'}
