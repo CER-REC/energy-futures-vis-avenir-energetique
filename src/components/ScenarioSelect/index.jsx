@@ -1,12 +1,12 @@
-import React, { useContext, useEffect, useMemo } from 'react';
+import React, { useCallback, useContext, useEffect, useMemo } from 'react';
+import { useIntl } from 'react-intl';
 import {
   makeStyles, createStyles,
   Grid, Typography, Button, Tooltip,
 } from '@material-ui/core';
 
+import useAPI from '../../hooks/useAPI';
 import { ConfigContext } from '../../utilities/configContext';
-import { CONFIG_REPRESENTATION } from '../../types';
-import { SCENARIO_LAYOUT, SCENARIO_TOOPTIP } from '../../constants';
 
 const useStyles = makeStyles(theme => createStyles({
   root: {
@@ -24,13 +24,13 @@ const useStyles = makeStyles(theme => createStyles({
 
 const ScenarioSelect = () => {
   const classes = useStyles();
-
+  const intl = useIntl();
   const { config, setConfig } = useContext(ConfigContext);
-
-  /**
-   * Update the config.
-   */
-  const handleConfigUpdate = (field, value) => setConfig({ ...config, [field]: value });
+  const { data: { yearIdIterations } } = useAPI();
+  const handleConfigUpdate = useCallback(
+    (field, value) => setConfig({ ...config, [field]: value }),
+    [setConfig, config],
+  );
 
   /**
    * If the previous selected scenario is no longer available after the year change,
@@ -38,20 +38,12 @@ const ScenarioSelect = () => {
    */
   useEffect(
     () => {
-      const scenarios = SCENARIO_LAYOUT[config.year] || SCENARIO_LAYOUT.default;
+      const { scenarios } = yearIdIterations[config.year];
       if (scenarios.indexOf(config.scenario) < 0) {
         handleConfigUpdate('scenario', scenarios[0]);
       }
     },
-    [config.year], // eslint-disable-line react-hooks/exhaustive-deps
-  );
-
-  /**
-   * Memorize the current menu structure based on the config.
-   */
-  const layoutScenario = useMemo(
-    () => SCENARIO_LAYOUT[config.year] || SCENARIO_LAYOUT.default,
-    [config.year],
+    [yearIdIterations, config.year, config.scenario, handleConfigUpdate, setConfig],
   );
 
   return (
@@ -60,9 +52,12 @@ const ScenarioSelect = () => {
         <Typography variant="h6" color="primary">Scenarios</Typography>
       </Grid>
 
-      {layoutScenario.map(scenario => (
+      {yearIdIterations[config.year].scenarios.map(scenario => (
         <Grid item key={`config-scenario-${scenario}`}>
-          <Tooltip title={SCENARIO_TOOPTIP[scenario]} classes={{ tooltip: classes.tooltip }}>
+          <Tooltip
+            title={intl.formatMessage({ id: `components.scenarioSelect.${scenario}.description` })}
+            classes={{ tooltip: classes.tooltip }}
+          >
             <Button
               variant={config.scenario === scenario ? 'contained' : 'outlined'}
               color="primary"
@@ -70,7 +65,7 @@ const ScenarioSelect = () => {
               fullWidth
               onClick={() => handleConfigUpdate('scenario', scenario)}
             >
-              {CONFIG_REPRESENTATION[scenario]}
+              {intl.formatMessage({ id: `components.scenarioSelect.${scenario}.title` })}
             </Button>
           </Tooltip>
         </Grid>
