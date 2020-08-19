@@ -5,16 +5,18 @@ import { createBrowserHistory } from 'history';
 import queryString from 'query-string';
 
 import { DEFAULT_CONFIG, REGION_ORDER, SOURCE_ORDER } from '../../types';
-import { ConfigContext } from '../../utilities/configContext';
-
+import PageLayout from '../../components/PageLayout';
 import Landing from '../../pages/Landing';
 import ByRegion from '../../pages/ByRegion';
 import BySector from '../../pages/BySector';
 import Scenarios from '../../pages/Scenarios';
 import Electricity from '../../pages/Electricity';
 import Demand from '../../pages/Demand';
-import PageLayout from '../../components/PageLayout';
+import useAPI from '../../hooks/useAPI';
+import { ConfigContext } from '../../utilities/configContext';
 
+const parameters = ['page', 'mainSelection', 'year', 'scenario', 'sector', 'unit', 'view'];
+const delimitedParameters = ['provinces', 'provinceOrder', 'sources', 'sourceOrder'];
 const history = createBrowserHistory();
 
 /**
@@ -87,12 +89,18 @@ const theme = createMuiTheme({
 
 export default () => {
   const [config, setConfig] = useState(DEFAULT_CONFIG);
+  const { data: { yearIdIterations } } = useAPI();
 
   /**
    * URL parachuting.
    */
   useEffect(() => {
     const query = queryString.parse(history.location.search);
+    const yearIds = Object.keys(yearIdIterations).sort();
+    const yearId = yearIds.indexOf(query.year) === -1 ? yearIds.reverse()[0] : query.year;
+    const { scenarios } = yearIdIterations[yearId];
+    const scenario = scenarios.indexOf(query.scenario) === -1 ? scenarios[0] : query.scenario;
+
     setConfig({
       ...DEFAULT_CONFIG,
       ...query,
@@ -100,28 +108,22 @@ export default () => {
       provinceOrder: query.provinceOrder ? query.provinceOrder.split(',') : REGION_ORDER,
       sources: query.sources ? query.sources.split(',') : SOURCE_ORDER,
       sourceOrder: query.sourceOrder ? query.sourceOrder.split(',') : SOURCE_ORDER,
+      year: yearId,
+      scenario,
     });
-  }, []);
+  }, [yearIdIterations]);
 
   /**
    * Update the URL if the control setting is modified.
    */
   useEffect(() => {
+    const queryParameters = parameters.map(parameter => `${parameter}=${config[parameter]}`);
+
+    queryParameters.concat(delimitedParameters.map(parameter => `${parameter}=${config[parameter].join(',')}`));
+
     history.replace({
       pathname: '/energy-future/',
-      search: `?\
-page=${config.page}&\
-mainSelection=${config.mainSelection}&\
-unit=${config.unit}&\
-view=${config.view}&\
-sector=${config.sector}&\
-year=${config.year || '2019'}&\
-scenario=${config.scenario}&\
-provinces=${config.provinces.join(',')}&\
-provinceOrder=${config.provinceOrder.join(',')}&\
-sources=${config.sources.join(',')}&\
-sourceOrder=${config.sourceOrder.join(',')}\
-      `,
+      search: `?${queryParameters.join('&')}`,
     });
   }, [config]);
 
