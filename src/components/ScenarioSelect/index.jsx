@@ -25,17 +25,16 @@ const useStyles = makeStyles(theme => createStyles({
 
 /**
  * TODO: replace it with
- * 1) real terms defined in the database, and;
- * 2) real colors from UI designers.
+ * 1) real colors from UI designers.
  */
 const SCENARIO_COLOR = {
-  technology: '#3692FA',
-  hcp: '#0B3CB4',
-  highPrice: '#6C5AEB',
-  lowPrice: '#082346',
-  constrained: '#333333',
-  highLng: '#2B6762',
-  noLng: '#3692FA',
+  Technology: '#3692FA',
+  'Higher Carbon Price': '#0B3CB4',
+  'High Price': '#6C5AEB',
+  'Low Price': '#082346',
+  Constrained: '#333333',
+  'High LNG': '#2B6762',
+  'No LNG': '#3692FA',
 };
 
 const ScenarioSelect = ({ multiSelect }) => {

@@ -122,10 +122,8 @@ export default () => {
    */
   useEffect(() => {
     const queryParameters = parameters.map(parameter => `${parameter}=${config[parameter]}`);
-console.log(config)
+
     queryParameters.concat(delimitedParameters.map(parameter => `${parameter}=${config[parameter].join(',')}`));
-
-
 
     history.replace({
       pathname: '/energy-future/',
