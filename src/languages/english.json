@@ -11,6 +11,10 @@
         "title": "Constrained",
         "description": "The EF 2016 report considers a case where no new major oil pipelines are built over the projection period to address uncertainties related to future oil export infrastructure."
       },
+      "Evolving": {
+        "title": "Evolving",
+        "description": "Evolving"
+      },
       "High LNG": {
         "title": "High LNG",
         "description": "The uncertainty related to eventual volumes of liquefied natural gas (LNG) exports is explored in two additional cases."

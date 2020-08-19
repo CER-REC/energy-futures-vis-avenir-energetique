@@ -11,6 +11,10 @@
         "title": "Capacité Limitée",
         "description": "Le rapport AE 2016 prend aussi en considération des incertitudes relatives à l’infrastructure d’exportation du pétrole et propose un scénario dans lequel aucun pipeline d’envergure n’est construit durant la période de projection."
       },
+      "Evolving": {
+        "title": "évolution",
+        "description": "évolution"
+      },
       "High LNG": {
         "title": "Gnl Élevé",
         "description": "Deux autres scénarios explorent les incertitudes entourant les éventuelles exportations de gaz naturel liquéfié (GNL)."
