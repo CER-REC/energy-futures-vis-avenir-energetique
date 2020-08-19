@@ -1,6 +1,8 @@
 import { useContext, useMemo, useCallback } from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
+
+import useAPI from './useAPI';
 import { ConfigContext } from '../utilities/configContext';
 import convertUnit from '../utilities/convertUnit';
 
@@ -44,60 +46,24 @@ query ($iteration: ID!, $regions: [Region!], $scenarios: [String!]) {
 }
 `;
 
-const yearToIteration = {
-  2016: 1,
-  '2016*': 2,
-  2017: 3,
-  2018: 4,
-  2019: 5,
-};
-
-// Setup query + query variables
-const getQueryVariables = (config) => {
+const getQuery = (config) => {
   // TODO: Revisit this config.provinces check
   if ((config.page === 'by-region') && (config.provinces)) {
     switch (config.mainSelection) {
       case 'oilProduction':
-        return {
-          query: OIL_PRODUCTIONS,
-          queryVariables: {
-            scenarios: config.scenario,
-            iteration: yearToIteration[config.year],
-            regions: config.provinces,
-          },
-        };
+        return OIL_PRODUCTIONS;
       case 'energyDemand':
-        return {
-          query: ENERGY_DEMAND,
-          queryVariables: {
-            scenarios: config.scenario,
-            iteration: yearToIteration[config.year],
-            regions: config.provinces,
-          },
-        };
+        return ENERGY_DEMAND;
       case 'gasProduction':
-        return {
-          query: GAS_PRODUCTIONS,
-          queryVariables: {
-            scenarios: config.scenario,
-            iteration: yearToIteration[config.year],
-            regions: config.provinces,
-          },
-        };
+        return GAS_PRODUCTIONS;
       case 'electricityGeneration':
-        return {
-          query: ELECTRICITY_GENERATIONS,
-          queryVariables: {
-            scenarios: config.scenario,
-            iteration: yearToIteration[config.year],
-            regions: config.provinces,
-          },
-        };
+        return ELECTRICITY_GENERATIONS;
       default:
         break;
     }
   }
-  return { query: undefined, queryVariables: undefined };
+
+  return null;
 };
 
 // getDefaultUnit returns the default unit that the API returns.
@@ -120,11 +86,18 @@ const getDefaultUnit = (config) => {
   }
 };
 
-export default function () {
+export default () => {
+  const { data: { yearIdIterations } } = useAPI();
   const { config } = useContext(ConfigContext);
-  const { query, queryVariables } = getQueryVariables(config);
+  const query = getQuery(config);
   const defaultUnit = getDefaultUnit(config);
-  const { loading, error, data } = useQuery(query, { variables: queryVariables });
+  const { loading, error, data } = useQuery(query, {
+    variables: {
+      scenarios: config.scenario,
+      iteration: yearIdIterations[config.year].id,
+      regions: config.provinces,
+    },
+  });
 
   /*
   TODO: Revisit this logic.
