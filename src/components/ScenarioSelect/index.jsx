@@ -1,5 +1,6 @@
 import React, { useCallback, useContext, useEffect } from 'react';
 import { useIntl } from 'react-intl';
+import PropTypes from 'prop-types';
 import {
   makeStyles, createStyles,
   Grid, Typography, Button, Tooltip,
@@ -22,14 +23,29 @@ const useStyles = makeStyles(theme => createStyles({
   },
 }));
 
-const ScenarioSelect = () => {
+/**
+ * TODO: replace it with
+ * 1) real terms defined in the database, and;
+ * 2) real colors from UI designers.
+ */
+const SCENARIO_COLOR = {
+  technology: '#3692FA',
+  hcp: '#0B3CB4',
+  highPrice: '#6C5AEB',
+  lowPrice: '#082346',
+  constrained: '#333333',
+  highLng: '#2B6762',
+  noLng: '#3692FA',
+};
+
+const ScenarioSelect = ({ multiSelect }) => {
   const classes = useStyles();
   const intl = useIntl();
   const { config, setConfig } = useContext(ConfigContext);
   const { data: { yearIdIterations } } = useAPI();
-  const handleConfigUpdate = useCallback(
-    (field, value) => setConfig({ ...config, [field]: value }),
-    [setConfig, config],
+  const handleScenarioUpdate = useCallback(
+    scenario => setConfig({ ...config, scenario }),
+    [config, setConfig],
   );
 
   /**
@@ -39,12 +55,39 @@ const ScenarioSelect = () => {
   useEffect(
     () => {
       const { scenarios } = yearIdIterations[config.year];
-      if (scenarios.indexOf(config.scenario) < 0) {
-        handleConfigUpdate('scenario', scenarios[0]);
+      const validScenarios = config.scenario.filter(scenario => scenarios.indexOf(scenario) !== -1);
+
+      if (
+        (multiSelect || (validScenarios.length === 1))
+        && (config.scenario.length === validScenarios.length)
+      ) {
+        return;
+      }
+
+      if (multiSelect) {
+        handleScenarioUpdate(validScenarios);
+      } else if (validScenarios.length === 0) {
+        handleScenarioUpdate([scenarios[0]]);
+      } else {
+        handleScenarioUpdate([validScenarios[0]]);
       }
     },
-    [yearIdIterations, config.year, config.scenario, handleConfigUpdate, setConfig],
+    [multiSelect, yearIdIterations, config.year, config.scenario, handleScenarioUpdate],
   );
+
+  /**
+   * When a scenario button is pressed.
+   */
+  const handleScenarioSelect = useCallback((scenario) => {
+    if (!multiSelect) {
+      handleScenarioUpdate([scenario]);
+      return;
+    }
+    const updated = config.scenario.indexOf(scenario) > -1
+      ? [...config.scenario].filter(s => s !== scenario)
+      : [...config.scenario, scenario];
+    handleScenarioUpdate(updated);
+  }, [multiSelect, config.scenario, handleScenarioUpdate]);
 
   return (
     <Grid container alignItems="center" wrap="nowrap" spacing={1} className={classes.root}>
@@ -59,11 +102,15 @@ const ScenarioSelect = () => {
             classes={{ tooltip: classes.tooltip }}
           >
             <Button
-              variant={config.scenario === scenario ? 'contained' : 'outlined'}
+              variant={config.scenario.indexOf(scenario) > -1 ? 'contained' : 'outlined'}
               color="primary"
               size="small"
               fullWidth
-              onClick={() => handleConfigUpdate('scenario', scenario)}
+              onClick={() => handleScenarioSelect(scenario)}
+              style={multiSelect && config.scenario.indexOf(scenario) > -1 ? {
+                backgroundColor: SCENARIO_COLOR[scenario],
+                borderColor: SCENARIO_COLOR[scenario],
+              } : {}}
             >
               {intl.formatMessage({ id: `components.scenarioSelect.${scenario}.title` })}
             </Button>
@@ -72,6 +119,14 @@ const ScenarioSelect = () => {
       ))}
     </Grid>
   );
+};
+
+ScenarioSelect.propTypes = {
+  multiSelect: PropTypes.bool,
+};
+
+ScenarioSelect.defaultProps = {
+  multiSelect: false,
 };
 
 export default ScenarioSelect;

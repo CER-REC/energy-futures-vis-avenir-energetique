@@ -15,8 +15,8 @@ import Demand from '../../pages/Demand';
 import useAPI from '../../hooks/useAPI';
 import { ConfigContext } from '../../utilities/configContext';
 
-const parameters = ['page', 'mainSelection', 'year', 'scenario', 'sector', 'unit', 'view'];
-const delimitedParameters = ['provinces', 'provinceOrder', 'sources', 'sourceOrder'];
+const parameters = ['page', 'mainSelection', 'year', 'sector', 'unit', 'view'];
+const delimitedParameters = ['scenario', 'provinces', 'provinceOrder', 'sources', 'sourceOrder'];
 const history = createBrowserHistory();
 
 /**
@@ -99,7 +99,11 @@ export default () => {
     const yearIds = Object.keys(yearIdIterations).sort();
     const yearId = yearIds.indexOf(query.year) === -1 ? yearIds.reverse()[0] : query.year;
     const { scenarios } = yearIdIterations[yearId];
-    const scenario = scenarios.indexOf(query.scenario) === -1 ? scenarios[0] : query.scenario;
+    let queryScenarios = query.scenario?.split(',').filter(scenarioName => scenarios.indexOf(scenarios) !== -1);
+
+    if (!queryScenarios?.length) {
+      queryScenarios = [scenarios[0]];
+    }
 
     setConfig({
       ...DEFAULT_CONFIG,
@@ -109,7 +113,7 @@ export default () => {
       sources: query.sources ? query.sources.split(',') : SOURCE_ORDER,
       sourceOrder: query.sourceOrder ? query.sourceOrder.split(',') : SOURCE_ORDER,
       year: yearId,
-      scenario,
+      scenario: queryScenarios,
     });
   }, [yearIdIterations]);
 
@@ -118,8 +122,10 @@ export default () => {
    */
   useEffect(() => {
     const queryParameters = parameters.map(parameter => `${parameter}=${config[parameter]}`);
-
+console.log(config)
     queryParameters.concat(delimitedParameters.map(parameter => `${parameter}=${config[parameter].join(',')}`));
+
+
 
     history.replace({
       pathname: '/energy-future/',
@@ -131,10 +137,10 @@ export default () => {
     <ThemeProvider theme={theme}>
       <ConfigContext.Provider value={{ config, setConfig }}>
         <CssBaseline />
-
         {config.page === 'landing' ? <Landing /> : (
           <PageLayout
             showRegion
+            multiSelectScenario={config.page === 'scenarios'}
             disableDraggableRegion={['by-sector', 'electricity', 'scenarios', 'demand'].includes(config.page)}
             singleSelectRegion={['by-sector', 'electricity', 'scenarios', 'demand'].includes(config.page)}
             showSource={['by-sector', 'electricity'].includes(config.page)}

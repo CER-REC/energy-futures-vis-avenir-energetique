@@ -64,7 +64,7 @@ export const CONFIG_LAYOUT = {
   electricityGeneration: {
     name: 'Electricity',
     icon: ElectricityIcon,
-    unit: ['petajoules', 'gigawattHours', 'kilobarrelEquivalents'],
+    unit: ['gigawattHours', 'petajoules', 'kilobarrelEquivalents'],
   },
   oilProduction: {
     name: 'Oil Production',
@@ -74,7 +74,7 @@ export const CONFIG_LAYOUT = {
   gasProduction: {
     name: 'Gas Production',
     icon: GasIcon,
-    unit: ['cubicFeet', 'millionCubicMetres'],
+    unit: ['millionCubicMetres', 'cubicFeet'],
   },
 };
 

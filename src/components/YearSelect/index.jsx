@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect, useMemo } from 'react';
+import React, { useContext, useMemo } from 'react';
 import {
   makeStyles, createStyles,
   Grid, Typography, Button,
@@ -53,28 +53,6 @@ const YearSelect = () => {
   const { data: { yearIdIterations } } = useAPI();
   const { config, setConfig } = useContext(ConfigContext);
 
-  /**
-   * Update the config.
-   */
-  const handleConfigUpdate = useCallback(
-    (field, value) => setConfig({ ...config, [field]: value }),
-    [setConfig, config],
-  );
-
-  /**
-   * If the previous selected scenario is no longer available after the year change,
-   * then auto-select the first scenario in the new list.
-   */
-  useEffect(
-    () => {
-      const { scenarios } = yearIdIterations[config.year];
-      if (scenarios.indexOf(config.scenario) < 0) {
-        handleConfigUpdate('scenario', scenarios[0]);
-      }
-    },
-    [yearIdIterations, config.year, config.scenario, handleConfigUpdate],
-  );
-
   const yearNames = useMemo(
     () => Object.keys(yearIdIterations).sort().reverse(),
     [yearIdIterations],
@@ -92,7 +70,7 @@ const YearSelect = () => {
             variant={config.year === year ? 'contained' : 'outlined'}
             color="primary"
             size="small"
-            onClick={() => handleConfigUpdate('year', year)}
+            onClick={() => setConfig({ ...config, year })}
             classes={{
               containedPrimary: classes.btnContained,
               outlinedPrimary: classes.btnOutlined,
