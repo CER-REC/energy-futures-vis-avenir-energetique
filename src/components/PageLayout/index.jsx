@@ -1,6 +1,10 @@
-import React, { useContext } from 'react';
+import React, { useContext, useMemo, Children, cloneElement } from 'react';
 import PropTypes from 'prop-types';
-import { makeStyles, Grid } from '@material-ui/core';
+import { makeStyles, Grid, CircularProgress } from '@material-ui/core';
+import Alert from '@material-ui/lab/Alert';
+import AlertTitle from '@material-ui/lab/AlertTitle';
+
+import useEnergyFutureData from '../../hooks/useEnergyFutureData';
 import YearSelect from '../YearSelect';
 import PageSelect from '../PageSelect';
 import ScenarioSelect from '../ScenarioSelect';
@@ -17,8 +21,15 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: theme.palette.background.paper,
   },
   graph: {
+    display: 'flex',
     flexGrow: 1,
     height: 700,
+    '& > div': { margin: 'auto' },
+  },
+  vis: {
+    height: '100%',
+    width: '100%',
+    border: `1px solid ${theme.palette.divider}`,
   },
 }));
 
@@ -34,7 +45,14 @@ const PageLayout = ({
 }) => {
   const classes = useStyles();
 
+  const { loading, error, data } = useEnergyFutureData();
+
   const { config, setConfig } = useContext(ConfigContext);
+
+  const vis = useMemo(
+    () => Children.map(children, child => child && cloneElement(child, { data })),
+    [children, data],
+  );
 
   return (
     <Grid container spacing={4} className={classes.root}>
@@ -80,7 +98,13 @@ const PageLayout = ({
               />
             </Grid>
           )}
-          {children && <Grid item className={classes.graph}>{children}</Grid>}
+          {vis && (
+            <Grid item className={classes.graph}>
+              {loading && <CircularProgress color="primary" size={66} className={classes.loading} />}
+              {error && <Alert severity="error"><AlertTitle>Error</AlertTitle>{error}</Alert>}
+              {!loading && !error && <div className={classes.vis}>{vis}</div>}
+            </Grid>
+          )}
         </Grid>
       </Grid>
     </Grid>
