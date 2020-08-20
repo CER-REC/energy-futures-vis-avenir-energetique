@@ -32,13 +32,15 @@ export default () => {
   const { loading, error, data } = useQuery(CONFIG);
 
   const processedData = useMemo(() => {
-    if (!data) {
-      return data;
+    const config = {
+      yearIdIterations: {},
+    };
+
+    if (data) {
+      config.yearIdIterations = getYearIdIterations(data.iterations);
     }
 
-    return {
-      yearIdIterations: getYearIdIterations(data.iterations),
-    };
+    return config;
   }, [data]);
 
   return { loading, error, data: processedData };
