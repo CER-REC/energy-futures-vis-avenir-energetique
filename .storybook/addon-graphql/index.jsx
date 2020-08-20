@@ -1,13 +1,12 @@
 import React from 'react';
+import { ApolloProvider } from '@apollo/react-hooks';
 import { makeDecorator } from '@storybook/addons';
 import { ApolloClient } from 'apollo-client';
-import { ApolloProvider } from 'react-apollo';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { HttpLink } from 'apollo-link-http';
-import { lang } from '../../src/constants';
 
 const cache = new InMemoryCache();
-const link = new HttpLink({ uri: `/energy-future/graphql?lang=${lang}` });
+const link = new HttpLink({ uri: '/energy-future/graphql' });
 const client = new ApolloClient({ cache, link, fetch });
 
 const addGQL = (storyFn, context) => (

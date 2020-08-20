@@ -69,5 +69,5 @@ and covers all of the interaction, analytics, and accessibility requirements.
 ## Retrieving data
 
 Data for the visualization will be served by a GraphQL server running in the IIS
-visualization service. Queries can be executed with `react-apollo`, which will
+visualization service. Queries can be executed with `@apollo/react-hooks`, which will
 provide automatic caching and query execution when props change.
