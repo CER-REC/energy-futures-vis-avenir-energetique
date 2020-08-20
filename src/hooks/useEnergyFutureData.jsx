@@ -44,6 +44,18 @@ query ($iteration: ID!, $regions: [Region!], $scenarios: [String!]) {
 }
 `;
 
+const BY_SECTOR = gql`
+query ($iteration: ID!, $regions: [Region!], $scenarios: [String!], $sectors:[String!], $sources: [EnergySource!]) {
+  resources:energyDemands(iterationIds: [$iteration], regions: $regions, scenarios: $scenarios, sectors: $sectors, sources: $sources) {
+    province: region
+    year
+    value: quantity
+    source
+    sector
+  }
+}
+`;
+
 const yearToIteration = {
   2016: 1,
   '2016*': 2,
@@ -97,6 +109,41 @@ const getQueryVariables = (config) => {
         break;
     }
   }
+  if ((config.page === 'by-sector') && (config.provinces)) {
+    // #region Enum Correction
+    // TODO: fix the config data to match the enums then remove this next part
+    // and replace correctedSources with config.sources
+    const correctedSources = [...config.sources];
+    if (correctedSources.find(item => item === 'solarWindGeothermal')) {
+      correctedSources[correctedSources.indexOf('solarWindGeothermal')] = 'renewable';
+    }
+    if (correctedSources.find(item => item === 'oilProducts')) {
+      correctedSources[correctedSources.indexOf('oilProducts')] = 'oil';
+    }
+    if (correctedSources.find(item => item === 'naturalGas')) {
+      correctedSources[correctedSources.indexOf('naturalGas')] = 'gas';
+    }
+    // This one removes nuclear because it shouldnt even be a source option
+    if (correctedSources.find(item => item === 'nuclear')) {
+      correctedSources.splice(correctedSources.indexOf('nuclear'), 1);
+    }
+    // #endregion
+
+    if (correctedSources.length) {
+      return {
+        query: BY_SECTOR,
+        queryVariables: {
+          scenarios: config.scenario,
+          iteration: yearToIteration[config.year],
+          regions: config.provinces,
+          // FIXME: config will store it as "total"
+          // it should be "total end-use"
+          sectors: config.sector === 'total' ? 'total end-use' : config.sector,
+          sources: correctedSources,
+        },
+      };
+    }
+  }
   return { query: undefined, queryVariables: undefined };
 };
 
@@ -123,7 +170,8 @@ const getDefaultUnit = (config) => {
 export default function () {
   const { config } = useContext(ConfigContext);
   const { query, queryVariables } = getQueryVariables(config);
-  const defaultUnit = getDefaultUnit(config);
+  const unitConversion = convertUnit(getDefaultUnit(config), config.unit);
+  if (!query) { return { loading: false, error: undefined, data: [] }; }
   const { loading, error, data } = useQuery(query, { variables: queryVariables });
 
   /*
@@ -145,25 +193,56 @@ export default function () {
       return data;
     }
 
-    const filteredData = (energyData) => {
-      const byYear = energyData
-        .filter(configFilter)
-        .reduce((accu, curr) => {
-          const result = { ...accu };
-          if (!result[curr.year]) {
-            result[curr.year] = {};
-          }
-          if (!result[curr.year][curr.province]) {
-            result[curr.year][curr.province] = 0;
-          }
-          result[curr.year][curr.province] += (curr.value * convertUnit(defaultUnit, config.unit));
-          return result;
-        }, {});
-      return Object.keys(byYear).map(year => ({ year, ...byYear[year] }));
-    };
+    if (config.page === 'by-sector') {
+      const filteredData = [];
+      const tempContainer = {};
 
-    return filteredData(data.resources);
-  }, [config.unit, configFilter, data, defaultUnit]);
+      // Checking for sources here makes sure that if no sources are selected
+      // the backend won't return all sources.
+      data.resources.forEach((entry) => {
+        if (tempContainer[entry.source]) {
+          tempContainer[entry.source].push({ x: entry.year, y: entry.value * unitConversion });
+        } else {
+          tempContainer[entry.source] = [{ x: entry.year, y: entry.value * unitConversion }];
+        }
+      });
+
+      Object.keys(tempContainer).forEach((source) => {
+        // Sort the data in acending order by year
+        tempContainer[source].sort((a, b) => a.x - b.x);
+        if (source !== 'ALL') {
+          filteredData.push({ id: source.toLocaleLowerCase(), data: tempContainer[source] });
+        }
+      });
+
+      return filteredData;
+    }
+
+    if (config.page === 'by-region') {
+      const filteredData = (energyData) => {
+        const byYear = energyData
+          .filter(configFilter)
+          .reduce((accu, curr) => {
+            const result = { ...accu };
+            if (!result[curr.year]) {
+              result[curr.year] = {};
+            }
+            if (!result[curr.year][curr.province]) {
+              result[curr.year][curr.province] = 0;
+            }
+            result[curr.year][curr.province] += (
+              curr.value * unitConversion
+            );
+            return result;
+          }, {});
+        return Object.keys(byYear).map(year => ({ year, ...byYear[year] }));
+      };
+
+      return filteredData(data.resources);
+    }
+
+    return undefined;
+  }, [config.page, configFilter, data, unitConversion]);
 
   return { loading, error, data: processedData };
 }
