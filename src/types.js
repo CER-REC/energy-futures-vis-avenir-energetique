@@ -73,7 +73,7 @@ export const DEFAULT_CONFIG = {
   unit: 'petajoules', // e.g. kilobarrelEquivalents, gigawattHours, kilobarrels, thousandCubicMetres, cubicFeet, millionCubicMetres
   view: 'region', // e.g. region or source
   sector: 'total', // e.g. residential, commercial, industrial, or industrial
-  scenario: [],
+  scenarios: [],
   provinces: REGION_ORDER,
   provinceOrder: REGION_ORDER,
   sources: SOURCE_ORDER,

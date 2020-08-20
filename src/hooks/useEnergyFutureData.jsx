@@ -2,9 +2,9 @@ import { useContext, useMemo, useCallback } from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 
-import useAPI from './useAPI';
 import { ConfigContext } from '../utilities/configContext';
 import convertUnit from '../utilities/convertUnit';
+import useAPI from './useAPI';
 
 // Some parts of this file are not very DRY in anticipation of changes
 // to the individual queries
@@ -93,8 +93,8 @@ export default () => {
   const defaultUnit = getDefaultUnit(config);
   const { loading, error, data } = useQuery(query, {
     variables: {
-      scenarios: config.scenario,
-      iteration: yearIdIterations[config.year].id,
+      scenarios: config.scenarios,
+      iteration: yearIdIterations[config.yearId].id,
       regions: config.provinces,
     },
   });
@@ -109,8 +109,8 @@ export default () => {
   */
   const configFilter = useCallback(
     row => config.provinces.indexOf(row.province) > -1
-      && (!row.scenario || row.scenario.toLowerCase() === config.scenario),
-    [config.provinces, config.scenario],
+      && (!row.scenario || row.scenarios === config.scenarios),
+    [config.provinces, config.scenarios],
   );
 
   const processedData = useMemo(() => {
@@ -139,4 +139,4 @@ export default () => {
   }, [config.unit, configFilter, data, defaultUnit]);
 
   return { loading, error, data: processedData };
-}
+};

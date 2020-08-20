@@ -53,7 +53,7 @@ const YearSelect = () => {
   const { data: { yearIdIterations } } = useAPI();
   const { config, setConfig } = useContext(ConfigContext);
 
-  const yearNames = useMemo(
+  const yearIds = useMemo(
     () => Object.keys(yearIdIterations).sort().reverse(),
     [yearIdIterations],
   );
@@ -64,19 +64,19 @@ const YearSelect = () => {
         <Typography variant="h5" color="primary" className={classes.title}>Energy Futures From</Typography>
       </Grid>
 
-      {yearNames.map(year => (
-        <Grid item key={`year-select-option-${year}`}>
+      {yearIds.map(yearId => (
+        <Grid item key={`year-select-option-${yearId}`}>
           <Button
-            variant={config.year === year ? 'contained' : 'outlined'}
+            variant={config.yearId === yearId ? 'contained' : 'outlined'}
             color="primary"
             size="small"
-            onClick={() => setConfig({ ...config, year })}
+            onClick={() => setConfig({ ...config, yearId })}
             classes={{
               containedPrimary: classes.btnContained,
               outlinedPrimary: classes.btnOutlined,
             }}
           >
-            {config.year === year ? (<Typography variant="h5">{year}</Typography>) : year}
+            {config.yearId === yearId ? (<Typography variant="h5">{yearId}</Typography>) : yearId}
           </Button>
         </Grid>
       ))}

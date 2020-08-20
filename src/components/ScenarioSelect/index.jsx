@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect } from 'react';
+import React, { useCallback, useContext, useEffect, useMemo } from 'react';
 import { useIntl } from 'react-intl';
 import PropTypes from 'prop-types';
 import {
@@ -42,9 +42,13 @@ const ScenarioSelect = ({ multiSelect }) => {
   const intl = useIntl();
   const { config, setConfig } = useContext(ConfigContext);
   const { data: { yearIdIterations } } = useAPI();
-  const handleScenarioUpdate = useCallback(
-    scenario => setConfig({ ...config, scenario }),
+  const handleScenariosUpdate = useCallback(
+    scenarios => setConfig({ ...config, scenarios }),
     [config, setConfig],
+  );
+  const scenarios = useMemo(
+    () => yearIdIterations[config.yearId]?.scenarios || [],
+    [yearIdIterations, config.yearId],
   );
 
   /**
@@ -53,25 +57,33 @@ const ScenarioSelect = ({ multiSelect }) => {
    */
   useEffect(
     () => {
-      const { scenarios } = yearIdIterations[config.year];
-      const validScenarios = config.scenario.filter(scenario => scenarios.indexOf(scenario) !== -1);
+      const validScenarios = config.scenarios.filter(
+        scenario => scenarios.indexOf(scenario) !== -1,
+      );
 
       if (
         (multiSelect || (validScenarios.length === 1))
-        && (config.scenario.length === validScenarios.length)
+        && (config.scenarios.length === validScenarios.length)
       ) {
         return;
       }
 
       if (multiSelect) {
-        handleScenarioUpdate(validScenarios);
+        handleScenariosUpdate(validScenarios);
       } else if (validScenarios.length === 0) {
-        handleScenarioUpdate([scenarios[0]]);
+        handleScenariosUpdate([scenarios[0]]);
       } else {
-        handleScenarioUpdate([validScenarios[0]]);
+        handleScenariosUpdate([validScenarios[0]]);
       }
     },
-    [multiSelect, yearIdIterations, config.year, config.scenario, handleScenarioUpdate],
+    [
+      scenarios,
+      multiSelect,
+      yearIdIterations,
+      config.yearId,
+      config.scenarios,
+      handleScenariosUpdate,
+    ],
   );
 
   /**
@@ -79,14 +91,15 @@ const ScenarioSelect = ({ multiSelect }) => {
    */
   const handleScenarioSelect = useCallback((scenario) => {
     if (!multiSelect) {
-      handleScenarioUpdate([scenario]);
+      handleScenariosUpdate([scenario]);
       return;
     }
-    const updated = config.scenario.indexOf(scenario) > -1
-      ? [...config.scenario].filter(s => s !== scenario)
-      : [...config.scenario, scenario];
-    handleScenarioUpdate(updated);
-  }, [multiSelect, config.scenario, handleScenarioUpdate]);
+
+    const updated = config.scenarios.indexOf(scenario) > -1
+      ? [...config.scenarios].filter(configScenario => configScenario !== scenario)
+      : [...config.scenarios, scenario];
+    handleScenariosUpdate(updated);
+  }, [multiSelect, config.scenarios, handleScenariosUpdate]);
 
   return (
     <Grid container alignItems="center" wrap="nowrap" spacing={1} className={classes.root}>
@@ -94,19 +107,19 @@ const ScenarioSelect = ({ multiSelect }) => {
         <Typography variant="h6" color="primary">Scenarios</Typography>
       </Grid>
 
-      {yearIdIterations[config.year].scenarios.map(scenario => (
+      {scenarios.map(scenario => (
         <Grid item key={`config-scenario-${scenario}`}>
           <Tooltip
             title={intl.formatMessage({ id: `components.scenarioSelect.${scenario}.description` })}
             classes={{ tooltip: classes.tooltip }}
           >
             <Button
-              variant={config.scenario.indexOf(scenario) > -1 ? 'contained' : 'outlined'}
+              variant={config.scenarios.indexOf(scenario) > -1 ? 'contained' : 'outlined'}
               color="primary"
               size="small"
               fullWidth
               onClick={() => handleScenarioSelect(scenario)}
-              style={multiSelect && config.scenario.indexOf(scenario) > -1 ? {
+              style={multiSelect && config.scenarios.indexOf(scenario) > -1 ? {
                 backgroundColor: SCENARIO_COLOR[scenario],
                 borderColor: SCENARIO_COLOR[scenario],
               } : {}}

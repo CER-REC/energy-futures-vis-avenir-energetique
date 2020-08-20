@@ -15,8 +15,8 @@ import Demand from '../../pages/Demand';
 import useAPI from '../../hooks/useAPI';
 import { ConfigContext } from '../../utilities/configContext';
 
-const parameters = ['page', 'mainSelection', 'year', 'sector', 'unit', 'view'];
-const delimitedParameters = ['scenario', 'provinces', 'provinceOrder', 'sources', 'sourceOrder'];
+const parameters = ['page', 'mainSelection', 'yearId', 'sector', 'unit', 'view'];
+const delimitedParameters = ['scenarios', 'provinces', 'provinceOrder', 'sources', 'sourceOrder'];
 const history = createBrowserHistory();
 
 /**
@@ -94,12 +94,13 @@ export default () => {
   /**
    * URL parachuting.
    */
+  // TODO: Address potential issues of list values with commas inside the value
   useEffect(() => {
     const query = queryString.parse(history.location.search);
     const yearIds = Object.keys(yearIdIterations).sort();
-    const yearId = yearIds.indexOf(query.year) === -1 ? yearIds.reverse()[0] : query.year;
+    const yearId = yearIds.indexOf(query.yearId) === -1 ? yearIds.reverse()[0] : query.yearId;
     const { scenarios } = yearIdIterations[yearId];
-    let queryScenarios = query.scenario?.split(',').filter(scenarioName => scenarios.indexOf(scenarios) !== -1);
+    let queryScenarios = query.scenarios?.split(',').filter(scenario => scenarios.indexOf(scenario) !== -1);
 
     if (!queryScenarios?.length) {
       queryScenarios = [scenarios[0]];
@@ -112,8 +113,8 @@ export default () => {
       provinceOrder: query.provinceOrder ? query.provinceOrder.split(',') : REGION_ORDER,
       sources: query.sources ? query.sources.split(',') : SOURCE_ORDER,
       sourceOrder: query.sourceOrder ? query.sourceOrder.split(',') : SOURCE_ORDER,
-      year: yearId,
-      scenario: queryScenarios,
+      yearId,
+      scenarios: queryScenarios,
     });
   }, [yearIdIterations]);
 
@@ -121,13 +122,16 @@ export default () => {
    * Update the URL if the control setting is modified.
    */
   useEffect(() => {
-    const queryParameters = parameters.map(parameter => `${parameter}=${config[parameter]}`);
-
-    queryParameters.concat(delimitedParameters.map(parameter => `${parameter}=${config[parameter].join(',')}`));
+    const queryParameters = parameters.map(
+      parameter => `${parameter}=${config[parameter]}`,
+    );
+    const delimitedQueryParameters = delimitedParameters.map(
+      parameter => `${parameter}=${config[parameter].join(',')}`,
+    );
 
     history.replace({
       pathname: '/energy-future/',
-      search: `?${queryParameters.join('&')}`,
+      search: `?${queryParameters.concat(delimitedQueryParameters).join('&')}`,
     });
   }, [config]);
 
