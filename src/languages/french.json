@@ -2,6 +2,13 @@
   "common": {
   },
   "components": {
+    "errorBoundary": {
+      "errorMessage": "Une erreur s’est produite.",
+      "restoreLinkText": "Rétablir la session.",
+      "restoreMessage": "Veuillez cliquer sur le lien pour rétablir la session.",
+      "resetLinkText": "Réinitialiser la session.",
+      "resetMessage": "Veuillez cliquer sur le lien pour réinitialiser la session."
+    },
     "loadingIndicator": {
         "api": "veuillez patienter",
         "app": "veuillez patienter"
