@@ -47,11 +47,9 @@ query ($iteration: ID!, $regions: [Region!], $scenarios: [String!]) {
 const BY_SECTOR = gql`
 query ($iteration: ID!, $regions: [Region!], $scenarios: [String!], $sectors:[String!], $sources: [EnergySource!]) {
   resources:energyDemands(iterationIds: [$iteration], regions: $regions, scenarios: $scenarios, sectors: $sectors, sources: $sources) {
-    province: region
     year
     value: quantity
     source
-    sector
   }
 }
 `;
@@ -114,6 +112,7 @@ const getQueryVariables = (config) => {
     // TODO: fix the config data to match the enums then remove this next part
     // and replace correctedSources with config.sources
     const correctedSources = [...config.sources];
+
     if (correctedSources.find(item => item === 'solarWindGeothermal')) {
       correctedSources[correctedSources.indexOf('solarWindGeothermal')] = 'renewable';
     }
@@ -171,6 +170,7 @@ export default function () {
   const { config } = useContext(ConfigContext);
   const { query, queryVariables } = getQueryVariables(config);
   const unitConversion = convertUnit(getDefaultUnit(config), config.unit);
+
   if (!query) { return { loading: false, error: undefined, data: [] }; }
   const { loading, error, data } = useQuery(query, { variables: queryVariables });
 
@@ -194,28 +194,22 @@ export default function () {
     }
 
     if (config.page === 'by-sector') {
-      const filteredData = [];
-      const tempContainer = {};
+      const filteredData = {};
 
       // Checking for sources here makes sure that if no sources are selected
       // the backend won't return all sources.
       data.resources.forEach((entry) => {
-        if (tempContainer[entry.source]) {
-          tempContainer[entry.source].push({ x: entry.year, y: entry.value * unitConversion });
-        } else {
-          tempContainer[entry.source] = [{ x: entry.year, y: entry.value * unitConversion }];
+        if (filteredData[entry.source]) {
+          filteredData[entry.source].push({ x: entry.year, y: entry.value * unitConversion });
+        } else if (entry.source !== 'ALL') {
+          filteredData[entry.source] = [{ x: entry.year, y: entry.value * unitConversion }];
         }
       });
 
-      Object.keys(tempContainer).forEach((source) => {
-        // Sort the data in acending order by year
-        tempContainer[source].sort((a, b) => a.x - b.x);
-        if (source !== 'ALL') {
-          filteredData.push({ id: source.toLocaleLowerCase(), data: tempContainer[source] });
-        }
+      return Object.keys(filteredData).map((source) => {
+        filteredData[source].sort((a, b) => a.x - b.x);
+        return { id: source.toLocaleLowerCase(), data: filteredData[source] };
       });
-
-      return filteredData;
     }
 
     if (config.page === 'by-region') {

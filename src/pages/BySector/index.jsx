@@ -5,14 +5,14 @@ import useEnergyFutureData from '../../hooks/useEnergyFutureData';
 const SOURCES = ['electricity', 'oilProducts', 'bio', 'naturalGas', 'coal', 'solarWindGeothermal'];
 
 const BySector = () => {
-  const { loading, error, data } = useEnergyFutureData();
+  const { data } = useEnergyFutureData();
   if (!data) {
     return null;
   }
 
   return (
     <ResponsiveLine
-      data={data || []}
+      data={data}
       keys={SOURCES}
       margin={{ top: 50, right: 50, bottom: 50, left: 80 }}
       xScale={{ type: 'point' }}
