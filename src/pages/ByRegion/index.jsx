@@ -1,11 +1,11 @@
 import React, { useContext, useEffect } from 'react';
 import { ResponsiveBar } from '@nivo/bar';
 import useEnergyFutureData from '../../hooks/useEnergyFutureData';
-import { ConfigContext } from '../../utilities/configContext';
+import useConfig from '../../hooks/useConfig';
 import { REGION_ORDER } from '../../types';
 
 const ByRegion = () => {
-  const { config, setConfig } = useContext(ConfigContext);
+  const { config, setConfig } = useConfig();
   const { loading, error, data } = useEnergyFutureData();
 
   /**

@@ -1,10 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { ThemeProvider, createMuiTheme } from '@material-ui/core';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import { createBrowserHistory } from 'history';
-import queryString from 'query-string';
 
-import { DEFAULT_CONFIG, REGION_ORDER, SOURCE_ORDER } from '../../types';
 import PageLayout from '../../components/PageLayout';
 import Landing from '../../pages/Landing';
 import ByRegion from '../../pages/ByRegion';
@@ -12,12 +9,7 @@ import BySector from '../../pages/BySector';
 import Scenarios from '../../pages/Scenarios';
 import Electricity from '../../pages/Electricity';
 import Demand from '../../pages/Demand';
-import useAPI from '../../hooks/useAPI';
-import { ConfigContext } from '../../utilities/configContext';
-
-const parameters = ['page', 'mainSelection', 'yearId', 'sector', 'unit', 'view'];
-const delimitedParameters = ['scenarios', 'provinces', 'provinceOrder', 'sources', 'sourceOrder'];
-const history = createBrowserHistory();
+import useConfig, { ConfigProvider } from '../../hooks/useConfig';
 
 /**
  * Customize the look-and-feel of UI components here.
@@ -87,75 +79,36 @@ const theme = createMuiTheme({
   },
 });
 
-export default () => {
-  const [config, setConfig] = useState(DEFAULT_CONFIG);
-  const { data: { yearIdIterations } } = useAPI();
+const Content = () => {
+  const { config } = useConfig();
 
-  /**
-   * URL parachuting.
-   */
-  // TODO: Address potential issues of list values with commas inside the value
-  useEffect(() => {
-    const query = queryString.parse(history.location.search);
-    const yearIds = Object.keys(yearIdIterations).sort();
-    const yearId = yearIds.indexOf(query.yearId) === -1 ? yearIds.reverse()[0] : query.yearId;
-    const { scenarios } = yearIdIterations[yearId];
-    let queryScenarios = query.scenarios?.split(',').filter(scenario => scenarios.indexOf(scenario) !== -1);
-
-    if (!queryScenarios?.length) {
-      queryScenarios = [scenarios[0]];
-    }
-
-    setConfig({
-      ...DEFAULT_CONFIG,
-      ...query,
-      provinces: query.provinces ? query.provinces.split(',') : REGION_ORDER,
-      provinceOrder: query.provinceOrder ? query.provinceOrder.split(',') : REGION_ORDER,
-      sources: query.sources ? query.sources.split(',') : SOURCE_ORDER,
-      sourceOrder: query.sourceOrder ? query.sourceOrder.split(',') : SOURCE_ORDER,
-      yearId,
-      scenarios: queryScenarios,
-    });
-  }, [yearIdIterations]);
-
-  /**
-   * Update the URL if the control setting is modified.
-   */
-  useEffect(() => {
-    const queryParameters = parameters.map(
-      parameter => `${parameter}=${config[parameter]}`,
-    );
-    const delimitedQueryParameters = delimitedParameters.map(
-      parameter => `${parameter}=${config[parameter].join(',')}`,
-    );
-
-    history.replace({
-      pathname: '/energy-future/',
-      search: `?${queryParameters.concat(delimitedQueryParameters).join('&')}`,
-    });
-  }, [config]);
+  if (config.page === 'landing') {
+    return <Landing />;
+  }
 
   return (
-    <ThemeProvider theme={theme}>
-      <ConfigContext.Provider value={{ config, setConfig }}>
-        <CssBaseline />
-        {config.page === 'landing' ? <Landing /> : (
-          <PageLayout
-            showRegion
-            multiSelectScenario={config.page === 'scenarios'}
-            disableDraggableRegion={['by-sector', 'electricity', 'scenarios', 'demand'].includes(config.page)}
-            singleSelectRegion={['by-sector', 'electricity', 'scenarios', 'demand'].includes(config.page)}
-            showSource={['by-sector', 'electricity'].includes(config.page)}
-            disableDraggableSource={['electricity'].includes(config.page)}
-          >
-            {config.page === 'by-region' && <ByRegion />}
-            {config.page === 'by-sector' && <BySector />}
-            {config.page === 'electricity' && <Electricity />}
-            {config.page === 'scenarios' && <Scenarios />}
-            {config.page === 'demand' && <Demand />}
-          </PageLayout>
-        )}
-      </ConfigContext.Provider>
-    </ThemeProvider>
+    <PageLayout
+      showRegion
+      multiSelectScenario={config.page === 'scenarios'}
+      disableDraggableRegion={['by-sector', 'electricity', 'scenarios', 'demand'].includes(config.page)}
+      singleSelectRegion={['by-sector', 'electricity', 'scenarios', 'demand'].includes(config.page)}
+      showSource={['by-sector', 'electricity'].includes(config.page)}
+      disableDraggableSource={['electricity'].includes(config.page)}
+    >
+      {config.page === 'by-region' && <ByRegion />}
+      {config.page === 'by-sector' && <BySector />}
+      {config.page === 'electricity' && <Electricity />}
+      {config.page === 'scenarios' && <Scenarios />}
+      {config.page === 'demand' && <Demand />}
+    </PageLayout>
   );
 };
+
+export default () => (
+  <ThemeProvider theme={theme}>
+    <ConfigProvider>
+      <CssBaseline />
+      <Content />
+    </ConfigProvider>
+  </ThemeProvider>
+);

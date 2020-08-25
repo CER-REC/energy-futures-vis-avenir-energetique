@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { makeStyles, createStyles, Grid, ButtonBase, Typography } from '@material-ui/core';
 import { PAGES } from '../../constants';
-import { ConfigContext } from '../../utilities/configContext';
+import useConfig from '../../hooks/useConfig';
 
 const useStyles = makeStyles(theme => createStyles({
   box: {
@@ -21,7 +21,7 @@ const useStyles = makeStyles(theme => createStyles({
 const Landing = () => {
   const classes = useStyles();
 
-  const { config, setConfig } = useContext(ConfigContext);
+  const { config, setConfig } = useConfig();
 
   const handleRedirect = page => () => setConfig({ ...config, page });
 

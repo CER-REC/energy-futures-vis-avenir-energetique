@@ -8,7 +8,7 @@ import { grey } from '@material-ui/core/colors';
 import ClearIcon from '@material-ui/icons/Clear';
 import DragIcon from '@material-ui/icons/DragIndicator';
 
-import { ConfigContext } from '../../utilities/configContext';
+import useConfig from '../../hooks/useConfig';
 
 const reorder = (list, startIndex, endIndex) => {
   const result = Array.from(list);
@@ -136,7 +136,7 @@ const DraggableVerticalList = ({
 }) => {
   const classes = useStyles({ width, dense, disabled });
 
-  const { config } = useContext(ConfigContext);
+  const { config } = useConfig();
 
   const [localItems, setLocalItems] = useState(items || Object.keys(defaultItems));
   const [localItemOrder, setLocalItemOrder] = useState(itemOrder || defaultItemOrder);

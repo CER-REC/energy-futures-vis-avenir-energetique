@@ -2,9 +2,9 @@ import { useContext, useMemo, useCallback } from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 
-import { ConfigContext } from '../utilities/configContext';
 import convertUnit from '../utilities/convertUnit';
 import useAPI from './useAPI';
+import useConfig from './useConfig';
 
 // Some parts of this file are not very DRY in anticipation of changes
 // to the individual queries
@@ -88,9 +88,18 @@ const getDefaultUnit = (config) => {
 
 export default () => {
   const { data: { yearIdIterations } } = useAPI();
-  const { config } = useContext(ConfigContext);
+  const { config } = useConfig();
   const query = getQuery(config);
   const defaultUnit = getDefaultUnit(config);
+
+  if (!query) {
+    return {
+      loading: false,
+      error: null,
+      data: [],
+    };
+  }
+
   const { loading, error, data } = useQuery(query, {
     variables: {
       scenarios: config.scenarios,

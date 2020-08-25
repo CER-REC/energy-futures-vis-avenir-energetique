@@ -7,7 +7,7 @@ import ScenarioSelect from '../ScenarioSelect';
 import DraggableVerticalList from '../DraggableVerticalList';
 import HorizontalControlBar from '../HorizontalControlBar';
 
-import { ConfigContext } from '../../utilities/configContext';
+import useConfig from '../../hooks/useConfig';
 import { REGIONS, REGION_ORDER, SOURCES, SOURCE_ORDER } from '../../types';
 
 const useStyles = makeStyles(theme => ({
@@ -34,7 +34,7 @@ const PageLayout = ({
 }) => {
   const classes = useStyles();
 
-  const { config, setConfig } = useContext(ConfigContext);
+  const { config, setConfig } = useConfig();
 
   return (
     <Grid container spacing={4} className={classes.root}>

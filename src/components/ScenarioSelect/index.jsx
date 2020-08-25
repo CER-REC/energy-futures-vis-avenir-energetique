@@ -7,7 +7,7 @@ import {
 } from '@material-ui/core';
 
 import useAPI from '../../hooks/useAPI';
-import { ConfigContext } from '../../utilities/configContext';
+import useConfig from '../../hooks/useConfig';
 
 const useStyles = makeStyles(theme => createStyles({
   root: {
@@ -40,7 +40,7 @@ const SCENARIO_COLOR = {
 const ScenarioSelect = ({ multiSelect }) => {
   const classes = useStyles();
   const intl = useIntl();
-  const { config, setConfig } = useContext(ConfigContext);
+  const { config, setConfig } = useConfig();
   const { data: { yearIdIterations } } = useAPI();
   const handleScenariosUpdate = useCallback(
     scenarios => setConfig({ ...config, scenarios }),
