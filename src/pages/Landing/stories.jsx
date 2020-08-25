@@ -5,6 +5,6 @@ import { storiesForComponent } from '../../../.storybook/utils';
 import Landing from './index';
 import ReadMe from './README.md';
 
-storiesForComponent('Pages|Landing Page', module, ReadMe)
+storiesForComponent('Pages|Landing', module, ReadMe)
   .addDecorator(withConfigAndGQL)
   .add('default', () => <Landing />);

@@ -7,7 +7,7 @@ import { storiesForComponent } from '../../../.storybook/utils';
 import ScenarioSelect from './index';
 import ReadMe from './README.md';
 
-storiesForComponent('Components|Scenario Select', module, ReadMe)
+storiesForComponent('Components|ScenarioSelect', module, ReadMe)
   .addDecorator(withKnobs)
   .addDecorator(withConfigAndGQL)
   .add('default', () => (

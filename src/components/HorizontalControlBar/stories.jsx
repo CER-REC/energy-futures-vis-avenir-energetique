@@ -5,6 +5,6 @@ import { storiesForComponent } from '../../../.storybook/utils';
 import HorizontalControlBar from './index';
 import ReadMe from './README.md';
 
-storiesForComponent('Components|Horizontal Control Bar', module, ReadMe)
+storiesForComponent('Components|HorizontalControlBar', module, ReadMe)
   .addDecorator(withConfigAndGQL)
   .add('default', () => <Grid container style={{ padding: 16 }}><HorizontalControlBar /></Grid>);

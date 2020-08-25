@@ -6,6 +6,6 @@ import { storiesForComponent } from '../../../.storybook/utils';
 import PageSelect from './index';
 import ReadMe from './README.md';
 
-storiesForComponent('Components|Page Select', module, ReadMe)
+storiesForComponent('Components|PageSelect', module, ReadMe)
   .addDecorator(withConfigAndGQL)
   .add('default', () => <Grid container style={{ padding: 16 }}><PageSelect /></Grid>);
