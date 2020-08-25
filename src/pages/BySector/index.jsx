@@ -20,7 +20,7 @@ const BySector = () => {
       }}
       axisTop={null}
       axisRight={{
-        orient: 'left',
+        orient: 'right',
         tickSize: 5,
         tickPadding: 5,
         tickRotation: 0,
@@ -30,9 +30,9 @@ const BySector = () => {
         tickSize: 5,
         tickPadding: 5,
         tickRotation: 0,
+        tickValues: [0, 5, 10, 15, 20, 25, 30, 35],
         format(value) {
-          const formatedVal = value + 5;
-          return formatedVal < 10 ? `0${formatedVal}` : formatedVal;
+          return value + 2005;
         },
       }}
       axisLeft={null}
