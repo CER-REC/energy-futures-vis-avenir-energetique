@@ -196,20 +196,15 @@ export default function () {
     if (config.page === 'by-sector') {
       const filteredData = {};
 
-      // Checking for sources here makes sure that if no sources are selected
-      // the backend won't return all sources.
       data.resources.forEach((entry) => {
-        if (filteredData[entry.source]) {
-          filteredData[entry.source].push({ x: entry.year, y: entry.value * unitConversion });
+        if (filteredData[entry.year]) {
+          filteredData[entry.year][entry.source] = entry.value * unitConversion;
         } else if (entry.source !== 'ALL') {
-          filteredData[entry.source] = [{ x: entry.year, y: entry.value * unitConversion }];
+          filteredData[entry.year] = { [entry.source]: entry.value * unitConversion };
         }
       });
 
-      return Object.keys(filteredData).map((source) => {
-        filteredData[source].sort((a, b) => a.x - b.x);
-        return { id: source.toLocaleLowerCase(), data: filteredData[source] };
-      });
+      return Object.keys(filteredData).map(entry => filteredData[entry]);
     }
 
     if (config.page === 'by-region') {
