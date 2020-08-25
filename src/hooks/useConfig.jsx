@@ -12,8 +12,9 @@ const history = createBrowserHistory();
 const ConfigContext = createContext();
 
 export const ConfigProvider = ({ children }) => {
+  // TODO: Cleanup app state structure (remove order parameters) and consider moving to useReducer
   const [config, setConfig] = useState(DEFAULT_CONFIG);
-  const { data: { yearIdIterations } } = useAPI();
+  const { yearIdIterations } = useAPI();
 
   /**
    * URL parachuting.

@@ -30,18 +30,10 @@ const getYearIdIterations = iterations => (
 
 export default () => {
   const { loading, error, data } = useQuery(CONFIG);
+  const yearIdIterations = useMemo(
+    () => (data ? getYearIdIterations(data.iterations) : {}),
+    [data],
+  );
 
-  const processedData = useMemo(() => {
-    const config = {
-      yearIdIterations: {},
-    };
-
-    if (data) {
-      config.yearIdIterations = getYearIdIterations(data.iterations);
-    }
-
-    return config;
-  }, [data]);
-
-  return { loading, error, data: processedData };
+  return { loading, error, yearIdIterations };
 };

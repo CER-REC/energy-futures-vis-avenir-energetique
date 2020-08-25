@@ -87,7 +87,7 @@ const getDefaultUnit = (config) => {
 };
 
 export default () => {
-  const { data: { yearIdIterations } } = useAPI();
+  const { yearIdIterations } = useAPI();
   const { config } = useConfig();
   const query = getQuery(config);
   const defaultUnit = getDefaultUnit(config);

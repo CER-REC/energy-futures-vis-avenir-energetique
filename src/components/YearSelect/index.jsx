@@ -50,7 +50,7 @@ const useStyles = makeStyles(theme => createStyles({
 
 const YearSelect = () => {
   const classes = useStyles();
-  const { data: { yearIdIterations } } = useAPI();
+  const { yearIdIterations } = useAPI();
   const { config, setConfig } = useConfig();
 
   const yearIds = useMemo(

@@ -41,7 +41,7 @@ const ScenarioSelect = ({ multiSelect }) => {
   const classes = useStyles();
   const intl = useIntl();
   const { config, setConfig } = useConfig();
-  const { data: { yearIdIterations } } = useAPI();
+  const { yearIdIterations } = useAPI();
   const handleScenariosUpdate = useCallback(
     scenarios => setConfig({ ...config, scenarios }),
     [config, setConfig],
