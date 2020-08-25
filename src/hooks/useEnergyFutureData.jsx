@@ -97,7 +97,7 @@ const getQueryVariables = (config) => {
         break;
     }
   }
-  return { query: undefined, queryVariables: undefined };
+  return { query: ENERGY_DEMAND, queryVariables: undefined };
 };
 
 // getDefaultUnit returns the default unit that the API returns.
@@ -124,7 +124,10 @@ export default function () {
   const { config } = useContext(ConfigContext);
   const { query, queryVariables } = getQueryVariables(config);
   const defaultUnit = getDefaultUnit(config);
-  const { loading, error, data } = useQuery(query, { variables: queryVariables });
+  const { loading, error, data } = useQuery(query, {
+    variables: queryVariables,
+    skip: !queryVariables, // disable GraphQL conditionally
+  });
 
   /*
   TODO: Revisit this logic.
