@@ -1,5 +1,5 @@
 // #region imports
-import React, { useContext, useMemo, useEffect } from 'react';
+import React, { useMemo, useEffect } from 'react';
 import {
   makeStyles, createStyles,
   Grid, Typography, Button, Tooltip,

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { ResponsiveBar } from '@nivo/bar';
 import useEnergyFutureData from '../../hooks/useEnergyFutureData';
 import useConfig from '../../hooks/useConfig';

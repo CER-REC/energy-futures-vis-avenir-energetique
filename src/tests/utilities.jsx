@@ -1,4 +1,3 @@
-import React from 'react';
 import { ShallowWrapper, shallow, mount } from 'enzyme';
 import { IntlProvider } from 'react-intl';
 

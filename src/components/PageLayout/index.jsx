@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles, Grid } from '@material-ui/core';
 import YearSelect from '../YearSelect';

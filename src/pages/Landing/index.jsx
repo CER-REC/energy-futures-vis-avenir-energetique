@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { makeStyles, createStyles, Grid, ButtonBase, Typography } from '@material-ui/core';
 import { PAGES } from '../../constants';
 import useConfig from '../../hooks/useConfig';

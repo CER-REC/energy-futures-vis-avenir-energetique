@@ -1,4 +1,4 @@
-import { useContext, useMemo, useCallback } from 'react';
+import { useMemo, useCallback } from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 
