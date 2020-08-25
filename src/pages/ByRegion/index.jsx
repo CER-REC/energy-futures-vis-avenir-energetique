@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react';
 import { ResponsiveBar } from '@nivo/bar';
-import useEnergyFutureData from '../../hooks/useEnergyFutureData';
+import PropTypes from 'prop-types';
+
 import useConfig from '../../hooks/useConfig';
 import { REGION_ORDER } from '../../types';
 
-const ByRegion = () => {
+const ByRegion = ({ data }) => {
   const { config, setConfig } = useConfig();
-  const { loading, error, data } = useEnergyFutureData();
 
   /**
    * A "hacky" but sufficient way to reselect all regions after
@@ -16,11 +16,15 @@ const ByRegion = () => {
     if (config.page === 'by-region' && JSON.stringify(config.provinces || []) === '["ALL"]') {
       setConfig({ ...config, provinces: REGION_ORDER });
     }
-  }, [config]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [config, setConfig]);
+
+  if (!data) {
+    return null;
+  }
 
   return (
     <ResponsiveBar
-      data={(loading || error) ? [] : data}
+      data={data}
       keys={config.provinces}
       indexBy="year"
       margin={{ top: 50, right: 0, bottom: 50, left: 80 }}
@@ -53,6 +57,14 @@ const ByRegion = () => {
       motionDamping={15}
     />
   );
+};
+
+ByRegion.propTypes = {
+  data: PropTypes.oneOfType([PropTypes.object, PropTypes.arrayOf(PropTypes.object)]),
+};
+
+ByRegion.defaultProps = {
+  data: undefined,
 };
 
 export default ByRegion;

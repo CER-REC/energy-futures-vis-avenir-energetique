@@ -91,21 +91,13 @@ export default () => {
   const { config } = useConfig();
   const query = getQuery(config);
   const defaultUnit = getDefaultUnit(config);
-
-  if (!query) {
-    return {
-      loading: false,
-      error: null,
-      data: [],
-    };
-  }
-
   const { loading, error, data } = useQuery(query, {
     variables: {
       scenarios: config.scenarios,
       iteration: yearIdIterations[config.yearId].id,
       regions: config.provinces,
     },
+    skip: !query,
   });
 
   /*
