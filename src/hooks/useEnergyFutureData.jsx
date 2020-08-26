@@ -91,7 +91,8 @@ export default () => {
   const { config } = useConfig();
   const query = getQuery(config);
   const defaultUnit = getDefaultUnit(config);
-  const { loading, error, data } = useQuery(query, {
+  // A GraphQL document node is needed even if skipping is specified
+  const { loading, error, data } = useQuery(query || gql`{ _ }`, {
     variables: {
       scenarios: config.scenarios,
       iteration: yearIdIterations[config.yearId].id,
