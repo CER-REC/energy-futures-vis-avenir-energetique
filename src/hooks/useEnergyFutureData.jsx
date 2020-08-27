@@ -3,6 +3,7 @@ import { useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 import { ConfigContext } from '../utilities/configContext';
 import convertUnit from '../utilities/convertUnit';
+import { REGION_ORDER } from '../types';
 
 // Some parts of this file are not very DRY in anticipation of changes
 // to the individual queries
@@ -27,9 +28,10 @@ query ($iteration: ID!, $regions: [Region!], $scenarios: [String!]) {
 
 const ELECTRICITY_GENERATIONS = gql`
 query ($iteration: ID!, $regions: [Region!], $scenarios: [String!]) {
-  resources:electricityGenerations(iterationIds: [$iteration], regions: $regions, scenarios: $scenarios, sources: [ALL]) {
+  resources:electricityGenerations(iterationIds: [$iteration], regions: $regions, scenarios: $scenarios, sources: []) {
     province: region
     year
+    source
     value: quantity
   }
 }
@@ -96,6 +98,16 @@ const getQueryVariables = (config) => {
       default:
         break;
     }
+  } else if (config.page === 'electricity') {
+    return {
+      query: ELECTRICITY_GENERATIONS,
+      queryVariables: {
+        scenarios: config.scenario,
+        sources: config.sources,
+        iteration: yearToIteration[config.year],
+        regions: REGION_ORDER,
+      },
+    };
   }
   return { query: ENERGY_DEMAND, queryVariables: undefined };
 };
@@ -165,7 +177,7 @@ export default function () {
       return Object.keys(byYear).map(year => ({ year, ...byYear[year] }));
     };
 
-    return filteredData(data.resources);
+    return config.page === 'electricity' ? data.resources : filteredData(data.resources);
   }, [config.unit, configFilter, data, defaultUnit]);
 
   return { loading, error, data: processedData };
