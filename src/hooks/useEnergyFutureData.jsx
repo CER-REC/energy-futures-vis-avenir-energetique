@@ -46,6 +46,16 @@ query ($iteration: ID!, $regions: [Region!], $scenarios: [String!]) {
 }
 `;
 
+const BY_SECTOR = gql`
+query ($iteration: ID!, $regions: [Region!], $scenarios: [String!], $sectors:[String!], $sources: [EnergySource!]) {
+  resources:energyDemands(iterationIds: [$iteration], regions: $regions, scenarios: $scenarios, sectors: $sectors, sources: $sources) {
+    year
+    value: quantity
+    source
+  }
+}
+`;
+
 const getQuery = (config) => {
   // TODO: Revisit this config.provinces check
   if ((config.page === 'by-region') && (config.provinces)) {
@@ -61,6 +71,8 @@ const getQuery = (config) => {
       default:
         break;
     }
+  } else if ((config.page === 'by-sector') && (config.provinces)) {
+    return BY_SECTOR;
   }
 
   return null;
@@ -89,14 +101,44 @@ const getDefaultUnit = (config) => {
 export default () => {
   const { yearIdIterations } = useAPI();
   const { config } = useConfig();
-  const query = getQuery(config);
-  const defaultUnit = getDefaultUnit(config);
+  let query = getQuery(config);
+  const unitConversion = convertUnit(getDefaultUnit(config), config.unit);
+
+  // #region Enum Correction
+  // TODO: fix the config data to match the enums then remove this next part
+  // and replace correctedSources with config.sources
+  const correctedSources = [...config.sources];
+
+  if ((config.page === 'by-sector') && (config.provinces)) {
+    if (correctedSources.find(item => item === 'solarWindGeothermal')) {
+      correctedSources[correctedSources.indexOf('solarWindGeothermal')] = 'renewable';
+    }
+    if (correctedSources.find(item => item === 'oilProducts')) {
+      correctedSources[correctedSources.indexOf('oilProducts')] = 'oil';
+    }
+    if (correctedSources.find(item => item === 'naturalGas')) {
+      correctedSources[correctedSources.indexOf('naturalGas')] = 'gas';
+    }
+    // This one removes nuclear because it shouldnt even be a source option
+    if (correctedSources.find(item => item === 'nuclear')) {
+      correctedSources.splice(correctedSources.indexOf('nuclear'), 1);
+    }
+    if (!correctedSources.length) {
+      query = null;
+    }
+  }
+  // #endregion
+
   // A GraphQL document node is needed even if skipping is specified
   const { loading, error, data } = useQuery(query || gql`{ _ }`, {
     variables: {
       scenarios: config.scenarios,
       iteration: yearIdIterations[config.yearId].id,
       regions: config.provinces,
+      // FIXME: config will store it as "total"
+      // it should be "total end-use"
+      sectors: config.sector === 'total' ? 'total end-use' : config.sector,
+      sources: correctedSources,
     },
     skip: !query,
   });
@@ -120,25 +162,45 @@ export default () => {
       return data;
     }
 
-    const filteredData = (energyData) => {
-      const byYear = energyData
-        .filter(configFilter)
-        .reduce((accu, curr) => {
-          const result = { ...accu };
-          if (!result[curr.year]) {
-            result[curr.year] = {};
-          }
-          if (!result[curr.year][curr.province]) {
-            result[curr.year][curr.province] = 0;
-          }
-          result[curr.year][curr.province] += (curr.value * convertUnit(defaultUnit, config.unit));
-          return result;
-        }, {});
-      return Object.keys(byYear).map(year => ({ year, ...byYear[year] }));
-    };
+    if (config.page === 'by-sector') {
+      const filteredData = {};
 
-    return filteredData(data.resources);
-  }, [config.unit, configFilter, data, defaultUnit]);
+      data.resources.forEach((entry) => {
+        if (filteredData[entry.year]) {
+          filteredData[entry.year][entry.source] = entry.value * unitConversion;
+        } else if (entry.source !== 'ALL') {
+          filteredData[entry.year] = { [entry.source]: entry.value * unitConversion };
+        }
+      });
+
+      return Object.keys(filteredData).map(entry => filteredData[entry]);
+    }
+
+    if (config.page === 'by-region') {
+      const filteredData = (energyData) => {
+        const byYear = energyData
+          .filter(configFilter)
+          .reduce((accu, curr) => {
+            const result = { ...accu };
+            if (!result[curr.year]) {
+              result[curr.year] = {};
+            }
+            if (!result[curr.year][curr.province]) {
+              result[curr.year][curr.province] = 0;
+            }
+            result[curr.year][curr.province] += (
+              curr.value * unitConversion
+            );
+            return result;
+          }, {});
+        return Object.keys(byYear).map(year => ({ year, ...byYear[year] }));
+      };
+
+      return filteredData(data.resources);
+    }
+
+    return undefined;
+  }, [config.page, configFilter, data, unitConversion]);
 
   return { loading, error, data: processedData };
 };

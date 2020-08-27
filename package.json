@@ -34,6 +34,7 @@
     "@nivo/bar": "^0.62.0",
     "@nivo/circle-packing": "^0.62.0",
     "@nivo/line": "^0.62.0",
+    "@nivo/stream": "^0.62.0",
     "apollo-cache-inmemory": "^1.6.6",
     "apollo-client": "^2.6.10",
     "apollo-link-http": "^1.5.17",
