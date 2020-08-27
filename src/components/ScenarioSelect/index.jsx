@@ -1,13 +1,13 @@
-import React, { useContext, useEffect, useCallback, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
+import { useIntl } from 'react-intl';
 import PropTypes from 'prop-types';
 import {
   makeStyles, createStyles,
   Grid, Typography, Button, Tooltip,
 } from '@material-ui/core';
 
-import { ConfigContext } from '../../utilities/configContext';
-import { CONFIG_REPRESENTATION } from '../../types';
-import { SCENARIO_LAYOUT, SCENARIO_TOOPTIP } from '../../constants';
+import useAPI from '../../hooks/useAPI';
+import useConfig from '../../hooks/useConfig';
 
 const useStyles = makeStyles(theme => createStyles({
   root: {
@@ -25,30 +25,30 @@ const useStyles = makeStyles(theme => createStyles({
 
 /**
  * TODO: replace it with
- * 1) real terms defined in the database, and;
- * 2) real colors from UI designers.
+ * 1) real colors from UI designers.
  */
 const SCENARIO_COLOR = {
-  technology: '#3692FA',
-  hcp: '#0B3CB4',
-  highPrice: '#6C5AEB',
-  lowPrice: '#082346',
-  constrained: '#333333',
-  highLng: '#2B6762',
-  noLng: '#3692FA',
+  Technology: '#3692FA',
+  'Higher Carbon Price': '#0B3CB4',
+  'High Price': '#6C5AEB',
+  'Low Price': '#082346',
+  Constrained: '#333333',
+  'High LNG': '#2B6762',
+  'No LNG': '#3692FA',
 };
 
 const ScenarioSelect = ({ multiSelect }) => {
   const classes = useStyles();
-
-  const { config, setConfig } = useContext(ConfigContext);
-
-  /**
-   * Update the config.scenario.
-   */
-  const handleScenarioUpdate = useCallback(
-    scenario => setConfig({ ...config, scenario }),
+  const intl = useIntl();
+  const { config, setConfig } = useConfig();
+  const { yearIdIterations } = useAPI();
+  const handleScenariosUpdate = useCallback(
+    scenarios => setConfig({ ...config, scenarios }),
     [config, setConfig],
+  );
+  const scenarios = useMemo(
+    () => yearIdIterations[config.yearId]?.scenarios || [],
+    [yearIdIterations, config.yearId],
   );
 
   /**
@@ -57,15 +57,33 @@ const ScenarioSelect = ({ multiSelect }) => {
    */
   useEffect(
     () => {
-      if (multiSelect) {
+      const validScenarios = config.scenarios.filter(
+        scenario => scenarios.indexOf(scenario) !== -1,
+      );
+
+      if (
+        (multiSelect || (validScenarios.length === 1))
+        && (config.scenarios.length === validScenarios.length)
+      ) {
         return;
       }
-      const scenarios = SCENARIO_LAYOUT[config.year] || SCENARIO_LAYOUT.default;
-      if (config.scenario.length > 1 || scenarios.indexOf(config.scenario[0]) < 0) {
-        handleScenarioUpdate([scenarios[0]]);
+
+      if (multiSelect) {
+        handleScenariosUpdate(validScenarios);
+      } else if (validScenarios.length === 0) {
+        handleScenariosUpdate([scenarios[0]]);
+      } else {
+        handleScenariosUpdate([validScenarios[0]]);
       }
     },
-    [multiSelect, config.year, config.scenario, handleScenarioUpdate],
+    [
+      scenarios,
+      multiSelect,
+      yearIdIterations,
+      config.yearId,
+      config.scenarios,
+      handleScenariosUpdate,
+    ],
   );
 
   /**
@@ -73,22 +91,15 @@ const ScenarioSelect = ({ multiSelect }) => {
    */
   const handleScenarioSelect = useCallback((scenario) => {
     if (!multiSelect) {
-      handleScenarioUpdate([scenario]);
+      handleScenariosUpdate([scenario]);
       return;
     }
-    const updated = config.scenario.indexOf(scenario) > -1
-      ? [...config.scenario].filter(s => s !== scenario)
-      : [...config.scenario, scenario];
-    handleScenarioUpdate(updated);
-  }, [multiSelect, config.scenario, handleScenarioUpdate]);
 
-  /**
-   * Memorize the current menu structure based on the config.
-   */
-  const layoutScenario = useMemo(
-    () => SCENARIO_LAYOUT[config.year] || SCENARIO_LAYOUT.default,
-    [config.year],
-  );
+    const updated = config.scenarios.indexOf(scenario) > -1
+      ? [...config.scenarios].filter(configScenario => configScenario !== scenario)
+      : [...config.scenarios, scenario];
+    handleScenariosUpdate(updated);
+  }, [multiSelect, config.scenarios, handleScenariosUpdate]);
 
   return (
     <Grid container alignItems="center" wrap="nowrap" spacing={1} className={classes.root}>
@@ -96,21 +107,24 @@ const ScenarioSelect = ({ multiSelect }) => {
         <Typography variant="h6" color="primary">Scenarios</Typography>
       </Grid>
 
-      {layoutScenario.map(scenario => (
+      {scenarios.map(scenario => (
         <Grid item key={`config-scenario-${scenario}`}>
-          <Tooltip title={SCENARIO_TOOPTIP[scenario]} classes={{ tooltip: classes.tooltip }}>
+          <Tooltip
+            title={intl.formatMessage({ id: `components.scenarioSelect.${scenario}.description` })}
+            classes={{ tooltip: classes.tooltip }}
+          >
             <Button
-              variant={config.scenario.indexOf(scenario) > -1 ? 'contained' : 'outlined'}
+              variant={config.scenarios.indexOf(scenario) > -1 ? 'contained' : 'outlined'}
               color="primary"
               size="small"
               fullWidth
               onClick={() => handleScenarioSelect(scenario)}
-              style={multiSelect && config.scenario.indexOf(scenario) > -1 ? {
+              style={multiSelect && config.scenarios.indexOf(scenario) > -1 ? {
                 backgroundColor: SCENARIO_COLOR[scenario],
                 borderColor: SCENARIO_COLOR[scenario],
               } : {}}
             >
-              {CONFIG_REPRESENTATION[scenario]}
+              {intl.formatMessage({ id: `components.scenarioSelect.${scenario}.title` })}
             </Button>
           </Tooltip>
         </Grid>

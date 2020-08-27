@@ -1,8 +1,10 @@
-import { useContext, useMemo, useCallback } from 'react';
+import { useMemo, useCallback } from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
-import { ConfigContext } from '../utilities/configContext';
+
 import convertUnit from '../utilities/convertUnit';
+import useAPI from './useAPI';
+import useConfig from './useConfig';
 
 // Some parts of this file are not very DRY in anticipation of changes
 // to the individual queries
@@ -54,96 +56,26 @@ query ($iteration: ID!, $regions: [Region!], $scenarios: [String!], $sectors:[St
 }
 `;
 
-const yearToIteration = {
-  2016: 1,
-  '2016*': 2,
-  2017: 3,
-  2018: 4,
-  2019: 5,
-};
-
-// Setup query + query variables
-const getQueryVariables = (config) => {
+const getQuery = (config) => {
   // TODO: Revisit this config.provinces check
   if ((config.page === 'by-region') && (config.provinces)) {
     switch (config.mainSelection) {
       case 'oilProduction':
-        return {
-          query: OIL_PRODUCTIONS,
-          queryVariables: {
-            scenarios: config.scenario,
-            iteration: yearToIteration[config.year],
-            regions: config.provinces,
-          },
-        };
+        return OIL_PRODUCTIONS;
       case 'energyDemand':
-        return {
-          query: ENERGY_DEMAND,
-          queryVariables: {
-            scenarios: config.scenario,
-            iteration: yearToIteration[config.year],
-            regions: config.provinces,
-          },
-        };
+        return ENERGY_DEMAND;
       case 'gasProduction':
-        return {
-          query: GAS_PRODUCTIONS,
-          queryVariables: {
-            scenarios: config.scenario,
-            iteration: yearToIteration[config.year],
-            regions: config.provinces,
-          },
-        };
+        return GAS_PRODUCTIONS;
       case 'electricityGeneration':
-        return {
-          query: ELECTRICITY_GENERATIONS,
-          queryVariables: {
-            scenarios: config.scenario,
-            iteration: yearToIteration[config.year],
-            regions: config.provinces,
-          },
-        };
+        return ELECTRICITY_GENERATIONS;
       default:
         break;
     }
+  } else if ((config.page === 'by-sector') && (config.provinces)) {
+    return BY_SECTOR;
   }
-  if ((config.page === 'by-sector') && (config.provinces)) {
-    // #region Enum Correction
-    // TODO: fix the config data to match the enums then remove this next part
-    // and replace correctedSources with config.sources
-    const correctedSources = [...config.sources];
 
-    if (correctedSources.find(item => item === 'solarWindGeothermal')) {
-      correctedSources[correctedSources.indexOf('solarWindGeothermal')] = 'renewable';
-    }
-    if (correctedSources.find(item => item === 'oilProducts')) {
-      correctedSources[correctedSources.indexOf('oilProducts')] = 'oil';
-    }
-    if (correctedSources.find(item => item === 'naturalGas')) {
-      correctedSources[correctedSources.indexOf('naturalGas')] = 'gas';
-    }
-    // This one removes nuclear because it shouldnt even be a source option
-    if (correctedSources.find(item => item === 'nuclear')) {
-      correctedSources.splice(correctedSources.indexOf('nuclear'), 1);
-    }
-    // #endregion
-
-    if (correctedSources.length) {
-      return {
-        query: BY_SECTOR,
-        queryVariables: {
-          scenarios: config.scenario,
-          iteration: yearToIteration[config.year],
-          regions: config.provinces,
-          // FIXME: config will store it as "total"
-          // it should be "total end-use"
-          sectors: config.sector === 'total' ? 'total end-use' : config.sector,
-          sources: correctedSources,
-        },
-      };
-    }
-  }
-  return { query: ENERGY_DEMAND, queryVariables: undefined };
+  return null;
 };
 
 // getDefaultUnit returns the default unit that the API returns.
@@ -166,15 +98,49 @@ const getDefaultUnit = (config) => {
   }
 };
 
-export default function () {
-  const { config } = useContext(ConfigContext);
-  const { query, queryVariables } = getQueryVariables(config);
+export default () => {
+  const { yearIdIterations } = useAPI();
+  const { config } = useConfig();
+  let query = getQuery(config);
   const unitConversion = convertUnit(getDefaultUnit(config), config.unit);
 
-  if (!query) { return { loading: false, error: undefined, data: [] }; }
-  const { loading, error, data } = useQuery(query, {
-    variables: queryVariables,
-    skip: !queryVariables, // disable GraphQL conditionally
+  // #region Enum Correction
+  // TODO: fix the config data to match the enums then remove this next part
+  // and replace correctedSources with config.sources
+  const correctedSources = [...config.sources];
+
+  if ((config.page === 'by-sector') && (config.provinces)) {
+    if (correctedSources.find(item => item === 'solarWindGeothermal')) {
+      correctedSources[correctedSources.indexOf('solarWindGeothermal')] = 'renewable';
+    }
+    if (correctedSources.find(item => item === 'oilProducts')) {
+      correctedSources[correctedSources.indexOf('oilProducts')] = 'oil';
+    }
+    if (correctedSources.find(item => item === 'naturalGas')) {
+      correctedSources[correctedSources.indexOf('naturalGas')] = 'gas';
+    }
+    // This one removes nuclear because it shouldnt even be a source option
+    if (correctedSources.find(item => item === 'nuclear')) {
+      correctedSources.splice(correctedSources.indexOf('nuclear'), 1);
+    }
+    if (!correctedSources.length) {
+      query = null;
+    }
+  }
+  // #endregion
+
+  // A GraphQL document node is needed even if skipping is specified
+  const { loading, error, data } = useQuery(query || gql`{ _ }`, {
+    variables: {
+      scenarios: config.scenarios,
+      iteration: yearIdIterations[config.yearId]?.id || '',
+      regions: config.provinces,
+      // FIXME: config will store it as "total"
+      // it should be "total end-use"
+      sectors: config.sector === 'total' ? 'total end-use' : config.sector,
+      sources: correctedSources,
+    },
+    skip: !query,
   });
 
   /*
@@ -187,8 +153,8 @@ export default function () {
   */
   const configFilter = useCallback(
     row => config.provinces.indexOf(row.province) > -1
-      && (!row.scenario || row.scenario.toLowerCase() === config.scenario),
-    [config.provinces, config.scenario],
+      && (!row.scenario || row.scenarios === config.scenarios),
+    [config.provinces, config.scenarios],
   );
 
   const processedData = useMemo(() => {
@@ -237,4 +203,4 @@ export default function () {
   }, [config.page, configFilter, data, unitConversion]);
 
   return { loading, error, data: processedData };
-}
+};

@@ -1,11 +1,11 @@
 /* eslint-disable react/prop-types */
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   makeStyles, createStyles,
   Grid, ButtonBase, Typography, Tooltip,
 } from '@material-ui/core';
 import { PAGES, CONFIG_LAYOUT, SECTOR_LAYOUT } from '../../constants';
-import { ConfigContext } from '../../utilities/configContext';
+import useConfig from '../../hooks/useConfig';
 
 import {
   PageIconBar, PageIconBubble, PageIconFlower, PageIconLine, PageIconStackedArea,
@@ -67,7 +67,7 @@ const useStyles = makeStyles(theme => createStyles({
 const PageSelect = () => {
   const classes = useStyles();
 
-  const { config, setConfig } = useContext(ConfigContext);
+  const { config, setConfig } = useConfig();
 
   const [pages, setPages] = useState(PAGES.filter(page => page.id !== 'landing'));
   const [loading, setLoading] = useState(false);

@@ -4,9 +4,6 @@ This component is used as a loading indicator when the app starts up and is pull
 
 ## Requirements
 
-- [x] Renders the Guide component
-- [x] Animates through all of the Guide's wedge states
-
 ## Interactions
 
 - None

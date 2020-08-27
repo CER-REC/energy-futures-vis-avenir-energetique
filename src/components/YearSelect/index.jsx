@@ -1,11 +1,11 @@
-import React, { useContext, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import {
   makeStyles, createStyles,
   Grid, Typography, Button,
 } from '@material-ui/core';
 
-import { ConfigContext } from '../../utilities/configContext';
-import { CONFIG_LAYOUT } from '../../constants';
+import useAPI from '../../hooks/useAPI';
+import useConfig from '../../hooks/useConfig';
 import ImgReport from '../../images/report-link.png';
 
 const useStyles = makeStyles(theme => createStyles({
@@ -50,13 +50,13 @@ const useStyles = makeStyles(theme => createStyles({
 
 const YearSelect = () => {
   const classes = useStyles();
+  const { yearIdIterations } = useAPI();
+  const { config, setConfig } = useConfig();
 
-  const { config, setConfig } = useContext(ConfigContext);
-
-  /**
-   * Memorize the current menu structure based on the config.
-   */
-  const layoutConfig = useMemo(() => CONFIG_LAYOUT[config.mainSelection], [config.mainSelection]);
+  const yearIds = useMemo(
+    () => Object.keys(yearIdIterations).sort().reverse(),
+    [yearIdIterations],
+  );
 
   return (
     <Grid container alignItems="center" spacing={1} className={classes.root}>
@@ -64,19 +64,19 @@ const YearSelect = () => {
         <Typography variant="h5" color="primary" className={classes.title}>Energy Futures From</Typography>
       </Grid>
 
-      {layoutConfig.year.map(year => (
-        <Grid item key={`year-select-option-${year}`}>
+      {yearIds.map(yearId => (
+        <Grid item key={`year-select-option-${yearId}`}>
           <Button
-            variant={config.year === year ? 'contained' : 'outlined'}
+            variant={config.yearId === yearId ? 'contained' : 'outlined'}
             color="primary"
             size="small"
-            onClick={() => setConfig({ ...config, year })}
+            onClick={() => setConfig({ ...config, yearId })}
             classes={{
               containedPrimary: classes.btnContained,
               outlinedPrimary: classes.btnOutlined,
             }}
           >
-            {config.year === year ? (<Typography variant="h5">{year}</Typography>) : year}
+            {config.yearId === yearId ? (<Typography variant="h5">{yearId}</Typography>) : yearId}
           </Button>
         </Grid>
       ))}

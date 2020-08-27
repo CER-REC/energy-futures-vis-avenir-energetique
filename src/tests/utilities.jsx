@@ -1,28 +1,22 @@
-import React from 'react';
 import { ShallowWrapper, shallow, mount } from 'enzyme';
-import { IntlProvider, addLocaleData, intlShape } from 'react-intl';
+import { IntlProvider } from 'react-intl';
+
 import i18nMessages from '../i18n';
 
-const intlProvider = new IntlProvider({ locale: 'en', messages: i18nMessages.en }, {});
-const { intl } = intlProvider.getChildContext();
-const nodeWithIntlProp = node => React.cloneElement(node, { intl });
-
-addLocaleData({
-  locale: 'test',
-  pluralRuleFunction: () => {},
-});
+// TODO: Create custom 'test' locale with a blank plural rule to use when custom messages are tested
+const defaultLocale = 'en';
+const defaultMessages = i18nMessages.en;
 
 export const monkeyPatchShallowWithIntl = () => {
   ShallowWrapper.prototype.shallowWithIntl = function shallowWithIntl(messages) {
-    let testIntl = intl;
-
-    if (messages) {
-      const testIntlProvider = new IntlProvider({ locale: 'test', messages }, {});
-
-      testIntl = testIntlProvider.getChildContext().intl;
-    }
-
-    return this.shallow({ context: { intl: testIntl } });
+    // Shallow twice to get pass the context provider
+    return this.shallow().shallow({
+      wrappingComponent: IntlProvider,
+      wrappingComponentProps: {
+        locale: defaultLocale,
+        messages: messages || defaultMessages,
+      },
+    });
   };
 };
 
@@ -62,31 +56,21 @@ export const shouldHaveInteractionProps = (wrapper) => {
   expect(props.focusable).toBe(true);
 };
 
-export const shallowWithIntl = (node, messages) => {
-  let testIntl = intl;
-
-  if (messages) {
-    const testIntlProvider = new IntlProvider({ locale: 'test', messages }, {});
-
-    testIntl = testIntlProvider.getChildContext().intl;
-  }
-
-  return shallow(
-    nodeWithIntlProp(node),
-    {
-      context: { intl: testIntl },
-    },
-  ).shallow();
-};
-
-export const mountWithIntl = (node, { context, childContextTypes, ...opts } = {}) => mount(
-  nodeWithIntlProp(node),
-  {
-    context: { ...context, intl },
-    childContextTypes: { intl: intlShape, ...childContextTypes },
-    ...opts,
+export const shallowWithIntl = (node, messages) => shallow(node, {
+  wrappingComponent: IntlProvider,
+  wrappingComponentProps: {
+    locale: defaultLocale,
+    messages: messages || defaultMessages,
   },
-);
+});
+
+export const mountWithIntl = (node, messages) => mount(node, {
+  wrappingComponent: IntlProvider,
+  wrappingComponentProps: {
+    locale: defaultLocale,
+    messages: messages || defaultMessages,
+  },
+});
 
 export const compareReduxChange = (reducer, newState) => {
   const initialState = reducer(undefined, {});

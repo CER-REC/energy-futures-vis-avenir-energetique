@@ -1,11 +1,11 @@
 // #region imports
-import React, { useContext, useMemo, useEffect } from 'react';
+import React, { useMemo, useEffect } from 'react';
 import {
   makeStyles, createStyles,
   Grid, Typography, Button, Tooltip,
 } from '@material-ui/core';
 
-import { ConfigContext } from '../../utilities/configContext';
+import useConfig from '../../hooks/useConfig';
 import { CONFIG_LAYOUT, SECTOR_LAYOUT } from '../../constants';
 import { CONFIG_REPRESENTATION } from '../../types';
 // #endregion
@@ -39,7 +39,7 @@ const useStyles = makeStyles(theme => createStyles({
 
 const HorizontalControlBar = () => {
   const classes = useStyles();
-  const { config, setConfig } = useContext(ConfigContext);
+  const { config, setConfig } = useConfig();
   const layout = useMemo(() => CONFIG_LAYOUT[config.mainSelection], [config.mainSelection]);
 
   /**

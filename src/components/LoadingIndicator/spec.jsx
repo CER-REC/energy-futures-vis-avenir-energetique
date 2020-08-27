@@ -1,12 +1,11 @@
 import React from 'react';
-import { shallow } from 'enzyme';
-import { shouldBehaveLikeAComponent } from '../../tests/utilities';
 
+import { mountWithIntl, shouldBehaveLikeAComponent } from '../../tests/utilities';
 import LoadingIndicator from './index';
 
 describe('Components|LoadingIndicator', () => {
   describe('with default props', () => {
-    const wrapper = shallow(<LoadingIndicator />);
+    const wrapper = mountWithIntl(<LoadingIndicator type="api" />);
 
     shouldBehaveLikeAComponent(LoadingIndicator, () => wrapper);
   });
