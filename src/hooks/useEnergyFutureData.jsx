@@ -133,7 +133,7 @@ export default () => {
   const { loading, error, data } = useQuery(query || gql`{ _ }`, {
     variables: {
       scenarios: config.scenarios,
-      iteration: yearIdIterations[config.yearId].id,
+      iteration: yearIdIterations[config.yearId]?.id || '',
       regions: config.provinces,
       // FIXME: config will store it as "total"
       // it should be "total end-use"
