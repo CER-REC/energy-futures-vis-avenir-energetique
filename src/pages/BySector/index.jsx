@@ -1,49 +1,53 @@
 import React from 'react';
-import { ResponsiveLine } from '@nivo/line';
-import data from './data';
-
-const SOURCES = ['electricity', 'oilProducts', 'bio', 'naturalGas', 'coal', 'solarWindGeothermal'];
+import { ResponsiveStream } from '@nivo/stream';
+import useEnergyFutureData from '../../hooks/useEnergyFutureData';
 
 const BySector = () => {
+  const { data } = useEnergyFutureData();
   if (!data) {
     return null;
   }
 
   return (
-    <ResponsiveLine
+    <ResponsiveStream
       data={data}
-      keys={SOURCES}
-      margin={{ top: 50, right: 50, bottom: 50, left: 80 }}
-      xScale={{ type: 'point' }}
-      yScale={{ type: 'linear', min: 0, max: 'auto', stacked: true, reverse: false }}
-      colors={{ scheme: 'nivo' }}
-      enablePoints={false}
-      enableArea
+      keys={Object.keys(data[0])}
+      margin={{
+        top: 50,
+        right: 50,
+        bottom: 50,
+        left: 80,
+      }}
       axisTop={null}
-      axisRight={null}
+      axisRight={{
+        orient: 'right',
+        tickSize: 5,
+        tickPadding: 5,
+        tickRotation: 0,
+      }}
       axisBottom={{
+        orient: 'bottom',
         tickSize: 5,
         tickPadding: 5,
         tickRotation: 0,
-        legendPosition: 'middle',
-        legendOffset: 32,
-        format: year => ((year % 5) ? '' : year),
+        tickValues: [0, 5, 10, 15, 20, 25, 30, 35],
+        format(value) {
+          return value + 2005;
+        },
       }}
-      axisLeft={{
-        tickSize: 5,
-        tickPadding: 5,
-        tickRotation: 0,
-        legendPosition: 'middle',
-        legendOffset: -40,
-      }}
-      enableLabel={false}
-      // labelSkipWidth={12}
-      // labelSkipHeight={12}
-      // labelTextColor={{ from: 'color', modifiers: [ [ 'darker', 1.6 ] ] }}
+      axisLeft={null}
+      curve="linear"
+      offsetType="diverging"
+      colors={{ scheme: 'nivo' }}
+      fillOpacity={0.60}
+      borderColor={{ theme: 'background' }}
+      dotSize={8}
+      dotColor={{ from: 'color' }}
+      dotBorderWidth={2}
+      dotBorderColor={{ from: 'color', modifiers: [['darker', 0.7]] }}
       animate
       motionStiffness={90}
       motionDamping={15}
-      useMesh
     />
   );
 };
