@@ -83,7 +83,7 @@ export const DEFAULT_CONFIG = {
   year: '2019',
   view: 'region', // e.g. region or source
   sector: 'total', // e.g. residential, commercial, industrial, or industrial
-  scenario: 'reference', // e.g. technology, hcp
+  scenario: ['reference'], // e.g. technology, hcp
   provinces: REGION_ORDER,
   provinceOrder: REGION_ORDER,
   sources: SOURCE_ORDER,

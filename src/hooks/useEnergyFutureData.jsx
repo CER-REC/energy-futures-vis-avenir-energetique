@@ -143,7 +143,7 @@ const getQueryVariables = (config) => {
       };
     }
   }
-  return { query: undefined, queryVariables: undefined };
+  return { query: ENERGY_DEMAND, queryVariables: undefined };
 };
 
 // getDefaultUnit returns the default unit that the API returns.
@@ -172,7 +172,10 @@ export default function () {
   const unitConversion = convertUnit(getDefaultUnit(config), config.unit);
 
   if (!query) { return { loading: false, error: undefined, data: [] }; }
-  const { loading, error, data } = useQuery(query, { variables: queryVariables });
+  const { loading, error, data } = useQuery(query, {
+    variables: queryVariables,
+    skip: !queryVariables, // disable GraphQL conditionally
+  });
 
   /*
   TODO: Revisit this logic.

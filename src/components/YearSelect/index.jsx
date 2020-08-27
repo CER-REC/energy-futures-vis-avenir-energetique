@@ -1,11 +1,11 @@
-import React, { useContext, useEffect, useMemo } from 'react';
+import React, { useContext, useMemo } from 'react';
 import {
   makeStyles, createStyles,
   Grid, Typography, Button,
 } from '@material-ui/core';
 
 import { ConfigContext } from '../../utilities/configContext';
-import { CONFIG_LAYOUT, SCENARIO_LAYOUT } from '../../constants';
+import { CONFIG_LAYOUT } from '../../constants';
 import ImgReport from '../../images/report-link.png';
 
 const useStyles = makeStyles(theme => createStyles({
@@ -54,25 +54,6 @@ const YearSelect = () => {
   const { config, setConfig } = useContext(ConfigContext);
 
   /**
-   * Update the config.
-   */
-  const handleConfigUpdate = (field, value) => setConfig({ ...config, [field]: value });
-
-  /**
-   * If the previous selected scenario is no longer available after the year change,
-   * then auto-select the first scenario in the new list.
-   */
-  useEffect(
-    () => {
-      const scenarios = SCENARIO_LAYOUT[config.year] || SCENARIO_LAYOUT.default;
-      if (scenarios.indexOf(config.scenario) < 0) {
-        handleConfigUpdate('scenario', scenarios[0]);
-      }
-    },
-    [config.year], // eslint-disable-line react-hooks/exhaustive-deps
-  );
-
-  /**
    * Memorize the current menu structure based on the config.
    */
   const layoutConfig = useMemo(() => CONFIG_LAYOUT[config.mainSelection], [config.mainSelection]);
@@ -89,7 +70,7 @@ const YearSelect = () => {
             variant={config.year === year ? 'contained' : 'outlined'}
             color="primary"
             size="small"
-            onClick={() => handleConfigUpdate('year', year)}
+            onClick={() => setConfig({ ...config, year })}
             classes={{
               containedPrimary: classes.btnContained,
               outlinedPrimary: classes.btnOutlined,
