@@ -2,15 +2,14 @@ import { SOURCE_COLOR } from "../constants";
 
 export const parseData = {
   'by-sector': (data, unitConversion) => {
-    const filteredData = {};
-    data.forEach((entry) => {
-      if (filteredData[entry.year]) {
-        filteredData[entry.year][entry.source] = entry.value * unitConversion;
-      } else if (entry.source !== 'ALL') {
-        filteredData[entry.year] = { [entry.source]: entry.value * unitConversion };
-      }
-    });
-    return Object.keys(filteredData).map(entry => filteredData[entry]);
+    const processed = (data || []).filter(entry => entry.source !== 'ALL').reduce((result, entry) => ({
+      ...result,
+      [entry.year]: {
+        ...(result[entry.year] || Object.keys(SOURCE_COLOR).reduce((all, key) => ({ ...all, [key]: 0 }), {})),
+        [entry.source]: entry.value * unitConversion,
+      },
+    }), {});
+    return Object.values(processed);
   },
 
   'by-region': (data, unitConversion) => {

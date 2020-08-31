@@ -1,11 +1,12 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles, Paper, Grid, Typography, Button, Slider } from '@material-ui/core';
 import PlayIcon from '@material-ui/icons/PlayCircleOutline';
 import PauseIcon from '@material-ui/icons/PauseCircleOutline';
 import { ResponsiveBubble } from '@nivo/circle-packing';
 
-import { REGION_ORDER } from '../../types';
+import { REGION_ORDER, CONFIG_REPRESENTATION } from '../../types';
+import { SOURCE_NAME } from '../../constants';
 import useConfig from '../../hooks/useConfig';
 
 const useStyles = makeStyles(theme => ({
@@ -61,7 +62,7 @@ const BUBBLE_SIZE_MIN = 10;
 const BUBBLE_SIZE_MAX = 25;
 
 const Tooltip = ({ name, value, unit }) => (
-  <Typography style={{ whiteSpace: 'nowrap' }}>{name}: {(value / 1000).toFixed(2)} k {unit}</Typography>
+  <Typography style={{ whiteSpace: 'nowrap' }}>{name}: {(value / 1000).toFixed(2)} k {CONFIG_REPRESENTATION[unit]}</Typography>
 );
 
 const YEAR_MIN = 2005;
@@ -120,6 +121,8 @@ const Electricity = ({ data }) => {
     return () => clearInterval(timer);
   }, [play]);
 
+  const sources = useCallback((source) => config.sources.map(s => SOURCE_NAME[s]).includes(source), [config.sources]);
+
   const regions = useMemo(() => config.provinces[0] === 'ALL' ? REGION_ORDER : config.provinces, [config]);
 
   const processedData = useMemo(() => {
@@ -138,7 +141,7 @@ const Electricity = ({ data }) => {
         : (totals[province] / (max - min)) * BUBBLE_SIZE_MAX + BUBBLE_SIZE_MIN),
       children: Object.values(data[year][province]),
     }));
-  }, [data, regions, year]);
+  }, [data, regions, year, sources]);
 
   if (!data) {
     return null;

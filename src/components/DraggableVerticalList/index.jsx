@@ -26,14 +26,14 @@ const ColoredItemBox = ({
       height: 36,
       width: 36,
       backgroundColor: theme.palette.common.white,
-      border: `1px solid ${color ? color[600] : theme.palette.secondary.main}`,
+      border: `1px solid ${color[600] || color || theme.palette.secondary.main}`,
       borderRadius: round ? '50%' : 0,
       transition: 'box-shadow .25s ease-in-out',
       '& > p, & > svg': {
         margin: 'auto',
-        color: color ? color[800] : theme.palette.secondary.main,
+        color: color[800] || color || theme.palette.secondary.main,
       },
-      '&.selected': { backgroundColor: color ? color[600] : theme.palette.secondary.main },
+      '&.selected': { backgroundColor: color[600] || color || theme.palette.secondary.main },
       '&.selected > p, &.selected > svg': { color: theme.palette.common.white },
       '&:hover': { boxShadow: theme.shadows[6] },
     },
@@ -76,7 +76,7 @@ ColoredItemBox.propTypes = {
   item: PropTypes.string.isRequired,
   label: PropTypes.string,
   icon: PropTypes.object, // eslint-disable-line react/forbid-prop-types
-  color: PropTypes.object, // eslint-disable-line react/forbid-prop-types
+  color: PropTypes.oneOfType([PropTypes.object, PropTypes.string]), // eslint-disable-line react/forbid-prop-types
   selected: PropTypes.bool,
   clear: PropTypes.bool,
   round: PropTypes.bool,

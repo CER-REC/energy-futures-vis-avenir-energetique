@@ -1,23 +1,27 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { ResponsiveStream } from '@nivo/stream';
-import useEnergyFutureData from '../../hooks/useEnergyFutureData';
+import PropTypes from 'prop-types';
 
-const BySector = () => {
-  const { data } = useEnergyFutureData();
+import { SOURCE_NAME, SOURCE_COLOR } from '../../constants';
+import useConfig from '../../hooks/useConfig';
+
+const BySector = ({ data }) => {
+  const { config } = useConfig();
+
   if (!data) {
     return null;
   }
 
+  const keys = useMemo(() => {
+    const sources = new Set(data.map(entry => Object.keys(entry)).flat());
+    return [...config.sourceOrder].reverse().map(s => SOURCE_NAME[s]).filter(s => sources.has(s));
+  }, [data, config.sourceOrder]);
+
   return (
     <ResponsiveStream
       data={data}
-      keys={Object.keys(data[0])}
-      margin={{
-        top: 50,
-        right: 50,
-        bottom: 50,
-        left: 80,
-      }}
+      keys={keys}
+      margin={{ top: 50, right: 50, bottom: 50, left: 80 }}
       axisTop={null}
       axisRight={{
         orient: 'right',
@@ -31,14 +35,12 @@ const BySector = () => {
         tickPadding: 5,
         tickRotation: 0,
         tickValues: [0, 5, 10, 15, 20, 25, 30, 35],
-        format(value) {
-          return value + 2005;
-        },
+        format: value => value + 2005,
       }}
       axisLeft={null}
       curve="linear"
       offsetType="diverging"
-      colors={{ scheme: 'nivo' }}
+      colors={d => SOURCE_COLOR[keys[d.index]]}
       fillOpacity={0.60}
       borderColor={{ theme: 'background' }}
       dotSize={8}
@@ -50,6 +52,14 @@ const BySector = () => {
       motionDamping={15}
     />
   );
+};
+
+BySector.propTypes = {
+  data: PropTypes.oneOfType([PropTypes.object, PropTypes.arrayOf(PropTypes.object)]),
+};
+
+BySector.defaultProps = {
+  data: undefined,
 };
 
 export default BySector;

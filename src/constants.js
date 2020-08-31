@@ -109,4 +109,18 @@ export const SOURCE_COLOR = {
   COAL: '#8C6639',
   RENEWABLE: '#60984D',
   HYDRO: '#4F67AE',
+  ELECTRICITY: '#7ACBCB',
+};
+/**
+ * TODO: temporary mapping between source names; remove after the ENUM is ready.
+ */
+export const SOURCE_NAME = {
+  oilProducts: 'OIL',
+  nuclear: 'NUCLEAR',
+  bio: 'BIO',
+  naturalGas: 'GAS',
+  coal: 'COAL',
+  solarWindGeothermal: 'RENEWABLE',
+  hydro: 'HYDRO',
+  electricity: 'ELECTRICITY',
 };
