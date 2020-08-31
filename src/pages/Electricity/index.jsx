@@ -3,8 +3,8 @@ import { makeStyles, Paper, Grid, Typography, Button, Slider } from '@material-u
 import PlayIcon from '@material-ui/icons/PlayCircleOutline';
 import PauseIcon from '@material-ui/icons/PauseCircleOutline';
 import { ResponsiveBubble } from '@nivo/circle-packing';
-import { ConfigContext } from '../../utilities/configContext';
 import { REGION_ORDER } from '../../types';
+import useConfig from '../../hooks/useConfig';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -98,7 +98,7 @@ const Bubble = ({ province, data }) => (
 const Electricity = ({ data }) => {
   const classes = useStyles();
 
-  const { config } = useContext(ConfigContext);
+  const { config } = useConfig();
 
   const [year, setYear] = useState(YEAR_MIN);
   const [play, setPlay] = useState(false);
@@ -108,7 +108,7 @@ const Electricity = ({ data }) => {
       if (play) {
         setYear(year => year >= YEAR_MAX ? YEAR_MIN : year += 1);
       }
-    }, 250);
+    }, 500);
     return () => clearInterval(timer);
   }, [play]);
 

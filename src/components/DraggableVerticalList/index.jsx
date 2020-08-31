@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import PropTypes from 'prop-types';
 import {
@@ -8,7 +8,7 @@ import { grey } from '@material-ui/core/colors';
 import ClearIcon from '@material-ui/icons/Clear';
 import DragIcon from '@material-ui/icons/DragIndicator';
 
-import { ConfigContext } from '../../utilities/configContext';
+import useConfig from '../../hooks/useConfig';
 
 const reorder = (list, startIndex, endIndex) => {
   const result = Array.from(list);
@@ -18,7 +18,7 @@ const reorder = (list, startIndex, endIndex) => {
 };
 
 const ColoredItemBox = ({
-  item, label, icon, color, selected, clear, round, ...props
+  item, label, icon, color, selected, clear, round, isDragDisabled, ...props
 }) => {
   const classes = makeStyles(theme => ({
     root: {
@@ -38,9 +38,9 @@ const ColoredItemBox = ({
       '&:hover': { boxShadow: theme.shadows[6] },
     },
     btn: { margin: 'auto' },
-    tooltip: {
+    tooltip: isDragDisabled => ({
       margin: theme.spacing(0, 1),
-      paddingLeft: 0,
+      paddingLeft: isDragDisabled ? 4 : 0,
       fontSize: 10,
       lineHeight: 1,
       color: '#999',
@@ -49,14 +49,14 @@ const ColoredItemBox = ({
       borderRadius: 0,
       boxShadow: theme.shadows[1],
       '& span': { marginLeft: theme.spacing(0.5) },
-    },
-  }))();
+    }),
+  }))(isDragDisabled);
   const Icon = icon;
   return (
     <Tooltip
       title={label && (
         <Grid container alignItems="center" wrap="nowrap">
-          <DragIcon fontSize="small" />
+          {!isDragDisabled && <DragIcon fontSize="small" />}
           <Typography variant="overline">{label}</Typography>
         </Grid>
       )}
@@ -80,6 +80,7 @@ ColoredItemBox.propTypes = {
   selected: PropTypes.bool,
   clear: PropTypes.bool,
   round: PropTypes.bool,
+  isDragDisabled: PropTypes.bool,
 };
 
 ColoredItemBox.defaultProps = {
@@ -89,6 +90,7 @@ ColoredItemBox.defaultProps = {
   selected: false,
   clear: false,
   round: false,
+  isDragDisabled: false,
 };
 
 const useStyles = makeStyles(theme => ({
@@ -136,7 +138,7 @@ const DraggableVerticalList = ({
 }) => {
   const classes = useStyles({ width, dense, disabled });
 
-  const { config } = useContext(ConfigContext);
+  const { config } = useConfig();
 
   const [localItems, setLocalItems] = useState(items || Object.keys(defaultItems));
   const [localItemOrder, setLocalItemOrder] = useState(itemOrder || defaultItemOrder);
@@ -247,6 +249,7 @@ const DraggableVerticalList = ({
                         icon={defaultItems[item].icon}
                         color={defaultItems[item].color}
                         selected={localItems.indexOf(item) > -1}
+                        isDragDisabled={disabled}
                       />
                     </Grid>
                   </>

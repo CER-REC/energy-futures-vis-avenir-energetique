@@ -1,11 +1,12 @@
-import React, { useContext, useEffect } from 'react';
-import PropTypes from 'prop-types';
+import React, { useEffect } from 'react';
 import { ResponsiveBar } from '@nivo/bar';
-import { ConfigContext } from '../../utilities/configContext';
+import PropTypes from 'prop-types';
+
+import useConfig from '../../hooks/useConfig';
 import { REGION_ORDER } from '../../types';
 
 const ByRegion = ({ data }) => {
-  const { config, setConfig } = useContext(ConfigContext);
+  const { config, setConfig } = useConfig();
 
   /**
    * A "hacky" but sufficient way to reselect all regions after

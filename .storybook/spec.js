@@ -9,7 +9,4 @@ jest.doMock('./addon-status', () => jest.fn((storyFnOuter, contextOuter) => {
 // doesn't directly define a test.
 beforeAll(() => {});
 
-// TODO: THIS IGNORES THE WHEEL STORYBOOK TESTS
-initStoryshots({
-  storyKindRegex: /^Components\|(?!Wheel)/,
-});
+initStoryshots();

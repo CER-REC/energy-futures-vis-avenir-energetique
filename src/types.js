@@ -37,15 +37,6 @@ export const CONFIG_REPRESENTATION = {
   thousandCubicMetres: 'km³/d',
   cubicFeet: 'Bcf/d',
   millionCubicMetres: 'Mm³/d',
-
-  reference: 'REFERENCE',
-  technology: 'TECHNOLOGY',
-  highPrice: 'HIGH PRICE',
-  lowPrice: 'LOW PRICE',
-  hcp: 'HIGH CO2 PRICE',
-  constrained: 'CONSTRND',
-  highLng: 'HIGH LNG',
-  noLng: 'NO LNG',
 };
 
 export const REGIONS = {
@@ -80,10 +71,9 @@ export const DEFAULT_CONFIG = {
   page: 'landing', // e.g. by-region, by-sector, electricity, senarios, demand
   mainSelection: 'energyDemand', // e.g. electricityGeneration, oilProduction, gasProduction
   unit: 'petajoules', // e.g. kilobarrelEquivalents, gigawattHours, kilobarrels, thousandCubicMetres, cubicFeet, millionCubicMetres
-  year: '2019',
   view: 'region', // e.g. region or source
   sector: 'total', // e.g. residential, commercial, industrial, or industrial
-  scenario: ['reference'], // e.g. technology, hcp
+  scenarios: [],
   provinces: REGION_ORDER,
   provinceOrder: REGION_ORDER,
   sources: SOURCE_ORDER,

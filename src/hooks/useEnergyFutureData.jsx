@@ -1,7 +1,9 @@
-import { useContext, useMemo, useCallback } from 'react';
+import { useMemo, useCallback } from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
-import { ConfigContext } from '../utilities/configContext';
+
+import useAPI from './useAPI';
+import useConfig from './useConfig';
 import convertUnit from '../utilities/convertUnit';
 import { REGION_ORDER } from '../types';
 
@@ -46,70 +48,38 @@ query ($iteration: ID!, $regions: [Region!], $scenarios: [String!]) {
 }
 `;
 
-const yearToIteration = {
-  2016: 1,
-  '2016*': 2,
-  2017: 3,
-  2018: 4,
-  2019: 5,
-};
+const BY_SECTOR = gql`
+query ($iteration: ID!, $regions: [Region!], $scenarios: [String!], $sectors:[String!], $sources: [EnergySource!]) {
+  resources:energyDemands(iterationIds: [$iteration], regions: $regions, scenarios: $scenarios, sectors: $sectors, sources: $sources) {
+    year
+    value: quantity
+    source
+  }
+}
+`;
 
-// Setup query + query variables
-const getQueryVariables = (config) => {
+const getQuery = (config) => {
   // TODO: Revisit this config.provinces check
   if ((config.page === 'by-region') && (config.provinces)) {
     switch (config.mainSelection) {
       case 'oilProduction':
-        return {
-          query: OIL_PRODUCTIONS,
-          queryVariables: {
-            scenarios: config.scenario,
-            iteration: yearToIteration[config.year],
-            regions: config.provinces,
-          },
-        };
+        return OIL_PRODUCTIONS;
       case 'energyDemand':
-        return {
-          query: ENERGY_DEMAND,
-          queryVariables: {
-            scenarios: config.scenario,
-            iteration: yearToIteration[config.year],
-            regions: config.provinces,
-          },
-        };
+        return ENERGY_DEMAND;
       case 'gasProduction':
-        return {
-          query: GAS_PRODUCTIONS,
-          queryVariables: {
-            scenarios: config.scenario,
-            iteration: yearToIteration[config.year],
-            regions: config.provinces,
-          },
-        };
+        return GAS_PRODUCTIONS;
       case 'electricityGeneration':
-        return {
-          query: ELECTRICITY_GENERATIONS,
-          queryVariables: {
-            scenarios: config.scenario,
-            iteration: yearToIteration[config.year],
-            regions: config.provinces,
-          },
-        };
+        return ELECTRICITY_GENERATIONS;
       default:
         break;
     }
   } else if (config.page === 'electricity') {
-    return {
-      query: ELECTRICITY_GENERATIONS,
-      queryVariables: {
-        scenarios: config.scenario,
-        sources: config.sources,
-        iteration: yearToIteration[config.year],
-        regions: REGION_ORDER,
-      },
-    };
+    return ELECTRICITY_GENERATIONS;
+  } else if ((config.page === 'by-sector') && (config.provinces)) {
+    return BY_SECTOR;
   }
-  return { query: ENERGY_DEMAND, queryVariables: undefined };
+
+  return null;
 };
 
 // getDefaultUnit returns the default unit that the API returns.
@@ -132,13 +102,54 @@ const getDefaultUnit = (config) => {
   }
 };
 
-export default function () {
-  const { config } = useContext(ConfigContext);
-  const { query, queryVariables } = getQueryVariables(config);
-  const defaultUnit = getDefaultUnit(config);
-  const { loading, error, data } = useQuery(query, {
-    variables: queryVariables,
-    skip: !queryVariables, // disable GraphQL conditionally
+export default () => {
+  const { yearIdIterations } = useAPI();
+  const { config } = useConfig();
+  let query = getQuery(config);
+  const unitConversion = convertUnit(getDefaultUnit(config), config.unit);
+
+  const regions = useMemo(
+    () => (config.page === 'electricity' && config.provinces[0] === 'ALL') ? REGION_ORDER : config.provinces,
+    [config.page, config.provinces],
+  );
+
+  // #region Enum Correction
+  // TODO: fix the config data to match the enums then remove this next part
+  // and replace correctedSources with config.sources
+  const correctedSources = [...config.sources];
+
+  if ((config.page === 'by-sector') && (config.provinces)) {
+    if (correctedSources.find(item => item === 'solarWindGeothermal')) {
+      correctedSources[correctedSources.indexOf('solarWindGeothermal')] = 'renewable';
+    }
+    if (correctedSources.find(item => item === 'oilProducts')) {
+      correctedSources[correctedSources.indexOf('oilProducts')] = 'oil';
+    }
+    if (correctedSources.find(item => item === 'naturalGas')) {
+      correctedSources[correctedSources.indexOf('naturalGas')] = 'gas';
+    }
+    // This one removes nuclear because it shouldnt even be a source option
+    if (correctedSources.find(item => item === 'nuclear')) {
+      correctedSources.splice(correctedSources.indexOf('nuclear'), 1);
+    }
+    if (!correctedSources.length) {
+      query = null;
+    }
+  }
+  // #endregion
+
+  // A GraphQL document node is needed even if skipping is specified
+  const { loading, error, data } = useQuery(query || gql`{ _ }`, {
+    variables: {
+      scenarios: config.scenarios,
+      iteration: yearIdIterations[config.yearId]?.id || '',
+      regions,
+      // FIXME: config will store it as "total"
+      // it should be "total end-use"
+      sectors: config.sector === 'total' ? 'total end-use' : config.sector,
+      sources: correctedSources,
+    },
+    skip: !query,
   });
 
   /*
@@ -151,8 +162,8 @@ export default function () {
   */
   const configFilter = useCallback(
     row => config.provinces.indexOf(row.province) > -1
-      && (!row.scenario || row.scenario.toLowerCase() === config.scenario),
-    [config.provinces, config.scenario],
+      && (!row.scenario || row.scenarios === config.scenarios),
+    [config.provinces, config.scenarios],
   );
 
   const processedData = useMemo(() => {
@@ -160,25 +171,48 @@ export default function () {
       return data;
     }
 
-    const filteredData = (energyData) => {
-      const byYear = energyData
-        .filter(configFilter)
-        .reduce((accu, curr) => {
-          const result = { ...accu };
-          if (!result[curr.year]) {
-            result[curr.year] = {};
-          }
-          if (!result[curr.year][curr.province]) {
-            result[curr.year][curr.province] = 0;
-          }
-          result[curr.year][curr.province] += (curr.value * convertUnit(defaultUnit, config.unit));
-          return result;
-        }, {});
-      return Object.keys(byYear).map(year => ({ year, ...byYear[year] }));
-    };
+    if (config.page === 'by-sector') {
+      const filteredData = {};
 
-    return config.page === 'electricity' ? data.resources : filteredData(data.resources);
-  }, [config.unit, configFilter, data, defaultUnit]);
+      data.resources.forEach((entry) => {
+        if (filteredData[entry.year]) {
+          filteredData[entry.year][entry.source] = entry.value * unitConversion;
+        } else if (entry.source !== 'ALL') {
+          filteredData[entry.year] = { [entry.source]: entry.value * unitConversion };
+        }
+      });
+
+      return Object.keys(filteredData).map(entry => filteredData[entry]);
+    }
+
+    if (config.page === 'by-region') {
+      const filteredData = (energyData) => {
+        const byYear = energyData
+          .filter(configFilter)
+          .reduce((accu, curr) => {
+            const result = { ...accu };
+            if (!result[curr.year]) {
+              result[curr.year] = {};
+            }
+            if (!result[curr.year][curr.province]) {
+              result[curr.year][curr.province] = 0;
+            }
+            result[curr.year][curr.province] += (
+              curr.value * unitConversion
+            );
+            return result;
+          }, {});
+        return Object.keys(byYear).map(year => ({ year, ...byYear[year] }));
+      };
+      return filteredData(data.resources);
+    }
+
+    if (config.page === 'electricity') {
+      return data.resources;
+    }
+
+    return undefined;
+  }, [config.page, configFilter, data, unitConversion]);
 
   return { loading, error, data: processedData };
-}
+};
