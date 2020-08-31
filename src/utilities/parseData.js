@@ -1,11 +1,12 @@
-import { SOURCE_COLOR } from "../constants";
+import { SOURCE_COLOR } from '../constants';
 
 export const parseData = {
   'by-sector': (data, unitConversion) => {
+    const DEFAULT = Object.keys(SOURCE_COLOR).reduce((all, key) => ({ ...all, [key]: 0 }), {});
     const processed = (data || []).filter(entry => entry.source !== 'ALL').reduce((result, entry) => ({
       ...result,
       [entry.year]: {
-        ...(result[entry.year] || Object.keys(SOURCE_COLOR).reduce((all, key) => ({ ...all, [key]: 0 }), {})),
+        ...(result[entry.year] || DEFAULT),
         [entry.source]: entry.value * unitConversion,
       },
     }), {});
@@ -52,12 +53,16 @@ export const parseData = {
         ...result,
         [entry.year]: [...(result[entry.year] || []), entry],
       }), {});
-    Object.keys(dataGroupedByYear).map(year => {
+    Object.keys(dataGroupedByYear).forEach((year) => {
       dataGroupedByYear[year] = [...dataGroupedByYear[year]].reduce((result, entry) => ({
         ...result,
         [entry.province]: {
           ...result[entry.province],
-          [entry.source]: { name: entry.source, color: SOURCE_COLOR[entry.source], value: entry.value * unitConversion },
+          [entry.source]: {
+            name: entry.source,
+            color: SOURCE_COLOR[entry.source],
+            value: entry.value * unitConversion,
+          },
         },
       }), {});
     });

@@ -6,7 +6,7 @@ import useAPI from './useAPI';
 import useConfig from './useConfig';
 import convertUnit from '../utilities/convertUnit';
 import { REGION_ORDER } from '../types';
-import { parseData } from '../utilities/parseData';
+import { parseData, NOOP } from '../utilities/parseData';
 
 // Some parts of this file are not very DRY in anticipation of changes
 // to the individual queries
@@ -122,10 +122,12 @@ export default () => {
   let query = getQuery(config);
   const unitConversion = convertUnit(getDefaultUnit(config), config.unit);
 
-  const regions = useMemo(
-    () => (config.page === 'electricity' && config.provinces[0] === 'ALL') ? REGION_ORDER : config.provinces,
-    [config.page, config.provinces],
-  );
+  const regions = useMemo(() => {
+    if (config.page === 'electricity' && config.provinces[0] === 'ALL') {
+      return REGION_ORDER;
+    }
+    return config.provinces;
+  }, [config.page, config.provinces]);
 
   // #region Enum Correction
   // TODO: fix the config data to match the enums then remove this next part

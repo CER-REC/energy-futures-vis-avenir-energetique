@@ -38,9 +38,9 @@ const ColoredItemBox = ({
       '&:hover': { boxShadow: theme.shadows[6] },
     },
     btn: { margin: 'auto' },
-    tooltip: isDragDisabled => ({
+    tooltip: disabled => ({
       margin: theme.spacing(0, 1),
-      paddingLeft: isDragDisabled ? 4 : 0,
+      paddingLeft: disabled ? 4 : 0,
       fontSize: 10,
       lineHeight: 1,
       color: '#999',
@@ -75,8 +75,10 @@ const ColoredItemBox = ({
 ColoredItemBox.propTypes = {
   item: PropTypes.string.isRequired,
   label: PropTypes.string,
-  icon: PropTypes.object, // eslint-disable-line react/forbid-prop-types
-  color: PropTypes.oneOfType([PropTypes.object, PropTypes.string]), // eslint-disable-line react/forbid-prop-types
+  // eslint-disable-next-line react/forbid-prop-types
+  icon: PropTypes.object,
+  // eslint-disable-next-line react/forbid-prop-types
+  color: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
   selected: PropTypes.bool,
   clear: PropTypes.bool,
   round: PropTypes.bool,

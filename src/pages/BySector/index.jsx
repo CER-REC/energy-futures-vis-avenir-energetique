@@ -8,14 +8,14 @@ import useConfig from '../../hooks/useConfig';
 const BySector = ({ data }) => {
   const { config } = useConfig();
 
+  const keys = useMemo(() => {
+    const sources = new Set((data || []).map(entry => Object.keys(entry)).flat());
+    return [...config.sourceOrder].reverse().map(s => SOURCE_NAME[s]).filter(s => sources.has(s));
+  }, [data, config.sourceOrder]);
+
   if (!data) {
     return null;
   }
-
-  const keys = useMemo(() => {
-    const sources = new Set(data.map(entry => Object.keys(entry)).flat());
-    return [...config.sourceOrder].reverse().map(s => SOURCE_NAME[s]).filter(s => sources.has(s));
-  }, [data, config.sourceOrder]);
 
   return (
     <ResponsiveStream

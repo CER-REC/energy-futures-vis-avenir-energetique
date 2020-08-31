@@ -1,12 +1,11 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles, Paper, Grid, Typography, Button, Slider } from '@material-ui/core';
 import PlayIcon from '@material-ui/icons/PlayCircleOutline';
 import PauseIcon from '@material-ui/icons/PauseCircleOutline';
 import { ResponsiveBubble } from '@nivo/circle-packing';
 
-import { REGION_ORDER, CONFIG_REPRESENTATION } from '../../types';
-import { SOURCE_NAME } from '../../constants';
+import { CONFIG_REPRESENTATION } from '../../types';
 import useConfig from '../../hooks/useConfig';
 
 const useStyles = makeStyles(theme => ({
@@ -61,9 +60,20 @@ const REGION_LOC = {
 const BUBBLE_SIZE_MIN = 10;
 const BUBBLE_SIZE_MAX = 25;
 
+/**
+ * Rendering bubble tooltips.
+ */
 const Tooltip = ({ name, value, unit }) => (
-  <Typography style={{ whiteSpace: 'nowrap' }}>{name}: {(value / 1000).toFixed(2)} k {CONFIG_REPRESENTATION[unit]}</Typography>
+  <Typography style={{ whiteSpace: 'nowrap' }}>
+    {name}: {(value / 1000).toFixed(2)} k {CONFIG_REPRESENTATION[unit]}
+  </Typography>
 );
+
+Tooltip.propTypes = {
+  name: PropTypes.string.isRequired,
+  value: PropTypes.number.isRequired,
+  unit: PropTypes.string.isRequired,
+};
 
 const YEAR_MIN = 2005;
 const YEAR_MAX = 2040;
@@ -94,13 +104,13 @@ const Bubble = ({ province, data, unit }) => (
 
 Bubble.propTypes = {
   province: PropTypes.string,
-  value: PropTypes.number,
+  data: PropTypes.oneOfType([PropTypes.object, PropTypes.arrayOf(PropTypes.object)]),
   unit: PropTypes.string,
 };
 
 Bubble.defaultProps = {
   province: '',
-  value: 0,
+  data: undefined,
   unit: '',
 };
 
@@ -112,23 +122,31 @@ const Electricity = ({ data }) => {
   const [year, setYear] = useState(YEAR_MIN);
   const [play, setPlay] = useState(false);
 
+  /**
+   * A timer for auto-play.
+   */
   useEffect(() => {
     const timer = setInterval(() => {
       if (play) {
-        setYear(year => year >= YEAR_MAX ? YEAR_MIN : year += 1);
+        setYear(y => (y >= YEAR_MAX ? YEAR_MIN : y + 1));
       }
     }, 500);
     return () => clearInterval(timer);
   }, [play]);
 
-  const sources = useCallback((source) => config.sources.map(s => SOURCE_NAME[s]).includes(source), [config.sources]);
-
-  const regions = useMemo(() => config.provinces[0] === 'ALL' ? REGION_ORDER : config.provinces, [config]);
-
+  /**
+   * Post-process for determining bubble sizes and positions.
+   */
   const processedData = useMemo(() => {
+    if (!data || !data[year]) {
+      return undefined;
+    }
+
     const totals = Object.keys(data[year]).reduce((result, province) => ({
       ...result,
-      [province]: Object.values(data[year][province]).map(entry => entry.value).reduce((a, b) => a + b),
+      [province]: Object.values(data[year][province])
+        .map(entry => entry.value)
+        .reduce((a, b) => a + b),
     }), {});
 
     const max = Math.max(...Object.values(totals));
@@ -141,7 +159,7 @@ const Electricity = ({ data }) => {
         : (totals[province] / (max - min)) * BUBBLE_SIZE_MAX + BUBBLE_SIZE_MIN),
       children: Object.values(data[year][province]),
     }));
-  }, [data, regions, year, sources]);
+  }, [data, year]);
 
   if (!data) {
     return null;
@@ -151,16 +169,19 @@ const Electricity = ({ data }) => {
     <div className={classes.root}>
       <Typography variant="h3" color="primary" className={classes.year}>{`${year} `}</Typography>
 
-      {processedData.map(data => (
-        <div key={`bubble-${data.name}`} style={{
-          height: data.size === Number.POSITIVE_INFINITY ? '80%' : `${data.size * 8}px`,
-          width: data.size === Number.POSITIVE_INFINITY ? '80%' : `${data.size * 8}px`,
-          top: data.size === Number.POSITIVE_INFINITY ? '10%' : REGION_LOC[data.name].top,
-          left: data.size === Number.POSITIVE_INFINITY ? '10%' : REGION_LOC[data.name].left,
-        }}>
-          <Bubble province={data.name} data={data.children} unit={config.unit} />
+      {processedData.map(entry => (
+        <div
+          key={`bubble-${entry.name}`}
+          style={{
+            height: entry.size === Number.POSITIVE_INFINITY ? '80%' : `${entry.size * 8}px`,
+            width: entry.size === Number.POSITIVE_INFINITY ? '80%' : `${entry.size * 8}px`,
+            top: entry.size === Number.POSITIVE_INFINITY ? '10%' : REGION_LOC[entry.name].top,
+            left: entry.size === Number.POSITIVE_INFINITY ? '10%' : REGION_LOC[entry.name].left,
+          }}
+        >
+          <Bubble province={entry.name} data={entry.children} unit={config.unit} />
           <Paper square elevation={0} className={classes.label}>
-            <Typography>{data.name}</Typography>
+            <Typography>{entry.name}</Typography>
           </Paper>
         </div>
       ))}
@@ -182,7 +203,6 @@ const Electricity = ({ data }) => {
             onChange={(_, value) => value && setYear(value)}
             aria-labelledby="year select slider"
             aria-valuetext="current selected year"
-            valueLabelDisplay="auto"
             step={1}
             marks={MARKS}
             min={YEAR_MIN}
