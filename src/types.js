@@ -5,8 +5,8 @@ import GasIcon from '@material-ui/icons/LocalGasStation';
 import CoalIcon from '@material-ui/icons/OutdoorGrillOutlined';
 import WindIcon from '@material-ui/icons/ToysOutlined';
 import BioIcon from '@material-ui/icons/EcoOutlined';
-import NuclearIcon from '@material-ui/icons/PanoramaVerticalOutlined';
-import HydroIcon from '@material-ui/icons/Waves';
+// import NuclearIcon from '@material-ui/icons/PanoramaVerticalOutlined';
+// import HydroIcon from '@material-ui/icons/Waves';
 
 import {
   red, purple, deepPurple, blue, lightBlue, teal, green,

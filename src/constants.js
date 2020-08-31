@@ -124,3 +124,17 @@ export const SOURCE_NAME = {
   hydro: 'HYDRO',
   electricity: 'ELECTRICITY',
 };
+
+/**
+ * TODO: replace it with real colors from UI designers.
+ */
+export const SCENARIO_COLOR = {
+  Reference: '#AAA',
+  Technology: '#3692FA',
+  'Higher Carbon Price': '#0B3CB4',
+  'High Price': '#6C5AEB',
+  'Low Price': '#082346',
+  Constrained: '#333333',
+  'High LNG': '#2B6762',
+  'No LNG': '#3692FA',
+};
