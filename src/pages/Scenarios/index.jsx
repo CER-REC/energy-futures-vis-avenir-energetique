@@ -1,8 +1,8 @@
 import React from 'react';
 import { ResponsiveLine } from '@nivo/line';
-import data from './data';
+import PropTypes from 'prop-types';
 
-const Scenarios = () => {
+const Scenarios = ({ data }) => {
   if (!data) {
     return null;
   }
@@ -10,11 +10,14 @@ const Scenarios = () => {
   return (
     <ResponsiveLine
       data={data}
+      curve="cardinal"
+      areaOpacity={0.05}
+      enableArea
       margin={{ top: 50, right: 50, bottom: 50, left: 80 }}
       xScale={{ type: 'point' }}
       yScale={{ type: 'linear', min: 0, max: 'auto', stacked: true, reverse: false }}
       colors={{ scheme: 'nivo' }}
-      pointSize={10}
+      pointSize={8}
       pointColor={{ theme: 'background' }}
       pointBorderWidth={2}
       pointBorderColor={{ from: 'serieColor' }}
@@ -38,15 +41,20 @@ const Scenarios = () => {
         legendOffset: -40,
       }}
       enableLabel={false}
-      // labelSkipWidth={12}
-      // labelSkipHeight={12}
-      // labelTextColor={{ from: 'color', modifiers: [ [ 'darker', 1.6 ] ] }}
       animate
       motionStiffness={90}
       motionDamping={15}
       useMesh
     />
   );
+};
+
+Scenarios.propTypes = {
+  data: PropTypes.oneOfType([PropTypes.object, PropTypes.arrayOf(PropTypes.object)]),
+};
+
+Scenarios.defaultProps = {
+  data: undefined,
 };
 
 export default Scenarios;

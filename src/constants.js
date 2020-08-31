@@ -100,3 +100,13 @@ export const SECTOR_LAYOUT = {
     icon: TransportIcon,
   },
 };
+
+export const SOURCE_COLOR = {
+  OIL: '#B56696',
+  NUCLEAR: '#CBCA44',
+  BIO: '#8468A9',
+  GAS: '#D5673E',
+  COAL: '#8C6639',
+  RENEWABLE: '#60984D',
+  HYDRO: '#4F67AE',
+};
