@@ -14,7 +14,7 @@ const Scenarios = ({ data }) => {
       curve="cardinal"
       areaOpacity={0.15}
       enableArea
-      margin={{ top: 50, right: 50, bottom: 50, left: 80 }}
+      margin={{ top: 50, right: 50, bottom: 50, left: 50 }}
       xScale={{ type: 'point' }}
       yScale={{ type: 'linear', min: 0, max: 'auto', stacked: true, reverse: false }}
       colors={d => SCENARIO_COLOR[d.id] || '#AAA'}
@@ -25,7 +25,7 @@ const Scenarios = ({ data }) => {
       pointLabel="y"
       pointLabelYOffset={-12}
       axisTop={null}
-      axisRight={null}
+      axisLeft={null}
       axisBottom={{
         tickSize: 5,
         tickPadding: 5,
@@ -34,7 +34,7 @@ const Scenarios = ({ data }) => {
         legendOffset: 32,
         format: year => ((year % 5) ? '' : year),
       }}
-      axisLeft={{
+      axisRight={{
         tickSize: 5,
         tickPadding: 5,
         tickRotation: 0,

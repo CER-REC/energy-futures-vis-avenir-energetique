@@ -21,7 +21,7 @@ const BySector = ({ data }) => {
     <ResponsiveStream
       data={data}
       keys={keys}
-      margin={{ top: 50, right: 50, bottom: 50, left: 80 }}
+      margin={{ top: 50, right: 50, bottom: 50, left: 50 }}
       axisTop={null}
       axisRight={{
         orient: 'right',
@@ -34,7 +34,7 @@ const BySector = ({ data }) => {
         tickSize: 5,
         tickPadding: 5,
         tickRotation: 0,
-        tickValues: [0, 5, 10, 15, 20, 25, 30, 35],
+        tickValues: [0, 5, 10, 15, 20, 25, 30, 35, 40, 45],
         format: value => value + 2005,
       }}
       axisLeft={null}

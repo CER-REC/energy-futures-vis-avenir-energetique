@@ -32,12 +32,12 @@ const ByRegion = ({ data }) => {
       data={data}
       keys={keys}
       indexBy="year"
-      margin={{ top: 50, right: 0, bottom: 50, left: 80 }}
+      margin={{ top: 50, right: 50, bottom: 50, left: 50 }}
       padding={0.1}
       colors={d => REGIONS[d.id].color[600]}
       borderColor={{ from: 'color', modifiers: [['darker', 1.6]] }}
       axisTop={null}
-      axisRight={null}
+      axisLeft={null}
       axisBottom={{
         tickSize: 5,
         tickPadding: 5,
@@ -46,7 +46,7 @@ const ByRegion = ({ data }) => {
         legendOffset: 32,
         format: year => ((year % 5) ? '' : year),
       }}
-      axisLeft={{
+      axisRight={{
         tickSize: 5,
         tickPadding: 5,
         tickRotation: 0,
