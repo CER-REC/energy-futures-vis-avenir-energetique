@@ -47,7 +47,7 @@ export const REGIONS = {
   PE: { color: blue, label: 'Prince Edward Island' },
   ON: { color: lightBlue, label: 'Ontario' },
   NU: { color: teal, label: 'Nunavut' },
-  NT: { color: green, label: 'Alberta' },
+  NT: { color: green, label: 'Northwest Territories' },
   NS: { color: lightGreen, label: 'Nova Scotia' },
   NL: { color: lime, label: 'Newfoundland and Labrador' },
   NB: { color: yellow, label: 'New Brunswick' },
