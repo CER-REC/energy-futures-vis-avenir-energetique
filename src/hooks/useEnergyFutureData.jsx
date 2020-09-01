@@ -165,7 +165,7 @@ export default () => {
       sectors: config.sector === 'total' ? 'total end-use' : config.sector,
       sources: correctedSources,
     },
-    skip: !query,
+    skip: !query || !regions || regions.length === 0, // invalid request; do nothing
   });
 
   const processedData = useMemo(() => {
