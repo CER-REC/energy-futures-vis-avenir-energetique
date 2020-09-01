@@ -16,7 +16,7 @@ const BySector = () => {
         top: 50,
         right: 50,
         bottom: 50,
-        left: 80,
+        left: 50,
       }}
       axisTop={null}
       axisRight={{
@@ -30,7 +30,7 @@ const BySector = () => {
         tickSize: 5,
         tickPadding: 5,
         tickRotation: 0,
-        tickValues: [0, 5, 10, 15, 20, 25, 30, 35],
+        tickValues: [0, 5, 10, 15, 20, 25, 30, 35, 40, 45],
         format(value) {
           return value + 2005;
         },
