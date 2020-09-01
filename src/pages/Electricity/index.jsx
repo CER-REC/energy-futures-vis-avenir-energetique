@@ -6,6 +6,7 @@ import PauseIcon from '@material-ui/icons/PauseCircleOutline';
 import { ResponsiveBubble } from '@nivo/circle-packing';
 
 import { CONFIG_REPRESENTATION } from '../../types';
+import { formatUnitAbbreviation } from '../../utilities/convertUnit';
 import useConfig from '../../hooks/useConfig';
 
 const useStyles = makeStyles(theme => ({
@@ -65,7 +66,7 @@ const BUBBLE_SIZE_MAX = 25;
  */
 const Tooltip = ({ name, value, unit }) => (
   <Typography style={{ whiteSpace: 'nowrap' }}>
-    {name}: {(value / 1000).toFixed(2)} k {CONFIG_REPRESENTATION[unit]}
+    {name}: {formatUnitAbbreviation(value)} {CONFIG_REPRESENTATION[unit]}
   </Typography>
 );
 

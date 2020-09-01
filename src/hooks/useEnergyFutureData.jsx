@@ -4,7 +4,7 @@ import gql from 'graphql-tag';
 
 import useAPI from './useAPI';
 import useConfig from './useConfig';
-import convertUnit from '../utilities/convertUnit';
+import { convertUnit } from '../utilities/convertUnit';
 import { REGION_ORDER } from '../types';
 import { parseData, NOOP } from '../utilities/parseData';
 
