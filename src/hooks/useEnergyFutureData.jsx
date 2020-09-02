@@ -74,7 +74,7 @@ query ($iteration: ID!, $regions: [Region!], $scenarios: [String!]) {
 
 const getQuery = (config) => {
   // TODO: Revisit this config.provinces check
-  if (['by-region', 'scenarios'].includes(config.page) && config.provinces) {
+  if (['by-region', 'scenarios'].includes(config.page)) {
     switch (config.mainSelection) {
       case 'oilProduction':
         return OIL_PRODUCTIONS;
@@ -89,7 +89,7 @@ const getQuery = (config) => {
     }
   } else if (config.page === 'electricity') {
     return ELECTRICITY_GENERATIONS_SOURCE;
-  } else if (config.page === 'by-sector' && config.provinces) {
+  } else if (config.page === 'by-sector') {
     return BY_SECTOR;
   }
 
