@@ -67,8 +67,8 @@ export const SOURCES = {
   hydro: { label: 'Hydro', icon: HydroIcon, color: '#4F67AE' },
   // electricity: { label: 'Electricity', icon: ElectricityIcon, color: '#7ACBCB' },
 };
-export const SOURCE_ORDER = ['oilProducts', 'bio', 'naturalGas', 'coal', 'solarWindGeothermal'];
-export const ELECTRICITY_SOURCE_ORDER = [...SOURCE_ORDER, 'nuclear', 'hydro'];
+export const SOURCE_ORDER = ['oilProducts', 'bio', 'naturalGas', 'coal'];
+export const ELECTRICITY_SOURCE_ORDER = [...SOURCE_ORDER, 'solarWindGeothermal', 'nuclear', 'hydro'];
 
 export const DEFAULT_CONFIG = {
   page: 'landing', // e.g. by-region, by-sector, electricity, senarios, demand
