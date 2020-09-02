@@ -1,7 +1,6 @@
 import React, { useMemo } from 'react';
 import { ResponsiveStream } from '@nivo/stream';
 import PropTypes from 'prop-types';
-
 import { SOURCE_NAME, SOURCE_COLOR } from '../../constants';
 import useConfig from '../../hooks/useConfig';
 
@@ -34,8 +33,7 @@ const BySector = ({ data }) => {
         tickSize: 5,
         tickPadding: 5,
         tickRotation: 0,
-        tickValues: [0, 5, 10, 15, 20, 25, 30, 35, 40, 45],
-        format: value => value + 2005,
+        format: value => ((value % 5) ? '' : value + 2005),
       }}
       axisLeft={null}
       curve="linear"
