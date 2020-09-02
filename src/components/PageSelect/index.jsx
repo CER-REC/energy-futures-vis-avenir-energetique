@@ -5,7 +5,6 @@ import {
   Grid, ButtonBase, Typography, Tooltip,
 } from '@material-ui/core';
 import { PAGES, CONFIG_LAYOUT, SECTOR_LAYOUT } from '../../constants';
-import { SOURCE_ORDER, ELECTRICITY_SOURCE_ORDER } from '../../types';
 import useConfig from '../../hooks/useConfig';
 
 import {
@@ -80,16 +79,6 @@ const PageSelect = () => {
     () => {
       if (config.page !== pages[0]) {
         toFront(pages, config.page);
-      }
-      if (config.page === 'by-sector') {
-        setConfig({ ...config, sources: SOURCE_ORDER, sourceOrder: SOURCE_ORDER });
-      }
-      if (config.page === 'electricity') {
-        setConfig({
-          ...config,
-          sources: ELECTRICITY_SOURCE_ORDER,
-          sourceOrder: ELECTRICITY_SOURCE_ORDER,
-        });
       }
     },
     [config.page], // eslint-disable-line react-hooks/exhaustive-deps
