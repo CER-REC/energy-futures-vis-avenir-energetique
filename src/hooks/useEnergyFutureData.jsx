@@ -62,8 +62,8 @@ query ($iteration: ID!, $regions: [Region!], $scenarios: [String!], $sectors:[St
 `;
 
 const ELECTRICITY_GENERATIONS_SOURCE = gql`
-query ($iteration: ID!, $regions: [Region!], $scenarios: [String!]) {
-  resources:electricityGenerations(iterationIds: [$iteration], regions: $regions, scenarios: $scenarios, sources: []) {
+query ($iteration: ID!, $regions: [Region!], $scenarios: [String!], $sources: [ElectricitySource!]) {
+  resources:electricityGenerations(iterationIds: [$iteration], regions: $regions, scenarios: $scenarios, sources: $sources) {
     province: region
     year
     source
@@ -73,7 +73,6 @@ query ($iteration: ID!, $regions: [Region!], $scenarios: [String!]) {
 `;
 
 const getQuery = (config) => {
-  // TODO: Revisit this config.provinces check
   if (['by-region', 'scenarios'].includes(config.page)) {
     switch (config.mainSelection) {
       case 'oilProduction':
@@ -92,7 +91,6 @@ const getQuery = (config) => {
   } else if (config.page === 'by-sector') {
     return BY_SECTOR;
   }
-
   return null;
 };
 
@@ -119,9 +117,12 @@ const getDefaultUnit = (config) => {
 export default () => {
   const { yearIdIterations } = useAPI();
   const { config } = useConfig();
-  let query = getQuery(config);
+  const query = getQuery(config);
   const unitConversion = convertUnit(getDefaultUnit(config), config.unit);
 
+  /**
+   * FIXME: this is a temporary special case for the Electricity page.
+   */
   const regions = useMemo(() => {
     if (config.page === 'electricity' && config.provinces[0] === 'ALL') {
       return REGION_ORDER;
@@ -132,9 +133,11 @@ export default () => {
   // #region Enum Correction
   // TODO: fix the config data to match the enums then remove this next part
   // and replace correctedSources with config.sources
-  const correctedSources = [...config.sources];
-
-  if ((config.page === 'by-sector') && (config.provinces)) {
+  const sources = useMemo(() => {
+    if (config.page !== 'by-sector' && config.page !== 'electricity') {
+      return config.sources;
+    }
+    const correctedSources = [...config.sources];
     if (correctedSources.find(item => item === 'solarWindGeothermal')) {
       correctedSources[correctedSources.indexOf('solarWindGeothermal')] = 'renewable';
     }
@@ -144,14 +147,15 @@ export default () => {
     if (correctedSources.find(item => item === 'naturalGas')) {
       correctedSources[correctedSources.indexOf('naturalGas')] = 'gas';
     }
-    // This one removes nuclear because it shouldnt even be a source option
-    if (correctedSources.find(item => item === 'nuclear')) {
+    // Removes nuclear and hydro because they are not in EnergySource
+    if (config.page === 'by-sector' && correctedSources.find(item => item === 'nuclear')) {
       correctedSources.splice(correctedSources.indexOf('nuclear'), 1);
     }
-    if (!correctedSources.length) {
-      query = null;
+    if (config.page === 'by-sector' && correctedSources.find(item => item === 'hydro')) {
+      correctedSources.splice(correctedSources.indexOf('hydro'), 1);
     }
-  }
+    return correctedSources;
+  }, [config.page, config.sources]);
   // #endregion
 
   // A GraphQL document node is needed even if skipping is specified
@@ -163,9 +167,13 @@ export default () => {
       // FIXME: config will store it as "total"
       // it should be "total end-use"
       sectors: config.sector === 'total' ? 'total end-use' : config.sector,
-      sources: correctedSources,
+      sources,
     },
-    skip: !query || !regions || regions.length === 0, // invalid request; do nothing
+    // do nothing if the request is invalid
+    skip: !query
+      || !regions || regions.length === 0
+      || !sources || sources.length === 0
+      || !config.scenarios || config.scenarios.length === 0,
   });
 
   const processedData = useMemo(() => {

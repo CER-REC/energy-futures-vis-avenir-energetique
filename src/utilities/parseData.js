@@ -32,14 +32,16 @@ export const parseData = {
     return Object.keys(byYear).map(year => ({ year, ...byYear[year] }));
   },
 
-  scenarios: (data, unitConversion) => {
-    const processed = data.reduce((result, entry) => ({
-      ...result,
-      [entry.scenario]: [
-        ...result[entry.scenario] || [],
-        { x: entry.year, y: entry.value * unitConversion },
-      ],
-    }), {});
+  scenarios: (data, unitConversion, regions) => {
+    const processed = data
+      .filter(entry => entry.province === regions[0]) // Scenarios chart only take single region
+      .reduce((result, entry) => ({
+        ...result,
+        [entry.scenario]: [
+          ...result[entry.scenario] || [],
+          { x: entry.year, y: entry.value * unitConversion },
+        ],
+      }), {});
     return Object.keys(processed).map(scenario => ({
       id: scenario,
       data: processed[scenario],
