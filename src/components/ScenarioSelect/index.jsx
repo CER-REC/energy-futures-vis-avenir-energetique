@@ -8,6 +8,7 @@ import {
 
 import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
+import { SCENARIO_COLOR } from '../../constants';
 
 const useStyles = makeStyles(theme => createStyles({
   root: {
@@ -22,20 +23,6 @@ const useStyles = makeStyles(theme => createStyles({
     borderRadius: 0,
   },
 }));
-
-/**
- * TODO: replace it with
- * 1) real colors from UI designers.
- */
-const SCENARIO_COLOR = {
-  Technology: '#3692FA',
-  'Higher Carbon Price': '#0B3CB4',
-  'High Price': '#6C5AEB',
-  'Low Price': '#082346',
-  Constrained: '#333333',
-  'High LNG': '#2B6762',
-  'No LNG': '#3692FA',
-};
 
 const ScenarioSelect = ({ multiSelect }) => {
   const classes = useStyles();

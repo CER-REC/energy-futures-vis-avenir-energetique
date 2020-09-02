@@ -1,9 +1,9 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { ResponsiveBar } from '@nivo/bar';
 import PropTypes from 'prop-types';
 
+import { REGIONS, REGION_ORDER } from '../../types';
 import useConfig from '../../hooks/useConfig';
-import { REGION_ORDER } from '../../types';
 
 const ByRegion = ({ data }) => {
   const { config, setConfig } = useConfig();
@@ -18,6 +18,11 @@ const ByRegion = ({ data }) => {
     }
   }, [config, setConfig]);
 
+  /**
+   * Determine the region order shown in the stacked bar chart.
+   */
+  const keys = useMemo(() => [...config.provinceOrder].reverse(), [config.provinceOrder]);
+
   if (!data) {
     return null;
   }
@@ -25,14 +30,14 @@ const ByRegion = ({ data }) => {
   return (
     <ResponsiveBar
       data={data}
-      keys={config.provinces}
+      keys={keys}
       indexBy="year"
-      margin={{ top: 50, right: 0, bottom: 50, left: 80 }}
+      margin={{ top: 50, right: 50, bottom: 50, left: 50 }}
       padding={0.1}
-      colors={{ scheme: 'nivo' }}
+      colors={d => REGIONS[d.id].color[600]}
       borderColor={{ from: 'color', modifiers: [['darker', 1.6]] }}
       axisTop={null}
-      axisRight={null}
+      axisLeft={null}
       axisBottom={{
         tickSize: 5,
         tickPadding: 5,
@@ -41,7 +46,7 @@ const ByRegion = ({ data }) => {
         legendOffset: 32,
         format: year => ((year % 5) ? '' : year),
       }}
-      axisLeft={{
+      axisRight={{
         tickSize: 5,
         tickPadding: 5,
         tickRotation: 0,

@@ -18,7 +18,7 @@ const reorder = (list, startIndex, endIndex) => {
 };
 
 const ColoredItemBox = ({
-  item, label, icon, color, selected, clear, round, ...props
+  item, label, icon, color, selected, clear, round, isDragDisabled, ...props
 }) => {
   const classes = makeStyles(theme => ({
     root: {
@@ -26,21 +26,21 @@ const ColoredItemBox = ({
       height: 36,
       width: 36,
       backgroundColor: theme.palette.common.white,
-      border: `1px solid ${color ? color[600] : theme.palette.secondary.main}`,
+      border: `1px solid ${color[600] || color || theme.palette.secondary.main}`,
       borderRadius: round ? '50%' : 0,
       transition: 'box-shadow .25s ease-in-out',
       '& > p, & > svg': {
         margin: 'auto',
-        color: color ? color[800] : theme.palette.secondary.main,
+        color: color[800] || color || theme.palette.secondary.main,
       },
-      '&.selected': { backgroundColor: color ? color[600] : theme.palette.secondary.main },
+      '&.selected': { backgroundColor: color[600] || color || theme.palette.secondary.main },
       '&.selected > p, &.selected > svg': { color: theme.palette.common.white },
       '&:hover': { boxShadow: theme.shadows[6] },
     },
     btn: { margin: 'auto' },
-    tooltip: {
+    tooltip: disabled => ({
       margin: theme.spacing(0, 1),
-      paddingLeft: 0,
+      paddingLeft: disabled ? 4 : 0,
       fontSize: 10,
       lineHeight: 1,
       color: '#999',
@@ -49,14 +49,14 @@ const ColoredItemBox = ({
       borderRadius: 0,
       boxShadow: theme.shadows[1],
       '& span': { marginLeft: theme.spacing(0.5) },
-    },
-  }))();
+    }),
+  }))(isDragDisabled);
   const Icon = icon;
   return (
     <Tooltip
       title={label && (
         <Grid container alignItems="center" wrap="nowrap">
-          <DragIcon fontSize="small" />
+          {!isDragDisabled && <DragIcon fontSize="small" />}
           <Typography variant="overline">{label}</Typography>
         </Grid>
       )}
@@ -75,11 +75,14 @@ const ColoredItemBox = ({
 ColoredItemBox.propTypes = {
   item: PropTypes.string.isRequired,
   label: PropTypes.string,
-  icon: PropTypes.object, // eslint-disable-line react/forbid-prop-types
-  color: PropTypes.object, // eslint-disable-line react/forbid-prop-types
+  // eslint-disable-next-line react/forbid-prop-types
+  icon: PropTypes.object,
+  // eslint-disable-next-line react/forbid-prop-types
+  color: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
   selected: PropTypes.bool,
   clear: PropTypes.bool,
   round: PropTypes.bool,
+  isDragDisabled: PropTypes.bool,
 };
 
 ColoredItemBox.defaultProps = {
@@ -89,6 +92,7 @@ ColoredItemBox.defaultProps = {
   selected: false,
   clear: false,
   round: false,
+  isDragDisabled: false,
 };
 
 const useStyles = makeStyles(theme => ({
@@ -247,6 +251,7 @@ const DraggableVerticalList = ({
                         icon={defaultItems[item].icon}
                         color={defaultItems[item].color}
                         selected={localItems.indexOf(item) > -1}
+                        isDragDisabled={disabled}
                       />
                     </Grid>
                   </>

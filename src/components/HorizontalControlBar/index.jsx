@@ -71,15 +71,18 @@ const HorizontalControlBar = () => {
         return (
           <Grid item key={`config-origin-${selection}`}>
             <Tooltip title={CONFIG_LAYOUT[selection]?.name} classes={{ tooltip: classes.tooltip }}>
-              <Button
-                variant={config.mainSelection === selection ? 'contained' : 'outlined'}
-                color="primary"
-                size="small"
-                onClick={() => handleConfigUpdate('mainSelection', selection)}
-                className={classes.btnSector}
-              >
-                {selection === 'energyDemand' ? 'Total Demand' : <Icon />}
-              </Button>
+              <span>
+                <Button
+                  variant={config.mainSelection === selection ? 'contained' : 'outlined'}
+                  color="primary"
+                  size="small"
+                  disabled={selection === 'oilProduction'}
+                  onClick={() => handleConfigUpdate('mainSelection', selection)}
+                  className={classes.btnSector}
+                >
+                  {selection === 'energyDemand' ? 'Total Demand' : <Icon />}
+                </Button>
+              </span>
             </Tooltip>
           </Grid>
         );
@@ -97,15 +100,17 @@ const HorizontalControlBar = () => {
         return (
           <Grid item key={`config-sector-${sector}`}>
             <Tooltip title={SECTOR_LAYOUT[sector]?.name} classes={{ tooltip: classes.tooltip }}>
-              <Button
-                variant={config.sector === sector ? 'contained' : 'outlined'}
-                color="primary"
-                size="small"
-                onClick={() => handleConfigUpdate('sector', sector)}
-                className={classes.btnSector}
-              >
-                {sector === 'total' ? 'Total Demand' : <Icon />}
-              </Button>
+              <span>
+                <Button
+                  variant={config.sector === sector ? 'contained' : 'outlined'}
+                  color="primary"
+                  size="small"
+                  onClick={() => handleConfigUpdate('sector', sector)}
+                  className={classes.btnSector}
+                >
+                  {sector === 'total' ? 'Total Demand' : <Icon />}
+                </Button>
+              </span>
             </Tooltip>
           </Grid>
         );
@@ -124,6 +129,7 @@ const HorizontalControlBar = () => {
             variant={config.view === view ? 'contained' : 'outlined'}
             color="primary"
             size="small"
+            disabled={view === 'source'}
             onClick={() => handleConfigUpdate('view', view)}
           >
             {view}

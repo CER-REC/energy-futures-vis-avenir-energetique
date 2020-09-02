@@ -100,3 +100,41 @@ export const SECTOR_LAYOUT = {
     icon: TransportIcon,
   },
 };
+
+export const SOURCE_COLOR = {
+  OIL: '#B56696',
+  NUCLEAR: '#CBCA44',
+  BIO: '#8468A9',
+  GAS: '#D5673E',
+  COAL: '#8C6639',
+  RENEWABLE: '#60984D',
+  HYDRO: '#4F67AE',
+  ELECTRICITY: '#7ACBCB',
+};
+/**
+ * TODO: temporary mapping between source names; remove after the ENUM is ready.
+ */
+export const SOURCE_NAME = {
+  oilProducts: 'OIL',
+  nuclear: 'NUCLEAR',
+  bio: 'BIO',
+  naturalGas: 'GAS',
+  coal: 'COAL',
+  solarWindGeothermal: 'RENEWABLE',
+  hydro: 'HYDRO',
+  electricity: 'ELECTRICITY',
+};
+
+/**
+ * TODO: replace it with real colors from UI designers.
+ */
+export const SCENARIO_COLOR = {
+  Reference: '#AAA',
+  Technology: '#3692FA',
+  'Higher Carbon Price': '#0B3CB4',
+  'High Price': '#6C5AEB',
+  'Low Price': '#082346',
+  Constrained: '#333333',
+  'High LNG': '#2B6762',
+  'No LNG': '#3692FA',
+};
