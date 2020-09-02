@@ -5,8 +5,8 @@ import GasIcon from '@material-ui/icons/LocalGasStation';
 import CoalIcon from '@material-ui/icons/OutdoorGrillOutlined';
 import WindIcon from '@material-ui/icons/ToysOutlined';
 import BioIcon from '@material-ui/icons/EcoOutlined';
-// import NuclearIcon from '@material-ui/icons/PanoramaVerticalOutlined';
-// import HydroIcon from '@material-ui/icons/Waves';
+import NuclearIcon from '@material-ui/icons/PanoramaVerticalOutlined';
+import HydroIcon from '@material-ui/icons/Waves';
 
 import {
   red, purple, deepPurple, blue, lightBlue, teal, green,
@@ -59,16 +59,16 @@ export const REGION_ORDER = ['YT', 'SK', 'QC', 'PE', 'ON', 'NU', 'NT', 'NS', 'NL
 
 export const SOURCES = {
   oilProducts: { label: 'Oil Products', icon: OilIcon, color: '#B56696' },
-  // nuclear: { label: 'Nuclear', icon: NuclearIcon, color: '#CBCA44' },
+  nuclear: { label: 'Nuclear', icon: NuclearIcon, color: '#CBCA44' },
   bio: { label: 'Bio', icon: BioIcon, color: '#8468A9' },
   naturalGas: { label: 'Natural Gas', icon: GasIcon, color: '#D5673E' },
   coal: { label: 'Coal', icon: CoalIcon, color: '#8C6639' },
   solarWindGeothermal: { label: 'Solar, Wind, Geothermal', icon: WindIcon, color: '#60984D' },
-  // hydro: { label: 'Hydro', icon: HydroIcon, color: '#4F67AE' },
+  hydro: { label: 'Hydro', icon: HydroIcon, color: '#4F67AE' },
   // electricity: { label: 'Electricity', icon: ElectricityIcon, color: '#7ACBCB' },
 };
-
 export const SOURCE_ORDER = ['oilProducts', 'bio', 'naturalGas', 'coal', 'solarWindGeothermal'];
+export const ELECTRICITY_SOURCE_ORDER = [...SOURCE_ORDER, 'nuclear', 'hydro'];
 
 export const DEFAULT_CONFIG = {
   page: 'landing', // e.g. by-region, by-sector, electricity, senarios, demand

@@ -6,7 +6,7 @@ import AlertTitle from '@material-ui/lab/AlertTitle';
 
 import useConfig from '../../hooks/useConfig';
 import useEnergyFutureData from '../../hooks/useEnergyFutureData';
-import { REGIONS, REGION_ORDER, SOURCES, SOURCE_ORDER } from '../../types';
+import { REGIONS, REGION_ORDER, SOURCES, SOURCE_ORDER, ELECTRICITY_SOURCE_ORDER } from '../../types';
 import YearSelect from '../YearSelect';
 import PageSelect from '../PageSelect';
 import ScenarioSelect from '../ScenarioSelect';
@@ -73,7 +73,7 @@ const PageLayout = ({
                 items={config.sources}
                 itemOrder={config.sourceOrder}
                 defaultItems={SOURCES}
-                defaultItemOrder={SOURCE_ORDER}
+                defaultItemOrder={config.page === 'electricty' ? ELECTRICITY_SOURCE_ORDER : SOURCE_ORDER}
                 setItems={sources => setConfig({ ...config, sources })}
                 setItemOrder={sourceOrder => setConfig({ ...config, sourceOrder })}
               />
