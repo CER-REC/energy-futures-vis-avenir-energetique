@@ -1,95 +1,31 @@
 import { useMemo } from 'react';
 import { useQuery } from '@apollo/react-hooks';
-import gql from 'graphql-tag';
 
 import useAPI from './useAPI';
 import useConfig from './useConfig';
 import { convertUnit } from '../utilities/convertUnit';
 import { REGION_ORDER } from '../types';
 import { parseData, NOOP } from '../utilities/parseData';
-
-// Some parts of this file are not very DRY in anticipation of changes
-// to the individual queries
-const ENERGY_DEMAND = gql`
-  query ($iteration: ID!, $regions: [Region!], $scenarios: [String!]) {
-    resources:energyDemands(iterationIds: [$iteration], regions: $regions, scenarios: $scenarios, sources: [ALL], sectors: ["total end-use"]) {
-      province: region
-      year
-      scenario
-      value: quantity
-    }
-  }
-`;
-const GAS_PRODUCTIONS = gql`
-query ($iteration: ID!, $regions: [Region!], $scenarios: [String!]) {
-  resources:gasProductions(iterationIds: [$iteration], regions: $regions, scenarios: $scenarios, sources: [ALL] ){
-      province: region
-      year
-      scenario
-      value: quantity
-    }
-  }
-`;
-
-const ELECTRICITY_GENERATIONS = gql`
-query ($iteration: ID!, $regions: [Region!], $scenarios: [String!]) {
-  resources:electricityGenerations(iterationIds: [$iteration], regions: $regions, scenarios: $scenarios, sources: [ALL]) {
-    province: region
-    year
-    scenario
-    value: quantity
-  }
-}
-`;
-const OIL_PRODUCTIONS = gql`
-query ($iteration: ID!, $regions: [Region!], $scenarios: [String!]) {
-  resources:oilProductions(iterationIds: [$iteration], regions: $regions, scenarios: $scenarios) {
-    province: region
-    year
-    value: quantity
-  }
-}
-`;
-
-const BY_SECTOR = gql`
-query ($iteration: ID!, $regions: [Region!], $scenarios: [String!], $sectors:[String!], $sources: [EnergySource!]) {
-  resources:energyDemands(iterationIds: [$iteration], regions: $regions, scenarios: $scenarios, sectors: $sectors, sources: $sources) {
-    year
-    value: quantity
-    source
-  }
-}
-`;
-
-const ELECTRICITY_GENERATIONS_SOURCE = gql`
-query ($iteration: ID!, $regions: [Region!], $scenarios: [String!], $sources: [ElectricitySource!]) {
-  resources:electricityGenerations(iterationIds: [$iteration], regions: $regions, scenarios: $scenarios, sources: $sources) {
-    province: region
-    year
-    source
-    value: quantity
-  }
-}
-`;
+import * as queries from './queries';
 
 const getQuery = (config) => {
   if (['by-region', 'scenarios'].includes(config.page)) {
     switch (config.mainSelection) {
       case 'oilProduction':
-        return OIL_PRODUCTIONS;
+        return queries.OIL_PRODUCTIONS;
       case 'energyDemand':
-        return ENERGY_DEMAND;
+        return queries.ENERGY_DEMAND;
       case 'gasProduction':
-        return GAS_PRODUCTIONS;
+        return queries.GAS_PRODUCTIONS;
       case 'electricityGeneration':
-        return ELECTRICITY_GENERATIONS;
+        return queries.ELECTRICITY_GENERATIONS;
       default:
         break;
     }
   } else if (config.page === 'electricity') {
-    return ELECTRICITY_GENERATIONS_SOURCE;
+    return queries.ELECTRICITY_GENERATIONS_SOURCE;
   } else if (config.page === 'by-sector') {
-    return BY_SECTOR;
+    return queries.BY_SECTOR;
   }
   return null;
 };
@@ -159,7 +95,7 @@ export default () => {
   // #endregion
 
   // A GraphQL document node is needed even if skipping is specified
-  const { loading, error, data } = useQuery(query || gql`{ _ }`, {
+  const { loading, error, data } = useQuery(query || queries.NULL_QUERY, {
     variables: {
       scenarios: config.scenarios,
       iteration: yearIdIterations[config.yearId]?.id || '',
@@ -182,6 +118,13 @@ export default () => {
     }
     return (parseData[config.page] || NOOP)(data.resources, unitConversion, regions);
   }, [config.page, data, regions, unitConversion]);
-
-  return { loading, error, data: processedData };
+  return {
+    loading,
+    error,
+    data: processedData,
+    year: {
+      min: data?.resources[0].year,
+      max: data?.resources[data.resources.length - 1].year,
+    },
+  };
 };

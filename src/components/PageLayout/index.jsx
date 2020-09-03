@@ -44,7 +44,7 @@ const PageLayout = ({
 }) => {
   const classes = useStyles();
   const { config, setConfig } = useConfig();
-  const { loading, error, data } = useEnergyFutureData();
+  const { loading, error, data, year } = useEnergyFutureData();
 
   /**
    * Reset the source list when opening 'by-sector' and 'electricity' pages.
@@ -66,8 +66,8 @@ const PageLayout = ({
   );
 
   const vis = useMemo(
-    () => Children.map(children, child => child && cloneElement(child, { data })),
-    [children, data],
+    () => Children.map(children, child => child && cloneElement(child, { data, year })),
+    [children, data, year],
   );
 
   return (
