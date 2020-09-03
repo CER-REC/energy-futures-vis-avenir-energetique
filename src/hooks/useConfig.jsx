@@ -28,7 +28,7 @@ export const ConfigProvider = ({ children }) => {
     let queryScenarios = query.scenarios?.split(',').filter(scenario => scenarios.indexOf(scenario) !== -1);
 
     if (!queryScenarios?.length) {
-      queryScenarios = [scenarios[1]];
+      queryScenarios = [scenarios[0]];
     }
 
     setConfig({
