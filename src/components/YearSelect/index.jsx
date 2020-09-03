@@ -21,20 +21,9 @@ const useStyles = makeStyles(theme => createStyles({
     fontWeight: 700,
     textTransform: 'uppercase',
   },
-  btnContained: {
+  button: {
     height: 43,
     width: 43,
-  },
-  btnOutlined: {
-    height: 43,
-    width: 43,
-    backgroundColor: '#F3EFEF',
-    border: '1px solid #F3EFEF',
-    '&:hover': {
-      backgroundColor: '#F3EFEF',
-      border: '1px solid #F3EFEF',
-      boxShadow: theme.shadows[2],
-    },
   },
   report: {
     position: 'absolute',
@@ -63,14 +52,11 @@ const YearSelect = () => {
       {yearIds.map(yearId => (
         <Grid item key={`year-select-option-${yearId}`}>
           <Button
-            variant={config.yearId === yearId ? 'contained' : 'outlined'}
-            color="primary"
+            variant="contained"
+            color={config.yearId === yearId ? 'primary' : 'secondary'}
             size="small"
             onClick={() => setConfig({ ...config, yearId })}
-            classes={{
-              containedPrimary: classes.btnContained,
-              outlinedPrimary: classes.btnOutlined,
-            }}
+            className={classes.button}
           >
             {config.yearId === yearId ? (<Typography variant="h5">{yearId}</Typography>) : yearId}
           </Button>
