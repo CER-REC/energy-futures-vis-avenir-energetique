@@ -1,4 +1,4 @@
-import React, { useMemo, Children, cloneElement } from 'react';
+import React, { useEffect, useMemo, Children, cloneElement } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles, Grid, CircularProgress } from '@material-ui/core';
 import Alert from '@material-ui/lab/Alert';
@@ -6,7 +6,7 @@ import AlertTitle from '@material-ui/lab/AlertTitle';
 
 import useConfig from '../../hooks/useConfig';
 import useEnergyFutureData from '../../hooks/useEnergyFutureData';
-import { REGIONS, REGION_ORDER, SOURCES, SOURCE_ORDER } from '../../types';
+import { REGIONS, REGION_ORDER, SOURCES, SOURCE_ORDER, ELECTRICITY_SOURCE_ORDER } from '../../types';
 import YearSelect from '../YearSelect';
 import PageSelect from '../PageSelect';
 import ScenarioSelect from '../ScenarioSelect';
@@ -46,6 +46,25 @@ const PageLayout = ({
   const { config, setConfig } = useConfig();
   const { loading, error, data } = useEnergyFutureData();
 
+  /**
+   * Reset the source list when opening 'by-sector' and 'electricity' pages.
+   */
+  useEffect(
+    () => {
+      if (config.page === 'by-sector') {
+        setConfig({ ...config, sources: SOURCE_ORDER, sourceOrder: SOURCE_ORDER });
+      }
+      if (config.page === 'electricity') {
+        setConfig({
+          ...config,
+          sources: ELECTRICITY_SOURCE_ORDER,
+          sourceOrder: ELECTRICITY_SOURCE_ORDER,
+        });
+      }
+    },
+    [config.page], // eslint-disable-line react-hooks/exhaustive-deps
+  );
+
   const vis = useMemo(
     () => Children.map(children, child => child && cloneElement(child, { data })),
     [children, data],
@@ -73,7 +92,7 @@ const PageLayout = ({
                 items={config.sources}
                 itemOrder={config.sourceOrder}
                 defaultItems={SOURCES}
-                defaultItemOrder={SOURCE_ORDER}
+                defaultItemOrder={config.page === 'electricty' ? ELECTRICITY_SOURCE_ORDER : SOURCE_ORDER}
                 setItems={sources => setConfig({ ...config, sources })}
                 setItemOrder={sourceOrder => setConfig({ ...config, sourceOrder })}
               />
