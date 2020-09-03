@@ -12,6 +12,7 @@ import PageSelect from '../PageSelect';
 import ScenarioSelect from '../ScenarioSelect';
 import DraggableVerticalList from '../DraggableVerticalList';
 import HorizontalControlBar from '../HorizontalControlBar';
+import LinkButtonGroup from '../LinkButtonGroup';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -75,12 +76,15 @@ const PageLayout = ({
       <Grid item xs={12}><YearSelect /></Grid>
       <Grid item style={{ width: 400 }}><PageSelect /></Grid>
       <Grid item style={{ width: 'calc(100% - 400px)' }}>
-        <Grid container direction="column" wrap="nowrap" spacing={1}>
+        <Grid container direction="column" wrap="nowrap" spacing={1} style={{ width: 'calc(100% - 100px)' }}>
           <Grid item><ScenarioSelect multiSelect={multiSelectScenario} /></Grid>
           <Grid item><HorizontalControlBar /></Grid>
         </Grid>
       </Grid>
-      <Grid item xs={12} style={{ marginLeft: 100 }}>
+      <Grid item style={{ width: 100 }}>
+        <LinkButtonGroup title="Context" labels={['about', 'mathodology', 'report', 'results', 'assumptions']} />
+      </Grid>
+      <Grid item style={{ width: 'calc(100% - 100px)' }}>
         <Grid container wrap="nowrap" spacing={4}>
           {showSource && (
             <Grid item>

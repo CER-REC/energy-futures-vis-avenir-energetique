@@ -63,6 +63,15 @@ const theme = createMuiTheme({
           border: '1px solid #33668b',
         },
       },
+      containedSecondary: {
+        color: defaultTheme.palette.secondary.light,
+        backgroundColor: '#F3EFEF',
+        boxShadow: defaultTheme.shadows[0],
+        '&:hover': {
+          backgroundColor: '#F3EFEF',
+          boxShadow: defaultTheme.shadows[2],
+        },
+      },
       outlinedPrimary: {
         fontWeight: 500,
         color: defaultTheme.palette.secondary.light,

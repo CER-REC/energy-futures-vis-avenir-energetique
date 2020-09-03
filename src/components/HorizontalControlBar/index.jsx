@@ -141,7 +141,8 @@ const HorizontalControlBar = () => {
 
   const units = (
     <>
-      <Grid item style={{ marginLeft: 90 }}>
+      <Grid item style={{ flexGrow: 1 }} />
+      <Grid item>
         <Typography variant="body1" color="primary">UNIT</Typography>
       </Grid>
       {layout.unit.map(unit => (
