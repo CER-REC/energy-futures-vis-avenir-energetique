@@ -32,7 +32,7 @@ const ByRegion = ({ data }) => {
       data={data}
       keys={keys}
       indexBy="year"
-      margin={{ top: 50, right: 50, bottom: 50, left: 50 }}
+      margin={{ top: 50, right: 80, bottom: 50, left: 50 }}
       padding={0.1}
       colors={d => REGIONS[d.id].color[600]}
       borderColor={{ from: 'color', modifiers: [['darker', 1.6]] }}
