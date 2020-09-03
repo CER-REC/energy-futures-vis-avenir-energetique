@@ -118,6 +118,5 @@ export default () => {
     }
     return (parseData[config.page] || NOOP)(data.resources, unitConversion, regions);
   }, [config.page, data, regions, unitConversion]);
-
-  return { loading, error, data: processedData };
+  return { loading, error, data: processedData?.data, year: processedData?.year };
 };
