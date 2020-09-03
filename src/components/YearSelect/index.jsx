@@ -61,7 +61,7 @@ const YearSelect = () => {
   return (
     <Grid container alignItems="center" spacing={1} className={classes.root}>
       <Grid item>
-        <Typography variant="h5" color="primary" className={classes.title}>Energy Futures From</Typography>
+        <Typography variant="h5" color="primary" className={classes.title}>Canada&apos;s Energy Future</Typography>
       </Grid>
 
       {yearIds.map(yearId => (
