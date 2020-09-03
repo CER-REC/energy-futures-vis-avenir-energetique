@@ -48,11 +48,11 @@ export const PAGES = [
     id: 'scenarios',
     bg: '#CA9830',
   },
-  {
-    label: 'Demand',
-    id: 'demand',
-    bg: '#CC6666',
-  },
+  // {
+  //   label: 'Demand',
+  //   id: 'demand',
+  //   bg: '#CC6666',
+  // },
 ];
 
 export const CONFIG_LAYOUT = {
