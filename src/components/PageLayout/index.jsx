@@ -82,7 +82,7 @@ const PageLayout = ({
         </Grid>
       </Grid>
       <Grid item style={{ width: 100 }}>
-        <LinkButtonGroup title="Context" labels={['about', 'mathodology', 'report', 'results', 'assumptions']} />
+        <LinkButtonGroup title="Context" labels={['about', 'methodology', 'report', 'results', 'assumptions']} />
       </Grid>
       <Grid item style={{ width: 'calc(100% - 100px)' }}>
         <Grid container wrap="nowrap" spacing={4}>

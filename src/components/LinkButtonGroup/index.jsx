@@ -27,8 +27,8 @@ const useStyles = makeStyles(theme => createStyles({
     },
   }),
   btnIcon: {
-    height: '24px !important',
     width: 40,
+    'button&': { height: '24px' },
   },
 }));
 
