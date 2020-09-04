@@ -76,10 +76,6 @@ Tooltip.propTypes = {
   unit: PropTypes.string.isRequired,
 };
 
-const YEAR_MIN = 2005;
-const YEAR_MAX = 2040;
-const MARKS = Array(8).fill(undefined).map((_, i) => ({ value: YEAR_MIN + i * 5, label: `${YEAR_MIN + i * 5}` }));
-
 /**
  * Rendering each bubble chart for a single province.
  */
@@ -115,37 +111,44 @@ Bubble.defaultProps = {
   unit: '',
 };
 
-const Electricity = ({ data }) => {
+const Electricity = ({ data, year }) => {
   const classes = useStyles();
 
   const { config } = useConfig();
 
-  const [year, setYear] = useState(YEAR_MIN);
+  const [currYear, setCurrYear] = useState(year?.min || 0);
   const [play, setPlay] = useState(false);
+
+  /**
+   * Generate slide marks for the video playback control.
+   */
+  const marks = useMemo(() => year && Array((year.max - year.min) / 5 + 1)
+    .fill(undefined)
+    .map((_, i) => ({ value: year.min + i * 5, label: `${year.min + i * 5}` })), [year]);
 
   /**
    * A timer for auto-play.
    */
   useEffect(() => {
     const timer = setInterval(() => {
-      if (play) {
-        setYear(y => (y >= YEAR_MAX ? YEAR_MIN : y + 1));
+      if (play && year) {
+        setCurrYear(y => (y >= year.max ? year.min : y + 1));
       }
     }, 500);
     return () => clearInterval(timer);
-  }, [play]);
+  }, [play, year]);
 
   /**
    * Post-process for determining bubble sizes and positions.
    */
   const processedData = useMemo(() => {
-    if (!data || !data[year]) {
+    if (!data || !data[currYear]) {
       return undefined;
     }
 
-    const totals = Object.keys(data[year]).reduce((result, province) => ({
+    const totals = Object.keys(data[currYear]).reduce((result, province) => ({
       ...result,
-      [province]: Object.values(data[year][province])
+      [province]: Object.values(data[currYear][province])
         .map(entry => entry.value)
         .reduce((a, b) => a + b),
     }), {});
@@ -153,14 +156,14 @@ const Electricity = ({ data }) => {
     const max = Math.max(...Object.values(totals));
     const min = Math.min(...Object.values(totals));
 
-    return Object.keys(data[year]).map(province => ({
+    return Object.keys(data[currYear]).map(province => ({
       name: province,
       size: (Math.abs(max - min) < Number.EPSILON
         ? Number.POSITIVE_INFINITY
         : (totals[province] / (max - min)) * BUBBLE_SIZE_MAX + BUBBLE_SIZE_MIN),
-      children: Object.values(data[year][province]),
+      children: Object.values(data[currYear][province]),
     }));
-  }, [data, year]);
+  }, [data, currYear]);
 
   if (!data) {
     return null;
@@ -168,7 +171,7 @@ const Electricity = ({ data }) => {
 
   return (
     <div className={classes.root}>
-      <Typography variant="h3" color="primary" className={classes.year}>{`${year} `}</Typography>
+      <Typography variant="h3" color="primary" className={classes.year}>{`${currYear} `}</Typography>
 
       {processedData.map(entry => (
         <div
@@ -200,14 +203,14 @@ const Electricity = ({ data }) => {
         </Grid>
         <Grid item style={{ flexGrow: 1 }}>
           <Slider
-            value={year}
-            onChange={(_, value) => value && setYear(value)}
+            value={currYear}
+            onChange={(_, value) => value && setCurrYear(value)}
             aria-labelledby="year select slider"
             aria-valuetext="current selected year"
             step={1}
-            marks={MARKS}
-            min={YEAR_MIN}
-            max={YEAR_MAX}
+            marks={marks}
+            min={year.min}
+            max={year.max}
             valueLabelDisplay="on"
           />
         </Grid>
@@ -218,10 +221,12 @@ const Electricity = ({ data }) => {
 
 Electricity.propTypes = {
   data: PropTypes.oneOfType([PropTypes.object, PropTypes.arrayOf(PropTypes.object)]),
+  year: PropTypes.shape({ min: PropTypes.number, max: PropTypes.number }),
 };
 
 Electricity.defaultProps = {
   data: undefined,
+  year: undefined,
 };
 
 export default Electricity;
