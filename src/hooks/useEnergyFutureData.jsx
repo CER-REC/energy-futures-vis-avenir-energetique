@@ -112,6 +112,8 @@ export default () => {
       || !config.scenarios || config.scenarios.length === 0,
   });
 
+  const years = useMemo(() => data?.resources?.map(entry => entry.year), [data]);
+
   const processedData = useMemo(() => {
     if (!data || !data.resources) {
       return data;
@@ -122,9 +124,9 @@ export default () => {
     loading,
     error,
     data: processedData,
-    year: {
-      min: data?.resources[0].year,
-      max: data?.resources[data.resources.length - 1].year,
+    year: years && {
+      min: Math.min(...years),
+      max: Math.max(...years),
     },
   };
 };

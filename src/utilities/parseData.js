@@ -10,15 +10,7 @@ export const parseData = {
         [entry.source]: entry.value * unitConversion,
       },
     }), {});
-
-    const keys = Object.keys(processed);
-    return {
-      data: Object.values(processed),
-      year: {
-        min: parseInt(keys[0], 10),
-        max: parseInt(keys[keys.length - 1], 10),
-      },
-    };
+    return Object.values(processed);
   },
 
   'by-region': (data, unitConversion) => {
@@ -37,15 +29,7 @@ export const parseData = {
         );
         return result;
       }, {});
-
-    const keys = Object.keys(byYear);
-    return {
-      data: Object.keys(byYear).map(year => ({ year, ...byYear[year] })),
-      year: {
-        min: parseInt(keys[0], 10),
-        max: parseInt(keys[keys.length - 1], 10),
-      },
-    };
+    return Object.keys(byYear).map(year => ({ year, ...byYear[year] }));
   },
 
   scenarios: (data, unitConversion, regions) => {
@@ -58,23 +42,10 @@ export const parseData = {
           { x: entry.year, y: entry.value * unitConversion },
         ],
       }), {});
-
-    const returnData = Object.keys(processed).map(scenario => ({
+    return Object.keys(processed).map(scenario => ({
       id: scenario,
       data: processed[scenario],
     }));
-
-    return {
-      data: returnData,
-      year: {
-        min: returnData.length
-          ? parseInt(returnData[0].data[0].x, 10)
-          : 0,
-        max: returnData.length
-          ? parseInt(returnData[0].data[returnData[0].data.length - 1].x, 10)
-          : 0,
-      },
-    };
   },
 
   electricity: (data, unitConversion, regions) => {
@@ -97,15 +68,7 @@ export const parseData = {
         },
       }), {});
     });
-
-    const keys = Object.keys(dataGroupedByYear);
-    return {
-      data: dataGroupedByYear,
-      year: {
-        min: parseInt(keys[0], 10),
-        max: parseInt(keys[keys.length - 1], 10),
-      },
-    };
+    return dataGroupedByYear;
   },
 };
 
