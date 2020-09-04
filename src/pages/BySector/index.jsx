@@ -12,7 +12,7 @@ const BySector = ({ data, year }) => {
     return [...config.sourceOrder].reverse().map(s => SOURCE_NAME[s]).filter(s => sources.has(s));
   }, [data, config.sourceOrder]);
 
-  if (!data) {
+  if (!data || !year) {
     return null;
   }
 
