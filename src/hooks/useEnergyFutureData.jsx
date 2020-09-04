@@ -90,6 +90,9 @@ export default () => {
     if (config.page === 'by-sector' && correctedSources.find(item => item === 'hydro')) {
       correctedSources.splice(correctedSources.indexOf('hydro'), 1);
     }
+    if (config.page === 'by-sector' && correctedSources.find(item => item === 'renewable')) {
+      correctedSources.splice(correctedSources.indexOf('renewable'), 1);
+    }
     return correctedSources;
   }, [config.page, config.sources]);
   // #endregion
