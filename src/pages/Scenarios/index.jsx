@@ -16,7 +16,7 @@ const Scenarios = ({ data }) => {
       enableArea
       margin={{ top: 50, right: 50, bottom: 50, left: 50 }}
       xScale={{ type: 'point' }}
-      yScale={{ type: 'linear', min: 0, max: 'auto', stacked: true, reverse: false }}
+      yScale={{ type: 'linear', min: 0, max: 'auto', reverse: false }}
       colors={d => SCENARIO_COLOR[d.id] || '#AAA'}
       pointSize={8}
       pointColor={{ theme: 'background' }}

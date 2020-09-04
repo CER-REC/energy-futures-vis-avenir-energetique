@@ -3,10 +3,14 @@ import {
   makeStyles, createStyles,
   Grid, Typography, Button,
 } from '@material-ui/core';
+import LinkIcon from '@material-ui/icons/Link';
+import {
+  SocialMediaIconTwitter, SocialMediaIconFacebook, SocialMediaIconLinkedIn,
+} from './SocialMediaIcons';
 
 import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
-import ImgReport from '../../images/report-link.png';
+import LinkButtonGroup from '../LinkButtonGroup';
 
 const useStyles = makeStyles(theme => createStyles({
   root: {
@@ -17,34 +21,15 @@ const useStyles = makeStyles(theme => createStyles({
     fontWeight: 700,
     textTransform: 'uppercase',
   },
-  btnContained: {
+  button: {
     height: 43,
     width: 43,
-  },
-  btnOutlined: {
-    height: 43,
-    width: 43,
-    backgroundColor: '#F3EFEF',
-    border: '1px solid #F3EFEF',
-    '&:hover': {
-      backgroundColor: '#F3EFEF',
-      border: '1px solid #F3EFEF',
-      boxShadow: theme.shadows[2],
-    },
   },
   report: {
     position: 'absolute',
-    top: '50%',
+    top: 0,
     right: 0,
-    transform: 'translateY(-50%)',
-    '& img': { height: 60 },
-    '& span': {
-      width: 50,
-      margin: 2,
-      lineHeight: 1,
-      fontSize: 10,
-      textAlign: 'right',
-    },
+    zIndex: 1,
   },
 }));
 
@@ -67,14 +52,11 @@ const YearSelect = () => {
       {yearIds.map(yearId => (
         <Grid item key={`year-select-option-${yearId}`}>
           <Button
-            variant={config.yearId === yearId ? 'contained' : 'outlined'}
-            color="primary"
+            variant="contained"
+            color={config.yearId === yearId ? 'primary' : 'secondary'}
             size="small"
             onClick={() => setConfig({ ...config, yearId })}
-            classes={{
-              containedPrimary: classes.btnContained,
-              outlinedPrimary: classes.btnOutlined,
-            }}
+            className={classes.button}
           >
             {config.yearId === yearId ? (<Typography variant="h5">{yearId}</Typography>) : yearId}
           </Button>
@@ -82,10 +64,16 @@ const YearSelect = () => {
       ))}
 
       <Grid item className={classes.report}>
-        <Grid container alignItems="flex-end" wrap="nowrap">
-          <Typography variant="overline" color="secondary">read report</Typography>
-          <img src={String(ImgReport).startsWith('/') ? ImgReport : `/${ImgReport}`} alt="read report" />
-        </Grid>
+        <LinkButtonGroup
+          labels={[
+            { icon: <SocialMediaIconTwitter />, name: 'Twitter' },
+            { icon: <SocialMediaIconLinkedIn />, name: 'LinkedIn' },
+            { icon: <SocialMediaIconFacebook />, name: 'Facebook' },
+            { icon: <LinkIcon />, name: 'Copy Link' },
+            'download data',
+          ]}
+          accent="right"
+        />
       </Grid>
     </Grid>
   );
