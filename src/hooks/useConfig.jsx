@@ -29,10 +29,8 @@ export const ConfigProvider = ({ children }) => {
     let queryScenarios = query.scenarios?.split(',').filter(scenario => scenarios.indexOf(scenario) !== -1);
 
     // select the default scenario
-    if (scenarios.includes('Evolving')) {
-      queryScenarios = ['Evolving'];
-    } else if (!queryScenarios?.length) {
-      queryScenarios = [scenarios[0]];
+    if (!queryScenarios?.length) {
+      queryScenarios = scenarios.includes('Evolving') ? ['Evolving'] : [scenarios[0]];
     }
 
     setConfig({

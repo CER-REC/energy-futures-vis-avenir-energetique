@@ -55,9 +55,6 @@ const ScenarioSelect = ({ multiSelect }) => {
         (multiSelect || (validScenarios.length === 1))
         && (config.scenarios.length === validScenarios.length)
       ) {
-        if (!validScenarios.includes('Evolving') && scenarios.includes('Evolving')) {
-          handleScenariosUpdate(['Evolving', ...multiSelect ? validScenarios : []]);
-        }
         return;
       }
 
