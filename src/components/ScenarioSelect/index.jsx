@@ -49,20 +49,15 @@ const ScenarioSelect = ({ multiSelect }) => {
    */
   useEffect(
     () => {
-      const validScenarios = [
-        // add 'Evolving' if it is a valid option but not selected.
-        ...(
-          !config.scenarios.includes('Evolving') && scenarios.includes('Evolving')
-            ? ['Evolving']
-            : []
-        ),
-        ...config.scenarios.filter(scenario => scenarios.indexOf(scenario) !== -1),
-      ];
+      const validScenarios = config.scenarios.filter(s => scenarios.indexOf(s) !== -1);
 
       if (
         (multiSelect || (validScenarios.length === 1))
         && (config.scenarios.length === validScenarios.length)
       ) {
+        if (!validScenarios.includes('Evolving') && scenarios.includes('Evolving')) {
+          handleScenariosUpdate(['Evolving', ...multiSelect ? validScenarios : []]);
+        }
         return;
       }
 
