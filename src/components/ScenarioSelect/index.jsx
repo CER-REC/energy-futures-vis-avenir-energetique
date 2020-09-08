@@ -37,7 +37,8 @@ const ScenarioSelect = ({ multiSelect }) => {
     const reorderedScenarios = yearIdIterations[config.yearId]?.scenarios || [];
     // moving 'Evolving' to the front of the list
     if (reorderedScenarios.includes('Evolving')) {
-      reorderedScenarios.sort((a, b) => a === 'Evolving' ? -1 : b === 'Evolving' ? 1 : 0);
+      // eslint-disable-next-line no-nested-ternary
+      reorderedScenarios.sort((a, b) => (a === 'Evolving' ? -1 : (b === 'Evolving' ? 1 : 0)));
     }
     return reorderedScenarios;
   }, [yearIdIterations, config.yearId]);
