@@ -25,8 +25,10 @@ export const ConfigProvider = ({ children }) => {
     const yearIds = Object.keys(yearIdIterations).sort();
     const yearId = yearIds.indexOf(query.yearId) === -1 ? yearIds.reverse()[0] : query.yearId;
     const scenarios = yearIdIterations[yearId]?.scenarios || [];
+
     let queryScenarios = query.scenarios?.split(',').filter(scenario => scenarios.indexOf(scenario) !== -1);
 
+    // select the default scenario
     if (!queryScenarios?.length) {
       queryScenarios = scenarios.includes('Evolving') ? ['Evolving'] : [scenarios[0]];
     }
