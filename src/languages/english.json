@@ -2,6 +2,9 @@
   "common": {
   },
   "components": {
+    "draggableVerticalList": {
+      "all": "All"
+    },
     "errorBoundary": {
       "errorMessage": "Something went wrong.",
       "restoreLinkText": "Restore Session",

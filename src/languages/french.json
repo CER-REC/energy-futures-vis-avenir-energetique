@@ -2,6 +2,9 @@
   "common": {
   },
   "components": {
+    "draggableVerticalList": {
+      "all": "Tous"
+    },
     "errorBoundary": {
       "errorMessage": "Une erreur s’est produite.",
       "restoreLinkText": "Rétablir la session.",

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import PropTypes from 'prop-types';
 import {
@@ -7,6 +7,7 @@ import {
 import { grey } from '@material-ui/core/colors';
 import ClearIcon from '@material-ui/icons/Clear';
 import DragIcon from '@material-ui/icons/DragIndicator';
+import { useIntl } from 'react-intl';
 
 import useConfig from '../../hooks/useConfig';
 
@@ -28,6 +29,7 @@ const ColoredItemBox = ({
       backgroundColor: theme.palette.common.white,
       border: `1px solid ${color[600] || color || theme.palette.secondary.main}`,
       borderRadius: round ? '50%' : 0,
+      textTransform: 'uppercase',
       transition: 'box-shadow .25s ease-in-out',
       '& > p, & > svg': {
         margin: 'auto',
@@ -138,12 +140,15 @@ const DraggableVerticalList = ({
   setItems /* (localItems) => void */,
   setItemOrder /* (localItemOrder) => void */,
 }) => {
+  const intl = useIntl();
   const classes = useStyles({ width, dense, disabled });
-
   const { config } = useConfig();
-
   const [localItems, setLocalItems] = useState(items || Object.keys(defaultItems));
   const [localItemOrder, setLocalItemOrder] = useState(itemOrder || defaultItemOrder);
+  const allTitle = useMemo(
+    () => intl.formatMessage({ id: 'components.draggableVerticalList.all' }),
+    [intl],
+  );
 
   /**
    * Update the global store if the local copy modified.
@@ -226,7 +231,7 @@ const DraggableVerticalList = ({
               className={classes.item}
             >
               <ColoredItemBox
-                item="ALL"
+                item={allTitle}
                 round={round}
                 color={grey}
                 selected={singleSelect ? localItems[0] === 'ALL' : localItems.length > 0}
