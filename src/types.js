@@ -47,16 +47,3 @@ export const SOURCES = {
 };
 export const SOURCE_ORDER = ['oilProducts', 'bio', 'naturalGas', 'coal'];
 export const ELECTRICITY_SOURCE_ORDER = [...SOURCE_ORDER, 'solarWindGeothermal', 'nuclear', 'hydro'];
-
-export const DEFAULT_CONFIG = {
-  page: 'landing', // e.g. by-region, by-sector, electricity, senarios, demand
-  mainSelection: 'energyDemand', // e.g. electricityGeneration, oilProduction, gasProduction
-  unit: 'petajoules', // e.g. kilobarrelEquivalents, gigawattHours, kilobarrels, thousandCubicMetres, cubicFeet, millionCubicMetres
-  view: 'region', // e.g. region or source
-  sector: 'total', // e.g. residential, commercial, industrial, or industrial
-  scenarios: [],
-  provinces: [],
-  provinceOrder: [],
-  sources: SOURCE_ORDER,
-  sourceOrder: SOURCE_ORDER,
-};

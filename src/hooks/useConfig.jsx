@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import { createBrowserHistory } from 'history';
 import queryString from 'query-string';
 
-import { DEFAULT_CONFIG, SOURCE_ORDER } from '../types';
+import { DEFAULT_CONFIG } from '../constants';
+import { SOURCE_ORDER } from '../types';
 import useAPI from './useAPI';
 
 const parameters = ['page', 'mainSelection', 'yearId', 'sector', 'unit', 'view'];

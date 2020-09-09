@@ -1,9 +1,9 @@
 import { useMemo } from 'react';
 import { useQuery } from '@apollo/react-hooks';
-import { grey } from '@material-ui/core/colors';
+import { black } from '@material-ui/core/colors';
 import gql from 'graphql-tag';
 
-import { REGION_COLORS } from '../constants';
+import { REGION_COLORS, SOURCE_COLORS, SOURCE_ICONS } from '../constants';
 
 const CONFIG = gql`
   query {
@@ -39,7 +39,7 @@ const getYearIdIterations = iterations => (
 
 const getRegions = (translations) => {
   const colors = {};
-  const defaultColor = grey;
+  const defaultColor = black;
   const regionEnums = translations.filter(
     translation => translation.group === 'REGION',
   ).map(
@@ -52,6 +52,44 @@ const getRegions = (translations) => {
   });
 
   return { colors, order };
+};
+
+const getSources = (translations) => {
+  const sources = {
+    electricity: {},
+    energy: {},
+    gas: {},
+    oil: {},
+  };
+  const sourceTranslationGroupTypes = {
+    ELECTRICITY_SOURCE: 'electricity',
+    ENERGY_SOURCE: 'energy',
+    GAS_SOURCE: 'gas',
+    OIL_SOURCE: 'oil',
+  };
+
+  Object.keys(sourceTranslationGroupTypes).forEach((group) => {
+    const colors = {};
+    const icons = {};
+    const type = sourceTranslationGroupTypes[group];
+    const enums = translations.filter(
+      translation => translation.group === group,
+    ).map(
+      translation => translation.key,
+    );
+    const order = enums.filter(source => source !== 'ALL').sort();
+
+    enums.forEach((source) => {
+      colors[source] = SOURCE_COLORS[type][source] || '#000000';
+      icons[source] = SOURCE_ICONS[type][source];
+    });
+
+    sources[type].colors = colors;
+    sources[type].icons = icons;
+    sources[type].order = order;
+  });
+
+  return sources;
 };
 
 const getI18NMessages = translations => (
@@ -103,12 +141,11 @@ export default () => {
     () => (data ? getRegions(data.translations) : { colors: {}, order: [] }),
     [data],
   );
-  // TODO
   const sources = useMemo(
-    () => (data ? {} : {}),
+    () => (data ? getSources(data.translations) : {}),
     [data],
   );
-  // TODO
+  // TODO: Complete when sectors are made into an enum for GraphQL
   const sectors = useMemo(
     () => (data ? {} : {}),
     [data],

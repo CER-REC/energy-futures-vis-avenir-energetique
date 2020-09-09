@@ -2,6 +2,11 @@ import TotalIcon from '@material-ui/icons/DataUsage';
 import ElectricityIcon from '@material-ui/icons/FlashOn';
 import OilIcon from '@material-ui/icons/Opacity';
 import GasIcon from '@material-ui/icons/LocalGasStation';
+import BioIcon from '@material-ui/icons/EcoOutlined';
+import CoalIcon from '@material-ui/icons/OutdoorGrillOutlined';
+import HydroIcon from '@material-ui/icons/Waves';
+import NuclearIcon from '@material-ui/icons/PanoramaVerticalOutlined';
+import WindIcon from '@material-ui/icons/ToysOutlined';
 import ResidentialIcon from '@material-ui/icons/HouseOutlined';
 import CommercialIcon from '@material-ui/icons/ApartmentOutlined';
 import IndustrialIcon from '@material-ui/icons/BuildOutlined';
@@ -157,4 +162,60 @@ export const REGION_COLORS = {
   MB: amber,
   BC: orange,
   AB: deepOrange,
+};
+
+// TODO: Make the use of colors consistent (either Material UI color objects or strings)
+export const SOURCE_COLORS = {
+  electricity: {
+    BIO: '#8468A9',
+    COAL: '#8C6639',
+    HYDRO: '#4F67AE',
+    GAS: '#D5673E',
+    OIL: '#B56696',
+    RENEWABLE: '#60984D',
+    NUCLEAR: '#CBCA44',
+  },
+  energy: {
+    BIO: '#8468A9',
+    COAL: '#8C6639',
+    ELECTRICITY: '#7ACBCB',
+    GAS: '#D5673E',
+    OIL: '#B56696',
+  },
+  gas: {},
+  oil: {},
+};
+
+export const SOURCE_ICONS = {
+  electricity: {
+    BIO: BioIcon,
+    COAL: CoalIcon,
+    HYDRO: HydroIcon,
+    GAS: GasIcon,
+    OIL: OilIcon,
+    RENEWABLE: WindIcon,
+    NUCLEAR: NuclearIcon,
+  },
+  energy: {
+    BIO: BioIcon,
+    COAL: CoalIcon,
+    ELECTRICITY: ElectricityIcon,
+    GAS: GasIcon,
+    OIL: OilIcon,
+  },
+  gas: {},
+  oil: {},
+};
+
+export const DEFAULT_CONFIG = {
+  page: 'landing', // e.g. by-region, by-sector, electricity, senarios, demand
+  mainSelection: 'energyDemand', // e.g. electricityGeneration, oilProduction, gasProduction
+  unit: 'petajoules', // e.g. kilobarrelEquivalents, gigawattHours, kilobarrels, thousandCubicMetres, cubicFeet, millionCubicMetres
+  view: 'region', // e.g. region or source
+  sector: 'total', // e.g. residential, commercial, industrial, or industrial
+  scenarios: [],
+  provinces: [],
+  provinceOrder: [],
+  sources: [],
+  sourceOrder: [],
 };
