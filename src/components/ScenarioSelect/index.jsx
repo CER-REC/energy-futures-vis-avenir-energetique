@@ -33,10 +33,15 @@ const ScenarioSelect = ({ multiSelect }) => {
     scenarios => setConfig({ ...config, scenarios }),
     [config, setConfig],
   );
-  const scenarios = useMemo(
-    () => yearIdIterations[config.yearId]?.scenarios || [],
-    [yearIdIterations, config.yearId],
-  );
+  const scenarios = useMemo(() => {
+    const reorderedScenarios = yearIdIterations[config.yearId]?.scenarios || [];
+    // moving 'Evolving' to the front of the list
+    if (reorderedScenarios.includes('Evolving')) {
+      // eslint-disable-next-line no-nested-ternary
+      reorderedScenarios.sort((a, b) => (a === 'Evolving' ? -1 : (b === 'Evolving' ? 1 : 0)));
+    }
+    return reorderedScenarios;
+  }, [yearIdIterations, config.yearId]);
 
   /**
    * If the previous selected scenario is no longer available after the year change,
@@ -44,9 +49,7 @@ const ScenarioSelect = ({ multiSelect }) => {
    */
   useEffect(
     () => {
-      const validScenarios = config.scenarios.filter(
-        scenario => scenarios.indexOf(scenario) !== -1,
-      );
+      const validScenarios = config.scenarios.filter(s => scenarios.indexOf(s) !== -1);
 
       if (
         (multiSelect || (validScenarios.length === 1))
