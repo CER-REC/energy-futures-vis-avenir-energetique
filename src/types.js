@@ -8,11 +8,6 @@ import BioIcon from '@material-ui/icons/EcoOutlined';
 import NuclearIcon from '@material-ui/icons/PanoramaVerticalOutlined';
 import HydroIcon from '@material-ui/icons/Waves';
 
-import {
-  red, purple, deepPurple, blue, lightBlue, teal, green,
-  lightGreen, lime, yellow, amber, orange, deepOrange,
-} from '@material-ui/core/colors';
-
 export const CONFIG_REPRESENTATION = {
   energyDemand: {
     name: 'Total Demand',
@@ -40,23 +35,6 @@ export const CONFIG_REPRESENTATION = {
   millionCubicMetres: 'Mm³/d',
 };
 
-export const REGIONS = {
-  YT: { color: red, label: 'Yukon' },
-  SK: { color: purple, label: 'Saskatchewan' },
-  QC: { color: deepPurple, label: 'Quebec' },
-  PE: { color: blue, label: 'Prince Edward Island' },
-  ON: { color: lightBlue, label: 'Ontario' },
-  NU: { color: teal, label: 'Nunavut' },
-  NT: { color: green, label: 'Northwest Territories' },
-  NS: { color: lightGreen, label: 'Nova Scotia' },
-  NL: { color: lime, label: 'Newfoundland and Labrador' },
-  NB: { color: yellow, label: 'New Brunswick' },
-  MB: { color: amber, label: 'Manitoba' },
-  BC: { color: orange, label: 'British Columbia' },
-  AB: { color: deepOrange, label: 'Alberta' },
-};
-export const REGION_ORDER = ['YT', 'SK', 'QC', 'PE', 'ON', 'NU', 'NT', 'NS', 'NL', 'NB', 'MB', 'BC', 'AB'];
-
 export const SOURCES = {
   oilProducts: { label: 'Oil Products', icon: OilIcon, color: '#B56696' },
   nuclear: { label: 'Nuclear', icon: NuclearIcon, color: '#CBCA44' },
@@ -77,8 +55,8 @@ export const DEFAULT_CONFIG = {
   view: 'region', // e.g. region or source
   sector: 'total', // e.g. residential, commercial, industrial, or industrial
   scenarios: [],
-  provinces: REGION_ORDER,
-  provinceOrder: REGION_ORDER,
+  provinces: [],
+  provinceOrder: [],
   sources: SOURCE_ORDER,
   sourceOrder: SOURCE_ORDER,
 };

@@ -6,6 +6,10 @@ import ResidentialIcon from '@material-ui/icons/HouseOutlined';
 import CommercialIcon from '@material-ui/icons/ApartmentOutlined';
 import IndustrialIcon from '@material-ui/icons/BuildOutlined';
 import TransportIcon from '@material-ui/icons/LocalShippingOutlined';
+import {
+  red, purple, deepPurple, blue, lightBlue, teal, green,
+  lightGreen, lime, yellow, amber, orange, deepOrange,
+} from '@material-ui/core/colors';
 
 export const applicationPath = {
   en: 'energy-future',
@@ -137,4 +141,20 @@ export const SCENARIO_COLOR = {
   Constrained: '#333333',
   'High LNG': '#2B6762',
   'No LNG': '#3692FA',
+};
+
+export const REGION_COLORS = {
+  YT: red,
+  SK: purple,
+  QC: deepPurple,
+  PE: blue,
+  ON: lightBlue,
+  NU: teal,
+  NT: green,
+  NS: lightGreen,
+  NL: lime,
+  NB: yellow,
+  MB: amber,
+  BC: orange,
+  AB: deepOrange,
 };

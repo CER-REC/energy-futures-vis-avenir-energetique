@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { createBrowserHistory } from 'history';
 import queryString from 'query-string';
 
-import { DEFAULT_CONFIG, REGION_ORDER, SOURCE_ORDER } from '../types';
+import { DEFAULT_CONFIG, SOURCE_ORDER } from '../types';
 import useAPI from './useAPI';
 
 const parameters = ['page', 'mainSelection', 'yearId', 'sector', 'unit', 'view'];
@@ -14,7 +14,7 @@ const ConfigContext = createContext();
 export const ConfigProvider = ({ children }) => {
   // TODO: Cleanup app state structure (remove order parameters) and consider moving to useReducer
   const [config, setConfig] = useState(DEFAULT_CONFIG);
-  const { yearIdIterations } = useAPI();
+  const { yearIdIterations, regions } = useAPI();
 
   /**
    * URL parachuting.
@@ -34,14 +34,14 @@ export const ConfigProvider = ({ children }) => {
     setConfig({
       ...DEFAULT_CONFIG,
       ...query,
-      provinces: query.provinces ? query.provinces.split(',') : REGION_ORDER,
-      provinceOrder: query.provinceOrder ? query.provinceOrder.split(',') : REGION_ORDER,
+      provinces: query.provinces ? query.provinces.split(',') : regions.order,
+      provinceOrder: query.provinceOrder ? query.provinceOrder.split(',') : regions.order,
       sources: query.sources ? query.sources.split(',') : SOURCE_ORDER,
       sourceOrder: query.sourceOrder ? query.sourceOrder.split(',') : SOURCE_ORDER,
       yearId,
       scenarios: queryScenarios,
     });
-  }, [yearIdIterations]);
+  }, [yearIdIterations, regions.order]);
 
   /**
    * Update the URL if the control setting is modified.

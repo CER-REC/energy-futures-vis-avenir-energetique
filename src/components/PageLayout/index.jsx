@@ -3,10 +3,12 @@ import PropTypes from 'prop-types';
 import { makeStyles, Grid, CircularProgress } from '@material-ui/core';
 import Alert from '@material-ui/lab/Alert';
 import AlertTitle from '@material-ui/lab/AlertTitle';
+import { useIntl } from 'react-intl';
 
+import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
 import useEnergyFutureData from '../../hooks/useEnergyFutureData';
-import { REGIONS, REGION_ORDER, SOURCES, SOURCE_ORDER, ELECTRICITY_SOURCE_ORDER } from '../../types';
+import { SOURCES, SOURCE_ORDER, ELECTRICITY_SOURCE_ORDER } from '../../types';
 import YearSelect from '../YearSelect';
 import PageSelect from '../PageSelect';
 import ScenarioSelect from '../ScenarioSelect';
@@ -43,6 +45,8 @@ const PageLayout = ({
   singleSelectSource,
 }) => {
   const classes = useStyles();
+  const intl = useIntl();
+  const { regions } = useAPI();
   const { config, setConfig } = useConfig();
   const { loading, error, data } = useEnergyFutureData();
 
@@ -68,6 +72,21 @@ const PageLayout = ({
   const vis = useMemo(
     () => Children.map(children, child => child && cloneElement(child, { data })),
     [children, data],
+  );
+  const regionItems = useMemo(
+    () => {
+      const items = {};
+
+      regions.order.forEach((region) => {
+        items[region] = {
+          color: regions.colors[region],
+          label: intl.formatMessage({ id: `regions.${region}` }),
+        };
+      });
+
+      return items;
+    },
+    [intl, regions],
   );
 
   return (
@@ -107,8 +126,8 @@ const PageLayout = ({
                 singleSelect={singleSelectRegion}
                 items={config.provinces}
                 itemOrder={config.provinceOrder}
-                defaultItems={REGIONS}
-                defaultItemOrder={REGION_ORDER}
+                defaultItems={regionItems}
+                defaultItemOrder={regions.order}
                 setItems={provinces => setConfig({ ...config, provinces })}
                 setItemOrder={provinceOrder => setConfig({ ...config, provinceOrder })}
               />

@@ -5,7 +5,6 @@ import gql from 'graphql-tag';
 import useAPI from './useAPI';
 import useConfig from './useConfig';
 import { convertUnit } from '../utilities/convertUnit';
-import { REGION_ORDER } from '../types';
 import { parseData, NOOP } from '../utilities/parseData';
 
 // Some parts of this file are not very DRY in anticipation of changes
@@ -115,7 +114,7 @@ const getDefaultUnit = (config) => {
 };
 
 export default () => {
-  const { yearIdIterations } = useAPI();
+  const { yearIdIterations, regions: { order: regionOrder } } = useAPI();
   const { config } = useConfig();
   const query = getQuery(config);
   const unitConversion = convertUnit(getDefaultUnit(config), config.unit);
@@ -125,10 +124,10 @@ export default () => {
    */
   const regions = useMemo(() => {
     if (config.page === 'electricity' && config.provinces[0] === 'ALL') {
-      return REGION_ORDER;
+      return regionOrder;
     }
     return config.provinces;
-  }, [config.page, config.provinces]);
+  }, [config.page, config.provinces, regionOrder]);
 
   // #region Enum Correction
   // TODO: fix the config data to match the enums then remove this next part
