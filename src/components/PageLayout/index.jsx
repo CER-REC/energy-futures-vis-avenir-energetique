@@ -85,7 +85,7 @@ const PageLayout = ({
         <LinkButtonGroup title="Context" labels={['about', 'methodology', 'report', 'results', 'assumptions']} />
       </Grid>
       <Grid item style={{ width: 'calc(100% - 100px)' }}>
-        <Grid container wrap="nowrap" spacing={4}>
+        <Grid container wrap="nowrap" spacing={2}>
           {showSource && (
             <Grid item>
               <DraggableVerticalList

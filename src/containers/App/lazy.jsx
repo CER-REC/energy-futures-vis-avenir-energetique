@@ -85,6 +85,16 @@ const theme = createMuiTheme({
         },
       },
     },
+    MuiTooltip: {
+      tooltip: {
+        backgroundColor: defaultTheme.palette.common.white,
+        color: defaultTheme.palette.secondary.main,
+        maxWidth: 220,
+        fontSize: defaultTheme.typography.pxToRem(12),
+        border: `1px solid ${defaultTheme.palette.secondary.main}`,
+        borderRadius: 0,
+      },
+    },
   },
 });
 
