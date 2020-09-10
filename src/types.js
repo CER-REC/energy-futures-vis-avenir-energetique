@@ -58,13 +58,13 @@ export const REGIONS = {
 export const REGION_ORDER = ['YT', 'SK', 'QC', 'PE', 'ON', 'NU', 'NT', 'NS', 'NL', 'NB', 'MB', 'BC', 'AB'];
 
 export const SOURCES = {
-  oilProducts: { label: 'Oil Products', icon: OilIcon, color: '#B56696' },
-  nuclear: { label: 'Nuclear', icon: NuclearIcon, color: '#CBCA44' },
-  bio: { label: 'Bio', icon: BioIcon, color: '#8468A9' },
-  naturalGas: { label: 'Natural Gas', icon: GasIcon, color: '#D5673E' },
-  coal: { label: 'Coal', icon: CoalIcon, color: '#8C6639' },
-  solarWindGeothermal: { label: 'Solar, Wind, Geothermal', icon: WindIcon, color: '#60984D' },
-  hydro: { label: 'Hydro', icon: HydroIcon, color: '#4F67AE' },
+  oilProducts: { label: 'Oil Products', icon: OilIcon, color: '#CE02D3' },
+  nuclear: { label: 'Nuclear', icon: NuclearIcon, color: '#B9B42F' },
+  bio: { label: 'Bio', icon: BioIcon, color: '#8545C5' },
+  naturalGas: { label: 'Natural Gas', icon: GasIcon, color: '#E3791D' },
+  coal: { label: 'Coal', icon: CoalIcon, color: '#5B3333' },
+  solarWindGeothermal: { label: 'Solar, Wind, Geothermal', icon: WindIcon, color: '#549464' },
+  hydro: { label: 'Hydro', icon: HydroIcon, color: '#506891' },
   // electricity: { label: 'Electricity', icon: ElectricityIcon, color: '#7ACBCB' },
 };
 export const SOURCE_ORDER = ['oilProducts', 'bio', 'naturalGas', 'coal'];

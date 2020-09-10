@@ -49,26 +49,25 @@ export const parseData = {
   },
 
   electricity: (data, unitConversion, regions) => {
-    const dataGroupedByYear = (data || [])
+    const dataByYear = (data || [])
       .filter(entry => regions.includes(entry.province) && entry.source !== 'ALL')
       .reduce((result, entry) => ({
         ...result,
         [entry.year]: [...(result[entry.year] || []), entry],
       }), {});
-    Object.keys(dataGroupedByYear).forEach((year) => {
-      dataGroupedByYear[year] = [...dataGroupedByYear[year]].reduce((result, entry) => ({
+    Object.keys(dataByYear).forEach((year) => {
+      dataByYear[year] = [...dataByYear[year]].reduce((result, entry) => entry.value ? ({
         ...result,
-        [entry.province]: {
-          ...result[entry.province],
-          [entry.source]: {
+        [entry.province]: [
+          ...(result[entry.province] || []), {
             name: entry.source,
             color: SOURCE_COLOR[entry.source],
             value: entry.value * unitConversion,
           },
-        },
-      }), {});
+        ],
+      }) : result, {});
     });
-    return dataGroupedByYear;
+    return dataByYear;
   },
 };
 

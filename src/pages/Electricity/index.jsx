@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles, Paper, Grid, Typography, Button, Slider } from '@material-ui/core';
 import PlayIcon from '@material-ui/icons/PlayCircleOutline';
@@ -7,7 +7,6 @@ import { ResponsiveBubble } from '@nivo/circle-packing';
 
 import { CONFIG_REPRESENTATION } from '../../types';
 import { formatUnitAbbreviation } from '../../utilities/convertUnit';
-import useConfig from '../../hooks/useConfig';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -25,6 +24,27 @@ const useStyles = makeStyles(theme => ({
       zIndex: 2,
     },
   },
+  region: {
+    position: 'relative',
+    transition: 'top .25s ease-in-out, left .25s ease-in-out, height .25s ease-in-out, width .25s ease-in-out',
+    '&:after': {
+      content: '""',
+      position: 'absolute',
+      top: 0,
+      bottom: 0,
+      left: 0,
+      right: 0,
+      backgroundColor: 'rgba(255, 255, 255, 0.2)',
+      borderRadius: '50%',
+      boxShadow: theme.shadows[1],
+    },
+  },
+  subregion: {
+    position: 'absolute',
+    transform: 'translate(-50%, -50%)',
+    borderRadius: '50%',
+    transition: 'top .25s ease-in-out, left .25s ease-in-out, height .25s ease-in-out, width .25s ease-in-out',
+  },
   year: {
     position: 'absolute',
     top: -10,
@@ -35,8 +55,9 @@ const useStyles = makeStyles(theme => ({
   },
   label: {
     position: 'absolute',
-    top: '15%',
-    left: '85%',
+    top: -35,
+    left: '50%',
+    transform: 'translateX(-50%)',
     padding: theme.spacing(0, 0.5),
     border: `1px solid ${theme.palette.secondary.light}`,
     zIndex: 1,
@@ -46,20 +67,20 @@ const useStyles = makeStyles(theme => ({
 const REGION_LOC = {
   YT: { top: '10%', left: '5%' },
   SK: { top: '60%', left: '25%' },
-  QC: { top: 0, left: '50%' },
-  PE: { top: '60%', left: '85%' },
-  ON: { top: '60%', left: '40%' },
-  NU: { top: '15%', left: '28%' },
+  QC: { top: '5%', left: '55%' },
+  PE: { top: '65%', left: '88%' },
+  ON: { top: '60%', left: '45%' },
+  NU: { top: '15%', left: '30%' },
   NT: { top: '3%', left: '18%' },
   NS: { top: '80%', left: '85%' },
-  NL: { top: '35%', left: '80%' },
+  NL: { top: '35%', left: '85%' },
   NB: { top: '55%', left: '70%' },
   MB: { top: '35%', left: '35%' },
-  BC: { top: '65%', left: 0 },
-  AB: { top: '30%', left: '5%' },
+  BC: { top: '70%', left: '8%' },
+  AB: { top: '30%', left: '8%' },
 };
-const BUBBLE_SIZE_MIN = 10;
-const BUBBLE_SIZE_MAX = 25;
+const BUBBLE_SIZE_MIN = 1;
+const BUBBLE_SIZE_MAX = 20;
 
 /**
  * Rendering bubble tooltips.
@@ -114,8 +135,6 @@ Bubble.defaultProps = {
 const Electricity = ({ data, year }) => {
   const classes = useStyles();
 
-  const { config } = useConfig();
-
   const [currYear, setCurrYear] = useState(year?.min || 0);
   const [play, setPlay] = useState(false);
 
@@ -141,7 +160,7 @@ const Electricity = ({ data, year }) => {
   /**
    * Post-process for determining bubble sizes and positions.
    */
-  const processedData = useMemo(() => {
+  const { totals, max, min } = useMemo(() => {
     if (!data || !data[currYear]) {
       return undefined;
     }
@@ -153,17 +172,38 @@ const Electricity = ({ data, year }) => {
         .reduce((a, b) => a + b),
     }), {});
 
-    const max = Math.max(...Object.values(totals));
-    const min = Math.min(...Object.values(totals));
-
-    return Object.keys(data[currYear]).map(province => ({
-      name: province,
-      size: (Math.abs(max - min) < Number.EPSILON
-        ? Number.POSITIVE_INFINITY
-        : (totals[province] / (max - min)) * BUBBLE_SIZE_MAX + BUBBLE_SIZE_MIN),
-      children: Object.values(data[currYear][province]),
-    }));
+    return {
+      totals,
+      max: Math.max(...Object.values(totals)),
+      min: Math.min(...Object.values(totals)),
+    }
   }, [data, currYear]);
+
+  const getSize = useCallback(
+    value => Math.sqrt(value / (max - min)) * BUBBLE_SIZE_MAX + BUBBLE_SIZE_MIN,
+    [max, min],
+  );
+
+  const isSingle = useMemo(() => Math.abs(max - min) < Number.EPSILON, [max, min]);
+
+  const processedData = useMemo(() => {
+    const dataWithPosition = Object.keys(data[currYear]).map(province => {
+      const size = isSingle ? Number.POSITIVE_INFINITY : getSize(totals[province]);
+      return {
+        name: province,
+        size,
+        height: isSingle ? '80%' : size * 8,
+        width: isSingle ? '80%' : size * 8,
+        top: isSingle ? '10%' : REGION_LOC[province].top,
+        left: isSingle ? '10%' : REGION_LOC[province].left,
+        nodes: data[currYear][province].sort((a, b) => b.value - a.value).map(source => ({
+          ...source,
+          size: getSize(source.value),
+        })),
+      }
+    });
+    return dataWithPosition;
+  }, [data, max, min]);
 
   if (!data) {
     return null;
@@ -176,14 +216,30 @@ const Electricity = ({ data, year }) => {
       {processedData.map(entry => (
         <div
           key={`bubble-${entry.name}`}
-          style={{
-            height: entry.size === Number.POSITIVE_INFINITY ? '80%' : `${entry.size * 8}px`,
-            width: entry.size === Number.POSITIVE_INFINITY ? '80%' : `${entry.size * 8}px`,
-            top: entry.size === Number.POSITIVE_INFINITY ? '10%' : REGION_LOC[entry.name].top,
-            left: entry.size === Number.POSITIVE_INFINITY ? '10%' : REGION_LOC[entry.name].left,
-          }}
+          className={classes.region}
+          style={{ height: entry.height, width: entry.width, top: entry.top, left: entry.left }}
         >
-          <Bubble province={entry.name} data={entry.children} unit={config.unit} />
+          {entry.nodes.map((source, index) => {
+            const theta = index === 0 ? 0 : Array(index + 1)
+              .fill(undefined)
+              .reduce((sum, _, i) => sum + ((i === 0 || i === index) ? 1 : 2) * (entry.nodes[i].size / entry.size * 1.1), 0);
+            const x = isNaN(theta) ? 0 : entry.size * 4 * (1 - Math.cos(theta));
+            const y = isNaN(theta) ? 0 : entry.size * 4 * Math.sin(theta);
+            return (
+              <div
+                key={`region-${entry.name}-source-${source.name}`}
+                className={classes.subregion}
+                style={{
+                  top: entry.size * 4 + y,
+                  left: x,
+                  height: source.size * 8,
+                  width: source.size * 8,
+                  backgroundColor: source.color,
+                }}
+              />
+            );
+          })}
+          {/* <div style={{ height: '100%', width: '100%', borderRadius: '50%', backgroundColor: 'rgba(255, 255, 255, .4)' }} /> */}
           <Paper square elevation={0} className={classes.label}>
             <Typography>{entry.name}</Typography>
           </Paper>
