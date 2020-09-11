@@ -29,6 +29,7 @@ const useStyles = makeStyles(theme => ({
   vis: {
     height: '100%',
     width: '100%',
+    position: 'relative',
     border: `1px solid ${theme.palette.divider}`,
   },
 }));
