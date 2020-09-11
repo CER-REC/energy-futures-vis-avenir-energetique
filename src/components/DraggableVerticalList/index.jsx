@@ -25,7 +25,7 @@ const ColoredItemBox = ({
       height: 36,
       width: 36,
       backgroundColor: theme.palette.common.white,
-      border: `1px solid ${color || theme.palette.secondary.main}`,
+      border: `2px solid ${color || theme.palette.secondary.main}`,
       borderRadius: round ? '50%' : 0,
       transition: 'box-shadow .25s ease-in-out',
       '& > p, & > svg': {
@@ -127,6 +127,7 @@ const useStyles = makeStyles(theme => ({
 const DraggableVerticalList = ({
   title, width, round, dense,
   singleSelect = false, /* multi-select or single select */
+  greyscale = false, /* ignore button colors */
   disabled = false, /* disable drag-n-drop */
   items /* array of strings */,
   defaultItems /* object */,
@@ -225,7 +226,6 @@ const DraggableVerticalList = ({
               <ColoredItemBox
                 item="ALL"
                 round={round}
-                color="#9E9E9E"
                 selected={singleSelect ? localItems[0] === 'ALL' : localItems.length > 0}
                 clear={localItems.length === Object.keys(defaultItems).length}
               />
@@ -246,7 +246,7 @@ const DraggableVerticalList = ({
                         round={round}
                         label={defaultItems[item].label}
                         icon={defaultItems[item].icon}
-                        color={defaultItems[item].color}
+                        color={greyscale ? undefined : defaultItems[item].color}
                         selected={localItems.indexOf(item) > -1}
                         isDragDisabled={disabled}
                       />
@@ -269,6 +269,7 @@ DraggableVerticalList.propTypes = {
   round: PropTypes.bool,
   dense: PropTypes.bool,
   singleSelect: PropTypes.bool,
+  greyscale: PropTypes.bool,
   disabled: PropTypes.bool,
   items: PropTypes.arrayOf(PropTypes.string),
   defaultItems: PropTypes.object, // eslint-disable-line react/forbid-prop-types
@@ -284,6 +285,7 @@ DraggableVerticalList.defaultProps = {
   round: false,
   dense: false,
   singleSelect: false,
+  greyscale: false,
   disabled: false,
   items: [],
   defaultItems: {},
