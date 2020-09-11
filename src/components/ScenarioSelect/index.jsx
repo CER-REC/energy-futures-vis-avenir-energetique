@@ -9,18 +9,11 @@ import {
 import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
 import { SCENARIO_COLOR } from '../../constants';
+import Hint from '../Hint';
 
 const useStyles = makeStyles(theme => createStyles({
   root: {
     '& > div:first-of-type': { marginRight: theme.spacing(2) },
-  },
-  tooltip: {
-    backgroundColor: theme.palette.common.white,
-    color: theme.palette.secondary.main,
-    maxWidth: 220,
-    fontSize: theme.typography.pxToRem(12),
-    border: `1px solid ${theme.palette.secondary.main}`,
-    borderRadius: 0,
   },
 }));
 
@@ -94,15 +87,12 @@ const ScenarioSelect = ({ multiSelect }) => {
   return (
     <Grid container alignItems="center" wrap="nowrap" spacing={1} className={classes.root}>
       <Grid item>
-        <Typography variant="h6" color="primary">Scenarios</Typography>
+        <Hint><Typography variant="h6" color="primary">Scenarios</Typography></Hint>
       </Grid>
 
       {scenarios.map(scenario => (
         <Grid item key={`config-scenario-${scenario}`}>
-          <Tooltip
-            title={intl.formatMessage({ id: `components.scenarioSelect.${scenario}.description` })}
-            classes={{ tooltip: classes.tooltip }}
-          >
+          <Tooltip title={intl.formatMessage({ id: `components.scenarioSelect.${scenario}.description` })}>
             <Button
               variant={config.scenarios.indexOf(scenario) > -1 ? 'contained' : 'outlined'}
               color="primary"
