@@ -50,25 +50,33 @@ const PageLayout = ({
   const { regions, sources } = useAPI();
   const { config, setConfig } = useConfig();
   const { loading, error, data, year } = useEnergyFutureData();
+  const type = PAGES.find(page => page.id === config.page).sourceType;
 
   /**
    * Reset the source list when opening 'by-sector' and 'electricity' pages.
    */
   useEffect(
+    // TODO: This logic should be in the reducer when that is implemented
     () => {
-      if (config.page === 'by-sector') {
-        setConfig({
-          ...config,
-          sources: sources.energy.order,
-          sourceOrder: sources.energy.order,
-        });
-      } else if (config.page === 'electricity') {
-        setConfig({
-          ...config,
-          sources: sources.electricity.order,
-          sourceOrder: sources.electricity.order,
-        });
+      let selectedSources = config.sources;
+      let selectedSourceOrder = config.sourceOrder;
+      const validSources = sources[type]?.order || [];
+
+      if (
+        (selectedSourceOrder.length !== validSources.length)
+        || !validSources.every(source => selectedSourceOrder.includes(source))
+      ) {
+        selectedSources = validSources;
+        selectedSourceOrder = validSources;
+      } else if (!selectedSources.every(source => validSources.includes(source))) {
+        selectedSources = validSources;
       }
+
+      setConfig({
+        ...config,
+        sources: selectedSources,
+        sourceOrder: selectedSourceOrder,
+      });
     },
     [config.page], // eslint-disable-line react-hooks/exhaustive-deps
   );
@@ -92,7 +100,6 @@ const PageLayout = ({
     },
     [regions, intl],
   );
-  const type = PAGES.find(page => page.id === config.page).sourceType;
   const sourceItems = useMemo(
     () => {
       const items = {};

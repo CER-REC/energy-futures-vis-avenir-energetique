@@ -145,6 +145,8 @@ const Electricity = ({ data, year }) => {
   const [currYear, setCurrYear] = useState(year?.min || 0);
   const [play, setPlay] = useState(false);
 
+  useEffect(() => setCurrYear(year?.min || 0), [year]);
+
   /**
    * Generate slide marks for the video playback control.
    */
@@ -191,7 +193,7 @@ const Electricity = ({ data, year }) => {
     }));
   }, [data, currYear]);
 
-  if (!data) {
+  if (!processedData) {
     return null;
   }
 
