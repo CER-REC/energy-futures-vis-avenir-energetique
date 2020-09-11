@@ -4,6 +4,7 @@ import {
   Grid, Typography, Button,
 } from '@material-ui/core';
 import LinkIcon from '@material-ui/icons/Link';
+import EmailIcon from '@material-ui/icons/Email';
 import {
   SocialMediaIconTwitter, SocialMediaIconFacebook, SocialMediaIconLinkedIn,
 } from './SocialMediaIcons';
@@ -68,10 +69,11 @@ const YearSelect = () => {
           labels={[
             ['download data'],
             [
-              { icon: <SocialMediaIconTwitter />, name: 'Twitter' },
+              { icon: <LinkIcon />, name: 'Copy Link' },
               { icon: <SocialMediaIconLinkedIn />, name: 'LinkedIn' },
               { icon: <SocialMediaIconFacebook />, name: 'Facebook' },
-              { icon: <LinkIcon />, name: 'Copy Link' },
+              { icon: <SocialMediaIconTwitter />, name: 'Twitter' },
+              { icon: <EmailIcon />, name: 'Email' },
             ],
           ]}
           accent="right"

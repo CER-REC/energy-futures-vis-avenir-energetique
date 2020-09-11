@@ -6,8 +6,6 @@ import {
 } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => createStyles({
-  root: {
-  },
   title: {
     color: theme.palette.primary.main,
     fontWeight: 700,
@@ -15,17 +13,21 @@ const useStyles = makeStyles(theme => createStyles({
   },
   btn: props => ({
     height: 'auto',
+    width: '100%',
     minWidth: 0,
     padding: '2px 8px !important',
+    fontSize: 12,
     textTransform: 'capitalize',
     justifyContent: props.accent || 'right',
   }),
   btnIcon: {
-    width: 40,
     'button&': {
-      height: 28,
+      height: 22,
+      width: 24,
+      padding: '0 4px !important',
       '&:hover': { boxShadow: 'none' },
     },
+    '& svg': { fontSize: 16 },
   },
   accent: {
     width: 8,
@@ -53,13 +55,12 @@ const LinkButtonGroup = ({ title, labels, accent, className }) => {
           spacing={labelGroup[0].icon ? 0 : 1}
         >
           {labelGroup.map(label => (
-            <Grid item key={`link-button-${label.name || label}`} style={{ width: '100%' }}>
+            <Grid item key={`link-button-${label.name || label}`} style={{ lineHeight: 0 }}>
               <Button
                 variant="contained"
                 color="secondary"
                 onClick={() => setSelect(label.name || label)}
                 className={`${classes.btn} ${label.icon && classes.btnIcon}`}
-                style={{ width: labelGroup[0].icon ? 40 : '100%' }}
               >
                 {label.icon || label}
               </Button>
