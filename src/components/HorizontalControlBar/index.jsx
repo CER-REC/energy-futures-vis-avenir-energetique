@@ -8,6 +8,7 @@ import {
 import useConfig from '../../hooks/useConfig';
 import { CONFIG_LAYOUT, SECTOR_LAYOUT } from '../../constants';
 import { CONFIG_REPRESENTATION } from '../../types';
+import Hint from '../Hint';
 // #endregion
 
 const useStyles = makeStyles(theme => createStyles({
@@ -15,10 +16,7 @@ const useStyles = makeStyles(theme => createStyles({
     height: 40,
     padding: theme.spacing(0.5, 2),
     backgroundColor: '#F3EFEF',
-    '& p': {
-      marginRight: theme.spacing(1),
-      fontWeight: 700,
-    },
+    '& p': { fontWeight: 700 },
   },
   btnSector: {
     marginRight: theme.spacing(1),
@@ -64,7 +62,7 @@ const HorizontalControlBar = () => {
   const selections = ['by-region', 'scenarios'].includes(config.page) && (
     <>
       <Grid item>
-        <Typography variant="body1" color="primary">SOURCE</Typography>
+        <Hint><Typography variant="body1" color="primary">SOURCE</Typography></Hint>
       </Grid>
       {Object.keys(CONFIG_LAYOUT).map((selection) => {
         const Icon = CONFIG_LAYOUT[selection]?.icon;
@@ -93,7 +91,7 @@ const HorizontalControlBar = () => {
   const sectors = ['by-sector', 'demand'].includes(config.page) && (
     <>
       <Grid item>
-        <Typography variant="body1" color="primary">SECTOR</Typography>
+        <Hint><Typography variant="body1" color="primary">SECTOR</Typography></Hint>
       </Grid>
       {Object.keys(SECTOR_LAYOUT).map((sector) => {
         const Icon = SECTOR_LAYOUT[sector]?.icon;
@@ -121,7 +119,7 @@ const HorizontalControlBar = () => {
   const views = config.page === 'electricity' && (
     <>
       <Grid item>
-        <Typography variant="body1" color="primary">VIEW BY</Typography>
+        <Hint><Typography variant="body1" color="primary">VIEW BY</Typography></Hint>
       </Grid>
       {['region', 'source'].map(view => (
         <Grid item key={`config-view-${view}`}>
@@ -143,7 +141,7 @@ const HorizontalControlBar = () => {
     <>
       <Grid item style={{ flexGrow: 1 }} />
       <Grid item>
-        <Typography variant="body1" color="primary">UNIT</Typography>
+        <Hint><Typography variant="body1" color="primary">UNIT</Typography></Hint>
       </Grid>
       {layout.unit.map(unit => (
         <Grid item key={`config-unit-${unit}`}>

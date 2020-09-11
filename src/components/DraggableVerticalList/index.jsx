@@ -9,6 +9,7 @@ import ClearIcon from '@material-ui/icons/Clear';
 import DragIcon from '@material-ui/icons/DragIndicator';
 
 import useConfig from '../../hooks/useConfig';
+import Hint from '../Hint';
 
 const reorder = (list, startIndex, endIndex) => {
   const result = Array.from(list);
@@ -115,6 +116,7 @@ const useStyles = makeStyles(theme => ({
       borderLeft: `2px solid ${theme.palette.secondary.main}`,
     },
   }),
+  title: { fontSize: 15 },
   item: props => ({
     position: 'relative',
     height: props.dense ? 44 : 52,
@@ -209,7 +211,9 @@ const DraggableVerticalList = ({
 
   return (
     <DragDropContext onDragEnd={handleDragEnd}>
-      <Typography variant="h6" color="secondary" gutterBottom>{title}</Typography>
+      <Hint>
+        <Typography variant="h6" color="secondary" className={classes.title}>{title}</Typography>
+      </Hint>
       <Droppable droppableId="droppable" isDropDisabled={disabled}>
         {(provided, snapshot) => (
           <Grid
