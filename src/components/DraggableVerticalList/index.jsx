@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import {
   makeStyles, Grid, Typography, Tooltip,
 } from '@material-ui/core';
-import { grey } from '@material-ui/core/colors';
 import ClearIcon from '@material-ui/icons/Clear';
 import DragIcon from '@material-ui/icons/DragIndicator';
 
@@ -26,14 +25,14 @@ const ColoredItemBox = ({
       height: 36,
       width: 36,
       backgroundColor: theme.palette.common.white,
-      border: `1px solid ${color[600] || color || theme.palette.secondary.main}`,
+      border: `1px solid ${color || theme.palette.secondary.main}`,
       borderRadius: round ? '50%' : 0,
       transition: 'box-shadow .25s ease-in-out',
       '& > p, & > svg': {
         margin: 'auto',
-        color: color[800] || color || theme.palette.secondary.main,
+        color: color || theme.palette.secondary.main,
       },
-      '&.selected': { backgroundColor: color[600] || color || theme.palette.secondary.main },
+      '&.selected': { backgroundColor: color || theme.palette.secondary.main },
       '&.selected > p, &.selected > svg': { color: theme.palette.common.white },
       '&:hover': { boxShadow: theme.shadows[6] },
     },
@@ -75,10 +74,8 @@ const ColoredItemBox = ({
 ColoredItemBox.propTypes = {
   item: PropTypes.string.isRequired,
   label: PropTypes.string,
-  // eslint-disable-next-line react/forbid-prop-types
-  icon: PropTypes.object,
-  // eslint-disable-next-line react/forbid-prop-types
-  color: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
+  icon: PropTypes.object, // eslint-disable-line react/forbid-prop-types
+  color: PropTypes.string,
   selected: PropTypes.bool,
   clear: PropTypes.bool,
   round: PropTypes.bool,
@@ -228,7 +225,7 @@ const DraggableVerticalList = ({
               <ColoredItemBox
                 item="ALL"
                 round={round}
-                color={grey}
+                color="#9E9E9E"
                 selected={singleSelect ? localItems[0] === 'ALL' : localItems.length > 0}
                 clear={localItems.length === Object.keys(defaultItems).length}
               />
