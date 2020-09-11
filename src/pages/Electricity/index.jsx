@@ -1,9 +1,10 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useCallback, useState, useEffect, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles, Paper, Grid, Typography, Button, Slider } from '@material-ui/core';
 import PlayIcon from '@material-ui/icons/PlayCircleOutline';
 import PauseIcon from '@material-ui/icons/PauseCircleOutline';
 import { ResponsiveBubble } from '@nivo/circle-packing';
+import { useIntl } from 'react-intl';
 
 import { UNIT_NAMES } from '../../constants';
 import { formatUnitAbbreviation } from '../../utilities/convertUnit';
@@ -80,37 +81,59 @@ Tooltip.propTypes = {
 /**
  * Rendering each bubble chart for a single province.
  */
-const Bubble = ({ province, data, unit, colors }) => (
-  <ResponsiveBubble
-    root={{ name: province, children: data }}
-    margin={{ top: 20, right: 20, bottom: 20, left: 20 }}
-    identity="name"
-    value="value"
-    colors={d => colors[d.name] || '#FFFFFF'}
-    padding={2}
-    borderWidth={1}
-    borderColor={d => (d.color === 'rgb(255,255,255)' ? '#666' : d.color)}
-    enableLabel={false}
-    tooltip={d => <Tooltip name={d.id === province ? 'TOTAL' : d.data.name} value={d.value} unit={unit} />}
-    isZoomable={false}
-    animate
-    motionStiffness={90}
-    motionDamping={12}
-  />
-);
+const Bubble = ({ province, data, unit, colors }) => {
+  const intl = useIntl();
+  const getColor = useCallback(dataItem => colors[dataItem.name] || '#FFFFFF', [colors]);
+  const getBorderColor = useCallback(
+    chartItem => (chartItem.color === 'rgb(255,255,255)' ? '#666666' : chartItem.color),
+    [],
+  );
+  const getTooltip = useCallback(
+    (dataItem) => {
+      // TODO: Add application translation for TOTAL
+      let name = 'TOTAL';
+
+      if (dataItem.id !== province) {
+        name = intl.formatMessage({ id: `common.sources.electricity.${dataItem.data.name}` }).toUpperCase();
+      }
+
+      return <Tooltip name={name} value={dataItem.value} unit={unit} />;
+    },
+    [province, intl, unit],
+  );
+
+  return (
+    <ResponsiveBubble
+      root={{ name: province, children: data }}
+      margin={{ top: 20, right: 20, bottom: 20, left: 20 }}
+      identity="name"
+      value="value"
+      colors={getColor}
+      padding={2}
+      borderWidth={1}
+      borderColor={getBorderColor}
+      enableLabel={false}
+      tooltip={getTooltip}
+      isZoomable={false}
+      animate
+      motionStiffness={90}
+      motionDamping={12}
+    />
+  );
+};
 
 Bubble.propTypes = {
   province: PropTypes.string,
   data: PropTypes.oneOfType([PropTypes.object, PropTypes.arrayOf(PropTypes.object)]),
   unit: PropTypes.string,
-  colors: PropTypes.arrayOf(PropTypes.object),
+  colors: PropTypes.shape({}),
 };
 
 Bubble.defaultProps = {
   province: '',
   data: undefined,
   unit: '',
-  colors: [],
+  colors: {},
 };
 
 const Electricity = ({ data, year }) => {

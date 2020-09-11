@@ -1,17 +1,23 @@
-import React, { useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { ResponsiveStream } from '@nivo/stream';
 import PropTypes from 'prop-types';
+import { useIntl } from 'react-intl';
 
 import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
 
 const BySector = ({ data, year }) => {
+  const intl = useIntl();
   const { sources: { energy: { colors } } } = useAPI();
   const { config } = useConfig();
   const keys = useMemo(() => {
     const sources = new Set((data || []).map(entry => Object.keys(entry)).flat());
     return [...config.sourceOrder].reverse().filter(s => sources.has(s));
   }, [data, config.sourceOrder]);
+  const getTooltipLabel = useCallback(
+    dataItem => intl.formatMessage({ id: `common.sources.energy.${dataItem.id}` }).toUpperCase(),
+    [intl],
+  );
 
   if (!data || !year) {
     return null;
@@ -49,6 +55,7 @@ const BySector = ({ data, year }) => {
       animate
       motionStiffness={90}
       motionDamping={15}
+      tooltipLabel={getTooltipLabel}
     />
   );
 };
