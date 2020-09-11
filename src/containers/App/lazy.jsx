@@ -74,8 +74,7 @@ const theme = createMuiTheme({
         },
       },
       containedSizeSmall: {
-        paddingTop: 0,
-        paddingBottom: 0,
+        padding: defaultTheme.spacing(0, 0.25),
       },
       outlinedPrimary: {
         fontWeight: 500,
@@ -90,8 +89,7 @@ const theme = createMuiTheme({
         },
       },
       outlinedSizeSmall: {
-        paddingTop: 0,
-        paddingBottom: 0,
+        padding: defaultTheme.spacing(0, 0.25),
       },
     },
     MuiTooltip: {

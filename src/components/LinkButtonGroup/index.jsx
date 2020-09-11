@@ -11,6 +11,10 @@ const useStyles = makeStyles(theme => createStyles({
     fontWeight: 700,
     textTransform: 'uppercase',
   },
+  btnGroup: {
+    width: '100%',
+    lineHeight: 0,
+  },
   btn: props => ({
     height: 'auto',
     width: '100%',
@@ -55,7 +59,7 @@ const LinkButtonGroup = ({ title, labels, accent, className }) => {
           spacing={labelGroup[0].icon ? 0 : 1}
         >
           {labelGroup.map(label => (
-            <Grid item key={`link-button-${label.name || label}`} style={{ lineHeight: 0 }}>
+            <Grid item key={`link-button-${label.name || label}`} className={classes.btnGroup}>
               <Button
                 variant="contained"
                 color="secondary"
