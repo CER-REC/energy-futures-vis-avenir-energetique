@@ -50,9 +50,9 @@ const theme = createMuiTheme({
       root: {
         height: 23,
         minWidth: 73,
-        padding: `${defaultTheme.spacing(0, 0.5)} !important`,
         borderRadius: 0,
       },
+      label: { margin: 'auto' },
       containedPrimary: {
         fontWeight: 700,
         color: defaultTheme.palette.common.white,
@@ -64,6 +64,7 @@ const theme = createMuiTheme({
         },
       },
       containedSecondary: {
+        minWidth: 0,
         color: defaultTheme.palette.secondary.light,
         backgroundColor: '#F3EFEF',
         boxShadow: defaultTheme.shadows[0],
@@ -71,6 +72,10 @@ const theme = createMuiTheme({
           backgroundColor: '#F3EFEF',
           boxShadow: defaultTheme.shadows[2],
         },
+      },
+      containedSizeSmall: {
+        paddingTop: 0,
+        paddingBottom: 0,
       },
       outlinedPrimary: {
         fontWeight: 500,
@@ -83,6 +88,10 @@ const theme = createMuiTheme({
           border: `1px solid ${defaultTheme.palette.secondary.main}`,
           boxShadow: defaultTheme.shadows[2],
         },
+      },
+      outlinedSizeSmall: {
+        paddingTop: 0,
+        paddingBottom: 0,
       },
     },
     MuiTooltip: {

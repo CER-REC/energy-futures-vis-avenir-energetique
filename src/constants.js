@@ -102,13 +102,13 @@ export const SECTOR_LAYOUT = {
 };
 
 export const SOURCE_COLOR = {
-  OIL: '#B56696',
-  NUCLEAR: '#CBCA44',
-  BIO: '#8468A9',
-  GAS: '#D5673E',
-  COAL: '#8C6639',
-  RENEWABLE: '#60984D',
-  HYDRO: '#4F67AE',
+  OIL: '#E4812C',
+  NUCLEAR: '#683A96',
+  BIO: '#4D8255',
+  GAS: '#F2CB53',
+  COAL: '#4E513F',
+  RENEWABLE: '#B2BCE4',
+  HYDRO: '#274368',
   ELECTRICITY: '#7ACBCB',
 };
 /**

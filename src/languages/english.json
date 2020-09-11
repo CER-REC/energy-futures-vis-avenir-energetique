@@ -20,7 +20,7 @@
       },
       "Evolving": {
         "title": "Evolving",
-        "description": "This is a placeholder of the Evolving tooltip text"
+        "description": "The Evolving Energy System Scenario considers the impact of increasing action on climate change throughout the projection period. It builds upon current climate and energy policies with a hypothetical suite of future policy developments."
       },
       "High LNG": {
         "title": "High LNG",
@@ -44,7 +44,7 @@
       },
       "Reference": {
         "title": "Reference",
-        "description": "The Reference Case provides a baseline outlook with a moderate view of energy prices and economic growth, and climate and energy policies announced at the time of analysis."
+        "description": "The Reference Scenario provides a baseline outlook with a moderate view of energy prices and economic growth, and climate and energy policies announced at the time of analysis."
       },
       "Technology": {
         "title": "Technology",

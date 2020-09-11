@@ -109,6 +109,7 @@ const PageLayout = ({
                 dense
                 disabled={disableDraggableRegion}
                 singleSelect={singleSelectRegion}
+                greyscale={config.page === 'by-sector'}
                 items={config.provinces}
                 itemOrder={config.provinceOrder}
                 defaultItems={REGIONS}

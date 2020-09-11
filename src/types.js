@@ -7,11 +7,7 @@ import WindIcon from '@material-ui/icons/ToysOutlined';
 import BioIcon from '@material-ui/icons/EcoOutlined';
 import NuclearIcon from '@material-ui/icons/PanoramaVerticalOutlined';
 import HydroIcon from '@material-ui/icons/Waves';
-
-import {
-  red, purple, deepPurple, blue, lightBlue, teal, green,
-  lightGreen, lime, yellow, amber, orange, deepOrange,
-} from '@material-ui/core/colors';
+import { SOURCE_COLOR } from './constants';
 
 export const CONFIG_REPRESENTATION = {
   energyDemand: {
@@ -41,30 +37,30 @@ export const CONFIG_REPRESENTATION = {
 };
 
 export const REGIONS = {
-  YT: { color: red, label: 'Yukon' },
-  SK: { color: purple, label: 'Saskatchewan' },
-  QC: { color: deepPurple, label: 'Quebec' },
-  PE: { color: blue, label: 'Prince Edward Island' },
-  ON: { color: lightBlue, label: 'Ontario' },
-  NU: { color: teal, label: 'Nunavut' },
-  NT: { color: green, label: 'Northwest Territories' },
-  NS: { color: lightGreen, label: 'Nova Scotia' },
-  NL: { color: lime, label: 'Newfoundland and Labrador' },
-  NB: { color: yellow, label: 'New Brunswick' },
-  MB: { color: amber, label: 'Manitoba' },
-  BC: { color: orange, label: 'British Columbia' },
-  AB: { color: deepOrange, label: 'Alberta' },
+  YT: { color: '#4E513F', label: 'Yukon' },
+  SK: { color: '#4D8255', label: 'Saskatchewan' },
+  QC: { color: '#985720', label: 'Quebec' },
+  PE: { color: '#E49FAB', label: 'Prince Edward Island' },
+  ON: { color: '#E4812C', label: 'Ontario' },
+  NU: { color: '#683A96', label: 'Nunavut' },
+  NT: { color: '#DA4367', label: 'Northwest Territories' },
+  NS: { color: '#7773AF', label: 'Nova Scotia' },
+  NL: { color: '#87C859', label: 'Newfoundland and Labrador' },
+  NB: { color: '#B03AAB', label: 'New Brunswick' },
+  MB: { color: '#F2CB53', label: 'Manitoba' },
+  BC: { color: '#82BCE4', label: 'British Columbia' },
+  AB: { color: '#274368', label: 'Alberta' },
 };
 export const REGION_ORDER = ['YT', 'SK', 'QC', 'PE', 'ON', 'NU', 'NT', 'NS', 'NL', 'NB', 'MB', 'BC', 'AB'];
 
 export const SOURCES = {
-  oilProducts: { label: 'Oil Products', icon: OilIcon, color: '#B56696' },
-  nuclear: { label: 'Nuclear', icon: NuclearIcon, color: '#CBCA44' },
-  bio: { label: 'Bio', icon: BioIcon, color: '#8468A9' },
-  naturalGas: { label: 'Natural Gas', icon: GasIcon, color: '#D5673E' },
-  coal: { label: 'Coal', icon: CoalIcon, color: '#8C6639' },
-  solarWindGeothermal: { label: 'Solar, Wind, Geothermal', icon: WindIcon, color: '#60984D' },
-  hydro: { label: 'Hydro', icon: HydroIcon, color: '#4F67AE' },
+  oilProducts: { label: 'Oil Products', icon: OilIcon, color: SOURCE_COLOR.OIL },
+  nuclear: { label: 'Nuclear', icon: NuclearIcon, color: SOURCE_COLOR.NUCLEAR },
+  bio: { label: 'Bio', icon: BioIcon, color: SOURCE_COLOR.BIO },
+  naturalGas: { label: 'Natural Gas', icon: GasIcon, color: SOURCE_COLOR.GAS },
+  coal: { label: 'Coal', icon: CoalIcon, color: SOURCE_COLOR.COAL },
+  solarWindGeothermal: { label: 'Solar, Wind, Geothermal', icon: WindIcon, color: SOURCE_COLOR.RENEWABLE },
+  hydro: { label: 'Hydro', icon: HydroIcon, color: SOURCE_COLOR.HYDRO },
   // electricity: { label: 'Electricity', icon: ElectricityIcon, color: '#7ACBCB' },
 };
 export const SOURCE_ORDER = ['oilProducts', 'bio', 'naturalGas', 'coal'];
