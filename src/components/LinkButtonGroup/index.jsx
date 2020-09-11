@@ -7,7 +7,6 @@ import {
 
 const useStyles = makeStyles(theme => createStyles({
   root: {
-    height: '100%',
   },
   title: {
     color: theme.palette.primary.main,
@@ -19,53 +18,77 @@ const useStyles = makeStyles(theme => createStyles({
     minWidth: 0,
     padding: '2px 8px !important',
     textTransform: 'capitalize',
-    borderLeft: props.accent === 'left' ? `3px solid ${theme.palette.primary.main}` : 'none',
-    borderRight: props.accent === 'left' ? 'none' : `3px solid ${theme.palette.primary.main}`,
-    '&:hover': {
-      borderLeft: props.accent === 'left' ? `3px solid ${theme.palette.primary.main}` : 'none',
-      borderRight: props.accent === 'left' ? 'none' : `3px solid ${theme.palette.primary.main}`,
-    },
+    justifyContent: props.accent || 'right',
   }),
   btnIcon: {
     width: 40,
-    'button&': { height: '24px' },
+    'button&': {
+      height: 28,
+      '&:hover': { boxShadow: 'none' },
+    },
+  },
+  accent: {
+    width: 8,
+    backgroundColor: theme.palette.primary.main,
+    '& + div': { width: `calc(100% - ${theme.spacing(1)}px)` },
   },
 }));
 
-const LinkButtonGroup = ({ title, labels, accent }) => {
+const LinkButtonGroup = ({ title, labels, accent, className }) => {
   const classes = useStyles({ accent });
 
   const [select, setSelect] = useState(undefined);
+
+  /**
+   * This is a button group in which buttons share the same accent color bar.
+   */
+  const generateLebelGroup = labelGroup => (
+    <Grid container>
+      {accent === 'left' && <Grid item className={classes.accent} />}
+      <Grid item>
+        <Grid
+          container
+          direction="column"
+          alignItems={accent === 'left' ? 'flex-start' : 'flex-end'}
+          spacing={labelGroup[0].icon ? 0 : 1}
+        >
+          {labelGroup.map(label => (
+            <Grid item key={`link-button-${label.name || label}`} style={{ width: '100%' }}>
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={() => setSelect(label.name || label)}
+                className={`${classes.btn} ${label.icon && classes.btnIcon}`}
+                style={{ width: labelGroup[0].icon ? 40 : '100%' }}
+              >
+                {label.icon || label}
+              </Button>
+            </Grid>
+          ))}
+        </Grid>
+      </Grid>
+      {accent !== 'left' && <Grid item className={classes.accent} />}
+    </Grid>
+  );
 
   return (
     <>
       <Grid
         container
-        direction="column-reverse"
+        direction="column"
         alignItems={accent === 'left' ? 'flex-start' : 'flex-end'}
         spacing={1}
-        className={classes.root}
+        className={className}
       >
-        {labels.map(label => (
-          <Grid item key={`link-button-${label.name || label}`}>
-            <Button
-              variant="contained"
-              color="secondary"
-              onClick={() => setSelect(label.name || label)}
-              className={`${classes.btn} ${label.icon && classes.btnIcon}`}
-            >
-              {label.icon || label}
-            </Button>
-          </Grid>
-        ))}
-
         {title && (
-          <Grid item>
-            <Typography variant="body1" coor="primary" className={classes.title}>{title}</Typography>
+          <Grid item xs={12}>
+            <Typography variant="body1" color="primary" className={classes.title}>{title}</Typography>
           </Grid>
         )}
+        {labels.map(labelGroup => <Grid item key={`link-button-group-${Math.random()}`}>{generateLebelGroup(labelGroup)}</Grid>)}
       </Grid>
 
+      {/* TODO: replace the mock-up pop-up with the real design */}
       <Dialog open={!!select} onClose={() => setSelect(undefined)}>
         <DialogTitle>{select}</DialogTitle>
         <DialogContent style={{ textAlign: 'justify' }}>
@@ -88,17 +111,19 @@ const LinkButtonGroup = ({ title, labels, accent }) => {
 
 LinkButtonGroup.propTypes = {
   title: PropTypes.string,
-  labels: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.shape({
+  labels: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.shape({
     icon: PropTypes.element,
     name: PropTypes.string,
-  }), PropTypes.string])),
+  }), PropTypes.string]))), // array of arries of strings
   accent: PropTypes.string, // 'left', 'right'
+  className: PropTypes.string, // root class names
 };
 
 LinkButtonGroup.defaultProps = {
   title: undefined,
   labels: [],
   accent: 'left',
+  className: undefined,
 };
 
 export default LinkButtonGroup;

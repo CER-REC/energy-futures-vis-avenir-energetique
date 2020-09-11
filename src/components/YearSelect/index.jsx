@@ -66,11 +66,13 @@ const YearSelect = () => {
       <Grid item className={classes.report}>
         <LinkButtonGroup
           labels={[
-            { icon: <SocialMediaIconTwitter />, name: 'Twitter' },
-            { icon: <SocialMediaIconLinkedIn />, name: 'LinkedIn' },
-            { icon: <SocialMediaIconFacebook />, name: 'Facebook' },
-            { icon: <LinkIcon />, name: 'Copy Link' },
-            'download data',
+            ['download data'],
+            [
+              { icon: <SocialMediaIconTwitter />, name: 'Twitter' },
+              { icon: <SocialMediaIconLinkedIn />, name: 'LinkedIn' },
+              { icon: <SocialMediaIconFacebook />, name: 'Facebook' },
+              { icon: <LinkIcon />, name: 'Copy Link' },
+            ],
           ]}
           accent="right"
         />
