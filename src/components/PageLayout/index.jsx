@@ -5,10 +5,10 @@ import Alert from '@material-ui/lab/Alert';
 import AlertTitle from '@material-ui/lab/AlertTitle';
 import { useIntl } from 'react-intl';
 
+import { PAGES } from '../../constants';
 import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
 import useEnergyFutureData from '../../hooks/useEnergyFutureData';
-import { SOURCES, SOURCE_ORDER, ELECTRICITY_SOURCE_ORDER } from '../../types';
 import YearSelect from '../YearSelect';
 import PageSelect from '../PageSelect';
 import ScenarioSelect from '../ScenarioSelect';
@@ -47,7 +47,7 @@ const PageLayout = ({
 }) => {
   const classes = useStyles();
   const intl = useIntl();
-  const { regions } = useAPI();
+  const { regions, sources } = useAPI();
   const { config, setConfig } = useConfig();
   const { loading, error, data, year } = useEnergyFutureData();
 
@@ -57,13 +57,16 @@ const PageLayout = ({
   useEffect(
     () => {
       if (config.page === 'by-sector') {
-        setConfig({ ...config, sources: SOURCE_ORDER, sourceOrder: SOURCE_ORDER });
-      }
-      if (config.page === 'electricity') {
         setConfig({
           ...config,
-          sources: ELECTRICITY_SOURCE_ORDER,
-          sourceOrder: ELECTRICITY_SOURCE_ORDER,
+          sources: sources.energy.order,
+          sourceOrder: sources.energy.order,
+        });
+      } else if (config.page === 'electricity') {
+        setConfig({
+          ...config,
+          sources: sources.electricity.order,
+          sourceOrder: sources.electricity.order,
         });
       }
     },
@@ -87,7 +90,26 @@ const PageLayout = ({
 
       return items;
     },
-    [intl, regions],
+    [regions, intl],
+  );
+  const type = PAGES.find(page => page.id === config.page).sourceType;
+  const sourceItems = useMemo(
+    () => {
+      const items = {};
+
+      if (type) {
+        sources[type].order.forEach((source) => {
+          items[source] = {
+            color: sources[type].colors[source],
+            icon: sources[type].icons[source],
+            label: intl.formatMessage({ id: `common.sources.${type}.${source}` }),
+          };
+        });
+      }
+
+      return items;
+    },
+    [type, sources, intl],
   );
 
   return (
@@ -114,9 +136,9 @@ const PageLayout = ({
                 singleSelect={singleSelectSource}
                 items={config.sources}
                 itemOrder={config.sourceOrder}
-                defaultItems={SOURCES}
-                defaultItemOrder={config.page === 'electricty' ? ELECTRICITY_SOURCE_ORDER : SOURCE_ORDER}
-                setItems={sources => setConfig({ ...config, sources })}
+                defaultItems={sourceItems}
+                defaultItemOrder={sources[type].order}
+                setItems={selectedSources => setConfig({ ...config, sources: selectedSources })}
                 setItemOrder={sourceOrder => setConfig({ ...config, sourceOrder })}
               />
             </Grid>

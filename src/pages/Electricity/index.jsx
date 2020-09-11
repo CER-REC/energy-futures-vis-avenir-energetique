@@ -5,8 +5,9 @@ import PlayIcon from '@material-ui/icons/PlayCircleOutline';
 import PauseIcon from '@material-ui/icons/PauseCircleOutline';
 import { ResponsiveBubble } from '@nivo/circle-packing';
 
-import { CONFIG_REPRESENTATION } from '../../types';
+import { UNIT_NAMES } from '../../constants';
 import { formatUnitAbbreviation } from '../../utilities/convertUnit';
+import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
 
 const useStyles = makeStyles(theme => ({
@@ -66,7 +67,7 @@ const BUBBLE_SIZE_MAX = 25;
  */
 const Tooltip = ({ name, value, unit }) => (
   <Typography style={{ whiteSpace: 'nowrap' }}>
-    {name}: {formatUnitAbbreviation(value)} {CONFIG_REPRESENTATION[unit]}
+    {name}: {formatUnitAbbreviation(value)} {UNIT_NAMES[unit]}
   </Typography>
 );
 
@@ -79,14 +80,13 @@ Tooltip.propTypes = {
 /**
  * Rendering each bubble chart for a single province.
  */
-const Bubble = ({ province, data, unit }) => (
+const Bubble = ({ province, data, unit, colors }) => (
   <ResponsiveBubble
-    root={{ name: province, color: '#FFF', children: data }}
+    root={{ name: province, children: data }}
     margin={{ top: 20, right: 20, bottom: 20, left: 20 }}
     identity="name"
     value="value"
-    colors={d => d.color}
-    colorBy="name"
+    colors={d => colors[d.name] || '#FFFFFF'}
     padding={2}
     borderWidth={1}
     borderColor={d => (d.color === 'rgb(255,255,255)' ? '#666' : d.color)}
@@ -103,17 +103,20 @@ Bubble.propTypes = {
   province: PropTypes.string,
   data: PropTypes.oneOfType([PropTypes.object, PropTypes.arrayOf(PropTypes.object)]),
   unit: PropTypes.string,
+  colors: PropTypes.arrayOf(PropTypes.object),
 };
 
 Bubble.defaultProps = {
   province: '',
   data: undefined,
   unit: '',
+  colors: [],
 };
 
 const Electricity = ({ data, year }) => {
   const classes = useStyles();
 
+  const { sources: { electricity: { colors } } } = useAPI();
   const { config } = useConfig();
 
   const [currYear, setCurrYear] = useState(year?.min || 0);
@@ -183,7 +186,7 @@ const Electricity = ({ data, year }) => {
             left: entry.size === Number.POSITIVE_INFINITY ? '10%' : REGION_LOC[entry.name].left,
           }}
         >
-          <Bubble province={entry.name} data={entry.children} unit={config.unit} />
+          <Bubble province={entry.name} data={entry.children} unit={config.unit} colors={colors} />
           <Paper square elevation={0} className={classes.label}>
             <Typography>{entry.name}</Typography>
           </Paper>

@@ -1,15 +1,16 @@
 import React, { useMemo } from 'react';
 import { ResponsiveStream } from '@nivo/stream';
 import PropTypes from 'prop-types';
-import { SOURCE_NAME, SOURCE_COLOR } from '../../constants';
+
+import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
 
 const BySector = ({ data, year }) => {
+  const { sources: { energy: { colors } } } = useAPI();
   const { config } = useConfig();
-
   const keys = useMemo(() => {
     const sources = new Set((data || []).map(entry => Object.keys(entry)).flat());
-    return [...config.sourceOrder].reverse().map(s => SOURCE_NAME[s]).filter(s => sources.has(s));
+    return [...config.sourceOrder].reverse().filter(s => sources.has(s));
   }, [data, config.sourceOrder]);
 
   if (!data || !year) {
@@ -38,7 +39,7 @@ const BySector = ({ data, year }) => {
       axisLeft={null}
       curve="linear"
       offsetType="diverging"
-      colors={d => SOURCE_COLOR[keys[d.index]]}
+      colors={d => colors[keys[d.index]]}
       fillOpacity={0.60}
       borderColor={{ theme: 'background' }}
       dotSize={8}

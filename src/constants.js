@@ -31,6 +31,17 @@ export const lang = (typeof document !== 'undefined'
     && window.localStorage.getItem('dev-lang') === 'fr')
   ? 'fr' : 'en';
 
+// TODO: Remove and replace using intl in the relevant components for translations
+export const UNIT_NAMES = {
+  petajoules: 'PETAJOULES',
+  kilobarrelEquivalents: 'kBOE/d',
+  gigawattHours: 'GW.h',
+  kilobarrels: 'kB/d',
+  thousandCubicMetres: 'km³/d',
+  cubicFeet: 'Bcf/d',
+  millionCubicMetres: 'Mm³/d',
+};
+
 export const PAGES = [
   {
     label: 'Landing',
@@ -46,11 +57,13 @@ export const PAGES = [
     label: 'By Sector',
     id: 'by-sector',
     bg: '#349999',
+    sourceType: 'energy',
   },
   {
     label: 'Electricity',
     id: 'electricity',
     bg: '#363796',
+    sourceType: 'electricity',
   },
   {
     label: 'Scenarios',
@@ -108,30 +121,6 @@ export const SECTOR_LAYOUT = {
     name: 'Transportation',
     icon: TransportIcon,
   },
-};
-
-export const SOURCE_COLOR = {
-  OIL: '#B56696',
-  NUCLEAR: '#CBCA44',
-  BIO: '#8468A9',
-  GAS: '#D5673E',
-  COAL: '#8C6639',
-  RENEWABLE: '#60984D',
-  HYDRO: '#4F67AE',
-  ELECTRICITY: '#7ACBCB',
-};
-/**
- * TODO: temporary mapping between source names; remove after the ENUM is ready.
- */
-export const SOURCE_NAME = {
-  oilProducts: 'OIL',
-  nuclear: 'NUCLEAR',
-  bio: 'BIO',
-  naturalGas: 'GAS',
-  coal: 'COAL',
-  solarWindGeothermal: 'RENEWABLE',
-  hydro: 'HYDRO',
-  electricity: 'ELECTRICITY',
 };
 
 /**

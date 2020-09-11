@@ -1,12 +1,11 @@
-import { SOURCE_COLOR } from '../constants';
-
 export const parseData = {
   'by-sector': (data, unitConversion) => {
-    const DEFAULT = Object.keys(SOURCE_COLOR).reduce((all, key) => ({ ...all, [key]: 0 }), {});
-    const processed = (data || []).filter(entry => entry.source !== 'ALL').reduce((result, entry) => ({
+    const sources = data.map(resource => resource.source);
+    const base = sources.reduce((all, key) => ({ ...all, [key]: 0 }), {});
+    const processed = data.reduce((result, entry) => ({
       ...result,
       [entry.year]: {
-        ...(result[entry.year] || DEFAULT),
+        ...(result[entry.year] || base),
         [entry.source]: entry.value * unitConversion,
       },
     }), {});
@@ -15,7 +14,6 @@ export const parseData = {
 
   'by-region': (data, unitConversion) => {
     const byYear = data
-      .filter(entry => entry.province !== 'ALL')
       .reduce((accu, curr) => {
         const result = { ...accu };
         if (!result[curr.year]) {
@@ -62,7 +60,6 @@ export const parseData = {
           ...result[entry.province],
           [entry.source]: {
             name: entry.source,
-            color: SOURCE_COLOR[entry.source],
             value: entry.value * unitConversion,
           },
         },

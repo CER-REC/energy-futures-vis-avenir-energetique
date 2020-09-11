@@ -4,7 +4,6 @@ import { createBrowserHistory } from 'history';
 import queryString from 'query-string';
 
 import { DEFAULT_CONFIG } from '../constants';
-import { SOURCE_ORDER } from '../types';
 import useAPI from './useAPI';
 
 const parameters = ['page', 'mainSelection', 'yearId', 'sector', 'unit', 'view'];
@@ -39,8 +38,8 @@ export const ConfigProvider = ({ children }) => {
       ...query,
       provinces: query.provinces ? query.provinces.split(',') : regions.order,
       provinceOrder: query.provinceOrder ? query.provinceOrder.split(',') : regions.order,
-      sources: query.sources ? query.sources.split(',') : SOURCE_ORDER,
-      sourceOrder: query.sourceOrder ? query.sourceOrder.split(',') : SOURCE_ORDER,
+      sources: query.sources ? query.sources.split(',') : [],
+      sourceOrder: query.sourceOrder ? query.sourceOrder.split(',') : [],
       yearId,
       scenarios: queryScenarios,
     });

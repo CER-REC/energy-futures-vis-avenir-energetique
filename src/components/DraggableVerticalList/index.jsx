@@ -238,7 +238,7 @@ const DraggableVerticalList = ({
                 clear={localItems.length === Object.keys(defaultItems).length}
               />
             </Grid>
-            {localItemOrder.map((item, index) => (
+            {localItemOrder.filter(item => defaultItems[item]).map((item, index) => (
               <Draggable key={`region-btn-${item}`} draggableId={item} index={index} isDragDisabled={disabled}>
                 {providedItem => (
                   <>
