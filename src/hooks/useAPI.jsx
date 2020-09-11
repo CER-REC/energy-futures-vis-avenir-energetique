@@ -142,7 +142,9 @@ export default () => {
     [data],
   );
   const sources = useMemo(
-    () => (data ? getSources(data.translations) : {}),
+    () => (data
+      ? getSources(data.translations)
+      : { electricity: {}, energy: {}, oil: {}, gas: {} }),
     [data],
   );
   // TODO: Complete when sectors are made into an enum for GraphQL
