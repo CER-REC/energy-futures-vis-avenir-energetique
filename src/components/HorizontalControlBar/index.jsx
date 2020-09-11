@@ -120,42 +120,36 @@ const HorizontalControlBar = () => {
 
   const views = config.page === 'electricity' && (
     <>
-      <Grid item>
-        <Typography variant="body1" color="primary">VIEW BY</Typography>
-      </Grid>
+      <Typography variant="body1" color="primary">VIEW BY</Typography>
       {['region', 'source'].map(view => (
-        <Grid item key={`config-view-${view}`}>
-          <Button
-            variant={config.view === view ? 'contained' : 'outlined'}
-            color="primary"
-            size="small"
-            disabled={view === 'source'}
-            onClick={() => handleConfigUpdate('view', view)}
-          >
-            {view}
-          </Button>
-        </Grid>
+        <Button
+          key={`config-view-${view}`}
+          variant={config.view === view ? 'contained' : 'outlined'}
+          color="primary"
+          size="small"
+          disabled={view === 'source'}
+          onClick={() => handleConfigUpdate('view', view)}
+        >
+          {view}
+        </Button>
       ))}
     </>
   );
 
   const units = (
     <>
-      <Grid item style={{ flexGrow: 1 }} />
-      <Grid item>
-        <Typography variant="body1" color="primary">UNIT</Typography>
-      </Grid>
+      <span style={{ flexGrow: 1 }} />
+      <Typography variant="body1" color="primary">UNIT</Typography>
       {layout.unit.map(unit => (
-        <Grid item key={`config-unit-${unit}`}>
-          <Button
-            variant={config.unit === unit ? 'contained' : 'outlined'}
-            color="primary"
-            size="small"
-            onClick={() => handleConfigUpdate('unit', unit)}
-          >
-            {CONFIG_REPRESENTATION[unit]}
-          </Button>
-        </Grid>
+        <Button
+          key={`config-unit-${unit}`}
+          variant={config.unit === unit ? 'contained' : 'outlined'}
+          color="primary"
+          size="small"
+          onClick={() => handleConfigUpdate('unit', unit)}
+        >
+          {CONFIG_REPRESENTATION[unit]}
+        </Button>
       ))}
     </>
   );

@@ -24,6 +24,7 @@ const useStyles = makeStyles(theme => createStyles({
   button: {
     height: 43,
     width: 43,
+    '& h5': { fontWeight: 700 },
   },
   report: {
     position: 'absolute',
