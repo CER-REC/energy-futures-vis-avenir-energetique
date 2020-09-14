@@ -2,10 +2,11 @@ import React, { useEffect, useMemo } from 'react';
 import { ResponsiveBar } from '@nivo/bar';
 import PropTypes from 'prop-types';
 
-import { REGIONS, REGION_ORDER } from '../../types';
+import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
 
 const ByRegion = ({ data }) => {
+  const { regions } = useAPI();
   const { config, setConfig } = useConfig();
 
   /**
@@ -14,9 +15,9 @@ const ByRegion = ({ data }) => {
    */
   useEffect(() => {
     if (config.page === 'by-region' && JSON.stringify(config.provinces || []) === '["ALL"]') {
-      setConfig({ ...config, provinces: REGION_ORDER });
+      setConfig({ ...config, provinces: regions.order });
     }
-  }, [config, setConfig]);
+  }, [config, setConfig, regions.order]);
 
   /**
    * Determine the region order shown in the stacked bar chart.
@@ -34,7 +35,7 @@ const ByRegion = ({ data }) => {
       indexBy="year"
       margin={{ top: 50, right: 80, bottom: 50, left: 50 }}
       padding={0.1}
-      colors={d => REGIONS[d.id].color}
+      colors={d => regions.colors[d.id]}
       borderColor={{ from: 'color', modifiers: [['darker', 1.6]] }}
       axisTop={null}
       axisLeft={null}

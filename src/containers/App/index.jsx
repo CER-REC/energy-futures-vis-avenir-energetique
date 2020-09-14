@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react';
+import React, { Suspense, useMemo } from 'react';
 import { ApolloProvider } from '@apollo/react-hooks';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { ApolloClient } from 'apollo-client';
@@ -29,7 +29,11 @@ const LazyApp = React.lazy(() => import('./lazy'));
 
 const Loader = () => {
   let content;
-  const { loading, error } = useAPI();
+  const { loading, error, translations } = useAPI();
+  const messages = useMemo(
+    () => ({ ...translations[lang], ...i18nMessages[lang] }),
+    [translations],
+  );
 
   if (window.innerWidth < 746) {
     content = <UnsupportedWarning type="resolution" />;
@@ -50,7 +54,7 @@ const Loader = () => {
   }
 
   return (
-    <IntlProvider locale={lang} messages={i18nMessages[lang]}>
+    <IntlProvider locale={lang} messages={messages}>
       <ErrorBoundary>
         {content}
       </ErrorBoundary>
