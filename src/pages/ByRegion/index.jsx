@@ -14,7 +14,7 @@ const ByRegion = ({ data, year }) => {
   const width = ((year.max - forecastYear) / (year.max - year.min)) * 100;
   const margin = ((forecastYear - year.min) / (year.max - year.min)) * 100;
 
-  const classes = makeStyles(() => ({
+  const classes = makeStyles({
     outerContainer: {
       // The 130 is to offset the chart margin, and 32 is for the extra line space on either side.
       width: 'calc(100% - 130px - 32px)',
