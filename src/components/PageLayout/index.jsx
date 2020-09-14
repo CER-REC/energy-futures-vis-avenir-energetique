@@ -3,10 +3,12 @@ import PropTypes from 'prop-types';
 import { makeStyles, Grid, CircularProgress } from '@material-ui/core';
 import Alert from '@material-ui/lab/Alert';
 import AlertTitle from '@material-ui/lab/AlertTitle';
+import { useIntl } from 'react-intl';
 
+import { PAGES } from '../../constants';
+import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
 import useEnergyFutureData from '../../hooks/useEnergyFutureData';
-import { REGIONS, REGION_ORDER, SOURCES, SOURCE_ORDER, ELECTRICITY_SOURCE_ORDER } from '../../types';
 import YearSelect from '../YearSelect';
 import PageSelect from '../PageSelect';
 import ScenarioSelect from '../ScenarioSelect';
@@ -49,24 +51,37 @@ const PageLayout = ({
   singleSelectSource,
 }) => {
   const classes = useStyles();
+  const intl = useIntl();
+  const { regions, sources } = useAPI();
   const { config, setConfig } = useConfig();
   const { loading, error, data, year } = useEnergyFutureData();
+  const type = PAGES.find(page => page.id === config.page).sourceType;
 
   /**
    * Reset the source list when opening 'by-sector' and 'electricity' pages.
    */
   useEffect(
+    // TODO: This logic should be in the reducer when that is implemented
     () => {
-      if (config.page === 'by-sector') {
-        setConfig({ ...config, sources: SOURCE_ORDER, sourceOrder: SOURCE_ORDER });
+      let selectedSources = config.sources;
+      let selectedSourceOrder = config.sourceOrder;
+      const validSources = sources[type]?.order || [];
+
+      if (
+        (selectedSourceOrder.length !== validSources.length)
+        || !validSources.every(source => selectedSourceOrder.includes(source))
+      ) {
+        selectedSources = validSources;
+        selectedSourceOrder = validSources;
+      } else if (!selectedSources.every(source => validSources.includes(source))) {
+        selectedSources = validSources;
       }
-      if (config.page === 'electricity') {
-        setConfig({
-          ...config,
-          sources: ELECTRICITY_SOURCE_ORDER,
-          sourceOrder: ELECTRICITY_SOURCE_ORDER,
-        });
-      }
+
+      setConfig({
+        ...config,
+        sources: selectedSources,
+        sourceOrder: selectedSourceOrder,
+      });
     },
     [config.page], // eslint-disable-line react-hooks/exhaustive-deps
   );
@@ -74,6 +89,39 @@ const PageLayout = ({
   const vis = useMemo(
     () => Children.map(children, child => child && cloneElement(child, { data, year })),
     [children, data, year],
+  );
+  const regionItems = useMemo(
+    () => {
+      const items = {};
+
+      regions.order.forEach((region) => {
+        items[region] = {
+          color: regions.colors[region],
+          label: intl.formatMessage({ id: `regions.${region}` }),
+        };
+      });
+
+      return items;
+    },
+    [regions, intl],
+  );
+  const sourceItems = useMemo(
+    () => {
+      const items = {};
+
+      if (type) {
+        sources[type].order.forEach((source) => {
+          items[source] = {
+            color: sources[type].colors[source],
+            icon: sources[type].icons[source],
+            label: intl.formatMessage({ id: `common.sources.${type}.${source}` }),
+          };
+        });
+      }
+
+      return items;
+    },
+    [type, sources, intl],
   );
 
   return (
@@ -104,9 +152,9 @@ const PageLayout = ({
                 singleSelect={singleSelectSource}
                 items={config.sources}
                 itemOrder={config.sourceOrder}
-                defaultItems={SOURCES}
-                defaultItemOrder={config.page === 'electricty' ? ELECTRICITY_SOURCE_ORDER : SOURCE_ORDER}
-                setItems={sources => setConfig({ ...config, sources })}
+                defaultItems={sourceItems}
+                defaultItemOrder={sources[type].order}
+                setItems={selectedSources => setConfig({ ...config, sources: selectedSources })}
                 setItemOrder={sourceOrder => setConfig({ ...config, sourceOrder })}
               />
             </Grid>
@@ -121,8 +169,8 @@ const PageLayout = ({
                 greyscale={config.page === 'by-sector'}
                 items={config.provinces}
                 itemOrder={config.provinceOrder}
-                defaultItems={REGIONS}
-                defaultItemOrder={REGION_ORDER}
+                defaultItems={regionItems}
+                defaultItemOrder={regions.order}
                 setItems={provinces => setConfig({ ...config, provinces })}
                 setItemOrder={provinceOrder => setConfig({ ...config, provinceOrder })}
               />

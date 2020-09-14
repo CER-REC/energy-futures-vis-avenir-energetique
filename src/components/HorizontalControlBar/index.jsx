@@ -6,8 +6,7 @@ import {
 } from '@material-ui/core';
 
 import useConfig from '../../hooks/useConfig';
-import { CONFIG_LAYOUT, SECTOR_LAYOUT } from '../../constants';
-import { CONFIG_REPRESENTATION } from '../../types';
+import { CONFIG_LAYOUT, SECTOR_LAYOUT, UNIT_NAMES } from '../../constants';
 import Hint from '../Hint';
 // #endregion
 
@@ -145,7 +144,7 @@ const HorizontalControlBar = () => {
           size="small"
           onClick={() => handleConfigUpdate('unit', unit)}
         >
-          {CONFIG_REPRESENTATION[unit]}
+          {UNIT_NAMES[unit]}
         </Button>
       ))}
     </>

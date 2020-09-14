@@ -90,6 +90,9 @@ const PageSelect = () => {
     }
     setLoading(true);
     setPages(toFront([...pages], id));
+    // TODO: Changing pages can cause a 400 GraphQL error due to providing invalid sources
+    // This can be fixed when implementing a reducer for the config,
+    // since the correct set of sources is set at the same time
     setConfig({ ...config, page: id });
     setTimeout(() => setLoading(false), 800);
   };

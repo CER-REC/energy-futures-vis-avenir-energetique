@@ -2,6 +2,9 @@
   "common": {
   },
   "components": {
+    "draggableVerticalList": {
+      "all": "Tous"
+    },
     "errorBoundary": {
       "errorMessage": "Une erreur s’est produite.",
       "restoreLinkText": "Rétablir la session.",
@@ -15,39 +18,30 @@
     },
     "scenarioSelect": {
       "Constrained": {
-        "title": "Capacité Limitée",
         "description": "Le rapport AE 2016 prend aussi en considération des incertitudes relatives à l’infrastructure d’exportation du pétrole et propose un scénario dans lequel aucun pipeline d’envergure n’est construit durant la période de projection."
       },
       "Evolving": {
-        "title": "évolution",
         "description": "évolution"
       },
       "High LNG": {
-        "title": "Gnl Élevé",
         "description": "Deux autres scénarios explorent les incertitudes entourant les éventuelles exportations de gaz naturel liquéfié (GNL)."
       },
       "High Price": {
-        "title": "Prix Élevé",
         "description": "Un premier scénario lié aux prix prévoit des prix du pétrole et du gaz naturel plus élevés et prend en compte certaines incertitudes qui ont trait aux prix futurs de l’énergie."
       },
       "Higher Carbon Price": {
-        "title": "Tarification du Carbone Élevée",
         "description": "Le scénario de tarification du carbone élevée évalue les répercussions à long terme de prix plus élevés pour le carbone que ce qui est prévu dans le scénario de référence."
       },
       "Low Price": {
-        "title": "Prix Bas",
         "description": "Un second scénario lié aux prix table sur des prix du pétrole et du gaz naturel moins élevés et intègre certaines incertitudes concernant les prix futurs de l’énergie."
       },
       "No LNG": {
-        "title": "Gnl Zéro",
         "description": "Deux autres scénarios explorent les incertitudes entourant les éventuelles exportations de gaz naturel liquéfié (GNL)."
       },
       "Reference": {
-        "title": "Référence",
         "description": "Le scénario de référence fournit des perspectives de base fondées sur une vision modérée des prix de l’énergie et de la croissance économique ainsi que sur les politiques énergétiques et climatiques déjà annoncées au moment de l’analyse."
       },
       "Technology": {
-        "title": "Avancées Technologiques",
         "description": "Le scénario des avancées technologiques suppose des prix du carbone plus élevés que ceux du scénario de référence et l’adoption plus massive de certaines technologies énergétiques émergentes liées à la production ou à la consommation."
       }
     },
