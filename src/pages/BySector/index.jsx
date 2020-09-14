@@ -1,29 +1,38 @@
 import React, { useMemo } from 'react';
 import { ResponsiveStream } from '@nivo/stream';
 import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/core';
+import { Typography, makeStyles } from '@material-ui/core';
 import { SOURCE_NAME, SOURCE_COLOR } from '../../constants';
 import useConfig from '../../hooks/useConfig';
 
-const useStyles = makeStyles(theme => ({
-  test: {
-    borderLeft: '2px dashed lightgray',
-    height: '625px',
-    width: '490px',
-    position: 'absolute',
-    // left: '50%',
-    marginLeft: '300px',
-    top: '10',
-  },
-  innerDiv: {
-    backgroundColor: 'lightgray',
-  },
-
-}));
-
 const BySector = ({ data, year }) => {
   const { config } = useConfig();
-  const classes = useStyles();
+
+  // FIXME: forecastYear will need to be dynamic eventually.
+  const forecastYear = 2020;
+  const width = ((year.max - forecastYear) / (year.max - year.min)) * 100;
+  const margin = ((forecastYear - year.min) / (year.max - year.min)) * 100;
+
+  const classes = makeStyles(theme => ({
+    outerContainer: {
+      // The 100 is to offset the chart margin
+      width: 'calc(100% - 100px)',
+      marginLeft: '50px',
+      position: 'relative',
+    },
+    innerContainer: {
+      marginLeft: `${margin}%`,
+      width: `${width}%`,
+      borderLeft: '1px dashed black',
+      height: '620px',
+      position: 'absolute',
+      zIndex: 1,
+    },
+    foreCast: {
+      backgroundColor: '#F3F2F2',
+      paddingLeft: '5px',
+    },
+  }))();
 
   const keys = useMemo(() => {
     const sources = new Set((data || []).map(entry => Object.keys(entry)).flat());
@@ -33,45 +42,16 @@ const BySector = ({ data, year }) => {
   if (!data || !year) {
     return null;
   }
-  const forecastYear = 2020;
 
-  const width = ((year.max - forecastYear) / (year.max - year.min)) * 100;
-  const margin = ((forecastYear - year.min) / (year.max - year.min)) * 100;
   return (
     <>
-
-      <div style={{
-        width: 'calc(100% - 100px)',
-        marginLeft: 50,
-        position: 'relative',
-
-      }}
-      >
-        <div
-          className='test'
-          style={{
-            marginLeft: `${margin}%`,
-            width: `${width}%`,
-            borderLeft: '2px dashed lightgray',
-            height: '624px',
-            top: 10,
-            position: 'absolute',
-          }}
-        >
-          <div style={{ backgroundColor: 'lightgrey' }}>Forecast</div>
+      <div className={classes.outerContainer}>
+        <div className={classes.innerContainer}>
+          <div className={classes.foreCast}>
+            <Typography variant='body1' color='secondary'>Forecast</Typography>
+          </div>
         </div>
       </div>
-      {/* <div style={{ width: 'calc(100% - 100px - 16px)', marginLeft: (50 + 8) }}>
-        <div style={{
-          display: 'inline-block',
-          width: '40%',
-          height: 20,
-          background: 'repeating-linear-gradient(-60deg, #EEE, #EEE 10px, transparent 10px, transparent 20px)',
-        }}
-        />
-        <div style={{ display: 'inline-block', width: '60%', height: 20, backgroundColor: '#AAA' }} />
-      </div> */}
-
       <ResponsiveStream
         data={data}
         keys={keys}

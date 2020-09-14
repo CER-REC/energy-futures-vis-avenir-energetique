@@ -1,12 +1,38 @@
 import React, { useEffect, useMemo } from 'react';
 import { ResponsiveBar } from '@nivo/bar';
 import PropTypes from 'prop-types';
-
+import { Typography, makeStyles } from '@material-ui/core';
 import { REGIONS, REGION_ORDER } from '../../types';
 import useConfig from '../../hooks/useConfig';
 
 const ByRegion = ({ data, year }) => {
   const { config, setConfig } = useConfig();
+
+  // FIXME: forecastYear will need to be dynamic eventually.
+  const forecastYear = 2020;
+  const width = ((year.max - forecastYear) / (year.max - year.min)) * 100;
+  const margin = ((forecastYear - year.min) / (year.max - year.min)) * 100;
+
+  const classes = makeStyles(() => ({
+    outerContainer: {
+      // The 130 is to offset the chart margin, and 32 is for the extra line space on either side.
+      width: 'calc(100% - 130px - 32px)',
+      marginLeft: 'calc(50px + 17px)',
+      position: 'relative',
+    },
+    innerContainer: {
+      marginLeft: `${margin}%`,
+      width: `${width}%`,
+      borderLeft: '1px dashed black',
+      height: '620px',
+      position: 'absolute',
+      zIndex: 1,
+    },
+    foreCast: {
+      backgroundColor: '#F3F2F2',
+      paddingLeft: '5px',
+    },
+  }))();
 
   /**
    * A "hacky" but sufficient way to reselect all regions after
@@ -26,43 +52,16 @@ const ByRegion = ({ data, year }) => {
   if (!data) {
     return null;
   }
-  const forecastYear = 2020;
-
-  const width = ((year.max - forecastYear) / (year.max - year.min)) * 100;
-  const margin = ((forecastYear - year.min) / (year.max - year.min)) * 100;
 
   return (
     <>
-      <div style={{
-        // 130 is to offset the chart margin, and 16 is for the small gap on either side.
-        width: 'calc(100% - 130px)',
-        marginLeft: (50),
-        position: 'relative',
-        borderTop: '3px solid red',
-
-      }}
-      >
-        <div
-          style={{
-            marginLeft: `${margin}%`,
-            width: `${width}%`,
-            borderLeft: '2px dashed lightgray',
-            height: '624px',
-            top: 10,
-            position: 'absolute',
-          }}
-        >
-          <div style={{ backgroundColor: 'lightgrey' }}>Forecast</div>
+      <div className={classes.outerContainer}>
+        <div className={classes.innerContainer}>
+          <div className={classes.foreCast}>
+            <Typography variant='body1' color='secondary'>Forecast</Typography>
+          </div>
         </div>
       </div>
-      {/* <div style={{ width: 'calc(100% - 100px - 16px)', marginLeft: (50 + 8) }}>
-        <div style={{
-          display: 'inline-block',
-          width: '40%',
-          height: 20,
-        }}
-        />
-      </div> */}
       <ResponsiveBar
         data={data}
         keys={keys}
