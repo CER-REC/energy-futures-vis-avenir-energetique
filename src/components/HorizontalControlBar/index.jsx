@@ -6,8 +6,8 @@ import {
 } from '@material-ui/core';
 
 import useConfig from '../../hooks/useConfig';
-import { CONFIG_LAYOUT, SECTOR_LAYOUT } from '../../constants';
-import { CONFIG_REPRESENTATION } from '../../types';
+import { CONFIG_LAYOUT, SECTOR_LAYOUT, UNIT_NAMES } from '../../constants';
+import Hint from '../Hint';
 // #endregion
 
 const useStyles = makeStyles(theme => createStyles({
@@ -15,10 +15,7 @@ const useStyles = makeStyles(theme => createStyles({
     height: 40,
     padding: theme.spacing(0.5, 2),
     backgroundColor: '#F3EFEF',
-    '& p': {
-      marginRight: theme.spacing(1),
-      fontWeight: 700,
-    },
+    '& p': { fontWeight: 700 },
   },
   btnSector: {
     marginRight: theme.spacing(1),
@@ -64,7 +61,7 @@ const HorizontalControlBar = () => {
   const selections = ['by-region', 'scenarios'].includes(config.page) && (
     <>
       <Grid item>
-        <Typography variant="body1" color="primary">SOURCE</Typography>
+        <Hint><Typography variant="body1" color="primary">SOURCE</Typography></Hint>
       </Grid>
       {Object.keys(CONFIG_LAYOUT).map((selection) => {
         const Icon = CONFIG_LAYOUT[selection]?.icon;
@@ -93,7 +90,7 @@ const HorizontalControlBar = () => {
   const sectors = ['by-sector', 'demand'].includes(config.page) && (
     <>
       <Grid item>
-        <Typography variant="body1" color="primary">SECTOR</Typography>
+        <Hint><Typography variant="body1" color="primary">SECTOR</Typography></Hint>
       </Grid>
       {Object.keys(SECTOR_LAYOUT).map((sector) => {
         const Icon = SECTOR_LAYOUT[sector]?.icon;
@@ -120,42 +117,35 @@ const HorizontalControlBar = () => {
 
   const views = config.page === 'electricity' && (
     <>
-      <Grid item>
-        <Typography variant="body1" color="primary">VIEW BY</Typography>
-      </Grid>
+      <Hint><Typography variant="body1" color="primary">VIEW BY</Typography></Hint>
       {['region', 'source'].map(view => (
-        <Grid item key={`config-view-${view}`}>
-          <Button
-            variant={config.view === view ? 'contained' : 'outlined'}
-            color="primary"
-            size="small"
-            disabled={view === 'source'}
-            onClick={() => handleConfigUpdate('view', view)}
-          >
-            {view}
-          </Button>
-        </Grid>
+        <Button
+          key={`config-view-${view}`}
+          variant={config.view === view ? 'contained' : 'outlined'}
+          color="primary"
+          size="small"
+          disabled={view === 'source'}
+          onClick={() => handleConfigUpdate('view', view)}
+        >
+          {view}
+        </Button>
       ))}
     </>
   );
 
   const units = (
     <>
-      <Grid item style={{ flexGrow: 1 }} />
-      <Grid item>
-        <Typography variant="body1" color="primary">UNIT</Typography>
-      </Grid>
+      <Hint><Typography variant="body1" color="primary">UNIT</Typography></Hint>
       {layout.unit.map(unit => (
-        <Grid item key={`config-unit-${unit}`}>
-          <Button
-            variant={config.unit === unit ? 'contained' : 'outlined'}
-            color="primary"
-            size="small"
-            onClick={() => handleConfigUpdate('unit', unit)}
-          >
-            {CONFIG_REPRESENTATION[unit]}
-          </Button>
-        </Grid>
+        <Button
+          key={`config-unit-${unit}`}
+          variant={config.unit === unit ? 'contained' : 'outlined'}
+          color="primary"
+          size="small"
+          onClick={() => handleConfigUpdate('unit', unit)}
+        >
+          {UNIT_NAMES[unit]}
+        </Button>
       ))}
     </>
   );

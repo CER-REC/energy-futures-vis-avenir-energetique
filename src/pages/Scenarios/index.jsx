@@ -10,7 +10,7 @@ const Scenarios = ({ data, year }) => {
   const width = ((year.max - forecastYear) / (year.max - year.min)) * 100;
   const margin = ((forecastYear - year.min) / (year.max - year.min)) * 100;
 
-  const classes = makeStyles(theme => ({
+  const classes = makeStyles(() => ({
     outerContainer: {
       // The 100 is to offset the chart margin
       width: 'calc(100% - 100px)',
@@ -67,7 +67,7 @@ const Scenarios = ({ data, year }) => {
           tickRotation: 0,
           legendPosition: 'middle',
           legendOffset: 32,
-          format: year => ((year % 5) ? '' : year),
+          format: yearLabel => ((yearLabel % 5) ? '' : yearLabel),
         }}
         axisRight={{
           tickSize: 5,

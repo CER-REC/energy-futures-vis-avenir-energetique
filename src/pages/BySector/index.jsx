@@ -1,11 +1,15 @@
-import React, { useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { ResponsiveStream } from '@nivo/stream';
 import PropTypes from 'prop-types';
 import { Typography, makeStyles } from '@material-ui/core';
-import { SOURCE_NAME, SOURCE_COLOR } from '../../constants';
+import { useIntl } from 'react-intl';
+
+import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
 
 const BySector = ({ data, year }) => {
+  const intl = useIntl();
+  const { sources: { energy: { colors } } } = useAPI();
   const { config } = useConfig();
 
   // FIXME: forecastYear will need to be dynamic eventually.
@@ -13,7 +17,7 @@ const BySector = ({ data, year }) => {
   const width = ((year.max - forecastYear) / (year.max - year.min)) * 100;
   const margin = ((forecastYear - year.min) / (year.max - year.min)) * 100;
 
-  const classes = makeStyles(theme => ({
+  const classes = makeStyles(() => ({
     outerContainer: {
       // The 100 is to offset the chart margin
       width: 'calc(100% - 100px)',
@@ -36,8 +40,12 @@ const BySector = ({ data, year }) => {
 
   const keys = useMemo(() => {
     const sources = new Set((data || []).map(entry => Object.keys(entry)).flat());
-    return [...config.sourceOrder].reverse().map(s => SOURCE_NAME[s]).filter(s => sources.has(s));
+    return [...config.sourceOrder].reverse().filter(s => sources.has(s));
   }, [data, config.sourceOrder]);
+  const getTooltipLabel = useCallback(
+    dataItem => intl.formatMessage({ id: `common.sources.energy.${dataItem.id}` }).toUpperCase(),
+    [intl],
+  );
 
   if (!data || !year) {
     return null;
@@ -48,6 +56,7 @@ const BySector = ({ data, year }) => {
       <div className={classes.outerContainer}>
         <div className={classes.innerContainer}>
           <div className={classes.foreCast}>
+            {/* TODO: This will need to be replaced by a translated version. */}
             <Typography variant='body1' color='secondary'>Forecast</Typography>
           </div>
         </div>
@@ -73,7 +82,7 @@ const BySector = ({ data, year }) => {
         axisLeft={null}
         curve="linear"
         offsetType="diverging"
-        colors={d => SOURCE_COLOR[keys[d.index]]}
+        colors={d => colors[keys[d.index]]}
         fillOpacity={0.60}
         borderColor={{ theme: 'background' }}
         dotSize={8}
@@ -83,6 +92,7 @@ const BySector = ({ data, year }) => {
         animate
         motionStiffness={90}
         motionDamping={15}
+        tooltipLabel={getTooltipLabel}
       />
     </>
   );
