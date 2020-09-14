@@ -43,6 +43,10 @@ const useStyles = makeStyles(theme => ({
     border: `1px solid ${theme.palette.secondary.light}`,
     zIndex: 1,
   },
+  btnPlay: {
+    height: 26,
+    padding: 0,
+  },
 }));
 
 const REGION_LOC = {
@@ -225,6 +229,7 @@ const Electricity = ({ data, year }) => {
             color="primary"
             startIcon={play ? <PauseIcon /> : <PlayIcon />}
             onClick={() => setPlay(!play)}
+            className={classes.btnPlay}
           >
             {play ? 'Stop' : 'Play'}
           </Button>

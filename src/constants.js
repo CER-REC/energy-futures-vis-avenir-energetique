@@ -11,10 +11,6 @@ import ResidentialIcon from '@material-ui/icons/HouseOutlined';
 import CommercialIcon from '@material-ui/icons/ApartmentOutlined';
 import IndustrialIcon from '@material-ui/icons/BuildOutlined';
 import TransportIcon from '@material-ui/icons/LocalShippingOutlined';
-import {
-  red, purple, deepPurple, blue, lightBlue, teal, green,
-  lightGreen, lime, yellow, amber, orange, deepOrange,
-} from '@material-ui/core/colors';
 
 export const applicationPath = {
   en: 'energy-future',
@@ -138,38 +134,37 @@ export const SCENARIO_COLOR = {
 };
 
 export const REGION_COLORS = {
-  YT: red,
-  SK: purple,
-  QC: deepPurple,
-  PE: blue,
-  ON: lightBlue,
-  NU: teal,
-  NT: green,
-  NS: lightGreen,
-  NL: lime,
-  NB: yellow,
-  MB: amber,
-  BC: orange,
-  AB: deepOrange,
+  YT: '#4E513F',
+  SK: '#4D8255',
+  QC: '#985720',
+  PE: '#E49FAB',
+  ON: '#E4812C',
+  NU: '#683A96',
+  NT: '#DA4367',
+  NS: '#7773AF',
+  NL: '#87C859',
+  NB: '#B03AAB',
+  MB: '#F2CB53',
+  BC: '#82BCE4',
+  AB: '#274368',
 };
 
-// TODO: Make the use of colors consistent (either Material UI color objects or strings)
 export const SOURCE_COLORS = {
   electricity: {
-    BIO: '#8468A9',
-    COAL: '#8C6639',
-    HYDRO: '#4F67AE',
-    GAS: '#D5673E',
-    OIL: '#B56696',
-    RENEWABLE: '#60984D',
-    NUCLEAR: '#CBCA44',
+    BIO: '#4D8255',
+    COAL: '#4E513F',
+    HYDRO: '#274368',
+    GAS: '#F2CB53',
+    OIL: '#E4812C',
+    RENEWABLE: '#B2BCE4',
+    NUCLEAR: '#683A96',
   },
   energy: {
-    BIO: '#8468A9',
-    COAL: '#8C6639',
+    BIO: '#4D8255',
+    COAL: '#4E513F',
     ELECTRICITY: '#7ACBCB',
-    GAS: '#D5673E',
-    OIL: '#B56696',
+    GAS: '#F2CB53',
+    OIL: '#E4812C',
   },
   gas: {},
   oil: {},

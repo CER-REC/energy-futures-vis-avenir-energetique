@@ -1,6 +1,5 @@
 import React from 'react';
 import { Grid } from '@material-ui/core';
-import { blue } from '@material-ui/core/colors';
 import DataUsageIcon from '@material-ui/icons/DataUsage';
 import FlashOnIcon from '@material-ui/icons/FlashOn';
 import { withKnobs, boolean, number, text } from '@storybook/addon-knobs';
@@ -30,7 +29,7 @@ const iconItems = {
     icon: FlashOnIcon,
   },
   e: {
-    color: blue,
+    color: 'blue',
     icon: DataUsageIcon,
   },
 };

@@ -133,7 +133,7 @@ const PageLayout = ({
         <LinkButtonGroup title="Context" labels={['about', 'methodology', 'report', 'results', 'assumptions']} />
       </Grid>
       <Grid item style={{ width: 'calc(100% - 100px)' }}>
-        <Grid container wrap="nowrap" spacing={4}>
+        <Grid container wrap="nowrap" spacing={2}>
           {showSource && (
             <Grid item>
               <DraggableVerticalList
@@ -157,6 +157,7 @@ const PageLayout = ({
                 dense
                 disabled={disableDraggableRegion}
                 singleSelect={singleSelectRegion}
+                greyscale={config.page === 'by-sector'}
                 items={config.provinces}
                 itemOrder={config.provinceOrder}
                 defaultItems={regionItems}

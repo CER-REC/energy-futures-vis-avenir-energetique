@@ -1,11 +1,11 @@
 import { useMemo } from 'react';
 import { useQuery } from '@apollo/react-hooks';
-import { black } from '@material-ui/core/colors';
 import gql from 'graphql-tag';
 
 import { REGION_COLORS, SOURCE_COLORS, SOURCE_ICONS } from '../constants';
 
-const CONFIG = gql`
+const defaultColor = '#000000';
+const configQuery = gql`
   query {
     iterations {
       id
@@ -39,7 +39,6 @@ const getYearIdIterations = iterations => (
 
 const getRegions = (translations) => {
   const colors = {};
-  const defaultColor = black;
   const regionEnums = translations.filter(
     translation => translation.group === 'REGION',
   ).map(
@@ -80,7 +79,7 @@ const getSources = (translations) => {
     const order = enums.filter(source => source !== 'ALL').sort();
 
     enums.forEach((source) => {
-      colors[source] = SOURCE_COLORS[type][source] || '#000000';
+      colors[source] = SOURCE_COLORS[type][source] || defaultColor;
       icons[source] = SOURCE_ICONS[type][source];
     });
 
@@ -132,7 +131,7 @@ const getI18NMessages = translations => (
 );
 
 export default () => {
-  const { loading, error, data } = useQuery(CONFIG);
+  const { loading, error, data } = useQuery(configQuery);
   const yearIdIterations = useMemo(
     () => (data ? getYearIdIterations(data.iterations) : {}),
     [data],

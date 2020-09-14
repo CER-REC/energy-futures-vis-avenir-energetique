@@ -4,12 +4,12 @@ import PropTypes from 'prop-types';
 import {
   makeStyles, Grid, Typography, Tooltip,
 } from '@material-ui/core';
-import { grey } from '@material-ui/core/colors';
 import ClearIcon from '@material-ui/icons/Clear';
 import DragIcon from '@material-ui/icons/DragIndicator';
 import { useIntl } from 'react-intl';
 
 import useConfig from '../../hooks/useConfig';
+import Hint from '../Hint';
 
 const reorder = (list, startIndex, endIndex) => {
   const result = Array.from(list);
@@ -27,15 +27,15 @@ const ColoredItemBox = ({
       height: 36,
       width: 36,
       backgroundColor: theme.palette.common.white,
-      border: `1px solid ${color[600] || color || theme.palette.secondary.main}`,
+      border: `2px solid ${color || theme.palette.secondary.main}`,
       borderRadius: round ? '50%' : 0,
       textTransform: 'uppercase',
       transition: 'box-shadow .25s ease-in-out',
       '& > p, & > svg': {
         margin: 'auto',
-        color: color[800] || color || theme.palette.secondary.main,
+        color: color || theme.palette.secondary.main,
       },
-      '&.selected': { backgroundColor: color[600] || color || theme.palette.secondary.main },
+      '&.selected': { backgroundColor: color || theme.palette.secondary.main },
       '&.selected > p, &.selected > svg': { color: theme.palette.common.white },
       '&:hover': { boxShadow: theme.shadows[6] },
     },
@@ -77,10 +77,8 @@ const ColoredItemBox = ({
 ColoredItemBox.propTypes = {
   item: PropTypes.string.isRequired,
   label: PropTypes.string,
-  // eslint-disable-next-line react/forbid-prop-types
-  icon: PropTypes.object,
-  // eslint-disable-next-line react/forbid-prop-types
-  color: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
+  icon: PropTypes.object, // eslint-disable-line react/forbid-prop-types
+  color: PropTypes.string,
   selected: PropTypes.bool,
   clear: PropTypes.bool,
   round: PropTypes.bool,
@@ -117,6 +115,7 @@ const useStyles = makeStyles(theme => ({
       borderLeft: `2px solid ${theme.palette.secondary.main}`,
     },
   }),
+  title: { fontSize: 15 },
   item: props => ({
     position: 'relative',
     height: props.dense ? 44 : 52,
@@ -132,6 +131,7 @@ const useStyles = makeStyles(theme => ({
 const DraggableVerticalList = ({
   title, width, round, dense,
   singleSelect = false, /* multi-select or single select */
+  greyscale = false, /* ignore button colors */
   disabled = false, /* disable drag-n-drop */
   items /* array of strings */,
   defaultItems /* object */,
@@ -214,7 +214,9 @@ const DraggableVerticalList = ({
 
   return (
     <DragDropContext onDragEnd={handleDragEnd}>
-      <Typography variant="h6" color="secondary" gutterBottom>{title}</Typography>
+      <Hint>
+        <Typography variant="h6" color="secondary" className={classes.title}>{title}</Typography>
+      </Hint>
       <Droppable droppableId="droppable" isDropDisabled={disabled}>
         {(provided, snapshot) => (
           <Grid
@@ -233,7 +235,6 @@ const DraggableVerticalList = ({
               <ColoredItemBox
                 item={allTitle}
                 round={round}
-                color={grey}
                 selected={singleSelect ? localItems[0] === 'ALL' : localItems.length > 0}
                 clear={localItems.length === Object.keys(defaultItems).length}
               />
@@ -254,7 +255,7 @@ const DraggableVerticalList = ({
                         round={round}
                         label={defaultItems[item].label}
                         icon={defaultItems[item].icon}
-                        color={defaultItems[item].color}
+                        color={greyscale ? undefined : defaultItems[item].color}
                         selected={localItems.indexOf(item) > -1}
                         isDragDisabled={disabled}
                       />
@@ -277,6 +278,7 @@ DraggableVerticalList.propTypes = {
   round: PropTypes.bool,
   dense: PropTypes.bool,
   singleSelect: PropTypes.bool,
+  greyscale: PropTypes.bool,
   disabled: PropTypes.bool,
   items: PropTypes.arrayOf(PropTypes.string),
   defaultItems: PropTypes.object, // eslint-disable-line react/forbid-prop-types
@@ -292,6 +294,7 @@ DraggableVerticalList.defaultProps = {
   round: false,
   dense: false,
   singleSelect: false,
+  greyscale: false,
   disabled: false,
   items: [],
   defaultItems: {},
