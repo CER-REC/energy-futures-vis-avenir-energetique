@@ -8,6 +8,7 @@ const useStyles = makeStyles(() => createStyles({
     width: page === 'by-region' ? 'calc(100% - 130px - 32px)' : 'calc(100% - 100px)',
     marginLeft: page === 'by-region' ? 'calc(50px + 17px)' : '50px',
     position: 'relative',
+    pointerEvents: 'none',
   }),
   innerContainer: ({ forecastYear, year }) => ({
     marginLeft: `${((forecastYear - year.min) / (year.max - year.min)) * 100}%`,
