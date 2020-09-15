@@ -4,6 +4,7 @@ import {
   Grid, Typography, Button,
 } from '@material-ui/core';
 import LinkIcon from '@material-ui/icons/Link';
+import EmailIcon from '@material-ui/icons/Email';
 import {
   SocialMediaIconTwitter, SocialMediaIconFacebook, SocialMediaIconLinkedIn,
 } from './SocialMediaIcons';
@@ -72,11 +73,14 @@ const YearSelect = () => {
       <Grid item className={classes.report}>
         <LinkButtonGroup
           labels={[
-            { icon: <SocialMediaIconTwitter />, name: 'Twitter' },
-            { icon: <SocialMediaIconLinkedIn />, name: 'LinkedIn' },
-            { icon: <SocialMediaIconFacebook />, name: 'Facebook' },
-            { icon: <LinkIcon />, name: 'Copy Link' },
-            'download data',
+            ['download data'],
+            [
+              { icon: <LinkIcon />, name: 'Copy Link' },
+              { icon: <SocialMediaIconLinkedIn />, name: 'LinkedIn' },
+              { icon: <SocialMediaIconFacebook />, name: 'Facebook' },
+              { icon: <SocialMediaIconTwitter />, name: 'Twitter' },
+              { icon: <EmailIcon />, name: 'Email' },
+            ],
           ]}
           accent="right"
         />

@@ -33,6 +33,11 @@ const useStyles = makeStyles(theme => ({
     width: '100%',
     border: `1px solid ${theme.palette.divider}`,
   },
+  links: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+  },
 }));
 
 const PageLayout = ({
@@ -129,8 +134,12 @@ const PageLayout = ({
           <Grid item><HorizontalControlBar /></Grid>
         </Grid>
       </Grid>
-      <Grid item style={{ width: 100 }}>
-        <LinkButtonGroup title="Context" labels={['about', 'methodology', 'report', 'results', 'assumptions']} />
+      <Grid item style={{ position: 'relative', width: 100 }}>
+        <LinkButtonGroup
+          title="Context"
+          labels={[['assumptions', 'results', 'report'], ['methodology', 'about']]}
+          className={classes.links}
+        />
       </Grid>
       <Grid item style={{ width: 'calc(100% - 100px)' }}>
         <Grid container wrap="nowrap" spacing={2}>
