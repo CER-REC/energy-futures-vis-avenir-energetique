@@ -33,7 +33,7 @@ const ByRegion = ({ data, year }) => {
       backgroundColor: '#F3F2F2',
       paddingLeft: '5px',
     },
-  }))();
+  })();
 
   /**
    * A "hacky" but sufficient way to reselect all regions after

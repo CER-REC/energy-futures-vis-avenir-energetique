@@ -36,7 +36,7 @@ const BySector = ({ data, year }) => {
       backgroundColor: '#F3F2F2',
       paddingLeft: '5px',
     },
-  }))();
+  })();
 
   const keys = useMemo(() => {
     const sources = new Set((data || []).map(entry => Object.keys(entry)).flat());

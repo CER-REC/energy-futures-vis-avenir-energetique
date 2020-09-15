@@ -29,7 +29,7 @@ const Scenarios = ({ data, year }) => {
       backgroundColor: '#F3F2F2',
       paddingLeft: '5px',
     },
-  }))();
+  })();
 
   if (!data) {
     return null;
