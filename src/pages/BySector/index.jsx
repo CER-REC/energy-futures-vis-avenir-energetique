@@ -1,11 +1,32 @@
 import React, { useCallback, useMemo } from 'react';
 import { ResponsiveStream } from '@nivo/stream';
 import PropTypes from 'prop-types';
-import { Typography, makeStyles } from '@material-ui/core';
+import { Typography, makeStyles, createStyles } from '@material-ui/core';
 import { useIntl } from 'react-intl';
 
 import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
+
+const useStyles = makeStyles(() => createStyles({
+  outerContainer: {
+    // The 100 is to offset the chart margin
+    width: 'calc(100% - 100px)',
+    marginLeft: '50px',
+    position: 'relative',
+  },
+  innerContainer: ({ forecastYear, year }) => ({
+    marginLeft: `${((forecastYear - year.min) / (year.max - year.min)) * 100}%`,
+    width: `${((year.max - forecastYear) / (year.max - year.min)) * 100}%`,
+    borderLeft: '1px dashed black',
+    height: '620px',
+    position: 'absolute',
+    zIndex: 1,
+  }),
+  foreCast: {
+    backgroundColor: '#F3F2F2',
+    paddingLeft: '5px',
+  },
+}));
 
 const BySector = ({ data, year }) => {
   const intl = useIntl();
@@ -14,29 +35,7 @@ const BySector = ({ data, year }) => {
 
   // FIXME: forecastYear will need to be dynamic eventually.
   const forecastYear = 2020;
-  const width = ((year.max - forecastYear) / (year.max - year.min)) * 100;
-  const margin = ((forecastYear - year.min) / (year.max - year.min)) * 100;
-
-  const classes = makeStyles({
-    outerContainer: {
-      // The 100 is to offset the chart margin
-      width: 'calc(100% - 100px)',
-      marginLeft: '50px',
-      position: 'relative',
-    },
-    innerContainer: {
-      marginLeft: `${margin}%`,
-      width: `${width}%`,
-      borderLeft: '1px dashed black',
-      height: '620px',
-      position: 'absolute',
-      zIndex: 1,
-    },
-    foreCast: {
-      backgroundColor: '#F3F2F2',
-      paddingLeft: '5px',
-    },
-  })();
+  const classes = useStyles({ forecastYear, year });
 
   const keys = useMemo(() => {
     const sources = new Set((data || []).map(entry => Object.keys(entry)).flat());

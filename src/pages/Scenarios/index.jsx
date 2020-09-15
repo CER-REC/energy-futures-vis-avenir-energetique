@@ -1,35 +1,34 @@
 import React from 'react';
 import { ResponsiveLine } from '@nivo/line';
 import PropTypes from 'prop-types';
-import { Typography, makeStyles } from '@material-ui/core';
+import { Typography, makeStyles, createStyles } from '@material-ui/core';
 import { SCENARIO_COLOR } from '../../constants';
+
+const useStyles = makeStyles(() => createStyles({
+  outerContainer: {
+    // The 100 is to offset the chart margin
+    width: 'calc(100% - 100px)',
+    marginLeft: '50px',
+    position: 'relative',
+  },
+  innerContainer: ({ forecastYear, year }) => ({
+    marginLeft: `${((forecastYear - year.min) / (year.max - year.min)) * 100}%`,
+    width: `${((year.max - forecastYear) / (year.max - year.min)) * 100}%`,
+    borderLeft: '1px dashed black',
+    height: '620px',
+    position: 'absolute',
+    zIndex: 1,
+  }),
+  forecast: {
+    backgroundColor: '#F3F2F2',
+    paddingLeft: '5px',
+  },
+}));
 
 const Scenarios = ({ data, year }) => {
   // FIXME: forecastYear will need to be dynamic eventually.
   const forecastYear = 2020;
-  const width = ((year.max - forecastYear) / (year.max - year.min)) * 100;
-  const margin = ((forecastYear - year.min) / (year.max - year.min)) * 100;
-
-  const classes = makeStyles({
-    outerContainer: {
-      // The 100 is to offset the chart margin
-      width: 'calc(100% - 100px)',
-      marginLeft: '50px',
-      position: 'relative',
-    },
-    innerContainer: {
-      marginLeft: `${margin}%`,
-      width: `${width}%`,
-      borderLeft: '1px dashed black',
-      height: '620px',
-      position: 'absolute',
-      zIndex: 1,
-    },
-    forecast: {
-      backgroundColor: '#F3F2F2',
-      paddingLeft: '5px',
-    },
-  })();
+  const classes = useStyles({ forecastYear, year });
 
   if (!data) {
     return null;
