@@ -11,6 +11,7 @@ import {
 import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
 import LinkButtonGroup from '../LinkButtonGroup';
+import Hint from '../Hint';
 
 const useStyles = makeStyles(theme => createStyles({
   root: {
@@ -24,6 +25,7 @@ const useStyles = makeStyles(theme => createStyles({
   button: {
     height: 43,
     width: 43,
+    '& h5': { fontWeight: 700 },
   },
   report: {
     position: 'absolute',
@@ -46,7 +48,11 @@ const YearSelect = () => {
   return (
     <Grid container alignItems="center" spacing={1} className={classes.root}>
       <Grid item>
-        <Typography variant="h5" color="primary" className={classes.title}>Canada&apos;s Energy Future</Typography>
+        <Hint>
+          <Typography variant="h5" color="primary" className={classes.title}>
+            Canada&apos;s Energy Future
+          </Typography>
+        </Hint>
       </Grid>
 
       {yearIds.map(yearId => (

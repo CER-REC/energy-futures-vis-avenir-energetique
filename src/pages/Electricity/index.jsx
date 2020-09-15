@@ -4,9 +4,11 @@ import { makeStyles, Paper, Grid, Typography, Button, Slider } from '@material-u
 import PlayIcon from '@material-ui/icons/PlayCircleOutline';
 import PauseIcon from '@material-ui/icons/PauseCircleOutline';
 import { ResponsiveBubble } from '@nivo/circle-packing';
+import { useIntl } from 'react-intl';
 
-import { CONFIG_REPRESENTATION } from '../../types';
+import { UNIT_NAMES } from '../../constants';
 import { formatUnitAbbreviation } from '../../utilities/convertUnit';
+import useAPI from '../../hooks/useAPI';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -62,6 +64,10 @@ const useStyles = makeStyles(theme => ({
     border: `1px solid ${theme.palette.secondary.light}`,
     zIndex: 1,
   },
+  btnPlay: {
+    height: 26,
+    padding: 0,
+  },
 }));
 
 const REGION_LOC = {
@@ -87,7 +93,7 @@ const BUBBLE_SIZE_MAX = 20;
  */
 const Tooltip = ({ name, value, unit }) => (
   <Typography style={{ whiteSpace: 'nowrap' }}>
-    {name}: {formatUnitAbbreviation(value)} {CONFIG_REPRESENTATION[unit]}
+    {name}: {formatUnitAbbreviation(value)} {UNIT_NAMES[unit]}
   </Typography>
 );
 
@@ -100,43 +106,70 @@ Tooltip.propTypes = {
 /**
  * Rendering each bubble chart for a single province.
  */
-const Bubble = ({ province, data, unit }) => (
-  <ResponsiveBubble
-    root={{ name: province, color: '#FFF', children: data }}
-    margin={{ top: 20, right: 20, bottom: 20, left: 20 }}
-    identity="name"
-    value="value"
-    colors={d => d.color}
-    colorBy="name"
-    padding={2}
-    borderWidth={1}
-    borderColor={d => (d.color === 'rgb(255,255,255)' ? '#666' : d.color)}
-    enableLabel={false}
-    tooltip={d => <Tooltip name={d.id === province ? 'TOTAL' : d.data.name} value={d.value} unit={unit} />}
-    isZoomable={false}
-    animate
-    motionStiffness={90}
-    motionDamping={12}
-  />
-);
+const Bubble = ({ province, data, unit, colors }) => {
+  const intl = useIntl();
+  const getColor = useCallback(dataItem => colors[dataItem.name] || '#FFFFFF', [colors]);
+  const getBorderColor = useCallback(
+    chartItem => (chartItem.color === 'rgb(255,255,255)' ? '#666666' : chartItem.color),
+    [],
+  );
+  const getTooltip = useCallback(
+    (dataItem) => {
+      // TODO: Add application translation for TOTAL
+      let name = 'TOTAL';
+
+      if (dataItem.id !== province) {
+        name = intl.formatMessage({ id: `common.sources.electricity.${dataItem.data.name}` }).toUpperCase();
+      }
+
+      return <Tooltip name={name} value={dataItem.value} unit={unit} />;
+    },
+    [province, intl, unit],
+  );
+
+  return (
+    <ResponsiveBubble
+      root={{ name: province, children: data }}
+      margin={{ top: 20, right: 20, bottom: 20, left: 20 }}
+      identity="name"
+      value="value"
+      colors={getColor}
+      padding={2}
+      borderWidth={1}
+      borderColor={getBorderColor}
+      enableLabel={false}
+      tooltip={getTooltip}
+      isZoomable={false}
+      animate
+      motionStiffness={90}
+      motionDamping={12}
+    />
+  );
+};
 
 Bubble.propTypes = {
   province: PropTypes.string,
   data: PropTypes.oneOfType([PropTypes.object, PropTypes.arrayOf(PropTypes.object)]),
   unit: PropTypes.string,
+  colors: PropTypes.shape({}),
 };
 
 Bubble.defaultProps = {
   province: '',
   data: undefined,
   unit: '',
+  colors: {},
 };
 
 const Electricity = ({ data, year }) => {
   const classes = useStyles();
 
+  const { sources: { electricity: { colors } } } = useAPI();
+
   const [currYear, setCurrYear] = useState(year?.min || 0);
   const [play, setPlay] = useState(false);
+
+  useEffect(() => setCurrYear(year?.min || 0), [year]);
 
   /**
    * Generate slide marks for the video playback control.
@@ -162,7 +195,7 @@ const Electricity = ({ data, year }) => {
    */
   const { totals, max, min } = useMemo(() => {
     if (!data || !data[currYear]) {
-      return undefined;
+      return { totals, max: Number.POSITIVE_INFINITY, min: Number.NEGATIVE_INFINITY };
     }
 
     const totals = Object.keys(data[currYear]).reduce((result, province) => ({
@@ -187,7 +220,7 @@ const Electricity = ({ data, year }) => {
   const isSingle = useMemo(() => Math.abs(max - min) < Number.EPSILON, [max, min]);
 
   const processedData = useMemo(() => {
-    const dataWithPosition = Object.keys(data[currYear]).map(province => {
+    const dataWithPosition = totals ? Object.keys(data[currYear]).map(province => {
       const size = isSingle ? Number.POSITIVE_INFINITY : getSize(totals[province]);
       return {
         name: province,
@@ -201,11 +234,11 @@ const Electricity = ({ data, year }) => {
           size: getSize(source.value),
         })),
       }
-    });
+    }) : [];
     return dataWithPosition;
   }, [data, max, min]);
 
-  if (!data) {
+  if (!data || !processedData || processedData.length <= 0) {
     return null;
   }
 
@@ -234,7 +267,7 @@ const Electricity = ({ data, year }) => {
                   left: x,
                   height: source.size * 8,
                   width: source.size * 8,
-                  backgroundColor: source.color,
+                  backgroundColor: colors[source.name],
                 }}
               />
             );
@@ -253,6 +286,7 @@ const Electricity = ({ data, year }) => {
             color="primary"
             startIcon={play ? <PauseIcon /> : <PlayIcon />}
             onClick={() => setPlay(!play)}
+            className={classes.btnPlay}
           >
             {play ? 'Stop' : 'Play'}
           </Button>
