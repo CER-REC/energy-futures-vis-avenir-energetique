@@ -54,7 +54,7 @@ export const parseData = {
         [entry.year]: [...(result[entry.year] || []), entry],
       }), {});
     Object.keys(dataByYear).forEach((year) => {
-      dataByYear[year] = [...dataByYear[year]].reduce((result, entry) => entry.value ? ({
+      dataByYear[year] = [...dataByYear[year]].reduce((result, entry) => (entry.value ? ({
         ...result,
         [entry.province]: [
           ...(result[entry.province] || []), {
@@ -62,7 +62,7 @@ export const parseData = {
             value: entry.value * unitConversion,
           },
         ],
-      }) : result, {});
+      }) : result), {});
     });
     return dataByYear;
   },
