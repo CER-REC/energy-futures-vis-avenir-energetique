@@ -5,6 +5,7 @@ import useConfig from '../../hooks/useConfig';
 
 const useStyles = makeStyles(() => createStyles({
   outerContainer: ({ page }) => ({
+    // 130px or 100px is to offset the chart margin
     width: page === 'by-region' ? 'calc(100% - 130px - 32px)' : 'calc(100% - 100px)',
     marginLeft: page === 'by-region' ? 'calc(50px + 17px)' : '50px',
     position: 'relative',
@@ -19,7 +20,8 @@ const useStyles = makeStyles(() => createStyles({
     zIndex: 1,
   }),
   foreCast: {
-    backgroundColor: '#F3F2F2',
+    // backgroundColor: '#F3F2F2',
+    backgroundImage: 'linear-gradient(to left, rgba(255,0,0,0), rgba(243, 242, 242, 1) 30%)',
     paddingLeft: '5px',
   },
 }));
