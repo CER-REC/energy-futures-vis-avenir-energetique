@@ -163,7 +163,7 @@ LinkButtonGroup.propTypes = {
   labels: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.shape({
     icon: PropTypes.element,
     name: PropTypes.string,
-  }), PropTypes.string]))), // array of arries of strings
+  }), PropTypes.string]))),
   accent: PropTypes.string, // 'left', 'right'
   className: PropTypes.string, // root class names
 };
