@@ -1,48 +1,17 @@
 import React from 'react';
 import { ResponsiveLine } from '@nivo/line';
 import PropTypes from 'prop-types';
-import { Typography, makeStyles, createStyles } from '@material-ui/core';
 import { SCENARIO_COLOR } from '../../constants';
-
-const useStyles = makeStyles(() => createStyles({
-  outerContainer: {
-    // The 100 is to offset the chart margin
-    width: 'calc(100% - 100px)',
-    marginLeft: '50px',
-    position: 'relative',
-  },
-  innerContainer: ({ forecastYear, year }) => ({
-    marginLeft: `${((forecastYear - year.min) / (year.max - year.min)) * 100}%`,
-    width: `${((year.max - forecastYear) / (year.max - year.min)) * 100}%`,
-    borderLeft: '1px dashed black',
-    height: '620px',
-    position: 'absolute',
-    zIndex: 1,
-  }),
-  forecast: {
-    backgroundColor: '#F3F2F2',
-    paddingLeft: '5px',
-  },
-}));
+import ForecastBar from '../../components/ForecastBar';
 
 const Scenarios = ({ data, year }) => {
-  // FIXME: forecastYear will need to be dynamic eventually.
-  const forecastYear = 2020;
-  const classes = useStyles({ forecastYear, year });
-
   if (!data) {
     return null;
   }
 
   return (
     <>
-      <div className={classes.outerContainer}>
-        <div className={classes.innerContainer}>
-          <div className={classes.forecast}>
-            <Typography variant='body1' color='secondary'>Forecast</Typography>
-          </div>
-        </div>
-      </div>
+      <ForecastBar year={year} />
       <ResponsiveLine
         data={data}
         curve="cardinal"
