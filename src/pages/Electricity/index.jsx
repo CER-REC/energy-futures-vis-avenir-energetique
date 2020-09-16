@@ -96,13 +96,13 @@ const Legend = ({ entry, unit }) => (
   <Grid container direction="column" spacing={1}>
     {[...entry.nodes, { name: 'Total', value: entry.value }].map((node) => {
       const value = formatUnitAbbreviation(node.value);
-      const postfix = node.name === 'Total' ? UNIT_NAMES[unit] : `(${((node.value / entry.value) * 100).toFixed(1)}%)`;
+      const suffix = node.name === 'Total' ? UNIT_NAMES[unit] : `(${((node.value / entry.value) * 100).toFixed(1)}%)`;
       return (
         <Grid item key={`legend-item-${node.name}`}>
           <Grid container alignItems="center" wrap="nowrap">
             <div style={{ height: 16, width: 16, backgroundColor: node.color || 'white', marginRight: 6 }} />
             <strong>{node.name}:</strong>&nbsp;
-            {`${value} ${postfix}`}
+            {`${value} ${suffix}`}
           </Grid>
         </Grid>
       );
@@ -112,15 +112,14 @@ const Legend = ({ entry, unit }) => (
 
 Legend.propTypes = {
   entry: PropTypes.shape({
-    name: PropTypes.string,
-    value: PropTypes.number,
-    nodes: PropTypes.arrayOf(PropTypes.shape({ name: PropTypes.string, value: PropTypes.number })),
-  }),
+    name: PropTypes.string.isRequired,
+    value: PropTypes.number.isRequired,
+    nodes: PropTypes.arrayOf(PropTypes.shape({ name: PropTypes.string, value: PropTypes.number })).isRequired,
+  }).isRequired,
   unit: PropTypes.string,
 };
 
 Legend.defaultProps = {
-  entry: {},
   unit: '',
 };
 
