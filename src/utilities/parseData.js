@@ -46,9 +46,11 @@ export const parseData = {
     }));
   },
 
-  electricity: (data, unitConversion, regions) => {
+  electricity: (data, unitConversion, regions, sources, view) => {
     const dataByYear = (data || [])
-      .filter(entry => regions.includes(entry.province) && entry.source !== 'ALL')
+      .filter(entry => (view === 'source'
+        ? sources.includes(entry.source) && entry.province !== 'ALL' && entry.source !== 'ALL'
+        : regions.includes(entry.province) && entry.province !== 'ALL' && entry.source !== 'ALL'))
       .reduce((result, entry) => ({
         ...result,
         [entry.year]: [...(result[entry.year] || []), entry],
@@ -56,9 +58,9 @@ export const parseData = {
     Object.keys(dataByYear).forEach((year) => {
       dataByYear[year] = [...dataByYear[year]].reduce((result, entry) => (entry.value ? ({
         ...result,
-        [entry.province]: [
-          ...(result[entry.province] || []), {
-            name: entry.source,
+        [view === 'source' ? entry.source : entry.province]: [
+          ...(result[view === 'source' ? entry.source : entry.province] || []), {
+            name: view === 'source' ? entry.province : entry.source,
             value: entry.value * unitConversion,
           },
         ],

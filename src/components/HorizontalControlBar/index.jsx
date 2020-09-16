@@ -124,7 +124,6 @@ const HorizontalControlBar = () => {
           variant={config.view === view ? 'contained' : 'outlined'}
           color="primary"
           size="small"
-          disabled={view === 'source'}
           onClick={() => handleConfigUpdate('view', view)}
         >
           {view}

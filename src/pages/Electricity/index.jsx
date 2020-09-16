@@ -71,7 +71,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const REGION_LOC = {
+const COORD = {
   YT: { top: '10%', left: '5%' },
   SK: { top: '60%', left: '25%' },
   QC: { top: '5%', left: '55%' },
@@ -85,9 +85,21 @@ const REGION_LOC = {
   MB: { top: '35%', left: '35%' },
   BC: { top: '70%', left: '8%' },
   AB: { top: '30%', left: '8%' },
+
+  BIO: { top: '10%', left: '60%' },
+  COAL: { top: '70%', left: '55%' },
+  GAS: { top: '15%', left: '80%' },
+  HYDRO: { top: '45%', left: '15%' },
+  NUCLEAR: { top: '5%', left: '35%' },
+  OIL: { top: '20%', left: '10%' },
+  RENEWABLE: { top: '50%', left: '75%' },
 };
-const BUBBLE_SIZE_MIN = 1;
-const BUBBLE_SIZE_MAX = 20;
+
+const BUBBLE_SIZE = {
+  region: { MAX: 20, MIN: 1 },
+  source: { MAX: 30, MIN: 0 },
+  single: 20,
+};
 
 /**
  * Rendering bubble tooltips.
@@ -114,7 +126,10 @@ Legend.propTypes = {
   entry: PropTypes.shape({
     name: PropTypes.string.isRequired,
     value: PropTypes.number.isRequired,
-    nodes: PropTypes.arrayOf(PropTypes.shape({ name: PropTypes.string, value: PropTypes.number })).isRequired,
+    nodes: PropTypes.arrayOf(PropTypes.shape({
+      name: PropTypes.string,
+      value: PropTypes.number,
+    })).isRequired,
   }).isRequired,
   unit: PropTypes.string,
 };
@@ -126,7 +141,10 @@ Legend.defaultProps = {
 const Electricity = ({ data, year }) => {
   const classes = useStyles();
 
-  const { sources: { electricity: { colors } } } = useAPI();
+  const {
+    sources: { electricity: { colors: colorSources } },
+    regions: { colors: colorRegions },
+  } = useAPI();
   const { config } = useConfig();
 
   const [currYear, setCurrYear] = useState(year?.min || 2005);
@@ -154,16 +172,16 @@ const Electricity = ({ data, year }) => {
   }, [play, year]);
 
   /**
-   * Post-process for determining bubble sizes and positions.
+   * Looking for the min and max value and the total volumns in each group (region or source).
    */
   const { totals, max, min } = useMemo(() => {
     if (!data || !data[currYear]) {
       return { totals: undefined, max: Number.POSITIVE_INFINITY, min: Number.NEGATIVE_INFINITY };
     }
 
-    const allValues = Object.keys(data[currYear]).reduce((result, province) => ({
+    const allValues = Object.keys(data[currYear]).reduce((result, view) => ({
       ...result,
-      [province]: Object.values(data[currYear][province])
+      [view]: Object.values(data[currYear][view]) // 'view' can be 'region' or 'source'
         .map(entry => entry.value)
         .reduce((a, b) => a + b),
     }), {});
@@ -181,13 +199,33 @@ const Electricity = ({ data, year }) => {
   const single = useMemo(() => Math.abs(max - min) < Number.EPSILON, [max, min]);
 
   /**
+   * Determine the min and max bubble size based on the current view select.
+   */
+  const sizeMin = useMemo(() => BUBBLE_SIZE[config.view].MIN, [config.view]);
+  const sizeMax = useMemo(
+    () => (single ? BUBBLE_SIZE.single : BUBBLE_SIZE[config.view].MAX),
+    [config.view, single],
+  );
+
+  /**
    * Calculate the screen pixel size of a bubble based on its numeric value.
    */
   const getSize = useCallback(
-    value => Math.sqrt(value / (single ? max / 2 : max - min)) * BUBBLE_SIZE_MAX + BUBBLE_SIZE_MIN,
-    [max, min, single],
+    value => Math.sqrt(value / (single ? max / 2 : max - min)) * sizeMax + sizeMin,
+    [max, min, sizeMax, sizeMin, single],
   );
 
+  /**
+   * A method determines whether or not a bubble is selected.
+   */
+  const isIncluded = useCallback(
+    name => (config.view === 'source' ? config.provinces : config.sources).includes(name),
+    [config.view, config.provinces, config.sources],
+  );
+
+  /**
+   * Post-process for determining each bubble sizes and positions.
+   */
   const processedData = useMemo(() => {
     const dataWithPosition = totals ? Object.keys(data[currYear]).map((province) => {
       const size = getSize(totals[province]);
@@ -198,18 +236,18 @@ const Electricity = ({ data, year }) => {
         nodes: data[currYear][province].sort((a, b) => b.value - a.value).map(source => ({
           ...source,
           size: getSize(source.value),
-          color: colors[source.name],
+          color: { ...colorSources, ...colorRegions }[source.name],
         })),
         style: {
           height: size * 8,
           width: size * 8,
-          top: single ? 'calc(50% - 120px)' : REGION_LOC[province].top,
-          left: single ? 'calc(50% - 200px)' : REGION_LOC[province].left,
+          top: single ? 'calc(50% - 120px)' : COORD[province].top,
+          left: single ? 'calc(50% - 200px)' : COORD[province].left,
         },
       };
     }) : [];
     return dataWithPosition;
-  }, [data, colors, currYear, getSize, single, totals]);
+  }, [data, colorSources, colorRegions, currYear, getSize, single, totals]);
 
   if (!data || !processedData || processedData.length <= 0) {
     return null;
@@ -222,7 +260,7 @@ const Electricity = ({ data, year }) => {
       {processedData.map(entry => (
         <Tooltip key={`bubble-${entry.name}`} title={single ? '' : <Legend entry={entry} unit={config.unit} />}>
           <div className={classes.region} style={entry.style}>
-            {entry.nodes.map((source, index, list) => {
+            {entry.nodes.map((node, index, list) => {
               /**
                * This simplified algorithm uses the chord length as an approximate of the
                * corresponding arc length. Starting from the biggest bubble, it calculates
@@ -238,7 +276,7 @@ const Electricity = ({ data, year }) => {
               const theta = index === 0 ? 0 : Array(index + 1)
                 .fill(undefined)
                 .reduce((sum, _, i) => {
-                  const offset = config.sources.includes(list[i].name)
+                  const offset = isIncluded(list[i].name)
                     ? ((i === 0 || i === index) ? 1 : 2) * (entry.nodes[i].size / entry.size) * 1.1
                     : 0;
                   return sum + offset;
@@ -247,14 +285,14 @@ const Electricity = ({ data, year }) => {
               const y = Number.isNaN(theta) ? 0 : entry.size * 4 * Math.sin(theta);
               return (
                 <div
-                  key={`region-${entry.name}-source-${source.name}`}
+                  key={`region-${entry.name}-source-${node.name}`}
                   className={classes.subregion}
                   style={{
                     top: entry.size * 4 + y,
                     left: x,
-                    height: config.sources.includes(source.name) ? source.size * 8 : 0,
-                    width: config.sources.includes(source.name) ? source.size * 8 : 0,
-                    backgroundColor: source.color,
+                    height: isIncluded(node.name) ? node.size * 8 : 0,
+                    width: isIncluded(node.name) ? node.size * 8 : 0,
+                    backgroundColor: node.color,
                   }}
                 />
               );
