@@ -2,9 +2,6 @@ import React from 'react';
 import { addDecorator, configure, addParameters } from '@storybook/react';
 import Adapter from 'enzyme-adapter-react-16';
 import { configure as enzyme } from 'enzyme';
-import { ApolloClient } from 'apollo-client';
-import { InMemoryCache } from 'apollo-cache-inmemory';
-import { HttpLink } from 'apollo-link-http';
 import gql from 'graphql-tag';
 import requireContext from 'require-context.macro';
 import { setIntlConfig, withIntl } from 'storybook-addon-intl';
@@ -18,13 +15,11 @@ import '@formatjs/intl-relativetimeformat/polyfill';
 import '@formatjs/intl-relativetimeformat/locale-data/en';
 import '@formatjs/intl-relativetimeformat/locale-data/fr';
 
+import client from './apolloClient';
 import { lang } from '../src/constants';
 import i18nMessages from '../src/i18n';
 import getI18NMessages from '../src/utilities/getI18NMessages';
 
-const cache = new InMemoryCache();
-const link = new HttpLink({ uri: '/energy-future/graphql' });
-const client = new ApolloClient({ cache, link, fetch });
 const locales = Object.keys(i18nMessages);
 const viewports = {
   fullscreen: {
