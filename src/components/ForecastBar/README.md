@@ -1,4 +1,4 @@
-# Hint Icon
+# Forecast Bar
 
 This component is used as an indicator of what years are forecasted data, and not real data.
 
