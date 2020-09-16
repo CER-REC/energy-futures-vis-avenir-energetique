@@ -2,7 +2,6 @@ import React from 'react';
 import { addDecorator, configure, addParameters } from '@storybook/react';
 import Adapter from 'enzyme-adapter-react-16';
 import { configure as enzyme } from 'enzyme';
-import gql from 'graphql-tag';
 import requireContext from 'require-context.macro';
 import { setIntlConfig, withIntl } from 'storybook-addon-intl';
 import { addReadme, configureReadme } from 'storybook-readme';
@@ -18,6 +17,7 @@ import '@formatjs/intl-relativetimeformat/locale-data/fr';
 import client from './apolloClient';
 import { lang } from '../src/constants';
 import i18nMessages from '../src/i18n';
+import { ITERATIONS_TRANSLATIONS } from '../src/hooks/queries';
 import getI18NMessages from '../src/utilities/getI18NMessages';
 
 const locales = Object.keys(i18nMessages);
@@ -40,18 +40,7 @@ const viewports = {
   },
 };
 
-client.query({
-  query: gql`
-    query {
-      translations {
-        group
-        key
-        english
-        french
-      }
-    }
-  `,
-}).then((result) => {
+client.query({ query: ITERATIONS_TRANSLATIONS }).then((result) => {
   const apiI18NMessages = getI18NMessages(result.data.translations);
   const messages = {};
 

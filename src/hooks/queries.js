@@ -20,7 +20,7 @@ export const GAS_PRODUCTIONS = gql`
         value: quantity
       }
     }
-  `;
+`;
 
 export const ELECTRICITY_GENERATIONS = gql`
   query ($iteration: ID!, $regions: [Region!], $scenarios: [String!]) {
@@ -31,7 +31,7 @@ export const ELECTRICITY_GENERATIONS = gql`
       value: quantity
     }
   }
-  `;
+`;
 
 export const OIL_PRODUCTIONS = gql`
   query ($iteration: ID!, $regions: [Region!], $scenarios: [String!]) {
@@ -41,7 +41,7 @@ export const OIL_PRODUCTIONS = gql`
       value: quantity
     }
   }
-  `;
+`;
 
 export const BY_SECTOR = gql`
   query ($iteration: ID!, $regions: [Region!], $scenarios: [String!], $sectors:[String!], $sources: [EnergySource!]) {
@@ -51,7 +51,7 @@ export const BY_SECTOR = gql`
       source
     }
   }
-  `;
+`;
 
 export const ELECTRICITY_GENERATIONS_SOURCE = gql`
   query ($iteration: ID!, $regions: [Region!], $scenarios: [String!]) {
@@ -62,5 +62,22 @@ export const ELECTRICITY_GENERATIONS_SOURCE = gql`
       value: quantity
     }
   }
-  `;
+`;
+
+export const ITERATIONS_TRANSLATIONS = gql`
+  query {
+    iterations {
+      id
+      year
+      scenarios
+    }
+    translations {
+      group
+      key
+      english
+      french
+    }
+  }
+`;
+
 export const NULL_QUERY = gql`{ _ }`;

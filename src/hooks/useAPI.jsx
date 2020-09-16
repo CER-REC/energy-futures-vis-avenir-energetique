@@ -1,26 +1,11 @@
 import { useMemo } from 'react';
 import { useQuery } from '@apollo/react-hooks';
-import gql from 'graphql-tag';
 
 import { REGION_COLORS, SOURCE_COLORS, SOURCE_ICONS } from '../constants';
 import getI18NMessages from '../utilities/getI18NMessages';
+import { ITERATIONS_TRANSLATIONS } from './queries';
 
 const defaultColor = '#000000';
-const configQuery = gql`
-  query {
-    iterations {
-      id
-      year
-      scenarios
-    }
-    translations {
-      group
-      key
-      english
-      french
-    }
-  }
-`;
 
 const getYearIdIterations = iterations => (
   iterations.reduce((yearIdIterations, iteration) => {
@@ -93,7 +78,7 @@ const getSources = (translations) => {
 };
 
 export default () => {
-  const { loading, error, data } = useQuery(configQuery);
+  const { loading, error, data } = useQuery(ITERATIONS_TRANSLATIONS);
   const yearIdIterations = useMemo(
     () => (data ? getYearIdIterations(data.iterations) : {}),
     [data],
