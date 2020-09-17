@@ -2,14 +2,41 @@ import React from 'react';
 import { ResponsiveLine } from '@nivo/line';
 import PropTypes from 'prop-types';
 import { SCENARIO_COLOR } from '../../constants';
+import useConfig from '../../hooks/useConfig';
+
+const pointsLayer = year => (props => props.points.reduce((acc, point) => {
+  if ((year === '2020' && point.serieId === 'Evolving') || (year !== '2020' && point.serieId === 'Reference')) {
+    acc.push(
+      <circle
+        key={point.id}
+        cx={point.x}
+        cy={point.y}
+        r={props.pointSize / 2}
+        /*
+        The stroke and fill of this circle is not yet dynamic
+        due to the way Nivo gets these properties from an internal hook.
+        It may still be possible however with some further investigation.
+         */
+        fill='transparent'
+        stroke='#AAA'
+        strokeWidth={props.pointBorderWidth}
+        style={{ pointerEvents: 'none' }}
+      />,
+    );
+  }
+  return acc;
+}, []));
 
 const Scenarios = ({ data }) => {
+  const { yearId } = useConfig().config;
   if (!data) {
     return null;
   }
 
   return (
     <ResponsiveLine
+      enablePoints={false}
+      layers={['grid', pointsLayer(yearId), 'markers', 'axes', 'areas', 'crosshair', 'lines', 'points', 'slices', 'mesh', 'legends']}
       data={data}
       curve="cardinal"
       areaOpacity={0.15}
