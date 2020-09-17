@@ -1,16 +1,7 @@
-import TotalIcon from '@material-ui/icons/DataUsage';
-import ElectricityIcon from '@material-ui/icons/FlashOn';
-import OilIcon from '@material-ui/icons/Opacity';
-import GasIcon from '@material-ui/icons/LocalGasStation';
-import BioIcon from '@material-ui/icons/EcoOutlined';
-import CoalIcon from '@material-ui/icons/OutdoorGrillOutlined';
-import HydroIcon from '@material-ui/icons/Waves';
-import NuclearIcon from '@material-ui/icons/PanoramaVerticalOutlined';
-import WindIcon from '@material-ui/icons/ToysOutlined';
-import ResidentialIcon from '@material-ui/icons/HouseOutlined';
-import CommercialIcon from '@material-ui/icons/ApartmentOutlined';
-import IndustrialIcon from '@material-ui/icons/BuildOutlined';
-import TransportIcon from '@material-ui/icons/LocalShippingOutlined';
+import {
+  IconDemand, IconTransportation, IconCommercial, IconResidential, IconIndustrial,
+  IconElectricity, IconOil, IconGas, IconBiomass, IconCoal, IconHydro, IconNuclear, IconRenewable,
+} from './icons';
 
 export const applicationPath = {
   en: 'energy-future',
@@ -76,22 +67,22 @@ export const PAGES = [
 export const CONFIG_LAYOUT = {
   energyDemand: {
     name: 'Total Demand',
-    icon: TotalIcon,
+    icon: IconDemand,
     unit: ['petajoules', 'kilobarrelEquivalents'],
   },
   electricityGeneration: {
     name: 'Electricity',
-    icon: ElectricityIcon,
+    icon: IconElectricity,
     unit: ['gigawattHours', 'petajoules', 'kilobarrelEquivalents'],
   },
   oilProduction: {
     name: 'Oil Production',
-    icon: OilIcon,
+    icon: IconOil,
     unit: ['kilobarrels', 'thousandCubicMetres'],
   },
   gasProduction: {
     name: 'Gas Production',
-    icon: GasIcon,
+    icon: IconGas,
     unit: ['millionCubicMetres', 'cubicFeet'],
   },
 };
@@ -99,23 +90,23 @@ export const CONFIG_LAYOUT = {
 export const SECTOR_LAYOUT = {
   total: {
     name: 'Total Demand',
-    icon: TotalIcon,
+    icon: IconDemand,
   },
   residential: {
     name: 'Residential',
-    icon: ResidentialIcon,
+    icon: IconResidential,
   },
   commercial: {
     name: 'Commercial',
-    icon: CommercialIcon,
+    icon: IconCommercial,
   },
   industrial: {
     name: 'Industrial',
-    icon: IndustrialIcon,
+    icon: IconIndustrial,
   },
   transportation: {
     name: 'Transportation',
-    icon: TransportIcon,
+    icon: IconTransportation,
   },
 };
 
@@ -172,20 +163,20 @@ export const SOURCE_COLORS = {
 
 export const SOURCE_ICONS = {
   electricity: {
-    BIO: BioIcon,
-    COAL: CoalIcon,
-    HYDRO: HydroIcon,
-    GAS: GasIcon,
-    OIL: OilIcon,
-    RENEWABLE: WindIcon,
-    NUCLEAR: NuclearIcon,
+    BIO: IconBiomass,
+    COAL: IconCoal,
+    HYDRO: IconHydro,
+    GAS: IconGas,
+    OIL: IconOil,
+    RENEWABLE: IconRenewable,
+    NUCLEAR: IconNuclear,
   },
   energy: {
-    BIO: BioIcon,
-    COAL: CoalIcon,
-    ELECTRICITY: ElectricityIcon,
-    GAS: GasIcon,
-    OIL: OilIcon,
+    BIO: IconBiomass,
+    COAL: IconCoal,
+    ELECTRICITY: IconElectricity,
+    GAS: IconGas,
+    OIL: IconOil,
   },
   gas: {},
   oil: {},
