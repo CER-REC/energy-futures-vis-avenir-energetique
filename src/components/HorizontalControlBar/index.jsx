@@ -135,6 +135,7 @@ const HorizontalControlBar = () => {
 
   const units = (
     <>
+      <span style={{ flexGrow: 1 }} />
       <Hint><Typography variant="body1" color="primary">UNIT</Typography></Hint>
       {layout.unit.map(unit => (
         <Button

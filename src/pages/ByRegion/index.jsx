@@ -1,11 +1,11 @@
 import React, { useEffect, useMemo } from 'react';
 import { ResponsiveBar } from '@nivo/bar';
 import PropTypes from 'prop-types';
-
 import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
+import ForecastBar from '../../components/ForecastBar';
 
-const ByRegion = ({ data }) => {
+const ByRegion = ({ data, year }) => {
   const { regions } = useAPI();
   const { config, setConfig } = useConfig();
 
@@ -29,48 +29,54 @@ const ByRegion = ({ data }) => {
   }
 
   return (
-    <ResponsiveBar
-      data={data}
-      keys={keys}
-      indexBy="year"
-      margin={{ top: 50, right: 80, bottom: 50, left: 50 }}
-      padding={0.1}
-      colors={d => regions.colors[d.id]}
-      borderColor={{ from: 'color', modifiers: [['darker', 1.6]] }}
-      axisTop={null}
-      axisLeft={null}
-      axisBottom={{
-        tickSize: 5,
-        tickPadding: 5,
-        tickRotation: 0,
-        legendPosition: 'middle',
-        legendOffset: 32,
-        format: year => ((year % 5) ? '' : year),
-      }}
-      axisRight={{
-        tickSize: 5,
-        tickPadding: 5,
-        tickRotation: 0,
-        legendPosition: 'middle',
-        legendOffset: -40,
-      }}
-      enableLabel={false}
-      labelSkipWidth={12}
-      labelSkipHeight={12}
-      labelTextColor={{ from: 'color', modifiers: [['darker', 1.6]] }}
-      animate
-      motionStiffness={90}
-      motionDamping={15}
-    />
+    <>
+      <ForecastBar year={year} />
+      <ResponsiveBar
+        data={data}
+        keys={keys}
+        indexBy="year"
+        margin={{ top: 50, right: 80, bottom: 50, left: 50 }}
+        padding={0.1}
+        colors={d => regions.colors[d.id]}
+        borderColor={{ from: 'color', modifiers: [['darker', 1.6]] }}
+        axisTop={null}
+        axisLeft={null}
+        axisBottom={{
+          tickSize: 5,
+          tickPadding: 5,
+          tickRotation: 0,
+          legendPosition: 'middle',
+          legendOffset: 32,
+          format: yearLabel => ((yearLabel % 5) ? '' : yearLabel),
+        }}
+        axisRight={{
+          tickSize: 5,
+          tickPadding: 5,
+          tickRotation: 0,
+          legendPosition: 'middle',
+          legendOffset: -40,
+        }}
+        enableLabel={false}
+        labelSkipWidth={12}
+        labelSkipHeight={12}
+        labelTextColor={{ from: 'color', modifiers: [['darker', 1.6]] }}
+        animate
+        motionStiffness={90}
+        motionDamping={15}
+      />
+    </>
   );
 };
 
 ByRegion.propTypes = {
   data: PropTypes.oneOfType([PropTypes.object, PropTypes.arrayOf(PropTypes.object)]),
+  year: PropTypes.shape({ min: PropTypes.number, max: PropTypes.number }),
+
 };
 
 ByRegion.defaultProps = {
   data: undefined,
+  year: { min: 0, max: 0 },
 };
 
 export default ByRegion;
