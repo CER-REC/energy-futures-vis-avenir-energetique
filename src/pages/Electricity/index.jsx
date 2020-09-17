@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import { useIntl } from 'react-intl';
 import PropTypes from 'prop-types';
 import {
   makeStyles, Paper, Grid, Typography, Tooltip, Button, Slider,
@@ -10,7 +11,6 @@ import { UNIT_NAMES } from '../../constants';
 import { formatUnitAbbreviation } from '../../utilities/convertUnit';
 import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
-import { useIntl } from 'react-intl';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -107,7 +107,7 @@ const COORD = {
 };
 
 const BUBBLE_SIZE = {
-  region: { MAX: 20, MIN: 1 },
+  region: { MAX: 20, MIN: 0.5 },
   source: { MAX: 30, MIN: 0 },
   single: 20,
 };
@@ -152,12 +152,12 @@ Legend.defaultProps = {
 const Electricity = ({ data, year }) => {
   const classes = useStyles();
 
+  const intl = useIntl();
   const {
     sources: { electricity: { colors: colorSources } },
     regions: { colors: colorRegions },
   } = useAPI();
   const { config } = useConfig();
-  const intl = useIntl();
 
   const [currYear, setCurrYear] = useState(year?.min || 2005);
   const [play, setPlay] = useState(false);
@@ -262,7 +262,7 @@ const Electricity = ({ data, year }) => {
       };
     }) : [];
     return dataWithPosition;
-  }, [data, config.view, colorSources, colorRegions, currYear, getSize, single, totals]);
+  }, [data, config.view, intl, colorSources, colorRegions, currYear, getSize, single, totals]);
 
   if (!data || !processedData || processedData.length <= 0) {
     return null;
