@@ -1,10 +1,11 @@
-import React, { useCallback, useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import { useIntl } from 'react-intl';
 import PropTypes from 'prop-types';
-import { makeStyles, Paper, Grid, Typography, Button, Slider } from '@material-ui/core';
+import {
+  makeStyles, Paper, Grid, Typography, Tooltip, Button, Slider,
+} from '@material-ui/core';
 import PlayIcon from '@material-ui/icons/PlayCircleOutline';
 import PauseIcon from '@material-ui/icons/PauseCircleOutline';
-import { ResponsiveBubble } from '@nivo/circle-packing';
-import { useIntl } from 'react-intl';
 
 import { UNIT_NAMES } from '../../constants';
 import { formatUnitAbbreviation } from '../../utilities/convertUnit';
@@ -27,6 +28,27 @@ const useStyles = makeStyles(theme => ({
       zIndex: 2,
     },
   },
+  region: {
+    position: 'relative',
+    transition: 'top .25s ease-in-out, left .25s ease-in-out, height .25s ease-in-out, width .25s ease-in-out',
+    '&:after': {
+      content: '""',
+      position: 'absolute',
+      top: 0,
+      bottom: 0,
+      left: 0,
+      right: 0,
+      backgroundColor: 'rgba(255, 255, 255, 0.2)',
+      borderRadius: '50%',
+      boxShadow: theme.shadows[1],
+    },
+  },
+  subregion: {
+    position: 'absolute',
+    transform: 'translate(-50%, -50%)',
+    borderRadius: '50%',
+    transition: 'top .25s ease-in-out, left .25s ease-in-out, height .25s ease-in-out, width .25s ease-in-out',
+  },
   year: {
     position: 'absolute',
     top: -10,
@@ -35,13 +57,24 @@ const useStyles = makeStyles(theme => ({
     paddingLeft: 6,
     backgroundColor: theme.palette.common.white,
   },
+  tooltip: { maxWidth: 'none' },
   label: {
     position: 'absolute',
-    top: '15%',
-    left: '85%',
+    top: -40,
+    left: '50%',
+    transform: 'translateX(-50%)',
     padding: theme.spacing(0, 0.5),
     border: `1px solid ${theme.palette.secondary.light}`,
     zIndex: 1,
+    '& > p': { whiteSpace: 'pre' },
+  },
+  legend: {
+    position: 'absolute',
+    bottom: '50%',
+    right: 'calc(-100% - 100px)',
+    maxWidth: 250,
+    transform: 'translateY(50%)',
+    fontSize: 12,
   },
   btnPlay: {
     height: 26,
@@ -49,107 +82,87 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const REGION_LOC = {
+const COORD = {
   YT: { top: '10%', left: '5%' },
   SK: { top: '60%', left: '25%' },
-  QC: { top: 0, left: '50%' },
-  PE: { top: '60%', left: '85%' },
-  ON: { top: '60%', left: '40%' },
-  NU: { top: '15%', left: '28%' },
+  QC: { top: '5%', left: '55%' },
+  PE: { top: '65%', left: '88%' },
+  ON: { top: '60%', left: '45%' },
+  NU: { top: '15%', left: '30%' },
   NT: { top: '3%', left: '18%' },
   NS: { top: '80%', left: '85%' },
-  NL: { top: '35%', left: '80%' },
+  NL: { top: '35%', left: '85%' },
   NB: { top: '55%', left: '70%' },
   MB: { top: '35%', left: '35%' },
-  BC: { top: '65%', left: 0 },
-  AB: { top: '30%', left: '5%' },
+  BC: { top: '70%', left: '8%' },
+  AB: { top: '30%', left: '8%' },
+
+  BIO: { top: '10%', left: '60%' },
+  COAL: { top: '70%', left: '55%' },
+  GAS: { top: '15%', left: '80%' },
+  HYDRO: { top: '45%', left: '15%' },
+  NUCLEAR: { top: '5%', left: '35%' },
+  OIL: { top: '20%', left: '10%' },
+  RENEWABLE: { top: '50%', left: '75%' },
 };
-const BUBBLE_SIZE_MIN = 10;
-const BUBBLE_SIZE_MAX = 25;
+
+const BUBBLE_SIZE = {
+  region: { MAX: 20, MIN: 0.5 },
+  source: { MAX: 30, MIN: 0 },
+  single: 20,
+};
 
 /**
  * Rendering bubble tooltips.
  */
-const Tooltip = ({ name, value, unit }) => (
-  <Typography style={{ whiteSpace: 'nowrap' }}>
-    {name}: {formatUnitAbbreviation(value)} {UNIT_NAMES[unit]}
-  </Typography>
+const Legend = ({ entry, unit }) => (
+  <Grid container direction="column" spacing={1}>
+    {[...entry.nodes, { name: 'Total', value: entry.value }].map((node) => {
+      const value = formatUnitAbbreviation(node.value);
+      const suffix = node.name === 'Total' ? UNIT_NAMES[unit] : `(${((node.value / entry.value) * 100).toFixed(1)}%)`;
+      return (
+        <Grid item key={`legend-item-${node.name}`}>
+          <Grid container alignItems="center" wrap="nowrap">
+            <div style={{ height: 16, width: 16, backgroundColor: node.color || 'white', marginRight: 6 }} />
+            <strong>{node.translation || node.name}:</strong>&nbsp;
+            {`${value} ${suffix}`}
+          </Grid>
+        </Grid>
+      );
+    })}
+  </Grid>
 );
 
-Tooltip.propTypes = {
-  name: PropTypes.string.isRequired,
-  value: PropTypes.number.isRequired,
-  unit: PropTypes.string.isRequired,
-};
-
-/**
- * Rendering each bubble chart for a single province.
- */
-const Bubble = ({ province, data, unit, colors }) => {
-  const intl = useIntl();
-  const getColor = useCallback(dataItem => colors[dataItem.name] || '#FFFFFF', [colors]);
-  const getBorderColor = useCallback(
-    chartItem => (chartItem.color === 'rgb(255,255,255)' ? '#666666' : chartItem.color),
-    [],
-  );
-  const getTooltip = useCallback(
-    (dataItem) => {
-      // TODO: Add application translation for TOTAL
-      let name = 'TOTAL';
-
-      if (dataItem.id !== province) {
-        name = intl.formatMessage({ id: `common.sources.electricity.${dataItem.data.name}` }).toUpperCase();
-      }
-
-      return <Tooltip name={name} value={dataItem.value} unit={unit} />;
-    },
-    [province, intl, unit],
-  );
-
-  return (
-    <ResponsiveBubble
-      root={{ name: province, children: data }}
-      margin={{ top: 20, right: 20, bottom: 20, left: 20 }}
-      identity="name"
-      value="value"
-      colors={getColor}
-      padding={2}
-      borderWidth={1}
-      borderColor={getBorderColor}
-      enableLabel={false}
-      tooltip={getTooltip}
-      isZoomable={false}
-      animate
-      motionStiffness={90}
-      motionDamping={12}
-    />
-  );
-};
-
-Bubble.propTypes = {
-  province: PropTypes.string,
-  data: PropTypes.oneOfType([PropTypes.object, PropTypes.arrayOf(PropTypes.object)]),
+Legend.propTypes = {
+  entry: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    value: PropTypes.number.isRequired,
+    nodes: PropTypes.arrayOf(PropTypes.shape({
+      name: PropTypes.string,
+      value: PropTypes.number,
+    })).isRequired,
+  }).isRequired,
   unit: PropTypes.string,
-  colors: PropTypes.shape({}),
 };
 
-Bubble.defaultProps = {
-  province: '',
-  data: undefined,
+Legend.defaultProps = {
   unit: '',
-  colors: {},
 };
 
 const Electricity = ({ data, year }) => {
   const classes = useStyles();
 
-  const { sources: { electricity: { colors } } } = useAPI();
+  const intl = useIntl();
+  const {
+    sources: { electricity: { colors: colorSources } },
+    regions: { colors: colorRegions },
+  } = useAPI();
   const { config } = useConfig();
 
-  const [currYear, setCurrYear] = useState(year?.min || 0);
+  const [currYear, setCurrYear] = useState(year?.min || 2005);
   const [play, setPlay] = useState(false);
 
-  useEffect(() => setCurrYear(year?.min || 0), [year]);
+  useEffect(() => setCurrYear(year?.min || 2005), [year]);
 
   /**
    * Generate slide marks for the video playback control.
@@ -171,57 +184,157 @@ const Electricity = ({ data, year }) => {
   }, [play, year]);
 
   /**
-   * Post-process for determining bubble sizes and positions.
+   * Looking for the min and max value and the total volumns in each group (region or source).
    */
-  const processedData = useMemo(() => {
+  const { totals, max, min } = useMemo(() => {
     if (!data || !data[currYear]) {
-      return undefined;
+      return { totals: undefined, max: Number.POSITIVE_INFINITY, min: Number.NEGATIVE_INFINITY };
     }
 
-    const totals = Object.keys(data[currYear]).reduce((result, province) => ({
+    const allValues = Object.keys(data[currYear]).reduce((result, view) => ({
       ...result,
-      [province]: Object.values(data[currYear][province])
+      [view]: Object.values(data[currYear][view]) // 'view' can be 'region' or 'source'
         .map(entry => entry.value)
         .reduce((a, b) => a + b),
     }), {});
 
-    const max = Math.max(...Object.values(totals));
-    const min = Math.min(...Object.values(totals));
-
-    return Object.keys(data[currYear]).map(province => ({
-      name: province,
-      size: (Math.abs(max - min) < Number.EPSILON
-        ? Number.POSITIVE_INFINITY
-        : (totals[province] / (max - min)) * BUBBLE_SIZE_MAX + BUBBLE_SIZE_MIN),
-      children: Object.values(data[currYear][province]),
-    }));
+    return {
+      totals: allValues,
+      max: Math.max(...Object.values(allValues)),
+      min: Math.min(...Object.values(allValues)),
+    };
   }, [data, currYear]);
 
-  if (!processedData) {
+  /**
+   * Determine whether not not a single bubble group is shown.
+   */
+  const single = useMemo(() => Math.abs(max - min) < Number.EPSILON, [max, min]);
+
+  /**
+   * Determine the min and max bubble size based on the current view select.
+   */
+  const sizeMin = useMemo(() => BUBBLE_SIZE[config.view].MIN, [config.view]);
+  const sizeMax = useMemo(
+    () => (single ? BUBBLE_SIZE.single : BUBBLE_SIZE[config.view].MAX),
+    [config.view, single],
+  );
+
+  /**
+   * Calculate the screen pixel size of a bubble based on its numeric value.
+   */
+  const getSize = useCallback(
+    value => Math.sqrt(value / (single ? max / 2 : max - min)) * sizeMax + sizeMin,
+    [max, min, sizeMax, sizeMin, single],
+  );
+
+  /**
+   * A method determines whether or not a bubble is selected.
+   */
+  const isIncluded = useCallback(
+    name => (config.view === 'source' ? config.provinces : config.sources).includes(name),
+    [config.view, config.provinces, config.sources],
+  );
+
+  /**
+   * Post-process for determining each bubble sizes and positions.
+   */
+  const processedData = useMemo(() => {
+    const dataWithPosition = totals ? Object.keys(data[currYear]).map((entry) => {
+      const size = getSize(totals[entry]);
+      return {
+        name: entry, // entry can be 'region' or 'source' depending on the view selection
+        size,
+        value: totals[entry],
+        nodes: data[currYear][entry].sort((a, b) => b.value - a.value).map(node => ({
+          ...node,
+          size: getSize(node.value),
+          color: { ...colorSources, ...colorRegions }[node.name],
+          translation: intl.formatMessage({
+            id: `${config.view === 'source' ? 'regions' : 'common.sources.electricity'}.${node.name}`,
+          }),
+        })),
+        style: {
+          height: size * 8,
+          width: size * 8,
+          top: single ? 'calc(50% - 120px)' : COORD[entry].top,
+          left: single ? 'calc(50% - 200px)' : COORD[entry].left,
+        },
+      };
+    }) : [];
+    return dataWithPosition;
+  }, [data, config.view, intl, colorSources, colorRegions, currYear, getSize, single, totals]);
+
+  if (!data || !processedData || processedData.length <= 0) {
     return null;
   }
 
   return (
     <div className={classes.root}>
-      <Typography variant="h3" color="primary" className={classes.year}>{`${currYear} `}</Typography>
+      <Typography variant="h4" color="primary" className={classes.year}>{`${currYear} `}</Typography>
 
       {processedData.map(entry => (
-        <div
+        <Tooltip
           key={`bubble-${entry.name}`}
-          style={{
-            height: entry.size === Number.POSITIVE_INFINITY ? '80%' : `${entry.size * 8}px`,
-            width: entry.size === Number.POSITIVE_INFINITY ? '80%' : `${entry.size * 8}px`,
-            top: entry.size === Number.POSITIVE_INFINITY ? '10%' : REGION_LOC[entry.name].top,
-            left: entry.size === Number.POSITIVE_INFINITY ? '10%' : REGION_LOC[entry.name].left,
-          }}
+          title={single ? '' : <Legend entry={entry} unit={config.unit} />}
+          classes={{ tooltip: classes.tooltip }}
         >
-          <Bubble province={entry.name} data={entry.children} unit={config.unit} colors={colors} />
-          <Paper square elevation={0} className={classes.label}>
-            <Typography>{entry.name}</Typography>
-          </Paper>
-        </div>
+          <div className={classes.region} style={entry.style}>
+            {entry.nodes.map((node, index, list) => {
+              /**
+               * This simplified algorithm uses the chord length as an approximate of the
+               * corresponding arc length. Starting from the biggest bubble, it calculates
+               * the coordinates of the bubble centers along the perimeter of the circle
+               * in sequence.
+               *
+               * Theta is the angle (in radius) spans between the center of the first bubble
+               * and the center of the current bubble, which accumulates when moving from one
+               * bubble to the next. Because the center of the first bubble is fixed, we can
+               * use theta to calculate the xy-coordinates of the current bubble center using
+               * trigonometry.
+               */
+              const theta = index === 0 ? 0 : Array(index + 1)
+                .fill(undefined)
+                .reduce((sum, _, i) => {
+                  const offset = isIncluded(list[i].name)
+                    ? ((i === 0 || i === index) ? 1 : 2) * (entry.nodes[i].size / entry.size) * 1.1
+                    : 0;
+                  return sum + offset;
+                }, 0);
+              const x = Number.isNaN(theta) ? 0 : entry.size * 4 * (1 - Math.cos(theta));
+              const y = Number.isNaN(theta) ? 0 : entry.size * 4 * Math.sin(theta);
+              return (
+                <div
+                  key={`region-${entry.name}-source-${node.name}`}
+                  className={classes.subregion}
+                  style={{
+                    top: entry.size * 4 + y,
+                    left: x,
+                    height: isIncluded(node.name) ? node.size * 8 : 0,
+                    width: isIncluded(node.name) ? node.size * 8 : 0,
+                    backgroundColor: node.color,
+                  }}
+                />
+              );
+            })}
+
+            {/* province name */}
+            <Paper square elevation={0} className={classes.label}>
+              <Typography>
+                {config.view === 'source' ? intl.formatMessage({ id: `common.sources.electricity.${entry.name}` }) : entry.name}
+              </Typography>
+            </Paper>
+
+            {/* static legend shown beside a single province */}
+            {single && (
+              <div className={classes.legend}>
+                <Legend entry={entry} unit={config.unit} />
+              </div>
+            )}
+          </div>
+        </Tooltip>
       ))}
 
+      {/* below are the controls for the year playback */}
       <Grid container alignItems="flex-start" spacing={6}>
         <Grid item>
           <Button

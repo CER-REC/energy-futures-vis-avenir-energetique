@@ -151,6 +151,7 @@ const PageLayout = ({
                 round
                 disabled={disableDraggableSource}
                 singleSelect={singleSelectSource}
+                greyscale={config.page === 'electricity' && config.view === 'source'}
                 items={config.sources}
                 itemOrder={config.sourceOrder}
                 defaultItems={sourceItems}
@@ -167,7 +168,10 @@ const PageLayout = ({
                 dense
                 disabled={disableDraggableRegion}
                 singleSelect={singleSelectRegion}
-                greyscale={config.page === 'by-sector'}
+                greyscale={
+                  config.page === 'by-sector' || config.page === 'scenarios'
+                  || (config.page === 'electricity' && config.view !== 'source')
+                }
                 items={config.provinces}
                 itemOrder={config.provinceOrder}
                 defaultItems={regionItems}
