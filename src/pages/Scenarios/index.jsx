@@ -13,13 +13,8 @@ const pointsLayer = year => (props => props.points.reduce((acc, point) => {
         cx={point.x}
         cy={point.y}
         r={props.pointSize / 2}
-        /*
-        The stroke and fill of this circle is not yet dynamic
-        due to the way Nivo gets these properties from an internal hook.
-        It may still be possible however with some further investigation.
-         */
-        fill='transparent'
-        stroke='#AAA'
+        fill={point.color}
+        stroke={point.borderColor}
         strokeWidth={props.pointBorderWidth}
         style={{ pointerEvents: 'none' }}
       />,
@@ -37,7 +32,6 @@ const Scenarios = ({ data, year }) => {
   return (
     <>
       <ForecastBar year={year} />
-
       <ResponsiveLine
         enablePoints={false}
         layers={['grid', pointsLayer(yearId), 'markers', 'axes', 'areas', 'crosshair', 'lines', 'points', 'slices', 'mesh', 'legends']}
