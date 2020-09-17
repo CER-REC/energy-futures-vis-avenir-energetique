@@ -35,5 +35,5 @@ const ABBREVIATIONS = [
 
 export const formatUnitAbbreviation = (value) => {
   const match = ABBREVIATIONS.find(abbr => value / abbr.magnitude > 1);
-  return match ? `${(value / match.magnitude).toFixed(2)} ${match.unit}`.trim() : value;
+  return `${match ? (value / match.magnitude).toFixed(2) : value.toFixed(3)} ${match?.unit || ''}`.trim();
 };

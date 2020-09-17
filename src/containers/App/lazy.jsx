@@ -117,9 +117,10 @@ const Content = () => {
       showRegion
       multiSelectScenario={config.page === 'scenarios'}
       disableDraggableRegion={['by-sector', 'electricity', 'scenarios', 'demand'].includes(config.page)}
-      singleSelectRegion={['by-sector', 'electricity', 'scenarios', 'demand'].includes(config.page)}
+      singleSelectRegion={['by-sector', 'scenarios', 'demand'].includes(config.page) || (config.page === 'electricity' && config.view !== 'source')}
       showSource={['by-sector', 'electricity'].includes(config.page)}
       disableDraggableSource={['electricity'].includes(config.page)}
+      singleSelectSource={config.page === 'electricity' && config.view === 'source'}
     >
       {config.page === 'by-region' && <ByRegion />}
       {config.page === 'by-sector' && <BySector />}

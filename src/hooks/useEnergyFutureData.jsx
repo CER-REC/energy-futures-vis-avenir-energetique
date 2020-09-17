@@ -23,7 +23,7 @@ const getQuery = (config) => {
         break;
     }
   } else if (config.page === 'electricity') {
-    return queries.ELECTRICITY_GENERATIONS_SOURCE;
+    return config.view === 'source' ? queries.ELECTRICITY_GENERATIONS_SOURCE : queries.ELECTRICITY_GENERATIONS_REGION;
   } else if (config.page === 'by-sector') {
     return queries.BY_SECTOR;
   }
@@ -51,13 +51,17 @@ const getDefaultUnit = (config) => {
 };
 
 export default () => {
-  const { yearIdIterations, regions: { order: regionOrder } } = useAPI();
+  const {
+    yearIdIterations,
+    regions: { order: regionOrder },
+    sources: { electricity: { order: sourceOrder } },
+  } = useAPI();
   const { config } = useConfig();
   const query = getQuery(config);
   const unitConversion = convertUnit(getDefaultUnit(config), config.unit);
 
   /**
-   * FIXME: this is a temporary special case for the Electricity page.
+   * FIXME: these are temporary special cases for the Electricity page.
    */
   const regions = useMemo(() => {
     if (config.page === 'electricity' && config.provinces[0] === 'ALL') {
@@ -65,6 +69,13 @@ export default () => {
     }
     return config.provinces;
   }, [config.page, config.provinces, regionOrder]);
+  const sources = useMemo(() => {
+    if (config.page === 'electricity' && config.sources[0] === 'ALL') {
+      return sourceOrder;
+    }
+    return config.sources;
+  }, [config.page, config.sources, sourceOrder]);
+
   const { sourceType } = PAGES.find(page => page.id === config.page);
 
   // A GraphQL document node is needed even if skipping is specified
@@ -76,7 +87,7 @@ export default () => {
       // FIXME: config will store it as "total"
       // it should be "total end-use"
       sectors: config.sector === 'total' ? 'total end-use' : config.sector,
-      sources: config.sources,
+      sources,
     },
     // do nothing if the request is invalid
     skip: !query
@@ -91,8 +102,14 @@ export default () => {
     if (!data || !data.resources) {
       return data;
     }
-    return (parseData[config.page] || NOOP)(data.resources, unitConversion, regions);
-  }, [config.page, data, regions, unitConversion]);
+    return (parseData[config.page] || NOOP)(
+      data.resources,
+      unitConversion,
+      regions,
+      sources,
+      config.view,
+    );
+  }, [config.page, config.view, data, regions, sources, unitConversion]);
   return {
     loading,
     error,

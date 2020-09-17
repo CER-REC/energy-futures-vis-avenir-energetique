@@ -53,9 +53,9 @@ export const BY_SECTOR = gql`
   }
   `;
 
-export const ELECTRICITY_GENERATIONS_SOURCE = gql`
+export const ELECTRICITY_GENERATIONS_REGION = gql`
   query ($iteration: ID!, $regions: [Region!], $scenarios: [String!]) {
-    resources:electricityGenerations(iterationIds: [$iteration], regions: $regions, scenarios: $scenarios, sources: []) {
+    resources:electricityGenerations(iterationIds: [$iteration], scenarios: $scenarios, regions: $regions, sources: []) {
       province: region
       year
       source
@@ -63,4 +63,16 @@ export const ELECTRICITY_GENERATIONS_SOURCE = gql`
     }
   }
   `;
+
+export const ELECTRICITY_GENERATIONS_SOURCE = gql`
+  query ($iteration: ID!, $sources: [ElectricitySource!], $scenarios: [String!]) {
+    resources:electricityGenerations(iterationIds: [$iteration], scenarios: $scenarios, regions: [], sources: $sources) {
+      province: region
+      year
+      source
+      value: quantity
+    }
+  }
+  `;
+
 export const NULL_QUERY = gql`{ _ }`;

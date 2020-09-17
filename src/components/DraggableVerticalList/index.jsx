@@ -184,6 +184,8 @@ const DraggableVerticalList = ({
   useEffect(() => {
     if (singleSelect) {
       setLocalItems(localItems.length === 1 ? localItems : ['ALL']);
+    } else if (setItems) {
+      setItems(itemOrder);
     }
   }, [singleSelect]); // eslint-disable-line react-hooks/exhaustive-deps
 
