@@ -10,6 +10,7 @@ import { UNIT_NAMES } from '../../constants';
 import { formatUnitAbbreviation } from '../../utilities/convertUnit';
 import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
+import { useIntl } from 'react-intl';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -56,14 +57,24 @@ const useStyles = makeStyles(theme => ({
     paddingLeft: 6,
     backgroundColor: theme.palette.common.white,
   },
+  tooltip: { maxWidth: 'none' },
   label: {
     position: 'absolute',
-    top: -35,
+    top: -40,
     left: '50%',
     transform: 'translateX(-50%)',
     padding: theme.spacing(0, 0.5),
     border: `1px solid ${theme.palette.secondary.light}`,
     zIndex: 1,
+    '& > p': { whiteSpace: 'pre' },
+  },
+  legend: {
+    position: 'absolute',
+    bottom: '50%',
+    right: 'calc(-100% - 100px)',
+    maxWidth: 250,
+    transform: 'translateY(50%)',
+    fontSize: 12,
   },
   btnPlay: {
     height: 26,
@@ -113,7 +124,7 @@ const Legend = ({ entry, unit }) => (
         <Grid item key={`legend-item-${node.name}`}>
           <Grid container alignItems="center" wrap="nowrap">
             <div style={{ height: 16, width: 16, backgroundColor: node.color || 'white', marginRight: 6 }} />
-            <strong>{node.name}:</strong>&nbsp;
+            <strong>{node.translation || node.name}:</strong>&nbsp;
             {`${value} ${suffix}`}
           </Grid>
         </Grid>
@@ -146,6 +157,7 @@ const Electricity = ({ data, year }) => {
     regions: { colors: colorRegions },
   } = useAPI();
   const { config } = useConfig();
+  const intl = useIntl();
 
   const [currYear, setCurrYear] = useState(year?.min || 2005);
   const [play, setPlay] = useState(false);
@@ -227,27 +239,30 @@ const Electricity = ({ data, year }) => {
    * Post-process for determining each bubble sizes and positions.
    */
   const processedData = useMemo(() => {
-    const dataWithPosition = totals ? Object.keys(data[currYear]).map((province) => {
-      const size = getSize(totals[province]);
+    const dataWithPosition = totals ? Object.keys(data[currYear]).map((entry) => {
+      const size = getSize(totals[entry]);
       return {
-        name: province,
+        name: entry, // entry can be 'region' or 'source' depending on the view selection
         size,
-        value: totals[province],
-        nodes: data[currYear][province].sort((a, b) => b.value - a.value).map(source => ({
-          ...source,
-          size: getSize(source.value),
-          color: { ...colorSources, ...colorRegions }[source.name],
+        value: totals[entry],
+        nodes: data[currYear][entry].sort((a, b) => b.value - a.value).map(node => ({
+          ...node,
+          size: getSize(node.value),
+          color: { ...colorSources, ...colorRegions }[node.name],
+          translation: intl.formatMessage({
+            id: `${config.view === 'source' ? 'regions' : 'common.sources.electricity'}.${node.name}`,
+          }),
         })),
         style: {
           height: size * 8,
           width: size * 8,
-          top: single ? 'calc(50% - 120px)' : COORD[province].top,
-          left: single ? 'calc(50% - 200px)' : COORD[province].left,
+          top: single ? 'calc(50% - 120px)' : COORD[entry].top,
+          left: single ? 'calc(50% - 200px)' : COORD[entry].left,
         },
       };
     }) : [];
     return dataWithPosition;
-  }, [data, colorSources, colorRegions, currYear, getSize, single, totals]);
+  }, [data, config.view, colorSources, colorRegions, currYear, getSize, single, totals]);
 
   if (!data || !processedData || processedData.length <= 0) {
     return null;
@@ -258,7 +273,11 @@ const Electricity = ({ data, year }) => {
       <Typography variant="h4" color="primary" className={classes.year}>{`${currYear} `}</Typography>
 
       {processedData.map(entry => (
-        <Tooltip key={`bubble-${entry.name}`} title={single ? '' : <Legend entry={entry} unit={config.unit} />}>
+        <Tooltip
+          key={`bubble-${entry.name}`}
+          title={single ? '' : <Legend entry={entry} unit={config.unit} />}
+          classes={{ tooltip: classes.tooltip }}
+        >
           <div className={classes.region} style={entry.style}>
             {entry.nodes.map((node, index, list) => {
               /**
@@ -300,12 +319,14 @@ const Electricity = ({ data, year }) => {
 
             {/* province name */}
             <Paper square elevation={0} className={classes.label}>
-              <Typography>{entry.name}</Typography>
+              <Typography>
+                {config.view === 'source' ? intl.formatMessage({ id: `common.sources.electricity.${entry.name}` }) : entry.name}
+              </Typography>
             </Paper>
 
             {/* static legend shown beside a single province */}
             {single && (
-              <div style={{ position: 'absolute', bottom: 0, right: 'calc(-100% - 100px)' }}>
+              <div className={classes.legend}>
                 <Legend entry={entry} unit={config.unit} />
               </div>
             )}
