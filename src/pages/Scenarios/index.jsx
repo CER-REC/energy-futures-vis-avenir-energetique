@@ -1,10 +1,28 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { ResponsiveLine } from '@nivo/line';
 import PropTypes from 'prop-types';
 import { SCENARIO_COLOR } from '../../constants';
 import ForecastBar from '../../components/ForecastBar';
+import useConfig from '../../hooks/useConfig';
 
 const Scenarios = ({ data, year }) => {
+  const { yearId } = useConfig().config;
+
+  const pointsLayer = useCallback(scenarioYear => args => args.points
+    .filter(point => point.serieId === (scenarioYear === '2020' ? 'Evolving' : 'Reference'))
+    .map(point => (
+      <circle
+        key={point.id}
+        cx={point.x}
+        cy={point.y}
+        r={args.pointSize / 2}
+        fill={point.color}
+        stroke={point.borderColor}
+        strokeWidth={args.pointBorderWidth}
+        style={{ pointerEvents: 'none' }}
+      />
+    )), []);
+
   if (!data) {
     return null;
   }
@@ -13,6 +31,8 @@ const Scenarios = ({ data, year }) => {
     <>
       <ForecastBar year={year} />
       <ResponsiveLine
+        enablePoints={false}
+        layers={['grid', pointsLayer(yearId), 'axes', 'areas', 'crosshair', 'lines', 'points', 'mesh']}
         data={data}
         curve="cardinal"
         areaOpacity={0.15}
