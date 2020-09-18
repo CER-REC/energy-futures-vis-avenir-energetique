@@ -6,8 +6,8 @@ import {
 import LinkIcon from '@material-ui/icons/Link';
 import EmailIcon from '@material-ui/icons/Email';
 import {
-  SocialMediaIconTwitter, SocialMediaIconFacebook, SocialMediaIconLinkedIn,
-} from './SocialMediaIcons';
+  IconTwitter, IconFacebook, IconLinkedIn,
+} from '../../icons';
 
 import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
@@ -76,9 +76,9 @@ const YearSelect = () => {
             ['download data'],
             [
               { icon: <LinkIcon />, name: 'Copy Link' },
-              { icon: <SocialMediaIconLinkedIn />, name: 'LinkedIn' },
-              { icon: <SocialMediaIconFacebook />, name: 'Facebook' },
-              { icon: <SocialMediaIconTwitter />, name: 'Twitter' },
+              { icon: <IconLinkedIn />, name: 'LinkedIn' },
+              { icon: <IconFacebook />, name: 'Facebook' },
+              { icon: <IconTwitter />, name: 'Twitter' },
               { icon: <EmailIcon />, name: 'Email' },
             ],
           ]}

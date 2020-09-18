@@ -8,16 +8,15 @@ import { PAGES, CONFIG_LAYOUT, SECTOR_LAYOUT } from '../../constants';
 import useConfig from '../../hooks/useConfig';
 
 import {
-  PageIconBar, PageIconBubble, PageIconFlower, PageIconLine, PageIconStackedArea,
-} from './PageIcons';
+  IconPageRegion, IconPageSector, IconPageElectricity, IconPageScenarios,
+} from '../../icons';
 
 const getPageIcon = (id) => {
   switch (id) {
-    case 'by-region': return <PageIconBar />;
-    case 'by-sector': return <PageIconStackedArea />;
-    case 'electricity': return <PageIconBubble />;
-    case 'scenarios': return <PageIconLine />;
-    case 'demand': return <PageIconFlower />;
+    case 'by-region': return <IconPageRegion />;
+    case 'by-sector': return <IconPageSector />;
+    case 'electricity': return <IconPageElectricity />;
+    case 'scenarios': return <IconPageScenarios />;
     default: return null;
   }
 };
@@ -41,7 +40,11 @@ const useStyles = makeStyles(theme => createStyles({
   icon: {
     height: 64,
     width: 64,
-    '& > svg': { height: 64 },
+    '& > svg': {
+      height: 64,
+      width: 64,
+      fill: theme.palette.secondary.light,
+    },
   },
   label: {
     textAlign: 'left',
