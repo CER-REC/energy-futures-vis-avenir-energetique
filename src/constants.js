@@ -1,6 +1,6 @@
 import {
   IconDemand, IconTransportation, IconCommercial, IconResidential, IconIndustrial,
-  IconElectricity, IconOil, IconGas, IconBiomass, IconCoal, IconHydro, IconNuclear, IconRenewable,
+  IconElectricity, IconOil, IconGas, IconBiomass, IconBiofuel, IconCoal, IconHydro, IconNuclear, IconRenewable,
 } from './icons';
 
 export const applicationPath = {
@@ -172,7 +172,7 @@ export const SOURCE_ICONS = {
     NUCLEAR: IconNuclear,
   },
   energy: {
-    BIO: IconBiomass,
+    BIO: IconBiofuel,
     COAL: IconCoal,
     ELECTRICITY: IconElectricity,
     GAS: IconGas,
