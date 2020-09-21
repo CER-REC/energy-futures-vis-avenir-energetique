@@ -92,7 +92,11 @@ const ScenarioSelect = ({ multiSelect }) => {
 
       {scenarios.map(scenario => (
         <Grid item key={`config-scenario-${scenario}`}>
-          <Tooltip title={intl.formatMessage({ id: `components.scenarioSelect.${scenario}.description` })}>
+          <Tooltip
+            title={intl.messages[`components.scenarioSelect.${scenario}.${parseInt(config.yearId, 10)}`]
+              ? intl.formatMessage({ id: `components.scenarioSelect.${scenario}.${parseInt(config.yearId, 10)}` })
+              : intl.formatMessage({ id: `components.scenarioSelect.${scenario}.description` })}
+          >
             <Button
               variant={config.scenarios.indexOf(scenario) > -1 ? 'contained' : 'outlined'}
               color="primary"
