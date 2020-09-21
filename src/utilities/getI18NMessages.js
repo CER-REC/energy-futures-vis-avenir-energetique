@@ -1,0 +1,38 @@
+export default translations => (
+  translations.reduce((i18nMessages, translation) => {
+    let key;
+
+    switch (translation.group) {
+      case 'REGION':
+        key = `regions.${translation.key}`;
+        break;
+      case 'SCENARIO':
+        key = `components.scenarioSelect.${translation.key}.title`;
+        break;
+      case 'ELECTRICITY_SOURCE':
+        key = `common.sources.electricity.${translation.key}`;
+        break;
+      case 'ENERGY_SOURCE':
+        key = `common.sources.energy.${translation.key}`;
+        break;
+      case 'GAS_SOURCE':
+        key = `common.sources.gas.${translation.key}`;
+        break;
+      case 'OIL_SOURCE':
+        key = `common.sources.oil.${translation.key}`;
+        break;
+      case 'SECTOR':
+        key = `components.horizontalControlBar.${translation.key}`;
+        break;
+      default:
+        return i18nMessages;
+    }
+
+    // eslint-disable-next-line no-param-reassign
+    i18nMessages.en[key] = translation.english;
+    // eslint-disable-next-line no-param-reassign
+    i18nMessages.fr[key] = translation.french;
+
+    return i18nMessages;
+  }, { en: {}, fr: {} })
+);
