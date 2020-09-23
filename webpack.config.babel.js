@@ -1,12 +1,8 @@
 const Path = require('path');
 const Webpack = require('webpack');
-const sass = require('node-sass');
-const SassUtilsConstructor = require('node-sass-utils');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const { features } = require('./src/constants');
 
 const BUILD_DIR = Path.resolve(__dirname, 'public/script');
-const sassUtils = SassUtilsConstructor(sass);
 
 const devMode = process.env.NODE_ENV !== 'production';
 
@@ -44,15 +40,8 @@ module.exports = {
           devMode ? 'style-loader' : MiniCssExtractPlugin.loader,
           'css-loader',
           'postcss-loader',
-          {
-            loader: 'sass-loader',
-            options: {
-              sassOptions: {
-                'getFeatureColors($feature)':
-                  feature => sassUtils.castToSass(features[feature.getValue()]),
-              },
-            },
-          },
+          // TODO: Remove sass-loader if Sass is not used in this project
+          'sass-loader',
         ],
       },
 
