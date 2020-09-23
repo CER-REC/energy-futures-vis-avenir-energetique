@@ -39,7 +39,15 @@
         "description": "Deux autres scénarios explorent les incertitudes entourant les éventuelles exportations de gaz naturel liquéfié (GNL)."
       },
       "Reference": {
-        "description": "Le scénario de référence fournit des perspectives de base fondées sur une vision modérée des prix de l’énergie et de la croissance économique ainsi que sur les politiques énergétiques et climatiques déjà annoncées au moment de l’analyse."
+        "description": {
+          "2016": "Le scénario de référence offre une perspective de base et mise sur une projection modérée des prix de l’énergie et de la croissance de l’économie dans les années à venir.",
+          "2016*": "Le scénario de référence offre une perspective de base et mise sur une projection modérée des prix de l’énergie et de la croissance de l’économie dans les années à venir.",
+          "2017": "Le scénario de référence offre une perspective de base et mise sur une projection modérée des prix de l’énergie et de la croissance de l’économie dans les années à venir.",
+          "2018": "Le scénario de référence offre une perspective de base et mise sur une projection modérée des prix de l’énergie et de la croissance de l’économie dans les années à venir.",
+          "2019": "Le scénario de référence offre une perspective de base et mise sur une projection modérée des prix de l’énergie et de la croissance de l’économie dans les années à venir.",
+          "2020": "Le scénario de référence fournit des perspectives de base fondées sur une vision modérée des prix de l’énergie et de la croissance économique ainsi que sur les politiques énergétiques et climatiques déjà annoncées au moment de l’analyse.",
+          "default": "Le scénario de référence fournit des perspectives de base fondées sur une vision modérée des prix de l’énergie et de la croissance économique ainsi que sur les politiques énergétiques et climatiques déjà annoncées au moment de l’analyse."
+        }
       },
       "Technology": {
         "description": "Le scénario des avancées technologiques suppose des prix du carbone plus élevés que ceux du scénario de référence et l’adoption plus massive de certaines technologies énergétiques émergentes liées à la production ou à la consommation."

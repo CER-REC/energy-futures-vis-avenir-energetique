@@ -84,6 +84,17 @@ const ScenarioSelect = ({ multiSelect }) => {
     handleScenariosUpdate(updated);
   }, [multiSelect, config.scenarios, handleScenariosUpdate]);
 
+  /**
+   * Prepare the tooltip text of a given scenario button.
+   */
+  const getTooltip = useCallback(
+    (scenario, yearly /* boolean */) => (yearly ? intl.formatMessage({
+      id: `components.scenarioSelect.${scenario}.description.${config.yearId}`,
+      defaultMessage: intl.formatMessage({ id: `components.scenarioSelect.${scenario}.description.default` }),
+    }) : intl.formatMessage({ id: `components.scenarioSelect.${scenario}.description` })),
+    [intl, config.yearId],
+  );
+
   return (
     <Grid container alignItems="center" wrap="nowrap" spacing={1} className={classes.root}>
       <Grid item>
@@ -92,7 +103,7 @@ const ScenarioSelect = ({ multiSelect }) => {
 
       {scenarios.map(scenario => (
         <Grid item key={`config-scenario-${scenario}`}>
-          <Tooltip title={intl.formatMessage({ id: `components.scenarioSelect.${scenario}.description` })}>
+          <Tooltip title={getTooltip(scenario, scenario === 'Reference')}>
             <Button
               variant={config.scenarios.indexOf(scenario) > -1 ? 'contained' : 'outlined'}
               color="primary"
