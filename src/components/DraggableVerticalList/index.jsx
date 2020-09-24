@@ -77,7 +77,7 @@ const ColoredItemBox = ({
 ColoredItemBox.propTypes = {
   item: PropTypes.string.isRequired,
   label: PropTypes.string,
-  icon: PropTypes.object, // eslint-disable-line react/forbid-prop-types
+  icon: PropTypes.func,
   color: PropTypes.string,
   selected: PropTypes.bool,
   clear: PropTypes.bool,
