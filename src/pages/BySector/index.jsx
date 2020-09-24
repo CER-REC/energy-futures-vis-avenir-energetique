@@ -6,6 +6,7 @@ import ForecastBar from '../../components/ForecastBar';
 
 import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
+import { UNIT_NAMES } from '../../constants';
 
 const BySector = ({ data, year }) => {
   const intl = useIntl();
@@ -16,6 +17,23 @@ const BySector = ({ data, year }) => {
     const sources = new Set((data || []).map(entry => Object.keys(entry)).flat());
     return [...config.sourceOrder].reverse().filter(s => sources.has(s));
   }, [data, config.sourceOrder]);
+
+  /**
+   * Format y-axis ticks so that unit is shown beside the largest value.
+   */
+  const getFormattedTick = useCallback(value => (
+    <>
+      <tspan className="tickValue">{value}</tspan>
+      <tspan className="tickUnit">
+        <tspan x="0" y="-8">{value}</tspan>
+        <tspan x="0" y="8">{UNIT_NAMES[config.unit] || config.unit}</tspan>
+      </tspan>
+    </>
+  ), [config.unit]);
+
+  /**
+   * Format tooltip labels.
+   */
   const getTooltipLabel = useCallback(
     dataItem => intl.formatMessage({ id: `common.sources.energy.${dataItem.id}` }).toUpperCase(),
     [intl],
@@ -31,13 +49,14 @@ const BySector = ({ data, year }) => {
       <ResponsiveStream
         data={data}
         keys={keys}
-        margin={{ top: 50, right: 50, bottom: 50, left: 50 }}
+        margin={{ top: 50, right: 80, bottom: 50, left: 50 }}
         axisTop={null}
         axisRight={{
           orient: 'right',
           tickSize: 5,
           tickPadding: 5,
           tickRotation: 0,
+          format: getFormattedTick,
         }}
         axisBottom={{
           orient: 'bottom',

@@ -33,6 +33,16 @@ const useStyles = makeStyles(theme => ({
     width: '100%',
     position: 'relative',
     border: `1px solid ${theme.palette.divider}`,
+    '& svg > g > g:nth-child(3) > g .tickUnit': { display: 'none' },
+    '& svg > g > g:nth-child(3) > g:last-of-type': {
+      '& text': { fontWeight: 700 },
+      '& .tickValue': { display: 'none' },
+      '& .tickUnit': {
+        display: 'block',
+        '& > tspan:first-of-type': { fontSize: 16 },
+        '& > tspan:last-of-type': { fontSize: 10 },
+      },
+    },
   },
   links: {
     position: 'absolute',
