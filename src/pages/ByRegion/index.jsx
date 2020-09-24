@@ -8,6 +8,7 @@ import ForecastBar from '../../components/ForecastBar';
 const ByRegion = ({ data, year }) => {
   const { regions } = useAPI();
   const { config, setConfig } = useConfig();
+  const preForecastPercentage = ((2020 - year.min) / (year.max - year.min)) * 100;
 
   /**
    * A "hacky" but sufficient way to reselect all regions after
@@ -28,8 +29,21 @@ const ByRegion = ({ data, year }) => {
     return null;
   }
 
+  const defs = Object.keys(data[0]).map((source, index) => (
+    <linearGradient key={source} id={`gradient${index}`}>
+      {/* Gradient starts to fade after forecast line */}
+      <stop key='0' offset={`${preForecastPercentage}%`} stopColor={regions.colors[keys[index]]} stopOpacity='1' />
+      <stop key='50' offset={`${100 - preForecastPercentage}%`} stopColor={regions.colors[keys[index]]} stopOpacity='0.6' />
+      <stop key='95' offset='95%' stopColor={regions.colors[keys[index]]} stopOpacity='0.4' />
+    </linearGradient>
+  ));
   return (
     <>
+      <svg height={0}>
+        <defs>
+          {defs}
+        </defs>
+      </svg>
       <ForecastBar year={year} />
       <ResponsiveBar
         data={data}
