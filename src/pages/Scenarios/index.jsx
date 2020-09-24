@@ -26,7 +26,7 @@ const Scenarios = ({ data, year }) => {
         style={{ pointerEvents: 'none' }}
       />
     )), []);
-  const dots = useMemo(() => dottedLayer(config.yearId), [config.yearId]);
+  const dots = useMemo(() => dottedLayer(config.yearId), [config.yearId, dottedLayer]);
 
   /**
    * Format y-axis ticks so that unit is shown beside the largest value.

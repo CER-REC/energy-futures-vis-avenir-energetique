@@ -139,8 +139,8 @@ const PageLayout = ({
    * Generate custom y-axis tick style based on the given page.
    */
   const tickStyle = useMemo(
-    () => config.page === 'by-region' ? classes.visYAxisSecond : classes.visYAxisThird,
-    [config.page],
+    () => (config.page === 'by-region' ? classes.visYAxisSecond : classes.visYAxisThird),
+    [config.page, classes.visYAxisSecond, classes.visYAxisThird],
   );
 
   return (
