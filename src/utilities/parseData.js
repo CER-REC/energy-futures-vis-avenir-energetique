@@ -1,15 +1,18 @@
 export const parseData = {
   'by-sector': (data, unitConversion) => {
-    const sources = data.map(resource => resource.source);
-    const base = sources.reduce((all, key) => ({ ...all, [key]: 0 }), {});
-    const processed = data.reduce((result, entry) => ({
-      ...result,
-      [entry.year]: {
-        ...(result[entry.year] || base),
-        [entry.source]: entry.value * unitConversion,
-      },
-    }), {});
-    return Object.values(processed);
+    const sortedData = data.sort((a, b) => a.year - b.year);
+    const processed = sortedData
+      .reduce((result, entry) => ({
+        ...result,
+        [entry.source]: [
+          ...result[entry.source] || [],
+          { x: entry.year, y: entry.value * unitConversion },
+        ],
+      }), {});
+    return Object.keys(processed).map(source => ({
+      id: source,
+      data: processed[source],
+    }));
   },
 
   'by-region': (data, unitConversion) => {

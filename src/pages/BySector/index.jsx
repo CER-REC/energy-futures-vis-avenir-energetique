@@ -1,8 +1,7 @@
 import React, { useCallback, useMemo } from 'react';
-import { ResponsiveStream } from '@nivo/stream';
+import { ResponsiveLine } from '@nivo/line';
 import PropTypes from 'prop-types';
 import { useIntl } from 'react-intl';
-import { linearGradientDef } from '@nivo/core';
 import ForecastBar from '../../components/ForecastBar';
 
 import useAPI from '../../hooks/useAPI';
@@ -12,7 +11,6 @@ const BySector = ({ data, year }) => {
   const intl = useIntl();
   const { sources: { energy: { colors } } } = useAPI();
   const { config } = useConfig();
-  const preForecastPercentage = ((2020 - year.min) / (year.max - year.min)) * 100;
 
   const keys = useMemo(() => {
     const sources = new Set((data || []).map(entry => Object.keys(entry)).flat());
@@ -27,27 +25,51 @@ const BySector = ({ data, year }) => {
     return null;
   }
 
-  const defs = Object.keys(data[0]).map((source, index) => (
-    <linearGradient key={source} id={`gradient${index}`}>
-      {/* Gradient starts to fade after forecast line */}
-      <stop key='0' offset={`${preForecastPercentage}%`} stopColor={colors[keys[index]]} stopOpacity='1' />
-      <stop key='50' offset={`${100 - preForecastPercentage}%`} stopColor={colors[keys[index]]} stopOpacity='0.6' />
-      <stop key='95' offset='95%' stopColor={colors[keys[index]]} stopOpacity='0.4' />
-    </linearGradient>
-  ));
+  const backgroundLayer = yearProp => (args) => {
+    // This number is used in multiple charts. Perhaps it should be passed as a prop.
+    // or perhaps this whole gradient can be exported
+    const preForecastPercentage = ((2020 - yearProp.min) / (yearProp.max - yearProp.min)) * 100;
 
+    /*
+    Generate the areas for lines in the chart.
+    The slice and reverse part is taken directly from the way Nivo draws the areas,
+    removing them affects the look of the chart, though I dont know why.
+    */
+    const areas = args.series
+      .slice(0)
+      .reverse()
+      .map((line, index) => (
+        <g key={line.id}>
+          <defs>
+            <linearGradient id={`line-${index}-gradient`}>
+              {/* Gradient starts to fade after forecast line */}
+              <stop offset={`${preForecastPercentage}%`} stopColor={line.color} stopOpacity='1' />
+              <stop offset={`${100 - preForecastPercentage}%`} stopColor={line.color} stopOpacity='0.6' />
+              <stop offset='95%' stopColor={line.color} stopOpacity='0.2' />
+            </linearGradient>
+          </defs>
+          <path
+            d={args.areaGenerator(line.data.map(d => d.position))}
+            fill={`url(#line-${index}-gradient)`}
+            style={{ mixBlendMode: 'multiply', pointerEvents: 'none' }}
+            opacity={0.5}
+          />
+        </g>
+      ));
+
+    return (<>{areas}</>);
+  };
   return (
     <>
-      <svg height={0}>
-        <defs>
-          {defs}
-        </defs>
-      </svg>
       <ForecastBar year={year} />
-      <ResponsiveStream
+      <ResponsiveLine
         data={data}
-        keys={keys}
+        layers={['grid', 'axes', 'areas', 'crosshair', 'lines', 'points', 'mesh', backgroundLayer(year)]}
         margin={{ top: 50, right: 50, bottom: 50, left: 50 }}
+        keys={keys}
+        xScale={{ type: 'point' }}
+        yScale={{ type: 'linear', min: 'auto', max: 'auto', stacked: true, reverse: false }}
+        curve="cardinal"
         axisTop={null}
         axisRight={{
           orient: 'right',
@@ -63,44 +85,11 @@ const BySector = ({ data, year }) => {
           format: value => ((value % 5) ? '' : value + year.min),
         }}
         axisLeft={null}
-        curve="linear"
-        offsetType="diverging"
-        colors={d => colors[keys[d.index]]}
-        fillOpacity={0.60}
-        borderColor={{ theme: 'background' }}
-        dotSize={8}
-        dotColor={{ from: 'color' }}
-        dotBorderWidth={2}
-        dotBorderColor={{ from: 'color', modifiers: [['darker', 0.7]] }}
-        animate
-        motionStiffness={90}
-        motionDamping={15}
+        colors={d => colors[d.id]}
+        lineWidth={0}
+        enablePoints={false}
         tooltipLabel={getTooltipLabel}
-        // defs={[
-        //   {
-        //     id: 'gradient',
-        //     type: 'linearGradient',
-        //     colors: [
-        //       { offset: 0, color: '#000', opacity: 0.1 },
-        //       { offset: 100, color: 'inherit', opacity: 1 },
-        //     ],
-        //     // ...options,
-        //   },
-        //   // (<linearGradient id="gradient">
-        //   //   {/* Gradient starts to fade after forecast line */}
-        //   //   <stop key='0' offset="0%" stopColor="blue" stopOpacity='1' />
-        //   //   <stop key='50' offset="50%" stopColor="blue" stopOpacity='0.6' />
-        //   //   <stop key='95' offset='95%' stopColor="blue" stopOpacity='0.2' />
-        //   //   </linearGradient>),
-        // ]}
-        fill={[
-          { match: d => d.index === 0, id: 'gradient0' },
-          { match: d => d.index === 1, id: 'gradient1' },
-          { match: d => d.index === 2, id: 'gradient2' },
-          { match: d => d.index === 3, id: 'gradient3' },
-          { match: d => d.index === 4, id: 'gradient4' },
-
-        ]}
+        useMesh
       />
     </>
   );
