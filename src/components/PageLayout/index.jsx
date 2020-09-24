@@ -33,14 +33,26 @@ const useStyles = makeStyles(theme => ({
     width: '100%',
     position: 'relative',
     border: `1px solid ${theme.palette.divider}`,
-    '& svg > g > g:nth-child(3) > g .tickUnit': { display: 'none' },
-    '& svg > g > g:nth-child(3) > g:last-of-type': {
-      '& text': { fontWeight: 700 },
+  },
+  visYAxisSecond: {
+    '& svg > g > g:nth-child(2) > g .tickUnit': { display: 'none' },
+    '& svg > g > g:nth-child(2) > g:last-of-type': {
       '& .tickValue': { display: 'none' },
       '& .tickUnit': {
         display: 'block',
-        '& > tspan:first-of-type': { fontSize: 16 },
-        '& > tspan:last-of-type': { fontSize: 10 },
+        '& > tspan:first-of-type': { fontSize: 16, fontWeight: 700 },
+        '& > tspan:last-of-type': { fontSize: 10, fontWeight: 700 },
+      },
+    },
+  },
+  visYAxisThird: {
+    '& svg > g > g:nth-child(3) > g .tickUnit': { display: 'none' },
+    '& svg > g > g:nth-child(3) > g:last-of-type': {
+      '& .tickValue': { display: 'none' },
+      '& .tickUnit': {
+        display: 'block',
+        '& > tspan:first-of-type': { fontSize: 16, fontWeight: 700 },
+        '& > tspan:last-of-type': { fontSize: 10, fontWeight: 700 },
       },
     },
   },
@@ -102,37 +114,33 @@ const PageLayout = ({
     [children, data, year],
   );
   const regionItems = useMemo(
-    () => {
-      const items = {};
-
-      regions.order.forEach((region) => {
-        items[region] = {
-          color: regions.colors[region],
-          label: intl.formatMessage({ id: `regions.${region}` }),
-        };
-      });
-
-      return items;
-    },
+    () => regions.order.reduce((items, region) => ({
+      ...items,
+      [region]: {
+        color: regions.colors[region],
+        label: intl.formatMessage({ id: `regions.${region}` }),
+      },
+    }), {}),
     [regions, intl],
   );
   const sourceItems = useMemo(
-    () => {
-      const items = {};
-
-      if (type) {
-        sources[type].order.forEach((source) => {
-          items[source] = {
-            color: sources[type].colors[source],
-            icon: sources[type].icons[source],
-            label: intl.formatMessage({ id: `common.sources.${type}.${source}` }),
-          };
-        });
-      }
-
-      return items;
-    },
+    () => (type ? sources[type].order : []).reduce((items, source) => ({
+      ...items,
+      [source]: {
+        color: sources[type].colors[source],
+        icon: sources[type].icons[source],
+        label: intl.formatMessage({ id: `common.sources.${type}.${source}` }),
+      },
+    }), {}),
     [type, sources, intl],
+  );
+
+  /**
+   * Generate custom y-axis tick style based on the given page.
+   */
+  const tickStyle = useMemo(
+    () => config.page === 'by-region' ? classes.visYAxisSecond : classes.visYAxisThird,
+    [config.page],
   );
 
   return (
@@ -195,7 +203,7 @@ const PageLayout = ({
             <Grid item className={classes.graph}>
               {loading && <CircularProgress color="primary" size={66} className={classes.loading} />}
               {error && <Alert severity="error"><AlertTitle>Error</AlertTitle>{error}</Alert>}
-              {!loading && !error && <div className={classes.vis}>{vis}</div>}
+              {!loading && !error && <div className={`${classes.vis} ${tickStyle}`}>{vis}</div>}
             </Grid>
           )}
         </Grid>

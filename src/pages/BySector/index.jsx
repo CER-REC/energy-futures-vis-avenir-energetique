@@ -6,7 +6,7 @@ import ForecastBar from '../../components/ForecastBar';
 
 import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
-import { UNIT_NAMES } from '../../constants';
+import { CHART_PROPS, CHART_AXIS_PROPS, UNIT_NAMES } from '../../constants';
 
 const BySector = ({ data, year }) => {
   const intl = useIntl();
@@ -47,25 +47,17 @@ const BySector = ({ data, year }) => {
     <>
       <ForecastBar year={year} />
       <ResponsiveStream
+        {...CHART_PROPS}
         data={data}
         keys={keys}
-        margin={{ top: 50, right: 80, bottom: 50, left: 50 }}
-        axisTop={null}
         axisRight={{
-          orient: 'right',
-          tickSize: 5,
-          tickPadding: 5,
-          tickRotation: 0,
+          ...CHART_AXIS_PROPS,
           format: getFormattedTick,
         }}
         axisBottom={{
-          orient: 'bottom',
-          tickSize: 5,
-          tickPadding: 5,
-          tickRotation: 0,
+          ...CHART_AXIS_PROPS,
           format: value => ((value % 5) ? '' : value + year.min),
         }}
-        axisLeft={null}
         curve="linear"
         offsetType="diverging"
         colors={d => colors[keys[d.index]]}
@@ -75,9 +67,6 @@ const BySector = ({ data, year }) => {
         dotColor={{ from: 'color' }}
         dotBorderWidth={2}
         dotBorderColor={{ from: 'color', modifiers: [['darker', 0.7]] }}
-        animate
-        motionStiffness={90}
-        motionDamping={15}
         tooltipLabel={getTooltipLabel}
       />
     </>
