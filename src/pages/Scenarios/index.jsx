@@ -3,44 +3,11 @@ import { ResponsiveLine } from '@nivo/line';
 import PropTypes from 'prop-types';
 import { SCENARIO_COLOR } from '../../constants';
 import ForecastBar from '../../components/ForecastBar';
+import fadeLayer from '../../components/FadeLayer/index';
 import useConfig from '../../hooks/useConfig';
 
 const Scenarios = ({ data, year }) => {
   const { yearId } = useConfig().config;
-
-  const backgroundLayer = yearProp => (args) => {
-    // This number is used in multiple charts. Perhaps it should be passed as a prop.
-    const preForecastPercentage = ((2020 - yearProp.min) / (yearProp.max - yearProp.min)) * 100;
-
-    /*
-    Generate the areas for lines in the chart.
-    The slice and reverse part is taken directly from the way Nivo draws the areas,
-    removing them affects the look of the chart, though I dont know why.
-    */
-    const areas = args.series
-      .slice(0)
-      .reverse()
-      .map((line, index) => (
-        <g key={line.id}>
-          <defs>
-            <linearGradient id={`line-${index}-gradient`}>
-              {/* Gradient starts to fade after forecast line */}
-              <stop offset={`${preForecastPercentage}%`} stopColor={line.color} stopOpacity='1' />
-              <stop offset={`${100 - preForecastPercentage}%`} stopColor={line.color} stopOpacity='0.6' />
-              <stop offset='95%' stopColor={line.color} stopOpacity='0.2' />
-            </linearGradient>
-          </defs>
-          <path
-            d={args.areaGenerator(line.data.map(d => d.position))}
-            fill={`url(#line-${index}-gradient)`}
-            style={{ mixBlendMode: 'multiply', pointerEvents: 'none' }}
-            opacity={0.5}
-          />
-        </g>
-      ));
-
-    return (<>{areas}</>);
-  };
 
   const pointsLayer = useCallback(scenarioYear => args => args.points
     .filter(point => point.serieId === (scenarioYear === '2020' ? 'Evolving' : 'Reference'))
@@ -66,11 +33,9 @@ const Scenarios = ({ data, year }) => {
       <ForecastBar year={year} />
       <ResponsiveLine
         enablePoints={false}
-        layers={['grid', pointsLayer(yearId), 'axes', 'areas', 'crosshair', 'lines', 'points', 'mesh', backgroundLayer(year)]}
+        layers={['grid', pointsLayer(yearId), 'axes', 'areas', 'crosshair', 'lines', 'points', 'mesh', fadeLayer(year)]}
         data={data}
         curve="cardinal"
-        // areaOpacity={0.15}
-        // enableArea
         margin={{ top: 50, right: 50, bottom: 50, left: 50 }}
         xScale={{ type: 'point' }}
         yScale={{ type: 'linear', min: 0, max: 'auto', reverse: false }}

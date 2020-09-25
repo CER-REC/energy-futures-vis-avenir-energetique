@@ -4,11 +4,21 @@ import PropTypes from 'prop-types';
 import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
 import ForecastBar from '../../components/ForecastBar';
+import convertHexToRGB from '../../utilities/convertHexToRGB';
 
 const ByRegion = ({ data, year }) => {
   const { regions } = useAPI();
   const { config, setConfig } = useConfig();
-  const preForecastPercentage = ((2020 - year.min) / (year.max - year.min)) * 100;
+
+  const customColorProp = (maxYear, forecastYear, hexFunc) => (d) => {
+    const opacityNumber = (d.indexValue > forecastYear)
+      ? (1.5 - ((d.indexValue - forecastYear) / (maxYear - forecastYear)))
+      : 1;
+    return hexFunc(regions.colors[d.id], opacityNumber);
+  };
+
+  // FIXME: this is a hardcoded solution
+  const forecastYear = 2020;
 
   /**
    * A "hacky" but sufficient way to reselect all regions after
@@ -29,21 +39,9 @@ const ByRegion = ({ data, year }) => {
     return null;
   }
 
-  const defs = Object.keys(data[0]).map((source, index) => (
-    <linearGradient key={source} id={`gradient${index}`}>
-      {/* Gradient starts to fade after forecast line */}
-      <stop key='0' offset={`${preForecastPercentage}%`} stopColor={regions.colors[keys[index]]} stopOpacity='1' />
-      <stop key='50' offset={`${100 - preForecastPercentage}%`} stopColor={regions.colors[keys[index]]} stopOpacity='0.6' />
-      <stop key='95' offset='95%' stopColor={regions.colors[keys[index]]} stopOpacity='0.4' />
-    </linearGradient>
-  ));
   return (
     <>
-      <svg height={0}>
-        <defs>
-          {defs}
-        </defs>
-      </svg>
+      {/* Its worth considering whether or not the forecast bar can be a Nivo layer */}
       <ForecastBar year={year} />
       <ResponsiveBar
         data={data}
@@ -51,7 +49,7 @@ const ByRegion = ({ data, year }) => {
         indexBy="year"
         margin={{ top: 50, right: 80, bottom: 50, left: 50 }}
         padding={0.1}
-        colors={d => regions.colors[d.id]}
+        colors={customColorProp(year.max, forecastYear, convertHexToRGB)}
         borderColor={{ from: 'color', modifiers: [['darker', 1.6]] }}
         axisTop={null}
         axisLeft={null}
