@@ -126,7 +126,7 @@ const PageLayout = ({
   );
 
   return (
-    <Grid container spacing={4} className={classes.root}>
+    <Grid container spacing={2} className={classes.root}>
       <Grid item xs={12}><YearSelect /></Grid>
       <Grid item style={{ width: 400 }}><PageSelect /></Grid>
       <Grid item style={{ width: 'calc(100% - 400px)' }}>

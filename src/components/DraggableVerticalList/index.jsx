@@ -98,8 +98,8 @@ ColoredItemBox.defaultProps = {
 const useStyles = makeStyles(theme => ({
   root: props => ({
     position: 'relative',
-    width: props.width || `calc(100% + ${theme.spacing(2)}px)`,
-    padding: theme.spacing(1),
+    width: props.width || '100%',
+    padding: theme.spacing(1, 0),
     marginTop: props.dense ? 0 : -4,
     border: '1px dashed transparent',
     borderRadius: theme.shape.borderRadius,
@@ -115,7 +115,7 @@ const useStyles = makeStyles(theme => ({
       borderLeft: `2px solid ${theme.palette.secondary.main}`,
     },
   }),
-  title: { fontSize: 15 },
+  title: { fontSize: 13 },
   item: props => ({
     position: 'relative',
     height: props.dense ? 44 : 52,
@@ -225,12 +225,13 @@ const DraggableVerticalList = ({
             container
             direction="column"
             alignItems="center"
-            spacing={2}
+            spacing={0}
             {...provided.droppableProps}
             ref={provided.innerRef}
             className={`${classes.root} ${snapshot.isDraggingOver && classes.dark}`}
           >
             <Grid
+              item
               onClick={handleToggleItem('ALL')}
               className={classes.item}
             >
@@ -246,6 +247,7 @@ const DraggableVerticalList = ({
                 {providedItem => (
                   <>
                     <Grid
+                      item
                       ref={providedItem.innerRef}
                       {...providedItem.draggableProps}
                       {...providedItem.dragHandleProps}
