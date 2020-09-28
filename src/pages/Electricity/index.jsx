@@ -89,7 +89,7 @@ const COORD = {
   PE: { top: '65%', left: '88%' },
   ON: { top: '60%', left: '45%' },
   NU: { top: '15%', left: '30%' },
-  NT: { top: '3%', left: '18%' },
+  NT: { top: '5%', left: '18%' },
   NS: { top: '80%', left: '85%' },
   NL: { top: '35%', left: '85%' },
   NB: { top: '55%', left: '70%' },
