@@ -3,10 +3,13 @@ import { ResponsiveLine } from '@nivo/line';
 import PropTypes from 'prop-types';
 import { SCENARIO_COLOR } from '../../constants';
 import ForecastBar from '../../components/ForecastBar';
+import fadeLayer from '../../components/FadeLayer/index';
 import useConfig from '../../hooks/useConfig';
 
 const Scenarios = ({ data, year }) => {
   const { yearId } = useConfig().config;
+
+  const fade = useCallback(fadeLayer(year), [year]);
 
   const pointsLayer = useCallback(scenarioYear => args => args.points
     .filter(point => point.serieId === (scenarioYear === '2020' ? 'Evolving' : 'Reference'))
@@ -32,11 +35,9 @@ const Scenarios = ({ data, year }) => {
       <ForecastBar year={year} />
       <ResponsiveLine
         enablePoints={false}
-        layers={['grid', pointsLayer(yearId), 'axes', 'areas', 'crosshair', 'lines', 'points', 'mesh']}
+        layers={['grid', pointsLayer(yearId), 'axes', 'areas', 'crosshair', 'lines', 'points', 'mesh', fade]}
         data={data}
         curve="cardinal"
-        areaOpacity={0.15}
-        enableArea
         margin={{ top: 50, right: 50, bottom: 50, left: 50 }}
         xScale={{ type: 'point' }}
         yScale={{ type: 'linear', min: 0, max: 'auto', reverse: false }}

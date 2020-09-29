@@ -1,8 +1,9 @@
 import React, { useCallback, useMemo } from 'react';
-import { ResponsiveStream } from '@nivo/stream';
+import { ResponsiveLine } from '@nivo/line';
 import PropTypes from 'prop-types';
 import { useIntl } from 'react-intl';
 import ForecastBar from '../../components/ForecastBar';
+import fadeLayer from '../../components/FadeLayer';
 
 import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
@@ -12,10 +13,13 @@ const BySector = ({ data, year }) => {
   const { sources: { energy: { colors } } } = useAPI();
   const { config } = useConfig();
 
+  const fade = useCallback(fadeLayer(year), [year]);
+
   const keys = useMemo(() => {
     const sources = new Set((data || []).map(entry => Object.keys(entry)).flat());
     return [...config.sourceOrder].reverse().filter(s => sources.has(s));
   }, [data, config.sourceOrder]);
+
   const getTooltipLabel = useCallback(
     dataItem => intl.formatMessage({ id: `common.sources.energy.${dataItem.id}` }).toUpperCase(),
     [intl],
@@ -28,10 +32,14 @@ const BySector = ({ data, year }) => {
   return (
     <>
       <ForecastBar year={year} />
-      <ResponsiveStream
+      <ResponsiveLine
         data={data}
-        keys={keys}
+        layers={['grid', 'axes', 'areas', 'crosshair', 'lines', 'points', 'mesh', fade]}
         margin={{ top: 50, right: 50, bottom: 50, left: 50 }}
+        keys={keys}
+        xScale={{ type: 'point' }}
+        yScale={{ type: 'linear', min: 'auto', max: 'auto', stacked: true, reverse: false }}
+        curve="cardinal"
         axisTop={null}
         axisRight={{
           orient: 'right',
@@ -47,19 +55,11 @@ const BySector = ({ data, year }) => {
           format: value => ((value % 5) ? '' : value + year.min),
         }}
         axisLeft={null}
-        curve="linear"
-        offsetType="diverging"
-        colors={d => colors[keys[d.index]]}
-        fillOpacity={0.60}
-        borderColor={{ theme: 'background' }}
-        dotSize={8}
-        dotColor={{ from: 'color' }}
-        dotBorderWidth={2}
-        dotBorderColor={{ from: 'color', modifiers: [['darker', 0.7]] }}
-        animate
-        motionStiffness={90}
-        motionDamping={15}
+        colors={d => colors[d.id]}
+        lineWidth={0}
+        enablePoints={false}
         tooltipLabel={getTooltipLabel}
+        useMesh
       />
     </>
   );

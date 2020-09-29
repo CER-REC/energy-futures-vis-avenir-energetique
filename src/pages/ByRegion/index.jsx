@@ -1,13 +1,26 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo, useCallback } from 'react';
 import { ResponsiveBar } from '@nivo/bar';
 import PropTypes from 'prop-types';
 import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
 import ForecastBar from '../../components/ForecastBar';
+import convertHexToRGB from '../../utilities/convertHexToRGB';
 
 const ByRegion = ({ data, year }) => {
   const { regions } = useAPI();
   const { config, setConfig } = useConfig();
+
+  const customColorProp = useCallback((maxYear, forecastYear, hexFunc) => (d) => {
+    const opacityNumber = (d.indexValue > forecastYear)
+      ? (1.5 - ((d.indexValue - forecastYear) / (maxYear - forecastYear)))
+      : 1;
+    return hexFunc(regions.colors[d.id], opacityNumber);
+  }, [regions.colors]);
+
+  // FIXME: this is a hardcoded solution
+  const forecastYear = 2020;
+
+  const colors = customColorProp(year.max, forecastYear, convertHexToRGB);
 
   /**
    * A "hacky" but sufficient way to reselect all regions after
@@ -30,6 +43,7 @@ const ByRegion = ({ data, year }) => {
 
   return (
     <>
+      {/* Its worth considering whether or not the forecast bar can be a Nivo layer */}
       <ForecastBar year={year} />
       <ResponsiveBar
         data={data}
@@ -37,7 +51,7 @@ const ByRegion = ({ data, year }) => {
         indexBy="year"
         margin={{ top: 50, right: 80, bottom: 50, left: 50 }}
         padding={0.1}
-        colors={d => regions.colors[d.id]}
+        colors={colors}
         borderColor={{ from: 'color', modifiers: [['darker', 1.6]] }}
         axisTop={null}
         axisLeft={null}
