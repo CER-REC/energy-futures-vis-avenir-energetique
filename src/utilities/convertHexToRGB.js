@@ -1,7 +1,7 @@
 export default (hex, alpha = 1) => {
-  const r = parseInt(hex.slice(1, 3), 16);
-  const g = parseInt(hex.slice(3, 5), 16);
-  const b = parseInt(hex.slice(5, 7), 16);
-
-  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+  const rgb = hex
+    .match(/[^#]{2}/g) // takes out the # and separates into pairs
+    .map(seg => parseInt(seg, 16));
+    // if hex is 3 digits, return hex un-altered.
+  return rgb.length === 3 ? `rgba(${rgb.join(', ')}, ${alpha})` : hex;
 };
