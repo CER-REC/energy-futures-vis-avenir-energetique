@@ -9,6 +9,8 @@ import useConfig from '../../hooks/useConfig';
 const Scenarios = ({ data, year }) => {
   const { yearId } = useConfig().config;
 
+  const fade = useCallback(fadeLayer(year), [year]);
+
   const pointsLayer = useCallback(scenarioYear => args => args.points
     .filter(point => point.serieId === (scenarioYear === '2020' ? 'Evolving' : 'Reference'))
     .map(point => (
@@ -33,7 +35,7 @@ const Scenarios = ({ data, year }) => {
       <ForecastBar year={year} />
       <ResponsiveLine
         enablePoints={false}
-        layers={['grid', pointsLayer(yearId), 'axes', 'areas', 'crosshair', 'lines', 'points', 'mesh', fadeLayer(year)]}
+        layers={['grid', pointsLayer(yearId), 'axes', 'areas', 'crosshair', 'lines', 'points', 'mesh', fade]}
         data={data}
         curve="cardinal"
         margin={{ top: 50, right: 50, bottom: 50, left: 50 }}

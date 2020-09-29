@@ -3,7 +3,7 @@ import { ResponsiveLine } from '@nivo/line';
 import PropTypes from 'prop-types';
 import { useIntl } from 'react-intl';
 import ForecastBar from '../../components/ForecastBar';
-import fadeLayer from '../../components/FadeLayer/index';
+import fadeLayer from '../../components/FadeLayer';
 
 import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
@@ -12,6 +12,8 @@ const BySector = ({ data, year }) => {
   const intl = useIntl();
   const { sources: { energy: { colors } } } = useAPI();
   const { config } = useConfig();
+
+  const fade = useCallback(fadeLayer(year), [year]);
 
   const keys = useMemo(() => {
     const sources = new Set((data || []).map(entry => Object.keys(entry)).flat());
@@ -32,7 +34,7 @@ const BySector = ({ data, year }) => {
       <ForecastBar year={year} />
       <ResponsiveLine
         data={data}
-        layers={['grid', 'axes', 'areas', 'crosshair', 'lines', 'points', 'mesh', fadeLayer(year)]}
+        layers={['grid', 'axes', 'areas', 'crosshair', 'lines', 'points', 'mesh', fade]}
         margin={{ top: 50, right: 50, bottom: 50, left: 50 }}
         keys={keys}
         xScale={{ type: 'point' }}
