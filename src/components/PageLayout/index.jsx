@@ -16,6 +16,15 @@ import DraggableVerticalList from '../DraggableVerticalList';
 import HorizontalControlBar from '../HorizontalControlBar';
 import LinkButtonGroup from '../LinkButtonGroup';
 
+const TICK_STYLE = {
+  '& .tickValue': { display: 'none' },
+  '& .tickUnit': {
+    display: 'block',
+    '& > tspan:first-of-type': { fontSize: 16, fontWeight: 700 },
+    '& > tspan:last-of-type': { fontSize: 10, fontWeight: 700 },
+  },
+};
+
 const useStyles = makeStyles(theme => ({
   root: {
     padding: theme.spacing(4, 0),
@@ -34,17 +43,14 @@ const useStyles = makeStyles(theme => ({
     position: 'relative',
     border: `1px solid ${theme.palette.divider}`,
   },
-  visTicks: isByRegion => ({
-    [`& svg > g > g:nth-child(${isByRegion ? 2 : 3}) > g .tickUnit`]: { display: 'none' },
-    [`& svg > g > g:nth-child(${isByRegion ? 2 : 3}) > g:last-of-type`]: {
-      '& .tickValue': { display: 'none' },
-      '& .tickUnit': {
-        display: 'block',
-        '& > tspan:first-of-type': { fontSize: 16, fontWeight: 700 },
-        '& > tspan:last-of-type': { fontSize: 10, fontWeight: 700 },
-      },
-    },
-  }),
+  visTickSecond: {
+    '& svg > g > g:nth-child(2) > g .tickUnit': { display: 'none' },
+    '& svg > g > g:nth-child(2) > g:last-of-type': TICK_STYLE,
+  },
+  visTickThird: {
+    '& svg > g > g:nth-child(3) > g .tickUnit': { display: 'none' },
+    '& svg > g > g:nth-child(3) > g:last-of-type': TICK_STYLE,
+  },
   links: {
     position: 'absolute',
     bottom: 0,
@@ -62,11 +68,11 @@ const PageLayout = ({
   singleSelectRegion,
   singleSelectSource,
 }) => {
+  const classes = useStyles();
   const intl = useIntl();
   const { regions, sources } = useAPI();
   const { config, setConfig } = useConfig();
   const { loading, error, data, year } = useEnergyFutureData();
-  const classes = useStyles(config.page === 'by-region');
 
   const type = PAGES.find(page => page.id === config.page).sourceType;
 
@@ -123,6 +129,14 @@ const PageLayout = ({
       },
     }), {}),
     [type, sources, intl],
+  );
+
+  /**
+   * Generate custom y-axis tick style based on the given page.
+   */
+  const tickStyle = useMemo(
+    () => (config.page === 'by-region' ? classes.visTickSecond : classes.visTickThird),
+    [config.page, classes.visTickSecond, classes.visTickThird],
   );
 
   return (
@@ -185,7 +199,7 @@ const PageLayout = ({
             <Grid item className={classes.graph}>
               {loading && <CircularProgress color="primary" size={66} className={classes.loading} />}
               {error && <Alert severity="error"><AlertTitle>Error</AlertTitle>{error}</Alert>}
-              {!loading && !error && <div className={`${classes.vis} ${classes.visTicks}`}>{vis}</div>}
+              {!loading && !error && <div className={`${classes.vis} ${tickStyle}`}>{vis}</div>}
             </Grid>
           )}
         </Grid>
