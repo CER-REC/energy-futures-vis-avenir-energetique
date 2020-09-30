@@ -27,8 +27,8 @@ export default ({ min: yearMin, max: yearMax }) => ({ areaGenerator, series }) =
         <path
           d={areaGenerator(line.data.map(d => d.position))}
           fill={`url(#line-${index}-gradient)`}
-          style={{ mixBlendMode: 'multiply', pointerEvents: 'none' }}
-          opacity={0.5}
+          style={{ mixBlendMode: 'normal', pointerEvents: 'none' }}
+          opacity={1}
         />
       </g>
     ));
