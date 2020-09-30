@@ -98,6 +98,16 @@ export default () => {
 
   const years = useMemo(() => data?.resources?.map(entry => entry.year), [data]);
 
+  // Where to draw the forecast line.
+  // 1 year before the current year for oil-and-gas.
+  // 2 years before the current year for all others.
+  const forecastStart = useMemo(() => (
+    ['gasProduction', 'oilProduction']
+      .indexOf(config.mainSelection) > -1
+      ? parseInt(config.yearId, 10) - 2
+      : parseInt(config.yearId, 10) - 1),
+  [config.yearId, config.mainSelection]);
+
   const processedData = useMemo(() => {
     if (!data || !data.resources) {
       return data;
@@ -116,6 +126,7 @@ export default () => {
     data: processedData,
     year: years && {
       min: Math.min(...years),
+      forecastStart,
       max: Math.max(...years),
     },
   };

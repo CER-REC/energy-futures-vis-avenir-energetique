@@ -11,16 +11,15 @@ const useStyles = makeStyles(() => createStyles({
     position: 'relative',
     pointerEvents: 'none',
   }),
-  innerContainer: ({ forecastYear, year }) => ({
-    marginLeft: `${((forecastYear - year.min) / (year.max - year.min)) * 100}%`,
-    width: `${((year.max - forecastYear) / (year.max - year.min)) * 100}%`,
+  innerContainer: ({ year }) => ({
+    marginLeft: `${((year.forecastStart - year.min) / (year.max - year.min)) * 100}%`,
+    width: `${((year.max - year.forecastStart) / (year.max - year.min)) * 100}%`,
     borderLeft: '1px dashed black',
     height: '620px',
     position: 'absolute',
     zIndex: 1,
   }),
   foreCast: {
-    // backgroundColor: '#F3F2F2',
     backgroundImage: 'linear-gradient(to left, rgba(255,0,0,0), rgba(243, 242, 242, 1) 30%)',
     paddingLeft: '5px',
   },
@@ -29,9 +28,7 @@ const useStyles = makeStyles(() => createStyles({
 const ForecastBar = ({ year }) => {
   const { page } = useConfig().config;
 
-  // FIXME: forecastYear will need to be dynamic eventually.
-  const forecastYear = 2020;
-  const classes = useStyles({ forecastYear, year, page });
+  const classes = useStyles({ year, page });
 
   return (
     <div className={classes.outerContainer}>
