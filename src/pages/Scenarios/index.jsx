@@ -1,10 +1,10 @@
 import React, { useCallback, useMemo } from 'react';
 import { ResponsiveLine } from '@nivo/line';
 import PropTypes from 'prop-types';
-
 import useConfig from '../../hooks/useConfig';
 import { CHART_PROPS, CHART_AXIS_PROPS, SCENARIO_COLOR, UNIT_NAMES } from '../../constants';
 import ForecastBar from '../../components/ForecastBar';
+import fadeLayer from '../../components/FadeLayer/index';
 
 const Scenarios = ({ data, year }) => {
   const { config } = useConfig();
@@ -27,6 +27,11 @@ const Scenarios = ({ data, year }) => {
       />
     )), []);
   const dots = useMemo(() => dottedLayer(config.yearId), [config.yearId, dottedLayer]);
+
+  /**
+   * The fade-out effect over forecast years.
+   */
+  const fade = useMemo(() => fadeLayer(year), [year]);
 
   /**
    * Format y-axis ticks so that unit is shown beside the largest value.
@@ -53,7 +58,7 @@ const Scenarios = ({ data, year }) => {
         data={data}
         enableArea
         enablePoints={false}
-        layers={['grid', 'axes', 'areas', 'crosshair', 'lines', 'points', 'mesh', dots]}
+        layers={['grid', dots, 'axes', 'areas', 'crosshair', 'lines', 'points', 'mesh', fade]}
         curve="cardinal"
         areaOpacity={0.15}
         xScale={{ type: 'point' }}

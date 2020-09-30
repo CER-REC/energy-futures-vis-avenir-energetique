@@ -20,7 +20,7 @@ const useStyles = makeStyles(theme => createStyles({
   btnSector: {
     marginRight: theme.spacing(1),
     height: 32,
-    minWidth: 40,
+    minWidth: 'min-content',
     maxWidth: 60,
     '& > span': { lineHeight: 1 },
   },
@@ -61,29 +61,26 @@ const HorizontalControlBar = () => {
   const selections = ['by-region', 'scenarios'].includes(config.page) && (
     <>
       <Grid item>
-        <Hint><Typography variant="body1" color="primary">SOURCE</Typography></Hint>
+        <Hint />
       </Grid>
-      {Object.keys(CONFIG_LAYOUT).map((selection) => {
-        const Icon = CONFIG_LAYOUT[selection]?.icon;
-        return (
-          <Grid item key={`config-origin-${selection}`}>
-            <Tooltip title={CONFIG_LAYOUT[selection]?.name} classes={{ tooltip: classes.tooltip }}>
-              <span>
-                <Button
-                  variant={config.mainSelection === selection ? 'contained' : 'outlined'}
-                  color="primary"
-                  size="small"
-                  disabled={selection === 'oilProduction'}
-                  onClick={() => handleConfigUpdate('mainSelection', selection)}
-                  className={classes.btnSector}
-                >
-                  {selection === 'energyDemand' ? 'Total Demand' : <Icon />}
-                </Button>
-              </span>
-            </Tooltip>
-          </Grid>
-        );
-      })}
+      {Object.keys(CONFIG_LAYOUT).map(selection => (
+        <Grid item key={`config-origin-${selection}`}>
+          <Tooltip title={CONFIG_LAYOUT[selection]?.name} classes={{ tooltip: classes.tooltip }}>
+            <span>
+              <Button
+                variant={config.mainSelection === selection ? 'contained' : 'outlined'}
+                color="primary"
+                size="small"
+                disabled={selection === 'oilProduction'}
+                onClick={() => handleConfigUpdate('mainSelection', selection)}
+                className={classes.btnSector}
+              >
+                {CONFIG_LAYOUT[selection]?.name}
+              </Button>
+            </span>
+          </Tooltip>
+        </Grid>
+      ))}
     </>
   );
 

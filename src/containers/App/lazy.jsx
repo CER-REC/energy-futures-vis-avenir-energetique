@@ -49,7 +49,7 @@ const theme = createMuiTheme({
     MuiButton: {
       root: {
         height: 23,
-        minWidth: 73,
+        minWidth: 60,
         borderRadius: 0,
       },
       label: { margin: 'auto' },

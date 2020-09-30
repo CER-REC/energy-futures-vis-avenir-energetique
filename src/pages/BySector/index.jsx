@@ -1,8 +1,9 @@
 import React, { useCallback, useMemo } from 'react';
-import { ResponsiveStream } from '@nivo/stream';
+import { ResponsiveLine } from '@nivo/line';
 import PropTypes from 'prop-types';
 import { useIntl } from 'react-intl';
 import ForecastBar from '../../components/ForecastBar';
+import fadeLayer from '../../components/FadeLayer';
 
 import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
@@ -17,6 +18,11 @@ const BySector = ({ data, year }) => {
     const sources = new Set((data || []).map(entry => Object.keys(entry)).flat());
     return [...config.sourceOrder].reverse().filter(s => sources.has(s));
   }, [data, config.sourceOrder]);
+
+  /**
+   * The fade-out effect over forecast years.
+   */
+  const fade = useMemo(() => fadeLayer(year), [year]);
 
   /**
    * Format y-axis ticks so that unit is shown beside the largest value.
@@ -46,10 +52,14 @@ const BySector = ({ data, year }) => {
   return (
     <>
       <ForecastBar year={year} />
-      <ResponsiveStream
+      <ResponsiveLine
         {...CHART_PROPS}
         data={data}
         keys={keys}
+        layers={['grid', 'axes', 'areas', 'crosshair', 'lines', 'points', 'mesh', fade]}
+        xScale={{ type: 'point' }}
+        yScale={{ type: 'linear', min: 0, max: 'auto', stacked: true, reverse: false }}
+        curve="cardinal"
         axisRight={{
           ...CHART_AXIS_PROPS,
           format: getFormattedTick,
@@ -58,16 +68,12 @@ const BySector = ({ data, year }) => {
           ...CHART_AXIS_PROPS,
           format: value => ((value % 5) ? '' : value + year.min),
         }}
-        curve="linear"
-        offsetType="diverging"
-        colors={d => colors[keys[d.index]]}
-        fillOpacity={0.60}
-        borderColor={{ theme: 'background' }}
-        dotSize={8}
-        dotColor={{ from: 'color' }}
-        dotBorderWidth={2}
-        dotBorderColor={{ from: 'color', modifiers: [['darker', 0.7]] }}
+        colors={d => colors[d.id]}
+        lineWidth={0}
+        enablePoints={false}
+        areaBaselineValue={0}
         tooltipLabel={getTooltipLabel}
+        useMesh
       />
     </>
   );

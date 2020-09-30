@@ -5,10 +5,26 @@ import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
 import { CHART_PROPS, CHART_AXIS_PROPS, UNIT_NAMES } from '../../constants';
 import ForecastBar from '../../components/ForecastBar';
+import convertHexToRGB from '../../utilities/convertHexToRGB';
 
 const ByRegion = ({ data, year }) => {
   const { regions } = useAPI();
   const { config, setConfig } = useConfig();
+
+  /**
+   * Manually calculating bar colors to create the fade-out effect.
+   */
+  const customColorProp = useCallback((maxYear, forecastYear, hexFunc) => (d) => {
+    const opacityNumber = (d.indexValue > forecastYear)
+      ? (1.5 - ((d.indexValue - forecastYear) / (maxYear - forecastYear)))
+      : 1;
+    return hexFunc(regions.colors[d.id], opacityNumber);
+  }, [regions.colors]);
+
+  // FIXME: this is a hardcoded solution
+  const forecastYear = 2020;
+
+  const colors = customColorProp(year.max, forecastYear, convertHexToRGB);
 
   /**
    * A "hacky" but sufficient way to reselect all regions after
@@ -44,6 +60,7 @@ const ByRegion = ({ data, year }) => {
 
   return (
     <>
+      {/* Its worth considering whether or not the forecast bar can be a Nivo layer */}
       <ForecastBar year={year} />
       <ResponsiveBar
         {...CHART_PROPS}
@@ -51,7 +68,7 @@ const ByRegion = ({ data, year }) => {
         keys={keys}
         indexBy="year"
         padding={0.1}
-        colors={d => regions.colors[d.id]}
+        colors={colors}
         borderColor={{ from: 'color', modifiers: [['darker', 1.6]] }}
         axisBottom={{
           ...CHART_AXIS_PROPS,

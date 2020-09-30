@@ -38,7 +38,7 @@ const ForecastBar = ({ year }) => {
       <div className={classes.innerContainer}>
         <div className={classes.foreCast}>
           {/* TODO: This will need to be replaced by a translated version. */}
-          <Typography variant='body1' color='secondary'>Forecast</Typography>
+          <Typography variant='body1' color='secondary'>FORECAST</Typography>
         </div>
       </div>
     </div>
