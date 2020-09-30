@@ -18,6 +18,7 @@ const BySector = ({ data, year }) => {
   const orderedData = useMemo(
     () => config.sourceOrder
       .map(source => data.find(o => o.id === source))
+      .filter(Boolean)
       .reverse(),
     [config.sourceOrder, data],
   );
