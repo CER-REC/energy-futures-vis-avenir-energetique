@@ -44,10 +44,9 @@ const Scenarios = ({ data, year }) => {
       .map((_, i) => Math.max(...values.map(source => source[i].y)));
     return getMaxTick(Math.max(...sums), true);
   }, [data]);
-  const axisFormat = useCallback(
-    value => (value === axis.max ? <MaxTick value={value} unit={config.unit} /> : value),
-    [axis.max, config.unit],
-  );
+  const axisFormat = useCallback(value => (Math.abs(value - axis.highest) < 1
+    ? <MaxTick value={value} unit={config.unit} />
+    : value), [axis.highest, config.unit]);
 
   if (!data) {
     return null;

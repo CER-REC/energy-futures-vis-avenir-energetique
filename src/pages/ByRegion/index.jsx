@@ -47,14 +47,13 @@ const ByRegion = ({ data, year }) => {
    * Calculate the max tick value on y-axis and generate the all ticks accordingly.
    */
   const axis = useMemo(() => {
-    const max = data && Math.max(...data
+    const highest = data && Math.max(...data
       .map(seg => Object.values(seg).reduce((a, b) => a + (typeof b === 'string' ? 0 : b), 0)));
-    return getMaxTick(max);
+    return getMaxTick(highest);
   }, [data]);
-  const axisFormat = useCallback(
-    value => (value === axis.max ? <MaxTick value={value} unit={config.unit} /> : value),
-    [axis.max, config.unit],
-  );
+  const axisFormat = useCallback(value => (Math.abs(value - axis.highest) < 1
+    ? <MaxTick value={value} unit={config.unit} />
+    : value), [axis.highest, config.unit]);
 
   if (!data) {
     return null;

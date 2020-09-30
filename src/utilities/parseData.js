@@ -81,11 +81,14 @@ export const NOOP = () => undefined;
 const STEPS = highest => [1, 10, (highest > 500 ? 50 : 20), (highest > 5000 ? 500 : 200)];
 export const getMaxTick = (highest) => {
   if (!highest || Number.isNaN(highest)) {
-    return { max: 'auto', step: undefined };
+    return { highest, max: 'auto', step: undefined, ticks: undefined };
   }
   const magnitude = Math.floor(Math.log(highest) / Math.LN10);
   const step = STEPS(highest)[magnitude] || 1000;
   const max = Math.ceil(highest / step) * step;
-  const ticks = max > 0 && step && Array(max / step + 1).fill(undefined).map((_, i) => i * step);
-  return { max, step, ticks };
+  const ticks = max > 0 && step && Array(max / step + 1)
+    .fill(undefined)
+    .map((_, i) => i * step)
+    .filter(tick => tick < highest && (highest - tick) > (step / 2));
+  return { highest, max, step, ticks: ticks ? [...ticks, parseInt(highest, 10)] : undefined };
 };
