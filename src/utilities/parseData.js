@@ -74,3 +74,18 @@ export const parseData = {
 };
 
 export const NOOP = () => undefined;
+
+/**
+ * Generate y-axis ticks using the given hightest value.
+ */
+const STEPS = highest => [1, 10, (highest > 500 ? 50 : 20), (highest > 5000 ? 500 : 200)];
+export const getMaxTick = (highest) => {
+  if (!highest || Number.isNaN(highest)) {
+    return { max: 'auto', step: undefined };
+  }
+  const magnitude = Math.floor(Math.log(highest) / Math.LN10);
+  const step = STEPS(highest)[magnitude] || 1000;
+  const max = Math.ceil(highest / step) * step;
+  const ticks = max > 0 && step && Array(max / step + 1).fill(undefined).map((_, i) => i * step);
+  return { max, step, ticks };
+};

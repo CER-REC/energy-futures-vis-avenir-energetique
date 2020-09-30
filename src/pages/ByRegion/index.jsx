@@ -3,9 +3,11 @@ import { ResponsiveBar } from '@nivo/bar';
 import PropTypes from 'prop-types';
 import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
-import { CHART_PROPS, CHART_AXIS_PROPS, UNIT_NAMES } from '../../constants';
+import { CHART_PROPS, CHART_AXIS_PROPS } from '../../constants';
 import ForecastBar from '../../components/ForecastBar';
+import MaxTick from '../../components/MaxTick';
 import convertHexToRGB from '../../utilities/convertHexToRGB';
+import { getMaxTick } from '../../utilities/parseData';
 
 const ByRegion = ({ data, year }) => {
   const { regions } = useAPI();
@@ -42,17 +44,17 @@ const ByRegion = ({ data, year }) => {
   const keys = useMemo(() => [...config.provinceOrder].reverse(), [config.provinceOrder]);
 
   /**
-   * Format y-axis ticks so that unit is shown beside the largest value.
+   * Calculate the max tick value on y-axis and generate the all ticks accordingly.
    */
-  const getFormattedTick = useCallback(value => (
-    <>
-      <tspan className="tickValue">{value}</tspan>
-      <tspan className="tickUnit">
-        <tspan x="0" y="-8">{value}</tspan>
-        <tspan x="0" y="8">{UNIT_NAMES[config.unit] || config.unit}</tspan>
-      </tspan>
-    </>
-  ), [config.unit]);
+  const axis = useMemo(() => {
+    const max = data && Math.max(...data
+      .map(seg => Object.values(seg).reduce((a, b) => a + (typeof b === 'string' ? 0 : b), 0)));
+    return getMaxTick(max);
+  }, [data]);
+  const axisFormat = useCallback(
+    value => (value === axis.max ? <MaxTick value={value} unit={config.unit} /> : value),
+    [axis.max, config.unit],
+  );
 
   if (!data) {
     return null;
@@ -67,6 +69,7 @@ const ByRegion = ({ data, year }) => {
         data={data}
         keys={keys}
         indexBy="year"
+        maxValue={axis.max}
         padding={0.1}
         colors={colors}
         borderColor={{ from: 'color', modifiers: [['darker', 1.6]] }}
@@ -76,7 +79,8 @@ const ByRegion = ({ data, year }) => {
         }}
         axisRight={{
           ...CHART_AXIS_PROPS,
-          format: getFormattedTick,
+          tickValues: axis.ticks,
+          format: axisFormat,
         }}
       />
     </>

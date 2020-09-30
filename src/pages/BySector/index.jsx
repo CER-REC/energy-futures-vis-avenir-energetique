@@ -4,10 +4,12 @@ import PropTypes from 'prop-types';
 import { useIntl } from 'react-intl';
 import ForecastBar from '../../components/ForecastBar';
 import fadeLayer from '../../components/FadeLayer';
+import MaxTick from '../../components/MaxTick';
 
 import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
-import { CHART_PROPS, CHART_AXIS_PROPS, UNIT_NAMES } from '../../constants';
+import { CHART_PROPS, CHART_AXIS_PROPS } from '../../constants';
+import { getMaxTick } from '../../utilities/parseData';
 
 const BySector = ({ data, year }) => {
   const intl = useIntl();
@@ -25,24 +27,25 @@ const BySector = ({ data, year }) => {
   const fade = useMemo(() => fadeLayer(year), [year]);
 
   /**
-   * Format y-axis ticks so that unit is shown beside the largest value.
-   */
-  const getFormattedTick = useCallback(value => (
-    <>
-      <tspan className="tickValue">{value}</tspan>
-      <tspan className="tickUnit">
-        <tspan x="0" y="-8">{value}</tspan>
-        <tspan x="0" y="8">{UNIT_NAMES[config.unit] || config.unit}</tspan>
-      </tspan>
-    </>
-  ), [config.unit]);
-
-  /**
    * Format tooltip labels.
    */
   const getTooltipLabel = useCallback(
     dataItem => intl.formatMessage({ id: `common.sources.energy.${dataItem.id}` }).toUpperCase(),
     [intl],
+  );
+
+  /**
+   * Calculate the max tick value on y-axis.
+   */
+  const axis = useMemo(() => {
+    const values = (data || []).map(source => source.data);
+    const sums = (values[0] || [])
+      .map((_, i) => values.map(source => source[i].y).reduce((a, b) => a + b, 0));
+    return getMaxTick(Math.max(...sums));
+  }, [data]);
+  const axisFormat = useCallback(
+    value => (value === axis.max ? <MaxTick value={value} unit={config.unit} /> : value),
+    [axis.max, config.unit],
   );
 
   if (!data || !year) {
@@ -58,11 +61,12 @@ const BySector = ({ data, year }) => {
         keys={keys}
         layers={['grid', 'axes', 'areas', 'crosshair', 'lines', 'points', 'mesh', fade]}
         xScale={{ type: 'point' }}
-        yScale={{ type: 'linear', min: 0, max: 'auto', stacked: true, reverse: false }}
+        yScale={{ type: 'linear', min: 0, max: axis.max, stacked: true, reverse: false }}
         curve="cardinal"
         axisRight={{
           ...CHART_AXIS_PROPS,
-          format: getFormattedTick,
+          tickValues: axis.ticks,
+          format: axisFormat,
         }}
         axisBottom={{
           ...CHART_AXIS_PROPS,

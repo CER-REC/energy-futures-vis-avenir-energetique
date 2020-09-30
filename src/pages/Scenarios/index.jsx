@@ -2,9 +2,11 @@ import React, { useCallback, useMemo } from 'react';
 import { ResponsiveLine } from '@nivo/line';
 import PropTypes from 'prop-types';
 import useConfig from '../../hooks/useConfig';
-import { CHART_PROPS, CHART_AXIS_PROPS, SCENARIO_COLOR, UNIT_NAMES } from '../../constants';
+import { CHART_PROPS, CHART_AXIS_PROPS, SCENARIO_COLOR } from '../../constants';
+import { getMaxTick } from '../../utilities/parseData';
 import ForecastBar from '../../components/ForecastBar';
 import fadeLayer from '../../components/FadeLayer/index';
+import MaxTick from '../../components/MaxTick';
 
 const Scenarios = ({ data, year }) => {
   const { config } = useConfig();
@@ -34,17 +36,18 @@ const Scenarios = ({ data, year }) => {
   const fade = useMemo(() => fadeLayer(year), [year]);
 
   /**
-   * Format y-axis ticks so that unit is shown beside the largest value.
+   * Calculate the max tick value on y-axis.
    */
-  const getFormattedTick = useCallback(value => (
-    <>
-      <tspan className="tickValue">{value}</tspan>
-      <tspan className="tickUnit">
-        <tspan x="0" y="-8">{value}</tspan>
-        <tspan x="0" y="8">{UNIT_NAMES[config.unit] || config.unit}</tspan>
-      </tspan>
-    </>
-  ), [config.unit]);
+  const axis = useMemo(() => {
+    const values = (data || []).map(source => source.data);
+    const sums = (values[0] || [])
+      .map((_, i) => Math.max(...values.map(source => source[i].y)));
+    return getMaxTick(Math.max(...sums), true);
+  }, [data]);
+  const axisFormat = useCallback(
+    value => (value === axis.max ? <MaxTick value={value} unit={config.unit} /> : value),
+    [axis.max, config.unit],
+  );
 
   if (!data) {
     return null;
@@ -58,11 +61,11 @@ const Scenarios = ({ data, year }) => {
         data={data}
         enableArea
         enablePoints={false}
-        layers={['grid', dots, 'axes', 'areas', 'crosshair', 'lines', 'points', 'mesh', fade]}
+        layers={['grid', 'axes', 'areas', 'crosshair', 'lines', 'points', 'mesh', fade, dots]}
         curve="cardinal"
         areaOpacity={0.15}
         xScale={{ type: 'point' }}
-        yScale={{ type: 'linear', min: 0, max: 'auto', reverse: false }}
+        yScale={{ type: 'linear', min: 0, max: axis.max, reverse: false }}
         colors={d => SCENARIO_COLOR[d.id] || '#AAA'}
         pointSize={8}
         pointColor={{ theme: 'background' }}
@@ -76,7 +79,8 @@ const Scenarios = ({ data, year }) => {
         }}
         axisRight={{
           ...CHART_AXIS_PROPS,
-          format: getFormattedTick,
+          tickValues: axis.ticks,
+          format: axisFormat,
         }}
         useMesh
       />
