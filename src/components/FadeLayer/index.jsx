@@ -28,10 +28,9 @@ export default ({ min: yearMin, max: yearMax }) => ({ areaGenerator, series }) =
           d={areaGenerator(line.data.map(d => d.position))}
           fill={`url(#line-${index}-gradient)`}
           style={{ mixBlendMode: 'normal', pointerEvents: 'none' }}
-          opacity={1}
         />
       </g>
     ));
 
-  return (<>{areas}</>);
+  return (<g opacity={0.7}>{areas}</g>);
 };
