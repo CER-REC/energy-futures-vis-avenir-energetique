@@ -16,10 +16,13 @@ const BySector = ({ data, year }) => {
   const { sources: { energy: { colors } } } = useAPI();
   const { config } = useConfig();
 
-  const keys = useMemo(() => {
-    const sources = new Set((data || []).map(entry => Object.keys(entry)).flat());
-    return [...config.sourceOrder].reverse().filter(s => sources.has(s));
-  }, [data, config.sourceOrder]);
+  const orderedData = useMemo(
+    () => config.sourceOrder
+      .map(source => data.find(o => o.id === source))
+      .filter(Boolean)
+      .reverse(),
+    [config.sourceOrder, data],
+  );
 
   /**
    * The fade-out effect over forecast years.
@@ -56,8 +59,7 @@ const BySector = ({ data, year }) => {
       <ForecastBar year={year} />
       <ResponsiveLine
         {...CHART_PROPS}
-        data={data}
-        keys={keys}
+        data={orderedData}
         layers={['grid', 'axes', 'areas', 'crosshair', 'lines', 'points', 'mesh', fade]}
         xScale={{ type: 'point' }}
         yScale={{ type: 'linear', min: 0, max: axis.max, stacked: true, reverse: false }}
@@ -69,7 +71,7 @@ const BySector = ({ data, year }) => {
         }}
         axisBottom={{
           ...CHART_AXIS_PROPS,
-          format: value => ((value % 5) ? '' : value + year.min),
+          format: value => ((value % 5) ? '' : value),
         }}
         colors={d => colors[d.id]}
         lineWidth={0}
