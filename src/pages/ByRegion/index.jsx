@@ -17,10 +17,7 @@ const ByRegion = ({ data, year }) => {
     return hexFunc(regions.colors[d.id], opacityNumber);
   }, [regions.colors]);
 
-  // FIXME: this is a hardcoded solution
-  const forecastYear = 2020;
-
-  const colors = customColorProp(year.max, forecastYear, convertHexToRGB);
+  const colors = customColorProp(year.max, year.forecastStart, convertHexToRGB);
 
   /**
    * A "hacky" but sufficient way to reselect all regions after
@@ -84,13 +81,21 @@ const ByRegion = ({ data, year }) => {
 
 ByRegion.propTypes = {
   data: PropTypes.oneOfType([PropTypes.object, PropTypes.arrayOf(PropTypes.object)]),
-  year: PropTypes.shape({ min: PropTypes.number, max: PropTypes.number }),
+  year: PropTypes.shape({
+    min: PropTypes.number,
+    max: PropTypes.number,
+    forecastStart: PropTypes.number,
+  }),
 
 };
 
 ByRegion.defaultProps = {
   data: undefined,
-  year: { min: 0, max: 0 },
+  year: {
+    min: 0,
+    max: 0,
+    forecastStart: 0,
+  },
 };
 
 export default ByRegion;
