@@ -24,11 +24,10 @@ export default ({ min: yearMin, max: yearMax, foreCastStart }) => ({ areaGenerat
         <path
           d={areaGenerator(line.data.map(d => d.position))}
           fill={`url(#line-${index}-gradient)`}
-          style={{ mixBlendMode: 'multiply', pointerEvents: 'none' }}
-          opacity={0.5}
+          style={{ mixBlendMode: 'normal', pointerEvents: 'none' }}
         />
       </g>
     ));
 
-  return (<>{areas}</>);
+  return (<g opacity={0.7}>{areas}</g>);
 };

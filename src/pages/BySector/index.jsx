@@ -15,10 +15,13 @@ const BySector = ({ data, year }) => {
 
   const fade = useCallback(fadeLayer(year), [year]);
 
-  const keys = useMemo(() => {
-    const sources = new Set((data || []).map(entry => Object.keys(entry)).flat());
-    return [...config.sourceOrder].reverse().filter(s => sources.has(s));
-  }, [data, config.sourceOrder]);
+  const orderedData = useMemo(
+    () => config.sourceOrder
+      .map(source => data.find(o => o.id === source))
+      .filter(Boolean)
+      .reverse(),
+    [config.sourceOrder, data],
+  );
 
   const getTooltipLabel = useCallback(
     dataItem => intl.formatMessage({ id: `common.sources.energy.${dataItem.id}` }).toUpperCase(),
@@ -33,12 +36,11 @@ const BySector = ({ data, year }) => {
     <>
       <ForecastBar year={year} />
       <ResponsiveLine
-        data={data}
+        data={orderedData}
         layers={['grid', 'axes', 'areas', 'crosshair', 'lines', 'points', 'mesh', fade]}
         margin={{ top: 50, right: 50, bottom: 50, left: 50 }}
-        keys={keys}
         xScale={{ type: 'point' }}
-        yScale={{ type: 'linear', min: 'auto', max: 'auto', stacked: true, reverse: false }}
+        yScale={{ type: 'linear', min: 0, max: 'auto', stacked: true, reverse: false }}
         curve="cardinal"
         axisTop={null}
         axisRight={{
@@ -52,7 +54,7 @@ const BySector = ({ data, year }) => {
           tickSize: 5,
           tickPadding: 5,
           tickRotation: 0,
-          format: value => ((value % 5) ? '' : value + year.min),
+          format: value => ((value % 5) ? '' : value),
         }}
         axisLeft={null}
         colors={d => colors[d.id]}
