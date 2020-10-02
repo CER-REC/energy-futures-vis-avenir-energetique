@@ -5,6 +5,8 @@ import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
 import ForecastBar from '../../components/ForecastBar';
 import convertHexToRGB from '../../utilities/convertHexToRGB';
+import { formatUnitAbbreviation } from '../../utilities/convertUnit';
+import { UNIT_NAMES } from '../../constants';
 
 const ByRegion = ({ data, year }) => {
   const { regions } = useAPI();
@@ -74,6 +76,7 @@ const ByRegion = ({ data, year }) => {
         animate
         motionStiffness={90}
         motionDamping={15}
+        tooltipFormat={value => `${formatUnitAbbreviation(value)} ${UNIT_NAMES[config.unit]}`}
       />
     </>
   );

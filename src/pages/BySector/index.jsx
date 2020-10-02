@@ -7,6 +7,7 @@ import fadeLayer from '../../components/FadeLayer';
 
 import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
+import VizTooltip from '../../components/VizTooltip';
 
 const BySector = ({ data, year }) => {
   const intl = useIntl();
@@ -23,10 +24,21 @@ const BySector = ({ data, year }) => {
     [config.sourceOrder, data],
   );
 
-  const getTooltipLabel = useCallback(
-    dataItem => intl.formatMessage({ id: `common.sources.energy.${dataItem.id}` }).toUpperCase(),
-    [intl],
-  );
+  /**
+   * Format tooltip.
+   */
+  const getTooltip = useCallback(event => (
+    <VizTooltip
+      nodes={event.slice?.points.map(value => ({
+        name: value.serieId,
+        translation: intl.formatMessage({ id: `common.sources.energy.${value.serieId}` }),
+        value: value.data?.y,
+        color: value.serieColor,
+      }))}
+      unit={config.unit}
+      paper
+    />
+  ), [intl, config.unit]);
 
   if (!data || !year) {
     return null;
@@ -37,7 +49,7 @@ const BySector = ({ data, year }) => {
       <ForecastBar year={year} />
       <ResponsiveLine
         data={orderedData}
-        layers={['grid', 'axes', 'areas', 'crosshair', 'lines', 'points', 'mesh', fade]}
+        layers={['grid', 'axes', 'areas', 'crosshair', 'lines', 'points', 'slices', fade]}
         margin={{ top: 50, right: 50, bottom: 50, left: 50 }}
         xScale={{ type: 'point' }}
         yScale={{ type: 'linear', min: 0, max: 'auto', stacked: true, reverse: false }}
@@ -60,8 +72,8 @@ const BySector = ({ data, year }) => {
         colors={d => colors[d.id]}
         lineWidth={0}
         enablePoints={false}
-        tooltipLabel={getTooltipLabel}
-        useMesh
+        enableSlices="x"
+        sliceTooltip={getTooltip}
       />
     </>
   );

@@ -2,12 +2,13 @@ import React, { useCallback } from 'react';
 import { ResponsiveLine } from '@nivo/line';
 import PropTypes from 'prop-types';
 import { SCENARIO_COLOR } from '../../constants';
+import useConfig from '../../hooks/useConfig';
 import ForecastBar from '../../components/ForecastBar';
 import fadeLayer from '../../components/FadeLayer/index';
-import useConfig from '../../hooks/useConfig';
+import VizTooltip from '../../components/VizTooltip';
 
 const Scenarios = ({ data, year }) => {
-  const { yearId } = useConfig().config;
+  const { config } = useConfig();
 
   const fade = useCallback(fadeLayer(year), [year]);
 
@@ -26,6 +27,21 @@ const Scenarios = ({ data, year }) => {
       />
     )), []);
 
+  /**
+   * Format tooltip.
+   */
+  const getTooltip = useCallback(event => (
+    <VizTooltip
+      nodes={event.slice?.points.map(value => ({
+        name: value.serieId,
+        value: value.data?.y,
+        color: value.serieColor,
+      }))}
+      unit={config.unit}
+      paper
+    />
+  ), [config.unit]);
+
   if (!data) {
     return null;
   }
@@ -35,7 +51,7 @@ const Scenarios = ({ data, year }) => {
       <ForecastBar year={year} />
       <ResponsiveLine
         enablePoints={false}
-        layers={['grid', pointsLayer(yearId), 'axes', 'areas', 'crosshair', 'lines', 'points', 'mesh', fade]}
+        layers={['grid', pointsLayer(config.yearId), 'axes', 'areas', 'crosshair', 'lines', 'points', 'slices', fade]}
         data={data}
         curve="cardinal"
         margin={{ top: 50, right: 50, bottom: 50, left: 50 }}
@@ -69,7 +85,8 @@ const Scenarios = ({ data, year }) => {
         animate
         motionStiffness={90}
         motionDamping={15}
-        useMesh
+        enableSlices="x"
+        sliceTooltip={getTooltip}
       />
     </>
   );
