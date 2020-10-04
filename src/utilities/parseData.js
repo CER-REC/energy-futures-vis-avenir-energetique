@@ -78,17 +78,25 @@ export const NOOP = () => undefined;
 /**
  * Generate y-axis ticks using the given hightest value.
  */
-const STEPS = highest => [1, 10, (highest > 500 ? 50 : 20), (highest > 5000 ? 500 : 200)];
 export const getMaxTick = (highest) => {
   if (!highest || Number.isNaN(highest)) {
-    return { highest, max: 'auto', step: undefined, ticks: undefined };
+    return { highest, max: 'auto', step: undefined, ticks: [highest] };
   }
-  const magnitude = Math.floor(Math.log(highest) / Math.LN10);
-  const step = STEPS(highest)[magnitude] || 1000;
+  // e.g. when highest = 37500
+  const exponent = Math.floor(Math.log(highest) / Math.LN10); // e.g. 4
+  const magnitude = 10 ** exponent; // e.g. 10000
+  const coefficient = highest / magnitude; // e.g. 3.75
+
+  // calculate the interval size between adjacent ticks
+  let step = magnitude / 10;
+  if (coefficient > 2) step = magnitude / 2;
+  if (coefficient > 8) step = magnitude;
+
   const max = Math.ceil(highest / step) * step;
-  const ticks = max > 0 && step && Array(max / step + 1)
+  const ticks = max > 0 && step && Array(parseInt(max / step, 10) + 1)
     .fill(undefined)
-    .map((_, i) => i * step)
+    .map((_, i) => Number((i * step).toFixed(2)))
     .filter(tick => tick < highest && (highest - tick) > (step / 2));
-  return { highest, max, step, ticks: ticks ? [...ticks, parseInt(highest, 10)] : undefined };
+  const lastValue = highest > 100 ? Math.ceil(highest, 10) : Number(highest.toFixed(3));
+  return { highest, max, step, ticks: ticks ? [...new Set([...ticks, lastValue])] : undefined };
 };

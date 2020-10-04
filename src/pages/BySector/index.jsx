@@ -17,7 +17,7 @@ const BySector = ({ data, year }) => {
   const { config } = useConfig();
 
   const orderedData = useMemo(
-    () => config.sourceOrder
+    () => data && config.sourceOrder
       .map(source => data.find(o => o.id === source))
       .filter(Boolean)
       .reverse(),
@@ -46,9 +46,12 @@ const BySector = ({ data, year }) => {
       .map((_, i) => values.map(source => source[i].y).reduce((a, b) => a + b, 0));
     return getMaxTick(Math.max(...sums));
   }, [data]);
-  const axisFormat = useCallback(value => (Math.abs(value - axis.highest) < 1
-    ? <MaxTick value={value} unit={config.unit} />
-    : value), [axis.highest, config.unit]);
+  const axisFormat = useCallback(
+    value => (Math.abs(value - Math.max(...axis.ticks)) < Number.EPSILON
+      ? <MaxTick value={value} unit={config.unit} />
+      : value),
+    [axis.ticks, config.unit],
+  );
 
   if (!data || !year) {
     return null;
@@ -62,7 +65,7 @@ const BySector = ({ data, year }) => {
         data={orderedData}
         layers={['grid', 'axes', 'areas', 'crosshair', 'lines', 'points', 'mesh', fade]}
         xScale={{ type: 'point' }}
-        yScale={{ type: 'linear', min: 0, max: axis.max, stacked: true, reverse: false }}
+        yScale={{ type: 'linear', min: 0, max: axis.highest, stacked: true, reverse: false }}
         curve="cardinal"
         axisRight={{
           ...CHART_AXIS_PROPS,

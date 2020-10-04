@@ -48,9 +48,12 @@ const ByRegion = ({ data, year }) => {
       .map(seg => Object.values(seg).reduce((a, b) => a + (typeof b === 'string' ? 0 : b), 0)));
     return getMaxTick(highest);
   }, [data]);
-  const axisFormat = useCallback(value => (Math.abs(value - axis.highest) < 1
-    ? <MaxTick value={value} unit={config.unit} />
-    : value), [axis.highest, config.unit]);
+  const axisFormat = useCallback(
+    value => (Math.abs(value - Math.max(...axis.ticks)) < Number.EPSILON
+      ? <MaxTick value={value} unit={config.unit} />
+      : value),
+    [axis.ticks, config.unit],
+  );
 
   if (!data) {
     return null;
@@ -65,7 +68,7 @@ const ByRegion = ({ data, year }) => {
         data={data}
         keys={keys}
         indexBy="year"
-        maxValue={axis.max}
+        maxValue={axis.highest}
         padding={0.1}
         colors={colors}
         borderColor={{ from: 'color', modifiers: [['darker', 1.6]] }}
