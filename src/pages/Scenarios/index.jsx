@@ -64,6 +64,8 @@ const Scenarios = ({ data, year }) => {
       }))}
       unit={config.unit}
       paper
+      showTotal={false}
+      showPercentage={false}
     />
   ), [config.unit]);
 

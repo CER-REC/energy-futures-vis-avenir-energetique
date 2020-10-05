@@ -14,7 +14,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const VizTooltip = ({ nodes, total, unit, year, paper }) => {
+const VizTooltip = ({ nodes, total, unit, year, paper, showTotal, showPercentage }) => {
   const classes = useStyles();
 
   const sum = total || (nodes || []).map(node => node.value).reduce((a, b) => a + b, 0);
@@ -23,10 +23,12 @@ const VizTooltip = ({ nodes, total, unit, year, paper }) => {
       {year && <Grid item><strong>{year}:</strong></Grid>}
       {[
         ...(nodes || []),
-        ...(nodes && nodes.length > 1 ? [{ name: 'TOTAL', value: sum }] : []),
+        ...(showTotal && nodes && nodes.length > 1 ? [{ name: 'TOTAL', value: sum }] : []),
       ].filter(node => Math.abs(node.value) > Number.EPSILON).map((node) => {
         const num = formatUnitAbbreviation(node.value);
-        const suffix = node.value === sum ? (UNIT_NAMES[unit] || '') : `(${((node.value / sum) * 100).toFixed(1)}%)`;
+        const suffix = node.value === sum || !showPercentage
+          ? (UNIT_NAMES[unit] || '')
+          : `(${((node.value / sum) * 100).toFixed(1)}%)`;
         return (
           <Grid item key={`viz-legend-item-${node.name}-${node.value}`}>
             <Grid container alignItems="center" wrap="nowrap">
@@ -53,12 +55,16 @@ VizTooltip.propTypes = {
   unit: PropTypes.string.isRequired,
   year: PropTypes.number,
   paper: PropTypes.bool,
+  showTotal: PropTypes.bool,
+  showPercentage: PropTypes.bool,
 };
 
 VizTooltip.defaultProps = {
   total: 0,
   year: undefined,
   paper: false,
+  showTotal: true, // determine whether or not the total value is displayed
+  showPercentage: true, // determine whether or not percentages are displayed
 };
 
 export default VizTooltip;
