@@ -4,9 +4,11 @@ import {
   makeStyles, createStyles,
   Grid, Typography, Button, Tooltip,
 } from '@material-ui/core';
+import { useIntl } from 'react-intl';
 
+import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
-import { CONFIG_LAYOUT, SECTOR_LAYOUT, UNIT_NAMES } from '../../constants';
+import { CONFIG_LAYOUT, UNIT_NAMES } from '../../constants';
 import Hint from '../Hint';
 // #endregion
 
@@ -36,6 +38,8 @@ const useStyles = makeStyles(theme => createStyles({
 
 const HorizontalControlBar = () => {
   const classes = useStyles();
+  const intl = useIntl();
+  const { sectors } = useAPI();
   const { config, setConfig } = useConfig();
   const layout = useMemo(() => CONFIG_LAYOUT[config.mainSelection], [config.mainSelection]);
 
@@ -84,16 +88,20 @@ const HorizontalControlBar = () => {
     </>
   );
 
-  const sectors = ['by-sector', 'demand'].includes(config.page) && (
+  const sectorSelection = ['by-sector', 'demand'].includes(config.page) && (
     <>
       <Grid item>
         <Hint><Typography variant="body1" color="primary">SECTOR</Typography></Hint>
       </Grid>
-      {Object.keys(SECTOR_LAYOUT).map((sector) => {
-        const Icon = SECTOR_LAYOUT[sector]?.icon;
+      {sectors.order.map((sector) => {
+        const Icon = sectors.icons[sector];
+
         return (
           <Grid item key={`config-sector-${sector}`}>
-            <Tooltip title={SECTOR_LAYOUT[sector]?.name} classes={{ tooltip: classes.tooltip }}>
+            <Tooltip
+              title={intl.formatMessage({ id: `common.sectors.${sector}` })}
+              classes={{ tooltip: classes.tooltip }}
+            >
               <span>
                 <Button
                   variant={config.sector === sector ? 'contained' : 'outlined'}
@@ -102,7 +110,7 @@ const HorizontalControlBar = () => {
                   onClick={() => handleConfigUpdate('sector', sector)}
                   className={classes.btnSector}
                 >
-                  {sector === 'total' ? 'Total Demand' : <Icon />}
+                  {Icon ? <Icon /> : intl.formatMessage({ id: `common.sectors.${sector}` }) }
                 </Button>
               </span>
             </Tooltip>
@@ -150,7 +158,7 @@ const HorizontalControlBar = () => {
   return (
     <Grid container alignItems="center" wrap="nowrap" className={classes.root}>
       {selections}
-      {sectors}
+      {sectorSelection}
       {views}
       {units}
     </Grid>
