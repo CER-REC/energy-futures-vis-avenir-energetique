@@ -88,29 +88,6 @@ export const CONFIG_LAYOUT = {
   },
 };
 
-export const SECTOR_LAYOUT = {
-  total: {
-    name: 'Total Demand',
-    icon: IconDemand,
-  },
-  residential: {
-    name: 'Residential',
-    icon: IconResidential,
-  },
-  commercial: {
-    name: 'Commercial',
-    icon: IconCommercial,
-  },
-  industrial: {
-    name: 'Industrial',
-    icon: IconIndustrial,
-  },
-  transportation: {
-    name: 'Transportation',
-    icon: IconTransportation,
-  },
-};
-
 /**
  * TODO: replace it with real colors from UI designers.
  */
@@ -183,12 +160,19 @@ export const SOURCE_ICONS = {
   oil: {},
 };
 
+export const SECTOR_ICONS = {
+  RESIDENTIAL: IconResidential,
+  COMMERCIAL: IconCommercial,
+  INDUSTRIAL: IconIndustrial,
+  TRANSPORTATION: IconTransportation,
+};
+
 export const DEFAULT_CONFIG = {
   page: 'landing', // e.g. by-region, by-sector, electricity, senarios, demand
   mainSelection: 'energyDemand', // e.g. electricityGeneration, oilProduction, gasProduction
   unit: 'petajoules', // e.g. kilobarrelEquivalents, gigawattHours, kilobarrels, thousandCubicMetres, cubicFeet, millionCubicMetres
   view: 'region', // e.g. region or source
-  sector: 'total', // e.g. residential, commercial, industrial, or industrial
+  sector: 'ALL', // e.g. ALL, RESIDENTIAL, COMMERCIAL, INDUSTRIAL, OR TRANSPORTATION
   scenarios: [],
   provinces: [],
   provinceOrder: [],
