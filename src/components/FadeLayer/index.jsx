@@ -1,10 +1,7 @@
 import React from 'react';
 
-export default ({ min: yearMin, max: yearMax }) => ({ areaGenerator, series }) => {
-  //   FIXME: this is a hardcoded solution
-  const foreCastYear = 2020;
-
-  const preForecastPercentage = ((foreCastYear - yearMin) / (yearMax - yearMin)) * 100;
+export default ({ min: yearMin, max: yearMax, foreCastStart }) => ({ areaGenerator, series }) => {
+  const preForecastPercentage = ((foreCastStart - yearMin) / (yearMax - yearMin)) * 100;
 
   /*
     Generate the areas for lines in the chart and apply a linear gradient to the fill.
@@ -27,11 +24,10 @@ export default ({ min: yearMin, max: yearMax }) => ({ areaGenerator, series }) =
         <path
           d={areaGenerator(line.data.map(d => d.position))}
           fill={`url(#line-${index}-gradient)`}
-          style={{ mixBlendMode: 'multiply', pointerEvents: 'none' }}
-          opacity={0.5}
+          style={{ mixBlendMode: 'normal', pointerEvents: 'none' }}
         />
       </g>
     ));
 
-  return (<>{areas}</>);
+  return (<g opacity={0.7}>{areas}</g>);
 };
