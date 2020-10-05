@@ -35,9 +35,10 @@ export const ELECTRICITY_GENERATIONS = gql`
 
 export const OIL_PRODUCTIONS = gql`
   query ($iteration: ID!, $regions: [Region!], $scenarios: [String!]) {
-    resources:oilProductions(iterationIds: [$iteration], regions: $regions, scenarios: $scenarios) {
+    resources:oilProductions(iterationIds: [$iteration], regions: $regions, scenarios: $scenarios, sources: [ALL]) {
       province: region
       year
+      scenario
       value: quantity
     }
   }
