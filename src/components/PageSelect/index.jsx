@@ -29,7 +29,7 @@ const useStyles = makeStyles(theme => createStyles({
   box: {
     position: 'absolute',
     left: 0,
-    height: 64,
+    height: 84,
     backgroundColor: '#F3EFEF',
     boxShadow: theme.shadows[4],
     zIndex: 9,
@@ -45,15 +45,21 @@ const useStyles = makeStyles(theme => createStyles({
       width: 64,
       fill: theme.palette.secondary.light,
     },
+    '& + span': {
+      width: 64,
+      color: theme.palette.secondary.light,
+      fontWeight: 700,
+    },
   },
   label: {
     textAlign: 'left',
     overflow: 'hidden',
     transition: 'height .5s ease-in-out, width .5s ease-in-out',
-    '& > h5': { transition: 'opacity .5s ease-in-out' },
-    '& > h5:first-of-type': {
-      fontWeight: 700,
+    '& > h5': {
+      marginLeft: theme.spacing(2),
+      transition: 'opacity .5s ease-in-out',
     },
+    '& > h5:first-of-type': { fontWeight: 700 },
   },
   tooltip: {
     margin: theme.spacing(0, 1),
@@ -113,11 +119,12 @@ const PageSelect = () => {
           centerRipple
           onClick={() => handleSelect(page.id)}
           classes={{ root: classes.box }}
-          style={{
-            top: index * 68 + 10,
-            padding: index === 0 ? '2px 8px' : 0,
-          }}
+          style={{ top: index === 0 ? 10 : (index - 1) * 88 + 82, height: index === 0 ? 68 : 84 }}
         >
+          <Grid container direction="column" wrap="nowrap" style={{ width: 'auto' }}>
+            <div className={classes.icon}>{getPageIcon(page.id)}</div>
+            {index !== 0 && <Typography variant="caption">{page.label}</Typography>}
+          </Grid>
           <div
             className={classes.label}
             style={{
@@ -134,7 +141,6 @@ const PageSelect = () => {
               {config.page === 'electricity' && `By ${config.view}`}
             </Typography>
           </div>
-          <div className={classes.icon}>{getPageIcon(page.id)}</div>
         </ButtonBase>
       </Tooltip>
     );
