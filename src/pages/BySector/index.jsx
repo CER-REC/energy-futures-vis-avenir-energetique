@@ -79,9 +79,9 @@ const BySector = ({ data, year }) => {
         colors={d => colors[d.id]}
         lineWidth={0}
         enablePoints={false}
-        areaBaselineValue={0}
         tooltipLabel={getTooltipLabel}
         useMesh
+        gridYValues={axis.ticks}
       />
     </>
   );

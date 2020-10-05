@@ -81,6 +81,7 @@ const ByRegion = ({ data, year }) => {
           tickValues: axis.ticks,
           format: axisFormat,
         }}
+        gridYValues={axis.ticks}
       />
     </>
   );

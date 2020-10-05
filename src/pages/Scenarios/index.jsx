@@ -85,6 +85,7 @@ const Scenarios = ({ data, year }) => {
           format: axisFormat,
         }}
         useMesh
+        gridYValues={axis.ticks}
       />
     </>
   );
