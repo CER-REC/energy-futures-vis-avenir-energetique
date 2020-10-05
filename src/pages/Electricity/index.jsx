@@ -312,8 +312,8 @@ const Electricity = ({ data, year }) => {
 
       {/* below are the controls for the year playback */}
       <YearSlider
-        year={{ curr: currYear }}
-        onYearChange={values => setCurrYear(values.curr)}
+        year={currYear}
+        onYearChange={value => setCurrYear(value)}
         min={year.min}
         max={year.max}
       />
