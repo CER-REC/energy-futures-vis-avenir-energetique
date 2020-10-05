@@ -3,11 +3,12 @@ import { ResponsiveBar } from '@nivo/bar';
 import PropTypes from 'prop-types';
 import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
-import { CHART_PROPS, CHART_AXIS_PROPS } from '../../constants';
+import { CHART_PROPS, CHART_AXIS_PROPS, UNIT_NAMES } from '../../constants';
+import { formatUnitAbbreviation } from '../../utilities/convertUnit';
+import { getMaxTick } from '../../utilities/parseData';
+import convertHexToRGB from '../../utilities/convertHexToRGB';
 import ForecastBar from '../../components/ForecastBar';
 import MaxTick from '../../components/MaxTick';
-import convertHexToRGB from '../../utilities/convertHexToRGB';
-import { getMaxTick } from '../../utilities/parseData';
 
 const ByRegion = ({ data, year }) => {
   const { regions } = useAPI();
@@ -81,6 +82,7 @@ const ByRegion = ({ data, year }) => {
           tickValues: axis.ticks,
           format: axisFormat,
         }}
+        tooltipFormat={value => `${formatUnitAbbreviation(value)} ${UNIT_NAMES[config.unit]}`}
         gridYValues={axis.ticks}
       />
     </>

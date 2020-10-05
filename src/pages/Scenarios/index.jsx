@@ -6,6 +6,7 @@ import { CHART_PROPS, CHART_AXIS_PROPS, SCENARIO_COLOR } from '../../constants';
 import { getMaxTick } from '../../utilities/parseData';
 import ForecastBar from '../../components/ForecastBar';
 import fadeLayer from '../../components/FadeLayer/index';
+import VizTooltip from '../../components/VizTooltip';
 import MaxTick from '../../components/MaxTick';
 
 const Scenarios = ({ data, year }) => {
@@ -51,6 +52,23 @@ const Scenarios = ({ data, year }) => {
     [axis.ticks, config.unit],
   );
 
+  /**
+   * Format tooltip.
+   */
+  const getTooltip = useCallback(event => (
+    <VizTooltip
+      nodes={event.slice?.points.map(value => ({
+        name: value.serieId,
+        value: value.data?.y,
+        color: value.serieColor,
+      }))}
+      unit={config.unit}
+      paper
+      showTotal={false}
+      showPercentage={false}
+    />
+  ), [config.unit]);
+
   if (!data) {
     return null;
   }
@@ -63,7 +81,7 @@ const Scenarios = ({ data, year }) => {
         data={data}
         enableArea
         enablePoints={false}
-        layers={['grid', 'axes', 'areas', 'crosshair', 'lines', 'points', 'mesh', fade, dots]}
+        layers={['grid', 'axes', 'areas', 'crosshair', 'lines', 'points', 'slices', fade, dots]}
         curve="cardinal"
         areaOpacity={0.15}
         xScale={{ type: 'point' }}
@@ -84,7 +102,8 @@ const Scenarios = ({ data, year }) => {
           tickValues: axis.ticks,
           format: axisFormat,
         }}
-        useMesh
+        enableSlices="x"
+        sliceTooltip={getTooltip}
         gridYValues={axis.ticks}
       />
     </>

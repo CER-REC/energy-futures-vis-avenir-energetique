@@ -8,6 +8,7 @@ import MaxTick from '../../components/MaxTick';
 
 import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
+import VizTooltip from '../../components/VizTooltip';
 import { CHART_PROPS, CHART_AXIS_PROPS } from '../../constants';
 import { getMaxTick } from '../../utilities/parseData';
 
@@ -30,12 +31,20 @@ const BySector = ({ data, year }) => {
   const fade = useMemo(() => fadeLayer(year), [year]);
 
   /**
-   * Format tooltip labels.
+   * Format tooltip.
    */
-  const getTooltipLabel = useCallback(
-    dataItem => intl.formatMessage({ id: `common.sources.energy.${dataItem.id}` }).toUpperCase(),
-    [intl],
-  );
+  const getTooltip = useCallback(event => (
+    <VizTooltip
+      nodes={event.slice?.points.map(value => ({
+        name: value.serieId,
+        translation: intl.formatMessage({ id: `common.sources.energy.${value.serieId}` }),
+        value: value.data?.y,
+        color: value.serieColor,
+      }))}
+      unit={config.unit}
+      paper
+    />
+  ), [intl, config.unit]);
 
   /**
    * Calculate the max tick value on y-axis.
@@ -63,7 +72,7 @@ const BySector = ({ data, year }) => {
       <ResponsiveLine
         {...CHART_PROPS}
         data={orderedData}
-        layers={['grid', 'axes', 'areas', 'crosshair', 'lines', 'points', 'mesh', fade]}
+        layers={['grid', 'axes', 'areas', 'crosshair', 'lines', 'points', 'slices', fade]}
         xScale={{ type: 'point' }}
         yScale={{ type: 'linear', min: 0, max: axis.highest, stacked: true, reverse: false }}
         curve="cardinal"
@@ -79,8 +88,8 @@ const BySector = ({ data, year }) => {
         colors={d => colors[d.id]}
         lineWidth={0}
         enablePoints={false}
-        tooltipLabel={getTooltipLabel}
-        useMesh
+        enableSlices="x"
+        sliceTooltip={getTooltip}
         gridYValues={axis.ticks}
       />
     </>
