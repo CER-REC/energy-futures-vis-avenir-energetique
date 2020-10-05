@@ -56,6 +56,7 @@ const PageLayout = ({
   const { regions, sources } = useAPI();
   const { config, setConfig } = useConfig();
   const { loading, error, data, year } = useEnergyFutureData();
+
   const type = PAGES.find(page => page.id === config.page).sourceType;
 
   /**
@@ -92,36 +93,24 @@ const PageLayout = ({
     [children, data, year],
   );
   const regionItems = useMemo(
-    () => {
-      const items = {};
-
-      regions.order.forEach((region) => {
-        items[region] = {
-          color: regions.colors[region],
-          label: intl.formatMessage({ id: `regions.${region}` }),
-        };
-      });
-
-      return items;
-    },
+    () => regions.order.reduce((items, region) => ({
+      ...items,
+      [region]: {
+        color: regions.colors[region],
+        label: intl.formatMessage({ id: `regions.${region}` }),
+      },
+    }), {}),
     [regions, intl],
   );
   const sourceItems = useMemo(
-    () => {
-      const items = {};
-
-      if (type) {
-        sources[type].order.forEach((source) => {
-          items[source] = {
-            color: sources[type].colors[source],
-            icon: sources[type].icons[source],
-            label: intl.formatMessage({ id: `common.sources.${type}.${source}` }),
-          };
-        });
-      }
-
-      return items;
-    },
+    () => (type ? sources[type].order : []).reduce((items, source) => ({
+      ...items,
+      [source]: {
+        color: sources[type].colors[source],
+        icon: sources[type].icons[source],
+        label: intl.formatMessage({ id: `common.sources.${type}.${source}` }),
+      },
+    }), {}),
     [type, sources, intl],
   );
 

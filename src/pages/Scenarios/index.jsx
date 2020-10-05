@@ -1,17 +1,20 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { ResponsiveLine } from '@nivo/line';
 import PropTypes from 'prop-types';
-import { SCENARIO_COLOR } from '../../constants';
+import useConfig from '../../hooks/useConfig';
+import { CHART_PROPS, CHART_AXIS_PROPS, SCENARIO_COLOR } from '../../constants';
+import { getMaxTick } from '../../utilities/parseData';
 import ForecastBar from '../../components/ForecastBar';
 import fadeLayer from '../../components/FadeLayer/index';
-import useConfig from '../../hooks/useConfig';
+import MaxTick from '../../components/MaxTick';
 
 const Scenarios = ({ data, year }) => {
-  const { yearId } = useConfig().config;
+  const { config } = useConfig();
 
-  const fade = useCallback(fadeLayer(year), [year]);
-
-  const pointsLayer = useCallback(scenarioYear => args => args.points
+  /**
+   * Generate a custom dotted line layer for rendering the default scenario.
+   */
+  const dottedLayer = useCallback(scenarioYear => args => args.points
     .filter(point => point.serieId === (scenarioYear === '2020' ? 'Evolving' : 'Reference'))
     .map(point => (
       <circle
@@ -25,6 +28,28 @@ const Scenarios = ({ data, year }) => {
         style={{ pointerEvents: 'none' }}
       />
     )), []);
+  const dots = useMemo(() => dottedLayer(config.yearId), [config.yearId, dottedLayer]);
+
+  /**
+   * The fade-out effect over forecast years.
+   */
+  const fade = useMemo(() => fadeLayer(year), [year]);
+
+  /**
+   * Calculate the max tick value on y-axis.
+   */
+  const axis = useMemo(() => {
+    const values = (data || []).map(source => source.data);
+    const sums = (values[0] || [])
+      .map((_, i) => Math.max(...values.map(source => source[i].y)));
+    return getMaxTick(Math.max(...sums), true);
+  }, [data]);
+  const axisFormat = useCallback(
+    value => (Math.abs(value - Math.max(...axis.ticks)) < Number.EPSILON
+      ? <MaxTick value={value} unit={config.unit} />
+      : value),
+    [axis.ticks, config.unit],
+  );
 
   if (!data) {
     return null;
@@ -34,13 +59,15 @@ const Scenarios = ({ data, year }) => {
     <>
       <ForecastBar year={year} />
       <ResponsiveLine
-        enablePoints={false}
-        layers={['grid', pointsLayer(yearId), 'axes', 'areas', 'crosshair', 'lines', 'points', 'mesh', fade]}
+        {...CHART_PROPS}
         data={data}
+        enableArea
+        enablePoints={false}
+        layers={['grid', 'axes', 'areas', 'crosshair', 'lines', 'points', 'mesh', fade, dots]}
         curve="cardinal"
-        margin={{ top: 50, right: 50, bottom: 50, left: 50 }}
+        areaOpacity={0.15}
         xScale={{ type: 'point' }}
-        yScale={{ type: 'linear', min: 0, max: 'auto', reverse: false }}
+        yScale={{ type: 'linear', min: 0, max: axis.highest, reverse: false }}
         colors={d => SCENARIO_COLOR[d.id] || '#AAA'}
         pointSize={8}
         pointColor={{ theme: 'background' }}
@@ -48,28 +75,17 @@ const Scenarios = ({ data, year }) => {
         pointBorderColor={{ from: 'serieColor' }}
         pointLabel="y"
         pointLabelYOffset={-12}
-        axisTop={null}
-        axisLeft={null}
         axisBottom={{
-          tickSize: 5,
-          tickPadding: 5,
-          tickRotation: 0,
-          legendPosition: 'middle',
-          legendOffset: 32,
+          ...CHART_AXIS_PROPS,
           format: yearLabel => ((yearLabel % 5) ? '' : yearLabel),
         }}
         axisRight={{
-          tickSize: 5,
-          tickPadding: 5,
-          tickRotation: 0,
-          legendPosition: 'middle',
-          legendOffset: -40,
+          ...CHART_AXIS_PROPS,
+          tickValues: axis.ticks,
+          format: axisFormat,
         }}
-        enableLabel={false}
-        animate
-        motionStiffness={90}
-        motionDamping={15}
         useMesh
+        gridYValues={axis.ticks}
       />
     </>
   );

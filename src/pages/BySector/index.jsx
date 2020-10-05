@@ -4,28 +4,53 @@ import PropTypes from 'prop-types';
 import { useIntl } from 'react-intl';
 import ForecastBar from '../../components/ForecastBar';
 import fadeLayer from '../../components/FadeLayer';
+import MaxTick from '../../components/MaxTick';
 
 import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
+import { CHART_PROPS, CHART_AXIS_PROPS } from '../../constants';
+import { getMaxTick } from '../../utilities/parseData';
 
 const BySector = ({ data, year }) => {
   const intl = useIntl();
   const { sources: { energy: { colors } } } = useAPI();
   const { config } = useConfig();
 
-  const fade = useCallback(fadeLayer(year), [year]);
-
   const orderedData = useMemo(
-    () => config.sourceOrder
+    () => data && config.sourceOrder
       .map(source => data.find(o => o.id === source))
       .filter(Boolean)
       .reverse(),
     [config.sourceOrder, data],
   );
 
+  /**
+   * The fade-out effect over forecast years.
+   */
+  const fade = useMemo(() => fadeLayer(year), [year]);
+
+  /**
+   * Format tooltip labels.
+   */
   const getTooltipLabel = useCallback(
     dataItem => intl.formatMessage({ id: `common.sources.energy.${dataItem.id}` }).toUpperCase(),
     [intl],
+  );
+
+  /**
+   * Calculate the max tick value on y-axis.
+   */
+  const axis = useMemo(() => {
+    const values = (data || []).map(source => source.data);
+    const sums = (values[0] || [])
+      .map((_, i) => values.map(source => source[i].y).reduce((a, b) => a + b, 0));
+    return getMaxTick(Math.max(...sums));
+  }, [data]);
+  const axisFormat = useCallback(
+    value => (Math.abs(value - Math.max(...axis.ticks)) < Number.EPSILON
+      ? <MaxTick value={value} unit={config.unit} />
+      : value),
+    [axis.ticks, config.unit],
   );
 
   if (!data || !year) {
@@ -36,32 +61,27 @@ const BySector = ({ data, year }) => {
     <>
       <ForecastBar year={year} />
       <ResponsiveLine
+        {...CHART_PROPS}
         data={orderedData}
         layers={['grid', 'axes', 'areas', 'crosshair', 'lines', 'points', 'mesh', fade]}
-        margin={{ top: 50, right: 50, bottom: 50, left: 50 }}
         xScale={{ type: 'point' }}
-        yScale={{ type: 'linear', min: 0, max: 'auto', stacked: true, reverse: false }}
+        yScale={{ type: 'linear', min: 0, max: axis.highest, stacked: true, reverse: false }}
         curve="cardinal"
-        axisTop={null}
         axisRight={{
-          orient: 'right',
-          tickSize: 5,
-          tickPadding: 5,
-          tickRotation: 0,
+          ...CHART_AXIS_PROPS,
+          tickValues: axis.ticks,
+          format: axisFormat,
         }}
         axisBottom={{
-          orient: 'bottom',
-          tickSize: 5,
-          tickPadding: 5,
-          tickRotation: 0,
+          ...CHART_AXIS_PROPS,
           format: value => ((value % 5) ? '' : value),
         }}
-        axisLeft={null}
         colors={d => colors[d.id]}
         lineWidth={0}
         enablePoints={false}
         tooltipLabel={getTooltipLabel}
         useMesh
+        gridYValues={axis.ticks}
       />
     </>
   );
