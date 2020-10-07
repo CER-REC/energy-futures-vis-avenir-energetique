@@ -164,7 +164,7 @@ const DraggableVerticalList = ({
   defaultItems /* object */,
   itemOrder /* array of strings */,
   defaultItemOrder /* array of strings */,
-  availableItems /* array of strings */,
+  disabledItems /* array of strings */,
   setItems /* (localItems) => void */,
   setItemOrder /* (localItemOrder) => void */,
 }) => {
@@ -291,7 +291,7 @@ const DraggableVerticalList = ({
                         icon={defaultItems[item].icon}
                         color={greyscale ? undefined : defaultItems[item].color}
                         selected={localItems.indexOf(item) > -1}
-                        disabled={availableItems && !availableItems?.includes(item)}
+                        disabled={disabledItems && disabledItems.includes(item)}
                         isDragDisabled={disabled}
                       />
                     </Grid>
@@ -319,7 +319,7 @@ DraggableVerticalList.propTypes = {
   defaultItems: PropTypes.object, // eslint-disable-line react/forbid-prop-types
   itemOrder: PropTypes.arrayOf(PropTypes.string),
   defaultItemOrder: PropTypes.arrayOf(PropTypes.string),
-  availableItems: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.string), PropTypes.bool]),
+  disabledItems: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.string), PropTypes.bool]),
   setItems: PropTypes.func,
   setItemOrder: PropTypes.func,
 };
@@ -336,7 +336,7 @@ DraggableVerticalList.defaultProps = {
   defaultItems: {},
   itemOrder: [],
   defaultItemOrder: [],
-  availableItems: false,
+  disabledItems: false,
   setItems: undefined,
   setItemOrder: undefined,
 };

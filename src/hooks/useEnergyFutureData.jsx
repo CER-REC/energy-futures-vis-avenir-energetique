@@ -122,20 +122,25 @@ export default () => {
   }, [config.page, config.view, data, regions, sources, unitConversion]);
 
   /**
-   * Determine all available items in the current data-set.
+   * Determine all the unavailable / disabled items in the current data-set.
    * This is used to render the button boxes in the draggable list.
    */
-  const availability = useCallback((key) => {
-    const items = new Set((data?.resources || []).filter(row => row.value).map(row => row[key]));
-    return items.size > 0 && Array.from(items);
+  const unavailability = useCallback((key) => {
+    const sums = (data?.resources || []).reduce((result, row) => ({
+      ...result,
+      [row[key]]: (result[row[key]] || 0) + row.value,
+    }), {});
+    return Object.keys(sums)
+      .map(name => (Math.abs(sums[name]) < Number.EPSILON ? name : undefined))
+      .filter(Boolean);
   }, [data]);
 
   return {
     loading,
     error,
     data: processedData,
-    availableRegions: availability('province'),
-    availableSources: availability('source'),
+    disabledRegions: unavailability('province'),
+    disabledSources: unavailability('source'),
     year: years && {
       min: Math.min(...years),
       forecastStart,

@@ -55,7 +55,7 @@ const PageLayout = ({
   const intl = useIntl();
   const { regions, sources } = useAPI();
   const { config, setConfig } = useConfig();
-  const { loading, error, data, availableRegions, availableSources, year } = useEnergyFutureData();
+  const { loading, error, data, disabledRegions, disabledSources, year } = useEnergyFutureData();
 
   const type = PAGES.find(page => page.id === config.page).sourceType;
 
@@ -145,7 +145,7 @@ const PageLayout = ({
                 itemOrder={config.sourceOrder}
                 defaultItems={sourceItems}
                 defaultItemOrder={sources[type].order}
-                availableItems={config.page === 'by-sector' && availableSources}
+                disabledItems={config.page === 'by-sector' && disabledSources}
                 setItems={selectedSources => setConfig({ ...config, sources: selectedSources })}
                 setItemOrder={sourceOrder => setConfig({ ...config, sourceOrder })}
               />
@@ -166,7 +166,7 @@ const PageLayout = ({
                 itemOrder={config.provinceOrder}
                 defaultItems={regionItems}
                 defaultItemOrder={regions.order}
-                availableItems={config.page === 'by-region' && availableRegions}
+                disabledItems={config.page === 'by-region' && disabledRegions}
                 setItems={provinces => setConfig({ ...config, provinces })}
                 setItemOrder={provinceOrder => setConfig({ ...config, provinceOrder })}
               />
