@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useMemo, useCallback, useState } from 'react';
+
 // import PropTypes from 'prop-types';
-import { Grid, Typography } from '@material-ui/core';
+import { Grid, Typography, Button } from '@material-ui/core';
 import { ResponsiveTreeMap } from '@nivo/treemap';
 import { useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
-import mockData from './mockData';
 import useAPI from '../../hooks/useAPI';
 
 const query = gql`
@@ -19,52 +19,10 @@ query ($iteration: ID!, $regions: [Region!], $scenarios: [String!], $sources: [G
   }
 `;
 
-const TreeMapCollection = ({ showSourceLabel, selectedYear }) => {
-  const { regions } = useAPI();
-  const { loading, error, data } = useQuery(query, {
-    variables: {
-      scenarios: ['Evolving'],
-      iteration: '6',
-      regions: ['YT', 'SK', 'QC', 'PE', 'ON', 'NU', 'NT', 'NS', 'NL', 'NB', 'MB', 'BC', 'AB'],
-      // FIXME: config will store it as "total"
-      // it should be "total end-use"
-      sectors: 'total end-use',
-      sources: ['TIGHT', 'CBM', 'NA', 'SHALE', 'SOLUTION'],
-    },
-  });
-
-  if (!data) {
-    return null;
-  }
-
-  const base = data.resources.reduce((acc, val) => {
-    if (!acc[val.year]) {
-      acc[val.year] = [];
-    }
-    if (!acc[val.year].find(element => element.name === val.source)) {
-      acc[val.year].push({ name: val.source, total: 0, children: [] });
-    }
-
-    return acc;
-  }, {});
-
-  const formattedData = data.resources.reduce((acc, val) => {
-    const entry = acc[val.year].find(e => e.name === val.source);
-    entry.children.push({
-      name: val.province,
-      color: regions.colors[val.province],
-      value: val.value,
-    });
-    entry.total += val.value;
-    // console.log(entry);
-    return acc;
-  }, base);
-
-  console.log(formattedData);
-  console.log(data);
-
-  const trees = formattedData[selectedYear].sort((a, b) => b.total - a.total).map(source => (
-    <div key={source.name} style={{ height: source.total * 1.5, width: source.total * 1.5, marginRight: '50px' }}>
+const TreeMapCollection = ({ data, showSourceLabel }) => {
+  const sortedData = data.sort((a, b) => b.total - a.total);
+  const trees = sortedData.map(source => (
+    <Grid key={source.name} style={{ bottom: '0', height: source.total * 1.5, width: source.total * 1.5, marginRight: '50px' }}>
 
       {showSourceLabel && <Typography style={{ marginLeft: 10 }}>{source.name}</Typography>}
       <ResponsiveTreeMap
@@ -81,24 +39,124 @@ const TreeMapCollection = ({ showSourceLabel, selectedYear }) => {
         motionStiffness={90}
         motionDamping={11}
       />
-    </div>
+    </Grid>
   ));
-
   return trees;
 };
 
-const TreeMap = () => (
-  <Grid container>
-    <Grid container wrap="nowrap">
-      <TreeMapCollection showSourceLabel selectedYear={2016} />
+const TreeMap = ({ view, selectedYear1, selectedYear2, region1, region2 }) => {
+  console.log(view);
+  const { regions } = useAPI();
+  const { _loading, _error, data } = useQuery(query, {
+    variables: {
+      scenarios: ['Evolving'],
+      iteration: '6',
+      regions: ['YT', 'SK', 'QC', 'PE', 'ON', 'NU', 'NT', 'NS', 'NL', 'NB', 'MB', 'BC', 'AB'],
+      // FIXME: config will store it as "total"
+      // it should be "total end-use"
+      sectors: 'total end-use',
+      sources: ['TIGHT', 'CBM', 'NA', 'SHALE', 'SOLUTION'],
+    },
+  });
+
+  const [compare, setCompare] = useState(false);
+
+  const getData = useCallback(
+    (inputData) => {
+      const baseStructure = inputData.resources.reduce((acc, val) => {
+        if (!acc[val.year]) {
+          acc[val.year] = [];
+        }
+        if (!acc[val.year].find(element => element.name === val.source)) {
+          acc[val.year].push({ name: val.source, total: 0, children: [] });
+        }
+        return acc;
+      }, {});
+
+      const formattedData = inputData.resources.reduce((acc, val) => {
+        const entry = acc[val.year].find(e => e.name === val.source);
+        entry.children.push({
+          name: val.province,
+          color: regions.colors[val.province],
+          value: val.value,
+        });
+        entry.total += val.value;
+        return acc;
+      }, baseStructure);
+      return formattedData;
+    },
+    [regions.colors],
+  );
+
+  const dataByRegion = useCallback((inputData) => {
+    const gasColors = {
+      ALL: 'black',
+      CBM: 'red',
+      OIL: 'pink',
+      TIGHT: 'pink',
+      NA: 'orange',
+      SHALE: 'yellow',
+      SOLUTION: 'green',
+    };
+    const baseStructure = inputData.resources.reduce((acc, val) => {
+      if (!acc[val.year]) {
+        acc[val.year] = {};
+      }
+      if (!acc[val.year][val.province]) {
+        acc[val.year][val.province] = { name: val.province, total: 0, children: [] };
+      }
+      return acc;
+    }, {});
+
+    // This mutates the array
+    inputData.resources.reduce((acc, val) => {
+      const entry = acc[val.year][val.province];
+      entry.children.push({
+        name: val.source,
+        color: gasColors[val.source], // FIXME:
+        value: val.value,
+      });
+      entry.total += val.value;
+      return acc;
+    }, baseStructure);
+    return baseStructure;
+  }, []);
+
+  if (!data) {
+    return null;
+  }
+  console.log(data);
+
+  return (
+    <Grid container>
+
+      <Grid style={{ marginLeft: '80%', align: 'right' }}>
+        <Typography variant='h3'>2016</Typography>
+        <Button onClick={() => setCompare(!compare)} variant="outlined"><Typography variant='body1'>{compare ? 'Dont Compare' : 'compare'}</Typography></Button>
+      </Grid>
+
+      <Grid container wrap="nowrap">
+        <TreeMapCollection
+          data={view === 'byRegion' ? [dataByRegion(data)[selectedYear1][region1]] : getData(data)[selectedYear1]}
+          showSourceLabel
+          selectedYear={selectedYear1}
+        />
+      </Grid>
+      <Grid container wrap="nowrap" style={{ marginTop: 15 }}>
+        <hr style={{ width: '100%' }} />
+      </Grid>
+      {compare
+      && (
+      <Grid container wrap="nowrap">
+        <TreeMapCollection
+          data={view === 'byRegion' ? [dataByRegion(data)[selectedYear2][region2]] : getData(data)[selectedYear2]}
+          selectedYear={selectedYear2}
+          showSourceLabel={view === 'byRegion'}
+        />
+      </Grid>
+      )}
     </Grid>
-    <Grid container wrap="nowrap" style={{ marginTop: 15 }}>
-      <hr style={{ width: '100%' }} />
-    </Grid>
-    <Grid container wrap="nowrap">
-      <TreeMapCollection selectedYear={2020} />
-    </Grid>
-  </Grid>
-);
+  );
+};
 
 export default TreeMap;
