@@ -5,11 +5,10 @@ import {
   makeStyles, Paper, Grid, Typography, Tooltip,
 } from '@material-ui/core';
 
-import { UNIT_NAMES } from '../../constants';
-import { formatUnitAbbreviation } from '../../utilities/convertUnit';
 import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
 import YearSlider from '../../components/YearSlider';
+import VizTooltip from '../../components/VizTooltip';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -74,7 +73,6 @@ const useStyles = makeStyles(theme => ({
     right: 'calc(-100% - 100px)',
     maxWidth: 250,
     transform: 'translateY(50%)',
-    fontSize: 12,
   },
 }));
 
@@ -106,43 +104,6 @@ const BUBBLE_SIZE = {
   region: { MAX: 20, MIN: 0.5 },
   source: { MAX: 30, MIN: 0 },
   single: 20,
-};
-
-/**
- * Rendering bubble tooltips.
- */
-const Legend = ({ entry, unit }) => (
-  <Grid container direction="column" spacing={1}>
-    {[...entry.nodes, { name: 'Total', value: entry.value }].map((node) => {
-      const value = formatUnitAbbreviation(node.value);
-      const suffix = node.name === 'Total' ? UNIT_NAMES[unit] : `(${((node.value / entry.value) * 100).toFixed(1)}%)`;
-      return (
-        <Grid item key={`legend-item-${node.name}`}>
-          <Grid container alignItems="center" wrap="nowrap">
-            <div style={{ height: 16, width: 16, backgroundColor: node.color || 'white', marginRight: 6 }} />
-            <strong>{node.translation || node.name}:</strong>&nbsp;
-            {`${value} ${suffix}`}
-          </Grid>
-        </Grid>
-      );
-    })}
-  </Grid>
-);
-
-Legend.propTypes = {
-  entry: PropTypes.shape({
-    name: PropTypes.string.isRequired,
-    value: PropTypes.number.isRequired,
-    nodes: PropTypes.arrayOf(PropTypes.shape({
-      name: PropTypes.string,
-      value: PropTypes.number,
-    })).isRequired,
-  }).isRequired,
-  unit: PropTypes.string,
-};
-
-Legend.defaultProps = {
-  unit: '',
 };
 
 const Electricity = ({ data, year }) => {
@@ -251,7 +212,7 @@ const Electricity = ({ data, year }) => {
       {processedData.map(entry => (
         <Tooltip
           key={`bubble-${entry.name}`}
-          title={single ? '' : <Legend entry={entry} unit={config.unit} />}
+          title={single ? '' : <VizTooltip nodes={entry.nodes} unit={config.unit} />}
           classes={{ tooltip: classes.tooltip }}
         >
           <div className={classes.region} style={entry.style}>
@@ -303,7 +264,7 @@ const Electricity = ({ data, year }) => {
             {/* static legend shown beside a single province */}
             {single && (
               <div className={classes.legend}>
-                <Legend entry={entry} unit={config.unit} />
+                <VizTooltip nodes={entry.nodes} unit={config.unit} />
               </div>
             )}
           </div>
