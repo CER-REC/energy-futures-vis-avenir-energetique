@@ -19,10 +19,10 @@ const reorder = (list, startIndex, endIndex) => {
 };
 
 const ColoredItemBox = ({
-  item, label, icon, color, selected, clear, round, isDragDisabled, ...props
+  item, label, icon, color, selected, clear, round, disabled, isDragDisabled, ...gridProps
 }) => {
   const classes = makeStyles(theme => ({
-    root: {
+    root: props => ({
       position: 'absolute',
       height: 36,
       width: 36,
@@ -38,11 +38,35 @@ const ColoredItemBox = ({
       '&.selected': { backgroundColor: color || theme.palette.secondary.main },
       '&.selected > p, &.selected > svg': { color: theme.palette.common.white },
       '&:hover': { boxShadow: theme.shadows[6] },
-    },
+
+      '&.disabled': {
+        borderColor: theme.palette.secondary.main,
+        backgroundColor: theme.palette.common.white,
+      },
+      '&.disabled > p, &.disabled > svg': {
+        color: theme.palette.secondary.main,
+        backgroundColor: props.round ? 'transparent' : theme.palette.common.white,
+        fontWeight: 700,
+        lineHeight: 1,
+        zIndex: 1,
+      },
+      '&.disabled:before': {
+        content: '""',
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        height: 2,
+        width: props.round ? '105%' : '152%',
+        transform: 'translate(-50%, -50%) rotate(-45deg)',
+        backgroundColor: theme.palette.secondary.main,
+        borderRadius: 1,
+      },
+      '&.disabled:hover': { boxShadow: theme.shadows[0] },
+    }),
     btn: { margin: 'auto' },
-    tooltip: disabled => ({
+    tooltip: props => ({
       margin: theme.spacing(0, 1),
-      paddingLeft: disabled ? 4 : 0,
+      paddingLeft: props.isDragDisabled ? 4 : 0,
       fontSize: 10,
       lineHeight: 1,
       color: '#999',
@@ -52,8 +76,9 @@ const ColoredItemBox = ({
       boxShadow: theme.shadows[1],
       '& span': { marginLeft: theme.spacing(0.5) },
     }),
-  }))(isDragDisabled);
+  }))({ round, isDragDisabled });
   const Icon = icon;
+  const styling = [classes.root, selected && 'selected', disabled && 'disabled'].filter(Boolean).join(' ');
   return (
     <Tooltip
       title={label && (
@@ -65,7 +90,7 @@ const ColoredItemBox = ({
       placement="right"
       classes={{ tooltip: classes.tooltip }}
     >
-      <Grid container {...props} className={`${classes.root} ${selected && 'selected'}`}>
+      <Grid container {...gridProps} className={styling}>
         {clear && <ClearIcon className={classes.btn} />}
         {!clear && icon && <Icon className={classes.btn} />}
         {!clear && !icon && <Typography variant="body2">{item}</Typography>}
@@ -82,6 +107,7 @@ ColoredItemBox.propTypes = {
   selected: PropTypes.bool,
   clear: PropTypes.bool,
   round: PropTypes.bool,
+  disabled: PropTypes.bool,
   isDragDisabled: PropTypes.bool,
 };
 
@@ -92,6 +118,7 @@ ColoredItemBox.defaultProps = {
   selected: false,
   clear: false,
   round: false,
+  disabled: false,
   isDragDisabled: false,
 };
 
@@ -137,14 +164,17 @@ const DraggableVerticalList = ({
   defaultItems /* object */,
   itemOrder /* array of strings */,
   defaultItemOrder /* array of strings */,
+  availableItems /* array of strings */,
   setItems /* (localItems) => void */,
   setItemOrder /* (localItemOrder) => void */,
 }) => {
   const intl = useIntl();
   const classes = useStyles({ width, dense, disabled });
   const { config } = useConfig();
+
   const [localItems, setLocalItems] = useState(items || Object.keys(defaultItems));
   const [localItemOrder, setLocalItemOrder] = useState(itemOrder || defaultItemOrder);
+
   const allTitle = useMemo(
     () => intl.formatMessage({ id: 'components.draggableVerticalList.all' }),
     [intl],
@@ -261,6 +291,7 @@ const DraggableVerticalList = ({
                         icon={defaultItems[item].icon}
                         color={greyscale ? undefined : defaultItems[item].color}
                         selected={localItems.indexOf(item) > -1}
+                        disabled={availableItems && !availableItems?.includes(item)}
                         isDragDisabled={disabled}
                       />
                     </Grid>
@@ -288,6 +319,7 @@ DraggableVerticalList.propTypes = {
   defaultItems: PropTypes.object, // eslint-disable-line react/forbid-prop-types
   itemOrder: PropTypes.arrayOf(PropTypes.string),
   defaultItemOrder: PropTypes.arrayOf(PropTypes.string),
+  availableItems: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.string), PropTypes.bool]),
   setItems: PropTypes.func,
   setItemOrder: PropTypes.func,
 };
@@ -304,6 +336,7 @@ DraggableVerticalList.defaultProps = {
   defaultItems: {},
   itemOrder: [],
   defaultItemOrder: [],
+  availableItems: false,
   setItems: undefined,
   setItemOrder: undefined,
 };

@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, useCallback } from 'react';
 import { useQuery } from '@apollo/react-hooks';
 
 import { PAGES } from '../constants';
@@ -120,10 +120,22 @@ export default () => {
       config.view,
     );
   }, [config.page, config.view, data, regions, sources, unitConversion]);
+
+  /**
+   * Determine all available items in the current data-set.
+   * This is used to render the button boxes in the draggable list.
+   */
+  const availability = useCallback((key) => {
+    const items = new Set((data?.resources || []).filter(row => row.value).map(row => row[key]));
+    return items.size > 0 && Array.from(items);
+  }, [data]);
+
   return {
     loading,
     error,
     data: processedData,
+    availableRegions: availability('province'),
+    availableSources: availability('source'),
     year: years && {
       min: Math.min(...years),
       forecastStart,
