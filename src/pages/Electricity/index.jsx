@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { useIntl } from 'react-intl';
 import PropTypes from 'prop-types';
 import {
-  makeStyles, Paper, Grid, Typography, Tooltip,
+  makeStyles, Paper, Typography, Tooltip,
 } from '@material-ui/core';
 
 import useAPI from '../../hooks/useAPI';
