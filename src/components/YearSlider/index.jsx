@@ -8,8 +8,8 @@ const useStyles = makeStyles(theme => ({
   root: {
     margin: theme.spacing(1),
     padding: theme.spacing(0, 1),
-    width: `calc(100% - ${theme.spacing(2)}px) !important`,
-    backgroundColor: '#EEE',
+    width: `calc(100% - ${theme.spacing(2)}px)`,
+    backgroundColor: '#F3EFEF',
   },
   slides: {
     position: 'relative',
@@ -25,7 +25,10 @@ const useStyles = makeStyles(theme => ({
       padding: 0,
     },
   },
-  play: { padding: theme.spacing(0, 2, 0, 0) },
+  play: {
+    padding: 0,
+    marginRight: theme.spacing(1),
+  },
   rail: {
     height: 1,
     color: theme.palette.secondary.main,
