@@ -58,6 +58,11 @@ export const PAGES = [
     id: 'scenarios',
     bg: '#CA9830',
   },
+  {
+    label: 'Oil-and-Gas',
+    id: 'oil-and-gas',
+    bg: '#CC6666',
+  },
   // {
   //   label: 'Demand',
   //   id: 'demand',
@@ -92,22 +97,37 @@ export const SECTOR_LAYOUT = {
   total: {
     name: 'Total Demand',
     icon: IconDemand,
+    page: ['by-sector', 'oil-and-gas'],
   },
   residential: {
     name: 'Residential',
     icon: IconResidential,
+    page: ['by-sector'],
   },
   commercial: {
     name: 'Commercial',
     icon: IconCommercial,
+    page: ['by-sector'],
   },
   industrial: {
     name: 'Industrial',
     icon: IconIndustrial,
+    page: ['by-sector'],
   },
   transportation: {
     name: 'Transportation',
     icon: IconTransportation,
+    page: ['by-sector'],
+  },
+  oil: {
+    name: 'Oil',
+    icon: IconOil,
+    page: ['oil-and-gas'],
+  },
+  gas: {
+    name: 'Gas',
+    icon: IconGas,
+    page: ['oil-and-gas'],
   },
 };
 
