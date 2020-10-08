@@ -195,3 +195,18 @@ export const DEFAULT_CONFIG = {
   sources: [],
   sourceOrder: [],
 };
+
+export const CHART_PROPS = {
+  margin: { top: 50, bottom: 50, left: 20, right: 80 },
+  axisTop: null,
+  axisLeft: null,
+  enableLabel: false,
+  animate: true,
+  motionStiffness: 90,
+  motionDamping: 15,
+};
+export const CHART_AXIS_PROPS = {
+  tickSize: 5,
+  tickPadding: 5,
+  tickRotation: 0,
+};
