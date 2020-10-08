@@ -110,8 +110,8 @@ const YearSlider = ({ year, onYearChange, min, max }) => {
    */
   const DEFAULT_PROPS = useMemo(() => ({
     step: 1,
-    min,
-    max,
+    min: min || 2005,
+    max: max || 2050,
     valueLabelDisplay: 'on',
     track: false,
   }), [min, max]);
@@ -175,7 +175,7 @@ YearSlider.propTypes = {
 };
 
 YearSlider.defaultProps = {
-  onYearChange: undefined,
+  onYearChange: () => {},
   min: 2005,
   max: 2020,
 };

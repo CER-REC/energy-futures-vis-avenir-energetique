@@ -7,6 +7,6 @@ import ReadMe from './README.md';
 storiesForComponent('Components|YearSlider', module, ReadMe)
   .add('default', () => (
     <Grid container style={{ padding: 16 }}>
-      <YearSlider year={2020} min={2000} max={2050} />
+      <YearSlider />
     </Grid>
   ));
