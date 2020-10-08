@@ -1,9 +1,9 @@
 import React from 'react';
 
-import { withKnobs, number, radios, array } from '@storybook/addon-knobs';
+import { withKnobs, number, radios } from '@storybook/addon-knobs';
 import withConfigAndGQL from '../../../.storybook/addon-config-and-gql';
 import { storiesForComponent } from '../../../.storybook/utils';
-import TreeMap from './index';
+import OilAndGas from './index';
 import ReadMe from './README.md';
 
 storiesForComponent('Pages|TreeMap', module, ReadMe)
@@ -11,9 +11,16 @@ storiesForComponent('Pages|TreeMap', module, ReadMe)
   .addDecorator(withKnobs)
   .add('default', () => {
     const view = radios('view', {
-      'By Sector': 'byRegion',
-      'By Region': 'bySector',
-    }, 'byRegion', 'Options');
+      'By Source': 'bySource',
+      'By Region': 'byRegion',
+    }, 'bySource', 'Options');
+    // const iteration = number('Iteration', 6, {
+    //   range: true,
+    //   min: 1,
+    //   max: 6,
+    //   step: 1,
+    // }, 'Options');
+
     const selectedYear1 = number('Year 1', 2005, {
       range: true,
       min: 2005,
@@ -24,7 +31,7 @@ storiesForComponent('Pages|TreeMap', module, ReadMe)
       range: true,
       min: 2005,
       max: 2040,
-      step: 2,
+      step: 1,
     }, 'Options');
 
     const region1 = radios('Region 1', {
@@ -39,12 +46,13 @@ storiesForComponent('Pages|TreeMap', module, ReadMe)
     }, 'BC', 'Options');
 
     return (
-      <TreeMap
+      <OilAndGas
         view={view}
         selectedYear1={selectedYear1}
         selectedYear2={selectedYear2}
         region1={region1}
         region2={region2}
+        // iteration={iteration}
       />
     );
   });

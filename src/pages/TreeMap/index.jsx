@@ -1,6 +1,6 @@
-import React, { useMemo, useCallback, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import { Grid, Typography, Button } from '@material-ui/core';
 import { ResponsiveTreeMap } from '@nivo/treemap';
 import { useQuery } from '@apollo/react-hooks';
@@ -19,10 +19,20 @@ query ($iteration: ID!, $regions: [Region!], $scenarios: [String!], $sources: [G
   }
 `;
 
-const TreeMapCollection = ({ data, showSourceLabel }) => {
+const TreeMapCollection = ({ data, showSourceLabel, view }) => {
+  const sizeMultiplier = view === 'bySource' ? 1.5 : 1;
+
   const sortedData = data.sort((a, b) => b.total - a.total);
   const trees = sortedData.map(source => (
-    <Grid key={source.name} style={{ bottom: '0', height: source.total * 1.5, width: source.total * 1.5, marginRight: '50px' }}>
+    <Grid
+      key={source.name}
+      style={{
+        bottom: '0',
+        height: source.total * sizeMultiplier,
+        width: source.total * sizeMultiplier,
+        marginRight: '100px',
+      }}
+    >
 
       {showSourceLabel && <Typography style={{ marginLeft: 10 }}>{source.name}</Typography>}
       <ResponsiveTreeMap
@@ -44,10 +54,9 @@ const TreeMapCollection = ({ data, showSourceLabel }) => {
   return trees;
 };
 
-const TreeMap = ({ view, selectedYear1, selectedYear2, region1, region2 }) => {
-  console.log(view);
+const OilAndGas = ({ view, selectedYear1, selectedYear2, region1, region2 }) => {
   const { regions } = useAPI();
-  const { _loading, _error, data } = useQuery(query, {
+  const { data } = useQuery(query, {
     variables: {
       scenarios: ['Evolving'],
       iteration: '6',
@@ -125,14 +134,21 @@ const TreeMap = ({ view, selectedYear1, selectedYear2, region1, region2 }) => {
   if (!data) {
     return null;
   }
-  console.log(data);
 
   return (
     <Grid container>
 
       <Grid style={{ marginLeft: '80%', align: 'right' }}>
         <Typography variant='h3'>2016</Typography>
-        <Button onClick={() => setCompare(!compare)} variant="outlined"><Typography variant='body1'>{compare ? 'Dont Compare' : 'compare'}</Typography></Button>
+        <Button
+          onClick={() => setCompare(!compare)}
+          variant="outlined"
+        >
+          <Typography
+            variant='body1'
+          >{compare ? 'Dont Compare' : 'compare'}
+          </Typography>
+        </Button>
       </Grid>
 
       <Grid container wrap="nowrap">
@@ -140,11 +156,14 @@ const TreeMap = ({ view, selectedYear1, selectedYear2, region1, region2 }) => {
           data={view === 'byRegion' ? [dataByRegion(data)[selectedYear1][region1]] : getData(data)[selectedYear1]}
           showSourceLabel
           selectedYear={selectedYear1}
+          view={view}
         />
       </Grid>
+
       <Grid container wrap="nowrap" style={{ marginTop: 15 }}>
         <hr style={{ width: '100%' }} />
       </Grid>
+
       {compare
       && (
       <Grid container wrap="nowrap">
@@ -152,11 +171,21 @@ const TreeMap = ({ view, selectedYear1, selectedYear2, region1, region2 }) => {
           data={view === 'byRegion' ? [dataByRegion(data)[selectedYear2][region2]] : getData(data)[selectedYear2]}
           selectedYear={selectedYear2}
           showSourceLabel={view === 'byRegion'}
+          view={view}
         />
       </Grid>
       )}
+
     </Grid>
   );
 };
 
-export default TreeMap;
+OilAndGas.propTypes = {
+  view: PropTypes.string.isRequired,
+  selectedYear1: PropTypes.number.isRequired,
+  selectedYear2: PropTypes.number.isRequired,
+  region1: PropTypes.string.isRequired,
+  region2: PropTypes.string.isRequired,
+};
+
+export default OilAndGas;
