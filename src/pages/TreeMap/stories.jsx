@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { withKnobs, number, radios } from '@storybook/addon-knobs';
+import { withKnobs, number, radios, select } from '@storybook/addon-knobs';
 import withConfigAndGQL from '../../../.storybook/addon-config-and-gql';
 import { storiesForComponent } from '../../../.storybook/utils';
 import OilAndGas from './index';
@@ -34,24 +34,27 @@ storiesForComponent('Pages|TreeMap', module, ReadMe)
       step: 1,
     }, 'Options');
 
-    const region1 = radios('Region 1', {
-      Alberta: 'AB',
-      'British Columbia': 'BC',
-      Saskatchuwan: 'SK',
-    }, 'AB', 'Options');
-    const region2 = radios('Region 2', {
-      Alberta: 'AB',
-      'British Columbia': 'BC',
-      Saskatchuwan: 'SK',
-    }, 'BC', 'Options');
+    const region1 = select('Region 1', {
+      All: ['AB', 'BC', 'SK'],
+      Alberta: ['AB'],
+      'British Columbia': ['BC'],
+      Saskatchuwan: ['SK'],
+    }, ['AB', 'BC', 'SK'], 'Regions');
+
+    const region2 = select('Region 2', {
+      All: ['AB', 'BC', 'SK'],
+      Alberta: ['AB'],
+      'British Columbia': ['BC'],
+      Saskatchuwan: ['SK'],
+    }, ['AB', 'BC', 'SK'], 'Regions');
 
     return (
       <OilAndGas
         view={view}
         selectedYear1={selectedYear1}
         selectedYear2={selectedYear2}
-        region1={region1}
-        region2={region2}
+        regions1={region1}
+        regions2={region2}
         // iteration={iteration}
       />
     );
