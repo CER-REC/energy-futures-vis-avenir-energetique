@@ -14,12 +14,12 @@ storiesForComponent('Pages|TreeMap', module, ReadMe)
       'By Source': 'bySource',
       'By Region': 'byRegion',
     }, 'bySource', 'Options');
-    // const iteration = number('Iteration', 6, {
-    //   range: true,
-    //   min: 1,
-    //   max: 6,
-    //   step: 1,
-    // }, 'Options');
+    const iteration = number('Iteration', 6, {
+      range: true,
+      min: 1,
+      max: 6,
+      step: 1,
+    }, 'Options');
 
     const selectedYear1 = number('Year 1', 2005, {
       range: true,
@@ -55,7 +55,7 @@ storiesForComponent('Pages|TreeMap', module, ReadMe)
         selectedYear2={selectedYear2}
         regions1={region1}
         regions2={region2}
-        // iteration={iteration}
+        iteration={iteration}
       />
     );
   });

@@ -72,12 +72,12 @@ const TreeMapCollection = ({ data, showSourceLabel, view, regions }) => {
   return trees;
 };
 
-const OilAndGas = ({ view, selectedYear1, selectedYear2, regions1, regions2 }) => {
+const OilAndGas = ({ view, selectedYear1, selectedYear2, regions1, regions2, iteration }) => {
   const { regions } = useAPI();
   const { data } = useQuery(query, {
     variables: {
-      scenarios: ['Evolving'],
-      iteration: '6',
+      scenarios: ['Reference'],
+      iteration,
       regions: ['YT', 'SK', 'QC', 'PE', 'ON', 'NU', 'NT', 'NS', 'NL', 'NB', 'MB', 'BC', 'AB'],
       // FIXME: config will store it as "total"
       // it should be "total end-use"
@@ -140,11 +140,20 @@ const OilAndGas = ({ view, selectedYear1, selectedYear2, regions1, regions2 }) =
     return null;
   }
 
+  const iterationTranslation = {
+    1: '2016',
+    2: '2016*',
+    3: '2017',
+    4: '2018',
+    5: '2019',
+    6: '2020',
+  };
+
   return (
     <Grid container>
 
       <Grid style={{ marginLeft: '80%', align: 'right' }}>
-        <Typography variant='h3'>2020</Typography>
+        <Typography variant='h3'>{iterationTranslation[iteration]}</Typography>
         <Button
           onClick={() => setCompare(!compare)}
           variant="outlined"
