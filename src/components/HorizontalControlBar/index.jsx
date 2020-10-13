@@ -18,8 +18,7 @@ const useStyles = makeStyles(theme => createStyles({
     '& p': { fontWeight: 700 },
   },
   btnSector: {
-    marginRight: theme.spacing(1),
-    height: 32,
+    height: 30,
     minWidth: 'min-content',
     maxWidth: 60,
     '& > span': { lineHeight: 1 },
@@ -59,8 +58,8 @@ const HorizontalControlBar = () => {
   }
 
   const selections = ['by-region', 'scenarios'].includes(config.page) && (
-    <>
-      <Grid item>
+    <Grid container alignItems="center" wrap="nowrap" spacing={1}>
+      <Grid item style={{ paddingRight: 0 }}>
         <Hint />
       </Grid>
       {Object.keys(CONFIG_LAYOUT).map(selection => (
@@ -81,17 +80,17 @@ const HorizontalControlBar = () => {
           </Tooltip>
         </Grid>
       ))}
-    </>
+    </Grid>
   );
 
-  const sectors = ['by-sector', 'demand'].includes(config.page) && (
-    <>
-      <Grid item>
+  const sectors = ['by-sector', 'oil-and-gas', 'demand'].includes(config.page) && (
+    <Grid container alignItems="center" wrap="nowrap" spacing={1}>
+      <Grid item style={{ paddingRight: 0 }}>
         <Hint><Typography variant="body1" color="primary">SECTOR</Typography></Hint>
       </Grid>
       {Object.keys(SECTOR_LAYOUT).map((sector) => {
         const Icon = SECTOR_LAYOUT[sector]?.icon;
-        return (
+        return (SECTOR_LAYOUT[sector]?.page || []).includes(config.page) && (
           <Grid item key={`config-sector-${sector}`}>
             <Tooltip title={SECTOR_LAYOUT[sector]?.name} classes={{ tooltip: classes.tooltip }}>
               <span>
@@ -109,11 +108,11 @@ const HorizontalControlBar = () => {
           </Grid>
         );
       })}
-    </>
+    </Grid>
   );
 
-  const views = config.page === 'electricity' && (
-    <>
+  const views = ['electricity', 'oil-and-gas'].includes(config.page) && (
+    <Grid container wrap="nowrap">
       <Hint><Typography variant="body1" color="primary">VIEW BY</Typography></Hint>
       {['region', 'source'].map(view => (
         <Button
@@ -126,12 +125,11 @@ const HorizontalControlBar = () => {
           {view}
         </Button>
       ))}
-    </>
+    </Grid>
   );
 
   const units = (
-    <>
-      <span style={{ flexGrow: 1 }} />
+    <Grid container wrap="nowrap">
       <Hint><Typography variant="body1" color="primary">UNIT</Typography></Hint>
       {layout.unit.map(unit => (
         <Button
@@ -144,15 +142,17 @@ const HorizontalControlBar = () => {
           {UNIT_NAMES[unit]}
         </Button>
       ))}
-    </>
+    </Grid>
   );
 
   return (
-    <Grid container alignItems="center" wrap="nowrap" className={classes.root}>
-      {selections}
-      {sectors}
-      {views}
-      {units}
+    <Grid container justify="space-between" alignItems="center" wrap="nowrap" className={classes.root}>
+      {[
+        selections,
+        sectors,
+        views,
+        units,
+      ].map(section => section && <Grid item key={`utility-section-${Math.random()}`}>{section}</Grid>)}
     </Grid>
   );
 };
