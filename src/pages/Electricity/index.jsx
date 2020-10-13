@@ -2,13 +2,12 @@ import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { useIntl } from 'react-intl';
 import PropTypes from 'prop-types';
 import {
-  makeStyles, Paper, Grid, Typography, Tooltip, Button, Slider,
+  makeStyles, Paper, Typography, Tooltip,
 } from '@material-ui/core';
-import PlayIcon from '@material-ui/icons/PlayCircleOutline';
-import PauseIcon from '@material-ui/icons/PauseCircleOutline';
 
 import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
+import YearSlider from '../../components/YearSlider';
 import VizTooltip from '../../components/VizTooltip';
 
 const useStyles = makeStyles(theme => ({
@@ -22,8 +21,9 @@ const useStyles = makeStyles(theme => ({
     },
     '& > div:last-of-type': {
       height: 'auto',
-      bottom: -41,
-      left: -1,
+      bottom: 0,
+      left: 0,
+      right: 0,
       zIndex: 2,
     },
   },
@@ -74,26 +74,22 @@ const useStyles = makeStyles(theme => ({
     maxWidth: 250,
     transform: 'translateY(50%)',
   },
-  btnPlay: {
-    height: 26,
-    padding: 0,
-  },
 }));
 
 const COORD = {
   YT: { top: '10%', left: '5%' },
-  SK: { top: '60%', left: '25%' },
+  SK: { top: '55%', left: '25%' },
   QC: { top: '5%', left: '55%' },
-  PE: { top: '65%', left: '88%' },
-  ON: { top: '60%', left: '45%' },
+  PE: { top: '60%', left: '88%' },
+  ON: { top: '55%', left: '45%' },
   NU: { top: '15%', left: '30%' },
   NT: { top: '5%', left: '18%' },
-  NS: { top: '80%', left: '85%' },
-  NL: { top: '35%', left: '85%' },
-  NB: { top: '55%', left: '70%' },
-  MB: { top: '35%', left: '35%' },
-  BC: { top: '70%', left: '8%' },
-  AB: { top: '30%', left: '8%' },
+  NS: { top: '75%', left: '85%' },
+  NL: { top: '30%', left: '85%' },
+  NB: { top: '50%', left: '70%' },
+  MB: { top: '30%', left: '35%' },
+  BC: { top: '65%', left: '8%' },
+  AB: { top: '25%', left: '8%' },
 
   BIO: { top: '10%', left: '60%' },
   COAL: { top: '70%', left: '55%' },
@@ -121,28 +117,8 @@ const Electricity = ({ data, year }) => {
   const { config } = useConfig();
 
   const [currYear, setCurrYear] = useState(year?.min || 2005);
-  const [play, setPlay] = useState(false);
 
   useEffect(() => setCurrYear(year?.min || 2005), [year]);
-
-  /**
-   * Generate slide marks for the video playback control.
-   */
-  const marks = useMemo(() => year && Array((year.max - year.min) / 5 + 1)
-    .fill(undefined)
-    .map((_, i) => ({ value: year.min + i * 5, label: `${year.min + i * 5}` })), [year]);
-
-  /**
-   * A timer for auto-play.
-   */
-  useEffect(() => {
-    const timer = setInterval(() => {
-      if (play && year) {
-        setCurrYear(y => (y >= year.max ? year.min : y + 1));
-      }
-    }, 500);
-    return () => clearInterval(timer);
-  }, [play, year]);
 
   /**
    * Looking for the min and max value and the total volumns in each group (region or source).
@@ -296,32 +272,12 @@ const Electricity = ({ data, year }) => {
       ))}
 
       {/* below are the controls for the year playback */}
-      <Grid container alignItems="flex-start" spacing={6}>
-        <Grid item>
-          <Button
-            variant="contained"
-            color="primary"
-            startIcon={play ? <PauseIcon /> : <PlayIcon />}
-            onClick={() => setPlay(!play)}
-            className={classes.btnPlay}
-          >
-            {play ? 'Stop' : 'Play'}
-          </Button>
-        </Grid>
-        <Grid item style={{ flexGrow: 1 }}>
-          <Slider
-            value={currYear}
-            onChange={(_, value) => value && setCurrYear(value)}
-            aria-labelledby="year select slider"
-            aria-valuetext="current selected year"
-            step={1}
-            marks={marks}
-            min={year.min}
-            max={year.max}
-            valueLabelDisplay="on"
-          />
-        </Grid>
-      </Grid>
+      <YearSlider
+        year={currYear}
+        onYearChange={value => setCurrYear(value)}
+        min={year.min}
+        max={year.max}
+      />
     </div>
   );
 };
