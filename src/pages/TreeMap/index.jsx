@@ -35,7 +35,9 @@ const TreeMapCollection = ({ data, showSourceLabel, view, regions }) => {
   const treeMapData = view === 'bySource' ? sortedData : regionData;
 
   const trees = treeMapData.map((source) => {
-    if (source.total === 0) {
+    // Anything smaller than 15 will not even appear
+
+    if (source.total < 15) {
       return null;
     }
 
@@ -140,23 +142,17 @@ const OilAndGas = ({ view, selectedYear1, selectedYear2, regions1, regions2, ite
     return null;
   }
 
-  const iterationTranslation = {
-    1: '2016',
-    2: '2016*',
-    3: '2017',
-    4: '2018',
-    5: '2019',
-    6: '2020',
-  };
-
   return (
     <Grid container>
 
       <Grid style={{ marginLeft: '80%', align: 'right' }}>
-        <Typography variant='h3'>{iterationTranslation[iteration]}</Typography>
+        <Typography variant='h3'>{selectedYear1}</Typography>
+        {compare
+        && <Typography variant='h3'>{selectedYear2}</Typography>}
         <Button
           onClick={() => setCompare(!compare)}
           variant="outlined"
+          style={{ marginTop: '10px' }}
         >
           <Typography
             variant='body1'
