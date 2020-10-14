@@ -22,7 +22,7 @@ export const lang = (typeof document !== 'undefined'
 // TODO: Remove and replace using intl in the relevant components for translations
 export const UNIT_NAMES = {
   petajoules: 'PETAJOULES',
-  kilobarrelEquivalents: 'kBOE/d',
+  kilobarrelEquivalents: 'mBOE/d',
   gigawattHours: 'GW.h',
   kilobarrels: 'kB/d',
   thousandCubicMetres: 'km³/d',
