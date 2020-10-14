@@ -77,7 +77,7 @@ export const CONFIG_LAYOUT = {
     unit: ['petajoules', 'kilobarrelEquivalents'],
   },
   electricityGeneration: {
-    name: 'Electricity Production',
+    name: 'Electricity Generation',
     icon: IconElectricity,
     unit: ['gigawattHours', 'petajoules', 'kilobarrelEquivalents'],
   },
