@@ -9,6 +9,7 @@ import BySector from '../../pages/BySector';
 import Scenarios from '../../pages/Scenarios';
 import Electricity from '../../pages/Electricity';
 import Demand from '../../pages/Demand';
+import OilAndGas from '../../pages/OilAndGas';
 import useConfig, { ConfigProvider } from '../../hooks/useConfig';
 
 /**
@@ -127,6 +128,7 @@ const Content = () => {
       {config.page === 'electricity' && <Electricity />}
       {config.page === 'scenarios' && <Scenarios />}
       {config.page === 'demand' && <Demand />}
+      {config.page === 'oil-and-gas' && <OilAndGas />}
     </PageLayout>
   );
 };

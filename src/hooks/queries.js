@@ -12,12 +12,13 @@ export const ENERGY_DEMAND = gql`
 `;
 
 export const GAS_PRODUCTIONS = gql`
-  query ($iteration: ID!, $regions: [Region!], $scenarios: [String!]) {
-    resources:gasProductions(iterationIds: [$iteration], regions: $regions, scenarios: $scenarios, sources: [ALL] ){
+  query ($iteration: ID!, $regions: [Region!], $scenarios: [String!], $sources: [GasSource!]) {
+    resources:gasProductions(iterationIds: [$iteration], regions: $regions, scenarios: $scenarios, sources: $sources ){
         province: region
         year
         scenario
         value: quantity
+        source
       }
     }
 `;
