@@ -62,20 +62,6 @@ export const ConfigProvider = ({ children }) => {
     });
   }, [config]);
 
-  /**
-   * Update some config settings based on other config changes.
-   */
-  useEffect(() => {
-    // make sure 'electricity generation' is selected in the Electricity page
-    if (config.page === 'electricity' && config.mainSelection !== 'electricityGeneration') {
-      setConfig({ ...config, mainSelection: 'electricityGeneration' });
-    }
-    // make sure 'energy demand' is selected in the By-Sector page
-    if (config.page === 'by-sector' && config.mainSelection !== 'energyDemand') {
-      setConfig({ ...config, mainSelection: 'energyDemand' });
-    }
-  }, [config]);
-
   return (
     <ConfigContext.Provider value={{ config, setConfig }}>
       {children}
