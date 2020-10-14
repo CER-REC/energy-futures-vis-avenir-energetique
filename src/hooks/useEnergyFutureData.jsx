@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, useCallback } from 'react';
 import { useQuery } from '@apollo/react-hooks';
 
 import { PAGES } from '../constants';
@@ -120,10 +120,27 @@ export default () => {
       config.view,
     );
   }, [config.page, config.view, data, regions, sources, unitConversion]);
+
+  /**
+   * Determine all the unavailable / disabled items in the current data-set.
+   * This is used to render the button boxes in the draggable list.
+   */
+  const unavailability = useCallback((key) => {
+    const sums = (data?.resources || []).reduce((result, row) => ({
+      ...result,
+      [row[key]]: (result[row[key]] || 0) + row.value,
+    }), {});
+    return Object.keys(sums)
+      .map(name => (Math.abs(sums[name]) < Number.EPSILON ? name : undefined))
+      .filter(Boolean);
+  }, [data]);
+
   return {
     loading,
     error,
     data: processedData,
+    disabledRegions: unavailability('province'),
+    disabledSources: unavailability('source'),
     year: years && {
       min: Math.min(...years),
       forecastStart,
