@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 import React, { useState, useEffect } from 'react';
+import { useIntl } from 'react-intl';
 import {
   makeStyles, createStyles,
   Grid, ButtonBase, Typography, Tooltip,
@@ -75,6 +76,7 @@ const useStyles = makeStyles(theme => createStyles({
 
 const PageSelect = () => {
   const classes = useStyles();
+  const intl = useIntl();
 
   const { config, setConfig } = useConfig();
 
@@ -111,15 +113,28 @@ const PageSelect = () => {
     return (
       <Tooltip
         key={`page-${page.id}`}
-        title={loading || index === 0 ? '' : page.label}
+        title={(
+          <>
+            <Typography variant="h6">{page.label}</Typography>
+            <Typography variant="caption" component="div" gutterBottom>
+              {intl.formatMessage({ id: `components.pageSelect.${page.label}.description` })}
+            </Typography>
+          </>
+        )}
         placement="right"
         classes={{ tooltip: classes.tooltip }}
       >
         <ButtonBase
           centerRipple
+          disableRipple={index === 0}
+          disableTouchRipple={index === 0}
           onClick={() => handleSelect(page.id)}
           classes={{ root: classes.box }}
-          style={{ top: index === 0 ? 10 : (index - 1) * 88 + 82, height: index === 0 ? 68 : 84 }}
+          style={{
+            top: index === 0 ? 10 : (index - 1) * 88 + 82,
+            height: index === 0 ? 68 : 84,
+            cursor: index === 0 ? 'default' : 'pointer',
+          }}
         >
           <Grid container direction="column" wrap="nowrap" style={{ width: 'auto' }}>
             <div className={classes.icon}>{getPageIcon(page.id)}</div>

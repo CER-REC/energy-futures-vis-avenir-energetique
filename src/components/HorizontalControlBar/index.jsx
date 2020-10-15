@@ -1,5 +1,6 @@
 // #region imports
 import React, { useMemo, useEffect } from 'react';
+import { useIntl } from 'react-intl';
 import {
   makeStyles, createStyles,
   Grid, Typography, Button, Tooltip,
@@ -35,6 +36,8 @@ const useStyles = makeStyles(theme => createStyles({
 
 const HorizontalControlBar = () => {
   const classes = useStyles();
+  const intl = useIntl();
+
   const { config, setConfig } = useConfig();
   const layout = useMemo(() => CONFIG_LAYOUT[config.mainSelection], [config.mainSelection]);
 
@@ -64,7 +67,10 @@ const HorizontalControlBar = () => {
       </Grid>
       {Object.keys(CONFIG_LAYOUT).map(selection => (
         <Grid item key={`config-origin-${selection}`}>
-          <Tooltip title={CONFIG_LAYOUT[selection]?.name} classes={{ tooltip: classes.tooltip }}>
+          <Tooltip
+            title={intl.formatMessage({ id: `components.mainSelect.${selection}.description` })}
+            classes={{ tooltip: classes.tooltip }}
+          >
             <span>
               <Button
                 variant={config.mainSelection === selection ? 'contained' : 'outlined'}
@@ -92,18 +98,16 @@ const HorizontalControlBar = () => {
         const Icon = SECTOR_LAYOUT[sector]?.icon;
         return (SECTOR_LAYOUT[sector]?.page || []).includes(config.page) && (
           <Grid item key={`config-sector-${sector}`}>
-            <Tooltip title={SECTOR_LAYOUT[sector]?.name} classes={{ tooltip: classes.tooltip }}>
-              <span>
-                <Button
-                  variant={config.sector === sector ? 'contained' : 'outlined'}
-                  color="primary"
-                  size="small"
-                  onClick={() => handleConfigUpdate('sector', sector)}
-                  className={classes.btnSector}
-                >
-                  {sector === 'total' ? 'Total Demand' : <Icon />}
-                </Button>
-              </span>
+            <Tooltip title={intl.formatMessage({ id: `components.sectorSelect.${sector}.description` })} classes={{ tooltip: classes.tooltip }}>
+              <Button
+                variant={config.sector === sector ? 'contained' : 'outlined'}
+                color="primary"
+                size="small"
+                onClick={() => handleConfigUpdate('sector', sector)}
+                className={classes.btnSector}
+              >
+                {sector === 'total' ? 'Total Demand' : <Icon />}
+              </Button>
             </Tooltip>
           </Grid>
         );
@@ -115,15 +119,19 @@ const HorizontalControlBar = () => {
     <Grid container wrap="nowrap">
       <Hint><Typography variant="body1" color="primary">VIEW BY</Typography></Hint>
       {['region', 'source'].map(view => (
-        <Button
+        <Tooltip
           key={`config-view-${view}`}
-          variant={config.view === view ? 'contained' : 'outlined'}
-          color="primary"
-          size="small"
-          onClick={() => handleConfigUpdate('view', view)}
+          title={intl.formatMessage({ id: `components.viewSelect.${view}.description` })}
         >
-          {view}
-        </Button>
+          <Button
+            variant={config.view === view ? 'contained' : 'outlined'}
+            color="primary"
+            size="small"
+            onClick={() => handleConfigUpdate('view', view)}
+          >
+            {view}
+          </Button>
+        </Tooltip>
       ))}
     </Grid>
   );
@@ -132,15 +140,24 @@ const HorizontalControlBar = () => {
     <Grid container wrap="nowrap">
       <Hint><Typography variant="body1" color="primary">UNIT</Typography></Hint>
       {layout.unit.map(unit => (
-        <Button
+        <Tooltip
           key={`config-unit-${unit}`}
-          variant={config.unit === unit ? 'contained' : 'outlined'}
-          color="primary"
-          size="small"
-          onClick={() => handleConfigUpdate('unit', unit)}
+          title={(
+            <>
+              <Typography variant="caption" component="div" gutterBottom><strong>{intl.formatMessage({ id: `components.unitSelect.${unit}.title` })}</strong></Typography>
+              <Typography variant="caption" component="div">{intl.formatMessage({ id: `components.unitSelect.${unit}.description` })}</Typography>
+            </>
+          )}
         >
-          {UNIT_NAMES[unit]}
-        </Button>
+          <Button
+            variant={config.unit === unit ? 'contained' : 'outlined'}
+            color="primary"
+            size="small"
+            onClick={() => handleConfigUpdate('unit', unit)}
+          >
+            {UNIT_NAMES[unit]}
+          </Button>
+        </Tooltip>
       ))}
     </Grid>
   );

@@ -77,7 +77,7 @@ export const CONFIG_LAYOUT = {
     unit: ['petajoules', 'kilobarrelEquivalents'],
   },
   electricityGeneration: {
-    name: 'Electricity Production',
+    name: 'Electricity Generation',
     icon: IconElectricity,
     unit: ['gigawattHours', 'petajoules', 'kilobarrelEquivalents'],
   },
@@ -97,7 +97,7 @@ export const SECTOR_LAYOUT = {
   total: {
     name: 'Total Demand',
     icon: IconDemand,
-    page: ['by-sector', 'oil-and-gas'],
+    page: ['by-sector'],
   },
   residential: {
     name: 'Residential',

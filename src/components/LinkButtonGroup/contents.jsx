@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
 import { useIntl } from 'react-intl';
+import PropTypes from 'prop-types';
 import { Grid, Typography } from '@material-ui/core';
 import markdown from 'micro-down';
 import ReportLinkImage from './report-link.png';
@@ -8,11 +9,11 @@ export const LinkButtonContentAssumptions = ({ yearId }) => {
   const intl = useIntl();
   const text = useMemo(() => intl.formatMessage({
     id: `links.Assumptions.description.${yearId}`,
-    defaultMessage: intl.formatMessage({ id: `links.Assumptions.description.default` }),
+    defaultMessage: intl.formatMessage({ id: 'links.Assumptions.description.default' }),
   }), [intl, yearId]);
   const link = useMemo(() => intl.formatMessage({
     id: `links.Assumptions.link.${yearId}`,
-    defaultMessage: intl.formatMessage({ id: `links.Assumptions.link.default` }),
+    defaultMessage: intl.formatMessage({ id: 'links.Assumptions.link.default' }),
   }), [intl, yearId]);
   return (
     <>
@@ -21,25 +22,27 @@ export const LinkButtonContentAssumptions = ({ yearId }) => {
     </>
   );
 };
+LinkButtonContentAssumptions.propTypes = { yearId: PropTypes.string.isRequired };
 
 export const LinkButtonContentKeyFindings = ({ yearId }) => {
   const intl = useIntl();
   const text = useMemo(() => intl.formatMessage({
     id: `links.Findings.description.${yearId}`,
-    defaultMessage: intl.formatMessage({ id: `links.Findings.description.default` }),
+    defaultMessage: intl.formatMessage({ id: 'links.Findings.description.default' }),
   }), [intl, yearId]);
   return <Typography variant="body2" color="secondary" dangerouslySetInnerHTML={{ __html: markdown.parse(text) }} />;
 };
+LinkButtonContentKeyFindings.propTypes = { yearId: PropTypes.string.isRequired };
 
 export const LinkButtonContentResults = ({ yearId }) => {
   const intl = useIntl();
   const text = useMemo(() => intl.formatMessage({
     id: `links.Results.description.${yearId}`,
-    defaultMessage: intl.formatMessage({ id: `links.Results.description.default` }),
+    defaultMessage: intl.formatMessage({ id: 'links.Results.description.default' }),
   }), [intl, yearId]);
   const link = useMemo(() => intl.formatMessage({
     id: `links.Results.link.${yearId}`,
-    defaultMessage: intl.formatMessage({ id: `links.Results.link.default` }),
+    defaultMessage: intl.formatMessage({ id: 'links.Results.link.default' }),
   }), [intl, yearId]);
   return (
     <>
@@ -48,11 +51,12 @@ export const LinkButtonContentResults = ({ yearId }) => {
     </>
   );
 };
+LinkButtonContentResults.propTypes = { yearId: PropTypes.string.isRequired };
 
 export const LinkButtonContentReport = () => {
   const intl = useIntl();
-  const text = useMemo(() => intl.formatMessage({ id: `links.Report.description` }), [intl]);
-  const link = useMemo(() => intl.formatMessage({ id: `links.Report.link` }), [intl]);
+  const text = useMemo(() => intl.formatMessage({ id: 'links.Report.description' }), [intl]);
+  const link = useMemo(() => intl.formatMessage({ id: 'links.Report.link' }), [intl]);
   return (
     <>
       <Typography variant="body2" color="secondary" gutterBottom>{text}</Typography>
@@ -66,7 +70,7 @@ export const LinkButtonContentReport = () => {
 
 export const LinkButtonContentMethodology = () => {
   const intl = useIntl();
-  const text = useMemo(() => intl.formatMessage({ id: `links.Methodology.description` }), [intl]);
+  const text = useMemo(() => intl.formatMessage({ id: 'links.Methodology.description' }), [intl]);
   return <Typography variant="body2" color="secondary" dangerouslySetInnerHTML={{ __html: markdown.parse(text) }} />;
 };
 
