@@ -15,6 +15,10 @@ import ScenarioSelect from '../ScenarioSelect';
 import DraggableVerticalList from '../DraggableVerticalList';
 import HorizontalControlBar from '../HorizontalControlBar';
 import LinkButtonGroup from '../LinkButtonGroup';
+import {
+  LinkButtonContentAssumptions, LinkButtonContentKeyFindings, LinkButtonContentResults,
+  LinkButtonContentReport, LinkButtonContentMethodology, LinkButtonContentAbout,
+} from '../LinkButtonGroup/contents';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -127,7 +131,16 @@ const PageLayout = ({
       <Grid item style={{ position: 'relative', width: 100 }}>
         <LinkButtonGroup
           title="Context"
-          labels={[['assumptions', 'results', 'report'], ['methodology', 'about']]}
+          labels={[
+            [
+              { name: 'assumptions', content: <LinkButtonContentAssumptions yearId={config.yearId} /> },
+              { name: 'key findings', content: <LinkButtonContentKeyFindings yearId={config.yearId} /> },
+              { name: 'results', content: <LinkButtonContentResults yearId={config.yearId} /> },
+              { name: 'report', content: <LinkButtonContentReport /> },
+            ], [
+              { name: 'methodology', content: <LinkButtonContentMethodology /> },
+              { name: 'about', content: <LinkButtonContentAbout /> },
+            ]]}
           className={classes.links}
         />
       </Grid>
