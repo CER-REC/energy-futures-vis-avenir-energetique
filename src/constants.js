@@ -178,7 +178,13 @@ export const SOURCE_COLORS = {
     GAS: '#F2CB53',
     OIL: '#E4812C',
   },
-  gas: {},
+  gas: {
+    CBM: '#4D8255',
+    SHALE: '#7ACBCB',
+    SOLUTION: '#F2CB53',
+    TIGHT: "won't work since it's missing",
+    NA: "won't work since it's missing",
+  },
   oil: {},
 };
 

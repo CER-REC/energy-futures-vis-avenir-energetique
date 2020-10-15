@@ -5,6 +5,7 @@ import { Grid, Typography, Button } from '@material-ui/core';
 import { ResponsiveTreeMap } from '@nivo/treemap';
 import useConfig from '../../hooks/useConfig';
 import useAPI from '../../hooks/useAPI';
+import YearSlider from '../../components/YearSlider';
 
 const TreeMapCollection = ({ data, showSourceLabel }) => {
   const { regions: { colors: regionColors } } = useAPI();
@@ -22,30 +23,35 @@ const TreeMapCollection = ({ data, showSourceLabel }) => {
   };
 
   // bySource needs to be a bit bigger, because some sources are very small.
-  const sizeMultiplier = config.view === 'source' ? 1.5 : 1;
+  // const sizeMultiplier = config.view === 'source' ? 1.5 : 1;
 
   // Sort data by largest total
   const sortedData = data.length > 1 ? data
     .sort((a, b) => b.total - a.total) : data;
 
+  // FIXME: there is an issue where if you deselect provinces, the query changes
+  // and the total percentage is recalculated, making the percentage wrong
+  const totalGrandTotal = sortedData.reduce((acc, val) => acc + val.total, 0);
+
   const trees = sortedData.map((source) => {
-    // Anything smaller than 20 will not even appear
-    if (source.total < 20) {
+    if (source.total <= 0) {
       return null;
     }
+
+    const percentage = ((source.total / totalGrandTotal) * 100).toFixed(2);
 
     return (
       <Grid
         key={source.name}
         style={{
           bottom: '0',
-          height: source.total * sizeMultiplier,
-          width: source.total * sizeMultiplier,
+          height: source.total,
+          width: source.total,
           marginRight: '100px',
         }}
       >
 
-        {showSourceLabel && <Typography style={{ marginLeft: 10 }}>{source.name}</Typography>}
+        {showSourceLabel && <Typography style={{ marginLeft: 10, bottom: 0 }}>{`${source.name}: ${percentage}%`}</Typography>}
         <ResponsiveTreeMap
           root={source}
           identity="name"
@@ -69,11 +75,10 @@ const TreeMapCollection = ({ data, showSourceLabel }) => {
   return trees;
 };
 
-const OilAndGas = ({ data }) => {
+const OilAndGas = ({ data, year }) => {
   const { config } = useConfig();
-  // These will be replaced when the year slider is put in
-  const selectedYear1 = 2005;
-  const selectedYear2 = 2006;
+  const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
+  const [compareYear, setCompareYear] = useState(year.min);
 
   // Compare button toggle
   const [compare, setCompare] = useState(false);
@@ -83,12 +88,12 @@ const OilAndGas = ({ data }) => {
   }
 
   return (
-    <Grid container>
+    <Grid container style={{ height: '100%' }}>
 
       <Grid style={{ marginLeft: '80%', align: 'right' }}>
-        <Typography variant='h3'>{selectedYear1}</Typography>
+        <Typography variant='h3'>{currentYear}</Typography>
         {compare
-        && <Typography variant='h3'>{selectedYear2}</Typography>}
+        && <Typography variant='h3'>{compareYear}</Typography>}
         <Button
           onClick={() => setCompare(!compare)}
           variant="outlined"
@@ -103,22 +108,33 @@ const OilAndGas = ({ data }) => {
 
       <Grid container wrap="nowrap">
         <TreeMapCollection
-          data={data[selectedYear1]}
+          data={data[currentYear]}
           showSourceLabel
-          selectedYear={selectedYear1}
+          selectedYear={currentYear}
         />
       </Grid>
 
       <Grid container wrap="nowrap" style={{ marginTop: 15 }}>
-        <hr style={{ width: '100%' }} />
+        <YearSlider
+          year={compare ? { curr: currentYear, compare: compareYear } : currentYear}
+          onYearChange={(value) => {
+            if (value.curr !== currentYear) {
+              setCurrentYear(value.curr);
+            } if (compare && value.compare !== compareYear) {
+              setCompareYear(value.compare);
+            }
+          }}
+          min={year.min}
+          max={year.max}
+        />
       </Grid>
 
       {compare
       && (
       <Grid container wrap="nowrap">
         <TreeMapCollection
-          data={data[selectedYear2]}
-          selectedYear={selectedYear2}
+          data={data[compareYear]}
+          selectedYear={compareYear}
           showSourceLabel={config.view === 'region'}
         />
       </Grid>
