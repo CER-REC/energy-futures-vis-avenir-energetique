@@ -8,7 +8,7 @@ import { PAGES, CONFIG_LAYOUT, SECTOR_LAYOUT } from '../../constants';
 import useConfig from '../../hooks/useConfig';
 
 import {
-  IconPageRegion, IconPageSector, IconPageElectricity, IconPageScenarios,
+  IconPageRegion, IconPageSector, IconPageElectricity, IconPageScenarios, IconPageOilAndGas,
 } from '../../icons';
 
 const getPageIcon = (id) => {
@@ -17,6 +17,7 @@ const getPageIcon = (id) => {
     case 'by-sector': return <IconPageSector />;
     case 'electricity': return <IconPageElectricity />;
     case 'scenarios': return <IconPageScenarios />;
+    case 'oil-and-gas': return <IconPageOilAndGas />;
     default: return null;
   }
 };
@@ -139,6 +140,7 @@ const PageSelect = () => {
               {['by-region', 'scenarios'].includes(config.page) && CONFIG_LAYOUT[config.mainSelection]?.name}
               {['by-sector', 'demand'].includes(config.page) && SECTOR_LAYOUT[config.sector]?.name}
               {config.page === 'electricity' && `By ${config.view}`}
+              {config.page === 'oil-and-gas' && `${SECTOR_LAYOUT[config.sector]?.name} / By ${config.view}`}
             </Typography>
           </div>
         </ButtonBase>
