@@ -133,10 +133,10 @@ const PageLayout = ({
           title="Context"
           labels={[
             [
+              { name: 'report', content: <LinkButtonContentReport /> },
               { name: 'assumptions', content: <LinkButtonContentAssumptions yearId={config.yearId} /> },
               { name: 'key findings', content: <LinkButtonContentKeyFindings yearId={config.yearId} /> },
               { name: 'results', content: <LinkButtonContentResults yearId={config.yearId} /> },
-              { name: 'report', content: <LinkButtonContentReport /> },
             ], [
               { name: 'methodology', content: <LinkButtonContentMethodology /> },
               { name: 'about', content: <LinkButtonContentAbout /> },
