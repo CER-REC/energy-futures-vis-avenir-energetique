@@ -70,26 +70,24 @@ const useStyles = makeStyles(theme => ({
       lineHeight: 1,
       textTransform: 'uppercase',
     },
-    '& > div:first-of-type': {
-      height: 50,
-      '& > div': {
-        position: 'absolute',
-        top: theme.spacing(0.5),
-        height: 50,
-        width: 50,
-        borderRadius: '50%',
-      },
-      '& > div:first-of-type': {
-        left: theme.spacing(0.5),
-        backgroundColor: theme.palette.secondary.light,
-      },
-      '& > div:last-of-type': {
-        right: theme.spacing(0.5),
-        border: `1px solid ${theme.palette.secondary.light}`,
-        boxShadow: theme.shadows[2],
-      },
-    },
+    '& > div:first-of-type': { height: 50 },
     '& > div:last-of-type': { textAlign: 'right' },
+  },
+  annotationCircle: {
+    position: 'absolute',
+    top: theme.spacing(0.5),
+    height: 50,
+    width: 50,
+    borderRadius: '50%',
+    '&:first-of-type': {
+      left: theme.spacing(0.5),
+      backgroundColor: theme.palette.secondary.light,
+    },
+    '&:last-of-type': {
+      right: theme.spacing(0.5),
+      border: `1px solid ${theme.palette.secondary.light}`,
+      boxShadow: theme.shadows[2],
+    },
   },
   tooltip: { maxWidth: 'none' },
   label: {
@@ -243,11 +241,14 @@ const Electricity = ({ data, year }) => {
   return (
     <div className={classes.root}>
       {/* current year number at the top-right corner */}
-      <Typography variant="h5" color="primary" className={classes.year}>{`${currYear} `}</Typography>
+      <Typography variant="h5" color="primary" className={classes.year}>{currYear}</Typography>
 
       {/* bubble annotation below the year number */}
       <Grid container className={classes.annotation}>
-        <Grid item xs={12}><div /><div /></Grid>
+        <Grid item xs={12}>
+          <div className={classes.annotationCircle} />
+          <div className={classes.annotationCircle} />
+        </Grid>
         <Grid item xs={6}><Typography variant="caption">Amount by {config.view === 'region' ? 'source' : 'region'}</Typography></Grid>
         <Grid item xs={6}><Typography variant="caption">Total Amount</Typography></Grid>
       </Grid>
