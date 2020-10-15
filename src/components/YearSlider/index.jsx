@@ -78,6 +78,7 @@ const useStyles = makeStyles(theme => ({
     position: 'absolute',
     top: 12,
     right: 0,
+    zIndex: -1,
     padding: theme.spacing(0.25, 0.5),
     backgroundImage: 'linear-gradient(to right, rgba(243, 239, 239, 1), rgba(243, 239, 239, 1) 30%, rgba(243, 239, 239, .25))',
     '& > span': {
