@@ -321,6 +321,7 @@ const Electricity = ({ data, year }) => {
         onYearChange={value => setCurrYear(value)}
         min={year.min}
         max={year.max}
+        forecast={year.forecastStart}
       />
     </div>
   );
@@ -328,7 +329,11 @@ const Electricity = ({ data, year }) => {
 
 Electricity.propTypes = {
   data: PropTypes.oneOfType([PropTypes.object, PropTypes.arrayOf(PropTypes.object)]),
-  year: PropTypes.shape({ min: PropTypes.number, max: PropTypes.number }),
+  year: PropTypes.shape({
+    min: PropTypes.number,
+    max: PropTypes.number,
+    forecastStart: PropTypes.number,
+  }),
 };
 
 Electricity.defaultProps = {
