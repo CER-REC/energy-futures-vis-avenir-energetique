@@ -34,7 +34,10 @@ const theme = createMuiTheme({
   overrides: {
     MuiCssBaseline: {
       '@global': {
-        html: { fontSize: '16px !important' }, // reset font-size that has been overwritten by the WET template
+        html: { // reset font-size that has been overwritten by the WET template
+          fontSize: '16px !important',
+          lineHeight: 'normal !important',
+        },
       },
     },
     MuiTypography: {

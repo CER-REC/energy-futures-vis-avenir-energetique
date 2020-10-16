@@ -3,13 +3,20 @@ import { ResponsiveBar } from '@nivo/bar';
 import PropTypes from 'prop-types';
 import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
-import ForecastBar from '../../components/ForecastBar';
+import { CHART_PROPS, CHART_AXIS_PROPS, UNIT_NAMES } from '../../constants';
+import { formatUnitAbbreviation } from '../../utilities/convertUnit';
+import { getMaxTick } from '../../utilities/parseData';
 import convertHexToRGB from '../../utilities/convertHexToRGB';
+import ForecastBar from '../../components/ForecastBar';
+import MaxTick from '../../components/MaxTick';
 
 const ByRegion = ({ data, year }) => {
   const { regions } = useAPI();
   const { config, setConfig } = useConfig();
 
+  /**
+   * Manually calculating bar colors to create the fade-out effect.
+   */
   const customColorProp = useCallback((maxYear, forecastYear, hexFunc) => (d) => {
     const opacityNumber = (d.indexValue > forecastYear)
       ? (1.5 - ((d.indexValue - forecastYear) / (maxYear - forecastYear)))
@@ -34,6 +41,21 @@ const ByRegion = ({ data, year }) => {
    */
   const keys = useMemo(() => [...config.provinceOrder].reverse(), [config.provinceOrder]);
 
+  /**
+   * Calculate the max tick value on y-axis and generate the all ticks accordingly.
+   */
+  const axis = useMemo(() => {
+    const highest = data && Math.max(...data
+      .map(seg => Object.values(seg).reduce((a, b) => a + (typeof b === 'string' ? 0 : b), 0)));
+    return getMaxTick(highest);
+  }, [data]);
+  const axisFormat = useCallback(
+    value => (Math.abs(value - Math.max(...axis.ticks)) < Number.EPSILON
+      ? <MaxTick value={value} unit={config.unit} />
+      : value),
+    [axis.ticks, config.unit],
+  );
+
   if (!data) {
     return null;
   }
@@ -43,37 +65,25 @@ const ByRegion = ({ data, year }) => {
       {/* Its worth considering whether or not the forecast bar can be a Nivo layer */}
       <ForecastBar year={year} />
       <ResponsiveBar
+        {...CHART_PROPS}
         data={data}
         keys={keys}
         indexBy="year"
-        margin={{ top: 50, right: 80, bottom: 50, left: 50 }}
+        maxValue={axis.highest}
         padding={0.1}
         colors={colors}
         borderColor={{ from: 'color', modifiers: [['darker', 1.6]] }}
-        axisTop={null}
-        axisLeft={null}
         axisBottom={{
-          tickSize: 5,
-          tickPadding: 5,
-          tickRotation: 0,
-          legendPosition: 'middle',
-          legendOffset: 32,
+          ...CHART_AXIS_PROPS,
           format: yearLabel => ((yearLabel % 5) ? '' : yearLabel),
         }}
         axisRight={{
-          tickSize: 5,
-          tickPadding: 5,
-          tickRotation: 0,
-          legendPosition: 'middle',
-          legendOffset: -40,
+          ...CHART_AXIS_PROPS,
+          tickValues: axis.ticks,
+          format: axisFormat,
         }}
-        enableLabel={false}
-        labelSkipWidth={12}
-        labelSkipHeight={12}
-        labelTextColor={{ from: 'color', modifiers: [['darker', 1.6]] }}
-        animate
-        motionStiffness={90}
-        motionDamping={15}
+        tooltipFormat={value => formatUnitAbbreviation(value, UNIT_NAMES[config.unit])}
+        gridYValues={axis.ticks}
       />
     </>
   );

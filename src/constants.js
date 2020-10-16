@@ -22,7 +22,7 @@ export const lang = (typeof document !== 'undefined'
 // TODO: Remove and replace using intl in the relevant components for translations
 export const UNIT_NAMES = {
   petajoules: 'PETAJOULES',
-  kilobarrelEquivalents: 'kBOE/d',
+  kilobarrelEquivalents: 'mBOE/d',
   gigawattHours: 'GW.h',
   kilobarrels: 'kB/d',
   thousandCubicMetres: 'km³/d',
@@ -58,6 +58,11 @@ export const PAGES = [
     id: 'scenarios',
     bg: '#CA9830',
   },
+  {
+    label: 'Oil-and-Gas',
+    id: 'oil-and-gas',
+    bg: '#CC6666',
+  },
   // {
   //   label: 'Demand',
   //   id: 'demand',
@@ -70,21 +75,25 @@ export const CONFIG_LAYOUT = {
     name: 'Total Demand',
     icon: IconDemand,
     unit: ['petajoules', 'kilobarrelEquivalents'],
+    pages: ['by-region', 'by-sector', 'scenarios'],
   },
   electricityGeneration: {
-    name: 'Electricity Production',
+    name: 'Electricity Generation',
     icon: IconElectricity,
     unit: ['gigawattHours', 'petajoules', 'kilobarrelEquivalents'],
+    pages: ['by-region', 'electricity', 'scenarios'],
   },
   oilProduction: {
     name: 'Oil Production',
     icon: IconOil,
     unit: ['kilobarrels', 'thousandCubicMetres'],
+    pages: ['by-region', 'scenarios', 'oil-and-gas'],
   },
   gasProduction: {
     name: 'Gas Production',
     icon: IconGas,
     unit: ['millionCubicMetres', 'cubicFeet'],
+    pages: ['by-region', 'scenarios', 'oil-and-gas'],
   },
 };
 
@@ -120,20 +129,20 @@ export const REGION_COLORS = {
 
 export const SOURCE_COLORS = {
   electricity: {
-    BIO: '#4D8255',
-    COAL: '#4E513F',
-    HYDRO: '#274368',
-    GAS: '#F2CB53',
-    OIL: '#E4812C',
-    RENEWABLE: '#B2BCE4',
-    NUCLEAR: '#683A96',
+    BIO: '#1C7F24',
+    COAL: '#4B5E5B',
+    HYDRO: '#5FBEE6',
+    GAS: '#890038',
+    OIL: '#FF821E',
+    RENEWABLE: '#FFCC47',
+    NUCLEAR: '#753B95',
   },
   energy: {
-    BIO: '#4D8255',
-    COAL: '#4E513F',
+    BIO: '#1C7F24',
+    COAL: '#4B5E5B',
     ELECTRICITY: '#7ACBCB',
-    GAS: '#F2CB53',
-    OIL: '#E4812C',
+    GAS: '#890038',
+    OIL: '#FF821E',
   },
   gas: {},
   oil: {},
@@ -178,4 +187,19 @@ export const DEFAULT_CONFIG = {
   provinceOrder: [],
   sources: [],
   sourceOrder: [],
+};
+
+export const CHART_PROPS = {
+  margin: { top: 50, bottom: 50, left: 20, right: 80 },
+  axisTop: null,
+  axisLeft: null,
+  enableLabel: false,
+  animate: true,
+  motionStiffness: 90,
+  motionDamping: 15,
+};
+export const CHART_AXIS_PROPS = {
+  tickSize: 5,
+  tickPadding: 5,
+  tickRotation: 0,
 };

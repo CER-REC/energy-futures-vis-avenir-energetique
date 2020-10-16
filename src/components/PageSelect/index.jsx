@@ -10,7 +10,7 @@ import { PAGES, CONFIG_LAYOUT } from '../../constants';
 import useConfig from '../../hooks/useConfig';
 
 import {
-  IconPageRegion, IconPageSector, IconPageElectricity, IconPageScenarios,
+  IconPageRegion, IconPageSector, IconPageElectricity, IconPageScenarios, IconPageOilAndGas,
 } from '../../icons';
 
 const getPageIcon = (id) => {
@@ -19,6 +19,7 @@ const getPageIcon = (id) => {
     case 'by-sector': return <IconPageSector />;
     case 'electricity': return <IconPageElectricity />;
     case 'scenarios': return <IconPageScenarios />;
+    case 'oil-and-gas': return <IconPageOilAndGas />;
     default: return null;
   }
 };
@@ -31,7 +32,7 @@ const useStyles = makeStyles(theme => createStyles({
   box: {
     position: 'absolute',
     left: 0,
-    height: 64,
+    height: 84,
     backgroundColor: '#F3EFEF',
     boxShadow: theme.shadows[4],
     zIndex: 9,
@@ -47,15 +48,21 @@ const useStyles = makeStyles(theme => createStyles({
       width: 64,
       fill: theme.palette.secondary.light,
     },
+    '& + span': {
+      width: 64,
+      color: theme.palette.secondary.light,
+      fontWeight: 700,
+    },
   },
   label: {
     textAlign: 'left',
     overflow: 'hidden',
     transition: 'height .5s ease-in-out, width .5s ease-in-out',
-    '& > h5': { transition: 'opacity .5s ease-in-out' },
-    '& > h5:first-of-type': {
-      fontWeight: 700,
+    '& > h5': {
+      marginLeft: theme.spacing(2),
+      transition: 'opacity .5s ease-in-out',
     },
+    '& > h5:first-of-type': { fontWeight: 700 },
   },
   tooltip: {
     margin: theme.spacing(0, 1),
@@ -115,11 +122,12 @@ const PageSelect = () => {
           centerRipple
           onClick={() => handleSelect(page.id)}
           classes={{ root: classes.box }}
-          style={{
-            top: index * 68 + 10,
-            padding: index === 0 ? '2px 8px' : 0,
-          }}
+          style={{ top: index === 0 ? 10 : (index - 1) * 88 + 82, height: index === 0 ? 68 : 84 }}
         >
+          <Grid container direction="column" wrap="nowrap" style={{ width: 'auto' }}>
+            <div className={classes.icon}>{getPageIcon(page.id)}</div>
+            {index !== 0 && <Typography variant="caption">{page.label}</Typography>}
+          </Grid>
           <div
             className={classes.label}
             style={{
@@ -134,9 +142,9 @@ const PageSelect = () => {
               {['by-region', 'scenarios'].includes(config.page) && CONFIG_LAYOUT[config.mainSelection]?.name}
               {['by-sector', 'demand'].includes(config.page) && intl.formatMessage({ id: `common.sectors.${config.sector}` })}
               {config.page === 'electricity' && `By ${config.view}`}
+              {config.page === 'oil-and-gas' && `${CONFIG_LAYOUT[config.mainSelection]?.name} / By ${config.view}`}
             </Typography>
           </div>
-          <div className={classes.icon}>{getPageIcon(page.id)}</div>
         </ButtonBase>
       </Tooltip>
     );
