@@ -12,7 +12,7 @@ import {
 import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
 import LinkButtonGroup from '../LinkButtonGroup';
-import Hint from '../Hint';
+import { HintYearSelect } from '../Hint';
 
 const useStyles = makeStyles(theme => createStyles({
   root: {
@@ -48,11 +48,11 @@ const YearSelect = () => {
   return (
     <Grid container alignItems="center" spacing={1} className={classes.root}>
       <Grid item>
-        <Hint>
+        <HintYearSelect>
           <Typography variant="h5" color="primary" className={classes.title}>
             Canada&apos;s Energy Future
           </Typography>
-        </Hint>
+        </HintYearSelect>
       </Grid>
 
       {yearIds.map(yearId => (

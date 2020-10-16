@@ -9,7 +9,7 @@ import {
 import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
 import { SCENARIO_COLOR } from '../../constants';
-import Hint from '../Hint';
+import { HintScenarioSelect } from '../Hint';
 
 const useStyles = makeStyles(theme => createStyles({
   root: {
@@ -95,7 +95,7 @@ const ScenarioSelect = ({ multiSelect }) => {
   return (
     <Grid container alignItems="center" wrap="nowrap" spacing={1} className={classes.root}>
       <Grid item>
-        <Hint><Typography variant="h6" color="primary">Scenarios</Typography></Hint>
+        <HintScenarioSelect><Typography variant="h6" color="primary">Scenarios</Typography></HintScenarioSelect>
       </Grid>
 
       {scenarios.map(scenario => (

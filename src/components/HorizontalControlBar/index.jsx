@@ -8,7 +8,7 @@ import {
 
 import useConfig from '../../hooks/useConfig';
 import { CONFIG_LAYOUT, SECTOR_LAYOUT, UNIT_NAMES } from '../../constants';
-import Hint from '../Hint';
+import { HintMainSelect, HintViewSelect, HintSectorSelect, HintUnitSelect } from '../Hint';
 // #endregion
 
 const useStyles = makeStyles(theme => createStyles({
@@ -63,7 +63,7 @@ const HorizontalControlBar = () => {
   const selections = ['by-region', 'scenarios'].includes(config.page) && (
     <Grid container alignItems="center" wrap="nowrap" spacing={1}>
       <Grid item style={{ paddingRight: 0 }}>
-        <Hint />
+        <HintMainSelect />
       </Grid>
       {Object.keys(CONFIG_LAYOUT).map(selection => (
         <Grid item key={`config-origin-${selection}`}>
@@ -92,7 +92,7 @@ const HorizontalControlBar = () => {
   const sectors = ['by-sector', 'oil-and-gas', 'demand'].includes(config.page) && (
     <Grid container alignItems="center" wrap="nowrap" spacing={1}>
       <Grid item style={{ paddingRight: 0 }}>
-        <Hint><Typography variant="body1" color="primary">SECTOR</Typography></Hint>
+        <HintSectorSelect><Typography variant="body1" color="primary">SECTOR</Typography></HintSectorSelect>
       </Grid>
       {Object.keys(SECTOR_LAYOUT).map((sector) => {
         const Icon = SECTOR_LAYOUT[sector]?.icon;
@@ -116,8 +116,8 @@ const HorizontalControlBar = () => {
   );
 
   const views = ['electricity', 'oil-and-gas'].includes(config.page) && (
-    <Grid container wrap="nowrap">
-      <Hint><Typography variant="body1" color="primary">VIEW BY</Typography></Hint>
+    <Grid container alignItems="center" wrap="nowrap">
+      <HintViewSelect><Typography variant="body1" color="primary">VIEW BY</Typography></HintViewSelect>
       {['region', 'source'].map(view => (
         <Tooltip
           key={`config-view-${view}`}
@@ -137,8 +137,8 @@ const HorizontalControlBar = () => {
   );
 
   const units = (
-    <Grid container wrap="nowrap">
-      <Hint><Typography variant="body1" color="primary">UNIT</Typography></Hint>
+    <Grid container alignItems="center" wrap="nowrap">
+      <HintUnitSelect><Typography variant="body1" color="primary">UNIT</Typography></HintUnitSelect>
       {layout.unit.map(unit => (
         <Tooltip
           key={`config-unit-${unit}`}
