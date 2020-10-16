@@ -80,7 +80,6 @@ const HorizontalControlBar = () => {
                   variant={config.mainSelection === selection ? 'contained' : 'outlined'}
                   color="primary"
                   size="small"
-                  disabled={selection === 'oilProduction'}
                   onClick={() => handleConfigUpdate('mainSelection', selection)}
                   className={classes.btnSector}
                 >
