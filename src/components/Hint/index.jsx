@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useCallback, useMemo, Fragment } from 'react';
 import { useIntl } from 'react-intl';
 import PropTypes from 'prop-types';
 import {
@@ -16,6 +16,7 @@ const useStyles = makeStyles(theme => createStyles({
   dialog: { overflow: 'visible' },
   hint: {
     height: 28,
+    margin: 'auto',
     padding: theme.spacing(0.5),
     color: theme.palette.secondary.light,
     transform: 'translateY(-6px)',
@@ -31,33 +32,51 @@ const useStyles = makeStyles(theme => createStyles({
 /**
  * A single section in the hint dialog content, including a section title and a list of body text.
  */
-const HintSection = ({ title, section }) => (
-  <Grid container spacing={2}>
-    {title && <Grid item xs={12}><Typography variant="h4">{title}</Typography></Grid>}
-    {section.map(entry => (
-      <Grid item xs={6} key={`hint-content-entry-${Math.random()}`}>
-        {entry.title && <Typography variant="h6" gutterBottom>{entry.title}</Typography>}
-        {(entry.text.startsWith('<') && entry.text.endsWith('>'))
-          ? <Typography variant="body2" color="secondary" dangerouslySetInnerHTML={{ __html: entry.text }} />
-          : <Typography variant="body2" color="secondary">{entry.text}</Typography>}
-        {entry.link && <Typography variant="body2" color="secondary" dangerouslySetInnerHTML={{ __html: entry.link }} />}
-      </Grid>
-    ))}
-  </Grid>
-);
+const HintSection = ({ title, section, singleColumn }) => {
+  const body = useCallback(text => ((text.startsWith('<') && text.endsWith('>'))
+    ? <Typography variant="body2" color="secondary" dangerouslySetInnerHTML={{ __html: text }} />
+    : <Typography variant="body2" color="secondary">{text}</Typography>), []);
+
+  return (
+    <Grid container alignItems={singleColumn ? 'center' : 'flex-start'} spacing={2}>
+      {title && <Grid item xs={12}><Typography variant="h4">{title}</Typography></Grid>}
+      {section.map(entry => (singleColumn ? (
+        <Fragment key={`hint-content-entry-${Math.random()}`}>
+          <Grid item xs={12} sm={4}>
+            {entry.icon && <entry.icon style={{ verticalAlign: 'middle', marginRight: 8 }} />}
+            <Typography variant="body1" component="span"><strong>{entry.title}</strong></Typography>
+          </Grid>
+          <Grid item xs={12} sm={8}>
+            {body(entry.text)}
+            {entry.link && <Typography variant="body2" color="secondary" dangerouslySetInnerHTML={{ __html: entry.link }} />}
+          </Grid>
+        </Fragment>
+      ) : (
+        <Grid item xs={6} key={`hint-content-entry-${Math.random()}`}>
+          {entry.title && <Typography variant="h6" gutterBottom>{entry.title}</Typography>}
+          {body(entry.text)}
+          {entry.link && <Typography variant="body2" color="secondary" dangerouslySetInnerHTML={{ __html: entry.link }} />}
+        </Grid>
+      )))}
+    </Grid>
+  );
+};
 
 HintSection.propTypes = {
   title: PropTypes.string,
   section: PropTypes.arrayOf(PropTypes.shape({
     title: PropTypes.string,
+    icon: PropTypes.func,
     text: PropTypes.oneOfType([PropTypes.string, PropTypes.node]).isRequired,
     link: PropTypes.node,
   })),
+  singleColumn: PropTypes.bool,
 };
 
 HintSection.defaultProps = {
   title: undefined,
   section: undefined,
+  singleColumn: false,
 };
 
 /**
@@ -74,7 +93,7 @@ const Hint = ({ children, content }) => {
         <IconButton onClick={() => setOpen(true)} className={classes.hint}><HintIcon fontSize="small" /></IconButton>
       </Grid>
 
-      <Dialog open={open} maxWidth="md" onClose={() => setOpen(false)} classes={{ paper: classes.dialog }}>
+      <Dialog open={open} maxWidth="sm" onClose={() => setOpen(false)} classes={{ paper: classes.dialog }}>
         <Fab color="primary" size="medium" onClick={() => setOpen(false)} className={classes.close}><CloseIcon /></Fab>
         <DialogContent style={{ padding: 24 }}>
           {typeof content === 'string' ? content : (
@@ -210,3 +229,39 @@ export const HintViewSelect = ({ children }) => {
 
 HintViewSelect.propTypes = { children: PropTypes.node };
 HintViewSelect.defaultProps = { children: null };
+
+/**
+ * Hint panel for the question mark on top of the draggable region list.
+ */
+export const HintRegionList = ({ children }) => {
+  const intl = useIntl();
+  const { regions } = useAPI();
+  const section = useMemo(() => ['ALL', ...regions.order].map(region => ({
+    title: region,
+    text: intl.formatMessage({ id: `regions.${region}` }),
+  })), [intl, regions]);
+  return <Hint content={[<HintSection section={section} singleColumn />]}>{children}</Hint>;
+};
+
+HintRegionList.propTypes = { children: PropTypes.node };
+HintRegionList.defaultProps = { children: null };
+
+/**
+ * Hint panel for the question mark on top of the draggable source list.
+ */
+export const HintSourceList = ({ sources, sourceType, children }) => {
+  const intl = useIntl();
+  const section = useMemo(() => Object.keys(sources).map(source => ({
+    title: sources[source].label,
+    icon: sources[source].icon,
+    text: intl.formatMessage({ id: `sources.${sourceType}.${source}` }),
+  })), [intl, sources, sourceType]);
+  return <Hint content={[<HintSection section={section} singleColumn />]}>{children}</Hint>;
+};
+
+HintSourceList.propTypes = {
+  sources: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+  sourceType: PropTypes.string.isRequired,
+  children: PropTypes.node,
+};
+HintSourceList.defaultProps = { children: null };

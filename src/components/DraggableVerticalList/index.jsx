@@ -9,7 +9,7 @@ import ClearIcon from '@material-ui/icons/Clear';
 import DragIcon from '@material-ui/icons/DragIndicator';
 
 import useConfig from '../../hooks/useConfig';
-import Hint from '../Hint';
+import { HintRegionList, HintSourceList } from '../Hint';
 
 const reorder = (list, startIndex, endIndex) => {
   const result = Array.from(list);
@@ -131,7 +131,6 @@ const useStyles = makeStyles(theme => ({
   root: props => ({
     position: 'relative',
     width: props.width || '100%',
-    padding: theme.spacing(1, 0),
     marginTop: props.dense ? 0 : -4,
     border: '1px dashed transparent',
     borderRadius: theme.shape.borderRadius,
@@ -268,9 +267,7 @@ const DraggableVerticalList = ({
 
   return (
     <DragDropContext onDragEnd={handleDragEnd}>
-      <Hint>
-        <Typography variant="h6" color="secondary" className={classes.title}>{title}</Typography>
-      </Hint>
+      {title === 'Region' ? <HintRegionList items={defaultItems} /> : <HintSourceList sources={defaultItems} sourceType={sourceType} />}
       <Droppable droppableId="droppable" isDropDisabled={disabled}>
         {(provided, snapshot) => (
           <Grid
