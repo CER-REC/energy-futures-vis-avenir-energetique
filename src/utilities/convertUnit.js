@@ -1,3 +1,5 @@
+import { UNIT_NAMES } from '../constants';
+
 const conversionTable = {
   petajoules: {
     kilobarrelEquivalents: 0.447507,
@@ -32,8 +34,11 @@ const ABBREVIATIONS = [
   { magnitude: 1000, unit: 'K' },
   { magnitude: 1, unit: '' },
 ];
-
-export const formatUnitAbbreviation = (value) => {
-  const match = ABBREVIATIONS.find(abbr => value / abbr.magnitude > 1);
-  return `${match ? (value / match.magnitude).toFixed(2) : value.toFixed(3)} ${match?.unit || ''}`.trim();
+export const formatUnitAbbreviation = (value, unit) => {
+  const match = ABBREVIATIONS.find(abbr => value / abbr.magnitude >= 1);
+  const num = match ? (value / match.magnitude).toFixed(2) : value.toFixed(3);
+  const isKiloMBOE = unit === UNIT_NAMES.kilobarrelEquivalents && match?.unit === 'K'; // K mBOE/d; change to mmBOE/d
+  const isMilliMBOE = unit === UNIT_NAMES.kilobarrelEquivalents && match?.unit === 'M'; // M mBOE/d; change to K mmBOE/d
+  const abbr = isMilliMBOE ? 'K' : (isKiloMBOE ? '' : match?.unit); // eslint-disable-line no-nested-ternary
+  return [num, abbr, `${(isKiloMBOE || isMilliMBOE) ? 'm' : ''}${unit || ''}`].filter(Boolean).join(' ');
 };

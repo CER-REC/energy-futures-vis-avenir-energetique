@@ -6,8 +6,8 @@ import useConfig from '../../hooks/useConfig';
 const useStyles = makeStyles(() => createStyles({
   outerContainer: ({ page }) => ({
     // 130px or 100px is to offset the chart margin
-    width: page === 'by-region' ? 'calc(100% - 130px - 32px)' : 'calc(100% - 100px)',
-    marginLeft: page === 'by-region' ? 'calc(50px + 17px)' : '50px',
+    width: page === 'by-region' ? 'calc(100% - 100px - 32px)' : 'calc(100% - 100px)',
+    marginLeft: page === 'by-region' ? (20 + 17) : 20,
     position: 'relative',
     pointerEvents: 'none',
   }),
@@ -20,7 +20,7 @@ const useStyles = makeStyles(() => createStyles({
     zIndex: 1,
   }),
   foreCast: {
-    backgroundImage: 'linear-gradient(to left, rgba(255,0,0,0), rgba(243, 242, 242, 1) 30%)',
+    backgroundImage: 'linear-gradient(to left, rgba(0, 0, 0, 0), rgba(242, 242, 242, 1) 30%)',
     paddingLeft: '5px',
   },
 }));
@@ -35,7 +35,7 @@ const ForecastBar = ({ year }) => {
       <div className={classes.innerContainer}>
         <div className={classes.foreCast}>
           {/* TODO: This will need to be replaced by a translated version. */}
-          <Typography variant='body1' color='secondary'>Forecast</Typography>
+          <Typography variant='body1' color='secondary'>FORECAST</Typography>
         </div>
       </div>
     </div>

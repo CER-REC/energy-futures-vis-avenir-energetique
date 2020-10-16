@@ -1,7 +1,7 @@
 import React from 'react';
 
-export default ({ min: yearMin, max: yearMax, foreCastStart }) => ({ areaGenerator, series }) => {
-  const preForecastPercentage = ((foreCastStart - yearMin) / (yearMax - yearMin)) * 100;
+export default ({ min: yearMin, max: yearMax, forecastStart }) => ({ areaGenerator, series }) => {
+  const preForecastPercentage = ((forecastStart - yearMin) / (yearMax - yearMin)) * 100;
 
   /*
     Generate the areas for lines in the chart and apply a linear gradient to the fill.
@@ -16,9 +16,9 @@ export default ({ min: yearMin, max: yearMax, foreCastStart }) => ({ areaGenerat
         <defs>
           <linearGradient id={`line-${index}-gradient`}>
             {/* Gradient starts to fade after forecast line */}
-            <stop offset={`${preForecastPercentage}%`} stopColor={line.color} stopOpacity='1' />
-            <stop offset={`${100 - preForecastPercentage}%`} stopColor={line.color} stopOpacity='0.6' />
-            <stop offset='95%' stopColor={line.color} stopOpacity='0.2' />
+            <stop offset="0%" stopColor={line.color} stopOpacity="1" />
+            <stop offset={`${preForecastPercentage}%`} stopColor={line.color} stopOpacity="1" />
+            <stop offset="100%" stopColor={line.color} stopOpacity='0.25' />
           </linearGradient>
         </defs>
         <path
@@ -29,5 +29,5 @@ export default ({ min: yearMin, max: yearMax, foreCastStart }) => ({ areaGenerat
       </g>
     ));
 
-  return (<g opacity={0.7}>{areas}</g>);
+  return (<g opacity={0.8}>{areas}</g>);
 };

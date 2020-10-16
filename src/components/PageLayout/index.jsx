@@ -5,7 +5,7 @@ import Alert from '@material-ui/lab/Alert';
 import AlertTitle from '@material-ui/lab/AlertTitle';
 import { useIntl } from 'react-intl';
 
-import { PAGES } from '../../constants';
+import { CONFIG_LAYOUT, PAGES } from '../../constants';
 import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
 import useEnergyFutureData from '../../hooks/useEnergyFutureData';
@@ -55,7 +55,8 @@ const PageLayout = ({
   const intl = useIntl();
   const { regions, sources } = useAPI();
   const { config, setConfig } = useConfig();
-  const { loading, error, data, year } = useEnergyFutureData();
+  const { loading, error, data, disabledRegions, disabledSources, year } = useEnergyFutureData();
+
   const type = PAGES.find(page => page.id === config.page).sourceType;
 
   /**
@@ -78,8 +79,18 @@ const PageLayout = ({
         selectedSources = validSources;
       }
 
+      // also update the main selection accordingly
+      let { mainSelection } = config;
+
+      if (!CONFIG_LAYOUT[mainSelection]?.pages.includes(config.page)) {
+        mainSelection = Object.keys(CONFIG_LAYOUT).find(
+          selection => CONFIG_LAYOUT[selection]?.pages.includes(config.page),
+        ) || mainSelection;
+      }
+
       setConfig({
         ...config,
+        mainSelection,
         sources: selectedSources,
         sourceOrder: selectedSourceOrder,
       });
@@ -92,36 +103,24 @@ const PageLayout = ({
     [children, data, year],
   );
   const regionItems = useMemo(
-    () => {
-      const items = {};
-
-      regions.order.forEach((region) => {
-        items[region] = {
-          color: regions.colors[region],
-          label: intl.formatMessage({ id: `regions.${region}` }),
-        };
-      });
-
-      return items;
-    },
+    () => regions.order.reduce((items, region) => ({
+      ...items,
+      [region]: {
+        color: regions.colors[region],
+        label: intl.formatMessage({ id: `regions.${region}` }),
+      },
+    }), {}),
     [regions, intl],
   );
   const sourceItems = useMemo(
-    () => {
-      const items = {};
-
-      if (type) {
-        sources[type].order.forEach((source) => {
-          items[source] = {
-            color: sources[type].colors[source],
-            icon: sources[type].icons[source],
-            label: intl.formatMessage({ id: `common.sources.${type}.${source}` }),
-          };
-        });
-      }
-
-      return items;
-    },
+    () => (type ? sources[type].order : []).reduce((items, source) => ({
+      ...items,
+      [source]: {
+        color: sources[type].colors[source],
+        icon: sources[type].icons[source],
+        label: intl.formatMessage({ id: `common.sources.${type}.${source}` }),
+      },
+    }), {}),
     [type, sources, intl],
   );
 
@@ -156,6 +155,7 @@ const PageLayout = ({
                 itemOrder={config.sourceOrder}
                 defaultItems={sourceItems}
                 defaultItemOrder={sources[type].order}
+                disabledItems={config.page === 'by-sector' && disabledSources}
                 setItems={selectedSources => setConfig({ ...config, sources: selectedSources })}
                 setItemOrder={sourceOrder => setConfig({ ...config, sourceOrder })}
               />
@@ -176,6 +176,7 @@ const PageLayout = ({
                 itemOrder={config.provinceOrder}
                 defaultItems={regionItems}
                 defaultItemOrder={regions.order}
+                disabledItems={config.page === 'by-region' && disabledRegions}
                 setItems={provinces => setConfig({ ...config, provinces })}
                 setItemOrder={provinceOrder => setConfig({ ...config, provinceOrder })}
               />
