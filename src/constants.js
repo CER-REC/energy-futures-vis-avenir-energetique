@@ -75,59 +75,25 @@ export const CONFIG_LAYOUT = {
     name: 'Total Demand',
     icon: IconDemand,
     unit: ['petajoules', 'kilobarrelEquivalents'],
+    pages: ['by-region', 'by-sector', 'scenarios'],
   },
   electricityGeneration: {
     name: 'Electricity Generation',
     icon: IconElectricity,
     unit: ['gigawattHours', 'petajoules', 'kilobarrelEquivalents'],
+    pages: ['by-region', 'electricity', 'scenarios'],
   },
   oilProduction: {
     name: 'Oil Production',
     icon: IconOil,
     unit: ['kilobarrels', 'thousandCubicMetres'],
+    pages: ['by-region', 'scenarios', 'oil-and-gas'],
   },
   gasProduction: {
     name: 'Gas Production',
     icon: IconGas,
     unit: ['millionCubicMetres', 'cubicFeet'],
-  },
-};
-
-export const SECTOR_LAYOUT = {
-  total: {
-    name: 'Total Demand',
-    icon: IconDemand,
-    page: ['by-sector', 'oil-and-gas'],
-  },
-  residential: {
-    name: 'Residential',
-    icon: IconResidential,
-    page: ['by-sector'],
-  },
-  commercial: {
-    name: 'Commercial',
-    icon: IconCommercial,
-    page: ['by-sector'],
-  },
-  industrial: {
-    name: 'Industrial',
-    icon: IconIndustrial,
-    page: ['by-sector'],
-  },
-  transportation: {
-    name: 'Transportation',
-    icon: IconTransportation,
-    page: ['by-sector'],
-  },
-  oil: {
-    name: 'Oil',
-    icon: IconOil,
-    page: ['oil-and-gas'],
-  },
-  gas: {
-    name: 'Gas',
-    icon: IconGas,
-    page: ['oil-and-gas'],
+    pages: ['by-region', 'scenarios', 'oil-and-gas'],
   },
 };
 
@@ -203,12 +169,19 @@ export const SOURCE_ICONS = {
   oil: {},
 };
 
+export const SECTOR_ICONS = {
+  RESIDENTIAL: IconResidential,
+  COMMERCIAL: IconCommercial,
+  INDUSTRIAL: IconIndustrial,
+  TRANSPORTATION: IconTransportation,
+};
+
 export const DEFAULT_CONFIG = {
   page: 'landing', // e.g. by-region, by-sector, electricity, senarios, demand
   mainSelection: 'energyDemand', // e.g. electricityGeneration, oilProduction, gasProduction
   unit: 'petajoules', // e.g. kilobarrelEquivalents, gigawattHours, kilobarrels, thousandCubicMetres, cubicFeet, millionCubicMetres
   view: 'region', // e.g. region or source
-  sector: 'total', // e.g. residential, commercial, industrial, or industrial
+  sector: 'ALL', // e.g. ALL, RESIDENTIAL, COMMERCIAL, INDUSTRIAL, OR TRANSPORTATION
   scenarios: [],
   provinces: [],
   provinceOrder: [],

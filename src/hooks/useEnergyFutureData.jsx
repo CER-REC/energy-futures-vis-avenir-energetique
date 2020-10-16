@@ -84,9 +84,7 @@ export default () => {
       scenarios: config.scenarios,
       iteration: yearIdIterations[config.yearId]?.id || '',
       regions,
-      // FIXME: config will store it as "total"
-      // it should be "total end-use"
-      sectors: config.sector === 'total' ? 'total end-use' : config.sector,
+      sectors: config.sector,
       sources,
     },
     // do nothing if the request is invalid
