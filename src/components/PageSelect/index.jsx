@@ -1,11 +1,11 @@
 /* eslint-disable react/prop-types */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useIntl } from 'react-intl';
 import {
   makeStyles, createStyles,
   Grid, ButtonBase, Typography, Tooltip,
 } from '@material-ui/core';
-import { PAGES, CONFIG_LAYOUT, SECTOR_LAYOUT } from '../../constants';
+import { PAGES } from '../../constants';
 import useConfig from '../../hooks/useConfig';
 
 import {
@@ -95,6 +95,20 @@ const PageSelect = () => {
     [config.page], // eslint-disable-line react-hooks/exhaustive-deps
   );
 
+  /**
+   * Generate the translation of the selected page title.
+   */
+  const getTitle = useCallback((page) => {
+    switch (page.id) {
+      case 'by-region': return intl.formatMessage({ id: `components.pageSelect.${page.label}.title.${config.mainSelection}` });
+      case 'by-sector': return intl.formatMessage({ id: `components.pageSelect.${page.label}.title.${config.sector}` });
+      case 'electricity': return intl.formatMessage({ id: `components.pageSelect.${page.label}.title.${config.view}` });
+      case 'scenarios': return intl.formatMessage({ id: `components.pageSelect.${page.label}.title.${config.mainSelection}` });
+      case 'Oil-and-Gas':
+      default: return page.label;
+    }
+  }, [intl, config.mainSelection, config.sector, config.view]);
+
   const handleSelect = (id) => {
     if (loading || id === config.page) {
       return;
@@ -148,12 +162,7 @@ const PageSelect = () => {
             }}
           >
             <Typography variant="h5" color="primary" style={{ opacity: index === 0 ? 1 : 0 }}>
-              {page.label}
-            </Typography>
-            <Typography variant="h5" color="primary" style={{ opacity: index === 0 ? 1 : 0 }}>
-              {['by-region', 'scenarios'].includes(config.page) && CONFIG_LAYOUT[config.mainSelection]?.name}
-              {['by-sector', 'demand'].includes(config.page) && SECTOR_LAYOUT[config.sector]?.name}
-              {config.page === 'electricity' && `By ${config.view}`}
+              {getTitle(page)}
             </Typography>
           </div>
         </ButtonBase>
