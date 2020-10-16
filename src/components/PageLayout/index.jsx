@@ -79,8 +79,12 @@ const PageLayout = ({
         selectedSources = validSources;
       }
 
+      // also update the main selection accordingly
+      const mainSelection = (config.page === 'electricity' && 'electricityGeneration') || (config.page === 'by-sector' && 'energyDemand') || config.mainSelection;
+
       setConfig({
         ...config,
+        mainSelection,
         sources: selectedSources,
         sourceOrder: selectedSourceOrder,
       });
