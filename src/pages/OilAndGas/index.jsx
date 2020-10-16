@@ -13,7 +13,7 @@ const TreeMapCollection = ({ data, showSourceLabel }) => {
 
   // the oil and gas colors are not yet availible
   const tempGasColors = {
-    ALL: 'black',
+    ALL: 'white',
     CBM: 'red',
     OIL: 'blue',
     TIGHT: 'pink',
@@ -78,7 +78,7 @@ const TreeMapCollection = ({ data, showSourceLabel }) => {
 const OilAndGas = ({ data, year }) => {
   const { config } = useConfig();
   const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
-  const [compareYear, setCompareYear] = useState(year.min);
+  const [compareYear, setCompareYear] = useState(currentYear);
 
   // Compare button toggle
   const [compare, setCompare] = useState(false);
@@ -118,8 +118,8 @@ const OilAndGas = ({ data, year }) => {
         <YearSlider
           year={compare ? { curr: currentYear, compare: compareYear } : currentYear}
           onYearChange={(value) => {
-            if (value.curr !== currentYear) {
-              setCurrentYear(value.curr);
+            if ((value.curr || value) !== currentYear) {
+              setCurrentYear(value.curr || value);
             } if (compare && value.compare !== compareYear) {
               setCompareYear(value.compare);
             }
