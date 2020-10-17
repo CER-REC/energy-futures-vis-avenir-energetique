@@ -164,6 +164,7 @@ const DraggableVerticalList = ({
   singleSelect = false, /* multi-select or single select */
   greyscale = false, /* ignore button colors */
   disabled = false, /* disable drag-n-drop */
+  sourceType,
   items /* array of strings */,
   defaultItems /* object */,
   itemOrder /* array of strings */,
@@ -183,18 +184,6 @@ const DraggableVerticalList = ({
     () => intl.formatMessage({ id: 'components.draggableVerticalList.all' }),
     [intl],
   );
-
-  /**
-   * Determine the current energy source type.
-   * This will be primarily used in the tooltip generation.
-   */
-  const sourceType = useMemo(() => {
-    if (title === 'Region') return undefined; // only for sources
-    if (config.page === 'by-sector') return config.sector === 'transportation' ? 'transportation' : 'energy';
-    if (config.page === 'electricity') return 'electricity';
-    if (config.page === 'oil-and-gas') return config.sector;
-    return undefined;
-  }, [title, config.page, config.sector]);
 
   /**
    * Update the global store if the local copy modified.
@@ -335,6 +324,7 @@ DraggableVerticalList.propTypes = {
   singleSelect: PropTypes.bool,
   greyscale: PropTypes.bool,
   disabled: PropTypes.bool,
+  sourceType: PropTypes.string,
   items: PropTypes.arrayOf(PropTypes.string),
   defaultItems: PropTypes.object, // eslint-disable-line react/forbid-prop-types
   itemOrder: PropTypes.arrayOf(PropTypes.string),
@@ -352,6 +342,7 @@ DraggableVerticalList.defaultProps = {
   singleSelect: false,
   greyscale: false,
   disabled: false,
+  sourceType: undefined,
   items: [],
   defaultItems: {},
   itemOrder: [],

@@ -1,24 +1,14 @@
 import React, { useCallback, useEffect, useMemo } from 'react';
 import { useIntl } from 'react-intl';
 import PropTypes from 'prop-types';
-import {
-  makeStyles, createStyles,
-  Grid, Typography, Button, Tooltip,
-} from '@material-ui/core';
+import { Grid, Typography, Button, Tooltip } from '@material-ui/core';
 
 import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
 import { SCENARIO_COLOR } from '../../constants';
 import { HintScenarioSelect } from '../Hint';
 
-const useStyles = makeStyles(theme => createStyles({
-  root: {
-    '& > div:first-of-type': { marginRight: theme.spacing(2) },
-  },
-}));
-
 const ScenarioSelect = ({ multiSelect }) => {
-  const classes = useStyles();
   const intl = useIntl();
   const { config, setConfig } = useConfig();
   const { yearIdIterations } = useAPI();
@@ -93,9 +83,11 @@ const ScenarioSelect = ({ multiSelect }) => {
   }), [intl, config.yearId]);
 
   return (
-    <Grid container alignItems="center" wrap="nowrap" spacing={1} className={classes.root}>
+    <Grid container alignItems="center" wrap="nowrap" spacing={1}>
       <Grid item>
-        <HintScenarioSelect><Typography variant="h6" color="primary">Scenarios</Typography></HintScenarioSelect>
+        <HintScenarioSelect>
+          <Typography variant="h6" color="primary">{intl.formatMessage({ id: 'components.scenarioSelect.name' })}</Typography>
+        </HintScenarioSelect>
       </Grid>
 
       {scenarios.map(scenario => (

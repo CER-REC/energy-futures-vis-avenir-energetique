@@ -51,7 +51,7 @@ const HorizontalControlBar = () => {
     if (layout.unit.indexOf(config.unit) === -1) {
       setConfig({ ...config, unit: layout.unit[0] });
     }
-  }, [config, config.mainSelection, layout.unit, setConfig]);
+  }, [config, layout.unit, setConfig]);
 
   /**
    * Update the config.
@@ -98,7 +98,9 @@ const HorizontalControlBar = () => {
   const sectorSelection = ['by-sector', 'demand'].includes(config.page) && (
     <Grid container alignItems="center" wrap="nowrap" spacing={1}>
       <Grid item style={{ paddingRight: 0 }}>
-        <HintSectorSelect><Typography variant="body1" color="primary">SECTOR</Typography></HintSectorSelect>
+        <HintSectorSelect>
+          <Typography variant="body1" color="primary">{intl.formatMessage({ id: 'components.sectorSelect.name' })}</Typography>
+        </HintSectorSelect>
       </Grid>
       {sectors.order.map((sector) => {
         const Icon = sectors.icons[sector];
@@ -127,7 +129,9 @@ const HorizontalControlBar = () => {
 
   const views = ['electricity', 'oil-and-gas'].includes(config.page) && (
     <Grid container alignItems="center" wrap="nowrap">
-      <HintViewSelect><Typography variant="body1" color="primary">VIEW BY</Typography></HintViewSelect>
+      <HintViewSelect>
+        <Typography variant="body1" color="primary">{intl.formatMessage({ id: 'components.viewSelect.name' })}</Typography>
+      </HintViewSelect>
       {['region', 'source'].map(view => (
         <Tooltip
           key={`config-view-${view}`}
@@ -148,7 +152,9 @@ const HorizontalControlBar = () => {
 
   const units = (
     <Grid container alignItems="center" wrap="nowrap">
-      <HintUnitSelect><Typography variant="body1" color="primary">UNIT</Typography></HintUnitSelect>
+      <HintUnitSelect>
+        <Typography variant="body1" color="primary">{intl.formatMessage({ id: 'components.unitSelect.name' })}</Typography>
+      </HintUnitSelect>
       {layout.unit.map(unit => (
         <Tooltip
           key={`config-unit-${unit}`}

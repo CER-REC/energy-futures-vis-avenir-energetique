@@ -1,8 +1,6 @@
 import React, { useMemo } from 'react';
-import {
-  makeStyles, createStyles,
-  Grid, Typography, Button,
-} from '@material-ui/core';
+import { useIntl } from 'react-intl';
+import { makeStyles, Grid, Typography, Button } from '@material-ui/core';
 import LinkIcon from '@material-ui/icons/Link';
 import EmailIcon from '@material-ui/icons/Email';
 import {
@@ -14,15 +12,8 @@ import useConfig from '../../hooks/useConfig';
 import LinkButtonGroup from '../LinkButtonGroup';
 import { HintYearSelect } from '../Hint';
 
-const useStyles = makeStyles(theme => createStyles({
-  root: {
-    position: 'relative',
-    '& > div:first-of-type': { marginRight: theme.spacing(2) },
-  },
-  title: {
-    fontWeight: 700,
-    textTransform: 'uppercase',
-  },
+const useStyles = makeStyles({
+  root: { position: 'relative' },
   button: {
     height: 43,
     width: 43,
@@ -33,10 +24,12 @@ const useStyles = makeStyles(theme => createStyles({
     top: 0,
     right: 0,
   },
-}));
+});
 
 const YearSelect = () => {
   const classes = useStyles();
+  const intl = useIntl();
+
   const { yearIdIterations } = useAPI();
   const { config, setConfig } = useConfig();
 
@@ -49,9 +42,7 @@ const YearSelect = () => {
     <Grid container alignItems="center" spacing={1} className={classes.root}>
       <Grid item>
         <HintYearSelect>
-          <Typography variant="h5" color="primary" className={classes.title}>
-            Canada&apos;s Energy Future
-          </Typography>
+          <Typography variant="h6" color="primary">{intl.formatMessage({ id: 'components.yearSelect.name' })}</Typography>
         </HintYearSelect>
       </Grid>
 
