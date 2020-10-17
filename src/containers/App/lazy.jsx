@@ -48,7 +48,10 @@ const theme = createMuiTheme({
         textTransform: 'uppercase',
       },
       body1: { fontSize: '14px' },
-      caption: { lineHeight: 1.3 },
+      caption: {
+        lineHeight: 1.3,
+        '& > p': { margin: 0 },
+      },
     },
     MuiButton: {
       root: {

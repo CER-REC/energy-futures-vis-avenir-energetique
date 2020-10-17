@@ -43,8 +43,10 @@ const HintSection = ({ title, section, singleColumn }) => {
       {section.map(entry => (singleColumn ? (
         <Fragment key={`hint-content-entry-${Math.random()}`}>
           <Grid item xs={12} sm={4}>
-            {entry.icon && <entry.icon style={{ verticalAlign: 'middle', marginRight: 8 }} />}
-            <Typography variant="body1" component="span"><strong>{entry.title}</strong></Typography>
+            <Grid container alignItems="center" wrap="nowrap">
+              {entry.icon && <entry.icon style={{ verticalAlign: 'middle', marginRight: 8 }} />}
+              <Typography variant="body1" component="span"><strong>{entry.title}</strong></Typography>
+            </Grid>
           </Grid>
           <Grid item xs={12} sm={8}>
             {body(entry.text)}

@@ -7,6 +7,7 @@ import {
 } from '@material-ui/core';
 import ClearIcon from '@material-ui/icons/Clear';
 import DragIcon from '@material-ui/icons/DragIndicator';
+import markdown from 'micro-down';
 
 import useConfig from '../../hooks/useConfig';
 import { HintRegionList, HintSourceList } from '../Hint';
@@ -86,7 +87,7 @@ const ColoredItemBox = ({
             <Typography variant="overline" component="div" style={{ lineHeight: tooltip ? 1.5 : 2.66 }}>
               <strong>{label}</strong>
             </Typography>
-            {tooltip && <Typography variant="caption">{tooltip}</Typography>}
+            {tooltip && <Typography variant="caption" color="secondary" dangerouslySetInnerHTML={{ __html: tooltip }} />}
           </Grid>
         </Grid>
       )}
@@ -227,7 +228,10 @@ const DraggableVerticalList = ({
   /**
    * Generate translated tooltip text, if available.
    */
-  const getTooltip = useCallback(item => sourceType && intl.formatMessage({ id: `sources.${sourceType}.${item}` }), [intl, sourceType]);
+  const getTooltip = useCallback((item) => {
+    const type = (config.page === 'by-sector' && config.sector === 'TRANSPORTATION') ? 'transportation' : sourceType;
+    return sourceType && markdown.parse(intl.formatMessage({ id: `sources.${type}.${item}` }));
+  }, [intl, sourceType, config.page, config.sector]);
 
   const handleToggleItem = toggledItem => () => {
     if (singleSelect) {

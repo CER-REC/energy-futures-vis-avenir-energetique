@@ -1,6 +1,8 @@
 import React, { useEffect, useMemo, Children, cloneElement } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles, Grid, Typography, CircularProgress } from '@material-ui/core';
+import LinkIcon from '@material-ui/icons/Link';
+import EmailIcon from '@material-ui/icons/Email';
 import Alert from '@material-ui/lab/Alert';
 import AlertTitle from '@material-ui/lab/AlertTitle';
 import { useIntl } from 'react-intl';
@@ -19,11 +21,13 @@ import {
   LinkButtonContentAssumptions, LinkButtonContentKeyFindings, LinkButtonContentResults,
   LinkButtonContentReport, LinkButtonContentMethodology, LinkButtonContentAbout,
 } from '../LinkButtonGroup/contents';
+import { IconTwitter, IconFacebook, IconLinkedIn } from '../../icons';
 
 const LEAD_COL_WIDTH = 400;
 
 const useStyles = makeStyles(theme => ({
   root: {
+    position: 'relative',
     padding: theme.spacing(2, 0),
     marginBottom: theme.spacing(2),
     backgroundColor: theme.palette.background.paper,
@@ -52,6 +56,11 @@ const useStyles = makeStyles(theme => ({
     bottom: 0,
     left: 0,
   },
+  report: {
+    position: 'absolute',
+    top: 11,
+    right: -8,
+  },
 }));
 
 const PageLayout = ({
@@ -75,11 +84,11 @@ const PageLayout = ({
    * This will be primarily used in the tooltip generation.
    */
   const type = useMemo(() => {
-    if (config.page === 'by-sector') return config.sector === 'transportation' ? 'transportation' : 'energy';
+    if (config.page === 'by-sector') return 'energy';
     if (config.page === 'electricity') return 'electricity';
     if (config.page === 'oil-and-gas') return config.mainSelection === 'oilProduction' ? 'oil' : 'gas';
     return undefined;
-  }, [config.page, config.sector, config.mainSelection]);
+  }, [config.page, config.mainSelection]);
 
   /**
    * Reset the source list when opening 'by-sector' and 'electricity' pages.
@@ -155,13 +164,29 @@ const PageLayout = ({
 
   return (
     <Grid container spacing={2} className={classes.root}>
-      {/* Row 1: main title; year select */}
+      {/* Row 1: main title; year select; social media links */}
       <Grid item xs={12}>
         <Grid container alignItems="flex-end" wrap="nowrap" spacing={2}>
           <Grid item className={classes.title}>
             <Typography variant="h4" color="primary">{intl.formatMessage({ id: 'common.title' })}</Typography>
           </Grid>
           <Grid item style={{ flexGrow: 1 }}><YearSelect /></Grid>
+          <Grid item className={classes.report}>
+            <LinkButtonGroup
+              labels={[
+                [
+                  { name: 'download data' },
+                ], [
+                  { icon: <LinkIcon />, name: 'Copy Link', content: () => {} },
+                  { icon: <IconLinkedIn />, name: 'LinkedIn', content: () => {} },
+                  { icon: <IconFacebook />, name: 'Facebook', content: () => {} },
+                  { icon: <IconTwitter />, name: 'Twitter', content: () => {} },
+                  { icon: <EmailIcon />, name: 'Email', content: () => {} },
+                ],
+              ]}
+              accent="right"
+            />
+          </Grid>
         </Grid>
       </Grid>
 
