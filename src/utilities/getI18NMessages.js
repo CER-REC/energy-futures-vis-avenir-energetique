@@ -22,7 +22,7 @@ export default translations => (
         key = `common.sources.oil.${translation.key}`;
         break;
       case 'SECTOR':
-        key = `components.horizontalControlBar.${translation.key}`;
+        key = `common.sectors.${translation.key}`;
         break;
       default:
         return i18nMessages;

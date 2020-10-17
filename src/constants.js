@@ -22,7 +22,7 @@ export const lang = (typeof document !== 'undefined'
 // TODO: Remove and replace using intl in the relevant components for translations
 export const UNIT_NAMES = {
   petajoules: 'PETAJOULES',
-  kilobarrelEquivalents: 'kBOE/d',
+  kilobarrelEquivalents: 'mBOE/d',
   gigawattHours: 'GW.h',
   kilobarrels: 'kB/d',
   thousandCubicMetres: 'km³/d',
@@ -75,59 +75,25 @@ export const CONFIG_LAYOUT = {
     name: 'Total Demand',
     icon: IconDemand,
     unit: ['petajoules', 'kilobarrelEquivalents'],
+    pages: ['by-region', 'by-sector', 'scenarios'],
   },
   electricityGeneration: {
     name: 'Electricity Generation',
     icon: IconElectricity,
     unit: ['gigawattHours', 'petajoules', 'kilobarrelEquivalents'],
+    pages: ['by-region', 'electricity', 'scenarios'],
   },
   oilProduction: {
     name: 'Oil Production',
     icon: IconOil,
     unit: ['kilobarrels', 'thousandCubicMetres'],
+    pages: ['by-region', 'scenarios', 'oil-and-gas'],
   },
   gasProduction: {
     name: 'Gas Production',
     icon: IconGas,
     unit: ['millionCubicMetres', 'cubicFeet'],
-  },
-};
-
-export const SECTOR_LAYOUT = {
-  total: {
-    name: 'Total Demand',
-    icon: IconDemand,
-    page: ['by-sector'],
-  },
-  residential: {
-    name: 'Residential',
-    icon: IconResidential,
-    page: ['by-sector'],
-  },
-  commercial: {
-    name: 'Commercial',
-    icon: IconCommercial,
-    page: ['by-sector'],
-  },
-  industrial: {
-    name: 'Industrial',
-    icon: IconIndustrial,
-    page: ['by-sector'],
-  },
-  transportation: {
-    name: 'Transportation',
-    icon: IconTransportation,
-    page: ['by-sector'],
-  },
-  oil: {
-    name: 'Oil',
-    icon: IconOil,
-    page: ['oil-and-gas'],
-  },
-  gas: {
-    name: 'Gas',
-    icon: IconGas,
-    page: ['oil-and-gas'],
+    pages: ['by-region', 'scenarios', 'oil-and-gas'],
   },
 };
 
@@ -163,20 +129,20 @@ export const REGION_COLORS = {
 
 export const SOURCE_COLORS = {
   electricity: {
-    BIO: '#4D8255',
-    COAL: '#4E513F',
-    HYDRO: '#274368',
-    GAS: '#F2CB53',
-    OIL: '#E4812C',
-    RENEWABLE: '#B2BCE4',
-    NUCLEAR: '#683A96',
+    BIO: '#1C7F24',
+    COAL: '#4B5E5B',
+    HYDRO: '#5FBEE6',
+    GAS: '#890038',
+    OIL: '#FF821E',
+    RENEWABLE: '#FFCC47',
+    NUCLEAR: '#753B95',
   },
   energy: {
-    BIO: '#4D8255',
-    COAL: '#4E513F',
+    BIO: '#1C7F24',
+    COAL: '#4B5E5B',
     ELECTRICITY: '#7ACBCB',
-    GAS: '#F2CB53',
-    OIL: '#E4812C',
+    GAS: '#890038',
+    OIL: '#FF821E',
   },
   gas: {},
   oil: {},
@@ -203,12 +169,19 @@ export const SOURCE_ICONS = {
   oil: {},
 };
 
+export const SECTOR_ICONS = {
+  RESIDENTIAL: IconResidential,
+  COMMERCIAL: IconCommercial,
+  INDUSTRIAL: IconIndustrial,
+  TRANSPORTATION: IconTransportation,
+};
+
 export const DEFAULT_CONFIG = {
   page: 'landing', // e.g. by-region, by-sector, electricity, senarios, demand
   mainSelection: 'energyDemand', // e.g. electricityGeneration, oilProduction, gasProduction
   unit: 'petajoules', // e.g. kilobarrelEquivalents, gigawattHours, kilobarrels, thousandCubicMetres, cubicFeet, millionCubicMetres
   view: 'region', // e.g. region or source
-  sector: 'total', // e.g. residential, commercial, industrial, or industrial
+  sector: 'ALL', // e.g. ALL, RESIDENTIAL, COMMERCIAL, INDUSTRIAL, OR TRANSPORTATION
   scenarios: [],
   provinces: [],
   provinceOrder: [],

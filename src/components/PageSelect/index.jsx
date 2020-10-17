@@ -9,7 +9,7 @@ import { PAGES } from '../../constants';
 import useConfig from '../../hooks/useConfig';
 
 import {
-  IconPageRegion, IconPageSector, IconPageElectricity, IconPageScenarios,
+  IconPageRegion, IconPageSector, IconPageElectricity, IconPageScenarios, IconPageOilAndGas,
 } from '../../icons';
 
 const getPageIcon = (id) => {
@@ -18,6 +18,7 @@ const getPageIcon = (id) => {
     case 'by-sector': return <IconPageSector />;
     case 'electricity': return <IconPageElectricity />;
     case 'scenarios': return <IconPageScenarios />;
+    case 'oil-and-gas': return <IconPageOilAndGas />;
     default: return null;
   }
 };

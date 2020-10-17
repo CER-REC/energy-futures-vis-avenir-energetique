@@ -9,7 +9,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import markdown from 'micro-down';
 import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
-import { CONFIG_LAYOUT, SECTOR_LAYOUT } from '../../constants';
+import { CONFIG_LAYOUT } from '../../constants';
 
 const useStyles = makeStyles(theme => createStyles({
   root: { width: 'auto' },
@@ -127,10 +127,13 @@ export default Hint;
  */
 export const HintMainSelect = ({ children }) => {
   const intl = useIntl();
-  const section = useMemo(() => Object.keys(CONFIG_LAYOUT).map(selection => ({
+  const { page } = useConfig().config;
+  const section = useMemo(() => Object.keys(CONFIG_LAYOUT).filter(
+    selection => CONFIG_LAYOUT[selection].pages.includes(page),
+  ).map(selection => ({
     title: intl.formatMessage({ id: `components.mainSelect.${selection}.title` }),
     text: intl.formatMessage({ id: `components.mainSelect.${selection}.description` }),
-  })), [intl]);
+  })), [intl, page]);
   return <Hint content={[<HintSection section={section} />]}>{children}</Hint>;
 };
 
@@ -203,12 +206,11 @@ HintUnitSelect.defaultProps = { children: null };
  */
 export const HintSectorSelect = ({ children }) => {
   const intl = useIntl();
-  const { page } = useConfig().config;
-  const section = useMemo(() => Object.keys(SECTOR_LAYOUT)
-    .map(sector => (SECTOR_LAYOUT[sector]?.page || []).includes(page) && ({
-      title: sector, // FIXME: to be translated
-      text: intl.formatMessage({ id: `components.sectorSelect.${sector}.description` }),
-    })).filter(Boolean), [intl, page]);
+  const { sectors } = useAPI();
+  const section = useMemo(() => sectors.order.map(sector => ({
+    title: intl.formatMessage({ id: `common.sectors.${sector}` }),
+    text: intl.formatMessage({ id: `components.sectorSelect.${sector}.description` }),
+  })).filter(Boolean), [intl, sectors]);
   return <Hint content={[<HintSection title="Sectors" section={section} />]}>{children}</Hint>;
 };
 

@@ -61,13 +61,11 @@
       },
       "By Sector": {
         "title": {
-          "total": "Total End-Use Demand For All Sectors",
-          "residential": "End-Use Demand By Residential Sector",
-          "commercial": "End-Use Demand By Commercial Sector",
-          "industrial": "End-Use Demand By Industrial Sector",
-          "transportation": "End-Use Demand By Transportation Sector",
-          "gas": "End-Use Demand By Gas Sector",
-          "oil": "End-Use Demand By Oil Sector"
+          "ALL": "Total End-Use Demand For All Sectors",
+          "RESIDENTIAL": "End-Use Demand By Residential Sector",
+          "COMMERCIAL": "End-Use Demand By Commercial Sector",
+          "INDUSTRIAL": "End-Use Demand By Industrial Sector",
+          "TRANSPORTATION": "End-Use Demand By Transportation Sector"
         },
         "description": "Explore how energy source mixes from different sectors have evolved in recent history, and how they are projected to evolve in the Energy Futures scenarios.\n\nSelect a province or territory, and choose between residential, commercial, transportation, industrial or total energy use."
       },
@@ -223,26 +221,20 @@
       }
     },
     "sectorSelect": {
-      "total": {
+      "ALL": {
         "description": "The total energy used in the four sectors of Canada’s economy: residential, commercial, industrial and transportation. Includes the use of electricity, natural gas, petroleum products such as gasoline and coal, and renewable fuels. Also referred to as end-use or secondary demand, it does not include energy used to generate electricity."
       },
-      "residential": {
+      "RESIDENTIAL": {
         "description": "This is the energy consumed by Canadian households. It includes energy used for space and water heating, air conditioning, lighting, large appliances, and other energy-using devices like televisions and computers."
       },
-      "commercial": {
+      "COMMERCIAL": {
         "description": "A broad category including offices, stores, warehouses, government and institutional buildings, utilities, communications, and other service industries. It also includes energy consumed by street lighting and pipelines. Buildings use energy for space and water heating, air conditioning, lighting, appliances and other devices. Pipelines use energy to power pumps or compressors that move oil and natural gas through pipelines."
       },
-      "industrial": {
+      "INDUSTRIAL": {
         "description": "This sector includes manufacturing, forestry, fisheries, agriculture, construction, mining, and oil and natural gas extraction. In 2013, 81 per cent of industrial energy was consumed by a number of energy-intensive industries like iron and steel, aluminum, cement, chemicals and fertilizers, pulp and paper, petroleum refining, mining, and oil and natural gas extraction."
       },
-      "transportation": {
+      "TRANSPORTATION": {
         "description": "Includes passenger and freight on-road transportation, as well as air, rail, marine, and non-industrial off-road travel, such as recreational all-terrain vehicles and snowmobiles. Demand in the transportation sector includes foreign energy used on Canadian soil, airspace and waters."
-      },
-      "oil": {
-        "description": "Includes refined petroleum products and natural gas liquids. Specifically, this includes: motor gasoline, diesel fuel, aviation fuel, light fuel oil, kerosene, heavy fuel oil, propane, butane, ethane, petroleum coke, still gas, and non-energy products such as lubricants, asphalt, and petrochemical feedstocks."
-      },
-      "gas": {
-        "description": "Includes compressed natural gas and liquefied natural gas used in cars, buses, trucks, and ships."
       }
     },
     "unsupportedWarning": {
