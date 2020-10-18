@@ -54,7 +54,7 @@ const HintSection = ({ title, section, singleColumn }) => {
           </Grid>
         </Fragment>
       ) : (
-        <Grid item xs={6} key={`hint-content-entry-${Math.random()}`}>
+        <Grid item xs={section.length < 3 ? 12 : 6} key={`hint-content-entry-${Math.random()}`}>
           {entry.title && <Typography variant="h6" gutterBottom>{entry.title}</Typography>}
           {body(entry.text)}
           {entry.link && <Typography variant="body2" color="secondary" dangerouslySetInnerHTML={{ __html: entry.link }} />}
@@ -84,7 +84,7 @@ HintSection.defaultProps = {
 /**
  * Construct and render the hint icon (question mark) and its dialog.
  */
-const Hint = ({ children, content }) => {
+const Hint = ({ children, content, maxWidth = 'sm' }) => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
 
@@ -95,7 +95,12 @@ const Hint = ({ children, content }) => {
         <IconButton onClick={() => setOpen(true)} className={classes.hint}><HintIcon fontSize="small" /></IconButton>
       </Grid>
 
-      <Dialog open={open} maxWidth="sm" onClose={() => setOpen(false)} classes={{ paper: classes.dialog }}>
+      <Dialog
+        open={open}
+        maxWidth={maxWidth}
+        onClose={() => setOpen(false)}
+        classes={{ paper: classes.dialog }}
+      >
         <Fab color="primary" size="medium" onClick={() => setOpen(false)} className={classes.close}><CloseIcon /></Fab>
         <DialogContent style={{ padding: 24 }}>
           {typeof content === 'string' ? content : (
@@ -115,11 +120,13 @@ Hint.propTypes = {
     PropTypes.string,
     PropTypes.arrayOf(PropTypes.node),
   ]),
+  maxWidth: PropTypes.string,
 };
 
 Hint.defaultProps = {
   children: null,
   content: 'under construction',
+  maxWidth: 'sm',
 };
 
 export default Hint;
@@ -154,7 +161,7 @@ export const HintYearSelect = ({ children }) => {
     link: markdown.parse(intl.formatMessage({ id: `components.yearSelect.${year}.link` })),
   })), [intl, yearIdIterations]);
   const content = <HintSection title={intl.formatMessage({ id: 'components.yearSelect.title' })} section={section} />;
-  return <Hint content={[content]}>{children}</Hint>;
+  return <Hint content={[content]} maxWidth="lg">{children}</Hint>;
 };
 
 HintYearSelect.propTypes = { children: PropTypes.node };
@@ -197,7 +204,7 @@ export const HintUnitSelect = ({ children }) => {
     <HintSection title="Energy Units" section={unitEnergy} />,
     <HintSection title="Volumetric Units" section={unitVolume} />,
   ];
-  return <Hint content={content}>{children}</Hint>;
+  return <Hint content={content} maxWidth="md">{children}</Hint>;
 };
 
 HintUnitSelect.propTypes = { children: PropTypes.node };
@@ -244,7 +251,7 @@ export const HintRegionList = ({ children }) => {
     title: region,
     text: intl.formatMessage({ id: `regions.${region}` }),
   })), [intl, regions]);
-  return <Hint content={[<HintSection section={section} singleColumn />]}>{children}</Hint>;
+  return <Hint content={[<HintSection section={section} singleColumn />]} maxWidth="xs">{children}</Hint>;
 };
 
 HintRegionList.propTypes = { children: PropTypes.node };
