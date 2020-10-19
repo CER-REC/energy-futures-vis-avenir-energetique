@@ -1,15 +1,15 @@
 // #region imports
 import React, { useMemo, useEffect } from 'react';
+import { useIntl } from 'react-intl';
 import {
   makeStyles, createStyles,
   Grid, Typography, Button, Tooltip,
 } from '@material-ui/core';
-import { useIntl } from 'react-intl';
 
 import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
 import { CONFIG_LAYOUT, UNIT_NAMES } from '../../constants';
-import Hint from '../Hint';
+import { HintMainSelect, HintViewSelect, HintSectorSelect, HintUnitSelect } from '../Hint';
 // #endregion
 
 const useStyles = makeStyles(theme => createStyles({
@@ -38,6 +38,7 @@ const useStyles = makeStyles(theme => createStyles({
 const HorizontalControlBar = () => {
   const classes = useStyles();
   const intl = useIntl();
+
   const { sectors } = useAPI();
   const { config, setConfig } = useConfig();
   const layout = useMemo(() => CONFIG_LAYOUT[config.mainSelection], [config.mainSelection]);
@@ -50,7 +51,7 @@ const HorizontalControlBar = () => {
     if (layout.unit.indexOf(config.unit) === -1) {
       setConfig({ ...config, unit: layout.unit[0] });
     }
-  }, [config, config.mainSelection, layout.unit, setConfig]);
+  }, [config, layout.unit, setConfig]);
 
   /**
    * Update the config.
@@ -67,25 +68,26 @@ const HorizontalControlBar = () => {
   const selections = (appendices.length > 1) && (
     <Grid container alignItems="center" wrap="nowrap" spacing={1}>
       <Grid item style={{ paddingRight: 0 }}>
-        <Hint />
+        <HintMainSelect />
       </Grid>
       {appendices.map((selection) => {
         const Icon = config.page === 'oil-and-gas' ? CONFIG_LAYOUT[selection]?.icon : null;
 
         return (
           <Grid item key={`config-origin-${selection}`}>
-            <Tooltip title={CONFIG_LAYOUT[selection]?.name} classes={{ tooltip: classes.tooltip }}>
-              <span>
-                <Button
-                  variant={config.mainSelection === selection ? 'contained' : 'outlined'}
-                  color="primary"
-                  size="small"
-                  onClick={() => handleConfigUpdate('mainSelection', selection)}
-                  className={classes.btnSector}
-                >
-                  {Icon ? <Icon /> : CONFIG_LAYOUT[selection]?.name}
-                </Button>
-              </span>
+            <Tooltip
+              title={intl.formatMessage({ id: `components.mainSelect.${selection}.description` })}
+              classes={{ tooltip: classes.tooltip }}
+            >
+              <Button
+                variant={config.mainSelection === selection ? 'contained' : 'outlined'}
+                color="primary"
+                size="small"
+                onClick={() => handleConfigUpdate('mainSelection', selection)}
+                className={classes.btnSector}
+              >
+                {Icon ? <Icon /> : CONFIG_LAYOUT[selection]?.name}
+              </Button>
             </Tooltip>
           </Grid>
         );
@@ -96,7 +98,9 @@ const HorizontalControlBar = () => {
   const sectorSelection = ['by-sector', 'demand'].includes(config.page) && (
     <Grid container alignItems="center" wrap="nowrap" spacing={1}>
       <Grid item style={{ paddingRight: 0 }}>
-        <Hint><Typography variant="body1" color="primary">SECTOR</Typography></Hint>
+        <HintSectorSelect>
+          <Typography variant="body1" color="primary">{intl.formatMessage({ id: 'components.sectorSelect.name' })}</Typography>
+        </HintSectorSelect>
       </Grid>
       {sectors.order.map((sector) => {
         const Icon = sectors.icons[sector];
@@ -104,20 +108,18 @@ const HorizontalControlBar = () => {
         return (
           <Grid item key={`config-sector-${sector}`}>
             <Tooltip
-              title={intl.formatMessage({ id: `common.sectors.${sector}` })}
+              title={intl.formatMessage({ id: `components.sectorSelect.${sector}.description` })}
               classes={{ tooltip: classes.tooltip }}
             >
-              <span>
-                <Button
-                  variant={config.sector === sector ? 'contained' : 'outlined'}
-                  color="primary"
-                  size="small"
-                  onClick={() => handleConfigUpdate('sector', sector)}
-                  className={classes.btnSector}
-                >
-                  {Icon ? <Icon /> : intl.formatMessage({ id: `common.sectors.${sector}` }) }
-                </Button>
-              </span>
+              <Button
+                variant={config.sector === sector ? 'contained' : 'outlined'}
+                color="primary"
+                size="small"
+                onClick={() => handleConfigUpdate('sector', sector)}
+                className={classes.btnSector}
+              >
+                {Icon ? <Icon /> : intl.formatMessage({ id: `common.sectors.${sector}` }) }
+              </Button>
             </Tooltip>
           </Grid>
         );
@@ -126,35 +128,52 @@ const HorizontalControlBar = () => {
   );
 
   const views = ['electricity', 'oil-and-gas'].includes(config.page) && (
-    <Grid container wrap="nowrap">
-      <Hint><Typography variant="body1" color="primary">VIEW BY</Typography></Hint>
+    <Grid container alignItems="center" wrap="nowrap">
+      <HintViewSelect>
+        <Typography variant="body1" color="primary">{intl.formatMessage({ id: 'components.viewSelect.name' })}</Typography>
+      </HintViewSelect>
       {['region', 'source'].map(view => (
-        <Button
+        <Tooltip
           key={`config-view-${view}`}
-          variant={config.view === view ? 'contained' : 'outlined'}
-          color="primary"
-          size="small"
-          onClick={() => handleConfigUpdate('view', view)}
+          title={intl.formatMessage({ id: `components.viewSelect.${view}.description` })}
         >
-          {view}
-        </Button>
+          <Button
+            variant={config.view === view ? 'contained' : 'outlined'}
+            color="primary"
+            size="small"
+            onClick={() => handleConfigUpdate('view', view)}
+          >
+            {view}
+          </Button>
+        </Tooltip>
       ))}
     </Grid>
   );
 
   const units = (
-    <Grid container wrap="nowrap">
-      <Hint><Typography variant="body1" color="primary">UNIT</Typography></Hint>
+    <Grid container alignItems="center" wrap="nowrap">
+      <HintUnitSelect>
+        <Typography variant="body1" color="primary">{intl.formatMessage({ id: 'components.unitSelect.name' })}</Typography>
+      </HintUnitSelect>
       {layout.unit.map(unit => (
-        <Button
+        <Tooltip
           key={`config-unit-${unit}`}
-          variant={config.unit === unit ? 'contained' : 'outlined'}
-          color="primary"
-          size="small"
-          onClick={() => handleConfigUpdate('unit', unit)}
+          title={(
+            <>
+              <Typography variant="caption" component="div" gutterBottom><strong>{intl.formatMessage({ id: `components.unitSelect.${unit}.title` })}</strong></Typography>
+              <Typography variant="caption" component="div">{intl.formatMessage({ id: `components.unitSelect.${unit}.description` })}</Typography>
+            </>
+          )}
         >
-          {UNIT_NAMES[unit]}
-        </Button>
+          <Button
+            variant={config.unit === unit ? 'contained' : 'outlined'}
+            color="primary"
+            size="small"
+            onClick={() => handleConfigUpdate('unit', unit)}
+          >
+            {UNIT_NAMES[unit]}
+          </Button>
+        </Tooltip>
       ))}
     </Grid>
   );

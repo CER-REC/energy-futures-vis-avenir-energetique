@@ -1,4 +1,5 @@
-import React, { useMemo, useState, useEffect } from 'react';
+import React, { useMemo, useState, useEffect, useCallback } from 'react';
+import { useIntl } from 'react-intl';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import PropTypes from 'prop-types';
 import {
@@ -6,10 +7,10 @@ import {
 } from '@material-ui/core';
 import ClearIcon from '@material-ui/icons/Clear';
 import DragIcon from '@material-ui/icons/DragIndicator';
-import { useIntl } from 'react-intl';
+import markdown from 'micro-down';
 
 import useConfig from '../../hooks/useConfig';
-import Hint from '../Hint';
+import { HintRegionList, HintSourceList } from '../Hint';
 
 const reorder = (list, startIndex, endIndex) => {
   const result = Array.from(list);
@@ -19,7 +20,7 @@ const reorder = (list, startIndex, endIndex) => {
 };
 
 const ColoredItemBox = ({
-  item, label, icon, color, selected, clear, round, disabled, isDragDisabled, ...gridProps
+  item, label, icon, color, selected, clear, round, tooltip, disabled, isDragDisabled, ...gridProps
 }) => {
   const classes = makeStyles(theme => ({
     root: props => ({
@@ -64,9 +65,8 @@ const ColoredItemBox = ({
       '&.disabled:hover': { boxShadow: theme.shadows[0] },
     }),
     btn: { margin: 'auto' },
-    tooltip: props => ({
-      margin: theme.spacing(0, 1),
-      paddingLeft: props.isDragDisabled ? 4 : 0,
+    tooltip: {
+      maxWidth: 350,
       fontSize: 10,
       lineHeight: 1,
       color: '#999',
@@ -74,17 +74,21 @@ const ColoredItemBox = ({
       border: '1px solid #AAA',
       borderRadius: 0,
       boxShadow: theme.shadows[1],
-      '& span': { marginLeft: theme.spacing(0.5) },
-    }),
-  }))({ round, isDragDisabled });
+    },
+  }))({ round });
   const Icon = icon;
   const styling = [classes.root, selected && 'selected', disabled && 'disabled'].filter(Boolean).join(' ');
   return (
     <Tooltip
       title={label && (
-        <Grid container alignItems="center" wrap="nowrap">
-          {!isDragDisabled && <DragIcon fontSize="small" />}
-          <Typography variant="overline">{label}</Typography>
+        <Grid container alignItems="center" wrap="nowrap" spacing={1}>
+          {!isDragDisabled && <Grid item><DragIcon fontSize="small" /></Grid>}
+          <Grid item>
+            <Typography variant="overline" component="div" style={{ lineHeight: tooltip ? 1.5 : 2.66 }}>
+              <strong>{label}</strong>
+            </Typography>
+            {tooltip && <Typography variant="caption" color="secondary" dangerouslySetInnerHTML={{ __html: tooltip }} />}
+          </Grid>
         </Grid>
       )}
       placement="right"
@@ -107,6 +111,7 @@ ColoredItemBox.propTypes = {
   selected: PropTypes.bool,
   clear: PropTypes.bool,
   round: PropTypes.bool,
+  tooltip: PropTypes.string,
   disabled: PropTypes.bool,
   isDragDisabled: PropTypes.bool,
 };
@@ -118,6 +123,7 @@ ColoredItemBox.defaultProps = {
   selected: false,
   clear: false,
   round: false,
+  tooltip: undefined,
   disabled: false,
   isDragDisabled: false,
 };
@@ -126,7 +132,6 @@ const useStyles = makeStyles(theme => ({
   root: props => ({
     position: 'relative',
     width: props.width || '100%',
-    padding: theme.spacing(1, 0),
     marginTop: props.dense ? 0 : -4,
     border: '1px dashed transparent',
     borderRadius: theme.shape.borderRadius,
@@ -160,6 +165,7 @@ const DraggableVerticalList = ({
   singleSelect = false, /* multi-select or single select */
   greyscale = false, /* ignore button colors */
   disabled = false, /* disable drag-n-drop */
+  sourceType,
   items /* array of strings */,
   defaultItems /* object */,
   itemOrder /* array of strings */,
@@ -219,6 +225,14 @@ const DraggableVerticalList = ({
     }
   }, [singleSelect]); // eslint-disable-line react-hooks/exhaustive-deps
 
+  /**
+   * Generate translated tooltip text, if available.
+   */
+  const getTooltip = useCallback((item) => {
+    const type = (config.page === 'by-sector' && config.sector === 'TRANSPORTATION') ? 'transportation' : sourceType;
+    return sourceType && markdown.parse(intl.formatMessage({ id: `sources.${type}.${item}` }));
+  }, [intl, sourceType, config.page, config.sector]);
+
   const handleToggleItem = toggledItem => () => {
     if (singleSelect) {
       setLocalItems([toggledItem]);
@@ -246,9 +260,7 @@ const DraggableVerticalList = ({
 
   return (
     <DragDropContext onDragEnd={handleDragEnd}>
-      <Hint>
-        <Typography variant="h6" color="secondary" className={classes.title}>{title}</Typography>
-      </Hint>
+      {title === 'Region' ? <HintRegionList items={defaultItems} /> : <HintSourceList sources={defaultItems} sourceType={sourceType} />}
       <Droppable droppableId="droppable" isDropDisabled={disabled}>
         {(provided, snapshot) => (
           <Grid
@@ -291,6 +303,7 @@ const DraggableVerticalList = ({
                         icon={defaultItems[item].icon}
                         color={greyscale ? undefined : defaultItems[item].color}
                         selected={localItems.indexOf(item) > -1}
+                        tooltip={getTooltip(item)}
                         disabled={disabledItems && disabledItems.includes(item)}
                         isDragDisabled={disabled}
                       />
@@ -315,6 +328,7 @@ DraggableVerticalList.propTypes = {
   singleSelect: PropTypes.bool,
   greyscale: PropTypes.bool,
   disabled: PropTypes.bool,
+  sourceType: PropTypes.string,
   items: PropTypes.arrayOf(PropTypes.string),
   defaultItems: PropTypes.object, // eslint-disable-line react/forbid-prop-types
   itemOrder: PropTypes.arrayOf(PropTypes.string),
@@ -332,6 +346,7 @@ DraggableVerticalList.defaultProps = {
   singleSelect: false,
   greyscale: false,
   disabled: false,
+  sourceType: undefined,
   items: [],
   defaultItems: {},
   itemOrder: [],

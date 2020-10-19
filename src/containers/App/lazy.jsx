@@ -49,6 +49,10 @@ const theme = createMuiTheme({
         textTransform: 'uppercase',
       },
       body1: { fontSize: '14px' },
+      caption: {
+        lineHeight: 1.3,
+        '& > p': { margin: 0 },
+      },
     },
     MuiButton: {
       root: {
@@ -120,10 +124,10 @@ const Content = () => {
     <PageLayout
       showRegion
       multiSelectScenario={config.page === 'scenarios'}
-      disableDraggableRegion={['by-sector', 'electricity', 'scenarios', 'demand'].includes(config.page)}
+      disableDraggableRegion={['by-sector', 'electricity', 'scenarios', 'oil-and-gas', 'demand'].includes(config.page)}
       singleSelectRegion={['by-sector', 'scenarios', 'demand'].includes(config.page) || (config.page === 'electricity' && config.view !== 'source')}
-      showSource={['by-sector', 'electricity'].includes(config.page)}
-      disableDraggableSource={['electricity'].includes(config.page)}
+      showSource={['by-sector', 'electricity', 'oil-and-gas'].includes(config.page)}
+      disableDraggableSource={['electricity', 'oil-and-gas'].includes(config.page)}
       singleSelectSource={config.page === 'electricity' && config.view === 'source'}
     >
       {config.page === 'by-region' && <ByRegion />}

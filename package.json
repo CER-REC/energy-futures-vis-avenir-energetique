@@ -45,6 +45,7 @@
     "graphql": "^14.7.0",
     "graphql-tag": "^2.11.0",
     "history": "^5.0.0",
+    "micro-down": "^1.6.0",
     "prop-types": "15.7.2",
     "query-string": "^6.13.1",
     "react": "^16.13.1",

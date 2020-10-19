@@ -1,11 +1,13 @@
 import React, { useEffect, useMemo, Children, cloneElement } from 'react';
 import PropTypes from 'prop-types';
-import { makeStyles, Grid, CircularProgress } from '@material-ui/core';
+import { makeStyles, Grid, Typography, CircularProgress } from '@material-ui/core';
+import LinkIcon from '@material-ui/icons/Link';
+import EmailIcon from '@material-ui/icons/Email';
 import Alert from '@material-ui/lab/Alert';
 import AlertTitle from '@material-ui/lab/AlertTitle';
 import { useIntl } from 'react-intl';
 
-import { CONFIG_LAYOUT, PAGES } from '../../constants';
+import { CONFIG_LAYOUT } from '../../constants';
 import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
 import useEnergyFutureData from '../../hooks/useEnergyFutureData';
@@ -15,12 +17,27 @@ import ScenarioSelect from '../ScenarioSelect';
 import DraggableVerticalList from '../DraggableVerticalList';
 import HorizontalControlBar from '../HorizontalControlBar';
 import LinkButtonGroup from '../LinkButtonGroup';
+import {
+  LinkButtonContentAssumptions, LinkButtonContentKeyFindings, LinkButtonContentResults,
+  LinkButtonContentReport, LinkButtonContentMethodology, LinkButtonContentAbout,
+} from '../LinkButtonGroup/contents';
+import { IconTwitter, IconFacebook, IconLinkedIn } from '../../icons';
+
+const LEAD_COL_WIDTH = 400;
 
 const useStyles = makeStyles(theme => ({
   root: {
-    padding: theme.spacing(4, 0),
+    position: 'relative',
+    padding: theme.spacing(2, 0),
     marginBottom: theme.spacing(2),
     backgroundColor: theme.palette.background.paper,
+  },
+  title: {
+    width: LEAD_COL_WIDTH,
+    '& > h4': {
+      fontWeight: 700,
+      textTransform: 'uppercase',
+    },
   },
   graph: {
     display: 'flex',
@@ -38,6 +55,11 @@ const useStyles = makeStyles(theme => ({
     position: 'absolute',
     bottom: 0,
     left: 0,
+  },
+  report: {
+    position: 'absolute',
+    top: 11,
+    right: -8,
   },
 }));
 
@@ -57,7 +79,16 @@ const PageLayout = ({
   const { config, setConfig } = useConfig();
   const { loading, error, data, disabledRegions, disabledSources, year } = useEnergyFutureData();
 
-  const type = PAGES.find(page => page.id === config.page).sourceType;
+  /**
+   * Determine the current energy source type.
+   * This will be primarily used in the tooltip generation.
+   */
+  const type = useMemo(() => {
+    if (config.page === 'by-sector') return 'energy';
+    if (config.page === 'electricity') return 'electricity';
+    if (config.page === 'oil-and-gas') return config.mainSelection === 'oilProduction' ? 'oil' : 'gas';
+    return undefined;
+  }, [config.page, config.mainSelection]);
 
   /**
    * Reset the source list when opening 'by-sector' and 'electricity' pages.
@@ -98,10 +129,17 @@ const PageLayout = ({
     [config.page], // eslint-disable-line react-hooks/exhaustive-deps
   );
 
+  /**
+   * Genenate the DOM node which contains the visualization.
+   */
   const vis = useMemo(
     () => Children.map(children, child => child && cloneElement(child, { data, year })),
     [children, data, year],
   );
+
+  /**
+   * Prepare items for draggable lists; one for sources and another for regions.
+   */
   const regionItems = useMemo(
     () => regions.order.reduce((items, region) => ({
       ...items,
@@ -126,18 +164,55 @@ const PageLayout = ({
 
   return (
     <Grid container spacing={2} className={classes.root}>
-      <Grid item xs={12}><YearSelect /></Grid>
-      <Grid item style={{ width: 400 }}><PageSelect /></Grid>
-      <Grid item style={{ width: 'calc(100% - 400px)' }}>
+      {/* Row 1: main title; year select; social media links */}
+      <Grid item xs={12}>
+        <Grid container alignItems="flex-end" wrap="nowrap" spacing={2}>
+          <Grid item className={classes.title}>
+            <Typography variant="h4" color="primary">{intl.formatMessage({ id: 'common.title' })}</Typography>
+          </Grid>
+          <Grid item style={{ flexGrow: 1 }}><YearSelect /></Grid>
+          <Grid item className={classes.report}>
+            <LinkButtonGroup
+              labels={[
+                [
+                  { name: 'download data' },
+                ], [
+                  { icon: <LinkIcon />, name: 'Copy Link', content: () => {} },
+                  { icon: <IconLinkedIn />, name: 'LinkedIn', content: () => {} },
+                  { icon: <IconFacebook />, name: 'Facebook', content: () => {} },
+                  { icon: <IconTwitter />, name: 'Twitter', content: () => {} },
+                  { icon: <EmailIcon />, name: 'Email', content: () => {} },
+                ],
+              ]}
+              accent="right"
+            />
+          </Grid>
+        </Grid>
+      </Grid>
+
+      {/* Row 2: page select; scenario select and utility bar (stacked) */}
+      <Grid item style={{ width: LEAD_COL_WIDTH }}><PageSelect /></Grid>
+      <Grid item style={{ width: `calc(100% - ${LEAD_COL_WIDTH}px)` }}>
         <Grid container direction="column" wrap="nowrap" spacing={1} style={{ width: 'calc(100% - 50px)' }}>
           <Grid item><ScenarioSelect multiSelect={multiSelectScenario} /></Grid>
           <Grid item><HorizontalControlBar /></Grid>
         </Grid>
       </Grid>
+
+      {/* Row 3: link buttons (at bottom); vertical draggable lists; visualization */}
       <Grid item style={{ position: 'relative', width: 100 }}>
         <LinkButtonGroup
           title="Context"
-          labels={[['assumptions', 'results', 'report'], ['methodology', 'about']]}
+          labels={[
+            [
+              { name: 'report', content: <LinkButtonContentReport /> },
+              { name: 'assumptions', content: <LinkButtonContentAssumptions yearId={config.yearId} /> },
+              { name: 'key findings', content: <LinkButtonContentKeyFindings yearId={config.yearId} /> },
+              { name: 'results', content: <LinkButtonContentResults yearId={config.yearId} /> },
+            ], [
+              { name: 'methodology', content: <LinkButtonContentMethodology /> },
+              { name: 'about', content: <LinkButtonContentAbout /> },
+            ]]}
           className={classes.links}
         />
       </Grid>
@@ -151,6 +226,7 @@ const PageLayout = ({
                 disabled={disableDraggableSource}
                 singleSelect={singleSelectSource}
                 greyscale={config.page === 'electricity' && config.view === 'source'}
+                sourceType={type}
                 items={config.sources}
                 itemOrder={config.sourceOrder}
                 defaultItems={sourceItems}
