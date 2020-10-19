@@ -102,7 +102,7 @@ const YearSlider = ({ year, onYearChange, min, max, forecast }) => {
   const classes = useStyles();
 
   const [currYear, setCurrYear] = useState(year?.curr || year);
-  const [compareYear, setCompareYear] = useState(year?.compare);
+  const [compareYear, setCompareYear] = useState(year?.compare || year);
   const [play, setPlay] = useState(false);
 
   const onCurrYearChange = useCallback((value) => {

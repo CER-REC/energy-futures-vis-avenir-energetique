@@ -71,6 +71,42 @@ export const parseData = {
     });
     return dataByYear;
   },
+  'oil-and-gas': (data, unitConversion, regions, sources, view) => {
+    /*
+    The data structure between the two views is very similar.
+    To take advantage of this, the structure can be easily re arranged
+    by determining the view, and swapping the variables in the logic below.
+    The values of inner and outer describe which selections will be on the inner structure,
+    and outer structure. Eg. bySource = { source: { name: province } }
+    */
+    const outer = view === 'source' ? 'source' : 'province';
+    const inner = view === 'source' ? 'province' : 'source';
+
+    const baseStructure = data.reduce((acc, val) => {
+      if (!acc[val.year]) {
+        acc[val.year] = [];
+      }
+      if (!acc[val.year].find(element => element.name === val[outer])) {
+        acc[val.year].push({ name: val[outer], total: 0, children: [] });
+      }
+      return acc;
+    }, {});
+
+    // I am not super happy with the way this logic mutates the baseStructure
+    data.reduce((acc, val) => {
+      // filter out the ALLs
+      if (val.source !== 'ALL') {
+        const entry = acc[val.year].find(e => e.name === val[outer]);
+        entry.children.push({
+          name: val[inner],
+          value: val.value * unitConversion,
+        });
+        entry.total += (val.value * unitConversion);
+      }
+      return acc;
+    }, baseStructure);
+    return baseStructure;
+  },
 };
 
 export const NOOP = () => undefined;

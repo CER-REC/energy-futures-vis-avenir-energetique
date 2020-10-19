@@ -26,6 +26,10 @@ const getQuery = (config) => {
     return config.view === 'source' ? queries.ELECTRICITY_GENERATIONS_SOURCE : queries.ELECTRICITY_GENERATIONS_REGION;
   } else if (config.page === 'by-sector') {
     return queries.BY_SECTOR;
+  } else if (config.page === 'oil-and-gas') {
+    return config.mainSelection === 'gasProduction'
+      ? queries.GAS_PRODUCTIONS
+      : queries.OIL_PRODUCTIONS;
   }
   return null;
 };
@@ -66,12 +70,19 @@ export default () => {
   const regions = useMemo(() => {
     if (config.page === 'electricity' && config.provinces[0] === 'ALL') {
       return regionOrder;
+    } if (config.page === 'oil-and-gas' && config.provinces[0] === 'ALL') {
+      // FIXME: THIS IS A TEMPORARY THING
+      return regionOrder;
     }
     return config.provinces;
   }, [config.page, config.provinces, regionOrder]);
+
   const sources = useMemo(() => {
     if (config.page === 'electricity' && config.sources[0] === 'ALL') {
       return sourceOrder;
+    } if (config.page === 'oil-and-gas' && config.sources[0] === 'ALL') {
+      // FIXME: THIS IS A TEMPORARY THING
+      return ['TIGHT', 'CBM', 'NA', 'SHALE', 'SOLUTION'];
     }
     return config.sources;
   }, [config.page, config.sources, sourceOrder]);
