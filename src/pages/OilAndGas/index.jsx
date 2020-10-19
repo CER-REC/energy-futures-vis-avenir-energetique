@@ -11,6 +11,10 @@ const TreeMapCollection = ({ data, showSourceLabel }) => {
   const { regions: { colors: regionColors } } = useAPI();
   const { config } = useConfig();
 
+  if (!data) {
+    return null;
+  }
+
   // the oil and gas colors are not yet availible
   const tempGasColors = {
     ALL: 'white',
@@ -23,7 +27,13 @@ const TreeMapCollection = ({ data, showSourceLabel }) => {
   };
 
   // bySource needs to be a bit bigger, because some sources are very small.
-  // const sizeMultiplier = config.view === 'source' ? 1.5 : 1;
+  const sizeMultiplier = () => {
+    let multiplier = 1;
+    if (config.mainSelection === 'oilProduction') {
+      multiplier = 0.1;
+    }
+    return multiplier;
+  };
 
   // Sort data by largest total
   const sortedData = data.length > 1 ? data
@@ -41,34 +51,36 @@ const TreeMapCollection = ({ data, showSourceLabel }) => {
     const percentage = ((source.total / totalGrandTotal) * 100).toFixed(2);
 
     return (
-      <Grid
-        key={source.name}
-        style={{
-          bottom: '0',
-          height: source.total,
-          width: source.total,
-          marginRight: '100px',
-        }}
-      >
+      <Grid container spacing={8} wrap="nowrap">
+        <Grid
+          item
+          key={source.name}
+          style={{
+            bottom: 0,
+            height: source.total * sizeMultiplier(),
+            width: source.total * sizeMultiplier(),
+          }}
+        >
 
-        {showSourceLabel && <Typography style={{ marginLeft: 10, bottom: 0 }}>{`${source.name}: ${percentage}%`}</Typography>}
-        <ResponsiveTreeMap
-          root={source}
-          identity="name"
-          value="value"
-          margin={{ top: 10, right: 10, bottom: 10, left: 10 }}
-          label={d => d.name}
-          labelSkipSize={12}
-          labelTextColor={{ from: 'color', modifiers: [['darker', 1.2]] }}
-          colors={d => (config.view === 'source'
-            ? regionColors[d.name]
-            : tempGasColors[d.name])}
-          borderColor={{ from: 'color', modifiers: [['darker', 0.3]] }}
-          animate
-          motionStiffness={90}
-          motionDamping={11}
-        />
+          {showSourceLabel && <Typography style={{ marginLeft: 10, bottom: 0 }}>{`${source.name}: ${percentage}%`}</Typography>}
+          <ResponsiveTreeMap
+            root={source}
+            identity="name"
+            value="value"
+            margin={{ top: 10, right: 10, bottom: 10, left: 10 }}
+            label={d => d.name}
+            labelSkipSize={12}
+            labelTextColor={{ from: 'color', modifiers: [['darker', 1.2]] }}
+            colors={d => (config.view === 'source'
+              ? regionColors[d.name]
+              : tempGasColors[d.name])}
+            borderColor={{ from: 'color', modifiers: [['darker', 0.3]] }}
+            animate
+            motionStiffness={90}
+            motionDamping={11}
+          />
 
+        </Grid>
       </Grid>
     );
   });
@@ -101,7 +113,7 @@ const OilAndGas = ({ data, year }) => {
         >
           <Typography
             variant='body1'
-          >{compare ? 'Dont Compare' : 'compare'}
+          >{compare ? "Don't Compare" : 'compare'}
           </Typography>
         </Button>
       </Grid>

@@ -27,11 +27,9 @@ const getQuery = (config) => {
   } else if (config.page === 'by-sector') {
     return queries.BY_SECTOR;
   } else if (config.page === 'oil-and-gas') {
-    if (config.sector === 'gas') {
-      return queries.GAS_PRODUCTIONS;
-    } if (config.sector === 'oil') {
-      return queries.OIL_PRODUCTIONS;
-    }
+    return config.mainSelection === 'gasProduction'
+      ? queries.GAS_PRODUCTIONS
+      : queries.OIL_PRODUCTIONS;
   }
   return null;
 };

@@ -39,7 +39,6 @@ export const OIL_PRODUCTIONS = gql`
     resources:oilProductions(iterationIds: [$iteration], regions: $regions, scenarios: $scenarios, sources: [ALL]) {
       province: region
       year
-      scenario
       value: quantity
     }
   }
