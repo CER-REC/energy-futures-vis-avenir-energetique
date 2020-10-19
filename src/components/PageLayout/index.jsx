@@ -5,7 +5,7 @@ import Alert from '@material-ui/lab/Alert';
 import AlertTitle from '@material-ui/lab/AlertTitle';
 import { useIntl } from 'react-intl';
 
-import { PAGES } from '../../constants';
+import { CONFIG_LAYOUT, PAGES } from '../../constants';
 import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
 import useEnergyFutureData from '../../hooks/useEnergyFutureData';
@@ -79,8 +79,18 @@ const PageLayout = ({
         selectedSources = validSources;
       }
 
+      // also update the main selection accordingly
+      let { mainSelection } = config;
+
+      if (!CONFIG_LAYOUT[mainSelection]?.pages.includes(config.page)) {
+        mainSelection = Object.keys(CONFIG_LAYOUT).find(
+          selection => CONFIG_LAYOUT[selection]?.pages.includes(config.page),
+        ) || mainSelection;
+      }
+
       setConfig({
         ...config,
+        mainSelection,
         sources: selectedSources,
         sourceOrder: selectedSourceOrder,
       });

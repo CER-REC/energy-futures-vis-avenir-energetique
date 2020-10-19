@@ -4,11 +4,13 @@ import {
   makeStyles, createStyles,
   Grid, ButtonBase, Typography, Tooltip,
 } from '@material-ui/core';
-import { PAGES, CONFIG_LAYOUT, SECTOR_LAYOUT } from '../../constants';
+import { useIntl } from 'react-intl';
+
+import { PAGES, CONFIG_LAYOUT } from '../../constants';
 import useConfig from '../../hooks/useConfig';
 
 import {
-  IconPageRegion, IconPageSector, IconPageElectricity, IconPageScenarios,
+  IconPageRegion, IconPageSector, IconPageElectricity, IconPageScenarios, IconPageOilAndGas,
 } from '../../icons';
 
 const getPageIcon = (id) => {
@@ -17,6 +19,7 @@ const getPageIcon = (id) => {
     case 'by-sector': return <IconPageSector />;
     case 'electricity': return <IconPageElectricity />;
     case 'scenarios': return <IconPageScenarios />;
+    case 'oil-and-gas': return <IconPageOilAndGas />;
     default: return null;
   }
 };
@@ -75,7 +78,7 @@ const useStyles = makeStyles(theme => createStyles({
 
 const PageSelect = () => {
   const classes = useStyles();
-
+  const intl = useIntl();
   const { config, setConfig } = useConfig();
 
   const [pages, setPages] = useState(PAGES.filter(page => page.id !== 'landing'));
@@ -137,8 +140,9 @@ const PageSelect = () => {
             </Typography>
             <Typography variant="h5" color="primary" style={{ opacity: index === 0 ? 1 : 0 }}>
               {['by-region', 'scenarios'].includes(config.page) && CONFIG_LAYOUT[config.mainSelection]?.name}
-              {['by-sector', 'demand'].includes(config.page) && SECTOR_LAYOUT[config.sector]?.name}
+              {['by-sector', 'demand'].includes(config.page) && intl.formatMessage({ id: `common.sectors.${config.sector}` })}
               {config.page === 'electricity' && `By ${config.view}`}
+              {config.page === 'oil-and-gas' && `${CONFIG_LAYOUT[config.mainSelection]?.name} / By ${config.view}`}
             </Typography>
           </div>
         </ButtonBase>

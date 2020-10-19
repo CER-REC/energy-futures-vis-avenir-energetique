@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { useIntl } from 'react-intl';
 import PropTypes from 'prop-types';
 import {
-  makeStyles, Paper, Typography, Tooltip,
+  makeStyles, Paper, Grid, Typography, Tooltip,
 } from '@material-ui/core';
 
 import useAPI from '../../hooks/useAPI';
@@ -15,10 +15,7 @@ const useStyles = makeStyles(theme => ({
     position: 'relative',
     height: '100%',
     width: '100%',
-    '& > div': {
-      position: 'absolute',
-      height: 300,
-    },
+    '& > div': { position: 'absolute' },
     '& > div:last-of-type': {
       height: 'auto',
       bottom: 0,
@@ -39,7 +36,8 @@ const useStyles = makeStyles(theme => ({
       right: 0,
       backgroundColor: 'rgba(255, 255, 255, 0.2)',
       borderRadius: '50%',
-      boxShadow: theme.shadows[1],
+      border: `1px solid ${theme.palette.secondary.light}`,
+      boxShadow: theme.shadows[2],
     },
   },
   subregion: {
@@ -50,11 +48,46 @@ const useStyles = makeStyles(theme => ({
   },
   year: {
     position: 'absolute',
-    top: -10,
-    right: -3,
+    top: theme.spacing(0.5),
+    right: theme.spacing(1),
     zIndex: 1,
     paddingLeft: 6,
+    fontWeight: 700,
     backgroundColor: theme.palette.common.white,
+  },
+  annotation: {
+    position: 'absolute',
+    top: theme.spacing(4.5),
+    right: theme.spacing(1),
+    width: 100,
+    zIndex: 1,
+    padding: theme.spacing(0.5),
+    border: `1px solid ${theme.palette.secondary.light}`,
+    lineHeight: 1,
+    '& span': {
+      fontSize: '.65rem',
+      fontWeight: 700,
+      lineHeight: 1,
+      textTransform: 'uppercase',
+    },
+    '& > div:first-of-type': { height: 50 },
+    '& > div:last-of-type': { textAlign: 'right' },
+  },
+  annotationCircle: {
+    position: 'absolute',
+    top: theme.spacing(0.5),
+    height: 50,
+    width: 50,
+    borderRadius: '50%',
+    '&:first-of-type': {
+      left: theme.spacing(0.5),
+      backgroundColor: theme.palette.secondary.light,
+    },
+    '&:last-of-type': {
+      right: theme.spacing(0.5),
+      border: `1px solid ${theme.palette.secondary.light}`,
+      boxShadow: theme.shadows[2],
+    },
   },
   tooltip: { maxWidth: 'none' },
   label: {
@@ -79,25 +112,25 @@ const useStyles = makeStyles(theme => ({
 const COORD = {
   YT: { top: '10%', left: '5%' },
   SK: { top: '55%', left: '25%' },
-  QC: { top: '5%', left: '55%' },
+  QC: { top: '8%', left: '55%' },
   PE: { top: '60%', left: '88%' },
   ON: { top: '55%', left: '45%' },
   NU: { top: '15%', left: '30%' },
-  NT: { top: '5%', left: '18%' },
+  NT: { top: '8%', left: '18%' },
   NS: { top: '75%', left: '85%' },
-  NL: { top: '30%', left: '85%' },
+  NL: { top: '33%', left: '85%' },
   NB: { top: '50%', left: '70%' },
   MB: { top: '30%', left: '35%' },
   BC: { top: '65%', left: '8%' },
   AB: { top: '25%', left: '8%' },
 
-  BIO: { top: '10%', left: '60%' },
-  COAL: { top: '70%', left: '55%' },
-  GAS: { top: '15%', left: '80%' },
-  HYDRO: { top: '45%', left: '15%' },
-  NUCLEAR: { top: '5%', left: '35%' },
+  BIO: { top: '30%', left: '55%' },
+  RENEWABLE: { top: '65%', left: '60%' },
+  GAS: { top: '15%', left: '70%' },
+  HYDRO: { top: '40%', left: '15%' },
+  NUCLEAR: { top: '8%', left: '30%' },
   OIL: { top: '20%', left: '10%' },
-  RENEWABLE: { top: '50%', left: '75%' },
+  COAL: { top: '45%', left: '75%' },
 };
 
 const BUBBLE_SIZE = {
@@ -207,7 +240,18 @@ const Electricity = ({ data, year }) => {
 
   return (
     <div className={classes.root}>
-      <Typography variant="h4" color="primary" className={classes.year}>{`${currYear} `}</Typography>
+      {/* current year number at the top-right corner */}
+      <Typography variant="h5" color="primary" className={classes.year}>{currYear}</Typography>
+
+      {/* bubble annotation below the year number */}
+      <Grid container className={classes.annotation}>
+        <Grid item xs={12}>
+          <div className={classes.annotationCircle} />
+          <div className={classes.annotationCircle} />
+        </Grid>
+        <Grid item xs={6}><Typography variant="caption">Amount by {config.view === 'region' ? 'source' : 'region'}</Typography></Grid>
+        <Grid item xs={6}><Typography variant="caption">Total Amount</Typography></Grid>
+      </Grid>
 
       {processedData.map(entry => (
         <Tooltip
@@ -277,6 +321,7 @@ const Electricity = ({ data, year }) => {
         onYearChange={value => setCurrYear(value)}
         min={year.min}
         max={year.max}
+        forecast={year.forecastStart}
       />
     </div>
   );
@@ -284,7 +329,11 @@ const Electricity = ({ data, year }) => {
 
 Electricity.propTypes = {
   data: PropTypes.oneOfType([PropTypes.object, PropTypes.arrayOf(PropTypes.object)]),
-  year: PropTypes.shape({ min: PropTypes.number, max: PropTypes.number }),
+  year: PropTypes.shape({
+    min: PropTypes.number,
+    max: PropTypes.number,
+    forecastStart: PropTypes.number,
+  }),
 };
 
 Electricity.defaultProps = {

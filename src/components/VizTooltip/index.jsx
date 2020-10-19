@@ -25,10 +25,9 @@ const VizTooltip = ({ nodes, total, unit, year, paper, showTotal, showPercentage
         ...(nodes || []),
         ...(showTotal && nodes && nodes.length > 1 ? [{ name: 'TOTAL', value: sum }] : []),
       ].filter(node => Math.abs(node.value) > Number.EPSILON).map((node) => {
-        const num = formatUnitAbbreviation(node.value);
-        const suffix = node.value === sum || !showPercentage
-          ? (UNIT_NAMES[unit] || '')
-          : `(${((node.value / sum) * 100).toFixed(1)}%)`;
+        const showUnit = node.value === sum || !showPercentage;
+        const num = formatUnitAbbreviation(node.value, showUnit && UNIT_NAMES[unit]);
+        const suffix = showUnit ? '' : `(${((node.value / sum) * 100).toFixed(1)}%)`;
         return (
           <Grid item key={`viz-legend-item-${node.name}-${node.value}`}>
             <Grid container alignItems="center" wrap="nowrap">
