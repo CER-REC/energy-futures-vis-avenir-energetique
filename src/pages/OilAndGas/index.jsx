@@ -16,7 +16,7 @@ const TreeMapCollection = ({ data, showSourceLabel }) => {
   }
 
   // the oil and gas colors are not yet availible
-  const tempGasColors = {
+  const tempColors = {
     ALL: 'white',
     CBM: 'red',
     OIL: 'blue',
@@ -24,6 +24,12 @@ const TreeMapCollection = ({ data, showSourceLabel }) => {
     NA: 'orange',
     SHALE: 'yellow',
     SOLUTION: 'green',
+    MB: 'red',
+    ISB: 'blue',
+    HEAVY: 'pink',
+    LIGHT: 'orange',
+    CONDENSATE: 'yellow',
+    C_5: 'green',
   };
 
   // bySource needs to be a bit bigger, because some sources are very small.
@@ -73,7 +79,7 @@ const TreeMapCollection = ({ data, showSourceLabel }) => {
             labelTextColor={{ from: 'color', modifiers: [['darker', 1.2]] }}
             colors={d => (config.view === 'source'
               ? regionColors[d.name]
-              : tempGasColors[d.name])}
+              : tempColors[d.name])}
             borderColor={{ from: 'color', modifiers: [['darker', 0.3]] }}
             animate
             motionStiffness={90}
