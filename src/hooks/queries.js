@@ -23,6 +23,17 @@ export const GAS_PRODUCTIONS = gql`
     }
 `;
 
+export const GAS_PRODUCTIONS_ALL = gql`
+  query ($iteration: ID!, $regions: [Region!], $scenarios: [String!]) {
+    resources:gasProductions(iterationIds: [$iteration], regions: $regions, scenarios: $scenarios, sources: [ALL] ){
+        province: region
+        year
+        scenario
+        value: quantity
+      }
+    }
+`;
+
 export const ELECTRICITY_GENERATIONS = gql`
   query ($iteration: ID!, $regions: [Region!], $scenarios: [String!]) {
     resources:electricityGenerations(iterationIds: [$iteration], regions: $regions, scenarios: $scenarios, sources: [ALL]) {
@@ -35,6 +46,17 @@ export const ELECTRICITY_GENERATIONS = gql`
 `;
 
 export const OIL_PRODUCTIONS = gql`
+  query ($iteration: ID!, $regions: [Region!], $scenarios: [String!], $sources:[OilSource!]) {
+    resources:oilProductions(iterationIds: [$iteration], regions: $regions, scenarios: $scenarios, sources: $sources) {
+      province: region
+      year
+      source
+      value: quantity
+    }
+  }
+`;
+
+export const OIL_PRODUCTIONS_ALL = gql`
   query ($iteration: ID!, $regions: [Region!], $scenarios: [String!]) {
     resources:oilProductions(iterationIds: [$iteration], regions: $regions, scenarios: $scenarios, sources: [ALL]) {
       province: region

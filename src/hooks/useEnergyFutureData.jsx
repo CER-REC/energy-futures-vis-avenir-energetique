@@ -12,11 +12,11 @@ const getQuery = (config) => {
   if (['by-region', 'scenarios'].includes(config.page)) {
     switch (config.mainSelection) {
       case 'oilProduction':
-        return queries.OIL_PRODUCTIONS;
+        return queries.OIL_PRODUCTIONS_ALL;
       case 'energyDemand':
         return queries.ENERGY_DEMAND;
       case 'gasProduction':
-        return queries.GAS_PRODUCTIONS;
+        return queries.GAS_PRODUCTIONS_ALL;
       case 'electricityGeneration':
         return queries.ELECTRICITY_GENERATIONS;
       default:
