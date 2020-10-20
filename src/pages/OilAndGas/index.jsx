@@ -7,7 +7,7 @@ import useConfig from '../../hooks/useConfig';
 import useAPI from '../../hooks/useAPI';
 import YearSlider from '../../components/YearSlider';
 
-const TreeMapCollection = ({ data, showSourceLabel }) => {
+const TreeMapCollection = ({ data, showSourceLabel, compare, currentYear, compareYear }) => {
   const { regions: { colors: regionColors } } = useAPI();
   const { config } = useConfig();
 
@@ -41,23 +41,25 @@ const TreeMapCollection = ({ data, showSourceLabel }) => {
     return multiplier;
   };
 
-  // Sort data by largest total
-  const sortedData = data.length > 1 ? data
-    .sort((a, b) => b.total - a.total) : data;
-
   // FIXME: there is an issue where if you deselect provinces, the query changes
   // and the total percentage is recalculated, making the percentage wrong
-  const totalGrandTotal = sortedData.reduce((acc, val) => acc + val.total, 0);
 
-  const trees = sortedData.map((source) => {
-    if (source.total <= 0) {
-      return null;
-    }
+  const trees = (treeData) => {
+    // Sort data by largest total
+    const sortedData = treeData.length > 1 ? treeData
+      .sort((a, b) => b.total - a.total) : data;
 
-    const percentage = ((source.total / totalGrandTotal) * 100).toFixed(2);
+    const totalGrandTotal = sortedData.reduce((acc, val) => acc + val.total, 0);
 
-    return (
-      <Grid container spacing={8} wrap="nowrap">
+    return sortedData.map((source) => {
+      if (source.total <= 0) {
+        return null;
+      }
+
+      const percentage = ((source.total / totalGrandTotal) * 100).toFixed(2);
+
+      return (
+      // <Grid container spacing={8} wrap="nowrap">
         <Grid
           item
           key={source.name}
@@ -68,7 +70,12 @@ const TreeMapCollection = ({ data, showSourceLabel }) => {
           }}
         >
 
-          {showSourceLabel && <Typography style={{ marginLeft: 10, bottom: 0 }}>{`${source.name}: ${percentage}%`}</Typography>}
+          {showSourceLabel
+          && (
+          <Typography style={{ marginLeft: 10, bottom: 0 }}>
+            {`${source.name}: ${percentage}%`}
+          </Typography>
+          )}
           <ResponsiveTreeMap
             root={source}
             identity="name"
@@ -87,10 +94,17 @@ const TreeMapCollection = ({ data, showSourceLabel }) => {
           />
 
         </Grid>
-      </Grid>
-    );
-  });
-  return trees;
+      // </Grid>
+      );
+    });
+  };
+  return (
+    <>
+      <Grid container spacing={8} wrap="nowrap">{trees(data[currentYear])}</Grid>
+
+      {compare && (<Grid container spacing={8} wrap="nowrap">{trees(data[compareYear])}</Grid>)}
+    </>
+  );
 };
 
 const OilAndGas = ({ data, year }) => {
@@ -124,13 +138,25 @@ const OilAndGas = ({ data, year }) => {
         </Button>
       </Grid>
 
-      <Grid container wrap="nowrap">
+      {/* <Grid container wrap="nowrap"> */}
+      <TreeMapCollection
+        data={data}
+        showSourceLabel
+        compare={compare}
+        compareYear={compareYear}
+        currentYear={currentYear}
+      />
+      {/* </Grid> */}
+
+      {/* {compare
+      && (
+      // <Grid container wrap="nowrap">
         <TreeMapCollection
-          data={data[currentYear]}
-          showSourceLabel
-          selectedYear={currentYear}
+          data={data[compareYear]}
+          showSourceLabel={config.view === 'region'}
         />
-      </Grid>
+      // </Grid>
+      )} */}
 
       <Grid container wrap="nowrap" style={{ marginTop: 15 }}>
         <YearSlider
@@ -146,17 +172,6 @@ const OilAndGas = ({ data, year }) => {
           max={year.max}
         />
       </Grid>
-
-      {compare
-      && (
-      <Grid container wrap="nowrap">
-        <TreeMapCollection
-          data={data[compareYear]}
-          selectedYear={compareYear}
-          showSourceLabel={config.view === 'region'}
-        />
-      </Grid>
-      )}
 
     </Grid>
   );
