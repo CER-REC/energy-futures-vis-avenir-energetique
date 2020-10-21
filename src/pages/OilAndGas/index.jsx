@@ -3,9 +3,16 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Grid, Typography, Button } from '@material-ui/core';
 import { ResponsiveTreeMap } from '@nivo/treemap';
-import useConfig from '../../hooks/useConfig';
-import useAPI from '../../hooks/useAPI';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import Paper from '@material-ui/core/Paper';
 import YearSlider from '../../components/YearSlider';
+import useAPI from '../../hooks/useAPI';
+import useConfig from '../../hooks/useConfig';
 
 const OilAndGas = ({ data, year }) => {
   const { config } = useConfig();
@@ -107,51 +114,94 @@ const OilAndGas = ({ data, year }) => {
     });
   };
 
+  const createData = (id = '', col1 = '', col2 = '', col3 = '', col4 = '', col5 = '') => ({ id, col1, col2, col3, col4, col5 });
+
+  const rows = [
+    createData('row1', '', '', '', '', compare
+      ? (
+        <>
+          <Typography variant='h3'>{currentYear}</Typography>
+          <Typography variant='h3'>{compareYear}</Typography>
+        </>
+      )
+      : <Typography variant='h3'>{currentYear}</Typography>),
+    createData('row3', '', '', '', '',
+      <Button
+        onClick={() => setCompare(!compare)}
+        variant="outlined"
+        style={{ marginTop: '10px' }}
+      >
+        <Typography
+          variant='body1'
+        >{compare ? "Don't Compare" : 'compare'}
+        </Typography>
+      </Button>),
+    createData('row4', ...treeMapCollection(currentYearData)),
+    ...(compare ? [createData('row5', ...treeMapCollection(compareYearData))] : []),
+  ];
+
   return (
-    <Grid container style={{ height: '100%' }}>
+    <TableContainer component={Paper}>
+      <Table aria-label="simple table">
+        <TableBody>
+          {rows.map(row => (
+            <TableRow key={row.id}>
+              <TableCell component="th" scope="row" style={{ borderBottom: '0' }}>
+                {row.col1}
+              </TableCell>
+              <TableCell align="right" style={{ borderBottom: '0' }}>{row.col2}</TableCell>
+              <TableCell align="right" style={{ borderBottom: '0' }}>{row.col3}</TableCell>
+              <TableCell align="right" style={{ borderBottom: '0' }}>{row.col4}</TableCell>
+              <TableCell align="right" style={{ borderBottom: '0' }}>{row.col5}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
+    // <Grid container style={{ height: '100%' }}>
 
-      <Grid style={{ marginLeft: '80%', align: 'right' }}>
-        <Typography variant='h3'>{currentYear}</Typography>
-        {compare
-        && <Typography variant='h3'>{compareYear}</Typography>}
-        <Button
-          onClick={() => setCompare(!compare)}
-          variant="outlined"
-          style={{ marginTop: '10px' }}
-        >
-          <Typography
-            variant='body1'
-          >{compare ? "Don't Compare" : 'compare'}
-          </Typography>
-        </Button>
-      </Grid>
+  //   <Grid style={{ marginLeft: '80%', align: 'right' }}>
+  //     <Typography variant='h3'>{currentYear}</Typography>
+  //     {compare
+  //     && <Typography variant='h3'>{compareYear}</Typography>}
+  //     <Button
+  //       onClick={() => setCompare(!compare)}
+  //       variant="outlined"
+  //       style={{ marginTop: '10px' }}
+  //     >
+  //       <Typography
+  //         variant='body1'
+  //       >{compare ? "Don't Compare" : 'compare'}
+  //       </Typography>
+  //     </Button>
+  //   </Grid>
 
-      <Grid container spacing={8} wrap="nowrap">
-        {treeMapCollection(currentYearData)}
-      </Grid>
+  //   <Grid container spacing={8} wrap="nowrap">
+  //     {treeMapCollection(currentYearData)}
+  //   </Grid>
 
-      {compare && (
-      <Grid container spacing={8} wrap="nowrap">
-        {treeMapCollection(compareYearData)}
-      </Grid>
-      )}
+  //   {compare && (
+  //   <Grid container spacing={8} wrap="nowrap">
+  //     {treeMapCollection(compareYearData)}
+  //   </Grid>
+  //   )}
 
-      <Grid container wrap="nowrap" style={{ marginTop: 15 }}>
-        <YearSlider
-          year={compare ? { curr: currentYear, compare: compareYear } : currentYear}
-          onYearChange={(value) => {
-            if ((value.curr || value) !== currentYear) {
-              setCurrentYear(value.curr || value);
-            } if (compare && value.compare !== compareYear) {
-              setCompareYear(value.compare);
-            }
-          }}
-          min={year.min}
-          max={year.max}
-        />
-      </Grid>
+  //   <Grid container wrap="nowrap" style={{ marginTop: 15 }}>
+  //     <YearSlider
+  //       year={compare ? { curr: currentYear, compare: compareYear } : currentYear}
+  //       onYearChange={(value) => {
+  //         if ((value.curr || value) !== currentYear) {
+  //           setCurrentYear(value.curr || value);
+  //         } if (compare && value.compare !== compareYear) {
+  //           setCompareYear(value.compare);
+  //         }
+  //       }}
+  //       min={year.min}
+  //       max={year.max}
+  //     />
+  //   </Grid>
 
-    </Grid>
+  // </Grid>
   );
 };
 
