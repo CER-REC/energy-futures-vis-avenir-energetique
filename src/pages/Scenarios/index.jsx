@@ -5,7 +5,7 @@ import useConfig from '../../hooks/useConfig';
 import { CHART_PROPS, CHART_AXIS_PROPS, SCENARIO_COLOR } from '../../constants';
 import { getMaxTick } from '../../utilities/parseData';
 import ForecastBar from '../../components/ForecastBar';
-import fadeLayer from '../../components/FadeLayer/index';
+import fadeLayer from '../../components/FadeLayer';
 import VizTooltip from '../../components/VizTooltip';
 import MaxTick from '../../components/MaxTick';
 
@@ -34,7 +34,7 @@ const Scenarios = ({ data, year }) => {
   /**
    * The fade-out effect over forecast years.
    */
-  const fade = useMemo(() => fadeLayer(year), [year]);
+  const fade = useMemo(() => fadeLayer({ year }), [year]);
 
   /**
    * Calculate the max tick value on y-axis.

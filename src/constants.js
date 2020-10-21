@@ -209,3 +209,36 @@ export const CHART_AXIS_PROPS = {
   tickPadding: 5,
   tickRotation: 0,
 };
+export const CHART_PATTERNS = [
+  {
+    id: 'dots',
+    type: 'patternDots',
+    size: 4,
+    padding: 4,
+    stagger: true,
+  },
+  {
+    id: 'lines-horizontal',
+    type: 'patternLines',
+    spacing: 6,
+    rotation: 0,
+    lineWidth: 3,
+  },
+  {
+    id: 'lines-vertical',
+    type: 'patternLines',
+    spacing: 6,
+    rotation: 90,
+    lineWidth: 3,
+  },
+  {
+    id: 'squares',
+    type: 'patternSquares',
+    size: 4,
+    padding: 6,
+    stagger: false,
+  },
+].map(pattern => [
+  { ...pattern, background: '#FF821E', color: '#FFF' },
+  { ...pattern, id: `${pattern.id}-no-bg`, background: '#FFF', color: '#AAA' },
+]).flat();

@@ -2,15 +2,16 @@ import React, { useCallback, useMemo } from 'react';
 import { ResponsiveLine } from '@nivo/line';
 import PropTypes from 'prop-types';
 import { useIntl } from 'react-intl';
-import ForecastBar from '../../components/ForecastBar';
-import fadeLayer from '../../components/FadeLayer';
-import MaxTick from '../../components/MaxTick';
 
 import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
-import VizTooltip from '../../components/VizTooltip';
-import { CHART_PROPS, CHART_AXIS_PROPS } from '../../constants';
+import { CHART_PROPS, CHART_AXIS_PROPS, CHART_PATTERNS } from '../../constants';
 import { getMaxTick } from '../../utilities/parseData';
+
+import ForecastBar from '../../components/ForecastBar';
+import fadeLayer from '../../components/FadeLayer';
+import MaxTick from '../../components/MaxTick';
+import VizTooltip from '../../components/VizTooltip';
 
 const BySector = ({ data, year }) => {
   const intl = useIntl();
@@ -28,7 +29,7 @@ const BySector = ({ data, year }) => {
   /**
    * The fade-out effect over forecast years.
    */
-  const fade = useMemo(() => fadeLayer(year), [year]);
+  const fade = useMemo(() => fadeLayer({ year, isTransportation: config.sector === 'TRANSPORTATION' }), [year, config.sector]);
 
   /**
    * Format tooltip.
@@ -72,7 +73,7 @@ const BySector = ({ data, year }) => {
       <ResponsiveLine
         {...CHART_PROPS}
         data={orderedData}
-        layers={['grid', 'axes', 'areas', 'crosshair', 'lines', 'points', 'slices', fade]}
+        layers={['grid', 'axes', 'crosshair', 'lines', 'points', 'slices', 'areas', fade]}
         xScale={{ type: 'point' }}
         yScale={{ type: 'linear', min: 0, max: axis.highest, stacked: true, reverse: false }}
         curve="cardinal"
@@ -91,6 +92,7 @@ const BySector = ({ data, year }) => {
         enableSlices="x"
         sliceTooltip={getTooltip}
         gridYValues={axis.ticks}
+        defs={CHART_PATTERNS}
       />
     </>
   );
