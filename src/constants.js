@@ -196,7 +196,7 @@ export const DEFAULT_CONFIG = {
 };
 
 export const CHART_PROPS = {
-  margin: { top: 50, bottom: 50, left: 20, right: 80 },
+  margin: { top: 50, bottom: 50, left: 20, right: 50 },
   axisTop: null,
   axisLeft: null,
   enableLabel: false,
