@@ -1,8 +1,6 @@
 import React, { useEffect, useMemo, Children, cloneElement } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles, Grid, Typography, CircularProgress } from '@material-ui/core';
-import LinkIcon from '@material-ui/icons/Link';
-import EmailIcon from '@material-ui/icons/Email';
 import Alert from '@material-ui/lab/Alert';
 import AlertTitle from '@material-ui/lab/AlertTitle';
 import { useIntl } from 'react-intl';
@@ -21,7 +19,7 @@ import {
   LinkButtonContentAssumptions, LinkButtonContentKeyFindings, LinkButtonContentResults,
   LinkButtonContentReport, LinkButtonContentMethodology, LinkButtonContentAbout,
 } from '../LinkButtonGroup/contents';
-import { IconTwitter, IconFacebook, IconLinkedIn } from '../../icons';
+import Share from '../Share';
 
 const LEAD_COL_WIDTH = 400;
 
@@ -172,20 +170,7 @@ const PageLayout = ({
           </Grid>
           <Grid item style={{ flexGrow: 1 }}><YearSelect /></Grid>
           <Grid item className={classes.report}>
-            <LinkButtonGroup
-              labels={[
-                [
-                  { name: 'download data' },
-                ], [
-                  { icon: <LinkIcon />, name: 'Copy Link', content: () => {} },
-                  { icon: <IconLinkedIn />, name: 'LinkedIn', content: () => {} },
-                  { icon: <IconFacebook />, name: 'Facebook', content: () => {} },
-                  { icon: <IconTwitter />, name: 'Twitter', content: () => {} },
-                  { icon: <EmailIcon />, name: 'Email', content: () => {} },
-                ],
-              ]}
-              accent="right"
-            />
+            <Share />
           </Grid>
         </Grid>
       </Grid>
