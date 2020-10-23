@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles, Grid } from '@material-ui/core';
+import { OIL_SUBGROUP, SOURCE_PATTERNS } from '../../constants';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -23,8 +24,6 @@ const useStyles = makeStyles(theme => ({
     borderRadius: '50%',
     transition: 'box-shadow .25s ease-in-out',
     zIndex: 1,
-    '&:hover': { boxShadow: theme.shadows[6] },
-    '&.selected': { backgroundColor: '#FF821E' },
 
     '&.disabled': {
       borderColor: theme.palette.secondary.main,
@@ -41,58 +40,52 @@ const useStyles = makeStyles(theme => ({
       backgroundColor: theme.palette.secondary.main,
       borderRadius: 1,
     },
-    '&.disabled:hover': { boxShadow: theme.shadows[0] },
   },
 }));
 
-const PATTERNS = {
-  AVIATION: 'dots',
-  DIESEL: 'lines-horizontal',
-  GASOLINE: 'lines-vertical',
-  OIL: 'squares',
-};
-
-const OilSubgroup = ({ disabled /* AVIATION, DIESEL, GASOLINE, OIL */ }) => {
+const OilSubgroup = ({ selected, disabled /* e.g. [AVIATION, GASOLINE, DIESEL, OIL] */ }) => {
   const classes = useStyles();
-  const [selected, setSelected] = useState(['AVIATION', 'DIESEL', 'GASOLINE', 'OIL']);
-
-  const toggleSelection = (event, item) => {
-    event.stopPropagation();
-    setSelected(selected.includes(item)
-      ? selected.filter(source => source !== item)
-      : [...selected, item]);
-  };
+  const styling = useCallback(
+    source => [classes.node, selected && 'selected', disabled.includes(source) && 'disabled'].filter(Boolean).join(' '),
+    [classes, selected, disabled],
+  );
 
   return (
-    <Grid container direction="column" spacing={0} className={classes.root}>
-      {['AVIATION', 'DIESEL', 'GASOLINE', 'OIL'].map(source => (
-        <Grid item key={`draggable-list-sub-group-${source}`}>
-          <div
-            role="button"
-            tabIndex={0}
-            onClick={event => toggleSelection(event, source)}
-            onKeyPress={event => event.key === 'Enter' && toggleSelection(event, source)}
-            className={[
-              classes.node,
-              selected.includes(source) && 'selected',
-              disabled.includes(source) && 'disabled',
-            ].filter(Boolean).join(' ')}
-          >
-            <svg height="100%" width="100%" viewBox="0 0 50 50">
-              <circle fill={`url(#${PATTERNS[source]}${selected.includes(source) ? '' : '-no-bg'})`} cx="50%" cy="50%" r="50%" />
-            </svg>
-          </div>
-        </Grid>
-      ))}
-    </Grid>
+    <>
+      {/* Definitions of pattern masking to support both selected and unselected states. */}
+      <svg>
+        <defs>
+          {OIL_SUBGROUP.map(source => (
+            <mask key={`node-${source}-mask`} id={`node-${source}-mask`} x="0" y="0" height="100%" width="100%">
+              <rect x="0" y="0" height="200%" width="200%" fill={`url(#${SOURCE_PATTERNS[source]}-mask)`} />
+            </mask>
+          ))}
+        </defs>
+      </svg>
+
+      {/* The vertical arrangement of oil sub-group options. */}
+      <Grid container direction="column" spacing={0} className={classes.root}>
+        {OIL_SUBGROUP.map(source => (
+          <Grid item key={`draggable-list-sub-group-${source}`}>
+            <div className={styling(source)}>
+              <svg height="100%" width="100%" viewBox="0 0 50 50">
+                <circle cx="50%" cy="50%" r="50%" fill={selected ? '#FF821E' : '#BBB'} mask={`url(#node-${source}-mask)`} />
+              </svg>
+            </div>
+          </Grid>
+        ))}
+      </Grid>
+    </>
   );
 };
 
 OilSubgroup.propTypes = {
+  selected: PropTypes.bool,
   disabled: PropTypes.arrayOf(PropTypes.string),
 };
 
 OilSubgroup.defaultProps = {
+  selected: true,
   disabled: [],
 };
 

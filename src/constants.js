@@ -152,6 +152,12 @@ export const SOURCE_COLORS = {
     NA: "won't work since it's missing",
   },
   oil: {},
+  transportation: {
+    AVIATION: '#FF821E',
+    GASOLINE: '#FF821E',
+    DIESEL: '#FF821E',
+    OIL: '#FF821E',
+  },
 };
 
 export const SOURCE_ICONS = {
@@ -173,6 +179,7 @@ export const SOURCE_ICONS = {
   },
   gas: {},
   oil: {},
+  transportation: {},
 };
 
 export const SECTOR_ICONS = {
@@ -218,10 +225,17 @@ export const CHART_PATTERNS = [
     stagger: true,
   },
   {
-    id: 'lines-horizontal',
+    id: 'squares',
+    type: 'patternSquares',
+    size: 4,
+    padding: 6,
+    stagger: false,
+  },
+  {
+    id: 'lines-diagonal',
     type: 'patternLines',
     spacing: 6,
-    rotation: 0,
+    rotation: 45,
     lineWidth: 3,
   },
   {
@@ -231,14 +245,16 @@ export const CHART_PATTERNS = [
     rotation: 90,
     lineWidth: 3,
   },
-  {
-    id: 'squares',
-    type: 'patternSquares',
-    size: 4,
-    padding: 6,
-    stagger: false,
-  },
-].map(pattern => [
-  { ...pattern, background: '#FF821E', color: '#FFF' },
-  { ...pattern, id: `${pattern.id}-no-bg`, background: '#FFF', color: '#AAA' },
-]).flat();
+].map(pattern => ([
+  { ...pattern, background: 'transparent', color: '#FFF' }, // for color blending in viz
+  { ...pattern, id: `${pattern.id}-mask`, background: '#FFF', color: '#000' }, // for masking
+])).flat();
+
+export const OIL_SUBGROUP = ['AVIATION', 'GASOLINE', 'DIESEL', 'OIL'];
+
+export const SOURCE_PATTERNS = {
+  AVIATION: 'dots',
+  GASOLINE: 'lines-diagonal',
+  DIESEL: 'squares',
+  OIL: 'lines-vertical',
+};

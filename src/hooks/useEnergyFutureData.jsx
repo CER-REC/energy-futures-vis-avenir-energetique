@@ -92,8 +92,13 @@ export default () => {
     //   adjustedSources[config.sources.indexOf('C5')] = 'C_5';
     //   return adjustedSources;
     // }
+
+    // adds extra oil sources if sector 'transportation' is selected in the by-sector page.
+    if (config.page === 'by-sector' && config.sector === 'TRANSPORTATION') {
+      return [...config.sources, ...(config.sources.includes('OIL') ? ['AVIATION', 'DIESEL', 'GASOLINE'] : [])];
+    }
     return config.sources;
-  }, [config.page, config.sources, sourceOrder, config.mainSelection]);
+  }, [config.page, config.sources, sourceOrder, config.mainSelection, config.sector]);
 
   const { sourceType } = PAGES.find(page => page.id === config.page);
 

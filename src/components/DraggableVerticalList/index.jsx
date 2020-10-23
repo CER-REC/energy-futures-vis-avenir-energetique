@@ -130,10 +130,6 @@ const DraggableVerticalList = ({
   }, [intl, sourceType, isTransportation]);
 
   const handleToggleItem = toggledItem => () => {
-    if (isTransportation && toggledItem === 'OIL') {
-      return; // subgroup; will be handled differently
-    }
-
     if (singleSelect) {
       setLocalItems([toggledItem]);
       return;
@@ -201,7 +197,7 @@ const DraggableVerticalList = ({
                       icon={defaultItems[item].icon}
                       color={greyscale ? undefined : defaultItems[item].color}
                       selected={localItems.indexOf(item) > -1}
-                      attachment={isTransportation && item === 'OIL' && <OilSubgroup />}
+                      attachment={isTransportation && item === 'OIL' && <OilSubgroup selected={localItems.indexOf(item) > -1} />}
                       tooltip={getTooltip(item)}
                       disabled={disabledItems && disabledItems.includes(item)}
                       isDragDisabled={disabled}

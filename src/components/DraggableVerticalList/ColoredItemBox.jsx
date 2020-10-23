@@ -16,8 +16,8 @@ const useStyles = makeStyles(theme => ({
     borderRadius: props.round ? '50%' : 0,
     textTransform: 'uppercase',
     transition: 'box-shadow .25s ease-in-out',
-    '& > p, & > svg': {
-      margin: 'auto',
+    '& > p, & > svg:first-of-type': {
+      margin: props.attachment ? 4 : 'auto',
       color: props.color || theme.palette.secondary.main,
     },
     '&.selected': { backgroundColor: props.color || theme.palette.secondary.main },

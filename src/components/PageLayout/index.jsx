@@ -126,7 +126,7 @@ const PageLayout = ({
         sourceOrder: selectedSourceOrder,
       });
     },
-    [config.page], // eslint-disable-line react-hooks/exhaustive-deps
+    [config.page, config.sector], // eslint-disable-line react-hooks/exhaustive-deps
   );
 
   /**

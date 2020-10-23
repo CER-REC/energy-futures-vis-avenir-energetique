@@ -5,7 +5,7 @@ import { useIntl } from 'react-intl';
 
 import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
-import { CHART_PROPS, CHART_AXIS_PROPS, CHART_PATTERNS } from '../../constants';
+import { CHART_PROPS, CHART_AXIS_PROPS, CHART_PATTERNS, OIL_SUBGROUP } from '../../constants';
 import { getMaxTick } from '../../utilities/parseData';
 
 import ForecastBar from '../../components/ForecastBar';
@@ -15,21 +15,39 @@ import VizTooltip from '../../components/VizTooltip';
 
 const BySector = ({ data, year }) => {
   const intl = useIntl();
-  const { sources: { energy: { colors } } } = useAPI();
+  const {
+    sources: {
+      energy: { colors: energyColors },
+      transportation: { colors: transportationColors },
+    },
+  } = useAPI();
   const { config } = useConfig();
+
+  /**
+   * Determine whether or not 'transportation' is the current selected sector.
+   */
+  const isTransportation = useMemo(() => config.sector === 'TRANSPORTATION', [config.sector]);
+
+  /**
+   * Prepare the color palette, which is a combination of energy colors and transportation colors.
+   */
+  const colors = useMemo(
+    () => ({ ...energyColors, ...transportationColors }),
+    [energyColors, transportationColors],
+  );
 
   const orderedData = useMemo(
     () => data && config.sourceOrder
-      .map(source => data.find(o => o.id === source))
-      .filter(Boolean)
+      .map(id => ((isTransportation && id === 'OIL') ? OIL_SUBGROUP : id)).flat() // expand extra oil options
+      .map(source => data.find(o => o.id === source)).filter(Boolean) // place sources in order
       .reverse(),
-    [config.sourceOrder, data],
+    [data, config.sourceOrder, isTransportation],
   );
 
   /**
    * The fade-out effect over forecast years.
    */
-  const fade = useMemo(() => fadeLayer({ year, isTransportation: config.sector === 'TRANSPORTATION' }), [year, config.sector]);
+  const fade = useMemo(() => fadeLayer({ year, isTransportation }), [year, isTransportation]);
 
   /**
    * Format tooltip.
@@ -38,14 +56,17 @@ const BySector = ({ data, year }) => {
     <VizTooltip
       nodes={event.slice?.points.map(value => ({
         name: value.serieId,
-        translation: intl.formatMessage({ id: `common.sources.energy.${value.serieId}` }),
+        translation: isTransportation && OIL_SUBGROUP.includes(value.serieId)
+          ? intl.formatMessage({ id: `common.sources.transportation.${value.serieId}` })
+          : intl.formatMessage({ id: `common.sources.energy.${value.serieId}` }),
         value: value.data?.y,
         color: value.serieColor,
+        filter: isTransportation && OIL_SUBGROUP.includes(value.serieId) && `url(#line-${value.serieId}-filter)`,
       }))}
       unit={config.unit}
       paper
     />
-  ), [intl, config.unit]);
+  ), [intl, isTransportation, config.unit]);
 
   /**
    * Calculate the max tick value on y-axis.
@@ -75,7 +96,7 @@ const BySector = ({ data, year }) => {
         data={orderedData}
         layers={['grid', 'axes', 'crosshair', 'lines', 'points', 'slices', 'areas', fade]}
         xScale={{ type: 'point' }}
-        yScale={{ type: 'linear', min: 0, max: axis.highest, stacked: true, reverse: false }}
+        yScale={{ type: 'linear', min: 0, max: axis.highest, stacked: true }}
         curve="cardinal"
         axisRight={{
           ...CHART_AXIS_PROPS,
