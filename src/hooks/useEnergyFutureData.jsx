@@ -84,12 +84,6 @@ export default () => {
       // FIXME: THIS IS A TEMPORARY THING
       return ['TIGHT', 'CBM', 'NA', 'SHALE', 'SOLUTION'];
     }
-    // TODO: This is a temporary fix. The API needs to be updated to send 'C5' not 'C_5'
-    if (config.page === 'oil-and-gas' && config.sources.find(item => item === 'C5')) {
-      const adjustedSources = [...config.sources];
-      adjustedSources[config.sources.indexOf('C5')] = 'C_5';
-      return adjustedSources;
-    }
     return config.sources;
   }, [config.page, config.sources, sourceOrder, config.mainSelection]);
 
