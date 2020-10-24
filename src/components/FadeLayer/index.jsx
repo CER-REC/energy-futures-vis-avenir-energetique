@@ -1,9 +1,10 @@
 import React from 'react';
 import { SOURCE_PATTERNS } from '../../constants';
 
-export default ({
+const fadeLayer = ({
   year,
-  isTransportation,
+  isTransparent = false, /* boolean */
+  isTransportation, /* boolean */
 }) => ({ areaGenerator, series, innerHeight, innerWidth }) => {
   if (!year) {
     return null; // no valid year definition; do nothing
@@ -38,11 +39,20 @@ export default ({
         <g key={id}>
           <defs>
             {/* background gradient with color */}
-            <linearGradient id={`${id}-gradient`}>
-              <stop offset="0%" stopColor={line.color || '#FF821E'} stopOpacity="1" />
-              <stop offset={`${preForecastPercentage}%`} stopColor={line.color || '#FF821E'} stopOpacity="1" />
-              <stop offset="100%" stopColor="#FFF" stopOpacity='1' />
-            </linearGradient>
+            {/* semi-transparent for scenarios viz and solid colors for by-sector viz */}
+            {isTransparent ? (
+              <linearGradient id={`${id}-gradient`}>
+                <stop offset="0%" stopColor={line.color} stopOpacity="1" />
+                <stop offset={`${preForecastPercentage}%`} stopColor={line.color} stopOpacity="1" />
+                <stop offset="100%" stopColor={line.color} stopOpacity='0.05' />
+              </linearGradient>
+            ) : (
+              <linearGradient id={`${id}-gradient`}>
+                <stop offset="0%" stopColor={line.color} stopOpacity="1" />
+                <stop offset={`${preForecastPercentage}%`} stopColor={line.color} stopOpacity="1" />
+                <stop offset="100%" stopColor="#FFF" stopOpacity='1' />
+              </linearGradient>
+            )}
 
             {/* if a pattern is applicable, then combine it with the background */}
             {/* NOTE: masking cannot be used here because it exposes the color behind */}
@@ -69,5 +79,9 @@ export default ({
       );
     });
 
-  return <g opacity={0.8}>{areas}</g>;
+  return <g opacity={0.7}>{areas}</g>;
 };
+
+export const fadeLayerBySector = props => fadeLayer(props /* { year, isTransportation } */);
+
+export const fadeLayerScenario = ({ year }) => fadeLayer({ year, isTransparent: true });

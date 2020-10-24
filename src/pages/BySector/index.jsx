@@ -9,7 +9,7 @@ import { CHART_PROPS, CHART_AXIS_PROPS, CHART_PATTERNS, OIL_SUBGROUP } from '../
 import { getMaxTick } from '../../utilities/parseData';
 
 import ForecastBar from '../../components/ForecastBar';
-import fadeLayer from '../../components/FadeLayer';
+import { fadeLayerBySector } from '../../components/FadeLayer';
 import MaxTick from '../../components/MaxTick';
 import VizTooltip from '../../components/VizTooltip';
 
@@ -47,7 +47,10 @@ const BySector = ({ data, year }) => {
   /**
    * The fade-out effect over forecast years.
    */
-  const fade = useMemo(() => fadeLayer({ year, isTransportation }), [year, isTransportation]);
+  const fade = useMemo(
+    () => fadeLayerBySector({ year, isTransportation }),
+    [year, isTransportation],
+  );
 
   /**
    * Format tooltip.
