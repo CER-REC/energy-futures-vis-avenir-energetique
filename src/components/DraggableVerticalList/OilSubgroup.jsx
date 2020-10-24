@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
-import { makeStyles, Grid } from '@material-ui/core';
+import { makeStyles, Grid, Typography } from '@material-ui/core';
 import { OIL_SUBGROUP, SOURCE_PATTERNS } from '../../constants';
 
 const useStyles = makeStyles(theme => ({
@@ -15,6 +15,7 @@ const useStyles = makeStyles(theme => ({
     borderRadius: 24,
   },
   node: {
+    position: 'relative',
     height: 28,
     width: 28,
     margin: '2px auto',
@@ -39,6 +40,15 @@ const useStyles = makeStyles(theme => ({
       transform: 'translate(-50%, -50%) rotate(-45deg)',
       backgroundColor: theme.palette.secondary.main,
       borderRadius: 1,
+    },
+
+    '& > span': {
+      position: 'absolute',
+      top: 'calc(50% - 0.5px)',
+      left: 'calc(50% + 0.5px)',
+      transform: 'translate(-50%, -50%)',
+      color: theme.palette.secondary.main,
+      fontWeight: 500,
     },
   },
 }));
@@ -71,6 +81,7 @@ const OilSubgroup = ({ selected, disabled /* e.g. [AVIATION, GASOLINE, DIESEL, O
               <svg height="100%" width="100%" viewBox="0 0 50 50">
                 <circle cx="50%" cy="50%" r="50%" fill={selected ? '#FF821E' : '#BBB'} mask={`url(#node-${source}-mask)`} />
               </svg>
+              <Typography variant="outline">{source.charAt(0)}</Typography>
             </div>
           </Grid>
         ))}
