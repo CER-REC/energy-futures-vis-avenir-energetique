@@ -23,7 +23,7 @@ const Scenarios = ({ data, year }) => {
         cx={point.x}
         cy={point.y}
         r={args.pointSize / 2}
-        fill={point.color}
+        fill="#FFF"
         stroke={point.borderColor}
         strokeWidth={args.pointBorderWidth}
         style={{ pointerEvents: 'none' }}
