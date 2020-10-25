@@ -1,7 +1,7 @@
-import React, { useMemo, useCallback } from 'react';
+import React, { useMemo } from 'react';
 import { useIntl } from 'react-intl';
 import { makeStyles, Grid, Typography, Button, Tooltip } from '@material-ui/core';
-import markdown from 'micro-down';
+import Markdown from 'react-markdown';
 
 import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
@@ -27,8 +27,6 @@ const YearSelect = () => {
     [yearIdIterations],
   );
 
-  const tooltip = useCallback(yearId => markdown.parse(intl.formatMessage({ id: `components.yearSelect.${yearId}.description` })), [intl]);
-
   return (
     <Grid container alignItems="center" spacing={1}>
       <Grid item>
@@ -39,7 +37,13 @@ const YearSelect = () => {
 
       {yearIds.map(yearId => (
         <Grid item key={`year-select-option-${yearId}`}>
-          <Tooltip title={<Typography variant="caption" color="secondary" dangerouslySetInnerHTML={{ __html: tooltip(yearId) }} />}>
+          <Tooltip
+            title={(
+              <Typography variant="caption" color="secondary">
+                <Markdown>{intl.formatMessage({ id: `components.yearSelect.${yearId}.description` })}</Markdown>
+              </Typography>
+            )}
+          >
             <Button
               variant="contained"
               color={config.yearId === yearId ? 'primary' : 'secondary'}
