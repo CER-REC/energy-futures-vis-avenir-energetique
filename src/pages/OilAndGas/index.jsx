@@ -78,13 +78,13 @@ const OilAndGas = ({ data, year }) => {
     C5: 'green',
   };
 
-  const getBiggestTreeMap = () => {
+  const getBiggestTreeMapTotal = () => {
     if (compare) {
       return currentYearData[0].total > compareYearData[0].total
-        ? currentYearData[0]
-        : compareYearData[0];
+        ? currentYearData[0].total
+        : compareYearData[0].total;
     }
-    return currentYearData[0];
+    return currentYearData[0].total;
   };
 
   const sizeMultiplier = (total) => {
@@ -93,10 +93,12 @@ const OilAndGas = ({ data, year }) => {
     small charts. This will be solved when the small ones get grouped and
     magnified.
     */
+
+    const biggestTreeMapTotal = getBiggestTreeMapTotal();
     const size = compare ? 250 : 450;
 
-    if (!(total >= getBiggestTreeMap().total)) {
-      return size * (total / getBiggestTreeMap().total);
+    if (!(total >= biggestTreeMapTotal)) {
+      return size * (total / biggestTreeMapTotal);
     }
 
     return size;
@@ -120,12 +122,12 @@ const OilAndGas = ({ data, year }) => {
           key={source.name}
           style={{
             bottom: 0,
-            height: sizeMultiplier(source.total),
-            width: sizeMultiplier(source.total),
+            height: sizeMultiplier(source.total) || 0,
+            width: sizeMultiplier(source.total) || 0,
           }}
         >
 
-          <Typography style={{ marginLeft: 10, bottom: 0 }}>
+          <Typography varient="body1" style={{ marginLeft: 10, bottom: 0 }}>
             {`${source.name}: ${percentage}%`}
           </Typography>
 
@@ -152,11 +154,10 @@ const OilAndGas = ({ data, year }) => {
     });
   };
 
-  const createData = (id = '', ...rest) => ({ id, ...rest });
+  return (
+    <>
+      <div style={{ position: 'absolute' }}>
 
-  const rows = [
-    createData('years',
-      <>
         <Typography color='primary' variant='h3'>{currentYear}</Typography>
         {compare && <Typography color='secondary' variant='h3'>{compareYear}</Typography>}
         <Button
@@ -169,41 +170,40 @@ const OilAndGas = ({ data, year }) => {
           >{compare ? "Don't Compare" : 'compare'}
           </Typography>
         </Button>
-      </>),
-    createData('treeMapCollection1', ...treeMapCollection(currentYearData)),
-    ...(compare ? [createData('treeMapCollection2', ...treeMapCollection(compareYearData))] : []),
-    createData('slider',
-      <YearSlider
-        year={compare ? { curr: currentYear, compare: compareYear } : currentYear}
-        onYearChange={(value) => {
-          if ((value.curr || value) !== currentYear) {
-            setCurrentYear(value.curr || value);
-          } if (compare && value.compare !== compareYear) {
-            setCompareYear(value.compare);
-          }
-        }}
-        min={year.min}
-        max={year.max}
-      />),
-  ];
-
-  return (
-    <TableContainer>
-      <Table>
-        <TableBody>
-          {rows.map(row => (
-            // Making this dynamic is more difficult than I initially thought
-            <TableRow key={row.id} className={classes[row.id]}>
-              <TableCell align="right" className={classes.cells}>{row[0]}</TableCell>
-              {row[1] && <TableCell align="right" className={classes.cells}>{row[1]}</TableCell>}
-              {row[2] && <TableCell align="right" className={classes.cells}>{row[2]}</TableCell>}
-              {row[3] && <TableCell align="right" className={classes.cells}>{row[3]}</TableCell>}
-              {row[4] && <TableCell align="right" className={classes.cells}>{row[4]}</TableCell>}
+      </div>
+      <TableContainer>
+        <Table>
+          <TableBody>
+            <TableRow key="treeMapCollection1" className={classes.treeMapCollection1}>
+              {treeMapCollection(currentYearData).map(treeMap => <TableCell align="right" className={classes.cells}>{treeMap}</TableCell>)}
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+            <TableCell
+              align="right"
+              colSpan="100%"
+            >
+              <YearSlider
+                year={compare ? { curr: currentYear, compare: compareYear } : currentYear}
+                onYearChange={(value) => {
+                  if ((value.curr || value) !== currentYear) {
+                    setCurrentYear(value.curr || value);
+                  } if (compare && value.compare !== compareYear) {
+                    setCompareYear(value.compare);
+                  }
+                }}
+                min={year.min}
+                max={year.max}
+              />
+            </TableCell>
+
+            {compare && (
+            <TableRow key="treeMapCollection2" className={classes.treeMapCollection2}>
+              {treeMapCollection(compareYearData).map(treeMap => <TableCell align="right" className={classes.cells}>{treeMap}</TableCell>)}
+            </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </>
   );
 };
 
