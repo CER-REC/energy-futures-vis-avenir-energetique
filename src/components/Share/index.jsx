@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
 import LinkIcon from '@material-ui/icons/Link';
 import EmailIcon from '@material-ui/icons/Email';
+import Clipboard from 'clipboard';
 import { useIntl } from 'react-intl';
 
 import { IconTwitter, IconFacebook, IconLinkedIn } from '../../icons';
@@ -25,6 +26,20 @@ const openShareWindow = baseUrl => getBitlyURL().then(bitlyUrl => window.open(
   'targetWindow',
   'width=650,height=650',
 ));
+
+const copy = {
+  name: 'copy',
+  icon: <LinkIcon />,
+  content: () => getBitlyURL().then((bitlyUrl) => {
+    // TODO: Remove and change to use useRef and useEffect when the browser clipboard API
+    // allows for asynchronous copies (https://github.com/zenorocha/clipboard.js/issues/639)
+    const ref = document.createElement('div');
+    const clipboard = new Clipboard(ref, { text: () => bitlyUrl });
+
+    ref.click();
+    clipboard.destroy();
+  }),
+};
 
 const linkedin = {
   name: 'linkedin',
@@ -64,7 +79,7 @@ const Share = () => {
   return (
     <LinkButtonGroup
       labels={[[{ name: 'download data' }], [
-        { icon: <LinkIcon />, name: 'Copy Link', content: () => {} },
+        copy,
         linkedin,
         facebook,
         twitter,
