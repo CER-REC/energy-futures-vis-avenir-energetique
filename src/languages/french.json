@@ -53,6 +53,10 @@
         "description": "Le scénario des avancées technologiques suppose des prix du carbone plus élevés que ceux du scénario de référence et l’adoption plus massive de certaines technologies énergétiques émergentes liées à la production ou à la consommation."
       }
     },
+    "share": {
+      "emailSubject": "l’avenir énergétique du Canada",
+      "emailMessage": "Pour créer l’outil interactif Explorer l’avenir énergétique du Canada, la Régie de l’énergie du Canada s’est associé à des experts de la visualisation des données du milieu universitaire et de l’industrie. Fondé sur la publication phare Avenir énergétique du Canada en 2016 – Offre et demande énergétiques à l’horizon 2040, ce projet pilote donnera aux Canadiens un avant-goût du nouveau et fabuleux moyen qu’utilisera désormais la Régie pour diffuser ses données."
+    },
     "unsupportedWarning": {
       "browser": "Votre fureteur n’autorise pas les particularités propres à cette visualisation.\nVeuillez utiliser une version récente du logiciel de navigation Chrome, Firefox, Safari ou Edge.\nMerci!",
       "resolution": "Cette visualisation a été conçue pour des ordinateurs ou tablettes disposant d’un écran d’une largeur minimale de 768 pixels.\nMerci!"
