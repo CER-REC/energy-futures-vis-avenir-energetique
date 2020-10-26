@@ -81,7 +81,7 @@ const OilSubgroup = ({ selected, disabled /* e.g. [AVIATION, GASOLINE, DIESEL, O
               <svg height="100%" width="100%" viewBox="0 0 50 50">
                 <circle cx="50%" cy="50%" r="50%" fill={selected ? '#FF821E' : '#BBB'} mask={`url(#node-${source}-mask)`} />
               </svg>
-              <Typography variant="outline">{source.charAt(0)}</Typography>
+              <Typography variant="h6" component="span">{source.charAt(0)}</Typography>
             </div>
           </Grid>
         ))}
