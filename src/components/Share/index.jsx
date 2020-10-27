@@ -11,6 +11,14 @@ import useConfig from '../../hooks/useConfig';
 import useEnergyFutureData from '../../hooks/useEnergyFutureData';
 import LinkButtonGroup from '../LinkButtonGroup';
 
+// TODO: Remove after refactoring source type references into selection references
+const mainSelectionSourceType = {
+  energyDemand: 'energy',
+  electricityGeneration: 'electricity',
+  oilProduction: 'oil',
+  gasProduction: 'gas',
+};
+
 const getBitlyURL = () => {
   const bitlyServiceURL = `${document.location.origin}/bitlyService/api/bitlyShortlink`;
 
@@ -70,7 +78,79 @@ const Share = () => {
   const download = useMemo(() => ({
     name: intl.formatMessage({ id: 'components.share.download' }),
     content: () => {
-      saveAs(new Blob([Papa.unparse(data)], { type: 'text/csv' }), 'energyFutures.csv');
+      const selection = intl.formatMessage({ id: `common.selections.${config.mainSelection}` }).toUpperCase();
+      const region = intl.formatMessage({ id: `common.regions.${config.provinces[0]}` }).toUpperCase();
+      const sector = intl.formatMessage({ id: `common.sectors.${config.sector}` }).toUpperCase();
+      const scenario = intl.formatMessage({ id: `common.scenarios.${config.scenarios[0]}` }).toUpperCase();
+      const unit = intl.formatMessage({ id: `common.units.${config.unit}` });
+      const dataset = intl.formatMessage({ id: `common.dataset.${config.yearId}`, defaultMessage: config.yearId }).toUpperCase();
+      const headers = {
+        selection: intl.formatMessage({ id: 'common.selection' }).toLowerCase(),
+        region: intl.formatMessage({ id: 'common.region' }).toLowerCase(),
+        scenario: intl.formatMessage({ id: 'common.scenario' }).toLowerCase(),
+        sector: intl.formatMessage({ id: 'common.sector' }).toLowerCase(),
+        source: intl.formatMessage({ id: 'common.source' }).toLowerCase(),
+        year: intl.formatMessage({ id: 'common.year' }).toLowerCase(),
+        value: intl.formatMessage({ id: 'common.value' }).toLowerCase(),
+        unit: intl.formatMessage({ id: 'common.unit' }).toLowerCase(),
+        dataset: intl.formatMessage({ id: 'common.dataset' }).toLowerCase(),
+      };
+      const sourceType = mainSelectionSourceType[config.mainSelection];
+      const csvData = data.map((resource) => {
+        switch (config.page) {
+          case 'by-region':
+            return {
+              [headers.selection]: selection,
+              [headers.region]: intl.formatMessage({ id: `common.regions.${resource.province}` }).toUpperCase(),
+              [headers.scenario]: scenario,
+              [headers.year]: resource.year,
+              [headers.value]: resource.value,
+              [headers.unit]: unit,
+              [headers.dataset]: dataset,
+            };
+          case 'by-sector':
+            return {
+              [headers.region]: region,
+              [headers.sector]: sector,
+              [headers.source]: intl.formatMessage({ id: `common.sources.${sourceType}.${resource.source}` }).toUpperCase(),
+              [headers.scenario]: scenario,
+              [headers.year]: resource.year,
+              [headers.value]: resource.value,
+              [headers.unit]: unit,
+              [headers.dataset]: dataset,
+            };
+          case 'electricity':
+            return {
+              [headers.region]: intl.formatMessage({ id: `common.regions.${resource.province}` }).toUpperCase(),
+              [headers.source]: intl.formatMessage({ id: `common.sources.${sourceType}.${resource.source}` }).toUpperCase(),
+              [headers.value]: resource.value,
+              [headers.unit]: unit,
+              [headers.dataset]: dataset,
+            };
+          case 'scenarios':
+            return {
+              [headers.selection]: selection,
+              [headers.region]: region,
+              [headers.scenario]: scenario,
+              [headers.year]: resource.year,
+              [headers.value]: resource.value,
+              [headers.unit]: unit,
+              [headers.dataset]: dataset,
+            };
+          case 'oil-and-gas':
+            return {
+              [headers.region]: intl.formatMessage({ id: `common.regions.${resource.province}` }).toUpperCase(),
+              [headers.source]: intl.formatMessage({ id: `common.sources.${sourceType}.${resource.source}` }).toUpperCase(),
+              [headers.value]: resource.value,
+              [headers.unit]: unit,
+              [headers.dataset]: dataset,
+            };
+          default:
+            throw new Error('Invalid data download.');
+        }
+      });
+
+      saveAs(new Blob([Papa.unparse(csvData)], { type: 'text/csv' }), 'energyFutures.csv');
     },
   }), [intl, data, config]);
   const email = useMemo(() => ({
