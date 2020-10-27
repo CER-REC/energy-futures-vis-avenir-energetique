@@ -158,6 +158,7 @@ export default () => {
     data: processedData,
     disabledRegions: unavailability('province'),
     disabledSources: unavailability('source'),
+    rawData: data?.resources,
     year: years && {
       min: Math.min(...years),
       forecastStart,

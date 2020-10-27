@@ -2,9 +2,13 @@ import React, { useMemo } from 'react';
 import LinkIcon from '@material-ui/icons/Link';
 import EmailIcon from '@material-ui/icons/Email';
 import Clipboard from 'clipboard';
+import { saveAs } from 'file-saver';
+import Papa from 'papaparse';
 import { useIntl } from 'react-intl';
 
 import { IconTwitter, IconFacebook, IconLinkedIn } from '../../icons';
+import useConfig from '../../hooks/useConfig';
+import useEnergyFutureData from '../../hooks/useEnergyFutureData';
 import LinkButtonGroup from '../LinkButtonGroup';
 
 const getBitlyURL = () => {
@@ -61,6 +65,14 @@ const twitter = {
 
 const Share = () => {
   const intl = useIntl();
+  const { config } = useConfig();
+  const { rawData: data } = useEnergyFutureData();
+  const download = useMemo(() => ({
+    name: intl.formatMessage({ id: 'components.share.download' }),
+    content: () => {
+      saveAs(new Blob([Papa.unparse(data)], { type: 'text/csv' }), 'energyFutures.csv');
+    },
+  }), [intl, data, config]);
   const email = useMemo(() => ({
     name: 'email',
     icon: <EmailIcon />,
@@ -78,7 +90,7 @@ const Share = () => {
 
   return (
     <LinkButtonGroup
-      labels={[[{ name: 'download data' }], [
+      labels={[[download], [
         copy,
         linkedin,
         facebook,
