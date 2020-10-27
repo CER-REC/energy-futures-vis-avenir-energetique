@@ -113,7 +113,7 @@ const Share = () => {
     // The electricity visualization does not completely use the API to filter the data
     // TODO: Remove after implementing a uniform filter solution (all on server or all on client),
     // and when the electricity special cases in useEnergyFutureData are removed
-    const filteredData = data.filter((resource) => {
+    const filteredData = (data || []).filter((resource) => {
       if (config.page === 'electricity') {
         const regions = config.provinces[0] === 'ALL' ? regionOrder : config.provinces;
         const sources = config.sources[0] === 'ALL' ? sourceOrder : config.provinces;
