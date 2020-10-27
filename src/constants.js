@@ -101,14 +101,15 @@ export const CONFIG_LAYOUT = {
  * TODO: replace it with real colors from UI designers.
  */
 export const SCENARIO_COLOR = {
+  Evolving: '#6D60E8',
   Reference: '#AAA',
   Technology: '#3692FA',
   'Higher Carbon Price': '#0B3CB4',
   'High Price': '#6C5AEB',
   'Low Price': '#082346',
-  Constrained: '#333333',
-  'High LNG': '#2B6762',
-  'No LNG': '#3692FA',
+  Constrained: '#4EEB8D',
+  'High LNG': '#06A458',
+  'No LNG': '#56D3EE',
 };
 
 export const REGION_COLORS = {
@@ -203,7 +204,7 @@ export const DEFAULT_CONFIG = {
 };
 
 export const CHART_PROPS = {
-  margin: { top: 50, bottom: 50, left: 20, right: 80 },
+  margin: { top: 50, bottom: 50, left: 20, right: 50 },
   axisTop: null,
   axisLeft: null,
   enableLabel: false,
