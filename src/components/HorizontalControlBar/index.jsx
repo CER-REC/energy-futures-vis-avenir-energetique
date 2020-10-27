@@ -70,7 +70,7 @@ const HorizontalControlBar = () => {
       <Grid item style={{ paddingRight: 0 }}>
         <HintMainSelect />
       </Grid>
-      {appendices.map((selection) => (
+      {appendices.map(selection => (
         <Grid item key={`config-origin-${selection}`}>
           <Tooltip
             title={intl.formatMessage({ id: `components.mainSelect.${selection}.description` })}

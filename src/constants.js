@@ -149,8 +149,8 @@ export const SOURCE_COLORS = {
     CBM: '#9A65BA',
     SHALE: '#9B938A',
     SOLUTION: '#FA86AC',
-    TIGHT: "#8C0038",
-    NA: "#FFCC47",
+    TIGHT: '#8C0038',
+    NA: '#FFCC47',
   },
   oil: {
     C5: '#96B6CF',
