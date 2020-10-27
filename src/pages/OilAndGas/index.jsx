@@ -13,9 +13,15 @@ import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
 
 const useStyles = makeStyles(theme => ({
-  cells: {
+  cellsTop: {
     borderBottom: '0',
     minWidth: 0,
+    verticalAlign: 'bottom',
+  },
+  cellsBottom: {
+    borderBottom: '0',
+    minWidth: 0,
+    verticalAlign: 'top',
   },
   years: {},
   treeMapCollection1: {},
@@ -128,7 +134,7 @@ const OilAndGas = ({ data, year }) => {
         >
 
           <Typography varient="body1" style={{ marginLeft: 10, bottom: 0 }}>
-            {`${source.name}: ${percentage}%`}
+            {config.view === 'region' ? `${source.name}: ${percentage}%` : source.name}
           </Typography>
 
           <ResponsiveTreeMap
@@ -156,10 +162,26 @@ const OilAndGas = ({ data, year }) => {
 
   return (
     <>
-      <div style={{ position: 'absolute' }}>
+      <div style={{ position: 'absolute', right: 50 }}>
 
-        <Typography color='primary' variant='h3'>{currentYear}</Typography>
-        {compare && <Typography color='secondary' variant='h3'>{compareYear}</Typography>}
+        <div>
+          <div style={{ border: '4px solid black', height: 30, width: 30, display: 'inline-block', marginRight: 10 }} />
+
+          <div style={{ display: 'inline-block' }}>
+            <Typography color='primary' variant='h3'>
+              {currentYear}
+            </Typography>
+          </div>
+        </div>
+
+        {compare && (
+        <div>
+          <div style={{ border: '4px dotted grey', height: 30, width: 30, display: 'inline-block', marginRight: 10 }} />
+          <div style={{ display: 'inline-block' }}>
+            <Typography color='secondary' variant='h3'>{compareYear}</Typography>
+          </div>
+        </div>
+        )}
         <Button
           onClick={() => setCompare(!compare)}
           variant="outlined"
@@ -169,13 +191,15 @@ const OilAndGas = ({ data, year }) => {
             variant='body1'
           >{compare ? "Don't Compare" : 'compare'}
           </Typography>
+
         </Button>
       </div>
+
       <TableContainer>
         <Table>
           <TableBody>
             <TableRow key="treeMapCollection1" className={classes.treeMapCollection1}>
-              {treeMapCollection(currentYearData).map(treeMap => <TableCell align="right" className={classes.cells}>{treeMap}</TableCell>)}
+              {treeMapCollection(currentYearData).map(treeMap => <TableCell align="right" className={classes.cellsTop}>{treeMap}</TableCell>)}
             </TableRow>
             <TableCell
               align="right"
@@ -197,7 +221,7 @@ const OilAndGas = ({ data, year }) => {
 
             {compare && (
             <TableRow key="treeMapCollection2" className={classes.treeMapCollection2}>
-              {treeMapCollection(compareYearData).map(treeMap => <TableCell align="right" className={classes.cells}>{treeMap}</TableCell>)}
+              {treeMapCollection(compareYearData).map(treeMap => <TableCell align="right" className={classes.cellsBottom}>{treeMap}</TableCell>)}
             </TableRow>
             )}
           </TableBody>
