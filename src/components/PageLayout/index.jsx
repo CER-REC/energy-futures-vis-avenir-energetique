@@ -143,7 +143,7 @@ const PageLayout = ({
       ...items,
       [region]: {
         color: regions.colors[region],
-        label: intl.formatMessage({ id: `regions.${region}` }),
+        label: intl.formatMessage({ id: `common.regions.${region}` }),
       },
     }), {}),
     [regions, intl],

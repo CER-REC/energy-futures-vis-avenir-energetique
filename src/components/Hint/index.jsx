@@ -175,7 +175,7 @@ export const HintScenarioSelect = ({ children }) => {
   const { yearIdIterations } = useAPI();
   const { yearId } = useConfig().config;
   const section = useMemo(() => (yearIdIterations[yearId]?.scenarios || []).map(scenario => ({
-    title: intl.formatMessage({ id: `components.scenarioSelect.${scenario}.title` }),
+    title: intl.formatMessage({ id: `common.scenarios.${scenario}` }),
     text: intl.formatMessage({
       id: `components.scenarioSelect.${scenario}.description.${yearId}`,
       defaultMessage: intl.formatMessage({ id: `components.scenarioSelect.${scenario}.description.default` }),
@@ -249,7 +249,7 @@ export const HintRegionList = ({ children }) => {
   const { regions } = useAPI();
   const section = useMemo(() => ['ALL', ...regions.order].map(region => ({
     title: region,
-    text: intl.formatMessage({ id: `regions.${region}` }),
+    text: intl.formatMessage({ id: `common.regions.${region}` }),
   })), [intl, regions]);
   return <Hint content={[<HintSection section={section} singleColumn />]} maxWidth="xs">{children}</Hint>;
 };
