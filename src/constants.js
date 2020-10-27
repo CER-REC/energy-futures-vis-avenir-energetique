@@ -245,10 +245,7 @@ export const CHART_PATTERNS = [
     rotation: 90,
     lineWidth: 3,
   },
-].map(pattern => ([
-  { ...pattern, background: 'transparent', color: '#FFF' }, // for color blending in viz
-  { ...pattern, id: `${pattern.id}-mask`, background: '#FFF', color: '#000' }, // for masking
-])).flat();
+].map(pattern => ({ ...pattern, background: '#FFF', color: '#000' }));
 
 export const OIL_SUBGROUP = ['AVIATION', 'GASOLINE', 'DIESEL', 'OIL'];
 

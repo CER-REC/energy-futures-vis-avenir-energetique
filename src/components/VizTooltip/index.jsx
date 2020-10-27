@@ -31,10 +31,10 @@ const VizTooltip = ({ nodes, total, unit, year, paper, showTotal, showPercentage
         return (
           <Grid item key={`viz-legend-item-${node.name}-${node.value}`}>
             <Grid container alignItems="center" wrap="nowrap">
-              <div className={classes.color} style={{ backgroundColor: node.color || 'white' }}>
-                {node.filter && (
+              <div className={classes.color} style={{ backgroundColor: node.mask ? 'transparent' : node.color }}>
+                {node.mask && (
                   <svg x="0" y="0" height="100%" width="100%" viewBox="0 0 30 30">
-                    <rect x="0" y="0" height="100%" width="100%" filter={node.filter} />
+                    <rect x="0" y="0" height="100%" width="100%" fill={node.color || '#FFF'} mask={node.mask} />
                   </svg>
                 )}
               </div>
@@ -54,9 +54,9 @@ VizTooltip.propTypes = {
     name: PropTypes.string,
     translation: PropTypes.string,
     value: PropTypes.number,
-    // tooltip nodes take in either solid colors or existing filters for pattern rendering
+    // tooltip nodes take in either solid colors or existing pattern masking
     color: PropTypes.string,
-    filter: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+    mask: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
   })).isRequired,
   total: PropTypes.number,
   unit: PropTypes.string.isRequired,

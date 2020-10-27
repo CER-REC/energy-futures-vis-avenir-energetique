@@ -66,8 +66,8 @@ const OilSubgroup = ({ selected, disabled /* e.g. [AVIATION, GASOLINE, DIESEL, O
       <svg>
         <defs>
           {OIL_SUBGROUP.map(source => (
-            <mask key={`node-${source}-mask`} id={`node-${source}-mask`} x="0" y="0" height="100%" width="100%">
-              <rect x="0" y="0" height="200%" width="200%" fill={`url(#${SOURCE_PATTERNS[source]}-mask)`} />
+            <mask key={`source-${source}-mask`} id={`${source}-mask`}>
+              <rect x="0" y="0" height="1000" width="1000" fill={`url(#${SOURCE_PATTERNS[source]})`} />
             </mask>
           ))}
         </defs>
@@ -79,7 +79,7 @@ const OilSubgroup = ({ selected, disabled /* e.g. [AVIATION, GASOLINE, DIESEL, O
           <Grid item key={`draggable-list-sub-group-${source}`}>
             <div className={styling(source)}>
               <svg height="100%" width="100%" viewBox="0 0 50 50">
-                <circle cx="50%" cy="50%" r="50%" fill={selected ? '#FF821E' : '#BBB'} mask={`url(#node-${source}-mask)`} />
+                <circle cx="50%" cy="50%" r="50%" fill={selected ? '#FF821E' : '#BBB'} mask={`url(#${source}-mask)`} />
               </svg>
               <Typography variant="h6" component="span">{source.charAt(0)}</Typography>
             </div>

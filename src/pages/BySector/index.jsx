@@ -64,7 +64,7 @@ const BySector = ({ data, year }) => {
           : intl.formatMessage({ id: `common.sources.energy.${value.serieId}` }),
         value: value.data?.y,
         color: value.serieColor,
-        filter: isTransportation && OIL_SUBGROUP.includes(value.serieId) && `url(#line-${value.serieId}-filter)`,
+        mask: isTransportation && OIL_SUBGROUP.includes(value.serieId) && `url(#${value.serieId}-mask)`,
       }))}
       unit={config.unit}
       paper
