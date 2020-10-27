@@ -158,6 +158,8 @@ export default () => {
     data: processedData,
     disabledRegions: unavailability('province'),
     disabledSources: unavailability('source'),
+    // TODO: Remove after refactoring to move processedData chart structure data
+    // into individual chart components
     rawData: data?.resources,
     year: years && {
       min: Math.min(...years),

@@ -9,14 +9,23 @@ import { useIntl } from 'react-intl';
 import { IconTwitter, IconFacebook, IconLinkedIn } from '../../icons';
 import useConfig from '../../hooks/useConfig';
 import useEnergyFutureData from '../../hooks/useEnergyFutureData';
+import { convertUnit } from '../../utilities/convertUnit';
 import LinkButtonGroup from '../LinkButtonGroup';
 
 // TODO: Remove after refactoring source type references into selection references
-const mainSelectionSourceType = {
+const selectionSourceTypes = {
   energyDemand: 'energy',
   electricityGeneration: 'electricity',
   oilProduction: 'oil',
   gasProduction: 'gas',
+};
+
+// TODO: Remove after refactoring into useEnergyFutureData to provide a uniform data structure
+const selectionUnits = {
+  energyDemand: 'petajoules',
+  electricityGeneration: 'gigawattHours',
+  oilProduction: 'thousandCubicMetres',
+  gasProduction: 'millionCubicMetres',
 };
 
 const getBitlyURL = () => {
@@ -78,6 +87,8 @@ const Share = () => {
   const download = useMemo(() => ({
     name: intl.formatMessage({ id: 'components.share.download' }),
     content: () => {
+      const defaultUnit = selectionUnits[config.mainSelection];
+      const conversionRatio = convertUnit(defaultUnit, config.unit);
       const selection = intl.formatMessage({ id: `common.selections.${config.mainSelection}` }).toUpperCase();
       const region = intl.formatMessage({ id: `common.regions.${config.provinces[0]}` }).toUpperCase();
       const sector = intl.formatMessage({ id: `common.sectors.${config.sector}` }).toUpperCase();
@@ -95,7 +106,7 @@ const Share = () => {
         unit: intl.formatMessage({ id: 'common.unit' }).toLowerCase(),
         dataset: intl.formatMessage({ id: 'common.dataset' }).toLowerCase(),
       };
-      const sourceType = mainSelectionSourceType[config.mainSelection];
+      const sourceType = selectionSourceTypes[config.mainSelection];
       const csvData = data.map((resource) => {
         switch (config.page) {
           case 'by-region':
@@ -104,7 +115,7 @@ const Share = () => {
               [headers.region]: intl.formatMessage({ id: `common.regions.${resource.province}` }).toUpperCase(),
               [headers.scenario]: scenario,
               [headers.year]: resource.year,
-              [headers.value]: resource.value,
+              [headers.value]: resource.value * conversionRatio,
               [headers.unit]: unit,
               [headers.dataset]: dataset,
             };
@@ -115,7 +126,7 @@ const Share = () => {
               [headers.source]: intl.formatMessage({ id: `common.sources.${sourceType}.${resource.source}` }).toUpperCase(),
               [headers.scenario]: scenario,
               [headers.year]: resource.year,
-              [headers.value]: resource.value,
+              [headers.value]: resource.value * conversionRatio,
               [headers.unit]: unit,
               [headers.dataset]: dataset,
             };
@@ -123,7 +134,7 @@ const Share = () => {
             return {
               [headers.region]: intl.formatMessage({ id: `common.regions.${resource.province}` }).toUpperCase(),
               [headers.source]: intl.formatMessage({ id: `common.sources.${sourceType}.${resource.source}` }).toUpperCase(),
-              [headers.value]: resource.value,
+              [headers.value]: resource.value * conversionRatio,
               [headers.unit]: unit,
               [headers.dataset]: dataset,
             };
@@ -133,7 +144,7 @@ const Share = () => {
               [headers.region]: region,
               [headers.scenario]: scenario,
               [headers.year]: resource.year,
-              [headers.value]: resource.value,
+              [headers.value]: resource.value * conversionRatio,
               [headers.unit]: unit,
               [headers.dataset]: dataset,
             };
@@ -141,7 +152,7 @@ const Share = () => {
             return {
               [headers.region]: intl.formatMessage({ id: `common.regions.${resource.province}` }).toUpperCase(),
               [headers.source]: intl.formatMessage({ id: `common.sources.${sourceType}.${resource.source}` }).toUpperCase(),
-              [headers.value]: resource.value,
+              [headers.value]: resource.value * conversionRatio,
               [headers.unit]: unit,
               [headers.dataset]: dataset,
             };
