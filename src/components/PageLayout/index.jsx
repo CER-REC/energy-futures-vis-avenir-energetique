@@ -84,7 +84,7 @@ const PageLayout = ({
   const type = useMemo(() => {
     if (config.page === 'by-sector') return 'energy';
     if (config.page === 'electricity') return 'electricity';
-    if (config.page === 'oil-and-gas') return config.mainSelection === 'oilProduction' ? 'oil' : 'gas';
+    if (config.page === 'oil-and-gas') return config.mainSelection === 'gasProduction' ? 'gas' : 'oil';
     return undefined;
   }, [config.page, config.mainSelection]);
 
@@ -115,6 +115,10 @@ const PageLayout = ({
         mainSelection = Object.keys(CONFIG_LAYOUT).find(
           selection => CONFIG_LAYOUT[selection]?.pages.includes(config.page),
         ) || mainSelection;
+      }
+
+      if (config.page === 'oil-and-gas' && mainSelection === 'energyDemand') {
+        mainSelection = 'oilProduction';
       }
 
       setConfig({
