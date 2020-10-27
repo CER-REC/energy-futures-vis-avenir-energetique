@@ -7,6 +7,7 @@ import Papa from 'papaparse';
 import { useIntl } from 'react-intl';
 
 import { IconTwitter, IconFacebook, IconLinkedIn } from '../../icons';
+import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
 import useEnergyFutureData from '../../hooks/useEnergyFutureData';
 import { convertUnit } from '../../utilities/convertUnit';
@@ -82,6 +83,10 @@ const twitter = {
 
 const Share = () => {
   const intl = useIntl();
+  const {
+    regions: { order: regionOrder },
+    sources: { electricity: { order: sourceOrder } },
+  } = useAPI();
   const { config } = useConfig();
   const { rawData: data } = useEnergyFutureData();
   const headers = useMemo(() => ({
@@ -105,7 +110,32 @@ const Share = () => {
     const unit = intl.formatMessage({ id: `common.units.${config.unit}` });
     const dataset = intl.formatMessage({ id: `common.dataset.${config.yearId}`, defaultMessage: config.yearId }).toUpperCase();
     const sourceType = selectionSourceTypes[config.mainSelection];
-    const csvData = data.map((resource) => {
+    // The electricity visualization does not completely use the API to filter the data
+    // TODO: Remove after implementing a uniform filter solution (all on server or all on client),
+    // and when the electricity special cases in useEnergyFutureData are removed
+    const filteredData = data.filter((resource) => {
+      if (config.page === 'electricity') {
+        const regions = config.provinces[0] === 'ALL' ? regionOrder : config.provinces;
+        const sources = config.sources[0] === 'ALL' ? sourceOrder : config.provinces;
+
+        if (config.view === 'source') {
+          return (
+            sources.includes(resource.source)
+            && resource.province !== 'ALL'
+            && resource.source !== 'ALL'
+          );
+        }
+
+        return (
+          regions.includes(resource.province)
+          && resource.province !== 'ALL'
+          && resource.source !== 'ALL'
+        );
+      }
+
+      return true;
+    });
+    const csvData = filteredData.map((resource) => {
       switch (config.page) {
         case 'by-region':
           return {
@@ -160,7 +190,7 @@ const Share = () => {
     });
 
     saveAs(new Blob([Papa.unparse(csvData)], { type: 'text/csv' }), 'energyFutures.csv');
-  }, [config, intl, data, headers]);
+  }, [config, intl, regionOrder, sourceOrder, data, headers]);
   const download = useMemo(() => ({
     name: intl.formatMessage({ id: 'components.share.download' }),
     content: downloadCSV,
