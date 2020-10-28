@@ -46,8 +46,8 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: 'transparent',
     border: 'none',
     cursor: 'pointer',
+    '&.oil-sub-group': { height: 180 },
   }),
-  group: { height: '180px !important' },
 }));
 
 const DraggableVerticalList = ({
@@ -188,7 +188,7 @@ const DraggableVerticalList = ({
                     {...providedItem.draggableProps}
                     {...providedItem.dragHandleProps}
                     onClick={handleToggleItem(item)}
-                    className={`${classes.item} ${isTransportation && item === 'OIL' && classes.group}`}
+                    className={`${classes.item} ${isTransportation && item === 'OIL' && 'oil-sub-group'}`}
                   >
                     <ColoredItemBox
                       item={item}

@@ -66,7 +66,7 @@ const OilSubgroup = ({ selected, disabled /* e.g. [AVIATION, GASOLINE, DIESEL, O
       <svg>
         <defs>
           {OIL_SUBGROUP.map(source => (
-            <mask key={`source-${source}-mask`} id={`${source}-mask`}>
+            <mask key={`${source}-mask`} id={`${source}-mask`}>
               <rect x="0" y="0" height="1000" width="1000" fill={`url(#${SOURCE_PATTERNS[source]})`} />
             </mask>
           ))}
