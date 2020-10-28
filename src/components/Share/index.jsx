@@ -32,7 +32,7 @@ const selectionUnits = {
 const getBitlyURL = () => {
   const bitlyServiceURL = `${document.location.origin}/bitlyService/api/bitlyShortlink`;
 
-  return fetch(`${bitlyServiceURL}?shortenUrl=${document.location.href}`)
+  return fetch(`${bitlyServiceURL}?shortenUrl=${encodeURIComponent(document.location.href)}`)
     .then(response => response.json())
     .then((data) => {
       if (!data?.data?.url) {
@@ -116,18 +116,11 @@ const Share = () => {
     const filteredData = (data || []).filter((resource) => {
       if (config.page === 'electricity') {
         const regions = config.provinces[0] === 'ALL' ? regionOrder : config.provinces;
-        const sources = config.sources[0] === 'ALL' ? sourceOrder : config.provinces;
-
-        if (config.view === 'source') {
-          return (
-            sources.includes(resource.source)
-            && resource.province !== 'ALL'
-            && resource.source !== 'ALL'
-          );
-        }
+        const sources = config.sources[0] === 'ALL' ? sourceOrder : config.sources;
 
         return (
-          regions.includes(resource.province)
+          sources.includes(resource.source)
+          && regions.includes(resource.province)
           && resource.province !== 'ALL'
           && resource.source !== 'ALL'
         );
@@ -170,7 +163,7 @@ const Share = () => {
           return {
             [headers.selection]: selection,
             [headers.region]: region,
-            [headers.scenario]: scenario,
+            [headers.scenario]: intl.formatMessage({ id: `common.scenarios.${resource.scenario}` }).toUpperCase(),
             [headers.year]: resource.year,
             [headers.value]: resource.value * conversionRatio,
             [headers.unit]: unit,
@@ -178,6 +171,7 @@ const Share = () => {
           };
         case 'oil-and-gas':
           return {
+            [headers.selection]: selection,
             [headers.region]: intl.formatMessage({ id: `common.regions.${resource.province}` }).toUpperCase(),
             [headers.source]: intl.formatMessage({ id: `common.sources.${sourceType}.${resource.source}` }).toUpperCase(),
             [headers.value]: resource.value * conversionRatio,
@@ -189,7 +183,7 @@ const Share = () => {
       }
     });
 
-    saveAs(new Blob([Papa.unparse(csvData)], { type: 'text/csv' }), 'energyFutures.csv');
+    saveAs(new Blob([Papa.unparse(csvData)], { type: 'text/csv;charset=utf-8;' }), 'energyFutures.csv');
   }, [config, intl, regionOrder, sourceOrder, data, headers]);
   const download = useMemo(() => ({
     name: intl.formatMessage({ id: 'components.share.download' }),
