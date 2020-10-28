@@ -2,10 +2,11 @@ import React, { useCallback, useMemo } from 'react';
 import { ResponsiveLine } from '@nivo/line';
 import PropTypes from 'prop-types';
 import useConfig from '../../hooks/useConfig';
+
 import { CHART_PROPS, CHART_AXIS_PROPS, SCENARIO_COLOR } from '../../constants';
 import { getMaxTick } from '../../utilities/parseData';
-import ForecastBar from '../../components/ForecastBar';
 import { fadeLayerScenario } from '../../components/FadeLayer';
+import forecastLayer from '../../components/ForecastLayer';
 import VizTooltip from '../../components/VizTooltip';
 import MaxTick from '../../components/MaxTick';
 
@@ -35,6 +36,11 @@ const Scenarios = ({ data, year }) => {
    * The fade-out effect over forecast years.
    */
   const fade = useMemo(() => fadeLayerScenario({ year }), [year]);
+
+  /**
+   * The forecast bar.
+   */
+  const forecast = useMemo(() => forecastLayer({ year }), [year]);
 
   /**
    * Calculate the max tick value on y-axis.
@@ -74,39 +80,36 @@ const Scenarios = ({ data, year }) => {
   }
 
   return (
-    <>
-      <ForecastBar year={year} />
-      <ResponsiveLine
-        {...CHART_PROPS}
-        data={data}
-        enableArea
-        enablePoints={false}
-        layers={['grid', 'axes', 'areas', 'crosshair', 'lines', 'points', 'slices', fade, dots]}
-        curve="cardinal"
-        areaOpacity={0.15}
-        xScale={{ type: 'point' }}
-        yScale={{ type: 'linear', min: 0, max: axis.highest, reverse: false }}
-        colors={d => SCENARIO_COLOR[d.id] || '#AAA'}
-        pointSize={8}
-        pointColor={{ theme: 'background' }}
-        pointBorderWidth={2}
-        pointBorderColor={{ from: 'serieColor' }}
-        pointLabel="y"
-        pointLabelYOffset={-12}
-        axisBottom={{
-          ...CHART_AXIS_PROPS,
-          format: yearLabel => ((yearLabel % 5) ? '' : yearLabel),
-        }}
-        axisRight={{
-          ...CHART_AXIS_PROPS,
-          tickValues: axis.ticks,
-          format: axisFormat,
-        }}
-        enableSlices="x"
-        sliceTooltip={getTooltip}
-        gridYValues={axis.ticks}
-      />
-    </>
+    <ResponsiveLine
+      {...CHART_PROPS}
+      data={data}
+      enableArea
+      enablePoints={false}
+      layers={['grid', 'axes', 'areas', 'crosshair', 'lines', 'points', 'slices', fade, forecast, dots]}
+      curve="cardinal"
+      areaOpacity={0.15}
+      xScale={{ type: 'point' }}
+      yScale={{ type: 'linear', min: 0, max: axis.highest, reverse: false }}
+      colors={d => SCENARIO_COLOR[d.id] || '#AAA'}
+      pointSize={8}
+      pointColor={{ theme: 'background' }}
+      pointBorderWidth={2}
+      pointBorderColor={{ from: 'serieColor' }}
+      pointLabel="y"
+      pointLabelYOffset={-12}
+      axisBottom={{
+        ...CHART_AXIS_PROPS,
+        format: yearLabel => ((yearLabel % 5) ? '' : yearLabel),
+      }}
+      axisRight={{
+        ...CHART_AXIS_PROPS,
+        tickValues: axis.ticks,
+        format: axisFormat,
+      }}
+      enableSlices="x"
+      sliceTooltip={getTooltip}
+      gridYValues={axis.ticks}
+    />
   );
 };
 

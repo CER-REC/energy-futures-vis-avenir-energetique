@@ -1,5 +1,6 @@
 {
   "common": {
+    "forecast": "prévision"
   },
   "components": {
     "draggableVerticalList": {

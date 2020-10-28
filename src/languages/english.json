@@ -1,6 +1,7 @@
 {
   "common": {
-    "title": "Canada's Energy Future"
+    "title": "Canada's Energy Future",
+    "forecast": "forecast"
   },
   "components": {
     "draggableVerticalList": {
