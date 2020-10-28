@@ -105,7 +105,7 @@ const PageSelect = () => {
       case 'by-sector': return intl.formatMessage({ id: `components.pageSelect.${page.label}.title.${config.sector}` });
       case 'electricity': return intl.formatMessage({ id: `components.pageSelect.${page.label}.title.${config.view}` });
       case 'scenarios': return intl.formatMessage({ id: `components.pageSelect.${page.label}.title.${config.mainSelection}` });
-      case 'Oil-and-Gas':
+      case 'Oil-and-Gas': return intl.formatMessage({ id: `components.pageSelect.${page.label}.title.${config.mainSelection}` });
       default: return page.label;
     }
   }, [intl, config.mainSelection, config.sector, config.view]);

@@ -88,6 +88,10 @@
         "description": "Directly compare the scenarios.\n\nExplore the impact of key uncertainties on future energy trends, including technological development, climate policy initiatives such as carbon pricing, higher or lower energy prices, higher LNG exports or no LNG exports, or not building crude oil export pipelines."
       },
       "Oil-and-Gas": {
+        "title": {
+          "oilProduction": "Oil and Gas",
+          "gasProduction": "Oil and Gas"
+        },
         "description": "Explore Oil and Gas production across the provinces and territories for a given year.\n\nSwitch between two views: one that compares the amount of oil or gas production by source for each region, and one that compares the production of oil or gas by region for each source.\n\nUse the timeline to compare actual vs. projected years and to see how production changes over time."
       }
     },
