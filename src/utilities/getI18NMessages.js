@@ -21,6 +21,9 @@ export default translations => (
       case 'OIL_SOURCE':
         key = `common.sources.oil.${translation.key}`;
         break;
+      case 'TRANSPORTATION_OIL_ENERGY_SOURCE':
+        key = `common.sources.transportation.${translation.key}`;
+        break;
       case 'SECTOR':
         key = `common.sectors.${translation.key}`;
         break;

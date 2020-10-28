@@ -153,6 +153,12 @@ export const SOURCE_COLORS = {
     NA: "won't work since it's missing",
   },
   oil: {},
+  transportation: {
+    AVIATION: '#FF821E',
+    GASOLINE: '#FF821E',
+    DIESEL: '#FF821E',
+    OIL: '#FF821E',
+  },
 };
 
 export const SOURCE_ICONS = {
@@ -174,6 +180,7 @@ export const SOURCE_ICONS = {
   },
   gas: {},
   oil: {},
+  transportation: {},
 };
 
 export const SECTOR_ICONS = {
@@ -209,4 +216,43 @@ export const CHART_AXIS_PROPS = {
   tickSize: 5,
   tickPadding: 5,
   tickRotation: 0,
+};
+export const CHART_PATTERNS = [
+  {
+    id: 'dots',
+    type: 'patternDots',
+    size: 4,
+    padding: 4,
+    stagger: true,
+  },
+  {
+    id: 'squares',
+    type: 'patternSquares',
+    size: 4,
+    padding: 6,
+    stagger: false,
+  },
+  {
+    id: 'lines-diagonal',
+    type: 'patternLines',
+    spacing: 6,
+    rotation: 45,
+    lineWidth: 3,
+  },
+  {
+    id: 'lines-vertical',
+    type: 'patternLines',
+    spacing: 6,
+    rotation: 90,
+    lineWidth: 3,
+  },
+].map(pattern => ({ ...pattern, background: '#FFF', color: '#000' }));
+
+export const OIL_SUBGROUP = ['AVIATION', 'GASOLINE', 'DIESEL', 'OIL'];
+
+export const SOURCE_PATTERNS = {
+  AVIATION: 'dots',
+  GASOLINE: 'lines-diagonal',
+  DIESEL: 'squares',
+  OIL: 'lines-vertical',
 };
