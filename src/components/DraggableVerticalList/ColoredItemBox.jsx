@@ -5,6 +5,7 @@ import {
 } from '@material-ui/core';
 import ClearIcon from '@material-ui/icons/Clear';
 import DragIcon from '@material-ui/icons/DragIndicator';
+import Markdown from 'react-markdown';
 
 const useStyles = makeStyles(theme => ({
   root: props => ({
@@ -77,7 +78,7 @@ const ColoredItemBox = ({
             <Typography variant="overline" component="div" style={{ lineHeight: tooltip ? 1.5 : 2.66 }}>
               <strong>{label}</strong>
             </Typography>
-            {tooltip && <Typography variant="caption" color="secondary" dangerouslySetInnerHTML={{ __html: tooltip }} />}
+            {tooltip && <Typography variant="caption" color="secondary"><Markdown>{tooltip}</Markdown></Typography>}
           </Grid>
         </Grid>
       )}

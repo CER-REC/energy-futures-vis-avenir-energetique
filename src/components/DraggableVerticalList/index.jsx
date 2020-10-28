@@ -3,7 +3,6 @@ import { useIntl } from 'react-intl';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import PropTypes from 'prop-types';
 import { makeStyles, Grid } from '@material-ui/core';
-import markdown from 'micro-down';
 
 import useConfig from '../../hooks/useConfig';
 import { HintRegionList, HintSourceList } from '../Hint';
@@ -126,7 +125,7 @@ const DraggableVerticalList = ({
    */
   const getTooltip = useCallback((item) => {
     const type = isTransportation ? 'transportation' : sourceType;
-    return sourceType && markdown.parse(intl.formatMessage({ id: `sources.${type}.${item}` }));
+    return sourceType && intl.formatMessage({ id: `sources.${type}.${item}` });
   }, [intl, sourceType, isTransportation]);
 
   const handleToggleItem = toggledItem => () => {
