@@ -220,7 +220,7 @@ const Electricity = ({ data, year }) => {
           size: getSize(node.value),
           color: { ...colorSources, ...colorRegions }[node.name],
           translation: intl.formatMessage({
-            id: `${config.view === 'source' ? 'regions' : 'common.sources.electricity'}.${node.name}`,
+            id: `${config.view === 'source' ? 'common.regions' : 'common.sources.electricity'}.${node.name}`,
           }),
         })),
         style: {
