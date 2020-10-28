@@ -17,8 +17,8 @@ export const LinkButtonContentAssumptions = ({ yearId }) => {
   }), [intl, yearId]);
   return (
     <>
-      <Typography variant="body2" color="secondary" gutterBottom><Markdown>{text}</Markdown></Typography>
-      <Typography variant="body2" color="secondary"><Markdown>{link}</Markdown></Typography>
+      <Typography variant="body2" color="secondary" component="span" gutterBottom><Markdown>{text}</Markdown></Typography>
+      <Typography variant="body2" color="secondary" component="span"><Markdown>{link}</Markdown></Typography>
     </>
   );
 };
@@ -30,7 +30,7 @@ export const LinkButtonContentKeyFindings = ({ yearId }) => {
     id: `links.Findings.description.${yearId}`,
     defaultMessage: intl.formatMessage({ id: 'links.Findings.description.default' }),
   }), [intl, yearId]);
-  return <Typography variant="body2" color="secondary"><Markdown>{text}</Markdown></Typography>;
+  return <Typography variant="body2" color="secondary" component="span"><Markdown>{text}</Markdown></Typography>;
 };
 LinkButtonContentKeyFindings.propTypes = { yearId: PropTypes.string.isRequired };
 
@@ -46,8 +46,8 @@ export const LinkButtonContentResults = ({ yearId }) => {
   }), [intl, yearId]);
   return (
     <>
-      <Typography variant="body2" color="secondary" gutterBottom><Markdown>{text}</Markdown></Typography>
-      <Typography variant="body2" color="secondary"><Markdown>{link}</Markdown></Typography>
+      <Typography variant="body2" color="secondary" component="span" gutterBottom><Markdown>{text}</Markdown></Typography>
+      <Typography variant="body2" color="secondary" component="span"><Markdown>{link}</Markdown></Typography>
     </>
   );
 };
@@ -71,7 +71,7 @@ export const LinkButtonContentReport = () => {
 export const LinkButtonContentMethodology = () => {
   const intl = useIntl();
   const text = useMemo(() => intl.formatMessage({ id: 'links.Methodology.description' }), [intl]);
-  return <Typography variant="body2" color="secondary"><Markdown>{text}</Markdown></Typography>;
+  return <Typography variant="body2" color="secondary" component="span"><Markdown>{text}</Markdown></Typography>;
 };
 
 export const LinkButtonContentAbout = () => (

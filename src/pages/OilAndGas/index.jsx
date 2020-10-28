@@ -12,7 +12,7 @@ import YearSlider from '../../components/YearSlider';
 import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles({
   cellsTop: {
     borderBottom: '0',
     minWidth: 0,
@@ -27,7 +27,7 @@ const useStyles = makeStyles(theme => ({
   treeMapCollection1: {},
   treeMapCollection2: {},
   slider: {},
-}));
+});
 
 const OilAndGas = ({ data, year }) => {
   const classes = useStyles();
