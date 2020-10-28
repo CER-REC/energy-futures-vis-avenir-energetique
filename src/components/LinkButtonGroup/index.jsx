@@ -112,7 +112,6 @@ const LinkButtonGroup = ({ title, labels, accent, className }) => {
                 {label.icon || label.name}
               </Button>
 
-              {/* TODO: placeholder; this will be replaced with real content */}
               <span style={{ display: select === label.name ? 'block' : 'none' }}>
                 <div className={classes.btnPopUp}>
                   {typeof label.content === 'object' && label.content}
