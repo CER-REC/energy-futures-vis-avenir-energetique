@@ -170,6 +170,7 @@ const HorizontalControlBar = () => {
             color="primary"
             size="small"
             onClick={() => handleConfigUpdate('unit', unit)}
+            style={{ textTransform: 'none' }}
           >
             {UNIT_NAMES[unit]}
           </Button>

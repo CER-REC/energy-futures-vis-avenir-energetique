@@ -22,12 +22,12 @@ export const lang = (typeof document !== 'undefined'
 // TODO: Remove and replace using intl in the relevant components for translations
 export const UNIT_NAMES = {
   petajoules: 'PJ',
-  kilobarrelEquivalents: 'mBOE/d',
+  kilobarrelEquivalents: 'Mboe/d',
   gigawattHours: 'GW.h',
-  kilobarrels: 'kB/d',
-  thousandCubicMetres: 'km³/d',
+  kilobarrels: 'MB/d',
+  thousandCubicMetres: 'Mm³/d',
   cubicFeet: 'Bcf/d',
-  millionCubicMetres: 'Mm³/d',
+  millionCubicMetres: 'MMm³/d',
 };
 
 export const PAGES = [

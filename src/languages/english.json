@@ -188,31 +188,31 @@
     "unitSelect": {
       "name": "UNIT",
       "petajoules": {
-        "title": "Petajoule",
+        "title": "Petajoule (PJ)",
         "description": "A measure of energy that is a quadrillion (10^15) joules. According to Statistics Canada, a petajoule is the approximate amount of energy it takes to run the Montreal Metro for one year."
       },
       "kilobarrelEquivalents": {
-        "title": "Thousand barrels of oil equivalent per day",
+        "title": "Thousand barrels of oil equivalent per day (Mboe/d)",
         "description": "A measure of energy normalized to the equivalent energy content of a barrel of light crude oil. One barrel of oil equivalent is equal to 6.811 gigajoules, while one petajoule is equal to 0.4475 Mboe/d."
       },
       "gigawattHours": {
-        "title": "Gigawatt hour",
+        "title": "Gigawatt hour (GW.h)",
         "description": "A measure of electric energy that is a billion (10^9) watt hours of electric energy per year. One GW.h is equal to 0.0036 petajoules and 0.0016 Mboe/d."
       },
       "kilobarrels": {
-        "title": "Thousand barrels per day",
+        "title": "Thousand barrels per day (MB/d)",
         "description": "Number of barrels of crude oil produced per day."
       },
       "thousandCubicMetres": {
-        "title": "Thousand cubic metres per day",
+        "title": "Thousand cubic metres per day (Mm³/d)",
         "description": "Number of cubic metres of crude oil produced per day. One barrel of oil is equal to 0.159 cubic metres."
       },
       "cubicFeet": {
-        "title": "Billion cubic feet per day",
+        "title": "Billion cubic feet per day (Bcf/d)",
         "description": "Number of cubic feet of natural gas produced per day."
       },
       "millionCubicMetres": {
-        "title": "Million cubic metres per day",
+        "title": "Million cubic metres per day (MMm³/d)",
         "description": "Number of cubic metres of natural gas produced per day. One cubic foot of natural gas is equal to 0.0283 cubic metres."
       }
     },
