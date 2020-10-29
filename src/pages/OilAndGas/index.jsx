@@ -130,7 +130,8 @@ const OilAndGas = ({ data, year }) => {
     return size;
   }, []);
 
-  if (!data || !data[currentYear][0].total) {
+  // eslint-disable-next-line no-restricted-globals
+  if (!data || isNaN(data[currentYear][0].total)) {
     return null;
   }
 
