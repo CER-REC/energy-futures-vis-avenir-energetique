@@ -1,6 +1,33 @@
 {
   "common": {
-    "title": "Canada's Energy Future"
+    "title": "Canada's Energy Future",
+    "selection": "Selection",
+    "region": "Region",
+    "scenario": "Scenario",
+    "sector": "Sector",
+    "source": "Source",
+    "year": "Year",
+    "value": "Value",
+    "unit": "Unit",
+    "dataset": "Dataset",
+    "units": {
+      "petajoules": "PETAJOULE",
+      "gigawattHours": "GW.h",
+      "kilobarrelEquivalents": "mBOE/d",
+      "thousandCubicMetres": "km³/d",
+      "millionCubicMetres": "Mm³/d",
+      "kilobarrels": "kB/d",
+      "cubicFeet": "Bcf/d"
+    },
+    "datasets": {
+      "2016*": "2016 Update"
+    },
+    "selections": {
+      "energyDemand": "Total Demand",
+      "electricityGeneration": "Electricity Generation",
+      "oilProduction": "Oil Production",
+      "gasProduction": "Gas Production"
+    }
   },
   "components": {
     "draggableVerticalList": {
@@ -242,6 +269,11 @@
       "TRANSPORTATION": {
         "description": "Includes passenger and freight on-road transportation, as well as air, rail, marine, and non-industrial off-road travel, such as recreational all-terrain vehicles and snowmobiles. Demand in the transportation sector includes foreign energy used on Canadian soil, airspace and waters."
       }
+    },
+    "share": {
+      "download": "Download Data",
+      "emailSubject": "Canada’s Energy Future",
+      "emailMessage": "Exploring Canada’s Energy Future interactive online tool is based on the Canada Energy Regulator’s (CER) flagship publication – Canada’s Energy Future. This visualization allows you to explore energy production and consumption trends and forecast them into the future. You can explore the data from the most recent report, or refer to previous reports."
     },
     "unsupportedWarning": {
       "browser": "Your browser does not support the features required by this visualization.\nPlease use a recent version of Chrome, Firefox, Safari, or Edge.\nThank you!",

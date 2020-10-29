@@ -104,7 +104,7 @@ const ScenarioSelect = ({ multiSelect }) => {
                 borderColor: SCENARIO_COLOR[scenario],
               } : {}}
             >
-              {intl.formatMessage({ id: `components.scenarioSelect.${scenario}.title` })}
+              {intl.formatMessage({ id: `common.scenarios.${scenario}` })}
             </Button>
           </Tooltip>
         </Grid>
