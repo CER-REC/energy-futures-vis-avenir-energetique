@@ -128,7 +128,10 @@ const PageLayout = ({
         sourceOrder: selectedSourceOrder,
       });
     },
-    [config.page, config.sector], // eslint-disable-line react-hooks/exhaustive-deps
+    // config.mainSelection needs to be a dependency because
+    // the oil and gas viz changed query parameters on mainSelection change.
+
+    [config.page, config.mainSelection, config.sector, config.sources], // eslint-disable-line react-hooks/exhaustive-deps
   );
 
   /**
