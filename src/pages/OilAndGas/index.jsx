@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useMemo } from 'react';
+import React, { useState, useCallback } from 'react';
 
 import PropTypes from 'prop-types';
 import { Grid, Typography, Button, makeStyles } from '@material-ui/core';
@@ -130,7 +130,7 @@ const OilAndGas = ({ data, year }) => {
     return size;
   }, []);
 
-  if (!data) {
+  if (!data || !data[currentYear][0].total) {
     return null;
   }
 
@@ -171,7 +171,7 @@ const OilAndGas = ({ data, year }) => {
             width: sizeMultiplier(sortedSource.total, size, biggestTreeMapTotal) || 0,
           }}
         >
-          {!isTopChart && <div style={{ borderLeft: '1px dashed black', height: 20 }} />}
+          {!isTopChart && <div style={{ marginLeft: 'calc(50% - 0.5px)', borderLeft: '1px dashed black', height: 20 }} />}
 
           <Typography align='center' varient="body1" style={{ bottom: 0 }}>
             {config.view === 'region' ? `${sortedSource.name}: ${percentage}%` : sortedSource.name}
@@ -196,7 +196,7 @@ const OilAndGas = ({ data, year }) => {
             tooltip={getTooltip}
           />
 
-          {isTopChart && <div style={{ borderLeft: '1px dashed black', height: 10 }} />}
+          {(compare && isTopChart) && <div style={{ marginLeft: 'calc(50% - 0.5px)', borderLeft: '1px dashed black', height: 10 }} />}
 
         </Grid>
       );
