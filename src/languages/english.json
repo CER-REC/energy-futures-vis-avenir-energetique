@@ -1,6 +1,7 @@
 {
   "common": {
     "title": "Canada's Energy Future",
+    "forecast": "forecast",
     "selection": "Selection",
     "region": "Region",
     "scenario": "Scenario",
