@@ -1,4 +1,6 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
+import Alert from '@material-ui/lab/Alert';
+import Snackbar from '@material-ui/core/Snackbar';
 import LinkIcon from '@material-ui/icons/Link';
 import EmailIcon from '@material-ui/icons/Email';
 import Clipboard from 'clipboard';
@@ -49,20 +51,6 @@ const openShareWindow = baseUrl => getBitlyURL().then(bitlyUrl => window.open(
   'width=650,height=650',
 ));
 
-const copy = {
-  name: 'copy',
-  icon: <LinkIcon />,
-  content: () => getBitlyURL().then((bitlyUrl) => {
-    // TODO: Remove and change to use useRef and useEffect when the browser clipboard API
-    // allows for asynchronous copies (https://github.com/zenorocha/clipboard.js/issues/639)
-    const ref = document.createElement('div');
-    const clipboard = new Clipboard(ref, { text: () => bitlyUrl });
-
-    ref.click();
-    clipboard.destroy();
-  }),
-};
-
 const linkedin = {
   name: 'linkedin',
   icon: <IconLinkedIn />,
@@ -89,6 +77,7 @@ const Share = () => {
   } = useAPI();
   const { config } = useConfig();
   const { rawData: data } = useEnergyFutureData();
+  const [open, setOpen] = useState(false);
   const headers = useMemo(() => ({
     selection: intl.formatMessage({ id: 'common.selection' }).toLowerCase(),
     region: intl.formatMessage({ id: 'common.region' }).toLowerCase(),
@@ -189,6 +178,20 @@ const Share = () => {
     name: intl.formatMessage({ id: 'components.share.download' }),
     content: downloadCSV,
   }), [intl, downloadCSV]);
+  const copy = useMemo(() => ({
+    name: 'copy',
+    icon: <LinkIcon />,
+    content: () => getBitlyURL().then((bitlyUrl) => {
+      // TODO: Remove and change to use useRef and useEffect when the browser clipboard API
+      // allows for asynchronous copies (https://github.com/zenorocha/clipboard.js/issues/639)
+      const ref = document.createElement('div');
+      const clipboard = new Clipboard(ref, { text: () => bitlyUrl });
+
+      ref.click();
+      setOpen(true);
+      clipboard.destroy();
+    }),
+  }), [setOpen]);
   const email = useMemo(() => ({
     name: 'email',
     icon: <EmailIcon />,
@@ -205,14 +208,26 @@ const Share = () => {
   }), [intl]);
   const groups = useMemo(
     () => [[download], [copy, linkedin, facebook, twitter, email]],
-    [download, email],
+    [download, copy, email],
   );
+  const onClose = useCallback(() => setOpen(false), [setOpen]);
 
   return (
-    <LinkButtonGroup
-      labels={groups}
-      accent="right"
-    />
+    <>
+      <LinkButtonGroup
+        labels={groups}
+        accent="right"
+      />
+      <Snackbar
+        open={open}
+        autoHideDuration={2000}
+        onClose={onClose}
+      >
+        <Alert variant="filled" severity="info">
+          {intl.formatMessage({ id: 'components.share.copied' })}
+        </Alert>
+      </Snackbar>
+    </>
   );
 };
 

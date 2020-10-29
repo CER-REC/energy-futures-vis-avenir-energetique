@@ -83,6 +83,7 @@
     },
     "share": {
       "download": "Téléchargement des données",
+      "copied": "URL copiée",
       "emailSubject": "l’avenir énergétique du Canada",
       "emailMessage": "Pour créer l’outil interactif Explorer l’avenir énergétique du Canada, la Régie de l’énergie du Canada s’est associé à des experts de la visualisation des données du milieu universitaire et de l’industrie. Fondé sur la publication phare Avenir énergétique du Canada en 2016 – Offre et demande énergétiques à l’horizon 2040, ce projet pilote donnera aux Canadiens un avant-goût du nouveau et fabuleux moyen qu’utilisera désormais la Régie pour diffuser ses données."
     },
