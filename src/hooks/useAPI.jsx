@@ -45,12 +45,14 @@ const getSources = (translations) => {
     energy: {},
     gas: {},
     oil: {},
+    transportation: {},
   };
   const sourceTranslationGroupTypes = {
     ELECTRICITY_SOURCE: 'electricity',
     ENERGY_SOURCE: 'energy',
     GAS_SOURCE: 'gas',
     OIL_SOURCE: 'oil',
+    TRANSPORTATION_OIL_ENERGY_SOURCE: 'transportation',
   };
 
   Object.keys(sourceTranslationGroupTypes).forEach((group) => {

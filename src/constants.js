@@ -101,30 +101,31 @@ export const CONFIG_LAYOUT = {
  * TODO: replace it with real colors from UI designers.
  */
 export const SCENARIO_COLOR = {
+  Evolving: '#6D60E8',
   Reference: '#AAA',
   Technology: '#3692FA',
   'Higher Carbon Price': '#0B3CB4',
   'High Price': '#6C5AEB',
   'Low Price': '#082346',
-  Constrained: '#333333',
-  'High LNG': '#2B6762',
-  'No LNG': '#3692FA',
+  Constrained: '#4EEB8D',
+  'High LNG': '#06A458',
+  'No LNG': '#56D3EE',
 };
 
 export const REGION_COLORS = {
-  YT: '#4E513F',
-  SK: '#4D8255',
-  QC: '#985720',
-  PE: '#E49FAB',
-  ON: '#E4812C',
-  NU: '#683A96',
-  NT: '#DA4367',
-  NS: '#7773AF',
-  NL: '#87C859',
-  NB: '#B03AAB',
-  MB: '#F2CB53',
-  BC: '#82BCE4',
-  AB: '#274368',
+  YT: '#4B5E5B',
+  SK: '#1C7F24',
+  QC: '#AB5614',
+  PE: '#FAA0AD',
+  ON: '#FF821E',
+  NU: '#753B95',
+  NT: '#FC4169',
+  NS: '#7A73B3',
+  NL: '#5DCA4F',
+  NB: '#CC37B0',
+  MB: '#FFCC47',
+  BC: '#5FBEE6',
+  AB: '#054169',
 };
 
 export const SOURCE_COLORS = {
@@ -145,13 +146,26 @@ export const SOURCE_COLORS = {
     OIL: '#FF821E',
   },
   gas: {
-    CBM: '#4D8255',
-    SHALE: '#7ACBCB',
-    SOLUTION: '#F2CB53',
-    TIGHT: "won't work since it's missing",
-    NA: "won't work since it's missing",
+    CBM: '#9A65BA',
+    SHALE: '#9B938A',
+    SOLUTION: '#FA86AC',
+    TIGHT: '#8C0038',
+    NA: '#FFCC47',
   },
-  oil: {},
+  oil: {
+    C5: '#96B6CF',
+    CONDENSATE: '#9B938A',
+    HEAVY: '#FFCC47',
+    ISB: '#FF821E',
+    LIGHT: '#9A65BA',
+    MB: '#4D4C45',
+  },
+  transportation: {
+    AVIATION: '#FF821E',
+    GASOLINE: '#FF821E',
+    DIESEL: '#FF821E',
+    OIL: '#FF821E',
+  },
 };
 
 export const SOURCE_ICONS = {
@@ -173,6 +187,7 @@ export const SOURCE_ICONS = {
   },
   gas: {},
   oil: {},
+  transportation: {},
 };
 
 export const SECTOR_ICONS = {
@@ -196,7 +211,7 @@ export const DEFAULT_CONFIG = {
 };
 
 export const CHART_PROPS = {
-  margin: { top: 50, bottom: 50, left: 20, right: 80 },
+  margin: { top: 50, bottom: 50, left: 20, right: 50 },
   axisTop: null,
   axisLeft: null,
   enableLabel: false,
@@ -208,4 +223,43 @@ export const CHART_AXIS_PROPS = {
   tickSize: 5,
   tickPadding: 5,
   tickRotation: 0,
+};
+export const CHART_PATTERNS = [
+  {
+    id: 'dots',
+    type: 'patternDots',
+    size: 4,
+    padding: 4,
+    stagger: true,
+  },
+  {
+    id: 'squares',
+    type: 'patternSquares',
+    size: 4,
+    padding: 6,
+    stagger: false,
+  },
+  {
+    id: 'lines-diagonal',
+    type: 'patternLines',
+    spacing: 6,
+    rotation: 45,
+    lineWidth: 3,
+  },
+  {
+    id: 'lines-vertical',
+    type: 'patternLines',
+    spacing: 6,
+    rotation: 90,
+    lineWidth: 3,
+  },
+].map(pattern => ({ ...pattern, background: '#FFF', color: '#000' }));
+
+export const OIL_SUBGROUP = ['AVIATION', 'GASOLINE', 'DIESEL', 'OIL'];
+
+export const SOURCE_PATTERNS = {
+  AVIATION: 'dots',
+  GASOLINE: 'lines-diagonal',
+  DIESEL: 'squares',
+  OIL: 'lines-vertical',
 };

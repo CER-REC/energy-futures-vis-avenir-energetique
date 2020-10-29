@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useMemo, Fragment } from 'react';
+import React, { useState, useMemo, Fragment } from 'react';
 import { useIntl } from 'react-intl';
 import PropTypes from 'prop-types';
 import {
@@ -6,7 +6,8 @@ import {
 } from '@material-ui/core';
 import HintIcon from '@material-ui/icons/HelpOutline';
 import CloseIcon from '@material-ui/icons/Close';
-import markdown from 'micro-down';
+import Markdown from 'react-markdown';
+
 import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
 import { CONFIG_LAYOUT } from '../../constants';
@@ -32,37 +33,31 @@ const useStyles = makeStyles(theme => createStyles({
 /**
  * A single section in the hint dialog content, including a section title and a list of body text.
  */
-const HintSection = ({ title, section, singleColumn }) => {
-  const body = useCallback(text => ((text.startsWith('<') && text.endsWith('>'))
-    ? <Typography variant="body2" color="secondary" dangerouslySetInnerHTML={{ __html: text }} />
-    : <Typography variant="body2" color="secondary">{text}</Typography>), []);
-
-  return (
-    <Grid container alignItems={singleColumn ? 'center' : 'flex-start'} spacing={2}>
-      {title && <Grid item xs={12}><Typography variant="h4">{title}</Typography></Grid>}
-      {section.map(entry => (singleColumn ? (
-        <Fragment key={`hint-content-entry-${Math.random()}`}>
-          <Grid item xs={12} sm={4}>
-            <Grid container alignItems="center" wrap="nowrap">
-              {entry.icon && <entry.icon style={{ verticalAlign: 'middle', marginRight: 8 }} />}
-              <Typography variant="body1" component="span"><strong>{entry.title}</strong></Typography>
-            </Grid>
+const HintSection = ({ title, section, singleColumn }) => (
+  <Grid container alignItems={singleColumn ? 'center' : 'flex-start'} spacing={2}>
+    {title && <Grid item xs={12}><Typography variant="h4">{title}</Typography></Grid>}
+    {section.map(entry => (singleColumn ? (
+      <Fragment key={`hint-content-entry-${Math.random()}`}>
+        <Grid item xs={12} sm={4}>
+          <Grid container alignItems="center" wrap="nowrap">
+            {entry.icon && <entry.icon style={{ verticalAlign: 'middle', marginRight: 8 }} />}
+            <Typography variant="body1" component="span"><strong>{entry.title}</strong></Typography>
           </Grid>
-          <Grid item xs={12} sm={8}>
-            {body(entry.text)}
-            {entry.link && <Typography variant="body2" color="secondary" dangerouslySetInnerHTML={{ __html: entry.link }} />}
-          </Grid>
-        </Fragment>
-      ) : (
-        <Grid item xs={section.length < 3 ? 12 : 6} key={`hint-content-entry-${Math.random()}`}>
-          {entry.title && <Typography variant="h6" gutterBottom>{entry.title}</Typography>}
-          {body(entry.text)}
-          {entry.link && <Typography variant="body2" color="secondary" dangerouslySetInnerHTML={{ __html: entry.link }} />}
         </Grid>
-      )))}
-    </Grid>
-  );
-};
+        <Grid item xs={12} sm={8}>
+          <Typography variant="body2" color="secondary" component="span"><Markdown>{entry.text}</Markdown></Typography>
+          {entry.link && <Typography variant="body2" color="secondary"><Markdown>{entry.link}</Markdown></Typography>}
+        </Grid>
+      </Fragment>
+    ) : (
+      <Grid item xs={section.length < 3 ? 12 : 6} key={`hint-content-entry-${Math.random()}`}>
+        {entry.title && <Typography variant="h6" gutterBottom>{entry.title}</Typography>}
+        <Typography variant="body2" color="secondary" component="span"><Markdown>{entry.text}</Markdown></Typography>
+        {entry.link && <Typography variant="body2" color="secondary"><Markdown>{entry.link}</Markdown></Typography>}
+      </Grid>
+    )))}
+  </Grid>
+);
 
 HintSection.propTypes = {
   title: PropTypes.string,
@@ -157,8 +152,8 @@ export const HintYearSelect = ({ children }) => {
   const { yearIdIterations } = useAPI();
   const section = useMemo(() => Object.keys(yearIdIterations).sort().reverse().map(year => ({
     title: intl.formatMessage({ id: `components.yearSelect.${year}.title` }),
-    text: markdown.parse(intl.formatMessage({ id: `components.yearSelect.${year}.description` })),
-    link: markdown.parse(intl.formatMessage({ id: `components.yearSelect.${year}.link` })),
+    text: intl.formatMessage({ id: `components.yearSelect.${year}.description` }),
+    link: intl.formatMessage({ id: `components.yearSelect.${year}.link` }),
   })), [intl, yearIdIterations]);
   const content = <HintSection title={intl.formatMessage({ id: 'components.yearSelect.title' })} section={section} />;
   return <Hint content={[content]} maxWidth="lg">{children}</Hint>;
@@ -175,7 +170,7 @@ export const HintScenarioSelect = ({ children }) => {
   const { yearIdIterations } = useAPI();
   const { yearId } = useConfig().config;
   const section = useMemo(() => (yearIdIterations[yearId]?.scenarios || []).map(scenario => ({
-    title: intl.formatMessage({ id: `components.scenarioSelect.${scenario}.title` }),
+    title: intl.formatMessage({ id: `common.scenarios.${scenario}` }),
     text: intl.formatMessage({
       id: `components.scenarioSelect.${scenario}.description.${yearId}`,
       defaultMessage: intl.formatMessage({ id: `components.scenarioSelect.${scenario}.description.default` }),
@@ -249,7 +244,7 @@ export const HintRegionList = ({ children }) => {
   const { regions } = useAPI();
   const section = useMemo(() => ['ALL', ...regions.order].map(region => ({
     title: region,
-    text: intl.formatMessage({ id: `regions.${region}` }),
+    text: intl.formatMessage({ id: `common.regions.${region}` }),
   })), [intl, regions]);
   return <Hint content={[<HintSection section={section} singleColumn />]} maxWidth="xs">{children}</Hint>;
 };

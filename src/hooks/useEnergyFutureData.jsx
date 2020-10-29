@@ -84,8 +84,14 @@ export default () => {
       // FIXME: THIS IS A TEMPORARY THING
       return ['TIGHT', 'CBM', 'NA', 'SHALE', 'SOLUTION'];
     }
+
+    // adds extra oil sources if sector 'transportation' is selected in the by-sector page.
+    if (config.page === 'by-sector' && config.sector === 'TRANSPORTATION') {
+      return [...config.sources, ...(config.sources.includes('OIL') ? ['AVIATION', 'DIESEL', 'GASOLINE'] : [])];
+    }
+
     return config.sources;
-  }, [config.page, config.sources, sourceOrder, config.mainSelection]);
+  }, [config.page, config.sources, sourceOrder, config.mainSelection, config.sector]);
 
   const { sourceType } = PAGES.find(page => page.id === config.page);
 
@@ -150,6 +156,9 @@ export default () => {
     data: processedData,
     disabledRegions: unavailability('province'),
     disabledSources: unavailability('source'),
+    // TODO: Remove after refactoring to move processedData chart structure data
+    // into individual chart components
+    rawData: data?.resources,
     year: years && {
       min: Math.min(...years),
       forecastStart,

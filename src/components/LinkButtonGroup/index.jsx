@@ -106,13 +106,12 @@ const LinkButtonGroup = ({ title, labels, accent, className }) => {
                 variant="contained"
                 color={select === label.name ? 'primary' : 'secondary'}
                 onClick={typeof label.content === 'function' ? label.content : handleSelect(label)}
-                onMouseEnter={typeof label.content === 'function' ? label.content : handleSelect(label)}
+                onMouseEnter={handleSelect(label)}
                 className={`${classes.btn} ${label.icon && classes.btnIcon}`}
               >
                 {label.icon || label.name}
               </Button>
 
-              {/* TODO: placeholder; this will be replaced with real content */}
               <span style={{ display: select === label.name ? 'block' : 'none' }}>
                 <div className={classes.btnPopUp}>
                   {typeof label.content === 'object' && label.content}

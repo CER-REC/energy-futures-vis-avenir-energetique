@@ -1,6 +1,33 @@
 {
   "common": {
-    "title": "Canada's Energy Future"
+    "title": "Canada's Energy Future",
+    "selection": "Selection",
+    "region": "Region",
+    "scenario": "Scenario",
+    "sector": "Sector",
+    "source": "Source",
+    "year": "Year",
+    "value": "Value",
+    "unit": "Unit",
+    "dataset": "Dataset",
+    "units": {
+      "petajoules": "PETAJOULE",
+      "gigawattHours": "GW.h",
+      "kilobarrelEquivalents": "mBOE/d",
+      "thousandCubicMetres": "km³/d",
+      "millionCubicMetres": "Mm³/d",
+      "kilobarrels": "kB/d",
+      "cubicFeet": "Bcf/d"
+    },
+    "datasets": {
+      "2016*": "2016 Update"
+    },
+    "selections": {
+      "energyDemand": "Total Demand",
+      "electricityGeneration": "Electricity Generation",
+      "oilProduction": "Oil Production",
+      "gasProduction": "Gas Production"
+    }
   },
   "components": {
     "draggableVerticalList": {
@@ -247,6 +274,12 @@
         "description": "Includes passenger and freight on-road transportation, as well as air, rail, marine, and non-industrial off-road travel, such as recreational all-terrain vehicles and snowmobiles. Demand in the transportation sector includes foreign energy used on Canadian soil, airspace and waters."
       }
     },
+    "share": {
+      "download": "Download Data",
+      "copied": "URL Copied",
+      "emailSubject": "Canada’s Energy Future",
+      "emailMessage": "Exploring Canada’s Energy Future interactive online tool is based on the Canada Energy Regulator’s (CER) flagship publication – Canada’s Energy Future. This visualization allows you to explore energy production and consumption trends and forecast them into the future. You can explore the data from the most recent report, or refer to previous reports."
+    },
     "unsupportedWarning": {
       "browser": "Your browser does not support the features required by this visualization.\nPlease use a recent version of Chrome, Firefox, Safari, or Edge.\nThank you!",
       "resolution": "This visualization has been designed for use on computers and tablets with a screen width of at least 768 pixels.\nThank you!"
@@ -337,7 +370,7 @@
         "2017": "Results of the EF2017 Reference, HCP and Technology Case projections includes analysis on macroeconomic growth, energy use, and energy production for various sources. These projections should not be viewed as a prediction, but as a possible future based on the assumptions described in the Assumptions section.",
         "2018": "Results of the EF2018 Reference and High/Low Price and Technology Case projections includes analysis on macroeconomic growth, energy use, and energy production for various sources. These projections should not be viewed as a prediction, but as a possible future based on the assumptions described in the Assumptions section.",
         "2019": "Results of the EF2019 Reference Case projection includes analysis on macroeconomic growth, energy use, and energy production for various sources. This projection should not be viewed as a prediction, but as a possible future based on the assumptions described in the Assumptions section.",
-        "2020": "Results of the EF2020 projections focus primarily on the Evolving Scenario. These projections are not a prediction, but possible future outcomes based on the assumptions described in the Assumptions section. There are many factors and uncertainties that will influence future trends. Key uncertainties are included for each section.",
+        "2020": "The EF2020 Results section focuses on results of the EF2020 Evolving Scenario, and also includes results from the Reference Scenario. It includes analysis on macroeconomic growth, energy use, and energy production for various commodities. Projections for these two scenarios should not be viewed as predictions, but as two possible futures based on the assumptions described in the Assumptions section for each scenario.",
         "default": "Results from the EF2016 Reference and sensitivity case projections highlight key changes in Canadian energy supply and demand trends. These projections should not be viewed as a prediction, but as a possible future based on the assumptions described in the Assumptions section."
       },
       "link": {
