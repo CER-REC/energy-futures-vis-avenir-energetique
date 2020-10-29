@@ -24,7 +24,7 @@ export const UNIT_NAMES = {
   petajoules: 'PJ',
   kilobarrelEquivalents: 'Mboe/d',
   gigawattHours: 'GW.h',
-  kilobarrels: 'MB/d',
+  kilobarrels: 'Mb/d',
   thousandCubicMetres: 'Mm³/d',
   cubicFeet: 'Bcf/d',
   millionCubicMetres: 'MMm³/d',
