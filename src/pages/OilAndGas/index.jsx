@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 
 import PropTypes from 'prop-types';
 import { Grid, Typography, Button, makeStyles } from '@material-ui/core';
@@ -31,6 +31,23 @@ const useStyles = makeStyles(theme => ({
   slider: {},
 }));
 
+// the oil and gas colors are not yet availible
+const tempColors = {
+  ALL: 'white',
+  CBM: 'red',
+  OIL: 'blue',
+  TIGHT: 'pink',
+  NA: 'orange',
+  SHALE: 'yellow',
+  SOLUTION: 'green',
+  MB: 'red',
+  ISB: 'blue',
+  HEAVY: 'pink',
+  LIGHT: 'orange',
+  CONDENSATE: 'yellow',
+  C5: 'green',
+};
+
 const OilAndGas = ({ data, year }) => {
   const classes = useStyles();
   const { config } = useConfig();
@@ -61,91 +78,80 @@ const OilAndGas = ({ data, year }) => {
     />
   ), [config, intl]);
 
+  const getYearData = useCallback((inputData, dataYear) => {
+    // This basically just filters and sorts the top level data
+    // This sorting should be moved into parseData
+    if (!inputData) {
+      return [];
+    }
+    return (inputData[dataYear].length > 1)
+      ? inputData[dataYear]
+        .sort((a, b) => b.total - a.total)
+        .filter(entry => entry.total > 0)
+      : inputData[dataYear];
+  }, []);
+
+  const getBiggestTreeMapTotal = useCallback((curr, comp) => {
+    // Finds the biggest treeMap
+    if (compare) {
+      return curr[0].total > comp[0].total
+        ? curr[0].total
+        : comp[0].total;
+    }
+    return curr[0].total;
+  }, [compare]);
+
+  const getSizeNumber = useCallback((treeData) => {
+    // Calculates the base size all the tree maps will start with.
+    const bigChart = 450;
+    const mediumChart = 230;
+    const smallChart = 180;
+
+    if (treeData[1]
+      && (treeData[1].total > (treeData[0].total / 6) || compare)) {
+      if (treeData.length > 4) {
+        return smallChart;
+      }
+      return mediumChart;
+    }
+    return bigChart;
+  }, [compare]);
+
+  const sizeMultiplier = useCallback((total, size, biggestTreeMap) => {
+    // Takes the base treeMap size, and multiplies it by how much smaller the total is
+    // compared to the biggest one, giving it a size proportional to the biggest one.
+    if (total < biggestTreeMap) {
+      // This is so that really small numbers will show something
+      if (size * (total / biggestTreeMap) < 30) {
+        return 30;
+      }
+      return size * (total / biggestTreeMap);
+    }
+    return size;
+  }, []);
+
   if (!data) {
     return null;
   }
 
   // Sorted datasets. Can be improved
-  const currentYearData = data[currentYear].length > 1 ? data[currentYear]
-    .sort((a, b) => b.total - a.total) : data[currentYear];
+  const currentYearData = getYearData(data, currentYear);
+  const compareYearData = getYearData(data, compareYear);
 
-  const compareYearData = data[compareYear].length > 1 ? data[compareYear]
-    .sort((a, b) => b.total - a.total) : data[compareYear];
+  const biggestTreeMapTotal = getBiggestTreeMapTotal(currentYearData, compareYearData);
 
-  // the oil and gas colors are not yet availible
-  const tempColors = {
-    ALL: 'white',
-    CBM: 'red',
-    OIL: 'blue',
-    TIGHT: 'pink',
-    NA: 'orange',
-    SHALE: 'yellow',
-    SOLUTION: 'green',
-    MB: 'red',
-    ISB: 'blue',
-    HEAVY: 'pink',
-    LIGHT: 'orange',
-    CONDENSATE: 'yellow',
-    C5: 'green',
-  };
-
-  const treeMapCollection = (treeData) => {
-    // remove any entries with zero values
-    const filteredTreeData = treeData.filter(entry => entry.total > 0);
-
+  const treeMapCollection = (treeData, isTopChart) => {
     // FIXME: there is an issue where if you deselect provinces, the query changes
     // and the total percentage is recalculated, making the percentage wrong
-    const totalGrandTotal = filteredTreeData.reduce((acc, val) => acc + val.total, 0);
+    const totalGrandTotal = treeData.reduce((acc, val) => acc + val.total, 0);
+    const size = getSizeNumber(treeData);
 
-    const getBiggestTreeMapTotal = () => {
-      if (compare) {
-        return currentYearData[0].total > compareYearData[0].total
-          ? currentYearData[0].total
-          : compareYearData[0].total;
+    return treeData.map((source) => {
+      if (source.total <= 0) {
+        return null;
       }
-      return currentYearData[0].total;
-    };
-
-    const sizeMultiplier = (total) => {
-      /*
-      This solution works pretty well with the exeption of very
-      small charts. This will be solved when the small ones get grouped and
-      magnified.
-      */
-
-      const getSizeNumber = () => {
-        const bigChart = 450;
-        const mediumChart = 230;
-        const smallChart = 180;
-
-        if (filteredTreeData[1]
-          && (filteredTreeData[1].total > (filteredTreeData[0].total / 6) || compare)) {
-          if (filteredTreeData.length > 4) {
-            return smallChart;
-          }
-
-          return mediumChart;
-        }
-
-        return bigChart;
-      };
-
-      const biggestTreeMapTotal = getBiggestTreeMapTotal();
-
-      const size = getSizeNumber();
-
-      if (total < biggestTreeMapTotal) {
-        // This is so that really small numbers will show something
-        if (size * (total / biggestTreeMapTotal) < 30) {
-          return 30;
-        }
-        return size * (total / biggestTreeMapTotal);
-      }
-
-      return size;
-    };
-
-    return filteredTreeData.map((source) => {
+      // Its easier to sort the sources when they come in.
+      // This is not very efficient however.
       const sortedSource = source.children.length > 1 ? {
         name: source.name,
         total: source.total,
@@ -153,21 +159,19 @@ const OilAndGas = ({ data, year }) => {
           .sort((a, b) => b.value - a.value),
       } : source;
 
-      if (sortedSource.total <= 0) {
-        return null;
-      }
-
       const percentage = ((sortedSource.total / totalGrandTotal) * 100).toFixed(2);
+
       return (
         <Grid
           item
           key={sortedSource.name}
           style={{
             bottom: 0,
-            height: sizeMultiplier(sortedSource.total) || 0,
-            width: sizeMultiplier(sortedSource.total) || 0,
+            height: sizeMultiplier(sortedSource.total, size, biggestTreeMapTotal) || 0,
+            width: sizeMultiplier(sortedSource.total, size, biggestTreeMapTotal) || 0,
           }}
         >
+          {!isTopChart && <div style={{ borderLeft: '1px dashed black', height: 20 }} />}
 
           <Typography align='center' varient="body1" style={{ bottom: 0 }}>
             {config.view === 'region' ? `${sortedSource.name}: ${percentage}%` : sortedSource.name}
@@ -191,6 +195,8 @@ const OilAndGas = ({ data, year }) => {
             motionDamping={11}
             tooltip={getTooltip}
           />
+
+          {isTopChart && <div style={{ borderLeft: '1px dashed black', height: 10 }} />}
 
         </Grid>
       );
@@ -232,11 +238,13 @@ const OilAndGas = ({ data, year }) => {
         </Button>
       </div>
       <div style={{ marginTop: compare ? 120 : 150 }}>
+
         <TableContainer>
           <Table>
             <TableBody>
+
               <TableRow key="treeMapCollection1" className={classes.treeMapCollection1}>
-                {treeMapCollection(currentYearData).map(treeMap => (
+                {treeMapCollection(currentYearData || [], true).map(treeMap => (
                   <TableCell
                     key={treeMap.name}
                     align="right"
@@ -245,6 +253,7 @@ const OilAndGas = ({ data, year }) => {
                   </TableCell>
                 ))}
               </TableRow>
+
               <TableRow key="yearSlider">
                 <TableCell
                   align="right"
@@ -264,12 +273,20 @@ const OilAndGas = ({ data, year }) => {
                   />
                 </TableCell>
               </TableRow>
+
               {compare && (
               <TableRow key="treeMapCollection2" className={classes.treeMapCollection2}>
-                {treeMapCollection(compareYearData).map(treeMap => (<TableCell key={treeMap.name} align="right" className={classes.cellsTop}>{treeMap}</TableCell>
+                {treeMapCollection(compareYearData || [], false).map(treeMap => (
+                  <TableCell
+                    key={treeMap.name}
+                    align="right"
+                    className={classes.cellsBottom}
+                  >{treeMap}
+                  </TableCell>
                 ))}
               </TableRow>
               )}
+
             </TableBody>
           </Table>
         </TableContainer>
