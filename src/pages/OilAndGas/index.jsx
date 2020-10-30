@@ -139,7 +139,7 @@ const OilAndGas = ({ data, year }) => {
     return null;
   }
 
-  // Sorted datasets. Can be improved
+  // Sorted datasets
   const currentYearData = getYearData(data, currentYear);
   const compareYearData = getYearData(data, compareYear);
 
@@ -295,6 +295,13 @@ const OilAndGas = ({ data, year }) => {
             </TableBody>
           </Table>
         </TableContainer>
+      </div>
+      <div style={{ backgroundColor: '#F3F3F3', height: 100, width: 280, position: 'absolute', bottom: 5, right: 5 }}>
+        <Typography align='center'>Legend</Typography>
+        <Typography align='center'>Type of Oil &#40;Year selected&#41;</Typography>
+        <Typography align='center'>Region: Amount produced &#40;% of total in CAN&#41;</Typography>
+        <Typography align='center'>CAN: Total amount produced in Canada</Typography>
+
       </div>
     </>
   );
