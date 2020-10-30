@@ -30,7 +30,16 @@ export const LinkButtonContentKeyFindings = ({ yearId }) => {
     id: `links.Findings.description.${yearId}`,
     defaultMessage: intl.formatMessage({ id: 'links.Findings.description.default' }),
   }), [intl, yearId]);
-  return <Typography variant="body2" color="secondary" component="span"><Markdown>{text}</Markdown></Typography>;
+  const link = useMemo(() => intl.formatMessage({
+    id: `links.Findings.link.${yearId}`,
+    defaultMessage: intl.formatMessage({ id: 'links.Findings.link.default' }),
+  }), [intl, yearId]);
+  return (
+    <>
+      <Typography variant="body2" color="secondary" component="span" gutterBottom><Markdown>{text}</Markdown></Typography>
+      <Typography variant="body2" color="secondary" component="span"><Markdown>{link}</Markdown></Typography>
+    </>
+  );
 };
 LinkButtonContentKeyFindings.propTypes = { yearId: PropTypes.string.isRequired };
 
@@ -76,7 +85,7 @@ export const LinkButtonContentMethodology = () => {
 
 export const LinkButtonContentAbout = () => (
   <>
-    <Typography variant="h6" color="secondary" gutterBottom><b>ABOUT THIS PROJECT</b></Typography>
+    <Typography variant="h6" color="secondary" gutterBottom><b>ABOUT THIS TOOL</b></Typography>
     <Typography variant="body2" color="secondary" gutterBottom>
       Exploring Canada’s Energy Future interactive online tool is based on the
       Canada Energy Regulator’s (CER) flagship publication –
@@ -151,12 +160,6 @@ export const LinkButtonContentAbout = () => (
       Lead Technical: VizworX<br />
       Technical: Stephanie Sachrajda, Patrick King, Alaa Azazi, Abhishek Sharma,
       Ben Cousins and Claudio Esperança
-    </Typography>
-
-    <Typography variant="h5" color="secondary" gutterBottom><b>THIRD PARTY LICENSES</b></Typography>
-    <Typography variant="body2" color="secondary">
-      Map showing provinces and territories reporting 2009 swine flu (H1N1) cases in Canada by
-      Fonadier is licensed under CC BY 3.0 / Re-colored and rotated from original.
     </Typography>
   </>
 );

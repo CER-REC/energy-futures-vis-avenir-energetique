@@ -47,7 +47,7 @@ const useStyles = makeStyles(theme => createStyles({
     border: `1px solid ${theme.palette.secondary.light}`,
     backgroundColor: '#F3EFEF',
     overflow: 'auto',
-    '& p': {
+    '& p, & li': {
       fontSize: 12,
       lineHeight: 1.1,
       '&:not(.MuiTypography-root)': { marginBottom: 0 },

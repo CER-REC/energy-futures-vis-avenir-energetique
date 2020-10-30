@@ -46,14 +46,14 @@ const HintSection = ({ title, section, singleColumn }) => (
         </Grid>
         <Grid item xs={12} sm={8}>
           <Typography variant="body2" color="secondary" component="span"><Markdown>{entry.text}</Markdown></Typography>
-          {entry.link && <Typography variant="body2" color="secondary"><Markdown>{entry.link}</Markdown></Typography>}
+          {entry.link && <Typography variant="body2" color="secondary" component="span"><Markdown>{entry.link}</Markdown></Typography>}
         </Grid>
       </Fragment>
     ) : (
       <Grid item xs={section.length < 3 ? 12 : 6} key={`hint-content-entry-${Math.random()}`}>
         {entry.title && <Typography variant="h6" gutterBottom>{entry.title}</Typography>}
         <Typography variant="body2" color="secondary" component="span"><Markdown>{entry.text}</Markdown></Typography>
-        {entry.link && <Typography variant="body2" color="secondary"><Markdown>{entry.link}</Markdown></Typography>}
+        {entry.link && <Typography variant="body2" color="secondary" component="span"><Markdown>{entry.link}</Markdown></Typography>}
       </Grid>
     )))}
   </Grid>
@@ -188,16 +188,16 @@ HintScenarioSelect.defaultProps = { children: null };
 export const HintUnitSelect = ({ children }) => {
   const intl = useIntl();
   const unitEnergy = useMemo(() => ['petajoules', 'kilobarrelEquivalents', 'gigawattHours'].map(unit => ({
-    title: intl.formatMessage({ id: `components.unitSelect.${unit}.title` }),
+    title: `${intl.formatMessage({ id: `components.unitSelect.${unit}.title` })} (${intl.formatMessage({ id: `common.units.${unit}` })})`,
     text: intl.formatMessage({ id: `components.unitSelect.${unit}.description` }),
   })), [intl]);
   const unitVolume = useMemo(() => ['kilobarrels', 'thousandCubicMetres', 'cubicFeet', 'millionCubicMetres'].map(unit => ({
-    title: intl.formatMessage({ id: `components.unitSelect.${unit}.title` }),
+    title: `${intl.formatMessage({ id: `components.unitSelect.${unit}.title` })} (${intl.formatMessage({ id: `common.units.${unit}` })})`,
     text: intl.formatMessage({ id: `components.unitSelect.${unit}.description` }),
   })), [intl]);
   const content = [
-    <HintSection title="Energy Units" section={unitEnergy} />,
-    <HintSection title="Volumetric Units" section={unitVolume} />,
+    <HintSection title={intl.formatMessage({ id: 'common.energyUnits' })} section={unitEnergy} />,
+    <HintSection title={intl.formatMessage({ id: 'common.volumetricUnits' })} section={unitVolume} />,
   ];
   return <Hint content={content} maxWidth="md">{children}</Hint>;
 };
