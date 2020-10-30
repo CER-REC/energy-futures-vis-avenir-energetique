@@ -68,7 +68,11 @@ const OilAndGas = ({ data, year }) => {
       nodes={event.parent?.children.map(value => ({
         name: value.id,
         translation: intl.formatMessage(
-          { id: `common.sources.${config.mainSelection === 'oilProduction' ? 'oil' : 'gas'}.${value.id}` },
+          {
+            id: config.view === 'region'
+              ? `common.sources.${config.mainSelection === 'oilProduction' ? 'oil' : 'gas'}.${value.id}`
+              : `common.regions.${value.id}`,
+          },
         ),
         value: value.value,
         color: value.color,
