@@ -1,4 +1,4 @@
-## À PROPOS DE L’OUTIL
+#### À PROPOS DE L’OUTIL
 
 L’outil interactif en ligne Explorer l’avenir énergétique du Canada repose sur la publication phare de la Régie de l’énergie du Canada intitulée [Avenir énergétique du Canada](https://www.cer-rec.gc.ca/fr/donnees-analyse/avenir-energetique-canada/index.html). Cette visualisation vous permet de prendre connaissance de l’évolution de la production et de la consommation d’énergie, et faire des prévisions pour l’avenir. Vous avez le loisir de vous en tenir au rapport le plus récent ou d’aller voir ce que disaient de précédents rapports.
 
@@ -10,31 +10,40 @@ Nous espérons avoir atteint notre objectif. Votre rétroaction est essentielle.
 
 Vous pouvez nous la faire parvenir, ainsi que vos suggestions, à l’adresse [data.donnees@cer-rec.gc.ca](mailto:data.donnees@cer-rec.gc.ca). Votre opinion compte.
 
-### LES CONTRIBUTEURS
+###### LES CONTRIBUTEURS
 
-### VERSION 2
-### SOURCE DES DONNÉES :
+###### VERSION 2
+###### SOURCE DES DONNÉES :
 Matthew Hansen (spécialiste technique, marchés), Aaron Hoyle (analyste de marchés), Mantaj Hundal (analyste de marchés), Michael Nadew (analyste de marchés), Melanie Stogran (analyste de l'offre), Bryce van Sluys (directeur)
 
-### COORDINATION :
+###### COORDINATION :
 Amanda Harwood (gestionnaire de projet); Romina Imani (coordinatrice des données numériques); Karen Ryhorchuk (agente de communications)
 
-### VISUALISATION DE DONNÉES :
+###### VISUALISATION DE DONNÉES :
 Responsable de la conception technique : Jagoda Walny-Nix
+
 Responsable de la conception : Doris Kosminsky
+
 Conception de l’expérience utilisateur : Angelsea Saby, Lien Quach
+
 Conception et production graphiques : Tétro
+
 Responsable du développement technique : VizworX
+
 Développement : Alan Chen, Nico Li, Steven Rothenburger
 
-### VERSION 1
-### SOURCE DES DONNÉES :
+###### VERSION 1
+###### SOURCE DES DONNÉES :
 Abha Bhargava (directrice) et Matthew Hansen, Bryce van Sluys, Chris Doleman, Michael Nadew, Lukas Hansen, Mantaj Hundal, Ryan Safton (analystes de marchés)
 
-### COORDINATION :
+###### COORDINATION :
 Annette Hester (conception et coordination); Katherine Murphy et Amanda Harwood (gestionnaires de projet); Faiza Hussain (Soutien administratif); Stephen Chow (coordination des données); Garth Rowe (responsable du Web); Jim Chisholm (gestion de l’information et technologie)
 
-### VISUALISATION DE DONNÉES :
-Recherche conceptuelle sous la direction de Sheelagh Carpendale et Wesley Willett, iLab, Université de Calgary Conception : Lindsay MacDonald, Charles Perin, Jo Vermeulen, Doris Kosminsky, Søren Knudsen, Lien Quach, Peter Buk, Shreya Chopra, Katrina Tabuli et Claudia Maurer
+###### VISUALISATION DE DONNÉES :
+Recherche conceptuelle sous la direction de Sheelagh Carpendale et Wesley Willett, iLab, Université de Calgary
+
+Conception : Lindsay MacDonald, Charles Perin, Jo Vermeulen, Doris Kosminsky, Søren Knudsen, Lien Quach, Peter Buk, Shreya Chopra, Katrina Tabuli et Claudia Maurer
+
 Chef technique à VizworX
+
 Aspect technique : Stephanie Sachrajda, Patrick King, Alaa Azazi, Abhishek Sharma, Ben Cousins et Claudio Esperança

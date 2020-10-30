@@ -47,6 +47,7 @@ const useStyles = makeStyles(theme => createStyles({
     border: `1px solid ${theme.palette.secondary.light}`,
     backgroundColor: '#F3EFEF',
     overflow: 'auto',
+    '& h4': { marginTop: 0 },
     '& p, & li': {
       fontSize: 12,
       lineHeight: 1.1,
