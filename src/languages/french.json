@@ -14,7 +14,7 @@
     "energyUnits": "UNITÉS D’ÉNERGIE",
     "volumetricUnits": "UNITÉS VOLUMÉTRIQUES",
     "units": {
-      "petajoules": "Pétajoule",
+      "petajoules": "PJ",
       "gigawattHours": "GWh",
       "kilobarrelEquivalents": "kbep/j",
       "thousandCubicMetres": "10³m³/j",
@@ -44,11 +44,11 @@
       "resetMessage": "Veuillez cliquer sur le lien pour réinitialiser la session."
     },
     "loadingIndicator": {
-        "api": "veuillez patienter",
-        "app": "veuillez patienter"
+      "api": "veuillez patienter",
+      "app": "veuillez patienter"
     },
     "yearSelect": {
-      "name": "REPORT",
+      "name": "RAPPORTS",
       "title": "RAPPORTS SUR L’AVENIR ÉNERGÉTIQUE",
       "2020": {
         "title": "AVENIR ÉNERGÉTIQUE DU CANADA EN 2020",
@@ -87,7 +87,8 @@
           "energyDemand": "Demande totale pour utilisation finale selon la région",
           "electricityGeneration": "Production d’électricité selon la région",
           "oilProduction": "Production de pétrole selon la région",
-          "gasProduction": "Production de gaz selon la région"
+          "gasProduction": "Production de gaz selon la région",
+          "default": "La région"
         },
         "description": "Comparez les données passées et faites des projections de l’offre et de la demande d’énergie pour les provinces et les territoires au Canada.\n\nSélectionnez la demande totale, la production d’électricité, la production de pétrole brut ou la production de gaz naturel, puis comparez, ajoutez, retirez ou réorganisez les données selon les provinces et les territoires pour analyser divers résultats possibles."
       },
@@ -97,14 +98,16 @@
           "RESIDENTIAL": "Demande pour utilisation finale, secteur résidentiel",
           "COMMERCIAL": "Demande pour utilisation finale, secteur commercial",
           "INDUSTRIAL": "Demande pour utilisation finale, secteur industriel",
-          "TRANSPORTATION": "Demande pour utilisation finale, secteur des transports"
+          "TRANSPORTATION": "Demande pour utilisation finale, secteur des transports",
+          "default": "Les secteurs"
         },
         "description": "Examinez l’évolution récente des sources énergétiques de différents secteurs et ce que projettent les scénarios du rapport sur l’avenir énergétique à cet égard.\n\nSélectionnez une province ou un territoire, puis consultez la consommation énergétique des secteurs résidentiel, commercial, industriel ou des transports, ou encore la consommation totale d’énergie."
       },
       "Electricity": {
         "title": {
           "region": "Production d’électricité selon la région",
-          "source": "Production d’électricité selon la source"
+          "source": "Production d’électricité selon la source",
+          "default": "Électricité"
         },
         "description": "Comparez la quantité relative d’électricité produite à partir de diverses sources dans les provinces et les territoires au cours d’une année donnée.\n\nPassez d’une visualisation à l’autre, de la quantité d’électricité produite par chaque source dans chaque région, à la quantité d’électricité produite dans chaque région par chaque source."
       },
@@ -113,7 +116,8 @@
           "energyDemand": "Comparer des scénarios pour la demande totale pour utilisation finale",
           "electricityGeneration": "Comparer des scénarios pour la production d’électricité",
           "oilProduction": "Comparer des scénarios pour la production de pétrole",
-          "gasProduction": "Comparer des scénarios pour la production de gaz"
+          "gasProduction": "Comparer des scénarios pour la production de gaz",
+          "default": "Scénarios"
         },
         "description": "Comparez directement les scénarios.\n\nComparez l’incidence des principales incertitudes sur l’évolution future de l’énergie, notamment : développement technologique; initiatives de politique climatique comme la tarification du carbone; prix de l’énergie plus élevés ou plus bas; exportations plus élevées de GNL ou absence d’exportations de GNL, ou encore absence de nouveaux pipelines d’exportation de pétrole brut."
       },
@@ -133,7 +137,7 @@
       }
     },
     "scenarioSelect": {
-      "name": "SCENARIOS",
+      "name": "SCÉNARIOS",
       "description": {
         "2016": "Les projections du rapport AE 2016 comprennent un scénario de référence, cinq scénarios de sensibilité, dont deux liés au prix :",
         "2016*": "Les projections du rapport AE 2016 Mise à jour comprennent un scénario de référence et deux liés au prix :",
@@ -344,6 +348,7 @@
   },
   "links": {
     "Assumptions": {
+      "title": "Hypothèses",
       "description": {
         "2016": "Les scénarios de base du rapport AE 2016 reposent sur quatre hypothèses clés :\n1. Les marchés seront en mesure d’absorber toute l’énergie produite, et l’infrastructure nécessaire sera mise en place en fonction des besoins.\n1. Seuls les politiques et les programmes en vigueur au moment de la rédaction du rapport sont pris en considération dans les projections. Donc, les politiques qui sont à l’étude ou qui seront élaborées après que les projections ont été faites, à l’été 2015, n’ont pas été incluses dans l’analyse.\n1. Les facteurs environnementaux et socioéconomiques qui vont au-delà de la portée des programmes et politiques retenus sont exclus de l’analyse.\n1. Les marchés de l’énergie sont en constante évolution.",
         "2016*": "La filière énergétique canadienne est en perpétuelle évolution. La technologie, les composantes économiques, l’infrastructure, les préférences de la société et les politiques et programmes des gouvernements, pour ne nommer que ceux-là, influencent sans cesse la façon dont l’énergie est produite, transportée et consommée au Canada. AE 2016 Mise à jour : Chapitre 2 propose un survol de l’actualité récente de ces marchés et des politiques climatiques. Il décrit également les principales hypothèses et les faits récents sur lesquels s’appuie la présente analyse.",
@@ -364,6 +369,7 @@
       }
     },
     "Findings": {
+      "title": "Grandes conclusions",
       "description": {
         "2016": "Les principales conclusions du rapport AE 2016 sont décrites brièvement ci-dessous, puis font l’objet d’un exposé succinct dans le rapport AE 2016 :\n- Les événements récents ont mis en lumière les nombreuses incertitudes entourant les perspectives énergétiques à long terme du Canada.\n- Dans le scénario de référence, la production énergétique croît plus rapidement que la consommation d’énergie; les exportations nettes d’énergie sont en hausse.\n- La production future de pétrole et de gaz naturel dépend énormément des prix du moment, qui sont empreints d’une grande incertitude.\n- Faute d’ajout de nouveaux oléoducs à l’infrastructure pipelinière actuelle, la croissance de la production de pétrole brut est freinée, mais demeure modérée durant la période de projection.\n- Le volume des exportations de gaz naturel liquéfié est un facteur important dans la croissance de la production de gaz naturel au Canada.\n- La consommation totale d’énergie au Canada, incluant celle du secteur de la production énergétique, est uniforme dans tous les scénarios envisagés dans le rapport AE 2016, et les émissions de GES résultant de l’utilisation de l’énergie suivront la même courbe.",
         "2016*": "Les grandes conclusions de la Mise à jour 2016 sont décrites ci-dessous et exposées brièvement dans le rapport :\n- La Mise à jour 2016 tient compte de plusieurs politiques sur les changements climatiques annoncées récemment. Les mesures concrètes à venir dans ce domaine constituent un élément d’incertitude de première importance dans les projections.\n- La consommation d’énergie, dont celle produite au moyen de combustibles fossiles, continue d’augmenter, mais à un rythme moins soutenu que celui prévu dans le rapport AE 2016.\n- Les hypothèses concernant le prix du pétrole brut ont été revues à la baisse dans la Mise à jour 2016, pour tenir compte des événements récents sur le marché; cela a entraîné une réduction des projections de la production de pétrole brut.\n- Afin de répondre à la demande croissante d’électricité et de remplacer les centrales alimentées au charbon, la capacité de production éolienne, solaire et hydroélectrique, ainsi qu’à partir du gaz naturel, augmente.",
@@ -384,6 +390,7 @@
       }
     },
     "Results": {
+      "title": "Résultats",
       "description": {
         "2016": "Les résultats des projections du scénario de référence et des scénarios de sensibilité et mettent en évidence les principaux changements observés en ce qui a trait à l’offre et à la demande énergétiques au Canada. Ces projections ne constituent pas des prévisions, mais bien des possibilités futures fondées sur les hypothèses décrites dans la section « Hypothèses ».",
         "2016*": "Les résultats des projections des scénarios Référence, Prix élevés, Prix bas d’Avenir énergétique Mise à jour 2016 renferment des analyses de la croissance macroéconomique, de la consommation d’énergie et de la production d’énergie pour diverses sources. Ces projections ne constituent pas des prévisions, mais bien des possibilités futures fondées sur les hypothèses décrites dans la section « Hypothèses ».",
@@ -404,11 +411,16 @@
       }
     },
     "Methodology": {
+      "title": "Méthodologie",
       "description": "Consultez notre [document sur la méthodologie](https://www.cer-rec.gc.ca/avenir-energetique/PDF/Regie-avenir-energetique-methodologie-fr.pdf) pour en savoir plus sur le système de modélisation de l’avenir énergétique, les définitions et les indicateurs, les sources de données et plus encore."
     },
     "Report": {
-      "description": "Energy Future includes a wide range of projections for Canadian energy supply and demand. Theme projects are the result of a modeling system consisting of several interactive components (or modules) which produce integrated, future Canadian energy trends.",
-      "link": "DOWNLOAD THE COMPLETE REPORT HERE"
+      "title": "Rapport",
+      "description": "Les rapports sur l’avenir énergétique proposent un large éventail de projections concernant l’offre et la demande d’énergie au Canada. Ces projections ont été réalisées à partir d’un système de modélisation qui fait interagir plusieurs composantes (ou modules) en vue d’arriver à des projections globales sur les tendances énergétiques futures du Canada.",
+      "link": "[Voir le rapport AE 2020](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2020/index.html)"
+    },
+    "About": {
+      "title": "À propos"
     }
   }
 }

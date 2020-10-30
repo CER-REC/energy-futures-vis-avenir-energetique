@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import { useIntl } from 'react-intl';
 import PropTypes from 'prop-types';
 import { makeStyles, Grid, Typography, IconButton, Slider } from '@material-ui/core';
 import PlayIcon from '@material-ui/icons/PlayArrow';
@@ -100,6 +101,7 @@ const useStyles = makeStyles(theme => ({
 
 const YearSlider = ({ year, onYearChange, min, max, forecast }) => {
   const classes = useStyles();
+  const intl = useIntl();
 
   const [currYear, setCurrYear] = useState(year?.curr || year);
   const [compareYear, setCompareYear] = useState(year?.compare || year);
@@ -197,7 +199,7 @@ const YearSlider = ({ year, onYearChange, min, max, forecast }) => {
         {/* forecast bar */}
         {forecast && (
           <div className={classes.forecast} style={{ left: `${((forecast - min) / (max - min)) * 100}%` }}>
-            <Typography variant="overline">FORECAST</Typography>
+            <Typography variant="overline">{intl.formatMessage({ id: 'common.forecast' })}</Typography>
           </div>
         )}
       </Grid>

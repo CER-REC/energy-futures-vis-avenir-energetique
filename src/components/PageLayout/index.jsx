@@ -198,13 +198,13 @@ const PageLayout = ({
           title="Context"
           labels={[
             [
-              { name: 'report', content: <LinkButtonContentReport /> },
-              { name: 'assumptions', content: <LinkButtonContentAssumptions yearId={config.yearId} /> },
-              { name: 'key findings', content: <LinkButtonContentKeyFindings yearId={config.yearId} /> },
-              { name: 'results', content: <LinkButtonContentResults yearId={config.yearId} /> },
+              { name: intl.formatMessage({ id: 'links.Report.title' }), content: <LinkButtonContentReport /> },
+              { name: intl.formatMessage({ id: 'links.Assumptions.title' }), content: <LinkButtonContentAssumptions yearId={config.yearId} /> },
+              { name: intl.formatMessage({ id: 'links.Findings.title' }), content: <LinkButtonContentKeyFindings yearId={config.yearId} /> },
+              { name: intl.formatMessage({ id: 'links.Results.title' }), content: <LinkButtonContentResults yearId={config.yearId} /> },
             ], [
-              { name: 'methodology', content: <LinkButtonContentMethodology /> },
-              { name: 'about', content: <LinkButtonContentAbout /> },
+              { name: intl.formatMessage({ id: 'links.Methodology.title' }), content: <LinkButtonContentMethodology /> },
+              { name: intl.formatMessage({ id: 'links.About.title' }), content: <LinkButtonContentAbout /> },
             ]]}
           className={classes.links}
         />

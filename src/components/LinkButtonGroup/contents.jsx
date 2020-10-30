@@ -71,7 +71,7 @@ export const LinkButtonContentReport = () => {
       <Typography variant="body2" color="secondary" gutterBottom>{text}</Typography>
       <Grid container alignItems="flex-end" wrap="nowrap" spacing={1}>
         <Grid item xs={5}><img src={ReportLinkImage} alt="report link" /></Grid>
-        <Grid item xs={7}><Typography variant="body2" color="secondary">{link}</Typography></Grid>
+        <Grid item xs={7}><Typography variant="body2" color="secondary" component="span"><Markdown>{link}</Markdown></Typography></Grid>
       </Grid>
     </>
   );

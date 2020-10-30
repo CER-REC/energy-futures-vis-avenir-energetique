@@ -54,7 +54,7 @@ const Loader = () => {
   }
 
   return (
-    <IntlProvider locale={lang} messages={messages}>
+    <IntlProvider locale={lang} defaultLocale={lang} messages={messages}>
       <ErrorBoundary>
         {content}
       </ErrorBoundary>

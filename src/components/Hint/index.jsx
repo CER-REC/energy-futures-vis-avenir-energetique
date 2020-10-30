@@ -176,7 +176,7 @@ export const HintScenarioSelect = ({ children }) => {
       defaultMessage: intl.formatMessage({ id: `components.scenarioSelect.${scenario}.description.default` }),
     }),
   })), [intl, yearIdIterations, yearId]);
-  return <Hint content={[<HintSection title="Scenarios" section={section} />]}>{children}</Hint>;
+  return <Hint content={[<HintSection title={intl.formatMessage({ id: 'components.scenarioSelect.name' })} section={section} />]}>{children}</Hint>;
 };
 
 HintScenarioSelect.propTypes = { children: PropTypes.node };
@@ -215,7 +215,7 @@ export const HintSectorSelect = ({ children }) => {
     title: intl.formatMessage({ id: `common.sectors.${sector}` }),
     text: intl.formatMessage({ id: `components.sectorSelect.${sector}.description` }),
   })).filter(Boolean), [intl, sectors]);
-  return <Hint content={[<HintSection title="Sectors" section={section} />]}>{children}</Hint>;
+  return <Hint content={[<HintSection title={intl.formatMessage({ id: 'components.sectorSelect.name' })} section={section} />]}>{children}</Hint>;
 };
 
 HintSectorSelect.propTypes = { children: PropTypes.node };
@@ -227,10 +227,10 @@ HintSectorSelect.defaultProps = { children: null };
 export const HintViewSelect = ({ children }) => {
   const intl = useIntl();
   const section = useMemo(() => ['region', 'source'].map(view => ({
-    title: view, // FIXME: to be translated
+    title: intl.formatMessage({ id: `common.${view}` }),
     text: intl.formatMessage({ id: `components.viewSelect.${view}.description` }),
   })), [intl]);
-  return <Hint content={[<HintSection title="View By" section={section} />]}>{children}</Hint>;
+  return <Hint content={[<HintSection title={intl.formatMessage({ id: 'components.viewSelect.name' })} section={section} />]}>{children}</Hint>;
 };
 
 HintViewSelect.propTypes = { children: PropTypes.node };

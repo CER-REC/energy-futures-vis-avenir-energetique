@@ -1,4 +1,5 @@
 import React from 'react';
+import { useIntl } from 'react-intl';
 import PropTypes from 'prop-types';
 import { makeStyles, Paper, Grid } from '@material-ui/core';
 import { formatUnitAbbreviation } from '../../utilities/convertUnit';
@@ -16,6 +17,7 @@ const useStyles = makeStyles(theme => ({
 
 const VizTooltip = ({ nodes, total, unit, year, paper, showTotal, showPercentage }) => {
   const classes = useStyles();
+  const intl = useIntl();
 
   const sum = total || (nodes || []).map(node => node.value).reduce((a, b) => a + b, 0);
   const content = (
@@ -23,7 +25,7 @@ const VizTooltip = ({ nodes, total, unit, year, paper, showTotal, showPercentage
       {year && <Grid item><strong>{year}:</strong></Grid>}
       {[
         ...(nodes || []),
-        ...(showTotal && nodes && nodes.length > 1 ? [{ name: 'TOTAL', value: sum }] : []),
+        ...(showTotal && nodes && nodes.length > 1 ? [{ name: intl.formatMessage({ id: 'components.draggableVerticalList.all' }), value: sum }] : []),
       ].filter(node => Math.abs(node.value) > Number.EPSILON).map((node) => {
         const showUnit = node.value === sum || !showPercentage;
         const num = formatUnitAbbreviation(node.value, showUnit && UNIT_NAMES[unit]);
