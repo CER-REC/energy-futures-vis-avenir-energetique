@@ -46,14 +46,14 @@ const HintSection = ({ title, section, singleColumn }) => (
         </Grid>
         <Grid item xs={12} sm={8}>
           <Typography variant="body2" color="secondary" component="span"><Markdown>{entry.text}</Markdown></Typography>
-          {entry.link && <Typography variant="body2" color="secondary"><Markdown>{entry.link}</Markdown></Typography>}
+          {entry.link && <Typography variant="body2" color="secondary" component="span"><Markdown>{entry.link}</Markdown></Typography>}
         </Grid>
       </Fragment>
     ) : (
       <Grid item xs={section.length < 3 ? 12 : 6} key={`hint-content-entry-${Math.random()}`}>
         {entry.title && <Typography variant="h6" gutterBottom>{entry.title}</Typography>}
         <Typography variant="body2" color="secondary" component="span"><Markdown>{entry.text}</Markdown></Typography>
-        {entry.link && <Typography variant="body2" color="secondary"><Markdown>{entry.link}</Markdown></Typography>}
+        {entry.link && <Typography variant="body2" color="secondary" component="span"><Markdown>{entry.link}</Markdown></Typography>}
       </Grid>
     )))}
   </Grid>
@@ -176,7 +176,7 @@ export const HintScenarioSelect = ({ children }) => {
       defaultMessage: intl.formatMessage({ id: `components.scenarioSelect.${scenario}.description.default` }),
     }),
   })), [intl, yearIdIterations, yearId]);
-  return <Hint content={[<HintSection title="Scenarios" section={section} />]}>{children}</Hint>;
+  return <Hint content={[<HintSection title={intl.formatMessage({ id: 'components.scenarioSelect.name' })} section={section} />]}>{children}</Hint>;
 };
 
 HintScenarioSelect.propTypes = { children: PropTypes.node };
@@ -188,16 +188,16 @@ HintScenarioSelect.defaultProps = { children: null };
 export const HintUnitSelect = ({ children }) => {
   const intl = useIntl();
   const unitEnergy = useMemo(() => ['petajoules', 'kilobarrelEquivalents', 'gigawattHours'].map(unit => ({
-    title: intl.formatMessage({ id: `components.unitSelect.${unit}.title` }),
+    title: `${intl.formatMessage({ id: `components.unitSelect.${unit}.title` })} (${intl.formatMessage({ id: `common.units.${unit}` })})`,
     text: intl.formatMessage({ id: `components.unitSelect.${unit}.description` }),
   })), [intl]);
   const unitVolume = useMemo(() => ['kilobarrels', 'thousandCubicMetres', 'cubicFeet', 'millionCubicMetres'].map(unit => ({
-    title: intl.formatMessage({ id: `components.unitSelect.${unit}.title` }),
+    title: `${intl.formatMessage({ id: `components.unitSelect.${unit}.title` })} (${intl.formatMessage({ id: `common.units.${unit}` })})`,
     text: intl.formatMessage({ id: `components.unitSelect.${unit}.description` }),
   })), [intl]);
   const content = [
-    <HintSection title="Energy Units" section={unitEnergy} />,
-    <HintSection title="Volumetric Units" section={unitVolume} />,
+    <HintSection title={intl.formatMessage({ id: 'common.energyUnits' })} section={unitEnergy} />,
+    <HintSection title={intl.formatMessage({ id: 'common.volumetricUnits' })} section={unitVolume} />,
   ];
   return <Hint content={content} maxWidth="md">{children}</Hint>;
 };
@@ -215,7 +215,7 @@ export const HintSectorSelect = ({ children }) => {
     title: intl.formatMessage({ id: `common.sectors.${sector}` }),
     text: intl.formatMessage({ id: `components.sectorSelect.${sector}.description` }),
   })).filter(Boolean), [intl, sectors]);
-  return <Hint content={[<HintSection title="Sectors" section={section} />]}>{children}</Hint>;
+  return <Hint content={[<HintSection title={intl.formatMessage({ id: 'components.sectorSelect.name' })} section={section} />]}>{children}</Hint>;
 };
 
 HintSectorSelect.propTypes = { children: PropTypes.node };
@@ -227,10 +227,10 @@ HintSectorSelect.defaultProps = { children: null };
 export const HintViewSelect = ({ children }) => {
   const intl = useIntl();
   const section = useMemo(() => ['region', 'source'].map(view => ({
-    title: view, // FIXME: to be translated
+    title: intl.formatMessage({ id: `common.${view}` }),
     text: intl.formatMessage({ id: `components.viewSelect.${view}.description` }),
   })), [intl]);
-  return <Hint content={[<HintSection title="View By" section={section} />]}>{children}</Hint>;
+  return <Hint content={[<HintSection title={intl.formatMessage({ id: 'components.viewSelect.name' })} section={section} />]}>{children}</Hint>;
 };
 
 HintViewSelect.propTypes = { children: PropTypes.node };

@@ -105,7 +105,10 @@ const PageSelect = () => {
       case 'by-sector': return intl.formatMessage({ id: `components.pageSelect.${page.label}.title.${config.sector}` });
       case 'electricity': return intl.formatMessage({ id: `components.pageSelect.${page.label}.title.${config.view}` });
       case 'scenarios': return intl.formatMessage({ id: `components.pageSelect.${page.label}.title.${config.mainSelection}` });
-      case 'Oil-and-Gas': return intl.formatMessage({ id: `components.pageSelect.${page.label}.title.${config.mainSelection}` });
+      case 'oil-and-gas': return intl.formatMessage({
+        id: `components.pageSelect.${page.label}.title.${config.mainSelection}.${config.view}`,
+        defaultMessage: intl.formatMessage({ id: `components.pageSelect.${page.label}.title.default` }),
+      });
       default: return page.label;
     }
   }, [intl, config.mainSelection, config.sector, config.view]);
@@ -125,12 +128,13 @@ const PageSelect = () => {
 
   const pageButtons = PAGES.filter(page => page.id !== 'landing').map((page) => {
     const index = pages.findIndex(p => p.id === page.id) || 0;
+    const subtitle = intl.formatMessage({ id: `components.pageSelect.${page.label}.title.default` });
     return (
       <Tooltip
         key={`page-${page.id}`}
         title={(
           <>
-            <Typography variant="h6">{page.label}</Typography>
+            <Typography variant="h6">{subtitle}</Typography>
             <Typography variant="caption" component="div" gutterBottom>
               {intl.formatMessage({ id: `components.pageSelect.${page.label}.description` })}
             </Typography>
@@ -153,7 +157,7 @@ const PageSelect = () => {
         >
           <Grid container direction="column" wrap="nowrap" style={{ width: 'auto' }}>
             <div className={classes.icon}>{getPageIcon(page.id)}</div>
-            {index !== 0 && <Typography variant="caption">{page.label}</Typography>}
+            {index !== 0 && <Typography variant="caption">{subtitle}</Typography>}
           </Grid>
           <div
             className={classes.label}

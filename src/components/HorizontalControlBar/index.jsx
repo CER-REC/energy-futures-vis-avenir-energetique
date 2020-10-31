@@ -8,7 +8,7 @@ import {
 
 import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
-import { CONFIG_LAYOUT, UNIT_NAMES } from '../../constants';
+import { CONFIG_LAYOUT } from '../../constants';
 import { HintMainSelect, HintViewSelect, HintSectorSelect, HintUnitSelect } from '../Hint';
 // #endregion
 
@@ -83,7 +83,7 @@ const HorizontalControlBar = () => {
               onClick={() => handleConfigUpdate('mainSelection', selection)}
               className={classes.btnSector}
             >
-              {CONFIG_LAYOUT[selection]?.name}
+              {intl.formatMessage({ id: `components.mainSelect.${selection}.title` })}
             </Button>
           </Tooltip>
         </Grid>
@@ -139,7 +139,7 @@ const HorizontalControlBar = () => {
             size="small"
             onClick={() => handleConfigUpdate('view', view)}
           >
-            {view}
+            {intl.formatMessage({ id: `common.${view}` })}
           </Button>
         </Tooltip>
       ))}
@@ -166,8 +166,9 @@ const HorizontalControlBar = () => {
             color="primary"
             size="small"
             onClick={() => handleConfigUpdate('unit', unit)}
+            style={{ textTransform: 'none' }}
           >
-            {UNIT_NAMES[unit]}
+            {intl.formatMessage({ id: `common.units.${unit}` })}
           </Button>
         </Tooltip>
       ))}
