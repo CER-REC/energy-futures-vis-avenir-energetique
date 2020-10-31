@@ -58,11 +58,12 @@ export const PAGES = [
     id: 'scenarios',
     bg: '#CA9830',
   },
-  {
-    label: 'Oil-and-Gas',
-    id: 'oil-and-gas',
-    bg: '#CC6666',
-  },
+  // TODO: hide the oil-and-gas page temporarily for incoming demos
+  // {
+  //   label: 'Oil-and-Gas',
+  //   id: 'oil-and-gas',
+  //   bg: '#CC6666',
+  // },
   // {
   //   label: 'Demand',
   //   id: 'demand',
