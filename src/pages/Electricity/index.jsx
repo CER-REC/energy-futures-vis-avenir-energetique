@@ -220,7 +220,7 @@ const Electricity = ({ data, year }) => {
           size: getSize(node.value),
           color: { ...colorSources, ...colorRegions }[node.name],
           translation: intl.formatMessage({
-            id: `${config.view === 'source' ? 'regions' : 'common.sources.electricity'}.${node.name}`,
+            id: `${config.view === 'source' ? 'common.regions' : 'common.sources.electricity'}.${node.name}`,
           }),
         })),
         style: {
@@ -249,8 +249,11 @@ const Electricity = ({ data, year }) => {
           <div className={classes.annotationCircle} />
           <div className={classes.annotationCircle} />
         </Grid>
-        <Grid item xs={6}><Typography variant="caption">Amount by {config.view === 'region' ? 'source' : 'region'}</Typography></Grid>
-        <Grid item xs={6}><Typography variant="caption">Total Amount</Typography></Grid>
+        <Grid item xs={6}>
+          {config.view === 'region' && <Typography variant="caption">{intl.formatMessage({ id: 'common.electricity.amount.bySource' })}</Typography>}
+          {config.view === 'source' && <Typography variant="caption">{intl.formatMessage({ id: 'common.electricity.amount.byRegion' })}</Typography>}
+        </Grid>
+        <Grid item xs={6}><Typography variant="caption">{intl.formatMessage({ id: 'common.electricity.amount.total' })}</Typography></Grid>
       </Grid>
 
       {processedData.map(entry => (

@@ -7,7 +7,7 @@ import { CHART_PROPS, CHART_AXIS_PROPS, UNIT_NAMES } from '../../constants';
 import { formatUnitAbbreviation } from '../../utilities/convertUnit';
 import { getMaxTick } from '../../utilities/parseData';
 import convertHexToRGB from '../../utilities/convertHexToRGB';
-import ForecastBar from '../../components/ForecastBar';
+import forecastLayer from '../../components/ForecastLayer';
 import MaxTick from '../../components/MaxTick';
 
 const ByRegion = ({ data, year }) => {
@@ -25,6 +25,11 @@ const ByRegion = ({ data, year }) => {
   }, [regions.colors]);
 
   const colors = customColorProp(year.max, year.forecastStart, convertHexToRGB);
+
+  /**
+   * The forecast bar.
+   */
+  const forecast = useMemo(() => forecastLayer({ year }), [year]);
 
   /**
    * A "hacky" but sufficient way to reselect all regions after
@@ -61,31 +66,27 @@ const ByRegion = ({ data, year }) => {
   }
 
   return (
-    <>
-      {/* Its worth considering whether or not the forecast bar can be a Nivo layer */}
-      <ForecastBar year={year} />
-      <ResponsiveBar
-        {...CHART_PROPS}
-        data={data}
-        keys={keys}
-        indexBy="year"
-        maxValue={axis.highest}
-        padding={0.1}
-        colors={colors}
-        borderColor={{ from: 'color', modifiers: [['darker', 1.6]] }}
-        axisBottom={{
-          ...CHART_AXIS_PROPS,
-          format: yearLabel => ((yearLabel % 5) ? '' : yearLabel),
-        }}
-        axisRight={{
-          ...CHART_AXIS_PROPS,
-          tickValues: axis.ticks,
-          format: axisFormat,
-        }}
-        tooltipFormat={value => formatUnitAbbreviation(value, UNIT_NAMES[config.unit])}
-        gridYValues={axis.ticks}
-      />
-    </>
+    <ResponsiveBar
+      {...CHART_PROPS}
+      data={data}
+      keys={keys}
+      layers={['grid', 'axes', 'bars', 'markers', forecast]}
+      indexBy="year"
+      maxValue={axis.highest}
+      colors={colors}
+      borderColor={{ from: 'color', modifiers: [['darker', 1.6]] }}
+      axisBottom={{
+        ...CHART_AXIS_PROPS,
+        format: yearLabel => ((yearLabel % 5) ? '' : yearLabel),
+      }}
+      axisRight={{
+        ...CHART_AXIS_PROPS,
+        tickValues: axis.ticks,
+        format: axisFormat,
+      }}
+      tooltipFormat={value => formatUnitAbbreviation(value, UNIT_NAMES[config.unit])}
+      gridYValues={axis.ticks}
+    />
   );
 };
 

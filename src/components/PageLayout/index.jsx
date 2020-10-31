@@ -1,8 +1,6 @@
 import React, { useEffect, useMemo, Children, cloneElement } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles, Grid, Typography, CircularProgress } from '@material-ui/core';
-import LinkIcon from '@material-ui/icons/Link';
-import EmailIcon from '@material-ui/icons/Email';
 import Alert from '@material-ui/lab/Alert';
 import AlertTitle from '@material-ui/lab/AlertTitle';
 import { useIntl } from 'react-intl';
@@ -21,7 +19,7 @@ import {
   LinkButtonContentAssumptions, LinkButtonContentKeyFindings, LinkButtonContentResults,
   LinkButtonContentReport, LinkButtonContentMethodology, LinkButtonContentAbout,
 } from '../LinkButtonGroup/contents';
-import { IconTwitter, IconFacebook, IconLinkedIn } from '../../icons';
+import Share from '../Share';
 
 const LEAD_COL_WIDTH = 400;
 
@@ -94,7 +92,7 @@ const PageLayout = ({
    * Reset the source list when opening 'by-sector' and 'electricity' pages.
    */
   useEffect(
-    // TODO: This logic should be in the reducer when that is implemented
+    // TODO: This logic should be in the reducer when that is implemented (B-07744)
     () => {
       let selectedSources = config.sources;
       let selectedSourceOrder = config.sourceOrder;
@@ -130,7 +128,11 @@ const PageLayout = ({
         sourceOrder: selectedSourceOrder,
       });
     },
-    [config.page, config.sector], // eslint-disable-line react-hooks/exhaustive-deps
+    // config.mainSelection needs to be a dependency because
+    // the oil and gas viz changed query parameters on mainSelection change.
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [config.page, config.mainSelection, config.sector],
   );
 
   /**
@@ -149,7 +151,7 @@ const PageLayout = ({
       ...items,
       [region]: {
         color: regions.colors[region],
-        label: intl.formatMessage({ id: `regions.${region}` }),
+        label: intl.formatMessage({ id: `common.regions.${region}` }),
       },
     }), {}),
     [regions, intl],
@@ -176,20 +178,7 @@ const PageLayout = ({
           </Grid>
           <Grid item style={{ flexGrow: 1 }}><YearSelect /></Grid>
           <Grid item className={classes.report}>
-            <LinkButtonGroup
-              labels={[
-                [
-                  { name: 'download data' },
-                ], [
-                  { icon: <LinkIcon />, name: 'Copy Link', content: () => {} },
-                  { icon: <IconLinkedIn />, name: 'LinkedIn', content: () => {} },
-                  { icon: <IconFacebook />, name: 'Facebook', content: () => {} },
-                  { icon: <IconTwitter />, name: 'Twitter', content: () => {} },
-                  { icon: <EmailIcon />, name: 'Email', content: () => {} },
-                ],
-              ]}
-              accent="right"
-            />
+            <Share />
           </Grid>
         </Grid>
       </Grid>
@@ -209,13 +198,13 @@ const PageLayout = ({
           title="Context"
           labels={[
             [
-              { name: 'report', content: <LinkButtonContentReport /> },
-              { name: 'assumptions', content: <LinkButtonContentAssumptions yearId={config.yearId} /> },
-              { name: 'key findings', content: <LinkButtonContentKeyFindings yearId={config.yearId} /> },
-              { name: 'results', content: <LinkButtonContentResults yearId={config.yearId} /> },
+              { name: intl.formatMessage({ id: 'links.Report.title' }), content: <LinkButtonContentReport /> },
+              { name: intl.formatMessage({ id: 'links.Assumptions.title' }), content: <LinkButtonContentAssumptions yearId={config.yearId} /> },
+              { name: intl.formatMessage({ id: 'links.Findings.title' }), content: <LinkButtonContentKeyFindings yearId={config.yearId} /> },
+              { name: intl.formatMessage({ id: 'links.Results.title' }), content: <LinkButtonContentResults yearId={config.yearId} /> },
             ], [
-              { name: 'methodology', content: <LinkButtonContentMethodology /> },
-              { name: 'about', content: <LinkButtonContentAbout /> },
+              { name: intl.formatMessage({ id: 'links.Methodology.title' }), content: <LinkButtonContentMethodology /> },
+              { name: intl.formatMessage({ id: 'links.About.title' }), content: <LinkButtonContentAbout /> },
             ]]}
           className={classes.links}
         />

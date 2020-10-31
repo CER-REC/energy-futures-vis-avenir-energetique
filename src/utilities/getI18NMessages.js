@@ -4,10 +4,10 @@ export default translations => (
 
     switch (translation.group) {
       case 'REGION':
-        key = `regions.${translation.key}`;
+        key = `common.regions.${translation.key}`;
         break;
       case 'SCENARIO':
-        key = `components.scenarioSelect.${translation.key}.title`;
+        key = `common.scenarios.${translation.key}`;
         break;
       case 'ELECTRICITY_SOURCE':
         key = `common.sources.electricity.${translation.key}`;

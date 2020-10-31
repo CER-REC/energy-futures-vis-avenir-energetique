@@ -14,6 +14,8 @@ import '@formatjs/intl-relativetimeformat/locale-data/fr';
 
 import { lang } from '../../constants';
 import i18nMessages from '../../i18n';
+import aboutEnglish from '../../languages/about.english.md';
+import aboutFrench from '../../languages/about.french.md';
 import ErrorBoundary from '../../components/ErrorBoundary';
 import LoadingIndicator from '../../components/LoadingIndicator';
 import UnsupportedWarning from '../../components/UnsupportedWarning';
@@ -31,7 +33,7 @@ const Loader = () => {
   let content;
   const { loading, error, translations } = useAPI();
   const messages = useMemo(
-    () => ({ ...translations[lang], ...i18nMessages[lang] }),
+    () => ({ ...translations[lang], ...i18nMessages[lang], about: lang === 'fr' ? aboutFrench : aboutEnglish }),
     [translations],
   );
 
@@ -54,7 +56,7 @@ const Loader = () => {
   }
 
   return (
-    <IntlProvider locale={lang} messages={messages}>
+    <IntlProvider locale={lang} defaultLocale={lang} messages={messages}>
       <ErrorBoundary>
         {content}
       </ErrorBoundary>
