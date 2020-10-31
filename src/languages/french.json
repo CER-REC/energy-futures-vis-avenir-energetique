@@ -30,6 +30,13 @@
       "electricityGeneration": "Production d’électricité",
       "oilProduction": "Production de pétrole",
       "gasProduction": "Production de gaz"
+    },
+    "electricity": {
+      "amount": {
+        "bySource": "QUANTITÉ PAR SOURCE",
+        "byRegion": "QUANTITÉ PAR RÉGION",
+        "total": "QUANTITÉ TOTALE"
+      }
     }
   },
   "components": {

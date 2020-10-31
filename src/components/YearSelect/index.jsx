@@ -1,7 +1,6 @@
 import React, { useMemo } from 'react';
 import { useIntl } from 'react-intl';
 import { makeStyles, Grid, Typography, Button, Tooltip } from '@material-ui/core';
-import Markdown from 'react-markdown';
 
 import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
@@ -40,7 +39,7 @@ const YearSelect = () => {
           <Tooltip
             title={(
               <Typography variant="caption" color="secondary">
-                <Markdown>{intl.formatMessage({ id: `components.yearSelect.${yearId}.description` })}</Markdown>
+                {intl.formatMessage({ id: `components.yearSelect.${yearId}.title` })}
               </Typography>
             )}
           >
