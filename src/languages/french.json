@@ -233,7 +233,7 @@
         "description": "Il s’agit de la quantité de pétrole brut produit au Canada. Plusieurs régions produisent du pétrole brut à partir de diverses techniques. La production de pétrole comprend celle de bitume (extraction à ciel ouvert et in situ) provenant des sables bitumineux; le pétrole léger et le pétrole classiques issus du bassin sédimentaire de l’Ouest canadien et d’autres régions du pays; les condensats; et le pétrole produit à partir des plateformes de forage au large de la côte Est."
       },
       "gasProduction": {
-        "title": "Production de gaz naturel",
+        "title": "Production de gaz",
         "description": "Elle désigne la quantité de gaz naturel commercialisable produit au Canada. Plusieurs régions produisent du gaz naturel à partir de diverses techniques. La production de gaz naturel comprend le gaz de réservoirs étanches, le gaz de schiste, le méthane de houille, le gaz classique et le gaz tiré de l’exploitation des puits de pétrole (aussi appelé gaz associé ou gaz dissous)."
       }
     },
