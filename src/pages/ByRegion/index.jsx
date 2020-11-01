@@ -1,9 +1,10 @@
 import React, { useEffect, useMemo, useCallback } from 'react';
+import { useIntl } from 'react-intl';
 import { ResponsiveBar } from '@nivo/bar';
 import PropTypes from 'prop-types';
 import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
-import { CHART_PROPS, CHART_AXIS_PROPS, UNIT_NAMES } from '../../constants';
+import { CHART_PROPS, CHART_AXIS_PROPS } from '../../constants';
 import { formatUnitAbbreviation } from '../../utilities/convertUnit';
 import { getMaxTick } from '../../utilities/parseData';
 import convertHexToRGB from '../../utilities/convertHexToRGB';
@@ -12,6 +13,7 @@ import MaxTick from '../../components/MaxTick';
 
 const ByRegion = ({ data, year }) => {
   const { regions } = useAPI();
+  const intl = useIntl();
   const { config, setConfig } = useConfig();
 
   /**
@@ -84,7 +86,7 @@ const ByRegion = ({ data, year }) => {
         tickValues: axis.ticks,
         format: axisFormat,
       }}
-      tooltipFormat={value => formatUnitAbbreviation(value, UNIT_NAMES[config.unit])}
+      tooltipFormat={value => formatUnitAbbreviation(value, intl.formatMessage({ id: `common.units.${config.unit}` }))}
       gridYValues={axis.ticks}
     />
   );
