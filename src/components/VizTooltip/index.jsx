@@ -3,7 +3,6 @@ import { useIntl } from 'react-intl';
 import PropTypes from 'prop-types';
 import { makeStyles, Paper, Grid } from '@material-ui/core';
 import { formatUnitAbbreviation } from '../../utilities/convertUnit';
-import { UNIT_NAMES } from '../../constants';
 
 const useStyles = makeStyles(theme => ({
   paper: { padding: theme.spacing(2) },
@@ -28,7 +27,7 @@ const VizTooltip = ({ nodes, total, unit, year, paper, showTotal, showPercentage
         ...(showTotal && nodes && nodes.length > 1 ? [{ name: intl.formatMessage({ id: 'components.draggableVerticalList.all' }), value: sum }] : []),
       ].filter(node => Math.abs(node.value) > Number.EPSILON).map((node) => {
         const showUnit = node.value === sum || !showPercentage;
-        const num = formatUnitAbbreviation(node.value, showUnit && UNIT_NAMES[unit]);
+        const num = formatUnitAbbreviation(node.value, showUnit && intl.formatMessage({ id: `common.units.${unit}` }));
         const suffix = showUnit ? '' : `(${((node.value / sum) * 100).toFixed(1)}%)`;
         return (
           <Grid item key={`viz-legend-item-${node.name}-${node.value}`}>

@@ -233,7 +233,7 @@
         "description": "The amount of crude oil produced in Canada. Crude oil is produced from various areas using different technologies. This includes mined and in situ bitumen from the oil sands, conventional light and heavy oil produced in the Western Canadian Sedimentary Basin and other parts of Canada, condensate, and oil produced from off-shore platforms on the east coast."
       },
       "gasProduction": {
-        "title": "Natural Gas Production",
+        "title": "Gas Production",
         "description": "The amount of marketable natural gas produced in Canada. Natural gas is produced from various areas using different technologies. This includes tight, shale, coal bed methane, conventional, and natural gas produced along with oil from oil wells (also termed associated or solution gas)."
       }
     },

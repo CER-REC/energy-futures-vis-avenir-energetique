@@ -19,17 +19,6 @@ export const lang = (typeof document !== 'undefined'
     && window.localStorage.getItem('dev-lang') === 'fr')
   ? 'fr' : 'en';
 
-// TODO: Remove and replace using intl in the relevant components for translations
-export const UNIT_NAMES = {
-  petajoules: 'PJ',
-  kilobarrelEquivalents: 'mBOE/d',
-  gigawattHours: 'GW.h',
-  kilobarrels: 'kB/d',
-  thousandCubicMetres: 'km³/d',
-  cubicFeet: 'Bcf/d',
-  millionCubicMetres: 'Mm³/d',
-};
-
 export const PAGES = [
   {
     label: 'Landing',
