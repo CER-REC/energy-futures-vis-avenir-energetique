@@ -8,8 +8,8 @@ import useConfig from '../../hooks/useConfig';
 import { CHART_PROPS, CHART_AXIS_PROPS, CHART_PATTERNS, OIL_SUBGROUP } from '../../constants';
 import { getMaxTick } from '../../utilities/parseData';
 
-import ForecastBar from '../../components/ForecastBar';
 import { fadeLayerBySector } from '../../components/FadeLayer';
+import forecastLayer from '../../components/ForecastLayer';
 import MaxTick from '../../components/MaxTick';
 import VizTooltip from '../../components/VizTooltip';
 
@@ -53,6 +53,11 @@ const BySector = ({ data, year }) => {
   );
 
   /**
+   * The forecast bar.
+   */
+  const forecast = useMemo(() => forecastLayer({ year }), [year]);
+
+  /**
    * Format tooltip.
    */
   const getTooltip = useCallback(event => (
@@ -92,33 +97,30 @@ const BySector = ({ data, year }) => {
   }
 
   return (
-    <>
-      <ForecastBar year={year} />
-      <ResponsiveLine
-        {...CHART_PROPS}
-        data={orderedData}
-        layers={['grid', 'axes', 'crosshair', 'lines', 'points', 'slices', 'areas', fade]}
-        xScale={{ type: 'point' }}
-        yScale={{ type: 'linear', min: 0, max: axis.highest, stacked: true }}
-        curve="cardinal"
-        axisRight={{
-          ...CHART_AXIS_PROPS,
-          tickValues: axis.ticks,
-          format: axisFormat,
-        }}
-        axisBottom={{
-          ...CHART_AXIS_PROPS,
-          format: value => ((value % 5) ? '' : value),
-        }}
-        colors={d => colors[d.id]}
-        lineWidth={0}
-        enablePoints={false}
-        enableSlices="x"
-        sliceTooltip={getTooltip}
-        gridYValues={axis.ticks}
-        defs={CHART_PATTERNS}
-      />
-    </>
+    <ResponsiveLine
+      {...CHART_PROPS}
+      data={orderedData}
+      layers={['grid', 'axes', 'crosshair', 'lines', 'points', 'slices', 'areas', fade, forecast]}
+      xScale={{ type: 'point' }}
+      yScale={{ type: 'linear', min: 0, max: axis.highest, stacked: true }}
+      curve="cardinal"
+      axisRight={{
+        ...CHART_AXIS_PROPS,
+        tickValues: axis.ticks,
+        format: axisFormat,
+      }}
+      axisBottom={{
+        ...CHART_AXIS_PROPS,
+        format: value => ((value % 5) ? '' : value),
+      }}
+      colors={d => colors[d.id]}
+      lineWidth={0}
+      enablePoints={false}
+      enableSlices="x"
+      sliceTooltip={getTooltip}
+      gridYValues={axis.ticks}
+      defs={CHART_PATTERNS}
+    />
   );
 };
 

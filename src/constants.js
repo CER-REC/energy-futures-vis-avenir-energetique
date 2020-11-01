@@ -19,17 +19,6 @@ export const lang = (typeof document !== 'undefined'
     && window.localStorage.getItem('dev-lang') === 'fr')
   ? 'fr' : 'en';
 
-// TODO: Remove and replace using intl in the relevant components for translations
-export const UNIT_NAMES = {
-  petajoules: 'PJ',
-  kilobarrelEquivalents: 'mBOE/d',
-  gigawattHours: 'GW.h',
-  kilobarrels: 'kB/d',
-  thousandCubicMetres: 'km³/d',
-  cubicFeet: 'Bcf/d',
-  millionCubicMetres: 'Mm³/d',
-};
-
 export const PAGES = [
   {
     label: 'Landing',
@@ -58,11 +47,12 @@ export const PAGES = [
     id: 'scenarios',
     bg: '#CA9830',
   },
-  {
-    label: 'Oil-and-Gas',
-    id: 'oil-and-gas',
-    bg: '#CC6666',
-  },
+  // TODO: hide the oil-and-gas page temporarily for incoming demos
+  // {
+  //   label: 'Oil-and-Gas',
+  //   id: 'oil-and-gas',
+  //   bg: '#CC6666',
+  // },
   // {
   //   label: 'Demand',
   //   id: 'demand',
@@ -113,19 +103,19 @@ export const SCENARIO_COLOR = {
 };
 
 export const REGION_COLORS = {
-  YT: '#4E513F',
-  SK: '#4D8255',
-  QC: '#985720',
-  PE: '#E49FAB',
-  ON: '#E4812C',
-  NU: '#683A96',
-  NT: '#DA4367',
-  NS: '#7773AF',
-  NL: '#87C859',
-  NB: '#B03AAB',
-  MB: '#F2CB53',
-  BC: '#82BCE4',
-  AB: '#274368',
+  YT: '#4B5E5B',
+  SK: '#1C7F24',
+  QC: '#AB5614',
+  PE: '#FAA0AD',
+  ON: '#FF821E',
+  NU: '#753B95',
+  NT: '#FC4169',
+  NS: '#7A73B3',
+  NL: '#5DCA4F',
+  NB: '#CC37B0',
+  MB: '#FFCC47',
+  BC: '#5FBEE6',
+  AB: '#054169',
 };
 
 export const SOURCE_COLORS = {
@@ -146,13 +136,20 @@ export const SOURCE_COLORS = {
     OIL: '#FF821E',
   },
   gas: {
-    CBM: '#4D8255',
-    SHALE: '#7ACBCB',
-    SOLUTION: '#F2CB53',
-    TIGHT: "won't work since it's missing",
-    NA: "won't work since it's missing",
+    CBM: '#9A65BA',
+    SHALE: '#9B938A',
+    SOLUTION: '#FA86AC',
+    TIGHT: '#8C0038',
+    NA: '#FFCC47',
   },
-  oil: {},
+  oil: {
+    C5: '#96B6CF',
+    CONDENSATE: '#9B938A',
+    HEAVY: '#FFCC47',
+    ISB: '#FF821E',
+    LIGHT: '#9A65BA',
+    MB: '#4D4C45',
+  },
   transportation: {
     AVIATION: '#FF821E',
     GASOLINE: '#FF821E',
