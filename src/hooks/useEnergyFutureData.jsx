@@ -93,7 +93,8 @@ export default () => {
     return config.sources;
   }, [config.page, config.sources, sourceOrder, config.mainSelection, config.sector]);
 
-  const { sourceType } = PAGES.find(page => page.id === config.page);
+  // const { sourceType } = PAGES.find(page => page.id === config.page);
+  const sourceType = undefined;
 
   // A GraphQL document node is needed even if skipping is specified
   const { loading, error, data } = useQuery(query || queries.NULL_QUERY, {
