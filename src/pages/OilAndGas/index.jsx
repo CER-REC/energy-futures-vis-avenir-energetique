@@ -13,6 +13,7 @@ import YearSlider from '../../components/YearSlider';
 import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
 import VizTooltip from '../../components/VizTooltip';
+import { IconOilAndGasGroup, IconOilAndGasRectangle } from '../../icons';
 
 const useStyles = makeStyles({
   cellsTop: {
@@ -107,7 +108,7 @@ const OilAndGas = ({ data, year }) => {
 
   const getSizeNumber = useCallback((treeData) => {
     // Calculates the base size all the tree maps will start with.
-    const bigChart = 450;
+    const bigChart = 230;
     const mediumChart = 230;
     const smallChart = 180;
 
@@ -126,10 +127,10 @@ const OilAndGas = ({ data, year }) => {
     // compared to the biggest one, giving it a size proportional to the biggest one.
     if (total < biggestTreeMap) {
       // This is so that really small numbers will show something
-      if (size * (total / biggestTreeMap) < 30) {
+      if (size * (Math.sqrt(total / biggestTreeMap)) < 30) {
         return 30;
       }
-      return size * (total / biggestTreeMap);
+      return size * (Math.sqrt(total / biggestTreeMap));
     }
     return size;
   }, []);
@@ -303,9 +304,8 @@ const OilAndGas = ({ data, year }) => {
       <div style={{ backgroundColor: '#F3F3F3', height: 100, width: 280, position: 'absolute', bottom: 5, right: 5 }}>
         <Typography align='center'>Legend</Typography>
         <Typography align='center'>Type of Oil &#40;Year selected&#41;</Typography>
-        <Typography align='center'>Region: Amount produced &#40;% of total in CAN&#41;</Typography>
-        <Typography align='center'>CAN: Total amount produced in Canada</Typography>
-
+        <Typography align='left'><IconOilAndGasRectangle />Region: Amount produced &#40;% of total in CAN&#41;</Typography>
+        <Typography align='left'><IconOilAndGasGroup />CAN: Total amount produced in Canada</Typography>
       </div>
     </>
   );

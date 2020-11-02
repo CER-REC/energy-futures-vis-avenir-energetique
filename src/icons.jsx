@@ -324,3 +324,20 @@ export const IconPageOilAndGas = props => (
     />
   </SvgIcon>
 );
+
+export const IconOilAndGasGroup = props => (
+  <SvgIcon {...props} width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M14 1H1V25H14V1Z" fill="#C4C4C4" stroke="white" />
+    <path d="M21 12H14V25H21V12Z" fill="#5E5E5E" stroke="white" />
+    <path d="M25 19H21V25H25V19Z" fill="black" fillOpacity="0.74" stroke="white" />
+    <path d="M25 12H21V19H25V12Z" fill="#8A8A8A" stroke="white" />
+    <path d="M25 1H14V12H25V1Z" fill="#858585" stroke="white" />
+  </SvgIcon>
+
+);
+export const IconOilAndGasRectangle = props => (
+  <SvgIcon {...props} width="10" height="16" viewBox="0 0 10 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0 0.84848H10V15.0909H0V0.84848Z" fill="#83868E" />
+  </SvgIcon>
+
+);
