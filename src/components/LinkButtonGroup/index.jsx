@@ -106,6 +106,7 @@ const LinkButtonGroup = ({ title, labels, accent, className }) => {
               <Button
                 variant="contained"
                 color={select === label.name ? 'primary' : 'secondary'}
+                aria-label={label.name}
                 onClick={typeof label.content === 'function' ? label.content : handleSelect(label)}
                 onMouseEnter={handleSelect(label)}
                 className={`${classes.btn} ${label.icon && classes.btnIcon}`}

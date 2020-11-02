@@ -87,7 +87,9 @@ const Hint = ({ children, content, maxWidth = 'sm' }) => {
     <>
       <Grid container alignItems="center" wrap="nowrap" className={classes.root}>
         {children}
-        <IconButton onClick={() => setOpen(true)} className={classes.hint}><HintIcon fontSize="small" /></IconButton>
+        <IconButton onClick={() => setOpen(true)} aria-label="open description dialog" className={classes.hint}>
+          <HintIcon fontSize="small" />
+        </IconButton>
       </Grid>
 
       <Dialog
@@ -96,7 +98,9 @@ const Hint = ({ children, content, maxWidth = 'sm' }) => {
         onClose={() => setOpen(false)}
         classes={{ paper: classes.dialog }}
       >
-        <Fab color="primary" size="medium" onClick={() => setOpen(false)} className={classes.close}><CloseIcon /></Fab>
+        <Fab color="primary" size="medium" onClick={() => setOpen(false)} aria-label="close description dialog" className={classes.close}>
+          <CloseIcon />
+        </Fab>
         <DialogContent style={{ padding: 24 }}>
           {typeof content === 'string' ? content : (
             <Grid container spacing={4}>
