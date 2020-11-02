@@ -242,12 +242,7 @@ HintViewSelect.defaultProps = { children: null };
 // TODO: translate this.
 const HintDraggableListKeyboardShortcut = ({
   title: 'Keyboard Shortcut',
-  text: '\
-- **Spacebar:** start to drag or drop\n\
-- **Escapse:** cancel the drag\n\
-- **Up Arrow:** move an item upwards\n\
-- **Down Arrow:** move an item downwards\n\
-',
+  text: '- **Spacebar:** start to drag or drop\n- **Escapse:** cancel the drag\n- **Up Arrow:** move an item upwards\n- **Down Arrow:** move an item downwards\n',
 });
 
 /**
@@ -256,11 +251,11 @@ const HintDraggableListKeyboardShortcut = ({
 export const HintRegionList = ({ children }) => {
   const intl = useIntl();
   const { regions } = useAPI();
-  const section = useMemo(() => ['ALL', ...regions.order].map(region => ({
+  const section = useMemo(() => [...['ALL', ...regions.order].map(region => ({
     title: region,
     text: intl.formatMessage({ id: `common.regions.${region}` }),
-  })), [intl, regions]);
-  return <Hint content={[<HintSection section={[...section, HintDraggableListKeyboardShortcut]} singleColumn />]} maxWidth="xs">{children}</Hint>;
+  })), HintDraggableListKeyboardShortcut], [intl, regions]);
+  return <Hint content={[<HintSection section={section} singleColumn />]} maxWidth="xs">{children}</Hint>;
 };
 
 HintRegionList.propTypes = { children: PropTypes.node };
@@ -271,12 +266,12 @@ HintRegionList.defaultProps = { children: null };
  */
 export const HintSourceList = ({ sources, sourceType, children }) => {
   const intl = useIntl();
-  const section = useMemo(() => Object.keys(sources).map(source => ({
+  const section = useMemo(() => [...Object.keys(sources).map(source => ({
     title: sources[source].label,
     icon: sources[source].icon,
     text: intl.formatMessage({ id: `sources.${sourceType}.${source}` }),
-  })), [intl, sources, sourceType]);
-  return <Hint content={[<HintSection section={[...section, HintDraggableListKeyboardShortcut]} singleColumn />]}>{children}</Hint>;
+  })), HintDraggableListKeyboardShortcut], [intl, sources, sourceType]);
+  return <Hint content={[<HintSection section={section} singleColumn />]}>{children}</Hint>;
 };
 
 HintSourceList.propTypes = {
