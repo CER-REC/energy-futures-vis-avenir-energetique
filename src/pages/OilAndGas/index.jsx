@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from 'react';
 
 import PropTypes from 'prop-types';
-import { Grid, Typography, Button, makeStyles } from '@material-ui/core';
+import { Typography, Button, makeStyles } from '@material-ui/core';
 import { ResponsiveTreeMap } from '@nivo/treemap';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -151,8 +151,11 @@ const OilAndGas = ({ data, year }) => {
     // and the total percentage is recalculated, making the percentage wrong
     const totalGrandTotal = treeData.reduce((acc, val) => acc + val.total, 0);
     const size = getSizeNumber(treeData);
+    const regularTreeMaps = [];
+    const smallTreeMaps = [];
 
-    return treeData.map((source) => {
+    // eslint-disable-next-line consistent-return
+    treeData.forEach((source) => {
       if (source.total <= 0) {
         return null;
       }
@@ -167,50 +170,100 @@ const OilAndGas = ({ data, year }) => {
 
       const percentage = ((sortedSource.total / totalGrandTotal) * 100).toFixed(2);
 
-      return (
-        <Grid
-          item
-          key={sortedSource.name}
-          style={{
-            bottom: 0,
+      if (percentage <= 1) {
+        smallTreeMaps.push(
+          <div style={{ display: 'inline-block' }}>
+            {!isTopChart && <div style={{ marginLeft: 'calc(50% - 0.5px)', borderLeft: '1px dashed black', height: 20 }} />}
 
-          }}
-        >
-          {!isTopChart && <div style={{ marginLeft: 'calc(50% - 0.5px)', borderLeft: '1px dashed black', height: 20 }} />}
+            <Typography align='left' varient="body1" style={{ bottom: 0 }}>
+              { sortedSource.name }
+            </Typography>
 
-          <Typography align='center' varient="body1" style={{ bottom: 0 }}>
-            {config.view === 'region' ? `${sortedSource.name}: ${percentage}%` : sortedSource.name}
-          </Typography>
-
-          <div style={{
-            height: sizeMultiplier(sortedSource.total, size, biggestTreeMapTotal) || 0,
-            width: sizeMultiplier(sortedSource.total, size, biggestTreeMapTotal) || 0,
-          }}
-          >
-            <ResponsiveTreeMap
-              key={sortedSource.name}
-              root={sortedSource}
+            <div style={{
+              height: sizeMultiplier(sortedSource.total, size, biggestTreeMapTotal) || 0,
+              width: sizeMultiplier(sortedSource.total, size, biggestTreeMapTotal) || 0,
+            }}
+            >
+              <ResponsiveTreeMap
+                key={sortedSource.name}
+                root={sortedSource}
                 tile='squarify'
-              identity="name"
-              value="value"
-              margin={{ top: 10, right: 10, bottom: 10, left: 10 }}
-              enableLabel={false}
-              colors={d => (config.view === 'source'
-                ? regionColors[d.name]
-                : tempColors[d.name])}
-              borderWidth={2}
-              borderColor="white"
-              animate
-              motionStiffness={90}
-              motionDamping={11}
-              tooltip={getTooltip}
-            />
-          </div>
-          {(compare && isTopChart) && <div style={{ marginLeft: 'calc(50% - 0.5px)', borderLeft: '1px dashed black', height: 10 }} />}
+                identity="name"
+                value="value"
+                margin={{ top: 10, right: 10, bottom: 10, left: 10 }}
+                enableLabel={false}
+                colors={d => (config.view === 'source'
+                  ? regionColors[d.name]
+                  : tempColors[d.name])}
+                borderWidth={2}
+                borderColor="white"
+                animate
+                motionStiffness={90}
+                motionDamping={11}
+                tooltip={getTooltip}
+              />
+            </div>
+            {(compare && isTopChart) && <div style={{ marginLeft: 'calc(50% - 0.5px)', borderLeft: '1px dashed black', height: 10 }} />}
+          </div>,
+        );
+      } else {
+        regularTreeMaps.push(
+          <TableCell
+            key={sortedSource.name}
+            align="right"
+            className={isTopChart ? classes.cellsTop : classes.cellsBottom}
+          >
+            {!isTopChart && <div style={{ marginLeft: 'calc(50% - 0.5px)', borderLeft: '1px dashed black', height: 20 }} />}
 
-        </Grid>
-      );
+            <Typography align='center' varient="body1" style={{ bottom: 0 }}>
+              {config.view === 'region' ? `${sortedSource.name}: ${percentage}%` : sortedSource.name}
+            </Typography>
+
+            <div style={{
+              height: sizeMultiplier(sortedSource.total, size, biggestTreeMapTotal) || 0,
+              width: sizeMultiplier(sortedSource.total, size, biggestTreeMapTotal) || 0,
+            }}
+            >
+              <ResponsiveTreeMap
+                key={sortedSource.name}
+                root={sortedSource}
+                tile='squarify'
+                identity="name"
+                value="value"
+                margin={{ top: 10, right: 10, bottom: 10, left: 10 }}
+                enableLabel={false}
+                colors={d => (config.view === 'source'
+                  ? regionColors[d.name]
+                  : tempColors[d.name])}
+                borderWidth={2}
+                borderColor="white"
+                animate
+                motionStiffness={90}
+                motionDamping={11}
+                tooltip={getTooltip}
+              />
+            </div>
+            {(compare && isTopChart) && <div style={{ marginLeft: 'calc(50% - 0.5px)', borderLeft: '1px dashed black', height: 10 }} />}
+
+          </TableCell>,
+        );
+      }
     });
+
+    return (
+      <TableRow key={`treeMapCollection${isTopChart ? 'Top' : 'Bottom'}`}>
+        {regularTreeMaps}
+        <TableCell
+          key="smallMaps"
+          // align="right"
+          className={isTopChart ? classes.cellsTop : classes.cellsBottom}
+        >
+          <div style={{ border: '2px solid black' }}>
+            {smallTreeMaps}
+          </div>
+        </TableCell>
+      </TableRow>
+    );
   };
 
   return (
@@ -253,16 +306,7 @@ const OilAndGas = ({ data, year }) => {
           <Table>
             <TableBody>
 
-              <TableRow key="treeMapCollection1" className={classes.treeMapCollection1}>
-                {treeMapCollection(currentYearData || [], true).map(treeMap => (
-                  <TableCell
-                    key={treeMap.name}
-                    align="right"
-                    className={classes.cellsTop}
-                  >{treeMap}
-                  </TableCell>
-                ))}
-              </TableRow>
+              {treeMapCollection(currentYearData || [], true)}
 
               <TableRow key="yearSlider">
                 <TableCell
@@ -284,18 +328,7 @@ const OilAndGas = ({ data, year }) => {
                 </TableCell>
               </TableRow>
 
-              {compare && (
-              <TableRow key="treeMapCollection2" className={classes.treeMapCollection2}>
-                {treeMapCollection(compareYearData || [], false).map(treeMap => (
-                  <TableCell
-                    key={treeMap.name}
-                    align="right"
-                    className={classes.cellsBottom}
-                  >{treeMap}
-                  </TableCell>
-                ))}
-              </TableRow>
-              )}
+              {compare && treeMapCollection(compareYearData || [], false)}
 
             </TableBody>
           </Table>
