@@ -19,17 +19,6 @@ export const lang = (typeof document !== 'undefined'
     && window.localStorage.getItem('dev-lang') === 'fr')
   ? 'fr' : 'en';
 
-// TODO: Remove and replace using intl in the relevant components for translations
-export const UNIT_NAMES = {
-  petajoules: 'PJ',
-  kilobarrelEquivalents: 'mBOE/d',
-  gigawattHours: 'GW.h',
-  kilobarrels: 'kB/d',
-  thousandCubicMetres: 'km³/d',
-  cubicFeet: 'Bcf/d',
-  millionCubicMetres: 'Mm³/d',
-};
-
 export const PAGES = [
   {
     label: 'Landing',
@@ -58,11 +47,12 @@ export const PAGES = [
     id: 'scenarios',
     bg: '#CA9830',
   },
-  {
-    label: 'Oil-and-Gas',
-    id: 'oil-and-gas',
-    bg: '#CC6666',
-  },
+  // TODO: hide the oil-and-gas page temporarily for incoming demos
+  // {
+  //   label: 'Oil-and-Gas',
+  //   id: 'oil-and-gas',
+  //   bg: '#CC6666',
+  // },
   // {
   //   label: 'Demand',
   //   id: 'demand',

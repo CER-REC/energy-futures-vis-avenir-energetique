@@ -92,7 +92,7 @@ const PageLayout = ({
    * Reset the source list when opening 'by-sector' and 'electricity' pages.
    */
   useEffect(
-    // TODO: This logic should be in the reducer when that is implemented
+    // TODO: This logic should be in the reducer when that is implemented (B-07744)
     () => {
       let selectedSources = config.sources;
       let selectedSourceOrder = config.sourceOrder;
@@ -131,7 +131,8 @@ const PageLayout = ({
     // config.mainSelection needs to be a dependency because
     // the oil and gas viz changed query parameters on mainSelection change.
 
-    [config.page, config.mainSelection, config.sector, config.sources], // eslint-disable-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [config.page, config.mainSelection, config.sector],
   );
 
   /**
@@ -197,13 +198,13 @@ const PageLayout = ({
           title="Context"
           labels={[
             [
-              { name: 'report', content: <LinkButtonContentReport /> },
-              { name: 'assumptions', content: <LinkButtonContentAssumptions yearId={config.yearId} /> },
-              { name: 'key findings', content: <LinkButtonContentKeyFindings yearId={config.yearId} /> },
-              { name: 'results', content: <LinkButtonContentResults yearId={config.yearId} /> },
+              { name: intl.formatMessage({ id: 'links.Report.title' }), content: <LinkButtonContentReport /> },
+              { name: intl.formatMessage({ id: 'links.Assumptions.title' }), content: <LinkButtonContentAssumptions yearId={config.yearId} /> },
+              { name: intl.formatMessage({ id: 'links.Findings.title' }), content: <LinkButtonContentKeyFindings yearId={config.yearId} /> },
+              { name: intl.formatMessage({ id: 'links.Results.title' }), content: <LinkButtonContentResults yearId={config.yearId} /> },
             ], [
-              { name: 'methodology', content: <LinkButtonContentMethodology /> },
-              { name: 'about', content: <LinkButtonContentAbout /> },
+              { name: intl.formatMessage({ id: 'links.Methodology.title' }), content: <LinkButtonContentMethodology /> },
+              { name: intl.formatMessage({ id: 'links.About.title' }), content: <LinkButtonContentAbout /> },
             ]]}
           className={classes.links}
         />
