@@ -172,8 +172,7 @@ const OilAndGas = ({ data, year }) => {
           key={sortedSource.name}
           style={{
             bottom: 0,
-            height: sizeMultiplier(sortedSource.total, size, biggestTreeMapTotal) || 0,
-            width: sizeMultiplier(sortedSource.total, size, biggestTreeMapTotal) || 0,
+
           }}
         >
           {!isTopChart && <div style={{ marginLeft: 'calc(50% - 0.5px)', borderLeft: '1px dashed black', height: 20 }} />}
@@ -182,25 +181,30 @@ const OilAndGas = ({ data, year }) => {
             {config.view === 'region' ? `${sortedSource.name}: ${percentage}%` : sortedSource.name}
           </Typography>
 
-          <ResponsiveTreeMap
-            key={sortedSource.name}
-            root={sortedSource}
-            tile='sliceDice'
-            identity="name"
-            value="value"
-            margin={{ top: 10, right: 10, bottom: 10, left: 10 }}
-            enableLabel={false}
-            colors={d => (config.view === 'source'
-              ? regionColors[d.name]
-              : tempColors[d.name])}
-            borderWidth={2}
-            borderColor="white"
-            animate
-            motionStiffness={90}
-            motionDamping={11}
-            tooltip={getTooltip}
-          />
-
+          <div style={{
+            height: sizeMultiplier(sortedSource.total, size, biggestTreeMapTotal) || 0,
+            width: sizeMultiplier(sortedSource.total, size, biggestTreeMapTotal) || 0,
+          }}
+          >
+            <ResponsiveTreeMap
+              key={sortedSource.name}
+              root={sortedSource}
+              tile='sliceDice'
+              identity="name"
+              value="value"
+              margin={{ top: 10, right: 10, bottom: 10, left: 10 }}
+              enableLabel={false}
+              colors={d => (config.view === 'source'
+                ? regionColors[d.name]
+                : tempColors[d.name])}
+              borderWidth={2}
+              borderColor="white"
+              animate
+              motionStiffness={90}
+              motionDamping={11}
+              tooltip={getTooltip}
+            />
+          </div>
           {(compare && isTopChart) && <div style={{ marginLeft: 'calc(50% - 0.5px)', borderLeft: '1px dashed black', height: 10 }} />}
 
         </Grid>
