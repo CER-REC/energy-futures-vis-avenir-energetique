@@ -190,7 +190,7 @@ const OilAndGas = ({ data, year }) => {
             <ResponsiveTreeMap
               key={sortedSource.name}
               root={sortedSource}
-              tile='sliceDice'
+                tile='squarify'
               identity="name"
               value="value"
               margin={{ top: 10, right: 10, bottom: 10, left: 10 }}
