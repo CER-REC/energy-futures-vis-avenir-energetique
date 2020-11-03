@@ -32,23 +32,6 @@ const useStyles = makeStyles({
   slider: {},
 });
 
-// the oil and gas colors are not yet availible
-const tempColors = {
-  ALL: 'white',
-  CBM: 'red',
-  OIL: 'blue',
-  TIGHT: 'pink',
-  NA: 'orange',
-  SHALE: 'yellow',
-  SOLUTION: 'green',
-  MB: 'red',
-  ISB: 'blue',
-  HEAVY: 'pink',
-  LIGHT: 'orange',
-  CONDENSATE: 'yellow',
-  C5: 'green',
-};
-
 const OilAndGas = ({ data, year }) => {
   const classes = useStyles();
   const { config } = useConfig();
@@ -186,15 +169,16 @@ const OilAndGas = ({ data, year }) => {
       if (percentage <= 1) {
         smallTreeMaps.push(
           <div style={{ display: 'inline-block' }}>
-            {!isTopChart && <div style={{ marginLeft: 'calc(50% - 0.5px)', borderLeft: '1px dashed black', height: 20 }} />}
 
-            <Typography align='left' varient="body1" style={{ bottom: 0 }}>
+            <Typography varient="body1" style={{ bottom: 0 }}>
               { sortedSource.name }
             </Typography>
 
             <div style={{
               height: sizeMultiplier(sortedSource.total, size, biggestTreeMapTotal) || 0,
               width: sizeMultiplier(sortedSource.total, size, biggestTreeMapTotal) || 0,
+              margin: 'auto',
+              textAlign: 'center',
             }}
             >
               <ResponsiveTreeMap
@@ -214,14 +198,12 @@ const OilAndGas = ({ data, year }) => {
                 tooltip={getTooltip}
               />
             </div>
-            {(compare && isTopChart) && <div style={{ marginLeft: 'calc(50% - 0.5px)', borderLeft: '1px dashed black', height: 10 }} />}
           </div>,
         );
       } else {
         regularTreeMaps.push(
           <TableCell
             key={sortedSource.name}
-            align="right"
             className={isTopChart ? classes.cellsTop : classes.cellsBottom}
           >
             {!isTopChart && <div style={{ marginLeft: 'calc(50% - 0.5px)', borderLeft: '1px dashed black', height: 20 }} />}
@@ -231,8 +213,10 @@ const OilAndGas = ({ data, year }) => {
             </Typography>
 
             <div style={{
+              textAlign: 'center',
               height: sizeMultiplier(sortedSource.total, size, biggestTreeMapTotal) || 0,
               width: sizeMultiplier(sortedSource.total, size, biggestTreeMapTotal) || 0,
+              margin: 'auto',
             }}
             >
 
@@ -265,12 +249,15 @@ const OilAndGas = ({ data, year }) => {
         {regularTreeMaps}
         <TableCell
           key="smallMaps"
-          // align="right"
+          width='auto'
           className={isTopChart ? classes.cellsTop : classes.cellsBottom}
         >
-          <div style={{ border: '2px solid black' }}>
+          <Typography align='center'>Values less than 1%</Typography>
+          {smallTreeMaps.length > 0 && (
+          <div style={{ border: '2px solid black', textAlign: 'center' }}>
             {smallTreeMaps}
           </div>
+          )}
         </TableCell>
       </TableRow>
     );
@@ -347,8 +334,8 @@ const OilAndGas = ({ data, year }) => {
       <div style={{ backgroundColor: '#F3F3F3', height: 100, width: 280, position: 'absolute', bottom: 5, right: 5 }}>
         <Typography align='center'>Legend</Typography>
         <Typography align='center'>Type of Oil &#40;Year selected&#41;</Typography>
-        <Typography align='left'><IconOilAndGasRectangle />Region: Amount produced &#40;% of total in CAN&#41;</Typography>
-        <Typography align='left'><IconOilAndGasGroup />CAN: Total amount produced in Canada</Typography>
+        <Typography align='left'><IconOilAndGasRectangle style={{ marginRight: 1 }} />Region: Amount produced &#40;% of total in CAN&#41;</Typography>
+        <Typography align='left'><IconOilAndGasGroup style={{ marginRight: 1 }} />CAN: Total amount produced in Canada</Typography>
       </div>
     </>
   );
