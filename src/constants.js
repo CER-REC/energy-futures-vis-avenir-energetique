@@ -187,19 +187,6 @@ export const SECTOR_ICONS = {
   TRANSPORTATION: IconTransportation,
 };
 
-export const DEFAULT_CONFIG = {
-  page: 'landing', // e.g. by-region, by-sector, electricity, senarios, demand
-  mainSelection: 'energyDemand', // e.g. electricityGeneration, oilProduction, gasProduction
-  unit: 'petajoules', // e.g. kilobarrelEquivalents, gigawattHours, kilobarrels, thousandCubicMetres, cubicFeet, millionCubicMetres
-  view: 'region', // e.g. region or source
-  sector: 'ALL', // e.g. ALL, RESIDENTIAL, COMMERCIAL, INDUSTRIAL, OR TRANSPORTATION
-  scenarios: [],
-  provinces: [],
-  provinceOrder: [],
-  sources: [],
-  sourceOrder: [],
-};
-
 export const CHART_PROPS = {
   margin: { top: 50, bottom: 50, left: 20, right: 50 },
   axisTop: null,
