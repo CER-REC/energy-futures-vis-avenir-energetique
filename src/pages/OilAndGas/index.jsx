@@ -300,12 +300,13 @@ const OilAndGas = ({ data, year }) => {
         <Button
           onClick={() => setCompare(!compare)}
           variant="outlined"
-          style={{ marginTop: '10px' }}
+          color="primary"
+          size="small"
+          fullWidth
+          style={{ marginTop: '10px', '& p': { fontWeight: 700 } }}
         >
-          <Typography
-            variant='body1'
-          >{compare ? "Don't Compare" : 'compare'}
-          </Typography>
+
+          {compare ? "Don't Compare" : 'compare'}
 
         </Button>
       </div>
