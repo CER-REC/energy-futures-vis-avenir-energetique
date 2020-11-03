@@ -27,8 +27,8 @@ const useStyles = makeStyles({
     verticalAlign: 'top',
   },
   years: {},
-  treeMapCollection1: {},
-  treeMapCollection2: {},
+  treeMapCollectionTop: {},
+  treeMapCollectionBottom: {},
   slider: {},
 });
 
@@ -96,7 +96,7 @@ const OilAndGas = ({ data, year }) => {
     // Calculates the base size all the tree maps will start with.
     const bigChart = 230;
     const mediumChart = 230;
-    const smallChart = 180;
+    const smallChart = 160;
 
     if (treeData[1]
       && (treeData[1].total > (treeData[0].total / 6) || compare)) {
@@ -248,18 +248,20 @@ const OilAndGas = ({ data, year }) => {
     }
 
     return (
-      <TableRow key={`treeMapCollection${isTopChart ? 'Top' : 'Bottom'}`}>
+      <TableRow className={classes[`treeMapCollection${isTopChart ? 'Top' : 'Bottom'}`]} key={`treeMapCollection${isTopChart ? 'Top' : 'Bottom'}`}>
         {regularTreeMaps}
         <TableCell
           key="smallMaps"
           width='auto'
           className={isTopChart ? classes.cellsTop : classes.cellsBottom}
         >
-          <Typography align='center'>Values less than 1%</Typography>
           {smallTreeMaps.length > 0 && (
-          <div style={{ border: '2px solid black', textAlign: 'center' }}>
-            {smallTreeMaps}
-          </div>
+            <>
+              <Typography align='center'>Values less than 1%</Typography>
+              <div style={{ border: '2px solid black', textAlign: 'center' }}>
+                {smallTreeMaps}
+              </div>
+            </>
           )}
         </TableCell>
       </TableRow>
@@ -307,7 +309,7 @@ const OilAndGas = ({ data, year }) => {
 
         </Button>
       </div>
-      <div style={{ marginTop: compare ? 120 : 150 }}>
+      <div style={{ marginTop: compare ? 120 : 150, marginBottom: 100 }}>
 
         <TableContainer>
           <Table>

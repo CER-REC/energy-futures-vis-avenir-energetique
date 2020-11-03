@@ -40,7 +40,7 @@ const useStyles = makeStyles(theme => ({
   graph: {
     display: 'flex',
     flexGrow: 1,
-    height: 700,
+    height: 'auto',
     '& > div': { margin: 'auto' },
   },
   vis: {
