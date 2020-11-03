@@ -56,7 +56,10 @@ const OilAndGas = ({ data, year }) => {
   const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
   const [compareYear, setCompareYear] = useState(currentYear);
 
-  const { regions: { colors: regionColors } } = useAPI();
+  const {
+    regions: { colors: regionColors },
+    sources: { oil: { colors: oilColors }, gas: { colors: gasColors } },
+  } = useAPI();
 
   // Compare button toggle
   const [compare, setCompare] = useState(false);
@@ -135,6 +138,16 @@ const OilAndGas = ({ data, year }) => {
     return size;
   }, []);
 
+  const getColor = (d) => {
+    let color;
+    if (config.view === 'source') {
+      color = regionColors[d.name];
+    } else {
+      color = config.mainSelection === 'oilProduction' ? oilColors[d.name] : gasColors[d.name];
+    }
+    return color;
+  };
+
   // eslint-disable-next-line no-restricted-globals
   if (!data || isNaN(data[currentYear][0].total)) {
     return null;
@@ -192,9 +205,7 @@ const OilAndGas = ({ data, year }) => {
                 value="value"
                 margin={{ top: 10, right: 10, bottom: 10, left: 10 }}
                 enableLabel={false}
-                colors={d => (config.view === 'source'
-                  ? regionColors[d.name]
-                  : tempColors[d.name])}
+                colors={getColor}
                 borderWidth={2}
                 borderColor="white"
                 animate
@@ -224,6 +235,7 @@ const OilAndGas = ({ data, year }) => {
               width: sizeMultiplier(sortedSource.total, size, biggestTreeMapTotal) || 0,
             }}
             >
+
               <ResponsiveTreeMap
                 key={sortedSource.name}
                 root={sortedSource}
@@ -232,9 +244,7 @@ const OilAndGas = ({ data, year }) => {
                 value="value"
                 margin={{ top: 10, right: 10, bottom: 10, left: 10 }}
                 enableLabel={false}
-                colors={d => (config.view === 'source'
-                  ? regionColors[d.name]
-                  : tempColors[d.name])}
+                colors={getColor}
                 borderWidth={2}
                 borderColor="white"
                 animate
