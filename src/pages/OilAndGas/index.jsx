@@ -243,6 +243,9 @@ const OilAndGas = ({ data, year }) => {
         );
       }
     });
+    if (regularTreeMaps.length === 0) {
+      return null;
+    }
 
     return (
       <TableRow key={`treeMapCollection${isTopChart ? 'Top' : 'Bottom'}`}>
@@ -262,6 +265,13 @@ const OilAndGas = ({ data, year }) => {
       </TableRow>
     );
   };
+
+  const currentTreeMapCollection = treeMapCollection(currentYearData || [], true);
+  const compareTreeMapCollection = treeMapCollection(compareYearData || [], false);
+
+  if (!currentTreeMapCollection && !compareTreeMapCollection) {
+    return null;
+  }
 
   return (
     <>
@@ -303,7 +313,7 @@ const OilAndGas = ({ data, year }) => {
           <Table>
             <TableBody>
 
-              {treeMapCollection(currentYearData || [], true)}
+              {currentTreeMapCollection}
 
               <TableRow key="yearSlider">
                 <TableCell
@@ -325,7 +335,7 @@ const OilAndGas = ({ data, year }) => {
                 </TableCell>
               </TableRow>
 
-              {compare && treeMapCollection(compareYearData || [], false)}
+              {compare && compareTreeMapCollection}
 
             </TableBody>
           </Table>
