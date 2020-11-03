@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useCallback } from 'react';
+import React, { useMemo, useCallback } from 'react';
 import { useIntl } from 'react-intl';
 import { ResponsiveBar } from '@nivo/bar';
 import PropTypes from 'prop-types';
@@ -14,7 +14,7 @@ import MaxTick from '../../components/MaxTick';
 const ByRegion = ({ data, year }) => {
   const { regions } = useAPI();
   const intl = useIntl();
-  const { config, setConfig } = useConfig();
+  const { config } = useConfig();
 
   /**
    * Manually calculating bar colors to create the fade-out effect.
@@ -32,16 +32,6 @@ const ByRegion = ({ data, year }) => {
    * The forecast bar.
    */
   const forecast = useMemo(() => forecastLayer({ year }), [year]);
-
-  /**
-   * A "hacky" but sufficient way to reselect all regions after
-   * being redirected from other pages but none of the regions is currently selected.
-   */
-  useEffect(() => {
-    if (config.page === 'by-region' && JSON.stringify(config.provinces || []) === '["ALL"]') {
-      setConfig({ ...config, provinces: regions.order });
-    }
-  }, [config, setConfig, regions.order]);
 
   /**
    * Determine the region order shown in the stacked bar chart.

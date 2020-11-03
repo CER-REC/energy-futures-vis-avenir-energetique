@@ -5,7 +5,6 @@ import Alert from '@material-ui/lab/Alert';
 import AlertTitle from '@material-ui/lab/AlertTitle';
 import { useIntl } from 'react-intl';
 
-import { CONFIG_LAYOUT } from '../../constants';
 import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
 import useEnergyFutureData from '../../hooks/useEnergyFutureData';
@@ -74,7 +73,7 @@ const PageLayout = ({
   const classes = useStyles();
   const intl = useIntl();
   const { regions, sources } = useAPI();
-  const { config, setConfig } = useConfig();
+  const { config, configDispatch } = useConfig();
   const { loading, error, data, disabledRegions, disabledSources, year } = useEnergyFutureData();
 
   /**
@@ -88,11 +87,7 @@ const PageLayout = ({
     return undefined;
   }, [config.page, config.mainSelection]);
 
-  /**
-   * Reset the source list when opening 'by-sector' and 'electricity' pages.
-   */
   useEffect(
-    // TODO: This logic should be in the reducer when that is implemented (B-07744)
     () => {
       let selectedSources = config.sources;
       let selectedSourceOrder = config.sourceOrder;
@@ -108,31 +103,10 @@ const PageLayout = ({
         selectedSources = validSources;
       }
 
-      // also update the main selection accordingly
-      let { mainSelection } = config;
-
-      if (!CONFIG_LAYOUT[mainSelection]?.pages.includes(config.page)) {
-        mainSelection = Object.keys(CONFIG_LAYOUT).find(
-          selection => CONFIG_LAYOUT[selection]?.pages.includes(config.page),
-        ) || mainSelection;
-      }
-
-      if (config.page === 'oil-and-gas' && mainSelection === 'energyDemand') {
-        mainSelection = 'oilProduction';
-      }
-
-      setConfig({
-        ...config,
-        mainSelection,
-        sources: selectedSources,
-        sourceOrder: selectedSourceOrder,
-      });
+      configDispatch({ type: 'sources/changed', payload: selectedSources });
+      configDispatch({ type: 'sourceOrder/changed', payload: selectedSourceOrder });
     },
-    // config.mainSelection needs to be a dependency because
-    // the oil and gas viz changed query parameters on mainSelection change.
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [config.page, config.mainSelection, config.sector],
+    [config.page, config.sector],
   );
 
   /**
@@ -225,8 +199,8 @@ const PageLayout = ({
                 defaultItems={sourceItems}
                 defaultItemOrder={sources[type].order}
                 disabledItems={config.page === 'by-sector' && disabledSources}
-                setItems={selectedSources => setConfig({ ...config, sources: selectedSources })}
-                setItemOrder={sourceOrder => setConfig({ ...config, sourceOrder })}
+                setItems={selectedSources => configDispatch({ type: 'sources/changed', payload: selectedSources })}
+                setItemOrder={sourceOrder => configDispatch({ type: 'sourceOrder/changed', payload: sourceOrder })}
               />
             </Grid>
           )}
@@ -246,8 +220,8 @@ const PageLayout = ({
                 defaultItems={regionItems}
                 defaultItemOrder={regions.order}
                 disabledItems={config.page === 'by-region' && disabledRegions}
-                setItems={provinces => setConfig({ ...config, provinces })}
-                setItemOrder={provinceOrder => setConfig({ ...config, provinceOrder })}
+                setItems={provinces => configDispatch({ type: 'provinces/changed', payload: provinces })}
+                setItemOrder={provinceOrder => configDispatch({ type: 'provinceOrder/changed', payload: provinceOrder })}
               />
             </Grid>
           )}

@@ -19,7 +19,7 @@ const YearSelect = () => {
   const intl = useIntl();
 
   const { yearIdIterations } = useAPI();
-  const { config, setConfig } = useConfig();
+  const { config, configDispatch } = useConfig();
 
   const yearIds = useMemo(
     () => Object.keys(yearIdIterations).sort().reverse(),
@@ -47,7 +47,7 @@ const YearSelect = () => {
               variant="contained"
               color={config.yearId === yearId ? 'primary' : 'secondary'}
               size="small"
-              onClick={() => setConfig({ ...config, yearId })}
+              onClick={() => configDispatch({ type: 'yearId/changed', payload: yearId })}
               className={classes.button}
             >
               {config.yearId === yearId ? (<Typography variant="h5">{yearId}</Typography>) : yearId}

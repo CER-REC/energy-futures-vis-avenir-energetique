@@ -1,5 +1,5 @@
 // #region imports
-import React, { useMemo, useEffect } from 'react';
+import React, { useMemo } from 'react';
 import { useIntl } from 'react-intl';
 import {
   makeStyles, createStyles,
@@ -40,23 +40,8 @@ const HorizontalControlBar = () => {
   const intl = useIntl();
 
   const { sectors } = useAPI();
-  const { config, setConfig } = useConfig();
+  const { config, configDispatch } = useConfig();
   const layout = useMemo(() => CONFIG_LAYOUT[config.mainSelection], [config.mainSelection]);
-
-  /**
-   * If the current selected unit is no longer available under the new source,
-   * then select the default unit.
-   */
-  useEffect(() => {
-    if (layout.unit.indexOf(config.unit) === -1) {
-      setConfig({ ...config, unit: layout.unit[0] });
-    }
-  }, [config, layout.unit, setConfig]);
-
-  /**
-   * Update the config.
-   */
-  const handleConfigUpdate = (field, value) => setConfig({ ...config, [field]: value });
 
   if (!layout) {
     return null;
@@ -80,7 +65,7 @@ const HorizontalControlBar = () => {
               variant={config.mainSelection === selection ? 'contained' : 'outlined'}
               color="primary"
               size="small"
-              onClick={() => handleConfigUpdate('mainSelection', selection)}
+              onClick={() => configDispatch({ type: 'mainSelection/changed', payload: selection })}
               className={classes.btnSector}
             >
               {intl.formatMessage({ id: `components.mainSelect.${selection}.title` })}
@@ -111,7 +96,7 @@ const HorizontalControlBar = () => {
                 variant={config.sector === sector ? 'contained' : 'outlined'}
                 color="primary"
                 size="small"
-                onClick={() => handleConfigUpdate('sector', sector)}
+                onClick={() => configDispatch({ type: 'sector/changed', payload: sector })}
                 className={classes.btnSector}
               >
                 {Icon ? <Icon /> : intl.formatMessage({ id: `common.sectors.${sector}` }) }
@@ -137,7 +122,7 @@ const HorizontalControlBar = () => {
             variant={config.view === view ? 'contained' : 'outlined'}
             color="primary"
             size="small"
-            onClick={() => handleConfigUpdate('view', view)}
+            onClick={() => configDispatch({ type: 'view/changed', payload: view })}
           >
             {intl.formatMessage({ id: `common.${view}` })}
           </Button>
@@ -165,7 +150,7 @@ const HorizontalControlBar = () => {
             variant={config.unit === unit ? 'contained' : 'outlined'}
             color="primary"
             size="small"
-            onClick={() => handleConfigUpdate('unit', unit)}
+            onClick={() => configDispatch({ type: 'unit/changed', payload: unit })}
             style={{ textTransform: 'none' }}
           >
             {intl.formatMessage({ id: `common.units.${unit}` })}
