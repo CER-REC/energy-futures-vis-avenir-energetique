@@ -26,7 +26,10 @@ const ByRegion = ({ data, year }) => {
     return convertHexToRGB(regions.colors[d.id], opacityNumber);
   }, [regions.colors]);
 
-  const colors = useMemo(() => customColorProp(year.max, year.forecastStart), [year]);
+  const colors = useMemo(
+    () => customColorProp(year.max, year.forecastStart),
+    [customColorProp, year],
+  );
 
   /**
    * The forecast bar.
