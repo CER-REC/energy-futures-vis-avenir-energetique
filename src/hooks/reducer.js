@@ -190,7 +190,7 @@ export const getReducer = (regions, sources, sectors, yearIdIterations) => {
           ...state,
           yearId,
           // Reset the scenarios to the default
-          scenarios: getScenarios(state.page, yearId),
+          scenarios: getScenarios(state.page, yearId, null),
         };
       case 'unit/changed':
         return {
