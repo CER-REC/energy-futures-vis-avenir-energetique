@@ -104,17 +104,6 @@ const DraggableVerticalList = ({
   );
 
   /**
-   * Switch between single- vs. multi-select.
-   */
-  useEffect(() => {
-    if (singleSelect) {
-      setLocalItems(localItems.length === 1 ? localItems : ['ALL']);
-    } else if (setItems) {
-      setItems(itemOrder);
-    }
-  }, [singleSelect]); // eslint-disable-line react-hooks/exhaustive-deps
-
-  /**
    * Determine whether or not 'transportation' is the current selected sector.
    * This will be later used in generating tooltips and the subgroup.
    */
