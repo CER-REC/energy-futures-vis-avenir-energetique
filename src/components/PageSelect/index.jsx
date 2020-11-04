@@ -102,7 +102,10 @@ const PageSelect = () => {
   const getTitle = useCallback((page) => {
     switch (page.id) {
       case 'by-region':
-        return intl.formatMessage({ id: `components.pageSelect.${page.label}.title.${config.mainSelection}` });
+        return intl.formatMessage({
+          id: `components.pageSelect.${page.label}.title.${config.mainSelection}`,
+          defaultMessage: intl.formatMessage({ id: `components.pageSelect.${page.label}.title.default` }),
+        });
       case 'by-sector':
         return intl.formatMessage({
           id: `components.pageSelect.${page.label}.title.${config.sector}`,
@@ -114,11 +117,15 @@ const PageSelect = () => {
           defaultMessage: intl.formatMessage({ id: `components.pageSelect.${page.label}.title.default` }),
         });
       case 'scenarios':
-        return intl.formatMessage({ id: `components.pageSelect.${page.label}.title.${config.mainSelection}` });
-      case 'oil-and-gas': return intl.formatMessage({
-        id: `components.pageSelect.${page.label}.title.${config.mainSelection}.${config.view}`,
-        defaultMessage: intl.formatMessage({ id: `components.pageSelect.${page.label}.title.default` }),
-      });
+        return intl.formatMessage({
+          id: `components.pageSelect.${page.label}.title.${config.mainSelection}`,
+          defaultMessage: intl.formatMessage({ id: `components.pageSelect.${page.label}.title.default` }),
+        });
+      case 'oil-and-gas':
+        return intl.formatMessage({
+          id: `components.pageSelect.${page.label}.title.${config.mainSelection}.${config.view}`,
+          defaultMessage: intl.formatMessage({ id: `components.pageSelect.${page.label}.title.default` }),
+        });
       default: return page.label;
     }
   }, [intl, config.mainSelection, config.sector, config.view]);
