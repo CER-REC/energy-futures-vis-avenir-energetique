@@ -127,7 +127,7 @@ const Content = () => {
       singleSelectRegion={['by-sector', 'scenarios', 'demand'].includes(config.page) || (config.view === 'region')}
       showSource={['by-sector', 'electricity', 'oil-and-gas'].includes(config.page)}
       disableDraggableSource={['electricity', 'oil-and-gas'].includes(config.page)}
-      singleSelectSource={config.page === 'electricity' && config.view === 'source'}
+      singleSelectSource={config.view === 'source'}
     >
       {config.page === 'by-region' && <ByRegion />}
       {config.page === 'by-sector' && <BySector />}

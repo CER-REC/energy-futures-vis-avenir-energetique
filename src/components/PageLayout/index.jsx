@@ -169,7 +169,7 @@ const PageLayout = ({
                 round
                 disabled={disableDraggableSource}
                 singleSelect={singleSelectSource}
-                greyscale={config.page === 'electricity' && config.view === 'source'}
+                greyscale={singleSelectSource}
                 sourceType={type}
                 items={config.sources}
                 itemOrder={config.sourceOrder}
