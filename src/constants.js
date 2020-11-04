@@ -53,7 +53,7 @@ export const PAGES = [
     bg: '#CA9830',
   },
   {
-    label: 'Oil and Gas',
+    label: 'Oil-and-Gas',
     id: 'oil-and-gas',
     bg: '#CC6666',
     sourceTypes: {
