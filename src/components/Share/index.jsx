@@ -13,15 +13,8 @@ import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
 import useEnergyFutureData from '../../hooks/useEnergyFutureData';
 import { convertUnit } from '../../utilities/convertUnit';
+import { PAGES } from '../../constants';
 import LinkButtonGroup from '../LinkButtonGroup';
-
-// TODO: Remove after refactoring source type references into selection references
-const selectionSourceTypes = {
-  energyDemand: 'energy',
-  electricityGeneration: 'electricity',
-  oilProduction: 'oil',
-  gasProduction: 'gas',
-};
 
 // TODO: Remove after refactoring into useEnergyFutureData to provide a uniform data structure
 const selectionUnits = {
@@ -98,7 +91,9 @@ const Share = () => {
     const scenario = intl.formatMessage({ id: `common.scenarios.${config.scenarios[0]}` }).toUpperCase();
     const unit = intl.formatMessage({ id: `common.units.${config.unit}` });
     const dataset = intl.formatMessage({ id: `common.dataset.${config.yearId}`, defaultMessage: config.yearId }).toUpperCase();
-    const sourceType = selectionSourceTypes[config.mainSelection];
+    const sourceType = PAGES.find(
+      page => page.id === config.page,
+    ).sourceTypes?.[config.mainSelection];
     // The electricity visualization does not completely use the API to filter the data
     // TODO: Remove after implementing a uniform filter solution (all on server or all on client),
     // and when the electricity special cases in useEnergyFutureData are removed

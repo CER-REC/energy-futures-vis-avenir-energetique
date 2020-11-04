@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, Children, cloneElement } from 'react';
+import React, { useMemo, Children, cloneElement } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles, Grid, Typography, CircularProgress } from '@material-ui/core';
 import Alert from '@material-ui/lab/Alert';
@@ -8,6 +8,7 @@ import { useIntl } from 'react-intl';
 import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
 import useEnergyFutureData from '../../hooks/useEnergyFutureData';
+import { PAGES } from '../../constants';
 import YearSelect from '../YearSelect';
 import PageSelect from '../PageSelect';
 import ScenarioSelect from '../ScenarioSelect';
@@ -80,33 +81,9 @@ const PageLayout = ({
    * Determine the current energy source type.
    * This will be primarily used in the tooltip generation.
    */
-  const type = useMemo(() => {
-    if (config.page === 'by-sector') return 'energy';
-    if (config.page === 'electricity') return 'electricity';
-    if (config.page === 'oil-and-gas') return config.mainSelection === 'gasProduction' ? 'gas' : 'oil';
-    return undefined;
-  }, [config.page, config.mainSelection]);
-
-  useEffect(
-    () => {
-      let selectedSources = config.sources;
-      let selectedSourceOrder = config.sourceOrder;
-      const validSources = sources[type]?.order || [];
-
-      if (
-        (selectedSourceOrder.length !== validSources.length)
-        || !validSources.every(source => selectedSourceOrder.includes(source))
-      ) {
-        selectedSources = validSources;
-        selectedSourceOrder = validSources;
-      } else if (!selectedSources.every(source => validSources.includes(source))) {
-        selectedSources = validSources;
-      }
-
-      configDispatch({ type: 'sources/changed', payload: selectedSources });
-      configDispatch({ type: 'sourceOrder/changed', payload: selectedSourceOrder });
-    },
-    [config.page, config.sector],
+  const type = useMemo(
+    () => PAGES.find(page => page.id === config.page).sourceTypes?.[config.mainSelection],
+    [config.page, config.mainSelection],
   );
 
   /**

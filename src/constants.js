@@ -34,25 +34,32 @@ export const PAGES = [
     label: 'By Sector',
     id: 'by-sector',
     bg: '#349999',
-    sourceType: 'energy',
+    sourceTypes: {
+      energyDemand: 'energy',
+    },
   },
   {
     label: 'Electricity',
     id: 'electricity',
     bg: '#363796',
-    sourceType: 'electricity',
+    sourceTypes: {
+      electricityGeneration: 'electricity',
+    },
   },
   {
     label: 'Scenarios',
     id: 'scenarios',
     bg: '#CA9830',
   },
-  // TODO: hide the oil-and-gas page temporarily for incoming demos
-  // {
-  //   label: 'Oil-and-Gas',
-  //   id: 'oil-and-gas',
-  //   bg: '#CC6666',
-  // },
+  {
+    label: 'Oil-and-Gas',
+    id: 'oil-and-gas',
+    bg: '#CC6666',
+    sourceTypes: {
+      oilProduction: 'oil',
+      gasProduction: 'gas',
+    },
+  },
   // {
   //   label: 'Demand',
   //   id: 'demand',
