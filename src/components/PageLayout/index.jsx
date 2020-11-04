@@ -188,10 +188,7 @@ const PageLayout = ({
                 dense
                 disabled={disableDraggableRegion}
                 singleSelect={singleSelectRegion}
-                greyscale={
-                  config.page === 'by-sector' || config.page === 'scenarios'
-                  || (config.page === 'electricity' && config.view !== 'source')
-                }
+                greyscale={singleSelectRegion}
                 items={config.provinces}
                 itemOrder={config.provinceOrder}
                 defaultItems={regionItems}
