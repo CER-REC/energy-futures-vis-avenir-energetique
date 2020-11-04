@@ -36,7 +36,7 @@ const ByRegion = ({ data, year }) => {
   /**
    * Determine the region order shown in the stacked bar chart.
    */
-  const keys = useMemo(() => [...config.provinceOrder].reverse(), [config.provinceOrder]);
+  const keys = useMemo(() => config.provinceOrder?.slice().reverse(), [config.provinceOrder]);
 
   /**
    * Calculate the max tick value on y-axis and generate the all ticks accordingly.
