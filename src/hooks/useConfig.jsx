@@ -52,7 +52,15 @@ const getReducer = (regions, sources, yearIdIterations) => {
 
     return validUnits.includes(unit) ? unit : (validUnits[0] || null);
   };
-  const getView = (page, view) => (page !== 'electricity' ? null : (view || 'region'));
+  const getView = (page, view) => {
+    const validViews = PAGES.find(pageItem => pageItem.id === page).views;
+
+    if (!validViews) {
+      return null;
+    }
+
+    return validViews.includes(view) ? view : validViews[0];
+  };
   // TODO: Replace default sector with default from API
   const getSector = (page, sector) => (page !== 'by-sector' ? null : (sector || 'ALL'));
   const getScenarios = (page, yearId, scenarios) => {
@@ -77,7 +85,7 @@ const getReducer = (regions, sources, yearIdIterations) => {
 
     const validatedProvinces = regions.order.filter(region => provinces?.includes(region));
 
-    if ((page === 'by-region') || ((page === 'electricity') && (view === 'source'))) {
+    if ((page === 'by-region') || (view === 'source')) {
       return (provinces?.includes('ALL') || !provinces) ? regions.order : validatedProvinces;
     }
 
@@ -114,7 +122,7 @@ const getReducer = (regions, sources, yearIdIterations) => {
 
     const validatedSources = validSources.filter(source => selectedSources?.includes(source));
 
-    if ((page === 'by-sector') || ((page === 'electricity') && (view === 'region'))) {
+    if ((page === 'by-sector') || (view === 'region')) {
       return (selectedSources?.includes('ALL') || !selectedSources) ? validSources : validatedSources;
     }
 
@@ -177,7 +185,8 @@ const getReducer = (regions, sources, yearIdIterations) => {
           ...state,
           mainSelection,
           unit: getUnit(mainSelection, state.unit),
-          sources: getSources(state.page, mainSelection, state.view, state.sources),
+          // Always reset the sources on selection change
+          sources: getSources(state.page, mainSelection, state.view, null),
           sourceOrder: getSourceOrder(state.page, mainSelection, state.sourceOrder),
         };
       case 'yearId/changed':
