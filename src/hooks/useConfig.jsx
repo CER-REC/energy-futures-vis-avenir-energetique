@@ -30,7 +30,7 @@ const initialState = {
   sourceOrder: null,
 };
 
-const getReducer = (regions, sources, yearIdIterations) => {
+const getReducer = (regions, sources, sectors, yearIdIterations) => {
   const getSelection = (page, selection) => {
     const validSelections = Object.keys(CONFIG_LAYOUT).filter(
       selectionKey => CONFIG_LAYOUT[selectionKey].pages.includes(page),
@@ -61,8 +61,13 @@ const getReducer = (regions, sources, yearIdIterations) => {
 
     return validViews.includes(view) ? view : validViews[0];
   };
-  // TODO: Replace default sector with default from API
-  const getSector = (page, sector) => (page !== 'by-sector' ? null : (sector || 'ALL'));
+  const getSector = (page, sector) => {
+    if (page !== 'by-sector') {
+      return null;
+    }
+
+    return sectors.order.includes(sector) ? sector : sectors.order[0];
+  };
   const getScenarios = (page, yearId, scenarios) => {
     if (page === initialState.page) {
       return null;
@@ -250,10 +255,10 @@ const getReducer = (regions, sources, yearIdIterations) => {
 };
 
 export const ConfigProvider = ({ children }) => {
-  const { regions, sources, yearIdIterations } = useAPI();
+  const { regions, sources, sectors, yearIdIterations } = useAPI();
   const reducer = useMemo(
-    () => getReducer(regions, sources, yearIdIterations),
-    [regions, sources, yearIdIterations],
+    () => getReducer(regions, sources, sectors, yearIdIterations),
+    [regions, sources, sectors, yearIdIterations],
   );
   const [config, configDispatch] = useReducer(reducer, initialState);
 
