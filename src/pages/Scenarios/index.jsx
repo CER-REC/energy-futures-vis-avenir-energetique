@@ -85,7 +85,7 @@ const Scenarios = ({ data, year }) => {
       data={data}
       enableArea
       enablePoints={false}
-      layers={['grid', 'axes', 'areas', 'crosshair', 'lines', 'points', 'slices', fade, forecast, dots]}
+      layers={['grid', 'axes', 'areas', 'crosshair', 'points', 'slices', fade, 'lines', forecast, dots]}
       curve="cardinal"
       areaOpacity={0.15}
       xScale={{ type: 'point' }}
