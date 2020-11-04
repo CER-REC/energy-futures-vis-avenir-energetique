@@ -1,11 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-  makeStyles, Grid, Typography, Tooltip,
+  makeStyles, Grid, Typography,
 } from '@material-ui/core';
 import ClearIcon from '@material-ui/icons/Clear';
-import DragIcon from '@material-ui/icons/DragIndicator';
-import Markdown from 'react-markdown';
 
 const useStyles = makeStyles(theme => ({
   root: props => ({
@@ -50,76 +48,44 @@ const useStyles = makeStyles(theme => ({
     '&.disabled:hover': { boxShadow: theme.shadows[0] },
   }),
   btn: { margin: 'auto' },
-  tooltip: {
-    maxWidth: 350,
-    fontSize: 10,
-    lineHeight: 1,
-    color: '#999',
-    backgroundColor: theme.palette.common.white,
-    border: '1px solid #AAA',
-    borderRadius: 0,
-    boxShadow: theme.shadows[1],
-  },
 }));
 
 const ColoredItemBox = ({
-  item, label, icon, color, selected, clear, round,
-  attachment, tooltip, disabled, isDragDisabled, ...gridProps
+  item, icon, color, selected, clear, round,
+  attachment, disabled, ...gridProps
 }) => {
   const classes = useStyles({ color, round, attachment });
   const Icon = icon;
   const styling = [classes.root, selected && 'selected', disabled && 'disabled'].filter(Boolean).join(' ');
   return (
-    <Tooltip
-      title={label && (
-        <Grid container alignItems="center" wrap="nowrap" spacing={1}>
-          {!isDragDisabled && <Grid item><DragIcon fontSize="small" /></Grid>}
-          <Grid item>
-            <Typography variant="overline" component="div" style={{ lineHeight: tooltip ? 1.5 : 2.66 }}>
-              <strong>{label}</strong>
-            </Typography>
-            {tooltip && <Typography variant="caption" color="secondary"><Markdown>{tooltip}</Markdown></Typography>}
-          </Grid>
-        </Grid>
-      )}
-      placement="right"
-      classes={{ tooltip: classes.tooltip }}
-    >
-      <Grid container {...gridProps} className={styling}>
-        {clear && <ClearIcon className={classes.btn} />}
-        {!clear && icon && <Icon className={classes.btn} />}
-        {!clear && !icon && <Typography variant="body2">{item}</Typography>}
-        {attachment}
-      </Grid>
-    </Tooltip>
+    <Grid container {...gridProps} className={styling}>
+      {clear && <ClearIcon className={classes.btn} />}
+      {!clear && icon && <Icon className={classes.btn} />}
+      {!clear && !icon && <Typography variant="body2">{item}</Typography>}
+      {attachment}
+    </Grid>
   );
 };
 
 ColoredItemBox.propTypes = {
   item: PropTypes.string.isRequired,
-  label: PropTypes.string,
   icon: PropTypes.func,
   color: PropTypes.string,
   selected: PropTypes.bool,
   clear: PropTypes.bool,
   round: PropTypes.bool,
   attachment: PropTypes.oneOfType([PropTypes.node, PropTypes.bool]),
-  tooltip: PropTypes.string,
   disabled: PropTypes.bool,
-  isDragDisabled: PropTypes.bool,
 };
 
 ColoredItemBox.defaultProps = {
-  label: '',
   icon: undefined,
   color: undefined,
   selected: false,
   clear: false,
   round: false,
   attachment: undefined,
-  tooltip: undefined,
   disabled: false,
-  isDragDisabled: false,
 };
 
 export default ColoredItemBox;

@@ -2,7 +2,9 @@ import React, { useMemo, useState, useEffect, useCallback } from 'react';
 import { useIntl } from 'react-intl';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import PropTypes from 'prop-types';
-import { makeStyles, Grid } from '@material-ui/core';
+import { makeStyles, Grid, Tooltip, Typography } from '@material-ui/core';
+import DragIcon from '@material-ui/icons/DragIndicator';
+import Markdown from 'react-markdown';
 
 import useConfig from '../../hooks/useConfig';
 import { HintRegionList, HintSourceList } from '../Hint';
@@ -47,6 +49,16 @@ const useStyles = makeStyles(theme => ({
     cursor: 'pointer',
     '&.oil-sub-group': { height: 180 },
   }),
+  tooltip: {
+    maxWidth: 350,
+    fontSize: 10,
+    lineHeight: 1,
+    color: '#999',
+    backgroundColor: theme.palette.common.white,
+    border: '1px solid #AAA',
+    borderRadius: 0,
+    boxShadow: theme.shadows[1],
+  },
 }));
 
 const DraggableVerticalList = ({
@@ -157,7 +169,13 @@ const DraggableVerticalList = ({
             className={`${classes.root} ${snapshot.isDraggingOver && classes.dark}`}
           >
             {/* the 'ALL' box */}
-            <Grid item onClick={handleToggleItem('ALL')} className={classes.item}>
+            <Grid
+              item
+              onClick={handleToggleItem('ALL')}
+              onKeyPress={event => event.key === 'Enter' && handleToggleItem('ALL')()}
+              tabIndex={0}
+              className={classes.item}
+            >
               <ColoredItemBox
                 item={allTitle}
                 round={round}
@@ -169,29 +187,47 @@ const DraggableVerticalList = ({
             {/* individual boxes */}
             {localItemOrder.filter(item => defaultItems[item]).map((item, index) => (
               <Draggable key={`region-btn-${item}`} draggableId={item} index={index} isDragDisabled={disabled}>
-                {providedItem => (
-                  <Grid
-                    item
-                    ref={providedItem.innerRef}
-                    {...providedItem.draggableProps}
-                    {...providedItem.dragHandleProps}
-                    onClick={handleToggleItem(item)}
-                    className={`${classes.item} ${isTransportation && item === 'OIL' && 'oil-sub-group'}`}
-                  >
-                    <ColoredItemBox
-                      item={item}
-                      round={round}
-                      label={defaultItems[item].label}
-                      icon={defaultItems[item].icon}
-                      color={greyscale ? undefined : defaultItems[item].color}
-                      selected={localItems.indexOf(item) > -1}
-                      attachment={isTransportation && item === 'OIL' && <OilSubgroup selected={localItems.indexOf(item) > -1} />}
-                      tooltip={getTooltip(item)}
-                      disabled={disabledItems && disabledItems.includes(item)}
-                      isDragDisabled={disabled}
-                    />
-                  </Grid>
-                )}
+                {(providedItem) => {
+                  const tooltip = getTooltip(item);
+                  return (
+                    <Tooltip
+                      title={defaultItems[item]?.label && (
+                        <Grid container alignItems="center" wrap="nowrap" spacing={1}>
+                          {!disabled && <Grid item><DragIcon fontSize="small" /></Grid>}
+                          <Grid item>
+                            <Typography variant="overline" component="div" style={{ lineHeight: tooltip ? 1.5 : 2.66 }}>
+                              <strong>{defaultItems[item].label}</strong>
+                            </Typography>
+                            {tooltip && <Typography variant="caption" color="secondary"><Markdown>{tooltip}</Markdown></Typography>}
+                          </Grid>
+                        </Grid>
+                      )}
+                      placement="right"
+                      classes={{ tooltip: classes.tooltip }}
+                    >
+                      <Grid
+                        item
+                        ref={providedItem.innerRef}
+                        {...providedItem.draggableProps}
+                        {...providedItem.dragHandleProps}
+                        onClick={handleToggleItem(item)}
+                        onKeyPress={event => event.key === 'Enter' && handleToggleItem(item)()}
+                        tabIndex={0}
+                        className={`${classes.item} ${isTransportation && item === 'OIL' && 'oil-sub-group'}`}
+                      >
+                        <ColoredItemBox
+                          item={item}
+                          round={round}
+                          icon={defaultItems[item].icon}
+                          color={greyscale ? undefined : defaultItems[item].color}
+                          selected={localItems.indexOf(item) > -1}
+                          attachment={isTransportation && item === 'OIL' && <OilSubgroup selected={localItems.indexOf(item) > -1} />}
+                          disabled={disabledItems && disabledItems.includes(item)}
+                        />
+                      </Grid>
+                    </Tooltip>
+                  );
+                }}
               </Draggable>
             ))}
             {provided.placeholder}

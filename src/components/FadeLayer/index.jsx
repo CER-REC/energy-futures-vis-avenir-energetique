@@ -34,9 +34,9 @@ const fadeLayer = ({
             {/* background gradient with color */}
             {/* semi-transparent for scenarios viz and solid colors for by-sector viz */}
             <linearGradient id={`${id}-gradient`}>
-              <stop offset="0%" stopColor={line.color} stopOpacity="1" />
-              <stop offset={`${preForecastPercentage}%`} stopColor={line.color} stopOpacity="1" />
-              <stop offset="100%" stopColor={isTransparent ? line.color : '#FFF'} stopOpacity={isTransparent ? 0.05 : 1} />
+              <stop offset="0%" stopColor={line.color} stopOpacity={isTransparent ? 0.5 : 1} />
+              <stop offset={`${preForecastPercentage}%`} stopColor={line.color} stopOpacity={isTransparent ? 0.5 : 1} />
+              <stop offset="100%" stopColor="#FFF" stopOpacity="1" />
             </linearGradient>
           </defs>
 
