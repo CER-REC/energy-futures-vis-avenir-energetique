@@ -65,7 +65,6 @@ const OilAndGas = ({ data, year }) => {
         color: value.color,
       }))}
       unit={config.unit}
-      // paper
     />
   ), [config, intl]);
 
@@ -143,8 +142,6 @@ const OilAndGas = ({ data, year }) => {
   const biggestTreeMapTotal = getBiggestTreeMapTotal(currentYearData, compareYearData);
 
   const treeMapCollection = (treeData, isTopChart) => {
-    // FIXME: there is an issue where if you deselect provinces, the query changes
-    // and the total percentage is recalculated, making the percentage wrong
     const totalGrandTotal = treeData.reduce((acc, val) => acc + val.total, 0);
     const size = getSizeNumber(treeData);
     const regularTreeMaps = [];

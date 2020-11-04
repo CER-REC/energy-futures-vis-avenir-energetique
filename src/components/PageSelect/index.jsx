@@ -79,7 +79,7 @@ const PageSelect = () => {
   const classes = useStyles();
   const intl = useIntl();
 
-  const { config, setConfig } = useConfig();
+  const { config, configDispatch } = useConfig();
 
   const [pages, setPages] = useState(PAGES.filter(page => page.id !== 'landing'));
   const [loading, setLoading] = useState(false);
@@ -101,14 +101,31 @@ const PageSelect = () => {
    */
   const getTitle = useCallback((page) => {
     switch (page.id) {
-      case 'by-region': return intl.formatMessage({ id: `components.pageSelect.${page.label}.title.${config.mainSelection}` });
-      case 'by-sector': return intl.formatMessage({ id: `components.pageSelect.${page.label}.title.${config.sector}` });
-      case 'electricity': return intl.formatMessage({ id: `components.pageSelect.${page.label}.title.${config.view}` });
-      case 'scenarios': return intl.formatMessage({ id: `components.pageSelect.${page.label}.title.${config.mainSelection}` });
-      case 'oil-and-gas': return intl.formatMessage({
-        id: `components.pageSelect.${page.label}.title.${config.mainSelection}.${config.view}`,
-        defaultMessage: intl.formatMessage({ id: `components.pageSelect.${page.label}.title.default` }),
-      });
+      case 'by-region':
+        return intl.formatMessage({
+          id: `components.pageSelect.${page.label}.title.${config.mainSelection}`,
+          defaultMessage: intl.formatMessage({ id: `components.pageSelect.${page.label}.title.default` }),
+        });
+      case 'by-sector':
+        return intl.formatMessage({
+          id: `components.pageSelect.${page.label}.title.${config.sector}`,
+          defaultMessage: intl.formatMessage({ id: `components.pageSelect.${page.label}.title.default` }),
+        });
+      case 'electricity':
+        return intl.formatMessage({
+          id: `components.pageSelect.${page.label}.title.${config.view}`,
+          defaultMessage: intl.formatMessage({ id: `components.pageSelect.${page.label}.title.default` }),
+        });
+      case 'scenarios':
+        return intl.formatMessage({
+          id: `components.pageSelect.${page.label}.title.${config.mainSelection}`,
+          defaultMessage: intl.formatMessage({ id: `components.pageSelect.${page.label}.title.default` }),
+        });
+      case 'oil-and-gas':
+        return intl.formatMessage({
+          id: `components.pageSelect.${page.label}.title.${config.mainSelection}.${config.view}`,
+          defaultMessage: intl.formatMessage({ id: `components.pageSelect.${page.label}.title.default` }),
+        });
       default: return page.label;
     }
   }, [intl, config.mainSelection, config.sector, config.view]);
@@ -119,10 +136,7 @@ const PageSelect = () => {
     }
     setLoading(true);
     setPages(toFront([...pages], id));
-    // TODO: Changing pages can cause a 400 GraphQL error due to providing invalid sources
-    // This can be fixed when implementing a reducer for the config,
-    // since the correct set of sources is set at the same time
-    setConfig({ ...config, page: id });
+    configDispatch({ type: 'page/changed', payload: id });
     setTimeout(() => setLoading(false), 800);
   };
 
