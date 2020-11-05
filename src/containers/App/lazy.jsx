@@ -32,6 +32,9 @@ const theme = createMuiTheme({
       light: defaultTheme.palette.secondary.light,
     },
   },
+  typography: {
+    fontFamily: '"FiraSansCondensed", "Roboto", "Helvetica", "Arial", sans-serif',
+  },
   overrides: {
     MuiCssBaseline: {
       '@global': {
