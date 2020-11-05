@@ -298,7 +298,7 @@ const OilAndGas = ({ data, year }) => {
         <Button
           onClick={() => setCompare(!compare)}
           variant="outlined"
-          color="black"
+          color="primary"
           size="small"
           fullWidth
           style={{ marginTop: '10px' }}
@@ -320,6 +320,7 @@ const OilAndGas = ({ data, year }) => {
                 <TableCell
                   align="right"
                   colSpan="100%"
+                  style={{ border: 'none' }}
                 >
                   <YearSlider
                     year={compare ? { curr: currentYear, compare: compareYear } : currentYear}
