@@ -36,8 +36,8 @@ export const ConfigProvider = ({ children }) => {
     configDispatch({ type: 'provinceOrder/changed', payload: query.provinceOrder?.split(',') });
     configDispatch({ type: 'sources/changed', payload: query.sources?.split(',') });
     configDispatch({ type: 'sourceOrder/changed', payload: query.sourceOrder?.split(',') });
-    configDispatch({ type: 'baseYear/changed', payload: parseInt(query.baseYear, 10) });
-    configDispatch({ type: 'compareYear/changed', payload: parseInt(query.compareYear, 10) });
+    configDispatch({ type: 'baseYear/changed', payload: query.baseYear });
+    configDispatch({ type: 'compareYear/changed', payload: query.compareYear });
   }, [configDispatch]);
 
   /**
