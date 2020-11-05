@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import { useIntl } from 'react-intl';
 import PropTypes from 'prop-types';
-import { makeStyles, Grid, IconButton, Slider } from '@material-ui/core';
+import { makeStyles, Grid, Typography, IconButton, Slider } from '@material-ui/core';
 import PlayIcon from '@material-ui/icons/PlayArrow';
 import PauseIcon from '@material-ui/icons/Pause';
 
@@ -9,7 +10,6 @@ const useStyles = makeStyles(theme => ({
     margin: theme.spacing(1),
     padding: theme.spacing(0, 1),
     width: `calc(100% - ${theme.spacing(2)}px)`,
-    backgroundColor: '#F3EFEF',
   },
   slides: {
     position: 'relative',
@@ -74,13 +74,37 @@ const useStyles = makeStyles(theme => ({
       borderBottom: `8px solid ${theme.palette.secondary.main}`,
     },
   },
+  forecast: {
+    display: 'flex',
+    position: 'absolute',
+    top: 12,
+    right: 0,
+    zIndex: -1,
+    padding: theme.spacing(0.25, 0.5),
+    backgroundImage: 'linear-gradient(to right, rgba(243, 239, 239, 1), rgba(243, 239, 239, 1) 30%, rgba(243, 239, 239, .25))',
+    '& > span': {
+      color: '#666',
+      lineHeight: 1,
+    },
+    '&:after': {
+      content: '""',
+      position: 'absolute',
+      top: '50%',
+      left: 0,
+      height: 36,
+      width: 1,
+      transform: 'translateY(-50%)',
+      borderLeft: `1px dashed ${theme.palette.secondary.main}`,
+    },
+  },
 }));
 
-const YearSlider = ({ year, onYearChange, min, max }) => {
+const YearSlider = ({ year, onYearChange, min, max, forecast }) => {
   const classes = useStyles();
+  const intl = useIntl();
 
   const [currYear, setCurrYear] = useState(year?.curr || year);
-  const [compareYear, setCompareYear] = useState(year?.compare);
+  const [compareYear, setCompareYear] = useState(year?.compare || year);
   const [play, setPlay] = useState(false);
 
   const onCurrYearChange = useCallback((value) => {
@@ -117,6 +141,11 @@ const YearSlider = ({ year, onYearChange, min, max }) => {
   }), [min, max]);
 
   /**
+   * Determine whether or not it renders double sliders, i.e. with comparison.
+   */
+  const double = useMemo(() => typeof year === 'object' && year.compare, [year]);
+
+  /**
    * Overriding some styling to achieve the designed look-and-feel.
    */
   const getClasses = useCallback(atBottom => ({
@@ -130,14 +159,22 @@ const YearSlider = ({ year, onYearChange, min, max }) => {
   }
 
   return (
-    <Grid container alignItems="center" wrap="nowrap" spacing={0} className={classes.root}>
+    <Grid
+      container
+      alignItems="center"
+      wrap="nowrap"
+      spacing={0}
+      className={classes.root}
+      style={{ backgroundColor: double || !forecast ? '#F3EFEF' : 'transparent' }}
+    >
       <Grid item>
         <IconButton color="primary" onClick={() => setPlay(!play)} className={classes.play}>
           {play ? <PauseIcon fontSize="large" /> : <PlayIcon fontSize="large" />}
         </IconButton>
       </Grid>
       <Grid item className={classes.slides}>
-        {typeof year === 'object' && year.compare && (
+        {/* compare slider */}
+        {double && (
           <Slider
             value={compareYear}
             onChange={(_, value) => value && onCompareYearChange(value)}
@@ -148,6 +185,8 @@ const YearSlider = ({ year, onYearChange, min, max }) => {
             classes={getClasses(true)}
           />
         )}
+
+        {/* current year slider */}
         <Slider
           value={currYear}
           onChange={(_, value) => value && onCurrYearChange(value)}
@@ -156,6 +195,13 @@ const YearSlider = ({ year, onYearChange, min, max }) => {
           {...DEFAULT_PROPS}
           classes={getClasses()}
         />
+
+        {/* forecast bar */}
+        {forecast && (
+          <div className={classes.forecast} style={{ left: `${((forecast - min) / (max - min)) * 100}%` }}>
+            <Typography variant="overline">{intl.formatMessage({ id: 'common.forecast' })}</Typography>
+          </div>
+        )}
       </Grid>
     </Grid>
   );
@@ -172,12 +218,14 @@ YearSlider.propTypes = {
   onYearChange: PropTypes.func,
   min: PropTypes.number,
   max: PropTypes.number,
+  forecast: PropTypes.number,
 };
 
 YearSlider.defaultProps = {
   onYearChange: () => {},
   min: 2005,
   max: 2020,
+  forecast: undefined,
 };
 
 export default YearSlider;

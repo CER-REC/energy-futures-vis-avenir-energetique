@@ -1,15 +1,15 @@
-import React, { useMemo, useState, useEffect } from 'react';
+import React, { useMemo, useState, useEffect, useCallback } from 'react';
+import { useIntl } from 'react-intl';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import PropTypes from 'prop-types';
-import {
-  makeStyles, Grid, Typography, Tooltip,
-} from '@material-ui/core';
-import ClearIcon from '@material-ui/icons/Clear';
+import { makeStyles, Grid, Tooltip, Typography } from '@material-ui/core';
 import DragIcon from '@material-ui/icons/DragIndicator';
-import { useIntl } from 'react-intl';
+import Markdown from 'react-markdown';
 
 import useConfig from '../../hooks/useConfig';
-import Hint from '../Hint';
+import { HintRegionList, HintSourceList } from '../Hint';
+import ColoredItemBox from './ColoredItemBox';
+import OilSubgroup from './OilSubgroup';
 
 const reorder = (list, startIndex, endIndex) => {
   const result = Array.from(list);
@@ -18,115 +18,10 @@ const reorder = (list, startIndex, endIndex) => {
   return result;
 };
 
-const ColoredItemBox = ({
-  item, label, icon, color, selected, clear, round, disabled, isDragDisabled, ...gridProps
-}) => {
-  const classes = makeStyles(theme => ({
-    root: props => ({
-      position: 'absolute',
-      height: 36,
-      width: 36,
-      backgroundColor: theme.palette.common.white,
-      border: `2px solid ${color || theme.palette.secondary.main}`,
-      borderRadius: round ? '50%' : 0,
-      textTransform: 'uppercase',
-      transition: 'box-shadow .25s ease-in-out',
-      '& > p, & > svg': {
-        margin: 'auto',
-        color: color || theme.palette.secondary.main,
-      },
-      '&.selected': { backgroundColor: color || theme.palette.secondary.main },
-      '&.selected > p, &.selected > svg': { color: theme.palette.common.white },
-      '&:hover': { boxShadow: theme.shadows[6] },
-
-      '&.disabled': {
-        borderColor: theme.palette.secondary.main,
-        backgroundColor: theme.palette.common.white,
-      },
-      '&.disabled > p, &.disabled > svg': {
-        color: theme.palette.secondary.main,
-        backgroundColor: props.round ? 'transparent' : theme.palette.common.white,
-        fontWeight: 700,
-        lineHeight: 1,
-        zIndex: 1,
-      },
-      '&.disabled:before': {
-        content: '""',
-        position: 'absolute',
-        top: '50%',
-        left: '50%',
-        height: 2,
-        width: props.round ? '105%' : '152%',
-        transform: 'translate(-50%, -50%) rotate(-45deg)',
-        backgroundColor: theme.palette.secondary.main,
-        borderRadius: 1,
-      },
-      '&.disabled:hover': { boxShadow: theme.shadows[0] },
-    }),
-    btn: { margin: 'auto' },
-    tooltip: props => ({
-      margin: theme.spacing(0, 1),
-      paddingLeft: props.isDragDisabled ? 4 : 0,
-      fontSize: 10,
-      lineHeight: 1,
-      color: '#999',
-      backgroundColor: theme.palette.common.white,
-      border: '1px solid #AAA',
-      borderRadius: 0,
-      boxShadow: theme.shadows[1],
-      '& span': { marginLeft: theme.spacing(0.5) },
-    }),
-  }))({ round, isDragDisabled });
-  const Icon = icon;
-  const styling = [classes.root, selected && 'selected', disabled && 'disabled'].filter(Boolean).join(' ');
-  return (
-    <Tooltip
-      title={label && (
-        <Grid container alignItems="center" wrap="nowrap">
-          {!isDragDisabled && <DragIcon fontSize="small" />}
-          <Typography variant="overline">{label}</Typography>
-        </Grid>
-      )}
-      placement="right"
-      classes={{ tooltip: classes.tooltip }}
-    >
-      <Grid container {...gridProps} className={styling}>
-        {clear && <ClearIcon className={classes.btn} />}
-        {!clear && icon && <Icon className={classes.btn} />}
-        {!clear && !icon && <Typography variant="body2">{item}</Typography>}
-      </Grid>
-    </Tooltip>
-  );
-};
-
-ColoredItemBox.propTypes = {
-  item: PropTypes.string.isRequired,
-  label: PropTypes.string,
-  icon: PropTypes.func,
-  color: PropTypes.string,
-  selected: PropTypes.bool,
-  clear: PropTypes.bool,
-  round: PropTypes.bool,
-  disabled: PropTypes.bool,
-  isDragDisabled: PropTypes.bool,
-};
-
-ColoredItemBox.defaultProps = {
-  label: '',
-  icon: undefined,
-  color: undefined,
-  selected: false,
-  clear: false,
-  round: false,
-  disabled: false,
-  isDragDisabled: false,
-};
-
 const useStyles = makeStyles(theme => ({
   root: props => ({
     position: 'relative',
     width: props.width || '100%',
-    padding: theme.spacing(1, 0),
     marginTop: props.dense ? 0 : -4,
     border: '1px dashed transparent',
     borderRadius: theme.shape.borderRadius,
@@ -152,7 +47,18 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: 'transparent',
     border: 'none',
     cursor: 'pointer',
+    '&.oil-sub-group': { height: 180 },
   }),
+  tooltip: {
+    maxWidth: 350,
+    fontSize: 10,
+    lineHeight: 1,
+    color: '#999',
+    backgroundColor: theme.palette.common.white,
+    border: '1px solid #AAA',
+    borderRadius: 0,
+    boxShadow: theme.shadows[1],
+  },
 }));
 
 const DraggableVerticalList = ({
@@ -160,6 +66,7 @@ const DraggableVerticalList = ({
   singleSelect = false, /* multi-select or single select */
   greyscale = false, /* ignore button colors */
   disabled = false, /* disable drag-n-drop */
+  sourceType,
   items /* array of strings */,
   defaultItems /* object */,
   itemOrder /* array of strings */,
@@ -209,15 +116,18 @@ const DraggableVerticalList = ({
   );
 
   /**
-   * Switch between single- vs. multi-select.
+   * Determine whether or not 'transportation' is the current selected sector.
+   * This will be later used in generating tooltips and the subgroup.
    */
-  useEffect(() => {
-    if (singleSelect) {
-      setLocalItems(localItems.length === 1 ? localItems : ['ALL']);
-    } else if (setItems) {
-      setItems(itemOrder);
-    }
-  }, [singleSelect]); // eslint-disable-line react-hooks/exhaustive-deps
+  const isTransportation = useMemo(() => config.page === 'by-sector' && config.sector === 'TRANSPORTATION', [config.page, config.sector]);
+
+  /**
+   * Generate translated tooltip text, if available.
+   */
+  const getTooltip = useCallback((item) => {
+    const type = isTransportation ? 'transportation' : sourceType;
+    return sourceType && intl.formatMessage({ id: `sources.${type}.${item}` });
+  }, [intl, sourceType, isTransportation]);
 
   const handleToggleItem = toggledItem => () => {
     if (singleSelect) {
@@ -246,9 +156,7 @@ const DraggableVerticalList = ({
 
   return (
     <DragDropContext onDragEnd={handleDragEnd}>
-      <Hint>
-        <Typography variant="h6" color="secondary" className={classes.title}>{title}</Typography>
-      </Hint>
+      {title === 'Region' ? <HintRegionList items={defaultItems} /> : <HintSourceList sources={defaultItems} sourceType={sourceType} />}
       <Droppable droppableId="droppable" isDropDisabled={disabled}>
         {(provided, snapshot) => (
           <Grid
@@ -260,9 +168,12 @@ const DraggableVerticalList = ({
             ref={provided.innerRef}
             className={`${classes.root} ${snapshot.isDraggingOver && classes.dark}`}
           >
+            {/* the 'ALL' box */}
             <Grid
               item
               onClick={handleToggleItem('ALL')}
+              onKeyPress={event => event.key === 'Enter' && handleToggleItem('ALL')()}
+              tabIndex={0}
               className={classes.item}
             >
               <ColoredItemBox
@@ -272,31 +183,51 @@ const DraggableVerticalList = ({
                 clear={localItems.length === Object.keys(defaultItems).length}
               />
             </Grid>
+
+            {/* individual boxes */}
             {localItemOrder.filter(item => defaultItems[item]).map((item, index) => (
               <Draggable key={`region-btn-${item}`} draggableId={item} index={index} isDragDisabled={disabled}>
-                {providedItem => (
-                  <>
-                    <Grid
-                      item
-                      ref={providedItem.innerRef}
-                      {...providedItem.draggableProps}
-                      {...providedItem.dragHandleProps}
-                      onClick={handleToggleItem(item)}
-                      className={classes.item}
+                {(providedItem) => {
+                  const tooltip = getTooltip(item);
+                  return (
+                    <Tooltip
+                      title={defaultItems[item]?.label && (
+                        <Grid container alignItems="center" wrap="nowrap" spacing={1}>
+                          {!disabled && <Grid item><DragIcon fontSize="small" /></Grid>}
+                          <Grid item>
+                            <Typography variant="overline" component="div" style={{ lineHeight: tooltip ? 1.5 : 2.66 }}>
+                              <strong>{defaultItems[item].label}</strong>
+                            </Typography>
+                            {tooltip && <Typography variant="caption" color="secondary"><Markdown>{tooltip}</Markdown></Typography>}
+                          </Grid>
+                        </Grid>
+                      )}
+                      placement="right"
+                      classes={{ tooltip: classes.tooltip }}
                     >
-                      <ColoredItemBox
-                        item={item}
-                        round={round}
-                        label={defaultItems[item].label}
-                        icon={defaultItems[item].icon}
-                        color={greyscale ? undefined : defaultItems[item].color}
-                        selected={localItems.indexOf(item) > -1}
-                        disabled={disabledItems && disabledItems.includes(item)}
-                        isDragDisabled={disabled}
-                      />
-                    </Grid>
-                  </>
-                )}
+                      <Grid
+                        item
+                        ref={providedItem.innerRef}
+                        {...providedItem.draggableProps}
+                        {...providedItem.dragHandleProps}
+                        onClick={handleToggleItem(item)}
+                        onKeyPress={event => event.key === 'Enter' && handleToggleItem(item)()}
+                        tabIndex={0}
+                        className={`${classes.item} ${isTransportation && item === 'OIL' && 'oil-sub-group'}`}
+                      >
+                        <ColoredItemBox
+                          item={item}
+                          round={round}
+                          icon={defaultItems[item].icon}
+                          color={greyscale ? undefined : defaultItems[item].color}
+                          selected={localItems.indexOf(item) > -1}
+                          attachment={isTransportation && item === 'OIL' && <OilSubgroup selected={localItems.indexOf(item) > -1} />}
+                          disabled={disabledItems && disabledItems.includes(item)}
+                        />
+                      </Grid>
+                    </Tooltip>
+                  );
+                }}
               </Draggable>
             ))}
             {provided.placeholder}
@@ -315,6 +246,7 @@ DraggableVerticalList.propTypes = {
   singleSelect: PropTypes.bool,
   greyscale: PropTypes.bool,
   disabled: PropTypes.bool,
+  sourceType: PropTypes.string,
   items: PropTypes.arrayOf(PropTypes.string),
   defaultItems: PropTypes.object, // eslint-disable-line react/forbid-prop-types
   itemOrder: PropTypes.arrayOf(PropTypes.string),
@@ -332,6 +264,7 @@ DraggableVerticalList.defaultProps = {
   singleSelect: false,
   greyscale: false,
   disabled: false,
+  sourceType: undefined,
   items: [],
   defaultItems: {},
   itemOrder: [],

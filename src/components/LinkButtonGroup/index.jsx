@@ -4,7 +4,6 @@ import {
   makeStyles, createStyles, Grid, Button, Typography,
 } from '@material-ui/core';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
-import ReportLinkImage from './report-link.png';
 
 const useStyles = makeStyles(theme => createStyles({
   title: {
@@ -40,17 +39,21 @@ const useStyles = makeStyles(theme => createStyles({
     top: '50%',
     left: props.accent === 'left' ? 'calc(100% - 10px)' : 'auto',
     right: props.accent !== 'left' ? 'calc(100% - 10px)' : 'auto',
-    width: 250,
+    maxHeight: 350,
+    width: 300,
     padding: theme.spacing(1.5, 2, 1.5, 1.5),
     transform: `translate(${props.accent === 'left' ? 26 : -26}px, -50%)`,
     zIndex: theme.zIndex.modal,
     border: `1px solid ${theme.palette.secondary.light}`,
     backgroundColor: '#F3EFEF',
     overflow: 'auto',
-    '& p': {
+    '& h4': { marginTop: 0 },
+    '& p, & li': {
       fontSize: 12,
       lineHeight: 1.1,
+      '&:not(.MuiTypography-root)': { marginBottom: 0 },
     },
+    '& li': { margin: theme.spacing(0.5, 0) },
     '& img': { width: '100%' },
   }),
   btnPopUpTip: props => ({
@@ -81,7 +84,7 @@ const LinkButtonGroup = ({ title, labels, accent, className }) => {
   const [select, setSelect] = useState(undefined);
 
   const handleSelect = useCallback(
-    label => () => select !== (label.name || label) && setSelect(label.name || label),
+    label => () => select !== label.name && typeof label.content === 'object' && setSelect(label.name),
     [select, setSelect],
   );
 
@@ -99,34 +102,20 @@ const LinkButtonGroup = ({ title, labels, accent, className }) => {
           spacing={labelGroup[0].icon ? 0 : 1}
         >
           {labelGroup.map(label => (
-            <Grid item key={`link-button-${label.name || label}`} className={classes.btnContainer}>
+            <Grid item key={`link-button-${label.name}`} className={classes.btnContainer}>
               <Button
                 variant="contained"
-                color={select === (label.name || label) ? 'primary' : 'secondary'}
-                onClick={handleSelect(label.name || label)}
-                onMouseEnter={handleSelect(label.name || label)}
+                color={select === label.name ? 'primary' : 'secondary'}
+                onClick={typeof label.content === 'function' ? label.content : handleSelect(label)}
+                onMouseEnter={handleSelect(label)}
                 className={`${classes.btn} ${label.icon && classes.btnIcon}`}
               >
-                {label.icon || label}
+                {label.icon || label.name}
               </Button>
 
-              {/* TODO: placeholder; this will be replaced with real content */}
-              <span style={{ display: select === (label.name || label) ? 'block' : 'none' }}>
+              <span style={{ display: select === label.name ? 'block' : 'none' }}>
                 <div className={classes.btnPopUp}>
-                  <Typography varaint="body2" color="secondary" gutterBottom>
-                    Energy Future includes a wide range of projections for Canadian energy supply
-                    and demand. Theme projects are the result of a modeling system consisting of
-                    several interactive components (or modules) which produce integrated, future
-                    Canadian energy trends.
-                  </Typography>
-                  <Grid container alignItems="flex-end" wrap="nowrap" spacing={1}>
-                    <Grid item xs={5}><img src={ReportLinkImage} alt="report link" /></Grid>
-                    <Grid item xs={7}>
-                      <Typography varaint="body2" color="secondary">
-                        DOWNLOAD THE COMPLETE REPORT HERE
-                      </Typography>
-                    </Grid>
-                  </Grid>
+                  {typeof label.content === 'object' && label.content}
                 </div>
                 <div className={`${classes.btnPopUpTip} ${label.icon && classes.btnIconPopUpTip}`} />
               </span>
@@ -160,10 +149,11 @@ const LinkButtonGroup = ({ title, labels, accent, className }) => {
 
 LinkButtonGroup.propTypes = {
   title: PropTypes.string,
-  labels: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.shape({
+  labels: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.shape({
     icon: PropTypes.element,
-    name: PropTypes.string,
-  }), PropTypes.string]))),
+    name: PropTypes.string.isRequired,
+    content: PropTypes.oneOfType([PropTypes.element, PropTypes.func]),
+  }))),
   accent: PropTypes.string, // 'left', 'right'
   className: PropTypes.string, // root class names
 };

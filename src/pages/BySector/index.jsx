@@ -2,33 +2,60 @@ import React, { useCallback, useMemo } from 'react';
 import { ResponsiveLine } from '@nivo/line';
 import PropTypes from 'prop-types';
 import { useIntl } from 'react-intl';
-import ForecastBar from '../../components/ForecastBar';
-import fadeLayer from '../../components/FadeLayer';
-import MaxTick from '../../components/MaxTick';
 
 import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
-import VizTooltip from '../../components/VizTooltip';
-import { CHART_PROPS, CHART_AXIS_PROPS } from '../../constants';
+import { CHART_PROPS, CHART_AXIS_PROPS, CHART_PATTERNS, OIL_SUBGROUP } from '../../constants';
 import { getMaxTick } from '../../utilities/parseData';
+
+import { fadeLayerBySector } from '../../components/FadeLayer';
+import forecastLayer from '../../components/ForecastLayer';
+import MaxTick from '../../components/MaxTick';
+import VizTooltip from '../../components/VizTooltip';
 
 const BySector = ({ data, year }) => {
   const intl = useIntl();
-  const { sources: { energy: { colors } } } = useAPI();
+  const {
+    sources: {
+      energy: { colors: energyColors },
+      transportation: { colors: transportationColors },
+    },
+  } = useAPI();
   const { config } = useConfig();
+
+  /**
+   * Determine whether or not 'transportation' is the current selected sector.
+   */
+  const isTransportation = useMemo(() => config.sector === 'TRANSPORTATION', [config.sector]);
+
+  /**
+   * Prepare the color palette, which is a combination of energy colors and transportation colors.
+   */
+  const colors = useMemo(
+    () => ({ ...energyColors, ...transportationColors }),
+    [energyColors, transportationColors],
+  );
 
   const orderedData = useMemo(
     () => data && config.sourceOrder
-      .map(source => data.find(o => o.id === source))
-      .filter(Boolean)
+      .map(id => ((isTransportation && id === 'OIL') ? OIL_SUBGROUP : id)).flat() // expand extra oil options
+      .map(source => data.find(o => o.id === source)).filter(Boolean) // place sources in order
       .reverse(),
-    [config.sourceOrder, data],
+    [data, config.sourceOrder, isTransportation],
   );
 
   /**
    * The fade-out effect over forecast years.
    */
-  const fade = useMemo(() => fadeLayer(year), [year]);
+  const fade = useMemo(
+    () => fadeLayerBySector({ year, isTransportation }),
+    [year, isTransportation],
+  );
+
+  /**
+   * The forecast bar.
+   */
+  const forecast = useMemo(() => forecastLayer({ year }), [year]);
 
   /**
    * Format tooltip.
@@ -37,14 +64,17 @@ const BySector = ({ data, year }) => {
     <VizTooltip
       nodes={event.slice?.points.map(value => ({
         name: value.serieId,
-        translation: intl.formatMessage({ id: `common.sources.energy.${value.serieId}` }),
+        translation: isTransportation && OIL_SUBGROUP.includes(value.serieId)
+          ? intl.formatMessage({ id: `common.sources.transportation.${value.serieId}` })
+          : intl.formatMessage({ id: `common.sources.energy.${value.serieId}` }),
         value: value.data?.y,
         color: value.serieColor,
+        mask: isTransportation && OIL_SUBGROUP.includes(value.serieId) && `url(#${value.serieId}-mask)`,
       }))}
       unit={config.unit}
       paper
     />
-  ), [intl, config.unit]);
+  ), [intl, isTransportation, config.unit]);
 
   /**
    * Calculate the max tick value on y-axis.
@@ -67,32 +97,30 @@ const BySector = ({ data, year }) => {
   }
 
   return (
-    <>
-      <ForecastBar year={year} />
-      <ResponsiveLine
-        {...CHART_PROPS}
-        data={orderedData}
-        layers={['grid', 'axes', 'areas', 'crosshair', 'lines', 'points', 'slices', fade]}
-        xScale={{ type: 'point' }}
-        yScale={{ type: 'linear', min: 0, max: axis.highest, stacked: true, reverse: false }}
-        curve="cardinal"
-        axisRight={{
-          ...CHART_AXIS_PROPS,
-          tickValues: axis.ticks,
-          format: axisFormat,
-        }}
-        axisBottom={{
-          ...CHART_AXIS_PROPS,
-          format: value => ((value % 5) ? '' : value),
-        }}
-        colors={d => colors[d.id]}
-        lineWidth={0}
-        enablePoints={false}
-        enableSlices="x"
-        sliceTooltip={getTooltip}
-        gridYValues={axis.ticks}
-      />
-    </>
+    <ResponsiveLine
+      {...CHART_PROPS}
+      data={orderedData}
+      layers={['grid', 'axes', 'crosshair', 'lines', 'points', 'slices', 'areas', fade, forecast]}
+      xScale={{ type: 'point' }}
+      yScale={{ type: 'linear', min: 0, max: axis.highest, stacked: true }}
+      curve="cardinal"
+      axisRight={{
+        ...CHART_AXIS_PROPS,
+        tickValues: axis.ticks,
+        format: axisFormat,
+      }}
+      axisBottom={{
+        ...CHART_AXIS_PROPS,
+        format: value => ((value % 5) ? '' : value),
+      }}
+      colors={d => colors[d.id]}
+      lineWidth={0}
+      enablePoints={false}
+      enableSlices="x"
+      sliceTooltip={getTooltip}
+      gridYValues={axis.ticks}
+      defs={CHART_PATTERNS}
+    />
   );
 };
 

@@ -1,30 +1,20 @@
-import React, { useCallback, useEffect, useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { useIntl } from 'react-intl';
 import PropTypes from 'prop-types';
-import {
-  makeStyles, createStyles,
-  Grid, Typography, Button, Tooltip,
-} from '@material-ui/core';
+import { Grid, Typography, Button, Tooltip } from '@material-ui/core';
 
 import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
 import { SCENARIO_COLOR } from '../../constants';
-import Hint from '../Hint';
-
-const useStyles = makeStyles(theme => createStyles({
-  root: {
-    '& > div:first-of-type': { marginRight: theme.spacing(2) },
-  },
-}));
+import { HintScenarioSelect } from '../Hint';
 
 const ScenarioSelect = ({ multiSelect }) => {
-  const classes = useStyles();
   const intl = useIntl();
-  const { config, setConfig } = useConfig();
+  const { config, configDispatch } = useConfig();
   const { yearIdIterations } = useAPI();
   const handleScenariosUpdate = useCallback(
-    scenarios => setConfig({ ...config, scenarios }),
-    [config, setConfig],
+    scenarios => configDispatch({ type: 'scenarios/changed', payload: scenarios }),
+    [configDispatch],
   );
   const scenarios = useMemo(() => {
     const reorderedScenarios = yearIdIterations[config.yearId]?.scenarios || [];
@@ -35,39 +25,6 @@ const ScenarioSelect = ({ multiSelect }) => {
     }
     return reorderedScenarios;
   }, [yearIdIterations, config.yearId]);
-
-  /**
-   * If the previous selected scenario is no longer available after the year change,
-   * then auto-select the first scenario in the new list.
-   */
-  useEffect(
-    () => {
-      const validScenarios = config.scenarios.filter(s => scenarios.indexOf(s) !== -1);
-
-      if (
-        (multiSelect || (validScenarios.length === 1))
-        && (config.scenarios.length === validScenarios.length)
-      ) {
-        return;
-      }
-
-      if (multiSelect) {
-        handleScenariosUpdate(validScenarios);
-      } else if (validScenarios.length === 0) {
-        handleScenariosUpdate([scenarios[0]]);
-      } else {
-        handleScenariosUpdate([validScenarios[0]]);
-      }
-    },
-    [
-      scenarios,
-      multiSelect,
-      yearIdIterations,
-      config.yearId,
-      config.scenarios,
-      handleScenariosUpdate,
-    ],
-  );
 
   /**
    * When a scenario button is pressed.
@@ -87,23 +44,22 @@ const ScenarioSelect = ({ multiSelect }) => {
   /**
    * Prepare the tooltip text of a given scenario button.
    */
-  const getTooltip = useCallback(
-    (scenario, yearly /* boolean */) => (yearly ? intl.formatMessage({
-      id: `components.scenarioSelect.${scenario}.description.${config.yearId}`,
-      defaultMessage: intl.formatMessage({ id: `components.scenarioSelect.${scenario}.description.default` }),
-    }) : intl.formatMessage({ id: `components.scenarioSelect.${scenario}.description` })),
-    [intl, config.yearId],
-  );
+  const getTooltip = useCallback(scenario => intl.formatMessage({
+    id: `components.scenarioSelect.${scenario}.description.${config.yearId}`,
+    defaultMessage: intl.formatMessage({ id: `components.scenarioSelect.${scenario}.description.default` }),
+  }), [intl, config.yearId]);
 
   return (
-    <Grid container alignItems="center" wrap="nowrap" spacing={1} className={classes.root}>
+    <Grid container alignItems="center" wrap="nowrap" spacing={1}>
       <Grid item>
-        <Hint><Typography variant="h6" color="primary">Scenarios</Typography></Hint>
+        <HintScenarioSelect>
+          <Typography variant="h6" color="primary">{intl.formatMessage({ id: 'components.scenarioSelect.name' })}</Typography>
+        </HintScenarioSelect>
       </Grid>
 
       {scenarios.map(scenario => (
         <Grid item key={`config-scenario-${scenario}`}>
-          <Tooltip title={getTooltip(scenario, scenario === 'Reference')}>
+          <Tooltip title={getTooltip(scenario)}>
             <Button
               variant={config.scenarios.indexOf(scenario) > -1 ? 'contained' : 'outlined'}
               color="primary"
@@ -115,7 +71,7 @@ const ScenarioSelect = ({ multiSelect }) => {
                 borderColor: SCENARIO_COLOR[scenario],
               } : {}}
             >
-              {intl.formatMessage({ id: `components.scenarioSelect.${scenario}.title` })}
+              {intl.formatMessage({ id: `common.scenarios.${scenario}` })}
             </Button>
           </Tooltip>
         </Grid>

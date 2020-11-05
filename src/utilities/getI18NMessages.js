@@ -4,10 +4,10 @@ export default translations => (
 
     switch (translation.group) {
       case 'REGION':
-        key = `regions.${translation.key}`;
+        key = `common.regions.${translation.key}`;
         break;
       case 'SCENARIO':
-        key = `components.scenarioSelect.${translation.key}.title`;
+        key = `common.scenarios.${translation.key}`;
         break;
       case 'ELECTRICITY_SOURCE':
         key = `common.sources.electricity.${translation.key}`;
@@ -21,8 +21,11 @@ export default translations => (
       case 'OIL_SOURCE':
         key = `common.sources.oil.${translation.key}`;
         break;
+      case 'TRANSPORTATION_OIL_ENERGY_SOURCE':
+        key = `common.sources.transportation.${translation.key}`;
+        break;
       case 'SECTOR':
-        key = `components.horizontalControlBar.${translation.key}`;
+        key = `common.sectors.${translation.key}`;
         break;
       default:
         return i18nMessages;

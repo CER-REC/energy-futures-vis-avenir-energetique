@@ -1,44 +1,25 @@
 import React, { useMemo } from 'react';
-import {
-  makeStyles, createStyles,
-  Grid, Typography, Button,
-} from '@material-ui/core';
-import LinkIcon from '@material-ui/icons/Link';
-import EmailIcon from '@material-ui/icons/Email';
-import {
-  IconTwitter, IconFacebook, IconLinkedIn,
-} from '../../icons';
+import { useIntl } from 'react-intl';
+import { makeStyles, Grid, Typography, Button, Tooltip } from '@material-ui/core';
 
 import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
-import LinkButtonGroup from '../LinkButtonGroup';
-import Hint from '../Hint';
+import { HintYearSelect } from '../Hint';
 
-const useStyles = makeStyles(theme => createStyles({
-  root: {
-    position: 'relative',
-    '& > div:first-of-type': { marginRight: theme.spacing(2) },
-  },
-  title: {
-    fontWeight: 700,
-    textTransform: 'uppercase',
-  },
+const useStyles = makeStyles({
   button: {
     height: 43,
     width: 43,
     '& h5': { fontWeight: 700 },
   },
-  report: {
-    position: 'absolute',
-    top: 0,
-    right: 0,
-  },
-}));
+});
 
 const YearSelect = () => {
   const classes = useStyles();
+  const intl = useIntl();
+
   const { yearIdIterations } = useAPI();
-  const { config, setConfig } = useConfig();
+  const { config, configDispatch } = useConfig();
 
   const yearIds = useMemo(
     () => Object.keys(yearIdIterations).sort().reverse(),
@@ -46,44 +27,34 @@ const YearSelect = () => {
   );
 
   return (
-    <Grid container alignItems="center" spacing={1} className={classes.root}>
+    <Grid container alignItems="center" spacing={1}>
       <Grid item>
-        <Hint>
-          <Typography variant="h5" color="primary" className={classes.title}>
-            Canada&apos;s Energy Future
-          </Typography>
-        </Hint>
+        <HintYearSelect>
+          <Typography variant="h6" color="primary">{intl.formatMessage({ id: 'components.yearSelect.name' })}</Typography>
+        </HintYearSelect>
       </Grid>
 
       {yearIds.map(yearId => (
         <Grid item key={`year-select-option-${yearId}`}>
-          <Button
-            variant="contained"
-            color={config.yearId === yearId ? 'primary' : 'secondary'}
-            size="small"
-            onClick={() => setConfig({ ...config, yearId })}
-            className={classes.button}
+          <Tooltip
+            title={(
+              <Typography variant="caption" color="secondary">
+                {intl.formatMessage({ id: `components.yearSelect.${yearId}.title` })}
+              </Typography>
+            )}
           >
-            {config.yearId === yearId ? (<Typography variant="h5">{yearId}</Typography>) : yearId}
-          </Button>
+            <Button
+              variant="contained"
+              color={config.yearId === yearId ? 'primary' : 'secondary'}
+              size="small"
+              onClick={() => configDispatch({ type: 'yearId/changed', payload: yearId })}
+              className={classes.button}
+            >
+              {config.yearId === yearId ? (<Typography variant="h5">{yearId}</Typography>) : yearId}
+            </Button>
+          </Tooltip>
         </Grid>
       ))}
-
-      <Grid item className={classes.report}>
-        <LinkButtonGroup
-          labels={[
-            ['download data'],
-            [
-              { icon: <LinkIcon />, name: 'Copy Link' },
-              { icon: <IconLinkedIn />, name: 'LinkedIn' },
-              { icon: <IconFacebook />, name: 'Facebook' },
-              { icon: <IconTwitter />, name: 'Twitter' },
-              { icon: <EmailIcon />, name: 'Email' },
-            ],
-          ]}
-          accent="right"
-        />
-      </Grid>
     </Grid>
   );
 };

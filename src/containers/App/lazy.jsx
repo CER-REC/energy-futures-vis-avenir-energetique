@@ -9,6 +9,7 @@ import BySector from '../../pages/BySector';
 import Scenarios from '../../pages/Scenarios';
 import Electricity from '../../pages/Electricity';
 import Demand from '../../pages/Demand';
+import OilAndGas from '../../pages/OilAndGas';
 import useConfig, { ConfigProvider } from '../../hooks/useConfig';
 
 /**
@@ -48,9 +49,12 @@ const theme = createMuiTheme({
       h6: {
         fontSize: '20px',
         fontWeight: 700,
-        textTransform: 'uppercase',
       },
       body1: { fontSize: '14px' },
+      caption: {
+        lineHeight: 1.3,
+        '& > p': { margin: 0 },
+      },
     },
     MuiButton: {
       root: {
@@ -122,17 +126,18 @@ const Content = () => {
     <PageLayout
       showRegion
       multiSelectScenario={config.page === 'scenarios'}
-      disableDraggableRegion={['by-sector', 'electricity', 'scenarios', 'demand'].includes(config.page)}
-      singleSelectRegion={['by-sector', 'scenarios', 'demand'].includes(config.page) || (config.page === 'electricity' && config.view !== 'source')}
-      showSource={['by-sector', 'electricity'].includes(config.page)}
-      disableDraggableSource={['electricity'].includes(config.page)}
-      singleSelectSource={config.page === 'electricity' && config.view === 'source'}
+      disableDraggableRegion={['by-sector', 'electricity', 'scenarios', 'oil-and-gas', 'demand'].includes(config.page)}
+      singleSelectRegion={['by-sector', 'scenarios', 'demand'].includes(config.page) || (config.view === 'region')}
+      showSource={['by-sector', 'electricity', 'oil-and-gas'].includes(config.page)}
+      disableDraggableSource={['electricity', 'oil-and-gas'].includes(config.page)}
+      singleSelectSource={config.view === 'source'}
     >
       {config.page === 'by-region' && <ByRegion />}
       {config.page === 'by-sector' && <BySector />}
       {config.page === 'electricity' && <Electricity />}
       {config.page === 'scenarios' && <Scenarios />}
       {config.page === 'demand' && <Demand />}
+      {config.page === 'oil-and-gas' && <OilAndGas />}
     </PageLayout>
   );
 };

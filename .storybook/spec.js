@@ -1,4 +1,4 @@
-import initStoryshots from '@storybook/addon-storyshots';
+import initStoryshots, { snapshotWithOptions } from '@storybook/addon-storyshots';
 import { SynchronousPromise } from 'synchronous-promise';
 
 import client from './mockApolloClient';
@@ -17,4 +17,15 @@ jest.doMock('./addon-status', () => jest.fn((storyFnOuter, contextOuter) => {
 // doesn't directly define a test.
 beforeAll(() => {});
 
-initStoryshots();
+initStoryshots({
+  test: snapshotWithOptions({
+    createNodeMock: (element) => {
+      // Mock ref for Material UI slider
+      if (element.props.className.indexOf('MuiSlider-root') !== -1) {
+        return document.createElement(element.type);
+      }
+
+      return null;
+    },
+  }),
+});

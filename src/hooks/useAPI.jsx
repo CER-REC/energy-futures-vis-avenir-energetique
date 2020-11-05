@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { useQuery } from '@apollo/react-hooks';
 
-import { REGION_COLORS, SOURCE_COLORS, SOURCE_ICONS } from '../constants';
+import { REGION_COLORS, SOURCE_COLORS, SOURCE_ICONS, SECTOR_ICONS } from '../constants';
 import getI18NMessages from '../utilities/getI18NMessages';
 import { ITERATIONS_TRANSLATIONS } from './queries';
 
@@ -45,12 +45,14 @@ const getSources = (translations) => {
     energy: {},
     gas: {},
     oil: {},
+    transportation: {},
   };
   const sourceTranslationGroupTypes = {
     ELECTRICITY_SOURCE: 'electricity',
     ENERGY_SOURCE: 'energy',
     GAS_SOURCE: 'gas',
     OIL_SOURCE: 'oil',
+    TRANSPORTATION_OIL_ENERGY_SOURCE: 'transportation',
   };
 
   Object.keys(sourceTranslationGroupTypes).forEach((group) => {
@@ -77,6 +79,24 @@ const getSources = (translations) => {
   return sources;
 };
 
+const getSectors = (translations) => {
+  const icons = {};
+  const sectorEnums = translations.filter(
+    translation => translation.group === 'SECTOR',
+  ).map(
+    translation => translation.key,
+  );
+  const order = sectorEnums.filter(sector => sector !== 'ALL');
+
+  order.unshift('ALL');
+
+  sectorEnums.forEach((sector) => {
+    icons[sector] = SECTOR_ICONS[sector];
+  });
+
+  return { icons, order };
+};
+
 export default () => {
   const { loading, error, data } = useQuery(ITERATIONS_TRANSLATIONS);
   const yearIdIterations = useMemo(
@@ -93,9 +113,8 @@ export default () => {
       : { electricity: {}, energy: {}, oil: {}, gas: {} }),
     [data],
   );
-  // TODO: Complete when sectors are made into an enum for GraphQL
   const sectors = useMemo(
-    () => (data ? {} : {}),
+    () => (data ? getSectors(data.translations) : { icons: {}, order: [] }),
     [data],
   );
   const translations = useMemo(

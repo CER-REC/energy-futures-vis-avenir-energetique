@@ -1,45 +1,45 @@
-import React, { useEffect, useMemo, useCallback } from 'react';
+import React, { useMemo, useCallback } from 'react';
+import { useIntl } from 'react-intl';
 import { ResponsiveBar } from '@nivo/bar';
 import PropTypes from 'prop-types';
 import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
-import { CHART_PROPS, CHART_AXIS_PROPS, UNIT_NAMES } from '../../constants';
+import { CHART_PROPS, CHART_AXIS_PROPS } from '../../constants';
 import { formatUnitAbbreviation } from '../../utilities/convertUnit';
 import { getMaxTick } from '../../utilities/parseData';
 import convertHexToRGB from '../../utilities/convertHexToRGB';
-import ForecastBar from '../../components/ForecastBar';
+import forecastLayer from '../../components/ForecastLayer';
 import MaxTick from '../../components/MaxTick';
 
 const ByRegion = ({ data, year }) => {
   const { regions } = useAPI();
-  const { config, setConfig } = useConfig();
+  const intl = useIntl();
+  const { config } = useConfig();
 
   /**
    * Manually calculating bar colors to create the fade-out effect.
    */
-  const customColorProp = useCallback((maxYear, forecastYear, hexFunc) => (d) => {
+  const customColorProp = useCallback((maxYear, forecastYear) => (d) => {
     const opacityNumber = (d.indexValue > forecastYear)
-      ? (1.5 - ((d.indexValue - forecastYear) / (maxYear - forecastYear)))
+      ? (1.1 - ((d.indexValue - forecastYear) / (maxYear - forecastYear)))
       : 1;
-    return hexFunc(regions.colors[d.id], opacityNumber);
+    return convertHexToRGB(regions.colors[d.id], opacityNumber);
   }, [regions.colors]);
 
-  const colors = customColorProp(year.max, year.forecastStart, convertHexToRGB);
+  const colors = useMemo(
+    () => customColorProp(year.max, year.forecastStart),
+    [customColorProp, year],
+  );
 
   /**
-   * A "hacky" but sufficient way to reselect all regions after
-   * being redirected from other pages but none of the regions is currently selected.
+   * The forecast bar.
    */
-  useEffect(() => {
-    if (config.page === 'by-region' && JSON.stringify(config.provinces || []) === '["ALL"]') {
-      setConfig({ ...config, provinces: regions.order });
-    }
-  }, [config, setConfig, regions.order]);
+  const forecast = useMemo(() => forecastLayer({ year }), [year]);
 
   /**
    * Determine the region order shown in the stacked bar chart.
    */
-  const keys = useMemo(() => [...config.provinceOrder].reverse(), [config.provinceOrder]);
+  const keys = useMemo(() => config.provinceOrder?.slice().reverse(), [config.provinceOrder]);
 
   /**
    * Calculate the max tick value on y-axis and generate the all ticks accordingly.
@@ -61,31 +61,27 @@ const ByRegion = ({ data, year }) => {
   }
 
   return (
-    <>
-      {/* Its worth considering whether or not the forecast bar can be a Nivo layer */}
-      <ForecastBar year={year} />
-      <ResponsiveBar
-        {...CHART_PROPS}
-        data={data}
-        keys={keys}
-        indexBy="year"
-        maxValue={axis.highest}
-        padding={0.1}
-        colors={colors}
-        borderColor={{ from: 'color', modifiers: [['darker', 1.6]] }}
-        axisBottom={{
-          ...CHART_AXIS_PROPS,
-          format: yearLabel => ((yearLabel % 5) ? '' : yearLabel),
-        }}
-        axisRight={{
-          ...CHART_AXIS_PROPS,
-          tickValues: axis.ticks,
-          format: axisFormat,
-        }}
-        tooltipFormat={value => `${formatUnitAbbreviation(value)} ${UNIT_NAMES[config.unit]}`}
-        gridYValues={axis.ticks}
-      />
-    </>
+    <ResponsiveBar
+      {...CHART_PROPS}
+      data={data}
+      keys={keys}
+      layers={['grid', 'axes', 'bars', 'markers', forecast]}
+      indexBy="year"
+      maxValue={axis.highest}
+      colors={colors}
+      borderColor={{ from: 'color', modifiers: [['darker', 1.6]] }}
+      axisBottom={{
+        ...CHART_AXIS_PROPS,
+        format: yearLabel => ((yearLabel % 5) ? '' : yearLabel),
+      }}
+      axisRight={{
+        ...CHART_AXIS_PROPS,
+        tickValues: axis.ticks,
+        format: axisFormat,
+      }}
+      tooltipFormat={value => formatUnitAbbreviation(value, intl.formatMessage({ id: `common.units.${config.unit}` }))}
+      gridYValues={axis.ticks}
+    />
   );
 };
 

@@ -12,11 +12,11 @@ const getQuery = (config) => {
   if (['by-region', 'scenarios'].includes(config.page)) {
     switch (config.mainSelection) {
       case 'oilProduction':
-        return queries.OIL_PRODUCTIONS;
+        return queries.OIL_PRODUCTIONS_ALL;
       case 'energyDemand':
         return queries.ENERGY_DEMAND;
       case 'gasProduction':
-        return queries.GAS_PRODUCTIONS;
+        return queries.GAS_PRODUCTIONS_ALL;
       case 'electricityGeneration':
         return queries.ELECTRICITY_GENERATIONS;
       default:
@@ -26,6 +26,10 @@ const getQuery = (config) => {
     return config.view === 'source' ? queries.ELECTRICITY_GENERATIONS_SOURCE : queries.ELECTRICITY_GENERATIONS_REGION;
   } else if (config.page === 'by-sector') {
     return queries.BY_SECTOR;
+  } else if (config.page === 'oil-and-gas') {
+    return config.mainSelection === 'gasProduction'
+      ? queries.GAS_PRODUCTIONS
+      : queries.OIL_PRODUCTIONS;
   }
   return null;
 };
@@ -66,17 +70,33 @@ export default () => {
   const regions = useMemo(() => {
     if (config.page === 'electricity' && config.provinces[0] === 'ALL') {
       return regionOrder;
+    } if (config.page === 'oil-and-gas' && config.provinces[0] === 'ALL') {
+      // FIXME: THIS IS A TEMPORARY THING
+      return regionOrder;
     }
     return config.provinces;
   }, [config.page, config.provinces, regionOrder]);
+
   const sources = useMemo(() => {
     if (config.page === 'electricity' && config.sources[0] === 'ALL') {
       return sourceOrder;
+    } if (config.page === 'oil-and-gas' && config.mainSelection === 'gasProduction') {
+      // FIXME: THIS IS A TEMPORARY THING
+      return ['TIGHT', 'CBM', 'NA', 'SHALE', 'SOLUTION'];
     }
-    return config.sources;
-  }, [config.page, config.sources, sourceOrder]);
 
-  const { sourceType } = PAGES.find(page => page.id === config.page);
+    // adds extra oil sources if sector 'transportation' is selected in the by-sector page.
+    if (config.page === 'by-sector' && config.sector === 'TRANSPORTATION') {
+      return [...config.sources, ...(config.sources.includes('OIL') ? ['AVIATION', 'DIESEL', 'GASOLINE'] : [])];
+    }
+
+    return config.sources;
+  }, [config.page, config.sources, sourceOrder, config.mainSelection, config.sector]);
+
+  const sourceType = useMemo(
+    () => PAGES.find(page => page.id === config.page).sourceTypes?.[config.mainSelection],
+    [config.page, config.mainSelection],
+  );
 
   // A GraphQL document node is needed even if skipping is specified
   const { loading, error, data } = useQuery(query || queries.NULL_QUERY, {
@@ -84,9 +104,7 @@ export default () => {
       scenarios: config.scenarios,
       iteration: yearIdIterations[config.yearId]?.id || '',
       regions,
-      // FIXME: config will store it as "total"
-      // it should be "total end-use"
-      sectors: config.sector === 'total' ? 'total end-use' : config.sector,
+      sectors: config.sector,
       sources,
     },
     // do nothing if the request is invalid
@@ -141,6 +159,9 @@ export default () => {
     data: processedData,
     disabledRegions: unavailability('province'),
     disabledSources: unavailability('source'),
+    // TODO: Remove after refactoring to move processedData chart structure data
+    // into individual chart components
+    rawData: data?.resources,
     year: years && {
       min: Math.min(...years),
       forecastStart,
