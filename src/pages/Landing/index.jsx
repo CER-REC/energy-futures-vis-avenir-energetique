@@ -1,11 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useIntl } from 'react-intl';
-import { makeStyles, Grid, ButtonBase, Button, Typography, useMediaQuery } from '@material-ui/core';
+import {
+  makeStyles, useMediaQuery,
+  Grid, ButtonBase, Button, Fab, Typography, Dialog, DialogContent,
+} from '@material-ui/core';
+import CloseIcon from '@material-ui/icons/Close';
+import Markdown from 'react-markdown';
 import { PAGES } from '../../constants';
 import useConfig from '../../hooks/useConfig';
 
-import LinkButtonGroup from '../../components/LinkButtonGroup';
-import { LinkButtonContentMethodology, LinkButtonContentAbout } from '../../components/LinkButtonGroup/contents';
 import { IconDownload, IconExternal } from '../../icons';
 import headerBg from './header.jpg';
 import portalByRegion from './portal_by_region.jpg';
@@ -35,7 +38,6 @@ const useStyles = makeStyles(theme => ({
   },
 
   box: {
-    minHeight: 200,
     width: '100%',
     boxShadow: theme.shadows[0],
     backgroundSize: 'cover',
@@ -80,10 +82,21 @@ const useStyles = makeStyles(theme => ({
   },
 
   links: {
-    '& > div': { width: '100%' },
-    '& button': {
+    '& > div:first-of-type': {
+      width: theme.spacing(1),
+      backgroundColor: theme.palette.primary.main,
+    },
+    '& > div:last-of-type': { width: 'calc(100% - 8px)' },
+    '& button, & a': {
       height: 38,
+      width: '100%',
+      justifyContent: 'flex-start',
+      whiteSpace: 'nowrap',
       '& > span:first-of-type': { fontSize: 16 },
+    },
+    '& button, & a, & a:hover, & a:focus, & a:active, & a:visited': {
+      color: theme.palette.secondary.main,
+      textDecoration: 'none',
     },
   },
   download: {
@@ -106,6 +119,17 @@ const useStyles = makeStyles(theme => ({
     },
     '& > a > span:first-of-type': { justifyContent: 'normal' },
   },
+
+  dialog: {
+    overflow: 'visible',
+    '& p, & ul': { margin: theme.spacing(0, 0, 1) },
+  },
+  close: {
+    position: 'absolute',
+    top: -24,
+    right: -24,
+    zIndex: 1,
+  },
 }));
 
 const getBg = (page) => {
@@ -124,6 +148,7 @@ const Landing = () => {
   const intl = useIntl();
 
   const { configDispatch } = useConfig();
+  const [open, setDialog] = useState(false); // for the 'about' dialog
 
   /**
    * CER template uses a custom breakpoint.
@@ -136,22 +161,33 @@ const Landing = () => {
     <>
       <header className={classes.header}>
         <img src={headerBg} alt="heade background" />
-        <Typography variant="h4" className={classes.title}>{intl.formatMessage({ id: 'landing.title' })}</Typography>
+        <Typography variant={desktop ? 'h4' : 'h5'} className={classes.title}>{intl.formatMessage({ id: 'landing.title' })}</Typography>
       </header>
 
       <aside className={classes.aside} style={{ width: desktop ? '20%' : '30%' }}>
         <Grid container direction="column" wrap="nowrap" spacing={desktop ? 6 : 3}>
+
+          {/* link buttons (about, methodology, and student resources) */}
           <Grid item>
-            <LinkButtonGroup
-              labels={[[
-                { name: intl.formatMessage({ id: 'links.About.title' }), content: <LinkButtonContentAbout /> },
-                { name: intl.formatMessage({ id: 'links.Methodology.title' }), content: <LinkButtonContentMethodology /> },
-                { name: intl.formatMessage({ id: 'landing.links.resources.title' }), content: () => {} },
-              ]]}
-              spacing={3}
-              className={classes.links}
-            />
+            <Grid container wrap="nowrap" className={classes.links}>
+              <Grid item />
+              <Grid item>
+                <Grid container direction="column" wrap="nowrap" spacing={2}>
+                  {[
+                    { name: intl.formatMessage({ id: 'links.About.title' }), action: () => setDialog(true) },
+                    { name: intl.formatMessage({ id: 'landing.links.methodology.title' }), link: intl.formatMessage({ id: 'landing.links.methodology.link' }) },
+                    { name: intl.formatMessage({ id: 'landing.links.resources.title' }), link: intl.formatMessage({ id: 'landing.links.resources.link' }) },
+                  ].map(entry => (
+                    <Grid item key={`landing-link-button-${entry.name}`}>
+                      <Button variant="contained" color="secondary" href={entry.link} target="_about" onClick={entry.action}>{entry.name}</Button>
+                    </Grid>
+                  ))}
+                </Grid>
+              </Grid>
+            </Grid>
           </Grid>
+
+          {/* the download report thumbnail and links */}
           <Grid item className={classes.download}>
             <Typography variant="h6" color="secondary">{intl.formatMessage({ id: 'landing.links.title' })}</Typography>
             <ButtonBase href={intl.formatMessage({ id: 'landing.links.download.link' })} target="_about">
@@ -186,6 +222,14 @@ const Landing = () => {
           ))}
         </Grid>
       </main>
+
+      {/* the about dialog */}
+      <Dialog open={open} onClose={() => setDialog(false)} classes={{ paper: classes.dialog }}>
+        <Fab color="primary" size="medium" onClick={() => setDialog(false)} className={classes.close}><CloseIcon /></Fab>
+        <DialogContent style={{ padding: 24 }}>
+          <Markdown>{intl.formatMessage({ id: 'about' })}</Markdown>
+        </DialogContent>
+      </Dialog>
     </>
   );
 };

@@ -310,7 +310,6 @@
   },
   "regions": {
   },
-
   "sources": {
     "electricity": {
       "BIO": "Comprennent les combustibles solides de biomasse, comme les granulés de bois, ainsi que les sources géothermiques.",
@@ -431,39 +430,44 @@
     }
   },
   "landing": {
-    "title": "Explore Canada's Energy Future",
+    "title": "Explorer l’avenir énergétique du Canada",
     "description": "Mettant à profit les données associées à nos rapports sur l’avenir énergétique, cet outil interactif vous permet d’explorer l’évolution de la production et de la consommation d’énergie, même de faire des prévisions. Vous avez le loisir de vous en tenir au rapport le plus récent ou d’aller voir ce que disaient de précédents rapports.",
     "By Region": {
-      "title": "Explore By Region",
+      "title": "Explorer par région",
       "description": "Comparez les données passées et faites des projections de l’offre et de la demande d’énergie pour les provinces et les territoires au Canada"
     },
     "By Sector": {
-      "title": "Explore By Sector",
+      "title": "Explorer par secteur",
       "description": "Examinez l’évolution récente des sources énergétiques de différents secteurs et ce que projettent les scénarios du rapport sur l’avenir énergétique à cet égard"
     },
     "Electricity": {
-      "title": "Explore Electricity",
+      "title": "Explorer l’électricité",
       "description": "Comparez la quantité relative d’électricité produite à partir de diverses sources dans les provinces et les territoires au cours d’une année donnée"
     },
     "Scenarios": {
-      "title": "Explore Scenarios",
+      "title": "Explorer les scénarios",
       "description": "Comparez directement les scénarios"
     },
     "Oil-and-Gas": {
-      "title": "Explore Oil and Gas",
+      "title": "Explorer le pétrole et le gaz",
       "description": "Explorer la production de pétrole et de gaz dans les provinces et les territoires pendant une année donnée"
     },
     "links": {
-      "title": "Explore Canada's Energy Future Report",
+      "title": "Explorer le rapport sur l’avenir énergétique du Canada",
+      "methodology": {
+        "title": "Hypothèses",
+        "link": "https://www.cer-rec.gc.ca/avenir-energetique/PDF/Regie-avenir-energetique-methodologie-fr.pdf"
+      },
       "resources": {
-        "title": "Student Resources"
+        "title": "Ressources pour les édutiants",
+        "link": "https://www.cer-rec.gc.ca/fr/donnees-analyse/ressources-etudiants/index.html"
       },
       "download": {
-        "title": "Download the 2020 Report",
+        "title": "Téléchargez le rapport 2020",
         "link": "https://www.cer-rec.gc.ca/fr/donnees-analyse/avenir-energetique-canada/2020/index.html"
       },
       "view": {
-        "title": "View Past Reports",
+        "title": "Voir les anciens rapports",
         "link": "https://www.cer-rec.gc.ca/fr/donnees-analyse/avenir-energetique-canada"
       }
     }
