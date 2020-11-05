@@ -165,7 +165,7 @@ const OilAndGas = ({ data, year }) => {
 
       if (percentage <= 1) {
         smallTreeMaps.push(
-          <div style={{ display: 'inline-block' }}>
+          <div style={{ display: 'inline-block' }} key={sortedSource.name}>
 
             <Typography varient="body1" style={{ bottom: 0, fontWeight: 700 }}>
               { sortedSource.name }
@@ -251,11 +251,12 @@ const OilAndGas = ({ data, year }) => {
           key="smallMaps"
           width='auto'
           className={isTopChart ? classes.cellsTop : classes.cellsBottom}
+          style={{ width: 100 }}
         >
           {smallTreeMaps.length > 0 && (
             <>
               <Typography align='center'>Values less than 1%</Typography>
-              <div style={{ border: '2px solid black', textAlign: 'center' }}>
+              <div style={{ border: '2px solid black', textAlign: 'center', marginTop: 10 }}>
                 {smallTreeMaps}
               </div>
             </>
@@ -348,7 +349,9 @@ const OilAndGas = ({ data, year }) => {
 
         <Typography align='center'>
           <span style={{ fontWeight: 900 }}>
-            {config.view === 'source' ? `Type of ${config.mainSelection === 'oilProduction' ? 'Oil' : 'Gas'}` : 'Region'}
+            {config.view === 'source'
+              ? `Type of ${config.mainSelection === 'oilProduction' ? 'Oil' : 'Gas'}`
+              : 'Region'}
           </span> &#40;Year selected&#41;
         </Typography>
 
