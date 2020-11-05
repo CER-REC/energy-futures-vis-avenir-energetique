@@ -343,11 +343,29 @@ const OilAndGas = ({ data, year }) => {
           </Table>
         </TableContainer>
       </div>
-      <div style={{ backgroundColor: '#F3F3F3', height: 110, width: 280, position: 'absolute', bottom: 5, right: 5 }}>
+      <div style={{ backgroundColor: '#F3F3F3', height: 'auto', width: 'auto', padding: 10, position: 'absolute', bottom: 5, right: 5 }}>
         <Typography align='center' style={{ fontWeight: 950, fontSize: 'medium' }}>Legend</Typography>
-        <Typography align='center'><span style={{ fontWeight: 900 }}>Type of Oil</span> &#40;Year selected&#41;</Typography>
-        <Typography align='left'><IconOilAndGasRectangle style={{ marginRight: 1 }} />Region: Amount produced &#40;% of total in CAN&#41;</Typography>
-        <Typography align='left'><IconOilAndGasGroup style={{ marginRight: 1 }} />CAN: Total amount produced in Canada</Typography>
+
+        <Typography align='center'>
+          <span style={{ fontWeight: 900 }}>
+            {config.view === 'source' ? `Type of ${config.mainSelection === 'oilProduction' ? 'Oil' : 'Gas'}` : 'Region'}
+          </span> &#40;Year selected&#41;
+        </Typography>
+
+        <Typography align='left'>
+          <IconOilAndGasRectangle style={{ marginRight: 5 }} />
+          {config.view === 'region'
+            ? 'Source: Amount of source produced in region (% of total in CAN)'
+            : 'Region: Amount of source produced in region'}
+        </Typography>
+
+        <Typography align='left'>
+          <IconOilAndGasGroup style={{ marginRight: 5 }} />
+          {config.view === 'source'
+            ? 'Source: Total amount of source produced in Canada'
+            : 'Region: Total amount produced in region'}
+        </Typography>
+
       </div>
     </>
   );
