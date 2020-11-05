@@ -78,7 +78,7 @@ const useStyles = makeStyles(theme => createStyles({
   },
 }));
 
-const LinkButtonGroup = ({ title, labels, accent, className }) => {
+const LinkButtonGroup = ({ title, labels, accent, spacing, className }) => {
   const classes = useStyles({ accent });
 
   const [select, setSelect] = useState(undefined);
@@ -133,7 +133,7 @@ const LinkButtonGroup = ({ title, labels, accent, className }) => {
         container
         direction="column"
         alignItems={accent === 'left' ? 'flex-start' : 'flex-end'}
-        spacing={1}
+        spacing={spacing}
         className={className}
       >
         {title && (
@@ -155,6 +155,7 @@ LinkButtonGroup.propTypes = {
     content: PropTypes.oneOfType([PropTypes.element, PropTypes.func]),
   }))),
   accent: PropTypes.string, // 'left', 'right'
+  spacing: PropTypes.number,
   className: PropTypes.string, // root class names
 };
 
@@ -162,6 +163,7 @@ LinkButtonGroup.defaultProps = {
   title: undefined,
   labels: [],
   accent: 'left',
+  spacing: 1,
   className: undefined,
 };
 
