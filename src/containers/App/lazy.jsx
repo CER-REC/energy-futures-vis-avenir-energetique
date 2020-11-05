@@ -33,7 +33,7 @@ const theme = createMuiTheme({
     },
   },
   typography: {
-    fontFamily: '"FiraSansCondensed", "Roboto", "Helvetica", "Arial", sans-serif',
+    fontFamily: '"FiraSansCondensed", "Roboto", "Helvetica", "Arial", sans-serif !important',
   },
   overrides: {
     MuiCssBaseline: {
