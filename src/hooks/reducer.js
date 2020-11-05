@@ -18,8 +18,8 @@ export const initialState = {
   sources: null,
   sourceOrder: null,
   // timeline
-  baseYear: new Date().getFullYear(),
-  compareYear: new Date().getFullYear(),
+  baseYear: null,
+  compareYear: null,
 };
 
 export const getReducer = (regions, sources, sectors, yearIdIterations) => {
@@ -144,6 +144,21 @@ export const getReducer = (regions, sources, sectors, yearIdIterations) => {
 
     return (validatedSources.length === validSources.length) ? order : validSources;
   };
+  const getBaseYear = (page, baseYear) => {
+    if (!['electricity', 'oil-and-gas'].includes(page)) {
+      return null;
+    }
+    const value = parseInt(baseYear, 10);
+    return Number.isNaN(value) ? new Date().getFullYear() : value;
+  };
+
+  const getCompareYear = (page, compareYear) => {
+    if (page !== 'oil-and-gas') {
+      return null;
+    }
+    const value = parseInt(compareYear, 10);
+    return Number.isNaN(value) ? new Date().getFullYear() : value;
+  };
 
   return (state, action) => {
     let mainSelection;
@@ -174,6 +189,8 @@ export const getReducer = (regions, sources, sectors, yearIdIterations) => {
           // Always reset the sources on page change
           sources: getSources(action.payload, mainSelection, view, null),
           sourceOrder: getSourceOrder(action.payload, mainSelection, state.sourceOrder),
+          baseYear: getBaseYear(action.payload, state.baseYear),
+          compareYear: getCompareYear(action.payload, state.compareYear),
         };
       case 'mainSelection/changed':
         mainSelection = getSelection(state.page, action.payload);
@@ -243,12 +260,12 @@ export const getReducer = (regions, sources, sectors, yearIdIterations) => {
       case 'baseYear/changed':
         return {
           ...state,
-          baseYear: action.payload || new Date().getFullYear(),
+          baseYear: getBaseYear(state.page, action.payload),
         };
       case 'compareYear/changed':
         return {
           ...state,
-          compareYear: action.payload || new Date().getFullYear(),
+          compareYear: getCompareYear(state.page, action.payload),
         };
       default:
         return state;
