@@ -2,6 +2,7 @@ import React from 'react';
 import { Grid } from '@material-ui/core';
 import { withKnobs, number } from '@storybook/addon-knobs';
 import withInteraction, { getInteractionProps } from 'storybook-addon-interaction';
+import withConfigAndGQL from '../../../.storybook/addon-config-and-gql';
 
 import { storiesForComponent } from '../../../.storybook/utils';
 import YearSlider from './index';
@@ -17,6 +18,7 @@ storiesForComponent('Components|YearSlider', module, ReadMe)
       },
     }),
   )
+  .addDecorator(withConfigAndGQL)
   .add('default', () => (
     <Grid container style={{ padding: 16 }}>
       <YearSlider

@@ -17,6 +17,9 @@ export const initialState = {
   provinceOrder: null,
   sources: null,
   sourceOrder: null,
+  // timeline
+  baseYear: new Date().getFullYear(),
+  compareYear: new Date().getFullYear(),
 };
 
 export const getReducer = (regions, sources, sectors, yearIdIterations) => {
@@ -236,6 +239,16 @@ export const getReducer = (regions, sources, sectors, yearIdIterations) => {
         return {
           ...state,
           sourceOrder: getSourceOrder(state.page, state.mainSelection, action.payload),
+        };
+      case 'baseYear/changed':
+        return {
+          ...state,
+          baseYear: action.payload || new Date().getFullYear(),
+        };
+      case 'compareYear/changed':
+        return {
+          ...state,
+          compareYear: action.payload || new Date().getFullYear(),
         };
       default:
         return state;
