@@ -16,7 +16,7 @@
     "units": {
       "petajoules": "PJ",
       "gigawattHours": "GWh",
-      "kilobarrelEquivalents": "kbep/j",
+      "kilobarrelEquivalents": "kbep",
       "thousandCubicMetres": "10³m³/j",
       "millionCubicMetres": "Mm³/j",
       "kilobarrels": "kb/j",
