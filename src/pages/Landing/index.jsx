@@ -160,7 +160,7 @@ const Landing = () => {
   return (
     <>
       <header className={classes.header}>
-        <img src={headerBg} alt="heade background" />
+        <img src={headerBg} alt="header background" />
         <Typography variant={desktop ? 'h4' : 'h5'} className={classes.title}>{intl.formatMessage({ id: 'landing.title' })}</Typography>
       </header>
 
