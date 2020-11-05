@@ -34,25 +34,34 @@ export const PAGES = [
     label: 'By Sector',
     id: 'by-sector',
     bg: '#349999',
-    sourceType: 'energy',
+    sourceTypes: {
+      energyDemand: 'energy',
+    },
   },
   {
     label: 'Electricity',
     id: 'electricity',
     bg: '#363796',
-    sourceType: 'electricity',
+    sourceTypes: {
+      electricityGeneration: 'electricity',
+    },
+    views: ['region', 'source'],
   },
   {
     label: 'Scenarios',
     id: 'scenarios',
     bg: '#CA9830',
   },
-  // TODO: hide the oil-and-gas page temporarily for incoming demos
-  // {
-  //   label: 'Oil-and-Gas',
-  //   id: 'oil-and-gas',
-  //   bg: '#CC6666',
-  // },
+  {
+    label: 'Oil-and-Gas',
+    id: 'oil-and-gas',
+    bg: '#CC6666',
+    sourceTypes: {
+      oilProduction: 'oil',
+      gasProduction: 'gas',
+    },
+    views: ['region', 'source'],
+  },
   // {
   //   label: 'Demand',
   //   id: 'demand',
@@ -185,19 +194,6 @@ export const SECTOR_ICONS = {
   COMMERCIAL: IconCommercial,
   INDUSTRIAL: IconIndustrial,
   TRANSPORTATION: IconTransportation,
-};
-
-export const DEFAULT_CONFIG = {
-  page: 'landing', // e.g. by-region, by-sector, electricity, senarios, demand
-  mainSelection: 'energyDemand', // e.g. electricityGeneration, oilProduction, gasProduction
-  unit: 'petajoules', // e.g. kilobarrelEquivalents, gigawattHours, kilobarrels, thousandCubicMetres, cubicFeet, millionCubicMetres
-  view: 'region', // e.g. region or source
-  sector: 'ALL', // e.g. ALL, RESIDENTIAL, COMMERCIAL, INDUSTRIAL, OR TRANSPORTATION
-  scenarios: [],
-  provinces: [],
-  provinceOrder: [],
-  sources: [],
-  sourceOrder: [],
 };
 
 export const CHART_PROPS = {

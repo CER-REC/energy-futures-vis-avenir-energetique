@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useCallback } from 'react';
+import React, { useMemo, useCallback } from 'react';
 import { useIntl } from 'react-intl';
 import { ResponsiveBar } from '@nivo/bar';
 import PropTypes from 'prop-types';
@@ -14,19 +14,22 @@ import MaxTick from '../../components/MaxTick';
 const ByRegion = ({ data, year }) => {
   const { regions } = useAPI();
   const intl = useIntl();
-  const { config, setConfig } = useConfig();
+  const { config } = useConfig();
 
   /**
    * Manually calculating bar colors to create the fade-out effect.
    */
-  const customColorProp = useCallback((maxYear, forecastYear, hexFunc) => (d) => {
+  const customColorProp = useCallback((maxYear, forecastYear) => (d) => {
     const opacityNumber = (d.indexValue > forecastYear)
-      ? (1.5 - ((d.indexValue - forecastYear) / (maxYear - forecastYear)))
+      ? (1.1 - ((d.indexValue - forecastYear) / (maxYear - forecastYear)))
       : 1;
-    return hexFunc(regions.colors[d.id], opacityNumber);
+    return convertHexToRGB(regions.colors[d.id], opacityNumber);
   }, [regions.colors]);
 
-  const colors = customColorProp(year.max, year.forecastStart, convertHexToRGB);
+  const colors = useMemo(
+    () => customColorProp(year.max, year.forecastStart),
+    [customColorProp, year],
+  );
 
   /**
    * The forecast bar.
@@ -34,19 +37,9 @@ const ByRegion = ({ data, year }) => {
   const forecast = useMemo(() => forecastLayer({ year }), [year]);
 
   /**
-   * A "hacky" but sufficient way to reselect all regions after
-   * being redirected from other pages but none of the regions is currently selected.
-   */
-  useEffect(() => {
-    if (config.page === 'by-region' && JSON.stringify(config.provinces || []) === '["ALL"]') {
-      setConfig({ ...config, provinces: regions.order });
-    }
-  }, [config, setConfig, regions.order]);
-
-  /**
    * Determine the region order shown in the stacked bar chart.
    */
-  const keys = useMemo(() => [...config.provinceOrder].reverse(), [config.provinceOrder]);
+  const keys = useMemo(() => config.provinceOrder?.slice().reverse(), [config.provinceOrder]);
 
   /**
    * Calculate the max tick value on y-axis and generate the all ticks accordingly.

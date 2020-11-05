@@ -21,9 +21,9 @@ const useStyles = makeStyles(theme => createStyles({
 const Landing = () => {
   const classes = useStyles();
 
-  const { config, setConfig } = useConfig();
+  const { configDispatch } = useConfig();
 
-  const handleRedirect = page => () => setConfig({ ...config, page });
+  const handleRedirect = page => () => configDispatch({ type: 'page/changed', payload: page });
 
   return (
     <Grid container spacing={2}>

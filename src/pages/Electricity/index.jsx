@@ -183,9 +183,9 @@ const Electricity = ({ data, year }) => {
   /**
    * Determine the min and max bubble size based on the current view select.
    */
-  const sizeMin = useMemo(() => BUBBLE_SIZE[config.view].MIN, [config.view]);
+  const sizeMin = useMemo(() => BUBBLE_SIZE[config.view]?.MIN, [config.view]);
   const sizeMax = useMemo(
-    () => (single ? BUBBLE_SIZE.single : BUBBLE_SIZE[config.view].MAX),
+    () => (single ? BUBBLE_SIZE.single : BUBBLE_SIZE[config.view]?.MAX),
     [config.view, single],
   );
 
