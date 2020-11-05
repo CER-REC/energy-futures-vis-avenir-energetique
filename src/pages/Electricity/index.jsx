@@ -151,7 +151,7 @@ const Electricity = ({ data, year }) => {
 
   const [currYear, setCurrYear] = useState(config.baseYear || year?.min);
 
-  useEffect(() => setCurrYear(config.baseYear, 10 || year?.min), [config.baseYear, year]);
+  useEffect(() => setCurrYear(config.baseYear || year?.min), [config.baseYear, year]);
 
   /**
    * Looking for the min and max value and the total volumns in each group (region or source).

@@ -149,7 +149,9 @@ export const getReducer = (regions, sources, sectors, yearIdIterations) => {
       return null;
     }
     const value = parseInt(baseYear, 10);
-    return Number.isNaN(value) ? new Date().getFullYear() : value;
+
+    // set to 0 if not available so that the year slider stays at the minimum year number.
+    return Number.isNaN(value) ? 0 : value;
   };
 
   const getCompareYear = (page, compareYear) => {
@@ -157,7 +159,9 @@ export const getReducer = (regions, sources, sectors, yearIdIterations) => {
       return null;
     }
     const value = parseInt(compareYear, 10);
-    return Number.isNaN(value) ? new Date().getFullYear() : value;
+
+    // set to 0 if not available so that the year slider stays at the minimum year number.
+    return Number.isNaN(value) ? 0 : value;
   };
 
   return (state, action) => {
