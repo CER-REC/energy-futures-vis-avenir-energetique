@@ -27,7 +27,6 @@ const useStyles = makeStyles(theme => createStyles({
     backgroundColor: theme.palette.common.white,
     color: theme.palette.secondary.main,
     maxWidth: 220,
-    fontSize: theme.typography.pxToRem(12),
     border: `1px solid ${theme.palette.secondary.main}`,
     borderRadius: 0,
   },

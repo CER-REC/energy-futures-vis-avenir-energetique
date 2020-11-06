@@ -65,7 +65,6 @@ const useStyles = makeStyles(theme => ({
     border: `1px solid ${theme.palette.secondary.light}`,
     lineHeight: 1,
     '& span': {
-      fontSize: '.65rem',
       fontWeight: 700,
       lineHeight: 1,
       textTransform: 'uppercase',
@@ -149,9 +148,9 @@ const Electricity = ({ data, year }) => {
   } = useAPI();
   const { config } = useConfig();
 
-  const [currYear, setCurrYear] = useState(year?.min || 2005);
+  const [currYear, setCurrYear] = useState(config.baseYear || year?.min);
 
-  useEffect(() => setCurrYear(year?.min || 2005), [year]);
+  useEffect(() => setCurrYear(config.baseYear || year?.min), [config.baseYear, year]);
 
   /**
    * Looking for the min and max value and the total volumns in each group (region or source).

@@ -1,4 +1,5 @@
 import React, { useCallback, useMemo, useState } from 'react';
+import { useIntl } from 'react-intl';
 import { makeStyles, Grid, Button } from '@material-ui/core';
 import Alert from '@material-ui/lab/Alert';
 import Snackbar from '@material-ui/core/Snackbar';
@@ -7,9 +8,8 @@ import EmailIcon from '@material-ui/icons/Email';
 import Clipboard from 'clipboard';
 import { saveAs } from 'file-saver';
 import Papa from 'papaparse';
-import { useIntl } from 'react-intl';
 
-import { IconTwitter, IconFacebook, IconLinkedIn } from '../../icons';
+import { IconTwitter, IconFacebook, IconLinkedIn, IconDownload } from '../../icons';
 import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
 import useEnergyFutureData from '../../hooks/useEnergyFutureData';
@@ -73,7 +73,7 @@ const useStyles = makeStyles(theme => ({
     '& svg': { fontSize: 16 },
   },
   download: {
-    maxWidth: 120,
+    maxWidth: 130,
     textAlign: 'right',
     borderRight: `8px solid ${theme.palette.primary.main}`,
   },
@@ -266,7 +266,13 @@ export const DownloadButton = () => {
   }, [config, intl, regionOrder, sourceOrder, data, headers]);
 
   return (
-    <Button variant="contained" color="secondary" onClick={downloadCSV} classes={{ root: classes.download, label: classes.label }}>
+    <Button
+      variant="contained"
+      color="secondary"
+      startIcon={<IconDownload />}
+      onClick={downloadCSV}
+      classes={{ root: classes.download, label: classes.label }}
+    >
       {intl.formatMessage({ id: 'components.share.download' })}
     </Button>
   );

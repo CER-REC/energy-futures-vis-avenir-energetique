@@ -159,7 +159,7 @@ const PageLayout = ({
     <>
       {/* Row 1: main title; year select; download button */}
       <Grid item xs={12}>
-        <Grid container alignItems="flex-end" wrap="nowrap" spacing={2} className={classes.row}>
+        <Grid container alignItems="flex-end" wrap="nowrap" spacing={2}>
           <Grid item style={{ width: LEAD_COL_WIDTH }}>{title}</Grid>
           <Grid item style={{ flexGrow: 1 }}><YearSelect /></Grid>
           <Grid item className={classes.download}><DownloadButton /></Grid>
