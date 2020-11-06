@@ -26,10 +26,6 @@ const useStyles = makeStyles({
     minWidth: 0,
     verticalAlign: 'top',
   },
-  years: {},
-  treeMapCollectionTop: {},
-  treeMapCollectionBottom: {},
-  slider: {},
   treeMapRectangle: {
     '& svg': { transform: 'rotate(270deg)' },
   },
@@ -80,7 +76,6 @@ const OilAndGas = ({ data, year }) => {
     return (inputData[dataYear].length > 1)
       ? inputData[dataYear]
         .sort((a, b) => b.total - a.total)
-        .filter(entry => entry.total > 0)
       : inputData[dataYear];
   }, []);
 
@@ -129,7 +124,7 @@ const OilAndGas = ({ data, year }) => {
     return returnValue;
   }, []);
 
-  const getColor = (d) => {
+  const getColor = useCallback((d) => {
     let color;
     if (config.view === 'source') {
       color = regionColors[d.name];
@@ -137,7 +132,7 @@ const OilAndGas = ({ data, year }) => {
       color = config.mainSelection === 'oilProduction' ? oilColors[d.name] : gasColors[d.name];
     }
     return color;
-  };
+  }, [config.mainSelection, config.view, gasColors, oilColors, regionColors]);
 
   // eslint-disable-next-line no-restricted-globals
   if (!data || isNaN(data[currentYear][0].total)) {
@@ -174,7 +169,7 @@ const OilAndGas = ({ data, year }) => {
 
       if (percentage <= 1) {
         smallTreeMaps.push(
-          <div style={{ display: 'inline-block' }} key={sortedSource.name}>
+          <>
 
             <Typography varient="body1" style={{ bottom: 0, fontWeight: 700 }}>
               { sortedSource.name }
@@ -190,7 +185,9 @@ const OilAndGas = ({ data, year }) => {
               <ResponsiveTreeMap
                 key={sortedSource.name}
                 root={sortedSource}
-                tile='squarify'
+                 // Using binary causes a bunch of warnings and errors about
+                // width and height being NaN
+                tile='binary'
                 identity="name"
                 value="value"
                 margin={{ top: 10, right: 10, bottom: 10, left: 10 }}
@@ -204,7 +201,8 @@ const OilAndGas = ({ data, year }) => {
                 tooltip={getTooltip}
               />
             </div>
-          </div>,
+          </>
+          ,
         );
       } else {
         regularTreeMaps.push(
@@ -259,10 +257,9 @@ const OilAndGas = ({ data, year }) => {
     }
 
     return (
-      <TableRow className={classes[`treeMapCollection${isTopChart ? 'Top' : 'Bottom'}`]} key={`treeMapCollection${isTopChart ? 'Top' : 'Bottom'}`}>
+      <TableRow>
         {regularTreeMaps}
         <TableCell
-          key="smallMaps"
           width='auto'
           className={isTopChart ? classes.cellsTop : classes.cellsBottom}
           style={{ width: 100 }}
@@ -362,7 +359,10 @@ const OilAndGas = ({ data, year }) => {
           </Table>
         </TableContainer>
       </div>
-      <div style={{ backgroundColor: '#F3F3F3', height: 'auto', width: 'auto', padding: 10, position: 'absolute', bottom: 5, right: 5 }}>
+      <div style={{
+        backgroundColor: '#F3F3F3', height: 'auto', width: 'auto', padding: 10, position: 'absolute', bottom: 5, right: 5,
+      }}
+      >
         <Typography align='center' style={{ fontWeight: 950, fontSize: 'medium' }}>Legend</Typography>
 
         <Typography align='center'>

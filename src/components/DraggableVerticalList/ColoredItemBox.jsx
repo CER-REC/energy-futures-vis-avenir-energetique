@@ -50,20 +50,6 @@ const useStyles = makeStyles(theme => ({
   btn: { margin: 'auto' },
 }));
 
-const oilAndGasAbbrevs = {
-  LIGHT: 'CL',
-  ISB: 'iSB',
-  HEAVY: 'CH',
-  CONDENSATE: 'FC',
-  C5: 'C5+',
-  MB: 'MB',
-  CBM: 'CB',
-  NA: 'NA',
-  SHALE: 'Sh',
-  SOLUTION: 'SOL',
-  TIGHT: 'Ti',
-};
-
 const ColoredItemBox = ({
   item, icon, color, selected, clear, round,
   attachment, disabled, ...gridProps
@@ -75,7 +61,7 @@ const ColoredItemBox = ({
     <Grid container {...gridProps} className={styling}>
       {clear && <ClearIcon className={classes.btn} />}
       {!clear && icon && <Icon className={classes.btn} />}
-      {!clear && !icon && <Typography variant="body2">{oilAndGasAbbrevs[item] || item}</Typography>}
+      {!clear && !icon && <Typography variant="body2">{item}</Typography>}
       {attachment}
     </Grid>
   );
