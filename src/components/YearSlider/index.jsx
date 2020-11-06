@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { makeStyles, Grid, Typography, IconButton, Slider } from '@material-ui/core';
 import PlayIcon from '@material-ui/icons/PlayArrow';
 import PauseIcon from '@material-ui/icons/Pause';
+import useConfig from '../../hooks/useConfig';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -44,6 +45,7 @@ const useStyles = makeStyles(theme => ({
   },
   label: {
     top: -10,
+    fontSize: 12,
     '& > span': {
       height: 18,
       borderRadius: 0,
@@ -103,19 +105,23 @@ const YearSlider = ({ year, onYearChange, min, max, forecast }) => {
   const classes = useStyles();
   const intl = useIntl();
 
+  const { configDispatch } = useConfig();
+
   const [currYear, setCurrYear] = useState(year?.curr || year);
   const [compareYear, setCompareYear] = useState(year?.compare || year);
   const [play, setPlay] = useState(false);
 
   const onCurrYearChange = useCallback((value) => {
     setCurrYear(value);
+    configDispatch({ type: 'baseYear/changed', payload: value });
     onYearChange(year?.curr ? { ...year, curr: value } : value);
-  }, [year, setCurrYear, onYearChange]);
+  }, [year, setCurrYear, configDispatch, onYearChange]);
 
   const onCompareYearChange = useCallback((value) => {
     setCompareYear(value);
+    configDispatch({ type: 'compareYear/changed', payload: value });
     onYearChange({ ...year, compare: value });
-  }, [year, setCompareYear, onYearChange]);
+  }, [year, setCompareYear, configDispatch, onYearChange]);
 
   /**
    * A timer for auto-play.

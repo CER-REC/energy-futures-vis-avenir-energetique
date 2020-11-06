@@ -62,7 +62,6 @@ const oilAndGasAbbrevs = {
   SHALE: 'Sh',
   SOLUTION: 'SOL',
   TIGHT: 'Ti',
-  All: 'ALL',
 };
 
 const ColoredItemBox = ({
@@ -76,7 +75,7 @@ const ColoredItemBox = ({
     <Grid container {...gridProps} className={styling}>
       {clear && <ClearIcon className={classes.btn} />}
       {!clear && icon && <Icon className={classes.btn} />}
-      {!clear && !icon && <Typography variant="body2">{oilAndGasAbbrevs[item]}</Typography>}
+      {!clear && !icon && <Typography variant="body2">{oilAndGasAbbrevs[item] || item}</Typography>}
       {attachment}
     </Grid>
   );
