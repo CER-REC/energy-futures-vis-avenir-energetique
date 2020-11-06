@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import React, { useState, useCallback } from 'react';
 
 import PropTypes from 'prop-types';
@@ -134,6 +135,60 @@ const OilAndGas = ({ data, year }) => {
     return color;
   }, [config.mainSelection, config.view, gasColors, oilColors, regionColors]);
 
+  const createTreeMap = useCallback((sortedSource, percentage, size, isTopChart, biggestTreeMapTotal) => {
+    const treeMap = (
+      <div key={sortedSource.name}>
+        <Typography align='center' varient="body1" style={{ bottom: 0, fontWeight: 700 }}>
+          {config.view === 'region' && percentage > 1
+            ? `${sortedSource.name}: ${percentage}%`
+            : sortedSource.name}
+        </Typography>
+
+        <div
+          className={classes.treeMapRectangle}
+          style={{
+            textAlign: 'center',
+            height: sizeMultiplier(sortedSource.total, size, biggestTreeMapTotal) || 0,
+            width: sizeMultiplier(sortedSource.total, size, biggestTreeMapTotal) || 0,
+            margin: 'auto',
+          }}
+        >
+          <ResponsiveTreeMap
+            key={sortedSource.name}
+            root={sortedSource}
+            // Using binary causes a bunch of warnings and errors about
+            // width and height being NaN
+            tile='binary'
+            identity="name"
+            value="value"
+            margin={{ top: 10, right: 10, bottom: 10, left: 10 }}
+            enableLabel={false}
+            colors={getColor}
+            borderWidth={2}
+            borderColor="white"
+            animate
+            motionStiffness={90}
+            motionDamping={11}
+            tooltip={getTooltip}
+          />
+        </div>
+      </div>
+    );
+
+    return percentage <= 1
+      ? treeMap
+      : (
+        <TableCell
+          key={sortedSource.name}
+          className={isTopChart ? classes.cellsTop : classes.cellsBottom}
+        >
+          {!isTopChart && <div style={{ marginLeft: 'calc(50% - 0.5px)', borderLeft: '1px dashed black', height: 20 }} />}
+          {treeMap}
+          {(compare && isTopChart) && <div style={{ marginLeft: 'calc(50% - 0.5px)', borderLeft: '1px dashed black', height: 10 }} />}
+        </TableCell>
+      );
+  }, [classes.cellsBottom, classes.cellsTop, classes.treeMapRectangle, compare, config.view, getColor, getTooltip, sizeMultiplier]);
+
   // eslint-disable-next-line no-restricted-globals
   if (!data || isNaN(data[currentYear][0].total)) {
     return null;
@@ -168,88 +223,9 @@ const OilAndGas = ({ data, year }) => {
       const percentage = ((sortedSource.total / totalGrandTotal) * 100).toFixed(2);
 
       if (percentage <= 1) {
-        smallTreeMaps.push(
-          <>
-
-            <Typography varient="body1" style={{ bottom: 0, fontWeight: 700 }}>
-              { sortedSource.name }
-            </Typography>
-
-            <div style={{
-              height: sizeMultiplier(sortedSource.total, size, biggestTreeMapTotal) || 0,
-              width: sizeMultiplier(sortedSource.total, size, biggestTreeMapTotal) || 0,
-              margin: 'auto',
-              textAlign: 'center',
-            }}
-            >
-              <ResponsiveTreeMap
-                key={sortedSource.name}
-                root={sortedSource}
-                 // Using binary causes a bunch of warnings and errors about
-                // width and height being NaN
-                tile='binary'
-                identity="name"
-                value="value"
-                margin={{ top: 10, right: 10, bottom: 10, left: 10 }}
-                enableLabel={false}
-                colors={getColor}
-                borderWidth={2}
-                borderColor="white"
-                animate
-                motionStiffness={90}
-                motionDamping={11}
-                tooltip={getTooltip}
-              />
-            </div>
-          </>
-          ,
-        );
+        smallTreeMaps.push(createTreeMap(sortedSource, percentage, size, isTopChart, biggestTreeMapTotal));
       } else {
-        regularTreeMaps.push(
-          <TableCell
-            key={sortedSource.name}
-            className={isTopChart ? classes.cellsTop : classes.cellsBottom}
-          >
-            {!isTopChart && <div style={{ marginLeft: 'calc(50% - 0.5px)', borderLeft: '1px dashed black', height: 20 }} />}
-
-            <Typography align='center' varient="body1" style={{ bottom: 0, fontWeight: 700 }}>
-              {config.view === 'region' ? `${sortedSource.name}: ${percentage}%` : sortedSource.name}
-            </Typography>
-
-            <div
-              className={classes.treeMapRectangle}
-              style={{
-                textAlign: 'center',
-                height: sizeMultiplier(sortedSource.total, size, biggestTreeMapTotal) || 0,
-                width: sizeMultiplier(sortedSource.total, size, biggestTreeMapTotal) || 0,
-                margin: 'auto',
-              }}
-            >
-
-              <ResponsiveTreeMap
-                key={sortedSource.name}
-                root={sortedSource}
-                // Using binary causes a bunch of warnings and errors about
-                // width and height being NaN
-
-                tile='binary'
-                identity="name"
-                value="value"
-                margin={{ top: 10, right: 10, bottom: 10, left: 10 }}
-                enableLabel={false}
-                colors={getColor}
-                borderWidth={2}
-                borderColor="white"
-                animate
-                motionStiffness={90}
-                motionDamping={11}
-                tooltip={getTooltip}
-              />
-            </div>
-            {(compare && isTopChart) && <div style={{ marginLeft: 'calc(50% - 0.5px)', borderLeft: '1px dashed black', height: 10 }} />}
-
-          </TableCell>,
-        );
+        regularTreeMaps.push(createTreeMap(sortedSource, percentage, size, isTopChart, biggestTreeMapTotal));
       }
     });
     if (regularTreeMaps.length === 0) {
