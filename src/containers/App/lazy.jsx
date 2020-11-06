@@ -42,8 +42,8 @@ const theme = createMuiTheme({
         fontSize: 20,
         fontWeight: 700,
       },
-      body1: { fontSize: 14 },
-      body2: { fontSize: 12 },
+      body1: { fontSize: 16 },
+      body2: { fontSize: 14 },
       caption: {
         fontSize: 12,
         lineHeight: 1.3,
@@ -115,6 +115,7 @@ const theme = createMuiTheme({
     },
     MuiSvgIcon: {
       root: { fontSize: 24 },
+      fontSizeSmall: { fontSize: 20 },
     },
   },
 });
