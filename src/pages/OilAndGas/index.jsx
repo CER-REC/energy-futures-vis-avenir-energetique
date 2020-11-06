@@ -294,7 +294,7 @@ const OilAndGas = ({ data, year }) => {
         <div>
           <div style={{ border: '4px solid black', height: 30, width: 30, display: 'inline-block', marginRight: 10 }} />
           <div style={{ display: 'inline-block' }}>
-            <Typography color='primary' variant='h3' style={{ fontWeight: 700 }}>
+            <Typography color='primary' variant='h2' style={{ fontWeight: 700 }}>
               {currentYear}
             </Typography>
           </div>
@@ -304,7 +304,7 @@ const OilAndGas = ({ data, year }) => {
         <div>
           <div style={{ border: '4px dotted grey', height: 30, width: 30, display: 'inline-block', marginRight: 10 }} />
           <div style={{ display: 'inline-block' }}>
-            <Typography color='secondary' variant='h3' style={{ fontWeight: 700 }}>
+            <Typography color='secondary' variant='h2' style={{ fontWeight: 700 }}>
               {compareYear}
             </Typography>
           </div>
@@ -314,16 +314,20 @@ const OilAndGas = ({ data, year }) => {
           onClick={() => setCompare(!compare)}
           variant="outlined"
           color="primary"
-          size="small"
+          size="medium"
           fullWidth
-          style={{ marginTop: '10px' }}
+          style={{ height: 'auto', padding: 5 }}
         >
 
-          <span style={{ fontWeight: 900 }}>{compare ? "Don't Compare" : 'compare'}</span>
+          <span style={{ fontWeight: 900 }}>
+            <Typography>
+              {compare ? "Don't Compare" : 'Compare'}
+            </Typography>
+          </span>
 
         </Button>
       </div>
-      <div style={{ marginTop: compare ? 120 : 150, marginBottom: 100 }}>
+      <div style={{ marginTop: compare ? 120 : 150, marginBottom: 150 }}>
 
         <TableContainer>
           <Table>
