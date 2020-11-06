@@ -4,7 +4,7 @@ Exploring Canada’s Energy Future interactive online tool is based on the Canad
 
 **Background:** Exploring Canada’s Energy Future was initially created in 2016 as a pilot project tha launched the CER’s Data Visualization Initiative (DVI). DVI was a three-year initiative to transform how the CER structures and shares data. The objective was to enable evidence-based decision making and remove barriers to understanding Canada’s energy and pipeline systems through the use of user-friendly interactive visualizations.
 
-If you want to use the data for research and undertake your own review, all the data is downloadable and shareable. If you are interested in the source code for the visualizations, it is available on the government’s Open Government portal: [open.canada.ca])(https://open.canada.ca/en).
+If you want to use the data for research and undertake your own review, all the data is downloadable and shareable. If you are interested in the source code for the visualizations, it is available on the government’s Open Government portal: [open.canada.ca](https://open.canada.ca/en).
 
 We hope we are hitting the mark. Your feedback is essential.
 

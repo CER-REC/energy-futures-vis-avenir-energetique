@@ -1,6 +1,5 @@
 import React from 'react';
 import { ThemeProvider, createMuiTheme } from '@material-ui/core';
-import CssBaseline from '@material-ui/core/CssBaseline';
 
 import PageLayout from '../../components/PageLayout';
 import Landing from '../../pages/Landing';
@@ -33,34 +32,31 @@ const theme = createMuiTheme({
     },
   },
   typography: {
-    fontFamily: '"FiraSansCondensed", "Roboto", "Helvetica", "Arial", sans-serif !important',
+    fontFamily: '"FiraSansCondensed", "Roboto", "Helvetica", "Arial", sans-serif',
   },
   overrides: {
-    MuiCssBaseline: {
-      '@global': {
-        html: { // reset font-size that has been overwritten by the WET template
-          fontSize: '16px !important',
-          lineHeight: 'normal !important',
-        },
-      },
-    },
     MuiTypography: {
-      h5: { fontSize: '22px' },
+      h4: { fontSize: 34 },
+      h5: { fontSize: 22 },
       h6: {
-        fontSize: '20px',
+        fontSize: 20,
         fontWeight: 700,
       },
-      body1: { fontSize: '14px' },
+      body1: { fontSize: 14 },
+      body2: { fontSize: 12 },
       caption: {
+        fontSize: 12,
         lineHeight: 1.3,
         '& > p': { margin: 0 },
       },
+      overline: { fontSize: 12 },
     },
     MuiButton: {
       root: {
         height: 23,
         minWidth: 60,
         borderRadius: 0,
+        fontSize: 14,
       },
       label: { margin: 'auto' },
       containedPrimary: {
@@ -84,6 +80,7 @@ const theme = createMuiTheme({
         },
       },
       containedSizeSmall: {
+        fontSize: 13,
         padding: defaultTheme.spacing(0, 0.25),
       },
       outlinedPrimary: {
@@ -99,6 +96,7 @@ const theme = createMuiTheme({
         },
       },
       outlinedSizeSmall: {
+        fontSize: 13,
         padding: defaultTheme.spacing(0, 0.25),
       },
     },
@@ -107,10 +105,16 @@ const theme = createMuiTheme({
         backgroundColor: defaultTheme.palette.common.white,
         color: defaultTheme.palette.secondary.main,
         maxWidth: 220,
-        fontSize: defaultTheme.typography.pxToRem(12),
+        fontSize: 12,
         border: `1px solid ${defaultTheme.palette.secondary.main}`,
         borderRadius: 0,
       },
+    },
+    MuiDialog: {
+      root: { fontFamily: '"FiraSansCondensed", "Roboto", "Helvetica", "Arial", sans-serif' },
+    },
+    MuiSvgIcon: {
+      root: { fontSize: 24 },
     },
   },
 });
@@ -145,7 +149,6 @@ const Content = () => {
 export default () => (
   <ThemeProvider theme={theme}>
     <ConfigProvider>
-      <CssBaseline />
       <Content />
     </ConfigProvider>
   </ThemeProvider>

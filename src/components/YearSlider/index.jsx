@@ -44,6 +44,7 @@ const useStyles = makeStyles(theme => ({
   },
   label: {
     top: -10,
+    fontSize: 12,
     '& > span': {
       height: 18,
       borderRadius: 0,
