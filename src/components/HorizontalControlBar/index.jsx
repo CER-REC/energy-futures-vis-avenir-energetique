@@ -159,7 +159,7 @@ const HorizontalControlBar = () => {
   );
 
   return (
-    <Grid container justify="space-between" alignItems="center" className={classes.root}>
+    <Grid container justify="space-between" alignItems="center" spacing={1} className={classes.root}>
       {[
         selections,
         sectorSelection,

@@ -1,6 +1,6 @@
 import React, { useMemo, Children, cloneElement } from 'react';
 import PropTypes from 'prop-types';
-import { makeStyles, Grid, Typography, CircularProgress } from '@material-ui/core';
+import { makeStyles, useMediaQuery, Grid, Typography, CircularProgress } from '@material-ui/core';
 import Alert from '@material-ui/lab/Alert';
 import AlertTitle from '@material-ui/lab/AlertTitle';
 import { useIntl } from 'react-intl';
@@ -19,7 +19,7 @@ import {
   LinkButtonContentAssumptions, LinkButtonContentKeyFindings, LinkButtonContentResults,
   LinkButtonContentReport, LinkButtonContentMethodology, LinkButtonContentAbout,
 } from '../LinkButtonGroup/contents';
-import { Share } from '../Share';
+import { DownloadButton, Share } from '../Share';
 
 const LEAD_COL_WIDTH = 400;
 
@@ -30,11 +30,19 @@ const useStyles = makeStyles(theme => ({
     marginBottom: theme.spacing(2),
     backgroundColor: theme.palette.background.paper,
   },
+  row: {
+    height: `calc(100% + ${theme.spacing(2)}px)`,
+    '& > div': { height: '100%' },
+  },
   title: {
-    width: LEAD_COL_WIDTH,
-    '& > h4': {
-      fontWeight: 700,
-      textTransform: 'uppercase',
+    fontWeight: 700,
+    textTransform: 'uppercase',
+  },
+  download: {
+    height: '100%',
+    '& > button': {
+      height: '100%',
+      textTransform: 'none',
     },
   },
   controls: {
@@ -80,6 +88,8 @@ const PageLayout = ({
 }) => {
   const classes = useStyles();
   const intl = useIntl();
+  const desktop = useMediaQuery('(min-width: 992px)');
+
   const { regions, sources } = useAPI();
   const { config, configDispatch } = useConfig();
   const { loading, error, data, disabledRegions, disabledSources, year } = useEnergyFutureData();
@@ -126,32 +136,65 @@ const PageLayout = ({
     [type, sources, intl],
   );
 
-  return (
-    <Grid container spacing={2} className={classes.root}>
+  /**
+   * The main title, which can be reused in both desktop and mobile layouts.
+   */
+  const title = <Typography variant="h4" color="primary" className={classes.title}>{intl.formatMessage({ id: 'common.title' })}</Typography>;
+
+  /**
+   * The control panel, which can be reused in both desktop and mobile layouts.
+   */
+  const controls = (
+    <Grid container direction="column" wrap="nowrap" className={classes.controls}>
+      <Grid item><ScenarioSelect multiSelect={multiSelectScenario} /></Grid>
+      <Grid item><HorizontalControlBar /></Grid>
+    </Grid>
+  );
+
+  /**
+   * Construct the header / controls based on the screen size.
+   * Note: CER template uses custom breakpoints.
+   */
+  const header = desktop ? (
+    <>
       {/* Row 1: main title; year select; download button */}
       <Grid item xs={12}>
-        <Grid container alignItems="flex-end" wrap="nowrap" spacing={2}>
-          <Grid item className={classes.title}>
-            <Typography variant="h4" color="primary">{intl.formatMessage({ id: 'common.title' })}</Typography>
-          </Grid>
+        <Grid container alignItems="flex-end" wrap="nowrap" spacing={2} className={classes.row}>
+          <Grid item style={{ width: LEAD_COL_WIDTH }}>{title}</Grid>
           <Grid item style={{ flexGrow: 1 }}><YearSelect /></Grid>
+          <Grid item className={classes.download}><DownloadButton /></Grid>
         </Grid>
       </Grid>
 
       {/* Row 2: page select; scenario select and utility bar (stacked); social media links */}
-      <Grid item style={{ width: LEAD_COL_WIDTH }}>
-        <PageTitle />
-      </Grid>
-      <Grid item style={{ width: `calc(100% - ${LEAD_COL_WIDTH}px - 40px)` }}>
-        <Grid container direction="column" wrap="nowrap" className={classes.controls}>
-          <Grid item><ScenarioSelect multiSelect={multiSelectScenario} /></Grid>
-          <Grid item><HorizontalControlBar /></Grid>
+      <Grid item xs={12}>
+        <Grid container alignItems="center" wrap="nowrap" spacing={2} className={classes.row}>
+          <Grid item style={{ width: LEAD_COL_WIDTH }}><PageTitle /></Grid>
+          <Grid item style={{ flexGrow: 1 }}>{controls}</Grid>
+          <Grid item style={{ width: 40 }}><Share /></Grid>
         </Grid>
       </Grid>
-      <Grid item style={{ width: 40 }}><Share /></Grid>
 
       {/* Row 3: link buttons (at bottom); vertical draggable lists; visualization */}
-      <Grid item style={{ position: 'relative' }}><PageSelect /></Grid>
+      <Grid item style={{ width: 100 }}><PageSelect /></Grid>
+    </>
+  ) : (
+    <>
+      <Grid item xs={12}>{title}</Grid>
+      <Grid item xs={12}>
+        <Grid container alignItems="center" wrap="nowrap" spacing={2} className={classes.row}>
+          <Grid item><PageTitle /></Grid>
+          <Grid item style={{ height: '100%' }}><PageSelect direction="row" /></Grid>
+        </Grid>
+      </Grid>
+      <Grid item xs={12}>{controls}</Grid>
+    </>
+  );
+
+  return (
+    <Grid container spacing={2} className={classes.root}>
+      {header}
+
       {showSource && (
         <Grid item>
           <DraggableVerticalList
@@ -197,20 +240,28 @@ const PageLayout = ({
         </Grid>
       )}
 
-      <LinkButtonGroup
-        title="Context"
-        labels={[
-          [
-            { name: intl.formatMessage({ id: 'links.Report.title' }), content: <LinkButtonContentReport /> },
-            { name: intl.formatMessage({ id: 'links.Assumptions.title' }), content: <LinkButtonContentAssumptions yearId={config.yearId} /> },
-            { name: intl.formatMessage({ id: 'links.Findings.title' }), content: <LinkButtonContentKeyFindings yearId={config.yearId} /> },
-            { name: intl.formatMessage({ id: 'links.Results.title' }), content: <LinkButtonContentResults yearId={config.yearId} /> },
-          ], [
-            { name: intl.formatMessage({ id: 'links.Methodology.title' }), content: <LinkButtonContentMethodology /> },
-            { name: intl.formatMessage({ id: 'links.About.title' }), content: <LinkButtonContentAbout /> },
-          ]]}
-        className={classes.links}
-      />
+      <Grid item xs={12} className={desktop ? classes.links : ''}>
+        <Grid container alignItems="flex-start" wrap="nowrap" spacing={2}>
+          <Grid item>
+            <LinkButtonGroup
+              title="Context"
+              labels={[
+                [
+                  { name: intl.formatMessage({ id: 'links.Report.title' }), content: <LinkButtonContentReport /> },
+                  { name: intl.formatMessage({ id: 'links.Assumptions.title' }), content: <LinkButtonContentAssumptions yearId={config.yearId} /> },
+                  { name: intl.formatMessage({ id: 'links.Findings.title' }), content: <LinkButtonContentKeyFindings yearId={config.yearId} /> },
+                  { name: intl.formatMessage({ id: 'links.Results.title' }), content: <LinkButtonContentResults yearId={config.yearId} /> },
+                ], [
+                  { name: intl.formatMessage({ id: 'links.Methodology.title' }), content: <LinkButtonContentMethodology /> },
+                  { name: intl.formatMessage({ id: 'links.About.title' }), content: <LinkButtonContentAbout /> },
+                ]]}
+            />
+          </Grid>
+          <Grid item style={{ flexGrow: 1 }} />
+          {!desktop && <Grid item className={classes.download}><DownloadButton /></Grid>}
+          {!desktop && <Grid item><Share /></Grid>}
+        </Grid>
+      </Grid>
     </Grid>
   );
 };

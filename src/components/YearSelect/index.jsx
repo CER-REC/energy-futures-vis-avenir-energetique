@@ -5,20 +5,12 @@ import { makeStyles, Grid, Typography, Button, Tooltip } from '@material-ui/core
 import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
 import { HintYearSelect } from '../Hint';
-import { DownloadButton } from '../Share';
 
 const useStyles = makeStyles({
   button: {
     height: 43,
     width: 43,
     '& h5': { fontWeight: 700 },
-  },
-  download: {
-    height: '100%',
-    '& > button': {
-      height: '100%',
-      textTransform: 'none',
-    },
   },
   selected: {
     '&:after': {
@@ -46,7 +38,7 @@ const YearSelect = () => {
   );
 
   return (
-    <Grid container alignItems="center" spacing={1}>
+    <Grid container alignItems="center" wrap="nowrap" spacing={1}>
       <Grid item style={{ marginLeft: 14 }}>
         <HintYearSelect>
           <Typography variant="h6" color="secondary">{intl.formatMessage({ id: 'components.yearSelect.name' })}</Typography>
@@ -74,10 +66,6 @@ const YearSelect = () => {
           </Tooltip>
         </Grid>
       ))}
-
-      <Grid item style={{ flexGrow: 1 }} />
-
-      <Grid item className={classes.download}><DownloadButton /></Grid>
     </Grid>
   );
 };
