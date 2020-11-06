@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useCallback } from 'react';
 import { useIntl } from 'react-intl';
 import {
   makeStyles, createStyles,
@@ -23,15 +23,28 @@ const getPageIcon = (id) => {
   }
 };
 
-// eslint-disable-next-line no-nested-ternary
-const toFront = (pages, id) => (pages.sort((a, b) => (a.id === id ? -1 : (b.id === id ? 1 : 0))));
-
 const useStyles = makeStyles(theme => createStyles({
-  root: { position: 'relative' },
+  title: {
+    position: 'relative',
+    height: '100%',
+    width: '100%',
+    backgroundColor: '#F3EFEF',
+    overflow: 'hidden',
+    '& > svg': {
+      position: 'absolute',
+      top: '-10%',
+      left: '-4%',
+      height: '120%',
+      width: 'auto',
+      fill: '#CCC',
+    },
+    '& > h5': { marginLeft: theme.spacing(15) },
+  },
+
+  root: { marginTop: -theme.spacing(1.5) },
   box: {
-    position: 'absolute',
-    left: 0,
     height: 84,
+    width: 72,
     backgroundColor: '#F3EFEF',
     boxShadow: theme.shadows[4],
     zIndex: 9,
@@ -75,26 +88,11 @@ const useStyles = makeStyles(theme => createStyles({
   },
 }));
 
-const PageSelect = () => {
+export const PageTitle = () => {
   const classes = useStyles();
   const intl = useIntl();
 
-  const { config, configDispatch } = useConfig();
-
-  const [pages, setPages] = useState(PAGES.filter(page => page.id !== 'landing'));
-  const [loading, setLoading] = useState(false);
-
-  /**
-   * Auto-sync the selected page.
-   */
-  useEffect(
-    () => {
-      if (config.page !== pages[0]) {
-        toFront(pages, config.page);
-      }
-    },
-    [config.page], // eslint-disable-line react-hooks/exhaustive-deps
-  );
+  const { config } = useConfig();
 
   /**
    * Generate the translation of the selected page title.
@@ -126,74 +124,62 @@ const PageSelect = () => {
           id: `components.pageSelect.${page.label}.title.${config.mainSelection}.${config.view}`,
           defaultMessage: intl.formatMessage({ id: `components.pageSelect.${page.label}.title.default` }),
         });
-      default: return page.label;
+      default: return page?.label;
     }
   }, [intl, config.mainSelection, config.sector, config.view]);
 
-  const handleSelect = (id) => {
-    if (loading || id === config.page) {
-      return;
-    }
-    setLoading(true);
-    setPages(toFront([...pages], id));
-    configDispatch({ type: 'page/changed', payload: id });
-    setTimeout(() => setLoading(false), 800);
-  };
-
-  const pageButtons = PAGES.filter(page => page.id !== 'landing').map((page) => {
-    const index = pages.findIndex(p => p.id === page.id) || 0;
-    const subtitle = intl.formatMessage({ id: `components.pageSelect.${page.label}.title.default` });
-    return (
-      <Tooltip
-        key={`page-${page.id}`}
-        title={(
-          <>
-            <Typography variant="h6">{subtitle}</Typography>
-            <Typography variant="caption" component="div" gutterBottom>
-              {intl.formatMessage({ id: `components.pageSelect.${page.label}.description` })}
-            </Typography>
-          </>
-        )}
-        placement="right"
-        classes={{ tooltip: classes.tooltip }}
-      >
-        <ButtonBase
-          centerRipple
-          disableRipple={index === 0}
-          disableTouchRipple={index === 0}
-          onClick={() => handleSelect(page.id)}
-          classes={{ root: classes.box }}
-          style={{
-            top: index === 0 ? 10 : (index - 1) * 88 + 82,
-            height: index === 0 ? 68 : 84,
-            cursor: index === 0 ? 'default' : 'pointer',
-          }}
-        >
-          <Grid container direction="column" wrap="nowrap" style={{ width: 'auto' }}>
-            <div className={classes.icon}>{getPageIcon(page.id)}</div>
-            {index !== 0 && <Typography variant="caption">{subtitle}</Typography>}
-          </Grid>
-          <div
-            className={classes.label}
-            style={{
-              height: index === 0 ? 60 : 0,
-              width: index === 0 ? 300 : 0,
-            }}
-          >
-            <Typography variant="h5" color="primary" style={{ opacity: index === 0 ? 1 : 0 }}>
-              {getTitle(page)}
-            </Typography>
-          </div>
-        </ButtonBase>
-      </Tooltip>
-    );
-  });
-
   return (
-    <Grid container alignItems="center" wrap="nowrap" className={classes.root}>
-      {pageButtons}
+    <Grid container alignItems="center" wrap="nowrap" className={classes.title}>
+      {getPageIcon(config.page)}
+      <Typography variant="h5" color="secondary">
+        {getTitle(PAGES.find(page => page.id === config.page))}
+      </Typography>
     </Grid>
   );
 };
 
-export default PageSelect;
+export const PageSelect = () => {
+  const classes = useStyles();
+  const intl = useIntl();
+
+  const { config, configDispatch } = useConfig();
+
+  const pageButtons = PAGES.filter(page => page.id !== 'landing').map((page) => {
+    const subtitle = intl.formatMessage({ id: `components.pageSelect.${page.label}.title.default` });
+    return (
+      <Grid item key={`page-${page.id}`}>
+        <Tooltip
+          title={(
+            <>
+              <Typography variant="h6">{subtitle}</Typography>
+              <Typography variant="caption" component="div" gutterBottom>
+                {intl.formatMessage({ id: `components.pageSelect.${page.label}.description` })}
+              </Typography>
+            </>
+          )}
+          placement="right"
+          classes={{ tooltip: classes.tooltip }}
+        >
+          <span>
+            <ButtonBase
+              disabled={page.id === config.page}
+              onClick={() => configDispatch({ type: 'page/changed', payload: page.id })}
+              classes={{ root: classes.box }}
+            >
+              <Grid container direction="column" wrap="nowrap" style={{ width: 'auto' }}>
+                <div className={classes.icon}>{getPageIcon(page.id)}</div>
+                <Typography variant="caption">{subtitle}</Typography>
+              </Grid>
+            </ButtonBase>
+          </span>
+        </Tooltip>
+      </Grid>
+    );
+  });
+
+  return (
+    <Grid container direction="column" alignItems="center" wrap="nowrap" spacing={1} className={classes.root}>
+      {pageButtons}
+    </Grid>
+  );
+};

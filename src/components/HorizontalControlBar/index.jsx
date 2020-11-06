@@ -14,14 +14,12 @@ import { HintMainSelect, HintViewSelect, HintSectorSelect, HintUnitSelect } from
 
 const useStyles = makeStyles(theme => createStyles({
   root: {
-    height: 40,
     padding: theme.spacing(0.5, 2),
-    backgroundColor: '#F3EFEF',
     '& p': { fontWeight: 700 },
   },
   btnSector: {
     height: 30,
-    minWidth: 'min-content',
+    minWidth: 45,
     maxWidth: 60,
     '& > span': { lineHeight: 1 },
   },
@@ -80,7 +78,7 @@ const HorizontalControlBar = () => {
     <Grid container alignItems="center" wrap="nowrap" spacing={1}>
       <Grid item style={{ paddingRight: 0 }}>
         <HintSectorSelect>
-          <Typography variant="body1" color="primary">{intl.formatMessage({ id: 'components.sectorSelect.name' })}</Typography>
+          <Typography variant="body1" color="secondary">{intl.formatMessage({ id: 'components.sectorSelect.name' })}</Typography>
         </HintSectorSelect>
       </Grid>
       {sectors.order.map((sector) => {
@@ -111,7 +109,7 @@ const HorizontalControlBar = () => {
   const views = ['electricity', 'oil-and-gas'].includes(config.page) && (
     <Grid container alignItems="center" wrap="nowrap">
       <HintViewSelect>
-        <Typography variant="body1" color="primary">{intl.formatMessage({ id: 'components.viewSelect.name' })}</Typography>
+        <Typography variant="body1" color="secondary">{intl.formatMessage({ id: 'components.viewSelect.name' })}</Typography>
       </HintViewSelect>
       {['region', 'source'].map(view => (
         <Tooltip
@@ -134,7 +132,7 @@ const HorizontalControlBar = () => {
   const units = (
     <Grid container alignItems="center" wrap="nowrap">
       <HintUnitSelect>
-        <Typography variant="body1" color="primary">{intl.formatMessage({ id: 'components.unitSelect.name' })}</Typography>
+        <Typography variant="body1" color="secondary">{intl.formatMessage({ id: 'components.unitSelect.name' })}</Typography>
       </HintUnitSelect>
       {layout.unit.map(unit => (
         <Tooltip
@@ -161,7 +159,7 @@ const HorizontalControlBar = () => {
   );
 
   return (
-    <Grid container justify="space-between" alignItems="center" wrap="nowrap" className={classes.root}>
+    <Grid container justify="space-between" alignItems="center" className={classes.root}>
       {[
         selections,
         sectorSelection,

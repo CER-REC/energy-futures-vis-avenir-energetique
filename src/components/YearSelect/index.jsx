@@ -5,12 +5,31 @@ import { makeStyles, Grid, Typography, Button, Tooltip } from '@material-ui/core
 import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
 import { HintYearSelect } from '../Hint';
+import { DownloadButton } from '../Share';
 
 const useStyles = makeStyles({
   button: {
     height: 43,
     width: 43,
     '& h5': { fontWeight: 700 },
+  },
+  download: {
+    height: '100%',
+    '& > button': {
+      height: '100%',
+      textTransform: 'none',
+    },
+  },
+  selected: {
+    '&:after': {
+      content: '""',
+      position: 'absolute',
+      top: 'calc(100% + 4px)',
+      left: -1,
+      right: -1,
+      height: 16,
+      backgroundColor: '#F3EFEF',
+    },
   },
 });
 
@@ -28,9 +47,9 @@ const YearSelect = () => {
 
   return (
     <Grid container alignItems="center" spacing={1}>
-      <Grid item>
+      <Grid item style={{ marginLeft: 14 }}>
         <HintYearSelect>
-          <Typography variant="h6" color="primary">{intl.formatMessage({ id: 'components.yearSelect.name' })}</Typography>
+          <Typography variant="h6" color="secondary">{intl.formatMessage({ id: 'components.yearSelect.name' })}</Typography>
         </HintYearSelect>
       </Grid>
 
@@ -48,13 +67,17 @@ const YearSelect = () => {
               color={config.yearId === yearId ? 'primary' : 'secondary'}
               size="small"
               onClick={() => configDispatch({ type: 'yearId/changed', payload: yearId })}
-              className={classes.button}
+              className={`${classes.button} ${config.yearId === yearId ? classes.selected : ''}`.trim()}
             >
               {config.yearId === yearId ? (<Typography variant="h5">{yearId}</Typography>) : yearId}
             </Button>
           </Tooltip>
         </Grid>
       ))}
+
+      <Grid item style={{ flexGrow: 1 }} />
+
+      <Grid item className={classes.download}><DownloadButton /></Grid>
     </Grid>
   );
 };
