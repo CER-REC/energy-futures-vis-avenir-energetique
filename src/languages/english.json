@@ -41,7 +41,13 @@
   },
   "components": {
     "draggableVerticalList": {
-      "all": "All"
+      "all": "All",
+      "abbr": {
+        "AVIATION": "A",
+        "GASOLINE": "G",
+        "DIESEL": "D",
+        "OIL": "O"
+      }
     },
     "errorBoundary": {
       "errorMessage": "Something went wrong.",

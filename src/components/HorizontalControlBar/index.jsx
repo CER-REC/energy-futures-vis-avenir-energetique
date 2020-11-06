@@ -20,7 +20,7 @@ const useStyles = makeStyles(theme => createStyles({
   btnSector: {
     height: 30,
     minWidth: 45,
-    maxWidth: 60,
+    maxWidth: 80,
     '& > span': { lineHeight: 1 },
   },
   tooltip: {

@@ -17,12 +17,14 @@ const useStyles = makeStyles(theme => createStyles({
     lineHeight: 0,
   },
   btn: {
-    height: 26,
-    width: '100%',
+    height: 'auto',
+    minHeight: 26,
+    width: 88,
     minWidth: 0,
     padding: theme.spacing(0.25, 1),
     fontSize: 12,
-    textTransform: 'capitalize',
+    textAlign: 'left',
+    textTransform: 'initial',
     justifyContent: 'left',
   },
   btnIcon: {

@@ -59,7 +59,7 @@ const useStyles = makeStyles(theme => ({
   links: {
     position: 'absolute',
     bottom: 0,
-    left: 0,
+    left: -theme.spacing(1),
   },
   report: {
     position: 'absolute',

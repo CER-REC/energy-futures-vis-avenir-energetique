@@ -72,7 +72,15 @@ const useStyles = makeStyles(theme => ({
     },
     '& svg': { fontSize: 16 },
   },
-  download: { borderRight: `8px solid ${theme.palette.primary.main}` },
+  download: {
+    maxWidth: 120,
+    textAlign: 'right',
+    borderRight: `8px solid ${theme.palette.primary.main}`,
+  },
+  label: {
+    fontSize: 12,
+    lineHeight: 1.2,
+  },
 }));
 
 export const Share = () => {
@@ -258,7 +266,7 @@ export const DownloadButton = () => {
   }, [config, intl, regionOrder, sourceOrder, data, headers]);
 
   return (
-    <Button variant="contained" color="secondary" onClick={downloadCSV} className={classes.download}>
+    <Button variant="contained" color="secondary" onClick={downloadCSV} classes={{ root: classes.download, label: classes.label }}>
       {intl.formatMessage({ id: 'components.share.download' })}
     </Button>
   );

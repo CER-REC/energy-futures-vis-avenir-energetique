@@ -1,4 +1,5 @@
 import React, { useCallback } from 'react';
+import { useIntl } from 'react-intl';
 import PropTypes from 'prop-types';
 import { makeStyles, Grid, Typography } from '@material-ui/core';
 import { OIL_SUBGROUP, SOURCE_PATTERNS } from '../../constants';
@@ -55,6 +56,8 @@ const useStyles = makeStyles(theme => ({
 
 const OilSubgroup = ({ selected, disabled /* e.g. [AVIATION, GASOLINE, DIESEL, OIL] */ }) => {
   const classes = useStyles();
+  const intl = useIntl();
+
   const styling = useCallback(
     source => [classes.node, selected && 'selected', disabled.includes(source) && 'disabled'].filter(Boolean).join(' '),
     [classes, selected, disabled],
@@ -81,7 +84,9 @@ const OilSubgroup = ({ selected, disabled /* e.g. [AVIATION, GASOLINE, DIESEL, O
               <svg height="100%" width="100%" viewBox="0 0 50 50">
                 <circle cx="50%" cy="50%" r="50%" fill={selected ? '#FF821E' : '#BBB'} mask={`url(#${source}-mask)`} />
               </svg>
-              <Typography variant="h6" component="span">{source.charAt(0)}</Typography>
+              <Typography variant="h6" component="span">
+                {intl.formatMessage({ id: `components.draggableVerticalList.abbr.${source}` })}
+              </Typography>
             </div>
           </Grid>
         ))}

@@ -38,7 +38,7 @@ const useStyles = makeStyles(theme => createStyles({
       width: 'auto',
       fill: '#CCC',
     },
-    '& > h5': { marginLeft: theme.spacing(15) },
+    '& > h5': { margin: theme.spacing(0, 2, 0, 15) },
   },
 
   root: { marginTop: -theme.spacing(1.5) },
@@ -51,6 +51,11 @@ const useStyles = makeStyles(theme => createStyles({
     border: '2px solid transparent',
     transition: 'top .5s ease-in-out, padding .5s ease-in-out, border-color .25s ease-in-out',
     '&:hover': { border: `2px solid ${theme.palette.primary.main}` },
+
+    '& > div': {
+      width: 'auto',
+      '& > span': { whiteSpace: 'nowrap' },
+    },
   },
   icon: {
     height: 64,
@@ -166,7 +171,7 @@ export const PageSelect = () => {
               onClick={() => configDispatch({ type: 'page/changed', payload: page.id })}
               classes={{ root: classes.box }}
             >
-              <Grid container direction="column" wrap="nowrap" style={{ width: 'auto' }}>
+              <Grid container direction="column" wrap="nowrap">
                 <div className={classes.icon}>{getPageIcon(page.id)}</div>
                 <Typography variant="caption">{subtitle}</Typography>
               </Grid>
