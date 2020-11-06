@@ -359,6 +359,7 @@
     }
   },
   "links": {
+    "title": "Contexte",
     "Assumptions": {
       "title": "Hypothèses",
       "description": {
@@ -427,7 +428,10 @@
       "description": "Consultez notre [document sur la méthodologie](https://www.cer-rec.gc.ca/avenir-energetique/PDF/Regie-avenir-energetique-methodologie-fr.pdf) pour en savoir plus sur le système de modélisation de l’avenir énergétique, les définitions et les indicateurs, les sources de données et plus encore."
     },
     "Report": {
-      "title": "Rapport",
+      "title": "2020 Rapports"
+    },
+    "Summary": {
+      "title": "Summary",
       "description": "Les rapports sur l’avenir énergétique proposent un large éventail de projections concernant l’offre et la demande d’énergie au Canada. Ces projections ont été réalisées à partir d’un système de modélisation qui fait interagir plusieurs composantes (ou modules) en vue d’arriver à des projections globales sur les tendances énergétiques futures du Canada.",
       "link": "[Voir le rapport AE 2020](https://www.cer-rec.gc.ca/fr/donnees-analyse/avenir-energetique-canada/2020/index.html)"
     },
