@@ -65,7 +65,6 @@ const useStyles = makeStyles(theme => ({
     border: `1px solid ${theme.palette.secondary.light}`,
     lineHeight: 1,
     '& span': {
-      fontSize: '.65rem',
       fontWeight: 700,
       lineHeight: 1,
       textTransform: 'uppercase',
