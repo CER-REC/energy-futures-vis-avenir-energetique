@@ -17,6 +17,9 @@ export const initialState = {
   provinceOrder: null,
   sources: null,
   sourceOrder: null,
+  // timeline
+  baseYear: null,
+  compareYear: null,
 };
 
 export const getReducer = (regions, sources, sectors, yearIdIterations) => {
@@ -141,6 +144,25 @@ export const getReducer = (regions, sources, sectors, yearIdIterations) => {
 
     return (validatedSources.length === validSources.length) ? order : validSources;
   };
+  const getBaseYear = (page, baseYear) => {
+    if (!['electricity', 'oil-and-gas'].includes(page)) {
+      return null;
+    }
+    const value = parseInt(baseYear, 10);
+
+    // set to 0 if not available so that the year slider stays at the minimum year number.
+    return Number.isNaN(value) ? 0 : value;
+  };
+
+  const getCompareYear = (page, compareYear) => {
+    if (page !== 'oil-and-gas') {
+      return null;
+    }
+    const value = parseInt(compareYear, 10);
+
+    // set to 0 if not available so that the year slider stays at the minimum year number.
+    return Number.isNaN(value) ? 0 : value;
+  };
 
   return (state, action) => {
     let mainSelection;
@@ -171,6 +193,8 @@ export const getReducer = (regions, sources, sectors, yearIdIterations) => {
           // Always reset the sources on page change
           sources: getSources(action.payload, mainSelection, view, null),
           sourceOrder: getSourceOrder(action.payload, mainSelection, state.sourceOrder),
+          baseYear: getBaseYear(action.payload, state.baseYear),
+          compareYear: getCompareYear(action.payload, state.compareYear),
         };
       case 'mainSelection/changed':
         mainSelection = getSelection(state.page, action.payload);
@@ -236,6 +260,16 @@ export const getReducer = (regions, sources, sectors, yearIdIterations) => {
         return {
           ...state,
           sourceOrder: getSourceOrder(state.page, state.mainSelection, action.payload),
+        };
+      case 'baseYear/changed':
+        return {
+          ...state,
+          baseYear: getBaseYear(state.page, action.payload),
+        };
+      case 'compareYear/changed':
+        return {
+          ...state,
+          compareYear: getCompareYear(state.page, action.payload),
         };
       default:
         return state;
