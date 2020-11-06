@@ -30,6 +30,9 @@ const useStyles = makeStyles({
   treeMapCollectionTop: {},
   treeMapCollectionBottom: {},
   slider: {},
+  treeMapRectangle: {
+    '& svg': { transform: 'rotate(270deg)' },
+  },
 });
 
 const OilAndGas = ({ data, year }) => {
@@ -110,14 +113,20 @@ const OilAndGas = ({ data, year }) => {
   const sizeMultiplier = useCallback((total, size, biggestTreeMap) => {
     // Takes the base treeMap size, and multiplies it by how much smaller the total is
     // compared to the biggest one, giving it a size proportional to the biggest one.
+    let returnValue = size;
+
     if (total < biggestTreeMap) {
       // This is so that really small numbers will show something
       if (size * (Math.sqrt(total / biggestTreeMap)) < 30) {
-        return 30;
+        returnValue = 30;
+      } else {
+        returnValue = size * (Math.sqrt(total / biggestTreeMap));
       }
-      return size * (Math.sqrt(total / biggestTreeMap));
     }
-    return size;
+    if (!returnValue > 0) {
+      return size;
+    }
+    return returnValue;
   }, []);
 
   const getColor = (d) => {
@@ -209,18 +218,23 @@ const OilAndGas = ({ data, year }) => {
               {config.view === 'region' ? `${sortedSource.name}: ${percentage}%` : sortedSource.name}
             </Typography>
 
-            <div style={{
-              textAlign: 'center',
-              height: sizeMultiplier(sortedSource.total, size, biggestTreeMapTotal) || 0,
-              width: sizeMultiplier(sortedSource.total, size, biggestTreeMapTotal) || 0,
-              margin: 'auto',
-            }}
+            <div
+              className={classes.treeMapRectangle}
+              style={{
+                textAlign: 'center',
+                height: sizeMultiplier(sortedSource.total, size, biggestTreeMapTotal) || 0,
+                width: sizeMultiplier(sortedSource.total, size, biggestTreeMapTotal) || 0,
+                margin: 'auto',
+              }}
             >
 
               <ResponsiveTreeMap
                 key={sortedSource.name}
                 root={sortedSource}
-                tile='squarify'
+                // Using binary causes a bunch of warnings and errors about
+                // width and height being NaN
+
+                tile='binary'
                 identity="name"
                 value="value"
                 margin={{ top: 10, right: 10, bottom: 10, left: 10 }}
