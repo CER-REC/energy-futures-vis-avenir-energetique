@@ -61,27 +61,29 @@ const ByRegion = ({ data, year }) => {
   }
 
   return (
-    <ResponsiveBar
-      {...CHART_PROPS}
-      data={data}
-      keys={keys}
-      layers={['grid', 'axes', 'bars', 'markers', forecast]}
-      indexBy="year"
-      maxValue={axis.highest}
-      colors={colors}
-      borderColor={{ from: 'color', modifiers: [['darker', 1.6]] }}
-      axisBottom={{
-        ...CHART_AXIS_PROPS,
-        format: yearLabel => ((yearLabel % 5) ? '' : yearLabel),
-      }}
-      axisRight={{
-        ...CHART_AXIS_PROPS,
-        tickValues: axis.ticks,
-        format: axisFormat,
-      }}
-      tooltipFormat={value => formatUnitAbbreviation(value, intl.formatMessage({ id: `common.units.${config.unit}` }))}
-      gridYValues={axis.ticks}
-    />
+    <div style={{ height: 700 }}>
+      <ResponsiveBar
+        {...CHART_PROPS}
+        data={data}
+        keys={keys}
+        layers={['grid', 'axes', 'bars', 'markers', forecast]}
+        indexBy="year"
+        maxValue={axis.highest}
+        colors={colors}
+        borderColor={{ from: 'color', modifiers: [['darker', 1.6]] }}
+        axisBottom={{
+          ...CHART_AXIS_PROPS,
+          format: yearLabel => ((yearLabel % 5) ? '' : yearLabel),
+        }}
+        axisRight={{
+          ...CHART_AXIS_PROPS,
+          tickValues: axis.ticks,
+          format: axisFormat,
+        }}
+        tooltipFormat={value => formatUnitAbbreviation(value, intl.formatMessage({ id: `common.units.${config.unit}` }))}
+        gridYValues={axis.ticks}
+      />
+    </div>
   );
 };
 
