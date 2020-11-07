@@ -1,8 +1,7 @@
 /* eslint-disable max-len */
 import React, { useState, useCallback } from 'react';
-
 import PropTypes from 'prop-types';
-import { Typography, Button, makeStyles } from '@material-ui/core';
+import { Grid, Typography, Button, makeStyles } from '@material-ui/core';
 import { ResponsiveTreeMap } from '@nivo/treemap';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -10,13 +9,33 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableRow from '@material-ui/core/TableRow';
 import { useIntl } from 'react-intl';
+
 import YearSlider from '../../components/YearSlider';
 import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
 import VizTooltip from '../../components/VizTooltip';
 import { IconOilAndGasGroup, IconOilAndGasRectangle } from '../../icons';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
+  year: {
+    position: 'absolute',
+    top: 6,
+    right: 16,
+    width: 'min-content',
+    '& button': {
+      height: 'auto',
+      width: '100%',
+    },
+  },
+  yearBox: {
+    '& > div': {
+      height: 28,
+      width: 28,
+    },
+    '&:first-of-type > div': { border: '4px solid black' },
+    '&:lastof-type > idv': { border: '4px solid black' },
+    '& + * h4': { fontWeight: 700 },
+  },
   cellsTop: {
     borderBottom: '0',
     minWidth: 0,
@@ -30,7 +49,23 @@ const useStyles = makeStyles({
   treeMapRectangle: {
     '& svg': { transform: 'rotate(270deg)' },
   },
-});
+  group: {
+    border: `1px solid ${theme.palette.secondary.main}`,
+    '& span': { lineHeight: 1.2 },
+  },
+  tick: {
+    height: 20,
+    marginLeft: 'calc(50% - 0.5px)',
+    borderLeft: `1px dashed ${theme.palette.secondary.main}`,
+  },
+  legend: {
+    float: 'right',
+    width: 'max-content',
+    margin: theme.spacing(1.5),
+    padding: theme.spacing(1),
+    backgroundColor: '#F3EFEF',
+  },
+}));
 
 const OilAndGas = ({ data, year }) => {
   const classes = useStyles();
@@ -136,59 +171,44 @@ const OilAndGas = ({ data, year }) => {
     return color;
   }, [config.mainSelection, config.view, gasColors, oilColors, regionColors]);
 
-  const createTreeMap = useCallback((sortedSource, percentage, size, isTopChart, biggestTreeMapTotal) => {
-    const treeMap = (
-      <div key={sortedSource.name}>
-        <Typography align='center' varient="body1" style={{ bottom: 0, fontWeight: 700 }}>
-          {config.view === 'region' && percentage > 1
-            ? `${sortedSource.name}: ${percentage}%`
-            : sortedSource.name}
-        </Typography>
+  const createTreeMap = useCallback((sortedSource, percentage, size, biggestTreeMapTotal) => (
+    <>
+      <Typography align='center' varient="body2" style={{ bottom: 0, fontWeight: 700 }}>
+        {config.view === 'region' && percentage > 1
+          ? `${sortedSource.name}: ${percentage}%`
+          : sortedSource.name}
+      </Typography>
 
-        <div
-          className={classes.treeMapRectangle}
-          style={{
-            textAlign: 'center',
-            height: sizeMultiplier(sortedSource.total, size, biggestTreeMapTotal) || 0,
-            width: sizeMultiplier(sortedSource.total, size, biggestTreeMapTotal) || 0,
-            margin: 'auto',
-          }}
-        >
-          <ResponsiveTreeMap
-            key={sortedSource.name}
-            root={sortedSource}
-            // Using binary causes a bunch of warnings and errors about
-            // width and height being NaN
-            tile='binary'
-            identity="name"
-            value="value"
-            margin={{ top: 10, right: 10, bottom: 10, left: 10 }}
-            enableLabel={false}
-            colors={getColor}
-            borderWidth={2}
-            borderColor="white"
-            animate
-            motionStiffness={90}
-            motionDamping={11}
-            tooltip={getTooltip}
-          />
-        </div>
-      </div>
-    );
-
-    return percentage <= 1
-      ? treeMap
-      : (
-        <TableCell
+      <div
+        className={classes.treeMapRectangle}
+        style={{
+          textAlign: 'center',
+          height: sizeMultiplier(sortedSource.total, size, biggestTreeMapTotal) || 0,
+          width: sizeMultiplier(sortedSource.total, size, biggestTreeMapTotal) || 0,
+          margin: 'auto',
+        }}
+      >
+        <ResponsiveTreeMap
           key={sortedSource.name}
-          className={isTopChart ? classes.cellsTop : classes.cellsBottom}
-        >
-          {!isTopChart && <div style={{ marginLeft: 'calc(50% - 0.5px)', borderLeft: '1px dashed black', height: 20 }} />}
-          {treeMap}
-          {(compare && isTopChart) && <div style={{ marginLeft: 'calc(50% - 0.5px)', borderLeft: '1px dashed black', height: 10 }} />}
-        </TableCell>
-      );
-  }, [classes.cellsBottom, classes.cellsTop, classes.treeMapRectangle, compare, config.view, getColor, getTooltip, sizeMultiplier]);
+          root={sortedSource}
+          // Using binary causes a bunch of warnings and errors about
+          // width and height being NaN
+          tile='binary'
+          identity="name"
+          value="value"
+          margin={{ top: 10, right: 10, bottom: 10, left: 10 }}
+          enableLabel={false}
+          colors={getColor}
+          borderWidth={2}
+          borderColor="white"
+          animate
+          motionStiffness={90}
+          motionDamping={11}
+          tooltip={getTooltip}
+        />
+      </div>
+    </>
+  ), [classes.treeMapRectangle, config.view, getColor, getTooltip, sizeMultiplier]);
 
   // eslint-disable-next-line no-restricted-globals
   if (!data || isNaN(data[currentYear][0].total)) {
@@ -207,10 +227,9 @@ const OilAndGas = ({ data, year }) => {
     const regularTreeMaps = [];
     const smallTreeMaps = [];
 
-    // eslint-disable-next-line consistent-return
-    treeData.forEach((source) => {
+    const names = treeData.map((source) => {
       if (source.total <= 0) {
-        return null;
+        return source.name;
       }
       // Its easier to sort the sources when they come in.
       // This is not very efficient however.
@@ -224,30 +243,38 @@ const OilAndGas = ({ data, year }) => {
       const percentage = ((sortedSource.total / totalGrandTotal) * 100).toFixed(2);
 
       if (percentage <= 1) {
-        smallTreeMaps.push(createTreeMap(sortedSource, percentage, size, isTopChart, biggestTreeMapTotal));
+        smallTreeMaps.push(createTreeMap(sortedSource, percentage, size, biggestTreeMapTotal));
       } else {
-        regularTreeMaps.push(createTreeMap(sortedSource, percentage, size, isTopChart, biggestTreeMapTotal));
+        regularTreeMaps.push(createTreeMap(sortedSource, percentage, size, biggestTreeMapTotal));
       }
+      return source.name;
     });
+
     if (regularTreeMaps.length === 0) {
       return null;
     }
 
     return (
       <TableRow>
-        {regularTreeMaps}
-        <TableCell
-          width='auto'
-          className={isTopChart ? classes.cellsTop : classes.cellsBottom}
-          style={{ width: 100 }}
-        >
+        {regularTreeMaps.map((tree, i) => (
+          <TableCell key={`treemap-${names[i]}`} className={isTopChart ? classes.cellsTop : classes.cellsBottom}>
+            <Grid container direction="column" wrap="nowrap" spacing={1}>
+              {!isTopChart && <Grid item className={classes.tick} />}
+              <Grid item>{tree}</Grid>
+              {(compare && isTopChart) && <Grid item className={classes.tick} />}
+            </Grid>
+          </TableCell>
+        ))}
+        <TableCell className={isTopChart ? classes.cellsTop : classes.cellsBottom} style={{ width: 100 }}>
           {smallTreeMaps.length > 0 && (
-            <>
-              <Typography align='center'>Values less than 1%</Typography>
-              <div style={{ border: '2px solid black', textAlign: 'center', marginTop: 10 }}>
-                {smallTreeMaps}
-              </div>
-            </>
+            <Grid container spacing={1} className={classes.group}>
+              <Grid item xs={12}>
+                <Typography variant="overline" align='center'>Values less than 1%</Typography>
+              </Grid>
+              {smallTreeMaps.map((tree, i) => (
+                <Grid item xs={12} sm={6} key={`grouped-treemap-${names[i]}`}>{tree}</Grid>
+              ))}
+            </Grid>
           )}
         </TableCell>
       </TableRow>
@@ -263,108 +290,88 @@ const OilAndGas = ({ data, year }) => {
 
   return (
     <>
-      <div style={{ position: 'absolute', right: 25, maxWidth: '100%' }}>
-
-        <div>
-          <div style={{ border: '4px solid black', height: 30, width: 30, display: 'inline-block', marginRight: 10 }} />
-          <div style={{ display: 'inline-block' }}>
-            <Typography color='primary' variant='h2' style={{ fontWeight: 700 }}>
-              {currentYear}
-            </Typography>
-          </div>
-        </div>
-
+      {/* year numbers and the compare button (top-right) */}
+      <Grid container direction="column" className={classes.year}>
+        <Grid item>
+          <Grid container alignItems="center" wrap="nowrap" spacing={1}>
+            <Grid item className={classes.yearBox}><div /></Grid>
+            <Grid item><Typography color='primary' variant='h4'>{currentYear}</Typography></Grid>
+          </Grid>
+        </Grid>
         {compare && (
-        <div>
-          <div style={{ border: '4px dotted grey', height: 30, width: 30, display: 'inline-block', marginRight: 10 }} />
-          <div style={{ display: 'inline-block' }}>
-            <Typography color='secondary' variant='h2' style={{ fontWeight: 700 }}>
-              {compareYear}
-            </Typography>
-          </div>
-        </div>
+          <Grid item>
+            <Grid container alignItems="center" wrap="nowrap" spacing={1}>
+              <Grid item className={classes.yearBox}><div /></Grid>
+              <Grid item><Typography color='secondary' variant='h4'>{compareYear}</Typography></Grid>
+            </Grid>
+          </Grid>
         )}
-        <Button
-          onClick={() => setCompare(!compare)}
-          variant="outlined"
-          color="primary"
-          size="medium"
-          fullWidth
-          style={{ height: 'auto', padding: 5 }}
-        >
+        <Grid item>
+          <Button variant="outlined" color="primary" size="small" onClick={() => setCompare(!compare)}>
+            {intl.formatMessage({ id: `common.oilandgas.button.${compare ? 'noCompare' : 'compare'}` })}
+          </Button>
+        </Grid>
+      </Grid>
 
-          <span style={{ fontWeight: 900 }}>
-            <Typography>
-              {compare ? "Don't Compare" : 'Compare'}
-            </Typography>
-          </span>
+      {/* treemap graphs */}
+      <TableContainer style={{ marginTop: compare ? 120 : 40, overflow: 'hidden' }}>
+        <Table>
+          <TableBody>
 
-        </Button>
-      </div>
-      <div style={{ marginTop: compare ? 120 : 150, marginBottom: 150 }}>
+            {currentTreeMapCollection}
 
-        <TableContainer>
-          <Table>
-            <TableBody>
+            <TableRow key="yearSlider">
+              <TableCell colSpan="100%" style={{ border: 'none' }}>
+                <YearSlider
+                  year={compare ? { curr: currentYear, compare: compareYear } : currentYear}
+                  onYearChange={(value) => {
+                    if ((value.curr || value) !== currentYear) {
+                      setCurrentYear(value.curr || value);
+                    } if (compare && value.compare !== compareYear) {
+                      setCompareYear(value.compare);
+                    }
+                  }}
+                  min={year.min}
+                  max={year.max}
+                />
+              </TableCell>
+            </TableRow>
 
-              {currentTreeMapCollection}
+            {compare && compareTreeMapCollection}
 
-              <TableRow key="yearSlider">
-                <TableCell
-                  align="right"
-                  colSpan="100%"
-                  style={{ border: 'none' }}
-                >
-                  <YearSlider
-                    year={compare ? { curr: currentYear, compare: compareYear } : currentYear}
-                    onYearChange={(value) => {
-                      if ((value.curr || value) !== currentYear) {
-                        setCurrentYear(value.curr || value);
-                      } if (compare && value.compare !== compareYear) {
-                        setCompareYear(value.compare);
-                      }
-                    }}
-                    min={year.min}
-                    max={year.max}
-                  />
-                </TableCell>
-              </TableRow>
+          </TableBody>
+        </Table>
+      </TableContainer>
 
-              {compare && compareTreeMapCollection}
+      {/* legend */}
+      <Grid container direction="column" className={classes.legend}>
+        <Typography align='center'><strong>Legend</strong></Typography>
 
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </div>
-      <div style={{
-        backgroundColor: '#F3F3F3', height: 'auto', width: 'auto', padding: 10, position: 'absolute', bottom: 5, right: 5,
-      }}
-      >
-        <Typography align='center' style={{ fontWeight: 950, fontSize: 'medium' }}>Legend</Typography>
-
-        <Typography align='center'>
-          <span style={{ fontWeight: 900 }}>
+        <Typography variant="body2" align="center">
+          <strong>
             {config.view === 'source'
               ? `Type of ${config.mainSelection === 'oilProduction' ? 'Oil' : 'Gas'}`
               : 'Region'}
-          </span> &#40;Year selected&#41;
+          </strong> &#40;Year selected&#41;
         </Typography>
 
-        <Typography align='left'>
-          <IconOilAndGasRectangle style={{ marginRight: 5 }} />
-          {config.view === 'region'
-            ? 'Source: Amount of source produced in region (% of total in CAN)'
-            : 'Region: Amount of source produced in region'}
-        </Typography>
-
-        <Typography align='left'>
-          <IconOilAndGasGroup style={{ marginRight: 5 }} />
-          {config.view === 'source'
-            ? 'Source: Total amount of source produced in Canada'
-            : 'Region: Total amount produced in region'}
-        </Typography>
-
-      </div>
+        <Grid container alignItems="center" wrap="nowrap" spacing={1}>
+          <Grid item><IconOilAndGasRectangle /></Grid>
+          <Grid item>
+            <Typography variant="body2">
+              {intl.formatMessage({ id: `common.oilandgas.legend.single.${config.view}` })}
+            </Typography>
+          </Grid>
+        </Grid>
+        <Grid container alignItems="center" wrap="nowrap" spacing={1}>
+          <Grid item><IconOilAndGasGroup /></Grid>
+          <Grid item>
+            <Typography variant="body2">
+              {intl.formatMessage({ id: `common.oilandgas.legend.group.${config.view}` })}
+            </Typography>
+          </Grid>
+        </Grid>
+      </Grid>
     </>
   );
 };
