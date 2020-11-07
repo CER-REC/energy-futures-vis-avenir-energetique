@@ -237,6 +237,7 @@ const DraggableVerticalList = ({
                           selected={localItems.indexOf(item) > -1}
                           attachment={isTransportation && item === 'OIL' && <OilSubgroup selected={localItems.indexOf(item) > -1} />}
                           disabled={disabledItems && disabledItems.includes(item)}
+                          draggable={!disabled}
                         />
                       </Grid>
                     </Tooltip>

@@ -4,6 +4,7 @@ import {
   makeStyles, Grid, Typography,
 } from '@material-ui/core';
 import ClearIcon from '@material-ui/icons/Clear';
+import DotsIcon from '@material-ui/icons/MoreHoriz';
 
 const useStyles = makeStyles(theme => ({
   root: props => ({
@@ -47,12 +48,17 @@ const useStyles = makeStyles(theme => ({
     },
     '&.disabled:hover': { boxShadow: theme.shadows[0] },
   }),
-  btn: { margin: 'auto' },
+  grasp: {
+    position: 'absolute',
+    bottom: -7,
+    left: '50%',
+    transform: 'translate(-50%, 0)',
+  },
 }));
 
 const ColoredItemBox = ({
   item, icon, color, selected, clear, round,
-  attachment, disabled, ...gridProps
+  attachment, disabled, draggable, ...gridProps
 }) => {
   const classes = useStyles({ color, round, attachment });
   const Icon = icon;
@@ -60,8 +66,9 @@ const ColoredItemBox = ({
   return (
     <Grid container {...gridProps} className={styling}>
       {clear && <ClearIcon className={classes.btn} />}
-      {!clear && icon && <Icon className={classes.btn} />}
+      {!clear && icon && <Icon style={{ margin: draggable ? '2px auto' : 'auto' }} />}
       {!clear && !icon && <Typography variant="body2">{item}</Typography>}
+      {!clear && draggable && <DotsIcon fontSize="small" className={classes.grasp} />}
       {attachment}
     </Grid>
   );
@@ -76,6 +83,7 @@ ColoredItemBox.propTypes = {
   round: PropTypes.bool,
   attachment: PropTypes.oneOfType([PropTypes.node, PropTypes.bool]),
   disabled: PropTypes.bool,
+  draggable: PropTypes.bool,
 };
 
 ColoredItemBox.defaultProps = {
@@ -86,6 +94,7 @@ ColoredItemBox.defaultProps = {
   round: false,
   attachment: undefined,
   disabled: false,
+  draggable: false,
 };
 
 export default ColoredItemBox;
