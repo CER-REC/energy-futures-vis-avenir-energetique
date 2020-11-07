@@ -82,20 +82,6 @@ const DraggableVerticalList = ({
   const [localItems, setLocalItems] = useState(items || Object.keys(defaultItems));
   const [localItemOrder, setLocalItemOrder] = useState(itemOrder || defaultItemOrder);
 
-  const oilAndGasAbbrevs = {
-    LIGHT: 'CL',
-    ISB: 'iSB',
-    HEAVY: 'CH',
-    CONDENSATE: 'FC',
-    C5: 'C5+',
-    MB: 'MB',
-    CBM: 'CB',
-    NA: 'NA',
-    SHALE: 'Sh',
-    SOLUTION: 'SOL',
-    TIGHT: 'Ti',
-  };
-
   const allTitle = useMemo(
     () => intl.formatMessage({ id: 'components.draggableVerticalList.all' }),
     [intl],
@@ -230,13 +216,14 @@ const DraggableVerticalList = ({
                         className={`${classes.item} ${isTransportation && item === 'OIL' && 'oil-sub-group'}`}
                       >
                         <ColoredItemBox
-                          item={defaultItems[item].icon || oilAndGasAbbrevs[item] || item}
+                          item={intl.formatMessage({ id: `components.draggableVerticalList.abbr.${item}`, defaultMessage: item })}
                           round={round}
                           icon={defaultItems[item].icon}
                           color={greyscale ? undefined : defaultItems[item].color}
                           selected={localItems.indexOf(item) > -1}
                           attachment={isTransportation && item === 'OIL' && <OilSubgroup selected={localItems.indexOf(item) > -1} />}
                           disabled={disabledItems && disabledItems.includes(item)}
+                          draggable={!disabled}
                         />
                       </Grid>
                     </Tooltip>

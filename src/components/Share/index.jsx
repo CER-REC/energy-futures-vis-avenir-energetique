@@ -1,5 +1,6 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import { useIntl } from 'react-intl';
+import PropTypes from 'prop-types';
 import { makeStyles, Grid, Button, Typography } from '@material-ui/core';
 import Alert from '@material-ui/lab/Alert';
 import Snackbar from '@material-ui/core/Snackbar';
@@ -75,15 +76,15 @@ const useStyles = makeStyles(theme => ({
   download: {
     maxWidth: 130,
     textAlign: 'right',
-    borderRight: `8px solid ${theme.palette.primary.main}`,
   },
   label: {
     fontSize: 12,
     lineHeight: 1.2,
   },
+  accent: { borderRight: `8px solid ${theme.palette.primary.main}` },
 }));
 
-export const Share = () => {
+export const Share = ({ direction }) => {
   const classes = useStyles();
   const intl = useIntl();
 
@@ -128,7 +129,7 @@ export const Share = () => {
 
   return (
     <>
-      <Grid container direction="column">
+      <Grid container direction={direction}>
         {buttons.map(button => (
           <Button
             key={`social-button-${button.name}`}
@@ -155,7 +156,10 @@ export const Share = () => {
   );
 };
 
-export const DownloadButton = () => {
+Share.propTypes = { direction: PropTypes.string }; // 'row' or 'column'
+Share.defaultProps = { direction: 'column' };
+
+export const DownloadButton = ({ accent }) => {
   const classes = useStyles();
   const intl = useIntl();
   const {
@@ -271,9 +275,12 @@ export const DownloadButton = () => {
       color="secondary"
       startIcon={<IconDownload />}
       onClick={downloadCSV}
-      classes={{ root: classes.download, label: classes.label }}
+      classes={{ root: `${classes.download} ${accent ? classes.accent : ''}`, label: classes.label }}
     >
       {intl.formatMessage({ id: 'components.share.download' })}
     </Button>
   );
 };
+
+DownloadButton.propTypes = { accent: PropTypes.bool };
+DownloadButton.defaultProps = { accent: false };

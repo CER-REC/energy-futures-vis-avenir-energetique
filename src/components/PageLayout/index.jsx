@@ -15,10 +15,6 @@ import ScenarioSelect from '../ScenarioSelect';
 import DraggableVerticalList from '../DraggableVerticalList';
 import HorizontalControlBar from '../HorizontalControlBar';
 import LinkButtonGroup from '../LinkButtonGroup';
-import {
-  LinkButtonContentAssumptions, LinkButtonContentKeyFindings, LinkButtonContentResults,
-  LinkButtonContentReport, LinkButtonContentMethodology, LinkButtonContentAbout,
-} from '../LinkButtonGroup/contents';
 import { DownloadButton, Share } from '../Share';
 
 const LEAD_COL_WIDTH = 400;
@@ -162,7 +158,7 @@ const PageLayout = ({
         <Grid container alignItems="flex-end" wrap="nowrap" spacing={2}>
           <Grid item style={{ width: LEAD_COL_WIDTH }}>{title}</Grid>
           <Grid item style={{ flexGrow: 1 }}><YearSelect /></Grid>
-          <Grid item className={classes.download}><DownloadButton /></Grid>
+          <Grid item className={classes.download}><DownloadButton accent /></Grid>
         </Grid>
       </Grid>
 
@@ -242,24 +238,10 @@ const PageLayout = ({
 
       <Grid item xs={12} className={desktop ? classes.links : ''}>
         <Grid container alignItems="flex-start" wrap="nowrap" spacing={2}>
-          <Grid item>
-            <LinkButtonGroup
-              title="Context"
-              labels={[
-                [
-                  { name: intl.formatMessage({ id: 'links.Report.title' }), content: <LinkButtonContentReport /> },
-                  { name: intl.formatMessage({ id: 'links.Assumptions.title' }), content: <LinkButtonContentAssumptions yearId={config.yearId} /> },
-                  { name: intl.formatMessage({ id: 'links.Findings.title' }), content: <LinkButtonContentKeyFindings yearId={config.yearId} /> },
-                  { name: intl.formatMessage({ id: 'links.Results.title' }), content: <LinkButtonContentResults yearId={config.yearId} /> },
-                ], [
-                  { name: intl.formatMessage({ id: 'links.Methodology.title' }), content: <LinkButtonContentMethodology /> },
-                  { name: intl.formatMessage({ id: 'links.About.title' }), content: <LinkButtonContentAbout /> },
-                ]]}
-            />
-          </Grid>
+          <Grid item><LinkButtonGroup direction={desktop ? 'column' : 'row'} /></Grid>
           <Grid item style={{ flexGrow: 1 }} />
           {!desktop && <Grid item className={classes.download}><DownloadButton /></Grid>}
-          {!desktop && <Grid item><Share /></Grid>}
+          {!desktop && <Grid item><Share direction="row" /></Grid>}
         </Grid>
       </Grid>
     </Grid>
