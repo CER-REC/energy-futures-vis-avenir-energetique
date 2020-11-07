@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import { useIntl } from 'react-intl';
-import { makeStyles, Grid, Button } from '@material-ui/core';
+import { makeStyles, Grid, Button, Typography } from '@material-ui/core';
 import Alert from '@material-ui/lab/Alert';
 import Snackbar from '@material-ui/core/Snackbar';
 import LinkIcon from '@material-ui/icons/Link';
@@ -148,7 +148,7 @@ export const Share = () => {
         onClose={onClose}
       >
         <Alert variant="filled" severity="info">
-          {intl.formatMessage({ id: 'components.share.copied' })}
+          <Typography>{intl.formatMessage({ id: 'components.share.copied' })}</Typography>
         </Alert>
       </Snackbar>
     </>
