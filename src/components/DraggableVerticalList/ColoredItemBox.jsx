@@ -53,6 +53,7 @@ const useStyles = makeStyles(theme => ({
     bottom: -7,
     left: '50%',
     transform: 'translate(-50%, 0)',
+    'svg&': { backgroundColor: 'transparent !important' },
   },
 }));
 
