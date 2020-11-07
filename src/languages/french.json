@@ -46,7 +46,18 @@
         "AVIATION": "C",
         "GASOLINE": "E",
         "DIESEL": "D",
-        "OIL": "A"
+        "OIL": "A",
+        "LIGHT": "CL",
+        "ISB": "iSB",
+        "HEAVY": "CH",
+        "CONDENSATE": "FC",
+        "C5": "C5+",
+        "MB": "MB",
+        "CBM": "CB",
+        "NA": "NA",
+        "SHALE": "Sh",
+        "SOLUTION": "SOL",
+        "TIGHT": "Ti"
       }
     },
     "errorBoundary": {

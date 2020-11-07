@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { useIntl } from 'react-intl';
 import PropTypes from 'prop-types';
 import {
-  makeStyles, Paper, Grid, Typography, Tooltip,
+  makeStyles, useMediaQuery, Paper, Grid, Typography, Tooltip,
 } from '@material-ui/core';
 
 import useAPI from '../../hooks/useAPI';
@@ -102,7 +102,6 @@ const useStyles = makeStyles(theme => ({
   legend: {
     position: 'absolute',
     bottom: '50%',
-    right: 'calc(-100% - 100px)',
     maxWidth: 250,
     transform: 'translateY(50%)',
   },
@@ -132,12 +131,6 @@ const COORD = {
   COAL: { top: '45%', left: '75%' },
 };
 
-const BUBBLE_SIZE = {
-  region: { MAX: 20, MIN: 0.5 },
-  source: { MAX: 30, MIN: 0 },
-  single: 20,
-};
-
 const Electricity = ({ data, year }) => {
   const classes = useStyles();
 
@@ -148,9 +141,23 @@ const Electricity = ({ data, year }) => {
   } = useAPI();
   const { config } = useConfig();
 
+  /**
+   * CER template uses a custom breakpoint.
+   */
+  const desktop = useMediaQuery('(min-width: 992px)');
+
   const [currYear, setCurrYear] = useState(config.baseYear || year?.min);
 
   useEffect(() => setCurrYear(config.baseYear || year?.min), [config.baseYear, year]);
+
+  /**
+   * Coefficients for determining bubble sizes during the calculation.
+   */
+  const BUBBLE_SIZE = useMemo(() => ({
+    region: { MAX: desktop ? 20 : 10, MIN: 0.5 },
+    source: { MAX: desktop ? 30 : 15, MIN: 0 },
+    single: desktop ? 20 : 10,
+  }), [desktop]);
 
   /**
    * Looking for the min and max value and the total volumns in each group (region or source).
@@ -182,10 +189,10 @@ const Electricity = ({ data, year }) => {
   /**
    * Determine the min and max bubble size based on the current view select.
    */
-  const sizeMin = useMemo(() => BUBBLE_SIZE[config.view]?.MIN, [config.view]);
+  const sizeMin = useMemo(() => BUBBLE_SIZE[config.view]?.MIN, [config.view, BUBBLE_SIZE]);
   const sizeMax = useMemo(
     () => (single ? BUBBLE_SIZE.single : BUBBLE_SIZE[config.view]?.MAX),
-    [config.view, single],
+    [config.view, single, BUBBLE_SIZE],
   );
 
   /**
@@ -302,14 +309,14 @@ const Electricity = ({ data, year }) => {
 
             {/* province name */}
             <Paper square elevation={0} className={classes.label}>
-              <Typography>
+              <Typography variant="body2">
                 {config.view === 'source' ? intl.formatMessage({ id: `common.sources.electricity.${entry.name}` }) : entry.name}
               </Typography>
             </Paper>
 
             {/* static legend shown beside a single province */}
             {single && (
-              <div className={classes.legend}>
+              <div className={classes.legend} style={{ right: `calc(-100% - ${desktop ? 100 : 200}px)` }}>
                 <VizTooltip nodes={entry.nodes} unit={config.unit} />
               </div>
             )}
