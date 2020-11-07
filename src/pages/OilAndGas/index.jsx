@@ -36,8 +36,9 @@ const OilAndGas = ({ data, year }) => {
   const classes = useStyles();
   const { config } = useConfig();
   const intl = useIntl();
-  const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
-  const [compareYear, setCompareYear] = useState(currentYear);
+
+  const [currentYear, setCurrentYear] = useState(config.baseYear || year?.min);
+  const [compareYear, setCompareYear] = useState(config.compareYear || year?.min);
 
   const {
     regions: { colors: regionColors },

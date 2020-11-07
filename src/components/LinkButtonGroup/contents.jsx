@@ -106,6 +106,7 @@ const useStyles = makeStyles(theme => ({
   close: {
     height: 'auto',
     minWidth: 36,
+    borderRight: 'none',
   },
 }));
 
