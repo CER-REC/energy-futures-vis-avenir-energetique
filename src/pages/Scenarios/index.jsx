@@ -80,36 +80,38 @@ const Scenarios = ({ data, year }) => {
   }
 
   return (
-    <ResponsiveLine
-      {...CHART_PROPS}
-      data={data}
-      enableArea
-      enablePoints={false}
-      layers={['grid', 'axes', 'areas', 'crosshair', 'points', 'slices', fade, 'lines', forecast, dots]}
-      curve="cardinal"
-      areaOpacity={0.15}
-      xScale={{ type: 'point' }}
-      yScale={{ type: 'linear', min: 0, max: axis.highest, reverse: false }}
-      colors={d => SCENARIO_COLOR[d.id] || '#AAA'}
-      pointSize={8}
-      pointColor={{ theme: 'background' }}
-      pointBorderWidth={2}
-      pointBorderColor={{ from: 'serieColor' }}
-      pointLabel="y"
-      pointLabelYOffset={-12}
-      axisBottom={{
-        ...CHART_AXIS_PROPS,
-        format: yearLabel => ((yearLabel % 5) ? '' : yearLabel),
-      }}
-      axisRight={{
-        ...CHART_AXIS_PROPS,
-        tickValues: axis.ticks,
-        format: axisFormat,
-      }}
-      enableSlices="x"
-      sliceTooltip={getTooltip}
-      gridYValues={axis.ticks}
-    />
+    <div style={{ height: 700 }}>
+      <ResponsiveLine
+        {...CHART_PROPS}
+        data={data}
+        enableArea
+        enablePoints={false}
+        layers={['grid', 'axes', 'areas', 'crosshair', 'points', 'slices', fade, 'lines', forecast, dots]}
+        curve="cardinal"
+        areaOpacity={0.15}
+        xScale={{ type: 'point' }}
+        yScale={{ type: 'linear', min: 0, max: axis.highest, reverse: false }}
+        colors={d => SCENARIO_COLOR[d.id] || '#AAA'}
+        pointSize={8}
+        pointColor={{ theme: 'background' }}
+        pointBorderWidth={2}
+        pointBorderColor={{ from: 'serieColor' }}
+        pointLabel="y"
+        pointLabelYOffset={-12}
+        axisBottom={{
+          ...CHART_AXIS_PROPS,
+          format: yearLabel => ((yearLabel % 5) ? '' : yearLabel),
+        }}
+        axisRight={{
+          ...CHART_AXIS_PROPS,
+          tickValues: axis.ticks,
+          format: axisFormat,
+        }}
+        enableSlices="x"
+        sliceTooltip={getTooltip}
+        gridYValues={axis.ticks}
+      />
+    </div>
   );
 };
 

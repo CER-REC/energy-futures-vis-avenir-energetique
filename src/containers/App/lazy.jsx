@@ -118,6 +118,9 @@ const theme = createMuiTheme({
       fontSizeSmall: { fontSize: 20 },
     },
   },
+  MuiTableCell: {
+    root: { borderBottom: 'none' },
+  },
 });
 
 const Content = () => {
