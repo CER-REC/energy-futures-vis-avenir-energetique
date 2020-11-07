@@ -41,7 +41,13 @@
   },
   "components": {
     "draggableVerticalList": {
-      "all": "Tous"
+      "all": "Tous",
+      "abbr": {
+        "AVIATION": "C",
+        "GASOLINE": "E",
+        "DIESEL": "D",
+        "OIL": "A"
+      }
     },
     "errorBoundary": {
       "errorMessage": "Une erreur s’est produite.",

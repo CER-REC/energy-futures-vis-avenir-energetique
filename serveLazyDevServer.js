@@ -5,19 +5,22 @@ import HtmlWebpackPlugin from 'html-webpack-plugin';
 import proxyMiddleware from './.storybook/middleware';
 import webpackConfig from './webpack.config.babel';
 
+const PATH = '/energy-future/';
+// const PATH = '/avenir-energetique/';
+
 webpackConfig.plugins.push(new HtmlWebpackPlugin({
   template: '.serveLazyDevServerTemplate.html',
 }));
-webpackConfig.output.publicPath = '/energy-future/';
+webpackConfig.output.publicPath = PATH;
 
 const compiler = webpack(webpackConfig);
 const app = express();
 
 app.use(middleware(compiler, {
   host: '0.0.0.0',
-  publicPath: '/energy-future/',
+  publicPath: PATH,
 }));
-app.use('/energy-future/', express.static('.storybook/wet-template'));
+app.use(PATH, express.static('.storybook/wet-template'));
 proxyMiddleware(app);
 
 // eslint-disable-next-line no-console

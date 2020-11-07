@@ -1,21 +1,32 @@
 import React, { useCallback, useMemo } from 'react';
 import { useIntl } from 'react-intl';
 import PropTypes from 'prop-types';
-import { Grid, Typography, Button, Tooltip } from '@material-ui/core';
+import { makeStyles, Grid, Typography, Button, Tooltip } from '@material-ui/core';
 
 import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
 import { SCENARIO_COLOR } from '../../constants';
 import { HintScenarioSelect } from '../Hint';
 
+const useStyles = makeStyles(theme => ({
+  root: {
+    padding: theme.spacing(0.5, 2),
+    '& p': { fontWeight: 700 },
+  },
+}));
+
 const ScenarioSelect = ({ multiSelect }) => {
+  const classes = useStyles();
   const intl = useIntl();
+
   const { config, configDispatch } = useConfig();
   const { yearIdIterations } = useAPI();
+
   const handleScenariosUpdate = useCallback(
     scenarios => configDispatch({ type: 'scenarios/changed', payload: scenarios }),
     [configDispatch],
   );
+
   const scenarios = useMemo(() => {
     const reorderedScenarios = yearIdIterations[config.yearId]?.scenarios || [];
     // moving 'Evolving' to the front of the list
@@ -50,10 +61,10 @@ const ScenarioSelect = ({ multiSelect }) => {
   }), [intl, config.yearId]);
 
   return (
-    <Grid container alignItems="center" wrap="nowrap" spacing={1}>
+    <Grid container alignItems="center" spacing={1} className={classes.root}>
       <Grid item>
         <HintScenarioSelect>
-          <Typography variant="h6" color="primary">{intl.formatMessage({ id: 'components.scenarioSelect.name' })}</Typography>
+          <Typography variant="body1" color="secondary">{intl.formatMessage({ id: 'components.scenarioSelect.name' })}</Typography>
         </HintScenarioSelect>
       </Grid>
 

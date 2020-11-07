@@ -16,15 +16,17 @@ const useStyles = makeStyles(theme => createStyles({
     width: '100%',
     lineHeight: 0,
   },
-  btn: props => ({
-    height: 26,
-    width: '100%',
+  btn: {
+    height: 'auto',
+    minHeight: 26,
+    width: 88,
     minWidth: 0,
     padding: theme.spacing(0.25, 1),
     fontSize: 12,
-    textTransform: 'capitalize',
-    justifyContent: props.accent || 'right',
-  }),
+    textAlign: 'left',
+    textTransform: 'initial',
+    justifyContent: 'left',
+  },
   btnIcon: {
     'button&': {
       height: 22,
@@ -34,15 +36,14 @@ const useStyles = makeStyles(theme => createStyles({
     },
     '& svg': { fontSize: 16 },
   },
-  btnPopUp: props => ({
+  btnPopUp: {
     position: 'absolute',
     top: '50%',
-    left: props.accent === 'left' ? 'calc(100% - 10px)' : 'auto',
-    right: props.accent !== 'left' ? 'calc(100% - 10px)' : 'auto',
+    left: 'calc(100% - 10px)',
     maxHeight: 350,
     width: 300,
     padding: theme.spacing(1.5, 2, 1.5, 1.5),
-    transform: `translate(${props.accent === 'left' ? 26 : -26}px, -50%)`,
+    transform: 'translate(26px, -50%)',
     zIndex: theme.zIndex.modal,
     border: `1px solid ${theme.palette.secondary.light}`,
     backgroundColor: '#F3EFEF',
@@ -55,21 +56,20 @@ const useStyles = makeStyles(theme => createStyles({
     },
     '& li': { margin: theme.spacing(0.5, 0) },
     '& img': { width: '100%' },
-  }),
-  btnPopUpTip: props => ({
+  },
+  btnPopUpTip: {
     position: 'absolute',
     top: '50%',
-    left: props.accent === 'left' ? '100%' : 'auto',
-    right: props.accent !== 'left' ? '100%' : 'auto',
+    left: '100%',
     height: `calc(100% - ${theme.spacing(1)}px)`,
     width: 17,
     transform: 'translate(0px, -50%)',
     border: `1px solid ${theme.palette.secondary.light}`,
-    borderLeft: props.accent === 'left' ? `1px solid ${theme.palette.secondary.light}` : 'none',
-    borderRight: props.accent !== 'left' ? `1px solid ${theme.palette.secondary.light}` : 'none',
+    borderLeft: `1px solid ${theme.palette.secondary.light}`,
+    borderRight: 'none',
     backgroundColor: '#F3EFEF',
     zIndex: theme.zIndex.modal + 1,
-  }),
+  },
   btnIconPopUpTip: { height: '100% !important' },
   accent: {
     width: 8,
@@ -78,8 +78,8 @@ const useStyles = makeStyles(theme => createStyles({
   },
 }));
 
-const LinkButtonGroup = ({ title, labels, accent, spacing, className }) => {
-  const classes = useStyles({ accent });
+const LinkButtonGroup = ({ title, labels, className }) => {
+  const classes = useStyles();
 
   const [select, setSelect] = useState(undefined);
 
@@ -93,12 +93,12 @@ const LinkButtonGroup = ({ title, labels, accent, spacing, className }) => {
    */
   const generateLebelGroup = labelGroup => (
     <Grid container>
-      {accent === 'left' && <Grid item className={classes.accent} />}
+      <Grid item className={classes.accent} />
       <Grid item>
         <Grid
           container
           direction="column"
-          alignItems={accent === 'left' ? 'flex-start' : 'flex-end'}
+          alignItems="flex-start"
           spacing={labelGroup[0].icon ? 0 : 1}
         >
           {labelGroup.map(label => (
@@ -123,7 +123,6 @@ const LinkButtonGroup = ({ title, labels, accent, spacing, className }) => {
           ))}
         </Grid>
       </Grid>
-      {accent !== 'left' && <Grid item className={classes.accent} />}
     </Grid>
   );
 
@@ -132,8 +131,8 @@ const LinkButtonGroup = ({ title, labels, accent, spacing, className }) => {
       <Grid
         container
         direction="column"
-        alignItems={accent === 'left' ? 'flex-start' : 'flex-end'}
-        spacing={spacing}
+        alignItems="flex-start"
+        spacing={1}
         className={className}
       >
         {title && (
@@ -154,16 +153,12 @@ LinkButtonGroup.propTypes = {
     name: PropTypes.string.isRequired,
     content: PropTypes.oneOfType([PropTypes.element, PropTypes.func]),
   }))),
-  accent: PropTypes.string, // 'left', 'right'
-  spacing: PropTypes.number,
   className: PropTypes.string, // root class names
 };
 
 LinkButtonGroup.defaultProps = {
   title: undefined,
   labels: [],
-  accent: 'left',
-  spacing: 1,
   className: undefined,
 };
 

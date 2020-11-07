@@ -88,10 +88,10 @@ const useStyles = makeStyles(theme => ({
     },
     '& > div:last-of-type': { width: 'calc(100% - 8px)' },
     '& button, & a': {
-      height: 38,
+      height: 'auto',
+      minHeight: 38,
       width: '100%',
       justifyContent: 'flex-start',
-      whiteSpace: 'nowrap',
       '& > span:first-of-type': { fontSize: 16 },
     },
     '& button, & a, & a:hover, & a:focus, & a:active, & a:visited': {
