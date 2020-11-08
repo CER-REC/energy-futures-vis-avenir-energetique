@@ -29,11 +29,9 @@ const useStyles = makeStyles(theme => ({
   },
   yearBox: {
     '& > div': {
-      height: 28,
-      width: 28,
+      height: 26,
+      width: 26,
     },
-    '&:first-of-type > div': { border: '4px solid black' },
-    '&:lastof-type > idv': { border: '4px solid black' },
     '& + * h4': { fontWeight: 700 },
   },
   cellsTop: {
@@ -294,14 +292,14 @@ const OilAndGas = ({ data, year }) => {
       <Grid container direction="column" className={classes.year}>
         <Grid item>
           <Grid container alignItems="center" wrap="nowrap" spacing={1}>
-            <Grid item className={classes.yearBox}><div /></Grid>
+            <Grid item className={classes.yearBox}><div style={{ border: '3px solid black' }} /></Grid>
             <Grid item><Typography color='primary' variant='h4'>{currentYear}</Typography></Grid>
           </Grid>
         </Grid>
         {compare && (
           <Grid item>
             <Grid container alignItems="center" wrap="nowrap" spacing={1}>
-              <Grid item className={classes.yearBox}><div /></Grid>
+              <Grid item className={classes.yearBox}><div style={{ border: '3px dotted grey' }} /></Grid>
               <Grid item><Typography color='secondary' variant='h4'>{compareYear}</Typography></Grid>
             </Grid>
           </Grid>
