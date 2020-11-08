@@ -37,6 +37,22 @@
         "byRegion": "QUANTITÉ PAR RÉGION",
         "total": "QUANTITÉ TOTALE"
       }
+    },
+    "oilandgas": {
+      "button": {
+        "compare": "Compare",
+        "noCompare": "Don't Compare"
+      },
+      "legend": {
+        "single": {
+          "source": "Region: Amount of source produced in region",
+          "region": "Source: Amount of source produced in region (% of total in CAN)"
+        },
+        "group": {
+          "source": "Source: Total amount of source produced in Canada",
+          "region": "Region: Total amount produced in region"
+        }
+      }
     }
   },
   "components": {
