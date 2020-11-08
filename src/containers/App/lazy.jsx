@@ -116,6 +116,7 @@ const theme = createMuiTheme({
     MuiSvgIcon: {
       root: { fontSize: 24 },
       fontSizeSmall: { fontSize: 20 },
+      fontSizeLarge: { fontSize: 35 },
     },
   },
   MuiTableCell: {

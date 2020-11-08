@@ -28,7 +28,7 @@ const useStyles = makeStyles(theme => ({
   },
   play: {
     padding: 0,
-    marginRight: theme.spacing(1),
+    marginRight: theme.spacing(2),
   },
   rail: {
     height: 1,
@@ -169,7 +169,6 @@ const YearSlider = ({ year, onYearChange, min, max, forecast }) => {
       container
       alignItems="center"
       wrap="nowrap"
-      spacing={0}
       className={classes.root}
       style={{ backgroundColor: double || !forecast ? '#F3EFEF' : 'transparent' }}
     >
