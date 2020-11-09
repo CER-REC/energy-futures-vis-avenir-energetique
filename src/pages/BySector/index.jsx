@@ -97,30 +97,32 @@ const BySector = ({ data, year }) => {
   }
 
   return (
-    <ResponsiveLine
-      {...CHART_PROPS}
-      data={orderedData}
-      layers={['grid', 'axes', 'crosshair', 'lines', 'points', 'slices', 'areas', fade, forecast]}
-      xScale={{ type: 'point' }}
-      yScale={{ type: 'linear', min: 0, max: axis.highest, stacked: true }}
-      curve="cardinal"
-      axisRight={{
-        ...CHART_AXIS_PROPS,
-        tickValues: axis.ticks,
-        format: axisFormat,
-      }}
-      axisBottom={{
-        ...CHART_AXIS_PROPS,
-        format: value => ((value % 5) ? '' : value),
-      }}
-      colors={d => colors[d.id]}
-      lineWidth={0}
-      enablePoints={false}
-      enableSlices="x"
-      sliceTooltip={getTooltip}
-      gridYValues={axis.ticks}
-      defs={CHART_PATTERNS}
-    />
+    <div style={{ height: 700 }}>
+      <ResponsiveLine
+        {...CHART_PROPS}
+        data={orderedData}
+        layers={['grid', 'axes', 'crosshair', 'lines', 'points', 'slices', 'areas', fade, forecast]}
+        xScale={{ type: 'point' }}
+        yScale={{ type: 'linear', min: 0, max: axis.highest, stacked: true }}
+        curve="cardinal"
+        axisRight={{
+          ...CHART_AXIS_PROPS,
+          tickValues: axis.ticks,
+          format: axisFormat,
+        }}
+        axisBottom={{
+          ...CHART_AXIS_PROPS,
+          format: value => ((value % 5) ? '' : value),
+        }}
+        colors={d => colors[d.id]}
+        lineWidth={0}
+        enablePoints={false}
+        enableSlices="x"
+        sliceTooltip={getTooltip}
+        gridYValues={axis.ticks}
+        defs={CHART_PATTERNS}
+      />
+    </div>
   );
 };
 

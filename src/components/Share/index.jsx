@@ -1,4 +1,7 @@
 import React, { useCallback, useMemo, useState } from 'react';
+import { useIntl } from 'react-intl';
+import PropTypes from 'prop-types';
+import { makeStyles, Grid, Button, Typography } from '@material-ui/core';
 import Alert from '@material-ui/lab/Alert';
 import Snackbar from '@material-ui/core/Snackbar';
 import LinkIcon from '@material-ui/icons/Link';
@@ -6,22 +9,13 @@ import EmailIcon from '@material-ui/icons/Email';
 import Clipboard from 'clipboard';
 import { saveAs } from 'file-saver';
 import Papa from 'papaparse';
-import { useIntl } from 'react-intl';
 
-import { IconTwitter, IconFacebook, IconLinkedIn } from '../../icons';
+import { IconTwitter, IconFacebook, IconLinkedIn, IconDownload } from '../../icons';
 import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
 import useEnergyFutureData from '../../hooks/useEnergyFutureData';
 import { convertUnit } from '../../utilities/convertUnit';
-import LinkButtonGroup from '../LinkButtonGroup';
-
-// TODO: Remove after refactoring source type references into selection references
-const selectionSourceTypes = {
-  energyDemand: 'energy',
-  electricityGeneration: 'electricity',
-  oilProduction: 'oil',
-  gasProduction: 'gas',
-};
+import { PAGES } from '../../constants';
 
 // TODO: Remove after refactoring into useEnergyFutureData to provide a uniform data structure
 const selectionUnits = {
@@ -69,7 +63,104 @@ const twitter = {
   content: () => openShareWindow('https://twitter.com/intent/tweet?url='),
 };
 
-const Share = () => {
+const useStyles = makeStyles(theme => ({
+  button: {
+    'button&': {
+      height: 22,
+      width: 24,
+      padding: theme.spacing(0, 0.5),
+      '&:hover': { boxShadow: 'none' },
+    },
+    '& svg': { fontSize: 16 },
+  },
+  download: {
+    maxWidth: 130,
+    textAlign: 'right',
+  },
+  label: {
+    fontSize: 12,
+    lineHeight: 1.2,
+  },
+  accent: { borderRight: `8px solid ${theme.palette.primary.main}` },
+}));
+
+export const Share = ({ direction }) => {
+  const classes = useStyles();
+  const intl = useIntl();
+
+  const [open, setOpen] = useState(false);
+
+  const copy = useMemo(() => ({
+    name: 'copy',
+    icon: <LinkIcon />,
+    content: () => getBitlyURL().then((bitlyUrl) => {
+      // TODO: Remove and change to use useRef and useEffect when the browser clipboard API
+      // allows for asynchronous copies (https://github.com/zenorocha/clipboard.js/issues/639)
+      const ref = document.createElement('div');
+      const clipboard = new Clipboard(ref, { text: () => bitlyUrl });
+
+      ref.click();
+      setOpen(true);
+      clipboard.destroy();
+    }),
+  }), [setOpen]);
+
+  const email = useMemo(() => ({
+    name: 'email',
+    icon: <EmailIcon />,
+    content: () => {
+      getBitlyURL().then((bitlyUrl) => {
+        const subject = intl.formatMessage({ id: 'components.share.emailSubject' });
+        const message = intl.formatMessage({ id: 'components.share.emailMessage' });
+        const body = `${encodeURIComponent(bitlyUrl)}%0A%0A${encodeURIComponent(message)}`;
+        const emailUrl = `mailto:?subject=${encodeURIComponent(subject)}&body=${body}`;
+
+        window.location.href = emailUrl;
+      });
+    },
+  }), [intl]);
+
+  const buttons = useMemo(
+    () => [copy, linkedin, facebook, twitter, email],
+    [copy, email],
+  );
+
+  const onClose = useCallback(() => setOpen(false), [setOpen]);
+
+  return (
+    <>
+      <Grid container direction={direction}>
+        {buttons.map(button => (
+          <Button
+            key={`social-button-${button.name}`}
+            variant="contained"
+            color="secondary"
+            onClick={button.content}
+            className={classes.button}
+          >
+            {button.icon}
+          </Button>
+        ))}
+      </Grid>
+
+      <Snackbar
+        open={open}
+        autoHideDuration={2000}
+        onClose={onClose}
+      >
+        <Alert variant="filled" severity="info">
+          <Typography>{intl.formatMessage({ id: 'components.share.copied' })}</Typography>
+        </Alert>
+      </Snackbar>
+    </>
+  );
+};
+
+Share.propTypes = { direction: PropTypes.string }; // 'row' or 'column'
+Share.defaultProps = { direction: 'column' };
+
+export const DownloadButton = ({ accent }) => {
+  const classes = useStyles();
   const intl = useIntl();
   const {
     regions: { order: regionOrder },
@@ -77,7 +168,7 @@ const Share = () => {
   } = useAPI();
   const { config } = useConfig();
   const { rawData: data } = useEnergyFutureData();
-  const [open, setOpen] = useState(false);
+
   const headers = useMemo(() => ({
     selection: intl.formatMessage({ id: 'common.selection' }).toLowerCase(),
     region: intl.formatMessage({ id: 'common.region' }).toLowerCase(),
@@ -89,6 +180,7 @@ const Share = () => {
     unit: intl.formatMessage({ id: 'common.unit' }).toLowerCase(),
     dataset: intl.formatMessage({ id: 'common.dataset' }).toLowerCase(),
   }), [intl]);
+
   const downloadCSV = useCallback(() => {
     const defaultUnit = selectionUnits[config.mainSelection];
     const conversionRatio = convertUnit(defaultUnit, config.unit);
@@ -98,7 +190,9 @@ const Share = () => {
     const scenario = intl.formatMessage({ id: `common.scenarios.${config.scenarios[0]}` }).toUpperCase();
     const unit = intl.formatMessage({ id: `common.units.${config.unit}` });
     const dataset = intl.formatMessage({ id: `common.dataset.${config.yearId}`, defaultMessage: config.yearId }).toUpperCase();
-    const sourceType = selectionSourceTypes[config.mainSelection];
+    const sourceType = PAGES.find(
+      page => page.id === config.page,
+    ).sourceTypes?.[config.mainSelection];
     // The electricity visualization does not completely use the API to filter the data
     // TODO: Remove after implementing a uniform filter solution (all on server or all on client),
     // and when the electricity special cases in useEnergyFutureData are removed
@@ -174,61 +268,19 @@ const Share = () => {
 
     saveAs(new Blob([Papa.unparse(csvData)], { type: 'text/csv;charset=utf-8;' }), 'energyFutures.csv');
   }, [config, intl, regionOrder, sourceOrder, data, headers]);
-  const download = useMemo(() => ({
-    name: intl.formatMessage({ id: 'components.share.download' }),
-    content: downloadCSV,
-  }), [intl, downloadCSV]);
-  const copy = useMemo(() => ({
-    name: 'copy',
-    icon: <LinkIcon />,
-    content: () => getBitlyURL().then((bitlyUrl) => {
-      // TODO: Remove and change to use useRef and useEffect when the browser clipboard API
-      // allows for asynchronous copies (https://github.com/zenorocha/clipboard.js/issues/639)
-      const ref = document.createElement('div');
-      const clipboard = new Clipboard(ref, { text: () => bitlyUrl });
-
-      ref.click();
-      setOpen(true);
-      clipboard.destroy();
-    }),
-  }), [setOpen]);
-  const email = useMemo(() => ({
-    name: 'email',
-    icon: <EmailIcon />,
-    content: () => {
-      getBitlyURL().then((bitlyUrl) => {
-        const subject = intl.formatMessage({ id: 'components.share.emailSubject' });
-        const message = intl.formatMessage({ id: 'components.share.emailMessage' });
-        const body = `${encodeURIComponent(bitlyUrl)}%0A%0A${encodeURIComponent(message)}`;
-        const emailUrl = `mailto:?subject=${encodeURIComponent(subject)}&body=${body}`;
-
-        window.location.href = emailUrl;
-      });
-    },
-  }), [intl]);
-  const groups = useMemo(
-    () => [[download], [copy, linkedin, facebook, twitter, email]],
-    [download, copy, email],
-  );
-  const onClose = useCallback(() => setOpen(false), [setOpen]);
 
   return (
-    <>
-      <LinkButtonGroup
-        labels={groups}
-        accent="right"
-      />
-      <Snackbar
-        open={open}
-        autoHideDuration={2000}
-        onClose={onClose}
-      >
-        <Alert variant="filled" severity="info">
-          {intl.formatMessage({ id: 'components.share.copied' })}
-        </Alert>
-      </Snackbar>
-    </>
+    <Button
+      variant="contained"
+      color="secondary"
+      startIcon={<IconDownload />}
+      onClick={downloadCSV}
+      classes={{ root: `${classes.download} ${accent ? classes.accent : ''}`, label: classes.label }}
+    >
+      {intl.formatMessage({ id: 'components.share.download' })}
+    </Button>
   );
 };
 
-export default Share;
+DownloadButton.propTypes = { accent: PropTypes.bool };
+DownloadButton.defaultProps = { accent: false };

@@ -1,9 +1,15 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
+import { useIntl } from 'react-intl';
 import PropTypes from 'prop-types';
 import {
   makeStyles, createStyles, Grid, Button, Typography,
 } from '@material-ui/core';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+
+import useConfig from '../../hooks/useConfig';
+import {
+  LinkButtonContentReport, LinkButtonContentMethodology, LinkButtonContentAbout,
+} from './contents';
 
 const useStyles = makeStyles(theme => createStyles({
   title: {
@@ -16,37 +22,24 @@ const useStyles = makeStyles(theme => createStyles({
     width: '100%',
     lineHeight: 0,
   },
-  btn: props => ({
+  btn: {
     height: 26,
-    width: '100%',
+    width: 96,
     minWidth: 0,
     padding: theme.spacing(0.25, 1),
     fontSize: 12,
-    textTransform: 'capitalize',
-    justifyContent: props.accent || 'right',
-  }),
-  btnIcon: {
-    'button&': {
-      height: 22,
-      width: 24,
-      padding: theme.spacing(0, 0.5),
-      '&:hover': { boxShadow: 'none' },
-    },
-    '& svg': { fontSize: 16 },
+    textAlign: 'left',
+    textTransform: 'initial',
+    justifyContent: 'left',
   },
-  btnPopUp: props => ({
+  popUp: {
     position: 'absolute',
-    top: '50%',
-    left: props.accent === 'left' ? 'calc(100% - 10px)' : 'auto',
-    right: props.accent !== 'left' ? 'calc(100% - 10px)' : 'auto',
-    maxHeight: 350,
-    width: 300,
-    padding: theme.spacing(1.5, 2, 1.5, 1.5),
-    transform: `translate(${props.accent === 'left' ? 26 : -26}px, -50%)`,
     zIndex: theme.zIndex.modal,
     border: `1px solid ${theme.palette.secondary.light}`,
+    color: theme.palette.secondary.main,
     backgroundColor: '#F3EFEF',
     overflow: 'auto',
+    fontFamily: '"FiraSansCondensed", "Roboto", "Helvetica", "Arial", sans-serif',
     '& h4': { marginTop: 0 },
     '& p, & li': {
       fontSize: 12,
@@ -55,115 +48,119 @@ const useStyles = makeStyles(theme => createStyles({
     },
     '& li': { margin: theme.spacing(0.5, 0) },
     '& img': { width: '100%' },
-  }),
-  btnPopUpTip: props => ({
-    position: 'absolute',
+  },
+  popUpRight: {
     top: '50%',
-    left: props.accent === 'left' ? '100%' : 'auto',
-    right: props.accent !== 'left' ? '100%' : 'auto',
-    height: `calc(100% - ${theme.spacing(1)}px)`,
-    width: 17,
-    transform: 'translate(0px, -50%)',
+    left: 'calc(100% + 20px)',
+    transform: 'translateY(-50%)',
+    maxHeight: 350,
+    minWidth: 300,
+  },
+  popUpTop: {
+    bottom: 'calc(100% + 24px)',
+    left: -16,
+    maxHeight: 300,
+    minWidth: 350,
+  },
+  tip: {
+    position: 'absolute',
     border: `1px solid ${theme.palette.secondary.light}`,
-    borderLeft: props.accent === 'left' ? `1px solid ${theme.palette.secondary.light}` : 'none',
-    borderRight: props.accent !== 'left' ? `1px solid ${theme.palette.secondary.light}` : 'none',
     backgroundColor: '#F3EFEF',
     zIndex: theme.zIndex.modal + 1,
-  }),
-  btnIconPopUpTip: { height: '100% !important' },
-  accent: {
-    width: 8,
-    backgroundColor: theme.palette.primary.main,
-    '& + div': { width: `calc(100% - ${theme.spacing(1)}px)` },
   },
+  tipRight: {
+    top: 0,
+    bottom: 0,
+    left: 'calc(100% + 4px)',
+    width: 17,
+    borderRight: 'none',
+  },
+  tipTop: {
+    bottom: 'calc(100% + 4px)',
+    left: 0,
+    right: 0,
+    height: 22,
+    borderTop: 'none',
+  },
+  accent: { borderLeft: `8px solid ${theme.palette.primary.main}` },
 }));
 
-const LinkButtonGroup = ({ title, labels, accent, className }) => {
-  const classes = useStyles({ accent });
+const LinkButtonGroup = ({ direction }) => {
+  const classes = useStyles();
+  const intl = useIntl();
 
+  const { config } = useConfig();
   const [select, setSelect] = useState(undefined);
 
   const handleSelect = useCallback(
-    label => () => select !== label.name && typeof label.content === 'object' && setSelect(label.name),
+    label => () => select !== label.name && setSelect(label.name),
     [select, setSelect],
   );
+  const close = useCallback(() => setSelect(undefined), [setSelect]);
+
+  const link = useMemo(() => ({
+    report: {
+      name: intl.formatMessage({ id: 'links.Report.title' }),
+      content: <LinkButtonContentReport yearId={config.yearId} onClose={close} />,
+    },
+    methodology: {
+      name: intl.formatMessage({ id: 'links.Methodology.title' }),
+      content: <LinkButtonContentMethodology onClose={close} />,
+    },
+    about: {
+      name: intl.formatMessage({ id: 'links.About.title' }),
+      content: <LinkButtonContentAbout onClose={close} />,
+    },
+  }), [intl, close, config.yearId]);
 
   /**
    * This is a button group in which buttons share the same accent color bar.
    */
-  const generateLebelGroup = labelGroup => (
-    <Grid container>
-      {accent === 'left' && <Grid item className={classes.accent} />}
-      <Grid item>
-        <Grid
-          container
-          direction="column"
-          alignItems={accent === 'left' ? 'flex-start' : 'flex-end'}
-          spacing={labelGroup[0].icon ? 0 : 1}
-        >
-          {labelGroup.map(label => (
-            <Grid item key={`link-button-${label.name}`} className={classes.btnContainer}>
-              <Button
-                variant="contained"
-                color={select === label.name ? 'primary' : 'secondary'}
-                aria-label={label.name}
-                onClick={typeof label.content === 'function' ? label.content : handleSelect(label)}
-                onMouseEnter={handleSelect(label)}
-                className={`${classes.btn} ${label.icon && classes.btnIcon}`}
-              >
-                {label.icon || label.name}
-              </Button>
+  const generateButton = label => (
+    <Grid item key={`link-button-${label.name}`} className={classes.btnContainer}>
+      <Button
+        variant="contained"
+        color={select === label.name ? 'primary' : 'secondary'}
+        aria-label={label.name}
+        onClick={handleSelect(label)}
+        className={classes.btn}
+      >
+        {label.name}
+      </Button>
 
-              <span style={{ display: select === label.name ? 'block' : 'none' }}>
-                <div className={classes.btnPopUp}>
-                  {typeof label.content === 'object' && label.content}
-                </div>
-                <div className={`${classes.btnPopUpTip} ${label.icon && classes.btnIconPopUpTip}`} />
-              </span>
-            </Grid>
-          ))}
-        </Grid>
-      </Grid>
-      {accent !== 'left' && <Grid item className={classes.accent} />}
+      <span style={{ display: select === label.name ? 'block' : 'none' }}>
+        <div className={`${classes.popUp} ${direction === 'row' ? classes.popUpTop : classes.popUpRight}`}>
+          {label.content}
+        </div>
+        <div className={`${classes.tip} ${direction === 'row' ? classes.tipTop : classes.tipRight}`} />
+      </span>
     </Grid>
   );
 
   return (
-    <ClickAwayListener onClickAway={() => setSelect(undefined)}>
+    <ClickAwayListener onClickAway={close}>
       <Grid
         container
-        direction="column"
-        alignItems={accent === 'left' ? 'flex-start' : 'flex-end'}
-        spacing={1}
-        className={className}
+        direction={direction}
+        alignItems="flex-start"
+        spacing={direction === 'row' ? 1 : 0}
       >
-        {title && (
-          <Grid item xs={12}>
-            <Typography variant="body1" color="primary" className={classes.title}>{title}</Typography>
+        {direction === 'column' && (
+          <Grid item xs={12} style={{ marginBottom: 8 }}>
+            <Typography variant="body1" color="primary" className={classes.title}>{intl.formatMessage({ id: 'links.title' })}</Typography>
           </Grid>
         )}
-        {labels.map(labelGroup => <Grid item key={`link-button-group-${Math.random()}`}>{generateLebelGroup(labelGroup)}</Grid>)}
+        <Grid item className={direction === 'row' ? '' : classes.accent}>{generateButton(link.report)}</Grid>
+        {direction === 'column' && <Grid item style={{ height: 8 }} />}
+        <Grid item className={direction === 'row' ? '' : classes.accent}>{generateButton(link.methodology)}</Grid>
+        {direction === 'column' && <Grid item className={direction === 'row' ? '' : classes.accent} style={{ height: 8 }} />}
+        <Grid item className={direction === 'row' ? '' : classes.accent}>{generateButton(link.about)}</Grid>
       </Grid>
     </ClickAwayListener>
   );
 };
 
-LinkButtonGroup.propTypes = {
-  title: PropTypes.string,
-  labels: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.shape({
-    icon: PropTypes.element,
-    name: PropTypes.string.isRequired,
-    content: PropTypes.oneOfType([PropTypes.element, PropTypes.func]),
-  }))),
-  accent: PropTypes.string, // 'left', 'right'
-  className: PropTypes.string, // root class names
-};
-
-LinkButtonGroup.defaultProps = {
-  title: undefined,
-  labels: [],
-  accent: 'left',
-  className: undefined,
-};
+LinkButtonGroup.propTypes = { direction: PropTypes.string }; // 'row' or 'column'
+LinkButtonGroup.defaultProps = { direction: 'column' };
 
 export default LinkButtonGroup;

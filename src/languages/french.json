@@ -16,7 +16,7 @@
     "units": {
       "petajoules": "PJ",
       "gigawattHours": "GWh",
-      "kilobarrelEquivalents": "kbep/j",
+      "kilobarrelEquivalents": "kbep",
       "thousandCubicMetres": "10³m³/j",
       "millionCubicMetres": "Mm³/j",
       "kilobarrels": "kb/j",
@@ -37,11 +37,44 @@
         "byRegion": "QUANTITÉ PAR RÉGION",
         "total": "QUANTITÉ TOTALE"
       }
+    },
+    "oilandgas": {
+      "button": {
+        "compare": "Compare",
+        "noCompare": "Don't Compare"
+      },
+      "legend": {
+        "single": {
+          "source": "Region: Amount of source produced in region",
+          "region": "Source: Amount of source produced in region (% of total in CAN)"
+        },
+        "group": {
+          "source": "Source: Total amount of source produced in Canada",
+          "region": "Region: Total amount produced in region"
+        }
+      }
     }
   },
   "components": {
     "draggableVerticalList": {
-      "all": "Tous"
+      "all": "Tous",
+      "abbr": {
+        "AVIATION": "C",
+        "GASOLINE": "E",
+        "DIESEL": "D",
+        "OIL": "A",
+        "LIGHT": "CL",
+        "ISB": "iSB",
+        "HEAVY": "CH",
+        "CONDENSATE": "FC",
+        "C5": "C5+",
+        "MB": "MB",
+        "CBM": "CB",
+        "NA": "NA",
+        "SHALE": "Sh",
+        "SOLUTION": "SOL",
+        "TIGHT": "Ti"
+      }
     },
     "errorBoundary": {
       "errorMessage": "Une erreur s’est produite.",
@@ -60,32 +93,32 @@
       "2020": {
         "title": "AVENIR ÉNERGÉTIQUE DU CANADA EN 2020",
         "description": "**Novembre 2020**\nLe thème central du rapport Avenir énergétique 2020 est la transition vers une économie à faibles émissions de carbone et l’incidence possible de celleci sur l’avenir énergétique du Canada. Il s’agit du premier rapport sur l’avenir énergétique qui renferme des projections jusqu’en 2050; il comporte un tout nouveau scénario : le scénario de la filière énergétique en évolution. Ce nouveau scénario est au cœur du rapport, bien que le scénario de référence traditionnel ait été inclus aux fins de comparaison. Le rapport analyse en profondeur les enjeux actuels auxquels fait face la filière énergétique du Canada dans le contexte de la reprise après la pandémie de la COVID-19 et de la transition vers un écosystème énergétique carboneutre.",
-        "link": "[Voir le rapport](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2020/index.html)"
+        "link": "[Voir le rapport](https://www.cer-rec.gc.ca/fr/donnees-analyse/avenir-energetique-canada/2020/index.html)"
       },
       "2019": {
         "title": "AVENIR ÉNERGÉTIQUE DU CANADA EN 2019",
         "description": "**Décembre 2019**\nL’Avenir énergétique 2019 examine divers scénarios susceptibles de s’offrir aux Canadiens à long terme. Le rapport de 2019 actualise le scénario de référence. Il s’appuie sur les perspectives économiques actuelles, sur une vision modérée des prix de l’énergie et des améliorations technologiques ainsi que sur les politiques énergétiques ou climatiques qui ont déjà été annoncées au moment de l’analyse et qui sont suffisamment détaillées pour les besoins de la modélisation. L’Avenir énergétique 2019 mise sur des modèles économiques et énergétiques pour faire des projections fondées sur un ensemble d’hypothèses quant aux technologies, aux politiques sur l’énergie et les changements climatiques, aux comportements humains et à l’économie.",
-        "link": "[Voir le rapport](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2019/index.html)"
+        "link": "[Voir le rapport](https://www.cer-rec.gc.ca/fr/donnees-analyse/avenir-energetique-canada/2019/index.html)"
       },
       "2018": {
         "title": "AVENIR ÉNERGÉTIQUE DU CANADA EN 2018",
         "description": "**Octobre 2018**\nLe rapport de 2018 examine comment divers scénarios possibles d’avenir énergétique pourraient se dérouler à long terme pour les Canadiens. Il porte sur quatre scénarios montrant comment les politiques climatiques futures et le développement technologique pourraient influer sur la filière énergétique du Canada. Le scénario de référence s’appuie sur les perspectives économiques actuelles, une vision modérée des prix de l’énergie et les politiques énergétiques ou climatiques déjà annoncées au moment de l’analyse. Les scénarios de prix élevés et de prix bas tiennent compte, eux, des incertitudes liées aux prix futurs du pétrole brut et de gaz naturel. Le scénario des avancées technologiques va au-delà des limites en la matière ou des politiques définies dans celui de référence et tient compte de mesures plus généralisées sur la scène mondiale, qui touchent le climat et qui se répercutent sur le marché. Il présente l’avenir énergétique sur lequel le Canada pourrait s’ouvrir en présence d’une transition plus rapide découlant de politiques à long terme sur le carbone qui seraient plus robustes, d’une dissémination plus rapide de technologies comme les véhicules électriques et de coûts moindres associés aux énergies renouvelables.",
-        "link": "[Voir le rapport](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2018/index.html)"
+        "link": "[Voir le rapport](https://www.cer-rec.gc.ca/fr/donnees-analyse/avenir-energetique-canada/2018/index.html)"
       },
       "2017": {
         "title": "AVENIR ÉNERGÉTIQUE DU CANADA EN 2017",
         "description": "**Octobre 2017**\nAE 2017 examine comment divers scénarios possibles d’avenir énergétique pourraient se dérouler à long terme pour les Canadiens. Le rapport porte sur trois scénarios montrant comment les politiques climatiques futures et le développement technologique pourraient influer sur la filière énergétique du Canada. Le scénario de référence s’appuie sur les perspectives économiques actuelles, une vision modérée des prix de l’énergie et les politiques énergétiques ou climatiques déjà annoncées au moment de l’analyse. Le scénario de tarification du carbone élevée rend compte des répercussions à long terme sur la filière énergétique canadienne de prix plus élevés pour le carbone que dans le scénario de référence. Le scénario des avancées technologiques tient non seulement compte d’une tarification du carbone élevée sur la filière énergétique canadienne mais également des incidences qu’aurait l’adoption plus massive de certaines technologies émergentes liées à la production ou à la consommation d’énergie.",
-        "link": "[Voir le rapport](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2017/index.html)"
+        "link": "[Voir le rapport](https://www.cer-rec.gc.ca/fr/donnees-analyse/avenir-energetique-canada/2017/index.html)"
       },
       "2016*": {
         "title": "AVENIR ÉNERGÉTIQUE DU CANADA EN 2016 – MISE À JOUR",
         "description": "**Octobre 2016**\nPrésente des scénarios de prix, bas et élevés, ainsi qu’un scénario de référence. Dans ce dernier cas, l’hypothèse de prix du pétrole brut a été revue à la baisse, à 90 $ US le baril en 2040. En plus des politiques déjà incluses précédemment, notamment le système de plafonnement et d’échange de droits d’émission au Québec et la taxe sur le carbone en Colombie-Britannique, les nouvelles prévisions tiennent compte, dans sa plus grande partie, du plan de leadership de l’Alberta en matière de changement climatique de même que du programme de plafonnement et d’échange de droits de l’Ontario.",
-        "link": "[Voir le rapport](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2016-update/index.html)"
+        "link": "[Voir le rapport](https://www.cer-rec.gc.ca/fr/donnees-analyse/avenir-energetique-canada/2016-mise-jour/index.html)"
       },
       "2016": {
         "title": "AVENIR ÉNERGÉTIQUE DU CANADA EN 2016",
         "description": "**Janvier 2016**\nLa suite de la série sur l’avenir énergétique. En plus des perspectives à long terme habituelles, nous explorons certaines incertitudes de fond dans le secteur de l’énergie au Canada, qu’il s’agisse par exemple de celles découlant du degré de robustesse des marchés mondiaux du GNL ou de la disponibilité d’une infrastructure pour l’acheminement de pétrole brut.",
-        "link": "[Voir le rapport](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2016/index.html)"
+        "link": "[Voir le rapport](https://www.cer-rec.gc.ca/fr/donnees-analyse/avenir-energetique-canada/2016/index.html)"
       }
     },
     "pageSelect": {
@@ -310,7 +343,6 @@
   },
   "regions": {
   },
-
   "sources": {
     "electricity": {
       "BIO": "Comprennent les combustibles solides de biomasse, comme les granulés de bois, ainsi que les sources géothermiques.",
@@ -354,6 +386,7 @@
     }
   },
   "links": {
+    "title": "Contexte",
     "Assumptions": {
       "title": "Hypothèses",
       "description": {
@@ -422,12 +455,58 @@
       "description": "Consultez notre [document sur la méthodologie](https://www.cer-rec.gc.ca/avenir-energetique/PDF/Regie-avenir-energetique-methodologie-fr.pdf) pour en savoir plus sur le système de modélisation de l’avenir énergétique, les définitions et les indicateurs, les sources de données et plus encore."
     },
     "Report": {
-      "title": "Rapport",
+      "title": "2020 Rapports"
+    },
+    "Summary": {
+      "title": "Summary",
       "description": "Les rapports sur l’avenir énergétique proposent un large éventail de projections concernant l’offre et la demande d’énergie au Canada. Ces projections ont été réalisées à partir d’un système de modélisation qui fait interagir plusieurs composantes (ou modules) en vue d’arriver à des projections globales sur les tendances énergétiques futures du Canada.",
-      "link": "[Voir le rapport AE 2020](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2020/index.html)"
+      "link": "[Voir le rapport AE 2020](https://www.cer-rec.gc.ca/fr/donnees-analyse/avenir-energetique-canada/2020/index.html)"
     },
     "About": {
       "title": "À propos"
+    }
+  },
+  "landing": {
+    "title": "Explorer l’avenir énergétique du Canada",
+    "description": "Mettant à profit les données associées à nos rapports sur l’avenir énergétique, cet outil interactif vous permet d’explorer l’évolution de la production et de la consommation d’énergie, même de faire des prévisions. Vous avez le loisir de vous en tenir au rapport le plus récent ou d’aller voir ce que disaient de précédents rapports.",
+    "By Region": {
+      "title": "Explorer par région",
+      "description": "Comparez les données passées et faites des projections de l’offre et de la demande d’énergie pour les provinces et les territoires au Canada"
+    },
+    "By Sector": {
+      "title": "Explorer par secteur",
+      "description": "Examinez l’évolution récente des sources énergétiques de différents secteurs et ce que projettent les scénarios du rapport sur l’avenir énergétique à cet égard"
+    },
+    "Electricity": {
+      "title": "Explorer l’électricité",
+      "description": "Comparez la quantité relative d’électricité produite à partir de diverses sources dans les provinces et les territoires au cours d’une année donnée"
+    },
+    "Scenarios": {
+      "title": "Explorer les scénarios",
+      "description": "Comparez directement les scénarios"
+    },
+    "Oil-and-Gas": {
+      "title": "Explorer le pétrole et le gaz",
+      "description": "Explorer la production de pétrole et de gaz dans les provinces et les territoires pendant une année donnée"
+    },
+    "links": {
+      "title": "Explorer le rapport sur l’avenir énergétique du Canada",
+      "methodology": {
+        "title": "Hypothèses",
+        "link": "https://www.cer-rec.gc.ca/avenir-energetique/PDF/Regie-avenir-energetique-methodologie-fr.pdf"
+      },
+      "resources": {
+        "title": "Ressources pour les édutiants",
+        "link": "https://www.cer-rec.gc.ca/fr/donnees-analyse/ressources-etudiants/index.html"
+      },
+      "download": {
+        "title": "Téléchargez le rapport 2020",
+        "link": "https://www.cer-rec.gc.ca/fr/donnees-analyse/avenir-energetique-canada/2020/index.html"
+      },
+      "view": {
+        "title": "Voir les anciens rapports",
+        "link": "https://www.cer-rec.gc.ca/fr/donnees-analyse/avenir-energetique-canada"
+      }
     }
   }
 }

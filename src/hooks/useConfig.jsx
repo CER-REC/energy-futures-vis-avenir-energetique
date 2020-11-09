@@ -1,59 +1,54 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useMemo, useReducer } from 'react';
 import PropTypes from 'prop-types';
 import { createBrowserHistory } from 'history';
 import queryString from 'query-string';
 
-import { DEFAULT_CONFIG } from '../constants';
+import { initialState, getReducer } from './reducer';
 import useAPI from './useAPI';
 
-const parameters = ['page', 'mainSelection', 'yearId', 'sector', 'unit', 'view'];
+const parameters = ['page', 'mainSelection', 'yearId', 'sector', 'unit', 'view', 'baseYear', 'compareYear'];
 const delimitedParameters = ['scenarios', 'provinces', 'provinceOrder', 'sources', 'sourceOrder'];
 const history = createBrowserHistory();
 const ConfigContext = createContext();
 
 export const ConfigProvider = ({ children }) => {
-  // TODO: Cleanup app state structure (remove order parameters) and consider moving to useReducer
-  const [config, setConfig] = useState(DEFAULT_CONFIG);
-  const { yearIdIterations, regions } = useAPI();
+  const { regions, sources, sectors, yearIdIterations } = useAPI();
+  const reducer = useMemo(
+    () => getReducer(regions, sources, sectors, yearIdIterations),
+    [regions, sources, sectors, yearIdIterations],
+  );
+  const [config, configDispatch] = useReducer(reducer, initialState);
 
   /**
    * URL parachuting.
    */
-  // TODO: Address potential issues of list values with commas inside the value
   useEffect(() => {
     const query = queryString.parse(history.location.search);
-    const yearIds = Object.keys(yearIdIterations).sort();
-    const yearId = yearIds.indexOf(query.yearId) === -1 ? yearIds.reverse()[0] : query.yearId;
-    const scenarios = yearIdIterations[yearId]?.scenarios || [];
 
-    let queryScenarios = query.scenarios?.split(',').filter(scenario => scenarios.indexOf(scenario) !== -1);
-
-    // select the default scenario
-    if (!queryScenarios?.length) {
-      queryScenarios = scenarios.includes('Evolving') ? ['Evolving'] : [scenarios[0]];
-    }
-
-    setConfig({
-      ...DEFAULT_CONFIG,
-      ...query,
-      provinces: query.provinces ? query.provinces.split(',') : regions.order,
-      provinceOrder: query.provinceOrder ? query.provinceOrder.split(',') : regions.order,
-      sources: query.sources ? query.sources.split(',') : [],
-      sourceOrder: query.sourceOrder ? query.sourceOrder.split(',') : [],
-      yearId,
-      scenarios: queryScenarios,
-    });
-  }, [yearIdIterations, regions.order]);
+    configDispatch({ type: 'page/changed', payload: query.page });
+    configDispatch({ type: 'mainSelection/changed', payload: query.mainSelection });
+    configDispatch({ type: 'yearId/changed', payload: query.yearId });
+    configDispatch({ type: 'unit/changed', payload: query.unit });
+    configDispatch({ type: 'view/changed', payload: query.view });
+    configDispatch({ type: 'sector/changed', payload: query.sector });
+    configDispatch({ type: 'scenarios/changed', payload: query.scenarios?.split(',') });
+    configDispatch({ type: 'provinces/changed', payload: query.provinces?.split(',') });
+    configDispatch({ type: 'provinceOrder/changed', payload: query.provinceOrder?.split(',') });
+    configDispatch({ type: 'sources/changed', payload: query.sources?.split(',') });
+    configDispatch({ type: 'sourceOrder/changed', payload: query.sourceOrder?.split(',') });
+    configDispatch({ type: 'baseYear/changed', payload: query.baseYear });
+    configDispatch({ type: 'compareYear/changed', payload: query.compareYear });
+  }, [configDispatch]);
 
   /**
    * Update the URL if the control setting is modified.
    */
   useEffect(() => {
     const queryParameters = parameters.map(
-      parameter => `${parameter}=${config[parameter]}`,
+      parameter => `${parameter}=${config[parameter] || ''}`,
     );
     const delimitedQueryParameters = delimitedParameters.map(
-      parameter => `${parameter}=${config[parameter].join(',')}`,
+      parameter => `${parameter}=${config[parameter]?.join(',') || ''}`,
     );
 
     history.replace({
@@ -63,7 +58,7 @@ export const ConfigProvider = ({ children }) => {
   }, [config]);
 
   return (
-    <ConfigContext.Provider value={{ config, setConfig }}>
+    <ConfigContext.Provider value={{ config, configDispatch }}>
       {children}
     </ConfigContext.Provider>
   );

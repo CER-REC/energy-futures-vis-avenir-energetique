@@ -324,3 +324,52 @@ export const IconPageOilAndGas = props => (
     />
   </SvgIcon>
 );
+
+export const IconOilAndGasGroup = props => (
+  <SvgIcon {...props} width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M14 1H1V25H14V1Z" fill="#C4C4C4" stroke="white" />
+    <path d="M21 12H14V25H21V12Z" fill="#5E5E5E" stroke="white" />
+    <path d="M25 19H21V25H25V19Z" fill="black" fillOpacity="0.74" stroke="white" />
+    <path d="M25 12H21V19H25V12Z" fill="#8A8A8A" stroke="white" />
+    <path d="M25 1H14V12H25V1Z" fill="#858585" stroke="white" />
+  </SvgIcon>
+
+);
+export const IconOilAndGasRectangle = props => (
+  <SvgIcon {...props} width="10" height="16" viewBox="0 0 10 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0 0.84848H10V15.0909H0V0.84848Z" fill="#83868E" />
+  </SvgIcon>
+);
+
+/**
+ * Others
+ */
+export const IconDownload = props => (
+  <SvgIcon {...props} viewBox="0 0 100 100">
+    <g>
+      <path d="M48.4,68.7c0.8,0.2,1.9,0.4,3,0c0.6-0.3,0.7-0.4,1.1-0.8l16-16c1.5-1.5,1.5-3.8,0-5.3c-1.5-1.5-3.8-1.5-5.3,0
+      l-9.5,9.5V14.7c0-2.3-1.5-3.8-3.8-3.8c-2.3,0-3.8,1.5-3.8,3.8v41.4l-9.5-9.5c-1.5-1.5-3.8-1.5-5.3,0c-1.5,1.5-1.5,3.8,0,5.3l16,16
+      C47.7,68.3,47.8,68.5,48.4,68.7z"
+      />
+      <path d="M78.4,48.9c-2.3,0-3.8,1.5-3.8,3.8v22.8c0,2.3-1.5,3.8-3.8,3.8H29c-2.3,0-3.8-1.5-3.8-3.8V52.7
+      c0-2.3-1.5-3.8-3.8-3.8s-3.8,1.5-3.8,3.8v22.8c0,6.5,4.9,11.4,11.4,11.4h41.8c6.5,0,11.4-4.9,11.4-11.4V52.7
+      C82.2,50.8,80.3,48.9,78.4,48.9z"
+      />
+    </g>
+  </SvgIcon>
+);
+
+export const IconExternal = props => (
+  <SvgIcon {...props} viewBox="0 0 100 100">
+    <g>
+      <path d="M72.8,50c-2.3,0-3.8,1.5-3.8,3.8v22.8c0,2.3-1.5,3.8-3.8,3.8H23.4c-2.3,0-3.8-1.5-3.8-3.8V34.8
+      c0-2.3,1.5-3.8,3.8-3.8h22.8c2.3,0,3.8-1.5,3.8-3.8s-1.5-3.8-3.8-3.8H23.4c-6.5,0-11.4,4.9-11.4,11.4v41.8C12,83.1,16.9,88,23.4,88
+      h41.8c6.5,0,11.4-4.9,11.4-11.4V53.8C76.6,51.9,75.1,50,72.8,50z"
+      />
+      <path d="M88,14.3c-0.2-0.7-0.8-1.4-1.6-1.9c-0.5-0.3-1.5-0.4-1.8-0.4H61.8c-2.3,0-3.8,1.5-3.8,3.8s1.5,3.8,3.8,3.8
+      h13.7L40.1,54.9c-1.5,1.5-1.5,3.8,0,5.3s3.8,1.5,5.3,0l35.3-35.3v13.7c0,2.3,1.5,3.8,3.8,3.8s3.8-1.5,3.8-3.8V15.8
+      C88.3,15,88.1,14.7,88,14.3z"
+      />
+    </g>
+  </SvgIcon>
+);

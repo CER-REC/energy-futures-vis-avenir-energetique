@@ -55,34 +55,32 @@ const getDefaultUnit = (config) => {
 };
 
 export default () => {
-  const {
-    yearIdIterations,
-    regions: { order: regionOrder },
-    sources: { electricity: { order: sourceOrder } },
-  } = useAPI();
   const { config } = useConfig();
   const query = getQuery(config);
   const unitConversion = convertUnit(getDefaultUnit(config), config.unit);
+  const sourceType = useMemo(
+    () => PAGES.find(page => page.id === config.page).sourceTypes?.[config.mainSelection],
+    [config.page, config.mainSelection],
+  );
+  const {
+    yearIdIterations,
+    regions: { order: regionOrder },
+    sources: { [sourceType]: source },
+  } = useAPI();
 
   /**
-   * FIXME: these are temporary special cases for the Electricity page.
+   * FIXME: these are temporary special cases for the Electricity and Oil and Gas pages.
    */
   const regions = useMemo(() => {
-    if (config.page === 'electricity' && config.provinces[0] === 'ALL') {
-      return regionOrder;
-    } if (config.page === 'oil-and-gas' && config.provinces[0] === 'ALL') {
-      // FIXME: THIS IS A TEMPORARY THING
+    if ((config.view === 'region') && (config.provinces[0] === 'ALL')) {
       return regionOrder;
     }
     return config.provinces;
-  }, [config.page, config.provinces, regionOrder]);
+  }, [config.view, config.provinces, regionOrder]);
 
   const sources = useMemo(() => {
-    if (config.page === 'electricity' && config.sources[0] === 'ALL') {
-      return sourceOrder;
-    } if (config.page === 'oil-and-gas' && config.mainSelection === 'gasProduction') {
-      // FIXME: THIS IS A TEMPORARY THING
-      return ['TIGHT', 'CBM', 'NA', 'SHALE', 'SOLUTION'];
+    if ((config.view === 'source') && (config.sources[0] === 'ALL')) {
+      return source.order;
     }
 
     // adds extra oil sources if sector 'transportation' is selected in the by-sector page.
@@ -91,9 +89,7 @@ export default () => {
     }
 
     return config.sources;
-  }, [config.page, config.sources, sourceOrder, config.mainSelection, config.sector]);
-
-  const { sourceType } = PAGES.find(page => page.id === config.page);
+  }, [config.page, config.view, config.sources, source, config.sector]);
 
   // A GraphQL document node is needed even if skipping is specified
   const { loading, error, data } = useQuery(query || queries.NULL_QUERY, {

@@ -95,7 +95,7 @@ export const parseData = {
     // I am not super happy with the way this logic mutates the baseStructure
     data.reduce((acc, val) => {
       // filter out the ALLs
-      if (val.source !== 'ALL') {
+      if (val.source !== 'ALL' && val.value > 0) {
         const entry = acc[val.year].find(e => e.name === val[outer]);
         entry.children.push({
           name: val[inner],

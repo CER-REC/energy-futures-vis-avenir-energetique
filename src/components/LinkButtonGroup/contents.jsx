@@ -1,11 +1,12 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useIntl } from 'react-intl';
 import PropTypes from 'prop-types';
-import { Grid, Typography } from '@material-ui/core';
+import { makeStyles, Grid, Typography, Button } from '@material-ui/core';
+import CloseIcon from '@material-ui/icons/Close';
 import Markdown from 'react-markdown';
 import ReportLinkImage from './report-link.png';
 
-export const LinkButtonContentAssumptions = ({ yearId }) => {
+const LinkButtonContentAssumptions = ({ yearId }) => {
   const intl = useIntl();
   const text = useMemo(() => intl.formatMessage({
     id: `links.Assumptions.description.${yearId}`,
@@ -24,7 +25,7 @@ export const LinkButtonContentAssumptions = ({ yearId }) => {
 };
 LinkButtonContentAssumptions.propTypes = { yearId: PropTypes.string.isRequired };
 
-export const LinkButtonContentKeyFindings = ({ yearId }) => {
+const LinkButtonContentKeyFindings = ({ yearId }) => {
   const intl = useIntl();
   const text = useMemo(() => intl.formatMessage({
     id: `links.Findings.description.${yearId}`,
@@ -43,7 +44,7 @@ export const LinkButtonContentKeyFindings = ({ yearId }) => {
 };
 LinkButtonContentKeyFindings.propTypes = { yearId: PropTypes.string.isRequired };
 
-export const LinkButtonContentResults = ({ yearId }) => {
+const LinkButtonContentResults = ({ yearId }) => {
   const intl = useIntl();
   const text = useMemo(() => intl.formatMessage({
     id: `links.Results.description.${yearId}`,
@@ -62,10 +63,10 @@ export const LinkButtonContentResults = ({ yearId }) => {
 };
 LinkButtonContentResults.propTypes = { yearId: PropTypes.string.isRequired };
 
-export const LinkButtonContentReport = () => {
+const LinkButtonContentSummary = () => {
   const intl = useIntl();
-  const text = useMemo(() => intl.formatMessage({ id: 'links.Report.description' }), [intl]);
-  const link = useMemo(() => intl.formatMessage({ id: 'links.Report.link' }), [intl]);
+  const text = useMemo(() => intl.formatMessage({ id: 'links.Summary.description' }), [intl]);
+  const link = useMemo(() => intl.formatMessage({ id: 'links.Summary.link' }), [intl]);
   return (
     <>
       <Typography variant="body2" color="secondary" gutterBottom>{text}</Typography>
@@ -77,14 +78,104 @@ export const LinkButtonContentReport = () => {
   );
 };
 
-export const LinkButtonContentMethodology = () => {
+const useStyles = makeStyles(theme => ({
+  content: {
+    padding: theme.spacing(1, 1.5, 2, 1.5),
+  },
+  header: {
+    position: 'sticky',
+    top: 0,
+    minHeight: 28,
+    width: '100%',
+    backgroundColor: '#F3EFEF',
+    textAlign: 'right',
+  },
+  tab: {
+    height: 'auto',
+    whiteSpace: 'nowrap',
+    borderRight: `1px solid ${theme.palette.secondary.light}`,
+    borderBottom: `1px solid ${theme.palette.secondary.light}`,
+    textTransform: 'none',
+    color: theme.palette.secondary.main,
+    'button[disabled]&': { color: theme.palette.secondary.main },
+  },
+  selected: {
+    borderBottom: 'none',
+    cursor: 'default',
+  },
+  close: {
+    height: 'auto',
+    minWidth: 36,
+    borderRight: 'none',
+  },
+}));
+
+export const LinkButtonContentMethodology = ({ onClose }) => {
+  const classes = useStyles();
   const intl = useIntl();
   const text = useMemo(() => intl.formatMessage({ id: 'links.Methodology.description' }), [intl]);
-  return <Typography variant="body2" color="secondary" component="span"><Markdown>{text}</Markdown></Typography>;
+  return (
+    <Grid container direction="column" wrap="nowrap">
+      <Grid item className={classes.header}>
+        <Button onClick={onClose} className={classes.close}><CloseIcon /></Button>
+      </Grid>
+      <Grid item className={classes.content}><Markdown>{text}</Markdown></Grid>
+    </Grid>
+  );
 };
+LinkButtonContentMethodology.propTypes = { onClose: PropTypes.func.isRequired };
 
-export const LinkButtonContentAbout = () => {
+export const LinkButtonContentAbout = ({ onClose }) => {
+  const classes = useStyles();
   const intl = useIntl();
   const text = useMemo(() => intl.formatMessage({ id: 'about' }), [intl]);
-  return <Typography variant="body2" color="secondary" component="span"><Markdown>{text}</Markdown></Typography>;
+  return (
+    <Grid container direction="column" wrap="nowrap">
+      <Grid item className={classes.header}>
+        <Button onClick={onClose} className={classes.close}><CloseIcon /></Button>
+      </Grid>
+      <Grid item className={classes.content}><Markdown>{text}</Markdown></Grid>
+    </Grid>
+  );
+};
+LinkButtonContentAbout.propTypes = { onClose: PropTypes.func.isRequired };
+
+export const LinkButtonContentReport = ({ yearId, onClose }) => {
+  const classes = useStyles();
+  const intl = useIntl();
+
+  const tabs = useMemo(() => [
+    { title: intl.formatMessage({ id: 'links.Summary.title' }), content: <LinkButtonContentSummary /> },
+    { title: intl.formatMessage({ id: 'links.Findings.title' }), content: <LinkButtonContentKeyFindings yearId={yearId} /> },
+    { title: intl.formatMessage({ id: 'links.Assumptions.title' }), content: <LinkButtonContentAssumptions yearId={yearId} /> },
+    { title: intl.formatMessage({ id: 'links.Results.title' }), content: <LinkButtonContentResults yearId={yearId} /> },
+  ], [intl, yearId]);
+  const [select, setSelect] = useState(tabs[0]);
+
+  return (
+    <>
+      <Grid container alignItems="center" wrap="nowrap" className={classes.header}>
+        {tabs.map(tab => (
+          <Grid item key={`report-button-tab-${tab.title}`}>
+            <Button
+              disabled={tab.title === select?.title}
+              onClick={() => setSelect(tab)}
+              className={`${classes.tab} ${tab.title === select?.title ? classes.selected : ''}`.trim()}
+            >
+              {tab.title}
+            </Button>
+          </Grid>
+        ))}
+        <Grid item>
+          <Button onClick={onClose} className={`${classes.tab} ${classes.close}`}><CloseIcon /></Button>
+        </Grid>
+      </Grid>
+      <Grid item className={classes.content}>{(select || {}).content}</Grid>
+    </>
+  );
+};
+
+LinkButtonContentReport.propTypes = {
+  yearId: PropTypes.string.isRequired,
+  onClose: PropTypes.func.isRequired,
 };

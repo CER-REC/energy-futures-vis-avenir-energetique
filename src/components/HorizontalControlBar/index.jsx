@@ -1,5 +1,5 @@
 // #region imports
-import React, { useMemo, useEffect } from 'react';
+import React, { useMemo } from 'react';
 import { useIntl } from 'react-intl';
 import {
   makeStyles, createStyles,
@@ -14,22 +14,19 @@ import { HintMainSelect, HintViewSelect, HintSectorSelect, HintUnitSelect } from
 
 const useStyles = makeStyles(theme => createStyles({
   root: {
-    height: 40,
     padding: theme.spacing(0.5, 2),
-    backgroundColor: '#F3EFEF',
     '& p': { fontWeight: 700 },
   },
   btnSector: {
     height: 30,
-    minWidth: 'min-content',
-    maxWidth: 60,
+    minWidth: 45,
+    maxWidth: 80,
     '& > span': { lineHeight: 1 },
   },
   tooltip: {
     backgroundColor: theme.palette.common.white,
     color: theme.palette.secondary.main,
     maxWidth: 220,
-    fontSize: theme.typography.pxToRem(12),
     border: `1px solid ${theme.palette.secondary.main}`,
     borderRadius: 0,
   },
@@ -40,23 +37,8 @@ const HorizontalControlBar = () => {
   const intl = useIntl();
 
   const { sectors } = useAPI();
-  const { config, setConfig } = useConfig();
+  const { config, configDispatch } = useConfig();
   const layout = useMemo(() => CONFIG_LAYOUT[config.mainSelection], [config.mainSelection]);
-
-  /**
-   * If the current selected unit is no longer available under the new source,
-   * then select the default unit.
-   */
-  useEffect(() => {
-    if (layout.unit.indexOf(config.unit) === -1) {
-      setConfig({ ...config, unit: layout.unit[0] });
-    }
-  }, [config, layout.unit, setConfig]);
-
-  /**
-   * Update the config.
-   */
-  const handleConfigUpdate = (field, value) => setConfig({ ...config, [field]: value });
 
   if (!layout) {
     return null;
@@ -80,7 +62,7 @@ const HorizontalControlBar = () => {
               variant={config.mainSelection === selection ? 'contained' : 'outlined'}
               color="primary"
               size="small"
-              onClick={() => handleConfigUpdate('mainSelection', selection)}
+              onClick={() => configDispatch({ type: 'mainSelection/changed', payload: selection })}
               className={classes.btnSector}
             >
               {intl.formatMessage({ id: `components.mainSelect.${selection}.title` })}
@@ -95,7 +77,7 @@ const HorizontalControlBar = () => {
     <Grid container alignItems="center" wrap="nowrap" spacing={1}>
       <Grid item style={{ paddingRight: 0 }}>
         <HintSectorSelect>
-          <Typography variant="body1" color="primary">{intl.formatMessage({ id: 'components.sectorSelect.name' })}</Typography>
+          <Typography variant="body1" color="secondary">{intl.formatMessage({ id: 'components.sectorSelect.name' })}</Typography>
         </HintSectorSelect>
       </Grid>
       {sectors.order.map((sector) => {
@@ -111,7 +93,7 @@ const HorizontalControlBar = () => {
                 variant={config.sector === sector ? 'contained' : 'outlined'}
                 color="primary"
                 size="small"
-                onClick={() => handleConfigUpdate('sector', sector)}
+                onClick={() => configDispatch({ type: 'sector/changed', payload: sector })}
                 className={classes.btnSector}
               >
                 {Icon ? <Icon /> : intl.formatMessage({ id: `common.sectors.${sector}` }) }
@@ -126,7 +108,7 @@ const HorizontalControlBar = () => {
   const views = ['electricity', 'oil-and-gas'].includes(config.page) && (
     <Grid container alignItems="center" wrap="nowrap">
       <HintViewSelect>
-        <Typography variant="body1" color="primary">{intl.formatMessage({ id: 'components.viewSelect.name' })}</Typography>
+        <Typography variant="body1" color="secondary">{intl.formatMessage({ id: 'components.viewSelect.name' })}</Typography>
       </HintViewSelect>
       {['region', 'source'].map(view => (
         <Tooltip
@@ -137,7 +119,7 @@ const HorizontalControlBar = () => {
             variant={config.view === view ? 'contained' : 'outlined'}
             color="primary"
             size="small"
-            onClick={() => handleConfigUpdate('view', view)}
+            onClick={() => configDispatch({ type: 'view/changed', payload: view })}
           >
             {intl.formatMessage({ id: `common.${view}` })}
           </Button>
@@ -149,7 +131,7 @@ const HorizontalControlBar = () => {
   const units = (
     <Grid container alignItems="center" wrap="nowrap">
       <HintUnitSelect>
-        <Typography variant="body1" color="primary">{intl.formatMessage({ id: 'components.unitSelect.name' })}</Typography>
+        <Typography variant="body1" color="secondary">{intl.formatMessage({ id: 'components.unitSelect.name' })}</Typography>
       </HintUnitSelect>
       {layout.unit.map(unit => (
         <Tooltip
@@ -165,7 +147,7 @@ const HorizontalControlBar = () => {
             variant={config.unit === unit ? 'contained' : 'outlined'}
             color="primary"
             size="small"
-            onClick={() => handleConfigUpdate('unit', unit)}
+            onClick={() => configDispatch({ type: 'unit/changed', payload: unit })}
             style={{ textTransform: 'none' }}
           >
             {intl.formatMessage({ id: `common.units.${unit}` })}
@@ -176,7 +158,7 @@ const HorizontalControlBar = () => {
   );
 
   return (
-    <Grid container justify="space-between" alignItems="center" wrap="nowrap" className={classes.root}>
+    <Grid container justify="space-between" alignItems="center" spacing={1} className={classes.root}>
       {[
         selections,
         sectorSelection,

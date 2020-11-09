@@ -12,6 +12,17 @@ const useStyles = makeStyles({
     width: 43,
     '& h5': { fontWeight: 700 },
   },
+  selected: {
+    '&:after': {
+      content: '""',
+      position: 'absolute',
+      top: 'calc(100% + 4px)',
+      left: -1,
+      right: -1,
+      height: 16,
+      backgroundColor: '#F3EFEF',
+    },
+  },
 });
 
 const YearSelect = () => {
@@ -19,7 +30,7 @@ const YearSelect = () => {
   const intl = useIntl();
 
   const { yearIdIterations } = useAPI();
-  const { config, setConfig } = useConfig();
+  const { config, configDispatch } = useConfig();
 
   const yearIds = useMemo(
     () => Object.keys(yearIdIterations).sort().reverse(),
@@ -27,10 +38,10 @@ const YearSelect = () => {
   );
 
   return (
-    <Grid container alignItems="center" spacing={1}>
-      <Grid item>
+    <Grid container alignItems="center" wrap="nowrap" spacing={1}>
+      <Grid item style={{ marginLeft: 14 }}>
         <HintYearSelect>
-          <Typography variant="h6" color="primary">{intl.formatMessage({ id: 'components.yearSelect.name' })}</Typography>
+          <Typography variant="h6" color="secondary">{intl.formatMessage({ id: 'components.yearSelect.name' })}</Typography>
         </HintYearSelect>
       </Grid>
 
@@ -47,8 +58,8 @@ const YearSelect = () => {
               variant="contained"
               color={config.yearId === yearId ? 'primary' : 'secondary'}
               size="small"
-              onClick={() => setConfig({ ...config, yearId })}
-              className={classes.button}
+              onClick={() => configDispatch({ type: 'yearId/changed', payload: yearId })}
+              className={`${classes.button} ${config.yearId === yearId ? classes.selected : ''}`.trim()}
             >
               {config.yearId === yearId ? (<Typography variant="h5">{yearId}</Typography>) : yearId}
             </Button>
