@@ -103,26 +103,50 @@ const OilAndGas = ({ data, year }) => {
     />
   ), [config, intl]);
 
-  const getYearData = useCallback((inputData, dataYear) => {
-    // This basically just filters and sorts the top level data
-    // This sorting should be moved into parseData
-    if (!inputData) {
-      return [];
+  const sortDataSets = useCallback((curr, comp, biggestTreeMapTotal) => {
+    const returnData = { currentYearData: [], compareYearData: [] };
+
+    if (curr.find(item => item.total === biggestTreeMapTotal) || !compare) {
+      returnData.currentYearData = (curr.length > 1)
+        ? curr
+          .sort((a, b) => b.total - a.total)
+        : curr;
+
+      // the sort order is currentYear
+      const sortOrder = returnData.currentYearData.map(item => item.name);
+
+      returnData.compareYearData = (comp.length > 1)
+        ? sortOrder
+          .map(item => comp.find(x => x.name === item))
+        : comp;
+    } else {
+      returnData.compareYearData = (curr.length > 1)
+        ? curr
+          .sort((a, b) => b.total - a.total)
+        : curr;
+
+      // the sort order is compareYear
+      const sortOrder = returnData.compareYearData.map(item => item.name);
+
+      returnData.currentYearData = (comp.length > 1)
+        ? sortOrder
+          .map(item => comp.find(x => x.name === item))
+        : comp;
     }
-    return (inputData[dataYear].length > 1)
-      ? inputData[dataYear]
-        .sort((a, b) => b.total - a.total)
-      : inputData[dataYear];
-  }, []);
+
+    return returnData;
+  }, [compare]);
 
   const getBiggestTreeMapTotal = useCallback((curr, comp) => {
-    // Finds the biggest treeMap
+    const currLargest = Math.max(...curr.map(item => item.total));
+    const compLargest = Math.max(...comp.map(item => item.total));
+
     if (compare) {
-      return curr[0].total > comp[0].total
-        ? curr[0].total
-        : comp[0].total;
+      return currLargest > compLargest
+        ? currLargest
+        : compLargest;
     }
-    return curr[0].total;
+    return currLargest;
   }, [compare]);
 
   const getSizeNumber = useCallback((treeData) => {
@@ -205,16 +229,17 @@ const OilAndGas = ({ data, year }) => {
     </>
   ), [classes.treeMapRectangle, config.view, getColor, getTooltip, sizeMultiplier]);
 
-  // eslint-disable-next-line no-restricted-globals
-  if (!data || isNaN(data[currentYear][0].total)) {
+  if (!data || Number.isNaN(data[currentYear][0].total)) {
     return null;
   }
 
-  // Sorted datasets
-  const currentYearData = getYearData(data, currentYear);
-  const compareYearData = getYearData(data, compareYear);
+  const biggestTreeMapTotal = getBiggestTreeMapTotal(data[currentYear], data[compareYear]);
 
-  const biggestTreeMapTotal = getBiggestTreeMapTotal(currentYearData, compareYearData);
+  // Sorted datasets
+  const {
+    currentYearData,
+    compareYearData,
+  } = sortDataSets(data[currentYear], data[compareYear], biggestTreeMapTotal);
 
   const treeMapCollection = (treeData, isTopChart) => {
     const totalGrandTotal = treeData.reduce((acc, val) => acc + val.total, 0);
