@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 import React, { useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { Grid, Typography, Button, makeStyles } from '@material-ui/core';
@@ -255,17 +254,32 @@ const OilAndGas = ({ data, year }) => {
     return (
       <TableRow>
         {regularTreeMaps.map((tree, i) => (
-          <TableCell key={`treemap-${names[i]}`} className={isTopChart ? classes.cellsTop : classes.cellsBottom}>
-            <Grid container direction="column" wrap="nowrap" spacing={1}>
+          <TableCell
+            key={`treemap-${names[i]}`}
+            className={isTopChart ? classes.cellsTop : classes.cellsBottom}
+          >
+            <Grid
+              container
+              direction="column"
+              wrap="nowrap"
+              spacing={1}
+            >
               {!isTopChart && <Grid item className={classes.tick} />}
               <Grid item>{tree}</Grid>
               {(compare && isTopChart) && <Grid item className={classes.tick} />}
             </Grid>
           </TableCell>
         ))}
-        <TableCell className={isTopChart ? classes.cellsTop : classes.cellsBottom} style={{ width: 100 }}>
+        <TableCell
+          className={isTopChart ? classes.cellsTop : classes.cellsBottom}
+          style={{ width: 100 }}
+        >
           {smallTreeMaps.length > 0 && (
-            <Grid container spacing={1} className={classes.group}>
+            <Grid
+              container
+              spacing={1}
+              className={classes.group}
+            >
               <Grid item xs={12}>
                 <Typography variant="overline" align='center'>Values less than 1%</Typography>
               </Grid>
