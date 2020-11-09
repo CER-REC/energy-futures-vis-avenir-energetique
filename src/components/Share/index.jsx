@@ -87,7 +87,7 @@ const useStyles = makeStyles(theme => ({
   accent: { borderRight: `8px solid ${theme.palette.primary.main}` },
 }));
 
-export const Share = ({ direction }) => {
+export const Share = ({ direction, keepMounted }) => {
   const classes = useStyles();
   const intl = useIntl();
 
@@ -167,7 +167,7 @@ export const Share = ({ direction }) => {
       </Grid>
 
       {/* this is the confirm dialog that only appears in Safari */}
-      <Dialog open={!!openDialog} keepMounted onClose={() => setOpenDialog(false)}>
+      <Dialog open={!!openDialog} keepMounted={keepMounted} onClose={() => setOpenDialog(false)}>
         <DialogTitle>{intl.formatMessage({ id: 'components.share.dialog.description' })}</DialogTitle>
         <DialogContent style={{ wordBreak: 'break-all' }}>{openDialog}</DialogContent>
         <DialogActions>
@@ -203,8 +203,14 @@ export const Share = ({ direction }) => {
   );
 };
 
-Share.propTypes = { direction: PropTypes.string }; // 'row' or 'column'
-Share.defaultProps = { direction: 'column' };
+Share.propTypes = {
+  direction: PropTypes.string, // 'row' or 'column'
+  keepMounted: PropTypes.bool,
+};
+Share.defaultProps = {
+  direction: 'column',
+  keepMounted: true,
+};
 
 export const DownloadButton = ({ accent }) => {
   const classes = useStyles();
