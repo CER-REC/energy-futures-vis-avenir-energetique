@@ -37,11 +37,13 @@ const useStyles = makeStyles(theme => ({
     borderBottom: '0',
     minWidth: 0,
     verticalAlign: 'bottom',
+    padding: 0,
   },
   cellsBottom: {
     borderBottom: '0',
     minWidth: 0,
     verticalAlign: 'top',
+    padding: 0,
   },
   treeMapRectangle: {
     '& svg': { transform: 'rotate(270deg)' },
@@ -126,7 +128,6 @@ const OilAndGas = ({ data, year }) => {
   const getSizeNumber = useCallback((treeData) => {
     // Calculates the base size all the tree maps will start with.
     const bigChart = 230;
-    const mediumChart = 230;
     const smallChart = 160;
 
     if (treeData[1]
@@ -134,7 +135,6 @@ const OilAndGas = ({ data, year }) => {
       if (treeData.length > 4) {
         return smallChart;
       }
-      return mediumChart;
     }
     return bigChart;
   }, [compare]);
@@ -188,8 +188,6 @@ const OilAndGas = ({ data, year }) => {
         <ResponsiveTreeMap
           key={sortedSource.name}
           root={sortedSource}
-          // Using binary causes a bunch of warnings and errors about
-          // width and height being NaN
           tile='binary'
           identity="name"
           value="value"
@@ -270,11 +268,11 @@ const OilAndGas = ({ data, year }) => {
             </Grid>
           </TableCell>
         ))}
-        <TableCell
-          className={isTopChart ? classes.cellsTop : classes.cellsBottom}
-          style={{ width: 100 }}
-        >
-          {smallTreeMaps.length > 0 && (
+        {smallTreeMaps.length > 0 && (
+          <TableCell
+            className={isTopChart ? classes.cellsTop : classes.cellsBottom}
+            style={{ width: 100 }}
+          >
             <Grid
               container
               spacing={1}
@@ -287,8 +285,8 @@ const OilAndGas = ({ data, year }) => {
                 <Grid item xs={12} sm={6} key={`grouped-treemap-${names[i]}`}>{tree}</Grid>
               ))}
             </Grid>
-          )}
-        </TableCell>
+          </TableCell>
+        )}
       </TableRow>
     );
   };
