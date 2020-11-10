@@ -170,6 +170,7 @@ export const PageSelect = ({ direction /* row, column */ }) => {
           <span>
             <ButtonBase
               disabled={page.id === config.page}
+              aria-label={`${intl.formatMessage({ id: 'common.a11y.redirect' })} ${subtitle}`}
               onClick={() => configDispatch({ type: 'page/changed', payload: page.id })}
               classes={{ root: classes.box }}
             >

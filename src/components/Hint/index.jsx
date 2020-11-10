@@ -243,22 +243,22 @@ export const HintViewSelect = ({ children }) => {
 HintViewSelect.propTypes = { children: PropTypes.node };
 HintViewSelect.defaultProps = { children: null };
 
-// TODO: translate this.
-const HintDraggableListKeyboardShortcut = ({
-  title: 'Keyboard Shortcut',
-  text: '- **Spacebar:** start to drag or drop\n- **Escapse:** cancel the drag\n- **Up Arrow:** move an item upwards\n- **Down Arrow:** move an item downwards\n',
-});
-
 /**
  * Hint panel for the question mark on top of the draggable region list.
  */
 export const HintRegionList = ({ children }) => {
   const intl = useIntl();
   const { regions } = useAPI();
-  const section = useMemo(() => [...['ALL', ...regions.order].map(region => ({
-    title: region,
-    text: intl.formatMessage({ id: `common.regions.${region}` }),
-  })), HintDraggableListKeyboardShortcut], [intl, regions]);
+  const section = useMemo(() => [
+    ...['ALL', ...regions.order].map(region => ({
+      title: region,
+      text: intl.formatMessage({ id: `common.regions.${region}` }),
+    })),
+    {
+      title: intl.formatMessage({ id: `components.draggableVerticalList.keyboardNav.title` }),
+      text: intl.formatMessage({ id: `components.draggableVerticalList.keyboardNav.description` }),
+    },
+  ], [intl, regions]);
   return <Hint content={[<HintSection section={section} singleColumn />]} maxWidth="xs">{children}</Hint>;
 };
 
@@ -270,11 +270,17 @@ HintRegionList.defaultProps = { children: null };
  */
 export const HintSourceList = ({ sources, sourceType, children }) => {
   const intl = useIntl();
-  const section = useMemo(() => [...Object.keys(sources).map(source => ({
-    title: sources[source].label,
-    icon: sources[source].icon,
-    text: intl.formatMessage({ id: `sources.${sourceType}.${source}` }),
-  })), HintDraggableListKeyboardShortcut], [intl, sources, sourceType]);
+  const section = useMemo(() => [
+    ...Object.keys(sources).map(source => ({
+      title: sources[source].label,
+      icon: sources[source].icon,
+      text: intl.formatMessage({ id: `sources.${sourceType}.${source}` }),
+    })),
+    {
+      title: intl.formatMessage({ id: `components.draggableVerticalList.keyboardNav.title` }),
+      text: intl.formatMessage({ id: `components.draggableVerticalList.keyboardNav.description` }),
+    },
+  ], [intl, sources, sourceType]);
   return <Hint content={[<HintSection section={section} singleColumn />]}>{children}</Hint>;
 };
 

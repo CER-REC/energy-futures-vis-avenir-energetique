@@ -71,7 +71,7 @@ const LinkButtonContentSummary = () => {
     <>
       <Typography variant="body2" color="secondary" gutterBottom>{text}</Typography>
       <Grid container alignItems="flex-end" wrap="nowrap" spacing={1}>
-        <Grid item xs={5}><img src={ReportLinkImage} alt="report link" /></Grid>
+        <Grid item xs={5}><img src={ReportLinkImage} alt={intl.formatMessage({ id: 'common.a11y.downloadReport' })} /></Grid>
         <Grid item xs={7}><Typography variant="body2" color="secondary" component="span"><Markdown>{link}</Markdown></Typography></Grid>
       </Grid>
     </>
@@ -117,7 +117,9 @@ export const LinkButtonContentMethodology = ({ onClose }) => {
   return (
     <Grid container direction="column" wrap="nowrap">
       <Grid item className={classes.header}>
-        <Button onClick={onClose} className={classes.close}><CloseIcon /></Button>
+        <Button aria-label={intl.formatMessage({ id: 'common.a11y.close' })} onClick={onClose} className={classes.close}>
+          <CloseIcon />
+        </Button>
       </Grid>
       <Grid item className={classes.content}><Markdown>{text}</Markdown></Grid>
     </Grid>
@@ -132,7 +134,9 @@ export const LinkButtonContentAbout = ({ onClose }) => {
   return (
     <Grid container direction="column" wrap="nowrap">
       <Grid item className={classes.header}>
-        <Button onClick={onClose} className={classes.close}><CloseIcon /></Button>
+        <Button aria-label={intl.formatMessage({ id: 'common.a11y.close' })} onClick={onClose} className={classes.close}>
+          <CloseIcon />
+        </Button>
       </Grid>
       <Grid item className={classes.content}><Markdown>{text}</Markdown></Grid>
     </Grid>
@@ -167,7 +171,9 @@ export const LinkButtonContentReport = ({ yearId, onClose }) => {
           </Grid>
         ))}
         <Grid item>
-          <Button onClick={onClose} className={`${classes.tab} ${classes.close}`}><CloseIcon /></Button>
+          <Button aria-label={intl.formatMessage({ id: 'common.a11y.close' })} onClick={onClose} className={`${classes.tab} ${classes.close}`}>
+            <CloseIcon />
+          </Button>
         </Grid>
       </Grid>
       <Grid item className={classes.content}>{(select || {}).content}</Grid>

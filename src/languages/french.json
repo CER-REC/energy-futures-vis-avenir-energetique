@@ -53,6 +53,12 @@
           "region": "Region: Total amount produced in region"
         }
       }
+    },
+    "a11y": {
+      "header": "header background",
+      "redirect": "redirect to page",
+      "close": "close",
+      "downloadReport": "download report"
     }
   },
   "components": {
@@ -74,6 +80,10 @@
         "SHALE": "Sh",
         "SOLUTION": "SOL",
         "TIGHT": "Ti"
+      },
+      "keyboardNav": {
+        "title": "Keyboard Shortcut",
+        "description": "- **Spacebar:** start to drag or drop\n- **Escapse:** cancel the drag\n- **Up Arrow:** move an item upwards\n- **Down Arrow:** move an item downwards\n"
       }
     },
     "errorBoundary": {
