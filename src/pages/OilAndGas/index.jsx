@@ -200,6 +200,7 @@ const OilAndGas = ({ data, year }) => {
           motionStiffness={90}
           motionDamping={11}
           tooltip={getTooltip}
+          leavesOnly
         />
       </div>
     </>
