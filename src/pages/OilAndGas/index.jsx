@@ -80,7 +80,7 @@ const OilAndGas = ({ data, year }) => {
   } = useAPI();
 
   // Compare button toggle
-  const [compare, setCompare] = useState(false);
+  const [compare, setCompare] = useState(true);
 
   /**
    * Format tooltip.
