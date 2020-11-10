@@ -64,16 +64,16 @@
         "DIESEL": "D",
         "OIL": "O",
         "LIGHT": "CL",
-        "ISB": "iSB",
+        "ISB": "ISB",
         "HEAVY": "CH",
         "CONDENSATE": "FC",
         "C5": "C5+",
         "MB": "MB",
-        "CBM": "CB",
-        "NA": "NA",
-        "SHALE": "Sh",
+        "CBM": "CBM",
+        "NA": "CON",
+        "SHALE": "SH",
         "SOLUTION": "SOL",
-        "TIGHT": "Ti"
+        "TIGHT": "TI"
       }
     },
     "errorBoundary": {
