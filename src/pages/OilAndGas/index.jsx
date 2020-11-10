@@ -170,10 +170,14 @@ const OilAndGas = ({ data, year }) => {
 
   const createTreeMap = useCallback((sortedSource, percentage, size, biggestTreeMapTotal) => (
     <>
-      <Typography align='center' varient="body2" style={{ bottom: 0, fontWeight: 700 }}>
-        {config.view === 'region' && percentage > 1
-          ? `${sortedSource.name}: ${percentage}%`
-          : sortedSource.name}
+      <Typography align='center' varient="body2" style={{ bottom: 0, fontWeight: 700, fontSize: 12 }}>
+        {intl.formatMessage(
+          {
+            id: `views.oil-and-gas.treeMapSourceTitles.${config.mainSelection}.${sortedSource.name}`,
+            defaultMessage: sortedSource.name,
+          },
+        )}
+        {config.view === 'region' && percentage > 1 && `: ${percentage}%`}
       </Typography>
 
       <div
@@ -204,7 +208,7 @@ const OilAndGas = ({ data, year }) => {
         />
       </div>
     </>
-  ), [classes.treeMapRectangle, config.view, getColor, getTooltip, sizeMultiplier]);
+  ), [classes.treeMapRectangle, config, getColor, getTooltip, intl, sizeMultiplier]);
 
   // eslint-disable-next-line no-restricted-globals
   if (!data || isNaN(data[currentYear][0].total)) {

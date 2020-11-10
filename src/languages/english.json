@@ -341,6 +341,25 @@
     }
   },
   "views": {
+    "oil-and-gas":{
+      "treeMapSourceTitles":{
+        "oilProduction":{
+          "LIGHT": "Conv. Light",
+          "ISB": "In Situ Bitumen",
+          "HEAVY": "Conv. Heavy",
+          "CONDENSATE": "Field Cond.",
+          "C5": "C5+ (Pentanes+)",
+          "MB": "Mined Bitumen"
+        },
+        "gasProduction":{
+          "CBM": "Coal Bed Methane",
+          "NA": "Conventional",
+          "SHALE": "Shale",
+          "SOLUTION": "Solution",
+          "TIGHT": "Tight"
+        }
+      }
+    }
   },
   "regions": {
   },
