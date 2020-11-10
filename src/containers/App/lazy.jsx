@@ -104,7 +104,6 @@ const theme = createMuiTheme({
       tooltip: {
         backgroundColor: defaultTheme.palette.common.white,
         color: defaultTheme.palette.secondary.main,
-        maxWidth: 220,
         fontSize: 12,
         border: `1px solid ${defaultTheme.palette.secondary.main}`,
         borderRadius: 0,
@@ -118,9 +117,12 @@ const theme = createMuiTheme({
       fontSizeSmall: { fontSize: 20 },
       fontSizeLarge: { fontSize: 35 },
     },
-  },
-  MuiTableCell: {
-    root: { borderBottom: 'none' },
+    MuiTableCell: {
+      root: {
+        fontSize: 12,
+        borderBottom: 'none',
+      },
+    },
   },
 });
 

@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
 import React, { useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
-import { Grid, Typography, Button, makeStyles } from '@material-ui/core';
+import { Grid, Typography, Button, Tooltip, makeStyles } from '@material-ui/core';
 import { ResponsiveTreeMap } from '@nivo/treemap';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -46,6 +46,7 @@ const useStyles = makeStyles(theme => ({
   },
   treeMapRectangle: {
     '& svg': { transform: 'rotate(270deg)' },
+    '& > div > div > div:last-of-type': { display: 'none' }, // hide the default Nivo tooltip
   },
   group: {
     border: `1px solid ${theme.palette.secondary.main}`,
@@ -82,25 +83,38 @@ const OilAndGas = ({ data, year }) => {
   const [compare, setCompare] = useState(false);
 
   /**
+   * Determine the block colors in treemaps.
+   */
+  const getColor = useCallback((d) => {
+    let color;
+    if (config.view === 'source') {
+      color = regionColors[d.name];
+    } else {
+      color = config.mainSelection === 'oilProduction' ? oilColors[d.name] : gasColors[d.name];
+    }
+    return color;
+  }, [config.mainSelection, config.view, gasColors, oilColors, regionColors]);
+
+  /**
    * Format tooltip.
    */
-  const getTooltip = useCallback(event => (
+  const getTooltip = useCallback(entry => (
     <VizTooltip
-      nodes={event.parent?.children.map(value => ({
-        name: value.id,
+      nodes={entry.children.map(value => ({
+        name: value.name,
         translation: intl.formatMessage(
           {
             id: config.view === 'region'
-              ? `common.sources.${config.mainSelection === 'oilProduction' ? 'oil' : 'gas'}.${value.id}`
-              : `common.regions.${value.id}`,
+              ? `common.sources.${config.mainSelection === 'oilProduction' ? 'oil' : 'gas'}.${value.name}`
+              : `common.regions.${value.name}`,
           },
         ),
         value: value.value,
-        color: value.color,
+        color: getColor(value),
       }))}
       unit={config.unit}
     />
-  ), [config, intl]);
+  ), [config, intl, getColor]);
 
   const getYearData = useCallback((inputData, dataYear) => {
     // This basically just filters and sorts the top level data
@@ -159,16 +173,6 @@ const OilAndGas = ({ data, year }) => {
     return returnValue;
   }, []);
 
-  const getColor = useCallback((d) => {
-    let color;
-    if (config.view === 'source') {
-      color = regionColors[d.name];
-    } else {
-      color = config.mainSelection === 'oilProduction' ? oilColors[d.name] : gasColors[d.name];
-    }
-    return color;
-  }, [config.mainSelection, config.view, gasColors, oilColors, regionColors]);
-
   const createTreeMap = useCallback((sortedSource, percentage, size, biggestTreeMapTotal) => (
     <>
       <Typography align='center' varient="body2" style={{ bottom: 0, fontWeight: 700 }}>
@@ -177,34 +181,35 @@ const OilAndGas = ({ data, year }) => {
           : sortedSource.name}
       </Typography>
 
-      <div
-        className={classes.treeMapRectangle}
-        style={{
-          textAlign: 'center',
-          height: sizeMultiplier(sortedSource.total, size, biggestTreeMapTotal) || 0,
-          width: sizeMultiplier(sortedSource.total, size, biggestTreeMapTotal) || 0,
-          margin: 'auto',
-        }}
-      >
-        <ResponsiveTreeMap
-          key={sortedSource.name}
-          root={sortedSource}
-          // Using binary causes a bunch of warnings and errors about
-          // width and height being NaN
-          tile='binary'
-          identity="name"
-          value="value"
-          margin={{ top: 10, right: 10, bottom: 10, left: 10 }}
-          enableLabel={false}
-          colors={getColor}
-          borderWidth={2}
-          borderColor="white"
-          animate
-          motionStiffness={90}
-          motionDamping={11}
-          tooltip={getTooltip}
-        />
-      </div>
+      <Tooltip title={getTooltip(sortedSource)}>
+        <div
+          className={classes.treeMapRectangle}
+          style={{
+            textAlign: 'center',
+            height: sizeMultiplier(sortedSource.total, size, biggestTreeMapTotal) || 0,
+            width: sizeMultiplier(sortedSource.total, size, biggestTreeMapTotal) || 0,
+            margin: 'auto',
+          }}
+        >
+          <ResponsiveTreeMap
+            key={sortedSource.name}
+            root={sortedSource}
+            // Using binary causes a bunch of warnings and errors about
+            // width and height being NaN
+            tile='binary'
+            identity="name"
+            value="value"
+            margin={{ top: 10, right: 10, bottom: 10, left: 10 }}
+            enableLabel={false}
+            colors={getColor}
+            borderWidth={2}
+            borderColor="white"
+            animate
+            motionStiffness={90}
+            motionDamping={11}
+          />
+        </div>
+      </Tooltip>
     </>
   ), [classes.treeMapRectangle, config.view, getColor, getTooltip, sizeMultiplier]);
 
