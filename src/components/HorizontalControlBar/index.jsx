@@ -121,7 +121,7 @@ const HorizontalControlBar = () => {
             size="small"
             onClick={() => configDispatch({ type: 'view/changed', payload: view })}
           >
-            {intl.formatMessage({ id: `common.${view}` })}
+            {intl.formatMessage({ id: `common.${(config.page === 'oil-and-gas' && view === 'source') ? 'type' : view}` })}
           </Button>
         </Tooltip>
       ))}

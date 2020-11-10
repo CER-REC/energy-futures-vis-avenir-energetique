@@ -7,6 +7,7 @@
     "scenario": "Scenario",
     "sector": "Sector",
     "source": "Source",
+    "type": "Type",
     "year": "Year",
     "value": "Value",
     "unit": "Unit",
