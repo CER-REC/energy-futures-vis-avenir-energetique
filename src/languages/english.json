@@ -330,6 +330,7 @@
     },
     "share": {
       "download": "Download Data",
+      "filename": "Energy_Future",
       "copied": "URL Copied",
       "emailSubject": "Canada’s Energy Future",
       "emailMessage": "Exploring Canada’s Energy Future interactive online tool is based on the Canada Energy Regulator’s (CER) flagship publication – Canada’s Energy Future. This visualization allows you to explore energy production and consumption trends and forecast them into the future. You can explore the data from the most recent report, or refer to previous reports."
@@ -500,7 +501,7 @@
         "link": "https://www.cer-rec.gc.ca/en/data-analysis/student-resources/index.html"
       },
       "download": {
-        "title": "Download the 2020 Report",
+        "title": "Download the EF2020 Report",
         "link": "https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2020/index.html"
       },
       "view": {

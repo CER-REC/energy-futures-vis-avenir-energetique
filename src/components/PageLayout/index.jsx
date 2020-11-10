@@ -1,6 +1,6 @@
 import React, { useMemo, Children, cloneElement } from 'react';
 import PropTypes from 'prop-types';
-import { makeStyles, useMediaQuery, Grid, Typography, CircularProgress } from '@material-ui/core';
+import { makeStyles, useMediaQuery, Grid, Typography, Link, CircularProgress } from '@material-ui/core';
 import Alert from '@material-ui/lab/Alert';
 import AlertTitle from '@material-ui/lab/AlertTitle';
 import { useIntl } from 'react-intl';
@@ -31,8 +31,11 @@ const useStyles = makeStyles(theme => ({
     '& > div': { height: '100%' },
   },
   title: {
-    fontWeight: 700,
-    textTransform: 'uppercase',
+    'a&:hover': { textDecoration: 'none' },
+    '& > h4': {
+      fontWeight: 700,
+      textTransform: 'uppercase',
+    },
   },
   download: {
     height: '100%',
@@ -135,7 +138,11 @@ const PageLayout = ({
   /**
    * The main title, which can be reused in both desktop and mobile layouts.
    */
-  const title = <Typography variant="h4" color="primary" className={classes.title}>{intl.formatMessage({ id: 'common.title' })}</Typography>;
+  const title = (
+    <Link href="./" underline="none" className={classes.title}>
+      <Typography variant="h4" color="primary">{intl.formatMessage({ id: 'common.title' })}</Typography>
+    </Link>
+  );
 
   /**
    * The control panel, which can be reused in both desktop and mobile layouts.
