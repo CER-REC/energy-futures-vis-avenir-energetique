@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 import React, { useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { Grid, Typography, Button, Tooltip, makeStyles } from '@material-ui/core';
@@ -38,11 +37,13 @@ const useStyles = makeStyles(theme => ({
     borderBottom: '0',
     minWidth: 0,
     verticalAlign: 'bottom',
+    padding: 10,
   },
   cellsBottom: {
     borderBottom: '0',
     minWidth: 0,
     verticalAlign: 'top',
+    padding: 10,
   },
   treeMapRectangle: {
     '& svg': { transform: 'rotate(270deg)' },
@@ -141,7 +142,6 @@ const OilAndGas = ({ data, year }) => {
   const getSizeNumber = useCallback((treeData) => {
     // Calculates the base size all the tree maps will start with.
     const bigChart = 230;
-    const mediumChart = 230;
     const smallChart = 160;
 
     if (treeData[1]
@@ -149,7 +149,6 @@ const OilAndGas = ({ data, year }) => {
       if (treeData.length > 4) {
         return smallChart;
       }
-      return mediumChart;
     }
     return bigChart;
   }, [compare]);
@@ -194,8 +193,6 @@ const OilAndGas = ({ data, year }) => {
           <ResponsiveTreeMap
             key={sortedSource.name}
             root={sortedSource}
-            // Using binary causes a bunch of warnings and errors about
-            // width and height being NaN
             tile='binary'
             identity="name"
             value="value"
@@ -260,17 +257,32 @@ const OilAndGas = ({ data, year }) => {
     return (
       <TableRow>
         {regularTreeMaps.map((tree, i) => (
-          <TableCell key={`treemap-${names[i]}`} className={isTopChart ? classes.cellsTop : classes.cellsBottom}>
-            <Grid container direction="column" wrap="nowrap" spacing={1}>
+          <TableCell
+            key={`treemap-${names[i]}`}
+            className={isTopChart ? classes.cellsTop : classes.cellsBottom}
+          >
+            <Grid
+              container
+              direction="column"
+              wrap="nowrap"
+              spacing={1}
+            >
               {!isTopChart && <Grid item className={classes.tick} />}
               <Grid item>{tree}</Grid>
               {(compare && isTopChart) && <Grid item className={classes.tick} />}
             </Grid>
           </TableCell>
         ))}
-        <TableCell className={isTopChart ? classes.cellsTop : classes.cellsBottom} style={{ width: 100 }}>
-          {smallTreeMaps.length > 0 && (
-            <Grid container spacing={1} className={classes.group}>
+        {smallTreeMaps.length > 0 && (
+          <TableCell
+            className={isTopChart ? classes.cellsTop : classes.cellsBottom}
+            style={{ width: 100 }}
+          >
+            <Grid
+              container
+              spacing={1}
+              className={classes.group}
+            >
               <Grid item xs={12}>
                 <Typography variant="overline" align='center'>Values less than 1%</Typography>
               </Grid>
@@ -278,8 +290,8 @@ const OilAndGas = ({ data, year }) => {
                 <Grid item xs={12} sm={6} key={`grouped-treemap-${names[i]}`}>{tree}</Grid>
               ))}
             </Grid>
-          )}
-        </TableCell>
+          </TableCell>
+        )}
       </TableRow>
     );
   };
