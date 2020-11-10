@@ -57,6 +57,7 @@
     "a11y": {
       "header": "header background",
       "redirect": "redirect to page",
+      "open": "open description dialog",
       "close": "close",
       "downloadReport": "download report"
     }

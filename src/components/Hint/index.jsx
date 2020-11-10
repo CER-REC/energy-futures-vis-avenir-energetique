@@ -84,13 +84,14 @@ HintSection.defaultProps = {
  */
 const Hint = ({ children, content, maxWidth = 'sm' }) => {
   const classes = useStyles();
+  const intl = useIntl();
   const [open, setOpen] = useState(false);
 
   return (
     <>
       <Grid container alignItems="center" wrap="nowrap" className={classes.root}>
         {children}
-        <IconButton onClick={() => setOpen(true)} aria-label="open description dialog" className={classes.hint}>
+        <IconButton onClick={() => setOpen(true)} aria-label={intl.formatMessage({ id: 'common.a11y.open' })} className={classes.hint}>
           <HintIcon fontSize="small" />
         </IconButton>
       </Grid>
@@ -101,7 +102,7 @@ const Hint = ({ children, content, maxWidth = 'sm' }) => {
         onClose={() => setOpen(false)}
         classes={{ paper: classes.dialog }}
       >
-        <Fab color="primary" size="medium" onClick={() => setOpen(false)} aria-label="close description dialog" className={classes.close}>
+        <Fab color="primary" size="medium" onClick={() => setOpen(false)} aria-label={intl.formatMessage({ id: 'common.a11y.close' })} className={classes.close}>
           <CloseIcon />
         </Fab>
         <DialogContent style={{ padding: 24 }}>
@@ -255,8 +256,8 @@ export const HintRegionList = ({ children }) => {
       text: intl.formatMessage({ id: `common.regions.${region}` }),
     })),
     {
-      title: intl.formatMessage({ id: `components.draggableVerticalList.keyboardNav.title` }),
-      text: intl.formatMessage({ id: `components.draggableVerticalList.keyboardNav.description` }),
+      title: intl.formatMessage({ id: 'components.draggableVerticalList.keyboardNav.title' }),
+      text: intl.formatMessage({ id: 'components.draggableVerticalList.keyboardNav.description' }),
     },
   ], [intl, regions]);
   return <Hint content={[<HintSection section={section} singleColumn />]} maxWidth="xs">{children}</Hint>;
@@ -277,8 +278,8 @@ export const HintSourceList = ({ sources, sourceType, children }) => {
       text: intl.formatMessage({ id: `sources.${sourceType}.${source}` }),
     })),
     {
-      title: intl.formatMessage({ id: `components.draggableVerticalList.keyboardNav.title` }),
-      text: intl.formatMessage({ id: `components.draggableVerticalList.keyboardNav.description` }),
+      title: intl.formatMessage({ id: 'components.draggableVerticalList.keyboardNav.title' }),
+      text: intl.formatMessage({ id: 'components.draggableVerticalList.keyboardNav.description' }),
     },
   ], [intl, sources, sourceType]);
   return <Hint content={[<HintSection section={section} singleColumn />]}>{children}</Hint>;
