@@ -103,39 +103,26 @@ const OilAndGas = ({ data, year }) => {
     />
   ), [config, intl]);
 
-  const sortDataSets = useCallback((curr, comp, biggestTreeMapTotal) => {
-    const returnData = { currentYearData: [], compareYearData: [] };
+  const sortDataSets = useCallback((curr, comp) => {
+    const sortedDataSets = { currentYearData: curr, compareYearData: comp };
 
-    if (curr.find(item => item.total === biggestTreeMapTotal) || !compare) {
-      returnData.currentYearData = (curr.length > 1)
-        ? curr
-          .sort((a, b) => b.total - a.total)
-        : curr;
+    // sort the current data in decending order
+    sortedDataSets.currentYearData = (curr.length > 1)
+      ? curr
+        .sort((a, b) => b.total - a.total)
+      : curr;
 
-      // the sort order is currentYear
-      const sortOrder = returnData.currentYearData.map(item => item.name);
+    // set the sort order to be the current year order
+    const sortOrder = sortedDataSets.currentYearData.map(item => item.name);
 
-      returnData.compareYearData = (comp.length > 1)
-        ? sortOrder
-          .map(item => comp.find(x => x.name === item))
-        : comp;
-    } else {
-      returnData.compareYearData = (curr.length > 1)
-        ? curr
-          .sort((a, b) => b.total - a.total)
-        : curr;
+    // re-arrange the compare year data to match current year data
+    sortedDataSets.compareYearData = (comp.length > 1)
+      ? sortOrder
+        .map(item => comp.find(x => x.name === item))
+      : comp;
 
-      // the sort order is compareYear
-      const sortOrder = returnData.compareYearData.map(item => item.name);
-
-      returnData.currentYearData = (comp.length > 1)
-        ? sortOrder
-          .map(item => comp.find(x => x.name === item))
-        : comp;
-    }
-
-    return returnData;
-  }, [compare]);
+    return sortedDataSets;
+  }, []);
 
   const getBiggestTreeMapTotal = useCallback((curr, comp) => {
     const currLargest = Math.max(...curr.map(item => item.total));
@@ -239,7 +226,7 @@ const OilAndGas = ({ data, year }) => {
   const {
     currentYearData,
     compareYearData,
-  } = sortDataSets(data[currentYear], data[compareYear], biggestTreeMapTotal);
+  } = sortDataSets(data[currentYear], data[compareYear]);
 
   const treeMapCollection = (treeData, isTopChart) => {
     const totalGrandTotal = treeData.reduce((acc, val) => acc + val.total, 0);
