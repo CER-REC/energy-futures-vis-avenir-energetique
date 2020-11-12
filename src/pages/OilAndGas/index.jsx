@@ -83,6 +83,9 @@ const OilAndGas = ({ data, year }) => {
   // Compare button toggle
   const [compare, setCompare] = useState(false);
 
+  // Determine which tooltip is currently open
+  const [tooltip, setTooltip] = useState(undefined);
+
   /**
    * Determine the block colors in treemaps.
    */
@@ -172,7 +175,9 @@ const OilAndGas = ({ data, year }) => {
     return returnValue;
   }, []);
 
-  const createTreeMap = useCallback((sortedSource, percentage, size, biggestTreeMapTotal) => (
+  const createTreeMap = useCallback((
+    sortedSource, percentage, size, isTopChart, biggestTreeMapTotal,
+  ) => (
     <>
       <Typography align='center' varient="body2" style={{ bottom: 0, fontWeight: 700 }}>
         {config.view === 'region' && percentage > 1
@@ -180,7 +185,13 @@ const OilAndGas = ({ data, year }) => {
           : sortedSource.name}
       </Typography>
 
-      <Tooltip title={getTooltip(sortedSource)}>
+      <Tooltip
+        open={sortedSource.name === tooltip}
+        title={getTooltip(sortedSource)}
+        placement={(compare && isTopChart) ? 'top' : 'bottom'}
+        onOpen={() => setTooltip(sortedSource.name)}
+        onClose={() => setTooltip(undefined)}
+      >
         <div
           className={classes.treeMapRectangle}
           style={{
@@ -208,7 +219,9 @@ const OilAndGas = ({ data, year }) => {
         </div>
       </Tooltip>
     </>
-  ), [classes.treeMapRectangle, config.view, getColor, getTooltip, sizeMultiplier]);
+  ), [
+    classes.treeMapRectangle, config.view, tooltip, compare, getColor, getTooltip, sizeMultiplier,
+  ]);
 
   // eslint-disable-next-line no-restricted-globals
   if (!data || isNaN(data[currentYear][0].total)) {
@@ -242,10 +255,12 @@ const OilAndGas = ({ data, year }) => {
 
       const percentage = ((sortedSource.total / totalGrandTotal) * 100).toFixed(2);
 
+      const args = [sortedSource, percentage, size, isTopChart, biggestTreeMapTotal];
+
       if (percentage <= 1) {
-        smallTreeMaps.push(createTreeMap(sortedSource, percentage, size, biggestTreeMapTotal));
+        smallTreeMaps.push(createTreeMap(...args));
       } else {
-        regularTreeMaps.push(createTreeMap(sortedSource, percentage, size, biggestTreeMapTotal));
+        regularTreeMaps.push(createTreeMap(...args));
       }
       return source.name;
     });
