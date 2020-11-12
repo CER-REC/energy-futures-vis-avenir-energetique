@@ -37,13 +37,13 @@ const useStyles = makeStyles(theme => ({
     borderBottom: '0',
     minWidth: 0,
     verticalAlign: 'bottom',
-    padding: 0,
+    padding: 10,
   },
   cellsBottom: {
     borderBottom: '0',
     minWidth: 0,
     verticalAlign: 'top',
-    padding: 0,
+    padding: 10,
   },
   treeMapRectangle: {
     '& svg': { transform: 'rotate(270deg)' },
