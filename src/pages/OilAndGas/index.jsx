@@ -231,23 +231,23 @@ const OilAndGas = ({ data, year }) => {
     const smallTreeMaps = [];
 
     const names = treeData.map((source) => {
-      if (source.total <= 0) {
-        return source.name;
-      }
       // Its easier to sort the sources when they come in.
       // This is not very efficient however.
-      const sortedSource = source.children.length > 1 ? {
+      const sortedSource = {
         name: source.name,
         total: source.total,
-        children: source.children
-          .sort((a, b) => b.value - a.value),
-      } : source;
+        children: source.children.sort((a, b) => b.value - a.value),
+      };
 
-      const percentage = ((sortedSource.total / totalGrandTotal) * 100).toFixed(2);
+      const percentage = (sortedSource.total / totalGrandTotal) * 100;
 
-      if (percentage <= 1) {
+      if (percentage <= 0) {
+        regularTreeMaps.push(0); // empty cell
+      }
+      if (percentage > 0 && percentage <= 1) {
         smallTreeMaps.push(createTreeMap(sortedSource, percentage, size, biggestTreeMapTotal));
-      } else {
+      }
+      if (percentage > 1) {
         regularTreeMaps.push(createTreeMap(sortedSource, percentage, size, biggestTreeMapTotal));
       }
       return source.name;
@@ -259,7 +259,7 @@ const OilAndGas = ({ data, year }) => {
 
     return (
       <TableRow>
-        {regularTreeMaps.map((tree, i) => (
+        {regularTreeMaps.map((tree, i) => (tree ? (
           <TableCell
             key={`treemap-${names[i]}`}
             className={isTopChart ? classes.cellsTop : classes.cellsBottom}
@@ -275,7 +275,7 @@ const OilAndGas = ({ data, year }) => {
               {(compare && isTopChart) && <Grid item className={classes.tick} />}
             </Grid>
           </TableCell>
-        ))}
+        ) : <TableCell />))}
         {smallTreeMaps.length > 0 && (
           <TableCell
             className={isTopChart ? classes.cellsTop : classes.cellsBottom}
