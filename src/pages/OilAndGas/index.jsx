@@ -107,19 +107,15 @@ const OilAndGas = ({ data, year }) => {
     const sortedDataSets = { currentYearData: curr, compareYearData: comp };
 
     // sort the current data in decending order
-    sortedDataSets.currentYearData = (curr.length > 1)
-      ? curr
-        .sort((a, b) => b.total - a.total)
-      : curr;
+    sortedDataSets.currentYearData = (curr || [])
+      .sort((a, b) => b.total - a.total);
 
     // set the sort order to be the current year order
     const sortOrder = sortedDataSets.currentYearData.map(item => item.name);
 
     // re-arrange the compare year data to match current year data
-    sortedDataSets.compareYearData = (comp.length > 1)
-      ? sortOrder
-        .map(item => comp.find(x => x.name === item))
-      : comp;
+    sortedDataSets.compareYearData = (sortOrder || [])
+      .map(item => comp.find(x => x.name === item));
 
     return sortedDataSets;
   }, []);
