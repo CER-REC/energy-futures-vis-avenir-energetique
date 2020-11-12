@@ -309,15 +309,29 @@ const OilAndGas = ({ data, year }) => {
       <Grid container direction="column" className={classes.year}>
         <Grid item>
           <Grid container alignItems="center" wrap="nowrap" spacing={1}>
-            <Grid item className={classes.yearBox}><div style={{ border: '3px solid black' }} /></Grid>
-            <Grid item><Typography color='primary' variant='h4'>{currentYear}</Typography></Grid>
+            {/* This may be re-implemented in the future */}
+            {/* <Grid item className={classes.yearBox}>
+              <div style={{ border: '3px solid black' }} />
+            </Grid> */}
+            <Grid item>
+              <Typography color='primary' variant='h4' style={{ padding: '0px 20px' }}>
+                {currentYear}
+              </Typography>
+            </Grid>
           </Grid>
         </Grid>
         {compare && (
           <Grid item>
             <Grid container alignItems="center" wrap="nowrap" spacing={1}>
-              <Grid item className={classes.yearBox}><div style={{ border: '3px dotted grey' }} /></Grid>
-              <Grid item><Typography color='secondary' variant='h4'>{compareYear}</Typography></Grid>
+              {/* This may be re-implemented in the future */}
+              {/* <Grid item className={classes.yearBox}>
+                <div style={{ border: '3px dotted grey' }} />
+              </Grid> */}
+              <Grid item>
+                <Typography color='secondary' variant='h4' style={{ padding: '0px 20px' }}>
+                  {compareYear}
+                </Typography>
+              </Grid>
             </Grid>
           </Grid>
         )}
