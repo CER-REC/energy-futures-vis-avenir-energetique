@@ -171,12 +171,12 @@ const OilAndGas = ({ data, year }) => {
   const createTreeMap = useCallback((sortedSource, percentage, size, biggestTreeMapTotal) => (
     <>
       <Typography align='center' varient="body2" style={{ bottom: 0, fontWeight: 700, fontSize: 12 }}>
-        {intl.formatMessage(
+        {config.view === 'source' ? intl.formatMessage(
           {
             id: `views.oil-and-gas.treeMapSourceTitles.${config.mainSelection}.${sortedSource.name}`,
             defaultMessage: sortedSource.name,
           },
-        )}
+        ) : sortedSource.name}
         {config.view === 'region' && percentage > 1 && `: ${percentage}%`}
       </Typography>
 
