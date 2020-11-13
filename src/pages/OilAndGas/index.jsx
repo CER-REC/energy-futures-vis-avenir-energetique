@@ -104,20 +104,25 @@ const OilAndGas = ({ data, year }) => {
   ), [config, intl]);
 
   const sortDataSets = useCallback((curr, comp) => {
-    const sortedDataSets = { currentYearData: curr, compareYearData: comp };
-
     // sort the current data in decending order
-    sortedDataSets.currentYearData = (curr || [])
-      .sort((a, b) => b.total - a.total);
+    const currentYearData = (curr || []).sort((a, b) => b.total - a.total);
 
     // set the sort order to be the current year order
-    const sortOrder = sortedDataSets.currentYearData.map(item => item.name);
+    const sortOrder = currentYearData.map(item => item.name);
 
     // re-arrange the compare year data to match current year data
-    sortedDataSets.compareYearData = (sortOrder || [])
-      .map(item => comp.find(x => x.name === item));
+    const compareYearData = (sortOrder || []).map(item => comp.find(x => x.name === item));
 
-    return sortedDataSets;
+    // removing entries that are zeros in both current and compare data
+    const currentZeros = new Set(currentYearData.filter(d => d.total <= 0).map(d => d.name));
+    const compareZeros = new Set(compareYearData.filter(d => d.total <= 0).map(d => d.name));
+
+    const isNotBothZero = item => !currentZeros.has(item.name) || !compareZeros.has(item.name);
+
+    return {
+      currentYearData: currentYearData.filter(isNotBothZero),
+      compareYearData: compareYearData.filter(isNotBothZero),
+    };
   }, []);
 
   const getBiggestTreeMapTotal = useCallback((curr, comp) => {
@@ -179,7 +184,7 @@ const OilAndGas = ({ data, year }) => {
     <>
       <Typography align='center' varient="body2" style={{ bottom: 0, fontWeight: 700 }}>
         {config.view === 'region' && percentage > 1
-          ? `${sortedSource.name}: ${percentage}%`
+          ? `${sortedSource.name}: ${percentage.toFixed(2)}%`
           : sortedSource.name}
       </Typography>
 
@@ -253,6 +258,14 @@ const OilAndGas = ({ data, year }) => {
       return source.name;
     });
 
+    // removing trailing zeros
+    while (regularTreeMaps[regularTreeMaps.length - 1] <= 0) {
+      regularTreeMaps.pop();
+    }
+    while (smallTreeMaps[smallTreeMaps.length - 1] <= 0) {
+      smallTreeMaps.pop();
+    }
+
     if (regularTreeMaps.length === 0) {
       return null;
     }
@@ -275,7 +288,7 @@ const OilAndGas = ({ data, year }) => {
               {(compare && isTopChart) && <Grid item className={classes.tick} />}
             </Grid>
           </TableCell>
-        ) : <TableCell />))}
+        ) : <TableCell key={`treemap-${names[i]}`} />))}
         {smallTreeMaps.length > 0 && (
           <TableCell
             className={isTopChart ? classes.cellsTop : classes.cellsBottom}
