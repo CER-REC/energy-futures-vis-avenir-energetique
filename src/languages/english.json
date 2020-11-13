@@ -187,12 +187,12 @@
       "Oil-and-Gas": {
         "title": {
           "oilProduction": {
-            "region": "Crude Oil Production By Region",
-            "source": "Crude Oil Production By Type"
+            "region": "Oil Production By Region",
+            "source": "Oil Production By Type"
           },
           "gasProduction": {
-            "region": "Natural Gas Production By Region",
-            "source": "Natural Gas Production By Type"
+            "region": "Gas Production By Region",
+            "source": "Gas Production By Type"
           },
           "default": "Oil and Gas"
         },

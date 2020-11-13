@@ -187,12 +187,12 @@
       "Oil-and-Gas": {
         "title": {
           "oilProduction": {
-            "region": "Production de pétrole brut selon la région",
-            "source": "Production de pétrole brut selon le type"
+            "region": "Production de pétrole selon la région",
+            "source": "Production de pétrole selon le type"
           },
           "gasProduction": {
-            "region": "Production de gaz naturel selon la région",
-            "source": "Production de gaz naturel selon le type"
+            "region": "Production de gaz selon la région",
+            "source": "Production de gaz selon le type"
           },
           "default": "Pétrole et gaz"
         },
