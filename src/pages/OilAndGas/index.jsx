@@ -80,7 +80,7 @@ const OilAndGas = ({ data, year }) => {
   } = useAPI();
 
   // Compare button toggle
-  const [compare, setCompare] = useState(false);
+  const [compare, setCompare] = useState(true);
 
   /**
    * Format tooltip.
@@ -182,10 +182,14 @@ const OilAndGas = ({ data, year }) => {
 
   const createTreeMap = useCallback((sortedSource, percentage, size, biggestTreeMapTotal) => (
     <>
-      <Typography align='center' varient="body2" style={{ bottom: 0, fontWeight: 700 }}>
-        {config.view === 'region' && percentage > 1
-          ? `${sortedSource.name}: ${percentage.toFixed(2)}%`
-          : sortedSource.name}
+      <Typography align='center' varient="body2" style={{ bottom: 0, fontWeight: 700, fontSize: 12 }}>
+        {config.view === 'source' ? intl.formatMessage(
+          {
+            id: `views.oil-and-gas.treeMapSourceTitles.${config.mainSelection}.${sortedSource.name}`,
+            defaultMessage: sortedSource.name,
+          },
+        ) : sortedSource.name}
+        {config.view === 'region' && percentage > 1 && `: ${percentage.toFixed(2)}%`}
       </Typography>
 
       <div
@@ -212,10 +216,11 @@ const OilAndGas = ({ data, year }) => {
           motionStiffness={90}
           motionDamping={11}
           tooltip={getTooltip}
+          leavesOnly
         />
       </div>
     </>
-  ), [classes.treeMapRectangle, config.view, getColor, getTooltip, sizeMultiplier]);
+  ), [classes.treeMapRectangle, config, getColor, getTooltip, intl, sizeMultiplier]);
 
   if (!data || Number.isNaN(data[currentYear][0].total)) {
     return null;
@@ -325,15 +330,29 @@ const OilAndGas = ({ data, year }) => {
       <Grid container direction="column" className={classes.year}>
         <Grid item>
           <Grid container alignItems="center" wrap="nowrap" spacing={1}>
-            <Grid item className={classes.yearBox}><div style={{ border: '3px solid black' }} /></Grid>
-            <Grid item><Typography color='primary' variant='h4'>{currentYear}</Typography></Grid>
+            {/* This may be re-implemented in the future */}
+            {/* <Grid item className={classes.yearBox}>
+              <div style={{ border: '3px solid black' }} />
+            </Grid> */}
+            <Grid item>
+              <Typography color='primary' variant='h4' style={{ padding: '0px 20px' }}>
+                {currentYear}
+              </Typography>
+            </Grid>
           </Grid>
         </Grid>
         {compare && (
           <Grid item>
             <Grid container alignItems="center" wrap="nowrap" spacing={1}>
-              <Grid item className={classes.yearBox}><div style={{ border: '3px dotted grey' }} /></Grid>
-              <Grid item><Typography color='secondary' variant='h4'>{compareYear}</Typography></Grid>
+              {/* This may be re-implemented in the future */}
+              {/* <Grid item className={classes.yearBox}>
+                <div style={{ border: '3px dotted grey' }} />
+              </Grid> */}
+              <Grid item>
+                <Typography color='secondary' variant='h4' style={{ padding: '0px 20px' }}>
+                  {compareYear}
+                </Typography>
+              </Grid>
             </Grid>
           </Grid>
         )}
@@ -376,9 +395,9 @@ const OilAndGas = ({ data, year }) => {
 
       {/* legend */}
       <Grid container direction="column" className={classes.legend}>
-        <Typography align='center'><strong>Legend</strong></Typography>
+        <Typography align='center' variant='body2'><strong>Legend</strong></Typography>
 
-        <Typography variant="body2" align="center">
+        <Typography variant="caption" align="center">
           <strong>
             {config.view === 'source'
               ? `Type of ${config.mainSelection === 'oilProduction' ? 'Oil' : 'Gas'}`
@@ -389,7 +408,7 @@ const OilAndGas = ({ data, year }) => {
         <Grid container alignItems="center" wrap="nowrap" spacing={1}>
           <Grid item><IconOilAndGasRectangle /></Grid>
           <Grid item>
-            <Typography variant="body2">
+            <Typography variant="caption">
               {intl.formatMessage({ id: `common.oilandgas.legend.single.${config.view}` })}
             </Typography>
           </Grid>
@@ -397,7 +416,7 @@ const OilAndGas = ({ data, year }) => {
         <Grid container alignItems="center" wrap="nowrap" spacing={1}>
           <Grid item><IconOilAndGasGroup /></Grid>
           <Grid item>
-            <Typography variant="body2">
+            <Typography variant="caption">
               {intl.formatMessage({ id: `common.oilandgas.legend.group.${config.view}` })}
             </Typography>
           </Grid>
