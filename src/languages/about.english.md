@@ -14,19 +14,17 @@ Email us with your comments and ideas: [data.donnees@cer-rec.gc.ca](mailto:data.
 
 ###### VERSION 2
 ###### DATA SOURCE:
-Matthew Hansen (Market Analyst), Aaron Hoyle (Market Analyst), Mantaj Hundal (Market Analyst), Michael Nadew (Market Analyst), Melanie Stogran (Supply Analyst), Bryce van Sluys (Director)
+Matthew Hansen (Market Analyst), Aaron Hoyle (Market Analyst), Mantaj Hundal (Market Analyst), Michael Nadew (Market Analyst), Melanie Stogran (Supply Analyst), Bryce van Sluys (Director, Energy Outlooks)
 
 ###### COORDINATION:
-Amanda Harwood (Project Manager); Romina Imani (Digital Data Coordinator); Karen Ryhorchuk (Communications Officer)
+Amanda Harwood (Project Manager); Romina Imani (Digital Data Coordinator); Karen Ryhorchuk (Communications Officer); Sean Stricker (Director, Digital Transformation)
 
 ###### DATA VISUALIZATION:
-Technical Design Lead: Jagoda Walny-Nix
+Design Lead & Production Graphics: Tétro
 
-Design Lead: Doris Kosminsky
+Tétro Design Team: Doris Kosminsky, Justin Ladia, Andrea Tetrault
 
-UX Design: Angelsea Saby, Lien Quach
-
-Design & Production Graphics: Tétro
+CER Design Team: Lien Quach, Angelsea Saby, Jagoda Walny-Nix
 
 Technical Development Lead: VizworX
 

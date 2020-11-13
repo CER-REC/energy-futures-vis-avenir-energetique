@@ -172,14 +172,22 @@ export const HintScenarioSelect = ({ children }) => {
   const intl = useIntl();
   const { yearIdIterations } = useAPI();
   const { yearId } = useConfig().config;
-  const section = useMemo(() => (yearIdIterations[yearId]?.scenarios || []).map(scenario => ({
+  const sectionTitle = useMemo(
+    () => [{ text: intl.formatMessage({ id: `components.scenarioSelect.description.${yearId}` }) }],
+    [intl, yearId],
+  );
+  const sectionBody = useMemo(() => (yearIdIterations[yearId]?.scenarios || []).map(scenario => ({
     title: intl.formatMessage({ id: `common.scenarios.${scenario}` }),
     text: intl.formatMessage({
       id: `components.scenarioSelect.${scenario}.description.${yearId}`,
       defaultMessage: intl.formatMessage({ id: `components.scenarioSelect.${scenario}.description.default` }),
     }),
   })), [intl, yearIdIterations, yearId]);
-  return <Hint content={[<HintSection title={intl.formatMessage({ id: 'components.scenarioSelect.name' })} section={section} />]}>{children}</Hint>;
+  const sections = [
+    <HintSection title={intl.formatMessage({ id: 'components.scenarioSelect.name' })} section={sectionTitle} />,
+    <HintSection section={sectionBody} />,
+  ];
+  return <Hint content={sections}>{children}</Hint>;
 };
 
 HintScenarioSelect.propTypes = { children: PropTypes.node };
@@ -229,10 +237,11 @@ HintSectorSelect.defaultProps = { children: null };
  */
 export const HintViewSelect = ({ children }) => {
   const intl = useIntl();
+  const { page } = useConfig().config;
   const section = useMemo(() => ['region', 'source'].map(view => ({
-    title: intl.formatMessage({ id: `common.${view}` }),
-    text: intl.formatMessage({ id: `components.viewSelect.${view}.description` }),
-  })), [intl]);
+    title: intl.formatMessage({ id: `common.${view === 'source' && page === 'oil-and-gas' ? 'type' : view}` }),
+    text: intl.formatMessage({ id: `components.viewSelect.${view}.description.${page}` }),
+  })), [intl, page]);
   return <Hint content={[<HintSection title={intl.formatMessage({ id: 'components.viewSelect.name' })} section={section} />]}>{children}</Hint>;
 };
 

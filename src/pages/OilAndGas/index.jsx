@@ -358,18 +358,14 @@ const OilAndGas = ({ data, year }) => {
         <Typography align='center'><strong>Legend</strong></Typography>
 
         <Typography variant="body2" align="center">
-          <strong>
-            {config.view === 'source'
-              ? `Type of ${config.mainSelection === 'oilProduction' ? 'Oil' : 'Gas'}`
-              : 'Region'}
-          </strong> &#40;Year selected&#41;
+          <strong>{intl.formatMessage({ id: `common.oilandgas.legend.${config.mainSelection}.${config.view}.title` })}</strong>
         </Typography>
 
         <Grid container alignItems="center" wrap="nowrap" spacing={1}>
           <Grid item><IconOilAndGasRectangle /></Grid>
           <Grid item>
             <Typography variant="body2">
-              {intl.formatMessage({ id: `common.oilandgas.legend.single.${config.view}` })}
+              {intl.formatMessage({ id: `common.oilandgas.legend.${config.mainSelection}.${config.view}.single` })}
             </Typography>
           </Grid>
         </Grid>
@@ -377,7 +373,7 @@ const OilAndGas = ({ data, year }) => {
           <Grid item><IconOilAndGasGroup /></Grid>
           <Grid item>
             <Typography variant="body2">
-              {intl.formatMessage({ id: `common.oilandgas.legend.group.${config.view}` })}
+              {intl.formatMessage({ id: `common.oilandgas.legend.${config.mainSelection}.${config.view}.group` })}
             </Typography>
           </Grid>
         </Grid>
