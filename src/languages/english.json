@@ -158,10 +158,10 @@
       "By Sector": {
         "title": {
           "ALL": "Total End-Use Demand For All Sectors",
-          "RESIDENTIAL": "End-Use Demand By Residential Sector",
-          "COMMERCIAL": "End-Use Demand By Commercial Sector",
-          "INDUSTRIAL": "End-Use Demand By Industrial Sector",
-          "TRANSPORTATION": "End-Use Demand By Transportation Sector",
+          "RESIDENTIAL": "End-Use Demand For The Residential Sector",
+          "COMMERCIAL": "End-Use Demand For The Commercial Sector",
+          "INDUSTRIAL": "End-Use Demand For The Industrial Sector",
+          "TRANSPORTATION": "End-Use Demand For The Transportation Sector",
           "default": "By Sector"
         },
         "description": "Explore how energy source mixes from different sectors have evolved in recent history, and how they are projected to evolve in the Energy Futures scenarios."
