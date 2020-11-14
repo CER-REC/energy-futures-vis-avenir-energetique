@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useMemo, useCallback, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Grid, Typography, Button, Tooltip, makeStyles } from '@material-ui/core';
 import { ResponsiveTreeMap } from '@nivo/treemap';
@@ -39,7 +39,7 @@ const useStyles = makeStyles(theme => ({
   },
   treeMapRectangle: {
     margin: 'auto',
-    '& svg': { transform: 'rotate(270deg)' },
+    '& svg': { transform: 'rotate(270deg) scaleX(-1)' },
     '& > div > div > div:last-of-type': { display: 'none' }, // hide the default Nivo tooltip
   },
   group: {
@@ -62,7 +62,7 @@ const useStyles = makeStyles(theme => ({
 
 const OilAndGas = ({ data, year }) => {
   const classes = useStyles();
-  const { config } = useConfig();
+  const { config, configDispatch } = useConfig();
   const intl = useIntl();
 
   const [currentYear, setCurrentYear] = useState(config.baseYear || year?.min);
@@ -74,7 +74,7 @@ const OilAndGas = ({ data, year }) => {
   } = useAPI();
 
   // Compare button toggle
-  const [compare, setCompare] = useState(true);
+  const compare = useMemo(() => !config.noCompare, [config.noCompare]);
 
   // Determine which tooltip is currently open
   const [tooltip, setTooltip] = useState(undefined);
@@ -178,7 +178,7 @@ const OilAndGas = ({ data, year }) => {
             margin={{ top: 10, right: 10, bottom: 10, left: 10 }}
             enableLabel={false}
             colors={getColor}
-            borderWidth={2}
+            borderWidth={1}
             borderColor="white"
             animate
             motionStiffness={90}
@@ -329,7 +329,7 @@ const OilAndGas = ({ data, year }) => {
           </Grid>
         )}
         <Grid item>
-          <Button variant="outlined" color="primary" size="small" onClick={() => setCompare(!compare)}>
+          <Button variant="outlined" color="primary" size="small" onClick={() => configDispatch({ type: 'noCompare/changed', payload: compare })}>
             {intl.formatMessage({ id: `common.oilandgas.button.${compare ? 'noCompare' : 'compare'}` })}
           </Button>
         </Grid>

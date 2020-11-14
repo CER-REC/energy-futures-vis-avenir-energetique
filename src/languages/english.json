@@ -17,7 +17,7 @@
     "units": {
       "petajoules": "PJ",
       "gigawattHours": "GW.h",
-      "kilobarrelEquivalents": "Mboe",
+      "kilobarrelEquivalents": "Mboe/d",
       "thousandCubicMetres": "10³m³/d",
       "millionCubicMetres": "10⁶m³/d",
       "kilobarrels": "Mb/d",
@@ -561,12 +561,20 @@
       "description": "Access our [Methodology document](https://apps2.cer-rec.gc.ca/dvs/PDF/CER_Energy_Futures_Methodology_ENG.PDF) to find out about the Energy Futures modeling system, definitions and indicators, data sources and more."
     },
     "Report": {
-      "title": "2020 Reports"
+      "title": "Reports"
     },
     "Summary": {
       "title": "Summary",
       "description": "Energy Future includes a wide range of projections for Canadian energy supply and demand. Theme projects are the result of a modeling system consisting of several interactive components (or modules) which produce integrated, future Canadian energy trends.",
-      "link": "[View the EF2020 Report](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2020/index.html)"
+      "link": {
+        "2016": "[View the EF2016 Report](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2016/index.html)",
+        "2016*": "[View the EF2016 (Update) Report](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2016-update/index.html)",
+        "2017": "[View the EF2017 Report](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2017/index.html)",
+        "2018": "[View the EF2018 Report](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2018/index.html)",
+        "2019": "[View the EF2019 Report](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2019/index.html)",
+        "2020": "[View the EF2020 Report](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2020/index.html)",
+        "default": "[View the EF2016 Report](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2020/index.html)"
+      }
     },
     "About": {
       "title": "About"

@@ -20,6 +20,8 @@ export const initialState = {
   // timeline
   baseYear: null,
   compareYear: null,
+  // oil-and-gas
+  noCompare: null,
 };
 
 export const getReducer = (regions, sources, sectors, yearIdIterations) => {
@@ -153,7 +155,6 @@ export const getReducer = (regions, sources, sectors, yearIdIterations) => {
     // set to 0 if not available so that the year slider stays at the minimum year number.
     return Number.isNaN(value) ? 0 : value;
   };
-
   const getCompareYear = (page, compareYear) => {
     if (page !== 'oil-and-gas') {
       return null;
@@ -270,6 +271,11 @@ export const getReducer = (regions, sources, sectors, yearIdIterations) => {
         return {
           ...state,
           compareYear: getCompareYear(state.page, action.payload),
+        };
+      case 'noCompare/changed':
+        return {
+          ...state,
+          noCompare: Boolean(action.payload),
         };
       default:
         return state;

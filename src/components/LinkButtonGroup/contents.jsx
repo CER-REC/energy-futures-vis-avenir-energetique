@@ -18,8 +18,8 @@ const LinkButtonContentAssumptions = ({ yearId }) => {
   }), [intl, yearId]);
   return (
     <>
-      <Typography variant="body2" color="secondary" component="span" gutterBottom><Markdown>{text}</Markdown></Typography>
-      <Typography variant="body2" color="secondary" component="span"><Markdown>{link}</Markdown></Typography>
+      <Typography variant="body2" color="secondary" component="div" gutterBottom><Markdown>{text}</Markdown></Typography>
+      <Typography variant="body2" color="secondary" component="div" gutterBottom><Markdown>{link}</Markdown></Typography>
     </>
   );
 };
@@ -37,8 +37,8 @@ const LinkButtonContentKeyFindings = ({ yearId }) => {
   }), [intl, yearId]);
   return (
     <>
-      <Typography variant="body2" color="secondary" component="span" gutterBottom><Markdown>{text}</Markdown></Typography>
-      <Typography variant="body2" color="secondary" component="span"><Markdown>{link}</Markdown></Typography>
+      <Typography variant="body2" color="secondary" component="div" gutterBottom><Markdown>{text}</Markdown></Typography>
+      <Typography variant="body2" color="secondary" component="div" gutterBottom><Markdown>{link}</Markdown></Typography>
     </>
   );
 };
@@ -56,20 +56,23 @@ const LinkButtonContentResults = ({ yearId }) => {
   }), [intl, yearId]);
   return (
     <>
-      <Typography variant="body2" color="secondary" component="span" gutterBottom><Markdown>{text}</Markdown></Typography>
-      <Typography variant="body2" color="secondary" component="span"><Markdown>{link}</Markdown></Typography>
+      <Typography variant="body2" color="secondary" component="div" gutterBottom><Markdown>{text}</Markdown></Typography>
+      <Typography variant="body2" color="secondary" component="div" gutterBottom><Markdown>{link}</Markdown></Typography>
     </>
   );
 };
 LinkButtonContentResults.propTypes = { yearId: PropTypes.string.isRequired };
 
-const LinkButtonContentSummary = () => {
+const LinkButtonContentSummary = ({ yearId }) => {
   const intl = useIntl();
   const text = useMemo(() => intl.formatMessage({ id: 'links.Summary.description' }), [intl]);
-  const link = useMemo(() => intl.formatMessage({ id: 'links.Summary.link' }), [intl]);
+  const link = useMemo(() => intl.formatMessage({
+    id: `links.Summary.link.${yearId}`,
+    defaultMessage: intl.formatMessage({ id: 'links.Summary.link.default' }),
+  }), [intl, yearId]);
   return (
     <>
-      <Typography variant="body2" color="secondary" gutterBottom>{text}</Typography>
+      <Typography variant="body2" color="secondary" style={{ marginBottom: 24 }}>{text}</Typography>
       <Grid container alignItems="flex-end" wrap="nowrap" spacing={1}>
         <Grid item xs={5}><img src={ReportLinkImage} alt={intl.formatMessage({ id: 'common.a11y.downloadReport' })} /></Grid>
         <Grid item xs={7}><Typography variant="body2" color="secondary" component="span"><Markdown>{link}</Markdown></Typography></Grid>
@@ -77,6 +80,7 @@ const LinkButtonContentSummary = () => {
     </>
   );
 };
+LinkButtonContentSummary.propTypes = { yearId: PropTypes.string.isRequired };
 
 const useStyles = makeStyles(theme => ({
   content: {
@@ -149,7 +153,7 @@ export const LinkButtonContentReport = ({ yearId, onClose }) => {
   const intl = useIntl();
 
   const tabs = useMemo(() => [
-    { title: intl.formatMessage({ id: 'links.Summary.title' }), content: <LinkButtonContentSummary /> },
+    { title: intl.formatMessage({ id: 'links.Summary.title' }), content: <LinkButtonContentSummary yearId={yearId} /> },
     { title: intl.formatMessage({ id: 'links.Findings.title' }), content: <LinkButtonContentKeyFindings yearId={yearId} /> },
     { title: intl.formatMessage({ id: 'links.Assumptions.title' }), content: <LinkButtonContentAssumptions yearId={yearId} /> },
     { title: intl.formatMessage({ id: 'links.Results.title' }), content: <LinkButtonContentResults yearId={yearId} /> },
@@ -176,7 +180,7 @@ export const LinkButtonContentReport = ({ yearId, onClose }) => {
           </Button>
         </Grid>
       </Grid>
-      <Grid item className={classes.content}>{(select || {}).content}</Grid>
+      <Grid item className={classes.content} style={{ height: 250 }}>{(select || {}).content}</Grid>
     </>
   );
 };

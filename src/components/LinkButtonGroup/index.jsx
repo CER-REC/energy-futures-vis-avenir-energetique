@@ -50,11 +50,11 @@ const useStyles = makeStyles(theme => createStyles({
     '& img': { width: '100%' },
   },
   popUpRight: {
-    top: '50%',
+    top: 0,
     left: 'calc(100% + 20px)',
-    transform: 'translateY(-50%)',
+    transform: `translateY(calc(-100% + ${theme.spacing(6)}px))`,
     maxHeight: 350,
-    minWidth: 300,
+    minWidth: 350,
   },
   popUpTop: {
     bottom: 'calc(100% + 24px)',
@@ -100,7 +100,7 @@ const LinkButtonGroup = ({ direction }) => {
 
   const link = useMemo(() => ({
     report: {
-      name: intl.formatMessage({ id: 'links.Report.title' }),
+      name: `${config.yearId} ${intl.formatMessage({ id: 'links.Report.title' })}`,
       content: <LinkButtonContentReport yearId={config.yearId} onClose={close} />,
     },
     methodology: {

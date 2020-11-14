@@ -17,7 +17,7 @@
     "units": {
       "petajoules": "PJ",
       "gigawattHours": "GWh",
-      "kilobarrelEquivalents": "kbep",
+      "kilobarrelEquivalents": "kbep/j",
       "thousandCubicMetres": "10³m³/j",
       "millionCubicMetres": "Mm³/j",
       "kilobarrels": "kb/j",
@@ -549,11 +549,11 @@
       "link": {
         "2016": "[Résultats d’AE 2016](https://www.cer-rec.gc.ca/fr/donnees-analyse/avenir-energetique-canada/2016/index.html)",
         "2016*": "[Résultats d’AE 2016 Mise à jour](https://www.cer-rec.gc.ca/fr/donnees-analyse/avenir-energetique-canada/2016-mise-jour/index.html)",
-        "2017": "- [EF2017 Reference and HCP Case: Results](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2017/chapter-3-reference-hcp-case-results.html)\n- [EF2017 Technology Case: Results](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2017/chapter-4-technology-case-results.html)",
+        "2017": "- [Scénarios de référence et de TCE d’AE 2017 : Résultats](https://www.cer-rec.gc.ca/fr/donnees-analyse/avenir-energetique-canada/2017/chapitre-3-resultats-scenarios-reference-tce.html)\n- [Scénario des avancées technologiques d’AE 2017 : Résultats](https://www.cer-rec.gc.ca/fr/donnees-analyse/avenir-energetique-canada/2017/chapitre-4-resultats-scenario-avancees-technologiques.html)",
         "2018": "- [Scénario de référence et scénarios de prix élevés/prix bas d’AE 2018: Résultats](https://www.cer-rec.gc.ca/fr/donnees-analyse/avenir-energetique-canada/2018/chapitre-3-scenario-reference-scenario-prix-eleves-scenario-prix-bas.html)\n- [Scénario des avancées technologiques d’AE 2018 : Résultats](https://www.cer-rec.gc.ca/fr/donnees-analyse/avenir-energetique-canada/2018/chapitre-4-scenario-avancees-technologiques.html)",
-        "2019": "[Résultats AE 2019](https://www.cer-rec.gc.ca/fr/donnees-analyse/avenir-energetique-canada/2019/resultats/index.html)",
-        "2020": "[Résultats EF 2020](https://www.cer-rec.gc.ca/fr/donnees-analyse/avenir-energetique-canada/2020/resultats/index.html)",
-        "default": "[EF2016 Results](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2016/index.html)"
+        "2019": "[Résultats d’AE 2019](https://www.cer-rec.gc.ca/fr/donnees-analyse/avenir-energetique-canada/2019/resultats/index.html)",
+        "2020": "[Résultats d’AE 2020](https://www.cer-rec.gc.ca/fr/donnees-analyse/avenir-energetique-canada/2020/resultats/index.html)",
+        "default": "[Résultats d’AE 2016](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2016/index.html)"
       }
     },
     "Methodology": {
@@ -561,12 +561,20 @@
       "description": "Consultez notre [document sur la méthodologie](https://www.cer-rec.gc.ca/avenir-energetique/PDF/Regie-avenir-energetique-methodologie-fr.pdf) pour en savoir plus sur le système de modélisation de l’avenir énergétique, les définitions et les indicateurs, les sources de données et plus encore."
     },
     "Report": {
-      "title": "2020 Rapports"
+      "title": "Rapports"
     },
     "Summary": {
       "title": "Summary",
       "description": "Les rapports sur l’avenir énergétique proposent un large éventail de projections concernant l’offre et la demande d’énergie au Canada. Ces projections ont été réalisées à partir d’un système de modélisation qui fait interagir plusieurs composantes (ou modules) en vue d’arriver à des projections globales sur les tendances énergétiques futures du Canada.",
-      "link": "[Voir le rapport AE 2020](https://www.cer-rec.gc.ca/fr/donnees-analyse/avenir-energetique-canada/2020/index.html)"
+      "link": {
+        "2016": "[Voir le rapport AE 2016](https://www.cer-rec.gc.ca/fr/donnees-analyse/avenir-energetique-canada/2016/index.html)",
+        "2016*": "[Voir le rapport AE 2016 Mise à jour](https://www.cer-rec.gc.ca/fr/donnees-analyse/avenir-energetique-canada/2016-mise-jour/index.html)",
+        "2017": "[Voir le rapport AE 2017](https://www.cer-rec.gc.ca/fr/donnees-analyse/avenir-energetique-canada/2017/index.html)",
+        "2018": "[Voir le rapport AE 2018](https://www.cer-rec.gc.ca/fr/donnees-analyse/avenir-energetique-canada/2018/index.html)",
+        "2019": "[Voir le rapport AE 2019](https://www.cer-rec.gc.ca/fr/donnees-analyse/avenir-energetique-canada/2019/index.html)",
+        "2020": "[Voir le rapport AE 2020](https://www.cer-rec.gc.ca/fr/donnees-analyse/avenir-energetique-canada/2020/index.html)",
+        "default": "[Voir le rapport AE 2016](https://www.cer-rec.gc.ca/fr/donnees-analyse/avenir-energetique-canada/2016/index.html)"
+      }
     },
     "About": {
       "title": "À propos"
