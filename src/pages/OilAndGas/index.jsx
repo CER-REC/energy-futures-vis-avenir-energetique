@@ -397,27 +397,23 @@ const OilAndGas = ({ data, year }) => {
       <Grid container direction="column" className={classes.legend}>
         <Typography align='center' variant='body2'><strong>Legend</strong></Typography>
 
-        <Typography variant="caption" align="center">
-          <strong>
-            {config.view === 'source'
-              ? `Type of ${config.mainSelection === 'oilProduction' ? 'Oil' : 'Gas'}`
-              : 'Region'}
-          </strong> &#40;Year selected&#41;
+        <Typography variant="body2" align="center">
+          <strong>{intl.formatMessage({ id: `common.oilandgas.legend.${config.mainSelection}.${config.view}.title` })}</strong>
         </Typography>
 
         <Grid container alignItems="center" wrap="nowrap" spacing={1}>
           <Grid item><IconOilAndGasRectangle /></Grid>
           <Grid item>
-            <Typography variant="caption">
-              {intl.formatMessage({ id: `common.oilandgas.legend.single.${config.view}` })}
+            <Typography variant="body2">
+              {intl.formatMessage({ id: `common.oilandgas.legend.${config.mainSelection}.${config.view}.single` })}
             </Typography>
           </Grid>
         </Grid>
         <Grid container alignItems="center" wrap="nowrap" spacing={1}>
           <Grid item><IconOilAndGasGroup /></Grid>
           <Grid item>
-            <Typography variant="caption">
-              {intl.formatMessage({ id: `common.oilandgas.legend.group.${config.view}` })}
+            <Typography variant="body2">
+              {intl.formatMessage({ id: `common.oilandgas.legend.${config.mainSelection}.${config.view}.group` })}
             </Typography>
           </Grid>
         </Grid>

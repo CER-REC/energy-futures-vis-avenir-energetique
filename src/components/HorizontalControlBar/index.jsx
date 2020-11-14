@@ -55,7 +55,7 @@ const HorizontalControlBar = () => {
       {appendices.map(selection => (
         <Grid item key={`config-origin-${selection}`}>
           <Tooltip
-            title={intl.formatMessage({ id: `components.mainSelect.${selection}.description` })}
+            title={intl.formatMessage({ id: `components.mainSelect.${selection}.tooltip.${config.page}` })}
             classes={{ tooltip: classes.tooltip }}
           >
             <Button
@@ -86,7 +86,7 @@ const HorizontalControlBar = () => {
         return (
           <Grid item key={`config-sector-${sector}`}>
             <Tooltip
-              title={intl.formatMessage({ id: `components.sectorSelect.${sector}.description` })}
+              title={intl.formatMessage({ id: `components.sectorSelect.${sector}.tooltip` })}
               classes={{ tooltip: classes.tooltip }}
             >
               <Button
@@ -113,7 +113,7 @@ const HorizontalControlBar = () => {
       {['region', 'source'].map(view => (
         <Tooltip
           key={`config-view-${view}`}
-          title={intl.formatMessage({ id: `components.viewSelect.${view}.description` })}
+          title={intl.formatMessage({ id: `components.viewSelect.${view}.tooltip.${config.page}.${config.mainSelection}` })}
         >
           <Button
             variant={config.view === view ? 'contained' : 'outlined'}
@@ -121,7 +121,7 @@ const HorizontalControlBar = () => {
             size="small"
             onClick={() => configDispatch({ type: 'view/changed', payload: view })}
           >
-            {intl.formatMessage({ id: `common.${(config.page === 'oil-and-gas' && view === 'source') ? 'type' : view}` })}
+            {intl.formatMessage({ id: `common.${view === 'source' && config.page === 'oil-and-gas' ? 'type' : view}` })}
           </Button>
         </Tooltip>
       ))}

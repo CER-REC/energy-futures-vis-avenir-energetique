@@ -50,7 +50,7 @@ const YearSelect = () => {
           <Tooltip
             title={(
               <Typography variant="caption" color="secondary">
-                {intl.formatMessage({ id: `components.yearSelect.${yearId}.title` })}
+                {intl.formatMessage({ id: `components.yearSelect.${yearId}.tooltip` })}
               </Typography>
             )}
           >
