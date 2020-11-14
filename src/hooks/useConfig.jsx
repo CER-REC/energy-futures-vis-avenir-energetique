@@ -6,7 +6,7 @@ import queryString from 'query-string';
 import { initialState, getReducer } from './reducer';
 import useAPI from './useAPI';
 
-const parameters = ['page', 'mainSelection', 'yearId', 'sector', 'unit', 'view', 'baseYear', 'compareYear'];
+const parameters = ['page', 'mainSelection', 'yearId', 'sector', 'unit', 'view', 'baseYear', 'compareYear', 'noCompare'];
 const delimitedParameters = ['scenarios', 'provinces', 'provinceOrder', 'sources', 'sourceOrder'];
 const history = createBrowserHistory();
 const ConfigContext = createContext();
@@ -38,6 +38,7 @@ export const ConfigProvider = ({ children }) => {
     configDispatch({ type: 'sourceOrder/changed', payload: query.sourceOrder?.split(',') });
     configDispatch({ type: 'baseYear/changed', payload: query.baseYear });
     configDispatch({ type: 'compareYear/changed', payload: query.compareYear });
+    configDispatch({ type: 'noCompare/changed', payload: query.noCompare });
   }, [configDispatch]);
 
   /**
