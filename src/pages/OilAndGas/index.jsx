@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { Grid, Typography, Button, Tooltip, makeStyles } from '@material-ui/core';
 import { ResponsiveTreeMap } from '@nivo/treemap';
@@ -69,7 +69,7 @@ const useStyles = makeStyles(theme => ({
 
 const OilAndGas = ({ data, year }) => {
   const classes = useStyles();
-  const { config } = useConfig();
+  const { config, configDispatch } = useConfig();
   const intl = useIntl();
 
   const [currentYear, setCurrentYear] = useState(config.baseYear || year?.min);
@@ -81,7 +81,7 @@ const OilAndGas = ({ data, year }) => {
   } = useAPI();
 
   // Compare button toggle
-  const [compare, setCompare] = useState(true);
+  const compare = useMemo(() => !config.noCompare, [config.noCompare]);
 
   // Determine which tooltip is currently open
   const [tooltip, setTooltip] = useState(undefined);
@@ -377,7 +377,7 @@ const OilAndGas = ({ data, year }) => {
           </Grid>
         )}
         <Grid item>
-          <Button variant="outlined" color="primary" size="small" onClick={() => setCompare(!compare)}>
+          <Button variant="outlined" color="primary" size="small" onClick={() => configDispatch({ type: 'noCompare/changed', payload: compare })}>
             {intl.formatMessage({ id: `common.oilandgas.button.${compare ? 'noCompare' : 'compare'}` })}
           </Button>
         </Grid>
