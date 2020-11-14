@@ -17,7 +17,7 @@
     "units": {
       "petajoules": "PJ",
       "gigawattHours": "GW.h",
-      "kilobarrelEquivalents": "Mboe",
+      "kilobarrelEquivalents": "Mboe/d",
       "thousandCubicMetres": "10³m³/d",
       "millionCubicMetres": "10⁶m³/d",
       "kilobarrels": "Mb/d",
