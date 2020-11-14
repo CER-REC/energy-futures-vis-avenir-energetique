@@ -26,14 +26,25 @@ const useStyles = makeStyles(theme => ({
     margin: theme.spacing(3, 0),
     '& > img': { width: '100%' },
   },
-  aside: { float: 'left' },
-  main: { marginBottom: theme.spacing(8) },
+  aside: {
+    float: 'left',
+    '& h6, & button, & a': {
+      fontFamily: '"Helvetica Neue",Helvetica,Arial,sans-serif',
+    },
+  },
+  main: {
+    marginBottom: theme.spacing(8),
+    '& h6, & p, & span, & button, & a': {
+      fontFamily: '"Helvetica Neue",Helvetica,Arial,sans-serif',
+    },
+  },
   title: {
     position: 'absolute',
     left: '8%',
     top: '50%',
     maxWidth: '27%',
     color: theme.palette.common.white,
+    fontFamily: '"Helvetica Neue",Helvetica,Arial,sans-serif',
     transform: 'translateY(-50%)',
   },
 
@@ -67,7 +78,7 @@ const useStyles = makeStyles(theme => ({
       backgroundColor: 'rgba(103, 142, 179, .75)',
     },
     '& h6, & p': {
-      padding: theme.spacing(1, 1.5),
+      padding: theme.spacing(1, 1.5, 1.5),
       color: theme.palette.getContrastText(theme.palette.primary.dark),
       lineHeight: 1.1,
     },
@@ -160,7 +171,7 @@ const Landing = () => {
   return (
     <>
       <header className={classes.header}>
-        <img src={headerBg} alt="header background" />
+        <img src={headerBg} alt={intl.formatMessage({ id: 'common.a11y.header' })} />
         <Typography variant={desktop ? 'h4' : 'h5'} className={classes.title}>{intl.formatMessage({ id: 'landing.title' })}</Typography>
       </header>
 
@@ -190,8 +201,8 @@ const Landing = () => {
           {/* the download report thumbnail and links */}
           <Grid item className={classes.download}>
             <Typography variant="h6" color="secondary">{intl.formatMessage({ id: 'landing.links.title' })}</Typography>
-            <ButtonBase href={intl.formatMessage({ id: 'landing.links.download.link' })} target="_about">
-              <img src={reportCover} alt="download report link" />
+            <ButtonBase aria-label={intl.formatMessage({ id: 'common.a11y.downloadReport' })} href={intl.formatMessage({ id: 'landing.links.download.link' })} target="_about">
+              <img src={reportCover} alt={intl.formatMessage({ id: 'common.a11y.downloadReport' })} />
             </ButtonBase>
             <Button color="primary" startIcon={<IconDownload />} href={intl.formatMessage({ id: 'landing.links.download.link' })} target="_about">
               {intl.formatMessage({ id: 'landing.links.download.title' })}
@@ -211,11 +222,15 @@ const Landing = () => {
 
           {PAGES.map(page => page.id !== 'landing' && (
             <Grid key={`landing-box-${page.id}`} item xs={desktop ? 6 : 12}>
-              <ButtonBase onClick={handleRedirect(page.id)} className={`${classes.box} ${desktop ? classes.boxDesktop : ''}`.trim()}>
-                <img src={getBg(page.id)} alt={`cover for the redirect link to page ${page.label}`} />
+              <ButtonBase
+                aria-label={`${intl.formatMessage({ id: 'common.a11y.redirect' })} ${page.label}`}
+                onClick={handleRedirect(page.id)}
+                className={`${classes.box} ${desktop ? classes.boxDesktop : ''}`.trim()}
+              >
+                <img src={getBg(page.id)} alt={`${intl.formatMessage({ id: 'common.a11y.redirect' })} ${page.label}`} />
                 <div>
                   <Typography variant="h6">{intl.formatMessage({ id: `landing.${page.label}.title` })}</Typography>
-                  <Typography variant="overline" component="p">{intl.formatMessage({ id: `landing.${page.label}.description` })}</Typography>
+                  <Typography variant="body2" component="p">{intl.formatMessage({ id: `landing.${page.label}.description` })}</Typography>
                 </div>
               </ButtonBase>
             </Grid>

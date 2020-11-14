@@ -84,13 +84,16 @@ HintSection.defaultProps = {
  */
 const Hint = ({ children, content, maxWidth = 'sm' }) => {
   const classes = useStyles();
+  const intl = useIntl();
   const [open, setOpen] = useState(false);
 
   return (
     <>
       <Grid container alignItems="center" wrap="nowrap" className={classes.root}>
         {children}
-        <IconButton onClick={() => setOpen(true)} className={classes.hint}><HintIcon fontSize="small" /></IconButton>
+        <IconButton onClick={() => setOpen(true)} aria-label={intl.formatMessage({ id: 'common.a11y.open' })} className={classes.hint}>
+          <HintIcon fontSize="small" />
+        </IconButton>
       </Grid>
 
       <Dialog
@@ -99,7 +102,9 @@ const Hint = ({ children, content, maxWidth = 'sm' }) => {
         onClose={() => setOpen(false)}
         classes={{ paper: classes.dialog }}
       >
-        <Fab color="primary" size="medium" onClick={() => setOpen(false)} className={classes.close}><CloseIcon /></Fab>
+        <Fab color="primary" size="medium" onClick={() => setOpen(false)} aria-label={intl.formatMessage({ id: 'common.a11y.close' })} className={classes.close}>
+          <CloseIcon />
+        </Fab>
         <DialogContent style={{ padding: 24 }}>
           {typeof content === 'string' ? content : (
             <Grid container spacing={1}>
@@ -172,14 +177,22 @@ export const HintScenarioSelect = ({ children }) => {
   const intl = useIntl();
   const { yearIdIterations } = useAPI();
   const { yearId } = useConfig().config;
-  const section = useMemo(() => (yearIdIterations[yearId]?.scenarios || []).map(scenario => ({
+  const sectionTitle = useMemo(
+    () => [{ text: intl.formatMessage({ id: `components.scenarioSelect.description.${yearId}` }) }],
+    [intl, yearId],
+  );
+  const sectionBody = useMemo(() => (yearIdIterations[yearId]?.scenarios || []).map(scenario => ({
     title: intl.formatMessage({ id: `common.scenarios.${scenario}` }),
     text: intl.formatMessage({
       id: `components.scenarioSelect.${scenario}.description.${yearId}`,
       defaultMessage: intl.formatMessage({ id: `components.scenarioSelect.${scenario}.description.default` }),
     }),
   })), [intl, yearIdIterations, yearId]);
-  return <Hint content={[<HintSection title={intl.formatMessage({ id: 'components.scenarioSelect.name' })} section={section} />]}>{children}</Hint>;
+  const sections = [
+    <HintSection title={intl.formatMessage({ id: 'components.scenarioSelect.name' })} section={sectionTitle} />,
+    <HintSection section={sectionBody} />,
+  ];
+  return <Hint content={sections}>{children}</Hint>;
 };
 
 HintScenarioSelect.propTypes = { children: PropTypes.node };
@@ -229,21 +242,16 @@ HintSectorSelect.defaultProps = { children: null };
  */
 export const HintViewSelect = ({ children }) => {
   const intl = useIntl();
+  const { page } = useConfig().config;
   const section = useMemo(() => ['region', 'source'].map(view => ({
-    title: intl.formatMessage({ id: `common.${view}` }),
-    text: intl.formatMessage({ id: `components.viewSelect.${view}.description` }),
-  })), [intl]);
+    title: intl.formatMessage({ id: `common.${view === 'source' && page === 'oil-and-gas' ? 'type' : view}` }),
+    text: intl.formatMessage({ id: `components.viewSelect.${view}.description.${page}` }),
+  })), [intl, page]);
   return <Hint content={[<HintSection title={intl.formatMessage({ id: 'components.viewSelect.name' })} section={section} />]}>{children}</Hint>;
 };
 
 HintViewSelect.propTypes = { children: PropTypes.node };
 HintViewSelect.defaultProps = { children: null };
-
-// TODO: translate this.
-const HintDraggableListKeyboardShortcut = ({
-  title: 'Keyboard Shortcut',
-  text: '- **Spacebar:** start to drag or drop\n- **Escapse:** cancel the drag\n- **Up Arrow:** move an item upwards\n- **Down Arrow:** move an item downwards\n',
-});
 
 /**
  * Hint panel for the question mark on top of the draggable region list.
@@ -251,10 +259,16 @@ const HintDraggableListKeyboardShortcut = ({
 export const HintRegionList = ({ children }) => {
   const intl = useIntl();
   const { regions } = useAPI();
-  const section = useMemo(() => [...['ALL', ...regions.order].map(region => ({
-    title: region,
-    text: intl.formatMessage({ id: `common.regions.${region}` }),
-  })), HintDraggableListKeyboardShortcut], [intl, regions]);
+  const section = useMemo(() => [
+    ...['ALL', ...regions.order].map(region => ({
+      title: region,
+      text: intl.formatMessage({ id: `common.regions.${region}` }),
+    })),
+    {
+      title: intl.formatMessage({ id: 'components.draggableVerticalList.keyboardNav.title' }),
+      text: intl.formatMessage({ id: 'components.draggableVerticalList.keyboardNav.description' }),
+    },
+  ], [intl, regions]);
   return <Hint content={[<HintSection section={section} singleColumn />]} maxWidth="xs">{children}</Hint>;
 };
 
@@ -266,11 +280,17 @@ HintRegionList.defaultProps = { children: null };
  */
 export const HintSourceList = ({ sources, sourceType, children }) => {
   const intl = useIntl();
-  const section = useMemo(() => [...Object.keys(sources).map(source => ({
-    title: sources[source].label,
-    icon: sources[source].icon,
-    text: intl.formatMessage({ id: `sources.${sourceType}.${source}` }),
-  })), HintDraggableListKeyboardShortcut], [intl, sources, sourceType]);
+  const section = useMemo(() => [
+    ...Object.keys(sources).map(source => ({
+      title: sources[source].label,
+      icon: sources[source].icon,
+      text: intl.formatMessage({ id: `sources.${sourceType}.${source}` }),
+    })),
+    {
+      title: intl.formatMessage({ id: 'components.draggableVerticalList.keyboardNav.title' }),
+      text: intl.formatMessage({ id: 'components.draggableVerticalList.keyboardNav.description' }),
+    },
+  ], [intl, sources, sourceType]);
   return <Hint content={[<HintSection section={section} singleColumn />]}>{children}</Hint>;
 };
 

@@ -121,6 +121,7 @@ const LinkButtonGroup = ({ direction }) => {
       <Button
         variant="contained"
         color={select === label.name ? 'primary' : 'secondary'}
+        aria-label={label.name}
         onClick={handleSelect(label)}
         className={classes.btn}
       >

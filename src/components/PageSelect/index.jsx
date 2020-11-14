@@ -53,6 +53,12 @@ const useStyles = makeStyles(theme => createStyles({
     border: '2px solid transparent',
     transition: 'top .5s ease-in-out, padding .5s ease-in-out, border-color .25s ease-in-out',
     '&:hover': { border: `2px solid ${theme.palette.primary.main}` },
+    '&:disabled': {
+      backgroundColor: theme.palette.primary.main,
+      boxShadow: theme.shadows[0],
+      '& svg': { fill: '#FEFEFE' },
+      '& span': { color: '#FEFEFE' },
+    },
 
     '& > div': {
       width: 'auto',
@@ -66,11 +72,13 @@ const useStyles = makeStyles(theme => createStyles({
       height: 64,
       width: 64,
       fill: theme.palette.secondary.light,
+      transition: 'fill .35 ease-in-out',
     },
     '& + span': {
       width: 64,
-      color: theme.palette.secondary.light,
       fontWeight: 700,
+      color: theme.palette.secondary.light,
+      transition: 'color .35 ease-in-out',
     },
   },
   label: {
@@ -170,6 +178,7 @@ export const PageSelect = ({ direction /* row, column */ }) => {
           <span>
             <ButtonBase
               disabled={page.id === config.page}
+              aria-label={`${intl.formatMessage({ id: 'common.a11y.redirect' })} ${subtitle}`}
               onClick={() => configDispatch({ type: 'page/changed', payload: page.id })}
               classes={{ root: classes.box }}
             >
