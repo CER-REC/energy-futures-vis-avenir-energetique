@@ -40,8 +40,6 @@ module.exports = {
           devMode ? 'style-loader' : MiniCssExtractPlugin.loader,
           'css-loader',
           'postcss-loader',
-          // TODO: Remove sass-loader if Sass is not used in this project
-          'sass-loader',
         ],
       },
 

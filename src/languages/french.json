@@ -70,6 +70,13 @@
           }
         }
       }
+    },
+    "a11y": {
+      "header": "header background",
+      "redirect": "redirect to page",
+      "open": "open description dialog",
+      "close": "close",
+      "downloadReport": "download report"
     }
   },
   "components": {
@@ -81,16 +88,20 @@
         "DIESEL": "D",
         "OIL": "A",
         "LIGHT": "CL",
-        "ISB": "iSB",
+        "ISB": "ISB",
         "HEAVY": "CH",
         "CONDENSATE": "FC",
         "C5": "C5+",
         "MB": "MB",
-        "CBM": "CB",
-        "NA": "NA",
-        "SHALE": "Sh",
+        "CBM": "CBM",
+        "NA": "CON",
+        "SHALE": "SH",
         "SOLUTION": "SOL",
-        "TIGHT": "Ti"
+        "TIGHT": "TI"
+      },
+      "keyboardNav": {
+        "title": "Keyboard Shortcut",
+        "description": "- **Spacebar:** start to drag or drop\n- **Escapse:** cancel the drag\n- **Up Arrow:** move an item upwards\n- **Down Arrow:** move an item downwards\n"
       }
     },
     "errorBoundary": {
@@ -402,7 +413,12 @@
       "download": "Téléchargement des données",
       "copied": "URL copiée",
       "emailSubject": "l’avenir énergétique du Canada",
-      "emailMessage": "L’outil interactif en ligne Explorer l’avenir énergétique du Canada repose sur la publication phare de la Régie de l’énergie du Canada intitulée Avenir énergétique du Canada. Cette visualisation vous permet de prendre connaissance de l’évolution de la production et de la consommation d’énergie, et faire des prévisions pour l’avenir. Vous avez le loisir de vous en tenir au rapport le plus récent ou d’aller voir ce que disaient de précédents rapports."
+      "emailMessage": "L’outil interactif en ligne Explorer l’avenir énergétique du Canada repose sur la publication phare de la Régie de l’énergie du Canada intitulée Avenir énergétique du Canada. Cette visualisation vous permet de prendre connaissance de l’évolution de la production et de la consommation d’énergie, et faire des prévisions pour l’avenir. Vous avez le loisir de vous en tenir au rapport le plus récent ou d’aller voir ce que disaient de précédents rapports.",
+      "dialog": {
+        "description": "Copy the following link to the clipboard?",
+        "btnCopy": "Copy",
+        "btnCancel": "Cancel"
+      }
     },
     "unsupportedWarning": {
       "browser": "Votre fureteur n’autorise pas les particularités propres à cette visualisation.\nVeuillez utiliser une version récente du logiciel de navigation Chrome, Firefox, Safari ou Edge.\nMerci!",
@@ -410,6 +426,25 @@
     }
   },
   "views": {
+    "oil-and-gas":{
+      "treeMapSourceTitles":{
+        "oilProduction":{
+          "LIGHT": "Conv. Light",
+          "ISB": "In Situ Bitumen",
+          "HEAVY": "Conv. Heavy",
+          "CONDENSATE": "Field Cond.",
+          "C5": "C5+ (Pentanes+)",
+          "MB": "Mined Bitumen"
+        },
+        "gasProduction":{
+          "CBM": "Coal Bed Methane",
+          "NA": "Conventional",
+          "SHALE": "Shale",
+          "SOLUTION": "Solution",
+          "TIGHT": "Tight"
+        }
+      }
+    }
   },
   "regions": {
   },

@@ -1,7 +1,10 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useEffect, useCallback, useMemo, useState } from 'react';
 import { useIntl } from 'react-intl';
 import PropTypes from 'prop-types';
-import { makeStyles, Grid, Button, Typography } from '@material-ui/core';
+import {
+  makeStyles, Grid, Button, Typography,
+  Dialog, DialogTitle, DialogContent, DialogActions,
+} from '@material-ui/core';
 import Alert from '@material-ui/lab/Alert';
 import Snackbar from '@material-ui/core/Snackbar';
 import LinkIcon from '@material-ui/icons/Link';
@@ -84,26 +87,46 @@ const useStyles = makeStyles(theme => ({
   accent: { borderRight: `8px solid ${theme.palette.primary.main}` },
 }));
 
-export const Share = ({ direction }) => {
+export const Share = ({ direction, keepMounted }) => {
   const classes = useStyles();
   const intl = useIntl();
 
-  const [open, setOpen] = useState(false);
+  const [openDialog, setOpenDialog] = useState('' /* shortened URL */);
+  const [openToast, setOpenToast] = useState(false);
+
+  /**
+   * Create the Clipboard instance associated with the confirm dialog button.
+   */
+  useEffect(() => {
+    new Clipboard('#copy-link-confirm-button'); // eslint-disable-line no-new
+  }, []);
+
+  /**
+   * Determine whether or not Safari is in use.
+   */
+  const isSafari = useMemo(() => /^((?!chrome|android).)*safari/i.test(navigator.userAgent), []);
 
   const copy = useMemo(() => ({
     name: 'copy',
     icon: <LinkIcon />,
     content: () => getBitlyURL().then((bitlyUrl) => {
+      // Due to the security restriction on Safari, the copy action needs to be triggered by
+      // the user manually. Therefore it is handled in a confirm dialog.
+      if (isSafari) {
+        setOpenDialog(bitlyUrl);
+        return;
+      }
+
       // TODO: Remove and change to use useRef and useEffect when the browser clipboard API
       // allows for asynchronous copies (https://github.com/zenorocha/clipboard.js/issues/639)
       const ref = document.createElement('div');
       const clipboard = new Clipboard(ref, { text: () => bitlyUrl });
 
       ref.click();
-      setOpen(true);
+      setOpenToast(true);
       clipboard.destroy();
     }),
-  }), [setOpen]);
+  }), [isSafari, setOpenDialog, setOpenToast]);
 
   const email = useMemo(() => ({
     name: 'email',
@@ -125,7 +148,7 @@ export const Share = ({ direction }) => {
     [copy, email],
   );
 
-  const onClose = useCallback(() => setOpen(false), [setOpen]);
+  const onClose = useCallback(() => setOpenToast(false), [setOpenToast]);
 
   return (
     <>
@@ -143,8 +166,32 @@ export const Share = ({ direction }) => {
         ))}
       </Grid>
 
+      {/* this is the confirm dialog that only appears in Safari */}
+      <Dialog open={!!openDialog} keepMounted={keepMounted} onClose={() => setOpenDialog(false)}>
+        <DialogTitle>{intl.formatMessage({ id: 'components.share.dialog.description' })}</DialogTitle>
+        <DialogContent style={{ wordBreak: 'break-all' }}>{openDialog}</DialogContent>
+        <DialogActions>
+          <Button color="primary" onClick={() => setOpenDialog(false)}>
+            {intl.formatMessage({ id: 'components.share.dialog.btnCancel' })}
+          </Button>
+          <Button
+            id="copy-link-confirm-button"
+            data-clipboard-text={openDialog}
+            variant="contained"
+            color="primary"
+            onClick={() => {
+              setOpenToast(true);
+              setOpenDialog(false);
+            }}
+          >
+            {intl.formatMessage({ id: 'components.share.dialog.btnCopy' })}
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* a toast as a visual indicator after the URL is copied successfully */}
       <Snackbar
-        open={open}
+        open={openToast}
         autoHideDuration={2000}
         onClose={onClose}
       >
@@ -156,8 +203,14 @@ export const Share = ({ direction }) => {
   );
 };
 
-Share.propTypes = { direction: PropTypes.string }; // 'row' or 'column'
-Share.defaultProps = { direction: 'column' };
+Share.propTypes = {
+  direction: PropTypes.string, // 'row' or 'column'
+  keepMounted: PropTypes.bool,
+};
+Share.defaultProps = {
+  direction: 'column',
+  keepMounted: true,
+};
 
 export const DownloadButton = ({ accent }) => {
   const classes = useStyles();

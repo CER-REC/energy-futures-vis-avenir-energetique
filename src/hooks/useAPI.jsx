@@ -100,15 +100,6 @@ const getSectors = (translations) => {
 export default () => {
   const { loading, error, data } = useQuery(ITERATIONS_TRANSLATIONS);
 
-  // FIXME: currently the ITERATIONS_TRANSLATIONS query returns tons of duplicated entries.
-  // the following code removes the duplicates but eventually the API needs to be fixed.
-  if (data) {
-    data.translations = Object.values((data.translations || []).reduce((accu, curr) => ({
-      ...accu,
-      [`${curr.group}-${curr.key}`]: curr,
-    }), {}));
-  }
-
   const yearIdIterations = useMemo(
     () => (data ? getYearIdIterations(data.iterations) : {}),
     [data],

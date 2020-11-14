@@ -91,7 +91,7 @@ export const CONFIG_LAYOUT = {
   gasProduction: {
     name: 'Gas Production',
     icon: IconGas,
-    unit: ['millionCubicMetres', 'cubicFeet'],
+    unit: ['cubicFeet', 'millionCubicMetres'],
     pages: ['by-region', 'scenarios', 'oil-and-gas'],
   },
 };

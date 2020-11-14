@@ -160,7 +160,7 @@ const Landing = () => {
   return (
     <>
       <header className={classes.header}>
-        <img src={headerBg} alt="header background" />
+        <img src={headerBg} alt={intl.formatMessage({ id: 'common.a11y.header' })} />
         <Typography variant={desktop ? 'h4' : 'h5'} className={classes.title}>{intl.formatMessage({ id: 'landing.title' })}</Typography>
       </header>
 
@@ -190,8 +190,8 @@ const Landing = () => {
           {/* the download report thumbnail and links */}
           <Grid item className={classes.download}>
             <Typography variant="h6" color="secondary">{intl.formatMessage({ id: 'landing.links.title' })}</Typography>
-            <ButtonBase href={intl.formatMessage({ id: 'landing.links.download.link' })} target="_about">
-              <img src={reportCover} alt="download report link" />
+            <ButtonBase aria-label={intl.formatMessage({ id: 'common.a11y.downloadReport' })} href={intl.formatMessage({ id: 'landing.links.download.link' })} target="_about">
+              <img src={reportCover} alt={intl.formatMessage({ id: 'common.a11y.downloadReport' })} />
             </ButtonBase>
             <Button color="primary" startIcon={<IconDownload />} href={intl.formatMessage({ id: 'landing.links.download.link' })} target="_about">
               {intl.formatMessage({ id: 'landing.links.download.title' })}
@@ -211,8 +211,12 @@ const Landing = () => {
 
           {PAGES.map(page => page.id !== 'landing' && (
             <Grid key={`landing-box-${page.id}`} item xs={desktop ? 6 : 12}>
-              <ButtonBase onClick={handleRedirect(page.id)} className={`${classes.box} ${desktop ? classes.boxDesktop : ''}`.trim()}>
-                <img src={getBg(page.id)} alt={`cover for the redirect link to page ${page.label}`} />
+              <ButtonBase
+                aria-label={`${intl.formatMessage({ id: 'common.a11y.redirect' })} ${page.label}`}
+                onClick={handleRedirect(page.id)}
+                className={`${classes.box} ${desktop ? classes.boxDesktop : ''}`.trim()}
+              >
+                <img src={getBg(page.id)} alt={`${intl.formatMessage({ id: 'common.a11y.redirect' })} ${page.label}`} />
                 <div>
                   <Typography variant="h6">{intl.formatMessage({ id: `landing.${page.label}.title` })}</Typography>
                   <Typography variant="overline" component="p">{intl.formatMessage({ id: `landing.${page.label}.description` })}</Typography>
