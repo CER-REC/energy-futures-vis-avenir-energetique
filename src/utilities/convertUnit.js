@@ -1,11 +1,11 @@
 const conversionTable = {
   petajoules: {
-    kilobarrelEquivalents: 0.44748,
+    kilobarrelEquivalents: 0.447,
   },
 
   gigawattHours: {
     petajoules: 0.0036,
-    kilobarrelEquivalents: 0.58798442,
+    kilobarrelEquivalents: 0.001611,
   },
 
   thousandCubicMetres: {
