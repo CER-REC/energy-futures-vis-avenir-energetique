@@ -101,6 +101,10 @@ const useStyles = makeStyles(theme => createStyles({
     borderRadius: 0,
     boxShadow: theme.shadows[1],
   },
+  shift: {
+    marginTop: -theme.spacing(1.5),
+    marginLeft: -theme.spacing(1),
+  },
 }));
 
 export const PageTitle = () => {
@@ -200,7 +204,7 @@ export const PageSelect = ({ direction /* row, column */ }) => {
       alignItems="center"
       wrap="nowrap"
       spacing={1}
-      style={{ height: '100%', marginTop: direction === 'row' ? 0 : -12 }}
+      className={direction === 'row' ? '' : classes.shift}
     >
       {pageButtons}
     </Grid>

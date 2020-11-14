@@ -53,7 +53,6 @@ const useStyles = makeStyles(theme => ({
   },
   graph: {
     display: 'flex',
-    flexGrow: 1,
     height: 'auto',
     '& > div': { margin: 'auto' },
   },
@@ -136,6 +135,14 @@ const PageLayout = ({
   );
 
   /**
+   * Calculate the width of the visualization container.
+   */
+  const vizWidth = useMemo(
+    () => `calc(100% - ${desktop ? 100 : 0}px - ${((showSource ? 1 : 0) + (showRegion ? 1 : 0)) * 70}px`,
+    [desktop, showSource, showRegion],
+  );
+
+  /**
    * The main title, which can be reused in both desktop and mobile layouts.
    */
   const title = (
@@ -199,7 +206,7 @@ const PageLayout = ({
       {header}
 
       {showSource && (
-        <Grid item>
+        <Grid item style={{ width: 70 }}>
           <DraggableVerticalList
             title="Source"
             round
@@ -218,7 +225,7 @@ const PageLayout = ({
         </Grid>
       )}
       {showRegion && (
-        <Grid item>
+        <Grid item style={{ width: 70 }}>
           <DraggableVerticalList
             title="Region"
             dense
@@ -235,11 +242,11 @@ const PageLayout = ({
           />
         </Grid>
       )}
-      {vis && (
-        <Grid item className={classes.graph}>
+      {vis?.length && vis?.length > 0 && (
+        <Grid item className={classes.graph} style={{ width: vizWidth }}>
           {loading && <CircularProgress color="primary" size={66} className={classes.loading} />}
           {error && <Alert severity="error"><AlertTitle>Error</AlertTitle>{error}</Alert>}
-          {!loading && !error && <div className={classes.vis}>{vis}</div>}
+          {!loading && !error && <div id="viz" className={classes.vis}>{vis}</div>}
         </Grid>
       )}
 
