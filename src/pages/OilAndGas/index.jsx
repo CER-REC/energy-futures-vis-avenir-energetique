@@ -46,7 +46,7 @@ const useStyles = makeStyles(theme => ({
     padding: 10,
   },
   treeMapRectangle: {
-    '& svg': { transform: 'rotate(270deg)' },
+    '& svg': { transform: 'rotate(270deg) scaleX(-1)' },
     '& > div > div > div:last-of-type': { display: 'none' }, // hide the default Nivo tooltip
   },
   group: {
@@ -220,13 +220,13 @@ const OilAndGas = ({ data, year }) => {
           <ResponsiveTreeMap
             key={sortedSource.name}
             root={sortedSource}
-            tile='binary'
+            tile="binary"
             identity="name"
             value="value"
             margin={{ top: 10, right: 10, bottom: 10, left: 10 }}
             enableLabel={false}
             colors={getColor}
-            borderWidth={2}
+            borderWidth={1}
             borderColor="white"
             animate
             motionStiffness={90}
