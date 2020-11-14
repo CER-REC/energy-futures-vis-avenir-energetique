@@ -238,7 +238,7 @@ const OilAndGas = ({ data, year }) => {
     </>
   ), [
     classes.treeMapRectangle, config.view, config.mainSelection,
-    tooltip, compare, getColor, sizeMultiplier, intl,
+    tooltip, compare, getColor, getTooltip, sizeMultiplier, intl,
   ]);
 
   if (!data || Number.isNaN(data[currentYear][0].total)) {
