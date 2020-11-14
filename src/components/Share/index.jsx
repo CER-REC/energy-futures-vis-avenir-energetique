@@ -319,7 +319,7 @@ export const DownloadButton = ({ accent }) => {
       }
     });
 
-    saveAs(new Blob([Papa.unparse(csvData)], { type: 'text/csv;charset=utf-8;' }), 'energyFutures.csv');
+    saveAs(new Blob([Papa.unparse(csvData)], { type: 'text/csv;charset=utf-8;' }), `${intl.formatMessage({ id: 'components.share.filename' })}.csv`);
   }, [config, intl, regionOrder, sourceOrder, data, headers]);
 
   return (

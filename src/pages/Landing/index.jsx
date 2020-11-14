@@ -26,14 +26,25 @@ const useStyles = makeStyles(theme => ({
     margin: theme.spacing(3, 0),
     '& > img': { width: '100%' },
   },
-  aside: { float: 'left' },
-  main: { marginBottom: theme.spacing(8) },
+  aside: {
+    float: 'left',
+    '& h6, & button, & a': {
+      fontFamily: '"Helvetica Neue",Helvetica,Arial,sans-serif',
+    },
+  },
+  main: {
+    marginBottom: theme.spacing(8),
+    '& h6, & p, & span, & button, & a': {
+      fontFamily: '"Helvetica Neue",Helvetica,Arial,sans-serif',
+    },
+  },
   title: {
     position: 'absolute',
     left: '8%',
     top: '50%',
     maxWidth: '27%',
     color: theme.palette.common.white,
+    fontFamily: '"Helvetica Neue",Helvetica,Arial,sans-serif',
     transform: 'translateY(-50%)',
   },
 
@@ -67,7 +78,7 @@ const useStyles = makeStyles(theme => ({
       backgroundColor: 'rgba(103, 142, 179, .75)',
     },
     '& h6, & p': {
-      padding: theme.spacing(1, 1.5),
+      padding: theme.spacing(1, 1.5, 1.5),
       color: theme.palette.getContrastText(theme.palette.primary.dark),
       lineHeight: 1.1,
     },
@@ -219,7 +230,7 @@ const Landing = () => {
                 <img src={getBg(page.id)} alt={`${intl.formatMessage({ id: 'common.a11y.redirect' })} ${page.label}`} />
                 <div>
                   <Typography variant="h6">{intl.formatMessage({ id: `landing.${page.label}.title` })}</Typography>
-                  <Typography variant="overline" component="p">{intl.formatMessage({ id: `landing.${page.label}.description` })}</Typography>
+                  <Typography variant="body2" component="p">{intl.formatMessage({ id: `landing.${page.label}.description` })}</Typography>
                 </div>
               </ButtonBase>
             </Grid>
