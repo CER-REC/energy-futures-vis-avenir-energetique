@@ -1,11 +1,11 @@
 const conversionTable = {
   petajoules: {
-    kilobarrelEquivalents: 163.33,
+    kilobarrelEquivalents: 0.447,
   },
 
   gigawattHours: {
     petajoules: 0.0036,
-    kilobarrelEquivalents: 0.58798442,
+    kilobarrelEquivalents: 0.001611,
   },
 
   thousandCubicMetres: {
@@ -32,7 +32,7 @@ const ABBREVIATIONS = [
   { magnitude: 1, unit: '' },
 ];
 export const formatUnitAbbreviation = (value, unit) => {
-  if (unit === 'Mboe' || unit === 'Mb/d') {
+  if (unit === 'Mboe/d' || unit === 'Mb/d') {
     const match = ABBREVIATIONS.find(abbr => value / abbr.magnitude >= 1);
     const num = match ? (value / match.magnitude).toFixed(2) : value.toFixed(3);
     return `${Number(num).toLocaleString()} ${match?.unit || ''}${unit || ''}`.trim();
