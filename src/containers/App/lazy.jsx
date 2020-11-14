@@ -111,7 +111,10 @@ const theme = createMuiTheme({
       },
     },
     MuiDialog: {
-      root: { fontFamily: '"FiraSansCondensed", "Roboto", "Helvetica", "Arial", sans-serif' },
+      root: {
+        fontFamily: '"FiraSansCondensed", "Roboto", "Helvetica", "Arial", sans-serif',
+        '& button': { height: 'auto' },
+      },
     },
     MuiSvgIcon: {
       root: { fontSize: 24 },

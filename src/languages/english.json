@@ -7,6 +7,7 @@
     "scenario": "Scenario",
     "sector": "Sector",
     "source": "Source",
+    "type": "Type",
     "year": "Year",
     "value": "Value",
     "unit": "Unit",
@@ -71,16 +72,16 @@
         "DIESEL": "D",
         "OIL": "O",
         "LIGHT": "CL",
-        "ISB": "iSB",
+        "ISB": "ISB",
         "HEAVY": "CH",
         "CONDENSATE": "FC",
         "C5": "C5+",
         "MB": "MB",
-        "CBM": "CB",
-        "NA": "NA",
-        "SHALE": "Sh",
+        "CBM": "CBM",
+        "NA": "CON",
+        "SHALE": "SH",
         "SOLUTION": "SOL",
-        "TIGHT": "Ti"
+        "TIGHT": "TI"
       },
       "keyboardNav": {
         "title": "Keyboard Shortcut",
@@ -343,7 +344,12 @@
       "download": "Download Data",
       "copied": "URL Copied",
       "emailSubject": "Canada’s Energy Future",
-      "emailMessage": "Exploring Canada’s Energy Future interactive online tool is based on the Canada Energy Regulator’s (CER) flagship publication – Canada’s Energy Future. This visualization allows you to explore energy production and consumption trends and forecast them into the future. You can explore the data from the most recent report, or refer to previous reports."
+      "emailMessage": "Exploring Canada’s Energy Future interactive online tool is based on the Canada Energy Regulator’s (CER) flagship publication – Canada’s Energy Future. This visualization allows you to explore energy production and consumption trends and forecast them into the future. You can explore the data from the most recent report, or refer to previous reports.",
+      "dialog": {
+        "description": "Copy the following link to the clipboard?",
+        "btnCopy": "Copy",
+        "btnCancel": "Cancel"
+      }
     },
     "unsupportedWarning": {
       "browser": "Your browser does not support the features required by this visualization.\nPlease use a recent version of Chrome, Firefox, Safari, or Edge.\nThank you!",
@@ -351,6 +357,25 @@
     }
   },
   "views": {
+    "oil-and-gas":{
+      "treeMapSourceTitles":{
+        "oilProduction":{
+          "LIGHT": "Conv. Light",
+          "ISB": "In Situ Bitumen",
+          "HEAVY": "Conv. Heavy",
+          "CONDENSATE": "Field Cond.",
+          "C5": "C5+ (Pentanes+)",
+          "MB": "Mined Bitumen"
+        },
+        "gasProduction":{
+          "CBM": "Coal Bed Methane",
+          "NA": "Conventional",
+          "SHALE": "Shale",
+          "SOLUTION": "Solution",
+          "TIGHT": "Tight"
+        }
+      }
+    }
   },
   "regions": {
   },

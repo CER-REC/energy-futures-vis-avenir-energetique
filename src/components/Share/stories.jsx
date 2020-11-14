@@ -7,4 +7,4 @@ import ReadMe from './README.md';
 
 storiesForComponent('Components|Share', module, ReadMe)
   .addDecorator(withConfigAndGQL)
-  .add('default', () => <Share />);
+  .add('default', () => <Share keepMounted={false} />);
