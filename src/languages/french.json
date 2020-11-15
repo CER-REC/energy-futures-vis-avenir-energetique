@@ -44,6 +44,7 @@
         "compare": "Compare",
         "noCompare": "Don't Compare"
       },
+      "groupLabel": "Values less than 1%",
       "legend": {
         "oilProduction": {
           "region": {

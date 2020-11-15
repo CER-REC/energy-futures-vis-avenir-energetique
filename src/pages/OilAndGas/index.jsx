@@ -39,6 +39,8 @@ const useStyles = makeStyles(theme => ({
   },
   treeMapRectangle: {
     margin: 'auto',
+    maxHeight: '25vw',
+    maxWidth: '25vw',
     '& svg': { transform: 'rotate(270deg) scaleX(-1)' },
     '& > div > div > div:last-of-type': { display: 'none' }, // hide the default Nivo tooltip
   },
@@ -46,8 +48,13 @@ const useStyles = makeStyles(theme => ({
     border: `1px solid ${theme.palette.secondary.main}`,
     '& span': { lineHeight: 1.2 },
   },
+  label: {
+    fontWeight: 700,
+    fontSize: 12,
+    lineHeight: 1.25,
+  },
   tick: {
-    height: 20,
+    height: 16,
     marginLeft: 'calc(50% - 0.5px)',
     borderLeft: `1px dashed ${theme.palette.secondary.main}`,
   },
@@ -150,7 +157,7 @@ const OilAndGas = ({ data, year }) => {
    */
   const createTreeMap = useCallback((source, isTopChart, size) => (
     <>
-      <Typography align='center' varient="body2" style={{ bottom: 0, fontWeight: 700, fontSize: 12 }}>
+      <Typography align='center' varient="body2" className={classes.label}>
         {config.view === 'source' ? intl.formatMessage({
           id: `views.oil-and-gas.treeMapSourceTitles.${config.mainSelection}.${source.name}`,
           defaultMessage: source.name,
@@ -193,7 +200,7 @@ const OilAndGas = ({ data, year }) => {
     tooltip, compare, getColor, getTooltip, intl,
   ]);
 
-  if (!data || Number.isNaN(data[currentYear][0].total)) {
+  if (!data || !data[currentYear] || Number.isNaN(data[currentYear][0].total)) {
     return null;
   }
 
@@ -259,10 +266,10 @@ const OilAndGas = ({ data, year }) => {
             className={classes.cell}
             style={{ verticalAlign: isTopChart ? 'bottom' : 'top' }}
           >
-            <Grid container direction="column" wrap="nowrap" spacing={1}>
-              {!isTopChart && <Grid item className={classes.tick} />}
+            <Grid container direction="column" wrap="nowrap">
+              {!isTopChart && <Grid item className={classes.tick} style={{ marginBottom: 12 }} />}
               <Grid item>{tree.node}</Grid>
-              {(compare && isTopChart) && <Grid item className={classes.tick} />}
+              {(compare && isTopChart) && <Grid item className={classes.tick} style={{ marginTop: 12 }} />}
             </Grid>
           </TableCell>
         ) : <TableCell key={`treemap-${tree.name}`} />))}
@@ -274,7 +281,7 @@ const OilAndGas = ({ data, year }) => {
           >
             <Grid container spacing={1} className={classes.group}>
               <Grid item xs={12}>
-                <Typography variant="overline" align='center'>Values less than 1%</Typography>
+                <Typography variant="overline" align='center'>{intl.formatMessage({ id: `common.oilandgas.groupLabel` })}</Typography>
               </Grid>
               {smallTreeMaps.map(source => ({
                 name: source.name,
