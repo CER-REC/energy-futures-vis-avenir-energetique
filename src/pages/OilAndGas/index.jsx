@@ -21,6 +21,7 @@ const useStyles = makeStyles(theme => ({
     top: 6,
     right: 16,
     width: 'min-content',
+    zIndex: 1,
     '& button': {
       height: 'auto',
       width: '100%',
@@ -34,8 +35,9 @@ const useStyles = makeStyles(theme => ({
   //   '& + * h4': { fontWeight: 700 },
   // },
   table: {
-    position: 'relative',
-    height: 710,
+    overflow: 'hidden',
+    marginTop: theme.spacing(8),
+    '& > table': { position: 'relative' },
   },
   cell: {
     minWidth: 0,
@@ -274,6 +276,9 @@ const OilAndGas = ({ data, year }) => {
     // prepare a method for calculate the screen sizes (in pixels) based on the canvas width
     const getSize = width => (((width || 0) / totalWidth) * canvasWidth) / (ratio > 1 ? ratio : 1);
 
+    // calculate the vertical offset of the grouped tiles
+    const groupOffset = `translateY(calc(-${compare ? `100% ${isTopChart ? '- 45' : '+ 224'}` : '84'}px))`;
+
     return (
       <TableRow>
         {regularTreeMaps.map(source => source && ({
@@ -302,7 +307,7 @@ const OilAndGas = ({ data, year }) => {
               container
               spacing={1}
               className={classes.group}
-              style={{ transform: `translateY(calc(-100% ${isTopChart ? '- 45' : '+ 224'}px)` }}
+              style={{ transform: groupOffset }}
             >
               <Grid item xs={12}>
                 <Typography variant="overline" align='center'>{intl.formatMessage({ id: 'common.oilandgas.groupLabel' })}</Typography>
@@ -367,8 +372,8 @@ const OilAndGas = ({ data, year }) => {
       </Grid>
 
       {/* treemap graphs */}
-      <TableContainer style={{ marginTop: compare ? 120 : 40, overflow: 'hidden' }}>
-        <Table ref={refTable} className={classes.table}>
+      <TableContainer className={classes.table}>
+        <Table ref={refTable} style={{ height: compare ? 710 : 270 }}>
           <TableBody>
 
             {currentTreeMapCollection}
