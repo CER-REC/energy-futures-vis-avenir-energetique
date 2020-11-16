@@ -86,6 +86,9 @@ const OilAndGas = ({ data, year }) => {
   // Determine which tooltip is currently open
   const [tooltip, setTooltip] = useState(undefined);
 
+  // 'oil' or 'gas' which is used for generating translation text
+  const type = useMemo(() => (config.mainSelection === 'oilProduction' ? 'oil' : 'gas'), [config.mainSelection]);
+
   /**
    * Determine the block colors in treemaps.
    */
@@ -109,7 +112,7 @@ const OilAndGas = ({ data, year }) => {
         translation: intl.formatMessage(
           {
             id: config.view === 'region'
-              ? `common.sources.${config.mainSelection === 'oilProduction' ? 'oil' : 'gas'}.${value.name}`
+              ? `common.sources.${type}.${value.name}`
               : `common.regions.${value.name}`,
           },
         ),
@@ -118,7 +121,7 @@ const OilAndGas = ({ data, year }) => {
       }))}
       unit={config.unit}
     />
-  ), [config, intl, getColor]);
+  ), [config.view, config.unit, intl, type, getColor]);
 
   const sortDataSets = useCallback((curr, comp) => {
     // sort the current data in decending order
@@ -192,12 +195,10 @@ const OilAndGas = ({ data, year }) => {
   ) => (
     <>
       <Typography align='center' varient="body2" style={{ bottom: 0, fontWeight: 700, fontSize: 12 }}>
-        {config.view === 'source' ? intl.formatMessage(
-          {
-            id: `views.oil-and-gas.treeMapSourceTitles.${config.mainSelection}.${sortedSource.name}`,
-            defaultMessage: sortedSource.name,
-          },
-        ) : sortedSource.name}
+        {config.view === 'source' ? intl.formatMessage({
+          id: `common.oilandgas.displayName.${sortedSource.name}`,
+          defaultMessage: intl.formatMessage({ id: `common.sources.${type}.${sortedSource.name}` }),
+        }) : sortedSource.name}
         {config.view === 'region' && percentage > 1 && `: ${percentage.toFixed(2)}%`}
       </Typography>
 
@@ -237,8 +238,8 @@ const OilAndGas = ({ data, year }) => {
       </Tooltip>
     </>
   ), [
-    classes.treeMapRectangle, config.view, config.mainSelection,
-    tooltip, compare, getColor, getTooltip, sizeMultiplier, intl,
+    classes.treeMapRectangle, config.view,
+    tooltip, compare, getColor, getTooltip, sizeMultiplier, type, intl,
   ]);
 
   if (!data || Number.isNaN(data[currentYear][0].total)) {

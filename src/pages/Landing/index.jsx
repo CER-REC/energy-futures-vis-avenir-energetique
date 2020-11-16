@@ -103,6 +103,7 @@ const useStyles = makeStyles(theme => ({
       minHeight: 38,
       width: '100%',
       justifyContent: 'flex-start',
+      textTransform: 'initial',
       '& > span:first-of-type': { fontSize: 16 },
     },
     '& button, & a, & a:hover, & a:focus, & a:active, & a:visited': {
@@ -172,7 +173,7 @@ const Landing = () => {
     <>
       <header className={classes.header}>
         <img src={headerBg} alt={intl.formatMessage({ id: 'common.a11y.header' })} />
-        <Typography variant={desktop ? 'h4' : 'h5'} className={classes.title}>{intl.formatMessage({ id: 'landing.title' })}</Typography>
+        <Typography variant={desktop ? 'h4' : 'h5'} className={classes.title}>{intl.formatMessage({ id: 'common.title' })}</Typography>
       </header>
 
       <aside className={classes.aside} style={{ width: desktop ? '20%' : '30%' }}>

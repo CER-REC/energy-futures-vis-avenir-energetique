@@ -47,7 +47,10 @@ const useStyles = makeStyles(theme => createStyles({
       '&:not(.MuiTypography-root)': { marginBottom: 0 },
     },
     '& li': { margin: theme.spacing(0.5, 0) },
-    '& img': { width: '100%' },
+    '& img': {
+      width: '100%',
+      border: `1px solid ${theme.palette.secondary.light}`,
+    },
   },
   popUpRight: {
     top: 0,
@@ -100,7 +103,10 @@ const LinkButtonGroup = ({ direction }) => {
 
   const link = useMemo(() => ({
     report: {
-      name: `${config.yearId} ${intl.formatMessage({ id: 'links.Report.title' })}`,
+      name: intl.formatMessage({
+        id: `links.Report.title.${config.yearId}`,
+        defaultMessage: intl.formatMessage({ id: 'links.Report.title.default' }),
+      }),
       content: <LinkButtonContentReport yearId={config.yearId} onClose={close} />,
     },
     methodology: {
