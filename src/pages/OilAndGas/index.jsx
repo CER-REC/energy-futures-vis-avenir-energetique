@@ -33,18 +33,24 @@ const useStyles = makeStyles(theme => ({
   //   },
   //   '& + * h4': { fontWeight: 700 },
   // },
+  table: {
+    position: 'relative',
+    height: 710,
+  },
   cell: {
     minWidth: 0,
     padding: theme.spacing(1),
   },
   treeMapRectangle: {
     margin: 'auto',
-    maxHeight: '25vw',
-    maxWidth: '25vw',
     '& svg': { transform: 'rotate(270deg) scaleX(-1)' },
     '& > div > div > div:last-of-type': { display: 'none' }, // hide the default Nivo tooltip
   },
   group: {
+    position: 'absolute',
+    top: '50%',
+    right: theme.spacing(2),
+    width: 100,
     border: `1px solid ${theme.palette.secondary.main}`,
     '& span': { lineHeight: 1.2 },
   },
@@ -68,6 +74,8 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: '#F3EFEF',
   },
 }));
+
+const MAX_SIZE = 250;
 
 const OilAndGas = ({ data, year }) => {
   const classes = useStyles();
@@ -256,13 +264,21 @@ const OilAndGas = ({ data, year }) => {
       return null;
     }
 
+    // sum up the total width among the treemaps
     const totalWidth = regularTreeMaps.reduce((acc, val) => acc + (val.width || 0), 0);
+
+    // if the biggest treemap exceed the max size, then calculate a ratio for shrinking them down
+    const maxPercentage = Math.max(...regularTreeMaps.map(t => t.width)) / totalWidth;
+    const ratio = (maxPercentage * canvasWidth) / MAX_SIZE;
+
+    // prepare a method for calculate the screen sizes (in pixels) based on the canvas width
+    const getSize = width => (((width || 0) / totalWidth) * canvasWidth) / (ratio > 1 ? ratio : 1);
 
     return (
       <TableRow>
         {regularTreeMaps.map(source => source && ({
           name: source.name,
-          node: createTreeMap(source, isTopChart, ((source.width || 0) / totalWidth) * canvasWidth),
+          node: createTreeMap(source, isTopChart, getSize(source.width)),
         })).map(tree => (tree ? (
           <TableCell
             key={`treemap-${tree.name}`}
@@ -280,9 +296,14 @@ const OilAndGas = ({ data, year }) => {
         {smallTreeMaps.length > 0 && (
           <TableCell
             className={classes.cell}
-            style={{ width: 100, verticalAlign: isTopChart ? 'bottom' : 'top' }}
+            style={{ width: 120 }}
           >
-            <Grid container spacing={1} className={classes.group}>
+            <Grid
+              container
+              spacing={1}
+              className={classes.group}
+              style={{ transform: `translateY(calc(-100% ${isTopChart ? '- 45' : '+ 224'}px)` }}
+            >
               <Grid item xs={12}>
                 <Typography variant="overline" align='center'>{intl.formatMessage({ id: 'common.oilandgas.groupLabel' })}</Typography>
               </Grid>
@@ -347,7 +368,7 @@ const OilAndGas = ({ data, year }) => {
 
       {/* treemap graphs */}
       <TableContainer style={{ marginTop: compare ? 120 : 40, overflow: 'hidden' }}>
-        <Table ref={refTable}>
+        <Table ref={refTable} className={classes.table}>
           <TableBody>
 
             {currentTreeMapCollection}
