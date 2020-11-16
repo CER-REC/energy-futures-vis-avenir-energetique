@@ -57,6 +57,8 @@ const useStyles = makeStyles(theme => ({
     height: 16,
     marginLeft: 'calc(50% - 0.5px)',
     borderLeft: `1px dashed ${theme.palette.secondary.main}`,
+    '&:first-of-type': { marginBottom: theme.spacing(1.5) },
+    '&:last-of-type': { marginTop: theme.spacing(1.5) },
   },
   legend: {
     float: 'right',
@@ -196,7 +198,8 @@ const OilAndGas = ({ data, year }) => {
       </Tooltip>
     </>
   ), [
-    classes.treeMapRectangle, config.view, config.mainSelection,
+    classes.treeMapRectangle, classes.label,
+    config.view, config.mainSelection,
     tooltip, compare, getColor, getTooltip, intl,
   ]);
 
@@ -267,9 +270,9 @@ const OilAndGas = ({ data, year }) => {
             style={{ verticalAlign: isTopChart ? 'bottom' : 'top' }}
           >
             <Grid container direction="column" wrap="nowrap">
-              {!isTopChart && <Grid item className={classes.tick} style={{ marginBottom: 12 }} />}
+              {!isTopChart && <Grid item className={classes.tick} />}
               <Grid item>{tree.node}</Grid>
-              {(compare && isTopChart) && <Grid item className={classes.tick} style={{ marginTop: 12 }} />}
+              {(compare && isTopChart) && <Grid item className={classes.tick} />}
             </Grid>
           </TableCell>
         ) : <TableCell key={`treemap-${tree.name}`} />))}
@@ -281,7 +284,7 @@ const OilAndGas = ({ data, year }) => {
           >
             <Grid container spacing={1} className={classes.group}>
               <Grid item xs={12}>
-                <Typography variant="overline" align='center'>{intl.formatMessage({ id: `common.oilandgas.groupLabel` })}</Typography>
+                <Typography variant="overline" align='center'>{intl.formatMessage({ id: 'common.oilandgas.groupLabel' })}</Typography>
               </Grid>
               {smallTreeMaps.map(source => ({
                 name: source.name,
