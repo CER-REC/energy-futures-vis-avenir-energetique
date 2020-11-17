@@ -48,13 +48,14 @@ const useStyles = makeStyles(theme => ({
     },
     '&.disabled:hover': { boxShadow: theme.shadows[0] },
   }),
-  grasp: {
+  grasp: props => ({
     position: 'absolute',
     bottom: -7,
     left: '50%',
     transform: 'translate(-50%, 0)',
+    color: props.color || theme.palette.secondary.main,
     'svg&': { backgroundColor: 'transparent !important' },
-  },
+  }),
 }));
 
 const ColoredItemBox = ({
