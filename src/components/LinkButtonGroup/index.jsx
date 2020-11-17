@@ -39,7 +39,7 @@ const useStyles = makeStyles(theme => createStyles({
     color: theme.palette.secondary.main,
     backgroundColor: '#F3EFEF',
     overflow: 'auto',
-    fontFamily: '"FiraSansCondensed", "Roboto", "Helvetica", "Arial", sans-serif',
+    '& *': { fontFamily: '"FiraSansCondensed", "Roboto", "Helvetica", "Arial", sans-serif' },
     '& h4': { marginTop: 0 },
     '& p, & li': {
       fontSize: 12,

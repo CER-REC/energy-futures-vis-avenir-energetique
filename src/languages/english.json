@@ -543,7 +543,7 @@
     },
     "Methodology": {
       "title": "Methodology",
-      "description": "Access our [Methodology document](https://apps2.cer-rec.gc.ca/dvs/PDF/CER_Energy_Futures_Methodology_ENG.PDF) to find out about the Energy Futures modeling system, definitions and indicators, data sources and more."
+      "description": "Access our [Methodology document](https://apps2.cer-rec.gc.ca/energy-future/pdf/energy-future-visualization-methodology-2020.pdf) to find out about the Energy Futures modeling system, definitions and indicators, data sources and more."
     },
     "Report": {
       "title": {
@@ -608,7 +608,7 @@
       "title": "Canada's Energy Future Report",
       "methodology": {
         "title": "Methodology",
-        "link": "https://apps2.cer-rec.gc.ca/dvs/PDF/CER_Energy_Futures_Methodology_ENG.PDF"
+        "link": "https://apps2.cer-rec.gc.ca/energy-future/pdf/energy-future-visualization-methodology-2020.pdf"
       },
       "resources": {
         "title": "Student Resources",

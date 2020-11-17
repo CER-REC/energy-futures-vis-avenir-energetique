@@ -28,14 +28,20 @@ const useStyles = makeStyles(theme => ({
   },
   aside: {
     float: 'left',
-    '& h6, & button, & a': {
-      fontFamily: '"Helvetica Neue",Helvetica,Arial,sans-serif',
+    '& h6': {
+      fontFamily: '"Lato","Helvetica Neue",Helvetica,Arial,sans-serif',
+    },
+    '& button, & a': {
+      fontFamily: '"Noto Sans","Helvetica Neue",Helvetica,Arial,sans-serif',
+      fontWeight: 600,
+      lineHeight: 1.25,
     },
   },
   main: {
     marginBottom: theme.spacing(8),
-    '& h6, & p, & span, & button, & a': {
-      fontFamily: '"Helvetica Neue",Helvetica,Arial,sans-serif',
+    '& h6': { fontFamily: '"Lato","Helvetica Neue",Helvetica,Arial,sans-serif' },
+    '& p, & span, & button, & a': {
+      fontFamily: '"Noto Sans","Helvetica Neue",Helvetica,Arial,sans-serif',
     },
   },
   title: {
@@ -44,7 +50,9 @@ const useStyles = makeStyles(theme => ({
     top: '50%',
     maxWidth: '27%',
     color: theme.palette.common.white,
-    fontFamily: '"Helvetica Neue",Helvetica,Arial,sans-serif',
+    fontSize: 38,
+    fontFamily: '"Lato","Helvetica Neue",Helvetica,Arial,sans-serif',
+    fontWeight: 600,
     transform: 'translateY(-50%)',
   },
 
