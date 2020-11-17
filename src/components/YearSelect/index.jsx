@@ -10,6 +10,7 @@ const useStyles = makeStyles({
   button: {
     height: 43,
     width: 43,
+    fontSize: 16,
     '& h5': { fontWeight: 700 },
   },
   selected: {
