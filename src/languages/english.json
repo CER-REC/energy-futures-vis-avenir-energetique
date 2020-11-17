@@ -76,7 +76,9 @@
       "redirect": "redirect to page",
       "open": "open description dialog",
       "close": "close",
-      "downloadReport": "download report"
+      "downloadReport": "download report",
+      "sliderYearCurrent": "current selected year",
+      "sliderYearCompare": "year selected for comparison"
     }
   },
   "components": {

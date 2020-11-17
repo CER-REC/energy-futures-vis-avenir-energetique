@@ -403,6 +403,7 @@ const OilAndGas = ({ data, year }) => {
                   }}
                   min={year.min}
                   max={year.max}
+                  forecast={year.forecastStart}
                 />
               </TableCell>
             </TableRow>
@@ -444,11 +445,15 @@ const OilAndGas = ({ data, year }) => {
 
 OilAndGas.propTypes = {
   data: PropTypes.oneOfType([PropTypes.object, PropTypes.arrayOf(PropTypes.object)]),
-  year: PropTypes.shape({ min: PropTypes.number, max: PropTypes.number }),
+  year: PropTypes.shape({
+    min: PropTypes.number,
+    max: PropTypes.number,
+    forecastStart: PropTypes.number,
+  }),
 };
 
 OilAndGas.defaultProps = {
   data: undefined,
-  year: { min: 0, max: 0 },
+  year: { min: 0, max: 0, forecastStart: 0 },
 };
 export default OilAndGas;
