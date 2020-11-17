@@ -175,8 +175,8 @@ const OilAndGas = ({ data, year }) => {
     <>
       <Typography align='center' varient="body2" className={classes.label}>
         {config.view === 'source' ? intl.formatMessage({
-          id: `common.oilandgas.displayName.${sortedSource.name}`,
-          defaultMessage: intl.formatMessage({ id: `common.sources.${type}.${sortedSource.name}` }),
+          id: `common.oilandgas.displayName.${source.name}`,
+          defaultMessage: intl.formatMessage({ id: `common.sources.${type}.${source.name}` }),
         }) : source.name}
         {config.view === 'region' && source.percentage > 1 && `: ${source.percentage.toFixed(2)}%`}
       </Typography>
@@ -269,8 +269,9 @@ const OilAndGas = ({ data, year }) => {
       return (
         <TableRow>
           <TableCell colSpan="100%" className={classes.cell}>
-            <Typography variant="h4" component="div" color="primary" align="center">
-              {intl.formatMessage({ id: 'common.oilandgas.placeholder' })}
+            <Typography variant="body1" component="div" color="secondary" align="center">
+              {config.view === 'region' && config.provinces.length === 1 && `${config.provinces[0]}: 0%`}
+              {config.view === 'source' && config.sources.length === 1 && `${intl.formatMessage({ id: `common.sources.${type}.${config.sources[0]}` })}: 0%`}
             </Typography>
           </TableCell>
         </TableRow>
