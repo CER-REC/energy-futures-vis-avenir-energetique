@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useCallback } from 'react';
+import React, { useState, useMemo, useCallback, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Grid, Typography, Button, Tooltip, makeStyles } from '@material-ui/core';
 import { ResponsiveTreeMap } from '@nivo/treemap';
@@ -21,42 +21,53 @@ const useStyles = makeStyles(theme => ({
     top: 6,
     right: 16,
     width: 'min-content',
+    zIndex: 1,
     '& button': {
       height: 'auto',
       width: '100%',
     },
   },
-  yearBox: {
-    '& > div': {
-      height: 26,
-      width: 26,
-    },
-    '& + * h4': { fontWeight: 700 },
+  // yearBox: {
+  //   '& > div': {
+  //     height: 26,
+  //     width: 26,
+  //   },
+  //   '& + * h4': { fontWeight: 700 },
+  // },
+  table: {
+    overflow: 'hidden',
+    marginTop: theme.spacing(8),
+    '& > table': { position: 'relative' },
   },
-  cellsTop: {
-    borderBottom: '0',
+  cell: {
+    height: 300,
     minWidth: 0,
-    verticalAlign: 'bottom',
-    padding: 10,
-  },
-  cellsBottom: {
-    borderBottom: '0',
-    minWidth: 0,
-    verticalAlign: 'top',
-    padding: 10,
+    padding: theme.spacing(1),
   },
   treeMapRectangle: {
+    margin: 'auto',
     '& svg': { transform: 'rotate(270deg) scaleX(-1)' },
     '& > div > div > div:last-of-type': { display: 'none' }, // hide the default Nivo tooltip
   },
   group: {
+    position: 'absolute',
+    top: '50%',
+    right: theme.spacing(2),
+    width: 100,
     border: `1px solid ${theme.palette.secondary.main}`,
     '& span': { lineHeight: 1.2 },
   },
+  label: {
+    fontWeight: 700,
+    fontSize: 12,
+    lineHeight: 1.25,
+  },
   tick: {
-    height: 20,
+    height: 16,
     marginLeft: 'calc(50% - 0.5px)',
     borderLeft: `1px dashed ${theme.palette.secondary.main}`,
+    '&:first-of-type': { marginBottom: theme.spacing(1.5) },
+    '&:last-of-type': { marginTop: theme.spacing(1.5) },
   },
   legend: {
     float: 'right',
@@ -66,6 +77,8 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: '#F3EFEF',
   },
 }));
+
+const MAX_SIZE = 250;
 
 const OilAndGas = ({ data, year }) => {
   const classes = useStyles();
@@ -86,6 +99,15 @@ const OilAndGas = ({ data, year }) => {
   // Determine which tooltip is currently open
   const [tooltip, setTooltip] = useState(undefined);
 
+  // Record the width of the entire viz DOM
+  const [canvasWidth, setCanvasWidth] = useState(0);
+
+  // Use the reference of the table DOM for determine whether the cells are ready to be rendered
+  const refTable = React.createRef();
+
+  // Memorized the current viz DOM width once the table reference exists
+  useEffect(() => refTable?.current && setCanvasWidth(document.getElementById('viz').clientWidth * 0.6), [refTable]);
+
   /**
    * Determine the block colors in treemaps.
    */
@@ -104,15 +126,13 @@ const OilAndGas = ({ data, year }) => {
    */
   const getTooltip = useCallback(entry => (
     <VizTooltip
-      nodes={entry.children.map(value => ({
+      nodes={(entry.children || []).map(value => ({
         name: value.name,
-        translation: intl.formatMessage(
-          {
-            id: config.view === 'region'
-              ? `common.sources.${config.mainSelection === 'oilProduction' ? 'oil' : 'gas'}.${value.name}`
-              : `common.regions.${value.name}`,
-          },
-        ),
+        translation: intl.formatMessage({
+          id: config.view === 'region'
+            ? `common.sources.${config.mainSelection === 'oilProduction' ? 'oil' : 'gas'}.${value.name}`
+            : `common.regions.${value.name}`,
+        }),
         value: value.value,
         color: getColor(value),
       }))}
@@ -120,6 +140,9 @@ const OilAndGas = ({ data, year }) => {
     />
   ), [config, intl, getColor]);
 
+  /**
+   * Sort both data based on the current year values in the descending order.
+   */
   const sortDataSets = useCallback((curr, comp) => {
     // sort the current data in decending order
     const currentYearData = (curr || []).sort((a, b) => b.total - a.total);
@@ -142,84 +165,33 @@ const OilAndGas = ({ data, year }) => {
     };
   }, []);
 
-  const getBiggestTreeMapTotal = useCallback((curr, comp) => {
-    const currLargest = Math.max(...curr.map(item => item.total));
-    const compLargest = Math.max(...comp.map(item => item.total));
-
-    if (compare) {
-      return currLargest > compLargest
-        ? currLargest
-        : compLargest;
-    }
-    return currLargest;
-  }, [compare]);
-
-  const getSizeNumber = useCallback((treeData) => {
-    // Calculates the base size all the tree maps will start with.
-    const bigChart = 230;
-    const smallChart = 160;
-
-    if (treeData[1]
-      && (treeData[1].total > (treeData[0].total / 6) || compare)) {
-      if (treeData.length > 4) {
-        return smallChart;
-      }
-    }
-    return bigChart;
-  }, [compare]);
-
-  const sizeMultiplier = useCallback((total, size, biggestTreeMap) => {
-    // Takes the base treeMap size, and multiplies it by how much smaller the total is
-    // compared to the biggest one, giving it a size proportional to the biggest one.
-    let returnValue = size;
-
-    if (total < biggestTreeMap) {
-      // This is so that really small numbers will show something
-      if (size * (Math.sqrt(total / biggestTreeMap)) < 30) {
-        returnValue = 30;
-      } else {
-        returnValue = size * (Math.sqrt(total / biggestTreeMap));
-      }
-    }
-    if (!returnValue > 0) {
-      return size;
-    }
-    return returnValue;
-  }, []);
-
-  const createTreeMap = useCallback((
-    sortedSource, percentage, size, isTopChart, biggestTreeMapTotal,
-  ) => (
+  /**
+   * Generate the treemap component based on the source values, size and location (top or bottom).
+   */
+  const createTreeMap = useCallback((source, isTopChart, size) => (
     <>
-      <Typography align='center' varient="body2" style={{ bottom: 0, fontWeight: 700, fontSize: 12 }}>
-        {config.view === 'source' ? intl.formatMessage(
-          {
-            id: `views.oil-and-gas.treeMapSourceTitles.${config.mainSelection}.${sortedSource.name}`,
-            defaultMessage: sortedSource.name,
-          },
-        ) : sortedSource.name}
-        {config.view === 'region' && percentage > 1 && `: ${percentage.toFixed(2)}%`}
+      <Typography align='center' varient="body2" className={classes.label}>
+        {config.view === 'source' ? intl.formatMessage({
+          id: `views.oil-and-gas.treeMapSourceTitles.${config.mainSelection}.${source.name}`,
+          defaultMessage: source.name,
+        }) : source.name}
+        {config.view === 'region' && source.percentage > 1 && `: ${source.percentage.toFixed(2)}%`}
       </Typography>
 
       <Tooltip
-        open={sortedSource.name === tooltip}
-        title={getTooltip(sortedSource)}
+        open={source.name === tooltip}
+        title={getTooltip(source)}
         placement={(compare && isTopChart) ? 'top' : 'bottom'}
-        onOpen={() => setTooltip(sortedSource.name)}
+        onOpen={() => setTooltip(source.name)}
         onClose={() => setTooltip(undefined)}
       >
         <div
           className={classes.treeMapRectangle}
-          style={{
-            textAlign: 'center',
-            height: sizeMultiplier(sortedSource.total, size, biggestTreeMapTotal) || 0,
-            width: sizeMultiplier(sortedSource.total, size, biggestTreeMapTotal) || 0,
-            margin: 'auto',
-          }}
+          style={{ height: size, width: size }}
         >
           <ResponsiveTreeMap
-            key={sortedSource.name}
-            root={sortedSource}
+            key={source.name}
+            root={source}
             tile="binary"
             identity="name"
             value="value"
@@ -237,15 +209,14 @@ const OilAndGas = ({ data, year }) => {
       </Tooltip>
     </>
   ), [
-    classes.treeMapRectangle, config.view, config.mainSelection,
-    tooltip, compare, getColor, getTooltip, sizeMultiplier, intl,
+    classes.treeMapRectangle, classes.label,
+    config.view, config.mainSelection,
+    tooltip, compare, getColor, getTooltip, intl,
   ]);
 
-  if (!data || Number.isNaN(data[currentYear][0].total)) {
+  if (!data || !data[currentYear] || Number.isNaN(data[currentYear][0].total)) {
     return null;
   }
-
-  const biggestTreeMapTotal = getBiggestTreeMapTotal(data[currentYear], data[compareYear]);
 
   // Sorted datasets
   const {
@@ -254,12 +225,15 @@ const OilAndGas = ({ data, year }) => {
   } = sortDataSets(data[currentYear], data[compareYear]);
 
   const treeMapCollection = (treeData, isTopChart) => {
+    if (!canvasWidth) {
+      return [];
+    }
+
     const totalGrandTotal = treeData.reduce((acc, val) => acc + val.total, 0);
-    const size = getSizeNumber(treeData);
     const regularTreeMaps = [];
     const smallTreeMaps = [];
 
-    const names = treeData.map((source) => {
+    treeData.forEach((source) => {
       // Its easier to sort the sources when they come in.
       // This is not very efficient however.
       const sortedSource = {
@@ -269,18 +243,16 @@ const OilAndGas = ({ data, year }) => {
       };
 
       const percentage = (sortedSource.total / totalGrandTotal) * 100;
-      const args = [sortedSource, percentage, size, isTopChart, biggestTreeMapTotal];
 
       if (percentage <= 0) {
         regularTreeMaps.push(0); // empty cell
       }
       if (percentage > 0 && percentage <= 1) {
-        smallTreeMaps.push(createTreeMap(...args));
+        smallTreeMaps.push({ ...sortedSource, percentage, width: Math.sqrt(percentage) });
       }
       if (percentage > 1) {
-        regularTreeMaps.push(createTreeMap(...args));
+        regularTreeMaps.push({ ...sortedSource, percentage, width: Math.sqrt(percentage) });
       }
-      return source.name;
     });
 
     // removing trailing zeros
@@ -291,44 +263,69 @@ const OilAndGas = ({ data, year }) => {
       smallTreeMaps.pop();
     }
 
-    if (regularTreeMaps.length === 0) {
-      return null;
+    if (regularTreeMaps.length === 0 || !canvasWidth) {
+      return (
+        <TableRow>
+          <TableCell colSpan="100%" className={classes.cell}>
+            <Typography variant="h4" component="div" color="primary" align="center">
+              {intl.formatMessage({ id: 'common.oilandgas.placeholder' })}
+            </Typography>
+          </TableCell>
+        </TableRow>
+      );
     }
+
+    // sum up the total width among the treemaps
+    const totalWidth = regularTreeMaps.reduce((acc, val) => acc + (val.width || 0), 0);
+
+    // if the biggest treemap exceed the max size, then calculate a ratio for shrinking them down
+    const maxPercentage = Math.max(...regularTreeMaps.map(t => t.width)) / totalWidth;
+    const ratio = (maxPercentage * canvasWidth) / MAX_SIZE;
+
+    // prepare a method for calculate the screen sizes (in pixels) based on the canvas width
+    const getSize = width => (((width || 0) / totalWidth) * canvasWidth) / (ratio > 1 ? ratio : 1);
+
+    // calculate the vertical offset of the grouped tiles
+    const groupOffset = `translateY(calc(-${compare ? `100% ${isTopChart ? '- 45' : '+ 224'}` : '84'}px))`;
 
     return (
       <TableRow>
-        {regularTreeMaps.map((tree, i) => (tree ? (
+        {regularTreeMaps.map(source => source && ({
+          name: source.name,
+          node: createTreeMap(source, isTopChart, getSize(source.width)),
+        })).map(tree => (tree ? (
           <TableCell
-            key={`treemap-${names[i]}`}
-            className={isTopChart ? classes.cellsTop : classes.cellsBottom}
+            key={`treemap-${tree.name}`}
+            className={classes.cell}
+            style={{ verticalAlign: isTopChart ? 'bottom' : 'top' }}
           >
-            <Grid
-              container
-              direction="column"
-              wrap="nowrap"
-              spacing={1}
-            >
+            <Grid container direction="column" wrap="nowrap">
               {!isTopChart && <Grid item className={classes.tick} />}
-              <Grid item>{tree}</Grid>
+              <Grid item>{tree.node}</Grid>
               {(compare && isTopChart) && <Grid item className={classes.tick} />}
             </Grid>
           </TableCell>
-        ) : <TableCell key={`treemap-${names[i]}`} />))}
+        ) : <TableCell key={`treemap-${tree.name}`} />))}
+
         {smallTreeMaps.length > 0 && (
           <TableCell
-            className={isTopChart ? classes.cellsTop : classes.cellsBottom}
-            style={{ width: 100 }}
+            className={classes.cell}
+            style={{ width: 120 }}
           >
             <Grid
               container
               spacing={1}
               className={classes.group}
+              style={{ transform: groupOffset }}
             >
               <Grid item xs={12}>
-                <Typography variant="overline" align='center'>Values less than 1%</Typography>
+                <Typography variant="overline" align='center'>{intl.formatMessage({ id: 'common.oilandgas.groupLabel' })}</Typography>
               </Grid>
-              {smallTreeMaps.map((tree, i) => (
-                <Grid item xs={12} sm={6} key={`grouped-treemap-${names[i]}`}>{tree}</Grid>
+              {smallTreeMaps.map(source => ({
+                name: source.name,
+                node: createTreeMap(source, isTopChart, 40),
+              })).map(tree => (
+                <Grid item xs={12} sm={6} key={`grouped-treemap-${tree.name}`}>{tree.node}</Grid>
               ))}
             </Grid>
           </TableCell>
@@ -384,14 +381,14 @@ const OilAndGas = ({ data, year }) => {
       </Grid>
 
       {/* treemap graphs */}
-      <TableContainer style={{ marginTop: compare ? 120 : 40, overflow: 'hidden' }}>
-        <Table>
+      <TableContainer className={classes.table}>
+        <Table ref={refTable} style={{ height: compare ? 710 : 270 }}>
           <TableBody>
 
             {currentTreeMapCollection}
 
             <TableRow key="yearSlider">
-              <TableCell colSpan="100%" style={{ border: 'none' }}>
+              <TableCell colSpan="100%" style={{ height: 51 }}>
                 <YearSlider
                   year={compare ? { curr: currentYear, compare: compareYear } : currentYear}
                   onYearChange={(value) => {

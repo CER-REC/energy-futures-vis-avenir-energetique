@@ -44,6 +44,7 @@
         "compare": "Compare",
         "noCompare": "Don't Compare"
       },
+      "groupLabel": "Values less than 1%",
       "legend": {
         "oilProduction": {
           "region": {
@@ -69,7 +70,8 @@
             "group": "Total amount of gas type produced in Canada"
           }
         }
-      }
+      },
+      "placeholder": "Not Available"
     },
     "a11y": {
       "header": "header background",
