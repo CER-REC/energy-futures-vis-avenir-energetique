@@ -48,6 +48,7 @@
         "LIGHT": "Conv. Light",
         "HEAVY": "Conv. Heavy"
       },
+      "groupLabel": "Values less than 1%",
       "legend": {
         "oilProduction": {
           "region": {
@@ -73,7 +74,8 @@
             "group": "Total amount of gas type produced in Canada"
           }
         }
-      }
+      },
+      "placeholder": "Not Available"
     },
     "a11y": {
       "header": "header background",
