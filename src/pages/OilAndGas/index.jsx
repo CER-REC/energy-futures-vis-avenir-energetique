@@ -162,7 +162,7 @@ const OilAndGas = ({ data, year }) => {
     return {
       currentYearData: currentYearData.filter(isNotBothZero),
       compareYearData: compareYearData.filter(isNotBothZero),
-      biggestValue: Math.max(0, ...[...currentYearData, ...compareYearData].map(item => item.total)),
+      biggestValue: Math.max(0, ...[...currentYearData, ...compareYearData].map(d => d.total)),
     };
   }, []);
 
