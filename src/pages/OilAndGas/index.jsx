@@ -40,6 +40,7 @@ const useStyles = makeStyles(theme => ({
     '& > table': { position: 'relative' },
   },
   cell: {
+    height: 300,
     minWidth: 0,
     padding: theme.spacing(1),
   },
@@ -263,7 +264,15 @@ const OilAndGas = ({ data, year }) => {
     }
 
     if (regularTreeMaps.length === 0 || !canvasWidth) {
-      return null;
+      return (
+        <TableRow>
+          <TableCell colSpan="100%" className={classes.cell}>
+            <Typography variant="h4" component="div" color="primary" align="center">
+              {intl.formatMessage({ id: 'common.oilandgas.placeholder' })}
+            </Typography>
+          </TableCell>
+        </TableRow>
+      );
     }
 
     // sum up the total width among the treemaps
@@ -379,7 +388,7 @@ const OilAndGas = ({ data, year }) => {
             {currentTreeMapCollection}
 
             <TableRow key="yearSlider">
-              <TableCell colSpan="100%" style={{ border: 'none' }}>
+              <TableCell colSpan="100%" style={{ height: 51 }}>
                 <YearSlider
                   year={compare ? { curr: currentYear, compare: compareYear } : currentYear}
                   onYearChange={(value) => {

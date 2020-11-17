@@ -70,7 +70,8 @@
             "group": "Total amount of gas type produced in Canada"
           }
         }
-      }
+      },
+      "placeholder": "Not Available"
     },
     "a11y": {
       "header": "header background",
