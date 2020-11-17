@@ -162,6 +162,7 @@ const OilAndGas = ({ data, year }) => {
     return {
       currentYearData: currentYearData.filter(isNotBothZero),
       compareYearData: compareYearData.filter(isNotBothZero),
+      biggestValue: Math.max(0, ...[...currentYearData, ...compareYearData].map(item => item.total)),
     };
   }, []);
 
@@ -222,14 +223,17 @@ const OilAndGas = ({ data, year }) => {
   const {
     currentYearData,
     compareYearData,
+    biggestValue,
   } = sortDataSets(data[currentYear], data[compareYear]);
 
   const treeMapCollection = (treeData, isTopChart) => {
-    if (!canvasWidth) {
+    if (!canvasWidth || biggestValue <= 0) {
       return [];
     }
 
     const totalGrandTotal = treeData.reduce((acc, val) => acc + val.total, 0);
+    const biggestRatio = Math.max(0, ...treeData.map(source => source.total)) / biggestValue;
+
     const regularTreeMaps = [];
     const smallTreeMaps = [];
 
@@ -279,8 +283,8 @@ const OilAndGas = ({ data, year }) => {
     const totalWidth = regularTreeMaps.reduce((acc, val) => acc + (val.width || 0), 0);
 
     // if the biggest treemap exceed the max size, then calculate a ratio for shrinking them down
-    const maxPercentage = Math.max(...regularTreeMaps.map(t => t.width)) / totalWidth;
-    const ratio = (maxPercentage * canvasWidth) / MAX_SIZE;
+    const maxPercentage = Math.max(0, ...regularTreeMaps.map(t => t.width)) / totalWidth;
+    const ratio = (maxPercentage * canvasWidth) / MAX_SIZE / biggestRatio;
 
     // prepare a method for calculate the screen sizes (in pixels) based on the canvas width
     const getSize = width => (((width || 0) / totalWidth) * canvasWidth) / (ratio > 1 ? ratio : 1);
