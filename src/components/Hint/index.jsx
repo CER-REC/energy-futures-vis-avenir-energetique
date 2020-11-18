@@ -30,6 +30,7 @@ const useStyles = makeStyles(theme => createStyles({
     top: -24,
     right: -24,
     zIndex: 1,
+    'button&': { height: 48 },
   },
 }));
 
@@ -160,7 +161,10 @@ export const HintYearSelect = ({ children }) => {
   const { yearIdIterations } = useAPI();
   const section = useMemo(() => Object.keys(yearIdIterations).sort().reverse().map(year => ({
     title: intl.formatMessage({ id: `components.yearSelect.${year}.title` }),
-    text: intl.formatMessage({ id: `components.yearSelect.${year}.description` }),
+    text: `
+**${intl.formatMessage({ id: `components.yearSelect.${year}.subtitle` })}**\n\n\
+${intl.formatMessage({ id: `components.yearSelect.${year}.description` })}\
+    `,
     link: intl.formatMessage({ id: `components.yearSelect.${year}.link` }),
   })), [intl, yearIdIterations]);
   const content = <HintSection title={intl.formatMessage({ id: 'components.yearSelect.title' })} section={section} />;

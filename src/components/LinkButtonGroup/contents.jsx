@@ -71,9 +71,7 @@ const LinkButtonContentSummary = ({ yearId }) => {
   }), [intl, yearId]);
   return (
     <>
-      <Typography variant="body2" color="secondary" component="div" style={{ marginBottom: 24 }}>
-        <Markdown>{text}</Markdown>
-      </Typography>
+      <Typography variant="body2" color="secondary" style={{ marginBottom: 24 }}>{text}</Typography>
       <Grid container alignItems="flex-end" wrap="nowrap" spacing={1}>
         <Grid item xs={5}>
           <img
