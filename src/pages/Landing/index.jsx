@@ -218,9 +218,6 @@ const Landing = () => {
             <ButtonBase aria-label={intl.formatMessage({ id: 'common.a11y.downloadReport' })} href={intl.formatMessage({ id: 'landing.links.download.link' })} target="_about">
               <img src={reportCover} alt={intl.formatMessage({ id: 'common.a11y.downloadReport' })} />
             </ButtonBase>
-            <Button color="primary" startIcon={<IconDownload />} href={intl.formatMessage({ id: 'landing.links.download.link' })} target="_about">
-              {intl.formatMessage({ id: 'landing.links.download.title' })}
-            </Button>
             <Button color="primary" startIcon={<IconExternal />} href={intl.formatMessage({ id: 'landing.links.view.link' })} target="_about">
               {intl.formatMessage({ id: 'landing.links.view.title' })}
             </Button>
