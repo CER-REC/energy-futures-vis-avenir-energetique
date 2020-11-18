@@ -218,7 +218,7 @@ const PageLayout = ({
             itemOrder={config.sourceOrder}
             defaultItems={sourceItems}
             defaultItemOrder={sources[type].order}
-            disabledItems={config.page === 'by-sector' && disabledSources}
+            disabledItems={disabledSources}
             setItems={selectedSources => configDispatch({ type: 'sources/changed', payload: selectedSources })}
             setItemOrder={sourceOrder => configDispatch({ type: 'sourceOrder/changed', payload: sourceOrder })}
           />
@@ -236,7 +236,7 @@ const PageLayout = ({
             itemOrder={config.provinceOrder}
             defaultItems={regionItems}
             defaultItemOrder={regions.order}
-            disabledItems={config.page === 'by-region' && disabledRegions}
+            disabledItems={disabledRegions}
             setItems={provinces => configDispatch({ type: 'provinces/changed', payload: provinces })}
             setItemOrder={provinceOrder => configDispatch({ type: 'provinceOrder/changed', payload: provinceOrder })}
           />
