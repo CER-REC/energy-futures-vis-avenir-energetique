@@ -1,4 +1,4 @@
-import React, { useMemo, Children, cloneElement } from 'react';
+import React, { useState, useEffect, useMemo, useCallback, Children, cloneElement } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles, useMediaQuery, Grid, Typography, Link, CircularProgress } from '@material-ui/core';
 import Alert from '@material-ui/lab/Alert';
@@ -8,6 +8,7 @@ import { useIntl } from 'react-intl';
 import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
 import useEnergyFutureData from '../../hooks/useEnergyFutureData';
+import { validYear } from '../../utilities/parseData';
 import { PAGES } from '../../constants';
 import YearSelect from '../YearSelect';
 import { PageTitle, PageSelect } from '../PageSelect';
@@ -92,6 +93,20 @@ const PageLayout = ({
   const { config, configDispatch } = useConfig();
   const { loading, error, data, disabledRegions, disabledSources, year } = useEnergyFutureData();
 
+  // Dimension of the viz bounding box
+  const [vizDimension, setVizDimension] = useState(undefined);
+
+  /**
+   * Update baseYear and compareYear if they are not valid.
+   * TODO: this can be move into the reducer if it has year min / max values.
+   */
+  useEffect(() => {
+    const baseYear = validYear(config.baseYear, year || {});
+    if (baseYear !== (config.baseYear || 0)) { configDispatch({ type: 'baseYear/changed', payload: baseYear }); }
+    const compareYear = validYear(config.compareYear, year || {});
+    if (compareYear !== (config.compareYear || 0)) { configDispatch({ type: 'compareYear/changed', payload: compareYear }); }
+  }, [year, config.baseYear, config.compareYear, configDispatch]);
+
   /**
    * Determine the current energy source type.
    * This will be primarily used in the tooltip generation.
@@ -105,8 +120,8 @@ const PageLayout = ({
    * Genenate the DOM node which contains the visualization.
    */
   const vis = useMemo(
-    () => Children.map(children, child => child && cloneElement(child, { data, year })),
-    [children, data, year],
+    () => Children.map(children, c => c && cloneElement(c, { data, year, vizDimension })),
+    [children, data, year, vizDimension],
   );
 
   /**
@@ -141,6 +156,15 @@ const PageLayout = ({
     () => `calc(100% - ${desktop ? 100 : 0}px - ${((showSource ? 1 : 0) + (showRegion ? 1 : 0)) * 70}px`,
     [desktop, showSource, showRegion],
   );
+
+  /**
+   * A ref used to record the bounding box dimension of the visualization container in pixels.
+   */
+  const vizRef = useCallback((node) => {
+    if (node !== null) {
+      setVizDimension(node.getBoundingClientRect());
+    }
+  }, []);
 
   /**
    * The main title, which can be reused in both desktop and mobile layouts.
@@ -201,6 +225,20 @@ const PageLayout = ({
     </>
   );
 
+  /**
+   * Render nothing if the baseYear value is out of range.
+   */
+  if (config.baseYear && config.baseYear !== validYear(config.baseYear, year || {})) {
+    return null;
+  }
+
+  /**
+   * Render nothing if the compareYear value is out of range.
+   */
+  if (config.compareYear && config.compareYear !== validYear(config.compareYear, year || {})) {
+    return null;
+  }
+
   return (
     <Grid container spacing={2} className={classes.root}>
       {header}
@@ -246,7 +284,7 @@ const PageLayout = ({
         <Grid item className={classes.graph} style={{ width: vizWidth }}>
           {loading && <CircularProgress color="primary" size={66} className={classes.loading} />}
           {error && <Alert severity="error"><AlertTitle>Error</AlertTitle>{error}</Alert>}
-          {!loading && !error && <div id="viz" className={classes.vis}>{vis}</div>}
+          {!loading && !error && <div ref={vizRef} className={classes.vis}>{vis}</div>}
         </Grid>
       )}
 

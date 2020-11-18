@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useCallback, useEffect } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { Grid, Typography, Button, Tooltip, makeStyles } from '@material-ui/core';
 import { ResponsiveTreeMap } from '@nivo/treemap';
@@ -63,11 +63,12 @@ const useStyles = makeStyles(theme => ({
     lineHeight: 1.25,
   },
   tick: {
-    height: 16,
-    marginLeft: 'calc(50% - 0.5px)',
-    borderLeft: `1px dashed ${theme.palette.secondary.main}`,
-    '&:first-of-type': { marginBottom: theme.spacing(1.5) },
-    '&:last-of-type': { marginTop: theme.spacing(1.5) },
+    position: 'absolute',
+    height: 40,
+    left: 'calc(50% - .5px)',
+    borderLeft: `1px dotted ${theme.palette.secondary.light}`,
+    '&:first-of-type': { top: -50 },
+    '&:last-of-type': { bottom: -50 },
   },
   legend: {
     float: 'right',
@@ -75,12 +76,13 @@ const useStyles = makeStyles(theme => ({
     margin: theme.spacing(1.5),
     padding: theme.spacing(1),
     backgroundColor: '#F3EFEF',
+    '& svg': { verticalAlign: 'middle' },
   },
 }));
 
 const MAX_SIZE = 250;
 
-const OilAndGas = ({ data, year }) => {
+const OilAndGas = ({ data, year, vizDimension }) => {
   const classes = useStyles();
   const { config, configDispatch } = useConfig();
   const intl = useIntl();
@@ -101,15 +103,6 @@ const OilAndGas = ({ data, year }) => {
 
   // 'oil' or 'gas' which is used for generating translation text
   const type = useMemo(() => (config.mainSelection === 'oilProduction' ? 'oil' : 'gas'), [config.mainSelection]);
-
-  // Record the width of the entire viz DOM
-  const [canvasWidth, setCanvasWidth] = useState(0);
-
-  // Use the reference of the table DOM for determine whether the cells are ready to be rendered
-  const refTable = React.createRef();
-
-  // Memorized the current viz DOM width once the table reference exists
-  useEffect(() => refTable?.current && setCanvasWidth(document.getElementById('viz').clientWidth * 0.6), [refTable]);
 
   /**
    * Determine the block colors in treemaps.
@@ -165,6 +158,7 @@ const OilAndGas = ({ data, year }) => {
     return {
       currentYearData: currentYearData.filter(isNotBothZero),
       compareYearData: compareYearData.filter(isNotBothZero),
+      biggestValue: Math.max(0, ...[...currentYearData, ...compareYearData].map(d => d.total)),
     };
   }, []);
 
@@ -216,7 +210,13 @@ const OilAndGas = ({ data, year }) => {
     type, tooltip, compare, getColor, getTooltip, intl,
   ]);
 
-  if (!data || !data[currentYear] || Number.isNaN(data[currentYear][0].total)) {
+  // data not ready; render nothing
+  if (!data || !data[currentYear] || !data[compareYear]) {
+    return null;
+  }
+
+  // data content not valid; render nothing
+  if (Number.isNaN(data[currentYear][0].total) || Number.isNaN(data[compareYear][0].total)) {
     return null;
   }
 
@@ -224,14 +224,17 @@ const OilAndGas = ({ data, year }) => {
   const {
     currentYearData,
     compareYearData,
+    biggestValue,
   } = sortDataSets(data[currentYear], data[compareYear]);
 
   const treeMapCollection = (treeData, isTopChart) => {
-    if (!canvasWidth) {
+    if (!vizDimension.width || biggestValue <= 0) {
       return [];
     }
 
     const totalGrandTotal = treeData.reduce((acc, val) => acc + val.total, 0);
+    const biggestRatio = Math.max(0, ...treeData.map(source => source.total)) / biggestValue;
+
     const regularTreeMaps = [];
     const smallTreeMaps = [];
 
@@ -250,10 +253,10 @@ const OilAndGas = ({ data, year }) => {
         regularTreeMaps.push(0); // empty cell
       }
       if (percentage > 0 && percentage <= 1) {
-        smallTreeMaps.push({ ...sortedSource, percentage, width: Math.sqrt(percentage) });
+        smallTreeMaps.push({ ...sortedSource, percentage, width: Math.pow(percentage, 0.333) });
       }
       if (percentage > 1) {
-        regularTreeMaps.push({ ...sortedSource, percentage, width: Math.sqrt(percentage) });
+        regularTreeMaps.push({ ...sortedSource, percentage, width: Math.pow(percentage, 0.333) });
       }
     });
 
@@ -265,7 +268,7 @@ const OilAndGas = ({ data, year }) => {
       smallTreeMaps.pop();
     }
 
-    if (regularTreeMaps.length === 0 || !canvasWidth) {
+    if (regularTreeMaps.length === 0 || !vizDimension.width) {
       return (
         <TableRow>
           <TableCell colSpan="100%" className={classes.cell}>
@@ -278,15 +281,18 @@ const OilAndGas = ({ data, year }) => {
       );
     }
 
+    // size of the rendering area
+    const canvasWidth = vizDimension.width * 0.7;
+
     // sum up the total width among the treemaps
     const totalWidth = regularTreeMaps.reduce((acc, val) => acc + (val.width || 0), 0);
 
     // if the biggest treemap exceed the max size, then calculate a ratio for shrinking them down
-    const maxPercentage = Math.max(...regularTreeMaps.map(t => t.width)) / totalWidth;
-    const ratio = (maxPercentage * canvasWidth) / MAX_SIZE;
+    const maxPercentage = Math.max(0, ...regularTreeMaps.map(t => t.width)) / totalWidth;
+    const ratio = (maxPercentage * canvasWidth) / MAX_SIZE / Math.sqrt(biggestRatio || 1);
 
     // prepare a method for calculate the screen sizes (in pixels) based on the canvas width
-    const getSize = width => (((width || 0) / totalWidth) * canvasWidth) / (ratio > 1 ? ratio : 1);
+    const getSize = width => ((width / totalWidth) * canvasWidth) / (ratio > 1 ? ratio : 1);
 
     // calculate the vertical offset of the grouped tiles
     const groupOffset = `translateY(calc(-${compare ? `100% ${isTopChart ? '- 45' : '+ 224'}` : '84'}px))`;
@@ -295,14 +301,14 @@ const OilAndGas = ({ data, year }) => {
       <TableRow>
         {regularTreeMaps.map(source => source && ({
           name: source.name,
-          node: createTreeMap(source, isTopChart, getSize(source.width)),
+          node: createTreeMap(source, isTopChart, getSize(source.width || 0)),
         })).map(tree => (tree ? (
           <TableCell
             key={`treemap-${tree.name}`}
             className={classes.cell}
             style={{ verticalAlign: isTopChart ? 'bottom' : 'top' }}
           >
-            <Grid container direction="column" wrap="nowrap">
+            <Grid container direction="column" wrap="nowrap" style={{ position: 'relative' }}>
               {!isTopChart && <Grid item className={classes.tick} />}
               <Grid item>{tree.node}</Grid>
               {(compare && isTopChart) && <Grid item className={classes.tick} />}
@@ -322,13 +328,15 @@ const OilAndGas = ({ data, year }) => {
               style={{ transform: groupOffset }}
             >
               <Grid item xs={12}>
-                <Typography variant="overline" align='center'>{intl.formatMessage({ id: 'common.oilandgas.groupLabel' })}</Typography>
+                <Typography variant="overline" align="center" component="div" style={{ lineHeight: 1.25 }}>
+                  {intl.formatMessage({ id: 'common.oilandgas.groupLabel' })}
+                </Typography>
               </Grid>
               {smallTreeMaps.map(source => ({
                 name: source.name,
                 node: createTreeMap(source, isTopChart, 40),
               })).map(tree => (
-                <Grid item xs={12} sm={6} key={`grouped-treemap-${tree.name}`}>{tree.node}</Grid>
+                <Grid item xs={12} sm={smallTreeMaps.length > 1 ? 6 : 12} key={`grouped-treemap-${tree.name}`}>{tree.node}</Grid>
               ))}
             </Grid>
           </TableCell>
@@ -385,7 +393,7 @@ const OilAndGas = ({ data, year }) => {
 
       {/* treemap graphs */}
       <TableContainer className={classes.table}>
-        <Table ref={refTable} style={{ height: compare ? 710 : 270 }}>
+        <Table style={{ height: compare ? 710 : 270 }}>
           <TableBody>
 
             {currentTreeMapCollection}
@@ -416,16 +424,14 @@ const OilAndGas = ({ data, year }) => {
 
       {/* legend */}
       <Grid container direction="column" className={classes.legend}>
-        <Typography align='center' variant='body2'><strong>Legend</strong></Typography>
-
-        <Typography variant="body2" align="center">
+        <Typography variant="caption" align="center">
           <strong>{intl.formatMessage({ id: `common.oilandgas.legend.${config.mainSelection}.${config.view}.title` })}</strong>
         </Typography>
 
         <Grid container alignItems="center" wrap="nowrap" spacing={1}>
           <Grid item><IconOilAndGasRectangle /></Grid>
           <Grid item>
-            <Typography variant="body2">
+            <Typography variant="caption">
               {intl.formatMessage({ id: `common.oilandgas.legend.${config.mainSelection}.${config.view}.single` })}
             </Typography>
           </Grid>
@@ -433,7 +439,7 @@ const OilAndGas = ({ data, year }) => {
         <Grid container alignItems="center" wrap="nowrap" spacing={1}>
           <Grid item><IconOilAndGasGroup /></Grid>
           <Grid item>
-            <Typography variant="body2">
+            <Typography variant="caption">
               {intl.formatMessage({ id: `common.oilandgas.legend.${config.mainSelection}.${config.view}.group` })}
             </Typography>
           </Grid>
@@ -450,10 +456,15 @@ OilAndGas.propTypes = {
     max: PropTypes.number,
     forecastStart: PropTypes.number,
   }),
+  vizDimension: PropTypes.shape({
+    height: PropTypes.number,
+    width: PropTypes.number,
+  }),
 };
 
 OilAndGas.defaultProps = {
   data: undefined,
   year: { min: 0, max: 0, forecastStart: 0 },
+  vizDimension: { height: 0, width: 0 },
 };
 export default OilAndGas;
