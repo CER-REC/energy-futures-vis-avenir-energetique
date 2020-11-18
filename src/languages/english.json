@@ -82,7 +82,7 @@
       "open": "open description dialog",
       "close": "close",
       "downloadReport": "download report",
-      "sliderYearCurrent": "currently selected year",
+      "sliderYearCurrent": "current selected year",
       "sliderYearCompare": "year selected for comparison"
     }
   },

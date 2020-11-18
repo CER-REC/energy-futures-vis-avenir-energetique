@@ -82,7 +82,7 @@
       "open": "ouvrir la boîte de dialogue de description",
       "close": "fermer",
       "downloadReport": "télécharger le rapport",
-      "sliderYearCurrent": "année actuellement sélectionnée",
+      "sliderYearCurrent": "année sélectionnée en cours",
       "sliderYearCompare": "année sélectionnée pour comparaison"
     }
   },
@@ -619,7 +619,7 @@
         "link": "https://apps2.cer-rec.gc.ca/energy-future/pdf/avenir-energetique-visualisation-methodologie-2020.pdf"
       },
       "resources": {
-        "title": "Ressources pour les édutiants",
+        "title": "Ressources pour les étudiants",
         "link": "https://www.cer-rec.gc.ca/fr/donnees-analyse/ressources-etudiants/index.html"
       },
       "download": {
