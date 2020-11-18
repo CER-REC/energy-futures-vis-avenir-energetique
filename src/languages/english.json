@@ -1,6 +1,6 @@
 {
   "common": {
-    "title": "EXPLORING CANADA’S ENERGY FUTURE",
+    "title": "Exploring Canada’s Energy Future",
     "forecast": "forecast",
     "selection": "Selection",
     "region": "Region",
@@ -43,6 +43,10 @@
       "button": {
         "compare": "Compare",
         "noCompare": "Don't Compare"
+      },
+      "displayName": {
+        "LIGHT": "Conv. Light",
+        "HEAVY": "Conv. Heavy"
       },
       "groupLabel": "Values less than 1%",
       "legend": {
@@ -431,25 +435,6 @@
     }
   },
   "views": {
-    "oil-and-gas":{
-      "treeMapSourceTitles":{
-        "oilProduction":{
-          "LIGHT": "Conv. Light",
-          "ISB": "In Situ Bitumen",
-          "HEAVY": "Conv. Heavy",
-          "CONDENSATE": "Field Cond.",
-          "C5": "C5+ (Pentanes+)",
-          "MB": "Mined Bitumen"
-        },
-        "gasProduction":{
-          "CBM": "Coal Bed Methane",
-          "NA": "Conventional",
-          "SHALE": "Shale",
-          "SOLUTION": "Solution",
-          "TIGHT": "Tight"
-        }
-      }
-    }
   },
   "regions": {
   },
@@ -562,10 +547,18 @@
     },
     "Methodology": {
       "title": "Methodology",
-      "description": "Access our [Methodology document](https://apps2.cer-rec.gc.ca/dvs/PDF/CER_Energy_Futures_Methodology_ENG.PDF) to find out about the Energy Futures modeling system, definitions and indicators, data sources and more."
+      "description": "Access our [Methodology document](https://apps2.cer-rec.gc.ca/energy-future/pdf/energy-future-visualization-methodology-2020.pdf) to find out about the Energy Futures modeling system, definitions and indicators, data sources and more."
     },
     "Report": {
-      "title": "Reports"
+      "title": {
+        "2016": "EF2016 Report",
+        "2016*": "EF2016 (Update) Report",
+        "2017": "EF2017 Report",
+        "2018": "EF2018 Report",
+        "2019": "EF2019 Report",
+        "2020": "EF2020 Report",
+        "default": "EF2016 Report"
+      }
     },
     "Summary": {
       "title": "Summary",
@@ -578,6 +571,15 @@
         "2019": "[View the EF2019 Report](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2019/index.html)",
         "2020": "[View the EF2020 Report](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2020/index.html)",
         "default": "[View the EF2016 Report](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2020/index.html)"
+      },
+      "image": {
+        "2016": "https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/images/2016nrgftr-eng.jpg",
+        "2016*": "https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/images/2016updt-eng.jpg",
+        "2017": "https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/images/2017nrgftr-eng.jpg",
+        "2018": "https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/images/2018nrgftr-eng.jpg",
+        "2019": "https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/images/2019nrgftr-eng.jpg",
+        "2020": "https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/images/2020nrgftr-eng.jpg",
+        "default": "https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/images/2016nrgftr-eng.jpg"
       }
     },
     "About": {
@@ -585,7 +587,6 @@
     }
   },
   "landing": {
-    "title": "Explore Canada's Energy Future",
     "description": "Based on data from our Energy Futures reports, this interactive tool allows you to explore energy production and consumption trends and forecast them into the future. You can explore the data from the most recent report, or refer to previous reports.",
     "By Region": {
       "title": "Explore By Region",
@@ -608,10 +609,10 @@
       "description": "Explore Oil and Gas production across the provinces and territories for a given year"
     },
     "links": {
-      "title": "Explore Canada's Energy Future Report",
+      "title": "Canada's Energy Future Report",
       "methodology": {
         "title": "Methodology",
-        "link": "https://apps2.cer-rec.gc.ca/dvs/PDF/CER_Energy_Futures_Methodology_ENG.PDF"
+        "link": "https://apps2.cer-rec.gc.ca/energy-future/pdf/energy-future-visualization-methodology-2020.pdf"
       },
       "resources": {
         "title": "Student Resources",
