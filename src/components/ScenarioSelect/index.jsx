@@ -56,8 +56,11 @@ const ScenarioSelect = ({ multiSelect }) => {
    * Prepare the tooltip text of a given scenario button.
    */
   const getTooltip = useCallback(scenario => intl.formatMessage({
-    id: `components.scenarioSelect.${scenario}.description.${config.yearId}`,
-    defaultMessage: intl.formatMessage({ id: `components.scenarioSelect.${scenario}.description.default` }),
+    id: `components.scenarioSelect.${scenario}.tooltip.${config.yearId}`,
+    defaultMessage: intl.formatMessage({
+      id: `components.scenarioSelect.${scenario}.description.${config.yearId}`,
+      defaultMessage: intl.formatMessage({ id: `components.scenarioSelect.${scenario}.description.default` }),
+    }),
   }), [intl, config.yearId]);
 
   return (

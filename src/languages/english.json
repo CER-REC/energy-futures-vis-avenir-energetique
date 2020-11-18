@@ -74,8 +74,7 @@
             "group": "Total amount of gas type produced in Canada"
           }
         }
-      },
-      "placeholder": "Not Available"
+      }
     },
     "a11y": {
       "header": "header background",
@@ -83,7 +82,7 @@
       "open": "open description dialog",
       "close": "close",
       "downloadReport": "download report",
-      "sliderYearCurrent": "current selected year",
+      "sliderYearCurrent": "currently selected year",
       "sliderYearCompare": "year selected for comparison"
     }
   },
@@ -109,7 +108,7 @@
       },
       "keyboardNav": {
         "title": "Keyboard Shortcut",
-        "description": "- **Spacebar:** start to drag or drop\n- **Escapse:** cancel the drag\n- **Up Arrow:** move an item upwards\n- **Down Arrow:** move an item downwards\n"
+        "description": "- **Spacebar:** start to drag or drop\n- **Escape:** cancel the drag\n- **Up Arrow:** move an item upwards\n- **Down Arrow:** move an item downwards\n"
       }
     },
     "errorBoundary": {
@@ -236,6 +235,9 @@
         }
       },
       "Evolving": {
+        "tooltip": {
+          "2020": "View projections based on the Evolving Energy System scenario"
+        },
         "description": {
           "2020": "The Evolving Energy System Scenario considers the impact of increasing action on climate change throughout the projection period. It builds upon current climate and energy policies with a hypothetical suite of future policy developments.",
           "default": "The Evolving Energy System Scenario considers the impact of increasing action on climate change throughout the projection period. It builds upon current climate and energy policies with a hypothetical suite of future policy developments."
@@ -276,6 +278,9 @@
         }
       },
       "Reference": {
+        "tooltip": {
+          "2020": "View projections based on the Reference scenario"
+        },
         "description": {
           "2016": "The Reference Case provides a baseline outlook, based on a moderate view of future energy prices and economic growth.",
           "2016*": "The Reference Case provides a baseline outlook, based on a moderate view of future energy prices and economic growth.",

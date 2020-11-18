@@ -14,21 +14,21 @@ Vous pouvez nous la faire parvenir, ainsi que vos suggestions, à l’adresse [d
 
 ###### VERSION 2
 ###### SOURCE DES DONNÉES :
-Matthew Hansen (spécialiste technique, marchés), Aaron Hoyle (analyste de marchés), Mantaj Hundal (analyste de marchés), Michael Nadew (analyste de marchés), Melanie Stogran (analyste de l'offre), Bryce van Sluys (directeur, Energy Outlooks)
+Matthew Hansen (spécialiste technique, marchés), Aaron Hoyle (analyste de marchés), Mantaj Hundal (analyste de marchés), Michael Nadew (analyste de marchés), Melanie Stogran (analyste de l'offre), Bryce van Sluys (directeur, Perspectives énergétiques)
 
 ###### COORDINATION :
-Amanda Harwood (gestionnaire de projet); Romina Imani (coordinatrice des données numériques); Karen Ryhorchuk (agente de communications); Sean Stricker (Director, Digital Transformation)
+Amanda Harwood (gestionnaire de projet); Romina Imani (coordinatrice des données numériques); Karen Ryhorchuk (agente de communications); Sean Stricker (directeur, Transformation numérique)
 
 ###### VISUALISATION DE DONNÉES :
-Design Lead & Production Graphics: Tétro
+Responsable de la conception et de la production graphiques : Tétro
 
-Tétro Design Team: Doris Kosminsky, Justin Ladia, Andrea Tetrault
+Équipe de conception de Tétro : Doris Kosminsky, Justin Ladia, Andrea Tetrault
 
-CER Design Team: Lien Quach, Angelsea Saby, Jagoda Walny-Nix
+Équipe de conception de la Régie : Lien Quach, Angelsea Saby, Jagoda Walny-Nix
 
-Technical Development Lead: VizworX
+Chef technique : VizworX
 
-Development: Alan Chen, Nico Li, Steven Rothenburger
+Aspect technique : Alan Chen, Nico Li, Steven Rothenburger
 
 ###### VERSION 1
 ###### SOURCE DES DONNÉES :
