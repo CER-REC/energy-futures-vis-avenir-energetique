@@ -1,6 +1,6 @@
 {
   "common": {
-    "title": "EXPLORER L’AVENIR ÉNERGÉTIQUE DU CANADA",
+    "title": "Explorer l’avenir énergétique du Canada",
     "forecast": "prévision",
     "selection": "Sélection",
     "region": "Région",
@@ -417,7 +417,6 @@
       "download": "Téléchargement des données",
       "filename": "Avenir_énergétique",
       "copied": "URL copiée",
-      "emailSubject": "l’avenir énergétique du Canada",
       "emailMessage": "L’outil interactif en ligne Explorer l’avenir énergétique du Canada repose sur la publication phare de la Régie de l’énergie du Canada intitulée Avenir énergétique du Canada. Cette visualisation vous permet de prendre connaissance de l’évolution de la production et de la consommation d’énergie, et faire des prévisions pour l’avenir. Vous avez le loisir de vous en tenir au rapport le plus récent ou d’aller voir ce que disaient de précédents rapports.",
       "dialog": {
         "description": "Copy the following link to the clipboard?",

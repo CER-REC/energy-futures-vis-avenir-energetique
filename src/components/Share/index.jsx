@@ -133,7 +133,7 @@ export const Share = ({ direction, keepMounted }) => {
     icon: <EmailIcon />,
     content: () => {
       getBitlyURL().then((bitlyUrl) => {
-        const subject = intl.formatMessage({ id: 'components.share.emailSubject' });
+        const subject = intl.formatMessage({ id: 'common.title' });
         const message = intl.formatMessage({ id: 'components.share.emailMessage' });
         const body = `${encodeURIComponent(bitlyUrl)}%0A%0A${encodeURIComponent(message)}`;
         const emailUrl = `mailto:?subject=${encodeURIComponent(subject)}&body=${body}`;
