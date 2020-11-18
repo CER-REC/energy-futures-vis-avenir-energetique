@@ -44,6 +44,10 @@
         "compare": "Compare",
         "noCompare": "Don't Compare"
       },
+      "displayName": {
+        "LIGHT": "Conv. Light",
+        "HEAVY": "Conv. Heavy"
+      },
       "groupLabel": "Values less than 1%",
       "legend": {
         "oilProduction": {
@@ -430,25 +434,6 @@
     }
   },
   "views": {
-    "oil-and-gas":{
-      "treeMapSourceTitles":{
-        "oilProduction":{
-          "LIGHT": "Conv. Light",
-          "ISB": "In Situ Bitumen",
-          "HEAVY": "Conv. Heavy",
-          "CONDENSATE": "Field Cond.",
-          "C5": "C5+ (Pentanes+)",
-          "MB": "Mined Bitumen"
-        },
-        "gasProduction":{
-          "CBM": "Coal Bed Methane",
-          "NA": "Conventional",
-          "SHALE": "Shale",
-          "SOLUTION": "Solution",
-          "TIGHT": "Tight"
-        }
-      }
-    }
   },
   "regions": {
   },
@@ -561,10 +546,18 @@
     },
     "Methodology": {
       "title": "Méthodologie",
-      "description": "Consultez notre [document sur la méthodologie](https://www.cer-rec.gc.ca/avenir-energetique/PDF/Regie-avenir-energetique-methodologie-fr.pdf) pour en savoir plus sur le système de modélisation de l’avenir énergétique, les définitions et les indicateurs, les sources de données et plus encore."
+      "description": "Consultez notre [document sur la méthodologie](https://apps2.cer-rec.gc.ca/energy-future/pdf/avenir-energetique-visualisation-methodologie-2020.pdf) pour en savoir plus sur le système de modélisation de l’avenir énergétique, les définitions et les indicateurs, les sources de données et plus encore."
     },
     "Report": {
-      "title": "Rapports"
+      "title": {
+        "2016": "Rapport AE 2016",
+        "2016*": "Rapport AE 2016 Mise à jour",
+        "2017": "Rapport AE 2017",
+        "2018": "Rapport AE 2018",
+        "2019": "Rapport AE 2019",
+        "2020": "Rapport AE 2020",
+        "default": "Rapport AE 2016"
+      }
     },
     "Summary": {
       "title": "Summary",
@@ -577,6 +570,15 @@
         "2019": "[Voir le rapport AE 2019](https://www.cer-rec.gc.ca/fr/donnees-analyse/avenir-energetique-canada/2019/index.html)",
         "2020": "[Voir le rapport AE 2020](https://www.cer-rec.gc.ca/fr/donnees-analyse/avenir-energetique-canada/2020/index.html)",
         "default": "[Voir le rapport AE 2016](https://www.cer-rec.gc.ca/fr/donnees-analyse/avenir-energetique-canada/2016/index.html)"
+      },
+      "image": {
+        "2016": "https://www.cer-rec.gc.ca/fr/donnees-analyse/avenir-energetique-canada/images/2016nrgftr-fra.jpg",
+        "2016*": "https://www.cer-rec.gc.ca/fr/donnees-analyse/avenir-energetique-canada/images/2016updt-fra.jpg",
+        "2017": "https://www.cer-rec.gc.ca/fr/donnees-analyse/avenir-energetique-canada/images/2017nrgftr-fra.jpg",
+        "2018": "https://www.cer-rec.gc.ca/fr/donnees-analyse/avenir-energetique-canada/images/2018nrgftr-fra.jpg",
+        "2019": "https://www.cer-rec.gc.ca/fr/donnees-analyse/avenir-energetique-canada/images/2019nrgftr-fra.jpg",
+        "2020": "https://www.cer-rec.gc.ca/fr/donnees-analyse/avenir-energetique-canada/images/2020nrgftr-fra.jpg",
+        "default": "https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/images/2016nrgftr-eng.jpg"
       }
     },
     "About": {
@@ -584,7 +586,6 @@
     }
   },
   "landing": {
-    "title": "Explorer l’avenir énergétique du Canada",
     "description": "Mettant à profit les données associées à nos rapports sur l’avenir énergétique, cet outil interactif vous permet d’explorer l’évolution de la production et de la consommation d’énergie, même de faire des prévisions. Vous avez le loisir de vous en tenir au rapport le plus récent ou d’aller voir ce que disaient de précédents rapports.",
     "By Region": {
       "title": "Explorer par région",
@@ -607,10 +608,10 @@
       "description": "Explorer la production de pétrole et de gaz dans les provinces et les territoires pendant une année donnée"
     },
     "links": {
-      "title": "Explorer le rapport sur l’avenir énergétique du Canada",
+      "title": "Le rapport sur l’avenir énergétique du Canada",
       "methodology": {
         "title": "Hypothèses",
-        "link": "https://www.cer-rec.gc.ca/avenir-energetique/PDF/Regie-avenir-energetique-methodologie-fr.pdf"
+        "link": "https://apps2.cer-rec.gc.ca/energy-future/pdf/avenir-energetique-visualisation-methodologie-2020.pdf"
       },
       "resources": {
         "title": "Ressources pour les édutiants",

@@ -1,4 +1,5 @@
 import React, { useCallback, useMemo } from 'react';
+import { useIntl } from 'react-intl';
 import { ResponsiveLine } from '@nivo/line';
 import PropTypes from 'prop-types';
 import useConfig from '../../hooks/useConfig';
@@ -11,6 +12,7 @@ import VizTooltip from '../../components/VizTooltip';
 import MaxTick from '../../components/MaxTick';
 
 const Scenarios = ({ data, year }) => {
+  const intl = useIntl();
   const { config } = useConfig();
 
   /**
@@ -65,6 +67,7 @@ const Scenarios = ({ data, year }) => {
     <VizTooltip
       nodes={event.slice?.points.map(value => ({
         name: value.serieId,
+        translation: intl.formatMessage({ id: `common.scenarios.${value.serieId}` }),
         value: value.data?.y,
         color: value.serieColor,
       }))}
@@ -73,7 +76,7 @@ const Scenarios = ({ data, year }) => {
       showTotal={false}
       showPercentage={false}
     />
-  ), [config.unit]);
+  ), [intl, config.unit]);
 
   if (!data) {
     return null;
