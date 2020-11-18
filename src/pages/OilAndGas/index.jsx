@@ -137,6 +137,16 @@ const OilAndGas = ({ data, year, vizDimension }) => {
   ), [config.view, config.unit, intl, type, getColor]);
 
   /**
+   * Determine the position of the tooltip based on the treemap size and the number of nodes.
+   */
+  const getTooltipPos = useCallback((length, size, isTopChart) => {
+    if (length > 3 && size > 120) {
+      return (compare && isTopChart) ? 'left' : 'right';
+    }
+    return (compare && isTopChart) ? 'top' : 'bottom';
+  }, [compare]);
+
+  /**
    * Sort both data based on the current year values in the descending order.
    */
   const sortDataSets = useCallback((curr, comp) => {
@@ -178,7 +188,7 @@ const OilAndGas = ({ data, year, vizDimension }) => {
       <Tooltip
         open={source.name === tooltip}
         title={getTooltip(source)}
-        placement={(compare && isTopChart) ? 'top' : 'bottom'}
+        placement={getTooltipPos(source.children.length, size, isTopChart)}
         onOpen={() => setTooltip(source.name)}
         onClose={() => setTooltip(undefined)}
       >
@@ -207,7 +217,7 @@ const OilAndGas = ({ data, year, vizDimension }) => {
     </>
   ), [
     classes.treeMapRectangle, classes.label, config.view,
-    type, tooltip, compare, getColor, getTooltip, intl,
+    type, tooltip, getColor, getTooltip, getTooltipPos, intl,
   ]);
 
   // data not ready; render nothing
@@ -253,10 +263,10 @@ const OilAndGas = ({ data, year, vizDimension }) => {
         regularTreeMaps.push(0); // empty cell
       }
       if (percentage > 0 && percentage <= 1) {
-        smallTreeMaps.push({ ...sortedSource, percentage, width: Math.pow(percentage, 0.333) });
+        smallTreeMaps.push({ ...sortedSource, percentage, width: percentage ** 0.333 });
       }
       if (percentage > 1) {
-        regularTreeMaps.push({ ...sortedSource, percentage, width: Math.pow(percentage, 0.333) });
+        regularTreeMaps.push({ ...sortedSource, percentage, width: percentage ** 0.333 });
       }
     });
 
