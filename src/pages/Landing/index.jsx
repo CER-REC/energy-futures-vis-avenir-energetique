@@ -142,13 +142,18 @@ const useStyles = makeStyles(theme => ({
 
   dialog: {
     overflow: 'visible',
-    '& p, & ul': { margin: theme.spacing(0, 0, 1) },
+    '& h4, & h6, & p, & ul': {
+      margin: theme.spacing(0, 0, 1),
+      fontFamily: '"Noto Sans","Helvetica Neue",Helvetica,Arial,sans-serif',
+    },
+    '& h6': { marginTop: theme.spacing(3) },
   },
   close: {
     position: 'absolute',
     top: -24,
     right: -24,
     zIndex: 1,
+    'button&': { height: 48 },
   },
 }));
 
