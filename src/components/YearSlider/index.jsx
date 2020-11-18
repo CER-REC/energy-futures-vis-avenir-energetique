@@ -18,6 +18,7 @@ const useStyles = makeStyles(theme => ({
     padding: theme.spacing(1.5, 1),
     borderLeft: `1px solid ${theme.palette.secondary.light}`,
     borderRight: `1px solid ${theme.palette.secondary.light}`,
+    zIndex: 1,
     '& > span': {
       position: 'absolute',
       top: 'calc(50% - 0.5px)',
@@ -165,13 +166,7 @@ const YearSlider = ({ year, onYearChange, min, max, forecast }) => {
   }
 
   return (
-    <Grid
-      container
-      alignItems="center"
-      wrap="nowrap"
-      className={classes.root}
-      style={{ backgroundColor: double || !forecast ? '#F3EFEF' : 'transparent' }}
-    >
+    <Grid container alignItems="center" wrap="nowrap" className={classes.root}>
       <Grid item>
         <IconButton color="primary" onClick={() => setPlay(!play)} className={classes.play}>
           {play ? <PauseIcon fontSize="large" /> : <PlayIcon fontSize="large" />}
@@ -183,8 +178,7 @@ const YearSlider = ({ year, onYearChange, min, max, forecast }) => {
           <Slider
             value={compareYear}
             onChange={(_, value) => value && onCompareYearChange(value)}
-            aria-labelledby="year select slider (compare)"
-            aria-valuetext="year selected for comparison"
+            aria-valuetext={intl.formatMessage({ id: 'common.a11y.sliderYearCompare' })}
             color="secondary"
             {...DEFAULT_PROPS}
             classes={getClasses(true)}
@@ -195,8 +189,7 @@ const YearSlider = ({ year, onYearChange, min, max, forecast }) => {
         <Slider
           value={currYear}
           onChange={(_, value) => value && onCurrYearChange(value)}
-          aria-labelledby="year select slider (current)"
-          aria-valuetext="current selected year"
+          aria-valuetext={intl.formatMessage({ id: 'common.a11y.sliderYearCurrent' })}
           {...DEFAULT_PROPS}
           classes={getClasses()}
         />
