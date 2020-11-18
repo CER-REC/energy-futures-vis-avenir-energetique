@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useCallback, useEffect } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { Grid, Typography, Button, Tooltip, makeStyles } from '@material-ui/core';
 import { ResponsiveTreeMap } from '@nivo/treemap';
@@ -80,7 +80,7 @@ const useStyles = makeStyles(theme => ({
 
 const MAX_SIZE = 250;
 
-const OilAndGas = ({ data, year }) => {
+const OilAndGas = ({ data, year, vizDimension }) => {
   const classes = useStyles();
   const { config, configDispatch } = useConfig();
   const intl = useIntl();
@@ -98,15 +98,6 @@ const OilAndGas = ({ data, year }) => {
 
   // Determine which tooltip is currently open
   const [tooltip, setTooltip] = useState(undefined);
-
-  // Record the width of the entire viz DOM
-  const [canvasWidth, setCanvasWidth] = useState(0);
-
-  // Use the reference of the table DOM for determine whether the cells are ready to be rendered
-  const refTable = React.createRef();
-
-  // Memorized the current viz DOM width once the table reference exists
-  useEffect(() => refTable?.current && setCanvasWidth(document.getElementById('viz').clientWidth * 0.6), [refTable]);
 
   /**
    * Determine the block colors in treemaps.
@@ -233,7 +224,7 @@ const OilAndGas = ({ data, year }) => {
   } = sortDataSets(data[currentYear], data[compareYear]);
 
   const treeMapCollection = (treeData, isTopChart) => {
-    if (!canvasWidth || biggestValue <= 0) {
+    if (!vizDimension.width || biggestValue <= 0) {
       return [];
     }
 
@@ -273,7 +264,7 @@ const OilAndGas = ({ data, year }) => {
       smallTreeMaps.pop();
     }
 
-    if (regularTreeMaps.length === 0 || !canvasWidth) {
+    if (regularTreeMaps.length === 0 || !vizDimension.width) {
       return (
         <TableRow>
           <TableCell colSpan="100%" className={classes.cell}>
@@ -285,6 +276,9 @@ const OilAndGas = ({ data, year }) => {
       );
     }
 
+    // size of the rendering area
+    const canvasWidth = vizDimension.width * 0.75;
+
     // sum up the total width among the treemaps
     const totalWidth = regularTreeMaps.reduce((acc, val) => acc + (val.width || 0), 0);
 
@@ -293,7 +287,7 @@ const OilAndGas = ({ data, year }) => {
     const ratio = (maxPercentage * canvasWidth) / MAX_SIZE / Math.sqrt(biggestRatio || 1);
 
     // prepare a method for calculate the screen sizes (in pixels) based on the canvas width
-    const getSize = width => (((width || 0) / totalWidth) * canvasWidth) / (ratio > 1 ? ratio : 1);
+    const getSize = width => ((width / totalWidth) * canvasWidth) / (ratio > 1 ? ratio : 1);
 
     // calculate the vertical offset of the grouped tiles
     const groupOffset = `translateY(calc(-${compare ? `100% ${isTopChart ? '- 45' : '+ 224'}` : '84'}px))`;
@@ -302,7 +296,7 @@ const OilAndGas = ({ data, year }) => {
       <TableRow>
         {regularTreeMaps.map(source => source && ({
           name: source.name,
-          node: createTreeMap(source, isTopChart, getSize(source.width)),
+          node: createTreeMap(source, isTopChart, getSize(source.width || 0)),
         })).map(tree => (tree ? (
           <TableCell
             key={`treemap-${tree.name}`}
@@ -392,7 +386,7 @@ const OilAndGas = ({ data, year }) => {
 
       {/* treemap graphs */}
       <TableContainer className={classes.table}>
-        <Table ref={refTable} style={{ height: compare ? 710 : 270 }}>
+        <Table style={{ height: compare ? 710 : 270 }}>
           <TableBody>
 
             {currentTreeMapCollection}
@@ -457,10 +451,15 @@ OilAndGas.propTypes = {
     max: PropTypes.number,
     forecastStart: PropTypes.number,
   }),
+  vizDimension: PropTypes.shape({
+    height: PropTypes.number,
+    width: PropTypes.number,
+  }),
 };
 
 OilAndGas.defaultProps = {
   data: undefined,
   year: { min: 0, max: 0, forecastStart: 0 },
+  vizDimension: { height: 0, width: 0 },
 };
 export default OilAndGas;
