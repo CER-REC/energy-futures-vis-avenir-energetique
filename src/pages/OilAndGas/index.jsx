@@ -253,10 +253,10 @@ const OilAndGas = ({ data, year, vizDimension }) => {
         regularTreeMaps.push(0); // empty cell
       }
       if (percentage > 0 && percentage <= 1) {
-        smallTreeMaps.push({ ...sortedSource, percentage, width: Math.sqrt(percentage) });
+        smallTreeMaps.push({ ...sortedSource, percentage, width: Math.pow(percentage, 0.333) });
       }
       if (percentage > 1) {
-        regularTreeMaps.push({ ...sortedSource, percentage, width: Math.sqrt(percentage) });
+        regularTreeMaps.push({ ...sortedSource, percentage, width: Math.pow(percentage, 0.333) });
       }
     });
 
