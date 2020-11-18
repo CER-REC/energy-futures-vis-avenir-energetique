@@ -1,6 +1,12 @@
 import React from 'react';
 import { useIntl } from 'react-intl';
 
+const STYLE = {
+  fontSize: 13,
+  textTransform: 'uppercase',
+  fontFamily: '"FiraSansCondensed", "Roboto", "Helvetica", "Arial", sans-serif',
+};
+
 export default ({ year }) => (props) => {
   const intl = useIntl();
 
@@ -29,7 +35,7 @@ export default ({ year }) => (props) => {
         width={width - x}
         fill="url(#forecastBarGradient)"
       />
-      <text x={x + 5} y={-y + 14} fill="#5D5D5D" style={{ fontSize: 13, textTransform: 'uppercase' }}>
+      <text x={x + 5} y={-y + 14} fill="#5D5D5D" style={STYLE}>
         {intl.formatMessage({ id: 'common.forecast' })}
       </text>
       <path

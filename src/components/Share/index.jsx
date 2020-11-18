@@ -81,7 +81,7 @@ const useStyles = makeStyles(theme => ({
     textAlign: 'right',
   },
   label: {
-    fontSize: 12,
+    fontSize: 14,
     lineHeight: 1.2,
   },
   accent: { borderRight: `8px solid ${theme.palette.primary.main}` },

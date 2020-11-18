@@ -101,6 +101,9 @@ const OilAndGas = ({ data, year, vizDimension }) => {
   // Determine which tooltip is currently open
   const [tooltip, setTooltip] = useState(undefined);
 
+  // 'oil' or 'gas' which is used for generating translation text
+  const type = useMemo(() => (config.mainSelection === 'oilProduction' ? 'oil' : 'gas'), [config.mainSelection]);
+
   /**
    * Determine the block colors in treemaps.
    */
@@ -123,7 +126,7 @@ const OilAndGas = ({ data, year, vizDimension }) => {
         name: value.name,
         translation: intl.formatMessage({
           id: config.view === 'region'
-            ? `common.sources.${config.mainSelection === 'oilProduction' ? 'oil' : 'gas'}.${value.name}`
+            ? `common.sources.${type}.${value.name}`
             : `common.regions.${value.name}`,
         }),
         value: value.value,
@@ -131,7 +134,7 @@ const OilAndGas = ({ data, year, vizDimension }) => {
       }))}
       unit={config.unit}
     />
-  ), [config, intl, getColor]);
+  ), [config.view, config.unit, intl, type, getColor]);
 
   /**
    * Sort both data based on the current year values in the descending order.
@@ -166,8 +169,8 @@ const OilAndGas = ({ data, year, vizDimension }) => {
     <>
       <Typography align='center' varient="body2" className={classes.label}>
         {config.view === 'source' ? intl.formatMessage({
-          id: `views.oil-and-gas.treeMapSourceTitles.${config.mainSelection}.${source.name}`,
-          defaultMessage: source.name,
+          id: `common.oilandgas.displayName.${source.name}`,
+          defaultMessage: intl.formatMessage({ id: `common.sources.${type}.${source.name}` }),
         }) : source.name}
         {config.view === 'region' && source.percentage > 1 && `: ${source.percentage.toFixed(2)}%`}
       </Typography>
@@ -203,9 +206,8 @@ const OilAndGas = ({ data, year, vizDimension }) => {
       </Tooltip>
     </>
   ), [
-    classes.treeMapRectangle, classes.label,
-    config.view, config.mainSelection,
-    tooltip, compare, getColor, getTooltip, intl,
+    classes.treeMapRectangle, classes.label, config.view,
+    type, tooltip, compare, getColor, getTooltip, intl,
   ]);
 
   // data not ready; render nothing
@@ -270,8 +272,9 @@ const OilAndGas = ({ data, year, vizDimension }) => {
       return (
         <TableRow>
           <TableCell colSpan="100%" className={classes.cell}>
-            <Typography variant="h4" component="div" color="primary" align="center">
-              {intl.formatMessage({ id: 'common.oilandgas.placeholder' })}
+            <Typography variant="body1" component="div" color="secondary" align="center">
+              {config.view === 'region' && config.provinces.length === 1 && `${config.provinces[0]}: 0%`}
+              {config.view === 'source' && config.sources.length === 1 && `${intl.formatMessage({ id: `common.sources.${type}.${config.sources[0]}` })}: 0%`}
             </Typography>
           </TableCell>
         </TableRow>

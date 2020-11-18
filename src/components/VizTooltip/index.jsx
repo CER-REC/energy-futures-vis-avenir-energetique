@@ -6,6 +6,9 @@ import { formatUnitAbbreviation } from '../../utilities/convertUnit';
 
 const useStyles = makeStyles(theme => ({
   paper: { padding: theme.spacing(2) },
+  row: {
+    '& > td': { padding: theme.spacing(0.25, 0.75) },
+  },
   color: {
     height: theme.spacing(2),
     width: theme.spacing(2),
@@ -29,8 +32,8 @@ const VizTooltip = ({ nodes, total, unit, year, paper, showTotal, showPercentage
           const num = formatUnitAbbreviation(node.value, showUnit && intl.formatMessage({ id: `common.units.${unit}` }));
           const suffix = showUnit ? '' : `(${((node.value / sum) * 100).toFixed(1)}%)`;
           return (
-            <TableRow key={`viz-legend-item-${node.name}-${node.value}`}>
-              <TableCell size="small" style={{ padding: 6 }}>
+            <TableRow key={`viz-legend-item-${node.name}-${node.value}`} className={classes.row}>
+              <TableCell size="small">
                 <div className={classes.color} style={{ backgroundColor: node.mask ? 'transparent' : node.color }}>
                   {node.mask && (
                     <svg x="0" y="0" height="100%" width="100%" viewBox="0 0 30 30">

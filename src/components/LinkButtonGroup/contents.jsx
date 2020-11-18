@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import { makeStyles, Grid, Typography, Button } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import Markdown from 'react-markdown';
-import ReportLinkImage from './report-link.png';
 
 const LinkButtonContentAssumptions = ({ yearId }) => {
   const intl = useIntl();
@@ -74,7 +73,12 @@ const LinkButtonContentSummary = ({ yearId }) => {
     <>
       <Typography variant="body2" color="secondary" style={{ marginBottom: 24 }}>{text}</Typography>
       <Grid container alignItems="flex-end" wrap="nowrap" spacing={1}>
-        <Grid item xs={5}><img src={ReportLinkImage} alt={intl.formatMessage({ id: 'common.a11y.downloadReport' })} /></Grid>
+        <Grid item xs={5}>
+          <img
+            src={intl.formatMessage({ id: `links.Summary.image.${yearId}` })}
+            alt={intl.formatMessage({ id: 'common.a11y.downloadReport' })}
+          />
+        </Grid>
         <Grid item xs={7}><Typography variant="body2" color="secondary" component="span"><Markdown>{link}</Markdown></Typography></Grid>
       </Grid>
     </>
@@ -180,7 +184,7 @@ export const LinkButtonContentReport = ({ yearId, onClose }) => {
           </Button>
         </Grid>
       </Grid>
-      <Grid item className={classes.content} style={{ height: 250 }}>{(select || {}).content}</Grid>
+      <Grid item className={classes.content} style={{ height: 280 }}>{(select || {}).content}</Grid>
     </>
   );
 };
