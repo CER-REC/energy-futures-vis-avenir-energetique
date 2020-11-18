@@ -215,7 +215,13 @@ const OilAndGas = ({ data, year }) => {
     tooltip, compare, getColor, getTooltip, intl,
   ]);
 
-  if (!data || !data[currentYear] || Number.isNaN(data[currentYear][0].total)) {
+  // data not ready; render nothing
+  if (!data || !data[currentYear] || !data[compareYear]) {
+    return null;
+  }
+
+  // data content not valid; render nothing
+  if (Number.isNaN(data[currentYear][0].total) || Number.isNaN(data[compareYear][0].total)) {
     return null;
   }
 
@@ -284,7 +290,7 @@ const OilAndGas = ({ data, year }) => {
 
     // if the biggest treemap exceed the max size, then calculate a ratio for shrinking them down
     const maxPercentage = Math.max(0, ...regularTreeMaps.map(t => t.width)) / totalWidth;
-    const ratio = (maxPercentage * canvasWidth) / MAX_SIZE / biggestRatio;
+    const ratio = (maxPercentage * canvasWidth) / MAX_SIZE / Math.sqrt(biggestRatio || 1);
 
     // prepare a method for calculate the screen sizes (in pixels) based on the canvas width
     const getSize = width => (((width || 0) / totalWidth) * canvasWidth) / (ratio > 1 ? ratio : 1);

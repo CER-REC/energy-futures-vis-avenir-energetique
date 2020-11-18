@@ -71,6 +71,7 @@ export const parseData = {
     });
     return dataByYear;
   },
+
   'oil-and-gas': (data, unitConversion, regions, sources, view) => {
     /*
     The data structure between the two views is very similar.
@@ -135,4 +136,13 @@ export const getMaxTick = (highest) => {
     .filter(tick => tick < highest && (highest - tick) > (step / 2));
   const lastValue = highest > 100 ? Math.ceil(highest, 10) : Number(highest.toFixed(3));
   return { highest, max, step, ticks: ticks ? [...new Set([...ticks, lastValue])] : undefined };
+};
+
+/**
+ * Make sure the year value is always valid.
+ */
+export const validYear = (year, { min, max }) => {
+  if (year && year < (min || 0)) return (min || 0);
+  if (year && year > (max || 2050)) return (max || 2050);
+  return year || 0;
 };

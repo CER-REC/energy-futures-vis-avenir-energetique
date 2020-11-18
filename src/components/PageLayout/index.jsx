@@ -1,4 +1,4 @@
-import React, { useMemo, Children, cloneElement } from 'react';
+import React, { useEffect, useMemo, Children, cloneElement } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles, useMediaQuery, Grid, Typography, Link, CircularProgress } from '@material-ui/core';
 import Alert from '@material-ui/lab/Alert';
@@ -8,6 +8,7 @@ import { useIntl } from 'react-intl';
 import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
 import useEnergyFutureData from '../../hooks/useEnergyFutureData';
+import { validYear } from '../../utilities/parseData';
 import { PAGES } from '../../constants';
 import YearSelect from '../YearSelect';
 import { PageTitle, PageSelect } from '../PageSelect';
@@ -91,6 +92,17 @@ const PageLayout = ({
   const { regions, sources } = useAPI();
   const { config, configDispatch } = useConfig();
   const { loading, error, data, disabledRegions, disabledSources, year } = useEnergyFutureData();
+
+  /**
+   * Update baseYear and compareYear if they are not valid.
+   * TODO: this can be move into the reducer if it has year min / max values.
+   */
+  useEffect(() => {
+    const baseYear = validYear(config.baseYear, year || {});
+    if (baseYear !== (config.baseYear || 0)) { configDispatch({ type: 'baseYear/changed', payload: baseYear }); }
+    const compareYear = validYear(config.compareYear, year || {});
+    if (compareYear !== (config.compareYear || 0)) { configDispatch({ type: 'compareYear/changed', payload: compareYear }); }
+  }, [year, config.baseYear, config.compareYear, configDispatch]);
 
   /**
    * Determine the current energy source type.
@@ -200,6 +212,20 @@ const PageLayout = ({
       <Grid item xs={12}>{controls}</Grid>
     </>
   );
+
+  /**
+   * Render nothing if the baseYear value is out of range.
+   */
+  if (config.baseYear && config.baseYear !== validYear(config.baseYear, year || {})) {
+    return null;
+  }
+
+  /**
+   * Render nothing if the compareYear value is out of range.
+   */
+  if (config.compareYear && config.compareYear !== validYear(config.compareYear, year || {})) {
+    return null;
+  }
 
   return (
     <Grid container spacing={2} className={classes.root}>
