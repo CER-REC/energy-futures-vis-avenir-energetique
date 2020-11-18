@@ -63,11 +63,12 @@ const useStyles = makeStyles(theme => ({
     lineHeight: 1.25,
   },
   tick: {
-    height: 16,
-    marginLeft: 'calc(50% - 0.5px)',
-    borderLeft: `1px dashed ${theme.palette.secondary.main}`,
-    '&:first-of-type': { marginBottom: theme.spacing(1.5) },
-    '&:last-of-type': { marginTop: theme.spacing(1.5) },
+    position: 'absolute',
+    height: 40,
+    left: 'calc(50% - .5px)',
+    borderLeft: `1px dotted ${theme.palette.secondary.light}`,
+    '&:first-of-type': { top: -50 },
+    '&:last-of-type': { bottom: -50 },
   },
   legend: {
     float: 'right',
@@ -75,6 +76,7 @@ const useStyles = makeStyles(theme => ({
     margin: theme.spacing(1.5),
     padding: theme.spacing(1),
     backgroundColor: '#F3EFEF',
+    '& svg': { verticalAlign: 'middle' },
   },
 }));
 
@@ -277,7 +279,7 @@ const OilAndGas = ({ data, year, vizDimension }) => {
     }
 
     // size of the rendering area
-    const canvasWidth = vizDimension.width * 0.75;
+    const canvasWidth = vizDimension.width * 0.7;
 
     // sum up the total width among the treemaps
     const totalWidth = regularTreeMaps.reduce((acc, val) => acc + (val.width || 0), 0);
@@ -303,7 +305,7 @@ const OilAndGas = ({ data, year, vizDimension }) => {
             className={classes.cell}
             style={{ verticalAlign: isTopChart ? 'bottom' : 'top' }}
           >
-            <Grid container direction="column" wrap="nowrap">
+            <Grid container direction="column" wrap="nowrap" style={{ position: 'relative' }}>
               {!isTopChart && <Grid item className={classes.tick} />}
               <Grid item>{tree.node}</Grid>
               {(compare && isTopChart) && <Grid item className={classes.tick} />}
@@ -323,13 +325,15 @@ const OilAndGas = ({ data, year, vizDimension }) => {
               style={{ transform: groupOffset }}
             >
               <Grid item xs={12}>
-                <Typography variant="overline" align='center'>{intl.formatMessage({ id: 'common.oilandgas.groupLabel' })}</Typography>
+                <Typography variant="overline" align="center" component="div" style={{ lineHeight: 1.25 }}>
+                  {intl.formatMessage({ id: 'common.oilandgas.groupLabel' })}
+                </Typography>
               </Grid>
               {smallTreeMaps.map(source => ({
                 name: source.name,
                 node: createTreeMap(source, isTopChart, 40),
               })).map(tree => (
-                <Grid item xs={12} sm={6} key={`grouped-treemap-${tree.name}`}>{tree.node}</Grid>
+                <Grid item xs={12} sm={smallTreeMaps.length > 1 ? 6 : 12} key={`grouped-treemap-${tree.name}`}>{tree.node}</Grid>
               ))}
             </Grid>
           </TableCell>
@@ -417,16 +421,14 @@ const OilAndGas = ({ data, year, vizDimension }) => {
 
       {/* legend */}
       <Grid container direction="column" className={classes.legend}>
-        <Typography align='center' variant='body2'><strong>Legend</strong></Typography>
-
-        <Typography variant="body2" align="center">
+        <Typography variant="caption" align="center">
           <strong>{intl.formatMessage({ id: `common.oilandgas.legend.${config.mainSelection}.${config.view}.title` })}</strong>
         </Typography>
 
         <Grid container alignItems="center" wrap="nowrap" spacing={1}>
           <Grid item><IconOilAndGasRectangle /></Grid>
           <Grid item>
-            <Typography variant="body2">
+            <Typography variant="caption">
               {intl.formatMessage({ id: `common.oilandgas.legend.${config.mainSelection}.${config.view}.single` })}
             </Typography>
           </Grid>
@@ -434,7 +436,7 @@ const OilAndGas = ({ data, year, vizDimension }) => {
         <Grid container alignItems="center" wrap="nowrap" spacing={1}>
           <Grid item><IconOilAndGasGroup /></Grid>
           <Grid item>
-            <Typography variant="body2">
+            <Typography variant="caption">
               {intl.formatMessage({ id: `common.oilandgas.legend.${config.mainSelection}.${config.view}.group` })}
             </Typography>
           </Grid>
