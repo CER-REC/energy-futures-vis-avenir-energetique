@@ -9,7 +9,7 @@ import Markdown from 'react-markdown';
 import { PAGES } from '../../constants';
 import useConfig from '../../hooks/useConfig';
 
-import { IconDownload, IconExternal } from '../../icons';
+import { IconExternal } from '../../icons';
 import headerBg from './header.jpg';
 import portalByRegion from './portal_by_region.jpg';
 import portalBySector from './portal_by_sector.jpg';
@@ -17,7 +17,8 @@ import portalElectricity from './portal_electricity.jpg';
 import portalScenarios from './portal_scenarios.jpg';
 import portalOilAndGas from './portal_oil_and_gas.jpg';
 import portalDemand from './portal_demand.jpg';
-import reportCover from './report_cover.jpg';
+import reportCoverEn from './report_cover_en.png';
+import reportCoverFr from './report_cover_fr.png';
 
 const useStyles = makeStyles(theme => ({
   header: {
@@ -216,11 +217,8 @@ const Landing = () => {
           <Grid item className={classes.download}>
             <Typography variant="h6" color="secondary">{intl.formatMessage({ id: 'landing.links.title' })}</Typography>
             <ButtonBase aria-label={intl.formatMessage({ id: 'common.a11y.downloadReport' })} href={intl.formatMessage({ id: 'landing.links.download.link' })} target="_about">
-              <img src={reportCover} alt={intl.formatMessage({ id: 'common.a11y.downloadReport' })} />
+              <img src={intl.locale === 'fr' ? reportCoverFr : reportCoverEn} alt={intl.formatMessage({ id: 'common.a11y.downloadReport' })} />
             </ButtonBase>
-            <Button color="primary" startIcon={<IconDownload />} href={intl.formatMessage({ id: 'landing.links.download.link' })} target="_about">
-              {intl.formatMessage({ id: 'landing.links.download.title' })}
-            </Button>
             <Button color="primary" startIcon={<IconExternal />} href={intl.formatMessage({ id: 'landing.links.view.link' })} target="_about">
               {intl.formatMessage({ id: 'landing.links.view.title' })}
             </Button>
