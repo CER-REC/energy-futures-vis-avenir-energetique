@@ -52,8 +52,8 @@ const useStyles = makeStyles(theme => ({
   group: {
     position: 'absolute',
     top: '50%',
-    right: theme.spacing(2),
-    width: 100,
+    right: theme.spacing(2.5),
+    width: 88,
     border: `1px solid ${theme.palette.secondary.main}`,
     '& span': { lineHeight: 1.2 },
   },
@@ -65,8 +65,11 @@ const useStyles = makeStyles(theme => ({
   tick: {
     position: 'absolute',
     height: 40,
+    width: 1,
     left: 'calc(50% - .5px)',
-    borderLeft: `1px dotted ${theme.palette.secondary.light}`,
+    backgroundImage: `linear-gradient(${theme.palette.secondary.light} 33%, transparent 0%)`,
+    backgroundSize: '1px 8px',
+    backgroundRepeat: 'repeat-y',
     '&:first-of-type': { top: -50 },
     '&:last-of-type': { bottom: -50 },
   },
@@ -202,7 +205,7 @@ const OilAndGas = ({ data, year, vizDimension }) => {
             tile="binary"
             identity="name"
             value="value"
-            margin={{ top: 10, right: 10, bottom: 10, left: 10 }}
+            margin={{ top: 4, right: 4, bottom: 4, left: 4 }}
             enableLabel={false}
             colors={getColor}
             borderWidth={1}
@@ -243,7 +246,7 @@ const OilAndGas = ({ data, year, vizDimension }) => {
     }
 
     const totalGrandTotal = treeData.reduce((acc, val) => acc + val.total, 0);
-    const biggestRatio = Math.max(0, ...treeData.map(source => source.total)) / biggestValue;
+    const biggestRatio = Math.max(0, ...treeData.map(source => source.total || 0)) / biggestValue;
 
     const regularTreeMaps = [];
     const smallTreeMaps = [];
@@ -298,11 +301,11 @@ const OilAndGas = ({ data, year, vizDimension }) => {
     const totalWidth = regularTreeMaps.reduce((acc, val) => acc + (val.width || 0), 0);
 
     // if the biggest treemap exceed the max size, then calculate a ratio for shrinking them down
-    const maxPercentage = Math.max(0, ...regularTreeMaps.map(t => t.width)) / totalWidth;
+    const maxPercentage = Math.max(0, ...regularTreeMaps.map(t => t.width || 0)) / totalWidth;
     const ratio = (maxPercentage * canvasWidth) / MAX_SIZE / Math.sqrt(biggestRatio || 1);
 
     // prepare a method for calculate the screen sizes (in pixels) based on the canvas width
-    const getSize = width => ((width / totalWidth) * canvasWidth) / (ratio > 1 ? ratio : 1);
+    const getSize = width => ((width / totalWidth) * canvasWidth) / ((ratio || 1) > 1 ? ratio : 1);
 
     // calculate the vertical offset of the grouped tiles
     const groupOffset = `translateY(calc(-${compare ? `100% ${isTopChart ? '- 45' : '+ 224'}` : '84'}px))`;
@@ -344,7 +347,7 @@ const OilAndGas = ({ data, year, vizDimension }) => {
               </Grid>
               {smallTreeMaps.map(source => ({
                 name: source.name,
-                node: createTreeMap(source, isTopChart, 40),
+                node: createTreeMap(source, isTopChart, 32),
               })).map(tree => (
                 <Grid item xs={12} sm={smallTreeMaps.length > 1 ? 6 : 12} key={`grouped-treemap-${tree.name}`}>{tree.node}</Grid>
               ))}
