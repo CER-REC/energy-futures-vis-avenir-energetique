@@ -24,10 +24,11 @@ const useStyles = makeStyles(theme => createStyles({
   },
   btn: {
     height: 26,
-    width: 96,
+    width: 102,
     minWidth: 0,
     padding: theme.spacing(0.25, 1),
     fontSize: 13,
+    letterSpacing: -0.25,
     textAlign: 'left',
     textTransform: 'initial',
     justifyContent: 'left',
