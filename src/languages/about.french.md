@@ -28,7 +28,7 @@ Responsable de la conception et de la production graphiques : Tétro
 
 Chef technique : VizworX
 
-Aspect technique : Alan Chen, Nico Li, Steven Rothenburger
+Aspect technique : Nico Li, Steven Rothenburger
 
 ###### VERSION 1
 ###### SOURCE DES DONNÉES :

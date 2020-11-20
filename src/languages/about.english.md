@@ -28,7 +28,7 @@ CER Design Team: Lien Quach, Angelsea Saby, Jagoda Walny-Nix
 
 Technical Development Lead: VizworX
 
-Development: Alan Chen, Nico Li, Steven Rothenburger
+Development: Nico Li, Steven Rothenburger
 
 ###### VERSION 1
 ###### DATA SOURCE:
