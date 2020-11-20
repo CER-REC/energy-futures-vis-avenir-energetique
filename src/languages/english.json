@@ -32,6 +32,10 @@
       "oilProduction": "Oil Production",
       "gasProduction": "Gas Production"
     },
+    "char": {
+      "colon": ":",
+      "percent": "%"
+    },
     "electricity": {
       "amount": {
         "bySource": "AMOUNT BY SOURCE",

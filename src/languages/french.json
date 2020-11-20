@@ -32,11 +32,15 @@
       "oilProduction": "Production de pétrole",
       "gasProduction": "Production de gaz"
     },
+    "char": {
+      "colon": " :",
+      "percent": " %"
+    },
     "electricity": {
       "amount": {
-        "bySource": "QUANTITÉ PAR SOURCE",
-        "byRegion": "QUANTITÉ PAR RÉGION",
-        "total": "QUANTITÉ TOTALE"
+        "bySource": "QUANT. PAR SOURCE",
+        "byRegion": "QUANT. PAR RÉGION",
+        "total": "QUANT. TOTALE"
       }
     },
     "oilandgas": {
@@ -48,7 +52,7 @@
         "LIGHT": "Léger classique",
         "HEAVY": "Lourd classique"
       },
-      "groupLabel": "Values less than 1%",
+      "groupLabel": "MOINS DE 1 %",
       "legend": {
         "oilProduction": {
           "region": {
@@ -94,20 +98,20 @@
         "GASOLINE": "E",
         "DIESEL": "D",
         "OIL": "A",
-        "LIGHT": "CL",
-        "ISB": "ISB",
-        "HEAVY": "CH",
-        "CONDENSATE": "FC",
+        "LIGHT": "LEC",
+        "ISB": "BIS",
+        "HEAVY": "LOC",
+        "CONDENSATE": "CP",
         "C5": "C5+",
-        "MB": "MB",
-        "CBM": "CBM",
-        "NA": "CON",
-        "SHALE": "SH",
-        "SOLUTION": "SOL",
-        "TIGHT": "TI"
+        "MB": "BE",
+        "CBM": "MH",
+        "NA": "CL",
+        "SHALE": "SCH",
+        "SOLUTION": "GD",
+        "TIGHT": "RÉ"
       },
       "keyboardNav": {
-        "title": "Raccourci clavier",
+        "title": "Raccourcis clavier",
         "description": "- **Barre d’espacement :** commencer à glisser ou à déposer\n- **Escape :** annuler le glissement\n- **Flèche vers le haut :** déplacer un élément vers le haut\n- **Flèche vers le bas :** déplacer un élément vers le bas\n"
       }
     },
@@ -175,7 +179,7 @@
           "electricityGeneration": "Production d’électricité selon la région",
           "oilProduction": "Production de pétrole selon la région",
           "gasProduction": "Production de gaz selon la région",
-          "default": "La région"
+          "default": "Région"
         },
         "description": "Comparer les données passées et faire des projections de l’offre et de la demande d’énergie pour les provinces et les territoires au Canada."
       },
@@ -186,7 +190,7 @@
           "COMMERCIAL": "Demande pour utilisation finale, secteur commercial",
           "INDUSTRIAL": "Demande pour utilisation finale, secteur industriel",
           "TRANSPORTATION": "Demande pour utilisation finale, secteur des transports",
-          "default": "Les secteurs"
+          "default": "Secteurs"
         },
         "description": "Examiner la façon dont le bouquet énergétique pour divers secteurs a évolué récemment, et la projection de leur évolution selon les scénarios du rapport sur l’avenir énergétique."
       },
@@ -470,7 +474,7 @@
       "COAL": "Includes coal, coke, and coke oven gas.",
       "ELECTRICITY": "Désigne l’électricité pour utilisation finale produite à partir de diverses sources et selon différentes techniques. Parmi les principales sources, on compte l’électricité issue de l’énergie nucléaire, de l’hydroélectricité, de l’éolien, du solaire, ainsi que la production thermique, qui utilise d’autres combustibles comme le gaz naturel, le charbon et le pétrole.",
       "GAS": "Comprend le gaz naturel comprimé et le gaz naturel liquéfié utilisés dans les voitures, les autobus, les camions et les navires.",
-      "OIL": "- **Carburéacteur :** Produit pétrolier raffiné servant à alimenter un aéronef.\n- **Essence :** Produit pétrolier raffiné destinés aux moteurs à combustion interne.\n- **Carburant diesel :** Produit pétrolier raffiné servant à alimenter les moteurs diesel.\n- **Autres produits pétroliers :** Comprennent le mazout lourd, le gaz de pétrole liquéfié et les lubrifiants."
+      "OIL": "- **Carburéacteur :** Produit pétrolier raffiné servant à alimenter un aéronef.\n- **Essence :** Produit pétrolier raffiné destinés aux moteurs à combustion interne.\n- **Diesel :** Produit pétrolier raffiné servant à alimenter les moteurs diesel.\n- **Autres produits pétroliers :** Comprennent le mazout lourd, le gaz de pétrole liquéfié et les lubrifiants."
     },
     "gas": {
       "ALL": "Elle désigne la quantité de gaz naturel commercialisable produit au Canada. Plusieurs régions produisent du gaz naturel à partir de diverses techniques.",
@@ -571,7 +575,7 @@
       }
     },
     "Summary": {
-      "title": "Summary",
+      "title": "Sommaire",
       "description": "Les rapports sur l’avenir énergétique proposent un large éventail de projections concernant l’offre et la demande d’énergie au Canada. Ces projections ont été réalisées à partir d’un système de modélisation qui fait interagir plusieurs composantes (ou modules) en vue d’arriver à des projections globales sur les tendances énergétiques futures du Canada.",
       "link": {
         "2016": "[Voir le rapport AE 2016](https://www.cer-rec.gc.ca/fr/donnees-analyse/avenir-energetique-canada/2016/index.html)",
@@ -616,12 +620,12 @@
     },
     "Oil-and-Gas": {
       "title": "Explorer le pétrole et le gaz",
-      "description": "Explorer la production de pétrole et de gaz dans les provinces et les territoires pendant une année donnée"
+      "description": "Explorez la production de pétrole et de gaz dans les provinces et les territoires pendant une année donnée"
     },
     "links": {
       "title": "Le rapport sur l’avenir énergétique du Canada",
       "methodology": {
-        "title": "Hypothèses",
+        "title": "Méthodologie",
         "link": "https://apps2.cer-rec.gc.ca/energy-future/pdf/avenir-energetique-visualisation-methodologie-2020.pdf"
       },
       "resources": {

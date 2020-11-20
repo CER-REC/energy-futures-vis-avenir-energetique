@@ -80,7 +80,7 @@ const ByRegion = ({ data, year }) => {
           tickValues: axis.ticks,
           format: axisFormat,
         }}
-        tooltipFormat={value => formatUnitAbbreviation(value, intl.formatMessage({ id: `common.units.${config.unit}` }))}
+        tooltipFormat={value => formatUnitAbbreviation(value, intl.formatMessage({ id: `common.units.${config.unit}` }), intl)}
         gridYValues={axis.ticks}
       />
     </div>

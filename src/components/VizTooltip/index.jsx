@@ -23,14 +23,24 @@ const VizTooltip = ({ nodes, total, unit, year, paper, showTotal, showPercentage
   const content = (
     <Table>
       <TableBody>
-        {year && <TableRow><TableCell colSpan={2} size="small"><strong>{year}:</strong></TableCell></TableRow>}
+        {year && (
+          <TableRow>
+            <TableCell colSpan={2} size="small">
+              <strong>{year}{intl.formatMessage({ id: 'common.char.colon' })}</strong>
+            </TableCell>
+          </TableRow>
+        )}
         {[
           ...(nodes || []),
-          ...(showTotal && nodes && nodes.length > 1 ? [{ name: intl.formatMessage({ id: 'components.draggableVerticalList.all' }), value: sum }] : []),
+          ...(showTotal && nodes && nodes.length > 1
+            ? [{ name: intl.formatMessage({ id: 'components.draggableVerticalList.all' }), value: sum }]
+            : []),
         ].filter(node => Math.abs(node.value) > Number.EPSILON).map((node) => {
           const showUnit = node.value === sum || !showPercentage;
-          const num = formatUnitAbbreviation(node.value, showUnit && intl.formatMessage({ id: `common.units.${unit}` }));
-          const suffix = showUnit ? '' : `(${((node.value / sum) * 100).toFixed(1)}%)`;
+          const num = formatUnitAbbreviation(node.value, showUnit && intl.formatMessage({ id: `common.units.${unit}` }), intl);
+          const suffix = showUnit
+            ? ''
+            : `(${((node.value / sum) * 100).toFixed(1)}${intl.formatMessage({ id: 'common.char.percent' })})`;
           return (
             <TableRow key={`viz-legend-item-${node.name}-${node.value}`} className={classes.row}>
               <TableCell size="small">
@@ -42,7 +52,10 @@ const VizTooltip = ({ nodes, total, unit, year, paper, showTotal, showPercentage
                   )}
                 </div>
               </TableCell>
-              <TableCell size="small"><strong>{node.translation || node.name}:</strong>&nbsp;{`${num} ${suffix}`}</TableCell>
+              <TableCell size="small">
+                <strong>{node.translation || node.name}{intl.formatMessage({ id: 'common.char.colon' })}</strong>
+                &nbsp;{`${num} ${suffix}`}
+              </TableCell>
             </TableRow>
           );
         })}
