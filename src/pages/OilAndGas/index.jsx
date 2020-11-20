@@ -175,6 +175,10 @@ const OilAndGas = ({ data, year, vizDimension }) => {
     };
   }, []);
 
+  // FIXME: This is a temporary patch to remove percentages on single select.
+  const showPercentages = useCallback(() => !(config.provinces.length === 1 && config.provinces[0] !== 'ALL'),
+    [config.provinces]);
+
   /**
    * Generate the treemap component based on the source values, size and location (top or bottom).
    */
@@ -185,9 +189,8 @@ const OilAndGas = ({ data, year, vizDimension }) => {
           id: `common.oilandgas.displayName.${source.name}`,
           defaultMessage: intl.formatMessage({ id: `common.sources.${type}.${source.name}` }),
         }) : source.name}
-        {config.view === 'region' && source.percentage > 1 && `: ${source.percentage.toFixed(2)}%`}
+        {(config.view === 'region' && source.percentage > 1 && showPercentages()) && `: ${source.percentage.toFixed(2)}%`}
       </Typography>
-
       <Tooltip
         open={source.name === tooltip}
         title={getTooltip(source)}
@@ -218,10 +221,7 @@ const OilAndGas = ({ data, year, vizDimension }) => {
         </div>
       </Tooltip>
     </>
-  ), [
-    classes.treeMapRectangle, classes.label, config.view,
-    type, tooltip, getColor, getTooltip, getTooltipPos, intl,
-  ]);
+  ), [classes.label, classes.treeMapRectangle, config.view, intl, type, showPercentages, tooltip, getTooltip, getTooltipPos, getColor]);
 
   // data not ready; render nothing
   if (!data || !data[currentYear] || !data[compareYear]) {
