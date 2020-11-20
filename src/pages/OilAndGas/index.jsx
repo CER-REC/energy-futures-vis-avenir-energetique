@@ -221,7 +221,16 @@ const OilAndGas = ({ data, year, vizDimension }) => {
         </div>
       </Tooltip>
     </>
-  ), [classes.label, classes.treeMapRectangle, config.view, intl, type, showPercentages, tooltip, getTooltip, getTooltipPos, getColor]);
+  ), [classes.label,
+    classes.treeMapRectangle,
+    config.view,
+    intl,
+    type,
+    showPercentages,
+    tooltip,
+    getTooltip,
+    getTooltipPos,
+    getColor]);
 
   // data not ready; render nothing
   if (!data || !data[currentYear] || !data[compareYear]) {
