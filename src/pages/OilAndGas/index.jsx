@@ -343,7 +343,7 @@ const OilAndGas = ({ data, year, vizDimension }) => {
               container
               spacing={1}
               className={classes.group}
-              style={isTopChart ? { bottom: 414 } : { top: 410 }}
+              style={isTopChart ? { bottom: compare ? 414 : 99 } : { top: 410 }}
             >
               <Grid item xs={12}>
                 <Typography variant="overline" align="center" component="div" style={{ lineHeight: 1.25 }}>
