@@ -2,7 +2,8 @@ import React, { useState, useMemo, Fragment } from 'react';
 import { useIntl } from 'react-intl';
 import PropTypes from 'prop-types';
 import {
-  makeStyles, createStyles, Grid, Typography, IconButton, Fab, Dialog, DialogContent,
+  makeStyles, createStyles,
+  Grid, Typography, IconButton, Fab, Dialog, DialogContent, Divider,
 } from '@material-ui/core';
 import HintIcon from '@material-ui/icons/HelpOutline';
 import CloseIcon from '@material-ui/icons/Close';
@@ -108,7 +109,7 @@ const Hint = ({ children, content, maxWidth = 'sm' }) => {
         </Fab>
         <DialogContent style={{ padding: 24 }}>
           {typeof content === 'string' ? content : (
-            <Grid container spacing={1}>
+            <Grid container direction="column" spacing={1}>
               {(content || []).map(section => <Grid item key={`hint-content-section-${Math.random()}`}>{section}</Grid>)}
             </Grid>
           )}
@@ -257,23 +258,33 @@ export const HintViewSelect = ({ children }) => {
 HintViewSelect.propTypes = { children: PropTypes.node };
 HintViewSelect.defaultProps = { children: null };
 
+const HintSectionNav = () => {
+  const intl = useIntl();
+  const section = useMemo(() => [{
+    title: intl.formatMessage({ id: 'components.draggableVerticalList.keyboardNav.title' }),
+    text: intl.formatMessage({ id: 'components.draggableVerticalList.keyboardNav.description' }),
+  }], [intl]);
+  return <HintSection section={section} />;
+};
+
 /**
  * Hint panel for the question mark on top of the draggable region list.
  */
 export const HintRegionList = ({ children }) => {
   const intl = useIntl();
   const { regions } = useAPI();
-  const section = useMemo(() => [
-    ...['ALL', ...regions.order].map(region => ({
-      title: region,
-      text: intl.formatMessage({ id: `common.regions.${region}` }),
-    })),
-    {
-      title: intl.formatMessage({ id: 'components.draggableVerticalList.keyboardNav.title' }),
-      text: intl.formatMessage({ id: 'components.draggableVerticalList.keyboardNav.description' }),
-    },
-  ], [intl, regions]);
-  return <Hint content={[<HintSection section={section} singleColumn />]} maxWidth="xs">{children}</Hint>;
+  const list = useMemo(() => ['ALL', ...regions.order].map(region => ({
+    title: region === 'ALL'
+      ? intl.formatMessage({ id: 'components.draggableVerticalList.all' })
+      : region,
+    text: intl.formatMessage({ id: `common.regions.${region}` }),
+  })), [intl, regions]);
+  const sections = [
+    <HintSection section={list} singleColumn />,
+    <Divider style={{ margin: '16px 0' }} />,
+    <HintSectionNav />,
+  ];
+  return <Hint content={sections} maxWidth="xs">{children}</Hint>;
 };
 
 HintRegionList.propTypes = { children: PropTypes.node };
@@ -284,18 +295,17 @@ HintRegionList.defaultProps = { children: null };
  */
 export const HintSourceList = ({ sources, sourceType, children }) => {
   const intl = useIntl();
-  const section = useMemo(() => [
-    ...Object.keys(sources).map(source => ({
-      title: sources[source].label,
-      icon: sources[source].icon,
-      text: intl.formatMessage({ id: `sources.${sourceType}.${source}` }),
-    })),
-    {
-      title: intl.formatMessage({ id: 'components.draggableVerticalList.keyboardNav.title' }),
-      text: intl.formatMessage({ id: 'components.draggableVerticalList.keyboardNav.description' }),
-    },
-  ], [intl, sources, sourceType]);
-  return <Hint content={[<HintSection section={section} singleColumn />]}>{children}</Hint>;
+  const list = useMemo(() => Object.keys(sources).map(source => ({
+    title: sources[source].label,
+    icon: sources[source].icon,
+    text: intl.formatMessage({ id: `sources.${sourceType}.${source}` }),
+  })), [intl, sources, sourceType]);
+  const sections = [
+    <HintSection section={list} singleColumn />,
+    <Divider style={{ margin: '16px 0' }} />,
+    <HintSectionNav />,
+  ];
+  return <Hint content={sections}>{children}</Hint>;
 };
 
 HintSourceList.propTypes = {
