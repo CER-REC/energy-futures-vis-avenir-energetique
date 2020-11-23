@@ -96,7 +96,7 @@ export const CONFIG_LAYOUT = {
   },
 };
 
-export const SECTORS = ['ALL', 'RESIDENTIAL', 'COMMERCIAL', 'INDUSTRIAL', 'TRANSPORTATION'];
+export const SECTOR_ORDER = ['ALL', 'RESIDENTIAL', 'COMMERCIAL', 'INDUSTRIAL', 'TRANSPORTATION'];
 
 /**
  * TODO: replace it with real colors from UI designers.
