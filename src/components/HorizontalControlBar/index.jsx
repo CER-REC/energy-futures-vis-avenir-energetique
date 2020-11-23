@@ -8,7 +8,7 @@ import {
 
 import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
-import { CONFIG_LAYOUT } from '../../constants';
+import { CONFIG_LAYOUT, SECTORS } from '../../constants';
 import { HintMainSelect, HintViewSelect, HintSectorSelect, HintUnitSelect } from '../Hint';
 // #endregion
 
@@ -80,7 +80,7 @@ const HorizontalControlBar = () => {
           <Typography variant="body1" color="secondary">{intl.formatMessage({ id: 'components.sectorSelect.name' })}</Typography>
         </HintSectorSelect>
       </Grid>
-      {sectors.order.map((sector) => {
+      {SECTORS.filter(sector => sectors.order.find(s => s === sector)).map((sector) => {
         const Icon = sectors.icons[sector];
 
         return (
