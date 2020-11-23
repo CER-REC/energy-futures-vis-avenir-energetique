@@ -56,24 +56,26 @@
       "legend": {
         "oilProduction": {
           "region": {
-            "title": "Region: % Oil Production in Canada",
+            "view": "Region",
+            "title": ": % Oil Production in Canada",
             "single": "Amount of a single oil type produced in the region",
             "group": "Total amount of oil produced in the region"
           },
           "source": {
-            "title": "Oil Type",
+            "view": "Oil Type",
             "single": "Amount of oil type produced in a single region",
             "group": "Total amount of oil type produced in Canada"
           }
         },
         "gasProduction": {
           "region": {
-            "title": "Region: % Gas Production in Canada",
+            "view": "Region",
+            "title": ": % Gas Production in Canada",
             "single": "Amount of a single gas type produced in the region",
             "group": "Total amount of gas produced in the region"
           },
           "source": {
-            "title": "Gas Type",
+            "view": "Gas Type",
             "single": "Amount of gas type produced in a single region",
             "group": "Total amount of gas type produced in Canada"
           }
@@ -626,7 +628,7 @@
       "title": "Canada's Energy Future Report",
       "methodology": {
         "title": "Methodology",
-        "link": "https://apps2.cer-rec.gc.ca/energy-future/pdf/energy-future-visualization-methodology-2020.pdf"
+        "link": "/energy-future/pdf/energy-future-visualization-methodology-2020.pdf"
       },
       "resources": {
         "title": "Student Resources",

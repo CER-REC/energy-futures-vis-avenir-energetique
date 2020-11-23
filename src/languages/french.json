@@ -56,24 +56,26 @@
       "legend": {
         "oilProduction": {
           "region": {
-            "title": "Région : % de la production de pétrole au Canada",
+            "view": "Région",
+            "title": " : % de la production de pétrole au Canada",
             "single": "Quantité d’un seul type de pétrole produite dans la région",
             "group": "Quantité totale de pétrole produite dans la région"
           },
           "source": {
-            "title": "Type de pétrole",
+            "view": "Type de pétrole",
             "single": "Quantité de pétrole produite dans une seule région",
             "group": "Quantité totale de pétrole produite au Canada"
           }
         },
         "gasProduction": {
           "region": {
-            "title": "Région : % de la production de gaz au Canada",
+            "view": "Région",
+            "title": " : % de la production de gaz au Canada",
             "single": "Quantité d’un seul type de gaz produite dans la région",
             "group": "Quantité totale de gaz produite dans la région"
           },
           "source": {
-            "title": "Type de gaz",
+            "view": "Type de gaz",
             "single": "Quantité de gaz produite dans une seule région",
             "group": "Quantité totale de type de gaz produite au Canada"
           }
@@ -626,7 +628,7 @@
       "title": "Le rapport sur l’avenir énergétique du Canada",
       "methodology": {
         "title": "Méthodologie",
-        "link": "https://apps2.cer-rec.gc.ca/energy-future/pdf/avenir-energetique-visualisation-methodologie-2020.pdf"
+        "link": "/energy-future/pdf/avenir-energetique-visualisation-methodologie-2020.pdf"
       },
       "resources": {
         "title": "Ressources pour les étudiants",

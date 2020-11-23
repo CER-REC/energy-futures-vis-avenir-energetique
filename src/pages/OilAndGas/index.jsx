@@ -89,6 +89,8 @@ const OilAndGas = ({ data, year, vizDimension }) => {
   const { config, configDispatch } = useConfig();
   const intl = useIntl();
 
+  const legendTranslationPath = `common.oilandgas.legend.${config.mainSelection}.${config.view}`;
+
   const [currentYear, setCurrentYear] = useState(config.baseYear || year?.min);
   const [compareYear, setCompareYear] = useState(config.compareYear || year?.min);
 
@@ -443,14 +445,19 @@ const OilAndGas = ({ data, year, vizDimension }) => {
       {/* legend */}
       <Grid container direction="column" className={classes.legend}>
         <Typography variant="caption" align="center">
-          <strong>{intl.formatMessage({ id: `common.oilandgas.legend.${config.mainSelection}.${config.view}.title` })}</strong>
+          <strong>
+            {/* FIXME: this is a temporary fix to remove percentages from the legend */}
+            {intl.formatMessage({ id: `${legendTranslationPath}.view` })}
+            {(config.view === 'region' && showPercentages())
+              && ` ${intl.formatMessage({ id: `${legendTranslationPath}.title` })}`}
+          </strong>
         </Typography>
 
         <Grid container alignItems="center" wrap="nowrap" spacing={1}>
           <Grid item><IconOilAndGasRectangle /></Grid>
           <Grid item>
             <Typography variant="caption">
-              {intl.formatMessage({ id: `common.oilandgas.legend.${config.mainSelection}.${config.view}.single` })}
+              {intl.formatMessage({ id: `${legendTranslationPath}.single` })}
             </Typography>
           </Grid>
         </Grid>
@@ -458,7 +465,7 @@ const OilAndGas = ({ data, year, vizDimension }) => {
           <Grid item><IconOilAndGasGroup /></Grid>
           <Grid item>
             <Typography variant="caption">
-              {intl.formatMessage({ id: `common.oilandgas.legend.${config.mainSelection}.${config.view}.group` })}
+              {intl.formatMessage({ id: `${legendTranslationPath}.group` })}
             </Typography>
           </Grid>
         </Grid>
