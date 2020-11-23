@@ -118,6 +118,10 @@ const useStyles = makeStyles(theme => ({
     minWidth: 36,
     borderRight: 'none',
   },
+  reportContent: {
+    height: 280,
+    overflowX: 'hidden',
+  },
 }));
 
 export const LinkButtonContentMethodology = ({ onClose }) => {
@@ -186,7 +190,7 @@ export const LinkButtonContentReport = ({ yearId, onClose }) => {
           </Button>
         </Grid>
       </Grid>
-      <Grid item className={classes.content} style={{ height: 280 }}>{(select || {}).content}</Grid>
+      <Grid item className={`${classes.content} ${classes.reportContent}`}>{(select || {}).content}</Grid>
     </>
   );
 };

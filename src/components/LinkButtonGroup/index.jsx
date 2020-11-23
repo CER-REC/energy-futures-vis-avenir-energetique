@@ -23,10 +23,12 @@ const useStyles = makeStyles(theme => createStyles({
     lineHeight: 0,
   },
   btn: {
-    height: 26,
+    height: 'auto',
+    minHeight: 26,
     width: 102,
     minWidth: 0,
     padding: theme.spacing(0.25, 1),
+    border: '1px solid transparent',
     fontSize: 13,
     letterSpacing: -0.25,
     textAlign: 'left',
@@ -56,7 +58,7 @@ const useStyles = makeStyles(theme => createStyles({
   popUpRight: {
     top: 0,
     left: 'calc(100% + 20px)',
-    transform: `translateY(calc(-100% + ${theme.spacing(6)}px))`,
+    transform: `translateY(calc(-100% + ${theme.spacing(8)}px))`,
     maxHeight: 350,
     minWidth: 350,
   },
