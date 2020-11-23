@@ -56,12 +56,13 @@
       "legend": {
         "oilProduction": {
           "region": {
-            "title": "Région : % de la production de pétrole au Canada",
+            "view": "Région",
+            "title": " : % de la production de pétrole au Canada",
             "single": "Quantité d’un seul type de pétrole produite dans la région",
             "group": "Quantité totale de pétrole produite dans la région"
           },
           "source": {
-            "title": "Type de pétrole",
+            "view": "Type de pétrole",
             "single": "Quantité de pétrole produite dans une seule région",
             "group": "Quantité totale de pétrole produite au Canada"
           }
