@@ -1,3 +1,4 @@
+import analytics from '../analytics';
 import { CONFIG_LAYOUT, PAGES } from '../constants';
 
 export const initialState = {
@@ -43,8 +44,16 @@ export const getReducer = (regions, sources, sectors, yearIdIterations) => {
   };
   const getUnit = (selection, unit) => {
     const validUnits = CONFIG_LAYOUT[selection]?.unit || [];
+    const newUnit = validUnits.includes(unit) ? unit : (validUnits[0] || null);
 
-    return validUnits.includes(unit) ? unit : (validUnits[0] || null);
+    newUnit && analytics.report({
+      category: 'feature',
+      action: 'click',
+      label: 'select unit',
+      value: newUnit,
+    });
+
+    return newUnit;
   };
   const getView = (page, view) => {
     const validViews = PAGES.find(pageItem => pageItem.id === page).views;
