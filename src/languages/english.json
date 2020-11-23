@@ -69,12 +69,13 @@
         },
         "gasProduction": {
           "region": {
-            "title": "Region: % Gas Production in Canada",
+            "view": "Region",
+            "title": ": % Gas Production in Canada",
             "single": "Amount of a single gas type produced in the region",
             "group": "Total amount of gas produced in the region"
           },
           "source": {
-            "title": "Gas Type",
+            "view": "Gas Type",
             "single": "Amount of gas type produced in a single region",
             "group": "Total amount of gas type produced in Canada"
           }
