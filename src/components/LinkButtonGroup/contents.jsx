@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import { makeStyles, Grid, Typography, Button } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import Markdown from 'react-markdown';
+import reportCoverEn from '../../pages/Landing/report_cover_en.png';
+import reportCoverFr from '../../pages/Landing/report_cover_fr.png';
 
 const LinkButtonContentAssumptions = ({ yearId }) => {
   const intl = useIntl();
@@ -65,6 +67,9 @@ LinkButtonContentResults.propTypes = { yearId: PropTypes.string.isRequired };
 const LinkButtonContentSummary = ({ yearId }) => {
   const intl = useIntl();
   const text = useMemo(() => intl.formatMessage({ id: `components.yearSelect.${yearId}.description` }), [intl, yearId]);
+  const src = useMemo(() => (yearId === '2020' // eslint-disable-line no-nested-ternary
+    ? (intl.locale === 'fr' ? reportCoverFr : reportCoverEn)
+    : intl.formatMessage({ id: `links.Summary.image.${yearId}` })), [intl, yearId]);
   const link = useMemo(() => intl.formatMessage({
     id: `links.Summary.link.${yearId}`,
     defaultMessage: intl.formatMessage({ id: 'links.Summary.link.default' }),
@@ -74,10 +79,7 @@ const LinkButtonContentSummary = ({ yearId }) => {
       <Typography variant="body2" color="secondary" style={{ marginBottom: 24 }}>{text}</Typography>
       <Grid container alignItems="flex-end" wrap="nowrap" spacing={1}>
         <Grid item xs={5}>
-          <img
-            src={intl.formatMessage({ id: `links.Summary.image.${yearId}` })}
-            alt={intl.formatMessage({ id: 'common.a11y.downloadReport' })}
-          />
+          <img src={src} alt={intl.formatMessage({ id: 'common.a11y.downloadReport' })} />
         </Grid>
         <Grid item xs={7}>
           <Typography variant="body2" color="secondary" component="span"><Markdown>{link}</Markdown></Typography>

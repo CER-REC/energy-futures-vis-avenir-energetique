@@ -40,7 +40,7 @@ const VizTooltip = ({ nodes, total, unit, year, paper, showTotal, showPercentage
           const num = formatUnitAbbreviation(node.value, showUnit && intl.formatMessage({ id: `common.units.${unit}` }), intl);
           const suffix = showUnit
             ? ''
-            : `(${((node.value / sum) * 100).toFixed(1)}${intl.formatMessage({ id: 'common.char.percent' })})`;
+            : `(${((node.value / sum) * 100).toLocaleString(intl.locale, { maximumFractionDigits: 2 })}${intl.formatMessage({ id: 'common.char.percent' })})`;
           return (
             <TableRow key={`viz-legend-item-${node.name}-${node.value}`} className={classes.row}>
               <TableCell size="small">
