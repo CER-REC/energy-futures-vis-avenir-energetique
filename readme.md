@@ -1,7 +1,7 @@
-Conditions Visualization
-========================
+Energy Futures Visualization
+============================
 
-Conditions data visualization for CER.
+Energy Futures visualization for CER.
 
 Quick Start
 -----------
