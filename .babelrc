@@ -1,0 +1,17 @@
+{
+  "presets": [
+    "@vizworx/babel-preset"
+  ],
+  "plugins": [
+    "macros",
+    "react-docgen",
+    "add-react-displayname"
+  ],
+  "env": {
+    "test": {
+      "plugins": [
+        "require-context-hook"
+      ]
+    }
+  }
+}

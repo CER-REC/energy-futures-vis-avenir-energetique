@@ -1,0 +1,345 @@
+{
+  "data": {
+    "iterations": [
+      {
+        "id": "3'",
+        "year": 2020,
+        "scenarios": ["Reference", "High Price", "Evolving"]
+      }, {
+        "id": "2",
+        "year": 2019,
+        "scenarios": ["Reference"]
+      }, {
+        "id": "1",
+        "year": 2018,
+        "scenarios": ["Reference", "High Price"]
+      }
+    ],
+    "translations": [
+      {
+        "group": "ELECTRICITY_SOURCE",
+        "key": "ALL",
+        "english": "All",
+        "french": "Tous"
+      },
+      {
+        "group": "ELECTRICITY_SOURCE",
+        "key": "RENEWABLE",
+        "english": "Solar / Wind",
+        "french": "Énergies Solaire et énergie éolienne"
+      },
+      {
+        "group": "ELECTRICITY_SOURCE",
+        "key": "NUCLEAR",
+        "english": "Nuclear",
+        "french": "Énergie Nucléaire"
+      },
+      {
+        "group": "ENERGY_SOURCE",
+        "key": "ALL",
+        "english": "All",
+        "french": "Tous"
+      },
+      {
+        "group": "ENERGY_SOURCE",
+        "key": "OIL",
+        "english": "Oil",
+        "french": "Pétroliers"
+      },
+      {
+        "group": "GAS_SOURCE",
+        "key": "OIL",
+        "english": "Tight",
+        "french": "Réservoir étanche"
+      },
+      {
+        "group": "GAS_SOURCE",
+        "key": "OIL",
+        "english": "Conventional",
+        "french": "Conventionnelle"
+      },
+      {
+        "group": "ITERATION",
+        "key": "1",
+        "english": "Canada’s Energy Future 2016",
+        "french": "Avenir énergétique du Canada en 2016"
+      },
+      {
+        "group": "ITERATION",
+        "key": "2",
+        "english": "Canada’s Energy Future 2016: Update",
+        "french": "Avenir énergétique du Canada en 2016 - Mise à jour"
+      },
+      {
+        "group": "ITERATION",
+        "key": "3",
+        "english": "Canada’s Energy Future 2017",
+        "french": "Avenir énergétique du Canada en 2017"
+      },
+      {
+        "group": "ITERATION",
+        "key": "4",
+        "english": "Canada’s Energy Future 2018",
+        "french": "Avenir énergétique du Canada en 2018"
+      },
+      {
+        "group": "ITERATION",
+        "key": "5",
+        "english": "Canada’s Energy Future 2019",
+        "french": "Avenir énergétique du Canada en 2019"
+      },
+      {
+        "group": "ITERATION",
+        "key": "6",
+        "english": "Canada’s Energy Future 2020",
+        "french": "Avenir énergétique du Canada en 2020"
+      },
+      {
+        "group": "REGION",
+        "key": "ALL",
+        "english": "Canada",
+        "french": "Canada"
+      },
+      {
+        "group": "REGION",
+        "key": "NL",
+        "english": "Newfoundland and Labrador",
+        "french": "Terre-Neuve-et-Labrador"
+      },
+      {
+        "group": "REGION",
+        "key": "PE",
+        "english": "Prince Edward Island",
+        "french": "Île-du-Prince-Édouard"
+      },
+      {
+        "group": "REGION",
+        "key": "NS",
+        "english": "Nova Scotia",
+        "french": "Nouvelle-Écosse"
+      },
+      {
+        "group": "REGION",
+        "key": "NB",
+        "english": "New Brunswick",
+        "french": "Nouveau-Brunswick"
+      },
+      {
+        "group": "REGION",
+        "key": "QC",
+        "english": "Quebec",
+        "french": "Québec"
+      },
+      {
+        "group": "REGION",
+        "key": "ON",
+        "english": "Ontario",
+        "french": "Ontario"
+      },
+      {
+        "group": "REGION",
+        "key": "MB",
+        "english": "Manitoba",
+        "french": "Manitoba"
+      },
+      {
+        "group": "REGION",
+        "key": "SK",
+        "english": "Saskatchewan",
+        "french": "Saskatchewan"
+      },
+      {
+        "group": "REGION",
+        "key": "AB",
+        "english": "Alberta",
+        "french": "Alberta"
+      },
+      {
+        "group": "REGION",
+        "key": "BC",
+        "english": "British Columbia",
+        "french": "Colombie-Britannique"
+      },
+      {
+        "group": "REGION",
+        "key": "YT",
+        "english": "Yukon",
+        "french": "Yukon"
+      },
+      {
+        "group": "REGION",
+        "key": "NT",
+        "english": "Northwest Territories",
+        "french": "Territoires du Nord-Ouest"
+      },
+      {
+        "group": "REGION",
+        "key": "NU",
+        "english": "Nunavut",
+        "french": "Nunavut"
+      },
+      {
+        "group": "SCENARIO",
+        "key": "Constrained",
+        "english": "Constrained",
+        "french": "Contraint"
+      },
+      {
+        "group": "SCENARIO",
+        "key": "Evolving",
+        "english": "Evolving",
+        "french": "évolution"
+      },
+      {
+        "group": "SCENARIO",
+        "key": "High LNG",
+        "english": "High LNG",
+        "french": "Haute GNL"
+      },
+      {
+        "group": "SCENARIO",
+        "key": "High Price",
+        "english": "High Price",
+        "french": "Prix élevés "
+      },
+      {
+        "group": "SCENARIO",
+        "key": "Higher Carbon Price",
+        "english": "Higher Carbon Price",
+        "french": "Tarification élevée du carbone"
+      },
+      {
+        "group": "SCENARIO",
+        "key": "Low Price",
+        "english": "Low Price",
+        "french": "Prix Bas"
+      },
+      {
+        "group": "SCENARIO",
+        "key": "No LNG",
+        "english": "No LNG",
+        "french": "Pas de GNL"
+      },
+      {
+        "group": "SCENARIO",
+        "key": "Reference",
+        "english": "Reference",
+        "french": "Référence"
+      },
+      {
+        "group": "SCENARIO",
+        "key": "Technology",
+        "english": "Technology",
+        "french": "Avancées technologiques"
+      },
+      {
+        "group": "ELECTRICITY_SOURCE",
+        "key": "COAL",
+        "english": "Coal & Coke",
+        "french": "Charbon et coke"
+      },
+      {
+        "group": "ELECTRICITY_SOURCE",
+        "key": "HYDRO",
+        "english": "Hydro / Wave / Tidal",
+        "french": "Énergie hydroélectrique / houlomotrice / marémotrice"
+      },
+      {
+        "group": "ELECTRICITY_SOURCE",
+        "key": "OIL",
+        "english": "Oil",
+        "french": "Pétrole"
+      },
+      {
+        "group": "ELECTRICITY_SOURCE",
+        "key": "BIO",
+        "english": "Biomass / Geothermal",
+        "french": "Biomasse / géothermique"
+      },
+      {
+        "group": "ELECTRICITY_SOURCE",
+        "key": "GAS",
+        "english": "Natural Gas",
+        "french": "Gaz naturel"
+      },
+      {
+        "group": "ENERGY_SOURCE",
+        "key": "BIO",
+        "english": "Biofuels & Emerging Energy",
+        "french": "Biocarburants et énergies émergentes"
+      },
+      {
+        "group": "ENERGY_SOURCE",
+        "key": "COAL",
+        "english": "Coal, Coke & Coke Oven Gas",
+        "french": "Charbon, coke et gaz de cokerie"
+      },
+      {
+        "group": "ENERGY_SOURCE",
+        "key": "GAS",
+        "english": "Natural Gas",
+        "french": "Gaz naturel"
+      },
+      {
+        "group": "ENERGY_SOURCE",
+        "key": "ELECTRICITY",
+        "english": "Electricity",
+        "french": "Électricité"
+      },
+      {
+        "group": "GAS_SOURCE",
+        "key": "SOLUTION",
+        "english": "Solution",
+        "french": "Gaz dissous"
+      },
+      {
+        "group": "GAS_SOURCE",
+        "key": "ALL",
+        "english": "Total",
+        "french": "Totale"
+      },
+      {
+        "group": "GAS_SOURCE",
+        "key": "CBM",
+        "english": "Coalbed Methane",
+        "french": "Méthane de houille"
+      },
+      {
+        "group": "GAS_SOURCE",
+        "key": "SHALE",
+        "english": "Shale",
+        "french": "Schiste"
+      },
+      {
+        "group": "SECTOR",
+        "key": "Residential",
+        "english": "Residential",
+        "french": "Résidentiel"
+      },
+      {
+        "group": "SECTOR",
+        "key": "Commercial",
+        "english": "Commercial",
+        "french": "Commercial"
+      },
+      {
+        "group": "SECTOR",
+        "key": "Industrial",
+        "english": "Industrial",
+        "french": "Industriel"
+      },
+      {
+        "group": "SECTOR",
+        "key": "Transportation",
+        "english": "Transportation",
+        "french": "Transport"
+      },
+      {
+        "group": "SECTOR",
+        "key": "Total End-Use",
+        "english": "Total End-Use",
+        "french": "Totale pour utilisation finale"
+      }
+    ]
+  }
+}

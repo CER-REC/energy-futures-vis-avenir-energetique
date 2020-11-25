@@ -1,0 +1,646 @@
+{
+  "common": {
+    "title": "Exploring Canada’s Energy Future",
+    "forecast": "forecast",
+    "selection": "Selection",
+    "region": "Region",
+    "scenario": "Scenario",
+    "sector": "Sector",
+    "source": "Source",
+    "type": "Type",
+    "year": "Year",
+    "value": "Value",
+    "unit": "Unit",
+    "dataset": "Dataset",
+    "energyUnits": "ENERGY UNITS",
+    "volumetricUnits": "VOLUMETRIC UNITS",
+    "units": {
+      "petajoules": "PJ",
+      "gigawattHours": "GW.h",
+      "kilobarrelEquivalents": "Mboe/d",
+      "thousandCubicMetres": "10³m³/d",
+      "millionCubicMetres": "10⁶m³/d",
+      "kilobarrels": "Mb/d",
+      "cubicFeet": "Bcf/d"
+    },
+    "datasets": {
+      "2016*": "2016 Update"
+    },
+    "selections": {
+      "energyDemand": "Total Demand",
+      "electricityGeneration": "Electricity Generation",
+      "oilProduction": "Oil Production",
+      "gasProduction": "Gas Production"
+    },
+    "char": {
+      "colon": ":",
+      "percent": "%"
+    },
+    "electricity": {
+      "amount": {
+        "bySource": "AMOUNT BY SOURCE",
+        "byRegion": "AMOUNT BY REGION",
+        "total": "TOTAL AMOUNT"
+      }
+    },
+    "oilandgas": {
+      "button": {
+        "compare": "Compare",
+        "noCompare": "Don't Compare"
+      },
+      "displayName": {
+        "LIGHT": "Conv. Light",
+        "HEAVY": "Conv. Heavy"
+      },
+      "groupLabel": "Values less than 1%",
+      "legend": {
+        "oilProduction": {
+          "region": {
+            "view": "Region",
+            "title": ": % Oil Production in Canada",
+            "single": "Amount of a single oil type produced in the region",
+            "group": "Total amount of oil produced in the region"
+          },
+          "source": {
+            "view": "Oil Type",
+            "single": "Amount of oil type produced in a single region",
+            "group": "Total amount of oil type produced in Canada"
+          }
+        },
+        "gasProduction": {
+          "region": {
+            "view": "Region",
+            "title": ": % Gas Production in Canada",
+            "single": "Amount of a single gas type produced in the region",
+            "group": "Total amount of gas produced in the region"
+          },
+          "source": {
+            "view": "Gas Type",
+            "single": "Amount of gas type produced in a single region",
+            "group": "Total amount of gas type produced in Canada"
+          }
+        }
+      }
+    },
+    "a11y": {
+      "header": "header background",
+      "redirect": "redirect to page",
+      "open": "open description dialog",
+      "close": "close",
+      "downloadReport": "download report",
+      "sliderYearCurrent": "current selected year",
+      "sliderYearCompare": "year selected for comparison"
+    }
+  },
+  "components": {
+    "draggableVerticalList": {
+      "all": "All",
+      "abbr": {
+        "AVIATION": "A",
+        "GASOLINE": "G",
+        "DIESEL": "D",
+        "OIL": "O",
+        "LIGHT": "CL",
+        "ISB": "ISB",
+        "HEAVY": "CH",
+        "CONDENSATE": "FC",
+        "C5": "C5+",
+        "MB": "MB",
+        "CBM": "CBM",
+        "NA": "CON",
+        "SHALE": "SH",
+        "SOLUTION": "SOL",
+        "TIGHT": "TI"
+      },
+      "keyboardNav": {
+        "title": "Keyboard Shortcut",
+        "description": "- **Spacebar:** start to drag or drop\n- **Escape:** cancel the drag\n- **Up Arrow:** move an item upwards\n- **Down Arrow:** move an item downwards\n"
+      }
+    },
+    "errorBoundary": {
+      "errorMessage": "Something went wrong.",
+      "restoreLinkText": "Restore Session",
+      "restoreMessage": "Please click on the link to restore the session:",
+      "resetLinkText": "Reset Session",
+      "resetMessage": "Please click on the link to reset the session:"
+    },
+    "loadingIndicator": {
+      "api": "connecting",
+      "app": "loading"
+    },
+    "yearSelect": {
+      "name": "REPORT",
+      "title": "ENERGY FUTURES REPORTS",
+      "2020": {
+        "title": "CANADA’S ENERGY FUTURE 2020",
+        "tooltip": "Explore data from the 2020 Energy Future Report",
+        "subtitle": "November 2020",
+        "description": "The central theme in EF2020 is the transition to a low carbon economy and what that could mean for Canada’s energy future. It’s the first Energy Futures report to include projections out to 2050, and includes a brand new scenario, the *Evolving Energy System Scenario*. This new scenario is the primary focus of the report, although the traditional Reference Scenario is included for comparison. The report does a deep dive into current issues facing Canada’s energy system in our recovery from the COVID-19 pandemic, as well as our transition towards a net-zero energy system.",
+        "link": "[View the report](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2020/index.html)"
+      },
+      "2019": {
+        "title": "CANADA’S ENERGY FUTURE 2019",
+        "tooltip": "Explore data from the 2019 Energy Future Report",
+        "subtitle": "December 2019",
+        "description": "EF2019 explores how possible energy futures might unfold for Canadians over the long term. It provides an update to the Reference Case and is based on a current economic outlook, a moderate view of energy prices and technological improvements, and climate and energy policies announced and sufficiently detailed for modeling at the time of analysis. EF2019 uses economic and energy models to make these projections, and includes assumptions about technology, energy and climate policies, human behaviour and the economy.",
+        "link": "[View the report](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2019/index.html)"
+      },
+      "2018": {
+        "title": "CANADA’S ENERGY FUTURE 2018",
+        "tooltip": "Explore data from the 2018 Energy Future Report",
+        "subtitle": "October 2018",
+        "description": "EF2018 explores how possible energy futures might unfold for Canadians over the long term. It considers four scenarios that explore how future commodity prices and technological development might impact Canada’s energy system. The Reference Case is based on a current economic outlook, a moderate view of energy prices and technology development, and climate and energy policies announced at the time of analysis. The High and Low Price Cases address the uncertainty of future crude oil and natural gas prices. The Technology Case pushes past the policy and technology boundaries specific to the Reference Case and includes greater global climate policy ambition and market outcomes. It provides one potential view of what a faster transition enabled by stronger long term carbon policy, faster uptake of technologies such as electric vehicles, and lower cost of renewables would mean for Canada’s energy future.",
+        "link": "[View the report](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2018/index.html)"
+      },
+      "2017": {
+        "title": "CANADA’S ENERGY FUTURE 2017",
+        "tooltip": "Explore data from the 2017 Energy Future Report",
+        "subtitle": "October 2017",
+        "description": "EF2017 explores how possible energy futures might unfold for Canadians over the long term. It considers three scenarios that explore how future climate policy and technological development might impact Canada’s energy system. The Reference Case is based on a current economic outlook, a moderate view of energy prices, and climate and energy policies announced at the time of analysis. The Higher Carbon Price Case considers the impact on the Canadian energy system of higher carbon pricing than in the Reference Case in the longer term. The Technology Case considers, in addition to higher carbon prices, the impact on the Canadian energy system of greater adoption of select emerging production and consumption energy technologies.",
+        "link": "[View the report](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2017/index.html)"
+      },
+      "2016*": {
+        "title": "CANADA’S ENERGY FUTURE 2016 UPDATE",
+        "tooltip": "Explore data from the 2016 (Update) Energy Future Report",
+        "subtitle": "October 2016",
+        "description": "EF2016 Update presents reference, high, and low price cases. In the Reference Case, the crude oil price assumption is revised lower to US$90 per barrel by 2040. In addition to policies which were included in the January edition, such as Quebec’s cap and trade system and the carbon tax in B.C., most of the Alberta Climate Leadership Plan and the Ontario cap and trade program have been integrated into the forecast.",
+        "link": "[View the report](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2016-update/index.html)"
+      },
+      "2016": {
+        "title": "CANADA’S ENERGY FUTURE 2016",
+        "tooltip": "Explore data from the 2016 Energy Future Report",
+        "subtitle": "January 2016",
+        "description": "EF2016 is continuation of the Energy Futures series. In addition to our usual baseline long-term outlook, we explore key uncertainties for Canadian energy such robustness of global LNG markets and availability of crude oil transportation infrastructure.",
+        "link": "[View the report](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2016/index.html)"
+      }
+    },
+    "pageSelect": {
+      "By Region": {
+        "title": {
+          "energyDemand": "Total End-Use Demand By Region",
+          "electricityGeneration": "Electricity Generation By Region",
+          "oilProduction": "Oil Production By Region",
+          "gasProduction": "Gas Production By Region",
+          "default": "By Region"
+        },
+        "description": "Compare historical and projected energy supply and demand data from across Canada’s provinces and territories."
+      },
+      "By Sector": {
+        "title": {
+          "ALL": "Total End-Use Demand For All Sectors",
+          "RESIDENTIAL": "End-Use Demand For The Residential Sector",
+          "COMMERCIAL": "End-Use Demand For The Commercial Sector",
+          "INDUSTRIAL": "End-Use Demand For The Industrial Sector",
+          "TRANSPORTATION": "End-Use Demand For The Transportation Sector",
+          "default": "By Sector"
+        },
+        "description": "Explore how energy source mixes from different sectors have evolved in recent history, and how they are projected to evolve in the Energy Futures scenarios."
+      },
+      "Electricity": {
+        "title": {
+          "region": "Electricity Generation By Region",
+          "source": "Electricity Generation By Source",
+          "default": "Electricity"
+        },
+        "description": "Compare the relative amount of electricity generated by various energy sources across the provinces and territories for a given year."
+      },
+      "Scenarios": {
+        "title": {
+          "energyDemand": "Compare Scenarios For Total End-Use Demand",
+          "electricityGeneration": "Compare Scenarios For Electricity Generation",
+          "oilProduction": "Compare Scenarios For Oil Production",
+          "gasProduction": "Compare Scenarios For Gas Production",
+          "default": "Scenarios"
+        },
+        "description": "Directly compare scenarios to see how projections change over time."
+      },
+      "Oil-and-Gas": {
+        "title": {
+          "oilProduction": {
+            "region": "Oil Production By Region",
+            "source": "Oil Production By Type"
+          },
+          "gasProduction": {
+            "region": "Gas Production By Region",
+            "source": "Gas Production By Type"
+          },
+          "default": "Oil and Gas"
+        },
+        "description": "Explore oil and gas production by type across Canada’s provinces and territories for a given year or compare production over time."
+      }
+    },
+    "scenarioSelect": {
+      "name": "SCENARIOS",
+      "description": {
+        "2016": "The projections in EF2016 include a Reference Case, two price sensitivity cases and three supplemental sensitivity cases:",
+        "2016*": "The projections in EF 2016 (Update) include a Reference Case and two price sensitivity cases:",
+        "2017": "EF2017 explores how possible energy futures might unfold for Canadians over the long term. It considers three scenarios that explore how future climate policy and technological development might impact Canada’s energy system.",
+        "2018": "EF2018 explores how possible energy futures might unfold for Canadians over the long term. It considers four scenarios that explore how future prices and technological development might impact Canada’s energy system.",
+        "2019": "EF2019 explores how possible energy futures might unfold for Canadians over the long term. It provides an update to the Reference Case.",
+        "2020": "EF2020 includes two core scenarios that explore potential outcomes for the Canadian energy system over the next 30 years. These scenarios are the Evolving Energy System Scenario (Evolving Scenario) and the Reference Energy System Scenario (Reference Scenario).",
+        "default": "The projections in EF2016 include a Reference Case, two price sensitivity cases and three supplemental sensitivity cases:"
+      },
+      "Constrained": {
+        "description": {
+          "2016": "The EF 2016 report considers a case where no new major oil pipelines are built over the projection period to address uncertainties related to future oil export infrastructure.",
+          "default": "The EF 2016 report considers a case where no new major oil pipelines are built over the projection period to address uncertainties related to future oil export infrastructure."
+        }
+      },
+      "Evolving": {
+        "tooltip": {
+          "2020": "View projections based on the Evolving Energy System scenario"
+        },
+        "description": {
+          "2020": "The Evolving Energy System Scenario considers the impact of increasing action on climate change throughout the projection period. It builds upon current climate and energy policies with a hypothetical suite of future policy developments.",
+          "default": "The Evolving Energy System Scenario considers the impact of increasing action on climate change throughout the projection period. It builds upon current climate and energy policies with a hypothetical suite of future policy developments."
+        }
+      },
+      "High LNG": {
+        "description": {
+          "2016": "The uncertainty related to eventual volumes of liquefied natural gas (LNG) exports is explored in two additional cases.",
+          "default": "The uncertainty related to eventual volumes of liquefied natural gas (LNG) exports is explored in two additional cases."
+        }
+      },
+      "High Price": {
+        "description": {
+          "2016": "A price case with higher oil and natural gas prices captures some of the uncertainty related to future energy prices.",
+          "2016*": "A price case with higher oil and natural gas prices captures some of the uncertainty related to future energy prices.",
+          "2018": "A price case with higher oil and natural gas prices captures some of the uncertainty related to future energy prices.",
+          "default": "A price case with higher oil and natural gas prices captures some of the uncertainty related to future energy prices."
+        }
+      },
+      "Higher Carbon Price": {
+        "description": {
+          "2017": "The Higher Carbon Price Case explores the impact of higher carbon pricing than in the Reference Case in the longer term.",
+          "default": "The Higher Carbon Price Case explores the impact of higher carbon pricing than in the Reference Case in the longer term."
+        }
+      },
+      "Low Price": {
+        "description": {
+          "2016": "A price case with lower oil and natural gas prices captures some of the uncertainty related to future energy prices.",
+          "2016*": "A price case with lower oil and natural gas prices captures some of the uncertainty related to future energy prices.",
+          "2018": "A price case with lower oil and natural gas prices captures some of the uncertainty related to future energy prices.",
+          "default": "A price case with lower oil and natural gas prices captures some of the uncertainty related to future energy prices."
+        }
+      },
+      "No LNG": {
+        "description": {
+          "2016": "The uncertainty related to eventual volumes of liquefied natural gas (LNG) exports is explored in two additional cases.",
+          "default": "The uncertainty related to eventual volumes of liquefied natural gas (LNG) exports is explored in two additional cases."
+        }
+      },
+      "Reference": {
+        "tooltip": {
+          "2020": "View projections based on the Reference scenario"
+        },
+        "description": {
+          "2016": "The Reference Case provides a baseline outlook, based on a moderate view of future energy prices and economic growth.",
+          "2016*": "The Reference Case provides a baseline outlook, based on a moderate view of future energy prices and economic growth.",
+          "2017": "The Reference Case provides a baseline outlook with a moderate view of energy prices and economic growth, and climate and energy policies announced at the time of analysis.",
+          "2018": "The Reference Case provides a baseline outlook with a moderate view of energy prices and economic growth, and climate and energy policies announced at the time of analysis.",
+          "2019": "The Reference Case provides a baseline outlook with a moderate view of energy prices and economic growth, and climate and energy policies announced at the time of analysis.",
+          "2020": "The Reference Scenario provides a baseline outlook with a moderate view of energy prices and economic growth, and climate and energy policies announced at the time of analysis.",
+          "default": "The Reference Scenario provides a baseline outlook with a moderate view of energy prices and economic growth, and climate and energy policies announced at the time of analysis."
+        }
+      },
+      "Technology": {
+        "description": {
+          "2017": "The Technology Case considers higher carbon prices than the Reference Case and greater adoption of select emerging production and consumption energy technologies.",
+          "2018": "The Technology Case considers higher carbon prices than the Reference Case and greater adoption of select emerging production and consumption energy technologies.",
+          "default": "The Technology Case considers higher carbon prices than the Reference Case and greater adoption of select emerging production and consumption energy technologies."
+        }
+      }
+    },
+    "mainSelect": {
+      "energyDemand": {
+        "title": "Total Demand",
+        "tooltip": {
+          "by-region": "View total end-use demand by region",
+          "scenarios": "Compare scenarios for total end-use demand"
+        },
+        "description": "The total energy used in the four sectors of Canada’s economy: residential, commercial, industrial and transportation. Includes the use of electricity, natural gas, petroleum products such as gasoline and coal, and renewable fuels. Also referred to as end-use or secondary demand, it does not include energy used to generate electricity."
+      },
+      "electricityGeneration": {
+        "title": "Electricity Generation",
+        "tooltip": {
+          "by-region": "View electricity generation by region",
+          "scenarios": "Compare scenarios for electricity generation"
+        },
+        "description": "The amount of electricity produced by transforming other forms of energy. In Canada, electricity is generated from a variety of sources, including hydro, other renewables like wind and solar, thermal sources like natural gas and coal, and nuclear power."
+      },
+      "oilProduction": {
+        "title": "Oil Production",
+        "tooltip": {
+          "by-region": "View oil production by region",
+          "scenarios": "Compare scenarios for oil production",
+          "oil-and-gas": "View oil production"
+        },
+        "description": "The amount of crude oil produced in Canada. Crude oil is produced from various areas using different technologies. This includes mined and in situ bitumen from the oil sands, conventional light and heavy oil produced in the Western Canadian Sedimentary Basin and other parts of Canada, condensate, and oil produced from off-shore platforms on the east coast."
+      },
+      "gasProduction": {
+        "title": "Gas Production",
+        "tooltip": {
+          "by-region": "View gas production by region",
+          "scenarios": "Compare scenarios for gas production",
+          "oil-and-gas": "View gas production"
+        },
+        "description": "The amount of marketable natural gas produced in Canada. Natural gas is produced from various areas using different technologies. This includes tight, shale, coal bed methane, conventional, and natural gas produced along with oil from oil wells (also termed associated or solution gas)."
+      }
+    },
+    "unitSelect": {
+      "name": "UNIT",
+      "petajoules": {
+        "title": "Petajoule",
+        "description": "A measure of energy that is a quadrillion (10¹⁵) joules."
+      },
+      "kilobarrelEquivalents": {
+        "title": "Thousand barrels of light oil equivalent per day",
+        "description": "A measure of energy normalized to the equivalent energy content of a barrel of light crude oil. One barrel of light oil equivalent is equal to 6.123 gigajoules."
+      },
+      "gigawattHours": {
+        "title": "Gigawatt hour",
+        "description": "A measure of electric energy that is a billion (10⁹) watt hours of electric energy per year. One GW.h is equal to 0.0036 petajoules and 0.0016 Mboe/d."
+      },
+      "kilobarrels": {
+        "title": "Thousand barrels per day",
+        "description": "Number of barrels of crude oil produced per day."
+      },
+      "thousandCubicMetres": {
+        "title": "Thousand cubic metres per day",
+        "description": "Number of cubic metres of crude oil produced per day. One barrel of oil is equal to 0.159 cubic metres."
+      },
+      "cubicFeet": {
+        "title": "Billion cubic feet per day",
+        "description": "Number of cubic feet of natural gas produced per day."
+      },
+      "millionCubicMetres": {
+        "title": "Million cubic metres per day",
+        "description": "Number of cubic metres of natural gas produced per day. One cubic foot of natural gas is equal to 0.0283 cubic metres."
+      }
+    },
+    "viewSelect": {
+      "name": "VIEW BY",
+      "region": {
+        "tooltip": {
+          "electricity": {
+            "electricityGeneration": "View electricity generation by region"
+          },
+          "oil-and-gas": {
+            "oilProduction": "View oil production by region",
+            "gasProduction": "View gas production by region"
+          }
+        },
+        "description": {
+          "electricity": "Compares the amount of electricity generated by each source for each region.",
+          "oil-and-gas": "Compares the amount of oil or gas production by type for each region."
+        }
+      },
+      "source": {
+        "tooltip": {
+          "electricity": {
+            "electricityGeneration": "View electricity generation by source"
+          },
+          "oil-and-gas": {
+            "oilProduction": "View oil production by type",
+            "gasProduction": "View gas production by type"
+          }
+        },
+        "description": {
+          "electricity": "Compares the amount of electricity generated by each region for each source.",
+          "oil-and-gas": "Compares the amount of oil or gas production by region for each type."
+        }
+      }
+    },
+    "sectorSelect": {
+      "name": "SECTOR",
+      "ALL": {
+        "tooltip": "View total end-use demand for all sectors",
+        "description": "The total energy used in the four sectors of Canada’s economy: residential, commercial, industrial and transportation. Includes the use of electricity, natural gas, petroleum products such as gasoline and coal, and renewable fuels. Also referred to as end-use or secondary demand, it does not include energy used to generate electricity."
+      },
+      "RESIDENTIAL": {
+        "tooltip": "Residential - View end-use demand for the residential sector",
+        "description": "This is the energy consumed by Canadian households. It includes energy used for space and water heating, air conditioning, lighting, large appliances, and other energy-using devices like televisions and computers."
+      },
+      "COMMERCIAL": {
+        "tooltip": "Commercial – View end-use demand for the commercial sector",
+        "description": "A broad category including offices, stores, warehouses, government and institutional buildings, utilities, communications, and other service industries. It also includes energy consumed by street lighting and pipelines. Buildings use energy for space and water heating, air conditioning, lighting, appliances and other devices. Pipelines use energy to power pumps or compressors that move oil and natural gas through pipelines."
+      },
+      "INDUSTRIAL": {
+        "tooltip": "Industrial – View end-use demand for the industrial sector",
+        "description": "This sector includes manufacturing, forestry, fisheries, agriculture, construction, mining, and oil and natural gas extraction. In 2013, 81 per cent of industrial energy was consumed by a number of energy-intensive industries like iron and steel, aluminum, cement, chemicals and fertilizers, pulp and paper, petroleum refining, mining, and oil and natural gas extraction."
+      },
+      "TRANSPORTATION": {
+        "tooltip": "Transportation – View end-use demand for the transportation sector",
+        "description": "Includes passenger and freight on-road transportation, as well as air, rail, marine, and non-industrial off-road travel, such as recreational all-terrain vehicles and snowmobiles. Demand in the transportation sector includes foreign energy used on Canadian soil, airspace and waters."
+      }
+    },
+    "share": {
+      "download": "Download Data",
+      "filename": "Energy_Future",
+      "copied": "URL Copied",
+      "emailMessage": "Exploring Canada’s Energy Future interactive online tool is based on the Canada Energy Regulator’s (CER) flagship publication – Canada’s Energy Future. This visualization allows you to explore energy production and consumption trends and forecast them into the future. You can explore the data from the most recent report, or refer to previous reports.",
+      "dialog": {
+        "description": "Copy the following link to the clipboard?",
+        "btnCopy": "Copy",
+        "btnCancel": "Cancel"
+      }
+    },
+    "unsupportedWarning": {
+      "browser": "Your browser does not support the features required by this visualization.\nPlease use a recent version of Chrome, Firefox, Safari, or Edge.\nThank you!",
+      "resolution": "This visualization has been designed for use on computers and tablets with a screen width of at least 768 pixels.\nThank you!"
+    }
+  },
+  "views": {
+  },
+  "regions": {
+  },
+  "sources": {
+    "electricity": {
+      "BIO": "Includes solid biomass fuels such as wood pellets, as well as geothermal sources.",
+      "COAL": "Electricity generated by coal-fired power plants.",
+      "HYDRO": "Electricity generated by hydro power plants, in addition to minor contributions from wave and tidal power stations.",
+      "GAS": "Electricity generated by a variety of technologies using natural gas, including steam generation units, gas turbine and combustion engine plants, and combined cycle units.",
+      "OIL": "Electricity generated by a variety of technologies using fuel oil, including steam turbines and combustion turbines.",
+      "RENEWABLE": "Includes electricity generated using photovoltaic systems or concentrated solar thermal systems and electricity generated by wind turbines.",
+      "NUCLEAR": "Electricity generated by nuclear power plants."
+    },
+    "energy": {
+      "BIO": "Includes biomass, hydrogen, ethanol and biodiesel.",
+      "COAL": "Includes coal, coke, and coke oven gas.",
+      "ELECTRICITY": "End-use electricity that is generated from a variety of sources and technologies. Includes electricity generation from primary sources such as nuclear, hydro, wind, and solar, and thermal generation from other fuels such as natural gas, coal, and oil.",
+      "GAS": "Total consumption of gas, including some non-marketed producer consumption.",
+      "OIL": "Includes refined petroleum products and natural gas liquids. Specifically, this includes: motor gasoline, diesel fuel, aviation fuel, light fuel oil, kerosene, heavy fuel oil, propane, butane, ethane, petroleum coke, still gas, and non-energy products such as lubricants, asphalt, and petrochemical feedstocks."
+    },
+    "transportation": {
+      "BIO": "Includes ethanol, biodiesel, and hydrogenation derived renewable diesel.",
+      "COAL": "Includes coal, coke, and coke oven gas.",
+      "ELECTRICITY": "End-use electricity that is generated from a variety of sources and technologies. Includes electricity generation from primary sources such as nuclear, hydro, wind, and solar, and thermal generation from other fuels such as natural gas, coal, and oil.",
+      "GAS": "Includes compressed natural gas and liquefied natural gas used in cars, buses, trucks, and ships.",
+      "OIL": "- **Aviation Fuel:** A refined petroleum product used to power aircraft.\n- **Gasoline:** A refined petroleum product used in internal combustion engines.\n- **Diesel Fuel:** A refined petroleum product used in diesel engines.\n- **Other Oil Products:** Includes heavy fuel oil, liquefied petroleum gas, and lubricants."
+    },
+    "gas": {
+      "ALL": "The amount of marketable natural gas produced in Canada. Natural gas is produced from various areas using different technologies.",
+      "CBM": "Natural gas that is trapped within coal seams.",
+      "NA": "Natural gas that can flow into a well at commercial rates without the extensive use of technology after the well is drilled.",
+      "SHALE": "Natural gas trapped within shale.",
+      "SOLUTION": "Natural gas produced along with oil from oil wells. Also termed associated gas.",
+      "TIGHT": "Gas produced from low permeability sandstone, siltstone, limestone or dolostone reservoirs."
+    },
+    "oil": {
+      "ALL": "The amount of crude oil produced in Canada. Crude oil is produced from various areas using different technologies.",
+      "C5": "A liquid like a very light oil, extracted during natural gas production at processing plants.",
+      "CONDENSATE": "A liquid like a very light oil, extracted during natural gas production at gas wells.",
+      "HEAVY": "Heavy crude oil that can flow into a well at commercial rates without the extensive use of technology after the well is drilled.",
+      "ISB": "Recovered through wells, typically using steam or solvents to reduce the bitumen’s viscosity.",
+      "LIGHT": "Light crude oil that can flow into a well at commercial rates without the extensive use of technology after the well is drilled.",
+      "MB": "A combined mining and upgrading operation where oil sands are mined from open pits, then bitumen is separated from the sand and upgraded by coking or hydroprocessing."
+    }
+  },
+  "links": {
+    "title": "Context",
+    "Assumptions": {
+      "title": "Assumptions",
+      "description": {
+        "2016": "Four key assumptions underpin the core cases in EF2016:\n1. All energy production will find markets and infrastructure will be built as needed.\n1. Only policies and programs that are law at the time of writing are included in the projections. As a result, any policies under consideration, or new policies developed after the projections were completed in the summer of 2015, are not included in this analysis.\n1. Environmental and socio-economic considerations beyond the included policies and programs, are outside the scope of this analysis.\n1. Energy markets are constantly evolving.",
+        "2016*": "The Canadian energy system is constantly changing. Factors like technology, economics, infrastructure, societal preferences, and government policy and programs continually influence how energy is produced, transported, and consumed in Canada. Chapter 2 in EF2016 (Update) describes the key assumptions and recent developments underpinning the analysis in the report.",
+        "2017": "Three key assumptions underpin the analysis in EF2017:\n- Over the long term, all energy production will find markets and infrastructure will be built as needed.\n- Environmental and socio-economic considerations beyond the included policies and programs are outside the scope of the analysis.\n- EF2017 includes many recently announced climate policies. The following criteria were applied to determine whether a certain policy was included in EF2017:\n  - The policy was publically announced prior to 1 January 2017.\n  - Sufficient detail exists to credibly model a policy, or reasonable assumptions can be made about the details of a policy.\n  - Goals and targets, including Canada’s international climate targets, are not explicitly modelled. Rather, policies that are announced, and in place, to address those targets are included in the modeling.",
+        "2018": "The Canadian energy system is constantly evolving. Factors such as economics, infrastructure, and societal preferences influence the production, transportation, and consumption of energy in Canada. Technology, and climate policies and programs increasingly impact energy markets. Chapter 2 in EF2018 provides an overview of recent energy market developments and climate policies. It also describes the key assumptions and recent developments underpinning the analysis in the report.",
+        "2019": "EF2019 makes a variety of assumptions about future trends that are necessary to make long-term projections. These are factors such as included climate policies and regulations, rate of technological change, crude oil and natural gas markets (both domestic and global), infrastructure, major electricity projects and future costs of new generation capacity.",
+        "2020": "EF2020 scenarios make a variety of assumptions about future trends necessary to make long-term projections. These include assumptions about climate policies and regulations, rate of technological change, crude oil and natural gas markets (both domestic and global), major energy infrastructure, and future costs of new electricity generation capacity.",
+        "default": "The Canadian energy system is constantly changing. Factors like technology, economics, infrastructure, societal preferences, and government policy and programs continually influence how energy is produced, transported, and consumed in Canada."
+      },
+      "link": {
+        "2016": "[EF2016 Assumptions](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2016/index.html)",
+        "2016*": "[EF2016 (Update) Assumptions](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2016-update/index.html)",
+        "2017": "[EF2017 Assumptions](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2017/chapter-2-key-assumptions.html)",
+        "2018": "[EF2018 Assumptions](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2018/chapter-2-recent-context-key-assumptions.html)",
+        "2019": "[EF2019 Assumptions](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2019/assumptions/index.html)",
+        "2020": "[EF2020 Assumptions](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2020/assumptions/index.html)",
+        "default": "[EF2016 Assumptions](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2016/index.html)"
+      }
+    },
+    "Findings": {
+      "title": "Key Findings",
+      "description": {
+        "2016": "The key findings of EF2016 are outlined below and then summarized in the EF2016 Report:\n- Recent developments have highlighted numerous uncertainties for Canada’s long-term energy outlook.\n- In the Reference Case, energy production grows faster than energy use and net exports of energy increase.\n- The levels of future oil and natural gas production are highly dependent on future prices, which are subject to considerable uncertainty.\n- Without development of additional oil pipeline infrastructure, crude oil production grows less quickly but continues to grow at a moderate pace over the projection period.\n- The volume of liquefied natural gas exports is an important driver of Canadian natural gas production growth.\n- Total energy use in Canada, which includes energy use in the energy production sector, grows at similar rates in all EF 2016 cases, and GHG emissions related to that energy use will follow similar trends.",
+        "2016*": "The key findings of EF2016 Update are outlined below and summarized in the EF2016 Update Report:\n- Update 2016 includes several recently announced climate policies. Future climate action remains a key uncertainty to the projections.\n- Energy use, including energy derived from fossil fuels, increases but at a slower pace compared to EF 2016.\n- The crude oil price assumptions in Update 2016 are lower to reflect recent market developments, resulting in lower crude oil production projections.\n- The electricity sector adds new wind, solar, hydro, and natural gas-fired generation to accommodate demand growth and replace coal-fired generation.",
+        "2017": "The key findings of EF2017 are outlined below and summarized in the EF2017 Report:\n- The Energy Futures 2017 Reference Case is the first baseline projection in the Energy Futures series* where fossil fuel consumption peaks within the projection period.\n- Canadian fossil fuel consumption in the Higher Carbon Price Case is 8% lower than in the Reference Case, and 13% lower in the Technology Case by 2040.\n- Renewable capacity grows quickly, with wind doubling and solar more than tripling by 2040 in the Reference Case.\n- Despite different energy outcomes, economic growth is similar in all three scenarios in Energy Futures 2017.\n- Future policies and technology trends, both domestically and globally, will shape Canada’s sustainable energy future.",
+        "2018": "The key findings of EF2018 are outlined below and summarized in the EF2018 Report:\n- Canada’s energy demand growth is slowing, while sources to meet these demands are becoming less carbon intensive.\n- In a scenario with greater adoption of new energy technologies, Canadians use over 15% less total energy and nearly 30% less fossil fuels by 2040.\n- Energy use and economic growth continue to decouple.\n- Canada’s energy mix continues to diversify, and its already low-emitting electricity mix adds more renewables.\n- Canadian oil and natural gas production increases in the Reference Case. Price and technology trends will be key factors influencing Canadian production in the future.",
+        "2019": "The key findings of EF2019 are outlined below and summarized in the EF2019 Report:\n- Energy use grows slowly in the next 20 years. The mix of energy sources that Canadians use continues to change.\n- Oil and natural gas production grows steadily over the projection period. Assumptions on short-term infrastructure developments and long-term energy prices underlie this growth.\n- Technologies enabling Canada’s transition to a low carbon economy make inroads across the energy system.\n- Canada is making progress in transitioning towards a low carbon future.",
+        "2020": "The key findings of EF2020 are outlined below and summarized in the EF2020 Report:\n- The COVID-19 pandemic has significantly impacted the Canadian energy system. We estimate that energy use in 2020 will fall by 6% from the year prior, larger than the decrease experienced during the 2009 financial crisis. We estimate that 2020 crude oil production will decrease by 7% or 335 thousand barrels per day (Mb/d) compared to 2019.\n- Canada’s domestic fossil fuel consumption remains below 2019 levels throughout the Evolving Scenario. By 2030, it is 12% lower, and 35% lower by 2050. At the same time, renewables and nuclear grow by 31% by 2050 and become a larger share of the energy mix.\n- Electricity becomes increasingly competitive with fossil fuels in many parts of the energy system, including for passenger vehicles. Electricity’s share of end-use demand increases from approximately 16% currently to over 27% in 2050 in the Evolving Scenario, when half of all passenger vehicles sales are electric vehicles. At the same time, renewable sources account for a larger share of electricity generation.\n- Under the assumptions of the Evolving Scenario, Canadian crude oil production increases steadily until peaking in 2039 at 5.8 million barrels per day (MMb/d). Driven by growing global demand for LNG, Canadian natural gas production increases and peaks at 18.4 billion cubic feet per day (Bcf/d) by 2040. Both crude oil and natural gas production decline slowly over the last decade of the projection period.\n- The major crude oil pipeline projects under construction will be able to accommodate all future production growth in both the Evolving and Reference Scenarios.\n- While fossil fuel consumption declines in the Evolving Scenario, it still makes up over 60% of Canada’s fuel mix in 2050. Achieving net-zero GHG emissions by 2050 will require an accelerated pace of transitioning away from fossil fuels.",
+        "default": "The key findings of EF2016 are outlined below and then summarized in the EF2016 Report:\n- Recent developments have highlighted numerous uncertainties for Canada’s long-term energy outlook.\n- In the Reference Case, energy production grows faster than energy use and net exports of energy increase.\n- The levels of future oil and natural gas production are highly dependent on future prices, which are subject to considerable uncertainty.\n- Without development of additional oil pipeline infrastructure, crude oil production grows less quickly but continues to grow at a moderate pace over the projection period.\n- The volume of liquefied natural gas exports is an important driver of Canadian natural gas production growth.\n- Total energy use in Canada, which includes energy use in the energy production sector, grows at similar rates in all EF 2016 cases, and GHG emissions related to that energy use will follow similar trends."
+      },
+      "link": {
+        "2016": "[EF2016 Key Findings](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2016/index.html)",
+        "2016*": "[EF2016 (Update) Key Findings](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2016-update/index.html)",
+        "2017": "[EF2017 Key Findings](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2017/executive-summary.html)",
+        "2018": "[EF2018 Key Findings](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2018/executive-summary.html)",
+        "2019": "[EF2019 Key Findings](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2019/executive-summary/index.html)",
+        "2020": "[EF2020 Key Findings](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2020/executive-summary/index.html)",
+        "default": "[EF2016 Key Findings](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2016/index.html)"
+      }
+    },
+    "Results": {
+      "title": "Results",
+      "description": {
+        "2016": "Results from the EF2016 Reference and sensitivity case projections highlight key changes in Canadian energy supply and demand trends. These projections should not be viewed as a prediction, but as a possible future based on the assumptions described in the Assumptions section.",
+        "2016*": "Results of the EF2016 (Update) Reference, High Price and Low Price Case projections includes analysis on macroeconomic growth, energy use, and energy production for various sources. These projections should not be viewed as a prediction, but as a possible future based on the assumptions described in the Assumptions section.",
+        "2017": "Results of the EF2017 Reference, HCP and Technology Case projections includes analysis on macroeconomic growth, energy use, and energy production for various sources. These projections should not be viewed as a prediction, but as a possible future based on the assumptions described in the Assumptions section.",
+        "2018": "Results of the EF2018 Reference and High/Low Price and Technology Case projections includes analysis on macroeconomic growth, energy use, and energy production for various sources. These projections should not be viewed as a prediction, but as a possible future based on the assumptions described in the Assumptions section.",
+        "2019": "Results of the EF2019 Reference Case projection includes analysis on macroeconomic growth, energy use, and energy production for various sources. This projection should not be viewed as a prediction, but as a possible future based on the assumptions described in the Assumptions section.",
+        "2020": "The EF2020 Results section focuses on results of the EF2020 Evolving Scenario, and also includes results from the Reference Scenario. It includes analysis on macroeconomic growth, energy use, and energy production for various commodities. Projections for these two scenarios should not be viewed as predictions, but as two possible futures based on the assumptions described in the Assumptions section for each scenario.",
+        "default": "Results from the EF2016 Reference and sensitivity case projections highlight key changes in Canadian energy supply and demand trends. These projections should not be viewed as a prediction, but as a possible future based on the assumptions described in the Assumptions section."
+      },
+      "link": {
+        "2016": "[EF2016 Results](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2016/index.html)",
+        "2016*": "[EF2016 (Update) Results](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2016-update/index.html)",
+        "2017": "- [EF2017 Reference and HCP Case: Results](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2017/chapter-3-reference-hcp-case-results.html)\n- [EF2017 Technology Case: Results](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2017/chapter-4-technology-case-results.html)",
+        "2018": "- [EF2018 Reference and High/Low Price Case: Result](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2018/chapter-3-reference-high-low-price-case-results.html)\n- [EF2018 Technology Case: Result](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2018/chapter-4-technology-case-results.html)",
+        "2019": "[EF2019 Results](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2019/results/index.html)",
+        "2020": "[EF2020 Results](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2020/results/index.html)",
+        "default": "[EF2016 Results](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2016/index.html)"
+      }
+    },
+    "Methodology": {
+      "title": "Methodology",
+      "description": "Access our [Methodology document](/energy-future/pdf/energy-future-visualization-methodology-2020.pdf) to find out about the Energy Futures modeling system, definitions and indicators, data sources and more."
+    },
+    "Report": {
+      "title": {
+        "2016": "EF2016 Report",
+        "2016*": "EF2016 (Update) Report",
+        "2017": "EF2017 Report",
+        "2018": "EF2018 Report",
+        "2019": "EF2019 Report",
+        "2020": "EF2020 Report",
+        "default": "EF2016 Report"
+      }
+    },
+    "Summary": {
+      "title": "Summary",
+      "description": "Energy Future includes a wide range of projections for Canadian energy supply and demand. Theme projects are the result of a modeling system consisting of several interactive components (or modules) which produce integrated, future Canadian energy trends.",
+      "link": {
+        "2016": "[View the EF2016 Report](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2016/index.html)",
+        "2016*": "[View the EF2016 (Update) Report](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2016-update/index.html)",
+        "2017": "[View the EF2017 Report](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2017/index.html)",
+        "2018": "[View the EF2018 Report](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2018/index.html)",
+        "2019": "[View the EF2019 Report](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2019/index.html)",
+        "2020": "[View the EF2020 Report](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2020/index.html)",
+        "default": "[View the EF2016 Report](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2020/index.html)"
+      },
+      "image": {
+        "2016": "https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/images/2016nrgftr-eng.jpg",
+        "2016*": "https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/images/2016updt-eng.jpg",
+        "2017": "https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/images/2017nrgftr-eng.jpg",
+        "2018": "https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/images/2018nrgftr-eng.jpg",
+        "2019": "https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/images/2019nrgftr-eng.jpg",
+        "default": "https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/images/2016nrgftr-eng.jpg"
+      }
+    },
+    "About": {
+      "title": "About"
+    }
+  },
+  "landing": {
+    "description": "Based on data from our Energy Futures reports, this interactive tool allows you to explore energy production and consumption trends and forecast them into the future. You can explore the data from the most recent report, or refer to previous reports.",
+    "By Region": {
+      "title": "Explore By Region",
+      "description": "Compare historical and projected energy supply and demand data from across Canada’s provinces and territories"
+    },
+    "By Sector": {
+      "title": "Explore By Sector",
+      "description": "Explore how energy source mixes from different sectors have evolved in recent history, and how they are projected to evolve in the Energy Futures scenarios"
+    },
+    "Electricity": {
+      "title": "Explore Electricity",
+      "description": "Compare the relative amount of electricity generated by various energy sources across the provinces and territories for a given year"
+    },
+    "Scenarios": {
+      "title": "Explore Scenarios",
+      "description": "Directly compare the scenarios"
+    },
+    "Oil-and-Gas": {
+      "title": "Explore Oil and Gas",
+      "description": "Explore Oil and Gas production across the provinces and territories for a given year"
+    },
+    "links": {
+      "title": "Canada's Energy Future Report",
+      "methodology": {
+        "title": "Methodology",
+        "link": "/energy-future/pdf/energy-future-visualization-methodology-2020.pdf"
+      },
+      "resources": {
+        "title": "Student Resources",
+        "link": "https://www.cer-rec.gc.ca/en/data-analysis/student-resources/index.html"
+      },
+      "download": {
+        "title": "Download the EF2020 Report",
+        "link": "https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2020/index.html"
+      },
+      "view": {
+        "title": "View Past Reports",
+        "link": "https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/"
+      }
+    }
+  }
+}

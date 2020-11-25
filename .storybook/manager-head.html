@@ -1,0 +1,11 @@
+<style>
+/* Use CSS to disable buttons that we don't want to be accessible */
+/* TODO: Migrate this when a parameter is added to storybook */
+button[title="Zoom in"],
+button[title="Zoom out"],
+button[title="Reset zoom"],
+button[title="Reset zoom"] + span,
+button[title="Toggle background grid"] {
+  display: none;
+}
+</style>

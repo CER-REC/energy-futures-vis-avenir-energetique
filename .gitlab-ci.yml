@@ -1,0 +1,82 @@
+# Official framework image. Look for the different tagged releases at:
+# https://hub.docker.com/r/library/node/tags/
+image: node:12.13.1
+
+stages:
+  - build
+  - test
+  - documentation
+  - deploy
+
+variables:
+  AWS_DEFAULT_REGION: us-west-2
+  BUCKET_NAME: neb-conditions-devdoc
+  PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
+
+build:
+  stage: build
+  script:
+    - npm install
+  # This folder is cached between builds
+  # http://docs.gitlab.com/ce/ci/yaml/README.html#cache
+  cache:
+    key: node_modules
+    paths:
+      - node_modules/
+  artifacts:
+    paths:
+      - node_modules/
+
+test:
+  stage: test
+  dependencies:
+    - build
+  script:
+    - npm run ci:test
+  artifacts:
+    reports:
+      junit: gl-junit.xml
+
+lint:
+  stage: test
+  dependencies:
+    - build
+  script:
+    - npm run lint
+  allow_failure: true
+  artifacts:
+    reports:
+      codequality: gl-codequality.json
+
+buildDevdocs:
+  stage: documentation
+  only:
+    - /^v\d+\.\d+\.\d+$/
+  except:
+    - branches
+  script:
+    - npm run build-storybook
+  artifacts:
+    paths:
+      - storybook-static
+
+deployDevdocs:
+  stage: deploy
+  image: "python:latest"
+  dependencies:
+    - buildDevdocs
+  only:
+    - /^v\d+\.\d+\.\d+$/
+  except:
+    - branches
+  cache:
+    key: deployDevdocs_pip
+    paths:
+      - .cache/pip
+  before_script:
+    - pip install awscli # Install the SDK
+  script:
+    - aws s3 cp storybook-static s3://${BUCKET_NAME}/${CI_COMMIT_TAG} --recursive
+  environment:
+    name: devdocs-${CI_COMMIT_TAG}
+    url: http://${BUCKET_NAME}.s3-website.${AWS_DEFAULT_REGION}.amazonaws.com/${CI_COMMIT_TAG}

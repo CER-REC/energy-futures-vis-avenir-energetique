@@ -1,0 +1,9 @@
+{{#if isPatch~}}
+  ##
+{{~else~}}
+  #
+{{~/if}} [{{version}}](http://neb-conditions-devdoc.s3-website.us-west-2.amazonaws.com/v{{version}})
+{{~#if title}} "{{title}}"
+{{~/if}}
+{{~#if date}} ({{date}})
+{{/if}}

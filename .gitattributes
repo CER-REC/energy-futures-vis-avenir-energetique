@@ -1,0 +1,19 @@
+* text eol=lf
+
+*.js text
+*.jsx text
+*.md text
+*.json text
+*.scss text
+*.css text
+*.svg text
+*.txt text
+
+*.jpg binary
+*.png binary
+*.PNG binary
+*.swf binary
+*.woff binary
+*.woff2 binary
+*.shp binary
+*.pdf binary

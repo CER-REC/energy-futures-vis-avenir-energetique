@@ -1,0 +1,13 @@
+*{{#if type}} **{{type}}:**
+{{~/if}} {{#if subject}}
+  {{~subject}}
+{{~else}}
+  {{~header}}
+{{~/if~}}
+
+{{~!-- commit references --}} (
+  {{~hash~}}
+  {{~#if references~}}
+    {{#each references~}}, NEBV-{{this.issue}}{{~/each}}
+  {{~/if~}}
+)
