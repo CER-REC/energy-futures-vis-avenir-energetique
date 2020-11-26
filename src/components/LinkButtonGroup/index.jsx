@@ -5,6 +5,7 @@ import {
   makeStyles, createStyles, Grid, Button, Typography,
 } from '@material-ui/core';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+import analytics from '../../analytics';
 
 import useConfig from '../../hooks/useConfig';
 import {
@@ -98,11 +99,27 @@ const LinkButtonGroup = ({ direction }) => {
   const { config } = useConfig();
   const [select, setSelect] = useState(undefined);
 
+  const analyticsName = (name) => {
+    if (name.toLowerCase() !== 'about' && name.toLowerCase() !== 'methodology') {
+      return 'report';
+    }
+    return name.toLowerCase();
+  };
+
   const handleSelect = useCallback(
-    label => () => select !== label.name && setSelect(label.name),
-    [select, setSelect],
+    label => () => {
+      analytics.reportMisc(config.page, 'click', analyticsName(label.name));
+      return (select !== label.name && setSelect(label.name));
+    },
+    [config.page, select],
   );
+
   const close = useCallback(() => setSelect(undefined), [setSelect]);
+
+  const onCloseButtonClick = useCallback(() => {
+    analytics.reportMisc(config.page, 'click', `close ${analyticsName(select)}`);
+    close();
+  }, [close, config.page, select]);
 
   const link = useMemo(() => ({
     report: {
@@ -110,17 +127,17 @@ const LinkButtonGroup = ({ direction }) => {
         id: `links.Report.title.${config.yearId}`,
         defaultMessage: intl.formatMessage({ id: 'links.Report.title.default' }),
       }),
-      content: <LinkButtonContentReport yearId={config.yearId} onClose={close} />,
+      content: <LinkButtonContentReport yearId={config.yearId} onClose={onCloseButtonClick} page={config.page} />,
     },
     methodology: {
       name: intl.formatMessage({ id: 'links.Methodology.title' }),
-      content: <LinkButtonContentMethodology onClose={close} />,
+      content: <LinkButtonContentMethodology onClose={onCloseButtonClick} />,
     },
     about: {
       name: intl.formatMessage({ id: 'links.About.title' }),
-      content: <LinkButtonContentAbout onClose={close} />,
+      content: <LinkButtonContentAbout onClose={onCloseButtonClick} />,
     },
-  }), [intl, close, config.yearId]);
+  }), [intl, config.yearId, config.page, onCloseButtonClick]);
 
   /**
    * This is a button group in which buttons share the same accent color bar.

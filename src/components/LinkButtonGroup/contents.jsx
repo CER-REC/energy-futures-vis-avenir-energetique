@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { makeStyles, Grid, Typography, Button } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import Markdown from 'react-markdown';
+import analytics from '../../analytics';
 
 const LinkButtonContentAssumptions = ({ yearId }) => {
   const intl = useIntl();
@@ -158,7 +159,7 @@ export const LinkButtonContentAbout = ({ onClose }) => {
 };
 LinkButtonContentAbout.propTypes = { onClose: PropTypes.func.isRequired };
 
-export const LinkButtonContentReport = ({ yearId, onClose }) => {
+export const LinkButtonContentReport = ({ yearId, onClose, page }) => {
   const classes = useStyles();
   const intl = useIntl();
 
@@ -170,6 +171,11 @@ export const LinkButtonContentReport = ({ yearId, onClose }) => {
   ], [intl, yearId]);
   const [select, setSelect] = useState(tabs[0]);
 
+  const onTabClick = (tab) => {
+    setSelect(tab);
+    analytics.reportMisc(page, 'click', tab.title.toLowerCase());
+  };
+
   return (
     <>
       <Grid container alignItems="center" wrap="nowrap" className={classes.header}>
@@ -177,7 +183,7 @@ export const LinkButtonContentReport = ({ yearId, onClose }) => {
           <Grid item key={`report-button-tab-${tab.title}`}>
             <Button
               disabled={tab.title === select?.title}
-              onClick={() => setSelect(tab)}
+              onClick={() => onTabClick(tab)}
               className={`${classes.tab} ${tab.title === select?.title ? classes.selected : ''}`.trim()}
             >
               {tab.title}
@@ -198,4 +204,5 @@ export const LinkButtonContentReport = ({ yearId, onClose }) => {
 LinkButtonContentReport.propTypes = {
   yearId: PropTypes.string.isRequired,
   onClose: PropTypes.func.isRequired,
+  page: PropTypes.oneOf(['by-region', 'by-sector', 'scenarios', 'oil-and-gas', 'electricity']).isRequired,
 };
