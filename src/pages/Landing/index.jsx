@@ -8,6 +8,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import Markdown from 'react-markdown';
 import { PAGES } from '../../constants';
 import useConfig from '../../hooks/useConfig';
+import analytics from '../../analytics';
 
 import { IconExternal } from '../../icons';
 import headerBg from './header.jpg';
@@ -181,7 +182,10 @@ const Landing = () => {
    */
   const desktop = useMediaQuery('(min-width: 992px)');
 
-  const handleRedirect = page => () => configDispatch({ type: 'page/changed', payload: page });
+  const handleRedirect = page => () => {
+    configDispatch({ type: 'page/changed', payload: page });
+    analytics.reportLanding(page);
+  };
 
   return (
     <>
