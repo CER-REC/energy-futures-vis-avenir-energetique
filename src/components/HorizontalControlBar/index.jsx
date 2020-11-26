@@ -1,5 +1,5 @@
 // #region imports
-import React, { useMemo } from 'react';
+import React, { useMemo, useCallback } from 'react';
 import { useIntl } from 'react-intl';
 import {
   makeStyles, createStyles,
@@ -8,6 +8,7 @@ import {
 
 import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
+import analytics from '../../analytics';
 import { CONFIG_LAYOUT, SECTOR_ORDER } from '../../constants';
 import { HintMainSelect, HintViewSelect, HintSectorSelect, HintUnitSelect } from '../Hint';
 // #endregion
@@ -40,10 +41,33 @@ const HorizontalControlBar = () => {
   const { config, configDispatch } = useConfig();
   const layout = useMemo(() => CONFIG_LAYOUT[config.mainSelection], [config.mainSelection]);
 
+  const handleUpdateAppendix = useCallback((selection) => {
+    configDispatch({ type: 'mainSelection/changed', payload: selection });
+    analytics.reportFeature(config.page, 'main selection', selection);
+  }, [configDispatch, config.page]);
+
+  const handleUpdateSector = useCallback((sector) => {
+    configDispatch({ type: 'sector/changed', payload: sector });
+    analytics.reportFeature(config.page, 'sector', sector);
+  }, [configDispatch, config.page]);
+
+  const handleUpdateView = useCallback((view) => {
+    configDispatch({ type: 'view/changed', payload: view });
+    analytics.reportFeature(config.page, 'view by', view);
+  }, [configDispatch, config.page]);
+
+  const handleUpdateUnit = useCallback((unit) => {
+    configDispatch({ type: 'unit/changed', payload: unit });
+    analytics.reportFeature(config.page, 'unit', unit);
+  }, [configDispatch, config.page]);
+
   if (!layout) {
     return null;
   }
 
+  /**
+   * Main selection
+   */
   const appendices = Object.keys(CONFIG_LAYOUT).filter(
     selection => CONFIG_LAYOUT[selection].pages.includes(config.page),
   );
@@ -62,7 +86,7 @@ const HorizontalControlBar = () => {
               variant={config.mainSelection === selection ? 'contained' : 'outlined'}
               color="primary"
               size="small"
-              onClick={() => configDispatch({ type: 'mainSelection/changed', payload: selection })}
+              onClick={() => handleUpdateAppendix(selection)}
               className={classes.btnSector}
             >
               {intl.formatMessage({ id: `components.mainSelect.${selection}.title` })}
@@ -73,6 +97,9 @@ const HorizontalControlBar = () => {
     </Grid>
   );
 
+  /**
+   * Sector
+   */
   const sectorSelection = ['by-sector', 'demand'].includes(config.page) && (
     <Grid container alignItems="center" wrap="nowrap" spacing={1}>
       <Grid item style={{ paddingRight: 0 }}>
@@ -93,7 +120,7 @@ const HorizontalControlBar = () => {
                 variant={config.sector === sector ? 'contained' : 'outlined'}
                 color="primary"
                 size="small"
-                onClick={() => configDispatch({ type: 'sector/changed', payload: sector })}
+                onClick={() => handleUpdateSector(sector)}
                 className={classes.btnSector}
               >
                 {Icon ? <Icon /> : intl.formatMessage({ id: `common.sectors.${sector}` }) }
@@ -105,6 +132,9 @@ const HorizontalControlBar = () => {
     </Grid>
   );
 
+  /**
+   * View by
+   */
   const views = ['electricity', 'oil-and-gas'].includes(config.page) && (
     <Grid container alignItems="center" wrap="nowrap">
       <HintViewSelect>
@@ -119,7 +149,7 @@ const HorizontalControlBar = () => {
             variant={config.view === view ? 'contained' : 'outlined'}
             color="primary"
             size="small"
-            onClick={() => configDispatch({ type: 'view/changed', payload: view })}
+            onClick={() => handleUpdateView(view)}
           >
             {intl.formatMessage({ id: `common.${view === 'source' && config.page === 'oil-and-gas' ? 'type' : view}` })}
           </Button>
@@ -128,6 +158,9 @@ const HorizontalControlBar = () => {
     </Grid>
   );
 
+  /**
+   * Unit
+   */
   const units = (
     <Grid container alignItems="center" wrap="nowrap">
       <HintUnitSelect>
@@ -147,7 +180,7 @@ const HorizontalControlBar = () => {
             variant={config.unit === unit ? 'contained' : 'outlined'}
             color="primary"
             size="small"
-            onClick={() => configDispatch({ type: 'unit/changed', payload: unit })}
+            onClick={() => handleUpdateUnit(unit)}
             style={{ textTransform: 'none' }}
           >
             {intl.formatMessage({ id: `common.units.${unit}` })}

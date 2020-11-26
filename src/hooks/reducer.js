@@ -43,7 +43,6 @@ export const getReducer = (regions, sources, sectors, yearIdIterations) => {
   };
   const getUnit = (selection, unit) => {
     const validUnits = CONFIG_LAYOUT[selection]?.unit || [];
-
     return validUnits.includes(unit) ? unit : (validUnits[0] || null);
   };
   const getView = (page, view) => {
