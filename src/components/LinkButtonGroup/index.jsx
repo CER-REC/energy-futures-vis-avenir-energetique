@@ -130,7 +130,6 @@ const LinkButtonGroup = ({ direction }) => {
       content: <LinkButtonContentReport
         yearId={config.yearId}
         onClose={onCloseButtonClick}
-        page={config.page}
       />,
     },
     methodology: {
@@ -141,7 +140,7 @@ const LinkButtonGroup = ({ direction }) => {
       name: intl.formatMessage({ id: 'links.About.title' }),
       content: <LinkButtonContentAbout onClose={onCloseButtonClick} />,
     },
-  }), [intl, config.yearId, config.page, onCloseButtonClick]);
+  }), [intl, config.yearId, onCloseButtonClick]);
 
   /**
    * This is a button group in which buttons share the same accent color bar.

@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { makeStyles, Grid, Typography, Button } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import Markdown from 'react-markdown';
+import useConfig from '../../hooks/useConfig';
 import analytics from '../../analytics';
 import reportCoverEn from '../../pages/Landing/report_cover_en.png';
 import reportCoverFr from '../../pages/Landing/report_cover_fr.png';
@@ -161,9 +162,10 @@ export const LinkButtonContentAbout = ({ onClose }) => {
 };
 LinkButtonContentAbout.propTypes = { onClose: PropTypes.func.isRequired };
 
-export const LinkButtonContentReport = ({ yearId, onClose, page }) => {
+export const LinkButtonContentReport = ({ yearId, onClose }) => {
   const classes = useStyles();
   const intl = useIntl();
+  const { config: { page } } = useConfig();
 
   const tabs = useMemo(() => [
     { title: intl.formatMessage({ id: 'links.Summary.title' }), content: <LinkButtonContentSummary yearId={yearId} /> },
@@ -206,5 +208,4 @@ export const LinkButtonContentReport = ({ yearId, onClose, page }) => {
 LinkButtonContentReport.propTypes = {
   yearId: PropTypes.string.isRequired,
   onClose: PropTypes.func.isRequired,
-  page: PropTypes.oneOf(['by-region', 'by-sector', 'scenarios', 'oil-and-gas', 'electricity']).isRequired,
 };
