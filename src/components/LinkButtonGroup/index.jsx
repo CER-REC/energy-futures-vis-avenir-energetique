@@ -127,7 +127,11 @@ const LinkButtonGroup = ({ direction }) => {
         id: `links.Report.title.${config.yearId}`,
         defaultMessage: intl.formatMessage({ id: 'links.Report.title.default' }),
       }),
-      content: <LinkButtonContentReport yearId={config.yearId} onClose={onCloseButtonClick} page={config.page} />,
+      content: <LinkButtonContentReport
+        yearId={config.yearId}
+        onClose={onCloseButtonClick}
+        page={config.page}
+      />,
     },
     methodology: {
       name: intl.formatMessage({ id: 'links.Methodology.title' }),
