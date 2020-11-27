@@ -12,6 +12,7 @@ import { useIntl } from 'react-intl';
 import YearSlider from '../../components/YearSlider';
 import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
+import analytics from '../../analytics';
 import VizTooltip from '../../components/VizTooltip';
 import { IconOilAndGasGroup, IconOilAndGasRectangle } from '../../icons';
 
@@ -222,7 +223,8 @@ const OilAndGas = ({ data, year, vizDimension }) => {
         </div>
       </Tooltip>
     </>
-  ), [classes.label,
+  ), [
+    classes.label,
     classes.treeMapRectangle,
     config.view,
     intl,
@@ -231,7 +233,16 @@ const OilAndGas = ({ data, year, vizDimension }) => {
     tooltip,
     getTooltip,
     getTooltipPos,
-    getColor]);
+    getColor,
+  ]);
+
+  /**
+   * Update the state of the compare button and send the event to data analytics
+   */
+  const handleCompareUpdate = useCallback(() => {
+    configDispatch({ type: 'noCompare/changed', payload: compare });
+    analytics.reportMedia(config.page, compare ? 'don\'t compare' : 'compare');
+  }, [configDispatch, compare, config.page]);
 
   // data not ready; render nothing
   if (!data || !data[currentYear] || !data[compareYear]) {
@@ -405,7 +416,7 @@ const OilAndGas = ({ data, year, vizDimension }) => {
           </Grid>
         )}
         <Grid item>
-          <Button variant="outlined" color="primary" size="small" onClick={() => configDispatch({ type: 'noCompare/changed', payload: compare })}>
+          <Button variant="outlined" color="primary" size="small" onClick={handleCompareUpdate}>
             {intl.formatMessage({ id: `common.oilandgas.button.${compare ? 'noCompare' : 'compare'}` })}
           </Button>
         </Grid>
