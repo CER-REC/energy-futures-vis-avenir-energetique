@@ -12,6 +12,7 @@ import EmailIcon from '@material-ui/icons/Email';
 import Clipboard from 'clipboard';
 import { saveAs } from 'file-saver';
 import Papa from 'papaparse';
+import analytics from '../../analytics';
 
 import { IconTwitter, IconFacebook, IconLinkedIn, IconDownload } from '../../icons';
 import useAPI from '../../hooks/useAPI';
@@ -90,6 +91,7 @@ const useStyles = makeStyles(theme => ({
 export const Share = ({ direction, keepMounted }) => {
   const classes = useStyles();
   const intl = useIntl();
+  const { config: { page } } = useConfig();
 
   const [openDialog, setOpenDialog] = useState('' /* shortened URL */);
   const [openToast, setOpenToast] = useState(false);
@@ -150,6 +152,11 @@ export const Share = ({ direction, keepMounted }) => {
 
   const onClose = useCallback(() => setOpenToast(false), [setOpenToast]);
 
+  const onClick = (name, content) => {
+    analytics.reportMisc(page, 'click', name);
+    content();
+  };
+
   return (
     <>
       <Grid container direction={direction}>
@@ -158,7 +165,7 @@ export const Share = ({ direction, keepMounted }) => {
             key={`social-button-${button.name}`}
             variant="contained"
             color="secondary"
-            onClick={button.content}
+            onClick={() => onClick(button.name, button.content)}
             className={classes.button}
           >
             {button.icon}
@@ -239,7 +246,7 @@ export const DownloadButton = ({ accent }) => {
     const conversionRatio = convertUnit(defaultUnit, config.unit);
     const selection = intl.formatMessage({ id: `common.selections.${config.mainSelection}` }).toUpperCase();
     const region = intl.formatMessage({ id: `common.regions.${config.provinces[0]}` }).toUpperCase();
-    const sector = intl.formatMessage({ id: `common.sectors.${config.sector}` }).toUpperCase();
+    const sector = config.page === 'by-sector' && intl.formatMessage({ id: `common.sectors.${config.sector}` }).toUpperCase();
     const scenario = intl.formatMessage({ id: `common.scenarios.${config.scenarios[0]}` }).toUpperCase();
     const unit = intl.formatMessage({ id: `common.units.${config.unit}` });
     const dataset = intl.formatMessage({ id: `common.dataset.${config.yearId}`, defaultMessage: config.yearId }).toUpperCase();
@@ -322,12 +329,17 @@ export const DownloadButton = ({ accent }) => {
     saveAs(new Blob([Papa.unparse(csvData)], { type: 'text/csv;charset=utf-8;' }), `${intl.formatMessage({ id: 'components.share.filename' })}.csv`);
   }, [config, intl, regionOrder, sourceOrder, data, headers]);
 
+  const onClick = () => {
+    analytics.reportMisc(config.page, 'click', 'download');
+    downloadCSV();
+  };
+
   return (
     <Button
       variant="contained"
       color="secondary"
       startIcon={<IconDownload />}
-      onClick={downloadCSV}
+      onClick={onClick}
       classes={{ root: `${classes.download} ${accent ? classes.accent : ''}`, label: classes.label }}
     >
       {intl.formatMessage({ id: 'components.share.download' })}

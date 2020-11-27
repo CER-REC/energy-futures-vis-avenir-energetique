@@ -98,6 +98,7 @@ const ByRegion = ({ data, year }) => {
         }}
         tooltip={getTooltip}
         gridYValues={axis.ticks}
+        motionStiffness={300}
       />
     </div>
   );

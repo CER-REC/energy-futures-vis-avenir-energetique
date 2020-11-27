@@ -1,13 +1,11 @@
 import React, { useState, useMemo, useCallback, useRef } from 'react';
 import { useIntl } from 'react-intl';
 import PropTypes from 'prop-types';
-import { Grid, Typography, Button, Tooltip, makeStyles } from '@material-ui/core';
+import {
+  makeStyles, Grid, Typography, Button, Tooltip,
+  TableContainer, Table, TableBody, TableRow, TableCell, 
+} from '@material-ui/core';
 import { ResponsiveTreeMap } from '@nivo/treemap';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableRow from '@material-ui/core/TableRow';
 
 import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
@@ -252,6 +250,14 @@ const OilAndGas = ({ data, year, vizDimension }) => {
     handleEventUpdate,
   ]);
 
+  /**
+   * Update the state of the compare button and send the event to data analytics
+   */
+  const handleCompareUpdate = useCallback(() => {
+    configDispatch({ type: 'noCompare/changed', payload: compare });
+    analytics.reportMedia(config.page, compare ? 'don\'t compare' : 'compare');
+  }, [configDispatch, compare, config.page]);
+
   // data not ready; render nothing
   if (!data || !data[currentYear] || !data[compareYear]) {
     return null;
@@ -424,7 +430,7 @@ const OilAndGas = ({ data, year, vizDimension }) => {
           </Grid>
         )}
         <Grid item>
-          <Button variant="outlined" color="primary" size="small" onClick={() => configDispatch({ type: 'noCompare/changed', payload: compare })}>
+          <Button variant="outlined" color="primary" size="small" onClick={handleCompareUpdate}>
             {intl.formatMessage({ id: `common.oilandgas.button.${compare ? 'noCompare' : 'compare'}` })}
           </Button>
         </Grid>

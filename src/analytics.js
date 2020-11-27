@@ -23,6 +23,7 @@ class Analytics {
 
   getVisualization(page) { // eslint-disable-line class-methods-use-this
     switch (page) {
+      case 'landing': return 'landing';
       case 'by-region': return 'by region';
       case 'by-sector': return 'by sector';
       case 'scenarios': return 'scenarios';
@@ -62,12 +63,12 @@ class Analytics {
     }
   }
 
-  reportLanding(page) {
-    this.report(page, { category: 'menu', action: 'click', label: 'visualization', value: page }, true);
+  reportLanding(page, value) {
+    this.report(page, { category: 'menu', action: 'click', label: 'landing', value }, true);
   }
 
-  reportNav(page) {
-    this.report(page, { category: 'menu', action: 'click', label: 'visualization', value: page });
+  reportNav(page, target) {
+    this.report(page, { category: 'menu', action: 'click', label: 'visualization', value: target ? this.getVisualization(target) : page }, !target);
   }
 
   reportMisc(page, action, value) {

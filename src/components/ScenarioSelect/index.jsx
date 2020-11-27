@@ -6,6 +6,7 @@ import { makeStyles, Grid, Typography, Button, Tooltip } from '@material-ui/core
 import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
 import { SCENARIO_COLOR } from '../../constants';
+import analytics from '../../analytics';
 import { HintScenarioSelect } from '../Hint';
 
 const useStyles = makeStyles(theme => ({
@@ -22,10 +23,10 @@ const ScenarioSelect = ({ multiSelect }) => {
   const { config, configDispatch } = useConfig();
   const { yearIdIterations } = useAPI();
 
-  const handleScenariosUpdate = useCallback(
-    scenarios => configDispatch({ type: 'scenarios/changed', payload: scenarios }),
-    [configDispatch],
-  );
+  const handleScenariosUpdate = useCallback((scenarios) => {
+    configDispatch({ type: 'scenarios/changed', payload: scenarios });
+    analytics.reportFeature(config.page, 'scenarios', scenarios.map(s => s.toLowerCase()).join(','));
+  }, [configDispatch, config.page]);
 
   const scenarios = useMemo(() => {
     const reorderedScenarios = yearIdIterations[config.yearId]?.scenarios || [];

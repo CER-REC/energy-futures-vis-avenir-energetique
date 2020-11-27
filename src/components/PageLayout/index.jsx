@@ -10,6 +10,8 @@ import useConfig from '../../hooks/useConfig';
 import useEnergyFutureData from '../../hooks/useEnergyFutureData';
 import { validYear } from '../../utilities/parseData';
 import { PAGES } from '../../constants';
+import analytics from '../../analytics';
+
 import YearSelect from '../YearSelect';
 import { PageTitle, PageSelect } from '../PageSelect';
 import ScenarioSelect from '../ScenarioSelect';
@@ -170,7 +172,7 @@ const PageLayout = ({
    * The main title, which can be reused in both desktop and mobile layouts.
    */
   const title = (
-    <Link href="./" underline="none" className={classes.title}>
+    <Link href="./" underline="none" onClick={() => analytics.reportNav('landing')} className={classes.title}>
       <Typography variant="h4" color="primary">{intl.formatMessage({ id: 'common.title' })}</Typography>
     </Link>
   );
