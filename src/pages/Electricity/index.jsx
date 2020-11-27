@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { useIntl } from 'react-intl';
 import PropTypes from 'prop-types';
 import {
@@ -7,6 +7,7 @@ import {
 
 import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
+import analytics from '../../analytics';
 import YearSlider from '../../components/YearSlider';
 import VizTooltip from '../../components/VizTooltip';
 
@@ -240,6 +241,18 @@ const Electricity = ({ data, year }) => {
     return dataWithPosition;
   }, [data, config.view, intl, colorSources, colorRegions, currYear, getSize, single, totals]);
 
+  /**
+   * Capture hover event but don't send repeated records.
+   */
+  const prevEvent = useRef(null);
+  const handleEventUpdate = useCallback((entry) => {
+    const event = `${entry.name} - ${config.baseYear || year?.min}`;
+    if (event !== prevEvent.current) {
+      analytics.reportPoi(config.page, event);
+      prevEvent.current = event;
+    }
+  }, [year, config.baseYear, config.page, prevEvent]);
+
   if (!data || !processedData || processedData.length <= 0) {
     return null;
   }
@@ -266,6 +279,7 @@ const Electricity = ({ data, year }) => {
         <Tooltip
           key={`bubble-${entry.name}`}
           title={single ? '' : <VizTooltip nodes={entry.nodes} unit={config.unit} />}
+          onOpen={() => handleEventUpdate(entry)}
           classes={{ tooltip: classes.tooltip }}
         >
           <div className={classes.region} style={entry.style}>

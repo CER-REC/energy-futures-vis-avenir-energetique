@@ -1,4 +1,5 @@
-import React, { useState, useMemo, useCallback } from 'react';
+import React, { useState, useMemo, useCallback, useRef } from 'react';
+import { useIntl } from 'react-intl';
 import PropTypes from 'prop-types';
 import { Grid, Typography, Button, Tooltip, makeStyles } from '@material-ui/core';
 import { ResponsiveTreeMap } from '@nivo/treemap';
@@ -7,11 +8,11 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableRow from '@material-ui/core/TableRow';
-import { useIntl } from 'react-intl';
 
-import YearSlider from '../../components/YearSlider';
 import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
+import analytics from '../../analytics';
+import YearSlider from '../../components/YearSlider';
 import VizTooltip from '../../components/VizTooltip';
 import { IconOilAndGasGroup, IconOilAndGasRectangle } from '../../icons';
 
@@ -151,6 +152,18 @@ const OilAndGas = ({ data, year, vizDimension }) => {
   }, [compare]);
 
   /**
+   * Capture hover event but don't send repeated records.
+   */
+  const prevEvent = useRef(null);
+  const handleEventUpdate = useCallback((source) => {
+    const event = `${source.name} - ${config.baseYear || year?.min}`;
+    if (event !== prevEvent.current) {
+      analytics.reportPoi(config.page, event);
+      prevEvent.current = event;
+    }
+  }, [year, config.baseYear, config.page, prevEvent]);
+
+  /**
    * Sort both data based on the current year values in the descending order.
    */
   const sortDataSets = useCallback((curr, comp) => {
@@ -196,7 +209,10 @@ const OilAndGas = ({ data, year, vizDimension }) => {
         open={source.name === tooltip}
         title={getTooltip(source)}
         placement={getTooltipPos(source.children.length, size, isTopChart)}
-        onOpen={() => setTooltip(source.name)}
+        onOpen={() => {
+          setTooltip(source.name);
+          handleEventUpdate(source);
+        }}
         onClose={() => setTooltip(undefined)}
       >
         <div
@@ -222,7 +238,8 @@ const OilAndGas = ({ data, year, vizDimension }) => {
         </div>
       </Tooltip>
     </>
-  ), [classes.label,
+  ), [
+    classes.label,
     classes.treeMapRectangle,
     config.view,
     intl,
@@ -231,7 +248,9 @@ const OilAndGas = ({ data, year, vizDimension }) => {
     tooltip,
     getTooltip,
     getTooltipPos,
-    getColor]);
+    getColor,
+    handleEventUpdate,
+  ]);
 
   // data not ready; render nothing
   if (!data || !data[currentYear] || !data[compareYear]) {

@@ -1,10 +1,11 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useMemo, useRef } from 'react';
 import { ResponsiveLine } from '@nivo/line';
 import PropTypes from 'prop-types';
 import { useIntl } from 'react-intl';
 
 import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
+import analytics from '../../analytics';
 import { CHART_PROPS, CHART_AXIS_PROPS, CHART_PATTERNS, OIL_SUBGROUP } from '../../constants';
 import { getMaxTick } from '../../utilities/parseData';
 
@@ -60,21 +61,31 @@ const BySector = ({ data, year }) => {
   /**
    * Format tooltip.
    */
-  const getTooltip = useCallback(event => (
-    <VizTooltip
-      nodes={event.slice?.points.map(value => ({
-        name: value.serieId,
-        translation: isTransportation && OIL_SUBGROUP.includes(value.serieId)
-          ? intl.formatMessage({ id: `common.sources.transportation.${value.serieId}` })
-          : intl.formatMessage({ id: `common.sources.energy.${value.serieId}` }),
-        value: value.data?.y,
-        color: value.serieColor,
-        mask: isTransportation && OIL_SUBGROUP.includes(value.serieId) && `url(#${value.serieId}-mask)`,
-      }))}
-      unit={config.unit}
-      paper
-    />
-  ), [intl, isTransportation, config.unit]);
+  const timer = useRef(null);
+  const getTooltip = useCallback((event) => {
+    // capture hover event and use a timer to avoid throttling
+    const index = Number((event?.slice?.points[0].id || '').split('.')[1]);
+    if (!Number.isNaN(index) && year?.min) {
+      clearTimeout(timer.current);
+      timer.current = setTimeout(() => analytics.reportPoi(config.page, year.min + index), 500);
+    }
+
+    return (
+      <VizTooltip
+        nodes={event.slice?.points.map(value => ({
+          name: value.serieId,
+          translation: isTransportation && OIL_SUBGROUP.includes(value.serieId)
+            ? intl.formatMessage({ id: `common.sources.transportation.${value.serieId}` })
+            : intl.formatMessage({ id: `common.sources.energy.${value.serieId}` }),
+          value: value.data?.y,
+          color: value.serieColor,
+          mask: isTransportation && OIL_SUBGROUP.includes(value.serieId) && `url(#${value.serieId}-mask)`,
+        }))}
+        unit={config.unit}
+        paper
+      />
+    );
+  }, [intl, isTransportation, config.unit, config.page, year]);
 
   /**
    * Calculate the max tick value on y-axis.

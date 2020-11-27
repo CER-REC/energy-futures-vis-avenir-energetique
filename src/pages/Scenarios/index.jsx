@@ -1,8 +1,9 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useMemo, useRef } from 'react';
 import { useIntl } from 'react-intl';
 import { ResponsiveLine } from '@nivo/line';
 import PropTypes from 'prop-types';
 import useConfig from '../../hooks/useConfig';
+import analytics from '../../analytics';
 
 import { CHART_PROPS, CHART_AXIS_PROPS, SCENARIO_COLOR } from '../../constants';
 import { getMaxTick } from '../../utilities/parseData';
@@ -63,20 +64,30 @@ const Scenarios = ({ data, year }) => {
   /**
    * Format tooltip.
    */
-  const getTooltip = useCallback(event => (
-    <VizTooltip
-      nodes={event.slice?.points.map(value => ({
-        name: value.serieId,
-        translation: intl.formatMessage({ id: `common.scenarios.${value.serieId}` }),
-        value: value.data?.y,
-        color: value.serieColor,
-      }))}
-      unit={config.unit}
-      paper
-      showTotal={false}
-      showPercentage={false}
-    />
-  ), [intl, config.unit]);
+  const timer = useRef(null);
+  const getTooltip = useCallback((event) => {
+    // capture hover event and use a timer to avoid throttling
+    const index = Number((event?.slice?.points[0].id || '').split('.')[1]);
+    if (!Number.isNaN(index) && year?.min) {
+      clearTimeout(timer.current);
+      timer.current = setTimeout(() => analytics.reportPoi(config.page, year.min + index), 500);
+    }
+
+    return (
+      <VizTooltip
+        nodes={event.slice?.points.map(value => ({
+          name: value.serieId,
+          translation: intl.formatMessage({ id: `common.scenarios.${value.serieId}` }),
+          value: value.data?.y,
+          color: value.serieColor,
+        }))}
+        unit={config.unit}
+        paper
+        showTotal={false}
+        showPercentage={false}
+      />
+    );
+  }, [timer, intl, config.unit, config.page, year]);
 
   if (!data) {
     return null;
