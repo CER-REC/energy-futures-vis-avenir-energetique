@@ -5,6 +5,7 @@ import { makeStyles, Grid, Typography, IconButton, Slider } from '@material-ui/c
 import PlayIcon from '@material-ui/icons/PlayArrow';
 import PauseIcon from '@material-ui/icons/Pause';
 import useConfig from '../../hooks/useConfig';
+import analytics from '../../analytics';
 import { validYear } from '../../utilities/parseData';
 
 const useStyles = makeStyles(theme => ({
@@ -107,7 +108,7 @@ const YearSlider = ({ year, onYearChange, min, max, forecast }) => {
   const classes = useStyles();
   const intl = useIntl();
 
-  const { configDispatch } = useConfig();
+  const { config: { page }, configDispatch } = useConfig();
 
   const [currYear, setCurrYear] = useState(year?.curr || year);
   const [compareYear, setCompareYear] = useState(year?.compare || year);
@@ -164,6 +165,11 @@ const YearSlider = ({ year, onYearChange, min, max, forecast }) => {
     thumb: classes.thumb,
   }), [classes]);
 
+  const handlePlay = useCallback(() => {
+    setPlay(!play);
+    analytics.reportMedia(page, play ? 'pause' : 'play');
+  }, [play, setPlay, page]);
+
   if (!year) {
     return null;
   }
@@ -171,7 +177,7 @@ const YearSlider = ({ year, onYearChange, min, max, forecast }) => {
   return (
     <Grid container alignItems="center" wrap="nowrap" className={classes.root}>
       <Grid item>
-        <IconButton color="primary" onClick={() => setPlay(!play)} className={classes.play}>
+        <IconButton color="primary" onClick={handlePlay} className={classes.play}>
           {play ? <PauseIcon fontSize="large" /> : <PlayIcon fontSize="large" />}
         </IconButton>
       </Grid>

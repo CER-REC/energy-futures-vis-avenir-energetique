@@ -12,6 +12,7 @@ import Markdown from 'react-markdown';
 import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
 import { CONFIG_LAYOUT } from '../../constants';
+import analytics from '../../analytics';
 
 const useStyles = makeStyles(theme => createStyles({
   root: { width: 'auto' },
@@ -84,16 +85,24 @@ HintSection.defaultProps = {
 /**
  * Construct and render the hint icon (question mark) and its dialog.
  */
-const Hint = ({ children, content, maxWidth = 'sm' }) => {
+const Hint = ({ children, label, content, maxWidth = 'sm' }) => {
   const classes = useStyles();
   const intl = useIntl();
+  const { page } = useConfig().config;
   const [open, setOpen] = useState(false);
+
+  const handleOpenDialog = () => {
+    if (label) {
+      analytics.reportHelp(page, label);
+    }
+    setOpen(true);
+  };
 
   return (
     <>
       <Grid container alignItems="center" wrap="nowrap" className={classes.root}>
         {children}
-        <IconButton onClick={() => setOpen(true)} aria-label={intl.formatMessage({ id: 'common.a11y.open' })} className={classes.hint}>
+        <IconButton onClick={handleOpenDialog} aria-label={intl.formatMessage({ id: 'common.a11y.open' })} className={classes.hint}>
           <HintIcon fontSize="small" />
         </IconButton>
       </Grid>
@@ -121,6 +130,7 @@ const Hint = ({ children, content, maxWidth = 'sm' }) => {
 
 Hint.propTypes = {
   children: PropTypes.node,
+  label: PropTypes.string,
   content: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.arrayOf(PropTypes.node),
@@ -130,6 +140,7 @@ Hint.propTypes = {
 
 Hint.defaultProps = {
   children: null,
+  label: '',
   content: 'under construction',
   maxWidth: 'sm',
 };
@@ -148,7 +159,7 @@ export const HintMainSelect = ({ children }) => {
     title: intl.formatMessage({ id: `components.mainSelect.${selection}.title` }),
     text: intl.formatMessage({ id: `components.mainSelect.${selection}.description` }),
   })), [intl, page]);
-  return <Hint content={[<HintSection section={section} />]}>{children}</Hint>;
+  return <Hint label="main selection" content={[<HintSection section={section} />]}>{children}</Hint>;
 };
 
 HintMainSelect.propTypes = { children: PropTypes.node };
@@ -169,7 +180,7 @@ ${intl.formatMessage({ id: `components.yearSelect.${year}.description` })}\
     link: intl.formatMessage({ id: `components.yearSelect.${year}.link` }),
   })), [intl, yearIdIterations]);
   const content = <HintSection title={intl.formatMessage({ id: 'components.yearSelect.title' })} section={section} />;
-  return <Hint content={[content]} maxWidth="lg">{children}</Hint>;
+  return <Hint label="year" content={[content]} maxWidth="lg">{children}</Hint>;
 };
 
 HintYearSelect.propTypes = { children: PropTypes.node };
@@ -197,7 +208,7 @@ export const HintScenarioSelect = ({ children }) => {
     <HintSection title={intl.formatMessage({ id: 'components.scenarioSelect.name' })} section={sectionTitle} />,
     <HintSection section={sectionBody} />,
   ];
-  return <Hint content={sections}>{children}</Hint>;
+  return <Hint label="scenarios" content={sections}>{children}</Hint>;
 };
 
 HintScenarioSelect.propTypes = { children: PropTypes.node };
@@ -220,7 +231,7 @@ export const HintUnitSelect = ({ children }) => {
     <HintSection title={intl.formatMessage({ id: 'common.energyUnits' })} section={unitEnergy} />,
     <HintSection title={intl.formatMessage({ id: 'common.volumetricUnits' })} section={unitVolume} />,
   ];
-  return <Hint content={content} maxWidth="md">{children}</Hint>;
+  return <Hint label="unit" content={content} maxWidth="md">{children}</Hint>;
 };
 
 HintUnitSelect.propTypes = { children: PropTypes.node };
@@ -236,7 +247,7 @@ export const HintSectorSelect = ({ children }) => {
     title: intl.formatMessage({ id: `common.sectors.${sector}` }),
     text: intl.formatMessage({ id: `components.sectorSelect.${sector}.description` }),
   })).filter(Boolean), [intl, sectors]);
-  return <Hint content={[<HintSection title={intl.formatMessage({ id: 'components.sectorSelect.name' })} section={section} />]}>{children}</Hint>;
+  return <Hint label="sector" content={[<HintSection title={intl.formatMessage({ id: 'components.sectorSelect.name' })} section={section} />]}>{children}</Hint>;
 };
 
 HintSectorSelect.propTypes = { children: PropTypes.node };
@@ -252,7 +263,7 @@ export const HintViewSelect = ({ children }) => {
     title: intl.formatMessage({ id: `common.${view === 'source' && page === 'oil-and-gas' ? 'type' : view}` }),
     text: intl.formatMessage({ id: `components.viewSelect.${view}.description.${page}` }),
   })), [intl, page]);
-  return <Hint content={[<HintSection title={intl.formatMessage({ id: 'components.viewSelect.name' })} section={section} />]}>{children}</Hint>;
+  return <Hint label="view by" content={[<HintSection title={intl.formatMessage({ id: 'components.viewSelect.name' })} section={section} />]}>{children}</Hint>;
 };
 
 HintViewSelect.propTypes = { children: PropTypes.node };
@@ -284,7 +295,7 @@ export const HintRegionList = ({ children }) => {
     <Divider style={{ margin: '16px 0' }} />,
     <HintSectionNav />,
   ];
-  return <Hint content={sections} maxWidth="xs">{children}</Hint>;
+  return <Hint label="region" content={sections} maxWidth="xs">{children}</Hint>;
 };
 
 HintRegionList.propTypes = { children: PropTypes.node };
@@ -305,7 +316,7 @@ export const HintSourceList = ({ sources, sourceType, children }) => {
     <Divider style={{ margin: '16px 0' }} />,
     <HintSectionNav />,
   ];
-  return <Hint content={sections}>{children}</Hint>;
+  return <Hint label="source" content={sections}>{children}</Hint>;
 };
 
 HintSourceList.propTypes = {
