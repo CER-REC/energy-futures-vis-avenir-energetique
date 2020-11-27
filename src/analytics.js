@@ -87,7 +87,7 @@ class Analytics {
   }
 
   reportPoi(page, value) {
-    this.report(page, { category: 'graph poi', action: 'click', value });
+    this.report(page, { category: 'graph poi', action: 'hover', value });
   }
 }
 
