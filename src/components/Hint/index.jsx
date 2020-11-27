@@ -88,12 +88,12 @@ HintSection.defaultProps = {
 const Hint = ({ children, label, content, maxWidth = 'sm' }) => {
   const classes = useStyles();
   const intl = useIntl();
-  const { config } = useConfig();
+  const { page } = useConfig().config;
   const [open, setOpen] = useState(false);
 
   const handleOpenDialog = () => {
     if (label) {
-      analytics.reportHelp(config.page, label);
+      analytics.reportHelp(page, label);
     }
     setOpen(true);
   };

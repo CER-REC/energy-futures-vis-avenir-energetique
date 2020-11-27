@@ -108,7 +108,7 @@ const YearSlider = ({ year, onYearChange, min, max, forecast }) => {
   const classes = useStyles();
   const intl = useIntl();
 
-  const { config, configDispatch } = useConfig();
+  const { config: { page }, configDispatch } = useConfig();
 
   const [currYear, setCurrYear] = useState(year?.curr || year);
   const [compareYear, setCompareYear] = useState(year?.compare || year);
@@ -167,8 +167,8 @@ const YearSlider = ({ year, onYearChange, min, max, forecast }) => {
 
   const handlePlay = useCallback(() => {
     setPlay(!play);
-    analytics.reportMedia(config.page, play ? 'pause' : 'play');
-  }, [play, setPlay, config.page]);
+    analytics.reportMedia(page, play ? 'pause' : 'play');
+  }, [play, setPlay, page]);
 
   if (!year) {
     return null;
