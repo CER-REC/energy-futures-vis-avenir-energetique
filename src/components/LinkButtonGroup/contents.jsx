@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import { makeStyles, Grid, Typography, Button } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import Markdown from 'react-markdown';
+import useConfig from '../../hooks/useConfig';
+import analytics from '../../analytics';
 import reportCoverEn from '../../pages/Landing/report_cover_en.png';
 import reportCoverFr from '../../pages/Landing/report_cover_fr.png';
 
@@ -163,6 +165,7 @@ LinkButtonContentAbout.propTypes = { onClose: PropTypes.func.isRequired };
 export const LinkButtonContentReport = ({ yearId, onClose }) => {
   const classes = useStyles();
   const intl = useIntl();
+  const { config: { page } } = useConfig();
 
   const tabs = useMemo(() => [
     { title: intl.formatMessage({ id: 'links.Summary.title' }), content: <LinkButtonContentSummary yearId={yearId} /> },
@@ -172,6 +175,11 @@ export const LinkButtonContentReport = ({ yearId, onClose }) => {
   ], [intl, yearId]);
   const [select, setSelect] = useState(tabs[0]);
 
+  const onTabClick = (tab) => {
+    setSelect(tab);
+    analytics.reportMisc(page, 'click', tab.title.toLowerCase());
+  };
+
   return (
     <>
       <Grid container alignItems="center" wrap="nowrap" className={classes.header}>
@@ -179,7 +187,7 @@ export const LinkButtonContentReport = ({ yearId, onClose }) => {
           <Grid item key={`report-button-tab-${tab.title}`}>
             <Button
               disabled={tab.title === select?.title}
-              onClick={() => setSelect(tab)}
+              onClick={() => onTabClick(tab)}
               className={`${classes.tab} ${tab.title === select?.title ? classes.selected : ''}`.trim()}
             >
               {tab.title}
