@@ -1,19 +1,18 @@
-import React, { useMemo, useCallback } from 'react';
-import { useIntl } from 'react-intl';
+import React, { useMemo, useCallback, useRef } from 'react';
 import { ResponsiveBar } from '@nivo/bar';
 import PropTypes from 'prop-types';
 import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
+import analytics from '../../analytics';
 import { CHART_PROPS, CHART_AXIS_PROPS } from '../../constants';
-import { formatUnitAbbreviation } from '../../utilities/convertUnit';
 import { getMaxTick } from '../../utilities/parseData';
 import convertHexToRGB from '../../utilities/convertHexToRGB';
 import forecastLayer from '../../components/ForecastLayer';
+import VizTooltip from '../../components/VizTooltip';
 import MaxTick from '../../components/MaxTick';
 
 const ByRegion = ({ data, year }) => {
   const { regions } = useAPI();
-  const intl = useIntl();
   const { config } = useConfig();
 
   /**
@@ -40,6 +39,23 @@ const ByRegion = ({ data, year }) => {
    * Determine the region order shown in the stacked bar chart.
    */
   const keys = useMemo(() => config.provinceOrder?.slice().reverse(), [config.provinceOrder]);
+
+  /**
+   * Format tooltip.
+   */
+  const timer = useRef(null);
+  const getTooltip = useCallback((entry) => {
+    // capture hover event and use a timer to avoid throttling
+    const name = `${entry.id} - ${entry.indexValue}`;
+    clearTimeout(timer.current);
+    timer.current = setTimeout(() => analytics.reportPoi(config.page, name), 500);
+    return (
+      <VizTooltip
+        nodes={[{ name, value: entry.value, color: entry.color }]}
+        unit={config.unit}
+      />
+    );
+  }, [config.page, config.unit]);
 
   /**
    * Calculate the max tick value on y-axis and generate the all ticks accordingly.
@@ -80,7 +96,7 @@ const ByRegion = ({ data, year }) => {
           tickValues: axis.ticks,
           format: axisFormat,
         }}
-        tooltipFormat={value => formatUnitAbbreviation(value, intl.formatMessage({ id: `common.units.${config.unit}` }), intl)}
+        tooltip={getTooltip}
         gridYValues={axis.ticks}
         motionStiffness={300}
       />

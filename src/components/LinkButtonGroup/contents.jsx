@@ -168,16 +168,16 @@ export const LinkButtonContentReport = ({ yearId, onClose }) => {
   const { config: { page } } = useConfig();
 
   const tabs = useMemo(() => [
-    { title: intl.formatMessage({ id: 'links.Summary.title' }), content: <LinkButtonContentSummary yearId={yearId} /> },
-    { title: intl.formatMessage({ id: 'links.Findings.title' }), content: <LinkButtonContentKeyFindings yearId={yearId} /> },
-    { title: intl.formatMessage({ id: 'links.Assumptions.title' }), content: <LinkButtonContentAssumptions yearId={yearId} /> },
-    { title: intl.formatMessage({ id: 'links.Results.title' }), content: <LinkButtonContentResults yearId={yearId} /> },
+    { tag: 'summary', title: intl.formatMessage({ id: 'links.Summary.title' }), content: <LinkButtonContentSummary yearId={yearId} /> },
+    { tag: 'key findings', title: intl.formatMessage({ id: 'links.Findings.title' }), content: <LinkButtonContentKeyFindings yearId={yearId} /> },
+    { tag: 'assumptions', title: intl.formatMessage({ id: 'links.Assumptions.title' }), content: <LinkButtonContentAssumptions yearId={yearId} /> },
+    { tag: 'results', title: intl.formatMessage({ id: 'links.Results.title' }), content: <LinkButtonContentResults yearId={yearId} /> },
   ], [intl, yearId]);
   const [select, setSelect] = useState(tabs[0]);
 
   const onTabClick = (tab) => {
     setSelect(tab);
-    analytics.reportMisc(page, 'click', tab.title.toLowerCase());
+    analytics.reportMisc(page, 'click', tab.tag);
   };
 
   return (
