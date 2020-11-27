@@ -3,7 +3,7 @@ import { useIntl } from 'react-intl';
 import PropTypes from 'prop-types';
 import {
   makeStyles, Grid, Typography, Button, Tooltip,
-  TableContainer, Table, TableBody, TableRow, TableCell, 
+  TableContainer, Table, TableBody, TableRow, TableCell,
 } from '@material-ui/core';
 import { ResponsiveTreeMap } from '@nivo/treemap';
 

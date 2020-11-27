@@ -99,48 +99,38 @@ const LinkButtonGroup = ({ direction }) => {
   const { config } = useConfig();
   const [select, setSelect] = useState(undefined);
 
-  const analyticsName = (name) => {
-    if (name.toLowerCase() !== 'about' && name.toLowerCase() !== 'methodology') {
-      return 'report';
+  const handleSelect = useCallback(label => () => {
+    if (select !== label.name) {
+      setSelect(label.name);
+      analytics.reportMisc(config.page, 'click', label.tag);
     }
-    return name.toLowerCase();
-  };
+  }, [config.page, select]);
 
-  const handleSelect = useCallback(
-    label => () => {
-      analytics.reportMisc(config.page, 'click', analyticsName(label.name));
-      return (select !== label.name && setSelect(label.name));
-    },
-    [config.page, select],
-  );
-
-  const close = useCallback(() => setSelect(undefined), [setSelect]);
-
-  const onCloseButtonClick = useCallback(() => {
-    analytics.reportMisc(config.page, 'click', `close ${analyticsName(select)}`);
-    close();
-  }, [close, config.page, select]);
+  const handleClose = useCallback(tag => () => {
+    setSelect(undefined);
+    analytics.reportMisc(config.page, 'click', `close ${tag}`);
+  }, [setSelect, config.page]);
 
   const link = useMemo(() => ({
     report: {
+      tag: 'report',
       name: intl.formatMessage({
         id: `links.Report.title.${config.yearId}`,
         defaultMessage: intl.formatMessage({ id: 'links.Report.title.default' }),
       }),
-      content: <LinkButtonContentReport
-        yearId={config.yearId}
-        onClose={onCloseButtonClick}
-      />,
+      content: <LinkButtonContentReport yearId={config.yearId} onClose={handleClose('report')} />,
     },
     methodology: {
+      tag: 'methodology',
       name: intl.formatMessage({ id: 'links.Methodology.title' }),
-      content: <LinkButtonContentMethodology onClose={onCloseButtonClick} />,
+      content: <LinkButtonContentMethodology onClose={handleClose('methodology')} />,
     },
     about: {
+      tag: 'about',
       name: intl.formatMessage({ id: 'links.About.title' }),
-      content: <LinkButtonContentAbout onClose={onCloseButtonClick} />,
+      content: <LinkButtonContentAbout onClose={handleClose('about')} />,
     },
-  }), [intl, config.yearId, onCloseButtonClick]);
+  }), [intl, config.yearId, handleClose]);
 
   /**
    * This is a button group in which buttons share the same accent color bar.
@@ -167,7 +157,7 @@ const LinkButtonGroup = ({ direction }) => {
   );
 
   return (
-    <ClickAwayListener onClickAway={close}>
+    <ClickAwayListener onClickAway={() => setSelect(undefined)}>
       <Grid
         container
         direction={direction}
