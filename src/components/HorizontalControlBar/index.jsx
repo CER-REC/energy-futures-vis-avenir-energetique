@@ -48,7 +48,7 @@ const HorizontalControlBar = () => {
 
   const handleUpdateSector = useCallback((sector) => {
     configDispatch({ type: 'sector/changed', payload: sector });
-    analytics.reportFeature(config.page, 'sector', sector);
+    analytics.reportFeature(config.page, 'sector', sector.toLowerCase());
   }, [configDispatch, config.page]);
 
   const handleUpdateView = useCallback((view) => {

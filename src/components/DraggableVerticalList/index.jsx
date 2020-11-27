@@ -7,6 +7,7 @@ import DragIcon from '@material-ui/icons/DragIndicator';
 import Markdown from 'react-markdown';
 
 import useConfig from '../../hooks/useConfig';
+import analytics from '../../analytics';
 import { HintRegionList, HintSourceList } from '../Hint';
 import ColoredItemBox from './ColoredItemBox';
 import OilSubgroup from './OilSubgroup';
@@ -130,6 +131,9 @@ const DraggableVerticalList = ({
   }, [intl, sourceType, isTransportation]);
 
   const handleToggleItem = toggledItem => () => {
+    // capture the event for data analytics
+    analytics.reportFeature(config.page, title === 'Region' ? 'region' : 'source', toggledItem.toLowerCase());
+
     if (singleSelect) {
       setLocalItems([toggledItem]);
       return;

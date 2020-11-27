@@ -1,9 +1,10 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useCallback } from 'react';
 import { useIntl } from 'react-intl';
 import { makeStyles, Grid, Typography, Button, Tooltip } from '@material-ui/core';
 
 import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
+import analytics from '../../analytics';
 import { HintYearSelect } from '../Hint';
 
 const useStyles = makeStyles({
@@ -38,6 +39,11 @@ const YearSelect = () => {
     [yearIdIterations],
   );
 
+  const handleYear = useCallback((yearId) => {
+    configDispatch({ type: 'yearId/changed', payload: yearId });
+    analytics.reportFeature(config.page, 'year', yearId);
+  }, [configDispatch, config.page]);
+
   return (
     <Grid container alignItems="center" wrap="nowrap" spacing={1}>
       <Grid item style={{ marginLeft: 14 }}>
@@ -59,7 +65,7 @@ const YearSelect = () => {
               variant="contained"
               color={config.yearId === yearId ? 'primary' : 'secondary'}
               size="small"
-              onClick={() => configDispatch({ type: 'yearId/changed', payload: yearId })}
+              onClick={() => handleYear(yearId)}
               className={`${classes.button} ${config.yearId === yearId ? classes.selected : ''}`.trim()}
             >
               {config.yearId === yearId ? (<Typography variant="h5">{yearId}</Typography>) : yearId}
