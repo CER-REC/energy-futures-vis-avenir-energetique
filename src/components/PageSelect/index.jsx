@@ -8,6 +8,7 @@ import {
 } from '@material-ui/core';
 import { PAGES } from '../../constants';
 import useConfig from '../../hooks/useConfig';
+import analytics from '../../analytics';
 
 import {
   IconPageRegion, IconPageSector, IconPageElectricity, IconPageScenarios, IconPageOilAndGas,
@@ -163,6 +164,11 @@ export const PageSelect = ({ direction /* row, column */ }) => {
 
   const { config, configDispatch } = useConfig();
 
+  const handlePageUpdate = page => () => {
+    configDispatch({ type: 'page/changed', payload: page });
+    analytics.reportNav(config.page, page);
+  };
+
   const pageButtons = PAGES.filter(page => page.id !== 'landing').map((page) => {
     const subtitle = intl.formatMessage({ id: `components.pageSelect.${page.label}.title.default` });
     return (
@@ -183,7 +189,7 @@ export const PageSelect = ({ direction /* row, column */ }) => {
             <ButtonBase
               disabled={page.id === config.page}
               aria-label={`${intl.formatMessage({ id: 'common.a11y.redirect' })} ${subtitle}`}
-              onClick={() => configDispatch({ type: 'page/changed', payload: page.id })}
+              onClick={handlePageUpdate(page.id)}
               classes={{ root: classes.box }}
             >
               <Grid container direction="column" wrap="nowrap">

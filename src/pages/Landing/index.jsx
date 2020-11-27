@@ -182,9 +182,16 @@ const Landing = () => {
    */
   const desktop = useMediaQuery('(min-width: 992px)');
 
+  const handleLinkButton = (name, openDialog /* boolean */) => () => {
+    analytics.reportLanding('landing', name);
+    if (openDialog) {
+      setDialog(true);
+    }
+  };
+
   const handleRedirect = page => () => {
     configDispatch({ type: 'page/changed', payload: page });
-    analytics.reportLanding(page);
+    analytics.reportNav(page);
   };
 
   return (
@@ -204,9 +211,9 @@ const Landing = () => {
               <Grid item>
                 <Grid container direction="column" wrap="nowrap" spacing={2}>
                   {[
-                    { name: intl.formatMessage({ id: 'links.About.title' }), action: () => setDialog(true) },
-                    { name: intl.formatMessage({ id: 'landing.links.methodology.title' }), link: intl.formatMessage({ id: 'landing.links.methodology.link' }) },
-                    { name: intl.formatMessage({ id: 'landing.links.resources.title' }), link: intl.formatMessage({ id: 'landing.links.resources.link' }) },
+                    { name: intl.formatMessage({ id: 'links.About.title' }), action: handleLinkButton('about', true) },
+                    { name: intl.formatMessage({ id: 'landing.links.methodology.title' }), link: intl.formatMessage({ id: 'landing.links.methodology.link' }), action: handleLinkButton('methodology') },
+                    { name: intl.formatMessage({ id: 'landing.links.resources.title' }), link: intl.formatMessage({ id: 'landing.links.resources.link' }), action: handleLinkButton('student resources') },
                   ].map(entry => (
                     <Grid item key={`landing-link-button-${entry.name}`}>
                       <Button variant="contained" color="secondary" href={entry.link} target="_about" onClick={entry.action}>{entry.name}</Button>
@@ -220,10 +227,21 @@ const Landing = () => {
           {/* the download report thumbnail and links */}
           <Grid item className={classes.download}>
             <Typography variant="h6" color="secondary">{intl.formatMessage({ id: 'landing.links.title' })}</Typography>
-            <ButtonBase aria-label={intl.formatMessage({ id: 'common.a11y.downloadReport' })} href={intl.formatMessage({ id: 'landing.links.download.link' })} target="_about">
+            <ButtonBase
+              aria-label={intl.formatMessage({ id: 'common.a11y.downloadReport' })}
+              href={intl.formatMessage({ id: 'landing.links.download.link' })}
+              target="_about"
+              onClick={handleLinkButton('2020 report')}
+            >
               <img src={intl.locale === 'fr' ? reportCoverFr : reportCoverEn} alt={intl.formatMessage({ id: 'common.a11y.downloadReport' })} />
             </ButtonBase>
-            <Button color="primary" startIcon={<IconExternal />} href={intl.formatMessage({ id: 'landing.links.view.link' })} target="_about">
+            <Button
+              color="primary"
+              startIcon={<IconExternal />}
+              href={intl.formatMessage({ id: 'landing.links.view.link' })}
+              target="_about"
+              onClick={handleLinkButton('past reports')}
+            >
               {intl.formatMessage({ id: 'landing.links.view.title' })}
             </Button>
           </Grid>
