@@ -1,7 +1,13 @@
-import { ShallowWrapper, shallow, mount } from 'enzyme';
+import React, { useMemo } from 'react';
+import PropTypes from 'prop-types';
 import { IntlProvider } from 'react-intl';
-
+import { ShallowWrapper, shallow, mount } from 'enzyme';
+import { ApolloProvider } from '@apollo/react-hooks';
+import client from '../../.storybook/mockApolloClient';
+import useAPI from '../hooks/useAPI';
+import { ConfigProvider } from '../hooks/useConfig';
 import i18nMessages from '../i18n';
+import { NOOP } from '../utilities/parseData';
 
 // TODO: Create custom 'test' locale with a blank plural rule to use when custom messages are tested
 const defaultLocale = 'en';
@@ -76,4 +82,42 @@ export const compareReduxChange = (reducer, newState) => {
   const initialState = reducer(undefined, {});
   expect(newState).not.toBe(initialState);
   expect(typeof initialState).toBe(typeof newState);
+};
+
+/**
+ * TODO: newly added helper functions.
+ */
+export const TestContainer = ({ children, mockConfig, mockConfigDispatch }) => {
+  const Root = () => {
+    const { translations } = useAPI();
+    const messages = useMemo(
+      () => ({ ...translations.en, ...i18nMessages.en }),
+      [translations],
+    );
+    return (
+      <IntlProvider locale="en" defaultLocale="en" messages={messages}>
+        <ConfigProvider mockConfig={mockConfig} mockConfigDispatch={mockConfigDispatch}>
+          {children}
+        </ConfigProvider>
+      </IntlProvider>
+    );
+  };
+  return <ApolloProvider client={client}><Root /></ApolloProvider>;
+};
+
+TestContainer.propTypes = {
+  children: PropTypes.node,
+  mockConfig: PropTypes.object, // eslint-disable-line react/forbid-prop-types
+  mockConfigDispatch: PropTypes.func,
+};
+
+TestContainer.defaultProps = {
+  children: null,
+  mockConfig: undefined,
+  mockConfigDispatch: NOOP,
+};
+
+export const getRendered = (component, wrapper) => {
+  if (wrapper instanceof ShallowWrapper) { return wrapper; }
+  return wrapper.find(component).childAt(0);
 };
