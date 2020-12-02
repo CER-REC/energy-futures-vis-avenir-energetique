@@ -30,7 +30,7 @@ Ex.
 
 ## Unit Testing
 
-At this point we are only testing to see if the default props come through properly, and that the title renders as a title.
+Testing should be at 100% coverage for this component at the time of writing.
 
 ## Examples
 

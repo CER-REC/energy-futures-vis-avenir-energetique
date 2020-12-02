@@ -152,7 +152,11 @@ export const PageTitle = () => {
     <Grid container alignItems="center" wrap="nowrap" className={classes.title}>
       {getPageIcon(config.page)}
       <Typography variant="h5" color="secondary">
-        {getTitle(PAGES.find(page => page.id === config.page))}
+        {getTitle(PAGES.find(page => page.id === config.page) || {
+          label: null,
+          id: null,
+          bg: null,
+        })}
       </Typography>
     </Grid>
   );
