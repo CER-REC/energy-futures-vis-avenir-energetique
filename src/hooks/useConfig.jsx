@@ -5,13 +5,14 @@ import queryString from 'query-string';
 
 import { initialState, getReducer } from './reducer';
 import useAPI from './useAPI';
+import { NOOP } from '../utilities/parseData';
 
 const parameters = ['page', 'mainSelection', 'yearId', 'sector', 'unit', 'view', 'baseYear', 'compareYear', 'noCompare'];
 const delimitedParameters = ['scenarios', 'provinces', 'provinceOrder', 'sources', 'sourceOrder'];
 const history = createBrowserHistory();
 const ConfigContext = createContext();
 
-export const ConfigProvider = ({ children }) => {
+export const ConfigProvider = ({ children, mockConfig, mockConfigDispatch }) => {
   const { regions, sources, sectors, yearIdIterations } = useAPI();
   const reducer = useMemo(
     () => getReducer(regions, sources, sectors, yearIdIterations),
@@ -59,7 +60,11 @@ export const ConfigProvider = ({ children }) => {
   }, [config]);
 
   return (
-    <ConfigContext.Provider value={{ config, configDispatch }}>
+    <ConfigContext.Provider
+      value={mockConfig
+        ? { config: mockConfig, configDispatch: mockConfigDispatch }
+        : { config, configDispatch }}
+    >
       {children}
     </ConfigContext.Provider>
   );
@@ -67,8 +72,14 @@ export const ConfigProvider = ({ children }) => {
 
 ConfigProvider.propTypes = {
   children: PropTypes.node,
+  mockConfig: PropTypes.object, // eslint-disable-line react/forbid-prop-types
+  mockConfigDispatch: PropTypes.func,
 };
 
-ConfigProvider.defaultProps = { children: null };
+ConfigProvider.defaultProps = {
+  children: null,
+  mockConfig: undefined,
+  mockConfigDispatch: NOOP,
+};
 
 export default () => useContext(ConfigContext);

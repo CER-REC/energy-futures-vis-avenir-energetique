@@ -5,11 +5,17 @@ import { makeDecorator } from '@storybook/addons';
 import { ConfigProvider } from '../../src/hooks/useConfig';
 import client from '../apolloClient';
 
-const addConfigAndGQL = (storyFn, context) => (
-  <ApolloProvider client={client}>
-    <ConfigProvider>{storyFn(context)}</ConfigProvider>
-  </ApolloProvider>
-);
+const addConfigAndGQL = (storyFn, context) => {
+  const mockConfig = {
+    ...(context?.parameters?.mockConfigBasic || {}),
+    ...(context?.parameters?.mockConfigExtra || {}),
+  };
+  return (
+    <ApolloProvider client={client}>
+      <ConfigProvider mockConfig={mockConfig}>{storyFn(context)}</ConfigProvider>
+    </ApolloProvider>
+  );
+};
 
 export default makeDecorator({
   name: 'withConfigAndGQL',
