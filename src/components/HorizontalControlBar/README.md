@@ -1,11 +1,27 @@
-# Loading Guide
+# Horizontal Control Bar
 
-This component is used as a loading indicator when the app starts up and is pulling in the data required before it can begin rendering.
+This component provides a group of control interface allowing the user to select or change configurations such as the main selection, sector, view by, and unit. Content of the configurations are page-sensitive, i.e. different pages show different controls.
 
-## Requirements
+More specifically,
+- By Region: main selection + unit
+- By Sector: sector + unit
+- Electricity: view by + unit
+- Scenarios: main selection + unit
+- Oil and Gas: main selection + view by + unit
 
-- [x] Renders the Guide component
-- [x] Animates through all of the Guide's wedge states
+## Usage
+
+Component `HorizontalControlBar` does not expose any parameters, instead, it is fully driven by the current system configuration stored in the `useConfig` hook.
+
+```jsx
+<HorizontalControlBar />
+```
+
+In return, user events (button clicks) happen in the component will update the system configuration directly.
+
+## Tip
+
+Make sure `useConfig` is properly connected and the configuration setting is valid, especially during testing.
 
 ## Interactions
 

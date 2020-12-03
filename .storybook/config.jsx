@@ -1,4 +1,5 @@
 import React from 'react';
+import { ThemeProvider } from '@material-ui/core';
 import { addDecorator, configure, addParameters } from '@storybook/react';
 import Adapter from 'enzyme-adapter-react-16';
 import { configure as enzyme } from 'enzyme';
@@ -19,6 +20,7 @@ import { lang } from '../src/constants';
 import i18nMessages from '../src/i18n';
 import { ITERATIONS_TRANSLATIONS } from '../src/hooks/queries';
 import getI18NMessages from '../src/utilities/getI18NMessages';
+import theme from '../src/containers/App/theme';
 
 const locales = Object.keys(i18nMessages);
 const viewports = {
@@ -72,8 +74,8 @@ client.query({ query: ITERATIONS_TRANSLATIONS }).then((result) => {
 
   configureReadme({
     // eslint-disable-next-line react/prop-types
-    DocPreview: ({ children }) => (
-      <div style={{ padding: '40px 40px 0' }}> {children}</div>
+    StoryPreview: ({ children }) => (
+      <div style={{ padding: '32px 32px 0' }}>{children}</div>
     ),
   });
 
@@ -87,7 +89,7 @@ client.query({ query: ITERATIONS_TRANSLATIONS }).then((result) => {
 
   addDecorator((storyFn, context) => {
     if (context.id === 'containers-app--within-wet') { return storyFn(); }
-    return <div className="visualization">{storyFn()}</div>;
+    return <ThemeProvider theme={theme}>{storyFn()}</ThemeProvider>;
   });
 
   enzyme({ adapter: new Adapter() });
