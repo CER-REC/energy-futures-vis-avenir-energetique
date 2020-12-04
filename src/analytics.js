@@ -47,7 +47,7 @@ class Analytics {
     }
 
     const event = {
-      event: 'energy future interaction',
+      event: 'visualization interaction',
       category,
       action,
       userID: this.userId,
