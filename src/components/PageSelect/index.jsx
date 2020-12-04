@@ -118,7 +118,7 @@ export const PageTitle = () => {
    * Generate the translation of the selected page title.
    */
   const getTitle = useCallback((page) => {
-    switch (page.id) {
+    switch (page?.id) {
       case 'by-region':
         return intl.formatMessage({
           id: `components.pageSelect.${page.label}.title.${config.mainSelection}`,
