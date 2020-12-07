@@ -31,38 +31,40 @@ const getComponent = props => (
 );
 
 describe('Component|VizTooltip', () => {
-  let wrapper;
-
+  /**
+   * Stand-alone
+   */
   describe('Test stand-alone component', () => {
-    beforeEach(async () => {
-      const dom = mount(getComponent());
+    const dom = mount(getComponent());
+
+    test('should render component', async () => {
       await act(async () => {
         await new Promise(resolve => setTimeout(resolve));
         dom.update();
-        wrapper = getRendered(VizTooltip, dom);
-      });
-    });
+        const wrapper = getRendered(VizTooltip, dom);
 
-    test('should render component', () => {
-      expect(wrapper.type()).not.toBeNull();
-      expect(wrapper.find('strong').map(label => label.text())).toEqual(MOCK_LABELS);
+        expect(wrapper.type()).not.toBeNull();
+        expect(wrapper.find('strong').map(label => label.text())).toEqual(MOCK_LABELS);
+      });
     });
   });
 
+  /**
+   * In tooltip panel
+   */
   describe('Test component renders in Paper', () => {
-    beforeEach(async () => {
-      const dom = mount(getComponent({ paper: true }));
+    const dom = mount(getComponent({ paper: true }));
+
+    test('should render component', async () => {
       await act(async () => {
         await new Promise(resolve => setTimeout(resolve));
         dom.update();
-        wrapper = getRendered(VizTooltip, dom);
-      });
-    });
+        const wrapper = getRendered(VizTooltip, dom);
 
-    test('should render component', () => {
-      expect(wrapper.type()).not.toBeNull();
-      expect(wrapper.find(Paper)).not.toBeNull();
-      expect(wrapper.find('strong').map(label => label.text())).toEqual(MOCK_LABELS);
+        expect(wrapper.type()).not.toBeNull();
+        expect(wrapper.find(Paper)).not.toBeNull();
+        expect(wrapper.find('strong').map(label => label.text())).toEqual(MOCK_LABELS);
+      });
     });
   });
 });

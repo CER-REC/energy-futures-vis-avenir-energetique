@@ -11,20 +11,17 @@ const getComponent = () => (
 );
 
 describe('Component|MaxTick', () => {
-  let wrapper;
+  const dom = mount(getComponent());
 
-  beforeEach(async () => {
-    const dom = mount(getComponent());
+  test('should render component', async () => {
     await act(async () => {
       await new Promise(resolve => setTimeout(resolve));
       dom.update();
-      wrapper = getRendered(MaxTick, dom);
-    });
-  });
+      const wrapper = getRendered(MaxTick, dom);
 
-  test('should render component', () => {
-    expect(wrapper.type()).not.toBeNull();
-    expect(wrapper.findWhere(node => node.type() === 'tspan' && node.text() === '10000')).not.toBeNull();
-    expect(wrapper.findWhere(node => node.type() === 'tspan' && node.text() === 'Mboe/d')).not.toBeNull();
+      expect(wrapper.type()).not.toBeNull();
+      expect(wrapper.findWhere(node => node.type() === 'tspan' && node.text() === '10000')).not.toBeNull();
+      expect(wrapper.findWhere(node => node.type() === 'tspan' && node.text() === 'Mboe/d')).not.toBeNull();
+    });
   });
 });
