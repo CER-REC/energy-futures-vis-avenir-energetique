@@ -8,7 +8,7 @@ import {
   HintMainSelect, HintYearSelect, HintScenarioSelect, HintSectorSelect,
   HintViewSelect, HintUnitSelect, HintRegionList, HintSourceList,
 } from '.';
-import { TestContainer, getRendered, getWrapperWithConfig } from '../../tests/utilities';
+import { TestContainer, getRendered } from '../../tests/utilities';
 
 describe('Component|Hint', () => {
   /**
