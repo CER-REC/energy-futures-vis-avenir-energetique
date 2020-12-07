@@ -8,7 +8,7 @@ import {
   HintMainSelect, HintYearSelect, HintScenarioSelect, HintSectorSelect,
   HintViewSelect, HintUnitSelect, HintRegionList, HintSourceList,
 } from '.';
-import { TestContainer, getRendered } from '../../tests/utilities';
+import { TestContainer, getRendered, getWrapperWithConfig } from '../../tests/utilities';
 
 describe('Component|Hint', () => {
   /**
@@ -37,22 +37,19 @@ describe('Component|Hint', () => {
    * HintScenarioSelect
    */
   describe('Test HintScenarioSelect', () => {
-    let wrapper;
-    beforeEach(async () => {
-      const dom = mount(
-        <TestContainer mockConfig={{ yearId: 2020 }}>
-          <HintScenarioSelect />
-        </TestContainer>,
-      );
+    const dom = mount(
+      <TestContainer mockConfig={{ yearId: 2020 }}>
+        <HintScenarioSelect />
+      </TestContainer>,
+    );
+
+    test('should render component', async () => {
       await act(async () => {
         await new Promise(resolve => setTimeout(resolve));
         dom.update();
-        wrapper = getRendered(HintScenarioSelect, dom);
+        const wrapper = getRendered(HintScenarioSelect, dom);
+        expect(wrapper.type()).not.toBeNull();
       });
-    });
-
-    test('should render component', () => {
-      expect(wrapper.type()).not.toBeNull();
     });
   });
 
@@ -71,22 +68,19 @@ describe('Component|Hint', () => {
    * HintViewSelect
    */
   describe('Test HintViewSelect', () => {
-    let wrapper;
-    beforeEach(async () => {
-      const dom = mount(
-        <TestContainer mockConfig={{ page: 'electricity' }}>
-          <HintViewSelect />
-        </TestContainer>,
-      );
+    const dom = mount(
+      <TestContainer mockConfig={{ page: 'electricity' }}>
+        <HintViewSelect />
+      </TestContainer>,
+    );
+
+    test('should render component', async () => {
       await act(async () => {
         await new Promise(resolve => setTimeout(resolve));
         dom.update();
-        wrapper = getRendered(HintViewSelect, dom);
+        const wrapper = getRendered(HintViewSelect, dom);
+        expect(wrapper.type()).not.toBeNull();
       });
-    });
-
-    test('should render component', () => {
-      expect(wrapper.type()).not.toBeNull();
     });
   });
 
