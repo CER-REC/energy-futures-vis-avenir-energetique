@@ -23,7 +23,7 @@ describe('Component|FadeLayer', () => {
 
     test('should render component', () => {
       expect(wrapper.type()).not.toBeNull();
-      expect(wrapper.findWhere(node => node.type() === 'g' && node.prop('opacity') === '0.7')).not.toBeNull();
+      expect(wrapper.findWhere(node => node.type() === 'g' && node.prop('opacity') === 0.7).exists()).toBeTruthy();
 
       // verify linear gradients
       const gradients = wrapper.findWhere(node => node.type() === 'linearGradient').map(node => node.prop('id'));
@@ -43,7 +43,7 @@ describe('Component|FadeLayer', () => {
 
     test('should render component', () => {
       expect(wrapper.type()).not.toBeNull();
-      expect(wrapper.findWhere(node => node.type() === 'g' && node.prop('opacity') === '0.7')).not.toBeNull();
+      expect(wrapper.findWhere(node => node.type() === 'g' && node.prop('opacity') === 0.7).exists()).toBeTruthy();
 
       // verify linear gradients
       const gradients = wrapper.findWhere(node => node.type() === 'linearGradient').map(node => node.prop('id'));
@@ -59,7 +59,7 @@ describe('Component|FadeLayer', () => {
 
     test('should render component', () => {
       expect(wrapper.type()).not.toBeNull();
-      expect(wrapper.findWhere(node => node.type() === 'g' && node.prop('opacity') === '0.7')).not.toBeNull();
+      expect(wrapper.findWhere(node => node.type() === 'g' && node.prop('opacity') === 0.7).exists()).toBeTruthy();
 
       // verify linear gradients
       const gradients = wrapper.findWhere(node => node.type() === 'linearGradient').map(node => node.prop('id'));

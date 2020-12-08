@@ -12,7 +12,7 @@ describe('Component|ForecastLayer', () => {
 
     test('should render component', () => {
       expect(wrapper.type()).not.toBeNull();
-      expect(wrapper.findWhere(node => node.type() === 'text' && node.text() === 'forecast')).not.toBeNull();
+      expect(wrapper.findWhere(node => node.type() === 'text' && node.text() === 'forecast').exists()).toBeTruthy();
     });
 
     test('should NOT render component without valid years', () => {
@@ -28,7 +28,7 @@ describe('Component|ForecastLayer', () => {
 
     test('should render component', () => {
       expect(wrapper.type()).not.toBeNull();
-      expect(wrapper.findWhere(node => node.type() === 'text' && node.text() === 'forecast')).not.toBeNull();
+      expect(wrapper.findWhere(node => node.type() === 'text' && node.text() === 'forecast').exists()).toBeTruthy();
     });
 
     test('should NOT render component without valid years', () => {
