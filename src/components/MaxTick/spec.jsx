@@ -20,8 +20,8 @@ describe('Component|MaxTick', () => {
       const wrapper = getRendered(MaxTick, dom);
 
       expect(wrapper.type()).not.toBeNull();
-      expect(wrapper.findWhere(node => node.type() === 'tspan' && node.text() === '10000')).not.toBeNull();
-      expect(wrapper.findWhere(node => node.type() === 'tspan' && node.text() === 'Mboe/d')).not.toBeNull();
+      expect(wrapper.findWhere(node => node.type() === 'tspan' && node.text() === '10000').exists()).toBeTruthy();
+      expect(wrapper.findWhere(node => node.type() === 'tspan' && node.text() === 'Mboe/d').exists()).toBeTruthy();
     });
   });
 });

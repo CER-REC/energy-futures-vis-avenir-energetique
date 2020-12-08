@@ -62,7 +62,7 @@ describe('Component|VizTooltip', () => {
         const wrapper = getRendered(VizTooltip, dom);
 
         expect(wrapper.type()).not.toBeNull();
-        expect(wrapper.find(Paper)).not.toBeNull();
+        expect(wrapper.find(Paper).exists()).toBeTruthy();
         expect(wrapper.find('strong').map(label => label.text())).toEqual(MOCK_LABELS);
       });
     });
