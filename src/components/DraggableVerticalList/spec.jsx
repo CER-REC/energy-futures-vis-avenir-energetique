@@ -1,7 +1,7 @@
 import React from 'react';
 import { mount } from 'enzyme';
 import { act } from 'react-dom/test-utils';
-import { Droppable, Draggable } from 'react-beautiful-dnd';
+import { DragDropContext, Draggable } from 'react-beautiful-dnd';
 import ClearIcon from '@material-ui/icons/Clear';
 import DotsIcon from '@material-ui/icons/MoreHoriz';
 
@@ -16,15 +16,23 @@ const DEFAULT_CONFIG = {
   view: 'region',
 };
 
+const MOCK_DROP = {
+  type: 'DEFAULT',
+  source: { index: 0, droppableId: 'droppable' },
+  draggableId: 'BIO',
+  mode: 'FLUID',
+  reason: 'DROP',
+};
+
 const getSourceComponent = (configs, props) => (
   <TestContainer mockConfig={{ ...DEFAULT_CONFIG, ...configs }}>
     <DraggableVerticalList
-      title="Source"
+      title={props?.disabled || 'Source'}
       round
       disabled={props?.disabled || false}
       singleSelect={props?.singleSelect || false}
       sourceType="energy"
-      items={['BIO', 'COAL', 'ELECTRICITY', 'GAS', 'OIL']}
+      items={props?.items || ['BIO', 'COAL', 'ELECTRICITY', 'GAS', 'OIL']}
       itemOrder={['BIO', 'COAL', 'ELECTRICITY', 'GAS', 'OIL']}
       defaultItems={{
         BIO: { color: '#1C7F24', label: 'Biofuels & Emerging Energy', icon: IconBiofuel },
@@ -38,7 +46,7 @@ const getSourceComponent = (configs, props) => (
   </TestContainer>
 );
 
-describe('Component|HorizontalControlBar', () => {
+describe('Component|DraggableVerticalList', () => {
   let wrapper;
 
   /**
@@ -58,34 +66,36 @@ describe('Component|HorizontalControlBar', () => {
       expect(wrapper.type()).not.toBeNull();
     });
 
-    test('should render normal and draggable nodes', () => {
+    test('should render normal and draggable nodes', async () => {
       // check 5 icons as inputted
-      expect(wrapper.find(Draggable).length).toBe(5);
+      expect(wrapper.find(Draggable)).toHaveLength(5);
       expect(wrapper.find(Draggable).map(node => node.prop('draggableId'))).toEqual(['BIO', 'COAL', 'ELECTRICITY', 'GAS', 'OIL']);
 
-      expect(wrapper.find(IconBiofuel)).not.toBeNull();
-      expect(wrapper.find(IconCoal)).not.toBeNull();
-      expect(wrapper.find(IconElectricity)).not.toBeNull();
-      expect(wrapper.find(IconGas)).not.toBeNull();
-      expect(wrapper.find(IconOil)).not.toBeNull();
+      expect(wrapper.find(IconBiofuel).exists()).toBeTruthy();
+      expect(wrapper.find(IconCoal).exists()).toBeTruthy();
+      expect(wrapper.find(IconElectricity).exists()).toBeTruthy();
+      expect(wrapper.find(IconGas).exists()).toBeTruthy();
+      expect(wrapper.find(IconOil).exists()).toBeTruthy();
 
       // draggable list, so 3 dots icons / drag indicators
-      const dotsIcons = wrapper.find(DotsIcon);
-      expect(dotsIcons.length).toBe(5);
+      expect(wrapper.find(DotsIcon)).toHaveLength(5);
 
       // all selected, so should display the clear icon
-      const clearIcons = wrapper.find(ClearIcon);
-      expect(clearIcons.length).toBe(1);
+      expect(wrapper.find(ClearIcon)).toHaveLength(1);
 
-      /* eslint-disable newline-per-chained-call */
-      wrapper.find(Droppable).at(0).find('.MuiGrid-item').at(0).simulate('keypress', { key: 'Enter' });
-      wrapper.find(Draggable).at(1).find('.MuiGrid-item').at(0).simulate('click');
-      wrapper.find(Draggable).at(2).find('.MuiGrid-item').at(0).simulate('keypress', { key: 'Enter' });
+      await act(async () => {
+        /* eslint-disable newline-per-chained-call */
+        wrapper.find(DragDropContext).at(0).prop('onDragEnd')(MOCK_DROP);
+        wrapper.find(DragDropContext).at(0).prop('onDragEnd')({ ...MOCK_DROP, destination: { droppableId: 'droppable', index: 2 } });
 
-      const mockDataTransfer = { setData: jest.fn() };
-      wrapper.find(Draggable).at(2).find('.MuiGrid-item').at(0).simulate('dragstart', mockDataTransfer);
-      wrapper.find(Draggable).at(1).find('.MuiGrid-item').at(0).simulate('dragover');
-      wrapper.find(Draggable).at(0).find('.MuiGrid-item').at(0).simulate('dragend');
+        wrapper.find(Draggable).at(1).find('.MuiGrid-item').at(0).prop('onClick')();
+        wrapper.find(Draggable).at(1).find('.MuiGrid-item').at(0).prop('onKeyPress')({ key: 'Enter' });
+
+        wrapper.find(Draggable).at(2).find('.MuiGrid-item').at(0).prop('onKeyPress')({ key: 'Space' });
+        wrapper.find(Draggable).at(2).find('.MuiGrid-item').at(0).prop('onKeyPress')({ key: 'ArrowDown' });
+        wrapper.find(Draggable).at(2).find('.MuiGrid-item').at(0).prop('onKeyPress')({ key: 'Space' });
+        /* eslint-enable newline-per-chained-call */
+      });
     });
   });
 
@@ -94,7 +104,7 @@ describe('Component|HorizontalControlBar', () => {
    */
   describe('Test single-select static list', () => {
     beforeEach(async () => {
-      const dom = mount(getSourceComponent({ page: 'by-sector', sector: 'ALL' }, { singleSelect: true }));
+      const dom = mount(getSourceComponent({ page: 'by-sector', sector: 'ALL' }, { singleSelect: true, items: ['BIO'] }));
       await act(async () => {
         await new Promise(resolve => setTimeout(resolve));
         dom.update();
@@ -106,8 +116,44 @@ describe('Component|HorizontalControlBar', () => {
       expect(wrapper.type()).not.toBeNull();
     });
 
-    test('should render static nodes', () => {
-      wrapper.find(Draggable).at(0).find('.MuiGrid-item').at(0).simulate('click');
+    test('should render static nodes', async () => {
+      const numOfSelected = wrapper.find(Draggable).find('.MuiGrid-container')
+        .map(box => box.prop('className').split(' '))
+        .flat()
+        .filter(className => className === 'selected');
+      expect(numOfSelected).toHaveLength(1);
+
+      await act(async () => {
+        const allButton = wrapper.findWhere(node => node.hasClass('MuiGrid-item') && node.text() === 'All').at(0);
+        allButton.prop('onClick')();
+        allButton.prop('onKeyPress')({ key: 'Enter' });
+      });
+    });
+  });
+
+  /**
+   * Single-select static Region list
+   */
+  describe('Test single-select static list', () => {
+    beforeEach(async () => {
+      const dom = mount(getSourceComponent({ page: 'by-sector', sector: 'ALL' }, { title: 'Region', singleSelect: true, items: ['BIO'] }));
+      await act(async () => {
+        await new Promise(resolve => setTimeout(resolve));
+        dom.update();
+        wrapper = getRendered(DraggableVerticalList, dom);
+      });
+    });
+
+    test('should render component', () => {
+      expect(wrapper.type()).not.toBeNull();
+    });
+
+    test('should render static nodes', async () => {
+      await act(async () => {
+        const allButton = wrapper.findWhere(node => node.hasClass('MuiGrid-item') && node.text() === 'All').at(0);
+        allButton.prop('onClick')();
+        allButton.prop('onKeyPress')({ key: 'Enter' });
+      });
     });
   });
 
@@ -130,8 +176,7 @@ describe('Component|HorizontalControlBar', () => {
 
     test('should render static nodes', () => {
       // non-draggable, so no dots icons are shown
-      const dotsIcons = wrapper.find(DotsIcon);
-      expect(dotsIcons.length).toBe(0);
+      expect(wrapper.find(DotsIcon)).toHaveLength(0);
     });
   });
 });
