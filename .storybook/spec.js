@@ -21,7 +21,7 @@ initStoryshots({
   test: snapshotWithOptions({
     createNodeMock: (element) => {
       // Mock ref for Material UI slider
-      if (element.props.className.indexOf('MuiSlider-root') !== -1) {
+      if (element.props.className?.indexOf('MuiSlider-root') !== -1) {
         return document.createElement(element.type);
       }
 
