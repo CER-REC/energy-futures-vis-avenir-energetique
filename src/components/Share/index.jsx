@@ -21,6 +21,8 @@ import useEnergyFutureData from '../../hooks/useEnergyFutureData';
 import { convertUnit } from '../../utilities/convertUnit';
 import { PAGES } from '../../constants';
 
+const fetch = require('node-fetch');
+
 // TODO: Remove after refactoring into useEnergyFutureData to provide a uniform data structure
 const selectionUnits = {
   energyDemand: 'petajoules',
@@ -40,7 +42,7 @@ const getBitlyURL = () => {
       }
 
       return data.data.url;
-    }).catch(() => document.location.href);
+    }).catch(() => document?.location.href || 'localhost:6000/energy-future');
 };
 
 const openShareWindow = baseUrl => getBitlyURL().then(bitlyUrl => window.open(
