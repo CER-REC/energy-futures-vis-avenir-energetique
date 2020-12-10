@@ -29,6 +29,10 @@ export const BASE_DATA = {
   YT: 8.1578,
 };
 
+/**
+ * Add some randomness in the mock data to generate
+ * fluctuation in the graph so that it is not monotone.
+ */
 const MOCK_DATA = Array(46).fill(undefined).map((_, i) => ({
   year: `${2005 + i}`, ...Object.keys(BASE_DATA).reduce((accu, curr) => ({ ...accu, [curr]: BASE_DATA[curr] * (1 + Math.random() / 4) }), {}),
 }));
