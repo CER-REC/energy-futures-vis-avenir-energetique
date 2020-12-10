@@ -58,7 +58,7 @@ describe('Component| Share Buttons', () => {
   //
 
   test('should render component', () => {
-    expect(wrapper.type()).not.toBeNull();
+    expect(wrapper.exists()).toBeTruthy();
   });
 
   test('should render share buttons', () => {
@@ -99,7 +99,7 @@ describe('Component| Download Button', () => {
   //
 
   test('should render component', () => {
-    expect(wrapper.type()).not.toBeNull();
+    expect(wrapper.exists()).toBeTruthy();
   });
 
   test('should render text', () => {
