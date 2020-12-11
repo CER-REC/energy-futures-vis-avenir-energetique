@@ -132,7 +132,7 @@ const COORD = {
   COAL: { top: '45%', left: '75%' },
 };
 
-const Electricity = ({ data, year }) => {
+const Electricity = ({ data, year, hideYearSlider }) => {
   const classes = useStyles();
 
   const intl = useIntl();
@@ -282,7 +282,7 @@ const Electricity = ({ data, year }) => {
           onOpen={() => handleEventUpdate(entry)}
           classes={{ tooltip: classes.tooltip }}
         >
-          <div className={classes.region} style={entry.style}>
+          <div id={`bubble-group-${entry.name}`} className={classes.region} style={entry.style}>
             {entry.nodes.map((node, index, list) => {
               /**
                * This simplified algorithm uses the chord length as an approximate of the
@@ -330,7 +330,7 @@ const Electricity = ({ data, year }) => {
 
             {/* static legend shown beside a single province */}
             {single && (
-              <div className={classes.legend} style={{ right: `calc(-100% - ${desktop ? 100 : 200}px)` }}>
+              <div id="single-bubble-legend" className={classes.legend} style={{ right: `calc(-100% - ${desktop ? 100 : 200}px)` }}>
                 <VizTooltip nodes={entry.nodes} unit={config.unit} />
               </div>
             )}
@@ -339,13 +339,15 @@ const Electricity = ({ data, year }) => {
       ))}
 
       {/* below are the controls for the year playback */}
-      <YearSlider
-        year={currYear}
-        onYearChange={value => setCurrYear(value)}
-        min={year.min}
-        max={year.max}
-        forecast={year.forecastStart}
-      />
+      {!hideYearSlider && (
+        <YearSlider
+          year={currYear}
+          onYearChange={value => setCurrYear(value)}
+          min={year.min}
+          max={year.max}
+          forecast={year.forecastStart}
+        />
+      )}
     </div>
   );
 };
@@ -357,11 +359,13 @@ Electricity.propTypes = {
     max: PropTypes.number,
     forecastStart: PropTypes.number,
   }),
+  hideYearSlider: PropTypes.bool,
 };
 
 Electricity.defaultProps = {
   data: undefined,
   year: undefined,
+  hideYearSlider: false,
 };
 
 export default Electricity;
