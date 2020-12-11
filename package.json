@@ -102,6 +102,7 @@
     "jest": "24.9.0",
     "jest-junit": "10.0.0",
     "mini-css-extract-plugin": "0.8.0",
+    "nock": "^13.0.5",
     "open-cli": "5.0.0",
     "postcss-loader": "3.0.0",
     "postcss-preset-env": "6.7.0",

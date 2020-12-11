@@ -21,8 +21,6 @@ import useEnergyFutureData from '../../hooks/useEnergyFutureData';
 import { convertUnit } from '../../utilities/convertUnit';
 import { PAGES } from '../../constants';
 
-const fetch = require('node-fetch');
-
 // TODO: Remove after refactoring into useEnergyFutureData to provide a uniform data structure
 const selectionUnits = {
   energyDemand: 'petajoules',

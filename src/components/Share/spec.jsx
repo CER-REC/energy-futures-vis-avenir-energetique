@@ -3,6 +3,8 @@ import { mount } from 'enzyme';
 import { act } from 'react-dom/test-utils';
 import { Button } from '@material-ui/core';
 import EmailIcon from '@material-ui/icons/Email';
+import { saveAs } from 'file-saver';
+import Snackbar from '@material-ui/core/Snackbar';
 import { Share, DownloadButton } from '.';
 import { TestContainer, getRendered } from '../../tests/utilities';
 import { IconTwitter, IconFacebook, IconLinkedIn } from '../../icons';
@@ -78,13 +80,39 @@ describe('Component| Share Buttons', () => {
 
     iconButtons.forEach((button) => {
       expect(button.prop('onClick')).not.toBeNull();
+    });
+  });
 
-      button.simulate('click');
+  test('should open social media links', async () => {
+    // These buttons have no good identifiers to grab them by
+    const linkedInButton = wrapper.find(Button).at(1);
+    const faceBookButton = wrapper.find(Button).at(2);
+    const twitterButton = wrapper.find(Button).at(3);
+    // const emailButton = wrapper.find(Button).at(4);
+
+    linkedInButton.simulate('click');
+    faceBookButton.simulate('click');
+    twitterButton.simulate('click');
+    // emailButton.simulate('click');
+
+    await new Promise(resolve => setTimeout(resolve, 10)); // FIXME:
+
+    expect(global.window.open).toHaveBeenCalledTimes(3);
+  });
+
+  test('should open copy link snack bar', () => {
+    const linkButton = wrapper.find(Button).at(0);
+
+    act(() => {
+      linkButton.simulate('click');
+      const snackBar = wrapper.find(Snackbar);
+      expect(snackBar.exists()).not.toBeNull();
     });
   });
 });
 
-describe('Component| Download Button', () => {
+// #region Download Button
+describe('Component| Download Button | By-Region', () => {
   let wrapper;
 
   beforeEach(async () => {
@@ -109,8 +137,78 @@ describe('Component| Download Button', () => {
     expect(button.text()).toBe('Download Data');
   });
 
-  // test('should be clickable', () => {
-  //   const button = wrapper.find(Button);
-  //   button.simulate('click');
-  // });
+  test('should be clickable', () => {
+    const downloadButton = wrapper.find(Button);
+    downloadButton.simulate('click');
+    expect(saveAs).toBeCalled();
+  });
 });
+
+describe('Component| Download Button | By-Sector', () => {
+  let wrapper;
+
+  test('should be clickable', async () => {
+    const dom = mount(getDownloadComponent({ page: 'by-sector', sources: ['BIO'], sector: 'ALL' }));
+    await act(async () => {
+      await new Promise(resolve => setTimeout(resolve));
+      dom.update();
+      wrapper = getRendered(DownloadButton, dom);
+    });
+
+    const downloadButton = wrapper.find(Button);
+    downloadButton.simulate('click');
+    expect(saveAs).toBeCalled();
+  });
+});
+
+describe('Component| Download Button | Scenarios', () => {
+  let wrapper;
+
+  test('should be clickable', async () => {
+    const dom = mount(getDownloadComponent({ page: 'scenarios' }));
+    await act(async () => {
+      await new Promise(resolve => setTimeout(resolve));
+      dom.update();
+      wrapper = getRendered(DownloadButton, dom);
+    });
+
+    const downloadButton = wrapper.find(Button);
+    downloadButton.simulate('click');
+    expect(saveAs).toBeCalled();
+  });
+});
+
+describe('Component| Download Button | Electricity', () => {
+  let wrapper;
+
+  test('should be clickable', async () => {
+    const dom = mount(getDownloadComponent({ page: 'electricity', view: 'region', sources: ['ALL'], mainSelection: 'electricityGeneration' }));
+    await act(async () => {
+      await new Promise(resolve => setTimeout(resolve));
+      dom.update();
+      wrapper = getRendered(DownloadButton, dom);
+    });
+
+    const downloadButton = wrapper.find(Button);
+    downloadButton.simulate('click');
+    expect(saveAs).toBeCalled();
+  });
+});
+
+describe('Component| Download Button | Oil-and-gas', () => {
+  let wrapper;
+
+  test('should be clickable', async () => {
+    const dom = mount(getDownloadComponent({ page: 'oil-and-gas', mainSelection: 'oilProduction', view: 'source', sources: ['ISB'], sourceOrder: ['ISB'] }));
+    await act(async () => {
+      await new Promise(resolve => setTimeout(resolve));
+      dom.update();
+      wrapper = getRendered(DownloadButton, dom);
+    });
+
+    const downloadButton = wrapper.find(Button);
+    downloadButton.simulate('click');
+    expect(saveAs).toBeCalled();
+  });
+});
+// #endregion
