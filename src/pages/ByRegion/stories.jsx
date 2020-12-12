@@ -2,7 +2,6 @@ import React from 'react';
 
 import withConfigAndGQL from '../../../.storybook/addon-config-and-gql';
 import { storiesForComponent } from '../../../.storybook/utils';
-import { TestContainer } from '../../tests/utilities';
 import ByRegion from './index';
 import ReadMe from './README.md';
 
@@ -39,8 +38,5 @@ const MOCK_DATA = Array(46).fill(undefined).map((_, i) => ({
 
 storiesForComponent('Pages|ByRegion', module, ReadMe)
   .addDecorator(withConfigAndGQL)
-  .add('default', () => (
-    <TestContainer mockConfig={{ ...DEFAULT_CONFIG }}>
-      <ByRegion data={MOCK_DATA} year={{ min: 2005, max: 2050, forecastStart: 2020 }} />
-    </TestContainer>
-  ));
+  .addParameters({ mockConfigBasic: DEFAULT_CONFIG })
+  .add('default', () => <ByRegion data={MOCK_DATA} year={{ min: 2005, max: 2050, forecastStart: 2020 }} />);
