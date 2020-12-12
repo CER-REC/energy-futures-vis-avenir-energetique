@@ -2,7 +2,6 @@ import React from 'react';
 
 import withConfigAndGQL from '../../../.storybook/addon-config-and-gql';
 import { storiesForComponent } from '../../../.storybook/utils';
-import { TestContainer } from '../../tests/utilities';
 import Electricity from './index';
 import ReadMe from './README.md';
 
@@ -77,12 +76,13 @@ export const MOCK_DATA_SINGLE = {
 export const MOCK_YEAR = { min: 2005, max: 2050, forecastStart: 2020 };
 
 const getComponent = data => (
-  <TestContainer mockConfig={{ ...DEFAULT_CONFIG, baseYear: 2005 }}>
-    <div style={{ height: 500, width: '100%' }}><Electricity data={{ 2005: data }} year={MOCK_YEAR} hideYearSlider /></div>
-  </TestContainer>
+  <div style={{ height: 500, width: '100%' }}>
+    <Electricity data={{ 2005: data }} year={MOCK_YEAR} hideYearSlider />
+  </div>
 );
 
 storiesForComponent('Pages|Electricity', module, ReadMe)
   .addDecorator(withConfigAndGQL)
+  .addParameters({ mockConfigBasic: DEFAULT_CONFIG })
   .add('multiple bubbles', () => getComponent(MOCK_DATA_REGION))
   .add('single bubble', () => getComponent(MOCK_DATA_SINGLE));
