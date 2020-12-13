@@ -194,6 +194,8 @@ const Landing = () => {
     analytics.reportNav(page);
   };
 
+  const handleCloseDialog = () => setDialog(false);
+
   return (
     <>
       <header className={classes.header}>
@@ -228,6 +230,7 @@ const Landing = () => {
           <Grid item className={classes.download}>
             <Typography variant="h6" color="secondary">{intl.formatMessage({ id: 'landing.links.title' })}</Typography>
             <ButtonBase
+              id="button-download-report"
               aria-label={intl.formatMessage({ id: 'common.a11y.downloadReport' })}
               href={intl.formatMessage({ id: 'landing.links.download.link' })}
               target="_about"
@@ -236,6 +239,7 @@ const Landing = () => {
               <img src={intl.locale === 'fr' ? reportCoverFr : reportCoverEn} alt={intl.formatMessage({ id: 'common.a11y.downloadReport' })} />
             </ButtonBase>
             <Button
+              id="button-past-reports"
               color="primary"
               startIcon={<IconExternal />}
               href={intl.formatMessage({ id: 'landing.links.view.link' })}
@@ -257,6 +261,7 @@ const Landing = () => {
           {PAGES.map(page => page.id !== 'landing' && (
             <Grid key={`landing-box-${page.id}`} item xs={desktop ? 6 : 12}>
               <ButtonBase
+                id={`page-portal-${page.id}`}
                 aria-label={`${intl.formatMessage({ id: 'common.a11y.redirect' })} ${page.label}`}
                 onClick={handleRedirect(page.id)}
                 className={`${classes.box} ${desktop ? classes.boxDesktop : ''}`.trim()}
@@ -273,8 +278,8 @@ const Landing = () => {
       </main>
 
       {/* the about dialog */}
-      <Dialog open={open} onClose={() => setDialog(false)} classes={{ paper: classes.dialog }}>
-        <Fab color="primary" size="medium" onClick={() => setDialog(false)} className={classes.close}><CloseIcon /></Fab>
+      <Dialog open={open} onClose={handleCloseDialog} classes={{ paper: classes.dialog }}>
+        <Fab color="primary" size="medium" onClick={handleCloseDialog} className={classes.close}><CloseIcon /></Fab>
         <DialogContent style={{ padding: 24 }}>
           <Markdown>{intl.formatMessage({ id: 'about' })}</Markdown>
         </DialogContent>
