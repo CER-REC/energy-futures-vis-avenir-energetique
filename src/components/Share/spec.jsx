@@ -95,7 +95,7 @@ describe('Component| Share Buttons', () => {
     twitterButton.simulate('click');
     // emailButton.simulate('click');
 
-    await new Promise(resolve => setTimeout(resolve, 10)); // FIXME:
+    await new Promise(resolve => setTimeout(resolve, 20)); // FIXME:
 
     expect(global.window.open).toHaveBeenCalledTimes(3);
   });
@@ -103,11 +103,9 @@ describe('Component| Share Buttons', () => {
   test('should open copy link snack bar', () => {
     const linkButton = wrapper.find(Button).at(0);
 
-    act(() => {
-      linkButton.simulate('click');
-      const snackBar = wrapper.find(Snackbar);
-      expect(snackBar.exists()).not.toBeNull();
-    });
+    linkButton.simulate('click');
+    const snackBar = wrapper.find(Snackbar);
+    expect(snackBar.exists()).not.toBeNull();
   });
 });
 
