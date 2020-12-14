@@ -6,11 +6,11 @@ class Analytics {
   constructor() {
     if (!window.dataLayer) {
       console.warn('Google Tag Manager dataLayer not found.');
-      return;
     }
-    this.dataLayer = window.dataLayer;
 
+    this.dataLayer = window.dataLayer || [];
     this.userId = Cookies.get('energy-futures-UUID');
+
     if (!this.userId) {
       this.userId = v1();
       Cookies.set('energy-futures-UUID', this.userId);
@@ -57,10 +57,7 @@ class Analytics {
       ...(value ? { value } : {}),
     };
 
-    if (this.dataLayer) {
-      console.log('Sending event:', event);
-      this.dataLayer.push(event);
-    }
+    this.dataLayer.push(event);
   }
 
   reportLanding(page, value) {
