@@ -12,7 +12,7 @@
     "start": "npm run storybook",
     "storybook": "start-storybook -s ./src/images -s ./.storybook/wet-template -p 6006",
     "verifyLazyLoad": "babel-node ./serveLazyDevServer",
-    "build-storybook": "cross-env NODE_ENV=production build-storybook -s ./src/images -s ./.storybook/wet-template",
+    "build-storybook": "cross-env NODE_ENV=production API_HOST=https://apps2.cer-rec.gc.ca build-storybook -s ./src/images -s ./.storybook/wet-template",
     "build:modified": "git show -s --format=%cd HEAD --date=short > LAST_MODIFIED",
     "build:update-version": "node -e \"require('fs').writeFileSync('VERSION', require('./package.json').version, 'utf-8')\"",
     "build:changelog": "conventional-changelog -n .release/index.js -i CHANGELOG.md -s",
