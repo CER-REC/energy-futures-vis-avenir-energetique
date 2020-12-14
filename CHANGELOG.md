@@ -1,3 +1,110 @@
+# [2.1.0](http://neb-energy-futures-devdoc.s3-website.us-west-2.amazonaws.com/v2.1.0) (2020-12-14)
+
+
+* **Features:** Added a blank array as a dataLayer fallback and remove console logs for GTM events (4495201)
+
+
+### byRegion
+
+* **Bug Fixes:** reduces motion stiffness of bar chart (7957260)
+
+
+### ByRegion
+
+* **Features:** updates the method how config parameters are passed into the stories (c4abaaf)
+* **Features:** adds a piece of comment explaining the generation of the mock data (aab3bae)
+* **Features:** adds testing scripts, README, and stories for the By-Region page (18c80c5)
+
+
+### BySector
+
+* **Features:** updates the method how config parameters are passed into the stories (d014fe7)
+* **Features:** adds the missing change in the previous commit (f407098)
+* **Features:** adds testing scripts, README, and stories for the By-Sector page (7bde808)
+
+
+### DataAnalytics
+
+* **Features:** uses 'hover' instead of 'click' as the action type when capturing viz POI event (ad9177a)
+* **Features:** updates some useConfig calls to narrow down the exposure of internal structure (9a7a8da)
+* **Features:** captures user events then hovering on viz (706ce4a)
+* **Features:** captures user events in helps and media buttons (4e79c95)
+* **Features:** captures user events in control and navigation components (181a549)
+* **Features:** adds shortcut methods to simplify the event report process (f70d27c)
+* **Features:** updates the local WET template to connect to the DEV env (075a0b3)
+* **Features:** sets up basic infrastructure for connecting with the backend envs (f758a51)
+* **Bug Fixes:** updates data analytics event name to 'visualization interaction' (c779851)
+* **Bug Fixes:** prevents event tags from being translated (8085634)
+* **Bug Fixes:** fixes the testing error in Hint after adding the useConfig hook (0b53634)
+
+
+### DraggableVerticalList
+
+* **Features:** improves testing logic for a better coverage (f67e7e2)
+* **Features:** adds testing scripts, README, and stories (e690158)
+
+
+### Hint
+
+* **Features:** removes unnecessary beforeEach methods from the test (aedda3c)
+* **Bug Fixes:** fixes a newly introduced linting warning in the testing scripts (ebb9b0a)
+
+
+### LinkButtonGroup
+
+* **Features:** adds analytics calls to linkButtonGroup buttons (60a0692)
+* **Bug Fixes:** pulls in config locally now (36c3a24)
+* **Bug Fixes:** fixes linting issue (7c88f69)
+
+
+### pageSelect
+
+* **Features:** improved test coverage for pageSelect (8e96153)
+* **Documentation:** adds documentation and some tests to pageSelect (da5c570)
+
+
+### PageSelect
+
+* **Bug Fixes:** small tweak to improve code quality (242746a)
+
+
+### scenarioSelect
+
+* **Documentation:** adds docs and testing to scenarioSelect (d9ebf32)
+
+
+### ScenarioSelect
+
+* **Tests:** adds tests, including storybook (ea8acc6)
+
+
+### ShareButtons
+
+* **Features:** adds analytics to share buttons (3b2d0be)
+
+
+### Storybook
+
+* **Features:** updates README for the HorizontalContrlBar component (da178a5)
+* **Features:** adds theme and stories of the HorizontalControlBar component in Storybook (a10e9e0)
+
+
+### Testing
+
+* **Features:** fixes incorrect methods when testing the existence of nodes in MaxTick and VizTooltip (55453ef)
+* **Features:** fixes incorrect methods when testing the existence of nodes in Nivo layers (21cac3d)
+* **Features:** removes unnecessary beforeEach method in testcases of MaxTick and VizTooltip (44b39d1)
+* **Features:** adds test cases and README for MaxTick and VizTooltip components (47e8d86)
+* **Features:** adds testing scripts for FadeLayer and ForecastLayer (03d2d16)
+* **Features:** adds tests and README for the Hint related components (2eaa963)
+* **Features:** adds test cases for the HorizontalControlBar component (cfade5f)
+
+
+### YearSelect
+
+* **Tests:** adds storybook setup (f61fcce)
+* **Tests:** adds tests for yearSelect (fba0494)
+
 # [2.0.0](http://neb-energy-futures-devdoc.s3-website.us-west-2.amazonaws.com/v2.0.0) (2020-11-25)
 
 
