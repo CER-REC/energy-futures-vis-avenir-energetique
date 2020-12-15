@@ -141,7 +141,7 @@ export const getMaxTick = (highest) => {
 /**
  * Make sure the year value is always valid.
  */
-export const validYear = (year, { min, max }) => {
+export const validYear = (year, { min, max } = {}) => {
   if (year && year < (min || 0)) return (min || 0);
   if (year && year > (max || 2050)) return (max || 2050);
   return year || 0;
