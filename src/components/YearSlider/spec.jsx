@@ -4,6 +4,7 @@ import { act } from 'react-dom/test-utils';
 
 import { IconButton, Slider } from '@material-ui/core';
 import PlayIcon from '@material-ui/icons/PlayArrow';
+import PauseIcon from '@material-ui/icons/Pause';
 
 import YearSlider from '.';
 import { TestContainer, getRendered } from '../../tests/utilities';
@@ -16,9 +17,9 @@ const DEFAULT_CONFIG = {
   view: 'region',
 };
 
-const getComponent = (year, min, max) => (
+const getComponent = (year, min, max, forecast) => (
   <TestContainer mockConfig={{ ...DEFAULT_CONFIG }}>
-    <YearSlider year={year} min={min || 2005} max={max || 2050} />
+    <YearSlider year={year} min={min || 2005} max={max || 2050} forecast={forecast} />
   </TestContainer>
 );
 
@@ -30,16 +31,15 @@ describe('Component|YearSlider', () => {
    */
   describe('Test base year only', () => {
     beforeEach(async () => {
-      const dom = mount(getComponent(2020, 2005, 2050));
+      wrapper = mount(getComponent(2020, 2005, 2050, 2018));
       await act(async () => {
         await new Promise(resolve => setTimeout(resolve));
-        dom.update();
-        wrapper = getRendered(YearSlider, dom);
+        wrapper.update();
       });
     });
 
     test('should render component', () => {
-      expect(wrapper.type()).not.toBeNull();
+      expect(getRendered(YearSlider, wrapper).type()).not.toBeNull();
     });
 
     test('should render year thumb', () => {
@@ -48,8 +48,17 @@ describe('Component|YearSlider', () => {
 
     test('should render play button', async () => {
       await act(async () => {
+        // verify button icons
         expect(wrapper.find(IconButton).find(PlayIcon).exists()).toBeTruthy();
+        expect(wrapper.find(IconButton).find(PauseIcon).exists()).toBeFalsy();
         wrapper.find(IconButton).at(0).prop('onClick')();
+        await new Promise(resolve => setTimeout(resolve, 750));
+        wrapper.update();
+        expect(wrapper.find(IconButton).find(PlayIcon).exists()).toBeFalsy();
+        expect(wrapper.find(IconButton).find(PauseIcon).exists()).toBeTruthy();
+
+        // verify auto-play
+        expect(Number(wrapper.find('.MuiSlider-thumb').at(0).text())).toBeGreaterThan(2020);
       });
     });
   });
@@ -59,27 +68,40 @@ describe('Component|YearSlider', () => {
    */
   describe('Test both base and compare years', () => {
     beforeEach(async () => {
-      const dom = mount(getComponent({ curr: 2020, compare: 2030 }));
+      wrapper = mount(getComponent({ curr: 2020, compare: 2030 }));
       await act(async () => {
         await new Promise(resolve => setTimeout(resolve));
-        dom.update();
-        wrapper = getRendered(YearSlider, dom);
+        wrapper.update();
       });
     });
 
     test('should render component', () => {
-      expect(wrapper.type()).not.toBeNull();
+      expect(getRendered(YearSlider, wrapper).type()).not.toBeNull();
     });
 
     test('should render year thumb', async () => {
       await act(async () => {
-        expect(wrapper.find('.MuiSlider-thumb')).toHaveLength(2);
+        expect(wrapper.find('.MuiSlider-thumb').map(node => node.text())).toEqual(['2030', '2020']);
 
         wrapper.find(Slider).at(0).prop('onChange')({}, 0);
+        await new Promise(resolve => setTimeout(resolve));
+        wrapper.update();
+        expect(wrapper.find('.MuiSlider-thumb').map(node => node.text())).toEqual(['2030', '2020']);
+
         wrapper.find(Slider).at(1).prop('onChange')({}, 0);
+        await new Promise(resolve => setTimeout(resolve));
+        wrapper.update();
+        expect(wrapper.find('.MuiSlider-thumb').map(node => node.text())).toEqual(['2030', '2020']);
 
         wrapper.find(Slider).at(0).prop('onChange')({}, 2045);
+        await new Promise(resolve => setTimeout(resolve));
+        wrapper.update();
+        expect(wrapper.find('.MuiSlider-thumb').map(node => node.text())).toEqual(['2045', '2020']);
+
         wrapper.find(Slider).at(1).prop('onChange')({}, 2045);
+        await new Promise(resolve => setTimeout(resolve));
+        wrapper.update();
+        expect(wrapper.find('.MuiSlider-thumb').map(node => node.text())).toEqual(['2045', '2045']);
       });
     });
   });
@@ -88,15 +110,13 @@ describe('Component|YearSlider', () => {
    * Invalid year value
    */
   describe('Test without a valid year value', () => {
-    const dom = mount(getComponent(0));
-
     test('should NOT render component', async () => {
+      wrapper = mount(getComponent(0));
       await act(async () => {
         await new Promise(resolve => setTimeout(resolve));
-        dom.update();
-        wrapper = getRendered(YearSlider, dom);
+        wrapper.update();
 
-        expect(wrapper.exists()).toBeFalsy();
+        expect(getRendered(YearSlider, wrapper).exists()).toBeFalsy();
       });
     });
   });
