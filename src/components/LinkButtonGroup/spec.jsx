@@ -40,16 +40,15 @@ describe('Component|LinkButtonGroup', () => {
    */
   describe('Test vertical button layout', () => {
     beforeEach(async () => {
-      const dom = mount(getComponent(<LinkButtonGroup />));
+      wrapper = mount(getComponent(<LinkButtonGroup />));
       await act(async () => {
         await new Promise(resolve => setTimeout(resolve));
-        dom.update();
-        wrapper = getRendered(LinkButtonGroup, dom);
+        wrapper.update();
       });
     });
 
     test('should render component', () => {
-      expect(wrapper.type()).not.toBeNull();
+      expect(getRendered(LinkButtonGroup, wrapper).type()).not.toBeNull();
     });
 
     test('should render vertical layout', () => {
@@ -64,10 +63,40 @@ describe('Component|LinkButtonGroup', () => {
     });
 
     test('should render button events', async () => {
+      // open the report panel and verify the panel is visible
       await act(async () => {
+        expect(wrapper.find('#panel-button-report').prop('style')).toEqual({ display: 'none' });
         wrapper.findWhere(node => node.type() === Button && node.text() === 'EF2020 Report').at(0).prop('onClick')();
-        wrapper.findWhere(node => node.type() === Button && node.text() === '').at(0).prop('onClick')();
+        await new Promise(resolve => setTimeout(resolve));
+        wrapper.update();
+        expect(wrapper.find('#panel-button-report').prop('style')).toEqual({ display: 'block' });
+      });
+
+      // close the report panel using the clickaway
+      await act(async () => {
+        expect(wrapper.find('#panel-button-report').prop('style')).toEqual({ display: 'block' });
         wrapper.find(ClickAwayListener).at(0).prop('onClickAway')();
+        await new Promise(resolve => setTimeout(resolve));
+        wrapper.update();
+        expect(wrapper.find('#panel-button-report').prop('style')).toEqual({ display: 'none' });
+      });
+
+      // open the about panel and verify the panel is visible
+      await act(async () => {
+        expect(wrapper.find('#panel-button-about').prop('style')).toEqual({ display: 'none' });
+        wrapper.findWhere(node => node.type() === Button && node.text() === 'About').at(0).prop('onClick')();
+        await new Promise(resolve => setTimeout(resolve));
+        wrapper.update();
+        expect(wrapper.find('#panel-button-about').prop('style')).toEqual({ display: 'block' });
+      });
+
+      // close the about panel using the close button
+      await act(async () => {
+        expect(wrapper.find('#panel-button-about').prop('style')).toEqual({ display: 'block' });
+        wrapper.find('#panel-button-about').find(Button).at(0).prop('onClick')();
+        await new Promise(resolve => setTimeout(resolve));
+        wrapper.update();
+        expect(wrapper.find('#panel-button-about').prop('style')).toEqual({ display: 'none' });
       });
     });
   });
@@ -77,16 +106,15 @@ describe('Component|LinkButtonGroup', () => {
    */
   describe('Test horizontal button layout', () => {
     beforeEach(async () => {
-      const dom = mount(getComponent(<LinkButtonGroup direction="row" />));
+      wrapper = mount(getComponent(<LinkButtonGroup direction="row" />));
       await act(async () => {
         await new Promise(resolve => setTimeout(resolve));
-        dom.update();
-        wrapper = getRendered(LinkButtonGroup, dom);
+        wrapper.update();
       });
     });
 
     test('should render component', () => {
-      expect(wrapper.type()).not.toBeNull();
+      expect(getRendered(LinkButtonGroup, wrapper).type()).not.toBeNull();
     });
 
     test('should render horizontal layout', () => {
@@ -102,17 +130,14 @@ describe('Component|LinkButtonGroup', () => {
    * LinkButtonContentMethodology
    */
   describe('Test LinkButtonContentMethodology', () => {
-    beforeEach(async () => {
-      const dom = mount(getComponent(<LinkButtonContentMethodology onClose={NOOP} />));
+    test('should render component', async () => {
+      wrapper = mount(getComponent(<LinkButtonContentMethodology onClose={NOOP} />));
       await act(async () => {
         await new Promise(resolve => setTimeout(resolve));
-        dom.update();
-        wrapper = getRendered(LinkButtonContentMethodology, dom);
+        wrapper.update();
       });
-    });
 
-    test('should render component', () => {
-      expect(wrapper.type()).not.toBeNull();
+      expect(getRendered(LinkButtonContentMethodology, wrapper).type()).not.toBeNull();
     });
   });
 
@@ -121,14 +146,13 @@ describe('Component|LinkButtonGroup', () => {
    */
   describe('Test LinkButtonContentAbout', () => {
     test('should render component', async () => {
-      const dom = mount(getComponent(<LinkButtonContentAbout onClose={NOOP} />));
+      wrapper = mount(getComponent(<LinkButtonContentAbout onClose={NOOP} />));
       await act(async () => {
         await new Promise(resolve => setTimeout(resolve));
-        dom.update();
-        wrapper = getRendered(LinkButtonContentAbout, dom);
+        wrapper.update();
       });
 
-      expect(wrapper.type()).not.toBeNull();
+      expect(getRendered(LinkButtonContentAbout, wrapper).type()).not.toBeNull();
     });
   });
 
@@ -136,30 +160,33 @@ describe('Component|LinkButtonGroup', () => {
    * LinkButtonContentReport
    */
   describe('Test LinkButtonContentReport', () => {
-    test('should render component', async () => {
-      const dom = mount(getComponent(<LinkButtonContentReport yearId="2020" onClose={NOOP} />));
+    beforeEach(async () => {
+      wrapper = mount(getComponent(<LinkButtonContentReport yearId="2020" onClose={NOOP} />));
       await act(async () => {
         await new Promise(resolve => setTimeout(resolve));
-        dom.update();
-        wrapper = getRendered(LinkButtonContentReport, dom);
+        wrapper.update();
       });
+    });
 
-      expect(wrapper.type()).not.toBeNull();
+    test('should render component', async () => {
+      expect(getRendered(LinkButtonContentReport, wrapper).type()).not.toBeNull();
     });
 
     test('should render tab buttons', async () => {
-      await act(async () => {
-        wrapper.findWhere(node => node.type() === Button && node.text() === 'Summary').at(0).prop('onClick')();
+      const verifyTabClick = async label => act(async () => {
+        const findButton = node => node.type() === Button && node.text() === label;
+        expect(wrapper.findWhere(findButton).at(0).prop('disabled')).toBeFalsy();
+        wrapper.findWhere(findButton).at(0).prop('onClick')();
+        await new Promise(resolve => setTimeout(resolve));
+        wrapper.update();
+        expect(wrapper.findWhere(findButton).at(0).prop('disabled')).toBeTruthy();
       });
-      await act(async () => {
-        wrapper.findWhere(node => node.type() === Button && node.text() === 'Key Findings').at(0).prop('onClick')();
-      });
-      await act(async () => {
-        wrapper.findWhere(node => node.type() === Button && node.text() === 'Assumptions').at(0).prop('onClick')();
-      });
-      await act(async () => {
-        wrapper.findWhere(node => node.type() === Button && node.text() === 'Results').at(0).prop('onClick')();
-      });
+
+      // iterate through tabs and verify the click event
+      await verifyTabClick('Key Findings');
+      await verifyTabClick('Assumptions');
+      await verifyTabClick('Results');
+      await verifyTabClick('Summary');
     });
   });
 });
