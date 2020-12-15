@@ -1,10 +1,11 @@
+/* eslint-disable no-underscore-dangle */
+/* eslint-disable no-restricted-properties */
 import React from 'react';
 import { mount } from 'enzyme';
 import { act } from 'react-dom/test-utils';
 import { Button } from '@material-ui/core';
 import EmailIcon from '@material-ui/icons/Email';
 import { saveAs } from 'file-saver';
-import Snackbar from '@material-ui/core/Snackbar';
 import { Share, DownloadButton } from '.';
 import { TestContainer, getRendered } from '../../tests/utilities';
 import { IconTwitter, IconFacebook, IconLinkedIn } from '../../icons';
@@ -44,7 +45,7 @@ const getDownloadComponent = (props, options = {}) => (
     <DownloadButton {...options} />
   </TestContainer>
 );
-
+// #region Share Buttons
 describe('Component| Share Buttons', () => {
   let wrapper;
 
@@ -56,8 +57,6 @@ describe('Component| Share Buttons', () => {
       wrapper = getRendered(Share, dom);
     });
   });
-
-  //
 
   test('should render component', () => {
     expect(wrapper.exists()).toBeTruthy();
@@ -85,30 +84,81 @@ describe('Component| Share Buttons', () => {
 
   test('should open social media links', async () => {
     // These buttons have no good identifiers to grab them by
-    const linkedInButton = wrapper.find(Button).at(1);
-    const faceBookButton = wrapper.find(Button).at(2);
-    const twitterButton = wrapper.find(Button).at(3);
-    // const emailButton = wrapper.find(Button).at(4);
+    const buttons = wrapper.find(Button);
+    const linkedInButton = buttons.at(1);
+    const faceBookButton = buttons.at(2);
+    const twitterButton = buttons.at(3);
+    const emailButton = buttons.at(4);
 
-    linkedInButton.simulate('click');
-    faceBookButton.simulate('click');
-    twitterButton.simulate('click');
-    // emailButton.simulate('click');
+    await act(
+      async () => {
+        await linkedInButton.simulate('click');
+      },
+    );
+    await act(
+      async () => {
+        await faceBookButton.simulate('click');
+      },
+    );
+    await act(
+      async () => {
+        await twitterButton.simulate('click');
+      },
+    );
 
-    await new Promise(resolve => setTimeout(resolve, 20)); // FIXME:
+    await act(
+      async () => {
+        await emailButton.simulate('click');
+      },
+    );
 
+    // FIXME: The fetch in these buttons takes an indeterminate amount of time.
+    // A workaround has not yet been found
+    await new Promise(resolve => setTimeout(resolve, 100));
+
+    // social media buttons open a pop up window
     expect(global.window.open).toHaveBeenCalledTimes(3);
-  });
 
-  test('should open copy link snack bar', () => {
-    const linkButton = wrapper.find(Button).at(0);
-
-    linkButton.simulate('click');
-    const snackBar = wrapper.find(Snackbar);
-    expect(snackBar.exists()).not.toBeNull();
+    // email redirects the href
+    expect(global.window.location.href).not.toBe('http://localhost/');
   });
 });
 
+describe('Component| Share | Copy Button', () => {
+  let wrapper;
+
+  beforeEach(async () => {
+    const dom = mount(getShareComponent({ page: 'by-region' }));
+    await act(async () => {
+      await new Promise(resolve => setTimeout(resolve));
+      dom.update();
+      wrapper = getRendered(Share, dom);
+      navigator.__defineGetter__('userAgent', () => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36'); // FIXME: this is pretty hacky
+    });
+  });
+  test('clicking button does not error with safari', async () => {
+    const fakeUserAgent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_3) AppleWebKit/537.75.14 (KHTML, like Gecko) Version/7.0.3 Safari/7046A194A';
+    navigator.__defineGetter__('userAgent', () => fakeUserAgent); // FIXME: this is pretty hacky
+    const button = wrapper.find(Button).at(0);
+
+    await act(
+      async () => {
+        button.simulate('click');
+      },
+    );
+  });
+
+  test('clicking button does not error with chrome', async () => {
+    const copyButton = wrapper.find(Button).at(0);
+
+    await act(
+      async () => {
+        await copyButton.simulate('click');
+      },
+    );
+  });
+});
+// #endregion
 // #region Download Button
 describe('Component| Download Button | By-Region', () => {
   let wrapper;
@@ -122,8 +172,6 @@ describe('Component| Download Button | By-Region', () => {
     });
   });
 
-  //
-
   test('should render component', () => {
     expect(wrapper.exists()).toBeTruthy();
   });
@@ -135,7 +183,7 @@ describe('Component| Download Button | By-Region', () => {
     expect(button.text()).toBe('Download Data');
   });
 
-  test('should be clickable', () => {
+  test('should call saveAs', () => {
     const downloadButton = wrapper.find(Button);
     downloadButton.simulate('click');
     expect(saveAs).toBeCalled();
@@ -145,7 +193,7 @@ describe('Component| Download Button | By-Region', () => {
 describe('Component| Download Button | By-Sector', () => {
   let wrapper;
 
-  test('should be clickable', async () => {
+  test('should call saveAs', async () => {
     const dom = mount(getDownloadComponent({ page: 'by-sector', sources: ['BIO'], sector: 'ALL' }));
     await act(async () => {
       await new Promise(resolve => setTimeout(resolve));
@@ -162,7 +210,7 @@ describe('Component| Download Button | By-Sector', () => {
 describe('Component| Download Button | Scenarios', () => {
   let wrapper;
 
-  test('should be clickable', async () => {
+  test('should call saveAs', async () => {
     const dom = mount(getDownloadComponent({ page: 'scenarios' }));
     await act(async () => {
       await new Promise(resolve => setTimeout(resolve));
@@ -179,7 +227,7 @@ describe('Component| Download Button | Scenarios', () => {
 describe('Component| Download Button | Electricity', () => {
   let wrapper;
 
-  test('should be clickable', async () => {
+  test('should call saveAs', async () => {
     const dom = mount(getDownloadComponent({ page: 'electricity', view: 'region', sources: ['ALL'], mainSelection: 'electricityGeneration' }));
     await act(async () => {
       await new Promise(resolve => setTimeout(resolve));
@@ -196,7 +244,7 @@ describe('Component| Download Button | Electricity', () => {
 describe('Component| Download Button | Oil-and-gas', () => {
   let wrapper;
 
-  test('should be clickable', async () => {
+  test('should call saveAs', async () => {
     const dom = mount(getDownloadComponent({ page: 'oil-and-gas', mainSelection: 'oilProduction', view: 'source', sources: ['ISB'], sourceOrder: ['ISB'] }));
     await act(async () => {
       await new Promise(resolve => setTimeout(resolve));
@@ -210,3 +258,4 @@ describe('Component| Download Button | Oil-and-gas', () => {
   });
 });
 // #endregion
+
