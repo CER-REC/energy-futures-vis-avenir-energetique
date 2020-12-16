@@ -325,8 +325,10 @@ export const DownloadButton = ({ accent }) => {
           throw new Error('Invalid data download.');
       }
     });
+    const blob = new Blob(['\uFEFF', Papa.unparse(csvData)], { type: 'text/csv;charset=utf-8;' });
+    const name = `${intl.formatMessage({ id: 'components.share.filename' })}.csv`;
 
-    saveAs(new Blob([Papa.unparse(csvData)], { type: 'text/csv;charset=utf-8;' }), `${intl.formatMessage({ id: 'components.share.filename' })}.csv`);
+    saveAs(blob, name);
   }, [config, intl, regionOrder, sourceOrder, data, headers]);
 
   const onClick = () => {
