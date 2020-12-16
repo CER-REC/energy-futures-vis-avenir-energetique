@@ -35,7 +35,7 @@ const getComponentWithNoVerticalList = props => (
 
 const getComponentWithVerticalList = props => (
   <TestContainer mockConfig={{ ...DEFAULT_CONFIG, ...props }}>
-    <PageLayout showRegion showSource>{() => <Typography>Viz</Typography>}</PageLayout>
+    <PageLayout showRegion showSource />
   </TestContainer>
 );
 
@@ -79,15 +79,14 @@ describe('Component|PageLayout', () => {
     });
 
     test('should render child components', () => {
-      expect(wrapper.findWhere(node => node.type() === Typography && node.text() === 'Exploring Canada’s Energy Future')).not.toBeNull();
-      expect(wrapper.findWhere(node => node.type() === Typography && node.text() === 'Viz')).not.toBeNull();
-      expect(wrapper.find(YearSelect)).not.toBeNull();
-      expect(wrapper.find(DownloadButton)).not.toBeNull();
-      expect(wrapper.find(PageTitle)).not.toBeNull();
-      expect(wrapper.find(ScenarioSelect)).not.toBeNull();
-      expect(wrapper.find(HorizontalControlBar)).not.toBeNull();
-      expect(wrapper.find(Share)).not.toBeNull();
-      expect(wrapper.find(PageSelect)).not.toBeNull();
+      expect(wrapper.findWhere(node => node.type() === Typography && node.text() === 'Exploring Canada’s Energy Future').exists()).toBeTruthy();
+      expect(wrapper.find(YearSelect).exists()).toBeTruthy();
+      expect(wrapper.find(DownloadButton).exists()).toBeTruthy();
+      expect(wrapper.find(PageTitle).exists()).toBeTruthy();
+      expect(wrapper.find(ScenarioSelect).exists()).toBeTruthy();
+      expect(wrapper.find(HorizontalControlBar).exists()).toBeTruthy();
+      expect(wrapper.find(Share).exists()).toBeTruthy();
+      expect(wrapper.find(PageSelect).exists()).toBeTruthy();
 
       // should render 2 vertical lists
       expect(wrapper.find(DraggableVerticalList).length).toBe(2);

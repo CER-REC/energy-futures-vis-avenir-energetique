@@ -22,9 +22,15 @@ storiesForComponent('Components|PageLayout', module, ReadMe)
       sources: ['BIO', 'COAL', 'ELECTRICITY', 'GAS', 'OIL'],
       sourceOrder: ['BIO', 'COAL', 'ELECTRICITY', 'GAS', 'OIL'],
     },
+
+    /**
+     * TODO: ignore this component in storyshots due to a known React Portal issue in testing:
+     * https://github.com/reactjs/react-modal/issues/553
+     */
+    storyshots: { disable: true },
   })
   .addDecorator(withConfigAndGQL)
-  .add('By Region', () => (
+  .add('default', () => (
     <PageLayout
       showRegion={boolean('Show Region List', false)}
       showSource={boolean('Show Source List', false)}
