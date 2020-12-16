@@ -56,7 +56,7 @@ const BySector = ({ data, year }) => {
   /**
    * The forecast bar.
    */
-  const forecast = useMemo(() => forecastLayer({ year }), [year]);
+  const forecast = useMemo(() => forecastLayer({ year, label: intl.formatMessage({ id: 'common.forecast' }) }), [year, intl]);
 
   /**
    * Format tooltip.

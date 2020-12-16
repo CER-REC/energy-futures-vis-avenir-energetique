@@ -1,4 +1,5 @@
 import React, { useMemo, useCallback, useRef } from 'react';
+import { useIntl } from 'react-intl';
 import { ResponsiveBar } from '@nivo/bar';
 import PropTypes from 'prop-types';
 import useAPI from '../../hooks/useAPI';
@@ -12,6 +13,8 @@ import VizTooltip from '../../components/VizTooltip';
 import MaxTick from '../../components/MaxTick';
 
 const ByRegion = ({ data, year }) => {
+  const intl = useIntl();
+
   const { regions } = useAPI();
   const { config } = useConfig();
 
@@ -33,7 +36,7 @@ const ByRegion = ({ data, year }) => {
   /**
    * The forecast bar.
    */
-  const forecast = useMemo(() => forecastLayer({ year }), [year]);
+  const forecast = useMemo(() => forecastLayer({ year, label: intl.formatMessage({ id: 'common.forecast' }) }), [year, intl]);
 
   /**
    * Determine the region order shown in the stacked bar chart.

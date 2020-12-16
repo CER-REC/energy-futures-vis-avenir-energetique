@@ -43,7 +43,7 @@ const Scenarios = ({ data, year }) => {
   /**
    * The forecast bar.
    */
-  const forecast = useMemo(() => forecastLayer({ year }), [year]);
+  const forecast = useMemo(() => forecastLayer({ year, label: intl.formatMessage({ id: 'common.forecast' }) }), [year, intl]);
 
   /**
    * Calculate the max tick value on y-axis.

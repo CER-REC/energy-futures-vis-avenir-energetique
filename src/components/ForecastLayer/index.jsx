@@ -1,5 +1,4 @@
 import React from 'react';
-import { useIntl } from 'react-intl';
 
 const STYLE = {
   fontSize: 13,
@@ -7,9 +6,7 @@ const STYLE = {
   fontFamily: '"FiraSansCondensed", "Roboto", "Helvetica", "Arial", sans-serif',
 };
 
-export default ({ year }) => (props) => {
-  const intl = useIntl();
-
+export default ({ year, label }) => (props) => {
   if (!year) {
     return null; // no valid year definition; do nothing
   }
@@ -36,7 +33,7 @@ export default ({ year }) => (props) => {
         fill="url(#forecastBarGradient)"
       />
       <text x={x + 5} y={-y + 14} fill="#5D5D5D" style={STYLE}>
-        {intl.formatMessage({ id: 'common.forecast' })}
+        {label || 'forecast'}
       </text>
       <path
         d={`M${x} ${-y} l0 ${height + y}`}
