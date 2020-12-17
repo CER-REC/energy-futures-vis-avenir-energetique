@@ -90,44 +90,57 @@ describe('Component| Share Buttons', () => {
     const twitterButton = buttons.at(3);
     const emailButton = buttons.at(4);
 
+    // linkedInButton.simulate('click');
+    // faceBookButton.simulate('click');
+    // twitterButton.simulate('click');
+    // emailButton.simulate('click');
+
+    // expect(global.window.open).toHaveBeenCalledTimes(3);
+    // expect(global.window.location.href).not.toBe('http://localhost/');
+
     await act(
       async () => {
         await linkedInButton.simulate('click');
+        faceBookButton.simulate('click');
+        twitterButton.simulate('click');
+        emailButton.simulate('click');
         // FIXME: The fetch in these buttons takes an indeterminate amount of time.
         // A workaround has not yet been found
         await new Promise(resolve => setTimeout(resolve, 100));
         wrapper.update();
 
         // social media buttons open a pop up window
-        expect(global.window.open).toHaveBeenCalledTimes(1);
+        // expect(global.window.open).toHaveBeenCalledTimes(1);
       },
     );
-    await act(
-      async () => {
-        await faceBookButton.simulate('click');
-        await new Promise(resolve => setTimeout(resolve, 100));
-        wrapper.update();
-        expect(global.window.open).toHaveBeenCalledTimes(2);
-      },
-    );
-    await act(
-      async () => {
-        await twitterButton.simulate('click');
-        await new Promise(resolve => setTimeout(resolve, 100));
-        wrapper.update();
-        expect(global.window.open).toHaveBeenCalledTimes(3);
-      },
-    );
+    expect(global.window.open).toHaveBeenCalledTimes(3);
+    expect(global.window.location.href).not.toBe('http://localhost/');
+    // await act(
+    //   async () => {
+    //     await faceBookButton.simulate('click');
+    //     await new Promise(resolve => setTimeout(resolve, 100));
+    //     wrapper.update();
+    //     expect(global.window.open).toHaveBeenCalledTimes(2);
+    //   },
+    // );
+    // await act(
+    //   async () => {
+    //     await twitterButton.simulate('click');
+    //     await new Promise(resolve => setTimeout(resolve, 100));
+    //     wrapper.update();
+    //     expect(global.window.open).toHaveBeenCalledTimes(3);
+    //   },
+    // );
 
-    await act(
-      async () => {
-        await emailButton.simulate('click');
-        await new Promise(resolve => setTimeout(resolve, 100));
-        wrapper.update();
-        // email redirects the href
-        expect(global.window.location.href).not.toBe('http://localhost/');
-      },
-    );
+    // await act(
+    //   async () => {
+    //     await emailButton.simulate('click');
+    //     await new Promise(resolve => setTimeout(resolve, 100));
+    //     wrapper.update();
+    //     // email redirects the href
+    //     expect(global.window.location.href).not.toBe('http://localhost/');
+    //   },
+    // );
   });
 });
 
