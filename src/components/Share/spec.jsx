@@ -90,98 +90,85 @@ describe('Component| Share Buttons', () => {
     const twitterButton = buttons.at(3);
     const emailButton = buttons.at(4);
 
-    // linkedInButton.simulate('click');
-    // faceBookButton.simulate('click');
-    // twitterButton.simulate('click');
-    // emailButton.simulate('click');
-
-    // expect(global.window.open).toHaveBeenCalledTimes(3);
-    // expect(global.window.location.href).not.toBe('http://localhost/');
-
     await act(
       async () => {
         await linkedInButton.simulate('click');
-        faceBookButton.simulate('click');
-        twitterButton.simulate('click');
-        emailButton.simulate('click');
         // FIXME: The fetch in these buttons takes an indeterminate amount of time.
         // A workaround has not yet been found
         await new Promise(resolve => setTimeout(resolve, 100));
         wrapper.update();
 
         // social media buttons open a pop up window
-        // expect(global.window.open).toHaveBeenCalledTimes(1);
+        expect(global.window.open).toHaveBeenCalledTimes(1);
       },
     );
-    expect(global.window.open).toHaveBeenCalledTimes(3);
-    expect(global.window.location.href).not.toBe('http://localhost/');
-    // await act(
-    //   async () => {
-    //     await faceBookButton.simulate('click');
-    //     await new Promise(resolve => setTimeout(resolve, 100));
-    //     wrapper.update();
-    //     expect(global.window.open).toHaveBeenCalledTimes(2);
-    //   },
-    // );
-    // await act(
-    //   async () => {
-    //     await twitterButton.simulate('click');
-    //     await new Promise(resolve => setTimeout(resolve, 100));
-    //     wrapper.update();
-    //     expect(global.window.open).toHaveBeenCalledTimes(3);
-    //   },
-    // );
-
-    // await act(
-    //   async () => {
-    //     await emailButton.simulate('click');
-    //     await new Promise(resolve => setTimeout(resolve, 100));
-    //     wrapper.update();
-    //     // email redirects the href
-    //     expect(global.window.location.href).not.toBe('http://localhost/');
-    //   },
-    // );
-  });
-});
-
-describe('Component| Share | Copy Button', () => {
-  let wrapper;
-
-  beforeEach(async () => {
-    wrapper = mount(getShareComponent({ page: 'by-region' }));
-    await act(async () => {
-      await new Promise(resolve => setTimeout(resolve));
-      wrapper.update();
-      navigator.__defineGetter__('userAgent', () => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36'); // FIXME: this is pretty hacky
-    });
-  });
-
-  test('clicking button does not error with safari', async () => {
-    const fakeUserAgent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_3) AppleWebKit/537.75.14 (KHTML, like Gecko) Version/7.0.3 Safari/7046A194A';
-    navigator.__defineGetter__('userAgent', () => fakeUserAgent); // FIXME: this is pretty hacky
-    // const button = wrapper.find(Button).at(0);
-
-    // expect(wrapper.find(Dialog).prop('open')).toBe(false);
     await act(
       async () => {
-        wrapper.find(Button).at(0).simulate('click');
-        await new Promise(resolve => setTimeout(resolve));
+        await faceBookButton.simulate('click');
+        await new Promise(resolve => setTimeout(resolve, 100));
         wrapper.update();
+        expect(global.window.open).toHaveBeenCalledTimes(2);
       },
     );
-    // expect(wrapper.find(Dialog).prop('open')).toBe(true);
-  });
-
-  test('clicking button does not error with chrome', async () => {
     await act(
       async () => {
-        await wrapper.find(Button).at(0).simulate('click');
-        await new Promise(resolve => setTimeout(resolve));
+        await twitterButton.simulate('click');
+        await new Promise(resolve => setTimeout(resolve, 100));
         wrapper.update();
+        expect(global.window.open).toHaveBeenCalledTimes(3);
+      },
+    );
+
+    await act(
+      async () => {
+        await emailButton.simulate('click');
+        await new Promise(resolve => setTimeout(resolve, 100));
+        wrapper.update();
+        // email redirects the href
+        expect(global.window.location.href).not.toBe('http://localhost/');
       },
     );
   });
 });
+
+// describe('Component| Share | Copy Button', () => {
+//   let wrapper;
+
+//   beforeEach(async () => {
+//     wrapper = mount(getShareComponent({ page: 'by-region' }));
+//     await act(async () => {
+//       await new Promise(resolve => setTimeout(resolve));
+//       wrapper.update();
+//       navigator.__defineGetter__('userAgent', () => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36'); // FIXME: this is pretty hacky
+//     });
+//   });
+
+//   test('clicking button does not error with safari', async () => {
+//     const fakeUserAgent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_3) AppleWebKit/537.75.14 (KHTML, like Gecko) Version/7.0.3 Safari/7046A194A';
+//     navigator.__defineGetter__('userAgent', () => fakeUserAgent); // FIXME: this is pretty hacky
+//     // const button = wrapper.find(Button).at(0);
+
+//     // expect(wrapper.find(Dialog).prop('open')).toBe(false);
+//     await act(
+//       async () => {
+//         wrapper.find(Button).at(0).simulate('click');
+//         await new Promise(resolve => setTimeout(resolve));
+//         wrapper.update();
+//       },
+//     );
+//     // expect(wrapper.find(Dialog).prop('open')).toBe(true);
+//   });
+
+//   test('clicking button does not error with chrome', async () => {
+//     await act(
+//       async () => {
+//         await wrapper.find(Button).at(0).simulate('click');
+//         await new Promise(resolve => setTimeout(resolve));
+//         wrapper.update();
+//       },
+//     );
+//   });
+// });
 // #endregion
 // #region Download Button
 describe('Component| Download Button | By-Region', () => {
