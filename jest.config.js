@@ -17,11 +17,13 @@ module.exports = {
   // An array of regexp pattern strings used to skip coverage collection
   coveragePathIgnorePatterns: [
     '/node_modules/',
-    '<rootDir>/src/components/Modal/index.jsx',
     '<rootDir>/src/queries/',
     '<rootDir>/src/tests/',
     '/(.*\\.)?spec.jsx?',
     '/(.*\\.)?stories.jsx?',
+
+    // TODO: temporarily disable viz 5 until it is actually desinged and implemented.
+    '<rootDir>/src/pages/Demand/',
   ],
 
   // A list of reporter names that Jest uses when writing coverage reports
@@ -52,7 +54,6 @@ module.exports = {
   // matched tests are skipped
   testPathIgnorePatterns: [
     '/node_modules/',
-    '/Modal/spec.jsx',
     '/_template/spec.jsx',
   ],
 
