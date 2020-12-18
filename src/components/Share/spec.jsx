@@ -1,6 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable no-restricted-properties */
 import React from 'react';
+import nock from 'nock';
 import { mount } from 'enzyme';
 import { act } from 'react-dom/test-utils';
 import { Button } from '@material-ui/core';
@@ -83,6 +84,20 @@ describe('Component| Share Buttons', () => {
   });
 
   test('should open social media links', async () => {
+    const getMockPromise = () => {
+      const bitlyDomain = 'http://localhost/bitlyService';
+      const promise = new Promise((resolve) => {
+        const scope = nock(bitlyDomain)
+          .get(/.*/)
+          .reply(200, {
+            data: { url: 'https://bit.ly/2W6hHBG' },
+          });
+        // Timeout's needed to move the assertions to the end of the process queue
+        scope.on('replied', () => setTimeout(resolve));
+      });
+      return promise;
+    };
+
     // These buttons have no good identifiers to grab them by
     const buttons = wrapper.find(Button);
     const linkedInButton = buttons.at(1);
@@ -90,44 +105,32 @@ describe('Component| Share Buttons', () => {
     const twitterButton = buttons.at(3);
     const emailButton = buttons.at(4);
 
-    await act(
-      async () => {
-        linkedInButton.simulate('click');
-        // FIXME: The fetch in these buttons takes an indeterminate amount of time.
-        // A workaround has not yet been found
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        wrapper.update();
+    let mockPromise = getMockPromise();
 
-        // social media buttons open a pop up window
-        expect(global.window.open).toHaveBeenCalledTimes(1);
-      },
-    );
-    await act(
-      async () => {
-        faceBookButton.simulate('click');
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        wrapper.update();
-        expect(global.window.open).toHaveBeenCalledTimes(2);
-      },
-    );
-    await act(
-      async () => {
-        twitterButton.simulate('click');
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        wrapper.update();
-        expect(global.window.open).toHaveBeenCalledTimes(3);
-      },
-    );
+    linkedInButton.simulate('click');
+    // FIXME: The fetch in these buttons takes an indeterminate amount of time.
+    // A workaround has not yet been found
+    await mockPromise;
+    expect(global.window.open).toHaveBeenCalledTimes(1);
 
-    await act(
-      async () => {
-        emailButton.simulate('click');
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        wrapper.update();
-        // email redirects the href
-        expect(global.window.location.href).not.toBe('http://localhost/');
-      },
-    );
+    faceBookButton.simulate('click');
+    mockPromise = getMockPromise();
+
+    await mockPromise;
+    expect(global.window.open).toHaveBeenCalledTimes(2);
+
+    twitterButton.simulate('click');
+    mockPromise = getMockPromise();
+    await mockPromise;
+
+    expect(global.window.open).toHaveBeenCalledTimes(3);
+
+    emailButton.simulate('click');
+    mockPromise = getMockPromise();
+    await mockPromise;
+
+    // email redirects the href
+    expect(global.window.location.href).not.toBe('http://localhost/');
   });
 });
 
