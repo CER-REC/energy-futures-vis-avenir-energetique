@@ -108,8 +108,6 @@ describe('Component| Share Buttons', () => {
     let mockPromise = getMockPromise();
 
     linkedInButton.simulate('click');
-    // FIXME: The fetch in these buttons takes an indeterminate amount of time.
-    // A workaround has not yet been found
     await mockPromise;
     expect(global.window.open).toHaveBeenCalledTimes(1);
 
@@ -149,9 +147,7 @@ describe('Component| Share | Copy Button', () => {
   test('clicking button does not error with safari', async () => {
     const fakeUserAgent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_3) AppleWebKit/537.75.14 (KHTML, like Gecko) Version/7.0.3 Safari/7046A194A';
     navigator.__defineGetter__('userAgent', () => fakeUserAgent); // FIXME: this is pretty hacky
-    // const button = wrapper.find(Button).at(0);
 
-    // expect(wrapper.find(Dialog).prop('open')).toBe(false);
     await act(
       async () => {
         wrapper.find(Button).at(0).simulate('click');
@@ -159,7 +155,6 @@ describe('Component| Share | Copy Button', () => {
         wrapper.update();
       },
     );
-    // expect(wrapper.find(Dialog).prop('open')).toBe(true);
   });
 
   test('clicking button does not error with chrome', async () => {
