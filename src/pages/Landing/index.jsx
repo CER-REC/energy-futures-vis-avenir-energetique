@@ -17,7 +17,7 @@ import portalBySector from './portal_by_sector.jpg';
 import portalElectricity from './portal_electricity.jpg';
 import portalScenarios from './portal_scenarios.jpg';
 import portalOilAndGas from './portal_oil_and_gas.jpg';
-import portalDemand from './portal_demand.jpg';
+// import portalDemand from './portal_demand.jpg';
 import reportCoverEn from './report_cover_en.png';
 import reportCoverFr from './report_cover_fr.png';
 
@@ -166,7 +166,8 @@ const getBg = (page) => {
     case 'electricity': return portalElectricity;
     case 'scenarios': return portalScenarios;
     case 'oil-and-gas': return portalOilAndGas;
-    case 'demand': default: return portalDemand;
+    // case 'demand':
+    default: return portalByRegion;
   }
 };
 
@@ -230,7 +231,6 @@ const Landing = () => {
           <Grid item className={classes.download}>
             <Typography variant="h6" color="secondary">{intl.formatMessage({ id: 'landing.links.title' })}</Typography>
             <ButtonBase
-              id="button-download-report"
               aria-label={intl.formatMessage({ id: 'common.a11y.downloadReport' })}
               href={intl.formatMessage({ id: 'landing.links.download.link' })}
               target="_about"
@@ -239,7 +239,6 @@ const Landing = () => {
               <img src={intl.locale === 'fr' ? reportCoverFr : reportCoverEn} alt={intl.formatMessage({ id: 'common.a11y.downloadReport' })} />
             </ButtonBase>
             <Button
-              id="button-past-reports"
               color="primary"
               startIcon={<IconExternal />}
               href={intl.formatMessage({ id: 'landing.links.view.link' })}
@@ -261,7 +260,6 @@ const Landing = () => {
           {PAGES.map(page => page.id !== 'landing' && (
             <Grid key={`landing-box-${page.id}`} item xs={desktop ? 6 : 12}>
               <ButtonBase
-                id={`page-portal-${page.id}`}
                 aria-label={`${intl.formatMessage({ id: 'common.a11y.redirect' })} ${page.label}`}
                 onClick={handleRedirect(page.id)}
                 className={`${classes.box} ${desktop ? classes.boxDesktop : ''}`.trim()}
