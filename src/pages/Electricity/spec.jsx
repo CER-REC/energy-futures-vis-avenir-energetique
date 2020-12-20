@@ -8,11 +8,18 @@ import { TestContainer, getRendered } from '../../tests/utilities';
 import YearSlider from '../../components/YearSlider';
 import { DEFAULT_CONFIG, MOCK_DATA_REGION, MOCK_DATA_SINGLE, MOCK_DATA_SOURCE, MOCK_YEAR } from './stories';
 
-const getComponent = (data, props) => (
-  <TestContainer mockConfig={{ ...DEFAULT_CONFIG, ...props }}>
-    <Electricity data={data} year={MOCK_YEAR} />
-  </TestContainer>
-);
+const getComponent = (data, props, desktop) => {
+  global.matchMedia = media => ({
+    addListener: () => {},
+    removeListener: () => {},
+    matches: desktop && media === '(min-width: 992px)',
+  });
+  return (
+    <TestContainer mockConfig={{ ...DEFAULT_CONFIG, ...props }}>
+      <Electricity data={data} year={MOCK_YEAR} />
+    </TestContainer>
+  );
+};
 
 const locateText = text => node => node.type() === Typography && node.text() === text;
 
@@ -24,16 +31,15 @@ describe('Page|Electricity', () => {
    */
   describe('Test view by region', () => {
     beforeEach(async () => {
-      const dom = mount(getComponent({ 2005: MOCK_DATA_REGION }, { baseYear: 2005 }));
+      wrapper = mount(getComponent(MOCK_DATA_REGION, { baseYear: 2005 }));
       await act(async () => {
         await new Promise(resolve => setTimeout(resolve));
-        dom.update();
-        wrapper = getRendered(Electricity, dom);
+        wrapper.update();
       });
     });
 
     test('should render component', () => {
-      expect(wrapper.type()).not.toBeNull();
+      expect(getRendered(Electricity, wrapper).type()).not.toBeNull();
     });
 
     test('should render viz properties', async () => {
@@ -42,12 +48,12 @@ describe('Page|Electricity', () => {
         wrapper.find(YearSlider).prop('onYearChange')(2006);
       });
 
-      Object.keys(MOCK_DATA_REGION).forEach((region) => {
+      Object.keys(MOCK_DATA_REGION[2005]).forEach((region) => {
         // bubble group
         expect(wrapper.find(`#bubble-group-${region}`).exists()).toBeTruthy();
 
         // num of bubble nodes + region label
-        expect(wrapper.find(`#bubble-group-${region}`).children()).toHaveLength(MOCK_DATA_REGION[region].length + 1);
+        expect(wrapper.find(`#bubble-group-${region}`).children()).toHaveLength(MOCK_DATA_REGION[2005][region].length + 1);
 
         // region lable text
         expect(wrapper.findWhere(locateText(region)).exists()).toBeTruthy();
@@ -64,25 +70,24 @@ describe('Page|Electricity', () => {
    */
   describe('Test view by source', () => {
     beforeEach(async () => {
-      const dom = mount(getComponent({ 2005: MOCK_DATA_SOURCE }, { view: 'source' }));
+      wrapper = mount(getComponent(MOCK_DATA_SOURCE, { view: 'source' }));
       await act(async () => {
         await new Promise(resolve => setTimeout(resolve));
-        dom.update();
-        wrapper = getRendered(Electricity, dom);
+        wrapper.update();
       });
     });
 
     test('should render component', () => {
-      expect(wrapper.type()).not.toBeNull();
+      expect(getRendered(Electricity, wrapper).type()).not.toBeNull();
     });
 
     test('should render viz properties', async () => {
-      Object.keys(MOCK_DATA_SOURCE).forEach((source) => {
+      Object.keys(MOCK_DATA_SOURCE[2005]).forEach((source) => {
         // bubble group
         expect(wrapper.find(`#bubble-group-${source}`).exists()).toBeTruthy();
 
         // num of bubble nodes + source label
-        expect(wrapper.find(`#bubble-group-${source}`).children()).toHaveLength(MOCK_DATA_SOURCE[source].length + 1);
+        expect(wrapper.find(`#bubble-group-${source}`).children()).toHaveLength(MOCK_DATA_SOURCE[2005][source].length + 1);
       });
 
       // annotation
@@ -96,16 +101,17 @@ describe('Page|Electricity', () => {
    */
   describe('Test single bubble chart', () => {
     beforeEach(async () => {
-      const dom = mount(getComponent({ 2005: MOCK_DATA_SINGLE }));
+      wrapper = mount(getComponent(MOCK_DATA_SINGLE));
       await act(async () => {
         await new Promise(resolve => setTimeout(resolve));
-        dom.update();
-        wrapper = getRendered(Electricity, dom);
+        wrapper.update();
       });
     });
 
     test('should render component', () => {
-      expect(wrapper.type()).not.toBeNull();
+      expect(getRendered(Electricity, wrapper).type()).not.toBeNull();
+
+      // single bubble visible
       expect(wrapper.find('#single-bubble-legend').exists()).toBeTruthy();
     });
   });
@@ -115,13 +121,46 @@ describe('Page|Electricity', () => {
    */
   describe('Test with invalid data structure', () => {
     test('should NOT render component', async () => {
-      const dom = mount(getComponent(null));
+      wrapper = mount(getComponent(null));
       await act(async () => {
         await new Promise(resolve => setTimeout(resolve));
-        dom.update();
+        wrapper.update();
 
-        expect(getRendered(Electricity, dom).exists()).toBeFalsy();
+        expect(getRendered(Electricity, wrapper).exists()).toBeFalsy();
       });
+    });
+  });
+
+  /**
+   * Responsiveness
+   */
+  describe('Test responsiveness', () => {
+    test('should render in tablet mode', async () => {
+      wrapper = mount(getComponent(MOCK_DATA_SINGLE));
+      await act(async () => {
+        await new Promise(resolve => setTimeout(resolve));
+        wrapper.update();
+      });
+
+      // should render
+      expect(getRendered(Electricity, wrapper).type()).not.toBeNull();
+
+      // verify legend location
+      expect(wrapper.find('#single-bubble-legend').prop('style').right).toEqual('calc(-100% - 200px)');
+    });
+
+    test('should render in desktop mode', async () => {
+      wrapper = mount(getComponent(MOCK_DATA_SINGLE, {}, true));
+      await act(async () => {
+        await new Promise(resolve => setTimeout(resolve));
+        wrapper.update();
+      });
+
+      // should render
+      expect(getRendered(Electricity, wrapper).type()).not.toBeNull();
+
+      // verify legend location
+      expect(wrapper.find('#single-bubble-legend').prop('style').right).toEqual('calc(-100% - 100px)');
     });
   });
 });

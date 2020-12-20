@@ -132,7 +132,7 @@ const COORD = {
   COAL: { top: '45%', left: '75%' },
 };
 
-const Electricity = ({ data, year, hideYearSlider }) => {
+const Electricity = ({ data, year }) => {
   const classes = useStyles();
 
   const intl = useIntl();
@@ -339,15 +339,13 @@ const Electricity = ({ data, year, hideYearSlider }) => {
       ))}
 
       {/* below are the controls for the year playback */}
-      {!hideYearSlider && (
-        <YearSlider
-          year={currYear}
-          onYearChange={value => setCurrYear(value)}
-          min={year.min}
-          max={year.max}
-          forecast={year.forecastStart}
-        />
-      )}
+      <YearSlider
+        year={currYear}
+        onYearChange={value => setCurrYear(value)}
+        min={year.min}
+        max={year.max}
+        forecast={year.forecastStart}
+      />
     </div>
   );
 };
@@ -359,13 +357,11 @@ Electricity.propTypes = {
     max: PropTypes.number,
     forecastStart: PropTypes.number,
   }),
-  hideYearSlider: PropTypes.bool,
 };
 
 Electricity.defaultProps = {
   data: undefined,
   year: undefined,
-  hideYearSlider: false,
 };
 
 export default Electricity;
