@@ -4,6 +4,7 @@ import { act } from 'react-dom/test-utils';
 import { Typography, Link } from '@material-ui/core';
 
 import PageLayout from '.';
+import analytics from '../../analytics';
 import { TestContainer, getRendered } from '../../tests/utilities';
 import YearSelect from '../YearSelect';
 import { DownloadButton, Share } from '../Share';
@@ -27,11 +28,20 @@ const DEFAULT_CONFIG = {
   sourceOrder: ['BIO', 'COAL', 'ELECTRICITY', 'GAS', 'OIL'],
 };
 
-const getComponentWithNoVerticalList = props => (
-  <TestContainer mockConfig={{ ...DEFAULT_CONFIG, ...props }}>
-    <PageLayout />
-  </TestContainer>
-);
+const spyAnalytics = jest.spyOn(analytics, 'reportNav');
+
+const getComponentWithNoVerticalList = (props, desktop) => {
+  global.matchMedia = media => ({
+    addListener: () => {},
+    removeListener: () => {},
+    matches: desktop && media === '(min-width: 992px)',
+  });
+  return (
+    <TestContainer mockConfig={{ ...DEFAULT_CONFIG, ...props }}>
+      <PageLayout />
+    </TestContainer>
+  );
+};
 
 const getComponentWithVerticalList = props => (
   <TestContainer mockConfig={{ ...DEFAULT_CONFIG, ...props }}>
@@ -47,11 +57,10 @@ describe('Component|PageLayout', () => {
    */
   describe('Test basic page layout with no vertical lists', () => {
     beforeEach(async () => {
-      const dom = mount(getComponentWithNoVerticalList({ page: 'scenarios' }));
+      wrapper = mount(getComponentWithNoVerticalList({ page: 'scenarios' }));
       await act(async () => {
         await new Promise(resolve => setTimeout(resolve));
-        dom.update();
-        wrapper = getRendered(PageLayout, dom);
+        wrapper.update();
       });
     });
 
@@ -66,19 +75,18 @@ describe('Component|PageLayout', () => {
    */
   describe('Test basic page layout with 2 vertical lists', () => {
     beforeEach(async () => {
-      const dom = mount(getComponentWithVerticalList());
+      wrapper = mount(getComponentWithVerticalList());
       await act(async () => {
         await new Promise(resolve => setTimeout(resolve));
-        dom.update();
-        wrapper = getRendered(PageLayout, dom);
+        wrapper.update();
       });
     });
 
     test('should render component', () => {
-      expect(wrapper.type()).not.toBeNull();
+      expect(getRendered(PageLayout, wrapper).type()).not.toBeNull();
     });
 
-    test('should render child components', () => {
+    test('should render child components', async () => {
       expect(wrapper.findWhere(node => node.type() === Typography && node.text() === 'Exploring Canada’s Energy Future').exists()).toBeTruthy();
       expect(wrapper.find(YearSelect).exists()).toBeTruthy();
       expect(wrapper.find(DownloadButton).exists()).toBeTruthy();
@@ -91,7 +99,11 @@ describe('Component|PageLayout', () => {
       // should render 2 vertical lists
       expect(wrapper.find(DraggableVerticalList).length).toBe(2);
 
-      wrapper.find(Link).at(0).simulate('click');
+      // verify the headerlink has been triggered
+      await act(async () => {
+        wrapper.find(Link).at(0).simulate('click');
+        expect(spyAnalytics).toBeCalled();
+      });
     });
   });
 
@@ -100,16 +112,15 @@ describe('Component|PageLayout', () => {
    */
   describe('Test invalid base year value', () => {
     beforeEach(async () => {
-      const dom = mount(getComponentWithNoVerticalList({ baseYear: 2077 }));
+      wrapper = mount(getComponentWithNoVerticalList({ baseYear: 2077 }));
       await act(async () => {
         await new Promise(resolve => setTimeout(resolve));
-        dom.update();
-        wrapper = getRendered(PageLayout, dom);
+        wrapper.update();
       });
     });
 
     test('should NOT render component', () => {
-      expect(wrapper.exists()).toBeFalsy();
+      expect(getRendered(PageLayout, wrapper).exists()).toBeFalsy();
     });
   });
 
@@ -118,16 +129,15 @@ describe('Component|PageLayout', () => {
    */
   describe('Test invalid compare year value', () => {
     beforeEach(async () => {
-      const dom = mount(getComponentWithNoVerticalList({ compareYear: 2077 }));
+      wrapper = mount(getComponentWithNoVerticalList({ compareYear: 2077 }));
       await act(async () => {
         await new Promise(resolve => setTimeout(resolve));
-        dom.update();
-        wrapper = getRendered(PageLayout, dom);
+        wrapper.update();
       });
     });
 
     test('should NOT render component', () => {
-      expect(wrapper.exists()).toBeFalsy();
+      expect(getRendered(PageLayout, wrapper).exists()).toBeFalsy();
     });
   });
 
@@ -135,21 +145,15 @@ describe('Component|PageLayout', () => {
    * Basic page layout with responsiveness
    */
   describe('Test responsiveness', () => {
-    beforeEach(async () => {
-      const dom = mount(getComponentWithNoVerticalList());
+    test('should render in tablet mode', async () => {
+      wrapper = mount(getComponentWithNoVerticalList());
       await act(async () => {
         await new Promise(resolve => setTimeout(resolve));
-        dom.update();
-        wrapper = getRendered(PageLayout, dom);
+        wrapper.update();
       });
-    });
 
-    test('should render in tablet mode', () => {
-      global.matchMedia = media => ({
-        addListener: () => {},
-        removeListener: () => {},
-        matches: media === '(min-width: 992px)',
-      });
+      // should render
+      expect(getRendered(PageLayout, wrapper).type()).not.toBeNull();
 
       // verify the shape of different components
       expect(wrapper.find(PageSelect).prop('direction')).toBe('row');
@@ -157,12 +161,15 @@ describe('Component|PageLayout', () => {
       expect(wrapper.find(Share).prop('direction')).toBe('row');
     });
 
-    test('should render in desktop mode', () => {
-      global.matchMedia = media => ({
-        addListener: () => {},
-        removeListener: () => {},
-        matches: media !== '(min-width: 992px)',
+    test('should render in desktop mode', async () => {
+      wrapper = mount(getComponentWithNoVerticalList({}, true));
+      await act(async () => {
+        await new Promise(resolve => setTimeout(resolve));
+        wrapper.update();
       });
+
+      // should render
+      expect(getRendered(PageLayout, wrapper).type()).not.toBeNull();
 
       // verify the shape of different components
       expect(wrapper.find(PageSelect).prop('direction')).toBe('column');
