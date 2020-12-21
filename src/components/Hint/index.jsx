@@ -281,7 +281,7 @@ const HintSectionNav = () => {
 /**
  * Hint panel for the question mark on top of the draggable region list.
  */
-export const HintRegionList = ({ children }) => {
+export const HintRegionList = ({ children, disabled }) => {
   const intl = useIntl();
   const { regions } = useAPI();
   const list = useMemo(() => ['ALL', ...regions.order].map(region => ({
@@ -292,19 +292,18 @@ export const HintRegionList = ({ children }) => {
   })), [intl, regions]);
   const sections = [
     <HintSection section={list} singleColumn />,
-    <Divider style={{ margin: '16px 0' }} />,
-    <HintSectionNav />,
+    ...disabled ? [] : [<Divider style={{ margin: '16px 0' }} />, <HintSectionNav />],
   ];
   return <Hint label="region" content={sections} maxWidth="xs">{children}</Hint>;
 };
 
-HintRegionList.propTypes = { children: PropTypes.node };
+HintRegionList.propTypes = { children: PropTypes.node, disabled: PropTypes.bool.isRequired };
 HintRegionList.defaultProps = { children: null };
 
 /**
  * Hint panel for the question mark on top of the draggable source list.
  */
-export const HintSourceList = ({ sources, sourceType, children }) => {
+export const HintSourceList = ({ sources, sourceType, children, disabled }) => {
   const intl = useIntl();
   const list = useMemo(() => Object.keys(sources).map(source => ({
     title: sources[source].label,
@@ -313,8 +312,7 @@ export const HintSourceList = ({ sources, sourceType, children }) => {
   })), [intl, sources, sourceType]);
   const sections = [
     <HintSection section={list} singleColumn />,
-    <Divider style={{ margin: '16px 0' }} />,
-    <HintSectionNav />,
+    ...disabled ? [] : [<Divider style={{ margin: '16px 0' }} />, <HintSectionNav />],
   ];
   return <Hint label="source" content={sections}>{children}</Hint>;
 };
@@ -322,6 +320,7 @@ export const HintSourceList = ({ sources, sourceType, children }) => {
 HintSourceList.propTypes = {
   sources: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   sourceType: PropTypes.string.isRequired,
+  disabled: PropTypes.bool.isRequired,
   children: PropTypes.node,
 };
 HintSourceList.defaultProps = { children: null };
