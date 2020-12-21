@@ -160,7 +160,7 @@ const DraggableVerticalList = ({
 
   return (
     <DragDropContext onDragEnd={handleDragEnd}>
-      {title === 'Region' ? <HintRegionList items={defaultItems} disabled={disabled} /> : <HintSourceList sources={defaultItems} sourceType={sourceType} disabled={disabled} />}
+      {title === 'Region' ? <HintRegionList items={defaultItems} disableKeyboardNav={disabled} /> : <HintSourceList sources={defaultItems} sourceType={sourceType} disableKeyboardNav={disabled} />}
       <Droppable droppableId="droppable" isDropDisabled={disabled}>
         {(provided, snapshot) => (
           <Grid
