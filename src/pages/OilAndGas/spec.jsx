@@ -35,7 +35,7 @@ describe('Page|OilAndGas', () => {
     });
 
     test('should render component', () => {
-      expect(getRendered(OilAndGas, wrapper).type()).not.toBeNull();
+      expect(getRendered(OilAndGas, wrapper).exists()).toBeTruthy();
     });
 
     test('should render viz properties', async () => {
@@ -106,7 +106,7 @@ describe('Page|OilAndGas', () => {
     });
 
     test('should render component', () => {
-      expect(getRendered(OilAndGas, wrapper).type()).not.toBeNull();
+      expect(getRendered(OilAndGas, wrapper).exists()).toBeTruthy();
     });
 
     test('should render treemaps', async () => {
@@ -136,7 +136,7 @@ describe('Page|OilAndGas', () => {
     });
 
     test('should render component', () => {
-      expect(getRendered(OilAndGas, wrapper).type()).not.toBeNull();
+      expect(getRendered(OilAndGas, wrapper).exists()).toBeTruthy();
     });
 
     test('should render button', async () => {
@@ -158,7 +158,7 @@ describe('Page|OilAndGas', () => {
         await new Promise(resolve => setTimeout(resolve));
         wrapper.update();
 
-        expect(getRendered(OilAndGas, wrapper).type()).not.toBeNull();
+        expect(getRendered(OilAndGas, wrapper).exists()).toBeTruthy();
       });
     });
   });
