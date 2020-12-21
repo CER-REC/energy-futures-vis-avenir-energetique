@@ -66,11 +66,11 @@ describe('Component| Share Buttons', () => {
   test('should render share buttons', () => {
     const buttons = wrapper.find(Button);
     expect(buttons.length).toBe(5);
-    expect(wrapper.find(IconTwitter).exists()).not.toBeNull();
-    expect(wrapper.find(IconFacebook).exists()).not.toBeNull();
-    expect(wrapper.find(IconLinkedIn).exists()).not.toBeNull();
-    expect(wrapper.find(IconTwitter).exists()).not.toBeNull();
-    expect(wrapper.find(EmailIcon).exists()).not.toBeNull();
+    expect(wrapper.find(IconTwitter).exists()).toBeTruthy();
+    expect(wrapper.find(IconFacebook).exists()).toBeTruthy();
+    expect(wrapper.find(IconLinkedIn).exists()).toBeTruthy();
+    expect(wrapper.find(IconTwitter).exists()).toBeTruthy();
+    expect(wrapper.find(EmailIcon).exists()).toBeTruthy();
   });
 
   test('should open correct item', () => {
