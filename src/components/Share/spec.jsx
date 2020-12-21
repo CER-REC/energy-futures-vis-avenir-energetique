@@ -66,11 +66,11 @@ describe('Component| Share Buttons', () => {
   test('should render share buttons', () => {
     const buttons = wrapper.find(Button);
     expect(buttons.length).toBe(5);
-    expect(wrapper.find(IconTwitter)).not.toBeNull();
-    expect(wrapper.find(IconFacebook)).not.toBeNull();
-    expect(wrapper.find(IconLinkedIn)).not.toBeNull();
-    expect(wrapper.find(IconTwitter)).not.toBeNull();
-    expect(wrapper.find(EmailIcon)).not.toBeNull();
+    expect(wrapper.find(IconTwitter).exists()).not.toBeNull();
+    expect(wrapper.find(IconFacebook).exists()).not.toBeNull();
+    expect(wrapper.find(IconLinkedIn).exists()).not.toBeNull();
+    expect(wrapper.find(IconTwitter).exists()).not.toBeNull();
+    expect(wrapper.find(EmailIcon).exists()).not.toBeNull();
   });
 
   test('should open correct item', () => {
@@ -132,7 +132,7 @@ describe('Component| Share Buttons', () => {
   });
 });
 
-describe('Component| Share | Copy Button', () => {
+describe('Component|Share|Copy Button', () => {
   let wrapper;
 
   beforeEach(async () => {
