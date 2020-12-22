@@ -282,7 +282,7 @@ const Electricity = ({ data, year }) => {
           onOpen={() => handleEventUpdate(entry)}
           classes={{ tooltip: classes.tooltip }}
         >
-          <div id={`bubble-group-${entry.name}`} className={classes.region} style={entry.style}>
+          <div className={classes.region} style={entry.style}>
             {entry.nodes.map((node, index, list) => {
               /**
                * This simplified algorithm uses the chord length as an approximate of the
@@ -330,7 +330,7 @@ const Electricity = ({ data, year }) => {
 
             {/* static legend shown beside a single province */}
             {single && (
-              <div id="single-bubble-legend" className={classes.legend} style={{ right: `calc(-100% - ${desktop ? 100 : 200}px)` }}>
+              <div className={classes.legend} style={{ right: `calc(-100% - ${desktop ? 100 : 200}px)` }}>
                 <VizTooltip nodes={entry.nodes} unit={config.unit} />
               </div>
             )}
