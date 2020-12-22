@@ -40,7 +40,7 @@ const getBitlyURL = () => {
       }
 
       return data.data.url;
-    }).catch(() => document.location.href);
+    }).catch(() => document?.location.href);
 };
 
 const openShareWindow = baseUrl => getBitlyURL().then(bitlyUrl => window.open(
