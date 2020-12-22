@@ -40,7 +40,7 @@ const getBitlyURL = () => {
       }
 
       return data.data.url;
-    }).catch(() => document?.location.href || 'localhost:6000/energy-future');
+    }).catch(() => document?.location.href);
 };
 
 const openShareWindow = baseUrl => getBitlyURL().then(bitlyUrl => window.open(

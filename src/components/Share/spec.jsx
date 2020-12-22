@@ -1,5 +1,3 @@
-/* eslint-disable no-underscore-dangle */
-/* eslint-disable no-restricted-properties */
 import React from 'react';
 import nock from 'nock';
 import { mount } from 'enzyme';
@@ -140,13 +138,19 @@ describe('Component|Share|Copy Button', () => {
     await act(async () => {
       await new Promise(resolve => setTimeout(resolve));
       wrapper.update();
-      navigator.__defineGetter__('userAgent', () => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36'); // FIXME: this is pretty hacky
+      Object.defineProperty(navigator, 'userAgent', {
+        value: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36',
+        configurable: true,
+      });
     });
   });
 
   test('clicking button does not error with safari', async () => {
     const fakeUserAgent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_3) AppleWebKit/537.75.14 (KHTML, like Gecko) Version/7.0.3 Safari/7046A194A';
-    navigator.__defineGetter__('userAgent', () => fakeUserAgent); // FIXME: this is pretty hacky
+    Object.defineProperty(navigator, 'userAgent', {
+      value: fakeUserAgent,
+      configurable: true,
+    });
 
     await act(
       async () => {
