@@ -2,17 +2,42 @@ import React from 'react';
 import { mount } from 'enzyme';
 import { act } from 'react-dom/test-utils';
 import { DragDropContext, Draggable } from 'react-beautiful-dnd';
+import { Grid } from '@material-ui/core';
 import ClearIcon from '@material-ui/icons/Clear';
 import DotsIcon from '@material-ui/icons/MoreHoriz';
 
 import DraggableVerticalList from '.';
 import { IconBiofuel, IconCoal, IconElectricity, IconGas, IconOil } from '../../icons';
 import { TestContainer, getRendered } from '../../tests/utilities';
+import ColoredItemBox from './ColoredItemBox';
+
+/**
+ * To get rid of the 'unable to find drag handle' error.
+ * https://github.com/atlassian/react-beautiful-dnd/issues/1593
+ */
+jest.mock('react-beautiful-dnd', () => ({
+  Droppable: ({ children }) => children({
+    draggableProps: {
+      style: {},
+    },
+    innerRef: jest.fn(),
+  }, {}),
+  Draggable: ({ children }) => children({
+    draggableProps: {
+      style: {},
+    },
+    innerRef: jest.fn(),
+  }, {}),
+  DragDropContext: ({ children }) => children,
+}));
+
+const mockFn = jest.fn();
 
 const DEFAULT_CONFIG = {
   mainSelection: 'energyDemand',
   yearId: '2020',
   scenarios: ['Evolving'],
+  sector: 'TRANSPORTATION',
   view: 'region',
 };
 
@@ -27,7 +52,7 @@ const MOCK_DROP = {
 const getSourceComponent = (configs, props) => (
   <TestContainer mockConfig={{ ...DEFAULT_CONFIG, ...configs }}>
     <DraggableVerticalList
-      title={props?.disabled || 'Source'}
+      title={props?.title || 'Source'}
       round
       disabled={props?.disabled || false}
       singleSelect={props?.singleSelect || false}
@@ -54,16 +79,15 @@ describe('Component|DraggableVerticalList', () => {
    */
   describe('Test multi-select draggable list', () => {
     beforeEach(async () => {
-      const dom = mount(getSourceComponent({ page: 'by-sector', sector: 'TRANSPORTATION' }));
+      wrapper = mount(getSourceComponent({ page: 'by-sector' }));
       await act(async () => {
         await new Promise(resolve => setTimeout(resolve));
-        dom.update();
-        wrapper = getRendered(DraggableVerticalList, dom);
+        wrapper.update();
       });
     });
 
     test('should render component', () => {
-      expect(wrapper.type()).not.toBeNull();
+      expect(getRendered(DraggableVerticalList, wrapper).exists()).toBeTruthy();
     });
 
     test('should render normal and draggable nodes', async () => {
@@ -83,77 +107,166 @@ describe('Component|DraggableVerticalList', () => {
       // all selected, so should display the clear icon
       expect(wrapper.find(ClearIcon)).toHaveLength(1);
 
+      // test drag-n-drop
       await act(async () => {
-        /* eslint-disable newline-per-chained-call */
+        expect(wrapper.find(Draggable).map(node => node.prop('draggableId'))).toEqual(['BIO', 'COAL', 'ELECTRICITY', 'GAS', 'OIL']);
         wrapper.find(DragDropContext).at(0).prop('onDragEnd')(MOCK_DROP);
         wrapper.find(DragDropContext).at(0).prop('onDragEnd')({ ...MOCK_DROP, destination: { droppableId: 'droppable', index: 2 } });
+        await new Promise(resolve => setTimeout(resolve));
+        wrapper.update();
+        expect(wrapper.find(Draggable).map(node => node.prop('draggableId'))).toEqual(['COAL', 'ELECTRICITY', 'BIO', 'GAS', 'OIL']);
+      });
 
-        wrapper.find(Draggable).at(1).find('.MuiGrid-item').at(0).prop('onClick')();
-        wrapper.find(Draggable).at(1).find('.MuiGrid-item').at(0).prop('onKeyPress')({ key: 'Enter' });
+      // test delect & deselect nodes
+      await act(async () => {
+        // all nodes selected; num of selected = 5
+        expect(wrapper.find(Draggable).findWhere(node => node.type() === Grid && node.hasClass('selected'))).toHaveLength(5);
 
-        wrapper.find(Draggable).at(2).find('.MuiGrid-item').at(0).prop('onKeyPress')({ key: 'Space' });
-        wrapper.find(Draggable).at(2).find('.MuiGrid-item').at(0).prop('onKeyPress')({ key: 'ArrowDown' });
-        wrapper.find(Draggable).at(2).find('.MuiGrid-item').at(0).prop('onKeyPress')({ key: 'Space' });
-        /* eslint-enable newline-per-chained-call */
+        // click the clear button to deselect all num of selected = 0
+        wrapper.find(ColoredItemBox).at(0).closest(Grid).prop('onClick')();
+        await new Promise(resolve => setTimeout(resolve));
+        wrapper.update();
+        expect(wrapper.find(Draggable).findWhere(node => node.type() === Grid && node.hasClass('selected'))).toHaveLength(0);
+
+        // click one of the nodes to select it num of selected = 1
+        wrapper.find(ColoredItemBox).at(2).closest(Grid).prop('onClick')();
+        await new Promise(resolve => setTimeout(resolve));
+        wrapper.update();
+        expect(wrapper.find(Draggable).findWhere(node => node.type() === Grid && node.hasClass('selected'))).toHaveLength(1);
+
+        // click the "ALL" button to select all num of selected = 5
+        wrapper.find(ColoredItemBox).at(0).closest(Grid).prop('onClick')();
+        await new Promise(resolve => setTimeout(resolve));
+        wrapper.update();
+        expect(wrapper.find(Draggable).findWhere(node => node.type() === Grid && node.hasClass('selected'))).toHaveLength(5);
+      });
+
+      // use key press to deselect and select nodes
+      await act(async () => {
+        // all nodes selected; num of selected = 5
+        expect(wrapper.find(Draggable).findWhere(node => node.type() === Grid && node.hasClass('selected'))).toHaveLength(5);
+
+        // use key press to deselect all nodes; num of selected = 0
+        wrapper.find(ColoredItemBox).at(0).closest(Grid).prop('onKeyPress')({ key: 'Enter' });
+        await new Promise(resolve => setTimeout(resolve));
+        wrapper.update();
+        expect(wrapper.find(Draggable).findWhere(node => node.type() === Grid && node.hasClass('selected'))).toHaveLength(0);
+
+        // use key press to re-select all nodes; num of selected = 5
+        wrapper.find(ColoredItemBox).at(0).closest(Grid).prop('onKeyPress')({ key: 'Enter' });
+        await new Promise(resolve => setTimeout(resolve));
+        wrapper.update();
+        expect(wrapper.find(Draggable).findWhere(node => node.type() === Grid && node.hasClass('selected'))).toHaveLength(5);
       });
     });
   });
 
   /**
-   * Single-select static list
+   * Items do not match with config
    */
-  describe('Test single-select static list', () => {
+  describe('Test if items do not match', () => {
     beforeEach(async () => {
-      const dom = mount(getSourceComponent({ page: 'by-sector', sector: 'ALL' }, { singleSelect: true, items: ['BIO'] }));
+      wrapper = mount(getSourceComponent({ page: 'by-sector', sources: ['BIO', 'COAL', 'ELECTRICITY', 'GAS', 'OIL'] }, { items: ['BIO'], setItems: mockFn() }));
       await act(async () => {
         await new Promise(resolve => setTimeout(resolve));
-        dom.update();
-        wrapper = getRendered(DraggableVerticalList, dom);
+        wrapper.update();
+      });
+    });
+
+    test('should render component and content', () => {
+      expect(getRendered(DraggableVerticalList, wrapper).exists()).toBeTruthy();
+      expect(wrapper.find(Draggable).find(ColoredItemBox)).toHaveLength(5);
+      expect(mockFn).toHaveBeenCalled();
+    });
+  });
+
+  /**
+   * Single-select static Source list
+   */
+  describe('Test single-select static source list', () => {
+    beforeEach(async () => {
+      wrapper = mount(getSourceComponent({ page: 'by-sector', sector: 'ALL' }, { singleSelect: true, items: ['BIO'] }));
+      await act(async () => {
+        await new Promise(resolve => setTimeout(resolve));
+        wrapper.update();
       });
     });
 
     test('should render component', () => {
-      expect(wrapper.type()).not.toBeNull();
+      expect(getRendered(DraggableVerticalList, wrapper).exists()).toBeTruthy();
     });
 
     test('should render static nodes', async () => {
-      const numOfSelected = wrapper.find(Draggable).find('.MuiGrid-container')
-        .map(box => box.prop('className').split(' '))
-        .flat()
-        .filter(className => className === 'selected');
-      expect(numOfSelected).toHaveLength(1);
+      // only 1 selected
+      expect(wrapper.find(Draggable).findWhere(node => node.type() === Grid && node.hasClass('selected'))).toHaveLength(1);
 
       await act(async () => {
-        const allButton = wrapper.findWhere(node => node.hasClass('MuiGrid-item') && node.text() === 'All').at(0);
-        allButton.prop('onClick')();
-        allButton.prop('onKeyPress')({ key: 'Enter' });
+        // 2nd node selected
+        expect(wrapper.find(ColoredItemBox).at(0).prop('selected')).toBeFalsy();
+        expect(wrapper.find(ColoredItemBox).at(1).prop('selected')).toBeTruthy();
+
+        // click the 1st node and verify it is selected
+        wrapper.find(ColoredItemBox).at(0).closest(Grid).prop('onClick')();
+        await new Promise(resolve => setTimeout(resolve));
+        wrapper.update();
+        expect(wrapper.find(ColoredItemBox).at(0).prop('selected')).toBeTruthy();
+        expect(wrapper.find(ColoredItemBox).at(1).prop('selected')).toBeFalsy();
+
+        // press ENTER on the 2nd node the verify it is selected
+        wrapper.find(ColoredItemBox).at(1).closest(Grid).prop('onKeyPress')({ key: 'Enter' });
+        await new Promise(resolve => setTimeout(resolve));
+        wrapper.update();
+        expect(wrapper.find(ColoredItemBox).at(0).prop('selected')).toBeFalsy();
+        expect(wrapper.find(ColoredItemBox).at(1).prop('selected')).toBeTruthy();
       });
+
+      // again, only 1 selected
+      expect(wrapper.find(Draggable).findWhere(node => node.type() === Grid && node.hasClass('selected'))).toHaveLength(1);
     });
   });
 
   /**
    * Single-select static Region list
    */
-  describe('Test single-select static list', () => {
+  describe('Test single-select static region list', () => {
     beforeEach(async () => {
-      const dom = mount(getSourceComponent({ page: 'by-sector', sector: 'ALL' }, { title: 'Region', singleSelect: true, items: ['BIO'] }));
+      wrapper = mount(getSourceComponent({ page: 'by-sector', sector: 'ALL' }, { title: 'Region', singleSelect: true, items: ['BIO'] }));
       await act(async () => {
         await new Promise(resolve => setTimeout(resolve));
-        dom.update();
-        wrapper = getRendered(DraggableVerticalList, dom);
+        wrapper.update();
       });
     });
 
     test('should render component', () => {
-      expect(wrapper.type()).not.toBeNull();
+      expect(getRendered(DraggableVerticalList, wrapper).exists()).toBeTruthy();
     });
 
     test('should render static nodes', async () => {
+      // only 1 selected
+      expect(wrapper.find(Draggable).findWhere(node => node.type() === Grid && node.hasClass('selected'))).toHaveLength(1);
+
       await act(async () => {
-        const allButton = wrapper.findWhere(node => node.hasClass('MuiGrid-item') && node.text() === 'All').at(0);
-        allButton.prop('onClick')();
-        allButton.prop('onKeyPress')({ key: 'Enter' });
+        // 2nd node selected
+        expect(wrapper.find(ColoredItemBox).at(0).prop('selected')).toBeFalsy();
+        expect(wrapper.find(ColoredItemBox).at(1).prop('selected')).toBeTruthy();
+
+        // click the 1st node and verify it is selected
+        wrapper.find(ColoredItemBox).at(0).closest(Grid).prop('onClick')();
+        await new Promise(resolve => setTimeout(resolve));
+        wrapper.update();
+        expect(wrapper.find(ColoredItemBox).at(0).prop('selected')).toBeTruthy();
+        expect(wrapper.find(ColoredItemBox).at(1).prop('selected')).toBeFalsy();
+
+        // press ENTER on the 2nd node the verify it is selected
+        wrapper.find(ColoredItemBox).at(1).closest(Grid).prop('onKeyPress')({ key: 'Enter' });
+        await new Promise(resolve => setTimeout(resolve));
+        wrapper.update();
+        expect(wrapper.find(ColoredItemBox).at(0).prop('selected')).toBeFalsy();
+        expect(wrapper.find(ColoredItemBox).at(1).prop('selected')).toBeTruthy();
       });
+
+      // again, only 1 selected
+      expect(wrapper.find(Draggable).findWhere(node => node.type() === Grid && node.hasClass('selected'))).toHaveLength(1);
     });
   });
 
@@ -162,16 +275,15 @@ describe('Component|DraggableVerticalList', () => {
    */
   describe('Test list with disabled drag-n-drop', () => {
     beforeEach(async () => {
-      const dom = mount(getSourceComponent({ page: 'by-sector', sector: 'ALL' }, { disabled: true }));
+      wrapper = mount(getSourceComponent({ page: 'by-sector', sector: 'ALL' }, { disabled: true }));
       await act(async () => {
         await new Promise(resolve => setTimeout(resolve));
-        dom.update();
-        wrapper = getRendered(DraggableVerticalList, dom);
+        wrapper.update();
       });
     });
 
     test('should render component', () => {
-      expect(wrapper.type()).not.toBeNull();
+      expect(getRendered(DraggableVerticalList, wrapper).exists()).toBeTruthy();
     });
 
     test('should render static nodes', () => {

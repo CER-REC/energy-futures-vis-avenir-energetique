@@ -3,6 +3,7 @@ import { mount } from 'enzyme';
 import { act } from 'react-dom/test-utils';
 
 import { Typography, IconButton, Button } from '@material-ui/core';
+import analytics from '../../analytics';
 
 import HorizontalControlBar from '.';
 import { IconTransportation, IconResidential, IconCommercial, IconIndustrial } from '../../icons';
@@ -14,7 +15,10 @@ const DEFAULT_CONFIG = {
   yearId: '2020',
   scenarios: ['Evolving'],
   view: 'region',
+  unit: 'petajoules',
 };
+
+const spyAnalytics = jest.spyOn(analytics, 'reportFeature');
 
 const getComponent = props => (
   <TestContainer mockConfig={{ ...DEFAULT_CONFIG, ...props }}>
@@ -30,45 +34,45 @@ describe('Component|HorizontalControlBar', () => {
    */
   describe('Test page by-region', () => {
     beforeEach(async () => {
-      const dom = mount(getComponent({ page: 'by-region' }));
+      wrapper = mount(getComponent({ page: 'by-region' }));
       await act(async () => {
         await new Promise(resolve => setTimeout(resolve));
-        dom.update();
-        wrapper = getRendered(HorizontalControlBar, dom);
+        wrapper.update();
       });
     });
 
     test('should render component', () => {
-      expect(wrapper.type()).not.toBeNull();
+      expect(getRendered(HorizontalControlBar, wrapper).exists()).toBeTruthy();
     });
 
     test('should render section titles', () => {
-      const titles = wrapper.find(Typography);
-      expect(['UNIT']).toEqual(expect.arrayContaining(titles.map(title => title.text())));
+      expect(wrapper.findWhere(node => node.type() === Typography && node.text() === 'UNIT').exists()).toBeTruthy();
     });
 
     test('should render section buttons', () => {
       // 2 'help' buttons
-      const iconButtons = wrapper.find(IconButton);
-      expect(iconButtons.length).toBe(2);
+      expect(wrapper.find(IconButton)).toHaveLength(2);
 
-      expect(wrapper.find(HintMainSelect)).not.toBeNull();
-      expect(wrapper.find(HintUnitSelect)).not.toBeNull();
+      expect(wrapper.find(HintMainSelect).exists()).toBeTruthy();
+      expect(wrapper.find(HintUnitSelect).exists()).toBeTruthy();
 
       // 6 regular buttons
-      const buttons = wrapper.find(Button);
-      expect(buttons.length).toBe(6);
-      expect(['Total Demand', 'Electricity Generation', 'Oil Production', 'Gas Production', 'PJ', 'Mboe/d']).toEqual(expect.arrayContaining(buttons.map(btn => btn.text())));
+      expect(wrapper.find(Button)).toHaveLength(6);
+      expect(wrapper.find(Button).map(btn => btn.text()).sort()).toEqual(['Total Demand', 'Electricity Generation', 'Oil Production', 'Gas Production', 'PJ', 'Mboe/d'].sort());
     });
 
     test('should select correct buttons', () => {
-      const buttons = wrapper.find('.MuiButton-contained');
-      expect(['Total Demand', 'PJ']).toEqual(expect.arrayContaining(buttons.map(btn => btn.text())));
+      expect(wrapper.findWhere(node => node.type() === Button && node.text() === 'Total Demand').at(0).prop('variant')).toEqual('contained');
+      expect(wrapper.findWhere(node => node.type() === Button && node.text() === 'PJ').at(0).prop('variant')).toEqual('contained');
     });
 
-    test('should buttons clickable', () => {
-      const button = wrapper.findWhere(node => node.type() === 'button' && node.text() === 'Electricity Generation');
-      button.simulate('click');
+    test('should buttons clickable', async () => {
+      await act(async () => {
+        wrapper.findWhere(node => node.type() === Button && node.text() === 'Electricity Generation').at(0).prop('onClick')();
+        await new Promise(resolve => setTimeout(resolve));
+        wrapper.update();
+        expect(spyAnalytics).toBeCalled();
+      });
     });
   });
 
@@ -77,50 +81,51 @@ describe('Component|HorizontalControlBar', () => {
    */
   describe('Test page by-sector', () => {
     beforeEach(async () => {
-      const dom = mount(getComponent({ page: 'by-sector' }));
+      wrapper = mount(getComponent({ page: 'by-sector', sector: 'ALL' }));
       await act(async () => {
         await new Promise(resolve => setTimeout(resolve));
-        dom.update();
-        wrapper = getRendered(HorizontalControlBar, dom);
+        wrapper.update();
       });
     });
 
     test('should render component', () => {
-      expect(wrapper.type()).not.toBeNull();
+      expect(getRendered(HorizontalControlBar, wrapper).exists()).toBeTruthy();
     });
 
     test('should render section titles', () => {
-      const titles = wrapper.find(Typography);
-      expect(['SECTOR', 'UNIT']).toEqual(expect.arrayContaining(titles.map(title => title.text())));
+      expect(wrapper.findWhere(node => node.type() === Typography && node.text() === 'SECTOR').exists()).toBeTruthy();
+      expect(wrapper.findWhere(node => node.type() === Typography && node.text() === 'UNIT').exists()).toBeTruthy();
     });
 
     test('should render section buttons', () => {
       // 2 'help' buttons
-      const iconButtons = wrapper.find(IconButton);
-      expect(iconButtons.length).toBe(2);
+      expect(wrapper.find(IconButton)).toHaveLength(2);
 
-      expect(wrapper.find(HintSectorSelect)).not.toBeNull();
-      expect(wrapper.find(HintUnitSelect)).not.toBeNull();
+      expect(wrapper.find(HintSectorSelect).exists()).toBeTruthy();
+      expect(wrapper.find(HintUnitSelect).exists()).toBeTruthy();
 
       // 7 regular buttons
-      const buttons = wrapper.find(Button);
-      expect(buttons.length).toBe(7);
+      expect(wrapper.find(Button)).toHaveLength(7);
 
-      expect(wrapper.find(IconTransportation)).not.toBeNull();
-      expect(wrapper.find(IconResidential)).not.toBeNull();
-      expect(wrapper.find(IconCommercial)).not.toBeNull();
-      expect(wrapper.find(IconIndustrial)).not.toBeNull();
-      expect(['Total Demand', 'PJ', 'Mboe/d']).toEqual(expect.arrayContaining(buttons.map(btn => btn.text()).filter(Boolean)));
+      expect(wrapper.find(IconTransportation).exists()).toBeTruthy();
+      expect(wrapper.find(IconResidential).exists()).toBeTruthy();
+      expect(wrapper.find(IconCommercial).exists()).toBeTruthy();
+      expect(wrapper.find(IconIndustrial).exists()).toBeTruthy();
+      expect(wrapper.find(Button).map(btn => btn.text()).filter(Boolean).sort()).toEqual(['Total Demand', 'PJ', 'Mboe/d'].sort());
     });
 
     test('should select correct buttons', () => {
-      const buttons = wrapper.find('.MuiButton-contained');
-      expect(['Total Demand', 'PJ']).toEqual(expect.arrayContaining(buttons.map(btn => btn.text())));
+      expect(wrapper.findWhere(node => node.type() === Button && node.text() === 'Total Demand').at(0).prop('variant')).toEqual('contained');
+      expect(wrapper.findWhere(node => node.type() === Button && node.text() === 'PJ').at(0).prop('variant')).toEqual('contained');
     });
 
-    test('should buttons clickable', () => {
-      const button = wrapper.findWhere(node => node.type() === 'button' && node.text() === 'Total Demand');
-      button.simulate('click');
+    test('should buttons clickable', async () => {
+      await act(async () => {
+        wrapper.findWhere(node => node.type() === Button && node.text() === 'Total Demand').at(0).prop('onClick')();
+        await new Promise(resolve => setTimeout(resolve));
+        wrapper.update();
+        expect(spyAnalytics).toBeCalled();
+      });
     });
   });
 
@@ -129,50 +134,46 @@ describe('Component|HorizontalControlBar', () => {
    */
   describe('Test page electricity', () => {
     beforeEach(async () => {
-      const dom = mount(getComponent({ page: 'electricity', mainSelection: 'electricityGeneration' }));
+      wrapper = mount(getComponent({ page: 'electricity', mainSelection: 'electricityGeneration', unit: 'gigawattHours' }));
       await act(async () => {
         await new Promise(resolve => setTimeout(resolve));
-        dom.update();
-        wrapper = getRendered(HorizontalControlBar, dom);
+        wrapper.update();
       });
     });
 
     test('should render component', () => {
-      expect(wrapper.type()).not.toBeNull();
+      expect(getRendered(HorizontalControlBar, wrapper).exists()).toBeTruthy();
     });
 
     test('should render section titles', () => {
-      const titles = wrapper.find(Typography);
-      expect(['VIEW BY', 'UNIT']).toEqual(expect.arrayContaining(titles.map(title => title.text())));
+      expect(wrapper.findWhere(node => node.type() === Typography && node.text() === 'VIEW BY').exists()).toBeTruthy();
+      expect(wrapper.findWhere(node => node.type() === Typography && node.text() === 'UNIT').exists()).toBeTruthy();
     });
 
     test('should render section buttons', () => {
       // 2 'help' buttons
-      const iconButtons = wrapper.find(IconButton);
-      expect(iconButtons.length).toBe(2);
+      expect(wrapper.find(IconButton)).toHaveLength(2);
 
-      expect(wrapper.find(HintViewSelect)).not.toBeNull();
-      expect(wrapper.find(HintUnitSelect)).not.toBeNull();
+      expect(wrapper.find(HintViewSelect).exists()).toBeTruthy();
+      expect(wrapper.find(HintUnitSelect).exists()).toBeTruthy();
 
       // 5 regular buttons
-      const buttons = wrapper.find(Button);
-      expect(buttons.length).toBe(5);
-      expect(['Region', 'Source', 'GW.h', 'PJ', 'Mboe/d']).toEqual(expect.arrayContaining(buttons.map(btn => btn.text()).filter(Boolean)));
+      expect(wrapper.find(Button)).toHaveLength(5);
+      expect(wrapper.find(Button).map(btn => btn.text()).filter(Boolean).sort()).toEqual(['Region', 'Source', 'GW.h', 'PJ', 'Mboe/d'].sort());
     });
 
     test('should select correct buttons', () => {
-      const buttons = wrapper.find('.MuiButton-contained');
-      expect(['Region', 'GW.h']).toEqual(expect.arrayContaining(buttons.map(btn => btn.text())));
+      expect(wrapper.findWhere(node => node.type() === Button && node.text() === 'Region').at(0).prop('variant')).toEqual('contained');
+      expect(wrapper.findWhere(node => node.type() === Button && node.text() === 'GW.h').at(0).prop('variant')).toEqual('contained');
     });
 
-    test('should select correct buttons', () => {
-      const buttons = wrapper.find('.MuiButton-contained');
-      expect(['Region', 'GW.h']).toEqual(expect.arrayContaining(buttons.map(btn => btn.text())));
-    });
-
-    test('should buttons clickable', () => {
-      const button = wrapper.findWhere(node => node.type() === 'button' && node.text() === 'Source');
-      button.simulate('click');
+    test('should buttons clickable', async () => {
+      await act(async () => {
+        wrapper.findWhere(node => node.type() === Button && node.text() === 'Source').at(0).prop('onClick')();
+        await new Promise(resolve => setTimeout(resolve));
+        wrapper.update();
+        expect(spyAnalytics).toBeCalled();
+      });
     });
   });
 
@@ -181,45 +182,45 @@ describe('Component|HorizontalControlBar', () => {
    */
   describe('Test page scenario', () => {
     beforeEach(async () => {
-      const dom = mount(getComponent({ page: 'scenarios' }));
+      wrapper = mount(getComponent({ page: 'scenarios' }));
       await act(async () => {
         await new Promise(resolve => setTimeout(resolve));
-        dom.update();
-        wrapper = getRendered(HorizontalControlBar, dom);
+        wrapper.update();
       });
     });
 
     test('should render component', () => {
-      expect(wrapper.type()).not.toBeNull();
+      expect(getRendered(HorizontalControlBar, wrapper).exists()).toBeTruthy();
     });
 
     test('should render section titles', () => {
-      const titles = wrapper.find(Typography);
-      expect(['VIEW BY', 'UNIT']).toEqual(expect.arrayContaining(titles.map(title => title.text())));
+      expect(wrapper.findWhere(node => node.type() === Typography && node.text() === 'UNIT').exists()).toBeTruthy();
     });
 
     test('should render section buttons', () => {
       // 2 'help' buttons
-      const iconButtons = wrapper.find(IconButton);
-      expect(iconButtons.length).toBe(2);
+      expect(wrapper.find(IconButton)).toHaveLength(2);
 
-      expect(wrapper.find(HintMainSelect)).not.toBeNull();
-      expect(wrapper.find(HintUnitSelect)).not.toBeNull();
+      expect(wrapper.find(HintMainSelect).exists()).toBeTruthy();
+      expect(wrapper.find(HintUnitSelect).exists()).toBeTruthy();
 
       // 6 regular buttons
-      const buttons = wrapper.find(Button);
-      expect(buttons.length).toBe(6);
-      expect(['Total Demand', 'Electricity Generation', 'Oil Production', 'Gas Production', 'PJ', 'Mboe/d']).toEqual(expect.arrayContaining(buttons.map(btn => btn.text())));
+      expect(wrapper.find(Button)).toHaveLength(6);
+      expect(wrapper.find(Button).map(btn => btn.text()).sort()).toEqual(['Total Demand', 'Electricity Generation', 'Oil Production', 'Gas Production', 'PJ', 'Mboe/d'].sort());
     });
 
     test('should select correct buttons', () => {
-      const buttons = wrapper.find('.MuiButton-contained');
-      expect(['Total Demand', 'PJ']).toEqual(expect.arrayContaining(buttons.map(btn => btn.text())));
+      expect(wrapper.findWhere(node => node.type() === Button && node.text() === 'Total Demand').at(0).prop('variant')).toEqual('contained');
+      expect(wrapper.findWhere(node => node.type() === Button && node.text() === 'PJ').at(0).prop('variant')).toEqual('contained');
     });
 
-    test('should buttons clickable', () => {
-      const button = wrapper.findWhere(node => node.type() === 'button' && node.text() === 'Mboe/d');
-      button.simulate('click');
+    test('should buttons clickable', async () => {
+      await act(async () => {
+        wrapper.findWhere(node => node.type() === Button && node.text() === 'Mboe/d').at(0).prop('onClick')();
+        await new Promise(resolve => setTimeout(resolve));
+        wrapper.update();
+        expect(spyAnalytics).toBeCalled();
+      });
     });
   });
 
@@ -228,46 +229,48 @@ describe('Component|HorizontalControlBar', () => {
    */
   describe('Test page oil-and-gas', () => {
     beforeEach(async () => {
-      const dom = mount(getComponent({ page: 'oil-and-gas', mainSelection: 'oilProduction' }));
+      wrapper = mount(getComponent({ page: 'oil-and-gas', mainSelection: 'oilProduction', unit: 'kilobarrels' }));
       await act(async () => {
         await new Promise(resolve => setTimeout(resolve));
-        dom.update();
-        wrapper = getRendered(HorizontalControlBar, dom);
+        wrapper.update();
       });
     });
 
     test('should render component', () => {
-      expect(wrapper.type()).not.toBeNull();
+      expect(getRendered(HorizontalControlBar, wrapper).exists()).toBeTruthy();
     });
 
     test('should render section titles', () => {
-      const titles = wrapper.find(Typography);
-      expect(['VIEW BY', 'UNIT']).toEqual(expect.arrayContaining(titles.map(title => title.text())));
+      expect(wrapper.findWhere(node => node.type() === Typography && node.text() === 'VIEW BY').exists()).toBeTruthy();
+      expect(wrapper.findWhere(node => node.type() === Typography && node.text() === 'UNIT').exists()).toBeTruthy();
     });
 
     test('should render section buttons', () => {
       // 3 'help' buttons
-      const iconButtons = wrapper.find(IconButton);
-      expect(iconButtons.length).toBe(3);
+      expect(wrapper.find(IconButton)).toHaveLength(3);
 
-      expect(wrapper.find(HintMainSelect)).not.toBeNull();
-      expect(wrapper.find(HintViewSelect)).not.toBeNull();
-      expect(wrapper.find(HintUnitSelect)).not.toBeNull();
+      expect(wrapper.find(HintMainSelect).exists()).toBeTruthy();
+      expect(wrapper.find(HintViewSelect).exists()).toBeTruthy();
+      expect(wrapper.find(HintUnitSelect).exists()).toBeTruthy();
 
       // 6 regular buttons
-      const buttons = wrapper.find(Button);
-      expect(buttons.length).toBe(6);
-      expect(['Oil Production', 'Gas Production', 'Region', 'Type', 'Mb/d', '10³m³/d']).toEqual(expect.arrayContaining(buttons.map(btn => btn.text())));
+      expect(wrapper.find(Button)).toHaveLength(6);
+      expect(wrapper.find(Button).map(btn => btn.text()).sort()).toEqual(['Oil Production', 'Gas Production', 'Region', 'Type', 'Mb/d', '10³m³/d'].sort());
     });
 
     test('should select correct buttons', () => {
-      const buttons = wrapper.find('.MuiButton-contained');
-      expect(['Oil Production', 'Region', 'Mb/d']).toEqual(expect.arrayContaining(buttons.map(btn => btn.text())));
+      expect(wrapper.findWhere(node => node.type() === Button && node.text() === 'Oil Production').at(0).prop('variant')).toEqual('contained');
+      expect(wrapper.findWhere(node => node.type() === Button && node.text() === 'Region').at(0).prop('variant')).toEqual('contained');
+      expect(wrapper.findWhere(node => node.type() === Button && node.text() === 'Mb/d').at(0).prop('variant')).toEqual('contained');
     });
 
-    test('should buttons clickable', () => {
-      const button = wrapper.findWhere(node => node.type() === 'button' && node.text() === 'Type');
-      button.simulate('click');
+    test('should buttons clickable', async () => {
+      await act(async () => {
+        wrapper.findWhere(node => node.type() === Button && node.text() === 'Type').at(0).prop('onClick')();
+        await new Promise(resolve => setTimeout(resolve));
+        wrapper.update();
+        expect(spyAnalytics).toBeCalled();
+      });
     });
   });
 
@@ -276,16 +279,15 @@ describe('Component|HorizontalControlBar', () => {
    */
   describe('Test non-existing page', () => {
     beforeEach(async () => {
-      const dom = mount(getComponent({ mainSelection: 'mock-up' }));
+      wrapper = mount(getComponent({ mainSelection: 'mock-up' }));
       await act(async () => {
         await new Promise(resolve => setTimeout(resolve));
-        dom.update();
-        wrapper = getRendered(HorizontalControlBar, dom);
+        wrapper.update();
       });
     });
 
     test('should NOT render component', () => {
-      expect(wrapper.exists()).toBeFalsy();
+      expect(getRendered(HorizontalControlBar, wrapper).exists()).toBeFalsy();
     });
   });
 });
