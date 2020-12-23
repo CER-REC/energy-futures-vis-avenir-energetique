@@ -87,7 +87,7 @@ export const compareReduxChange = (reducer, newState) => {
 /**
  * TODO: newly added helper functions.
  */
-export const TestContainer = ({ children, mockConfig, mockConfigDispatch }) => {
+export const TestContainer = ({ children, mockConfig, mockConfigDispatch, apolloClient }) => {
   const Root = () => {
     const { translations } = useAPI();
     const messages = useMemo(
@@ -102,19 +102,21 @@ export const TestContainer = ({ children, mockConfig, mockConfigDispatch }) => {
       </IntlProvider>
     );
   };
-  return <ApolloProvider client={client}><Root /></ApolloProvider>;
+  return <ApolloProvider client={apolloClient || client}><Root /></ApolloProvider>;
 };
 
 TestContainer.propTypes = {
   children: PropTypes.node,
   mockConfig: PropTypes.object, // eslint-disable-line react/forbid-prop-types
   mockConfigDispatch: PropTypes.func,
+  apolloClient: PropTypes.object, // eslint-disable-line react/forbid-prop-types
 };
 
 TestContainer.defaultProps = {
   children: null,
   mockConfig: undefined,
   mockConfigDispatch: NOOP,
+  apolloClient: undefined,
 };
 
 export const getRendered = (component, wrapper) => {

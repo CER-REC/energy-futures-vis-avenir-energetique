@@ -2,13 +2,35 @@ import React from 'react';
 import { mount } from 'enzyme';
 import { act } from 'react-dom/test-utils';
 import { ApolloProvider } from '@apollo/react-hooks';
+import { ApolloClient } from 'apollo-client';
+import { InMemoryCache } from 'apollo-cache-inmemory';
+import { MATCH_ANY_PARAMETERS, WildcardMockLink } from 'wildcard-mock-link';
 import client from '../../.storybook/mockApolloClient';
 
+import * as queries from './queries';
+import iterationsTranslations from '../tests/mocks/iterationsTranslations.json';
+import mockData from '../tests/mocks/mockData.json';
 import { initialState, getReducer } from './reducer';
 import useAPI from './useAPI';
 import useConfig from './useConfig';
 import useEnergyFutureData from './useEnergyFutureData';
 import { TestContainer } from '../tests/utilities';
+
+/**
+ * mock the query that takes wild cards for testing the useEnergyFutureData hook
+ */
+const cache = new InMemoryCache({ addTypename: false });
+const link = new WildcardMockLink([
+  {
+    request: { query: queries.ITERATIONS_TRANSLATIONS },
+    result: iterationsTranslations,
+  },
+  ...Object.keys(queries).map(query => query !== 'ITERATIONS_TRANSLATIONS' && ({
+    request: { query: queries[query], variables: MATCH_ANY_PARAMETERS },
+    result: mockData,
+  })).filter(Boolean),
+]);
+const apolloClient = new ApolloClient({ cache, link });
 
 const BASE_STATE = {
   baseYear: null,
@@ -164,73 +186,44 @@ describe('Component|hooks', () => {
   describe('Test useEnergyFutureData', () => {
     let wrapper;
     const getComponent = (props) => {
-      const MockComponent = () => <>{useEnergyFutureData().data}</>;
+      const MockComponent = () => <>{JSON.stringify(useEnergyFutureData())}</>;
       return (
-        <TestContainer mockConfig={{ ...BASE_STATE, ...props }}>
+        <TestContainer mockConfig={{ ...BASE_STATE, ...props }} apolloClient={apolloClient}>
           <MockComponent />
         </TestContainer>
       );
     };
 
     test('should load hook content', async () => {
+      const parseRegions = content => Object.keys(JSON.parse(content).data[0]).filter(key => key !== 'year');
+      const year = { min: 2005, forecastStart: 2018, max: 2005 };
+
       // by-region page
       await act(async () => {
         wrapper = mount(getComponent({ page: 'by-region' }));
-        await new Promise(resolve => setTimeout(resolve));
+        await new Promise(resolve => setTimeout(resolve, 100));
         wrapper.update();
-
-        expect(wrapper.type()).not.toBeNull();
+        expect(parseRegions(wrapper.text())).toHaveLength(mockData.data.resources.length);
 
         wrapper = mount(getComponent({ page: 'by-region', mainSelection: 'oilProduction' }));
         await new Promise(resolve => setTimeout(resolve));
         wrapper.update();
-
-        expect(wrapper.type()).not.toBeNull();
+        expect(parseRegions(wrapper.text())).toHaveLength(mockData.data.resources.length);
 
         wrapper = mount(getComponent({ page: 'by-region', mainSelection: 'gasProduction' }));
         await new Promise(resolve => setTimeout(resolve));
         wrapper.update();
-
-        expect(wrapper.type()).not.toBeNull();
+        expect(parseRegions(wrapper.text())).toHaveLength(mockData.data.resources.length);
 
         wrapper = mount(getComponent({ page: 'by-region', mainSelection: 'electricityGeneration' }));
         await new Promise(resolve => setTimeout(resolve));
         wrapper.update();
-
-        expect(wrapper.type()).not.toBeNull();
+        expect(parseRegions(wrapper.text())).toHaveLength(mockData.data.resources.length);
 
         wrapper = mount(getComponent({ page: 'by-region', mainSelection: 'invalid' }));
         await new Promise(resolve => setTimeout(resolve));
         wrapper.update();
-
-        expect(wrapper.type()).not.toBeNull();
-      });
-
-      // electricity page
-      await act(async () => {
-        wrapper = mount(getComponent({ page: 'electricity' }));
-        await new Promise(resolve => setTimeout(resolve));
-        wrapper.update();
-
-        expect(wrapper.type()).not.toBeNull();
-      });
-
-      // oil-and-gas page
-      await act(async () => {
-        wrapper = mount(getComponent({ page: 'oil-and-gas' }));
-        await new Promise(resolve => setTimeout(resolve));
-        wrapper.update();
-
-        expect(wrapper.type()).not.toBeNull();
-      });
-
-      // landing page
-      await act(async () => {
-        wrapper = mount(getComponent({ page: 'landing' }));
-        await new Promise(resolve => setTimeout(resolve));
-        wrapper.update();
-
-        expect(wrapper.type()).not.toBeNull();
+        expect(JSON.parse(wrapper.text()).data).toBeUndefined();
       });
 
       // by-sector page and other settings
@@ -239,19 +232,61 @@ describe('Component|hooks', () => {
         await new Promise(resolve => setTimeout(resolve));
         wrapper.update();
 
-        expect(wrapper.type()).not.toBeNull();
-
-        wrapper = mount(getComponent({ view: 'region' }));
-        await new Promise(resolve => setTimeout(resolve));
-        wrapper.update();
-
-        expect(wrapper.type()).not.toBeNull();
+        expect(JSON.parse(wrapper.text()).data[0].id).toEqual('BIO');
+        expect(JSON.parse(wrapper.text()).data[0].data).toBeDefined();
 
         wrapper = mount(getComponent({ sources: ['ALL'] }));
         await new Promise(resolve => setTimeout(resolve));
         wrapper.update();
 
-        expect(wrapper.type()).not.toBeNull();
+        expect(JSON.parse(wrapper.text()).data[0].id).toEqual('BIO');
+        expect(JSON.parse(wrapper.text()).data[0].data).toBeDefined();
+      });
+
+      // scenarios page
+      await act(async () => {
+        wrapper = mount(getComponent({ page: 'scenarios' }));
+        await new Promise(resolve => setTimeout(resolve));
+        wrapper.update();
+
+        expect(JSON.parse(wrapper.text()).data).toBeDefined();
+        expect(JSON.parse(wrapper.text()).year).toEqual(year);
+      });
+
+      // electricity page
+      await act(async () => {
+        wrapper = mount(getComponent({ page: 'electricity' }));
+        await new Promise(resolve => setTimeout(resolve));
+        wrapper.update();
+
+        expect(JSON.parse(wrapper.text()).data[2005]).toBeDefined();
+        expect(JSON.parse(wrapper.text()).year).toEqual(year);
+
+        wrapper = mount(getComponent({ ...SOURCE_STATE, view: 'region' }));
+        await new Promise(resolve => setTimeout(resolve));
+        wrapper.update();
+
+        expect(JSON.parse(wrapper.text()).data[2005]).toBeDefined();
+        expect(JSON.parse(wrapper.text()).year).toEqual(year);
+      });
+
+      // oil-and-gas page
+      await act(async () => {
+        wrapper = mount(getComponent({ page: 'oil-and-gas' }));
+        await new Promise(resolve => setTimeout(resolve));
+        wrapper.update();
+
+        expect(JSON.parse(wrapper.text()).data[2005]).toBeDefined();
+        expect(JSON.parse(wrapper.text()).year).toEqual(year);
+      });
+
+      // landing page
+      await act(async () => {
+        wrapper = mount(getComponent({ page: 'landing' }));
+        await new Promise(resolve => setTimeout(resolve));
+        wrapper.update();
+
+        expect(JSON.parse(wrapper.text()).data).toBeUndefined();
       });
     });
   });
