@@ -12,7 +12,7 @@ import '@formatjs/intl-relativetimeformat/polyfill';
 import '@formatjs/intl-relativetimeformat/locale-data/en';
 import '@formatjs/intl-relativetimeformat/locale-data/fr';
 
-import { lang } from '../../constants';
+import { lang, API_HOST } from '../../constants';
 import i18nMessages from '../../i18n';
 import aboutEnglish from '../../languages/about.english.md';
 import aboutFrench from '../../languages/about.french.md';
@@ -23,7 +23,7 @@ import useAPI from '../../hooks/useAPI';
 
 const cache = new InMemoryCache();
 const link = new HttpLink({
-  uri: '/energy-future/graphql',
+  uri: `${API_HOST}/energy-future/graphql`,
   credentials: 'same-origin',
 });
 const client = new ApolloClient({ cache, link, fetch });

@@ -1,5 +1,6 @@
 import React, { useMemo, useCallback } from 'react';
 import { useIntl } from 'react-intl';
+import PropTypes from 'prop-types';
 import { makeStyles, Grid, Typography, Button, Tooltip } from '@material-ui/core';
 
 import useAPI from '../../hooks/useAPI';
@@ -27,7 +28,7 @@ const useStyles = makeStyles({
   },
 });
 
-const YearSelect = () => {
+const YearSelect = ({ hideTip }) => {
   const classes = useStyles();
   const intl = useIntl();
 
@@ -66,7 +67,7 @@ const YearSelect = () => {
               color={config.yearId === yearId ? 'primary' : 'secondary'}
               size="small"
               onClick={() => handleYear(yearId)}
-              className={`${classes.button} ${config.yearId === yearId ? classes.selected : ''}`.trim()}
+              className={`${classes.button} ${config.yearId === yearId && !hideTip ? classes.selected : ''}`.trim()}
             >
               {config.yearId === yearId ? (<Typography variant="h5">{yearId}</Typography>) : yearId}
             </Button>
@@ -76,5 +77,8 @@ const YearSelect = () => {
     </Grid>
   );
 };
+
+YearSelect.propTypes = { hideTip: PropTypes.bool };
+YearSelect.defaultProps = { hideTip: false };
 
 export default YearSelect;
