@@ -217,6 +217,7 @@ const PageLayout = ({
   ) : (
     <>
       <Grid item xs={12}>{title}</Grid>
+      <Grid item xs={12}><YearSelect hideTip /></Grid>
       <Grid item xs={12}>
         <Grid container alignItems="center" wrap="nowrap" spacing={2} className={classes.row}>
           <Grid item><PageTitle /></Grid>

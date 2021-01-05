@@ -62,8 +62,8 @@ client.query({ query: ITERATIONS_TRANSLATIONS }).then((result) => {
     getMessages: locale => i18nMessages[locale],
   });
 
-  // eslint-disable-next-line no-alert
-  alert('Unable to load API translations.');
+  // eslint-disable-next-line no-console
+  console.warn('Unable to load API translations.');
 }).finally(() => {
   // Automatically import all files named stories.jsx
   const documentationStories = requireContext('../documentation/', true, /stories.jsx$/);

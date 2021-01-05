@@ -1,6 +1,6 @@
 {
   "name": "cer-energy-futures-visualization",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "A visualization of the Energy Future reports that the CER creates as part of their regulatory process.",
   "main": "src/index.jsx",
   "scripts": {
@@ -12,7 +12,7 @@
     "start": "npm run storybook",
     "storybook": "start-storybook -s ./src/images -s ./.storybook/wet-template -p 6006",
     "verifyLazyLoad": "babel-node ./serveLazyDevServer",
-    "build-storybook": "cross-env NODE_ENV=production build-storybook -s ./src/images -s ./.storybook/wet-template",
+    "build-storybook": "cross-env NODE_ENV=production API_HOST=https://apps2.cer-rec.gc.ca build-storybook -s ./src/images -s ./.storybook/wet-template",
     "build:modified": "git show -s --format=%cd HEAD --date=short > LAST_MODIFIED",
     "build:update-version": "node -e \"require('fs').writeFileSync('VERSION', require('./package.json').version, 'utf-8')\"",
     "build:changelog": "conventional-changelog -n .release/index.js -i CHANGELOG.md -s",
@@ -46,6 +46,7 @@
     "graphql-tag": "^2.11.0",
     "history": "^5.0.0",
     "js-cookie": "^2.2.1",
+    "node-fetch": "^2.6.1",
     "papaparse": "^5.3.0",
     "prop-types": "15.7.2",
     "query-string": "^6.13.1",
@@ -100,6 +101,7 @@
     "jest": "24.9.0",
     "jest-junit": "10.0.0",
     "mini-css-extract-plugin": "0.8.0",
+    "nock": "^13.0.5",
     "open-cli": "5.0.0",
     "postcss-loader": "3.0.0",
     "postcss-preset-env": "6.7.0",

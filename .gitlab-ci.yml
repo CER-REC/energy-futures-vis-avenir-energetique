@@ -10,7 +10,7 @@ stages:
 
 variables:
   AWS_DEFAULT_REGION: us-west-2
-  BUCKET_NAME: neb-conditions-devdoc
+  BUCKET_NAME: neb-energy-futures-devdoc
   PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
 
 build:

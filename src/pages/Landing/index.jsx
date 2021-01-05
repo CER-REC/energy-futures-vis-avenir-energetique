@@ -17,7 +17,7 @@ import portalBySector from './portal_by_sector.jpg';
 import portalElectricity from './portal_electricity.jpg';
 import portalScenarios from './portal_scenarios.jpg';
 import portalOilAndGas from './portal_oil_and_gas.jpg';
-import portalDemand from './portal_demand.jpg';
+// import portalDemand from './portal_demand.jpg';
 import reportCoverEn from './report_cover_en.png';
 import reportCoverFr from './report_cover_fr.png';
 
@@ -166,7 +166,8 @@ const getBg = (page) => {
     case 'electricity': return portalElectricity;
     case 'scenarios': return portalScenarios;
     case 'oil-and-gas': return portalOilAndGas;
-    case 'demand': default: return portalDemand;
+    // case 'demand':
+    default: return portalByRegion;
   }
 };
 
@@ -193,6 +194,8 @@ const Landing = () => {
     configDispatch({ type: 'page/changed', payload: page });
     analytics.reportNav(page);
   };
+
+  const handleCloseDialog = () => setDialog(false);
 
   return (
     <>
@@ -273,8 +276,8 @@ const Landing = () => {
       </main>
 
       {/* the about dialog */}
-      <Dialog open={open} onClose={() => setDialog(false)} classes={{ paper: classes.dialog }}>
-        <Fab color="primary" size="medium" onClick={() => setDialog(false)} className={classes.close}><CloseIcon /></Fab>
+      <Dialog open={open} onClose={handleCloseDialog} classes={{ paper: classes.dialog }}>
+        <Fab color="primary" size="medium" onClick={handleCloseDialog} className={classes.close}><CloseIcon /></Fab>
         <DialogContent style={{ padding: 24 }}>
           <Markdown>{intl.formatMessage({ id: 'about' })}</Markdown>
         </DialogContent>

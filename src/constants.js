@@ -19,6 +19,8 @@ export const lang = (typeof document !== 'undefined'
     && window.localStorage.getItem('dev-lang') === 'fr')
   ? 'fr' : 'en';
 
+export const API_HOST = process.env.API_HOST || '';
+
 export const PAGES = [
   {
     label: 'Landing',

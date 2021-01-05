@@ -12,28 +12,32 @@ import forecastLayer from '../../components/ForecastLayer';
 import VizTooltip from '../../components/VizTooltip';
 import MaxTick from '../../components/MaxTick';
 
+/**
+ * Generate a custom dotted line layer for rendering the default scenario.
+ */
+export const dottedLayer = scenarioYear => args => args.points
+  .filter(point => point.serieId === (scenarioYear === '2020' ? 'Evolving' : 'Reference'))
+  .map(point => (
+    <circle
+      key={point.id}
+      cx={point.x}
+      cy={point.y}
+      r={args.pointSize / 2}
+      fill="#FFF"
+      stroke={point.borderColor}
+      strokeWidth={args.pointBorderWidth}
+      style={{ pointerEvents: 'none' }}
+    />
+  ));
+
 const Scenarios = ({ data, year }) => {
   const intl = useIntl();
   const { config } = useConfig();
 
   /**
-   * Generate a custom dotted line layer for rendering the default scenario.
+   * The dotted line layer that represents the default scenario.
    */
-  const dottedLayer = useCallback(scenarioYear => args => args.points
-    .filter(point => point.serieId === (scenarioYear === '2020' ? 'Evolving' : 'Reference'))
-    .map(point => (
-      <circle
-        key={point.id}
-        cx={point.x}
-        cy={point.y}
-        r={args.pointSize / 2}
-        fill="#FFF"
-        stroke={point.borderColor}
-        strokeWidth={args.pointBorderWidth}
-        style={{ pointerEvents: 'none' }}
-      />
-    )), []);
-  const dots = useMemo(() => dottedLayer(config.yearId), [config.yearId, dottedLayer]);
+  const dots = useMemo(() => dottedLayer(config.yearId), [config.yearId]);
 
   /**
    * The fade-out effect over forecast years.
