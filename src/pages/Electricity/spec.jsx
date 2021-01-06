@@ -65,7 +65,7 @@ describe('Page|Electricity', () => {
         // num of bubble nodes + region label
         expect(regionLabel.closest('div').children()).toHaveLength(MOCK_DATA_REGION[2005][region].length + 1);
 
-        // region lable text
+        // region label text
         expect(wrapper.findWhere(locateText(region)).exists()).toBeTruthy();
       });
 

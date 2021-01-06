@@ -24,15 +24,15 @@ export const MOCK_DATA_REGION = Array(46).fill(undefined).map((_, i) => i).reduc
       { name: 'BIO', value: 1725.168 },
       { name: 'RENEWABLE', value: 741 },
       { name: 'OIL', value: 509.4367 },
-    ],
-    MB: [
+    ].map(type => ({ ...type, value: type.value * (1 + Math.random() / 5) })),
+    NB: [
       { name: 'HYDRO', value: 36440 },
       { name: 'COAL', value: 413.2573 },
       { name: 'RENEWABLE', value: 53 },
       { name: 'GAS', value: 41.6505 },
       { name: 'BIO', value: 27.33 },
       { name: 'OIL', value: 8.2922 },
-    ],
+    ].map(type => ({ ...type, value: type.value * (1 + Math.random() / 5) })),
   },
 }), {});
 
@@ -78,7 +78,7 @@ export const MOCK_DATA_SINGLE = Array(46).fill(undefined).map((_, i) => i).reduc
       { name: 'BIO', value: 1725.168 },
       { name: 'RENEWABLE', value: 741 },
       { name: 'OIL', value: 509.4367 },
-    ],
+    ].map(type => ({ ...type, value: type.value * (1 + Math.random()) })),
   },
 }), {});
 
