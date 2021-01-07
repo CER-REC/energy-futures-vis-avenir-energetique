@@ -1,0 +1,98 @@
+{
+  "data": {
+    "resources": [
+      {
+        "province": "NL",
+        "year": 2005,
+        "scenario": "Evolving",
+        "source": "BIO",
+        "value": 161.7068
+      },
+      {
+        "province": "PE",
+        "year": 2005,
+        "scenario": "Evolving",
+        "source": "BIO",
+        "value": 26.5185
+      },
+      {
+        "province": "NS",
+        "year": 2005,
+        "scenario": "Evolving",
+        "source": "BIO",
+        "value": 229.9022
+      },
+      {
+        "province": "NB",
+        "year": 2005,
+        "scenario": "Evolving",
+        "source": "BIO",
+        "value": 253.0975
+      },
+      {
+        "province": "QC",
+        "year": 2005,
+        "scenario": "Evolving",
+        "source": "BIO",
+        "value": 1848.2299
+      },
+      {
+        "province": "ON",
+        "year": 2005,
+        "scenario": "Evolving",
+        "source": "BIO",
+        "value": 3045.0494
+      },
+      {
+        "province": "MB",
+        "year": 2005,
+        "scenario": "Evolving",
+        "source": "BIO",
+        "value": 288.9049
+      },
+      {
+        "province": "SK",
+        "year": 2005,
+        "scenario": "Evolving",
+        "source": "BIO",
+        "value": 534.421
+      },
+      {
+        "province": "AB",
+        "year": 2005,
+        "scenario": "Evolving",
+        "source": "BIO",
+        "value": 2818.1722
+      },
+      {
+        "province": "BC",
+        "year": 2005,
+        "scenario": "Evolving",
+        "source": "BIO",
+        "value": 1259.11
+
+      },
+      {
+        "province": "YT",
+        "year": 2005,
+        "scenario": "Evolving",
+        "source": "BIO",
+        "value": 8.1578
+      },
+      {
+        "province": "NT",
+        "year": 2005,
+        "scenario": "Evolving",
+        "source": "BIO",
+        "value": 18.7046
+      },
+      {
+        "province": "NU",
+        "year": 2005,
+        "scenario": "Evolving",
+        "source": "BIO",
+        "value": 3.6129
+      }
+    ]
+  }
+}

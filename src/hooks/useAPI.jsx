@@ -111,7 +111,7 @@ export default () => {
   const sources = useMemo(
     () => (data
       ? getSources(data.translations)
-      : { electricity: {}, energy: {}, oil: {}, gas: {} }),
+      : { electricity: {}, energy: {}, oil: {}, gas: {}, transportation: {} }),
     [data],
   );
   const sectors = useMemo(

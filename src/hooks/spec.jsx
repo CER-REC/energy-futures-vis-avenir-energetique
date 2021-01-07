@@ -2,35 +2,14 @@ import React from 'react';
 import { mount } from 'enzyme';
 import { act } from 'react-dom/test-utils';
 import { ApolloProvider } from '@apollo/react-hooks';
-import { ApolloClient } from 'apollo-client';
-import { InMemoryCache } from 'apollo-cache-inmemory';
-import { MATCH_ANY_PARAMETERS, WildcardMockLink } from 'wildcard-mock-link';
 import client from '../../.storybook/mockApolloClient';
 
-import * as queries from './queries';
-import iterationsTranslations from '../tests/mocks/iterationsTranslations.json';
-import mockData from '../tests/mocks/mockData.json';
+import mockData from '../tests/mocks/data.json';
 import { initialState, getReducer } from './reducer';
 import useAPI from './useAPI';
 import useConfig from './useConfig';
 import useEnergyFutureData from './useEnergyFutureData';
 import { TestContainer } from '../tests/utilities';
-
-/**
- * mock the query that takes wild cards for testing the useEnergyFutureData hook
- */
-const cache = new InMemoryCache({ addTypename: false });
-const link = new WildcardMockLink([
-  {
-    request: { query: queries.ITERATIONS_TRANSLATIONS },
-    result: iterationsTranslations,
-  },
-  ...Object.keys(queries).map(query => query !== 'ITERATIONS_TRANSLATIONS' && ({
-    request: { query: queries[query], variables: MATCH_ANY_PARAMETERS },
-    result: mockData,
-  })).filter(Boolean),
-]);
-const apolloClient = new ApolloClient({ cache, link });
 
 const BASE_STATE = {
   baseYear: null,
@@ -188,7 +167,7 @@ describe('Component|hooks', () => {
     const getComponent = (props) => {
       const MockComponent = () => <>{JSON.stringify(useEnergyFutureData())}</>;
       return (
-        <TestContainer mockConfig={{ ...BASE_STATE, ...props }} apolloClient={apolloClient}>
+        <TestContainer mockConfig={{ ...BASE_STATE, ...props }}>
           <MockComponent />
         </TestContainer>
       );
