@@ -91,7 +91,7 @@ export const TestContainer = ({ children, mockConfig, mockConfigDispatch }) => {
   const Root = () => {
     const { translations } = useAPI();
     const messages = useMemo(
-      () => ({ ...translations.en, ...i18nMessages.en }),
+      () => ({ ...translations.en, ...i18nMessages.en, about: ' ' }),
       [translations],
     );
     return (
