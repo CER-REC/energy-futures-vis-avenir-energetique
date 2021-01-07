@@ -13,6 +13,20 @@ global.fetch = fetch;
 // Mock window.open
 global.open = jest.fn();
 global.location.assign = jest.fn();
+
+/**
+ * Fixes a known issue when testing Material UI Tooltip.
+ * https://github.com/mui-org/material-ui/issues/15726
+ */
+global.document.createRange = () => ({
+  setStart: () => {},
+  setEnd: () => {},
+  commonAncestorContainer: {
+    nodeName: 'BODY',
+    ownerDocument: document,
+  },
+});
+
 global.document = global.window.document;
 global.window.open = global.open;
 

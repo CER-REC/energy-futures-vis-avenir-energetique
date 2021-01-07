@@ -264,7 +264,10 @@ const OilAndGas = ({ data, year, vizDimension }) => {
   }
 
   // data content not valid; render nothing
-  if (Number.isNaN(data[currentYear][0].total) || Number.isNaN(data[compareYear][0].total)) {
+  if (
+    Number.isNaN(Number(data[currentYear][0].total))
+    || Number.isNaN(Number(data[compareYear][0].total))
+  ) {
     return null;
   }
 
@@ -450,7 +453,8 @@ const OilAndGas = ({ data, year, vizDimension }) => {
                   onYearChange={(value) => {
                     if ((value.curr || value) !== currentYear) {
                       setCurrentYear(value.curr || value);
-                    } if (compare && value.compare !== compareYear) {
+                    }
+                    if (compare && value.compare !== compareYear) {
                       setCompareYear(value.compare);
                     }
                   }}
