@@ -2,9 +2,9 @@ import { ApolloClient } from 'apollo-client';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { MATCH_ANY_PARAMETERS, WildcardMockLink } from 'wildcard-mock-link';
 
-import * as queries from '../src/hooks/queries';
-import iterationsTranslations from '../src/tests/mocks/iterationsTranslations.json';
-import mockData from '../src/tests/mocks/data.json';
+import * as queries from '../../hooks/queries';
+import iterationsTranslations from './iterationsTranslations.json';
+import mockData from './data.json';
 
 /**
  * mock the query that takes wild cards for testing the useEnergyFutureData hook
@@ -15,7 +15,7 @@ const mocks = [
     request: { query: queries.ITERATIONS_TRANSLATIONS },
     result: iterationsTranslations,
   },
-  ...Object.keys(queries).map(query => query !== 'ITERATIONS_TRANSLATIONS' && ({
+  ...Object.keys(queries).map(query => !['ITERATIONS_TRANSLATIONS', 'NULL_QUERY'].includes(query) && ({
     request: { query: queries[query], variables: MATCH_ANY_PARAMETERS },
     result: mockData,
   })).filter(Boolean),

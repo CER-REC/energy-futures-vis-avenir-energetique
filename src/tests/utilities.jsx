@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { IntlProvider } from 'react-intl';
 import { ShallowWrapper, shallow, mount } from 'enzyme';
 import { ApolloProvider } from '@apollo/react-hooks';
-import client from '../../.storybook/mockApolloClient';
+import client from './mocks/apolloClient';
 import useAPI from '../hooks/useAPI';
 import { ConfigProvider } from '../hooks/useConfig';
 import i18nMessages from '../i18n';

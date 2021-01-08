@@ -2,8 +2,8 @@ import React from 'react';
 import { mount } from 'enzyme';
 import { act } from 'react-dom/test-utils';
 import { ApolloProvider } from '@apollo/react-hooks';
-import client from '../../.storybook/mockApolloClient';
 
+import client from '../tests/mocks/apolloClient';
 import mockData from '../tests/mocks/data.json';
 import { initialState, getReducer } from './reducer';
 import useAPI from './useAPI';
