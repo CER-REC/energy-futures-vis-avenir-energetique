@@ -147,7 +147,7 @@ const LinkButtonGroup = ({ direction }) => {
         {label.name}
       </Button>
 
-      <span style={{ display: select === label.name ? 'block' : 'none' }}>
+      <span id={`panel-button-${label.tag}`} style={{ display: select === label.name ? 'block' : 'none' }}>
         <div className={`${classes.popUp} ${direction === 'row' ? classes.popUpTop : classes.popUpRight}`}>
           {label.content}
         </div>
