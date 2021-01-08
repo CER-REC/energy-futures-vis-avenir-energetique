@@ -1,10 +1,7 @@
 import React from 'react';
-import {
-  makeStyles, createStyles,
-} from '@material-ui/core';
+import { useIntl } from 'react-intl';
+import { makeStyles, createStyles, Typography } from '@material-ui/core';
 import propTypes from 'prop-types';
-import AdvancedFormattedMessage from '../AdvancedFormattedMessage';
-import TranslatedParagraphs from '../TranslatedParagraphs';
 
 const screenPath = (
   <path
@@ -87,6 +84,7 @@ const useStyles = makeStyles(theme => createStyles({
 
 const UnsupportedWarning = ({ type }) => {
   const classes = useStyles();
+  const intl = useIntl();
 
   return (
     <div className={`${classes.root} UnsupportedWarning`}>
@@ -96,10 +94,9 @@ const UnsupportedWarning = ({ type }) => {
           {iconPath}
         </g>
       </svg>
-      <AdvancedFormattedMessage
-        id={`components.unsupportedWarning.${type}`}
-        tag={TranslatedParagraphs}
-      />
+      <Typography variant="body1">
+        {intl.formatMessage({ id: `components.unsupportedWarning.${type}` })}
+      </Typography>
     </div>
   );
 };

@@ -47,7 +47,7 @@ client.query({ query: ITERATIONS_TRANSLATIONS }).then((result) => {
   const messages = {};
 
   locales.forEach((locale) => {
-    messages[locale] = { ...apiI18NMessages[locale], ...i18nMessages[locale] };
+    messages[locale] = { ...apiI18NMessages[locale], ...i18nMessages[locale], about: ' ' };
   });
 
   setIntlConfig({

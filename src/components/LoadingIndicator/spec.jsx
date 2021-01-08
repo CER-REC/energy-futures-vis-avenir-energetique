@@ -1,12 +1,11 @@
 import React from 'react';
-
-import { mountWithIntl, shouldBehaveLikeAComponent } from '../../tests/utilities';
+import { getRendered, mountWithIntl } from '../../tests/utilities';
 import LoadingIndicator from './index';
 
 describe('Components|LoadingIndicator', () => {
-  describe('with default props', () => {
+  test('should render component', () => {
     const wrapper = mountWithIntl(<LoadingIndicator type="api" />);
 
-    shouldBehaveLikeAComponent(LoadingIndicator, () => wrapper);
+    expect(getRendered(LoadingIndicator, wrapper).exists()).toBeTruthy();
   });
 });
