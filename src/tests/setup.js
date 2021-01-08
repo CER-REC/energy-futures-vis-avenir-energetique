@@ -4,10 +4,38 @@ import Adapter from 'enzyme-adapter-react-16';
 import fetch from 'node-fetch';
 import { monkeyPatchShallowWithIntl } from './utilities';
 
-jest.doMock('file-saver', () => ({ saveAs: jest.fn() }));
 registerRequireContextHook();
 configure({ adapter: new Adapter() });
 monkeyPatchShallowWithIntl();
+
+/**
+ * jest related:
+ */
+jest.doMock('file-saver', () => ({ saveAs: jest.fn() }));
+
+/**
+ * To get rid of the 'unable to find drag handle' error.
+ * https://github.com/atlassian/react-beautiful-dnd/issues/1593
+ */
+jest.mock('react-beautiful-dnd', () => ({
+  Droppable: ({ children }) => children({
+    draggableProps: {
+      style: {},
+    },
+    innerRef: jest.fn(),
+  }, {}),
+  Draggable: ({ children }) => children({
+    draggableProps: {
+      style: {},
+    },
+    innerRef: jest.fn(),
+  }, {}),
+  DragDropContext: ({ children }) => children,
+}));
+
+/**
+ * global related:
+ */
 global.fetch = fetch;
 
 // Mock window.open
