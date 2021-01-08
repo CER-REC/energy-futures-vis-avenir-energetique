@@ -1,3 +1,4 @@
+import React from 'react';
 import { mount } from 'enzyme';
 import forecastLayer from '.';
 
@@ -8,7 +9,9 @@ describe('Component|ForecastLayer', () => {
    * Chart with props 'innerHeight' and 'innerWidth'
    */
   describe('Test basic component', () => {
-    const wrapper = mount(forecastLayer(MOCK_YEAR)({ innerHeight: 600, innerWidth: 800 }));
+    const wrapper = mount(
+      <svg>{forecastLayer(MOCK_YEAR)({ innerHeight: 600, innerWidth: 800 })}</svg>,
+    );
 
     test('should render component', () => {
       expect(wrapper.type()).not.toBeNull();
@@ -24,7 +27,7 @@ describe('Component|ForecastLayer', () => {
    * Chart with props 'height' and 'width'
    */
   describe('Test basic component', () => {
-    const wrapper = mount(forecastLayer(MOCK_YEAR)({ height: 600, width: 800 }));
+    const wrapper = mount(<svg>{forecastLayer(MOCK_YEAR)({ height: 600, width: 800 })}</svg>);
 
     test('should render component', () => {
       expect(wrapper.type()).not.toBeNull();

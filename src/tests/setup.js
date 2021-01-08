@@ -38,6 +38,9 @@ jest.mock('react-beautiful-dnd', () => ({
  */
 global.fetch = fetch;
 
+// silent warning messages
+global.console = { ...global.console, warn: jest.fn() };
+
 // Mock window.open
 global.open = jest.fn();
 global.location.assign = jest.fn();

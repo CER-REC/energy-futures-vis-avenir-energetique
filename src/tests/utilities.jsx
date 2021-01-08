@@ -78,16 +78,10 @@ export const mountWithIntl = (node, messages) => mount(node, {
   },
 });
 
-export const compareReduxChange = (reducer, newState) => {
-  const initialState = reducer(undefined, {});
-  expect(newState).not.toBe(initialState);
-  expect(typeof initialState).toBe(typeof newState);
-};
-
 /**
  * TODO: newly added helper functions.
  */
-export const TestContainer = ({ children, mockConfig, mockConfigDispatch, apolloClient }) => {
+export const TestContainer = ({ children, mockConfig, mockConfigDispatch }) => {
   const Root = () => {
     const { translations } = useAPI();
     const messages = useMemo(
@@ -102,21 +96,19 @@ export const TestContainer = ({ children, mockConfig, mockConfigDispatch, apollo
       </IntlProvider>
     );
   };
-  return <ApolloProvider client={apolloClient || client}><Root /></ApolloProvider>;
+  return <ApolloProvider client={client}><Root /></ApolloProvider>;
 };
 
 TestContainer.propTypes = {
   children: PropTypes.node,
   mockConfig: PropTypes.object, // eslint-disable-line react/forbid-prop-types
   mockConfigDispatch: PropTypes.func,
-  apolloClient: PropTypes.object, // eslint-disable-line react/forbid-prop-types
 };
 
 TestContainer.defaultProps = {
   children: null,
   mockConfig: undefined,
   mockConfigDispatch: NOOP,
-  apolloClient: undefined,
 };
 
 export const getRendered = (component, wrapper) => {
