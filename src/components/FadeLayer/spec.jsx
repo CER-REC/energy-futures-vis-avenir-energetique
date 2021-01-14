@@ -1,3 +1,4 @@
+import React from 'react';
 import { mount } from 'enzyme';
 import { fadeLayerBySector, fadeLayerScenario } from '.';
 
@@ -19,7 +20,7 @@ describe('Component|FadeLayer', () => {
    * Page By-Sector
    */
   describe('Test in page by-sector', () => {
-    const wrapper = mount(fadeLayerBySector(MOCK_YEAR)(MOCK_CHART));
+    const wrapper = mount(<svg>{fadeLayerBySector(MOCK_YEAR)(MOCK_CHART)}</svg>);
 
     test('should render component', () => {
       expect(wrapper.type()).not.toBeNull();
@@ -39,7 +40,7 @@ describe('Component|FadeLayer', () => {
    * Page Scenarios
    */
   describe('Test in page scenarios', () => {
-    const wrapper = mount(fadeLayerScenario(MOCK_YEAR)(MOCK_CHART));
+    const wrapper = mount(<svg>{fadeLayerScenario(MOCK_YEAR)(MOCK_CHART)}</svg>);
 
     test('should render component', () => {
       expect(wrapper.type()).not.toBeNull();
@@ -55,7 +56,9 @@ describe('Component|FadeLayer', () => {
    * Transportation
    */
   describe('Test sector transportation', () => {
-    const wrapper = mount(fadeLayerBySector({ ...MOCK_YEAR, isTransportation: true })(MOCK_CHART));
+    const wrapper = mount(
+      <svg>{fadeLayerBySector({ ...MOCK_YEAR, isTransportation: true })(MOCK_CHART)}</svg>,
+    );
 
     test('should render component', () => {
       expect(wrapper.type()).not.toBeNull();

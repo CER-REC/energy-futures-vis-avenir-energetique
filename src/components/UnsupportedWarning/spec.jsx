@@ -1,13 +1,11 @@
 import React from 'react';
-import { shallow } from 'enzyme';
-import { shouldBehaveLikeAComponent } from '../../tests/utilities';
-
+import { getRendered, mountWithIntl } from '../../tests/utilities';
 import UnsupportedWarning from '.';
 
 describe('Components|UnsupportedWarning', () => {
-  describe('with default props', () => {
-    const wrapper = shallow(<UnsupportedWarning type="resolution" />);
+  test('should render component', async () => {
+    const wrapper = mountWithIntl(<UnsupportedWarning type="resolution" />);
 
-    shouldBehaveLikeAComponent(UnsupportedWarning, () => wrapper);
+    expect(getRendered(UnsupportedWarning, wrapper).exists()).toBeTruthy();
   });
 });

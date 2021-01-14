@@ -5,32 +5,20 @@ import { act } from 'react-dom/test-utils';
 import { Button } from '@material-ui/core';
 import EmailIcon from '@material-ui/icons/Email';
 import { saveAs } from 'file-saver';
+
 import { Share, DownloadButton } from '.';
 import { TestContainer, getRendered } from '../../tests/utilities';
 import { IconTwitter, IconFacebook, IconLinkedIn } from '../../icons';
 
 const DEFAULT_CONFIG = {
+  page: 'by-region',
   mainSelection: 'energyDemand',
   yearId: '2020',
-  provinces: ['AB'],
   scenarios: ['Evolving'],
   view: 'region',
   unit: 'petajoules',
-  provinceOrder: [
-    'YT',
-    'SK',
-    'QC',
-    'PE',
-    'ON',
-    'NU',
-    'NT',
-    'NS',
-    'NL',
-    'NB',
-    'MB',
-    'BC',
-    'AB',
-  ],
+  provinces: ['AB'],
+  provinceOrder: ['YT', 'SK', 'QC', 'PE', 'ON', 'NU', 'NT', 'NS', 'NL', 'NB', 'MB', 'BC', 'AB'],
 };
 
 const getShareComponent = (props, options = {}) => (
@@ -45,7 +33,7 @@ const getDownloadComponent = (props, options = {}) => (
   </TestContainer>
 );
 // #region Share Buttons
-describe('Component| Share Buttons', () => {
+describe('Component|ShareButtons', () => {
   let wrapper;
 
   beforeEach(async () => {
@@ -130,7 +118,7 @@ describe('Component| Share Buttons', () => {
   });
 });
 
-describe('Component|Share|Copy Button', () => {
+describe('Component|Share|CopyButton', () => {
   let wrapper;
 
   beforeEach(async () => {
@@ -173,7 +161,7 @@ describe('Component|Share|Copy Button', () => {
 });
 // #endregion
 // #region Download Button
-describe('Component| Download Button | By-Region', () => {
+describe('Component|DownloadButton|By-Region', () => {
   let wrapper;
 
   beforeEach(async () => {
@@ -203,7 +191,7 @@ describe('Component| Download Button | By-Region', () => {
   });
 });
 
-describe('Component| Download Button | By-Sector', () => {
+describe('Component|DownloadButton|By-Sector', () => {
   let wrapper;
 
   test('should call saveAs', async () => {
@@ -220,7 +208,7 @@ describe('Component| Download Button | By-Sector', () => {
   });
 });
 
-describe('Component| Download Button | Scenarios', () => {
+describe('Component|DownloadButton|Scenarios', () => {
   let wrapper;
 
   test('should call saveAs', async () => {
@@ -237,7 +225,7 @@ describe('Component| Download Button | Scenarios', () => {
   });
 });
 
-describe('Component| Download Button | Electricity', () => {
+describe('Component|Download Button|Electricity', () => {
   let wrapper;
 
   test('should call saveAs', async () => {
@@ -254,11 +242,11 @@ describe('Component| Download Button | Electricity', () => {
   });
 });
 
-describe('Component| Download Button | Oil-and-gas', () => {
+describe('Component|DownloadButton|Oil-and-Gas', () => {
   let wrapper;
 
   test('should call saveAs', async () => {
-    const dom = mount(getDownloadComponent({ page: 'oil-and-gas', mainSelection: 'oilProduction', view: 'source', sources: ['ISB'], sourceOrder: ['ISB'] }));
+    const dom = mount(getDownloadComponent({ page: 'oil-and-gas', mainSelection: 'oilProduction', view: 'region' }));
     await act(async () => {
       await new Promise(resolve => setTimeout(resolve));
       dom.update();

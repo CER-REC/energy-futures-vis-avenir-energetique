@@ -1,7 +1,6 @@
 import initStoryshots, { snapshotWithOptions } from '@storybook/addon-storyshots';
 import { SynchronousPromise } from 'synchronous-promise';
-
-import client from './mockApolloClient';
+import client from '../src/tests/mocks/apolloClient';
 
 // initStoryshots runs Storybook's configuration and needs "configure" to be called synchronously
 global.Promise = SynchronousPromise;

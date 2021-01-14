@@ -2,11 +2,9 @@ import registerRequireContextHook from 'babel-plugin-require-context-hook/regist
 import { configure } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import fetch from 'node-fetch';
-import { monkeyPatchShallowWithIntl } from './utilities';
 
 registerRequireContextHook();
 configure({ adapter: new Adapter() });
-monkeyPatchShallowWithIntl();
 
 /**
  * jest related:
@@ -37,6 +35,9 @@ jest.mock('react-beautiful-dnd', () => ({
  * global related:
  */
 global.fetch = fetch;
+
+// silent warning messages
+global.console = { ...global.console, warn: jest.fn() };
 
 // Mock window.open
 global.open = jest.fn();

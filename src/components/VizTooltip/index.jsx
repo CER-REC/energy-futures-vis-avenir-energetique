@@ -74,7 +74,7 @@ VizTooltip.propTypes = {
     // tooltip nodes take in either solid colors or existing pattern masking
     color: PropTypes.string,
     mask: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
-  })).isRequired,
+  })),
   total: PropTypes.number,
   unit: PropTypes.string.isRequired,
   year: PropTypes.number,
@@ -84,6 +84,7 @@ VizTooltip.propTypes = {
 };
 
 VizTooltip.defaultProps = {
+  nodes: [],
   total: 0,
   year: undefined,
   paper: false,

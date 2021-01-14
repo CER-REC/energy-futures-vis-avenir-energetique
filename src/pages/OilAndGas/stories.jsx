@@ -10,6 +10,7 @@ export const DEFAULT_CONFIG = {
   mainSelection: 'oilProduction',
   scenarios: ['Evolving'],
   unit: 'kilobarrels',
+  view: 'region',
   provinces: ['ALL'],
   sources: ['C5', 'CONDENSATE', 'HEAVY', 'ISB', 'LIGHT', 'MB'],
   baseYear: 2005,
