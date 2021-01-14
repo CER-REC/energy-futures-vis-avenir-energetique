@@ -1,12 +1,18 @@
 import React from 'react';
+import { makeStyles } from '@material-ui/core';
 
-const STYLE = {
-  fontSize: 13,
-  textTransform: 'uppercase',
-  fontFamily: '"FiraSansCondensed", "Roboto", "Helvetica", "Arial", sans-serif',
-};
+const useStyles = makeStyles(theme => ({
+  label: {
+    fill: theme.palette.secondary.main,
+    fontFamily: theme.typography.fontFamily,
+    fontSize: 13,
+    textTransform: 'uppercase',
+  },
+}));
 
 export default ({ year, label }) => (props) => {
+  const classes = useStyles();
+
   if (!year) {
     return null; // no valid year definition; do nothing
   }
@@ -32,7 +38,7 @@ export default ({ year, label }) => (props) => {
         width={width - x}
         fill="url(#forecastBarGradient)"
       />
-      <text x={x + 5} y={-y + 14} fill="#5D5D5D" style={STYLE}>
+      <text className={classes.label} x={x + 5} y={-y + 14}>
         {label || 'forecast'}
       </text>
       <path
