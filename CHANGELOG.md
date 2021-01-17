@@ -1,3 +1,117 @@
+# [2.2.0](http://neb-energy-futures-devdoc.s3-website.us-west-2.amazonaws.com/v2.2.0) (2021-01-17)
+
+
+### DraggableVerticalList
+
+* **Features:** moves the react-beautiful-dnd mock to the testing setup file (b900695)
+* **Features:** adds check to see if dragging is disabled (d409a59)
+* **Bug Fixes:** applies suggested fixes (7805ce4)
+
+
+### Electricity
+
+* **Features:** adds randomness in mock data generation to make the stories look more realistic (87639b0)
+* **Features:** applies a different approach for locating bubble groups in test scripts (90e2b29)
+* **Features:** removes unnecessary component parameter for hiding the year slider (46b95aa)
+* **Features:** updates the method how config parameters are passed into the stories (8aeb386)
+* **Features:** adds testing scripts, README, and stories for the Electricity page (7a7f4be)
+
+
+### Hooks
+
+* **Features:** moves the mockApolloClient to the test folder (abf7d65)
+* **Features:** replaces the mock Apollo client with the one with wildcards (77d07d1)
+* **Features:** adds testing scripts for React hooks (dccc366)
+* **Bug Fixes:** adds the updated mockApolloClient which is missing from the previous commit (955df58)
+
+
+### Landing
+
+* **Features:** adds test cases for verifying responsiveness in the Landing page (8d5fc14)
+* **Features:** adds testing scripts. README, and stories for the landing page (2d649fe)
+
+
+### LinkButtonGroup
+
+* **Features:** completes testing for user events such as clicking (a5a567e)
+* **Features:** adds testing scripts, README, and stories for the LinkButtonGroup component (d0fabae)
+* **Bug Fixes:** removes an unnecessary comment in the LinkButtonGroup README (3fdac56)
+
+
+### OilAndGas
+
+* **Features:** uses method 'exists' to verify the rendering for a better accuracy (10e0353)
+* **Features:** adds testing scrips, README, and stories for the Oil-and-Gas page (e2ea746)
+
+
+### PageLayout
+
+* **Features:** improves the method for testing responsiveness (94f83da)
+* **Features:** finds a workaround for the error in generating storyshots (677868b)
+* **Features:** adds testing scripts, README. and stories for the PageLayout component (98b2dc2)
+
+
+### Share
+
+* **Bug Fixes:** adds small fixes based on feedback (ec5912a)
+* **Bug Fixes:** fixes tests for social media (7fb9ed0)
+* **Bug Fixes:** applies suggested fixes (26501c2)
+* **Bug Fixes:** applies a small amount of cleanup (959fbdb)
+* **Bug Fixes:** remove global nock (43f1a83)
+* **Bug Fixes:** applies alans suggested fixes (9ece583)
+* **Bug Fixes:** changes delay in timeout to 1000 (8798ae3)
+* **Bug Fixes:** removes tests for copy button (0362962)
+* **Bug Fixes:** another attempt to fix tests (5f00a8a)
+* **Bug Fixes:** attepts to fix test suite (b7537ee)
+* **Bug Fixes:** fixes act issue (ab24af9)
+* **Bug Fixes:** fixes broken tests (71494fd)
+* **Tests:** added more tests and fixes (0e765e9)
+
+
+### Testing
+
+* **Features:** removes components and testing methods that are no longer used (46ba209)
+* **Features:** cleans up errors and warnings in test output (89f6f41)
+* **Features:** mutes warning messages caused by react-beautiful-dnd during testing (d5eaabd)
+* **Features:** improves old test scripts for HorizontalControlBar and VerticalDraggableList (4f0c584)
+
+
+* **Bug Fixes:** Added UTF-8 BOM to CSV file generation (763a388)
+* **Project Maintenance:** Scaled down social media image size (5fe8808)
+
+
+### Scenarios
+
+* **Features:** adds testing scripts, README, and stories for the Scenarios page (c4465d2)
+
+
+### Share Tests
+
+* **Bug Fixes:** fixes broken tests (6ec6784)
+
+
+### ShareButtons
+
+* **Tests:** adds some tests to share buttons (107d301)
+
+
+### shareLinks
+
+* **Code Refactoring:** improves readme and changes to exist test (f9214d0)
+
+
+### Utilities
+
+* **Features:** adds testing scripts for custom React hooks (40d2396)
+* **Features:** fixes the Number.toLocaleString issues under node 12.13 on GitLab runtime (dfc781b)
+* **Features:** adds testing scrips for the utility functions (080052d)
+
+
+### YearSlider
+
+* **Features:** adds testing logic for verifying the year auto-play function (13c8eab)
+* **Features:** adds testing scripts, README, and stories for the component (13f7339)
+
 # [2.1.0](http://neb-energy-futures-devdoc.s3-website.us-west-2.amazonaws.com/v2.1.0) (2020-12-14)
 
 
