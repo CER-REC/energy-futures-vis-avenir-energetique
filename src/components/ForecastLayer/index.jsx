@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { makeStyles } from '@material-ui/core';
 import PropTypes from 'prop-types';
 
@@ -11,28 +11,53 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
+const getYearX = (year, xScale, bars) => {
+  let x = xScale(year);
+
+  if (bars) {
+    const widths = bars
+      .filter(bar => bar.data.indexValue === year.toString())
+      .map(bar => bar.width);
+    const maxWidth = Math.max(...widths);
+
+    // xScale returns the starting x for bars
+    x += Math.round(maxWidth / 2);
+  }
+
+  return x;
+};
+
 const ForecastLayer = ({
+  bars,
   height,
   innerHeight,
   innerWidth,
-  width,
   margin,
-  maxYear,
-  minYear,
+  xScale,
   forecastStart,
   forecastLabel,
 }) => {
   const classes = useStyles();
+  const lineHeight = innerHeight || height;
+  const x = useMemo(
+    () => getYearX(forecastStart, xScale, bars),
+    [forecastStart, xScale, bars],
+  );
+  const y = -margin.top;
+  const forecastWidth = useMemo(() => {
+    if (!bars) {
+      return innerWidth;
+    }
 
-  if (!maxYear || !minYear || !forecastStart) {
+    const years = bars.map(bar => bar.data.indexValue);
+    const maxYear = Math.max(...years);
+
+    return getYearX(maxYear, xScale, bars) - x;
+  }, [bars, innerWidth, xScale, x]);
+
+  if (!forecastStart) {
     return null;
   }
-
-  const forecastPercentage = (forecastStart - minYear) / (maxYear - minYear);
-  const lineHeight = innerHeight || height;
-  const forecastWidth = innerWidth || (width - 30);
-  const x = forecastPercentage * forecastWidth + (innerWidth ? 0 : 15);
-  const y = margin?.top || 50;
 
   return (
     <g>
@@ -45,16 +70,16 @@ const ForecastLayer = ({
       </defs>
       <rect
         x={x}
-        y={-y}
+        y={y}
         height={20}
-        width={forecastWidth - x}
+        width={forecastWidth}
         fill="url(#forecastBarGradient)"
       />
-      <text className={classes.label} x={x + 5} y={-y + 14}>
+      <text className={classes.label} x={x + 5} y={y + 14}>
         {forecastLabel}
       </text>
       <path
-        d={`M${x} ${-y} l0 ${lineHeight + y}`}
+        d={`M${x} ${y} L${x} ${lineHeight}`}
         strokeDasharray="5,5"
         stroke="#444"
         strokeWidth="1"
@@ -64,22 +89,23 @@ const ForecastLayer = ({
 };
 
 ForecastLayer.propTypes = {
+  bars: PropTypes.arrayOf(PropTypes.shape({
+    data: PropTypes.shape({ indexValue: PropTypes.string.isRequired }),
+    width: PropTypes.number.isRequired,
+  })),
+  height: PropTypes.number.isRequired,
   innerHeight: PropTypes.number,
   innerWidth: PropTypes.number,
-  width: PropTypes.number.isRequired,
-  height: PropTypes.number.isRequired,
   margin: PropTypes.shape({ top: PropTypes.number.isRequired }).isRequired,
-  maxYear: PropTypes.number,
-  minYear: PropTypes.number,
+  xScale: PropTypes.func.isRequired,
   forecastStart: PropTypes.number,
-  forecastLabel: PropTypes.number,
+  forecastLabel: PropTypes.string,
 };
 
 ForecastLayer.defaultProps = {
+  bars: null,
   innerHeight: null,
   innerWidth: null,
-  maxYear: null,
-  minYear: null,
   forecastStart: null,
   forecastLabel: null,
 };

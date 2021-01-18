@@ -97,8 +97,6 @@ const ByRegion = ({ data, year }) => {
         tooltip={getTooltip}
         gridYValues={axis.ticks}
         motionStiffness={300}
-        maxYear={year.max}
-        minYear={year.min}
         forecastStart={year.forecastStart}
         forecastLabel={intl.formatMessage({ id: 'common.forecast' })}
       />

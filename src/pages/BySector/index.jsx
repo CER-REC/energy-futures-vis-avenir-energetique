@@ -127,8 +127,6 @@ const BySector = ({ data, year }) => {
         sliceTooltip={getTooltip}
         gridYValues={axis.ticks}
         defs={CHART_PATTERNS}
-        maxYear={year.max}
-        minYear={year.min}
         forecastStart={year.forecastStart}
         forecastLabel={intl.formatMessage({ id: 'common.forecast' })}
       />

@@ -123,8 +123,6 @@ const Scenarios = ({ data, year }) => {
         enableSlices="x"
         sliceTooltip={getTooltip}
         gridYValues={axis.ticks}
-        maxYear={year.max}
-        minYear={year.min}
         forecastStart={year.forecastStart}
         forecastLabel={intl.formatMessage({ id: 'common.forecast' })}
       />
