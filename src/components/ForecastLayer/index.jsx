@@ -38,12 +38,12 @@ const ForecastLayer = ({
   forecastLabel,
 }) => {
   const classes = useStyles();
-  const lineHeight = innerHeight || height;
   const x = useMemo(
     () => getYearX(forecastStart, xScale, bars),
     [forecastStart, xScale, bars],
   );
   const y = -margin.top;
+  const lineHeight = (innerHeight || height) + margin.top;
   const forecastWidth = useMemo(() => {
     if (!bars) {
       return innerWidth - x;
@@ -60,7 +60,7 @@ const ForecastLayer = ({
   }
 
   return (
-    <g transform={`translate(${x}, 0)`}>
+    <g transform={`translate(${x}, ${y})`}>
       <defs>
         <linearGradient id="forecastBarGradient">
           <stop offset="0%" stopColor="#EEE" stopOpacity="1" />
@@ -69,17 +69,15 @@ const ForecastLayer = ({
         </linearGradient>
       </defs>
       <rect
-        x={0}
-        y={y}
         height={20}
         width={forecastWidth}
         fill="url(#forecastBarGradient)"
       />
-      <text className={classes.label} x={5} y={y + 14}>
+      <text className={classes.label} x={5} y={14}>
         {forecastLabel}
       </text>
       <path
-        d={`M0 ${y} L0 ${lineHeight}`}
+        d={`M0 0 L0 ${lineHeight}`}
         strokeDasharray="5,5"
         stroke="#444"
         strokeWidth="1"
