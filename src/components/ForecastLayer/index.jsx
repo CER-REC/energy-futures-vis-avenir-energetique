@@ -87,16 +87,24 @@ const ForecastLayer = ({
 };
 
 ForecastLayer.propTypes = {
+  /** The bar data (provided by nivo) */
   bars: PropTypes.arrayOf(PropTypes.shape({
     data: PropTypes.shape({ indexValue: PropTypes.string.isRequired }),
     width: PropTypes.number.isRequired,
   })),
+  /** The height of the bar chart (provided by nivo) */
   height: PropTypes.number.isRequired,
+  /** The height of the line chart (provided by nivo) */
   innerHeight: PropTypes.number,
+  /** The width of the line chart (provided by nivo) */
   innerWidth: PropTypes.number,
+  /** The margins of the chart (provided by nivo) */
   margin: PropTypes.shape({ top: PropTypes.number.isRequired }).isRequired,
+  /** The function to get the x coordinate of the index (provided by nivo) */
   xScale: PropTypes.func.isRequired,
+  /** The year the forecast starts */
   forecastStart: PropTypes.number,
+  /** The text to display by the forecast line */
   forecastLabel: PropTypes.string,
 };
 
