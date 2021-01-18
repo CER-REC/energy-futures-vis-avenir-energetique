@@ -8,7 +8,7 @@ import analytics from '../../analytics';
 import { CHART_PROPS, CHART_AXIS_PROPS } from '../../constants';
 import { getMaxTick } from '../../utilities/parseData';
 import convertHexToRGB from '../../utilities/convertHexToRGB';
-import forecastLayer from '../../components/ForecastLayer';
+import ForecastLayer from '../../components/ForecastLayer';
 import VizTooltip from '../../components/VizTooltip';
 import MaxTick from '../../components/MaxTick';
 
@@ -32,11 +32,6 @@ const ByRegion = ({ data, year }) => {
     () => customColorProp(year.max, year.forecastStart),
     [customColorProp, year],
   );
-
-  /**
-   * The forecast bar.
-   */
-  const forecast = useMemo(() => forecastLayer({ year, label: intl.formatMessage({ id: 'common.forecast' }) }), [year, intl]);
 
   /**
    * Determine the region order shown in the stacked bar chart.
@@ -85,7 +80,7 @@ const ByRegion = ({ data, year }) => {
         {...CHART_PROPS}
         data={data}
         keys={keys}
-        layers={['grid', 'axes', 'bars', 'markers', forecast]}
+        layers={['grid', 'axes', 'bars', 'markers', ForecastLayer]}
         indexBy="year"
         maxValue={axis.highest}
         colors={colors}
@@ -102,6 +97,10 @@ const ByRegion = ({ data, year }) => {
         tooltip={getTooltip}
         gridYValues={axis.ticks}
         motionStiffness={300}
+        maxYear={year.max}
+        minYear={year.min}
+        forecastStart={year.forecastStart}
+        forecastLabel={intl.formatMessage({ id: 'common.forecast' })}
       />
     </div>
   );

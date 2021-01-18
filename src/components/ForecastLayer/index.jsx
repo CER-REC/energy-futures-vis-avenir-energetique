@@ -1,5 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core';
+import PropTypes from 'prop-types';
 
 const useStyles = makeStyles(theme => ({
   label: {
@@ -10,18 +11,29 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default ({ year, label }) => (props) => {
+const ForecastLayer = ({
+  height,
+  innerHeight,
+  innerWidth,
+  width,
+  margin,
+  maxYear,
+  minYear,
+  forecastStart,
+  forecastLabel,
+}) => {
   const classes = useStyles();
 
-  if (!year) {
-    return null; // no valid year definition; do nothing
+  if (!maxYear || !minYear || !forecastStart) {
+    return null;
   }
 
-  const forecastPercentage = (year.forecastStart - year.min) / (year.max - year.min);
-  const height = props.innerHeight || props.height;
-  const width = props.innerWidth || (props.width - 30);
-  const x = forecastPercentage * width + (props.innerWidth ? 0 : 15);
-  const y = props.margin?.top || 50;
+  const forecastPercentage = (forecastStart - minYear) / (maxYear - minYear);
+  const lineHeight = innerHeight || height;
+  const forecastWidth = innerWidth || (width - 30);
+  const x = forecastPercentage * forecastWidth + (innerWidth ? 0 : 15);
+  const y = margin?.top || 50;
+
   return (
     <g>
       <defs>
@@ -35,14 +47,14 @@ export default ({ year, label }) => (props) => {
         x={x}
         y={-y}
         height={20}
-        width={width - x}
+        width={forecastWidth - x}
         fill="url(#forecastBarGradient)"
       />
       <text className={classes.label} x={x + 5} y={-y + 14}>
-        {label || 'forecast'}
+        {forecastLabel}
       </text>
       <path
-        d={`M${x} ${-y} l0 ${height + y}`}
+        d={`M${x} ${-y} l0 ${lineHeight + y}`}
         strokeDasharray="5,5"
         stroke="#444"
         strokeWidth="1"
@@ -50,3 +62,26 @@ export default ({ year, label }) => (props) => {
     </g>
   );
 };
+
+ForecastLayer.propTypes = {
+  innerHeight: PropTypes.number,
+  innerWidth: PropTypes.number,
+  width: PropTypes.number.isRequired,
+  height: PropTypes.number.isRequired,
+  margin: PropTypes.shape({ top: PropTypes.number.isRequired }).isRequired,
+  maxYear: PropTypes.number,
+  minYear: PropTypes.number,
+  forecastStart: PropTypes.number,
+  forecastLabel: PropTypes.number,
+};
+
+ForecastLayer.defaultProps = {
+  innerHeight: null,
+  innerWidth: null,
+  maxYear: null,
+  minYear: null,
+  forecastStart: null,
+  forecastLabel: null,
+};
+
+export default ForecastLayer;
