@@ -20,6 +20,7 @@ export const initialState = {
   // timeline
   baseYear: null,
   compareYear: null,
+  sliderMoved: null,
   // oil-and-gas
   noCompare: null,
 };
@@ -146,18 +147,12 @@ export const getReducer = (regions, sources, sectors, yearIdIterations) => {
     return (validatedSources.length === validSources.length) ? order : validSources;
   };
   const getBaseYear = (page, baseYear) => {
-    if (!['electricity', 'oil-and-gas'].includes(page)) {
-      return null;
-    }
     const value = parseInt(baseYear, 10);
 
     // set to 0 if not available so that the year slider stays at the minimum year number.
     return Number.isNaN(value) ? 0 : value;
   };
   const getCompareYear = (page, compareYear) => {
-    if (page !== 'oil-and-gas') {
-      return null;
-    }
     const value = parseInt(compareYear, 10);
 
     // set to 0 if not available so that the year slider stays at the minimum year number.
@@ -275,6 +270,11 @@ export const getReducer = (regions, sources, sectors, yearIdIterations) => {
         return {
           ...state,
           noCompare: Boolean(action.payload),
+        };
+      case 'sliderMoved/changed':
+        return {
+          ...state,
+          sliderMoved: Boolean(action.payload),
         };
       default:
         return state;

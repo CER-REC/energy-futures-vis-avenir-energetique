@@ -108,25 +108,50 @@ const YearSlider = ({ year, onYearChange, min, max, forecast }) => {
   const classes = useStyles();
   const intl = useIntl();
 
-  const { config: { page }, configDispatch } = useConfig();
+  const {
+    config: { page, yearId, sliderMoved, compareYear, baseYear },
+    configDispatch,
+  } = useConfig();
 
   const [currYear, setCurrYear] = useState(year?.curr || year);
-  const [compareYear, setCompareYear] = useState(year?.compare || year);
+  const [compYear, setCompareYear] = useState(year?.compare || year);
   const [play, setPlay] = useState(false);
+
+  const iteration = useMemo(() => parseInt(yearId, 10), [yearId]);
 
   const onCurrYearChange = useCallback((newValue) => {
     const value = validYear(newValue || min, { min, max });
     setCurrYear(value);
     configDispatch({ type: 'baseYear/changed', payload: value });
+    configDispatch({ type: 'sliderMoved/changed', payload: true });
     onYearChange(year?.curr ? { ...year, curr: value } : value);
-  }, [year, setCurrYear, configDispatch, onYearChange, min, max]);
+
+    /*
+    * If only one slider is changed, the other needs a value otherwise
+    * it will reset on iteration change
+    */
+    if (!compareYear) {
+      configDispatch({ type: 'compareYear/changed', payload: value });
+      setCompareYear(iteration);
+    }
+  }, [min, max, configDispatch, onYearChange, year, compareYear, iteration]);
 
   const onCompareYearChange = useCallback((newValue) => {
     const value = validYear(newValue || min, { min, max });
     setCompareYear(value);
     configDispatch({ type: 'compareYear/changed', payload: value });
+    configDispatch({ type: 'sliderMoved/changed', payload: true });
     onYearChange({ ...year, compare: value });
-  }, [year, setCompareYear, configDispatch, onYearChange, min, max]);
+
+    /*
+    * If only one slider is changed, the other needs a value otherwise
+    * it will reset on iteration change
+    */
+    if (!baseYear) {
+      configDispatch({ type: 'baseYear/changed', payload: value });
+      setCurrYear(iteration);
+    }
+  }, [min, max, configDispatch, onYearChange, year, baseYear, iteration]);
 
   /**
    * A timer for auto-play.
@@ -170,6 +195,17 @@ const YearSlider = ({ year, onYearChange, min, max, forecast }) => {
     analytics.reportMedia(page, play ? 'pause' : 'play');
   }, [play, setPlay, page]);
 
+  /*
+  * Makes sure that the default slider years are the iteration year
+  * unless the slider has been moved.
+  */
+  if ((!sliderMoved && currYear !== iteration)) {
+    setCurrYear(iteration);
+  }
+  if (!sliderMoved && compYear !== iteration) {
+    setCompareYear(iteration);
+  }
+
   if (!year) {
     return null;
   }
@@ -185,7 +221,7 @@ const YearSlider = ({ year, onYearChange, min, max, forecast }) => {
         {/* compare slider */}
         {double && (
           <Slider
-            value={compareYear}
+            value={compYear}
             onChange={(_, value) => value && onCompareYearChange(value)}
             aria-valuetext={intl.formatMessage({ id: 'common.a11y.sliderYearCompare' })}
             color="secondary"
