@@ -102,10 +102,8 @@ describe('Component|hooks', () => {
 
     test('should make year value and compare changes', () => {
       expect(reducer({ ...BASE_STATE, page: 'oil-and-gas' }, { type: 'baseYear/changed', payload: 2050 }).baseYear).toEqual(2050);
-      expect(reducer(BASE_STATE, { type: 'baseYear/changed', payload: 2050 }).baseYear).toBeNull();
 
       expect(reducer({ ...BASE_STATE, page: 'oil-and-gas' }, { type: 'compareYear/changed', payload: 2050 }).compareYear).toEqual(2050);
-      expect(reducer(BASE_STATE, { type: 'compareYear/changed', payload: 2050 }).compareYear).toBeNull();
 
       expect(reducer({ ...BASE_STATE, page: 'oil-and-gas' }, { type: 'noCompare/changed', payload: true }).noCompare).toBeTruthy();
 

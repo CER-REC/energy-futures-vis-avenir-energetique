@@ -199,11 +199,14 @@ const YearSlider = ({ year, onYearChange, min, max, forecast }) => {
   * Makes sure that the default slider years are the iteration year
   * unless the slider has been moved.
   */
-  if ((!sliderMoved && currYear !== iteration)) {
-    setCurrYear(iteration);
-  }
-  if (!sliderMoved && compYear !== iteration) {
-    setCompareYear(iteration);
+
+  if (!sliderMoved) {
+    if (currYear && currYear !== iteration) {
+      setCurrYear(iteration);
+    }
+    if (compYear && compYear !== iteration) {
+      setCompareYear(iteration);
+    }
   }
 
   if (!year) {
