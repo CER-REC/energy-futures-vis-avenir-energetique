@@ -102,9 +102,9 @@ ForecastLayer.propTypes = {
   margin: PropTypes.shape({ top: PropTypes.number.isRequired }).isRequired,
   /** The function to get the x coordinate of the index (provided by nivo) */
   xScale: PropTypes.func.isRequired,
-  /** The year the forecast starts */
+  /** The year the forecast starts (set in nivo component) */
   forecastStart: PropTypes.number,
-  /** The text to display by the forecast line */
+  /** The text to display by the forecast line (set in nivo component) */
   forecastLabel: PropTypes.string,
 };
 
