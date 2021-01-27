@@ -142,12 +142,14 @@ const Electricity = ({ data, year }) => {
   } = useAPI();
   const { config } = useConfig();
 
+  const iteration = useMemo(() => parseInt(config.yearId, 10), [config.yearId]);
+
   /**
    * CER template uses a custom breakpoint.
    */
   const desktop = useMediaQuery('(min-width: 992px)');
 
-  const [currYear, setCurrYear] = useState(config.baseYear || year?.min);
+  const [currYear, setCurrYear] = useState(config.baseYear || iteration);
 
   useEffect(() => setCurrYear(config.baseYear || year?.min), [config.baseYear, year]);
 

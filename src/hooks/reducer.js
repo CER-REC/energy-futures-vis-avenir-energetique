@@ -20,7 +20,6 @@ export const initialState = {
   // timeline
   baseYear: null,
   compareYear: null,
-  sliderMoved: null,
   // oil-and-gas
   noCompare: null,
 };
@@ -270,11 +269,6 @@ export const getReducer = (regions, sources, sectors, yearIdIterations) => {
         return {
           ...state,
           noCompare: Boolean(action.payload),
-        };
-      case 'sliderMoved/changed':
-        return {
-          ...state,
-          sliderMoved: Boolean(action.payload),
         };
       default:
         return state;

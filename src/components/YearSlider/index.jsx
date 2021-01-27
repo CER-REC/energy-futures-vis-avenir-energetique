@@ -109,12 +109,12 @@ const YearSlider = ({ year, onYearChange, min, max, forecast }) => {
   const intl = useIntl();
 
   const {
-    config: { page, yearId, sliderMoved, compareYear, baseYear },
+    config: { page, yearId, compareYear, baseYear },
     configDispatch,
   } = useConfig();
 
   const [currYear, setCurrYear] = useState(year?.curr || year);
-  const [compYear, setCompareYear] = useState(year?.compare || year);
+  const [compYear, setCompYear] = useState(year?.compare || year);
   const [play, setPlay] = useState(false);
 
   const iteration = useMemo(() => parseInt(yearId, 10), [yearId]);
@@ -123,7 +123,6 @@ const YearSlider = ({ year, onYearChange, min, max, forecast }) => {
     const value = validYear(newValue || min, { min, max });
     setCurrYear(value);
     configDispatch({ type: 'baseYear/changed', payload: value });
-    configDispatch({ type: 'sliderMoved/changed', payload: true });
     onYearChange(year?.curr ? { ...year, curr: value } : value);
 
     /*
@@ -132,15 +131,14 @@ const YearSlider = ({ year, onYearChange, min, max, forecast }) => {
     */
     if (!compareYear) {
       configDispatch({ type: 'compareYear/changed', payload: value });
-      setCompareYear(iteration);
+      setCompYear(iteration);
     }
   }, [min, max, configDispatch, onYearChange, year, compareYear, iteration]);
 
   const onCompareYearChange = useCallback((newValue) => {
     const value = validYear(newValue || min, { min, max });
-    setCompareYear(value);
+    setCompYear(value);
     configDispatch({ type: 'compareYear/changed', payload: value });
-    configDispatch({ type: 'sliderMoved/changed', payload: true });
     onYearChange({ ...year, compare: value });
 
     /*
@@ -197,15 +195,14 @@ const YearSlider = ({ year, onYearChange, min, max, forecast }) => {
 
   /*
   * Makes sure that the default slider years are the iteration year
-  * unless the slider has been moved.
+  * if they arent specified.
   */
-
-  if (!sliderMoved) {
-    if (currYear && currYear !== iteration) {
+  if (!baseYear && !compareYear && iteration) {
+    if (currYear !== iteration) {
       setCurrYear(iteration);
     }
-    if (compYear && compYear !== iteration) {
-      setCompareYear(iteration);
+    if (compYear !== iteration) {
+      setCompYear(iteration);
     }
   }
 
