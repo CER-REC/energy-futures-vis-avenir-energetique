@@ -8,7 +8,7 @@ import analytics from '../../analytics';
 import { CHART_PROPS, CHART_AXIS_PROPS, SCENARIO_COLOR } from '../../constants';
 import { getMaxTick } from '../../utilities/parseData';
 import { fadeLayerScenario } from '../../components/FadeLayer';
-import forecastLayer from '../../components/ForecastLayer';
+import ForecastLayer from '../../components/ForecastLayer';
 import VizTooltip from '../../components/VizTooltip';
 import MaxTick from '../../components/MaxTick';
 
@@ -43,11 +43,6 @@ const Scenarios = ({ data, year }) => {
    * The fade-out effect over forecast years.
    */
   const fade = useMemo(() => fadeLayerScenario({ year }), [year]);
-
-  /**
-   * The forecast bar.
-   */
-  const forecast = useMemo(() => forecastLayer({ year, label: intl.formatMessage({ id: 'common.forecast' }) }), [year, intl]);
 
   /**
    * Calculate the max tick value on y-axis.
@@ -104,7 +99,7 @@ const Scenarios = ({ data, year }) => {
         data={data}
         enableArea
         enablePoints={false}
-        layers={['grid', 'axes', 'areas', 'crosshair', 'points', 'slices', fade, 'lines', forecast, dots]}
+        layers={['grid', 'axes', 'areas', 'crosshair', 'points', 'slices', fade, 'lines', ForecastLayer, dots]}
         curve="cardinal"
         areaOpacity={0.15}
         xScale={{ type: 'point' }}
@@ -128,6 +123,8 @@ const Scenarios = ({ data, year }) => {
         enableSlices="x"
         sliceTooltip={getTooltip}
         gridYValues={axis.ticks}
+        forecastStart={year.forecastStart}
+        forecastLabel={intl.formatMessage({ id: 'common.forecast' })}
       />
     </div>
   );
@@ -135,12 +132,20 @@ const Scenarios = ({ data, year }) => {
 
 Scenarios.propTypes = {
   data: PropTypes.oneOfType([PropTypes.object, PropTypes.arrayOf(PropTypes.object)]),
-  year: PropTypes.shape({ min: PropTypes.number, max: PropTypes.number }),
+  year: PropTypes.shape({
+    min: PropTypes.number,
+    max: PropTypes.number,
+    forecastStart: PropTypes.number,
+  }),
 };
 
 Scenarios.defaultProps = {
   data: undefined,
-  year: { min: 0, max: 0 },
+  year: {
+    min: 0,
+    max: 0,
+    forecastStart: 0,
+  },
 };
 
 export default Scenarios;

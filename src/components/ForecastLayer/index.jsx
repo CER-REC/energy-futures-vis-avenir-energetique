@@ -1,23 +1,66 @@
-import React from 'react';
+import React, { useMemo } from 'react';
+import { makeStyles } from '@material-ui/core';
+import PropTypes from 'prop-types';
 
-const STYLE = {
-  fontSize: 13,
-  textTransform: 'uppercase',
-  fontFamily: '"FiraSansCondensed", "Roboto", "Helvetica", "Arial", sans-serif',
-};
+const useStyles = makeStyles(theme => ({
+  label: {
+    fill: theme.palette.secondary.main,
+    fontFamily: theme.typography.fontFamily,
+    fontSize: 13,
+    textTransform: 'uppercase',
+  },
+}));
 
-export default ({ year, label }) => (props) => {
-  if (!year) {
-    return null; // no valid year definition; do nothing
+const getYearX = (year, xScale, bars) => {
+  let x = xScale(year);
+
+  if (bars) {
+    const widths = bars
+      .filter(bar => bar.data.indexValue === year.toString())
+      .map(bar => bar.width);
+    const maxWidth = Math.max(...widths);
+
+    // xScale returns the starting x for bars
+    x += Math.round(maxWidth / 2);
   }
 
-  const forecastPercentage = (year.forecastStart - year.min) / (year.max - year.min);
-  const height = props.innerHeight || props.height;
-  const width = props.innerWidth || (props.width - 30);
-  const x = forecastPercentage * width + (props.innerWidth ? 0 : 15);
-  const y = props.margin?.top || 50;
+  return x;
+};
+
+const ForecastLayer = ({
+  bars,
+  height,
+  innerHeight,
+  innerWidth,
+  margin,
+  xScale,
+  forecastStart,
+  forecastLabel,
+}) => {
+  const classes = useStyles();
+  const x = useMemo(
+    () => getYearX(forecastStart, xScale, bars),
+    [forecastStart, xScale, bars],
+  );
+  const y = -margin.top;
+  const lineHeight = (innerHeight || height) + margin.top;
+  const forecastWidth = useMemo(() => {
+    if (!bars) {
+      return innerWidth - x;
+    }
+
+    const years = bars.map(bar => bar.data.indexValue);
+    const maxYear = Math.max(...years);
+
+    return getYearX(maxYear, xScale, bars) - x;
+  }, [bars, innerWidth, xScale, x]);
+
+  if (!forecastStart) {
+    return null;
+  }
+
   return (
-    <g>
+    <g transform={`translate(${x}, ${y})`}>
       <defs>
         <linearGradient id="forecastBarGradient">
           <stop offset="0%" stopColor="#EEE" stopOpacity="1" />
@@ -26,17 +69,15 @@ export default ({ year, label }) => (props) => {
         </linearGradient>
       </defs>
       <rect
-        x={x}
-        y={-y}
         height={20}
-        width={width - x}
+        width={forecastWidth}
         fill="url(#forecastBarGradient)"
       />
-      <text x={x + 5} y={-y + 14} fill="#5D5D5D" style={STYLE}>
-        {label || 'forecast'}
+      <text className={classes.label} x={5} y={14}>
+        {forecastLabel}
       </text>
       <path
-        d={`M${x} ${-y} l0 ${height + y}`}
+        d={`M0 0 L0 ${lineHeight}`}
         strokeDasharray="5,5"
         stroke="#444"
         strokeWidth="1"
@@ -44,3 +85,35 @@ export default ({ year, label }) => (props) => {
     </g>
   );
 };
+
+ForecastLayer.propTypes = {
+  /** The bar data (provided by nivo) */
+  bars: PropTypes.arrayOf(PropTypes.shape({
+    data: PropTypes.shape({ indexValue: PropTypes.string.isRequired }),
+    width: PropTypes.number.isRequired,
+  })),
+  /** The height of the bar chart (provided by nivo) */
+  height: PropTypes.number.isRequired,
+  /** The height of the line chart (provided by nivo) */
+  innerHeight: PropTypes.number,
+  /** The width of the line chart (provided by nivo) */
+  innerWidth: PropTypes.number,
+  /** The margins of the chart (provided by nivo) */
+  margin: PropTypes.shape({ top: PropTypes.number.isRequired }).isRequired,
+  /** The function to get the x coordinate of the index (provided by nivo) */
+  xScale: PropTypes.func.isRequired,
+  /** The year the forecast starts (set in nivo component) */
+  forecastStart: PropTypes.number,
+  /** The text to display by the forecast line (set in nivo component) */
+  forecastLabel: PropTypes.string,
+};
+
+ForecastLayer.defaultProps = {
+  bars: null,
+  innerHeight: null,
+  innerWidth: null,
+  forecastStart: null,
+  forecastLabel: null,
+};
+
+export default ForecastLayer;

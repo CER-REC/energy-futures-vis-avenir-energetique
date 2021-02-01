@@ -10,7 +10,7 @@ import { CHART_PROPS, CHART_AXIS_PROPS, CHART_PATTERNS, OIL_SUBGROUP } from '../
 import { getMaxTick } from '../../utilities/parseData';
 
 import { fadeLayerBySector } from '../../components/FadeLayer';
-import forecastLayer from '../../components/ForecastLayer';
+import ForecastLayer from '../../components/ForecastLayer';
 import MaxTick from '../../components/MaxTick';
 import VizTooltip from '../../components/VizTooltip';
 
@@ -52,11 +52,6 @@ const BySector = ({ data, year }) => {
     () => fadeLayerBySector({ year, isTransportation }),
     [year, isTransportation],
   );
-
-  /**
-   * The forecast bar.
-   */
-  const forecast = useMemo(() => forecastLayer({ year, label: intl.formatMessage({ id: 'common.forecast' }) }), [year, intl]);
 
   /**
    * Format tooltip.
@@ -112,7 +107,7 @@ const BySector = ({ data, year }) => {
       <ResponsiveLine
         {...CHART_PROPS}
         data={orderedData}
-        layers={['grid', 'axes', 'crosshair', 'lines', 'points', 'slices', 'areas', fade, forecast]}
+        layers={['grid', 'axes', 'crosshair', 'lines', 'points', 'slices', 'areas', fade, ForecastLayer]}
         xScale={{ type: 'point' }}
         yScale={{ type: 'linear', min: 0, max: axis.highest, stacked: true }}
         curve="cardinal"
@@ -132,6 +127,8 @@ const BySector = ({ data, year }) => {
         sliceTooltip={getTooltip}
         gridYValues={axis.ticks}
         defs={CHART_PATTERNS}
+        forecastStart={year.forecastStart}
+        forecastLabel={intl.formatMessage({ id: 'common.forecast' })}
       />
     </div>
   );
@@ -139,12 +136,20 @@ const BySector = ({ data, year }) => {
 
 BySector.propTypes = {
   data: PropTypes.oneOfType([PropTypes.object, PropTypes.arrayOf(PropTypes.object)]),
-  year: PropTypes.shape({ min: PropTypes.number, max: PropTypes.number }),
+  year: PropTypes.shape({
+    min: PropTypes.number,
+    max: PropTypes.number,
+    forecastStart: PropTypes.number,
+  }),
 };
 
 BySector.defaultProps = {
   data: undefined,
-  year: { min: 0, max: 0 },
+  year: {
+    min: 0,
+    max: 0,
+    forecastStart: 0,
+  },
 };
 
 export default BySector;
