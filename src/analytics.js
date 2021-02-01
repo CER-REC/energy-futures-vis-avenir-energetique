@@ -77,7 +77,7 @@ class Analytics {
   }
 
   reportMedia(page, action) {
-    this.report(page, { category: 'media', action /* 'pause' or 'play' */ });
+    this.report(page, { category: 'media', action /* 'pause' or 'play' */, label: 'media' });
   }
 
   reportHelp(page, label) {
@@ -85,7 +85,7 @@ class Analytics {
   }
 
   reportPoi(page, value) {
-    this.report(page, { category: 'graph poi', action: 'hover', value });
+    this.report(page, { category: 'graph poi', action: 'hover', value, label: 'graph poi' });
   }
 }
 
