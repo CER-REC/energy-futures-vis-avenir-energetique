@@ -13,6 +13,7 @@ import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
 import { CONFIG_LAYOUT } from '../../constants';
 import analytics from '../../analytics';
+import HintUnit from './HintUnit';
 
 const useStyles = makeStyles(theme => createStyles({
   root: { width: 'auto' },
@@ -217,22 +218,7 @@ HintScenarioSelect.defaultProps = { children: null };
 /**
  * Hint panel for the unit selection question mark, which contains 2 sections.
  */
-export const HintUnitSelect = ({ children }) => {
-  const intl = useIntl();
-  const unitEnergy = useMemo(() => ['petajoules', 'kilobarrelEquivalents', 'gigawattHours'].map(unit => ({
-    title: `${intl.formatMessage({ id: `components.unitSelect.${unit}.title` })} (${intl.formatMessage({ id: `common.units.${unit}` })})`,
-    text: intl.formatMessage({ id: `components.unitSelect.${unit}.description` }),
-  })), [intl]);
-  const unitVolume = useMemo(() => ['kilobarrels', 'thousandCubicMetres', 'cubicFeet', 'millionCubicMetres'].map(unit => ({
-    title: `${intl.formatMessage({ id: `components.unitSelect.${unit}.title` })} (${intl.formatMessage({ id: `common.units.${unit}` })})`,
-    text: intl.formatMessage({ id: `components.unitSelect.${unit}.description` }),
-  })), [intl]);
-  const content = [
-    <HintSection title={intl.formatMessage({ id: 'common.energyUnits' })} section={unitEnergy} />,
-    <HintSection title={intl.formatMessage({ id: 'common.volumetricUnits' })} section={unitVolume} />,
-  ];
-  return <Hint label="unit" content={content} maxWidth="md">{children}</Hint>;
-};
+export const HintUnitSelect = ({ children }) => <Hint label="unit" content={[<HintUnit />]} maxWidth="md">{children}</Hint>;
 
 HintUnitSelect.propTypes = { children: PropTypes.node };
 HintUnitSelect.defaultProps = { children: null };
