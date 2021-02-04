@@ -1,6 +1,6 @@
 {
   "name": "cer-energy-futures-visualization",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "description": "A visualization of the Energy Future reports that the CER creates as part of their regulatory process.",
   "main": "src/index.jsx",
   "scripts": {

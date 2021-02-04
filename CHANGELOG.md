@@ -1,3 +1,26 @@
+## [2.2.1](http://neb-energy-futures-devdoc.s3-website.us-west-2.amazonaws.com/v2.2.1) (2021-02-04)
+
+
+### DataAnalytics
+
+* **Bug Fixes:** adds missing event labels (6741762)
+
+
+### Hint
+
+* **Features:** adds descriptive images in the scenario hint panel (eb13d1c)
+* **Features:** updates the visual of the unit hint panel (cdb5cde)
+
+
+* **Bug Fixes:** Adjusted forecast width for non bar charts (c99cab4)
+* **Bug Fixes:** Used xScale and bars to fix forecast line alignment for bar charts (c73c767)
+* **Tests:** Updated tests for revised forecast layer (c35a418)
+* **Code Refactoring:** Moved forecast layer y into the transform (de2b073)
+* **Code Refactoring:** Referenced Material UI theme for styling in forecast layer (d5b0cd0)
+* **Code Refactoring:** Updated the forecast layer to return a React component (cd825e6)
+* **Documentation:** Added a story for the forecast layer component (c7f9c81)
+* **Documentation:** Updated story for the forecast layer component to be used in a nivo chart (63154a3)
+
 # [2.2.0](http://neb-energy-futures-devdoc.s3-website.us-west-2.amazonaws.com/v2.2.0) (2021-01-17)
 
 
