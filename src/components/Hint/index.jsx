@@ -11,9 +11,12 @@ import Markdown from 'react-markdown';
 
 import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
-import { CONFIG_LAYOUT } from '../../constants';
+import { CONFIG_LAYOUT, SCENARIO_LABEL_COLOR } from '../../constants';
 import analytics from '../../analytics';
 import HintUnit from './HintUnit';
+
+import ScenarioHintImageEn from './scenario_hint_en.jpg';
+import ScenarioHintImageFr from './scenario_hint_fr.jpg';
 
 const useStyles = makeStyles(theme => createStyles({
   root: { width: 'auto' },
@@ -27,6 +30,14 @@ const useStyles = makeStyles(theme => createStyles({
     padding: theme.spacing(0.5),
     color: theme.palette.secondary.light,
     transform: 'translateY(-6px)',
+  },
+  senarios: {
+    '& img': {
+      width: '100%',
+      maxWidth: 500,
+      padding: theme.spacing(1),
+    },
+    '& hr': { margin: theme.spacing(1.5, 0) },
   },
   close: {
     position: 'absolute',
@@ -46,9 +57,9 @@ const HintSection = ({ title, section, singleColumn }) => (
     {section.map(entry => (singleColumn ? (
       <Fragment key={`hint-content-entry-${Math.random()}`}>
         <Grid item xs={12} sm={4}>
-          <Grid container alignItems="center" wrap="nowrap">
-            {entry.icon && <entry.icon style={{ verticalAlign: 'middle', marginRight: 8 }} />}
-            <Typography variant="body1" component="span"><strong>{entry.title}</strong></Typography>
+          <Grid container alignItems="center" wrap="nowrap" spacing={1}>
+            {entry.icon && <Grid item><entry.icon style={{ verticalAlign: 'middle' }} /></Grid>}
+            <Grid item><Typography variant="body1" component="span"><strong>{entry.title}</strong></Typography></Grid>
           </Grid>
         </Grid>
         <Grid item xs={12} sm={8}>
@@ -58,9 +69,18 @@ const HintSection = ({ title, section, singleColumn }) => (
       </Fragment>
     ) : (
       <Grid item xs={section.length < 3 ? 12 : 6} key={`hint-content-entry-${Math.random()}`}>
-        {entry.title && <Typography variant="h6" gutterBottom>{entry.title}</Typography>}
-        <Typography variant="body2" color="secondary" component="span"><Markdown>{entry.text}</Markdown></Typography>
-        {entry.link && <Typography variant="body2" color="secondary" component="span"><Markdown>{entry.link}</Markdown></Typography>}
+        <Grid container wrap="nowrap" spacing={1}>
+          {entry.color && (
+            <Grid item>
+              <div style={{ height: 12, width: 12, marginTop: 10, backgroundColor: entry.color }} />
+            </Grid>
+          )}
+          <Grid item>
+            {entry.title && <Typography variant="h6" gutterBottom>{entry.title}</Typography>}
+            <Typography variant="body2" color="secondary" component="span"><Markdown>{entry.text}</Markdown></Typography>
+            {entry.link && <Typography variant="body2" color="secondary" component="span"><Markdown>{entry.link}</Markdown></Typography>}
+          </Grid>
+        </Grid>
       </Grid>
     )))}
   </Grid>
@@ -70,7 +90,8 @@ HintSection.propTypes = {
   title: PropTypes.string,
   section: PropTypes.arrayOf(PropTypes.shape({
     title: PropTypes.string,
-    icon: PropTypes.func,
+    color: PropTypes.string, // for scenario panel
+    icon: PropTypes.func, // for source list panel
     text: PropTypes.oneOfType([PropTypes.string, PropTypes.node]).isRequired,
     link: PropTypes.node,
   })),
@@ -86,7 +107,7 @@ HintSection.defaultProps = {
 /**
  * Construct and render the hint icon (question mark) and its dialog.
  */
-const Hint = ({ children, label, content, maxWidth = 'sm' }) => {
+const Hint = ({ children, label, content, maxWidth = 'sm', className }) => {
   const classes = useStyles();
   const intl = useIntl();
   const { page } = useConfig().config;
@@ -112,7 +133,7 @@ const Hint = ({ children, label, content, maxWidth = 'sm' }) => {
         open={open}
         maxWidth={maxWidth}
         onClose={() => setOpen(false)}
-        classes={{ paper: classes.dialog }}
+        classes={{ paper: `${classes.dialog} ${className}`.trim() }}
       >
         <Fab color="primary" size="medium" onClick={() => setOpen(false)} aria-label={intl.formatMessage({ id: 'common.a11y.close' })} className={classes.close}>
           <CloseIcon />
@@ -137,6 +158,7 @@ Hint.propTypes = {
     PropTypes.arrayOf(PropTypes.node),
   ]),
   maxWidth: PropTypes.string,
+  className: PropTypes.string, // inject extra className for additional styling in the dialog
 };
 
 Hint.defaultProps = {
@@ -144,6 +166,7 @@ Hint.defaultProps = {
   label: '',
   content: 'under construction',
   maxWidth: 'sm',
+  className: '',
 };
 
 export default Hint;
@@ -191,25 +214,44 @@ HintYearSelect.defaultProps = { children: null };
  * Hint panel for the scenario selection question mark.
  */
 export const HintScenarioSelect = ({ children }) => {
+  const classes = useStyles();
   const intl = useIntl();
   const { yearIdIterations } = useAPI();
   const { yearId } = useConfig().config;
+
+  const showGraph = useMemo(
+    () => (yearIdIterations[yearId]?.scenarios || []).find(title => title === 'Evolving'),
+    [yearIdIterations, yearId],
+  );
   const sectionTitle = useMemo(
     () => [{ text: intl.formatMessage({ id: `components.scenarioSelect.description.${yearId}` }) }],
     [intl, yearId],
   );
   const sectionBody = useMemo(() => (yearIdIterations[yearId]?.scenarios || []).map(scenario => ({
-    title: intl.formatMessage({ id: `common.scenarios.${scenario}` }),
+    title: intl.formatMessage({
+      id: `common.scenarios.${scenario}.${yearId}`,
+      defaultMessage: intl.formatMessage({ id: `common.scenarios.${scenario}` }),
+    }),
     text: intl.formatMessage({
       id: `components.scenarioSelect.${scenario}.description.${yearId}`,
       defaultMessage: intl.formatMessage({ id: `components.scenarioSelect.${scenario}.description.default` }),
     }),
-  })), [intl, yearIdIterations, yearId]);
+    color: showGraph && SCENARIO_LABEL_COLOR[scenario],
+  })), [intl, yearIdIterations, yearId, showGraph]);
+  const sectionCaption = useMemo(() => ['netzero', 'history'].map(caption => ({
+    title: intl.formatMessage({ id: `components.scenarioSelect.caption.${caption}.title` }),
+    text: intl.formatMessage({ id: `components.scenarioSelect.caption.${caption}.description` }),
+    color: showGraph && SCENARIO_LABEL_COLOR[caption],
+  })), [intl, showGraph]);
+
   const sections = [
     <HintSection title={intl.formatMessage({ id: 'components.scenarioSelect.name' })} section={sectionTitle} />,
+    showGraph && <img src={intl.locale === 'fr' ? ScenarioHintImageFr : ScenarioHintImageEn} alt="evolving caption" />,
     <HintSection section={sectionBody} />,
-  ];
-  return <Hint label="scenarios" content={sections}>{children}</Hint>;
+    showGraph && <Divider />,
+    showGraph && <HintSection section={sectionCaption} />,
+  ].filter(Boolean);
+  return <Hint label="scenarios" content={sections} className={classes.senarios}>{children}</Hint>;
 };
 
 HintScenarioSelect.propTypes = { children: PropTypes.node };
