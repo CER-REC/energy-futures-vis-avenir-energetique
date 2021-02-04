@@ -26,6 +26,14 @@
     "datasets": {
       "2016*": "Mise à jour 2016"
     },
+    "scenarios": {
+      "Evolving": {
+        "2020": "Évolution (Scénario d’une filière énergétique en évolution)"
+      },
+      "Reference": {
+        "2020": "Référence (Scénario de référence de la filière énergétique)"
+      }
+    },
     "selections": {
       "energyDemand": "Demande totale",
       "electricityGeneration": "Production d’électricité",
@@ -308,6 +316,16 @@
           "2017": "Le scénario des avancées technologiques suppose des prix du carbone plus élevés que ceux du scénario de référence et l’adoption plus massive de certaines technologies énergétiques émergentes liées à la production ou à la consommation.",
           "2018": "Le scénario des avancées technologiques suppose des prix du carbone plus élevés que ceux du scénario de référence et l’adoption plus massive de certaines technologies énergétiques émergentes liées à la production ou à la consommation.",
           "default": "Le scénario des avancées technologiques suppose des prix du carbone plus élevés que ceux du scénario de référence et l’adoption plus massive de certaines technologies énergétiques émergentes liées à la production ou à la consommation."
+        }
+      },
+      "caption": {
+        "netzero": {
+          "title": "Vers un bilan zéro",
+          "description": "Le rythme des mesures de lutte contre les changements climatiques augmente par rapport aux niveaux actuels."
+        },
+        "history": {
+          "title": "Historique",
+          "description": "Intensification graduelle des mesures de lutte contre les changements climatiques, dont les politiques, la réglementation, la mise en valeur de ressources et le développement de technologies à faibles émissions de carbone."
         }
       }
     },
