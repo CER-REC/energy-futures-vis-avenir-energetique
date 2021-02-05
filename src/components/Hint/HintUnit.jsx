@@ -4,6 +4,9 @@ import { makeStyles, Grid, Typography, Divider } from '@material-ui/core';
 import { SOURCE_ICONS, SOURCE_COLORS } from '../../constants';
 
 const useStyles = makeStyles(theme => ({
+  root: {
+    '& > div.MuiGrid-item:nth-of-type(2)': { paddingLeft: theme.spacing(5.5) },
+  },
   subtitle: {
     marginBottom: theme.spacing(-2),
     '& svg': {
@@ -49,7 +52,7 @@ const HintUnit = () => {
   }, [intl, classes]);
 
   return (
-    <Grid container alignItems="flex-start" spacing={2}>
+    <Grid container alignItems="flex-start" spacing={2} className={classes.root}>
       <Grid item xs={12}><Typography variant="h4">{intl.formatMessage({ id: 'common.energyUnits' })}</Typography></Grid>
       {['petajoules', 'kilobarrelEquivalents'].map(generateDescription)}
       {generateSubtitle('electricityGeneration', 'ELECTRICITY')}
