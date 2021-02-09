@@ -88,10 +88,12 @@ const OilAndGas = ({ data, year, vizDimension }) => {
   const { config, configDispatch } = useConfig();
   const intl = useIntl();
 
+  const iteration = useMemo(() => parseInt(config.yearId, 10), [config.yearId]);
+
   const legendTranslationPath = `common.oilandgas.legend.${config.mainSelection}.${config.view}`;
 
-  const [currentYear, setCurrentYear] = useState(config.baseYear || year?.min);
-  const [compareYear, setCompareYear] = useState(config.compareYear || year?.min);
+  const [currentYear, setCurrentYear] = useState(config.baseYear || iteration);
+  const [compareYear, setCompareYear] = useState(config.compareYear || iteration);
 
   const {
     regions: { colors: regionColors },

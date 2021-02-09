@@ -15,6 +15,8 @@ const DEFAULT_CONFIG = {
   yearId: '2020',
   scenarios: ['Evolving'],
   view: 'region',
+  baseYear: 2020,
+  compareYear: 2020,
 };
 
 const getComponent = (year, min, max, forecast) => (
