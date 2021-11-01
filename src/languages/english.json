@@ -139,6 +139,13 @@
     "yearSelect": {
       "name": "REPORT",
       "title": "ENERGY FUTURES REPORTS",
+      "2021": {
+        "title": "CANADA’S ENERGY FUTURE 2021",
+        "tooltip": "Explore data from the 2021 Energy Future Report",
+        "subtitle": "November 2021",
+        "description": "EF2021 includes two core scenarios: The Evolving Policies Scenario and the Current Policies Scenario. The central difference between these scenarios is the level of future climate action, both globally and domestically. In both scenarios we provide projections for all energy commodities and all provinces and territories.\n\n  EF2021 also includes six additional electricity scenarios that explore what Canada’s electricity system might look like in a net-zero world. These scenarios focus only on how Canada will meet given electricity demands under different conditions, and do not include projections for other energy commodities. Electricity is an important contributor to achieving net-zero emissions, so these projections are an important next step toward future versions of the Canada’s Energy Future series that will cover all forms of energy in a net-zero world.",
+        "link": "[View the report](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2021/index.html)"
+      },
       "2020": {
         "title": "CANADA’S ENERGY FUTURE 2020",
         "tooltip": "Explore data from the 2020 Energy Future Report",
@@ -464,14 +471,12 @@
       }
     },
     "unsupportedWarning": {
-      "browser": "Your browser does not support the features required by this visualization.\nPlease use a recent version of Chrome, Firefox, Safari, or Edge.\nThank you!",
+      "browser": "Your browser does not support the features required by this visualization.\n Please use a recent version of Chrome, Firefox, Safari, or Edge.\nThank you!",
       "resolution": "This visualization has been designed for use on computers and tablets with a screen width of at least 768 pixels.\nThank you!"
     }
   },
-  "views": {
-  },
-  "regions": {
-  },
+  "views": {},
+  "regions": {},
   "sources": {
     "electricity": {
       "BIO": "Includes solid biomass fuels such as wood pellets, as well as geothermal sources.",
@@ -525,6 +530,7 @@
         "2018": "The Canadian energy system is constantly evolving. Factors such as economics, infrastructure, and societal preferences influence the production, transportation, and consumption of energy in Canada. Technology, and climate policies and programs increasingly impact energy markets. Chapter 2 in EF2018 provides an overview of recent energy market developments and climate policies. It also describes the key assumptions and recent developments underpinning the analysis in the report.",
         "2019": "EF2019 makes a variety of assumptions about future trends that are necessary to make long-term projections. These are factors such as included climate policies and regulations, rate of technological change, crude oil and natural gas markets (both domestic and global), infrastructure, major electricity projects and future costs of new generation capacity.",
         "2020": "EF2020 scenarios make a variety of assumptions about future trends necessary to make long-term projections. These include assumptions about climate policies and regulations, rate of technological change, crude oil and natural gas markets (both domestic and global), major energy infrastructure, and future costs of new electricity generation capacity.",
+        "2021": "EF2021 scenarios make a variety of assumptions about future trends necessary to make long-term projections. These include assumptions about climate policies and regulations, rate of technological change, crude oil and natural gas markets (both domestic and global), major energy infrastructure, and future costs of new electricity generation capacity.",
         "default": "The Canadian energy system is constantly changing. Factors like technology, economics, infrastructure, societal preferences, and government policy and programs continually influence how energy is produced, transported, and consumed in Canada."
       },
       "link": {
@@ -534,6 +540,7 @@
         "2018": "[EF2018 Assumptions](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2018/chapter-2-recent-context-key-assumptions.html)",
         "2019": "[EF2019 Assumptions](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2019/assumptions/index.html)",
         "2020": "[EF2020 Assumptions](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2020/assumptions/index.html)",
+        "2021": "[EF2021 Assumptions](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2021/assumptions/index.html)",
         "default": "[EF2016 Assumptions](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2016/index.html)"
       }
     },
@@ -546,6 +553,7 @@
         "2018": "The key findings of EF2018 are outlined below and summarized in the EF2018 Report:\n- Canada’s energy demand growth is slowing, while sources to meet these demands are becoming less carbon intensive.\n- In a scenario with greater adoption of new energy technologies, Canadians use over 15% less total energy and nearly 30% less fossil fuels by 2040.\n- Energy use and economic growth continue to decouple.\n- Canada’s energy mix continues to diversify, and its already low-emitting electricity mix adds more renewables.\n- Canadian oil and natural gas production increases in the Reference Case. Price and technology trends will be key factors influencing Canadian production in the future.",
         "2019": "The key findings of EF2019 are outlined below and summarized in the EF2019 Report:\n- Energy use grows slowly in the next 20 years. The mix of energy sources that Canadians use continues to change.\n- Oil and natural gas production grows steadily over the projection period. Assumptions on short-term infrastructure developments and long-term energy prices underlie this growth.\n- Technologies enabling Canada’s transition to a low carbon economy make inroads across the energy system.\n- Canada is making progress in transitioning towards a low carbon future.",
         "2020": "The key findings of EF2020 are outlined below and summarized in the EF2020 Report:\n- The COVID-19 pandemic has significantly impacted the Canadian energy system. We estimate that energy use in 2020 will fall by 6% from the year prior, larger than the decrease experienced during the 2009 financial crisis. We estimate that 2020 crude oil production will decrease by 7% or 335 thousand barrels per day (Mb/d) compared to 2019.\n- Canada’s domestic fossil fuel consumption remains below 2019 levels throughout the Evolving Scenario. By 2030, it is 12% lower, and 35% lower by 2050. At the same time, renewables and nuclear grow by 31% by 2050 and become a larger share of the energy mix.\n- Electricity becomes increasingly competitive with fossil fuels in many parts of the energy system, including for passenger vehicles. Electricity’s share of end-use demand increases from approximately 16% currently to over 27% in 2050 in the Evolving Scenario, when half of all passenger vehicles sales are electric vehicles. At the same time, renewable sources account for a larger share of electricity generation.\n- Under the assumptions of the Evolving Scenario, Canadian crude oil production increases steadily until peaking in 2039 at 5.8 million barrels per day (MMb/d). Driven by growing global demand for LNG, Canadian natural gas production increases and peaks at 18.4 billion cubic feet per day (Bcf/d) by 2040. Both crude oil and natural gas production decline slowly over the last decade of the projection period.\n- The major crude oil pipeline projects under construction will be able to accommodate all future production growth in both the Evolving and Reference Scenarios.\n- While fossil fuel consumption declines in the Evolving Scenario, it still makes up over 60% of Canada’s fuel mix in 2050. Achieving net-zero GHG emissions by 2050 will require an accelerated pace of transitioning away from fossil fuels.",
+        "2021": "The key findings of EF2021 are outlined below and summarized in the EF2021 Report:\n1. In the Evolving Policies Scenario, combustion of fossil fuels whose emissions are not captured falls 60% from 2021 to 2050, while use of low and non-emitting energy sources increases. While this implies a significant reduction in emissions by 2050, achieving net-zero will likely require more action than is included in this scenario.\n2. Canadians use more electricity from increasingly low-carbon sources. Despite total energy use declining by 20%, electricity demand grows 40% from 2021 to 2050 in the Evolving Policies Scenario, driven by new areas such as electric vehicles and hydrogen production. At the same time, Canada’s electricity system gets greener, going from 82% non-emitting in 2021 to 96% in 2050.\n3. Wind, solar, and battery storage dominate electric capacity additions in all six net-zero electricity scenarios, making up between 82-85% of added capacity. With rising levels of wind and solar, all scenarios require flexible generation sources to balance supply and demand. There are large differences in the types and capacities of flexible generation sources adopted among scenarios.\n4. The net-zero electricity scenarios suggest that Canadians will continue to use a range of technologies across the country, even in a low carbon future. The ten provinces meet their electricity demands in diverse ways, with varying mixes of hydro, nuclear, fossil energy with carbon capture and storage, to complement rising levels of wind and solar.\n5. In the Evolving Policies Scenario, crude oil production grows much more slowly than in the past decade, growing 16% to a peak of 5.8 MMb/d in 2032. Afterwards, production declines slowly to 2050. Crude oil available for export from Western Canada grows over the next decade and remains below the total pipeline capacity provided by existing and under construction projects.\n6. Investment for natural gas production is spurred by assumed liquified natural gas (LNG) exports in both scenarios. In the Evolving Policies Scenario, nearly 40% of Canadian natural gas production is liquefied and exported to global markets by 2050.  Despite considerable LNG-related production growth, natural gas production remains relatively stable through much of the projection period before declining gradually to reach 13.1 bcf/d by 2050, 17% lower than current levels.\n7. As Canada’s energy system decarbonizes, we use less fossil fuels. Coal becomes a negligible part of the energy mix. Use of oil-derived fuels declines, especially gasoline and diesel for transportation. Total natural gas use declines, and our consumption of natural gas is increasingly tied to the future of carbon capture and storage (CCS). Natural gas with CCS for industrial uses, power generation, and hydrogen production are key demand growth areas.",
         "default": "The key findings of EF2016 are outlined below and then summarized in the EF2016 Report:\n- Recent developments have highlighted numerous uncertainties for Canada’s long-term energy outlook.\n- In the Reference Case, energy production grows faster than energy use and net exports of energy increase.\n- The levels of future oil and natural gas production are highly dependent on future prices, which are subject to considerable uncertainty.\n- Without development of additional oil pipeline infrastructure, crude oil production grows less quickly but continues to grow at a moderate pace over the projection period.\n- The volume of liquefied natural gas exports is an important driver of Canadian natural gas production growth.\n- Total energy use in Canada, which includes energy use in the energy production sector, grows at similar rates in all EF 2016 cases, and GHG emissions related to that energy use will follow similar trends."
       },
       "link": {
@@ -555,6 +563,7 @@
         "2018": "[EF2018 Key Findings](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2018/executive-summary.html)",
         "2019": "[EF2019 Key Findings](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2019/executive-summary/index.html)",
         "2020": "[EF2020 Key Findings](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2020/executive-summary/index.html)",
+        "2021": "[EF2021 Key Findings](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2021/executive-summary/index.html)",
         "default": "[EF2016 Key Findings](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2016/index.html)"
       }
     },
@@ -567,6 +576,7 @@
         "2018": "Results of the EF2018 Reference and High/Low Price and Technology Case projections includes analysis on macroeconomic growth, energy use, and energy production for various sources. These projections should not be viewed as a prediction, but as a possible future based on the assumptions described in the Assumptions section.",
         "2019": "Results of the EF2019 Reference Case projection includes analysis on macroeconomic growth, energy use, and energy production for various sources. This projection should not be viewed as a prediction, but as a possible future based on the assumptions described in the Assumptions section.",
         "2020": "The EF2020 Results section focuses on results of the EF2020 Evolving Scenario, and also includes results from the Reference Scenario. It includes analysis on macroeconomic growth, energy use, and energy production for various commodities. Projections for these two scenarios should not be viewed as predictions, but as two possible futures based on the assumptions described in the Assumptions section for each scenario.",
+        "2021": "The Results section presents EF2021 projections, with a focus on the Evolving Policies Scenario. These projections are not a prediction, but instead present possible future outcomes based on the assumptions described in the previous section. There are many factors and uncertainties that will influence future trends. Key uncertainties are discussed in each section.\n\n For a description of the various ways to access the data supporting this discussion, including full data tables for both the Evolving and Current Policies scenarios, see the “Access and Explore Energy Futures Data” section. ",
         "default": "Results from the EF2016 Reference and sensitivity case projections highlight key changes in Canadian energy supply and demand trends. These projections should not be viewed as a prediction, but as a possible future based on the assumptions described in the Assumptions section."
       },
       "link": {
@@ -576,6 +586,7 @@
         "2018": "- [EF2018 Reference and High/Low Price Case: Result](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2018/chapter-3-reference-high-low-price-case-results.html)\n- [EF2018 Technology Case: Result](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2018/chapter-4-technology-case-results.html)",
         "2019": "[EF2019 Results](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2019/results/index.html)",
         "2020": "[EF2020 Results](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2020/results/index.html)",
+        "2021": "[EF2021 Results](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2021/results/index.html)",
         "default": "[EF2016 Results](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2016/index.html)"
       }
     },
@@ -591,6 +602,7 @@
         "2018": "EF2018 Report",
         "2019": "EF2019 Report",
         "2020": "EF2020 Report",
+        "2021": "EF2021 Report",
         "default": "EF2016 Report"
       }
     },
@@ -604,6 +616,7 @@
         "2018": "[View the EF2018 Report](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2018/index.html)",
         "2019": "[View the EF2019 Report](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2019/index.html)",
         "2020": "[View the EF2020 Report](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2020/index.html)",
+        "2021": "[View the EF2021 Report](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2021/index.html)",
         "default": "[View the EF2016 Report](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2020/index.html)"
       },
       "image": {
