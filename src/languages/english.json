@@ -143,7 +143,7 @@
         "title": "CANADA’S ENERGY FUTURE 2021",
         "tooltip": "Explore data from the 2021 Energy Future Report",
         "subtitle": "November 2021",
-        "description": "EF2021 includes two core scenarios: The Evolving Policies Scenario and the Current Policies Scenario. The central difference between these scenarios is the level of future climate action, both globally and domestically. In both scenarios we provide projections for all energy commodities and all provinces and territories.\n\n  EF2021 also includes six additional electricity scenarios that explore what Canada’s electricity system might look like in a net-zero world. These scenarios focus only on how Canada will meet given electricity demands under different conditions, and do not include projections for other energy commodities. Electricity is an important contributor to achieving net-zero emissions, so these projections are an important next step toward future versions of the Canada’s Energy Future series that will cover all forms of energy in a net-zero world.",
+        "description": "Canada’s Energy Future 2021: Energy Supply and Demand Projections to 2050 (EF2021) is our latest long-term energy outlook. The Canada’s Energy Future series explores how possible energy futures might unfold for Canadians over the long term.\n\nEF2021 includes two core scenarios: The Evolving Policies Scenario and the Current Policies Scenario. The central difference between these scenarios is the level of future climate action, both globally and domestically. In both scenarios we provide projections for all energy commodities and all provinces and territories.\n\nEF2021 also includes six additional electricity scenarios that explore what Canada’s electricity system might look like in a net-zero world. These scenarios focus only on how Canada will meet given electricity demands under different conditions, and do not include projections for other energy commodities.",
         "link": "[View the report](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2021/index.html)"
       },
       "2020": {
@@ -253,12 +253,22 @@
         "2018": "EF2018 explores how possible energy futures might unfold for Canadians over the long term. It considers four scenarios that explore how future prices and technological development might impact Canada’s energy system.",
         "2019": "EF2019 explores how possible energy futures might unfold for Canadians over the long term. It provides an update to the Reference Case.",
         "2020": "EF2020 includes two core scenarios that explore potential outcomes for the Canadian energy system over the next 30 years. These scenarios are the Evolving Energy System Scenario (Evolving Scenario) and the Reference Energy System Scenario (Reference Scenario).",
+        "2021": "EF2021 includes two core scenarios that explore potential outcomes for the Canadian energy system over the next 30 years. These scenarios are the Evolving Policies Scenario and the Current Policies Scenario.",
         "default": "The projections in EF2016 include a Reference Case, two price sensitivity cases and three supplemental sensitivity cases:"
       },
       "Constrained": {
         "description": {
           "2016": "The EF 2016 report considers a case where no new major oil pipelines are built over the projection period to address uncertainties related to future oil export infrastructure.",
           "default": "The EF 2016 report considers a case where no new major oil pipelines are built over the projection period to address uncertainties related to future oil export infrastructure."
+        }
+      },
+      "Current Policies": {
+        "tooltip": {
+          "2021": "View projections based on the Current Policies Scenario"
+        },
+        "description": {
+          "2021": "The premise of the Current Policies Scenario is that there is generally no additional action to reduce GHGs beyond those policies in place today, implying relatively higher global demand for fossil fuels and less adoption of low-carbon technologies.",
+          "default": "The premise of the Current Policies Scenario is that there is generally no additional action to reduce GHGs beyond those policies in place today, implying relatively higher global demand for fossil fuels and less adoption of low-carbon technologies."
         }
       },
       "Evolving": {
@@ -268,6 +278,15 @@
         "description": {
           "2020": "The Evolving Energy System Scenario considers the impact of increasing action on climate change throughout the projection period. It builds upon current climate and energy policies with a hypothetical suite of future policy developments.",
           "default": "The Evolving Energy System Scenario considers the impact of increasing action on climate change throughout the projection period. It builds upon current climate and energy policies with a hypothetical suite of future policy developments."
+        }
+      },
+      "Evolving Policies": {
+        "tooltip": {
+          "2021": "View projections based on the Evolving Policies Scenario"
+        },
+        "description": {
+          "2021": "The premise of the scenario is that action to reduce the GHG intensity of our energy system continues to increase at a pace similar to recent history, in both Canada and the world.",
+          "default": "The premise of the scenario is that action to reduce the GHG intensity of our energy system continues to increase at a pace similar to recent history, in both Canada and the world."
         }
       },
       "High LNG": {
@@ -489,10 +508,12 @@
     },
     "energy": {
       "BIO": "Includes biomass, hydrogen, ethanol and biodiesel.",
+      "BIO_UPDATED": "Includes biomass, ethanol and biodiesel.",
       "COAL": "Includes coal, coke, and coke oven gas.",
       "ELECTRICITY": "End-use electricity that is generated from a variety of sources and technologies. Includes electricity generation from primary sources such as nuclear, hydro, wind, and solar, and thermal generation from other fuels such as natural gas, coal, and oil.",
       "GAS": "Total consumption of gas, including some non-marketed producer consumption.",
-      "OIL": "Includes refined petroleum products and natural gas liquids. Specifically, this includes: motor gasoline, diesel fuel, aviation fuel, light fuel oil, kerosene, heavy fuel oil, propane, butane, ethane, petroleum coke, still gas, and non-energy products such as lubricants, asphalt, and petrochemical feedstocks."
+      "OIL": "Includes refined petroleum products and natural gas liquids. Specifically, this includes: motor gasoline, diesel fuel, aviation fuel, light fuel oil, kerosene, heavy fuel oil, propane, butane, ethane, petroleum coke, still gas, and non-energy products such as lubricants, asphalt, and petrochemical feedstocks.",
+      "HYDROGEN": "Consumption of hydrogen that is generated from a variety of sources and technologies."
     },
     "transportation": {
       "BIO": "Includes ethanol, biodiesel, and hydrogenation derived renewable diesel.",
