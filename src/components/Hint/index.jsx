@@ -346,9 +346,12 @@ HintRegionList.defaultProps = { children: null };
 export const HintSourceList = ({ sources, sourceType, children, disableKeyboardNav }) => {
   const intl = useIntl();
   const { config: { yearId } } = useConfig();
-  const getText = useCallback(source => (source && parseInt(yearId, 10) > 2020
-    ? intl.formatMessage({ id: `sources.${sourceType}.${source}_UPDATED` })
-    : intl.formatMessage({ id: `sources.${sourceType}.${source}` })), [intl, sourceType, yearId]);
+  const getText = useCallback((source) => {
+    if (source === 'BIO' && parseInt(yearId, 10) > 2020) {
+      return sourceType && intl.formatMessage({ id: `sources.${sourceType}.${source}_UPDATED` });
+    }
+    return intl.formatMessage({ id: `sources.${sourceType}.${source}` });
+  }, [intl, sourceType, yearId]);
 
   const list = useMemo(() => Object.keys(sources).map(source => ({
     title: sources[source].label,
