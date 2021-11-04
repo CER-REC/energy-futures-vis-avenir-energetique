@@ -1,7 +1,7 @@
 import {
   IconDemand, IconTransportation, IconCommercial, IconResidential, IconIndustrial,
   IconElectricity, IconOil, IconGas, IconBiomass, IconBiofuel,
-  IconCoal, IconHydro, IconNuclear, IconRenewable,
+  IconCoal, IconHydro, IconNuclear, IconRenewable, IconHydrogen,
 } from './icons';
 
 export const applicationPath = {
@@ -154,6 +154,7 @@ export const SOURCE_COLORS = {
     ELECTRICITY: '#7ACBCB',
     GAS: '#890038',
     OIL: '#FF821E',
+    HYDROGEN: '#7A73B3',
   },
   gas: {
     CBM: '#9A65BA',
@@ -194,6 +195,7 @@ export const SOURCE_ICONS = {
     ELECTRICITY: IconElectricity,
     GAS: IconGas,
     OIL: IconOil,
+    HYDROGEN: IconHydrogen,
   },
   gas: {},
   oil: {},

@@ -43,6 +43,16 @@ export const IconTwitter = props => (
  * Sources
  */
 
+export const IconHydrogen = props => (
+  <SvgIcon {...props} viewBox="0 0 22 22">
+    <g>
+      <path d="M8.25 6.875V11.3438M8.25 15.8126V11.3438M8.25 11.3438H14.4375M14.4375 11.3438V6.875M14.4375 11.3438V15.8126" stroke="white" strokeWidth="2" strokeLinecap="round" />
+      <path d="M21.125 11.0002C21.125 16.5921 16.5919 21.1253 11 21.1253C5.40813 21.1253 0.875 16.5921 0.875 11.0002C0.875 5.40818 5.40813 0.875 11 0.875C16.5919 0.875 21.125 5.40818 21.125 11.0002Z" stroke="white" strokeWidth="1.75" />
+      <ellipse cx="3.4375" cy="3.43755" rx="3.4375" ry="3.43755" fill="white" />
+    </g>
+  </SvgIcon>
+);
+
 export const IconBiofuel = props => (
   <SvgIcon {...props} viewBox="88 88 224 224">
     <path d="M295.3,184.1c-0.8-1.8-2.2-3.3-4.1-4.1c-0.9-0.4-1.9-0.6-2.9-0.6h-34.1c-4.1,0-7.5,3.4-7.5,7.5s3.4,7.5,7.5,7.5h16

@@ -128,8 +128,8 @@ const DraggableVerticalList = ({
   const getTooltip = useCallback((item) => {
     const type = isTransportation ? 'transportation' : sourceType;
 
-    if (sourceType && item === 'BIO') {
-      return parseInt(config.yearId, 10) > 2020
+    if (item === 'BIO') {
+      return sourceType && parseInt(config.yearId, 10) > 2020
         ? intl.formatMessage({ id: `sources.${type}.${item}_UPDATED` })
         : intl.formatMessage({ id: `sources.${type}.${item}` });
     }
@@ -196,13 +196,17 @@ const DraggableVerticalList = ({
             </Grid>
 
             {/* individual boxes */}
-            {localItemOrder.filter(item => defaultItems[item]).map((item, index) => (
-              <Draggable key={`region-btn-${item}`} draggableId={item} index={index} isDragDisabled={disabled}>
-                {(providedItem) => {
-                  const tooltip = getTooltip(item);
-                  return (
-                    <Tooltip
-                      title={defaultItems[item]?.label && (
+            {localItemOrder.filter(item => defaultItems[item]).map((item, index) => {
+              if (parseInt(config.yearId, 10) < 2021 && item === 'HYDROGEN') {
+                return null;
+              }
+              return (
+                <Draggable key={`region-btn-${item}`} draggableId={item} index={index} isDragDisabled={disabled}>
+                  {(providedItem) => {
+                    const tooltip = getTooltip(item);
+                    return (
+                      <Tooltip
+                        title={defaultItems[item]?.label && (
                         <Grid container alignItems="center" wrap="nowrap" spacing={1}>
                           {!disabled && <Grid item><DragIcon fontSize="small" /></Grid>}
                           <Grid item>
@@ -213,35 +217,36 @@ const DraggableVerticalList = ({
                           </Grid>
                         </Grid>
                       )}
-                      placement="right"
-                      classes={{ tooltip: classes.tooltip }}
-                    >
-                      <Grid
-                        item
-                        ref={providedItem.innerRef}
-                        {...providedItem.draggableProps}
-                        {...providedItem.dragHandleProps}
-                        onClick={handleToggleItem(item)}
-                        onKeyPress={event => event.key === 'Enter' && handleToggleItem(item)()}
-                        tabIndex={0}
-                        className={`${classes.item} ${isTransportation && item === 'OIL' && 'oil-sub-group'}`}
+                        placement="right"
+                        classes={{ tooltip: classes.tooltip }}
                       >
-                        <ColoredItemBox
-                          item={intl.formatMessage({ id: `components.draggableVerticalList.abbr.${item}`, defaultMessage: item })}
-                          round={round}
-                          icon={defaultItems[item].icon}
-                          color={greyscale ? undefined : defaultItems[item].color}
-                          selected={localItems.indexOf(item) > -1}
-                          attachment={isTransportation && item === 'OIL' && <OilSubgroup selected={localItems.indexOf(item) > -1} />}
-                          disabled={disabledItems && disabledItems.includes(item)}
-                          draggable={!disabled}
-                        />
-                      </Grid>
-                    </Tooltip>
-                  );
-                }}
-              </Draggable>
-            ))}
+                        <Grid
+                          item
+                          ref={providedItem.innerRef}
+                          {...providedItem.draggableProps}
+                          {...providedItem.dragHandleProps}
+                          onClick={handleToggleItem(item)}
+                          onKeyPress={event => event.key === 'Enter' && handleToggleItem(item)()}
+                          tabIndex={0}
+                          className={`${classes.item} ${isTransportation && item === 'OIL' && 'oil-sub-group'}`}
+                        >
+                          <ColoredItemBox
+                            item={intl.formatMessage({ id: `components.draggableVerticalList.abbr.${item}`, defaultMessage: item })}
+                            round={round}
+                            icon={defaultItems[item].icon}
+                            color={greyscale ? undefined : defaultItems[item].color}
+                            selected={localItems.indexOf(item) > -1}
+                            attachment={isTransportation && item === 'OIL' && <OilSubgroup selected={localItems.indexOf(item) > -1} />}
+                            disabled={disabledItems && disabledItems.includes(item)}
+                            draggable={!disabled}
+                          />
+                        </Grid>
+                      </Tooltip>
+                    );
+                  }}
+                </Draggable>
+              );
+            })}
             {provided.placeholder}
           </Grid>
         )}
