@@ -144,6 +144,7 @@
         "tooltip": "Explore data from the 2021 Energy Future Report",
         "subtitle": "November 2021",
         "description": "Canada’s Energy Future 2021: Energy Supply and Demand Projections to 2050 (EF2021) is our latest long-term energy outlook. The Canada’s Energy Future series explores how possible energy futures might unfold for Canadians over the long term.\n\nEF2021 includes two core scenarios: The Evolving Policies Scenario and the Current Policies Scenario. The central difference between these scenarios is the level of future climate action, both globally and domestically. In both scenarios we provide projections for all energy commodities and all provinces and territories.\n\nEF2021 also includes six additional electricity scenarios that explore what Canada’s electricity system might look like in a net-zero world. These scenarios focus only on how Canada will meet given electricity demands under different conditions, and do not include projections for other energy commodities.",
+        "context": "EF2021 includes two core scenarios: The Evolving Policies Scenario and the Current Policies Scenario. The central difference between these scenarios is the level of future climate action, both globally and domestically. In both scenarios we provide projections for all energy commodities and all provinces and territories.\n\nEF2021 also includes six additional electricity scenarios that explore what Canada’s electricity system might look like in a net-zero world. These scenarios focus only on how Canada will meet given electricity demands under different conditions, and do not include projections for other energy commodities. Electricity is an important contributor to achieving net-zero emissions, so these projections are an important next step toward future versions of the Canada’s Energy Future series that will cover all forms of energy in a net-zero world.",
         "link": "[View the report](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2021/index.html)"
       },
       "2020": {
@@ -258,7 +259,6 @@
       },
       "Constrained": {
         "description": {
-          "2016": "The EF 2016 report considers a case where no new major oil pipelines are built over the projection period to address uncertainties related to future oil export infrastructure.",
           "default": "The EF 2016 report considers a case where no new major oil pipelines are built over the projection period to address uncertainties related to future oil export infrastructure."
         }
       },
@@ -267,7 +267,6 @@
           "2021": "View projections based on the Current Policies Scenario"
         },
         "description": {
-          "2021": "The premise of the Current Policies Scenario is that there is generally no additional action to reduce GHGs beyond those policies in place today, implying relatively higher global demand for fossil fuels and less adoption of low-carbon technologies.",
           "default": "The premise of the Current Policies Scenario is that there is generally no additional action to reduce GHGs beyond those policies in place today, implying relatively higher global demand for fossil fuels and less adoption of low-carbon technologies."
         }
       },
@@ -276,7 +275,6 @@
           "2020": "View projections based on the Evolving Energy System scenario"
         },
         "description": {
-          "2020": "The Evolving Energy System Scenario considers the impact of increasing action on climate change throughout the projection period. It builds upon current climate and energy policies with a hypothetical suite of future policy developments.",
           "default": "The Evolving Energy System Scenario considers the impact of increasing action on climate change throughout the projection period. It builds upon current climate and energy policies with a hypothetical suite of future policy developments."
         }
       },
@@ -285,41 +283,31 @@
           "2021": "View projections based on the Evolving Policies Scenario"
         },
         "description": {
-          "2021": "The premise of the scenario is that action to reduce the GHG intensity of our energy system continues to increase at a pace similar to recent history, in both Canada and the world.",
           "default": "The premise of the scenario is that action to reduce the GHG intensity of our energy system continues to increase at a pace similar to recent history, in both Canada and the world."
         }
       },
       "High LNG": {
         "description": {
-          "2016": "The uncertainty related to eventual volumes of liquefied natural gas (LNG) exports is explored in two additional cases.",
           "default": "The uncertainty related to eventual volumes of liquefied natural gas (LNG) exports is explored in two additional cases."
         }
       },
       "High Price": {
         "description": {
-          "2016": "A price case with higher oil and natural gas prices captures some of the uncertainty related to future energy prices.",
-          "2016*": "A price case with higher oil and natural gas prices captures some of the uncertainty related to future energy prices.",
-          "2018": "A price case with higher oil and natural gas prices captures some of the uncertainty related to future energy prices.",
           "default": "A price case with higher oil and natural gas prices captures some of the uncertainty related to future energy prices."
         }
       },
       "Higher Carbon Price": {
         "description": {
-          "2017": "The Higher Carbon Price Case explores the impact of higher carbon pricing than in the Reference Case in the longer term.",
           "default": "The Higher Carbon Price Case explores the impact of higher carbon pricing than in the Reference Case in the longer term."
         }
       },
       "Low Price": {
         "description": {
-          "2016": "A price case with lower oil and natural gas prices captures some of the uncertainty related to future energy prices.",
-          "2016*": "A price case with lower oil and natural gas prices captures some of the uncertainty related to future energy prices.",
-          "2018": "A price case with lower oil and natural gas prices captures some of the uncertainty related to future energy prices.",
           "default": "A price case with lower oil and natural gas prices captures some of the uncertainty related to future energy prices."
         }
       },
       "No LNG": {
         "description": {
-          "2016": "The uncertainty related to eventual volumes of liquefied natural gas (LNG) exports is explored in two additional cases.",
           "default": "The uncertainty related to eventual volumes of liquefied natural gas (LNG) exports is explored in two additional cases."
         }
       },
@@ -330,17 +318,12 @@
         "description": {
           "2016": "The Reference Case provides a baseline outlook, based on a moderate view of future energy prices and economic growth.",
           "2016*": "The Reference Case provides a baseline outlook, based on a moderate view of future energy prices and economic growth.",
-          "2017": "The Reference Case provides a baseline outlook with a moderate view of energy prices and economic growth, and climate and energy policies announced at the time of analysis.",
-          "2018": "The Reference Case provides a baseline outlook with a moderate view of energy prices and economic growth, and climate and energy policies announced at the time of analysis.",
-          "2019": "The Reference Case provides a baseline outlook with a moderate view of energy prices and economic growth, and climate and energy policies announced at the time of analysis.",
           "2020": "The Reference Scenario provides a baseline outlook with a moderate view of energy prices and economic growth, and climate and energy policies announced at the time of analysis.",
-          "default": "The Reference Scenario provides a baseline outlook with a moderate view of energy prices and economic growth, and climate and energy policies announced at the time of analysis."
+          "default": "The Reference Case provides a baseline outlook with a moderate view of energy prices and economic growth, and climate and energy policies announced at the time of analysis."
         }
       },
       "Technology": {
         "description": {
-          "2017": "The Technology Case considers higher carbon prices than the Reference Case and greater adoption of select emerging production and consumption energy technologies.",
-          "2018": "The Technology Case considers higher carbon prices than the Reference Case and greater adoption of select emerging production and consumption energy technologies.",
           "default": "The Technology Case considers higher carbon prices than the Reference Case and greater adoption of select emerging production and consumption energy technologies."
         }
       },
@@ -490,7 +473,7 @@
       }
     },
     "unsupportedWarning": {
-      "browser": "Your browser does not support the features required by this visualization.\n Please use a recent version of Chrome, Firefox, Safari, or Edge.\nThank you!",
+      "browser": "Your browser does not support the features required by this visualization.\nPlease use a recent version of Chrome, Firefox, Safari, or Edge.\nThank you!",
       "resolution": "This visualization has been designed for use on computers and tablets with a screen width of at least 768 pixels.\nThank you!"
     }
   },
@@ -597,7 +580,7 @@
         "2018": "Results of the EF2018 Reference and High/Low Price and Technology Case projections includes analysis on macroeconomic growth, energy use, and energy production for various sources. These projections should not be viewed as a prediction, but as a possible future based on the assumptions described in the Assumptions section.",
         "2019": "Results of the EF2019 Reference Case projection includes analysis on macroeconomic growth, energy use, and energy production for various sources. This projection should not be viewed as a prediction, but as a possible future based on the assumptions described in the Assumptions section.",
         "2020": "The EF2020 Results section focuses on results of the EF2020 Evolving Scenario, and also includes results from the Reference Scenario. It includes analysis on macroeconomic growth, energy use, and energy production for various commodities. Projections for these two scenarios should not be viewed as predictions, but as two possible futures based on the assumptions described in the Assumptions section for each scenario.",
-        "2021": "The Results section presents EF2021 projections, with a focus on the Evolving Policies Scenario. These projections are not a prediction, but instead present possible future outcomes based on the assumptions described in the previous section. There are many factors and uncertainties that will influence future trends. Key uncertainties are discussed in each section.\n\n For a description of the various ways to access the data supporting this discussion, including full data tables for both the Evolving and Current Policies scenarios, see the “Access and Explore Energy Futures Data” section. ",
+        "2021": "The Results section presents EF2021 projections, with a focus on the Evolving Policies Scenario. These projections are not a prediction, but instead present possible future outcomes based on the assumptions described in the previous section. There are many factors and uncertainties that will influence future trends. Key uncertainties are discussed in each section.\n\n For a description of the various ways to access the data supporting this discussion, including full data tables for both the Evolving and Current Policies scenarios, see the “Access and Explore Energy Futures Data” section.",
         "default": "Results from the EF2016 Reference and sensitivity case projections highlight key changes in Canadian energy supply and demand trends. These projections should not be viewed as a prediction, but as a possible future based on the assumptions described in the Assumptions section."
       },
       "link": {

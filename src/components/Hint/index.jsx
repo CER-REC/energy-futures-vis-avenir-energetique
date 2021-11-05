@@ -347,8 +347,8 @@ export const HintSourceList = ({ sources, sourceType, children, disableKeyboardN
   const intl = useIntl();
   const { config: { yearId } } = useConfig();
   const getText = useCallback((source) => {
-    if (source === 'BIO' && parseInt(yearId, 10) > 2020) {
-      return sourceType && intl.formatMessage({ id: `sources.${sourceType}.${source}_UPDATED` });
+    if ((sourceType === 'energy') && (source === 'BIO') && (parseInt(yearId, 10) > 2020)) {
+      return intl.formatMessage({ id: 'sources.energy.BIO_UPDATED' });
     }
     return intl.formatMessage({ id: `sources.${sourceType}.${source}` });
   }, [intl, sourceType, yearId]);
