@@ -205,16 +205,16 @@ const DraggableVerticalList = ({
                     return (
                       <Tooltip
                         title={defaultItems[item]?.label && (
-                        <Grid container alignItems="center" wrap="nowrap" spacing={1}>
-                          {!disabled && <Grid item><DragIcon fontSize="small" /></Grid>}
-                          <Grid item>
-                            <Typography variant="overline" component="div" style={{ lineHeight: tooltip ? 1.5 : 2.66 }}>
-                              <strong>{defaultItems[item].label}</strong>
-                            </Typography>
-                            {tooltip && <Typography variant="caption" color="secondary"><Markdown>{tooltip}</Markdown></Typography>}
+                          <Grid container alignItems="center" wrap="nowrap" spacing={1}>
+                            {!disabled && <Grid item><DragIcon fontSize="small" /></Grid>}
+                            <Grid item>
+                              <Typography variant="overline" component="div" style={{ lineHeight: tooltip ? 1.5 : 2.66 }}>
+                                <strong>{defaultItems[item].label}</strong>
+                              </Typography>
+                              {tooltip && <Typography variant="caption" color="secondary"><Markdown>{tooltip}</Markdown></Typography>}
+                            </Grid>
                           </Grid>
-                        </Grid>
-                      )}
+                        )}
                         placement="right"
                         classes={{ tooltip: classes.tooltip }}
                       >
