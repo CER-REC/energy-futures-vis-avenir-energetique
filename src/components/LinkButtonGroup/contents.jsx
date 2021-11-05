@@ -68,17 +68,24 @@ LinkButtonContentResults.propTypes = { yearId: PropTypes.string.isRequired };
 
 const LinkButtonContentSummary = ({ yearId }) => {
   const intl = useIntl();
-  const text = useMemo(() => intl.formatMessage({ id: `components.yearSelect.${yearId}.description` }), [intl, yearId]);
+  const text = useMemo(() => {
+    if (yearId === '2021') {
+      return intl.formatMessage({ id: `components.yearSelect.${yearId}.context` });
+    }
+    return intl.formatMessage({ id: `components.yearSelect.${yearId}.description` });
+  }, [intl, yearId]);
+
   const src = useMemo(() => (yearId === '2020' // eslint-disable-line no-nested-ternary
     ? (intl.locale === 'fr' ? reportCoverFr : reportCoverEn)
     : intl.formatMessage({ id: `links.Summary.image.${yearId}` })), [intl, yearId]);
+
   const link = useMemo(() => intl.formatMessage({
     id: `links.Summary.link.${yearId}`,
     defaultMessage: intl.formatMessage({ id: 'links.Summary.link.default' }),
   }), [intl, yearId]);
   return (
     <>
-      <Typography variant="body2" color="secondary" style={{ marginBottom: 24 }}>{text}</Typography>
+      <Typography component='div' variant="body2" color="secondary" style={{ marginBottom: 24 }}><Markdown>{text}</Markdown></Typography>
       <Grid container alignItems="flex-end" wrap="nowrap" spacing={1}>
         <Grid item xs={5}>
           <img src={src} alt={intl.formatMessage({ id: 'common.a11y.downloadReport' })} />
@@ -125,6 +132,9 @@ const useStyles = makeStyles(theme => ({
   reportContent: {
     height: 280,
     overflowX: 'hidden',
+    '& div > p:nth-child(2)': {
+      paddingTop: '1em',
+    },
   },
 }));
 

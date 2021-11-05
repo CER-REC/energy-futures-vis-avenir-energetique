@@ -1,4 +1,4 @@
-import React, { useState, useMemo, Fragment } from 'react';
+import React, { useState, useMemo, Fragment, useCallback } from 'react';
 import { useIntl } from 'react-intl';
 import PropTypes from 'prop-types';
 import {
@@ -46,45 +46,53 @@ const useStyles = makeStyles(theme => createStyles({
     zIndex: 1,
     'button&': { height: 48 },
   },
+  paragraphSpacing: {
+    '& span > p:nth-child(2) ~ p': {
+      paddingTop: '1em',
+    },
+  },
 }));
 
 /**
  * A single section in the hint dialog content, including a section title and a list of body text.
  */
-const HintSection = ({ title, section, singleColumn }) => (
-  <Grid container alignItems={singleColumn ? 'center' : 'flex-start'} spacing={2}>
-    {title && <Grid item xs={12}><Typography variant="h4">{title}</Typography></Grid>}
-    {section.map(entry => (singleColumn ? (
-      <Fragment key={`hint-content-entry-${Math.random()}`}>
-        <Grid item xs={12} sm={4}>
-          <Grid container alignItems="center" wrap="nowrap" spacing={1}>
-            {entry.icon && <Grid item><entry.icon style={{ verticalAlign: 'middle' }} /></Grid>}
-            <Grid item><Typography variant="body1" component="span"><strong>{entry.title}</strong></Typography></Grid>
-          </Grid>
-        </Grid>
-        <Grid item xs={12} sm={8}>
-          <Typography variant="body2" color="secondary" component="span"><Markdown>{entry.text}</Markdown></Typography>
-          {entry.link && <Typography variant="body2" color="secondary" component="span"><Markdown>{entry.link}</Markdown></Typography>}
-        </Grid>
-      </Fragment>
-    ) : (
-      <Grid item xs={section.length < 3 ? 12 : 6} key={`hint-content-entry-${Math.random()}`}>
-        <Grid container wrap="nowrap" spacing={1}>
-          {entry.color && (
-            <Grid item>
-              <div style={{ height: 12, width: 12, marginTop: 10, backgroundColor: entry.color }} />
+const HintSection = ({ title, section, singleColumn }) => {
+  const classes = useStyles();
+  return (
+    <Grid container alignItems={singleColumn ? 'center' : 'flex-start'} spacing={2}>
+      {title && <Grid item xs={12}><Typography variant="h4">{title}</Typography></Grid>}
+      {section.map(entry => (singleColumn ? (
+        <Fragment key={`hint-content-entry-${Math.random()}`}>
+          <Grid item xs={12} sm={4}>
+            <Grid container alignItems="center" wrap="nowrap" spacing={1}>
+              {entry.icon && <Grid item><entry.icon style={{ verticalAlign: 'middle' }} /></Grid>}
+              <Grid item><Typography variant="body1" component="span"><strong>{entry.title}</strong></Typography></Grid>
             </Grid>
-          )}
-          <Grid item>
-            {entry.title && <Typography variant="h6" gutterBottom>{entry.title}</Typography>}
+          </Grid>
+          <Grid item xs={12} sm={8}>
             <Typography variant="body2" color="secondary" component="span"><Markdown>{entry.text}</Markdown></Typography>
             {entry.link && <Typography variant="body2" color="secondary" component="span"><Markdown>{entry.link}</Markdown></Typography>}
           </Grid>
+        </Fragment>
+      ) : (
+        <Grid item xs={section.length < 3 ? 12 : 6} key={`hint-content-entry-${Math.random()}`}>
+          <Grid container wrap="nowrap" spacing={1}>
+            {entry.color && (
+            <Grid item>
+              <div style={{ height: 12, width: 12, marginTop: 10, backgroundColor: entry.color }} />
+            </Grid>
+            )}
+            <Grid className={classes.paragraphSpacing} item>
+              {entry.title && <Typography variant="h6" gutterBottom>{entry.title}</Typography>}
+              <Typography variant="body2" color="secondary" component="span"><Markdown>{entry.text}</Markdown></Typography>
+              {entry.link && <Typography variant="body2" color="secondary" component="span"><Markdown>{entry.link}</Markdown></Typography>}
+            </Grid>
+          </Grid>
         </Grid>
-      </Grid>
-    )))}
-  </Grid>
-);
+      )))}
+    </Grid>
+  );
+};
 
 HintSection.propTypes = {
   title: PropTypes.string,
@@ -337,11 +345,19 @@ HintRegionList.defaultProps = { children: null };
  */
 export const HintSourceList = ({ sources, sourceType, children, disableKeyboardNav }) => {
   const intl = useIntl();
+  const { config: { yearId } } = useConfig();
+  const getText = useCallback((source) => {
+    if ((sourceType === 'energy') && (source === 'BIO') && (parseInt(yearId, 10) > 2020)) {
+      return intl.formatMessage({ id: 'sources.energy.BIO_UPDATED' });
+    }
+    return intl.formatMessage({ id: `sources.${sourceType}.${source}` });
+  }, [intl, sourceType, yearId]);
+
   const list = useMemo(() => Object.keys(sources).map(source => ({
     title: sources[source].label,
     icon: sources[source].icon,
-    text: intl.formatMessage({ id: `sources.${sourceType}.${source}` }),
-  })), [intl, sources, sourceType]);
+    text: getText(source),
+  })), [sources, getText]);
   const sections = [
     <HintSection section={list} singleColumn />,
     !disableKeyboardNav && <Divider style={{ margin: '16px 0' }} />,

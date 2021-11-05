@@ -127,8 +127,13 @@ const DraggableVerticalList = ({
    */
   const getTooltip = useCallback((item) => {
     const type = isTransportation ? 'transportation' : sourceType;
+
+    if ((type === 'energy') && (item === 'BIO') && (parseInt(config.yearId, 10) > 2020)) {
+      return intl.formatMessage({ id: 'sources.energy.BIO_UPDATED' });
+    }
+
     return sourceType && intl.formatMessage({ id: `sources.${type}.${item}` });
-  }, [intl, sourceType, isTransportation]);
+  }, [config.yearId, intl, isTransportation, sourceType]);
 
   const handleToggleItem = toggledItem => () => {
     // capture the event for data analytics
