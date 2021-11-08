@@ -128,7 +128,7 @@ const DraggableVerticalList = ({
   const getTooltip = useCallback((item) => {
     const type = isTransportation ? 'transportation' : sourceType;
 
-    if ((type === 'energy') && (item === 'BIO') && (parseInt(config.yearId, 10) > 2020)) {
+    if ((type === 'energy') && (item === 'BIO') && (config.yearId > 2020)) {
       return intl.formatMessage({ id: 'sources.energy.BIO_UPDATED' });
     }
 
@@ -194,52 +194,57 @@ const DraggableVerticalList = ({
             </Grid>
 
             {/* individual boxes */}
-            {localItemOrder.filter(item => defaultItems[item]).map((item, index) => (
-              <Draggable key={`region-btn-${item}`} draggableId={item} index={index} isDragDisabled={disabled}>
-                {(providedItem) => {
-                  const tooltip = getTooltip(item);
-                  return (
-                    <Tooltip
-                      title={defaultItems[item]?.label && (
-                        <Grid container alignItems="center" wrap="nowrap" spacing={1}>
-                          {!disabled && <Grid item><DragIcon fontSize="small" /></Grid>}
-                          <Grid item>
-                            <Typography variant="overline" component="div" style={{ lineHeight: tooltip ? 1.5 : 2.66 }}>
-                              <strong>{defaultItems[item].label}</strong>
-                            </Typography>
-                            {tooltip && <Typography variant="caption" color="secondary"><Markdown>{tooltip}</Markdown></Typography>}
+            {localItemOrder.filter(item => defaultItems[item]).map((item, index) => {
+              if (config.yearId < 2021 && item === 'HYDROGEN') {
+                return null;
+              }
+              return (
+                <Draggable key={`region-btn-${item}`} draggableId={item} index={index} isDragDisabled={disabled}>
+                  {(providedItem) => {
+                    const tooltip = getTooltip(item);
+                    return (
+                      <Tooltip
+                        title={defaultItems[item]?.label && (
+                          <Grid container alignItems="center" wrap="nowrap" spacing={1}>
+                            {!disabled && <Grid item><DragIcon fontSize="small" /></Grid>}
+                            <Grid item>
+                              <Typography variant="overline" component="div" style={{ lineHeight: tooltip ? 1.5 : 2.66 }}>
+                                <strong>{defaultItems[item].label}</strong>
+                              </Typography>
+                              {tooltip && <Typography variant="caption" color="secondary"><Markdown>{tooltip}</Markdown></Typography>}
+                            </Grid>
                           </Grid>
-                        </Grid>
-                      )}
-                      placement="right"
-                      classes={{ tooltip: classes.tooltip }}
-                    >
-                      <Grid
-                        item
-                        ref={providedItem.innerRef}
-                        {...providedItem.draggableProps}
-                        {...providedItem.dragHandleProps}
-                        onClick={handleToggleItem(item)}
-                        onKeyPress={event => event.key === 'Enter' && handleToggleItem(item)()}
-                        tabIndex={0}
-                        className={`${classes.item} ${isTransportation && item === 'OIL' && 'oil-sub-group'}`}
+                        )}
+                        placement="right"
+                        classes={{ tooltip: classes.tooltip }}
                       >
-                        <ColoredItemBox
-                          item={intl.formatMessage({ id: `components.draggableVerticalList.abbr.${item}`, defaultMessage: item })}
-                          round={round}
-                          icon={defaultItems[item].icon}
-                          color={greyscale ? undefined : defaultItems[item].color}
-                          selected={localItems.indexOf(item) > -1}
-                          attachment={isTransportation && item === 'OIL' && <OilSubgroup selected={localItems.indexOf(item) > -1} />}
-                          disabled={disabledItems && disabledItems.includes(item)}
-                          draggable={!disabled}
-                        />
-                      </Grid>
-                    </Tooltip>
-                  );
-                }}
-              </Draggable>
-            ))}
+                        <Grid
+                          item
+                          ref={providedItem.innerRef}
+                          {...providedItem.draggableProps}
+                          {...providedItem.dragHandleProps}
+                          onClick={handleToggleItem(item)}
+                          onKeyPress={event => event.key === 'Enter' && handleToggleItem(item)()}
+                          tabIndex={0}
+                          className={`${classes.item} ${isTransportation && item === 'OIL' && 'oil-sub-group'}`}
+                        >
+                          <ColoredItemBox
+                            item={intl.formatMessage({ id: `components.draggableVerticalList.abbr.${item}`, defaultMessage: item })}
+                            round={round}
+                            icon={defaultItems[item].icon}
+                            color={greyscale ? undefined : defaultItems[item].color}
+                            selected={localItems.indexOf(item) > -1}
+                            attachment={isTransportation && item === 'OIL' && <OilSubgroup selected={localItems.indexOf(item) > -1} />}
+                            disabled={disabledItems && disabledItems.includes(item)}
+                            draggable={!disabled}
+                          />
+                        </Grid>
+                      </Tooltip>
+                    );
+                  }}
+                </Draggable>
+              );
+            })}
             {provided.placeholder}
           </Grid>
         )}
