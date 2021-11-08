@@ -128,7 +128,7 @@ const DraggableVerticalList = ({
   const getTooltip = useCallback((item) => {
     const type = isTransportation ? 'transportation' : sourceType;
 
-    if ((type === 'energy') && (item === 'BIO') && (parseInt(config.yearId, 10) > 2020)) {
+    if ((type === 'energy') && (item === 'BIO') && (config.yearId > 2020)) {
       return intl.formatMessage({ id: 'sources.energy.BIO_UPDATED' });
     }
 
@@ -195,7 +195,7 @@ const DraggableVerticalList = ({
 
             {/* individual boxes */}
             {localItemOrder.filter(item => defaultItems[item]).map((item, index) => {
-              if (parseInt(config.yearId, 10) < 2021 && item === 'HYDROGEN') {
+              if (config.yearId < 2021 && item === 'HYDROGEN') {
                 return null;
               }
               return (
