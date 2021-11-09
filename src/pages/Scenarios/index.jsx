@@ -15,8 +15,21 @@ import MaxTick from '../../components/MaxTick';
 /**
  * Generate a custom dotted line layer for rendering the default scenario.
  */
+const dotsFilter = (scenarioYear) => {
+  // Returns the name of the scenario that needs to be dotted for each year
+  switch (scenarioYear) {
+    case '2020':
+      return 'Evolving';
+
+    case '2021':
+      return 'Evolving Policies';
+
+    default:
+      return 'Reference';
+  }
+};
 export const dottedLayer = scenarioYear => args => args.points
-  .filter(point => point.serieId === (scenarioYear === '2020' ? 'Evolving' : 'Reference'))
+  .filter(point => point.serieId === dotsFilter(scenarioYear))
   .map(point => (
     <circle
       key={point.id}
