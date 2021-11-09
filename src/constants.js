@@ -104,7 +104,9 @@ export const SECTOR_ORDER = ['ALL', 'RESIDENTIAL', 'COMMERCIAL', 'INDUSTRIAL', '
  * TODO: replace it with real colors from UI designers.
  */
 export const SCENARIO_COLOR = {
+  'Current Policies': '#AAA',
   Evolving: '#6D60E8',
+  'Evolving Policies': '#6D60E8',
   Reference: '#AAA',
   Technology: '#3692FA',
   'Higher Carbon Price': '#0B3CB4',
