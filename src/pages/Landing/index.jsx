@@ -182,6 +182,7 @@ const Landing = () => {
    * CER template uses a custom breakpoint.
    */
   const desktop = useMediaQuery('(min-width: 992px)');
+  const reportName = '2021 report';
 
   const handleLinkButton = (name, openDialog /* boolean */) => () => {
     analytics.reportLanding('landing', name);
@@ -234,7 +235,7 @@ const Landing = () => {
               aria-label={intl.formatMessage({ id: 'common.a11y.downloadReport' })}
               href={intl.formatMessage({ id: 'landing.links.download.link' })}
               target="_about"
-              onClick={handleLinkButton('2020 report')}
+              onClick={handleLinkButton(reportName)}
             >
               <img src={intl.locale === 'fr' ? reportCoverFr : reportCoverEn} alt={intl.formatMessage({ id: 'common.a11y.downloadReport' })} />
             </ButtonBase>
