@@ -6,8 +6,10 @@ import CloseIcon from '@material-ui/icons/Close';
 import Markdown from 'react-markdown';
 import useConfig from '../../hooks/useConfig';
 import analytics from '../../analytics';
-import reportCoverEn from '../../pages/Landing/report_cover_en.png';
-import reportCoverFr from '../../pages/Landing/report_cover_fr.png';
+import reportCoverEn2021 from '../../pages/Landing/report_cover_en_2021.png';
+import reportCoverFr2021 from '../../pages/Landing/report_cover_fr_2021.png';
+import reportCoverEn2020 from '../../pages/Landing/report_cover_en_2020.png';
+import reportCoverFr2020 from '../../pages/Landing/report_cover_fr_2020.png';
 
 const LinkButtonContentAssumptions = ({ yearId }) => {
   const intl = useIntl();
@@ -75,9 +77,16 @@ const LinkButtonContentSummary = ({ yearId }) => {
     return intl.formatMessage({ id: `components.yearSelect.${yearId}.description` });
   }, [intl, yearId]);
 
-  const src = useMemo(() => (yearId === '2020' // eslint-disable-line no-nested-ternary
-    ? (intl.locale === 'fr' ? reportCoverFr : reportCoverEn)
-    : intl.formatMessage({ id: `links.Summary.image.${yearId}` })), [intl, yearId]);
+  const src = () => {
+    switch (yearId) {
+      case '2020':
+        return intl.locale === 'fr' ? reportCoverFr2020 : reportCoverEn2020;
+      case '2021':
+        return intl.locale === 'fr' ? reportCoverFr2021 : reportCoverEn2021;
+      default:
+        return intl.formatMessage({ id: `links.Summary.image.${yearId}` });
+    }
+  };
 
   const link = useMemo(() => intl.formatMessage({
     id: `links.Summary.link.${yearId}`,
@@ -88,7 +97,7 @@ const LinkButtonContentSummary = ({ yearId }) => {
       <Typography component='div' variant="body2" color="secondary" style={{ marginBottom: 24 }}><Markdown>{text}</Markdown></Typography>
       <Grid container alignItems="flex-end" wrap="nowrap" spacing={1}>
         <Grid item xs={5}>
-          <img src={src} alt={intl.formatMessage({ id: 'common.a11y.downloadReport' })} />
+          <img src={src()} alt={intl.formatMessage({ id: 'common.a11y.downloadReport' })} />
         </Grid>
         <Grid item xs={7}>
           <Typography variant="body2" color="secondary" component="span"><Markdown>{link}</Markdown></Typography>

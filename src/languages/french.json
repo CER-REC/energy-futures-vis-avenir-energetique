@@ -264,7 +264,7 @@
       },
       "Current Policies": {
         "tooltip": {
-          "2021": "Politiques actuelles"
+          "2021": "Consulter les projections selon le scénario des politiques actuelles"
         },
         "description": {
           "default": "L’hypothèse de base du scénario des politiques actuelles suppose, de façon générale, l’absence de nouvelles mesures pour réduire les GES au-delà des politiques déjà en place, avec en corollaire une demande plus forte de combustibles fossiles et une adoption moins étendue des technologies à faibles émissions de carbone."
@@ -280,7 +280,7 @@
       },
       "Evolving Policies": {
         "tooltip": {
-          "2021": "Évolution des politiques"
+          "2021": "Consulter les projections selon le scénario d'évolution des politiques"
         },
         "description": {
           "default": "Ce scénario repose sur l’hypothèse de base que les mesures de réduction de l’intensité des GES dans la filière énergétique canadienne se poursuivront à un rythme comparable à celui de l’histoire récente, tant au Canada qu’ailleurs dans le monde."
