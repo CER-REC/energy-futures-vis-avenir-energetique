@@ -1,3 +1,80 @@
+# [2.3.0](http://neb-energy-futures-devdoc.s3-website.us-west-2.amazonaws.com/v2.3.0) (2021-11-24)
+
+
+### constants
+
+* **Features:** adds colors for two new scenarios (da21332)
+
+
+### Contents
+
+* **Features:** updates tooltip for french scenarios (7657a82)
+
+
+### DraggableVerticalList
+
+* **Features:** fixes some small bugs (415a421)
+* **Features:** adds hydrogen as a energy source (4673e13)
+* **Code Formatting:** fixes indentation (f28069b)
+* **Code Refactoring:** removes unneeded parseInt (19abe64)
+
+
+### french
+
+* **Features:** adds 2021 french translations (8f7c7c5)
+
+
+### Hint
+
+* **Features:** adds indent in front of the first unit hint description (a144953)
+* **Bug Fixes:** fixes issue where source was not checked (0a33ac7)
+
+
+### Icons
+
+* **Features:** updates hydrogen icon (fecdf24)
+
+
+### Landing
+
+* **Features:** updates links and labels (386211e)
+* **Features:** replaces report images with 2021 images (b1aae96)
+
+
+### LinkButtonGroup
+
+* **Features:** updates content and some styling for linkButtonGroup (67fae1f)
+
+
+### Scenarios
+
+* **Features:** adds dots layer for Evolving Policies for 2021 (d385608)
+
+
+### slider tests
+
+* **Bug Fixes:** fixes failed slider tests (f4c3796)
+
+
+### sliders
+
+* **Bug Fixes:** removes old code from tests (4f65c2d)
+
+
+### translations
+
+* **Features:** updates translations in various locations (cc6c8fb)
+
+
+### year sliders
+
+* **Features:** fixes issue with parachuting into year sliders (c317a5e)
+
+
+### yearSlider
+
+* **Features:** adds default year functionality to year slider (a91bc10)
+
 ## [2.2.1](http://neb-energy-futures-devdoc.s3-website.us-west-2.amazonaws.com/v2.2.1) (2021-02-04)
 
 
