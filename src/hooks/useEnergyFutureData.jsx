@@ -115,8 +115,8 @@ export default () => {
   const forecastStart = useMemo(() => (
     ['gasProduction', 'oilProduction']
       .indexOf(config.mainSelection) > -1
-      ? parseInt(config.yearId, 10) - 1
-      : parseInt(config.yearId, 10) - 2),
+      ? parseInt(config.yearId, 10) - 0
+      : parseInt(config.yearId, 10) - 1),
   [config.yearId, config.mainSelection]);
 
   const processedData = useMemo(() => {

@@ -42,7 +42,10 @@ const useStyles = makeStyles(theme => createStyles({
       fill: '#CCC',
       transform: 'translateY(-50%)',
     },
-    '& > h5': { margin: theme.spacing(1, 2, 1, 15) },
+    '& > h5': {
+      margin: theme.spacing(1, 2, 1, 15),
+      fontWeight: '700',
+    },
   },
 
   box: {
