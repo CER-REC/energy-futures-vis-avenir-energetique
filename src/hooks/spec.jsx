@@ -173,7 +173,7 @@ describe('Component|hooks', () => {
 
     test('should load hook content', async () => {
       const parseRegions = content => Object.keys(JSON.parse(content).data[0]).filter(key => key !== 'year');
-      const year = { min: 2005, forecastStart: 2018, max: 2005 };
+      const expectedYear = { min: 2005, forecastStart: 2019, max: 2005 };
 
       // by-region page
       await act(async () => {
@@ -227,7 +227,7 @@ describe('Component|hooks', () => {
         wrapper.update();
 
         expect(JSON.parse(wrapper.text()).data).toBeDefined();
-        expect(JSON.parse(wrapper.text()).year).toEqual(year);
+        expect(JSON.parse(wrapper.text()).year).toEqual(expectedYear);
       });
 
       // electricity page
@@ -237,14 +237,14 @@ describe('Component|hooks', () => {
         wrapper.update();
 
         expect(JSON.parse(wrapper.text()).data[2005]).toBeDefined();
-        expect(JSON.parse(wrapper.text()).year).toEqual(year);
+        expect(JSON.parse(wrapper.text()).year).toEqual(expectedYear);
 
         wrapper = mount(getComponent({ ...SOURCE_STATE, view: 'region' }));
         await new Promise(resolve => setTimeout(resolve));
         wrapper.update();
 
         expect(JSON.parse(wrapper.text()).data[2005]).toBeDefined();
-        expect(JSON.parse(wrapper.text()).year).toEqual(year);
+        expect(JSON.parse(wrapper.text()).year).toEqual(expectedYear);
       });
 
       // oil-and-gas page
@@ -254,7 +254,7 @@ describe('Component|hooks', () => {
         wrapper.update();
 
         expect(JSON.parse(wrapper.text()).data[2005]).toBeDefined();
-        expect(JSON.parse(wrapper.text()).year).toEqual(year);
+        expect(JSON.parse(wrapper.text()).year).toEqual(expectedYear);
       });
 
       // landing page
