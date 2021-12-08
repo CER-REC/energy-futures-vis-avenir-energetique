@@ -1,3 +1,11 @@
+# [2.4.0](http://neb-energy-futures-devdoc.s3-website.us-west-2.amazonaws.com/v2.4.0) (2021-12-08)
+
+
+### ForecastLine
+
+* **Features:** updates logic to move forecast year back 1 year (44574ef)
+* **Bug Fixes:** fixes tests (e39c44e)
+
 # [2.3.0](http://neb-energy-futures-devdoc.s3-website.us-west-2.amazonaws.com/v2.3.0) (2021-11-24)
 
 
