@@ -1,3 +1,10 @@
+## [2.4.1](http://neb-energy-futures-devdoc.s3-website.us-west-2.amazonaws.com/v2.4.1) (2021-12-08)
+
+
+### english
+
+* **Bug Fixes:** updates methodology link to 2020 (a0245ef)
+
 # [2.4.0](http://neb-energy-futures-devdoc.s3-website.us-west-2.amazonaws.com/v2.4.0) (2021-12-08)
 
 
