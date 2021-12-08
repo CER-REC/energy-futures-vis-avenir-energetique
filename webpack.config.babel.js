@@ -9,7 +9,7 @@ const devMode = process.env.NODE_ENV !== 'production';
 module.exports = {
   mode: process.env.NODE_ENV || 'development',
   entry: {
-    bundle: './src/index.jsx',
+    bundle: ['@babel/polyfill', './src/index.jsx'],
   },
   output: {
     path: BUILD_DIR,
