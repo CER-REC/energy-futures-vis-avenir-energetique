@@ -1,3 +1,5 @@
+## [2.4.2](http://neb-energy-futures-devdoc.s3-website.us-west-2.amazonaws.com/v2.4.2) (2021-12-09)
+
 ## [2.4.1](http://neb-energy-futures-devdoc.s3-website.us-west-2.amazonaws.com/v2.4.1) (2021-12-08)
 
 
