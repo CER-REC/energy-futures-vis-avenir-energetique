@@ -16,3 +16,9 @@ Commands
 - Testing (all): `npm run test`
 - Testing (target): `npm run test -- [PATH_TO_FILES]`
 - Coverage Report: `npm run test:showcoverage`
+
+PDFs
+----
+
+- `.\public\pdf` files are referenced externally
+
