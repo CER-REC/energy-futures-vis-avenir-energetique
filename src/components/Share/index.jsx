@@ -298,6 +298,8 @@ export const DownloadButton = ({ accent }) => {
           return {
             [headers.region]: intl.formatMessage({ id: `common.regions.${resource.province}` }).toUpperCase(),
             [headers.source]: intl.formatMessage({ id: `common.sources.${sourceType}.${resource.source}` }).toUpperCase(),
+            [headers.scenario]: scenario,
+            [headers.year]: resource.year,
             [headers.value]: resource.value * conversionRatio,
             [headers.unit]: unit,
             [headers.dataset]: dataset,
@@ -317,6 +319,8 @@ export const DownloadButton = ({ accent }) => {
             [headers.selection]: selection,
             [headers.region]: intl.formatMessage({ id: `common.regions.${resource.province}` }).toUpperCase(),
             [headers.source]: intl.formatMessage({ id: `common.sources.${sourceType}.${resource.source}` }).toUpperCase(),
+            [headers.scenario]: scenario,
+            [headers.year]: resource.year,
             [headers.value]: resource.value * conversionRatio,
             [headers.unit]: unit,
             [headers.dataset]: dataset,
