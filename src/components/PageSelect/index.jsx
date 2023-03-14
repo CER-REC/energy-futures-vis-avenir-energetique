@@ -49,7 +49,7 @@ const useStyles = makeStyles(theme => createStyles({
   },
 
   box: {
-    height: 84,
+    height: 98,
     width: 72,
     backgroundColor: '#F3EFEF',
     boxShadow: theme.shadows[4],
@@ -197,7 +197,7 @@ export const PageSelect = ({ direction /* row, column */ }) => {
             >
               <Grid container direction="column" wrap="nowrap">
                 <div className={classes.icon}>{getPageIcon(page.id)}</div>
-                <Typography variant="caption">{subtitle}</Typography>
+                <Typography variant="caption" style={{ whiteSpace: 'normal' }}>{subtitle}</Typography>
               </Grid>
             </ButtonBase>
           </span>

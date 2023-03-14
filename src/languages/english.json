@@ -208,7 +208,7 @@
           "COMMERCIAL": "End-Use Demand For The Commercial Sector",
           "INDUSTRIAL": "End-Use Demand For The Industrial Sector",
           "TRANSPORTATION": "End-Use Demand For The Transportation Sector",
-          "default": "By Sector"
+          "default": "By Energy Source"
         },
         "description": "Explore how energy source mixes from different sectors have evolved in recent history, and how they are projected to evolve in the Energy Futures scenarios."
       },
@@ -643,7 +643,7 @@
       "description": "Compare historical and projected energy supply and demand data from across Canada’s provinces and territories"
     },
     "By Sector": {
-      "title": "Explore By Sector",
+      "title": "Explore By Energy Source",
       "description": "Explore how energy source mixes from different sectors have evolved in recent history, and how they are projected to evolve in the Energy Futures scenarios"
     },
     "Electricity": {
