@@ -113,7 +113,7 @@ describe('Component| PageTitle', () => {
 
     test('should have correct title', () => {
       const title = wrapper.find('.MuiTypography-h5');
-      expect(title.text()).toBe('By Sector');
+      expect(title.text()).toBe('By Energy Source');
     });
   });
 
