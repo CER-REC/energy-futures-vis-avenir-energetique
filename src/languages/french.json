@@ -2,6 +2,7 @@
   "common": {
     "title": "Explorer l’avenir énergétique du Canada",
     "forecast": "prévision",
+    "historical": "",
     "selection": "Sélection",
     "region": "Région",
     "scenario": "Scénario",

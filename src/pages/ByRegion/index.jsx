@@ -11,6 +11,7 @@ import convertHexToRGB from '../../utilities/convertHexToRGB';
 import ForecastLayer from '../../components/ForecastLayer';
 import VizTooltip from '../../components/VizTooltip';
 import MaxTick from '../../components/MaxTick';
+import HistoricalLayer from '../../components/HistoricalLayer';
 
 const ByRegion = ({ data, year }) => {
   const intl = useIntl();
@@ -80,7 +81,7 @@ const ByRegion = ({ data, year }) => {
         {...CHART_PROPS}
         data={data}
         keys={keys}
-        layers={['grid', 'axes', 'bars', 'markers', ForecastLayer]}
+        layers={[HistoricalLayer, 'grid', 'axes', 'bars', 'markers', ForecastLayer]}
         indexBy="year"
         maxValue={axis.highest}
         colors={colors}
@@ -99,6 +100,7 @@ const ByRegion = ({ data, year }) => {
         motionStiffness={300}
         forecastStart={year.forecastStart}
         forecastLabel={intl.formatMessage({ id: 'common.forecast' })}
+        historicalLabel={intl.formatMessage({ id: 'common.historical' })}
       />
     </div>
   );

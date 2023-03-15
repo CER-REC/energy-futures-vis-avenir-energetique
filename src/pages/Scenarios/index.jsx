@@ -11,6 +11,7 @@ import { fadeLayerScenario } from '../../components/FadeLayer';
 import ForecastLayer from '../../components/ForecastLayer';
 import VizTooltip from '../../components/VizTooltip';
 import MaxTick from '../../components/MaxTick';
+import HistoricalLayer from '../../components/HistoricalLayer';
 
 /**
  * Generate a custom dotted line layer for rendering the default scenario.
@@ -112,7 +113,7 @@ const Scenarios = ({ data, year }) => {
         data={data}
         enableArea
         enablePoints={false}
-        layers={['grid', 'axes', 'areas', 'crosshair', 'points', 'slices', fade, 'lines', ForecastLayer, dots]}
+        layers={[HistoricalLayer, 'grid', 'axes', 'areas', 'crosshair', 'points', 'slices', fade, 'lines', ForecastLayer, dots]}
         curve="cardinal"
         areaOpacity={0.15}
         xScale={{ type: 'point' }}
@@ -138,6 +139,7 @@ const Scenarios = ({ data, year }) => {
         gridYValues={axis.ticks}
         forecastStart={year.forecastStart}
         forecastLabel={intl.formatMessage({ id: 'common.forecast' })}
+        historicalLabel={intl.formatMessage({ id: 'common.historical' })}
       />
     </div>
   );
