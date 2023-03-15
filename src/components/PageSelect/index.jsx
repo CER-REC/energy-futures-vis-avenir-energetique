@@ -66,7 +66,6 @@ const useStyles = makeStyles(theme => createStyles({
 
     '& > div': {
       width: 'auto',
-      '& > span': { whiteSpace: 'nowrap' },
     },
   },
   icon: {
@@ -76,13 +75,13 @@ const useStyles = makeStyles(theme => createStyles({
       height: 64,
       width: 64,
       fill: theme.palette.secondary.light,
-      transition: 'fill .35 ease-in-out',
+      transition: 'fill .35s ease-in-out',
     },
     '& + span': {
       width: 64,
       fontWeight: 700,
       color: theme.palette.secondary.light,
-      transition: 'color .35 ease-in-out',
+      transition: 'color .35s ease-in-out',
     },
   },
   label: {
@@ -197,7 +196,7 @@ export const PageSelect = ({ direction /* row, column */ }) => {
             >
               <Grid container direction="column" wrap="nowrap">
                 <div className={classes.icon}>{getPageIcon(page.id)}</div>
-                <Typography variant="caption" style={{ whiteSpace: 'normal' }}>{subtitle}</Typography>
+                <Typography variant="caption">{subtitle}</Typography>
               </Grid>
             </ButtonBase>
           </span>
