@@ -19,14 +19,11 @@ const ByRegion = ({ data, year }) => {
   const { config } = useConfig();
 
   /**
-   * Manually calculating bar colors to create the fade-out effect.
+   * Calculate bar colors.
    */
-  const customColorProp = useCallback((maxYear, forecastYear) => (d) => {
-    const opacityNumber = (d.indexValue > forecastYear)
-      ? (1.1 - ((d.indexValue - forecastYear) / (maxYear - forecastYear)))
-      : 1;
-    return convertHexToRGB(regions.colors[d.id], opacityNumber);
-  }, [regions.colors]);
+  const customColorProp = useCallback(
+    () => d => convertHexToRGB(regions.colors[d.id], 1), [regions.colors],
+  );
 
   const colors = useMemo(
     () => customColorProp(year.max, year.forecastStart),

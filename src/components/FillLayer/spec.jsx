@@ -1,6 +1,6 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import { fadeLayerBySector, fadeLayerScenario } from '.';
+import { fillLayerBySector, fillLayerScenario } from '.';
 
 const MOCK_YEAR = { year: { min: 2005, max: 2050, forecastStart: 2018 } };
 
@@ -15,24 +15,16 @@ const MOCK_CHART = {
   ],
 };
 
-describe('Component|FadeLayer', () => {
+describe('Component|FillLayer', () => {
   /**
    * Page By-Sector
    */
   describe('Test in page by-sector', () => {
-    const wrapper = mount(<svg>{fadeLayerBySector(MOCK_YEAR)(MOCK_CHART)}</svg>);
+    const wrapper = mount(<svg>{fillLayerBySector(MOCK_YEAR)(MOCK_CHART)}</svg>);
 
     test('should render component', () => {
       expect(wrapper.type()).not.toBeNull();
       expect(wrapper.findWhere(node => node.type() === 'g' && node.prop('opacity') === 0.7).exists()).toBeTruthy();
-
-      // verify linear gradients
-      const gradients = wrapper.findWhere(node => node.type() === 'linearGradient').map(node => node.prop('id'));
-      expect(gradients.sort()).toEqual(MOCK_CHART.series.map(line => `line-${line.id}-gradient`).sort());
-    });
-
-    test('should NOT render component without valid years', () => {
-      expect(fadeLayerBySector({ year: undefined })(MOCK_CHART)).toBeNull();
     });
   });
 
@@ -40,15 +32,11 @@ describe('Component|FadeLayer', () => {
    * Page Scenarios
    */
   describe('Test in page scenarios', () => {
-    const wrapper = mount(<svg>{fadeLayerScenario(MOCK_YEAR)(MOCK_CHART)}</svg>);
+    const wrapper = mount(<svg>{fillLayerScenario(MOCK_YEAR)(MOCK_CHART)}</svg>);
 
     test('should render component', () => {
       expect(wrapper.type()).not.toBeNull();
       expect(wrapper.findWhere(node => node.type() === 'g' && node.prop('opacity') === 0.7).exists()).toBeTruthy();
-
-      // verify linear gradients
-      const gradients = wrapper.findWhere(node => node.type() === 'linearGradient').map(node => node.prop('id'));
-      expect(gradients.sort()).toEqual(MOCK_CHART.series.map(line => `line-${line.id}-gradient`).sort());
     });
   });
 
@@ -57,16 +45,12 @@ describe('Component|FadeLayer', () => {
    */
   describe('Test sector transportation', () => {
     const wrapper = mount(
-      <svg>{fadeLayerBySector({ ...MOCK_YEAR, isTransportation: true })(MOCK_CHART)}</svg>,
+      <svg>{fillLayerBySector({ ...MOCK_YEAR, isTransportation: true })(MOCK_CHART)}</svg>,
     );
 
     test('should render component', () => {
       expect(wrapper.type()).not.toBeNull();
       expect(wrapper.findWhere(node => node.type() === 'g' && node.prop('opacity') === 0.7).exists()).toBeTruthy();
-
-      // verify linear gradients
-      const gradients = wrapper.findWhere(node => node.type() === 'linearGradient').map(node => node.prop('id'));
-      expect(gradients.sort()).toEqual(MOCK_CHART.series.map(line => `line-${line.id}-gradient`).sort());
     });
   });
 });
