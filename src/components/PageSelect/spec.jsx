@@ -41,7 +41,7 @@ describe('Component|PageSelect', () => {
 
   test('should render page titles', () => {
     const titles = wrapper.find(Typography);
-    const names = ['By Region', 'By Sector', 'Electricity', 'Scenarios', 'Oil and Gas'];
+    const names = ['By Region', 'By Energy Source', 'Electricity', 'Scenarios', 'Oil and Gas'];
     expect(expect.arrayContaining(titles.map(title => title.text()))).toEqual(names);
   });
 
@@ -113,7 +113,7 @@ describe('Component| PageTitle', () => {
 
     test('should have correct title', () => {
       const title = wrapper.find('.MuiTypography-h5');
-      expect(title.text()).toBe('By Sector');
+      expect(title.text()).toBe('By Energy Source');
     });
   });
 
