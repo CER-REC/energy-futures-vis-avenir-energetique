@@ -1,8 +1,18 @@
 <!doctype html>
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Energy Future</title>
+    <meta content="width=device-width,initial-scale=1" name="viewport" />
+    <title><%= htmlWebpackPlugin.options.title %></title>
+    <!-- Hide old WET Toolkit elements -->
+    <style>
+        #wb-bar, #wmms, #wb-srch {
+          display: none !important;
+        }
+    </style>
+    <link rel="stylesheet" href="./Templates/wet4-gcwu/includes/css/gcwu.custom.css">
+    <link href="./Templates/wet4-gcwu/css/polyfills/details.css" rel="stylesheet" type="text/css">
+    <link href="./Templates/wet4-gcwu/theme-gcwu-fegc/css/theme.min.css" rel="stylesheet">
 
     <!-- Google Tag Manager -->
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -17,7 +27,6 @@
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PPMJ59J" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
 
-    <link rel="stylesheet" href="./themes-dist-4.0.20-theme-gcwu-fegc/theme-gcwu-fegc/css/theme.min.css">
     <ul id="wb-tphp">
       <li class="wb-slc"><a class="wb-sl" href="#wb-cont">Skip to main content</a></li>
       <li class="wb-slc visible-sm visible-md visible-lg"><a class="wb-sl" href="#wb-info">Skip to "About this site"</a></li>
@@ -146,6 +155,11 @@
         </div>
       </div>
     </footer>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.js"></script><script src="./themes-dist-4.0.20-theme-gcwu-fegc/wet-boew/js/wet-boew.min.js"></script><script src="./themes-dist-4.0.20-theme-gcwu-fegc/theme-gcwu-fegc/js/theme.min.js"></script></div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.js"></script>
+    <script src="./Templates/wet4-gcwu/js/polyfills/details.js"></script>
+    <script src="./Templates/wet4-gcwu/wet-boew/js/i18n/en.min.js"></script>
+    <script src="./Templates/wet4-gcwu/wet-boew/js/wet-boew.min.js"></script>
+    <!--The WET template has a second reference to this CSS at the end of the file-->
+    <link href="./Templates/wet4-gcwu/theme-gcwu-fegc/css/theme.min.css" rel="stylesheet">
   </body>
 </html>

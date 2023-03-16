@@ -1,0 +1,33 @@
+ul.list-inline.menu{
+	font-size: 14px !important;	
+}
+.bg-white {
+   background-color: #ffffff !important;
+}
+.bg-dark, .background-dark {
+   background-color: #222222 !important;
+   color: #ffffff;
+}
+
+div p.bg-dark, div p.background-dark {
+	background-color: #222222 !important;	
+	padding: 5px 5px 5px 5px !important;
+	margin: 5px 0px 5px 0px !important;
+}	
+div.list-unstyled ul {
+	list-style: none;
+	padding-left: 0px;
+}
+div.list-unstyled ul  li{
+	padding-top: 5px;
+	padding-bottom: 5px;
+	border-bottom: 1px dotted #CCC;
+}
+.thumbnailCharts {
+	width: 220px !important;
+	height: 151px !important;
+}
+
+.social-spacing {
+	text-align: center;
+	}
