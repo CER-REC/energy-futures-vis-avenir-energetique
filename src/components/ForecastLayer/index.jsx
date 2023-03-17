@@ -29,6 +29,7 @@ const getYearX = (year, xScale, bars) => {
 
 const ForecastLayer = ({
   bars,
+  width,
   height,
   innerHeight,
   innerWidth,
@@ -44,16 +45,10 @@ const ForecastLayer = ({
   );
   const y = -margin.top;
   const lineHeight = (innerHeight || height) + margin.top;
-  const forecastWidth = useMemo(() => {
-    if (!bars) {
-      return innerWidth - x;
-    }
-
-    const years = bars.map(bar => bar.data.indexValue);
-    const maxYear = Math.max(...years);
-
-    return getYearX(maxYear, xScale, bars) - x;
-  }, [bars, innerWidth, xScale, x]);
+  const forecastWidth = useMemo(
+    () => (bars ? width - x : innerWidth - x),
+    [bars, innerWidth, width, x],
+  );
 
   if (!forecastStart) {
     return null;
@@ -61,17 +56,10 @@ const ForecastLayer = ({
 
   return (
     <g transform={`translate(${x}, ${y})`}>
-      <defs>
-        <linearGradient id="forecastBarGradient">
-          <stop offset="0%" stopColor="#EEE" stopOpacity="1" />
-          <stop offset="30%" stopColor="#EEE" stopOpacity="1" />
-          <stop offset="100%" stopColor="#EEE" stopOpacity="0" />
-        </linearGradient>
-      </defs>
       <rect
         height={20}
         width={forecastWidth}
-        fill="url(#forecastBarGradient)"
+        fill="#EEE"
       />
       <text className={classes.label} x={5} y={14}>
         {forecastLabel}
@@ -92,6 +80,8 @@ ForecastLayer.propTypes = {
     data: PropTypes.shape({ indexValue: PropTypes.string.isRequired }),
     width: PropTypes.number.isRequired,
   })),
+  /** The width of the bar chart (provided by nivo) */
+  width: PropTypes.number.isRequired,
   /** The height of the bar chart (provided by nivo) */
   height: PropTypes.number.isRequired,
   /** The height of the line chart (provided by nivo) */
