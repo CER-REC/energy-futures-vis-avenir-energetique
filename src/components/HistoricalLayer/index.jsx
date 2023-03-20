@@ -1,8 +1,8 @@
 import React, { useMemo } from 'react';
 import { makeStyles } from '@material-ui/core';
 import PropTypes from 'prop-types';
-import getYearX from "../../utilities/getYearX";
-import {useIntl} from "react-intl";
+import { useIntl } from 'react-intl';
+import getYearX from '../../utilities/getYearX';
 
 const useStyles = makeStyles(theme => ({
   label: {
@@ -22,7 +22,7 @@ const HistoricalLayer = ({
   const classes = useStyles();
   const historicalWidth = useMemo(
     () => getYearX(forecastStart, xScale, bars) + margin.left,
-    [forecastStart, xScale, bars],
+    [forecastStart, xScale, bars, margin.left],
   );
   const y = -margin.top;
   const lineHeight = (innerHeight || height) + margin.top;
@@ -61,7 +61,10 @@ HistoricalLayer.propTypes = {
   /** The height of the line chart (provided by nivo) */
   innerHeight: PropTypes.number,
   /** The margins of the chart (provided by nivo) */
-  margin: PropTypes.shape({ top: PropTypes.number.isRequired }).isRequired,
+  margin: PropTypes.shape({
+    top: PropTypes.number.isRequired,
+    left: PropTypes.number.isRequired,
+  }).isRequired,
   /** The function to get the x coordinate of the index (provided by nivo) */
   xScale: PropTypes.func.isRequired,
   /** The year the forecast starts (set in nivo component) */

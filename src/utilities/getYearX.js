@@ -1,4 +1,4 @@
-﻿export default (year, xScale, bars) => {
+export default (year, xScale, bars) => {
   let x = xScale(year);
 
   if (bars) {
