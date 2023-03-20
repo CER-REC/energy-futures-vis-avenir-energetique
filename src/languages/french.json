@@ -2,7 +2,6 @@
   "common": {
     "title": "Explorer l’avenir énergétique du Canada",
     "forecast": "prévision",
-    "historical": "",
     "selection": "Sélection",
     "region": "Région",
     "scenario": "Scénario",
@@ -190,6 +189,9 @@
         "description": "La suite de la série sur l’avenir énergétique. En plus des perspectives à long terme habituelles, nous explorons certaines incertitudes de fond dans le secteur de l’énergie au Canada, qu’il s’agisse par exemple de celles découlant du degré de robustesse des marchés mondiaux du GNL ou de la disponibilité d’une infrastructure pour l’acheminement de pétrole brut.",
         "link": "[Voir le rapport](https://www.cer-rec.gc.ca/fr/donnees-analyse/avenir-energetique-canada/2016/index.html)"
       }
+    },
+    "historicalLayer": {
+      "historical": "historical"
     },
     "pageSelect": {
       "By Region": {

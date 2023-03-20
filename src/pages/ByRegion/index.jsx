@@ -100,7 +100,6 @@ const ByRegion = ({ data, year }) => {
         motionStiffness={300}
         forecastStart={year.forecastStart}
         forecastLabel={intl.formatMessage({ id: 'common.forecast' })}
-        historicalLabel={intl.formatMessage({ id: 'common.historical' })}
       />
     </div>
   );

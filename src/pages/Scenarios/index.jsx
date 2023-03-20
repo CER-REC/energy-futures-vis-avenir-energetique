@@ -139,7 +139,6 @@ const Scenarios = ({ data, year }) => {
         gridYValues={axis.ticks}
         forecastStart={year.forecastStart}
         forecastLabel={intl.formatMessage({ id: 'common.forecast' })}
-        historicalLabel={intl.formatMessage({ id: 'common.historical' })}
       />
     </div>
   );

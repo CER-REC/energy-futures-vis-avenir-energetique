@@ -1,31 +1,13 @@
 import React, { useMemo } from 'react';
 import { makeStyles } from '@material-ui/core';
 import PropTypes from 'prop-types';
+import getYearX from "../../utilities/getYearX";
 
 const useStyles = makeStyles(theme => ({
   label: {
-    fill: theme.palette.secondary.main,
-    fontFamily: theme.typography.fontFamily,
-    fontSize: 13,
-    textTransform: 'uppercase',
+    ...theme.mixins.zoneLabel,
   },
 }));
-
-const getYearX = (year, xScale, bars) => {
-  let x = xScale(year);
-
-  if (bars) {
-    const widths = bars
-      .filter(bar => bar.data.indexValue === year.toString())
-      .map(bar => bar.width);
-    const maxWidth = Math.max(...widths);
-
-    // xScale returns the starting x for bars
-    x += Math.round(maxWidth / 2);
-  }
-
-  return x;
-};
 
 const ForecastLayer = ({
   bars,

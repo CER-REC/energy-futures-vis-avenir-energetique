@@ -20,6 +20,14 @@ const theme = createMuiTheme({
       light: defaultTheme.palette.secondary.light,
     },
   },
+  mixins: {
+    zoneLabel: {
+      fill: defaultTheme.palette.secondary.main,
+      fontFamily: defaultTheme.typography.fontFamily,
+      fontSize: 13,
+      textTransform: 'uppercase',
+    },
+  },
   typography: {
     fontFamily: '"FiraSansCondensed", "Roboto", "Helvetica", "Arial", sans-serif',
   },

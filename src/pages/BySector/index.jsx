@@ -130,7 +130,6 @@ const BySector = ({ data, year }) => {
         defs={CHART_PATTERNS}
         forecastStart={year.forecastStart}
         forecastLabel={intl.formatMessage({ id: 'common.forecast' })}
-        historicalLabel={intl.formatMessage({ id: 'common.historical' })}
       />
     </div>
   );
