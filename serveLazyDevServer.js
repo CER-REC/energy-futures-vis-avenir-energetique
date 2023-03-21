@@ -2,13 +2,16 @@ import express from 'express';
 import webpack from 'webpack';
 import middleware from 'webpack-dev-middleware';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
+
+import { applicationPath } from './src/constants';
 import proxyMiddleware from './.storybook/middleware';
 import webpackConfig from './webpack.config.babel';
 
-const PATH = '/energy-future/';
-// const PATH = '/avenir-energetique/';
+const PATH = `/${applicationPath.en}/`;
+const PORT = 6007;
 
 webpackConfig.plugins.push(new HtmlWebpackPlugin({
+  title: applicationPath.en,
   template: '.serveLazyDevServerTemplate.html',
 }));
 webpackConfig.output.publicPath = PATH;
@@ -23,5 +26,9 @@ app.use(middleware(compiler, {
 app.use(PATH, express.static('.storybook/wet-template'));
 proxyMiddleware(app);
 
-// eslint-disable-next-line no-console
-app.listen(6007, () => console.log('Lazy-load Hot-Reload server listening on 6007'));
+app.listen(PORT, () => {
+  /* eslint-disable no-console */
+  console.log(`Lazy-load Hot-Reload server listening on ${PORT}`);
+  console.log(`View at: http://localhost:${6007}${PATH}`);
+  /* eslint-enable no-console */
+});
