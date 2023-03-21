@@ -502,7 +502,8 @@
       "COAL": "Includes coal, coke, and coke oven gas.",
       "ELECTRICITY": "Désigne l’électricité pour utilisation finale produite à partir de diverses sources et selon différentes techniques. Parmi les principales sources, on compte l’électricité issue de l’énergie nucléaire, de l’hydroélectricité, de l’éolien, du solaire, ainsi que la production thermique, qui utilise d’autres combustibles comme le gaz naturel, le charbon et le pétrole.",
       "GAS": "Comprend le gaz naturel comprimé et le gaz naturel liquéfié utilisés dans les voitures, les autobus, les camions et les navires.",
-      "OIL": "- **Carburéacteur :** Produit pétrolier raffiné servant à alimenter un aéronef.\n- **Essence :** Produit pétrolier raffiné destinés aux moteurs à combustion interne.\n- **Diesel :** Produit pétrolier raffiné servant à alimenter les moteurs diesel.\n- **Autres produits pétroliers :** Comprennent le mazout lourd, le gaz de pétrole liquéfié et les lubrifiants."
+      "OIL": "- **Carburéacteur :** Produit pétrolier raffiné servant à alimenter un aéronef.\n- **Essence :** Produit pétrolier raffiné destinés aux moteurs à combustion interne.\n- **Diesel :** Produit pétrolier raffiné servant à alimenter les moteurs diesel.\n- **Autres produits pétroliers :** Comprennent le mazout lourd, le gaz de pétrole liquéfié et les lubrifiants.",
+      "HYDROGEN": "Consommation d’hydrogène produit à partir de diverses sources et de différentes technologies."
     },
     "gas": {
       "ALL": "Elle désigne la quantité de gaz naturel commercialisable produit au Canada. Plusieurs régions produisent du gaz naturel à partir de diverses techniques.",
