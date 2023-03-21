@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
 import { makeStyles } from '@material-ui/core';
 import PropTypes from 'prop-types';
+import { useIntl } from 'react-intl';
 import getYearX from '../../utilities/getYearX';
 
 const useStyles = makeStyles(theme => ({
@@ -17,8 +18,8 @@ const ForecastLayer = ({
   margin,
   xScale,
   forecastStart,
-  forecastLabel,
 }) => {
+  const intl = useIntl();
   const classes = useStyles();
   const x = useMemo(
     () => getYearX(forecastStart, xScale, bars),
@@ -56,7 +57,7 @@ const ForecastLayer = ({
         fill="url(#forecastBarGradient)"
       />
       <text className={classes.label} x={5} y={14}>
-        {forecastLabel}
+        {intl.formatMessage({ id: 'common.forecast' })}
       </text>
       <path
         d={`M0 0 L0 ${lineHeight}`}
@@ -86,8 +87,6 @@ ForecastLayer.propTypes = {
   xScale: PropTypes.func.isRequired,
   /** The year the forecast starts (set in nivo component) */
   forecastStart: PropTypes.number,
-  /** The text to display by the forecast line (set in nivo component) */
-  forecastLabel: PropTypes.string,
 };
 
 ForecastLayer.defaultProps = {
@@ -95,7 +94,6 @@ ForecastLayer.defaultProps = {
   innerHeight: null,
   innerWidth: null,
   forecastStart: null,
-  forecastLabel: null,
 };
 
 export default ForecastLayer;

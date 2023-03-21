@@ -1,5 +1,4 @@
 import React, { useMemo, useCallback, useRef } from 'react';
-import { useIntl } from 'react-intl';
 import { ResponsiveBar } from '@nivo/bar';
 import PropTypes from 'prop-types';
 import useAPI from '../../hooks/useAPI';
@@ -14,8 +13,6 @@ import MaxTick from '../../components/MaxTick';
 import HistoricalLayer from '../../components/HistoricalLayer';
 
 const ByRegion = ({ data, year }) => {
-  const intl = useIntl();
-
   const { regions } = useAPI();
   const { config } = useConfig();
 
@@ -99,7 +96,6 @@ const ByRegion = ({ data, year }) => {
         gridYValues={axis.ticks}
         motionStiffness={300}
         forecastStart={year.forecastStart}
-        forecastLabel={intl.formatMessage({ id: 'common.forecast' })}
       />
     </div>
   );

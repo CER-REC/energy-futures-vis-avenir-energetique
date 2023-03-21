@@ -21,8 +21,8 @@ const HistoricalLayer = ({
   const intl = useIntl();
   const classes = useStyles();
   const historicalWidth = useMemo(
-    () => getYearX(forecastStart, xScale, bars) + margin.left,
-    [forecastStart, xScale, bars, margin.left],
+    () => getYearX(forecastStart, xScale, bars),
+    [forecastStart, xScale, bars],
   );
   const y = -margin.top;
   const lineHeight = (innerHeight || height) + margin.top;
@@ -32,7 +32,7 @@ const HistoricalLayer = ({
   }
 
   return (
-    <g transform={`translate(${-margin.left}, ${y})`}>
+    <g transform={`translate(0, ${y})`}>
       <rect
         height={lineHeight}
         width={historicalWidth}
@@ -63,7 +63,6 @@ HistoricalLayer.propTypes = {
   /** The margins of the chart (provided by nivo) */
   margin: PropTypes.shape({
     top: PropTypes.number.isRequired,
-    left: PropTypes.number.isRequired,
   }).isRequired,
   /** The function to get the x coordinate of the index (provided by nivo) */
   xScale: PropTypes.func.isRequired,

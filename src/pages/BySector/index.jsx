@@ -129,7 +129,6 @@ const BySector = ({ data, year }) => {
         gridYValues={axis.ticks}
         defs={CHART_PATTERNS}
         forecastStart={year.forecastStart}
-        forecastLabel={intl.formatMessage({ id: 'common.forecast' })}
       />
     </div>
   );

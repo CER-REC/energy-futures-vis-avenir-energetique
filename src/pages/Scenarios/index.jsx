@@ -138,7 +138,6 @@ const Scenarios = ({ data, year }) => {
         sliceTooltip={getTooltip}
         gridYValues={axis.ticks}
         forecastStart={year.forecastStart}
-        forecastLabel={intl.formatMessage({ id: 'common.forecast' })}
       />
     </div>
   );
