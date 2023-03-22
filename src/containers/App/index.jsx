@@ -37,10 +37,8 @@ const Loader = () => {
     [translations],
   );
 
-  if (window.innerWidth < 746) {
-    content = <UnsupportedWarning type="resolution" />;
   // This will detect any version of IE up to and including IE11
-  } else if (window.MSInputMethodContext && document.documentMode) {
+  if (window.MSInputMethodContext && document.documentMode) {
     content = <UnsupportedWarning type="browser" />;
   } else if (loading) {
     content = <LoadingIndicator type="api" fullHeight />;

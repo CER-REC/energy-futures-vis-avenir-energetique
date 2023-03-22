@@ -472,8 +472,7 @@
       }
     },
     "unsupportedWarning": {
-      "browser": "Votre fureteur n’autorise pas les particularités propres à cette visualisation.\nVeuillez utiliser une version récente du logiciel de navigation Chrome, Firefox, Safari ou Edge.\nMerci!",
-      "resolution": "Cette visualisation a été conçue pour des ordinateurs ou tablettes disposant d’un écran d’une largeur minimale de 768 pixels.\nMerci!"
+      "browser": "Votre fureteur n’autorise pas les particularités propres à cette visualisation.\nVeuillez utiliser une version récente du logiciel de navigation Chrome, Firefox, Safari ou Edge.\nMerci!"
     }
   },
   "views": {},
