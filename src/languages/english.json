@@ -503,7 +503,8 @@
       "COAL": "Includes coal, coke, and coke oven gas.",
       "ELECTRICITY": "End-use electricity that is generated from a variety of sources and technologies. Includes electricity generation from primary sources such as nuclear, hydro, wind, and solar, and thermal generation from other fuels such as natural gas, coal, and oil.",
       "GAS": "Includes compressed natural gas and liquefied natural gas used in cars, buses, trucks, and ships.",
-      "OIL": "- **Aviation Fuel:** A refined petroleum product used to power aircraft.\n- **Gasoline:** A refined petroleum product used in internal combustion engines.\n- **Diesel Fuel:** A refined petroleum product used in diesel engines.\n- **Other Oil Products:** Includes heavy fuel oil, liquefied petroleum gas, and lubricants."
+      "OIL": "- **Aviation Fuel:** A refined petroleum product used to power aircraft.\n- **Gasoline:** A refined petroleum product used in internal combustion engines.\n- **Diesel Fuel:** A refined petroleum product used in diesel engines.\n- **Other Oil Products:** Includes heavy fuel oil, liquefied petroleum gas, and lubricants.",
+      "HYDROGEN": "Consumption of hydrogen that is generated from a variety of sources and technologies."
     },
     "gas": {
       "ALL": "The amount of marketable natural gas produced in Canada. Natural gas is produced from various areas using different technologies.",
