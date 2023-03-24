@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { getRendered, mountWithIntl } from '../../tests/utilities';
 
 import ForecastLayer from '.';
 
@@ -10,17 +10,19 @@ describe('Component|ForecastLayer', () => {
   describe('with no bar prop', () => {
     beforeEach(() => {
       spy = jest.fn(year => (year === 2000 ? 100 : 500));
-      wrapper = shallow((
-        <ForecastLayer
-          height={1000}
-          innerHeight={600}
-          innerWidth={800}
-          margin={{ top: 50 }}
-          xScale={spy}
-          forecastStart={2000}
-          forecastLabel="test"
-        />
+      wrapper = mountWithIntl((
+        <svg>
+          <ForecastLayer
+            height={1000}
+            innerHeight={600}
+            innerWidth={800}
+            margin={{ top: 50 }}
+            xScale={spy}
+            forecastStart={2000}
+          />
+        </svg>
       ));
+      wrapper = getRendered(ForecastLayer, wrapper);
     });
 
     test('should render a SVG group element', () => {
@@ -28,7 +30,7 @@ describe('Component|ForecastLayer', () => {
     });
 
     test('should render the label', () => {
-      expect(wrapper.text()).toBe('test');
+      expect(wrapper.text()).not.toBe('');
     });
 
     test('should render the x position using the xScale function', () => {
@@ -51,16 +53,18 @@ describe('Component|ForecastLayer', () => {
       }];
 
       spy = jest.fn(year => (year === 2020 ? 11 : 555));
-      wrapper = shallow((
-        <ForecastLayer
-          bars={bars}
-          height={800}
-          margin={{ top: 50 }}
-          xScale={spy}
-          forecastStart={2020}
-          forecastLabel="forecast"
-        />
+      wrapper = mountWithIntl((
+        <svg>
+          <ForecastLayer
+            bars={bars}
+            height={800}
+            margin={{ top: 50 }}
+            xScale={spy}
+            forecastStart={2020}
+          />
+        </svg>
       ));
+      wrapper = getRendered(ForecastLayer, wrapper);
     });
 
     test('should render the x position using the xScale function and bar width', () => {
@@ -72,20 +76,22 @@ describe('Component|ForecastLayer', () => {
   describe('with no forecastStart prop', () => {
     beforeEach(() => {
       spy = jest.fn();
-      wrapper = shallow((
-        <ForecastLayer
-          height={1000}
-          innerHeight={600}
-          innerWidth={800}
-          margin={{ top: 50 }}
-          xScale={spy}
-          forecastLabel="test"
-        />
+      wrapper = mountWithIntl((
+        <svg>
+          <ForecastLayer
+            height={1000}
+            innerHeight={600}
+            innerWidth={800}
+            margin={{ top: 50 }}
+            xScale={spy}
+          />
+        </svg>
       ));
+      wrapper = getRendered(ForecastLayer, wrapper);
     });
 
     test('should not render', () => {
-      expect(wrapper.type()).toBeNull();
+      expect(wrapper.exists()).toBeFalsy();
     });
   });
 });
