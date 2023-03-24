@@ -10,80 +10,70 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const ForecastLayer = ({
+const HistoricalLayer = ({
   bars,
-  width,
   height,
   innerHeight,
-  innerWidth,
   margin,
   xScale,
   forecastStart,
 }) => {
   const intl = useIntl();
   const classes = useStyles();
-  const x = useMemo(
+  const historicalWidth = useMemo(
     () => getYearX(forecastStart, xScale, bars),
     [forecastStart, xScale, bars],
   );
   const y = -margin.top;
   const lineHeight = (innerHeight || height) + margin.top;
-  const forecastWidth = useMemo(
-    () => (bars ? width - x : innerWidth - x),
-    [bars, innerWidth, width, x],
-  );
 
   if (!forecastStart) {
     return null;
   }
 
   return (
-    <g transform={`translate(${x}, ${y})`}>
+    <g transform={`translate(0, ${y})`}>
+      <rect
+        height={lineHeight}
+        width={historicalWidth}
+        fill="#E6E6E8"
+      />
       <rect
         height={20}
-        width={forecastWidth}
-        fill="#EEE"
+        width={historicalWidth}
+        fill="#DEDEE1"
       />
       <text className={classes.label} x={5} y={14}>
-        {intl.formatMessage({ id: 'common.forecast' })}
+        {intl.formatMessage({ id: 'components.historicalLayer.historical' })}
       </text>
-      <path
-        d={`M0 0 L0 ${lineHeight}`}
-        strokeDasharray="5,5"
-        stroke="#444"
-        strokeWidth="1"
-      />
     </g>
   );
 };
 
-ForecastLayer.propTypes = {
+HistoricalLayer.propTypes = {
   /** The bar data (provided by nivo) */
   bars: PropTypes.arrayOf(PropTypes.shape({
     data: PropTypes.shape({ indexValue: PropTypes.string.isRequired }),
     width: PropTypes.number.isRequired,
   })),
-  /** The width of the bar chart (provided by nivo) */
-  width: PropTypes.number.isRequired,
   /** The height of the bar chart (provided by nivo) */
   height: PropTypes.number.isRequired,
   /** The height of the line chart (provided by nivo) */
   innerHeight: PropTypes.number,
-  /** The width of the line chart (provided by nivo) */
-  innerWidth: PropTypes.number,
   /** The margins of the chart (provided by nivo) */
-  margin: PropTypes.shape({ top: PropTypes.number.isRequired }).isRequired,
+  margin: PropTypes.shape({
+    top: PropTypes.number.isRequired,
+  }).isRequired,
   /** The function to get the x coordinate of the index (provided by nivo) */
   xScale: PropTypes.func.isRequired,
   /** The year the forecast starts (set in nivo component) */
   forecastStart: PropTypes.number,
 };
 
-ForecastLayer.defaultProps = {
+HistoricalLayer.defaultProps = {
   bars: null,
   innerHeight: null,
-  innerWidth: null,
   forecastStart: null,
 };
 
-export default ForecastLayer;
+export default HistoricalLayer;

@@ -13,6 +13,7 @@ import { fillLayerBySector } from '../../components/FillLayer';
 import ForecastLayer from '../../components/ForecastLayer';
 import MaxTick from '../../components/MaxTick';
 import VizTooltip from '../../components/VizTooltip';
+import HistoricalLayer from '../../components/HistoricalLayer';
 
 const BySector = ({ data, year }) => {
   const intl = useIntl();
@@ -107,7 +108,7 @@ const BySector = ({ data, year }) => {
       <ResponsiveLine
         {...CHART_PROPS}
         data={orderedData}
-        layers={['grid', 'axes', 'crosshair', 'lines', 'points', 'slices', 'areas', fill, ForecastLayer]}
+        layers={[HistoricalLayer, 'grid', 'axes', 'crosshair', 'lines', 'points', 'slices', 'areas', fill, ForecastLayer]}
         xScale={{ type: 'point' }}
         yScale={{ type: 'linear', min: 0, max: axis.highest, stacked: true }}
         curve="cardinal"
@@ -128,7 +129,6 @@ const BySector = ({ data, year }) => {
         gridYValues={axis.ticks}
         defs={CHART_PATTERNS}
         forecastStart={year.forecastStart}
-        forecastLabel={intl.formatMessage({ id: 'common.forecast' })}
       />
     </div>
   );

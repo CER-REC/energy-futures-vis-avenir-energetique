@@ -11,6 +11,7 @@ import { fillLayerScenario } from '../../components/FillLayer';
 import ForecastLayer from '../../components/ForecastLayer';
 import VizTooltip from '../../components/VizTooltip';
 import MaxTick from '../../components/MaxTick';
+import HistoricalLayer from '../../components/HistoricalLayer';
 
 /**
  * Generate a custom dotted line layer for rendering the default scenario.
@@ -112,7 +113,8 @@ const Scenarios = ({ data, year }) => {
         data={data}
         enableArea
         enablePoints={false}
-        layers={['grid', 'axes', 'areas', 'crosshair', 'points', 'slices', fill, 'lines', ForecastLayer, dots]}
+        layers={[HistoricalLayer, 'grid', 'axes', 'areas', 'crosshair', 'points', 'slices', fill, 'lines', ForecastLayer, dots]}
+
         curve="cardinal"
         areaOpacity={0.15}
         xScale={{ type: 'point' }}
@@ -137,7 +139,6 @@ const Scenarios = ({ data, year }) => {
         sliceTooltip={getTooltip}
         gridYValues={axis.ticks}
         forecastStart={year.forecastStart}
-        forecastLabel={intl.formatMessage({ id: 'common.forecast' })}
       />
     </div>
   );

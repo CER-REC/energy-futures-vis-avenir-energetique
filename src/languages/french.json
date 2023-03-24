@@ -190,6 +190,9 @@
         "link": "[Voir le rapport](https://www.cer-rec.gc.ca/fr/donnees-analyse/avenir-energetique-canada/2016/index.html)"
       }
     },
+    "historicalLayer": {
+      "historical": "historical"
+    },
     "pageSelect": {
       "By Region": {
         "title": {
