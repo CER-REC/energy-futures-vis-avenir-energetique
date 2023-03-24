@@ -9,7 +9,7 @@ import analytics from '../../analytics';
 import { CHART_PROPS, CHART_AXIS_PROPS, CHART_PATTERNS, OIL_SUBGROUP } from '../../constants';
 import { getMaxTick } from '../../utilities/parseData';
 
-import { fadeLayerBySector } from '../../components/FadeLayer';
+import { fillLayerBySector } from '../../components/FillLayer';
 import ForecastLayer from '../../components/ForecastLayer';
 import MaxTick from '../../components/MaxTick';
 import VizTooltip from '../../components/VizTooltip';
@@ -47,10 +47,10 @@ const BySector = ({ data, year }) => {
   );
 
   /**
-   * The fade-out effect over forecast years.
+   * Fill over forecast years.
    */
-  const fade = useMemo(
-    () => fadeLayerBySector({ year, isTransportation }),
+  const fill = useMemo(
+    () => fillLayerBySector({ year, isTransportation }),
     [year, isTransportation],
   );
 
@@ -108,7 +108,7 @@ const BySector = ({ data, year }) => {
       <ResponsiveLine
         {...CHART_PROPS}
         data={orderedData}
-        layers={[HistoricalLayer, 'grid', 'axes', 'crosshair', 'lines', 'points', 'slices', 'areas', fade, ForecastLayer]}
+        layers={[HistoricalLayer, 'grid', 'axes', 'crosshair', 'lines', 'points', 'slices', 'areas', fill, ForecastLayer]}
         xScale={{ type: 'point' }}
         yScale={{ type: 'linear', min: 0, max: axis.highest, stacked: true }}
         curve="cardinal"

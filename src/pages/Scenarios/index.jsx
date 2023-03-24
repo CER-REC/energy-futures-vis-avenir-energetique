@@ -7,7 +7,7 @@ import analytics from '../../analytics';
 
 import { CHART_PROPS, CHART_AXIS_PROPS, SCENARIO_COLOR } from '../../constants';
 import { getMaxTick } from '../../utilities/parseData';
-import { fadeLayerScenario } from '../../components/FadeLayer';
+import { fillLayerScenario } from '../../components/FillLayer';
 import ForecastLayer from '../../components/ForecastLayer';
 import VizTooltip from '../../components/VizTooltip';
 import MaxTick from '../../components/MaxTick';
@@ -54,9 +54,9 @@ const Scenarios = ({ data, year }) => {
   const dots = useMemo(() => dottedLayer(config.yearId), [config.yearId]);
 
   /**
-   * The fade-out effect over forecast years.
+   * Fill over forecast years.
    */
-  const fade = useMemo(() => fadeLayerScenario({ year }), [year]);
+  const fill = useMemo(() => fillLayerScenario({ year }), [year]);
 
   /**
    * Calculate the max tick value on y-axis.
@@ -113,7 +113,8 @@ const Scenarios = ({ data, year }) => {
         data={data}
         enableArea
         enablePoints={false}
-        layers={[HistoricalLayer, 'grid', 'axes', 'areas', 'crosshair', 'points', 'slices', fade, 'lines', ForecastLayer, dots]}
+        layers={[HistoricalLayer, 'grid', 'axes', 'areas', 'crosshair', 'points', 'slices', fill, 'lines', ForecastLayer, dots]}
+
         curve="cardinal"
         areaOpacity={0.15}
         xScale={{ type: 'point' }}

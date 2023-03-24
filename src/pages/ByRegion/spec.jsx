@@ -42,7 +42,6 @@ describe('Page|ByRegion', () => {
 
     test('should render viz properties', () => {
       expect(wrapper.find(ResponsiveBar).prop('colors')({ id: 'ON', indexValue: '2005' })).toEqual('rgba(255, 130, 30, 1)');
-      expect(wrapper.find(ResponsiveBar).prop('colors')({ id: 'ON', indexValue: '2053' })).toEqual('rgba(255, 130, 30, 0)');
       expect(wrapper.find(ResponsiveBar).prop('tooltip')({
         color: 'rgba(255, 130, 30, 1)',
         id: 'ON',
