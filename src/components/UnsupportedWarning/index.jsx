@@ -1,7 +1,6 @@
 import React from 'react';
 import { useIntl } from 'react-intl';
 import { makeStyles, createStyles, Typography } from '@material-ui/core';
-import propTypes from 'prop-types';
 
 const screenPath = (
   <path
@@ -82,7 +81,7 @@ const useStyles = makeStyles(theme => createStyles({
   },
 }));
 
-const UnsupportedWarning = ({ type }) => {
+const UnsupportedWarning = () => {
   const classes = useStyles();
   const intl = useIntl();
 
@@ -95,14 +94,10 @@ const UnsupportedWarning = ({ type }) => {
         </g>
       </svg>
       <Typography variant="body1">
-        {intl.formatMessage({ id: `components.unsupportedWarning.${type}` })}
+        {intl.formatMessage({ id: 'components.unsupportedWarning.browser' })}
       </Typography>
     </div>
   );
-};
-
-UnsupportedWarning.propTypes = {
-  type: propTypes.oneOf(['resolution', 'browser']).isRequired,
 };
 
 export default UnsupportedWarning;

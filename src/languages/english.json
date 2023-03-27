@@ -476,8 +476,7 @@
       }
     },
     "unsupportedWarning": {
-      "browser": "Your browser does not support the features required by this visualization.\nPlease use a recent version of Chrome, Firefox, Safari, or Edge.\nThank you!",
-      "resolution": "This visualization has been designed for use on computers and tablets with a screen width of at least 768 pixels.\nThank you!"
+      "browser": "Your browser does not support the features required by this visualization.\nPlease use a recent version of Chrome, Firefox, Safari, or Edge.\nThank you!"
     }
   },
   "views": {},
