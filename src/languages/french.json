@@ -101,6 +101,9 @@
     }
   },
   "components": {
+    "header": {
+      "subtitle": ""
+    },
     "draggableVerticalList": {
       "all": "Tous",
       "abbr": {

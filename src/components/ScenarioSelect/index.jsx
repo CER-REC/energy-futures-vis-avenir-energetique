@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo } from 'react';
 import { useIntl } from 'react-intl';
 import PropTypes from 'prop-types';
-import { makeStyles, Grid, Typography, Button, Tooltip } from '@material-ui/core';
+import { makeStyles, Grid, Typography, Button, Tooltip, useMediaQuery } from '@material-ui/core';
 
 import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
@@ -14,11 +14,17 @@ const useStyles = makeStyles(theme => ({
     padding: theme.spacing(0.5, 2),
     '& p': { fontWeight: 700 },
   },
+  descriptionContainer: {
+    width: '100%',
+    height: '3.5em',
+    overflowY: 'auto',
+  },
 }));
 
 const ScenarioSelect = ({ multiSelect }) => {
   const classes = useStyles();
   const intl = useIntl();
+  const desktop = useMediaQuery('(min-width: 992px)');
 
   const { config, configDispatch } = useConfig();
   const { yearIdIterations } = useAPI();
@@ -66,12 +72,15 @@ const ScenarioSelect = ({ multiSelect }) => {
 
   return (
     <Grid container alignItems="center" spacing={1} className={classes.root}>
-      <Grid item>
-        <HintScenarioSelect>
-          <Typography variant="body1" color="secondary">{intl.formatMessage({ id: 'components.scenarioSelect.name' })}</Typography>
-        </HintScenarioSelect>
-      </Grid>
-
+      {
+        !desktop && (
+          <Grid item>
+            <HintScenarioSelect>
+              <Typography variant="body1" color="secondary">{intl.formatMessage({ id: 'components.scenarioSelect.name' })}</Typography>
+            </HintScenarioSelect>
+          </Grid>
+        )
+      }
       {scenarios.map(scenario => (
         <Grid item key={`config-scenario-${scenario}`}>
           <Tooltip title={getTooltip(scenario)}>
@@ -91,6 +100,22 @@ const ScenarioSelect = ({ multiSelect }) => {
           </Tooltip>
         </Grid>
       ))}
+      {
+        desktop && (
+          <Grid
+            item
+            className={classes.descriptionContainer}
+          >
+            {
+              config.scenarios.map(scenario => (
+                <Typography key={`selected-${scenario}`}>
+                  {intl.formatMessage({ id: `components.scenarioSelect.${scenario}.description.default` })}
+                </Typography>
+              ))
+            }
+          </Grid>
+        )
+      }
     </Grid>
   );
 };
