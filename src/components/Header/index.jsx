@@ -78,13 +78,12 @@ const Header = ({ multiSelectScenario }) => {
           <Grid item>{title}</Grid>
           {/* TODO: Year Select */}
           <div />
-          <YearSelect hideTip />
         </Grid>
         <Typography variant="h6" style={{ fontWeight: 'bold' }}>{intl.formatMessage({ id: 'components.header.subtitle' })}</Typography>
       </Grid>
 
       {/* Row 2: page select; scenario select and utility bar (stacked); social media links */}
-      <Grid item xs={12}>
+      <Grid item xs={12} style={{ marginBottom: '0.3em' }}>
         <Grid container style={{ width: '100%' }} alignItems="center" wrap="nowrap" spacing={2} className={classes.row}>
           <Grid item className={classes.icon}>
             {getPageIcon(config.page)}
