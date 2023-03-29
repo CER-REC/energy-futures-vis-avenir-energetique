@@ -77,6 +77,7 @@ const useStyles = makeStyles(theme => createStyles({
       fontFamily: 'FiraSansCondensedLight',
       color: theme.palette.grey[800],
       marginTop: '1em',
+      whiteSpace: 'break-spaces',
     },
   },
 }));
