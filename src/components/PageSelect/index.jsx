@@ -10,20 +10,7 @@ import { PAGES } from '../../constants';
 import useConfig from '../../hooks/useConfig';
 import analytics from '../../analytics';
 
-import {
-  IconPageRegion, IconPageSector, IconPageElectricity, IconPageScenarios, IconPageOilAndGas,
-} from '../../icons';
-
-const getPageIcon = (id) => {
-  switch (id) {
-    case 'by-region': return <IconPageRegion />;
-    case 'by-sector': return <IconPageSector />;
-    case 'electricity': return <IconPageElectricity />;
-    case 'scenarios': return <IconPageScenarios />;
-    case 'oil-and-gas': return <IconPageOilAndGas />;
-    default: return null;
-  }
-};
+import getPageIcon from '../../utilities/getPageIcon';
 
 const useStyles = makeStyles(theme => createStyles({
   title: {
