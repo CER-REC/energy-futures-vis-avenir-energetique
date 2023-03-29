@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo, useCallback, Children, cloneElement } from 'react';
 import PropTypes from 'prop-types';
-import { makeStyles, useMediaQuery, Grid, CircularProgress } from '@material-ui/core';
+import { makeStyles, useMediaQuery, Grid, CircularProgress, Typography } from '@material-ui/core';
 import Alert from '@material-ui/lab/Alert';
 import AlertTitle from '@material-ui/lab/AlertTitle';
 import { useIntl } from 'react-intl';
@@ -137,6 +137,40 @@ const PageLayout = ({
   }, []);
 
   /**
+   * Generate the translation of the selected page title.
+   */
+  const getTitle = useCallback((page) => {
+    switch (page?.id) {
+      case 'by-region':
+        return intl.formatMessage({
+          id: `components.pageSelect.${page.label}.title.${config.mainSelection}`,
+          defaultMessage: intl.formatMessage({ id: `components.pageSelect.${page.label}.title.default` }),
+        });
+      case 'by-sector':
+        return intl.formatMessage({
+          id: `components.pageSelect.${page.label}.title.${config.sector}`,
+          defaultMessage: intl.formatMessage({ id: `components.pageSelect.${page.label}.title.default` }),
+        });
+      case 'electricity':
+        return intl.formatMessage({
+          id: `components.pageSelect.${page.label}.title.${config.view}`,
+          defaultMessage: intl.formatMessage({ id: `components.pageSelect.${page.label}.title.default` }),
+        });
+      case 'scenarios':
+        return intl.formatMessage({
+          id: `components.pageSelect.${page.label}.title.${config.mainSelection}`,
+          defaultMessage: intl.formatMessage({ id: `components.pageSelect.${page.label}.title.default` }),
+        });
+      case 'oil-and-gas':
+        return intl.formatMessage({
+          id: `components.pageSelect.${page.label}.title.${config.mainSelection}.${config.view}`,
+          defaultMessage: intl.formatMessage({ id: `components.pageSelect.${page.label}.title.default` }),
+        });
+      default: return page?.label;
+    }
+  }, [intl, config.mainSelection, config.sector, config.view]);
+
+  /**
    * Render nothing if the baseYear value is out of range.
    */
   if (config.baseYear && config.baseYear !== validYear(config.baseYear, year || {})) {
@@ -190,13 +224,20 @@ const PageLayout = ({
           />
         </Grid>
       )}
-      {vis?.length && vis?.length > 0 && (
-        <Grid item className={classes.graph} style={{ width: vizWidth }}>
-          {loading && <CircularProgress color="primary" size={66} className={classes.loading} />}
-          {error && <Alert severity="error"><AlertTitle>Error</AlertTitle>{error}</Alert>}
-          {!loading && !error && <div ref={vizRef} className={classes.vis}>{vis}</div>}
+      <Grid container item direction="column" style={{ width: vizWidth }}>
+        <Grid item>
+          <Typography variant="h6">
+            {getTitle(PAGES.find(page => page.id === config.page))}
+          </Typography>
         </Grid>
-      )}
+        {vis?.length && vis?.length > 0 && (
+          <Grid item className={classes.graph}>
+            {loading && <CircularProgress color="primary" size={66} className={classes.loading} />}
+            {error && <Alert severity="error"><AlertTitle>Error</AlertTitle>{error}</Alert>}
+            {!loading && !error && <div ref={vizRef} className={classes.vis}>{vis}</div>}
+          </Grid>
+        )}
+      </Grid>
 
       <Grid item xs={12} className={desktop ? classes.links : ''}>
         <Grid container alignItems="flex-start" wrap="nowrap" spacing={2}>
