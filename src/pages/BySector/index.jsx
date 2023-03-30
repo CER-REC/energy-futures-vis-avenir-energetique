@@ -11,7 +11,6 @@ import { getMaxTick } from '../../utilities/parseData';
 
 import { fillLayerBySector } from '../../components/FillLayer';
 import ForecastLayer from '../../components/ForecastLayer';
-import MaxTick from '../../components/MaxTick';
 import VizTooltip from '../../components/VizTooltip';
 import HistoricalLayer from '../../components/HistoricalLayer';
 
@@ -92,12 +91,6 @@ const BySector = ({ data, year }) => {
       .map((_, i) => values.map(source => source[i].y).reduce((a, b) => a + b, 0));
     return getMaxTick(Math.max(...sums));
   }, [data]);
-  const axisFormat = useCallback(
-    value => (Math.abs(value - Math.max(...axis.ticks)) < Number.EPSILON
-      ? <MaxTick value={value} unit={config.unit} />
-      : value),
-    [axis.ticks, config.unit],
-  );
 
   if (!data || !year) {
     return null;
@@ -115,7 +108,6 @@ const BySector = ({ data, year }) => {
         axisRight={{
           ...CHART_AXIS_PROPS,
           tickValues: axis.ticks,
-          format: axisFormat,
         }}
         axisBottom={{
           ...CHART_AXIS_PROPS,

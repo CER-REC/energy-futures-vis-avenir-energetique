@@ -6,7 +6,6 @@ import { ResponsiveBar } from '@nivo/bar';
 import ByRegion from '.';
 import { TestContainer, getRendered } from '../../tests/utilities';
 import VizTooltip from '../../components/VizTooltip';
-import MaxTick from '../../components/MaxTick';
 import { BASE_DATA, DEFAULT_CONFIG } from './stories';
 
 const MOCK_DATA = [
@@ -48,11 +47,6 @@ describe('Page|ByRegion', () => {
         indexValue: '2005',
         value: 3045.0494,
       })).toHaveProperty('type', VizTooltip);
-
-      expect(wrapper.find(ResponsiveBar).prop('axisBottom').format(2005)).toEqual(2005);
-      expect(wrapper.find(ResponsiveBar).prop('axisBottom').format(2008)).toEqual('');
-      expect(wrapper.find(ResponsiveBar).prop('axisRight').format(3045.0494)).toEqual(3045.0494);
-      expect(wrapper.find(ResponsiveBar).prop('axisRight').format(10496)).toHaveProperty('type', MaxTick);
     });
   });
 
