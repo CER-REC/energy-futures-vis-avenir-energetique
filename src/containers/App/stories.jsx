@@ -20,7 +20,7 @@ storiesForView('Containers|App', module, ReadMe)
         case 'wb-srch':
           return null;
         case 'reactRoot':
-          return <App key="reactRoot" />;
+          return <div id="reactRoot" key="reactRoot"><App /></div>;
         default:
           return undefined;
       }
