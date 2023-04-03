@@ -18,7 +18,8 @@ import ScenarioSelect from '../ScenarioSelect';
 import DraggableVerticalList from '../DraggableVerticalList';
 import HorizontalControlBar from '../HorizontalControlBar';
 import LinkButtonGroup from '../LinkButtonGroup';
-import { DownloadButton, Share } from '../Share';
+import Share from '../Share';
+import DownloadButton from "../DownloadButton";
 
 const LEAD_COL_WIDTH = 400;
 

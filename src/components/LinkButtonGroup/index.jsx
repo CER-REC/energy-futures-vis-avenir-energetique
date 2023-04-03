@@ -11,6 +11,7 @@ import useConfig from '../../hooks/useConfig';
 import {
   LinkButtonContentReport, LinkButtonContentMethodology, LinkButtonContentAbout,
 } from './contents';
+import DownloadButton from "../DownloadButton";
 
 const useStyles = makeStyles(theme => createStyles({
   title: {
@@ -171,6 +172,7 @@ const LinkButtonGroup = ({ direction }) => {
         )}
         <Grid item className={direction === 'row' ? '' : classes.accent}>{generateButton(link.report)}</Grid>
         {direction === 'column' && <Grid item style={{ height: 8 }} />}
+        <Grid item className={classes.btnContainer}><DownloadButton accent /></Grid>
         <Grid item className={direction === 'row' ? '' : classes.accent}>{generateButton(link.methodology)}</Grid>
         {direction === 'column' && <Grid item className={direction === 'row' ? '' : classes.accent} style={{ height: 8 }} />}
         <Grid item className={direction === 'row' ? '' : classes.accent}>{generateButton(link.about)}</Grid>
