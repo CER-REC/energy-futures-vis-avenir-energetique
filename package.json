@@ -60,7 +60,6 @@
     "whatwg-fetch": "^3.2.0"
   },
   "devDependencies": {
-    "@apollo/react-testing": "^4.0.0",
     "@babel/cli": "7.7.5",
     "@babel/core": "7.7.5",
     "@babel/node": "7.7.4",
