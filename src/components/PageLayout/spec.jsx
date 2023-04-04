@@ -172,7 +172,6 @@ describe('Component|PageLayout', () => {
       expect(getRendered(PageLayout, wrapper).type()).not.toBeNull();
 
       // verify the shape of different components
-      expect(wrapper.find(PageSelect).prop('direction')).toBe('column');
       expect(wrapper.find(LinkButtonGroup).prop('direction')).toBe('column');
       expect(wrapper.find(Share).prop('direction')).toBe('column');
     });

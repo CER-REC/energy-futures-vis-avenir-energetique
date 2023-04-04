@@ -1,7 +1,14 @@
 import React from 'react';
-import { IconPageElectricity, IconPageOilAndGas, IconPageRegion, IconPageScenarios, IconPageSector } from '../icons';
+import PropTypes from 'prop-types';
+import {
+  IconPageElectricity,
+  IconPageOilAndGas,
+  IconPageRegion,
+  IconPageScenarios,
+  IconPageSector,
+} from '../../icons';
 
-export default (id) => {
+const PageIcon = ({ id }) => {
   switch (id) {
     case 'by-region': return <IconPageRegion />;
     case 'by-sector': return <IconPageSector />;
@@ -11,3 +18,7 @@ export default (id) => {
     default: return null;
   }
 };
+
+PageIcon.propTypes = { id: PropTypes.string.isRequired };
+
+export default PageIcon;

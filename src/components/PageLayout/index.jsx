@@ -47,7 +47,6 @@ const useStyles = makeStyles(theme => ({
 
 const PageLayout = ({
   children,
-  multiSelectScenario,
   showRegion,
   showSource,
   disableDraggableRegion,
@@ -152,7 +151,7 @@ const PageLayout = ({
 
   return (
     <Grid container spacing={2} className={classes.root}>
-      <Header multiSelectScenario={multiSelectScenario} />
+      <Header />
       {showSource && (
         <Grid item style={{ width: 70 }}>
           <DraggableVerticalList
@@ -212,7 +211,6 @@ const PageLayout = ({
 
 PageLayout.propTypes = {
   children: PropTypes.node,
-  multiSelectScenario: PropTypes.bool,
   showRegion: PropTypes.bool,
   showSource: PropTypes.bool,
   disableDraggableRegion: PropTypes.bool,
@@ -223,7 +221,6 @@ PageLayout.propTypes = {
 
 PageLayout.defaultProps = {
   children: undefined,
-  multiSelectScenario: false,
   showRegion: false,
   showSource: false,
   disableDraggableRegion: false,

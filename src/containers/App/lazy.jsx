@@ -22,7 +22,6 @@ const Content = () => {
   return (
     <PageLayout
       showRegion
-      multiSelectScenario={config.page === 'scenarios'}
       disableDraggableRegion={['by-sector', 'electricity', 'scenarios', 'oil-and-gas', 'demand'].includes(config.page)}
       singleSelectRegion={['by-sector', 'scenarios', 'demand'].includes(config.page) || (config.view === 'region')}
       showSource={['by-sector', 'electricity', 'oil-and-gas'].includes(config.page)}
