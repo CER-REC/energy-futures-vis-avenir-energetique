@@ -88,7 +88,7 @@ client.query({ query: ITERATIONS_TRANSLATIONS }).then((result) => {
   });
 
   addDecorator((storyFn, context) => {
-    if (context.id === 'containers-app--within-wet') { return storyFn(); }
+    if (context.id.startsWith('containers-app--')) { return storyFn(); }
     return <ThemeProvider theme={theme}>{storyFn()}</ThemeProvider>;
   });
 

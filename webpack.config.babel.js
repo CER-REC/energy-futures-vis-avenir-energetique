@@ -52,7 +52,7 @@ module.exports = {
       },
 
       {
-        test: /\.md$/,
+        test: /\.md$|\.html$/,
         use: 'raw-loader',
       },
 
