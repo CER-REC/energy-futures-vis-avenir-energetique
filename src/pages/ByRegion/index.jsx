@@ -9,7 +9,6 @@ import { getMaxTick } from '../../utilities/parseData';
 import convertHexToRGB from '../../utilities/convertHexToRGB';
 import ForecastLayer from '../../components/ForecastLayer';
 import VizTooltip from '../../components/VizTooltip';
-import MaxTick from '../../components/MaxTick';
 import HistoricalLayer from '../../components/HistoricalLayer';
 
 const ByRegion = ({ data, year }) => {
@@ -58,12 +57,6 @@ const ByRegion = ({ data, year }) => {
       .map(seg => Object.values(seg).reduce((a, b) => a + (typeof b === 'string' ? 0 : b), 0)));
     return getMaxTick(highest);
   }, [data]);
-  const axisFormat = useCallback(
-    value => (Math.abs(value - Math.max(...axis.ticks)) < Number.EPSILON
-      ? <MaxTick value={value} unit={config.unit} />
-      : value),
-    [axis.ticks, config.unit],
-  );
 
   if (!data) {
     return null;
@@ -87,7 +80,6 @@ const ByRegion = ({ data, year }) => {
         axisRight={{
           ...CHART_AXIS_PROPS,
           tickValues: axis.ticks,
-          format: axisFormat,
         }}
         tooltip={getTooltip}
         gridYValues={axis.ticks}

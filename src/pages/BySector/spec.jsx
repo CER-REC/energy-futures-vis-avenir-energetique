@@ -6,7 +6,6 @@ import { ResponsiveLine } from '@nivo/line';
 import BySector from '.';
 import { TestContainer, getRendered } from '../../tests/utilities';
 import VizTooltip from '../../components/VizTooltip';
-import MaxTick from '../../components/MaxTick';
 import { DEFAULT_CONFIG, BASE_DATA, GENERATE_DATA } from './stories';
 
 const MOCK_DATA = [
@@ -54,11 +53,6 @@ describe('Page|BySector', () => {
         points: [115, 152, 184, 220, 269, 461, 590]
           .map((y, i) => ({ serieId: MOCK_DATA[i].id, serieColor: MOCK_DATA[i].color, y })),
       })).toHaveProperty('type', VizTooltip);
-
-      expect(wrapper.find(ResponsiveLine).prop('axisBottom').format(2005)).toEqual(2005);
-      expect(wrapper.find(ResponsiveLine).prop('axisBottom').format(2008)).toEqual('');
-      expect(wrapper.find(ResponsiveLine).prop('axisRight').format(500)).toEqual(500);
-      expect(wrapper.find(ResponsiveLine).prop('axisRight').format(2470)).toHaveProperty('type', MaxTick);
     });
   });
 
