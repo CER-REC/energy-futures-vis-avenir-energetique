@@ -67,11 +67,13 @@ const twitter = {
   content: () => openShareWindow('https://twitter.com/intent/tweet?url='),
 };
 
+const BUTTON_SIZE = 27;
+
 const useStyles = makeStyles(theme => ({
   button: {
     'button&': {
-      height: 22,
-      width: 24,
+      height: BUTTON_SIZE,
+      width: BUTTON_SIZE,
       padding: theme.spacing(0, 0.5),
       '&:hover': { boxShadow: 'none' },
     },

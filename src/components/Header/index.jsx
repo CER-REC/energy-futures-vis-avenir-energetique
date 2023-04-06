@@ -13,7 +13,6 @@ import PageIcon from '../PageIcon';
 
 const useStyles = makeStyles(theme => ({
   row: {
-    height: `calc(100% + ${theme.spacing(2)}px)`,
     '& > div': { height: '100%' },
   },
   title: {
@@ -26,15 +25,19 @@ const useStyles = makeStyles(theme => ({
   controls: {
     height: '100%',
     width: '100%',
-    padding: theme.spacing(1, 0),
+    padding: theme.spacing(1, 0, 2, 2),
+    backgroundColor: '#F3EFEF',
+  },
+  shareControl: {
+    width: '4%',
+    padding: theme.spacing(0, 1),
     backgroundColor: '#F3EFEF',
   },
   icon: {
-    padding: 0,
     '& > svg': {
       height: '100%',
       maxHeight: 132,
-      width: 'auto',
+      width: '100%',
       fill: '#CCC',
     },
   },
@@ -79,15 +82,15 @@ const Header = () => {
       {/* Row 2: page select; scenario select and utility bar (stacked); social media links */}
       <Grid item xs={12} style={{ marginBottom: '0.3em' }}>
         <Grid container style={{ width: '100%' }} alignItems="center" wrap="nowrap" className={classes.row}>
-          <Grid item className={classes.icon}>
-            <PageIcon id={config.page} />
-          </Grid>
           <Grid container className={classes.controls}>
-            <Grid item style={{ width: '100%' }}>
+            <Grid item xs={1} className={classes.icon}>
+              <PageIcon id={config.page} />
+            </Grid>
+            <Grid item xs={11} style={{ width: '100%' }}>
               <ScenarioSelect multiSelect={multiSelectScenario} />
             </Grid>
           </Grid>
-          <Grid item style={{ marginLeft: '0.3em', height: 'auto' }}><Share /></Grid>
+          <Grid item style={{ marginLeft: '0.3em' }} className={classes.shareControl}><Share /></Grid>
         </Grid>
       </Grid>
 

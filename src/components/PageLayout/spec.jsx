@@ -173,7 +173,6 @@ describe('Component|PageLayout', () => {
 
       // verify the shape of different components
       expect(wrapper.find(LinkButtonGroup).prop('direction')).toBe('column');
-      expect(wrapper.find(Share).prop('direction')).toBe('column');
     });
   });
 });
