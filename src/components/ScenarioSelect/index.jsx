@@ -115,7 +115,7 @@ const ScenarioSelect = ({ multiSelect }) => {
             className={classes.descriptionContainer}
           >
             {
-              config.scenarios.map(scenario => (
+              [...config.scenarios].reverse().map(scenario => (
                 <Typography key={`selected-${scenario}`} variant="body2">
                   {intl.formatMessage({ id: `components.scenarioSelect.${scenario}.description.default` })}
                 </Typography>
