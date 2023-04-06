@@ -9,8 +9,7 @@ import {
 import { PAGES } from '../../constants';
 import useConfig from '../../hooks/useConfig';
 import analytics from '../../analytics';
-
-import getPageIcon from '../../utilities/getPageIcon';
+import PageIcon from '../PageIcon';
 
 const useStyles = makeStyles(theme => createStyles({
   title: {
@@ -139,7 +138,7 @@ export const PageTitle = () => {
 
   return (
     <Grid container alignItems="center" wrap="nowrap" className={classes.title}>
-      {getPageIcon(config.page)}
+      <PageIcon id={config.page} />
       <Typography variant="h5" color="secondary">
         {getTitle(PAGES.find(page => page.id === config.page))}
       </Typography>
@@ -182,7 +181,7 @@ export const PageSelect = ({ direction /* row, column */ }) => {
               classes={{ root: classes.box }}
             >
               <Grid container direction="column" wrap="nowrap">
-                <div className={classes.icon}>{getPageIcon(page.id)}</div>
+                <div className={classes.icon}><PageIcon id={page.id} /></div>
                 <Typography variant="caption">{subtitle}</Typography>
               </Grid>
             </ButtonBase>

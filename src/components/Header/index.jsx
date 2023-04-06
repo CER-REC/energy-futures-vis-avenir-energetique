@@ -1,7 +1,6 @@
 import { useIntl } from 'react-intl';
-import { Grid, Link, makeStyles, Typography, useMediaQuery } from '@material-ui/core';
+import { Grid, Link, makeStyles, Typography } from '@material-ui/core';
 import React from 'react';
-import PropTypes from 'prop-types';
 import YearSelect from '../YearSelect';
 import { Share } from '../Share';
 import { PageSelect, PageTitle } from '../PageSelect';
@@ -9,11 +8,11 @@ import ScenarioSelect from '../ScenarioSelect';
 import HorizontalControlBar from '../HorizontalControlBar';
 import analytics from '../../analytics';
 import useConfig from '../../hooks/useConfig';
-import getPageIcon from '../../utilities/getPageIcon';
+import useGetIsDesktop from '../../hooks/useGetIsDesktop';
+import PageIcon from '../PageIcon';
 
 const useStyles = makeStyles(theme => ({
   row: {
-    height: `calc(100% + ${theme.spacing(2)}px)`,
     '& > div': { height: '100%' },
   },
   title: {
@@ -26,39 +25,38 @@ const useStyles = makeStyles(theme => ({
   controls: {
     height: '100%',
     width: '100%',
-    padding: theme.spacing(1, 0),
+    padding: theme.spacing(1, 0, 2, 2),
+    backgroundColor: '#F3EFEF',
+  },
+  shareControl: {
+    width: '4%',
+    padding: theme.spacing(0, 1),
     backgroundColor: '#F3EFEF',
   },
   icon: {
-    padding: 0,
     '& > svg': {
       height: '100%',
       maxHeight: 132,
-      width: 'auto',
+      width: '100%',
       fill: '#CCC',
     },
   },
 }));
 
-const Header = ({ multiSelectScenario }) => {
+const Header = () => {
   const classes = useStyles();
   const intl = useIntl();
-  const desktop = useMediaQuery('(min-width: 992px)');
+  const isDesktop = useGetIsDesktop();
 
   const { config } = useConfig();
+  const multiSelectScenario = config.page === 'scenarios';
 
-  /**
-   * The main title, which can be reused in both desktop and mobile layouts.
-   */
   const title = (
     <Link href="./" underline="none" onClick={() => analytics.reportNav('landing')} className={classes.title}>
       <Typography variant="h4" color="primary">{intl.formatMessage({ id: 'common.title' })}</Typography>
     </Link>
   );
 
-  /**
-   * The control panel, which is currently only used in mobile layouts.
-   */
   const controls = (
     <Grid container direction="column" wrap="nowrap" className={classes.controls}>
       <Grid item><ScenarioSelect multiSelect={multiSelectScenario} /></Grid>
@@ -66,34 +64,33 @@ const Header = ({ multiSelectScenario }) => {
     </Grid>
   );
 
-  /**
-   * Construct the header / controls based on the screen size.
-   * Note: CER template uses custom breakpoints.
-   */
+  // Note: CER template uses custom breakpoints.
   const desktopHeader = (
     <>
       {/* Row 1: main title; year select; */}
       <Grid item xs={12}>
         <Grid container alignItems="flex-end" wrap="nowrap" spacing={2}>
-          <Grid item>{title}</Grid>
-          {/* TODO: Year Select */}
-          <div />
+          <Grid item xs={10}>{title}</Grid>
+          <Grid item xs={2} style={{ textAlign: 'right' }}>
+            {/* TODO: Year Select */}
+            <div />
+          </Grid>
         </Grid>
         <Typography variant="h6" style={{ fontWeight: 'bold' }}>{intl.formatMessage({ id: 'components.header.subtitle' })}</Typography>
       </Grid>
 
       {/* Row 2: page select; scenario select and utility bar (stacked); social media links */}
       <Grid item xs={12} style={{ marginBottom: '0.3em' }}>
-        <Grid container style={{ width: '100%' }} alignItems="center" wrap="nowrap" spacing={2} className={classes.row}>
-          <Grid item className={classes.icon}>
-            {getPageIcon(config.page)}
-          </Grid>
+        <Grid container style={{ width: '100%' }} alignItems="center" wrap="nowrap" className={classes.row}>
           <Grid container className={classes.controls}>
-            <Grid item style={{ width: '100%' }}>
+            <Grid item xs={1} className={classes.icon}>
+              <PageIcon id={config.page} />
+            </Grid>
+            <Grid item xs={11} style={{ width: '100%' }}>
               <ScenarioSelect multiSelect={multiSelectScenario} />
             </Grid>
           </Grid>
-          <Grid item style={{ width: 40 }}><Share /></Grid>
+          <Grid item style={{ marginLeft: '0.3em' }} className={classes.shareControl}><Share /></Grid>
         </Grid>
       </Grid>
 
@@ -116,15 +113,7 @@ const Header = ({ multiSelectScenario }) => {
     </>
   );
 
-  return desktop ? desktopHeader : tabletHeader;
-};
-
-Header.propTypes = {
-  multiSelectScenario: PropTypes.bool,
-};
-
-Header.defaultProps = {
-  multiSelectScenario: false,
+  return isDesktop ? desktopHeader : tabletHeader;
 };
 
 export default Header;
