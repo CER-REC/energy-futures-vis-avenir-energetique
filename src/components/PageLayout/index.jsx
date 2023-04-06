@@ -14,6 +14,7 @@ import DraggableVerticalList from '../DraggableVerticalList';
 import LinkButtonGroup from '../LinkButtonGroup';
 import { DownloadButton, Share } from '../Share';
 import Header from '../Header';
+import useChartTitle from "../../hooks/useChartTitle";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -24,6 +25,7 @@ const useStyles = makeStyles(theme => ({
   },
   graph: {
     display: 'flex',
+    flex: 1,
     height: 'auto',
     '& > div': { margin: 'auto' },
   },
@@ -31,7 +33,6 @@ const useStyles = makeStyles(theme => ({
     height: '100%',
     width: '100%',
     position: 'relative',
-    border: `1px solid ${theme.palette.divider}`,
   },
   links: {
     position: 'absolute',
@@ -136,40 +137,6 @@ const PageLayout = ({
   }, []);
 
   /**
-   * Generate the translation of the selected page title.
-   */
-  const getTitle = useCallback((page) => {
-    switch (page?.id) {
-      case 'by-region':
-        return intl.formatMessage({
-          id: `components.pageSelect.${page.label}.title.${config.mainSelection}`,
-          defaultMessage: intl.formatMessage({ id: `components.pageSelect.${page.label}.title.default` }),
-        });
-      case 'by-sector':
-        return intl.formatMessage({
-          id: `components.pageSelect.${page.label}.title.${config.sector}`,
-          defaultMessage: intl.formatMessage({ id: `components.pageSelect.${page.label}.title.default` }),
-        });
-      case 'electricity':
-        return intl.formatMessage({
-          id: `components.pageSelect.${page.label}.title.${config.view}`,
-          defaultMessage: intl.formatMessage({ id: `components.pageSelect.${page.label}.title.default` }),
-        });
-      case 'scenarios':
-        return intl.formatMessage({
-          id: `components.pageSelect.${page.label}.title.${config.mainSelection}`,
-          defaultMessage: intl.formatMessage({ id: `components.pageSelect.${page.label}.title.default` }),
-        });
-      case 'oil-and-gas':
-        return intl.formatMessage({
-          id: `components.pageSelect.${page.label}.title.${config.mainSelection}.${config.view}`,
-          defaultMessage: intl.formatMessage({ id: `components.pageSelect.${page.label}.title.default` }),
-        });
-      default: return page?.label;
-    }
-  }, [intl, config.mainSelection, config.sector, config.view]);
-
-  /**
    * Render nothing if the baseYear value is out of range.
    */
   if (config.baseYear && config.baseYear !== validYear(config.baseYear, year || {})) {
@@ -226,12 +193,12 @@ const PageLayout = ({
       <Grid container item direction="column" style={{ width: vizWidth }}>
         <Grid item>
           <Typography variant="h6">
-            {getTitle(PAGES.find(page => page.id === config.page))}
+            {useChartTitle(PAGES.find(page => page.id === config.page))}
           </Typography>
         </Grid>
         {vis?.length && vis?.length > 0 && (
           <Grid item className={classes.graph}>
-            {loading && <CircularProgress color="primary" size={66} className={classes.loading} />}
+            {loading && <CircularProgress color="primary" size={66}/>}
             {error && <Alert severity="error"><AlertTitle>Error</AlertTitle>{error}</Alert>}
             {!loading && !error && <div ref={vizRef} className={classes.vis}>{vis}</div>}
           </Grid>
