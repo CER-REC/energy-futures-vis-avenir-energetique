@@ -3,14 +3,14 @@ import React, { useMemo, useCallback } from 'react';
 import { useIntl } from 'react-intl';
 import {
   makeStyles, createStyles,
-  Grid, Typography, Button, Tooltip,
+  Grid, Typography, Button, Tooltip, useMediaQuery, useTheme,
 } from '@material-ui/core';
 
 import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
 import analytics from '../../analytics';
 import { CONFIG_LAYOUT, SECTOR_ORDER } from '../../constants';
-import { HintMainSelect, HintViewSelect, HintSectorSelect, HintUnitSelect } from '../Hint';
+import { HintMainSelect, HintViewSelect, HintSectorSelect } from '../Hint';
 // #endregion
 
 const useStyles = makeStyles(theme => createStyles({
@@ -21,7 +21,7 @@ const useStyles = makeStyles(theme => createStyles({
   btnSector: {
     height: 30,
     minWidth: 45,
-    maxWidth: 80,
+    textTransform: 'none',
     '& > span': { lineHeight: 1 },
   },
   tooltip: {
@@ -36,6 +36,7 @@ const useStyles = makeStyles(theme => createStyles({
 const HorizontalControlBar = () => {
   const classes = useStyles();
   const intl = useIntl();
+  const isDesktop = useMediaQuery(useTheme().breakpoints.up('lg'));
 
   const { sectors } = useAPI();
   const { config, configDispatch } = useConfig();
@@ -54,11 +55,6 @@ const HorizontalControlBar = () => {
   const handleUpdateView = useCallback((view) => {
     configDispatch({ type: 'view/changed', payload: view });
     analytics.reportFeature(config.page, 'view by', view);
-  }, [configDispatch, config.page]);
-
-  const handleUpdateUnit = useCallback((unit) => {
-    configDispatch({ type: 'unit/changed', payload: unit });
-    analytics.reportFeature(config.page, 'unit', unit);
   }, [configDispatch, config.page]);
 
   if (!layout) {
@@ -123,7 +119,8 @@ const HorizontalControlBar = () => {
                 onClick={() => handleUpdateSector(sector)}
                 className={classes.btnSector}
               >
-                {Icon ? <Icon /> : intl.formatMessage({ id: `common.sectors.${sector}` }) }
+                {Icon && <Icon /> }
+                {intl.formatMessage({ id: `common.sectors.${sector}` })}
               </Button>
             </Tooltip>
           </Grid>
@@ -159,45 +156,18 @@ const HorizontalControlBar = () => {
   );
 
   /**
-   * Unit
+   * TODO: Add unit dropdown
    */
   const units = (
-    <Grid container alignItems="center" wrap="nowrap">
-      <HintUnitSelect>
-        <Typography variant="body1" color="secondary">{intl.formatMessage({ id: 'components.unitSelect.name' })}</Typography>
-      </HintUnitSelect>
-      {layout.unit.map(unit => (
-        <Tooltip
-          key={`config-unit-${unit}`}
-          title={(
-            <>
-              <Typography variant="caption" component="div" gutterBottom><strong>{intl.formatMessage({ id: `components.unitSelect.${unit}.title` })}</strong></Typography>
-              <Typography variant="caption" component="div">{intl.formatMessage({ id: `components.unitSelect.${unit}.description` })}</Typography>
-            </>
-          )}
-        >
-          <Button
-            variant={config.unit === unit ? 'contained' : 'outlined'}
-            color="primary"
-            size="small"
-            onClick={() => handleUpdateUnit(unit)}
-            style={{ textTransform: 'none' }}
-          >
-            {intl.formatMessage({ id: `common.units.${unit}` })}
-          </Button>
-        </Tooltip>
-      ))}
-    </Grid>
+    <></>
   );
 
   return (
-    <Grid container justify="space-between" alignItems="center" spacing={1} className={classes.root}>
-      {[
-        selections,
-        sectorSelection,
-        views,
-        units,
-      ].map(section => section && <Grid item key={`utility-section-${Math.random()}`}>{section}</Grid>)}
+    <Grid container justify={config.page === 'electricity' ? 'flex-start' : 'space-between'} alignItems="center" spacing={1} className={classes.root}>
+      { selections && (<Grid item>{selections}</Grid>) }
+      <Grid item>{sectorSelection}</Grid>
+      <Grid item>{views}</Grid>
+      { isDesktop && (<Grid item>{units}</Grid>) }
     </Grid>
   );
 };

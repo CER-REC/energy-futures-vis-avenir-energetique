@@ -29,7 +29,6 @@ const useStyles = makeStyles(theme => createStyles({
     margin: 'auto',
     padding: theme.spacing(0.5),
     color: theme.palette.secondary.light,
-    transform: 'translateY(-6px)',
   },
   senarios: {
     '& img': {
