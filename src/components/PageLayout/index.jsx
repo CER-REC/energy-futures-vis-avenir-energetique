@@ -27,6 +27,7 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     flex: 1,
     height: 'auto',
+    width: '100%',
     '& > div': { margin: 'auto' },
   },
   vis: {
