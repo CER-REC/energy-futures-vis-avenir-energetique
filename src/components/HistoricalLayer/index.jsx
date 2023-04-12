@@ -22,7 +22,7 @@ const HistoricalLayer = ({
   const classes = useStyles();
   const historicalWidth = useMemo(
     () => getYearX(forecastStart, xScale, bars) + margin.left,
-    [forecastStart, xScale, bars],
+    [forecastStart, xScale, bars, margin.left],
   );
   const y = -margin.top;
   const lineHeight = (innerHeight || height) + margin.top;
