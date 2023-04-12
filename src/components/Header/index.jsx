@@ -8,7 +8,7 @@ import ScenarioSelect from '../ScenarioSelect';
 import HorizontalControlBar from '../HorizontalControlBar';
 import analytics from '../../analytics';
 import useConfig from '../../hooks/useConfig';
-import useGetIsDesktop from '../../hooks/useGetIsDesktop';
+import useIsDesktop from '../../hooks/useIsDesktop';
 import PageIcon from '../PageIcon';
 
 const useStyles = makeStyles(theme => ({
@@ -28,11 +28,6 @@ const useStyles = makeStyles(theme => ({
     padding: theme.spacing(1, 0, 2, 2),
     backgroundColor: '#F3EFEF',
   },
-  shareControl: {
-    width: '4%',
-    padding: theme.spacing(0, 1),
-    backgroundColor: '#F3EFEF',
-  },
   icon: {
     '& > svg': {
       height: '100%',
@@ -46,7 +41,7 @@ const useStyles = makeStyles(theme => ({
 const Header = () => {
   const classes = useStyles();
   const intl = useIntl();
-  const isDesktop = useGetIsDesktop();
+  const isDesktop = useIsDesktop();
 
   const { config } = useConfig();
   const multiSelectScenario = config.page === 'scenarios';
@@ -67,7 +62,6 @@ const Header = () => {
   // Note: CER template uses custom breakpoints.
   const desktopHeader = (
     <>
-      {/* Row 1: main title; year select; */}
       <Grid item xs={12}>
         <Grid container alignItems="flex-end" wrap="nowrap" spacing={2}>
           <Grid item xs={10}>{title}</Grid>
@@ -79,7 +73,6 @@ const Header = () => {
         <Typography variant="h6" style={{ fontWeight: 'bold' }}>{intl.formatMessage({ id: 'components.header.subtitle' })}</Typography>
       </Grid>
 
-      {/* Row 2: page select; scenario select and utility bar (stacked); social media links */}
       <Grid item xs={12} style={{ marginBottom: '0.3em' }}>
         <Grid container style={{ width: '100%' }} alignItems="center" wrap="nowrap" className={classes.row}>
           <Grid container className={classes.controls}>
@@ -90,11 +83,10 @@ const Header = () => {
               <ScenarioSelect multiSelect={multiSelectScenario} />
             </Grid>
           </Grid>
-          <Grid item style={{ marginLeft: '0.3em' }} className={classes.shareControl}><Share /></Grid>
+          <Grid item style={{ marginLeft: '0.3em' }}><Share /></Grid>
         </Grid>
       </Grid>
 
-      {/* Row 3: link buttons (at bottom); vertical draggable lists; visualization */}
       <Grid item style={{ width: 100 }}><PageSelect /></Grid>
     </>
   );
