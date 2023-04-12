@@ -14,7 +14,7 @@ import DraggableVerticalList from '../DraggableVerticalList';
 import LinkButtonGroup from '../LinkButtonGroup';
 import { DownloadButton, Share } from '../Share';
 import Header from '../Header';
-import useChartTitle from "../../hooks/useChartTitle";
+import useChartTitle from '../../hooks/useChartTitle';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -136,6 +136,8 @@ const PageLayout = ({
     }
   }, []);
 
+  const chartTitle = useChartTitle();
+
   /**
    * Render nothing if the baseYear value is out of range.
    */
@@ -193,12 +195,12 @@ const PageLayout = ({
       <Grid container item direction="column" style={{ width: vizWidth }}>
         <Grid item>
           <Typography variant="h6">
-            {useChartTitle(PAGES.find(page => page.id === config.page))}
+            {chartTitle}
           </Typography>
         </Grid>
         {vis?.length && vis?.length > 0 && (
           <Grid item className={classes.graph}>
-            {loading && <CircularProgress color="primary" size={66}/>}
+            {loading && <CircularProgress color="primary" size={66} />}
             {error && <Alert severity="error"><AlertTitle>Error</AlertTitle>{error}</Alert>}
             {!loading && !error && <div ref={vizRef} className={classes.vis}>{vis}</div>}
           </Grid>
