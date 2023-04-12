@@ -74,7 +74,7 @@ const useStyles = makeStyles(theme => ({
     'button&': {
       height: BUTTON_SIZE,
       width: BUTTON_SIZE,
-      padding: theme.spacing(0, 0.5),
+      padding: theme.spacing(0, 2.5),
       '&:hover': { boxShadow: 'none' },
     },
     '& svg': { fontSize: 16 },
