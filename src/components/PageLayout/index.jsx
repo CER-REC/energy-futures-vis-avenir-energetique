@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo, useCallback, Children, cloneElement } from 'react';
 import PropTypes from 'prop-types';
-import { makeStyles, useMediaQuery, Grid, CircularProgress } from '@material-ui/core';
+import { makeStyles, useMediaQuery, Grid, CircularProgress, Typography } from '@material-ui/core';
 import Alert from '@material-ui/lab/Alert';
 import AlertTitle from '@material-ui/lab/AlertTitle';
 import { useIntl } from 'react-intl';
@@ -14,6 +14,7 @@ import DraggableVerticalList from '../DraggableVerticalList';
 import LinkButtonGroup from '../LinkButtonGroup';
 import { DownloadButton, Share } from '../Share';
 import Header from '../Header';
+import useChartTitle from '../../hooks/useChartTitle';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -24,6 +25,7 @@ const useStyles = makeStyles(theme => ({
   },
   graph: {
     display: 'flex',
+    flex: 1,
     height: 'auto',
     '& > div': { margin: 'auto' },
   },
@@ -31,7 +33,6 @@ const useStyles = makeStyles(theme => ({
     height: '100%',
     width: '100%',
     position: 'relative',
-    border: `1px solid ${theme.palette.divider}`,
   },
   links: {
     position: 'absolute',
@@ -135,6 +136,8 @@ const PageLayout = ({
     }
   }, []);
 
+  const chartTitle = useChartTitle();
+
   /**
    * Render nothing if the baseYear value is out of range.
    */
@@ -189,13 +192,20 @@ const PageLayout = ({
           />
         </Grid>
       )}
-      {vis?.length && vis?.length > 0 && (
-        <Grid item className={classes.graph} style={{ width: vizWidth }}>
-          {loading && <CircularProgress color="primary" size={66} className={classes.loading} />}
-          {error && <Alert severity="error"><AlertTitle>Error</AlertTitle>{error}</Alert>}
-          {!loading && !error && <div ref={vizRef} className={classes.vis}>{vis}</div>}
+      <Grid container item direction="column" style={{ width: vizWidth }}>
+        <Grid item>
+          <Typography variant="h6">
+            {chartTitle}
+          </Typography>
         </Grid>
-      )}
+        {vis?.length && vis?.length > 0 && (
+          <Grid item className={classes.graph}>
+            {loading && <CircularProgress color="primary" size={66} />}
+            {error && <Alert severity="error"><AlertTitle>Error</AlertTitle>{error}</Alert>}
+            {!loading && !error && <div ref={vizRef} className={classes.vis}>{vis}</div>}
+          </Grid>
+        )}
+      </Grid>
 
       <Grid item xs={12} className={desktop ? classes.links : ''}>
         <Grid container alignItems="flex-start" wrap="nowrap" spacing={2}>
