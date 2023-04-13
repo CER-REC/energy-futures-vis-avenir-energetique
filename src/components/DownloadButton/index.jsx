@@ -172,7 +172,7 @@ const DownloadButton = ({ accent }) => {
     <Button
       variant="contained"
       color="secondary"
-      startIcon={!isDesktop ? <IconDownload /> : <></>}
+      startIcon={!isDesktop ? <IconDownload /> : null}
       onClick={onClick}
       className={classes.download}
       classes={{ root: `${accent ? classes.accent : ''}`, label: classes.label }}

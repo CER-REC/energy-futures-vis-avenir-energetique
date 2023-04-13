@@ -1,17 +1,21 @@
 import React, { useCallback, useMemo } from 'react';
 import { useIntl } from 'react-intl';
 import PropTypes from 'prop-types';
-import { makeStyles, Grid, Typography, Button, Tooltip, useMediaQuery } from '@material-ui/core';
+import { makeStyles, Grid, Typography, Button, Tooltip } from '@material-ui/core';
 
 import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
 import { SCENARIO_COLOR } from '../../constants';
 import analytics from '../../analytics';
-import { HintScenarioSelect } from '../Hint';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    padding: theme.spacing(0.5, 3),
+    [theme.breakpoints.up('md')]: {
+      padding: theme.spacing(0.5, 3),
+    },
+    [theme.breakpoints.down('sm')]: {
+      padding: theme.spacing(0.5, 1),
+    },
     '& p': { fontSize: 16 },
   },
   scenarioButton: {
@@ -31,7 +35,6 @@ const useStyles = makeStyles(theme => ({
 const ScenarioSelect = ({ multiSelect }) => {
   const classes = useStyles();
   const intl = useIntl();
-  const desktop = useMediaQuery('(min-width: 992px)');
 
   const { config, configDispatch } = useConfig();
   const { yearIdIterations } = useAPI();
@@ -106,7 +109,7 @@ const ScenarioSelect = ({ multiSelect }) => {
         {
           [...config.scenarios].reverse().map(scenario => (
             <Typography key={`selected-${scenario}`} variant="body2">
-              {intl.formatMessage({id: `components.scenarioSelect.${scenario}.description.default`})}
+              {intl.formatMessage({ id: `components.scenarioSelect.${scenario}.description.default` })}
             </Typography>
           ))
         }

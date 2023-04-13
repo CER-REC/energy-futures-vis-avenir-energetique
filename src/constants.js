@@ -117,13 +117,6 @@ export const SCENARIO_COLOR = {
   'No LNG': '#56D3EE',
 };
 
-export const SCENARIO_LABEL_COLOR = {
-  Evolving: '#F4BE62',
-  Reference: '#BEC0C2',
-  netzero: '#8EC059',
-  history: '#CBDEF1',
-};
-
 export const REGION_COLORS = {
   YT: '#4B5E5B',
   SK: '#1C7F24',

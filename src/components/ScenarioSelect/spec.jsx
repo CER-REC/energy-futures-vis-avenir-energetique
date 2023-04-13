@@ -1,7 +1,7 @@
 import React from 'react';
 import { mount } from 'enzyme';
 import { act } from 'react-dom/test-utils';
-import { Typography, Button, IconButton } from '@material-ui/core';
+import { Button } from '@material-ui/core';
 import ScenarioSelect from '.';
 import { TestContainer, getRendered } from '../../tests/utilities';
 import { HintMainSelect } from '../Hint';
@@ -37,16 +37,7 @@ describe('Component|PageSelect', () => {
       expect(wrapper.type()).not.toBeNull();
     });
 
-    test('should render scenario title', () => {
-      const titles = wrapper.find(Typography);
-      expect(expect.arrayContaining(titles.map(title => title.text()))).toEqual(['SCENARIOS']);
-    });
-
     test('should render section buttons', () => {
-    // 1 'help' button
-      const iconButtons = wrapper.find(IconButton);
-      expect(iconButtons.length).toBe(1);
-
       expect(wrapper.find(HintMainSelect)).not.toBeNull();
 
       // 2 scenario buttons for 2020 report year

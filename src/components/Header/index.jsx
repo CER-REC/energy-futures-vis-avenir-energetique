@@ -1,11 +1,9 @@
 import { useIntl } from 'react-intl';
 import { Grid, Link, makeStyles, Typography } from '@material-ui/core';
 import React from 'react';
-import YearSelect from '../YearSelect';
 import Share from '../Share';
-import { PageSelect, PageTitle } from '../PageSelect';
+import PageSelect from '../PageSelect';
 import ScenarioSelect from '../ScenarioSelect';
-import HorizontalControlBar from '../HorizontalControlBar';
 import analytics from '../../analytics';
 import useConfig from '../../hooks/useConfig';
 import useIsDesktop from '../../hooks/useIsDesktop';
@@ -13,6 +11,7 @@ import PageIcon from '../PageIcon';
 
 const useStyles = makeStyles(theme => ({
   row: {
+    width: '100%',
     '& > div': { height: '100%' },
   },
   title: {
@@ -27,6 +26,10 @@ const useStyles = makeStyles(theme => ({
     width: '100%',
     padding: theme.spacing(1, 0, 2, 2),
     backgroundColor: '#F3EFEF',
+    [theme.breakpoints.down('sm')]: {
+      margin: theme.spacing(0, 1),
+      padding: theme.spacing(0, 1, 1, 1),
+    },
   },
   icon: {
     '& > svg': {
@@ -67,7 +70,7 @@ const Header = () => {
       </Grid>
 
       <Grid item xs={12} style={{ marginBottom: '0.3em' }}>
-        <Grid container style={{ width: '100%' }} alignItems="center" wrap="nowrap" className={classes.row}>
+        <Grid container alignItems="center" wrap="nowrap" className={classes.row}>
           <Grid container className={classes.controls}>
             {
               isDesktop && (
@@ -88,8 +91,9 @@ const Header = () => {
 
       {
         isDesktop && (
-        <Grid item style={{ width: 100 }}><PageSelect /></Grid>
-      )}
+          <Grid item style={{ width: 100 }}><PageSelect /></Grid>
+        )
+      }
     </>
   );
 };

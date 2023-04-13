@@ -5,7 +5,7 @@ import { act } from 'react-dom/test-utils';
 import { IconButton, Dialog, Fab } from '@material-ui/core';
 
 import {
-  HintMainSelect, HintYearSelect, HintScenarioSelect, HintSectorSelect,
+  HintMainSelect, HintYearSelect, HintSectorSelect,
   HintViewSelect, HintUnitSelect, HintRegionList, HintSourceList,
 } from '.';
 import { TestContainer, getRendered } from '../../tests/utilities';
@@ -30,26 +30,6 @@ describe('Component|Hint', () => {
 
     test('should render component', () => {
       expect(wrapper.type()).not.toBeNull();
-    });
-  });
-
-  /**
-   * HintScenarioSelect
-   */
-  describe('Test HintScenarioSelect', () => {
-    const dom = mount(
-      <TestContainer mockConfig={{ yearId: 2020 }}>
-        <HintScenarioSelect />
-      </TestContainer>,
-    );
-
-    test('should render component', async () => {
-      await act(async () => {
-        await new Promise(resolve => setTimeout(resolve));
-        dom.update();
-        const wrapper = getRendered(HintScenarioSelect, dom);
-        expect(wrapper.type()).not.toBeNull();
-      });
     });
   });
 
