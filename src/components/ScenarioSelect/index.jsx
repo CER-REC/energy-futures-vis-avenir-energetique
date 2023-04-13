@@ -79,15 +79,6 @@ const ScenarioSelect = ({ multiSelect }) => {
 
   return (
     <Grid container alignItems="center" spacing={1} className={classes.root}>
-      {
-        !desktop && (
-          <Grid item>
-            <HintScenarioSelect>
-              <Typography variant="body1" color="secondary">{intl.formatMessage({ id: 'components.scenarioSelect.name' })}</Typography>
-            </HintScenarioSelect>
-          </Grid>
-        )
-      }
       {scenarios.map(scenario => (
         <Grid item key={`config-scenario-${scenario}`}>
           <Tooltip title={getTooltip(scenario)}>
@@ -108,22 +99,18 @@ const ScenarioSelect = ({ multiSelect }) => {
           </Tooltip>
         </Grid>
       ))}
-      {
-        desktop && (
-          <Grid
-            item
-            className={classes.descriptionContainer}
-          >
-            {
-              [...config.scenarios].reverse().map(scenario => (
-                <Typography key={`selected-${scenario}`} variant="body2">
-                  {intl.formatMessage({ id: `components.scenarioSelect.${scenario}.description.default` })}
-                </Typography>
-              ))
-            }
-          </Grid>
-        )
-      }
+      <Grid
+        item
+        className={classes.descriptionContainer}
+      >
+        {
+          [...config.scenarios].reverse().map(scenario => (
+            <Typography key={`selected-${scenario}`} variant="body2">
+              {intl.formatMessage({id: `components.scenarioSelect.${scenario}.description.default`})}
+            </Typography>
+          ))
+        }
+      </Grid>
     </Grid>
   );
 };
