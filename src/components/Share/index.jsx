@@ -10,16 +10,10 @@ import Snackbar from '@material-ui/core/Snackbar';
 import LinkIcon from '@material-ui/icons/Link';
 import EmailIcon from '@material-ui/icons/Email';
 import Clipboard from 'clipboard';
-import { saveAs } from 'file-saver';
-import Papa from 'papaparse';
 import analytics from '../../analytics';
 
-import { IconTwitter, IconFacebook, IconLinkedIn, IconDownload } from '../../icons';
-import useAPI from '../../hooks/useAPI';
+import { IconTwitter, IconFacebook, IconLinkedIn } from '../../icons';
 import useConfig from '../../hooks/useConfig';
-import useEnergyFutureData from '../../hooks/useEnergyFutureData';
-import { convertUnit } from '../../utilities/convertUnit';
-import { PAGES } from '../../constants';
 
 const getBitlyURL = () => {
   const bitlyServiceURL = `${document.location.origin}/bitlyService/api/bitlyShortlink`;

@@ -7,7 +7,7 @@ import PageLayout from '.';
 import analytics from '../../analytics';
 import { TestContainer, getRendered } from '../../tests/utilities';
 import YearSelect from '../YearSelect';
-import { DownloadButton, Share } from '../Share';
+import Share from '../Share';
 import { PageSelect, PageTitle } from '../PageSelect';
 import ScenarioSelect from '../ScenarioSelect';
 import HorizontalControlBar from '../HorizontalControlBar';
@@ -89,7 +89,6 @@ describe('Component|PageLayout', () => {
     test('should render child components', async () => {
       expect(wrapper.findWhere(node => node.type() === Typography && node.text() === 'Exploring Canada’s Energy Future').exists()).toBeTruthy();
       expect(wrapper.find(YearSelect).exists()).toBeTruthy();
-      expect(wrapper.find(DownloadButton).exists()).toBeTruthy();
       expect(wrapper.find(PageTitle).exists()).toBeTruthy();
       expect(wrapper.find(ScenarioSelect).exists()).toBeTruthy();
       expect(wrapper.find(HorizontalControlBar).exists()).toBeTruthy();

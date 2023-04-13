@@ -1,16 +1,17 @@
-﻿import {useIntl} from "react-intl";
-import useAPI from "../../hooks/useAPI";
-import useConfig from "../../hooks/useConfig";
-import useEnergyFutureData from "../../hooks/useEnergyFutureData";
-import React, {useCallback, useMemo} from "react";
-import {convertUnit} from "../../utilities/convertUnit";
-import {PAGES} from "../../constants";
-import Papa from "papaparse";
-import analytics from "../../analytics";
-import {Button, makeStyles} from "@material-ui/core";
-import {IconDownload} from "../../icons";
-import PropTypes from "prop-types";
-import useIsDesktop from "../../hooks/useIsDesktop";
+import { useIntl } from 'react-intl';
+import React, { useCallback, useMemo } from 'react';
+import Papa from 'papaparse';
+import { Button, makeStyles } from '@material-ui/core';
+import { saveAs } from 'file-saver';
+import PropTypes from 'prop-types';
+import useAPI from '../../hooks/useAPI';
+import useConfig from '../../hooks/useConfig';
+import useEnergyFutureData from '../../hooks/useEnergyFutureData';
+import { convertUnit } from '../../utilities/convertUnit';
+import { PAGES } from '../../constants';
+import analytics from '../../analytics';
+import { IconDownload } from '../../icons';
+import useIsDesktop from '../../hooks/useIsDesktop';
 
 // TODO: Remove after refactoring into useEnergyFutureData to provide a uniform data structure
 const selectionUnits = {
@@ -30,8 +31,8 @@ const useStyles = makeStyles(theme => ({
     },
     [theme.breakpoints.up('md')]: {
       ...theme.mixins.contextButton,
-      width: "100%",
-    }
+      width: '100%',
+    },
   },
   label: {
     [theme.breakpoints.down('sm')]: {
@@ -40,9 +41,9 @@ const useStyles = makeStyles(theme => ({
     },
     [theme.breakpoints.up('md')]: {
       fontSize: 13,
-    }
+    },
   },
-  accent: { ...theme.mixins.contextAccent, },
+  accent: { ...theme.mixins.contextAccent },
 }));
 
 const DownloadButton = ({ accent }) => {

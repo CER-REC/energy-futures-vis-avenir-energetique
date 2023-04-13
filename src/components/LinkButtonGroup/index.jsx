@@ -11,8 +11,8 @@ import useConfig from '../../hooks/useConfig';
 import {
   LinkButtonContentReport, LinkButtonContentMethodology, LinkButtonContentAbout,
 } from './contents';
-import DownloadButton from "../DownloadButton";
-import useIsDesktop from "../../hooks/useIsDesktop";
+import DownloadButton from '../DownloadButton';
+import useIsDesktop from '../../hooks/useIsDesktop';
 
 const useStyles = makeStyles(theme => createStyles({
   title: {
@@ -82,7 +82,7 @@ const useStyles = makeStyles(theme => createStyles({
     height: 22,
     borderTop: 'none',
   },
-  accent: { ...theme.mixins.contextAccent, },
+  accent: { ...theme.mixins.contextAccent },
 }));
 
 const LinkButtonGroup = ({ direction }) => {
@@ -165,7 +165,9 @@ const LinkButtonGroup = ({ direction }) => {
         )}
         <Grid item className={direction === 'row' ? '' : classes.accent}>{generateButton(link.report)}</Grid>
         {direction === 'column' && <Grid item style={{ height: 8 }} />}
-        {isDesktop && (<Grid item className={classes.btnContainer}><DownloadButton accent /></Grid>)}
+        {isDesktop && (
+          <Grid item className={classes.btnContainer}><DownloadButton accent /></Grid>
+        )}
         {direction === 'column' && <Grid item style={{ height: 8 }} />}
         <Grid item className={direction === 'row' ? '' : classes.accent}>{generateButton(link.methodology)}</Grid>
         {direction === 'column' && <Grid item className={direction === 'row' ? '' : classes.accent} style={{ height: 8 }} />}

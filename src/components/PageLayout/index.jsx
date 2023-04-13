@@ -13,7 +13,7 @@ import { PAGES } from '../../constants';
 import DraggableVerticalList from '../DraggableVerticalList';
 import LinkButtonGroup from '../LinkButtonGroup';
 import Share from '../Share';
-import DownloadButton from "../DownloadButton";
+import DownloadButton from '../DownloadButton';
 import Header from '../Header';
 import useChartTitle from '../../hooks/useChartTitle';
 

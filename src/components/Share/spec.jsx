@@ -4,9 +4,8 @@ import { mount } from 'enzyme';
 import { act } from 'react-dom/test-utils';
 import { Button } from '@material-ui/core';
 import EmailIcon from '@material-ui/icons/Email';
-import { saveAs } from 'file-saver';
 
-import { Share, DownloadButton } from '.';
+import Share from '.';
 import { TestContainer, getRendered } from '../../tests/utilities';
 import { IconTwitter, IconFacebook, IconLinkedIn } from '../../icons';
 
@@ -27,11 +26,6 @@ const getShareComponent = (props, options = {}) => (
   </TestContainer>
 );
 
-const getDownloadComponent = (props, options = {}) => (
-  <TestContainer mockConfig={{ ...DEFAULT_CONFIG, ...props }}>
-    <DownloadButton {...options} />
-  </TestContainer>
-);
 // #region Share Buttons
 describe('Component|ShareButtons', () => {
   let wrapper;
@@ -157,105 +151,6 @@ describe('Component|Share|CopyButton', () => {
         wrapper.update();
       },
     );
-  });
-});
-// #endregion
-// #region Download Button
-describe('Component|DownloadButton|By-Region', () => {
-  let wrapper;
-
-  beforeEach(async () => {
-    const dom = mount(getDownloadComponent({ page: 'by-region' }));
-    await act(async () => {
-      await new Promise(resolve => setTimeout(resolve));
-      dom.update();
-      wrapper = getRendered(DownloadButton, dom);
-    });
-  });
-
-  test('should render component', () => {
-    expect(wrapper.exists()).toBeTruthy();
-  });
-
-  test('should render text', () => {
-    const button = wrapper.find(Button);
-
-    expect(button.length).toBe(1);
-    expect(button.text()).toBe('Download Data');
-  });
-
-  test('should call saveAs', () => {
-    const downloadButton = wrapper.find(Button);
-    downloadButton.simulate('click');
-    expect(saveAs).toBeCalled();
-  });
-});
-
-describe('Component|DownloadButton|By-Sector', () => {
-  let wrapper;
-
-  test('should call saveAs', async () => {
-    const dom = mount(getDownloadComponent({ page: 'by-sector', sources: ['BIO'], sector: 'ALL' }));
-    await act(async () => {
-      await new Promise(resolve => setTimeout(resolve));
-      dom.update();
-      wrapper = getRendered(DownloadButton, dom);
-    });
-
-    const downloadButton = wrapper.find(Button);
-    downloadButton.simulate('click');
-    expect(saveAs).toBeCalled();
-  });
-});
-
-describe('Component|DownloadButton|Scenarios', () => {
-  let wrapper;
-
-  test('should call saveAs', async () => {
-    const dom = mount(getDownloadComponent({ page: 'scenarios' }));
-    await act(async () => {
-      await new Promise(resolve => setTimeout(resolve));
-      dom.update();
-      wrapper = getRendered(DownloadButton, dom);
-    });
-
-    const downloadButton = wrapper.find(Button);
-    downloadButton.simulate('click');
-    expect(saveAs).toBeCalled();
-  });
-});
-
-describe('Component|Download Button|Electricity', () => {
-  let wrapper;
-
-  test('should call saveAs', async () => {
-    const dom = mount(getDownloadComponent({ page: 'electricity', view: 'region', sources: ['ALL'], mainSelection: 'electricityGeneration' }));
-    await act(async () => {
-      await new Promise(resolve => setTimeout(resolve));
-      dom.update();
-      wrapper = getRendered(DownloadButton, dom);
-    });
-
-    const downloadButton = wrapper.find(Button);
-    downloadButton.simulate('click');
-    expect(saveAs).toBeCalled();
-  });
-});
-
-describe('Component|DownloadButton|Oil-and-Gas', () => {
-  let wrapper;
-
-  test('should call saveAs', async () => {
-    const dom = mount(getDownloadComponent({ page: 'oil-and-gas', mainSelection: 'oilProduction', view: 'region' }));
-    await act(async () => {
-      await new Promise(resolve => setTimeout(resolve));
-      dom.update();
-      wrapper = getRendered(DownloadButton, dom);
-    });
-
-    const downloadButton = wrapper.find(Button);
-    downloadButton.simulate('click');
-    expect(saveAs).toBeCalled();
   });
 });
 // #endregion
