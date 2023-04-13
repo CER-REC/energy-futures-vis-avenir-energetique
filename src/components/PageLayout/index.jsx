@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo, useCallback, Children, cloneElement } from 'react';
 import PropTypes from 'prop-types';
-import { makeStyles, useMediaQuery, Grid, Typography, Link, CircularProgress } from '@material-ui/core';
+import { makeStyles, useMediaQuery, Grid, CircularProgress, Typography } from '@material-ui/core';
 import Alert from '@material-ui/lab/Alert';
 import AlertTitle from '@material-ui/lab/AlertTitle';
 import { useIntl } from 'react-intl';
@@ -10,18 +10,12 @@ import useConfig from '../../hooks/useConfig';
 import useEnergyFutureData from '../../hooks/useEnergyFutureData';
 import { validYear } from '../../utilities/parseData';
 import { PAGES } from '../../constants';
-import analytics from '../../analytics';
-
-import YearSelect from '../YearSelect';
-import { PageTitle, PageSelect } from '../PageSelect';
-import ScenarioSelect from '../ScenarioSelect';
 import DraggableVerticalList from '../DraggableVerticalList';
-import HorizontalControlBar from '../HorizontalControlBar';
 import LinkButtonGroup from '../LinkButtonGroup';
 import Share from '../Share';
 import DownloadButton from "../DownloadButton";
-
-const LEAD_COL_WIDTH = 400;
+import Header from '../Header';
+import useChartTitle from '../../hooks/useChartTitle';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -30,33 +24,9 @@ const useStyles = makeStyles(theme => ({
     marginBottom: theme.spacing(2),
     backgroundColor: theme.palette.background.paper,
   },
-  row: {
-    height: `calc(100% + ${theme.spacing(2)}px)`,
-    '& > div': { height: '100%' },
-  },
-  title: {
-    'a&:hover': { textDecoration: 'none' },
-    '& > h4': {
-      fontWeight: 700,
-      textTransform: 'uppercase',
-    },
-  },
-  download: {
-    height: '100%',
-    '& > button': {
-      height: '100%',
-      textTransform: 'none',
-    },
-  },
-  controls: {
-    height: '100%',
-    width: '100%',
-    padding: theme.spacing(1, 0),
-    backgroundColor: '#F3EFEF',
-    '& > div:first-of-type': { marginBottom: theme.spacing(2) },
-  },
   graph: {
     display: 'flex',
+    flex: 1,
     height: 'auto',
     '& > div': { margin: 'auto' },
   },
@@ -64,7 +34,6 @@ const useStyles = makeStyles(theme => ({
     height: '100%',
     width: '100%',
     position: 'relative',
-    border: `1px solid ${theme.palette.divider}`,
   },
   links: {
     position: 'absolute',
@@ -80,7 +49,6 @@ const useStyles = makeStyles(theme => ({
 
 const PageLayout = ({
   children,
-  multiSelectScenario,
   showRegion,
   showSource,
   disableDraggableRegion,
@@ -169,65 +137,7 @@ const PageLayout = ({
     }
   }, []);
 
-  /**
-   * The main title, which can be reused in both desktop and mobile layouts.
-   */
-  const title = (
-    <Link href="./" underline="none" onClick={() => analytics.reportNav('landing')} className={classes.title}>
-      <Typography variant="h4" color="primary">{intl.formatMessage({ id: 'common.title' })}</Typography>
-    </Link>
-  );
-
-  /**
-   * The control panel, which can be reused in both desktop and mobile layouts.
-   */
-  const controls = (
-    <Grid container direction="column" wrap="nowrap" className={classes.controls}>
-      <Grid item><ScenarioSelect multiSelect={multiSelectScenario} /></Grid>
-      <Grid item><HorizontalControlBar /></Grid>
-    </Grid>
-  );
-
-  /**
-   * Construct the header / controls based on the screen size.
-   * Note: CER template uses custom breakpoints.
-   */
-  const header = desktop ? (
-    <>
-      {/* Row 1: main title; year select; download button */}
-      <Grid item xs={12}>
-        <Grid container alignItems="flex-end" wrap="nowrap" spacing={2}>
-          <Grid item style={{ width: LEAD_COL_WIDTH }}>{title}</Grid>
-          <Grid item style={{ flexGrow: 1 }}><YearSelect /></Grid>
-          <Grid item className={classes.download}><DownloadButton accent /></Grid>
-        </Grid>
-      </Grid>
-
-      {/* Row 2: page select; scenario select and utility bar (stacked); social media links */}
-      <Grid item xs={12}>
-        <Grid container alignItems="center" wrap="nowrap" spacing={2} className={classes.row}>
-          <Grid item style={{ width: LEAD_COL_WIDTH }}><PageTitle /></Grid>
-          <Grid item style={{ flexGrow: 1 }}>{controls}</Grid>
-          <Grid item style={{ width: 40 }}><Share /></Grid>
-        </Grid>
-      </Grid>
-
-      {/* Row 3: link buttons (at bottom); vertical draggable lists; visualization */}
-      <Grid item style={{ width: 100 }}><PageSelect /></Grid>
-    </>
-  ) : (
-    <>
-      <Grid item xs={12}>{title}</Grid>
-      <Grid item xs={12}><YearSelect hideTip /></Grid>
-      <Grid item xs={12}>
-        <Grid container alignItems="center" wrap="nowrap" spacing={2} className={classes.row}>
-          <Grid item><PageTitle /></Grid>
-          <Grid item style={{ height: '100%' }}><PageSelect direction="row" /></Grid>
-        </Grid>
-      </Grid>
-      <Grid item xs={12}>{controls}</Grid>
-    </>
-  );
+  const chartTitle = useChartTitle();
 
   /**
    * Render nothing if the baseYear value is out of range.
@@ -245,8 +155,7 @@ const PageLayout = ({
 
   return (
     <Grid container spacing={2} className={classes.root}>
-      {header}
-
+      <Header />
       {showSource && (
         <Grid item style={{ width: 70 }}>
           <DraggableVerticalList
@@ -284,19 +193,26 @@ const PageLayout = ({
           />
         </Grid>
       )}
-      {vis?.length && vis?.length > 0 && (
-        <Grid item className={classes.graph} style={{ width: vizWidth }}>
-          {loading && <CircularProgress color="primary" size={66} className={classes.loading} />}
-          {error && <Alert severity="error"><AlertTitle>Error</AlertTitle>{error}</Alert>}
-          {!loading && !error && <div ref={vizRef} className={classes.vis}>{vis}</div>}
+      <Grid container item direction="column" style={{ width: vizWidth }}>
+        <Grid item>
+          <Typography variant="h6">
+            {chartTitle}
+          </Typography>
         </Grid>
-      )}
+        {vis?.length && vis?.length > 0 && (
+          <Grid item className={classes.graph}>
+            {loading && <CircularProgress color="primary" size={66} />}
+            {error && <Alert severity="error"><AlertTitle>Error</AlertTitle>{error}</Alert>}
+            {!loading && !error && <div ref={vizRef} className={classes.vis}>{vis}</div>}
+          </Grid>
+        )}
+      </Grid>
 
       <Grid item xs={12} className={desktop ? classes.links : ''}>
         <Grid container alignItems="flex-start" wrap="nowrap" spacing={2}>
           <Grid item><LinkButtonGroup direction={desktop ? 'column' : 'row'} /></Grid>
           <Grid item style={{ flexGrow: 1 }} />
-          {!desktop && <Grid item className={classes.download}><DownloadButton /></Grid>}
+          {!desktop && <Grid item><DownloadButton /></Grid>}
           {!desktop && <Grid item><Share direction="row" /></Grid>}
         </Grid>
       </Grid>
@@ -306,7 +222,6 @@ const PageLayout = ({
 
 PageLayout.propTypes = {
   children: PropTypes.node,
-  multiSelectScenario: PropTypes.bool,
   showRegion: PropTypes.bool,
   showSource: PropTypes.bool,
   disableDraggableRegion: PropTypes.bool,
@@ -317,7 +232,6 @@ PageLayout.propTypes = {
 
 PageLayout.defaultProps = {
   children: undefined,
-  multiSelectScenario: false,
   showRegion: false,
   showSource: false,
   disableDraggableRegion: false,

@@ -10,7 +10,6 @@ import { getMaxTick } from '../../utilities/parseData';
 import { fillLayerScenario } from '../../components/FillLayer';
 import ForecastLayer from '../../components/ForecastLayer';
 import VizTooltip from '../../components/VizTooltip';
-import MaxTick from '../../components/MaxTick';
 import HistoricalLayer from '../../components/HistoricalLayer';
 
 /**
@@ -67,12 +66,6 @@ const Scenarios = ({ data, year }) => {
       .map((_, i) => Math.max(...values.map(source => source[i].y)));
     return getMaxTick(Math.max(...sums), true);
   }, [data]);
-  const axisFormat = useCallback(
-    value => (Math.abs(value - Math.max(...axis.ticks)) < Number.EPSILON
-      ? <MaxTick value={value} unit={config.unit} />
-      : value),
-    [axis.ticks, config.unit],
-  );
 
   /**
    * Format tooltip.
@@ -133,7 +126,6 @@ const Scenarios = ({ data, year }) => {
         axisRight={{
           ...CHART_AXIS_PROPS,
           tickValues: axis.ticks,
-          format: axisFormat,
         }}
         enableSlices="x"
         sliceTooltip={getTooltip}

@@ -10,6 +10,7 @@ import analytics from "../../analytics";
 import {Button, makeStyles} from "@material-ui/core";
 import {IconDownload} from "../../icons";
 import PropTypes from "prop-types";
+import useIsDesktop from "../../hooks/useIsDesktop";
 
 // TODO: Remove after refactoring into useEnergyFutureData to provide a uniform data structure
 const selectionUnits = {
@@ -21,27 +22,33 @@ const selectionUnits = {
 
 const useStyles = makeStyles(theme => ({
   download: {
-    height: 'auto',
-    minHeight: 26,
-    width: 102,
-    minWidth: 0,
-    padding: theme.spacing(0.25, 1),
-    border: '1px solid transparent',
-    fontSize: 13,
-    letterSpacing: -0.25,
-    textAlign: 'left',
-    textTransform: 'initial',
-    justifyContent: 'left',
+    [theme.breakpoints.down('sm')]: {
+      maxWidth: 130,
+      textAlign: 'right',
+      height: '100%',
+      textTransform: 'none',
+    },
+    [theme.breakpoints.up('md')]: {
+      ...theme.mixins.contextButton,
+      width: "100%",
+    }
   },
   label: {
-    fontSize: 13,
+    [theme.breakpoints.down('sm')]: {
+      fontSize: 14,
+      lineHeight: 1.2,
+    },
+    [theme.breakpoints.up('md')]: {
+      fontSize: 13,
+    }
   },
-  accent: { borderLeft: `8px solid ${theme.palette.primary.main}` },
+  accent: { ...theme.mixins.contextAccent, },
 }));
 
 const DownloadButton = ({ accent }) => {
   const classes = useStyles();
   const intl = useIntl();
+  const isDesktop = useIsDesktop();
   const {
     regions: { order: regionOrder },
     sources: { electricity: { order: sourceOrder } },
@@ -164,7 +171,7 @@ const DownloadButton = ({ accent }) => {
     <Button
       variant="contained"
       color="secondary"
-      startIcon={<IconDownload />}
+      startIcon={!isDesktop ? <IconDownload /> : <></>}
       onClick={onClick}
       className={classes.download}
       classes={{ root: `${accent ? classes.accent : ''}`, label: classes.label }}

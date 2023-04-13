@@ -6,7 +6,6 @@ import { ResponsiveLine } from '@nivo/line';
 import Scenarios, { dottedLayer } from '.';
 import { TestContainer, getRendered } from '../../tests/utilities';
 import VizTooltip from '../../components/VizTooltip';
-import MaxTick from '../../components/MaxTick';
 import { DEFAULT_CONFIG, MOCK_DATA } from './stories';
 
 const getComponent = (data, year) => (
@@ -48,12 +47,6 @@ describe('Page|Scenarios', () => {
           }],
         },
       })).toHaveProperty('type', VizTooltip);
-
-      expect(wrapper.find(ResponsiveLine).prop('axisBottom').format(2005)).toEqual(2005);
-      expect(wrapper.find(ResponsiveLine).prop('axisBottom').format(2008)).toEqual('');
-
-      expect(wrapper.find(ResponsiveLine).prop('axisRight').format(10925.7427)).toEqual(10925.7427);
-      expect(wrapper.find(ResponsiveLine).prop('axisRight').format(12171)).toHaveProperty('type', MaxTick);
     });
   });
 
