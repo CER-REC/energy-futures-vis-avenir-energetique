@@ -23,6 +23,11 @@ export const API_HOST = process.env.API_HOST || '';
 
 export const PAGES = [
   {
+    label: 'Scenarios',
+    id: 'scenarios',
+    bg: '#CA9830',
+  },
+  {
     label: 'Landing',
     id: 'landing',
     bg: '#EEE',
@@ -48,11 +53,6 @@ export const PAGES = [
       electricityGeneration: 'electricity',
     },
     views: ['region', 'source'],
-  },
-  {
-    label: 'Scenarios',
-    id: 'scenarios',
-    bg: '#CA9830',
   },
   {
     label: 'Oil-and-Gas',
