@@ -55,18 +55,27 @@ const Header = () => {
     </Link>
   );
 
+  const yearSelect = (
+    <Grid item xs={2} style={{ textAlign: 'right' }}>
+      {/* TODO: Year Select */}
+      <div />
+    </Grid>
+  );
+
   // Note: CER template uses custom breakpoints.
   return (
     <>
       <Grid item xs={12}>
-        <Grid container alignItems="flex-end" wrap="nowrap" spacing={2}>
-          <Grid item xs={10}>{title}</Grid>
-          <Grid item xs={2} style={{ textAlign: 'right' }}>
-            {/* TODO: Year Select */}
-            <div />
-          </Grid>
+        <Grid item xs={12} md={10}>{title}</Grid>
+        {
+          isDesktop && yearSelect
+        }
+        <Grid item xs={10} md={12}>
+          <Typography variant="h6" style={{ fontWeight: 'bold' }}>{intl.formatMessage({ id: 'components.header.subtitle' })}</Typography>
         </Grid>
-        <Typography variant="h6" style={{ fontWeight: 'bold' }}>{intl.formatMessage({ id: 'components.header.subtitle' })}</Typography>
+        {
+          !isDesktop && yearSelect
+        }
       </Grid>
 
       <Grid item xs={12} style={{ marginBottom: '0.3em' }}>
@@ -79,7 +88,7 @@ const Header = () => {
                 </Grid>
               )
             }
-            <Grid item md={11} xs={12} style={{ width: '100%' }}>
+            <Grid item md={11} xs={12}>
               <ScenarioSelect multiSelect={multiSelectScenario} />
             </Grid>
           </Grid>

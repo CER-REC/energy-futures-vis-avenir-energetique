@@ -40,7 +40,7 @@ describe('Component|PageSelect', () => {
     test('should render section buttons', () => {
       expect(wrapper.find(HintMainSelect)).not.toBeNull();
 
-      // 2 scenario buttons for 2020 report year
+      // scenario buttons for 2020 report year
       const buttons = wrapper.find(Button);
       expect(buttons.length).toBe(3);
       expect(expect.arrayContaining(buttons.map(btn => btn.text()))).toEqual(['Reference', 'Higher Carbon Price', 'Technology']);
