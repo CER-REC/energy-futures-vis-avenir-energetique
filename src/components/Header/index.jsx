@@ -39,6 +39,14 @@ const useStyles = makeStyles(theme => ({
       fill: '#CCC',
     },
   },
+  pageSelectContainer: {
+    [theme.breakpoints.down('sm')]: {
+      marginLeft: '0.25em'
+    },
+    [theme.breakpoints.up('md')]: {
+      marginRight: '0.15em'
+    },
+  },
 }));
 
 const Header = () => {
@@ -97,12 +105,9 @@ const Header = () => {
           )}
         </Grid>
       </Grid>
-
-      {
-        isDesktop && (
-          <Grid item style={{ width: 100 }}><PageSelect /></Grid>
-        )
-      }
+      <Grid item xs={12} md={1} className={classes.pageSelectContainer}>
+        <PageSelect direction={isDesktop ? 'column' : 'row'}/>
+      </Grid>
     </>
   );
 };
