@@ -15,6 +15,11 @@ import DownloadButton from '../DownloadButton';
 import useIsDesktop from '../../hooks/useIsDesktop';
 
 const useStyles = makeStyles(theme => createStyles({
+  root: {
+    [theme.breakpoints.up('md')]: {
+      marginTop: '1em',
+    },
+  },
   title: {
     color: theme.palette.primary.main,
     fontWeight: 700,
@@ -27,7 +32,7 @@ const useStyles = makeStyles(theme => createStyles({
   },
   btn: {
     ...theme.mixins.contextButton,
-    width: 102,
+    width: 92,
   },
   popUp: {
     position: 'absolute',
@@ -157,6 +162,7 @@ const LinkButtonGroup = ({ direction }) => {
         direction={direction}
         alignItems="flex-start"
         spacing={direction === 'row' ? 1 : 0}
+        className={classes.root}
       >
         {direction === 'column' && (
           <Grid item xs={12} style={{ marginBottom: 8 }}>
@@ -166,7 +172,7 @@ const LinkButtonGroup = ({ direction }) => {
         <Grid item className={direction === 'row' ? '' : classes.accent}>{generateButton(link.report)}</Grid>
         {direction === 'column' && <Grid item style={{ height: 8 }} />}
         {isDesktop && (
-          <Grid item className={classes.btnContainer}><DownloadButton accent /></Grid>
+          <Grid item style={{ width: 100 }}><DownloadButton accent /></Grid>
         )}
         {direction === 'column' && <Grid item style={{ height: 8 }} />}
         <Grid item className={direction === 'row' ? '' : classes.accent}>{generateButton(link.methodology)}</Grid>

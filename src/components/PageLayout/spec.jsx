@@ -10,7 +10,7 @@ import Share from '../Share';
 import ScenarioSelect from '../ScenarioSelect';
 import DraggableVerticalList from '../DraggableVerticalList';
 import LinkButtonGroup from '../LinkButtonGroup';
-import PageSelect from "../PageSelect";
+import PageSelect from '../PageSelect';
 
 const DEFAULT_CONFIG = {
   page: 'by-sector',
