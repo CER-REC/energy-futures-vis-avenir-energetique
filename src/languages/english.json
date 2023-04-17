@@ -197,6 +197,13 @@
       "historical": "historical"
     },
     "pageSelect": {
+      "defaultTitle": "{title} modelled with {scenario}",
+      "Emissions": {
+        "title": {
+          "default": "Emissions"
+        },
+        "description": ""
+      },
       "By Region": {
         "title": {
           "energyDemand": "Total End-Use Demand By Region",

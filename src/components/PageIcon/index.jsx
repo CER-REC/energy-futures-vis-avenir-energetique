@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-  IconPageElectricity,
+  IconPageElectricity, IconPageEmissions,
   IconPageOilAndGas,
   IconPageRegion,
   IconPageScenarios,
@@ -10,6 +10,7 @@ import {
 
 const PageIcon = ({ id }) => {
   switch (id) {
+    case 'emissions': return <IconPageEmissions />;
     case 'by-region': return <IconPageRegion />;
     case 'by-sector': return <IconPageSector />;
     case 'electricity': return <IconPageElectricity />;

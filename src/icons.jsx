@@ -282,6 +282,15 @@ export const IconTransportation = props => (
  * Pages
  */
 
+// TODO: Replace with emissions icon
+export const IconPageEmissions = props => (
+  <SvgIcon {...props} viewBox="88 88 224 224">
+    <path d="M167.8,278.7h15V167.7h-15V278.7z M266.5,204.9v73.8h15v-73.8H266.5z M118.5,278.7h15v-44.4h-15V278.7z M217.2,278.7h15
+    V121.3h-15V278.7z"
+    />
+  </SvgIcon>
+);
+
 export const IconPageRegion = props => (
   <SvgIcon {...props} viewBox="88 88 224 224">
     <path d="M167.8,278.7h15V167.7h-15V278.7z M266.5,204.9v73.8h15v-73.8H266.5z M118.5,278.7h15v-44.4h-15V278.7z M217.2,278.7h15
