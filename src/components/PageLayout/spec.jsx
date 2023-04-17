@@ -10,6 +10,7 @@ import Share from '../Share';
 import ScenarioSelect from '../ScenarioSelect';
 import DraggableVerticalList from '../DraggableVerticalList';
 import LinkButtonGroup from '../LinkButtonGroup';
+import PageSelect from "../PageSelect";
 
 const DEFAULT_CONFIG = {
   page: 'by-sector',
@@ -87,8 +88,7 @@ describe('Component|PageLayout', () => {
       expect(wrapper.findWhere(node => node.type() === Typography && node.text() === 'Exploring Canada’s Energy Future').exists()).toBeTruthy();
       expect(wrapper.find(ScenarioSelect).exists()).toBeTruthy();
       expect(wrapper.find(Share).exists()).toBeTruthy();
-      // TODO: Add this back in after PageSelect is added back
-      // expect(wrapper.find(PageSelect).exists()).toBeTruthy();
+      expect(wrapper.find(PageSelect).exists()).toBeTruthy();
 
       // should render 2 vertical lists
       expect(wrapper.find(DraggableVerticalList).length).toBe(2);
@@ -150,8 +150,7 @@ describe('Component|PageLayout', () => {
       expect(getRendered(PageLayout, wrapper).type()).not.toBeNull();
 
       // verify the shape of different components
-      // TODO: Add this back in after PageSelect is added back
-      // expect(wrapper.find(PageSelect).prop('direction')).toBe('row');
+      expect(wrapper.find(PageSelect).prop('direction')).toBe('row');
       expect(wrapper.find(LinkButtonGroup).prop('direction')).toBe('row');
       expect(wrapper.find(Share).prop('direction')).toBe('row');
     });
