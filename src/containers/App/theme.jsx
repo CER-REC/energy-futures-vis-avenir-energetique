@@ -30,7 +30,6 @@ const theme = createMuiTheme({
     contextButton: {
       height: 'auto',
       minHeight: 26,
-
       minWidth: 0,
       padding: defaultTheme.spacing(0.25, 1),
       border: '1px solid transparent',

@@ -65,15 +65,6 @@ const useStyles = makeStyles(theme => ({
     },
     '& svg': { fontSize: 16 },
   },
-  download: {
-    maxWidth: 130,
-    textAlign: 'right',
-  },
-  label: {
-    fontSize: 14,
-    lineHeight: 1.2,
-  },
-  accent: { borderRight: `8px solid ${theme.palette.primary.main}` },
 }));
 
 const Share = ({ direction, keepMounted }) => {
