@@ -11,7 +11,7 @@ import Electricity from '../../pages/Electricity';
 import Demand from '../../pages/Demand';
 import OilAndGas from '../../pages/OilAndGas';
 import useConfig, { ConfigProvider } from '../../hooks/useConfig';
-import Emissions from "../../pages/Emissions";
+import Emissions from '../../pages/Emissions';
 
 const Content = () => {
   const { config } = useConfig();

@@ -5,7 +5,8 @@ import { Typography, ButtonBase } from '@material-ui/core';
 import { PageSelect, PageTitle } from '.';
 import { TestContainer, getRendered } from '../../tests/utilities';
 import {
-  IconPageRegion, IconPageSector, IconPageElectricity, IconPageScenarios, IconPageOilAndGas,
+  IconPageRegion, IconPageSector, IconPageElectricity,
+  IconPageScenarios, IconPageOilAndGas, IconPageEmissions,
 } from '../../icons';
 
 const DEFAULT_CONFIG = {
@@ -41,15 +42,16 @@ describe('Component|PageSelect', () => {
 
   test('should render page titles', () => {
     const titles = wrapper.find(Typography);
-    const names = ['By Region', 'By Energy Source', 'Electricity', 'Scenarios', 'Oil and Gas'];
+    const names = ['Emissions', 'By Region', 'By Energy Source', 'Electricity', 'Scenarios', 'Oil and Gas'];
     expect(expect.arrayContaining(titles.map(title => title.text()))).toEqual(names);
   });
 
   test('should render section buttons', () => {
-    // 5 regular buttons
+    // 6 regular buttons
     const buttons = wrapper.find(ButtonBase);
-    expect(buttons.length).toBe(5);
+    expect(buttons.length).toBe(6);
 
+    expect(wrapper.find(IconPageEmissions)).not.toBeNull();
     expect(wrapper.find(IconPageRegion)).not.toBeNull();
     expect(wrapper.find(IconPageElectricity)).not.toBeNull();
     expect(wrapper.find(IconPageOilAndGas)).not.toBeNull();

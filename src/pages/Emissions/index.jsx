@@ -1,7 +1,5 @@
-﻿import React from 'react';
+import React from 'react';
 
-const Emissions = ({ }) => {
-  return <div />;
-}
+const Emissions = () => <div />;
 
 export default Emissions;
