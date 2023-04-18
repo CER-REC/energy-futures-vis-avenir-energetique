@@ -12,5 +12,9 @@ module.exports = ({ config }) => {
       chunkFilename: devMode ? '[id].css' : '[id].[hash].css',
     }),
   );
+  config.module.rules.push({
+    test: /\.html$/,
+    use: 'raw-loader',
+  });
   return config;
 };
