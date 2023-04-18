@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React, { useCallback } from 'react';
+import React from 'react';
 import { useIntl } from 'react-intl';
 import PropTypes from 'prop-types';
 import {
@@ -12,28 +12,6 @@ import analytics from '../../analytics';
 import PageIcon from '../PageIcon';
 
 const useStyles = makeStyles(theme => createStyles({
-  title: {
-    position: 'relative',
-    height: '100%',
-    width: '100%',
-    backgroundColor: '#F3EFEF',
-    overflow: 'hidden',
-    '& > svg': {
-      position: 'absolute',
-      top: '50%',
-      left: '-4%',
-      height: '120%',
-      maxHeight: 132,
-      width: 'auto',
-      fill: '#CCC',
-      transform: 'translateY(-50%)',
-    },
-    '& > h5': {
-      margin: theme.spacing(1, 2, 1, 15),
-      fontWeight: '700',
-    },
-  },
-
   box: {
     height: 98,
     width: 72,
@@ -70,16 +48,6 @@ const useStyles = makeStyles(theme => createStyles({
       transition: 'color .35s ease-in-out',
     },
   },
-  label: {
-    textAlign: 'left',
-    overflow: 'hidden',
-    transition: 'height .5s ease-in-out, width .5s ease-in-out',
-    '& > h5': {
-      marginLeft: theme.spacing(2),
-      transition: 'opacity .5s ease-in-out',
-    },
-    '& > h5:first-of-type': { fontWeight: 700 },
-  },
   tooltip: {
     margin: theme.spacing(0, 1),
     fontSize: 14,
@@ -96,57 +64,7 @@ const useStyles = makeStyles(theme => createStyles({
   },
 }));
 
-export const PageTitle = () => {
-  const classes = useStyles();
-  const intl = useIntl();
-
-  const { config } = useConfig();
-
-  /**
-   * Generate the translation of the selected page title.
-   */
-  const getTitle = useCallback((page) => {
-    switch (page?.id) {
-      case 'by-region':
-        return intl.formatMessage({
-          id: `components.pageSelect.${page.label}.title.${config.mainSelection}`,
-          defaultMessage: intl.formatMessage({ id: `components.pageSelect.${page.label}.title.default` }),
-        });
-      case 'by-sector':
-        return intl.formatMessage({
-          id: `components.pageSelect.${page.label}.title.${config.sector}`,
-          defaultMessage: intl.formatMessage({ id: `components.pageSelect.${page.label}.title.default` }),
-        });
-      case 'electricity':
-        return intl.formatMessage({
-          id: `components.pageSelect.${page.label}.title.${config.view}`,
-          defaultMessage: intl.formatMessage({ id: `components.pageSelect.${page.label}.title.default` }),
-        });
-      case 'scenarios':
-        return intl.formatMessage({
-          id: `components.pageSelect.${page.label}.title.${config.mainSelection}`,
-          defaultMessage: intl.formatMessage({ id: `components.pageSelect.${page.label}.title.default` }),
-        });
-      case 'oil-and-gas':
-        return intl.formatMessage({
-          id: `components.pageSelect.${page.label}.title.${config.mainSelection}.${config.view}`,
-          defaultMessage: intl.formatMessage({ id: `components.pageSelect.${page.label}.title.default` }),
-        });
-      default: return page?.label;
-    }
-  }, [intl, config.mainSelection, config.sector, config.view]);
-
-  return (
-    <Grid container alignItems="center" wrap="nowrap" className={classes.title}>
-      <PageIcon id={config.page} />
-      <Typography variant="h5" color="secondary">
-        {getTitle(PAGES.find(page => page.id === config.page))}
-      </Typography>
-    </Grid>
-  );
-};
-
-export const PageSelect = ({ direction /* row, column */ }) => {
+const PageSelect = ({ direction /* row, column */ }) => {
   const classes = useStyles();
   const intl = useIntl();
 
@@ -207,3 +125,5 @@ export const PageSelect = ({ direction /* row, column */ }) => {
 
 PageSelect.propTypes = { direction: PropTypes.string };
 PageSelect.defaultProps = { direction: 'column' };
+
+export default PageSelect;
