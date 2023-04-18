@@ -12,7 +12,8 @@ import { validYear } from '../../utilities/parseData';
 import { PAGES } from '../../constants';
 import DraggableVerticalList from '../DraggableVerticalList';
 import LinkButtonGroup from '../LinkButtonGroup';
-import { DownloadButton, Share } from '../Share';
+import Share from '../Share';
+import DownloadButton from '../DownloadButton';
 import Header from '../Header';
 import useChartTitle from '../../hooks/useChartTitle';
 
@@ -211,7 +212,7 @@ const PageLayout = ({
         <Grid container alignItems="flex-start" wrap="nowrap" spacing={2}>
           <Grid item><LinkButtonGroup direction={desktop ? 'column' : 'row'} /></Grid>
           <Grid item style={{ flexGrow: 1 }} />
-          {!desktop && <Grid item className={classes.download}><DownloadButton /></Grid>}
+          {!desktop && <Grid item><DownloadButton /></Grid>}
           {!desktop && <Grid item><Share direction="row" /></Grid>}
         </Grid>
       </Grid>

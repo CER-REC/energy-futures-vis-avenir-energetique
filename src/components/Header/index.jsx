@@ -2,7 +2,7 @@ import { useIntl } from 'react-intl';
 import { Grid, Link, makeStyles, Typography } from '@material-ui/core';
 import React from 'react';
 import YearSelect from '../YearSelect';
-import { Share } from '../Share';
+import Share from '../Share';
 import { PageSelect, PageTitle } from '../PageSelect';
 import ScenarioSelect from '../ScenarioSelect';
 import HorizontalControlBar from '../HorizontalControlBar';
