@@ -207,7 +207,7 @@ const PageLayout = ({
         !desktop && (
           <Grid item xs={12}>
             <Grid container alignItems="flex-start" wrap="nowrap" spacing={2}>
-              <Grid item><LinkButtonGroup direction='row'/></Grid>
+              <Grid item><LinkButtonGroup direction='row' /></Grid>
               <Grid item style={{ flexGrow: 1 }} />
               <Grid item><DownloadButton /></Grid>
               <Grid item><Share direction="row" /></Grid>

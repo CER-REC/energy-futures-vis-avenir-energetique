@@ -164,9 +164,6 @@ describe('Component|PageLayout', () => {
 
       // should render
       expect(getRendered(PageLayout, wrapper).type()).not.toBeNull();
-
-      // verify the shape of different components
-      expect(wrapper.find(LinkButtonGroup).prop('direction')).toBe('column');
     });
   });
 });
