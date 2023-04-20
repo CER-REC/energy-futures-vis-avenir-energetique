@@ -7,7 +7,7 @@ import analytics from '../../analytics';
 
 import HorizontalControlBar from '.';
 import { IconTransportation, IconResidential, IconCommercial, IconIndustrial } from '../../icons';
-import { HintMainSelect, HintSectorSelect, HintViewSelect, HintUnitSelect } from '../Hint';
+import { HintMainSelect, HintSectorSelect, HintViewSelect } from '../Hint';
 import { TestContainer, getRendered } from '../../tests/utilities';
 
 const DEFAULT_CONFIG = {
@@ -45,25 +45,19 @@ describe('Component|HorizontalControlBar', () => {
       expect(getRendered(HorizontalControlBar, wrapper).exists()).toBeTruthy();
     });
 
-    test('should render section titles', () => {
-      expect(wrapper.findWhere(node => node.type() === Typography && node.text() === 'UNIT').exists()).toBeTruthy();
-    });
-
     test('should render section buttons', () => {
       // 2 'help' buttons
-      expect(wrapper.find(IconButton)).toHaveLength(2);
+      expect(wrapper.find(IconButton)).toHaveLength(1);
 
       expect(wrapper.find(HintMainSelect).exists()).toBeTruthy();
-      expect(wrapper.find(HintUnitSelect).exists()).toBeTruthy();
 
-      // 6 regular buttons
-      expect(wrapper.find(Button)).toHaveLength(6);
-      expect(wrapper.find(Button).map(btn => btn.text()).sort()).toEqual(['Total Demand', 'Electricity Generation', 'Oil Production', 'Gas Production', 'PJ', 'Mboe/d'].sort());
+      // 4 regular buttons
+      expect(wrapper.find(Button)).toHaveLength(4);
+      expect(wrapper.find(Button).map(btn => btn.text()).sort()).toEqual(['Total Demand', 'Electricity Generation', 'Oil Production', 'Gas Production'].sort());
     });
 
     test('should select correct buttons', () => {
       expect(wrapper.findWhere(node => node.type() === Button && node.text() === 'Total Demand').at(0).prop('variant')).toEqual('contained');
-      expect(wrapper.findWhere(node => node.type() === Button && node.text() === 'PJ').at(0).prop('variant')).toEqual('contained');
     });
 
     test('should buttons clickable', async () => {
@@ -94,29 +88,26 @@ describe('Component|HorizontalControlBar', () => {
 
     test('should render section titles', () => {
       expect(wrapper.findWhere(node => node.type() === Typography && node.text() === 'SECTOR').exists()).toBeTruthy();
-      expect(wrapper.findWhere(node => node.type() === Typography && node.text() === 'UNIT').exists()).toBeTruthy();
     });
 
     test('should render section buttons', () => {
       // 2 'help' buttons
-      expect(wrapper.find(IconButton)).toHaveLength(2);
+      expect(wrapper.find(IconButton)).toHaveLength(1);
 
       expect(wrapper.find(HintSectorSelect).exists()).toBeTruthy();
-      expect(wrapper.find(HintUnitSelect).exists()).toBeTruthy();
 
-      // 7 regular buttons
-      expect(wrapper.find(Button)).toHaveLength(7);
+      // 5 regular buttons
+      expect(wrapper.find(Button)).toHaveLength(5);
 
       expect(wrapper.find(IconTransportation).exists()).toBeTruthy();
       expect(wrapper.find(IconResidential).exists()).toBeTruthy();
       expect(wrapper.find(IconCommercial).exists()).toBeTruthy();
       expect(wrapper.find(IconIndustrial).exists()).toBeTruthy();
-      expect(wrapper.find(Button).map(btn => btn.text()).filter(Boolean).sort()).toEqual(['Total Demand', 'PJ', 'Mboe/d'].sort());
+      expect(wrapper.find(Button).map(btn => btn.text()).filter(Boolean).sort()).toEqual(['Total Demand', 'Commercial', 'Industrial', 'Residential', 'Transportation'].sort());
     });
 
     test('should select correct buttons', () => {
       expect(wrapper.findWhere(node => node.type() === Button && node.text() === 'Total Demand').at(0).prop('variant')).toEqual('contained');
-      expect(wrapper.findWhere(node => node.type() === Button && node.text() === 'PJ').at(0).prop('variant')).toEqual('contained');
     });
 
     test('should buttons clickable', async () => {
@@ -147,24 +138,21 @@ describe('Component|HorizontalControlBar', () => {
 
     test('should render section titles', () => {
       expect(wrapper.findWhere(node => node.type() === Typography && node.text() === 'VIEW BY').exists()).toBeTruthy();
-      expect(wrapper.findWhere(node => node.type() === Typography && node.text() === 'UNIT').exists()).toBeTruthy();
     });
 
     test('should render section buttons', () => {
       // 2 'help' buttons
-      expect(wrapper.find(IconButton)).toHaveLength(2);
+      expect(wrapper.find(IconButton)).toHaveLength(1);
 
       expect(wrapper.find(HintViewSelect).exists()).toBeTruthy();
-      expect(wrapper.find(HintUnitSelect).exists()).toBeTruthy();
 
-      // 5 regular buttons
-      expect(wrapper.find(Button)).toHaveLength(5);
-      expect(wrapper.find(Button).map(btn => btn.text()).filter(Boolean).sort()).toEqual(['Region', 'Source', 'GW.h', 'PJ', 'Mboe/d'].sort());
+      // 2 regular buttons
+      expect(wrapper.find(Button)).toHaveLength(2);
+      expect(wrapper.find(Button).map(btn => btn.text()).filter(Boolean).sort()).toEqual(['Region', 'Source'].sort());
     });
 
     test('should select correct buttons', () => {
       expect(wrapper.findWhere(node => node.type() === Button && node.text() === 'Region').at(0).prop('variant')).toEqual('contained');
-      expect(wrapper.findWhere(node => node.type() === Button && node.text() === 'GW.h').at(0).prop('variant')).toEqual('contained');
     });
 
     test('should buttons clickable', async () => {
@@ -193,34 +181,19 @@ describe('Component|HorizontalControlBar', () => {
       expect(getRendered(HorizontalControlBar, wrapper).exists()).toBeTruthy();
     });
 
-    test('should render section titles', () => {
-      expect(wrapper.findWhere(node => node.type() === Typography && node.text() === 'UNIT').exists()).toBeTruthy();
-    });
-
     test('should render section buttons', () => {
       // 2 'help' buttons
-      expect(wrapper.find(IconButton)).toHaveLength(2);
+      expect(wrapper.find(IconButton)).toHaveLength(1);
 
       expect(wrapper.find(HintMainSelect).exists()).toBeTruthy();
-      expect(wrapper.find(HintUnitSelect).exists()).toBeTruthy();
 
-      // 6 regular buttons
-      expect(wrapper.find(Button)).toHaveLength(6);
-      expect(wrapper.find(Button).map(btn => btn.text()).sort()).toEqual(['Total Demand', 'Electricity Generation', 'Oil Production', 'Gas Production', 'PJ', 'Mboe/d'].sort());
+      // 4 regular buttons
+      expect(wrapper.find(Button)).toHaveLength(4);
+      expect(wrapper.find(Button).map(btn => btn.text()).sort()).toEqual(['Total Demand', 'Electricity Generation', 'Oil Production', 'Gas Production'].sort());
     });
 
     test('should select correct buttons', () => {
       expect(wrapper.findWhere(node => node.type() === Button && node.text() === 'Total Demand').at(0).prop('variant')).toEqual('contained');
-      expect(wrapper.findWhere(node => node.type() === Button && node.text() === 'PJ').at(0).prop('variant')).toEqual('contained');
-    });
-
-    test('should buttons clickable', async () => {
-      await act(async () => {
-        wrapper.findWhere(node => node.type() === Button && node.text() === 'Mboe/d').at(0).prop('onClick')();
-        await new Promise(resolve => setTimeout(resolve));
-        wrapper.update();
-        expect(spyAnalytics).toBeCalled();
-      });
     });
   });
 
@@ -242,26 +215,23 @@ describe('Component|HorizontalControlBar', () => {
 
     test('should render section titles', () => {
       expect(wrapper.findWhere(node => node.type() === Typography && node.text() === 'VIEW BY').exists()).toBeTruthy();
-      expect(wrapper.findWhere(node => node.type() === Typography && node.text() === 'UNIT').exists()).toBeTruthy();
     });
 
     test('should render section buttons', () => {
-      // 3 'help' buttons
-      expect(wrapper.find(IconButton)).toHaveLength(3);
+      // 2 'help' buttons
+      expect(wrapper.find(IconButton)).toHaveLength(2);
 
       expect(wrapper.find(HintMainSelect).exists()).toBeTruthy();
       expect(wrapper.find(HintViewSelect).exists()).toBeTruthy();
-      expect(wrapper.find(HintUnitSelect).exists()).toBeTruthy();
 
-      // 6 regular buttons
-      expect(wrapper.find(Button)).toHaveLength(6);
-      expect(wrapper.find(Button).map(btn => btn.text()).sort()).toEqual(['Oil Production', 'Gas Production', 'Region', 'Type', 'Mb/d', '10³m³/d'].sort());
+      // 4 regular buttons
+      expect(wrapper.find(Button)).toHaveLength(4);
+      expect(wrapper.find(Button).map(btn => btn.text()).sort()).toEqual(['Oil Production', 'Gas Production', 'Region', 'Type'].sort());
     });
 
     test('should select correct buttons', () => {
       expect(wrapper.findWhere(node => node.type() === Button && node.text() === 'Oil Production').at(0).prop('variant')).toEqual('contained');
       expect(wrapper.findWhere(node => node.type() === Button && node.text() === 'Region').at(0).prop('variant')).toEqual('contained');
-      expect(wrapper.findWhere(node => node.type() === Button && node.text() === 'Mb/d').at(0).prop('variant')).toEqual('contained');
     });
 
     test('should buttons clickable', async () => {

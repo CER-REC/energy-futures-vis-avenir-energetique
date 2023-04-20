@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo, useCallback, Children, cloneElement } from 'react';
 import PropTypes from 'prop-types';
-import { makeStyles, useMediaQuery, Grid, CircularProgress, Typography } from '@material-ui/core';
+import { makeStyles, useMediaQuery, Grid, Typography, CircularProgress } from '@material-ui/core';
 import Alert from '@material-ui/lab/Alert';
 import AlertTitle from '@material-ui/lab/AlertTitle';
 import { useIntl } from 'react-intl';
@@ -16,6 +16,7 @@ import Share from '../Share';
 import DownloadButton from '../DownloadButton';
 import Header from '../Header';
 import useChartTitle from '../../hooks/useChartTitle';
+import HorizontalControlBar from '../HorizontalControlBar';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -157,56 +158,63 @@ const PageLayout = ({
   return (
     <Grid container spacing={2} className={classes.root}>
       <Header />
-      {showSource && (
-        <Grid item style={{ width: 70 }}>
-          <DraggableVerticalList
-            title="Source"
-            round
-            disabled={disableDraggableSource}
-            singleSelect={singleSelectSource}
-            greyscale={singleSelectSource}
-            sourceType={type}
-            items={config.sources}
-            itemOrder={config.sourceOrder}
-            defaultItems={sourceItems}
-            defaultItemOrder={sources[type].order}
-            disabledItems={disabledSources}
-            setItems={selectedSources => configDispatch({ type: 'sources/changed', payload: selectedSources })}
-            setItemOrder={sourceOrder => configDispatch({ type: 'sourceOrder/changed', payload: sourceOrder })}
-          />
-        </Grid>
-      )}
-      {showRegion && (
-        <Grid item style={{ width: 70 }}>
-          <DraggableVerticalList
-            title="Region"
-            dense
-            disabled={disableDraggableRegion}
-            singleSelect={singleSelectRegion}
-            greyscale={singleSelectRegion}
-            items={config.provinces}
-            itemOrder={config.provinceOrder}
-            defaultItems={regionItems}
-            defaultItemOrder={regions.order}
-            disabledItems={disabledRegions}
-            setItems={provinces => configDispatch({ type: 'provinces/changed', payload: provinces })}
-            setItemOrder={provinceOrder => configDispatch({ type: 'provinceOrder/changed', payload: provinceOrder })}
-          />
-        </Grid>
-      )}
-      <Grid container item direction="column" style={{ width: vizWidth }}>
-        <Grid item>
-          <Typography variant="h6">
-            {chartTitle}
-          </Typography>
-        </Grid>
-        {vis?.length && vis?.length > 0 && (
-          <Grid item className={classes.graph}>
-            {loading && <CircularProgress color="primary" size={66} />}
-            {error && <Alert severity="error"><AlertTitle>Error</AlertTitle>{error}</Alert>}
-            {!loading && !error && <div ref={vizRef} className={classes.vis}>{vis}</div>}
+      <Grid item style={{ flex: 1, width: '100%' }}>
+        <Grid container style={{ flex: 1 }}>
+          <HorizontalControlBar />
+          <Grid container>
+            {showSource && (
+              <Grid item style={{ width: 70 }}>
+                <DraggableVerticalList
+                  title="Source"
+                  round
+                  disabled={disableDraggableSource}
+                  singleSelect={singleSelectSource}
+                  greyscale={singleSelectSource}
+                  sourceType={type}
+                  items={config.sources}
+                  itemOrder={config.sourceOrder}
+                  defaultItems={sourceItems}
+                  defaultItemOrder={sources[type].order}
+                  disabledItems={disabledSources}
+                  setItems={selectedSources => configDispatch({ type: 'sources/changed', payload: selectedSources })}
+                  setItemOrder={sourceOrder => configDispatch({ type: 'sourceOrder/changed', payload: sourceOrder })}
+                />
+              </Grid>
+            )}
+            {showRegion && (
+              <Grid item style={{ width: 70 }}>
+                <DraggableVerticalList
+                  title="Region"
+                  dense
+                  disabled={disableDraggableRegion}
+                  singleSelect={singleSelectRegion}
+                  greyscale={singleSelectRegion}
+                  items={config.provinces}
+                  itemOrder={config.provinceOrder}
+                  defaultItems={regionItems}
+                  defaultItemOrder={regions.order}
+                  disabledItems={disabledRegions}
+                  setItems={provinces => configDispatch({ type: 'provinces/changed', payload: provinces })}
+                  setItemOrder={provinceOrder => configDispatch({ type: 'provinceOrder/changed', payload: provinceOrder })}
+                />
+              </Grid>
+            )}
+            <Grid container item direction="column" style={{ width: vizWidth }}>
+              <Grid item>
+                <Typography variant="h6">
+                  {chartTitle}
+                </Typography>
+              </Grid>
+              {vis?.length && vis?.length > 0 && (
+                <Grid item className={classes.graph}>
+                  {loading && <CircularProgress color="primary" size={66} />}
+                  {error && <Alert severity="error"><AlertTitle>Error</AlertTitle>{error}</Alert>}
+                  {!loading && !error && <div ref={vizRef} className={classes.vis}>{vis}</div>}
+                </Grid>
+              )}
+            </Grid>
           </Grid>
-        )}
+        </Grid>
       </Grid>
 
       <Grid item xs={12} className={desktop ? classes.links : ''}>
