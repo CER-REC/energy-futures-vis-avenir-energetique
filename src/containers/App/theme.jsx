@@ -27,6 +27,21 @@ const theme = createMuiTheme({
       fontSize: 13,
       textTransform: 'uppercase',
     },
+    contextButton: {
+      height: 'auto',
+      minHeight: 26,
+      minWidth: 0,
+      padding: defaultTheme.spacing(0.25, 1),
+      border: '1px solid transparent',
+      fontSize: 13,
+      letterSpacing: -0.25,
+      textAlign: 'left',
+      textTransform: 'initial',
+      justifyContent: 'left',
+    },
+    contextAccent: {
+      borderLeft: `8px solid ${defaultTheme.palette.primary.main}`,
+    },
   },
   typography: {
     fontFamily: '"FiraSansCondensed", "Roboto", "Helvetica", "Arial", sans-serif',
