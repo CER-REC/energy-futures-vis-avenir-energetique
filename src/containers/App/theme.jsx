@@ -44,6 +44,9 @@ const theme = createMuiTheme({
       borderLeftStyle: 'solid',
       borderLeftColor: defaultTheme.palette.primary.main,
     },
+    selectBorder: {
+      border: '1px solid #A6A6A6',
+    },
   },
   typography: {
     fontFamily: '"FiraSansCondensed", "Roboto", "Helvetica", "Arial", sans-serif',

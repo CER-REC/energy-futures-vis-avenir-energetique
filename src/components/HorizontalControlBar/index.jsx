@@ -3,7 +3,7 @@ import React, { useMemo, useCallback } from 'react';
 import { useIntl } from 'react-intl';
 import {
   makeStyles, createStyles,
-  Grid, Typography, Button, Tooltip, useMediaQuery, useTheme,
+  Grid, Typography, Button, Tooltip,
 } from '@material-ui/core';
 
 import useAPI from '../../hooks/useAPI';
@@ -36,7 +36,6 @@ const useStyles = makeStyles(theme => createStyles({
 const HorizontalControlBar = () => {
   const classes = useStyles();
   const intl = useIntl();
-  const isDesktop = useMediaQuery(useTheme().breakpoints.up('lg'));
 
   const { sectors } = useAPI();
   const { config, configDispatch } = useConfig();
@@ -155,19 +154,11 @@ const HorizontalControlBar = () => {
     </Grid>
   );
 
-  /**
-   * TODO: Add unit dropdown
-   */
-  const units = (
-    <></>
-  );
-
   return (
     <Grid container justify={config.page === 'electricity' ? 'flex-start' : 'space-between'} alignItems="center" spacing={1} className={classes.root}>
       { selections && (<Grid item>{selections}</Grid>) }
       <Grid item>{sectorSelection}</Grid>
       <Grid item>{views}</Grid>
-      { isDesktop && (<Grid item>{units}</Grid>) }
     </Grid>
   );
 };
