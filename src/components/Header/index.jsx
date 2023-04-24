@@ -42,7 +42,7 @@ const useStyles = makeStyles(theme => ({
   },
   pageSelectContainer: {
     [theme.breakpoints.down('sm')]: {
-      marginLeft: '0.25em',
+      margin: theme.spacing(0, 1),
     },
     [theme.breakpoints.up('md')]: {
       marginRight: '0.15em',
