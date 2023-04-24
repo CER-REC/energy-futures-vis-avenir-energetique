@@ -69,12 +69,11 @@ export const getReducer = (regions, sources, sectors, yearIdIterations) => {
     const validScenarios = yearIdIterations[yearId].scenarios;
     const validatedScenarios = validScenarios.filter(scenario => scenarios?.includes(scenario));
 
-    if (validatedScenarios.length) {
-      return (page === 'scenarios') ? validatedScenarios : [validatedScenarios[0]];
+    if (page === 'scenarios') {
+      return validatedScenarios.length ? validatedScenarios : validScenarios;
     }
 
-    // Evolving will always take precedence
-    return validScenarios.includes('Evolving') ? ['Evolving'] : [validScenarios[0]];
+    return validatedScenarios.length ? [validatedScenarios[0]] : [validScenarios[0]];
   };
   const getProvinces = (page, view, provinces) => {
     if (page === initialState.page) {
