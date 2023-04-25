@@ -716,10 +716,6 @@ const Emissions = ({ year }) => {
           value: 0,
           lineStyle: { stroke: 'rgba(0,0,0,1)', strokeWidth: 3 },
         }]}
-        annotations={[{
-          type: 'line',
-          offset: 4,
-        }]}
       />
     </div>
   );
