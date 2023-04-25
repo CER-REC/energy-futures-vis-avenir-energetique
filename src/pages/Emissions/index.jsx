@@ -695,6 +695,7 @@ const Emissions = ({ year }) => {
         data={data}
         keys={sources.order.slice().reverse()}
         layers={[HistoricalLayer, 'grid', 'axes', 'bars', 'markers', ForecastLayer]}
+        padding={0.4}
         indexBy="year"
         maxValue={axis.highest}
         colors={colors}
