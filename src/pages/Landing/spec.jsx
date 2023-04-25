@@ -50,8 +50,8 @@ describe('Component|Landing', () => {
     });
 
     test('should render page portals', async () => {
-      // 5 page portal links
-      expect(wrapper.find('main').find(ButtonBase)).toHaveLength(5);
+      // 6 page portal links
+      expect(wrapper.find('main').find(ButtonBase)).toHaveLength(6);
 
       await act(async () => {
         wrapper.find('main').find(ButtonBase).at(0).prop('onClick')();

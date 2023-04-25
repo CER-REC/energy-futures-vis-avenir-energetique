@@ -11,6 +11,7 @@ import Electricity from '../../pages/Electricity';
 import Demand from '../../pages/Demand';
 import OilAndGas from '../../pages/OilAndGas';
 import useConfig, { ConfigProvider } from '../../hooks/useConfig';
+import Emissions from '../../pages/Emissions';
 
 const Content = () => {
   const { config } = useConfig();
@@ -28,6 +29,7 @@ const Content = () => {
       disableDraggableSource={['electricity', 'oil-and-gas'].includes(config.page)}
       singleSelectSource={config.view === 'source'}
     >
+      {config.page === 'emissions' && <Emissions />}
       {config.page === 'by-region' && <ByRegion />}
       {config.page === 'by-sector' && <BySector />}
       {config.page === 'electricity' && <Electricity />}

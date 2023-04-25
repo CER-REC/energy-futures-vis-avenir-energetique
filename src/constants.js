@@ -25,22 +25,22 @@ export const PAGES = [
   {
     label: 'Scenarios',
     id: 'scenarios',
-    bg: '#CA9830',
   },
   {
     label: 'Landing',
     id: 'landing',
-    bg: '#EEE',
+  },
+  {
+    label: 'Emissions',
+    id: 'emissions',
   },
   {
     label: 'By Region',
     id: 'by-region',
-    bg: '#6799CC',
   },
   {
     label: 'By Sector',
     id: 'by-sector',
-    bg: '#349999',
     sourceTypes: {
       energyDemand: 'energy',
     },
@@ -48,7 +48,6 @@ export const PAGES = [
   {
     label: 'Electricity',
     id: 'electricity',
-    bg: '#363796',
     sourceTypes: {
       electricityGeneration: 'electricity',
     },
@@ -57,7 +56,6 @@ export const PAGES = [
   {
     label: 'Oil-and-Gas',
     id: 'oil-and-gas',
-    bg: '#CC6666',
     sourceTypes: {
       oilProduction: 'oil',
       gasProduction: 'gas',

@@ -6,36 +6,40 @@ export default () => {
   const intl = useIntl();
   const { config } = useConfig();
   const currPage = PAGES.find(page => page.id === config.page);
+  const scenario = config.scenarios[0];
 
+  let title = null;
   const defaultMessage = intl.formatMessage({ id: `components.pageSelect.${currPage.label}.title.default` });
 
   switch (currPage?.id) {
+    case 'emissions':
+      title = `components.pageSelect.${currPage.label}.title.default`;
+      break;
     case 'by-region':
-      return intl.formatMessage({
-        id: `components.pageSelect.${currPage.label}.title.${config.mainSelection}`,
-        defaultMessage,
-      });
+      title = `components.pageSelect.${currPage.label}.title.${config.mainSelection}`;
+      break;
     case 'by-sector':
-      return intl.formatMessage({
-        id: `components.pageSelect.${currPage.label}.title.${config.sector}`,
-        defaultMessage,
-      });
+      title = `components.pageSelect.${currPage.label}.title.${config.sector}`;
+      break;
     case 'electricity':
-      return intl.formatMessage({
-        id: `components.pageSelect.${currPage.label}.title.${config.view}`,
-        defaultMessage,
-      });
+      title = `components.pageSelect.${currPage.label}.title.${config.view}`;
+      break;
     case 'scenarios':
       return intl.formatMessage({
         id: `components.pageSelect.${currPage.label}.title.${config.mainSelection}`,
         defaultMessage,
       });
     case 'oil-and-gas':
-      return intl.formatMessage({
-        id: `components.pageSelect.${currPage.label}.title.${config.mainSelection}.${config.view}`,
-        defaultMessage,
-      });
+      title = `components.pageSelect.${currPage.label}.title.${config.mainSelection}.${config.view}`;
+      break;
     default:
       return currPage?.label;
   }
+
+  return intl.formatMessage({ id: 'components.pageSelect.defaultTitle' },
+    {
+      title: intl.formatMessage({ id: title }),
+      scenario,
+      defaultMessage,
+    });
 };
