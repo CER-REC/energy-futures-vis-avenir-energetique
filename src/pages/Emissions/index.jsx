@@ -9,6 +9,7 @@ import { getMaxTick } from '../../utilities/parseData';
 import { CHART_AXIS_PROPS, CHART_PROPS } from '../../constants';
 import HistoricalLayer from '../../components/HistoricalLayer';
 import ForecastLayer from '../../components/ForecastLayer';
+import CandlestickBar from "../../components/CandlestickBar";
 
 // TODO: Remove data and sources when API is getting data correctly.
 
@@ -617,7 +618,7 @@ const sources = {
   colors: {
     AGRI: '#AB5614',
     AIR: '#5DCA4F',
-    BUILD: '#AB5614',
+    BUILD: '#1C7F24',
     ELECTRICITY: '#7ACBCB',
     HEAVY: '#FF821E',
     HYDROGEN: '#7A73B3',
@@ -688,6 +689,10 @@ const Emissions = ({ year }) => {
     return null;
   }
 
+  const CustomBarComponent = ({ x, y, width, height, color } ) => (
+    <circle cx={x + width / 2} cy={y + height / 2} r={Math.min(width, height) / 2} fill={color} />
+  )
+
   return (
     <div style={{ height: 700 }}>
       <ResponsiveBar
@@ -695,6 +700,7 @@ const Emissions = ({ year }) => {
         data={data}
         keys={sources.order.slice().reverse()}
         layers={[HistoricalLayer, 'grid', 'axes', 'bars', 'markers', ForecastLayer]}
+
         padding={0.4}
         indexBy="year"
         maxValue={axis.highest}
