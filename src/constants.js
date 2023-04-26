@@ -23,6 +23,10 @@ export const API_HOST = process.env.API_HOST || '';
 
 export const PAGES = [
   {
+    label: 'Scenarios',
+    id: 'scenarios',
+  },
+  {
     label: 'Landing',
     id: 'landing',
   },
@@ -48,10 +52,6 @@ export const PAGES = [
       electricityGeneration: 'electricity',
     },
     views: ['region', 'source'],
-  },
-  {
-    label: 'Scenarios',
-    id: 'scenarios',
   },
   {
     label: 'Oil-and-Gas',
@@ -113,13 +113,6 @@ export const SCENARIO_COLOR = {
   Constrained: '#4EEB8D',
   'High LNG': '#06A458',
   'No LNG': '#56D3EE',
-};
-
-export const SCENARIO_LABEL_COLOR = {
-  Evolving: '#F4BE62',
-  Reference: '#BEC0C2',
-  netzero: '#8EC059',
-  history: '#CBDEF1',
 };
 
 export const REGION_COLORS = {

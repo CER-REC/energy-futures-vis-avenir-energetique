@@ -2,7 +2,7 @@ import React from 'react';
 
 import withConfigAndGQL from '../../../.storybook/addon-config-and-gql';
 import { storiesForComponent } from '../../../.storybook/utils';
-import { Share } from './index';
+import Share from './index';
 import ReadMe from './README.md';
 
 const DEFAULT_CONFIG = {

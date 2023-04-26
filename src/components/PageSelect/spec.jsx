@@ -1,8 +1,8 @@
 import React from 'react';
 import { mount } from 'enzyme';
 import { act } from 'react-dom/test-utils';
-import { Typography, ButtonBase } from '@material-ui/core';
-import { PageSelect, PageTitle } from '.';
+import { ButtonBase } from '@material-ui/core';
+import PageSelect from '.';
 import { TestContainer, getRendered } from '../../tests/utilities';
 import {
   IconPageRegion, IconPageSector, IconPageElectricity,
@@ -40,12 +40,6 @@ describe('Component|PageSelect', () => {
     expect(wrapper.type()).not.toBeNull();
   });
 
-  test('should render page titles', () => {
-    const titles = wrapper.find(Typography);
-    const names = ['Emissions', 'By Region', 'By Energy Source', 'Electricity', 'Scenarios', 'Oil and Gas'];
-    expect(expect.arrayContaining(titles.map(title => title.text()))).toEqual(names);
-  });
-
   test('should render section buttons', () => {
     // 6 regular buttons
     const buttons = wrapper.find(ButtonBase);
@@ -71,136 +65,3 @@ describe('Component|PageSelect', () => {
 });
 
 // #endregion
-
-// #region PageTitle
-
-const getComponentTitle = props => (
-  <TestContainer mockConfig={{ ...DEFAULT_CONFIG, ...props }}>
-    <PageTitle />
-  </TestContainer>
-);
-
-describe('Component| PageTitle', () => {
-  let wrapper;
-
-  describe('Test By Region ', () => {
-    beforeEach(async () => {
-      const dom = mount(getComponentTitle({ page: 'by-region' }));
-      await act(async () => {
-        await new Promise(resolve => setTimeout(resolve));
-        dom.update();
-        wrapper = getRendered(PageTitle, dom);
-      });
-    });
-
-    test('should render component', () => {
-      expect(wrapper.type()).not.toBeNull();
-    });
-
-    test('should have correct title', () => {
-      const title = wrapper.find('.MuiTypography-h5');
-      expect(title.text()).toBe('Total End-Use Demand By Region');
-    });
-  });
-
-  describe('Test By Sector ', () => {
-    beforeEach(async () => {
-      const dom = mount(getComponentTitle({ page: 'by-sector' }));
-      await act(async () => {
-        await new Promise(resolve => setTimeout(resolve));
-        dom.update();
-        wrapper = getRendered(PageTitle, dom);
-      });
-    });
-
-    test('should have correct title', () => {
-      const title = wrapper.find('.MuiTypography-h5');
-      expect(title.text()).toBe('By Energy Source');
-    });
-  });
-
-  describe('Test Scenarios ', () => {
-    beforeEach(async () => {
-      const dom = mount(getComponentTitle({ page: 'scenarios' }));
-      await act(async () => {
-        await new Promise(resolve => setTimeout(resolve));
-        dom.update();
-        wrapper = getRendered(PageTitle, dom);
-      });
-    });
-
-    test('should have correct title', () => {
-      const title = wrapper.find('.MuiTypography-h5');
-      expect(title.text()).toBe('Compare Scenarios For Total End-Use Demand');
-    });
-  });
-
-  describe('Test Electricity ', () => {
-    beforeEach(async () => {
-      const dom = mount(getComponentTitle({ page: 'electricity' }));
-      await act(async () => {
-        await new Promise(resolve => setTimeout(resolve));
-        dom.update();
-        wrapper = getRendered(PageTitle, dom);
-      });
-    });
-
-    test('should have correct title', () => {
-      const title = wrapper.find('.MuiTypography-h5');
-      expect(title.text()).toBe('Electricity Generation By Region');
-    });
-  });
-
-  describe('Test Oil and Gas ', () => {
-    beforeEach(async () => {
-      const dom = mount(getComponentTitle({ page: 'oil-and-gas' }));
-      await act(async () => {
-        await new Promise(resolve => setTimeout(resolve));
-        dom.update();
-        wrapper = getRendered(PageTitle, dom);
-      });
-    });
-
-    test('should have correct title', () => {
-      const title = wrapper.find('.MuiTypography-h5');
-      expect(title.text()).toBe('Oil and Gas');
-    });
-  });
-
-  describe('Test Unknown Page ', () => {
-    beforeEach(async () => {
-      const dom = mount(getComponentTitle({ page: 'invalid' }));
-      await act(async () => {
-        await new Promise(resolve => setTimeout(resolve));
-        dom.update();
-        wrapper = getRendered(PageTitle, dom);
-      });
-    });
-
-    test('should have correct title', () => {
-      const title = wrapper.find('.MuiTypography-h5');
-      expect(title.text()).toBe('');
-    });
-  });
-});
-
-describe('Test title doesnt exist', () => {
-  let wrapper;
-
-  beforeEach(async () => {
-    const dom = mount(getComponentTitle({ page: 'mock-up' }));
-    await act(async () => {
-      await new Promise(resolve => setTimeout(resolve));
-      dom.update();
-      wrapper = getRendered(PageTitle, dom);
-    });
-  });
-
-  test('should NOT render title', () => {
-    const title = wrapper.find('.MuiTypography-h5');
-    expect(title.text()).toBeFalsy();
-  });
-});
-
-// #endregion
-

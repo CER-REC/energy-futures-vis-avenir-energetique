@@ -6,7 +6,7 @@ export default () => {
   const intl = useIntl();
   const { config } = useConfig();
   const currPage = PAGES.find(page => page.id === config.page);
-  const scenario = config.scenarios;
+  const scenario = config.scenarios[0];
 
   let title = null;
   const defaultMessage = intl.formatMessage({ id: `components.pageSelect.${currPage.label}.title.default` });
