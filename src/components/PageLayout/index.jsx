@@ -122,11 +122,8 @@ const PageLayout = ({
     [type, sources, intl],
   );
 
-  /**
-   * Calculate the width of the visualization container.
-   */
   const vizWidth = useMemo(
-    () => `calc(100% - ${desktop ? 100 : 0}px - ${((showSource ? 1 : 0) + (showRegion ? 1 : 0)) * 70}px`,
+    () => `calc(100% - ${((showSource ? 1 : 0) + (showRegion ? 1 : 0)) * 70}px`,
     [desktop, showSource, showRegion],
   );
 
