@@ -124,7 +124,7 @@ const PageLayout = ({
 
   const vizWidth = useMemo(
     () => `calc(100% - ${((showSource ? 1 : 0) + (showRegion ? 1 : 0)) * 70}px`,
-    [desktop, showSource, showRegion],
+    [showSource, showRegion],
   );
 
   /**
