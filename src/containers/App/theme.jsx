@@ -41,7 +41,9 @@ const theme = createMuiTheme({
       justifyContent: 'left',
     },
     contextAccent: {
-      borderLeft: `8px solid ${defaultTheme.palette.primary.main}`,
+      borderLeftWidth: 8,
+      borderLeftStyle: 'solid',
+      borderLeftColor: defaultTheme.palette.primary.main,
     },
   },
   typography: {
