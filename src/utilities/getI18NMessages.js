@@ -18,6 +18,9 @@ export default translations => (
       case 'GAS_SOURCE':
         key = `common.sources.gas.${translation.key}`;
         break;
+      case 'GREENHOUSE_GAS_SOURCE':
+        key = `common.sources.greenhouseGas.${translation.key}`;
+        break;
       case 'OIL_SOURCE':
         key = `common.sources.oil.${translation.key}`;
         break;

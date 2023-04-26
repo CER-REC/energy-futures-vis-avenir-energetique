@@ -163,6 +163,7 @@ export const SOURCE_COLORS = {
     TIGHT: '#8C0038',
     NA: '#FFCC47',
   },
+  greenhouseGas: {},
   oil: {
     C5: '#96B6CF',
     CONDENSATE: '#9B938A',
@@ -198,6 +199,7 @@ export const SOURCE_ICONS = {
     HYDROGEN: IconHydrogen,
   },
   gas: {},
+  greenhouseGas: {},
   oil: {},
   transportation: {},
 };
