@@ -108,6 +108,21 @@ export const parseData = {
     }, baseStructure);
     return baseStructure;
   },
+
+  emissions: (data) => {
+    const byYear = data.reduce((yearEmissions, emission) => {
+      const yearSources = { ...yearEmissions };
+      const { source, year } = emission;
+
+      yearSources[year] = yearSources[year] || {};
+      yearSources[year][source] = yearSources[year][source] || 0;
+      yearSources[year][source] += emission.value;
+
+      return yearSources;
+    }, {});
+
+    return Object.keys(byYear).map(year => ({ year, ...byYear[year] }));
+  },
 };
 
 export const NOOP = () => undefined;

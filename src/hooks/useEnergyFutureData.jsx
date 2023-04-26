@@ -30,6 +30,8 @@ const getQuery = (config) => {
     return config.mainSelection === 'gasProduction'
       ? queries.GAS_PRODUCTIONS
       : queries.OIL_PRODUCTIONS;
+  } else if (config.page === 'emissions') {
+    return queries.GREENHOUSE_GAS_EMISSIONS_SOURCE;
   }
   return null;
 };
