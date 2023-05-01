@@ -37,11 +37,6 @@ const useStyles = makeStyles(theme => ({
     width: '100%',
     position: 'relative',
   },
-  links: {
-    position: 'absolute',
-    bottom: 0,
-    left: -theme.spacing(1),
-  },
   report: {
     position: 'absolute',
     top: 11,
@@ -217,14 +212,18 @@ const PageLayout = ({
         </Grid>
       </Grid>
 
-      <Grid item xs={12} className={desktop ? classes.links : ''}>
-        <Grid container alignItems="flex-start" wrap="nowrap" spacing={2}>
-          <Grid item><LinkButtonGroup direction={desktop ? 'column' : 'row'} /></Grid>
-          <Grid item style={{ flexGrow: 1 }} />
-          {!desktop && <Grid item><DownloadButton /></Grid>}
-          {!desktop && <Grid item><Share direction="row" /></Grid>}
-        </Grid>
-      </Grid>
+      {
+        !desktop && (
+          <Grid item xs={12}>
+            <Grid container alignItems="flex-start" wrap="nowrap" spacing={2}>
+              <Grid item><LinkButtonGroup direction='row' /></Grid>
+              <Grid item style={{ flexGrow: 1 }} />
+              <Grid item><DownloadButton /></Grid>
+              <Grid item><Share direction="row" /></Grid>
+            </Grid>
+          </Grid>
+        )
+      }
     </Grid>
   );
 };
