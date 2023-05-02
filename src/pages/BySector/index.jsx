@@ -3,6 +3,7 @@ import { ResponsiveLine } from '@nivo/line';
 import PropTypes from 'prop-types';
 import { useIntl } from 'react-intl';
 
+import { makeStyles } from '@material-ui/core';
 import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
 import analytics from '../../analytics';
@@ -14,8 +15,15 @@ import ForecastLayer from '../../components/ForecastLayer';
 import VizTooltip from '../../components/VizTooltip';
 import HistoricalLayer from '../../components/HistoricalLayer';
 
+const useStyles = makeStyles(theme => ({
+  chart: {
+    ...theme.mixins.chart,
+  },
+}));
+
 const BySector = ({ data, year }) => {
   const intl = useIntl();
+  const classes = useStyles();
   const {
     sources: {
       energy: { colors: energyColors },
@@ -97,7 +105,7 @@ const BySector = ({ data, year }) => {
   }
 
   return (
-    <div style={{ height: 700 }}>
+    <div className={classes.chart}>
       <ResponsiveLine
         {...CHART_PROPS}
         data={orderedData}

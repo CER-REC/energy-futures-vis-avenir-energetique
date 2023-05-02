@@ -30,7 +30,10 @@ const CandlestickLayer = ({ bars, data }) => {
     <g>
       {
         barMinMax.map(obj => (
-          <g transform={`translate(${obj.x}, 0)`}>
+          <g
+            key={obj.year}
+            transform={`translate(${obj.x}, 0)`}
+          >
             <path
               d={`M-${barMoveX},${obj.yMax.y + obj.yMax.height} h ${barLength}`}
               stroke="black"

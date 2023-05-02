@@ -2,6 +2,7 @@ import React, { useCallback, useMemo, useRef } from 'react';
 import { useIntl } from 'react-intl';
 import { ResponsiveLine } from '@nivo/line';
 import PropTypes from 'prop-types';
+import { makeStyles } from '@material-ui/core';
 import useConfig from '../../hooks/useConfig';
 import analytics from '../../analytics';
 
@@ -11,6 +12,7 @@ import { fillLayerScenario } from '../../components/FillLayer';
 import ForecastLayer from '../../components/ForecastLayer';
 import VizTooltip from '../../components/VizTooltip';
 import HistoricalLayer from '../../components/HistoricalLayer';
+import getYearLabel from '../../utilities/getYearLabel';
 
 /**
  * Generate a custom dotted line layer for rendering the default scenario.
@@ -43,9 +45,16 @@ export const dottedLayer = scenarioYear => args => args.points
     />
   ));
 
+const useStyles = makeStyles(theme => ({
+  chart: {
+    ...theme.mixins.chart,
+  },
+}));
+
 const Scenarios = ({ data, year }) => {
   const intl = useIntl();
   const { config } = useConfig();
+  const classes = useStyles();
 
   /**
    * The dotted line layer that represents the default scenario.
@@ -100,7 +109,7 @@ const Scenarios = ({ data, year }) => {
   }
 
   return (
-    <div style={{ height: 700 }}>
+    <div className={classes.chart}>
       <ResponsiveLine
         {...CHART_PROPS}
         data={data}
@@ -121,7 +130,7 @@ const Scenarios = ({ data, year }) => {
         pointLabelYOffset={-12}
         axisBottom={{
           ...CHART_AXIS_PROPS,
-          format: yearLabel => ((yearLabel % 5) ? '' : yearLabel),
+          format: yearLabel => getYearLabel(yearLabel),
         }}
         axisRight={{
           ...CHART_AXIS_PROPS,

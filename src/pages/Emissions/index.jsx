@@ -1,6 +1,7 @@
 import React, { useCallback, useMemo, useRef } from 'react';
 import { ResponsiveBar } from '@nivo/bar';
 import PropTypes from 'prop-types';
+import { makeStyles } from '@material-ui/core';
 import useConfig from '../../hooks/useConfig';
 import convertHexToRGB from '../../utilities/convertHexToRGB';
 import analytics from '../../analytics';
@@ -10,6 +11,7 @@ import { CHART_AXIS_PROPS, CHART_PROPS } from '../../constants';
 import HistoricalLayer from '../../components/HistoricalLayer';
 import ForecastLayer from '../../components/ForecastLayer';
 import CandlestickLayer from '../../components/CandlestickLayer';
+import getYearLabel from '../../utilities/getYearLabel';
 
 // TODO: Remove data and sources when API is getting data correctly.
 
@@ -641,8 +643,15 @@ const sources = {
   ],
 };
 
+const useStyles = makeStyles(theme => ({
+  chart: {
+    ...theme.mixins.chart,
+  },
+}));
+
 const Emissions = ({ year }) => {
   const { config } = useConfig();
+  const classes = useStyles();
 
   const customColorProp = useCallback(
     () => d => convertHexToRGB(sources.colors[d.id], 0.75), [],
@@ -682,7 +691,7 @@ const Emissions = ({ year }) => {
   }
 
   return (
-    <div style={{ height: 700 }}>
+    <div className={classes.chart}>
       <ResponsiveBar
         {...CHART_PROPS}
         data={data}
@@ -694,7 +703,7 @@ const Emissions = ({ year }) => {
         colors={colors}
         axisBottom={{
           ...CHART_AXIS_PROPS,
-          format: yearLabel => ((yearLabel % 5) ? '' : yearLabel),
+          format: yearLabel => getYearLabel(yearLabel),
         }}
         axisRight={{
           ...CHART_AXIS_PROPS,

@@ -1,6 +1,7 @@
 import React, { useMemo, useCallback, useRef } from 'react';
 import { ResponsiveBar } from '@nivo/bar';
 import PropTypes from 'prop-types';
+import { makeStyles } from '@material-ui/core';
 import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
 import analytics from '../../analytics';
@@ -10,10 +11,18 @@ import convertHexToRGB from '../../utilities/convertHexToRGB';
 import ForecastLayer from '../../components/ForecastLayer';
 import VizTooltip from '../../components/VizTooltip';
 import HistoricalLayer from '../../components/HistoricalLayer';
+import getYearLabel from '../../utilities/getYearLabel';
+
+const useStyles = makeStyles(theme => ({
+  chart: {
+    ...theme.mixins.chart,
+  },
+}));
 
 const ByRegion = ({ data, year }) => {
   const { regions } = useAPI();
   const { config } = useConfig();
+  const classes = useStyles();
 
   /**
    * Calculate bar colors.
@@ -63,7 +72,7 @@ const ByRegion = ({ data, year }) => {
   }
 
   return (
-    <div style={{ height: 700 }}>
+    <div className={classes.chart}>
       <ResponsiveBar
         {...CHART_PROPS}
         data={data}
@@ -75,7 +84,7 @@ const ByRegion = ({ data, year }) => {
         borderColor={{ from: 'color', modifiers: [['darker', 1.6]] }}
         axisBottom={{
           ...CHART_AXIS_PROPS,
-          format: yearLabel => ((yearLabel % 5) ? '' : yearLabel),
+          format: yearLabel => getYearLabel(yearLabel),
         }}
         axisRight={{
           ...CHART_AXIS_PROPS,
