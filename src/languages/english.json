@@ -534,6 +534,18 @@
       "ISB": "Recovered through wells, typically using steam or solvents to reduce the bitumen’s viscosity.",
       "LIGHT": "Light crude oil that can flow into a well at commercial rates without the extensive use of technology after the well is drilled.",
       "MB": "A combined mining and upgrading operation where oil sands are mined from open pits, then bitumen is separated from the sand and upgraded by coking or hydroprocessing."
+    },
+    "greenhouseGas": {
+      "AGRI": "All GHGs associated with crop production, animal production, and energy use in agriculture.",
+      "AIR": "All GHGs associated with the direct air capture industry which removes CO2 from the atmosphere and stores it underground.",
+      "BUILD": "All GHGs associated with buildings in the residential and commercial sectors.",
+      "ELECTRICITY": "All GHGs associated with electricity generation.",
+      "FOSSIL": "All GHGs associated with the oil and gas sector including upstream, downstream, and transmissions and distribution emissions.",
+      "HEAVY": "All GHGs associated with heavy industry including mining, smelting and refining, pulp and paper, iron and steel, cement and lime, and chemicals and fertilizers.",
+      "HYDROGEN": "All GHGs associated with hydrogen production.",
+      "LAND": "All GHGs associated with natural lands and human activities that alter these lands.",
+      "TRANSPORTATION": "All GHGs associated with transport.",
+      "WASTE": "All GHGs associated with waste, coal mining, light manufacturing, and energy use in forestry operations."
     }
   },
   "links": {

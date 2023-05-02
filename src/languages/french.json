@@ -533,6 +533,18 @@
       "ISB": "Bitume récupéré à partir de puits, habituellement au moyen de vapeur ou de solvants pour réduire la viscosité du bitume.",
       "LIGHT": "Pétrole brut léger récupérable à partir de puits pouvant être mis en production à des tarifs commerciaux sans utilisation à grande échelle de moyens technologiques après que le puits a été foré.",
       "MB": "Exploitation alliant extraction et valorisation, dans laquelle les sables bitumineux sont extraits à ciel ouvert. Le bitume est ensuite séparé du sable et raffiné par cokéfaction ou hydrotraitement."
+    },
+    "greenhouseGas": {
+      "AGRI": "",
+      "AIR": "",
+      "BUILD": "",
+      "ELECTRICITY": "",
+      "FOSSIL": "",
+      "HEAVY": "",
+      "HYDROGEN": "",
+      "LAND": "",
+      "TRANSPORTATION": "",
+      "WASTE": ""
     }
   },
   "links": {
