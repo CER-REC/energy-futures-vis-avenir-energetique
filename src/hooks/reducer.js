@@ -119,7 +119,7 @@ export const getReducer = (regions, sources, sectors, yearIdIterations) => {
 
     const validatedSources = validSources.filter(source => selectedSources?.includes(source));
 
-    if ((page === 'by-sector') || (view === 'region')) {
+    if ((page === 'by-sector') || (view === 'region') || (page === 'emissions')) {
       return (selectedSources?.includes('ALL') || !selectedSources) ? validSources : validatedSources;
     }
 
