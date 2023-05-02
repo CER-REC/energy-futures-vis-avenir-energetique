@@ -4,7 +4,7 @@ This component is used as a control for selecting the regions and sources. It su
 
 In general the `DraggableVerticalList` component can be configured as a combination of the following options:
 - enable vs. disable drag-n-drop; this can be visually distinguished by whether or not the grasp indicator is shown
-- round vs. square of the node shape
+- the node shape (square, circle, hexagon)
 - single- vs. multi-select
 
 ## Usage
@@ -15,7 +15,7 @@ In return, the result will also update the corresponding configuration, more spe
 ```jsx
 <DraggableVerticalList
     title="Source"
-    round
+    shape="circle"
     disabled={props?.disabled || false}
     singleSelect={props?.singleSelect || false}
     sourceType="energy"

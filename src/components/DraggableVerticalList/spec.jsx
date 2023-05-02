@@ -33,7 +33,7 @@ const getSourceComponent = (configs, props) => (
   <TestContainer mockConfig={{ ...DEFAULT_CONFIG, ...configs }}>
     <DraggableVerticalList
       title={props?.title || 'Source'}
-      round
+      shape="circle"
       disabled={props?.disabled || false}
       singleSelect={props?.singleSelect || false}
       sourceType="energy"
