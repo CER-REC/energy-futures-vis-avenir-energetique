@@ -22,11 +22,11 @@ const Content = () => {
 
   return (
     <PageLayout
-      showRegion
+      showRegion={config.page !== 'emissions'}
       disableDraggableRegion={['by-sector', 'electricity', 'scenarios', 'oil-and-gas', 'demand'].includes(config.page)}
       singleSelectRegion={['by-sector', 'scenarios', 'demand'].includes(config.page) || (config.view === 'region')}
-      showSource={['by-sector', 'electricity', 'oil-and-gas'].includes(config.page)}
-      disableDraggableSource={['electricity', 'oil-and-gas'].includes(config.page)}
+      showSource={['by-sector', 'electricity', 'emissions', 'oil-and-gas'].includes(config.page)}
+      disableDraggableSource={['electricity', 'emissions', 'oil-and-gas'].includes(config.page)}
       singleSelectSource={config.view === 'source'}
     >
       {config.page === 'emissions' && <Emissions />}
