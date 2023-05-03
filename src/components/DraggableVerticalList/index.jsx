@@ -63,7 +63,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const DraggableVerticalList = ({
-  title, width, round, dense,
+  title, width, shape, dense,
   singleSelect = false, /* multi-select or single select */
   greyscale = false, /* ignore button colors */
   disabled = false, /* disable drag-n-drop */
@@ -187,7 +187,7 @@ const DraggableVerticalList = ({
             >
               <ColoredItemBox
                 item={allTitle}
-                round={round}
+                shape={shape}
                 selected={singleSelect ? localItems[0] === 'ALL' : localItems.length > 0}
                 clear={localItems.length === Object.keys(defaultItems).length}
               />
@@ -230,7 +230,7 @@ const DraggableVerticalList = ({
                         >
                           <ColoredItemBox
                             item={intl.formatMessage({ id: `components.draggableVerticalList.abbr.${item}`, defaultMessage: item })}
-                            round={round}
+                            shape={shape}
                             icon={defaultItems[item].icon}
                             color={greyscale ? undefined : defaultItems[item].color}
                             selected={localItems.indexOf(item) > -1}
@@ -256,7 +256,7 @@ const DraggableVerticalList = ({
 DraggableVerticalList.propTypes = {
   title: PropTypes.string,
   width: PropTypes.number,
-  round: PropTypes.bool,
+  shape: PropTypes.oneOf(['square', 'circle', 'hexagon']),
   dense: PropTypes.bool,
   singleSelect: PropTypes.bool,
   greyscale: PropTypes.bool,
@@ -274,7 +274,7 @@ DraggableVerticalList.propTypes = {
 DraggableVerticalList.defaultProps = {
   title: '',
   width: undefined,
-  round: false,
+  shape: 'square',
   dense: false,
   singleSelect: false,
   greyscale: false,

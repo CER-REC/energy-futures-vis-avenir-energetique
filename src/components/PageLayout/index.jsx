@@ -158,7 +158,7 @@ const PageLayout = ({
               <Grid item style={{ width: 70 }}>
                 <DraggableVerticalList
                   title="Source"
-                  round
+                  shape={config.page === 'emissions' ? 'hexagon' : 'circle'}
                   disabled={disableDraggableSource}
                   singleSelect={singleSelectSource}
                   greyscale={singleSelectSource}

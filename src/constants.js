@@ -1,7 +1,8 @@
 import {
   IconDemand, IconTransportation, IconCommercial, IconResidential, IconIndustrial,
   IconElectricity, IconOil, IconGas, IconBiomass, IconBiofuel,
-  IconCoal, IconHydro, IconNuclear, IconRenewable, IconHydrogen,
+  IconCoal, IconHydro, IconNuclear, IconRenewable, IconHydrogen, IconWaste,
+  IconAgriculture, IconOilGas, IconLand,
 } from './icons';
 
 export const applicationPath = {
@@ -33,6 +34,9 @@ export const PAGES = [
   {
     label: 'Emissions',
     id: 'emissions',
+    sourceTypes: {
+      greenhouseGasEmission: 'greenhouseGas',
+    },
   },
   {
     label: 'By Region',
@@ -94,9 +98,17 @@ export const CONFIG_LAYOUT = {
     unit: ['cubicFeet', 'millionCubicMetres'],
     pages: ['by-region', 'scenarios', 'oil-and-gas'],
   },
+  greenhouseGasEmission: {
+    name: 'Emissions',
+    icon: IconGas,
+    unit: ['megatonnes'],
+    pages: ['emissions'],
+  },
 };
 
 export const SECTOR_ORDER = ['ALL', 'RESIDENTIAL', 'COMMERCIAL', 'INDUSTRIAL', 'TRANSPORTATION'];
+
+export const GREENHOUSE_GAS_ORDER = ['WASTE', 'AGRI', 'BUILD', 'HEAVY', 'TRANSPORTATION', 'FOSSIL', 'LAND', 'ELECTRICITY', 'HYDROGEN', 'AIR'];
 
 /**
  * TODO: replace it with real colors from UI designers.
@@ -156,7 +168,18 @@ export const SOURCE_COLORS = {
     TIGHT: '#8C0038',
     NA: '#FFCC47',
   },
-  greenhouseGas: {},
+  greenhouseGas: {
+    AGRI: '#AB5614',
+    AIR: '#5DCA4F',
+    BUILD: '#CC37B0',
+    ELECTRICITY: '#7ACBCB',
+    FOSSIL: '#FF821E',
+    HEAVY: '#7A73B3',
+    HYDROGEN: '#E58BAB',
+    LAND: '#054169',
+    TRANSPORTATION: '#F2CB53',
+    WASTE: '#4B5E5B',
+  },
   oil: {
     C5: '#96B6CF',
     CONDENSATE: '#9B938A',
@@ -192,7 +215,18 @@ export const SOURCE_ICONS = {
     HYDROGEN: IconHydrogen,
   },
   gas: {},
-  greenhouseGas: {},
+  greenhouseGas: {
+    AGRI: IconAgriculture,
+    AIR: IconRenewable,
+    BUILD: IconResidential,
+    ELECTRICITY: IconElectricity,
+    FOSSIL: IconOilGas,
+    HEAVY: IconIndustrial,
+    HYDROGEN: IconHydrogen,
+    LAND: IconLand,
+    TRANSPORTATION: IconTransportation,
+    WASTE: IconWaste,
+  },
   oil: {},
   transportation: {},
 };

@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { useQuery } from '@apollo/react-hooks';
 
-import { REGION_COLORS, SOURCE_COLORS, SOURCE_ICONS, SECTOR_ICONS } from '../constants';
+import { GREENHOUSE_GAS_ORDER, REGION_COLORS, SOURCE_COLORS, SOURCE_ICONS, SECTOR_ICONS } from '../constants';
 import getI18NMessages from '../utilities/getI18NMessages';
 import { ITERATIONS_TRANSLATIONS } from './queries';
 
@@ -76,6 +76,10 @@ const getSources = (translations) => {
     sources[type].colors = colors;
     sources[type].icons = icons;
     sources[type].order = order;
+
+    if (type === 'greenhouseGas') {
+      sources[type].order = GREENHOUSE_GAS_ORDER;
+    }
   });
 
   return sources;

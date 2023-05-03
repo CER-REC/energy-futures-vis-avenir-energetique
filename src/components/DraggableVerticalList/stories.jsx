@@ -39,7 +39,7 @@ storiesForComponent('Components|DraggableVerticalList', module, ReadMe)
         <DraggableVerticalList
           title="Region"
           width={number('Width', 64)}
-          round={radios('Shape', { Round: 'round', Square: 'square' }, 'round') === 'round'}
+          shape={radios('Shape', { Square: 'square', Circle: 'circle', Hexagon: 'hexagon' }, 'circle')}
           dense={boolean('Dense', true)}
           singleSelect={boolean('Single-Select', false)}
           disabled={radios('Drag-n-Drop', { Enabled: 'enabled', Disabled: 'disabled' }, 'enabled') === 'disabled'}
@@ -53,7 +53,7 @@ storiesForComponent('Components|DraggableVerticalList', module, ReadMe)
       <Grid item>
         <DraggableVerticalList
           width={64}
-          round
+          shape="circle"
           sourceType="electricity"
           items={Object.keys(iconItems)}
           itemOrder={Object.keys(iconItems)}

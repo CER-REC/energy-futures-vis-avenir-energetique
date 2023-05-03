@@ -6,23 +6,51 @@ import {
 import ClearIcon from '@material-ui/icons/Clear';
 import DotsIcon from '@material-ui/icons/MoreHoriz';
 
+const hexagon = 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)';
+
 const useStyles = makeStyles(theme => ({
-  root: props => ({
+  shadow: {
+    transition: 'filter .25s ease-in-out',
+    '&:hover': {
+      filter: `drop-shadow(0 3px 3px rgba(0, 0, 0, 0.3))
+               drop-shadow(0 6px 6px rgba(0, 0, 0, 0.2))`,
+    },
+  },
+  shape: props => ({
     position: 'absolute',
     height: 36,
     width: 36,
     backgroundColor: theme.palette.common.white,
     border: `2px solid ${props.color || theme.palette.secondary.main}`,
-    borderRadius: props.round ? '50%' : 0,
+    '&.circle': {
+      borderRadius: '50%',
+      '&.disabled:before': { width: '105%' },
+    },
+    '&.hexagon': {
+      backgroundColor: props.color || theme.palette.secondary.main,
+      clipPath: hexagon,
+      '&:after, &.selected.disabled:after': {
+        backgroundColor: theme.palette.common.white,
+        clipPath: hexagon,
+        content: '""',
+        height: '100%',
+        position: 'absolute',
+        width: '100%',
+        zIndex: -1,
+      },
+      '&.selected:after': { content: 'none' },
+      '&.disabled': { backgroundColor: theme.palette.secondary.main },
+    },
+    '&.circle, &.hexagon': {
+      '&.disabled > p, &.disabled > svg': { backgroundColor: 'transparent' },
+    },
     textTransform: 'uppercase',
-    transition: 'box-shadow .25s ease-in-out',
     '& > p, & > svg:first-of-type': {
       margin: props.attachment ? 4 : 'auto',
       color: props.color || theme.palette.secondary.main,
     },
     '&.selected': { backgroundColor: props.color || theme.palette.secondary.main },
     '&.selected > p, &.selected > svg': { color: theme.palette.common.white },
-    '&:hover': { boxShadow: theme.shadows[6] },
 
     '&.disabled': {
       borderColor: theme.palette.secondary.main,
@@ -30,7 +58,7 @@ const useStyles = makeStyles(theme => ({
     },
     '&.disabled > p, &.disabled > svg': {
       color: theme.palette.secondary.main,
-      backgroundColor: props.round ? 'transparent' : theme.palette.common.white,
+      backgroundColor: theme.palette.common.white,
       fontWeight: 700,
       lineHeight: 1,
       zIndex: 1,
@@ -41,12 +69,11 @@ const useStyles = makeStyles(theme => ({
       top: '50%',
       left: '50%',
       height: 2,
-      width: props.round ? '105%' : '152%',
+      width: '152%',
       transform: 'translate(-50%, -50%) rotate(-45deg)',
       backgroundColor: theme.palette.secondary.main,
       borderRadius: 1,
     },
-    '&.disabled:hover': { boxShadow: theme.shadows[0] },
   }),
   grasp: props => ({
     position: 'absolute',
@@ -59,20 +86,22 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const ColoredItemBox = ({
-  item, icon, color, selected, clear, round,
+  item, icon, color, selected, clear, shape,
   attachment, disabled, draggable, ...gridProps
 }) => {
-  const classes = useStyles({ color, round, attachment });
+  const classes = useStyles({ color, attachment });
   const Icon = icon;
-  const styling = [classes.root, selected && 'selected', disabled && 'disabled'].filter(Boolean).join(' ');
+  const styling = [classes.shape, selected && 'selected', shape, disabled && 'disabled'].filter(Boolean).join(' ');
   return (
-    <Grid container {...gridProps} className={styling}>
-      {clear && <ClearIcon className={classes.btn} />}
-      {!clear && icon && <Icon style={{ margin: draggable ? '2px auto' : 'auto' }} />}
-      {!clear && !icon && <Typography variant="body2">{item}</Typography>}
-      {!clear && draggable && <DotsIcon fontSize="small" className={classes.grasp} />}
-      {attachment}
-    </Grid>
+    <div className={disabled ? '' : classes.shadow}>
+      <Grid container {...gridProps} className={styling}>
+        {clear && <ClearIcon className={classes.btn} />}
+        {!clear && icon && <Icon style={{ margin: draggable ? '2px auto' : 'auto' }} />}
+        {!clear && !icon && <Typography variant="body2">{item}</Typography>}
+        {!clear && draggable && <DotsIcon fontSize="small" className={classes.grasp} />}
+        {attachment}
+      </Grid>
+    </div>
   );
 };
 
@@ -82,7 +111,7 @@ ColoredItemBox.propTypes = {
   color: PropTypes.string,
   selected: PropTypes.bool,
   clear: PropTypes.bool,
-  round: PropTypes.bool,
+  shape: PropTypes.oneOf(['square', 'circle', 'hexagon']),
   attachment: PropTypes.oneOfType([PropTypes.node, PropTypes.bool]),
   disabled: PropTypes.bool,
   draggable: PropTypes.bool,
@@ -93,7 +122,7 @@ ColoredItemBox.defaultProps = {
   color: undefined,
   selected: false,
   clear: false,
-  round: false,
+  shape: 'square',
   attachment: undefined,
   disabled: false,
   draggable: false,
