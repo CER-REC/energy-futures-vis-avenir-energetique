@@ -9,7 +9,7 @@ import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
 import useEnergyFutureData from '../../hooks/useEnergyFutureData';
 import { validYear } from '../../utilities/parseData';
-import { PAGES } from '../../constants';
+import { CONFIG_LAYOUT, PAGES } from '../../constants';
 import DraggableVerticalList from '../DraggableVerticalList';
 import LinkButtonGroup from '../LinkButtonGroup';
 import Share from '../Share';
@@ -17,6 +17,9 @@ import DownloadButton from '../DownloadButton';
 import Header from '../Header';
 import useChartTitle from '../../hooks/useChartTitle';
 import HorizontalControlBar from '../HorizontalControlBar';
+import DropDown from '../Dropdown';
+import analytics from '../../analytics';
+import { HintUnitSelect } from '../Hint';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -41,6 +44,15 @@ const useStyles = makeStyles(theme => ({
     position: 'absolute',
     top: 11,
     right: -8,
+  },
+  dropDown: {
+    width: '100px',
+    textAlign: 'center',
+  },
+  dropDownMenu: {
+    '& .MuiListItem-root': {
+      justifyContent: 'center',
+    },
   },
 }));
 
@@ -133,6 +145,13 @@ const PageLayout = ({
 
   const chartTitle = useChartTitle();
 
+  const layout = useMemo(() => CONFIG_LAYOUT[config.mainSelection], [config.mainSelection]);
+
+  const handleUpdateUnit = useCallback((unit) => {
+    configDispatch({ type: 'unit/changed', payload: unit });
+    analytics.reportFeature(config.page, 'unit', unit);
+  }, [configDispatch, config.page]);
+
   /**
    * Render nothing if the baseYear value is out of range.
    */
@@ -192,10 +211,23 @@ const PageLayout = ({
               </Grid>
             )}
             <Grid container item direction="column" style={{ width: vizWidth }}>
-              <Grid item>
-                <Typography variant="h6">
-                  {chartTitle}
-                </Typography>
+              <Grid container item>
+                <Grid item style={{ flex: 1 }}>
+                  <Typography variant="h6">
+                    {chartTitle}
+                  </Typography>
+                </Grid>
+                <Grid item style={{ display: 'flex', alignItems: 'center' }}>
+                  <Typography variant="body1" color="secondary">{intl.formatMessage({ id: 'components.unitSelect.name' })}&nbsp;</Typography>
+                  <DropDown
+                    options={layout.unit.map(unit => [intl.formatMessage({ id: `common.units.${unit}` }), unit])}
+                    value={config.unit}
+                    onChange={handleUpdateUnit}
+                    className={classes.dropDown}
+                    menuClassName={classes.dropDownMenu}
+                  />
+                  <HintUnitSelect />
+                </Grid>
               </Grid>
               {vis?.length && vis?.length > 0 && (
                 <Grid item className={classes.graph}>

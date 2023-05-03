@@ -1,6 +1,6 @@
 import { useIntl } from 'react-intl';
 import { Grid, Link, makeStyles, Typography } from '@material-ui/core';
-import React from 'react';
+import React, { useCallback, useMemo } from 'react';
 import Share from '../Share';
 import PageSelect from '../PageSelect';
 import ScenarioSelect from '../ScenarioSelect';
@@ -9,6 +9,9 @@ import useConfig from '../../hooks/useConfig';
 import useIsDesktop from '../../hooks/useIsDesktop';
 import PageIcon from '../PageIcon';
 import LinkButtonGroup from '../LinkButtonGroup';
+import DropDown from '../Dropdown';
+import { HintYearSelect } from '../Hint';
+import useAPI from '../../hooks/useAPI';
 
 const useStyles = makeStyles(theme => ({
   row: {
@@ -48,38 +51,60 @@ const useStyles = makeStyles(theme => ({
       marginRight: '0.15em',
     },
   },
+  yearSelectContainer: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+  },
 }));
 
 const Header = () => {
   const classes = useStyles();
   const intl = useIntl();
   const isDesktop = useIsDesktop();
+  const { yearIdIterations } = useAPI();
 
-  const { config } = useConfig();
+  const yearIds = useMemo(
+    () => Object.keys(yearIdIterations).sort().reverse(),
+    [yearIdIterations],
+  );
+
+  const { config, configDispatch } = useConfig();
   const multiSelectScenario = config.page === 'scenarios';
+
+  const handleYear = useCallback((yearId) => {
+    configDispatch({ type: 'yearId/changed', payload: yearId });
+    analytics.reportFeature(config.page, 'year', yearId);
+  }, [configDispatch, config.page]);
 
   const title = (
     <Link href="./" underline="none" onClick={() => analytics.reportNav('landing')} className={classes.title}>
       <Typography variant="h4" color="primary">{intl.formatMessage({ id: 'common.title' })}</Typography>
     </Link>
   );
-
   const yearSelect = (
-    <Grid item xs={2} style={{ textAlign: 'right' }}>
-      {/* TODO: Year Select */}
-      <div />
+    <Grid item className={classes.yearSelectContainer}>
+      <Typography variant="body1" color="secondary">{intl.formatMessage({ id: 'components.yearSelect.name' })}</Typography>
+      <DropDown
+        options={yearIds.map(yearId => [intl.formatMessage({ id: `components.yearSelect.${yearId}.dropdown`, defaultMessage: yearId }), yearId])}
+        value={config.yearId}
+        onChange={handleYear}
+      />
+      <HintYearSelect />
     </Grid>
   );
 
   // Note: CER template uses custom breakpoints.
   return (
     <>
-      <Grid item xs={12}>
-        <Grid item xs={12} md={10}>{title}</Grid>
+      <Grid container item xs={12}>
+        <Grid item style={{ flex: 1 }}>{title}</Grid>
         {
           isDesktop && yearSelect
         }
-        <Grid item xs={10} md={12}>
+      </Grid>
+      <Grid container item xs={12}>
+        <Grid item style={{ flex: 1 }}>
           <Typography variant="h6" style={{ fontWeight: 'bold' }}>{intl.formatMessage({ id: 'components.header.subtitle' })}</Typography>
         </Grid>
         {

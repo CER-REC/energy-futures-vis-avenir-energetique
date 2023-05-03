@@ -183,7 +183,8 @@
         "tooltip": "Explore data from the 2016 (Update) Energy Future Report",
         "subtitle": "October 2016",
         "description": "EF2016 Update presents reference, high, and low price cases. In the Reference Case, the crude oil price assumption is revised lower to US$90 per barrel by 2040. In addition to policies which were included in the January edition, such as Quebec’s cap and trade system and the carbon tax in B.C., most of the Alberta Climate Leadership Plan and the Ontario cap and trade program have been integrated into the forecast.",
-        "link": "[View the report](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2016-update/index.html)"
+        "link": "[View the report](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2016-update/index.html)",
+        "dropdown": "2016* Update"
       },
       "2016": {
         "title": "CANADA’S ENERGY FUTURE 2016",
