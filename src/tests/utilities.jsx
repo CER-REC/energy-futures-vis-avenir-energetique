@@ -1,9 +1,11 @@
 import React, { useMemo } from 'react';
+import { ThemeProvider } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import { IntlProvider } from 'react-intl';
 import { ShallowWrapper, mount } from 'enzyme';
 import { ApolloProvider } from '@apollo/react-hooks';
 import client from './mocks/apolloClient';
+import theme from '../containers/App/theme';
 import useAPI from '../hooks/useAPI';
 import { ConfigProvider } from '../hooks/useConfig';
 import i18nMessages from '../i18n';
@@ -41,9 +43,11 @@ export const TestContainer = ({ children, mockConfig, mockConfigDispatch }) => {
     );
     return (
       <IntlProvider locale="en" defaultLocale="en" messages={messages}>
-        <ConfigProvider mockConfig={mockConfig} mockConfigDispatch={mockConfigDispatch}>
-          {children}
-        </ConfigProvider>
+        <ThemeProvider theme={theme}>
+          <ConfigProvider mockConfig={mockConfig} mockConfigDispatch={mockConfigDispatch}>
+            {children}
+          </ConfigProvider>
+        </ThemeProvider>
       </IntlProvider>
     );
   };

@@ -8,6 +8,7 @@ import analytics from '../../analytics';
 import useConfig from '../../hooks/useConfig';
 import useIsDesktop from '../../hooks/useIsDesktop';
 import PageIcon from '../PageIcon';
+import LinkButtonGroup from '../LinkButtonGroup';
 
 const useStyles = makeStyles(theme => ({
   row: {
@@ -37,6 +38,14 @@ const useStyles = makeStyles(theme => ({
       maxHeight: 132,
       width: '100%',
       fill: '#CCC',
+    },
+  },
+  pageSelectContainer: {
+    [theme.breakpoints.down('sm')]: {
+      margin: theme.spacing(0, 1),
+    },
+    [theme.breakpoints.up('md')]: {
+      marginRight: '0.15em',
     },
   },
 }));
@@ -97,12 +106,14 @@ const Header = () => {
           )}
         </Grid>
       </Grid>
-
-      {
-        isDesktop && (
-          <Grid item style={{ width: 100 }}><PageSelect /></Grid>
-        )
-      }
+      <Grid item xs={12} md={1} className={classes.pageSelectContainer}>
+        <PageSelect direction={isDesktop ? 'column' : 'row'} />
+        {
+          isDesktop && (
+            <LinkButtonGroup direction='column' />
+          )
+        }
+      </Grid>
     </>
   );
 };

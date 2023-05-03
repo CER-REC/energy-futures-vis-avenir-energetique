@@ -1,6 +1,7 @@
 import React, { useCallback, useMemo, useRef } from 'react';
 import { ResponsiveBar } from '@nivo/bar';
 import PropTypes from 'prop-types';
+import { makeStyles } from '@material-ui/core';
 import useConfig from '../../hooks/useConfig';
 import convertHexToRGB from '../../utilities/convertHexToRGB';
 import analytics from '../../analytics';
@@ -9,6 +10,8 @@ import { getMaxTick } from '../../utilities/parseData';
 import { CHART_AXIS_PROPS, CHART_PROPS } from '../../constants';
 import HistoricalLayer from '../../components/HistoricalLayer';
 import ForecastLayer from '../../components/ForecastLayer';
+import CandlestickLayer from '../../components/CandlestickLayer';
+import getYearLabel from '../../utilities/getYearLabel';
 
 // TODO: Remove data and sources when API is getting data correctly.
 
@@ -617,7 +620,7 @@ const sources = {
   colors: {
     AGRI: '#AB5614',
     AIR: '#5DCA4F',
-    BUILD: '#AB5614',
+    BUILD: '#1C7F24',
     ELECTRICITY: '#7ACBCB',
     HEAVY: '#FF821E',
     HYDROGEN: '#7A73B3',
@@ -627,10 +630,10 @@ const sources = {
     WASTE: '#4B5E5B',
   },
   order: [
+    'ELECTRICITY',
+    'BUILD',
     'AGRI',
     'AIR',
-    'BUILD',
-    'ELECTRICITY',
     'HEAVY',
     'HYDROGEN',
     'LAND',
@@ -640,12 +643,16 @@ const sources = {
   ],
 };
 
+const useStyles = makeStyles(theme => ({
+  chart: {
+    ...theme.mixins.chart,
+  },
+}));
+
 const Emissions = ({ year }) => {
   const { config } = useConfig();
+  const classes = useStyles();
 
-  /**
-   * Calculate bar colors.
-   */
   const customColorProp = useCallback(
     () => d => convertHexToRGB(sources.colors[d.id], 0.75), [],
   );
@@ -657,10 +664,8 @@ const Emissions = ({ year }) => {
 
   // TODO: Add this back in when config has sources correctly.
   // const keys = useMemo(() => config.provinceOrder?.slice().reverse(), [config.provinceOrder]);
+  const keys = sources.order.slice().reverse();
 
-  /**
-   * Format tooltip.
-   */
   const timer = useRef(null);
   const getTooltip = useCallback((entry) => {
     // capture hover event and use a timer to avoid throttling
@@ -675,9 +680,6 @@ const Emissions = ({ year }) => {
     );
   }, [config.page, config.unit]);
 
-  /**
-   * Calculate the max tick value on y-axis and generate the all ticks accordingly.
-   */
   const axis = useMemo(() => {
     const highest = data && Math.max(...data
       .map(seg => Object.values(seg).reduce((a, b) => a + (typeof b === 'string' ? 0 : b), 0)));
@@ -689,20 +691,19 @@ const Emissions = ({ year }) => {
   }
 
   return (
-    <div style={{ height: 700 }}>
+    <div className={classes.chart}>
       <ResponsiveBar
         {...CHART_PROPS}
         data={data}
-        keys={sources.order.slice().reverse()}
-        layers={[HistoricalLayer, 'grid', 'axes', 'bars', 'markers', ForecastLayer]}
-        padding={0.4}
+        keys={keys}
+        layers={[HistoricalLayer, 'grid', 'axes', 'bars', 'markers', CandlestickLayer, ForecastLayer]}
+        padding={0.6}
         indexBy="year"
         maxValue={axis.highest}
         colors={colors}
-        borderColor={{ from: 'color', modifiers: [['darker', 1.6]] }}
         axisBottom={{
           ...CHART_AXIS_PROPS,
-          format: yearLabel => ((yearLabel % 5) ? '' : yearLabel),
+          format: getYearLabel,
         }}
         axisRight={{
           ...CHART_AXIS_PROPS,
