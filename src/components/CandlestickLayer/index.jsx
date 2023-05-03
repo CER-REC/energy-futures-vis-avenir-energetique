@@ -53,12 +53,12 @@ CandlestickLayer.propTypes = {
   bars: PropTypes.arrayOf(PropTypes.shape({
     data: PropTypes.shape({
       indexValue: PropTypes.string.isRequired,
-    }).isRequired,
+    }),
     x: PropTypes.number.isRequired,
     y: PropTypes.number.isRequired,
     height: PropTypes.number.isRequired,
     width: PropTypes.number.isRequired,
-  })),
+  })).isRequired,
   data: PropTypes.arrayOf(PropTypes.shape({
     year: PropTypes.string.isRequired,
   })).isRequired,

@@ -14,7 +14,7 @@ import { fillLayerBySector } from '../../components/FillLayer';
 import ForecastLayer from '../../components/ForecastLayer';
 import VizTooltip from '../../components/VizTooltip';
 import HistoricalLayer from '../../components/HistoricalLayer';
-import getYearLabel from "../../utilities/getYearLabel";
+import getYearLabel from '../../utilities/getYearLabel';
 
 const useStyles = makeStyles(theme => ({
   chart: {
