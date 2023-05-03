@@ -14,24 +14,24 @@ export const ENERGY_DEMAND = gql`
 export const GAS_PRODUCTIONS = gql`
   query ($iteration: ID!, $regions: [Region!], $scenarios: [String!], $sources: [GasSource!]) {
     resources:gasProductions(iterationIds: [$iteration], regions: $regions, scenarios: $scenarios, sources: $sources ){
-        province: region
-        year
-        scenario
-        value: quantity
-        source
-      }
+      province: region
+      year
+      scenario
+      value: quantity
+      source
     }
+  }
 `;
 
 export const GAS_PRODUCTIONS_ALL = gql`
   query ($iteration: ID!, $regions: [Region!], $scenarios: [String!]) {
     resources:gasProductions(iterationIds: [$iteration], regions: $regions, scenarios: $scenarios, sources: [ALL] ){
-        province: region
-        year
-        scenario
-        value: quantity
-      }
+      province: region
+      year
+      scenario
+      value: quantity
     }
+  }
 `;
 
 export const ELECTRICITY_GENERATIONS = gql`
@@ -91,6 +91,17 @@ export const ELECTRICITY_GENERATIONS_REGION = gql`
 export const ELECTRICITY_GENERATIONS_SOURCE = gql`
   query ($iteration: ID!, $sources: [ElectricitySource!], $scenarios: [String!]) {
     resources:electricityGenerations(iterationIds: [$iteration], scenarios: $scenarios, regions: [], sources: $sources) {
+      province: region
+      year
+      source
+      value: quantity
+    }
+  }
+`;
+
+export const GREENHOUSE_GAS_EMISSIONS_SOURCE = gql`
+  query ($iteration: ID!, $sources: [GreenhouseGasSource!], $scenarios: [String!]) {
+    resources:greenhouseGasEmissions(iterationIds: [$iteration], scenarios: $scenarios, sources: $sources) {
       province: region
       year
       source
