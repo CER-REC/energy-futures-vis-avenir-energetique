@@ -130,7 +130,7 @@ const Scenarios = ({ data, year }) => {
         pointLabelYOffset={-12}
         axisBottom={{
           ...CHART_AXIS_PROPS,
-          format: yearLabel => getYearLabel(yearLabel),
+          format: getYearLabel,
         }}
         axisRight={{
           ...CHART_AXIS_PROPS,

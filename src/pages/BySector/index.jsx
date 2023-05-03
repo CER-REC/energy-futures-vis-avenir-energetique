@@ -14,6 +14,7 @@ import { fillLayerBySector } from '../../components/FillLayer';
 import ForecastLayer from '../../components/ForecastLayer';
 import VizTooltip from '../../components/VizTooltip';
 import HistoricalLayer from '../../components/HistoricalLayer';
+import getYearLabel from "../../utilities/getYearLabel";
 
 const useStyles = makeStyles(theme => ({
   chart: {
@@ -119,7 +120,7 @@ const BySector = ({ data, year }) => {
         }}
         axisBottom={{
           ...CHART_AXIS_PROPS,
-          format: value => ((value % 5) ? '' : value),
+          format: getYearLabel,
         }}
         colors={d => colors[d.id]}
         lineWidth={0}

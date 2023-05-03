@@ -84,7 +84,7 @@ const ByRegion = ({ data, year }) => {
         borderColor={{ from: 'color', modifiers: [['darker', 1.6]] }}
         axisBottom={{
           ...CHART_AXIS_PROPS,
-          format: yearLabel => getYearLabel(yearLabel),
+          format: getYearLabel,
         }}
         axisRight={{
           ...CHART_AXIS_PROPS,

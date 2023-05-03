@@ -703,7 +703,7 @@ const Emissions = ({ year }) => {
         colors={colors}
         axisBottom={{
           ...CHART_AXIS_PROPS,
-          format: yearLabel => getYearLabel(yearLabel),
+          format: getYearLabel,
         }}
         axisRight={{
           ...CHART_AXIS_PROPS,

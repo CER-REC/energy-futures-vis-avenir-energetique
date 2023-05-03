@@ -33,16 +33,14 @@ const CandlestickLayer = ({ bars, data }) => {
           <g
             key={obj.year}
             transform={`translate(${obj.x}, 0)`}
+            stroke="black"
+            strokeWidth="2"
           >
             <path
               d={`M-${barMoveX},${obj.yMax.y + obj.yMax.height} h ${barLength}`}
-              stroke="black"
-              strokeWidth="2"
             />
             <path
               d={`M-${barMoveX},${obj.yMin.y} h ${barLength}`}
-              stroke="black"
-              strokeWidth="2"
             />
           </g>
         ))
@@ -55,7 +53,7 @@ CandlestickLayer.propTypes = {
   bars: PropTypes.arrayOf(PropTypes.shape({
     data: PropTypes.shape({
       indexValue: PropTypes.string.isRequired,
-    }),
+    }).isRequired,
     x: PropTypes.number.isRequired,
     y: PropTypes.number.isRequired,
     height: PropTypes.number.isRequired,
@@ -63,12 +61,7 @@ CandlestickLayer.propTypes = {
   })),
   data: PropTypes.arrayOf(PropTypes.shape({
     year: PropTypes.string.isRequired,
-  })),
-};
-
-CandlestickLayer.defaultProps = {
-  bars: null,
-  data: null,
+  })).isRequired,
 };
 
 export default CandlestickLayer;
