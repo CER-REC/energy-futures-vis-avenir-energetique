@@ -27,6 +27,9 @@ const theme = createMuiTheme({
       fontSize: 13,
       textTransform: 'uppercase',
     },
+    chart: {
+      height: 700,
+    },
     contextButton: {
       height: 'auto',
       minHeight: 26,
