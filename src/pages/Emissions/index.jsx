@@ -35,8 +35,6 @@ const Emissions = ({ data, year }) => {
     [customColorProp, year],
   );
 
-  // TODO: Add this back in when config has sources correctly.
-  // const keys = useMemo(() => config.provinceOrder?.slice().reverse(), [config.provinceOrder]);
   const keys = sources.order.slice().reverse();
 
   const timer = useRef(null);

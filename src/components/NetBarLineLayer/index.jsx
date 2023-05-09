@@ -30,27 +30,29 @@ const NetBarLineLayer = ({
   );
 
   return (
-    <Line
-      renderWrapper={false}
-      layers={['lines']}
-      width={width}
-      height={height}
-      colors="black"
-      data={[{
-        id: 'NetBarLineLayer',
-        data: netPoints,
-      }]}
-      margin={{
-        left: barOffset,
-        right: barOffset,
-      }}
-      xScale={{ type: 'point' }}
-      yScale={{
-        type: 'linear',
-        min: minValue,
-        max: maxValue,
-      }}
-    />
+    <g style={{ pointerEvents: 'none' }}>
+      <Line
+        renderWrapper={false}
+        layers={['lines']}
+        width={width}
+        height={height}
+        colors="black"
+        data={[{
+          id: 'NetBarLineLayer',
+          data: netPoints,
+        }]}
+        margin={{
+          left: barOffset,
+          right: barOffset,
+        }}
+        xScale={{ type: 'point' }}
+        yScale={{
+          type: 'linear',
+          min: minValue,
+          max: maxValue,
+        }}
+      />
+    </g>
   );
 };
 
