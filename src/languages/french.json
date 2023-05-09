@@ -1,7 +1,7 @@
 {
   "common": {
     "title": "Explorer l’avenir énergétique du Canada",
-    "forecast": "prévision",
+    "forecast": "Projections",
     "selection": "Sélection",
     "region": "Région",
     "scenario": "Scénario",
@@ -21,7 +21,8 @@
       "thousandCubicMetres": "10³m³/j",
       "millionCubicMetres": "Mm³/j",
       "kilobarrels": "kb/j",
-      "cubicFeet": "Tpi³/j"
+      "cubicFeet": "Tpi³/j",
+      "megatonnes": "Mt"
     },
     "datasets": {
       "2016*": "Mise à jour 2016"
@@ -102,7 +103,7 @@
   },
   "components": {
     "header": {
-      "subtitle": ""
+      "subtitle": "À quoi ressemblerait l’avenir énergétique du Canada si nous suivions ces scénarios?"
     },
     "draggableVerticalList": {
       "all": "Tous",
@@ -183,7 +184,8 @@
         "tooltip": "Explorer les données de la mise à jour du rapport Avenir énergétique 2016",
         "subtitle": "Octobre 2016",
         "description": "Présente des scénarios de prix, bas et élevés, ainsi qu’un scénario de référence. Dans ce dernier cas, l’hypothèse de prix du pétrole brut a été revue à la baisse, à 90 $ US le baril en 2040. En plus des politiques déjà incluses précédemment, notamment le système de plafonnement et d’échange de droits d’émission au Québec et la taxe sur le carbone en Colombie-Britannique, les nouvelles prévisions tiennent compte, dans sa plus grande partie, du plan de leadership de l’Alberta en matière de changement climatique de même que du programme de plafonnement et d’échange de droits de l’Ontario.",
-        "link": "[Voir le rapport](https://www.cer-rec.gc.ca/fr/donnees-analyse/avenir-energetique-canada/2016-mise-jour/index.html)"
+        "link": "[Voir le rapport](https://www.cer-rec.gc.ca/fr/donnees-analyse/avenir-energetique-canada/2016-mise-jour/index.html)",
+        "dropdown": "Mise à jour de 2016*"
       },
       "2016": {
         "title": "AVENIR ÉNERGÉTIQUE DU CANADA EN 2016",
@@ -194,13 +196,13 @@
       }
     },
     "historicalLayer": {
-      "historical": "historical"
+      "historical": "Données historiques"
     },
     "pageSelect": {
       "defaultTitle": "{title} modelled with {scenario}",
       "Emissions": {
         "title": {
-          "default": "Emissions"
+          "default": "Émissions"
         },
         "description": "to be filled"
       },
@@ -221,7 +223,7 @@
           "COMMERCIAL": "Demande pour utilisation finale, secteur commercial",
           "INDUSTRIAL": "Demande pour utilisation finale, secteur industriel",
           "TRANSPORTATION": "Demande pour utilisation finale, secteur des transports",
-          "default": "Secteurs"
+          "default": "Par source d’énergie"
         },
         "description": "Examiner la façon dont le bouquet énergétique pour divers secteurs a évolué récemment, et la projection de leur évolution selon les scénarios du rapport sur l’avenir énergétique."
       },
@@ -337,6 +339,21 @@
       "Technology": {
         "description": {
           "default": "Le scénario des avancées technologiques suppose des prix du carbone plus élevés que ceux du scénario de référence et l’adoption plus massive de certaines technologies énergétiques émergentes liées à la production ou à la consommation."
+        }
+      },
+      "Global Net-zero": {
+        "description": {
+          "default": ""
+        }
+      },
+      "Canada Net-zero": {
+        "description": {
+          "default": ""
+        }
+      },
+      "Current Measures": {
+        "description": {
+          "default": ""
         }
       },
       "caption": {
@@ -667,7 +684,7 @@
       "description": "Comparez les données passées et faites des projections de l’offre et de la demande d’énergie pour les provinces et les territoires au Canada"
     },
     "By Sector": {
-      "title": "Explorer par secteur",
+      "title": "Explorer par source d’énergie",
       "description": "Examinez l’évolution récente des sources énergétiques de différents secteurs et ce que projettent les scénarios du rapport sur l’avenir énergétique à cet égard"
     },
     "Electricity": {
