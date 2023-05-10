@@ -75,8 +75,8 @@ const Emissions = ({ data, year }) => {
   }, [data]);
 
   const xAxisGridLines = useMemo(() => {
-    const allYears = data.map(entry => entry["year"]);
-    return allYears.filter((value) => value % 5 === 0);
+    const allYears = data.map(entry => entry.year);
+    return allYears.filter(value => value % 5 === 0);
   }, [data]);
 
   if (!data?.length) {
@@ -104,7 +104,7 @@ const Emissions = ({ data, year }) => {
           ...CHART_AXIS_PROPS,
           tickValues: axis.ticks,
         }}
-        enableGridX={true}
+        enableGridX
         tooltip={getTooltip}
         gridXValues={xAxisGridLines}
         gridYValues={axis.ticks}
