@@ -2,11 +2,11 @@ import React, { useCallback, useMemo, useRef } from 'react';
 import { ResponsiveBar } from '@nivo/bar';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core';
+import { useIntl } from 'react-intl';
 import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
 import convertHexToRGB from '../../utilities/convertHexToRGB';
 import analytics from '../../analytics';
-import VizTooltip from '../../components/VizTooltip';
 import { getMaxTick } from '../../utilities/parseData';
 import { CHART_AXIS_PROPS, CHART_PROPS } from '../../constants';
 import NetBarLineLayer from '../../components/NetBarLineLayer';
@@ -14,6 +14,7 @@ import HistoricalLayer from '../../components/HistoricalLayer';
 import ForecastLayer from '../../components/ForecastLayer';
 import CandlestickLayer from '../../components/CandlestickLayer';
 import getYearLabel from '../../utilities/getYearLabel';
+import EmissionsTooltip from '../../components/EmissionsTooltip';
 
 const useStyles = makeStyles(theme => ({
   chart: {
@@ -24,6 +25,7 @@ const useStyles = makeStyles(theme => ({
 const Emissions = ({ data, year }) => {
   const { sources: { greenhouseGas: sources } } = useAPI();
   const { config } = useConfig();
+  const intl = useIntl();
   const classes = useStyles();
 
   const customColorProp = useCallback(
@@ -43,13 +45,28 @@ const Emissions = ({ data, year }) => {
     const name = `${entry.id} - ${entry.indexValue}`;
     clearTimeout(timer.current);
     timer.current = setTimeout(() => analytics.reportPoi(config.page, name), 500);
+
+    const nodes = [];
+
+    sources.order.forEach((key) => {
+      if (entry.data[key]) {
+        nodes.push({
+          name: key,
+          value: entry.data[key],
+          color: sources.colors[key],
+          translation: intl.formatMessage({ id: `common.sources.greenhouseGas.${key}` }),
+        });
+      }
+    });
+
     return (
-      <VizTooltip
-        nodes={[{ name, value: entry.value, color: entry.color }]}
-        unit={config.unit}
+      <EmissionsTooltip
+        nodes={nodes}
+        year={entry.indexValue}
+        unit={intl.formatMessage({ id: `common.units.${config.unit}` })}
       />
     );
-  }, [config.page, config.unit]);
+  }, [config.page, config.unit, intl, sources.colors, sources.order]);
 
   const axis = useMemo(() => {
     const highest = data && Math.max(...data
