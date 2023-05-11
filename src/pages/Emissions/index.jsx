@@ -25,7 +25,6 @@ const useStyles = makeStyles(theme => ({
 const Emissions = ({ data, year }) => {
   const { sources: { greenhouseGas: sources } } = useAPI();
   const { config } = useConfig();
-  const intl = useIntl();
   const classes = useStyles();
 
   const customColorProp = useCallback(
@@ -54,7 +53,6 @@ const Emissions = ({ data, year }) => {
           name: key,
           value: entry.data[key],
           color: sources.colors[key],
-          translation: intl.formatMessage({ id: `common.sources.greenhouseGas.${key}` }),
         });
       }
     });
@@ -63,20 +61,15 @@ const Emissions = ({ data, year }) => {
       <EmissionsTooltip
         nodes={nodes}
         year={entry.indexValue}
-        unit={intl.formatMessage({ id: `common.units.${config.unit}` })}
+        unit={config.unit}
       />
     );
-  }, [config.page, config.unit, intl, sources.colors, sources.order]);
+  }, [config.page, config.unit, sources.colors, sources.order]);
 
   const axis = useMemo(() => {
     const highest = data && Math.max(...data
       .map(seg => Object.values(seg).reduce((a, b) => a + (typeof b === 'string' ? 0 : b), 0)));
     return getMaxTick(highest);
-  }, [data]);
-
-  const xAxisGridLines = useMemo(() => {
-    const allYears = data.map(entry => entry["year"]);
-    return allYears.filter((value) => value % 5 === 0);
   }, [data]);
 
   if (!data?.length) {
@@ -97,16 +90,14 @@ const Emissions = ({ data, year }) => {
         minValue={-200}
         colors={colors}
         axisBottom={{
-          tickSize: 0,
+          ...CHART_AXIS_PROPS,
           format: getYearLabel,
         }}
         axisRight={{
           ...CHART_AXIS_PROPS,
           tickValues: axis.ticks,
         }}
-        enableGridX={true}
         tooltip={getTooltip}
-        gridXValues={xAxisGridLines}
         gridYValues={axis.ticks}
         motionStiffness={300}
         forecastStart={year.forecastStart}
