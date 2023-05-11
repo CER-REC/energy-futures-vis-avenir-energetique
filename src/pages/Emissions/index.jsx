@@ -2,7 +2,6 @@ import React, { useCallback, useMemo, useRef } from 'react';
 import { ResponsiveBar } from '@nivo/bar';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core';
-import { useIntl } from 'react-intl';
 import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
 import convertHexToRGB from '../../utilities/convertHexToRGB';
@@ -25,7 +24,6 @@ const useStyles = makeStyles(theme => ({
 const Emissions = ({ data, year }) => {
   const { sources: { greenhouseGas: sources } } = useAPI();
   const { config } = useConfig();
-  const intl = useIntl();
   const classes = useStyles();
 
   const customColorProp = useCallback(
@@ -54,7 +52,6 @@ const Emissions = ({ data, year }) => {
           name: key,
           value: entry.data[key],
           color: sources.colors[key],
-          translation: intl.formatMessage({ id: `common.sources.greenhouseGas.${key}` }),
         });
       }
     });
@@ -63,10 +60,10 @@ const Emissions = ({ data, year }) => {
       <EmissionsTooltip
         nodes={nodes}
         year={entry.indexValue}
-        unit={intl.formatMessage({ id: `common.units.${config.unit}` })}
+        unit={config.unit}
       />
     );
-  }, [config.page, config.unit, intl, sources.colors, sources.order]);
+  }, [config.page, config.unit, sources.colors, sources.order]);
 
   const axis = useMemo(() => {
     const highest = data && Math.max(...data
@@ -76,7 +73,7 @@ const Emissions = ({ data, year }) => {
 
   const xAxisGridLines = useMemo(() => {
     const allYears = data.map(entry => entry.year);
-    return allYears.filter(value => value % 5 === 0);
+    return allYears.filter(value => getYearLabel(value) !== '');
   }, [data]);
 
   if (!data?.length) {

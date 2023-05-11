@@ -14,7 +14,7 @@
     "dataset": "Dataset",
     "energyUnits": "ENERGY UNITS",
     "volumetricUnits": "VOLUMETRIC UNITS",
-    "netEmissions": "Net Emissions: {sum}",
+    "netEmissions": "Net Emissions",
     "units": {
       "petajoules": "PJ",
       "gigawattHours": "GW.h",

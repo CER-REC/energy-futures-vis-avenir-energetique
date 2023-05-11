@@ -3,6 +3,7 @@ import { makeStyles, Table, TableBody, TableCell, TableHead, TableRow, Typograph
 import { useIntl } from 'react-intl';
 import PropTypes from 'prop-types';
 import useConfig from '../../hooks/useConfig';
+import { formatUnitAbbreviation } from '../../utilities/convertUnit';
 
 const useStyles = makeStyles(theme => ({
   gridContainer: {
@@ -13,15 +14,12 @@ const useStyles = makeStyles(theme => ({
     '& > tr:last-child': {
       backgroundColor: 'white',
       '& > td': {
-        padding: theme.spacing(2, 0.75, 1, 0.75),
+        padding: theme.spacing(1, 0.75, 1, 0.75),
       },
     },
   },
   header: {
-    '& > tr > th': { padding: theme.spacing(0.25, 0.75) },
-    '& > tr > th:first-child': {
-      paddingTop: theme.spacing(1),
-    },
+    '& > tr > th': { padding: theme.spacing(1, 0.75, 0.25, 0.75) },
   },
   color: {
     height: theme.spacing(2),
@@ -35,18 +33,18 @@ const EmissionsTooltip = ({ nodes, year, unit }) => {
   const { config } = useConfig();
   const intl = useIntl();
 
-  const sum = (nodes || []).map(node => node.value).reduce((a, b) => a + b, 0);
+  const sum = nodes.map(node => node.value).reduce((a, b) => a + b, 0);
 
   return (
     <Table>
       <TableHead className={classes.header}>
         <TableRow>
-          <TableCell size="small">
+          <TableCell>
             {year}
           </TableCell>
         </TableRow>
         <TableRow>
-          <TableCell size="small" style={{ paddingTop: 0 }}>
+          <TableCell style={{ paddingTop: 0 }}>
             <Typography variant="h6" style={{ fontSize: 16 }}>
               {config.scenarios[0]}
             </Typography>
@@ -55,27 +53,28 @@ const EmissionsTooltip = ({ nodes, year, unit }) => {
       </TableHead>
       <TableBody className={classes.gridContainer}>
         {nodes.map(node => (
-          <TableRow key={`item-${node.name}-${node.value}`}>
+          <TableRow key={node.name}>
             <TableCell size="small" style={{ display: 'flex' }}>
               <div className={classes.color}>
-                <svg x="0" y="0" height="100%" width="100%" viewBox="0 0 30 30">
-                  <rect x="0" y="0" height="100%" width="100%" fill={node.color || '#FFF'} mask={node.mask} />
+                <svg height="100%" width="100%" viewBox="0 0 30 30">
+                  <rect height="100%" width="100%" fill={node.color || '#FFF'} />
                 </svg>
               </div>
-              <strong>{node.translation}</strong>
+              <strong>{intl.formatMessage({ id: `common.sources.greenhouseGas.${node.name}` })}</strong>
             </TableCell>
-            <TableCell size="small" align="right">
-              {`${node.value} ${unit}`}
+            <TableCell align="right">
+              {formatUnitAbbreviation(node.value, intl.formatMessage({ id: `common.units.${unit}` }), intl)}
             </TableCell>
           </TableRow>
         ))}
 
         <TableRow>
           <TableCell>
-            <strong>{intl.formatMessage({ id: 'common.netEmissions' }, {
-              sum: `${sum} ${unit}`,
-            })}
+            <strong>{intl.formatMessage({ id: 'common.netEmissions' })}
             </strong>
+          </TableCell>
+          <TableCell align="right">
+            {formatUnitAbbreviation(sum, intl.formatMessage({ id: `common.units.${unit}` }), intl)}
           </TableCell>
         </TableRow>
       </TableBody>
@@ -88,14 +87,12 @@ EmissionsTooltip.propTypes = {
     name: PropTypes.string,
     value: PropTypes.number,
     color: PropTypes.string,
-    translation: PropTypes.string,
-  })),
+  })).isRequired,
   year: PropTypes.string,
   unit: PropTypes.string.isRequired,
 };
 
 EmissionsTooltip.defaultProps = {
-  nodes: [],
   year: undefined,
 };
 
