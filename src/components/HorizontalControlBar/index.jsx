@@ -9,7 +9,7 @@ import {
 import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
 import analytics from '../../analytics';
-import { CONFIG_LAYOUT, SECTOR_ORDER } from '../../constants';
+import { CONFIG_LAYOUT, SECTOR_ORDER, PAGES } from '../../constants';
 import { HintMainSelect, HintViewSelect, HintSectorSelect } from '../Hint';
 // #endregion
 
@@ -40,6 +40,7 @@ const HorizontalControlBar = () => {
   const { sectors } = useAPI();
   const { config, configDispatch } = useConfig();
   const layout = useMemo(() => CONFIG_LAYOUT[config.mainSelection], [config.mainSelection]);
+  const page = useMemo(() => PAGES.find(p => p.id === config.page), [config.page]);
 
   const handleUpdateAppendix = useCallback((selection) => {
     configDispatch({ type: 'mainSelection/changed', payload: selection });
@@ -131,12 +132,12 @@ const HorizontalControlBar = () => {
   /**
    * View by
    */
-  const views = ['electricity', 'oil-and-gas'].includes(config.page) && (
+  const views = page.views && (
     <Grid container alignItems="center" wrap="nowrap">
       <HintViewSelect>
         <Typography variant="body1" color="secondary">{intl.formatMessage({ id: 'components.viewSelect.name' })}</Typography>
       </HintViewSelect>
-      {['region', 'source'].map(view => (
+      {Object.keys(page.views).map(view => (
         <Tooltip
           key={`config-view-${view}`}
           title={intl.formatMessage({ id: `components.viewSelect.${view}.tooltip.${config.page}.${config.mainSelection}` })}
@@ -147,7 +148,7 @@ const HorizontalControlBar = () => {
             size="small"
             onClick={() => handleUpdateView(view)}
           >
-            {intl.formatMessage({ id: `common.${view === 'source' && config.page === 'oil-and-gas' ? 'type' : view}` })}
+            {intl.formatMessage({ id: `common.${page.views[view].labelTranslationKey}` })}
           </Button>
         </Tooltip>
       ))}
@@ -155,7 +156,7 @@ const HorizontalControlBar = () => {
   );
 
   return (
-    <Grid container justify={config.page === 'electricity' ? 'flex-start' : 'space-between'} alignItems="center" spacing={1} className={classes.root}>
+    <Grid container justify={config.page === 'electricity' || config.page === 'emissions' ? 'flex-start' : 'space-between'} alignItems="center" spacing={1} className={classes.root}>
       { selections && (<Grid item>{selections}</Grid>) }
       <Grid item>{sectorSelection}</Grid>
       <Grid item>{views}</Grid>
