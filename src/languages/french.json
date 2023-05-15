@@ -14,6 +14,7 @@
     "dataset": "Série de données",
     "energyUnits": "UNITÉS D’ÉNERGIE",
     "volumetricUnits": "UNITÉS VOLUMÉTRIQUES",
+    "netEmissions": "",
     "units": {
       "petajoules": "PJ",
       "gigawattHours": "GWh",

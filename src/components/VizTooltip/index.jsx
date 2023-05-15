@@ -46,8 +46,8 @@ const VizTooltip = ({ nodes, total, unit, year, paper, showTotal, showPercentage
               <TableCell size="small">
                 <div className={classes.color} style={{ backgroundColor: node.mask ? 'transparent' : node.color }}>
                   {node.mask && (
-                    <svg x="0" y="0" height="100%" width="100%" viewBox="0 0 30 30">
-                      <rect x="0" y="0" height="100%" width="100%" fill={node.color || '#FFF'} mask={node.mask} />
+                    <svg height="100%" width="100%" viewBox="0 0 30 30">
+                      <rect height="100%" width="100%" fill={node.color || '#FFF'} mask={node.mask} />
                     </svg>
                   )}
                 </div>

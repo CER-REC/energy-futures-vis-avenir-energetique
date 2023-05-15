@@ -6,7 +6,6 @@ import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
 import convertHexToRGB from '../../utilities/convertHexToRGB';
 import analytics from '../../analytics';
-import VizTooltip from '../../components/VizTooltip';
 import { getMaxTick } from '../../utilities/parseData';
 import { CHART_AXIS_PROPS, CHART_PROPS } from '../../constants';
 import NetBarLineLayer from '../../components/NetBarLineLayer';
@@ -14,6 +13,7 @@ import HistoricalLayer from '../../components/HistoricalLayer';
 import ForecastLayer from '../../components/ForecastLayer';
 import CandlestickLayer from '../../components/CandlestickLayer';
 import getYearLabel from '../../utilities/getYearLabel';
+import EmissionsTooltip from '../../components/EmissionsTooltip';
 
 const useStyles = makeStyles(theme => ({
   chart: {
@@ -43,18 +43,37 @@ const Emissions = ({ data, year }) => {
     const name = `${entry.id} - ${entry.indexValue}`;
     clearTimeout(timer.current);
     timer.current = setTimeout(() => analytics.reportPoi(config.page, name), 500);
+
+    const nodes = [];
+
+    sources.order.forEach((key) => {
+      if (entry.data[key]) {
+        nodes.push({
+          name: key,
+          value: entry.data[key],
+          color: sources.colors[key],
+        });
+      }
+    });
+
     return (
-      <VizTooltip
-        nodes={[{ name, value: entry.value, color: entry.color }]}
+      <EmissionsTooltip
+        nodes={nodes}
+        year={entry.indexValue}
         unit={config.unit}
       />
     );
-  }, [config.page, config.unit]);
+  }, [config.page, config.unit, sources.colors, sources.order]);
 
   const axis = useMemo(() => {
     const highest = data && Math.max(...data
       .map(seg => Object.values(seg).reduce((a, b) => a + (typeof b === 'string' ? 0 : b), 0)));
     return getMaxTick(highest);
+  }, [data]);
+
+  const xAxisGridLines = useMemo(() => {
+    const allYears = data.map(entry => entry.year);
+    return allYears.filter(value => getYearLabel(value) !== '');
   }, [data]);
 
   if (!data?.length) {
@@ -75,14 +94,16 @@ const Emissions = ({ data, year }) => {
         minValue={-200}
         colors={colors}
         axisBottom={{
-          ...CHART_AXIS_PROPS,
+          tickSize: 0,
           format: getYearLabel,
         }}
         axisRight={{
           ...CHART_AXIS_PROPS,
           tickValues: axis.ticks,
         }}
+        enableGridX
         tooltip={getTooltip}
+        gridXValues={xAxisGridLines}
         gridYValues={axis.ticks}
         motionStiffness={300}
         forecastStart={year.forecastStart}
