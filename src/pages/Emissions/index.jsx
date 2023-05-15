@@ -71,6 +71,11 @@ const Emissions = ({ data, year }) => {
     return getMaxTick(highest);
   }, [data]);
 
+  const xAxisGridLines = useMemo(() => {
+    const allYears = data.map(entry => entry.year);
+    return allYears.filter(value => getYearLabel(value) !== '');
+  }, [data]);
+
   if (!data?.length) {
     return null;
   }
@@ -89,14 +94,16 @@ const Emissions = ({ data, year }) => {
         minValue={-200}
         colors={colors}
         axisBottom={{
-          ...CHART_AXIS_PROPS,
+          tickSize: 0,
           format: getYearLabel,
         }}
         axisRight={{
           ...CHART_AXIS_PROPS,
           tickValues: axis.ticks,
         }}
+        enableGridX
         tooltip={getTooltip}
+        gridXValues={xAxisGridLines}
         gridYValues={axis.ticks}
         motionStiffness={300}
         forecastStart={year.forecastStart}
