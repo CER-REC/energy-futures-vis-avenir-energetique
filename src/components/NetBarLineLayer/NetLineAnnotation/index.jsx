@@ -1,11 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { useIntl } from 'react-intl';
 
 const DIAGONAL_MOVE = 20;
 const HORIZONTAL_LENGTH = 30;
 const FONT_SIZE = 13;
 
 const NetLineAnnotation = ({ points }) => {
+  const intl = useIntl();
+
   const midPoint = points[Math.ceil(points.length / 2)];
   const xPosText = DIAGONAL_MOVE + HORIZONTAL_LENGTH;
   const yPos = -((DIAGONAL_MOVE + FONT_SIZE) / 2);
@@ -20,7 +23,7 @@ const NetLineAnnotation = ({ points }) => {
         d={`M 0,0 l ${DIAGONAL_MOVE},-${DIAGONAL_MOVE} h ${HORIZONTAL_LENGTH - 2}`}
       />
       <text x={xPosText} y={yPos} style={{ fontSize: `${FONT_SIZE}px`, fontWeight: 'bold' }}>
-        Net emissions
+        {intl.formatMessage({ id: 'common.netEmissions' })}
       </text>
     </g>
   );
