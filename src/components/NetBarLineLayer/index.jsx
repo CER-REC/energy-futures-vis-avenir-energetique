@@ -2,6 +2,7 @@ import React, { useMemo } from 'react';
 import { Line } from '@nivo/line';
 import PropTypes from 'prop-types';
 import getYearX from '../../utilities/getYearX';
+import NetLineAnnotation from './NetLineAnnotation';
 
 const NetBarLineLayer = ({
   bars,
@@ -33,7 +34,7 @@ const NetBarLineLayer = ({
     <g style={{ pointerEvents: 'none' }}>
       <Line
         renderWrapper={false}
-        layers={['lines']}
+        layers={['lines', NetLineAnnotation]}
         width={width}
         height={height}
         colors="black"
