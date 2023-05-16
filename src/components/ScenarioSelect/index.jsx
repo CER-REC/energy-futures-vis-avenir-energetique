@@ -7,11 +7,13 @@ import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
 import { SCENARIO_COLOR } from '../../constants';
 import analytics from '../../analytics';
+import { HintScenarioSelect } from '../Hint';
+import { IconCaret } from '../../icons';
 
 const useStyles = makeStyles(theme => ({
   root: {
     [theme.breakpoints.up('md')]: {
-      padding: theme.spacing(0.5, 3),
+      padding: theme.spacing(0.5, 3, 0.5, 1),
     },
     [theme.breakpoints.down('sm')]: {
       padding: theme.spacing(0.5, 1),
@@ -20,19 +22,27 @@ const useStyles = makeStyles(theme => ({
   },
   scenarioButton: {
     padding: '0 1.5em',
+    boxShadow: '2px 2px 4px 0px #00000040',
+    textTransform: 'unset',
+  },
+  scenarioLabel: {
+    whiteSpace: 'nowrap',
   },
   descriptionContainer: {
     width: '100%',
-    height: '3.5em',
     overflowY: 'auto',
-    borderTop: '1px dashed black',
     '& > p': {
       paddingBottom: '0.3em',
     },
   },
+  minimizeButton: {
+    borderRadius: '1em',
+    padding: '0 1em',
+    textTransform: 'unset',
+  },
 }));
 
-const ScenarioSelect = ({ multiSelect }) => {
+const ScenarioSelect = ({ multiSelect, isMinimized, setIsMinimized }) => {
   const classes = useStyles();
   const intl = useIntl();
 
@@ -83,7 +93,7 @@ const ScenarioSelect = ({ multiSelect }) => {
   return (
     <Grid container alignItems="center" spacing={1} className={classes.root}>
       {scenarios.map(scenario => (
-        <Grid item key={`config-scenario-${scenario}`}>
+        <Grid item key={`config-scenario-${scenario}`} style={{ lineHeight: '1em' }}>
           <Tooltip title={getTooltip(scenario)}>
             <Button
               className={classes.scenarioButton}
@@ -102,24 +112,50 @@ const ScenarioSelect = ({ multiSelect }) => {
           </Tooltip>
         </Grid>
       ))}
-      <Grid
-        item
-        className={classes.descriptionContainer}
-      >
-        {
-          [...config.scenarios].reverse().map(scenario => (
-            <Typography key={`selected-${scenario}`} variant="body2">
-              {intl.formatMessage({ id: `components.scenarioSelect.${scenario}.description.default` })}
-            </Typography>
-          ))
-        }
+      <Grid item>
+        <HintScenarioSelect />
       </Grid>
+      <Grid item justify="flex-end" style={{ flexGrow: 1, display: 'flex' }}>
+        <Button
+          variant="outlined"
+          color="inherit"
+          size="small"
+          className={classes.minimizeButton}
+          onClick={() => setIsMinimized(!isMinimized)}
+        >
+          { isMinimized ? intl.formatMessage({ id: 'components.scenarioSelect.readMore' }) : intl.formatMessage({ id: 'components.scenarioSelect.readLess' }) }
+          <IconCaret style={{ padding: '6px', transform: isMinimized && 'rotate(180deg)' }} />
+        </Button>
+      </Grid>
+      { !isMinimized && (
+        <Grid item className={classes.descriptionContainer}>
+          {
+            scenarios.map(scenario => (
+              <Grid container key={`selected-${scenario}`} wrap="nowrap">
+                <Grid item className={classes.scenarioLabel}>
+                  <Typography variant="body2" style={{ color: SCENARIO_COLOR[scenario], fontWeight: 'bold' }}>
+                    {scenario}
+                  </Typography>
+                </Grid>
+                <Grid item><Typography variant="body2">&nbsp;-&nbsp;</Typography></Grid>
+                <Grid item>
+                  <Typography variant="body2">
+                    {intl.formatMessage({ id: `components.scenarioSelect.${scenario}.description.default` })}
+                  </Typography>
+                </Grid>
+              </Grid>
+            ))
+          }
+        </Grid>
+      )}
     </Grid>
   );
 };
 
 ScenarioSelect.propTypes = {
   multiSelect: PropTypes.bool,
+  isMinimized: PropTypes.func.isRequired,
+  setIsMinimized: PropTypes.func.isRequired,
 };
 
 ScenarioSelect.defaultProps = {

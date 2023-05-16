@@ -11,9 +11,11 @@ import Markdown from 'react-markdown';
 
 import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
-import { CONFIG_LAYOUT, PAGES } from '../../constants';
+import { CONFIG_LAYOUT, PAGES, SCENARIO_LABEL_COLOR } from '../../constants';
 import analytics from '../../analytics';
 import HintUnit from './HintUnit';
+import ScenarioHintImageEn from './scenario_hint_en.jpg';
+import ScenarioHintImageFr from './scenario_hint_fr.jpg';
 
 const useStyles = makeStyles(theme => createStyles({
   root: { width: 'auto' },
@@ -315,6 +317,50 @@ export const HintSourceList = ({ sources, sourceType, children, disableKeyboardN
   ];
   return <Hint label="source" content={sections}>{children}</Hint>;
 };
+
+export const HintScenarioSelect = ({ children }) => {
+  const classes = useStyles();
+  const intl = useIntl();
+  const { yearIdIterations } = useAPI();
+  const { yearId } = useConfig().config;
+
+  const showGraph = useMemo(
+    () => (yearIdIterations[yearId]?.scenarios || []).find(title => title === 'Evolving'),
+    [yearIdIterations, yearId],
+  );
+  const sectionTitle = useMemo(
+    () => [{ text: intl.formatMessage({ id: `components.scenarioSelect.description.${yearId}` }) }],
+    [intl, yearId],
+  );
+  const sectionBody = useMemo(() => (yearIdIterations[yearId]?.scenarios || []).map(scenario => ({
+    title: intl.formatMessage({
+      id: `common.scenarios.${scenario}.${yearId}`,
+      defaultMessage: intl.formatMessage({ id: `common.scenarios.${scenario}` }),
+    }),
+    text: intl.formatMessage({
+      id: `components.scenarioSelect.${scenario}.description.${yearId}`,
+      defaultMessage: intl.formatMessage({ id: `components.scenarioSelect.${scenario}.description.default` }),
+    }),
+    color: showGraph && SCENARIO_LABEL_COLOR[scenario],
+  })), [intl, yearIdIterations, yearId, showGraph]);
+  const sectionCaption = useMemo(() => ['netzero', 'history'].map(caption => ({
+    title: intl.formatMessage({ id: `components.scenarioSelect.caption.${caption}.title` }),
+    text: intl.formatMessage({ id: `components.scenarioSelect.caption.${caption}.description` }),
+    color: showGraph && SCENARIO_LABEL_COLOR[caption],
+  })), [intl, showGraph]);
+
+  const sections = [
+    <HintSection title={intl.formatMessage({ id: 'components.scenarioSelect.name' })} section={sectionTitle} />,
+    showGraph && <img src={intl.locale === 'fr' ? ScenarioHintImageFr : ScenarioHintImageEn} alt="evolving caption" />,
+    <HintSection section={sectionBody} />,
+    showGraph && <Divider />,
+    showGraph && <HintSection section={sectionCaption} />,
+  ].filter(Boolean);
+  return <Hint label="scenarios" content={sections} className={classes.senarios}>{children}</Hint>;
+};
+
+HintScenarioSelect.propTypes = { children: PropTypes.node };
+HintScenarioSelect.defaultProps = { children: null };
 
 HintSourceList.propTypes = {
   sources: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types

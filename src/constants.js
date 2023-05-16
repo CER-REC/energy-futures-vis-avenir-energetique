@@ -136,6 +136,9 @@ export const GREENHOUSE_GAS_ORDER = ['WASTE', 'AGRI', 'BUILD', 'HEAVY', 'TRANSPO
  * TODO: replace it with real colors from UI designers.
  */
 export const SCENARIO_COLOR = {
+  'Global Net-zero': '#559B37',
+  'Canada Net-zero': '#376787',
+  'Current Measures': '#CEA53B',
   'Current Policies': '#AAA',
   Evolving: '#6D60E8',
   'Evolving Policies': '#6D60E8',
@@ -147,6 +150,13 @@ export const SCENARIO_COLOR = {
   Constrained: '#4EEB8D',
   'High LNG': '#06A458',
   'No LNG': '#56D3EE',
+};
+
+export const SCENARIO_LABEL_COLOR = {
+  Evolving: '#F4BE62',
+  Reference: '#BEC0C2',
+  netzero: '#8EC059',
+  history: '#CBDEF1',
 };
 
 export const REGION_COLORS = {
