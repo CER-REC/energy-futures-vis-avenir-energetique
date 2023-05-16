@@ -96,7 +96,6 @@ const Emissions = ({ data, year }) => {
         padding={0.6}
         indexBy="year"
         maxValue={axis.max}
-        // TODO: Replace with value from axis calculation
         minValue={axis.min}
         colors={colors}
         axisBottom={{
