@@ -8,7 +8,7 @@ import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
 import analytics from '../../analytics';
 import { CHART_PROPS, CHART_AXIS_PROPS, CHART_PATTERNS, OIL_SUBGROUP } from '../../constants';
-import { getMaxTick } from '../../utilities/parseData';
+import { getTicks } from '../../utilities/parseData';
 
 import { fillLayerBySector } from '../../components/FillLayer';
 import ForecastLayer from '../../components/ForecastLayer';
@@ -98,7 +98,7 @@ const BySector = ({ data, year }) => {
     const values = (data || []).map(source => source.data);
     const sums = (values[0] || [])
       .map((_, i) => values.map(source => source[i].y).reduce((a, b) => a + b, 0));
-    return getMaxTick(Math.max(...sums));
+    return getTicks(Math.max(...sums));
   }, [data]);
 
   if (!data || !year) {
@@ -112,7 +112,7 @@ const BySector = ({ data, year }) => {
         data={orderedData}
         layers={[HistoricalLayer, 'grid', 'axes', 'crosshair', 'lines', 'points', 'slices', 'areas', fill, ForecastLayer]}
         xScale={{ type: 'point' }}
-        yScale={{ type: 'linear', min: 0, max: axis.highest, stacked: true }}
+        yScale={{ type: 'linear', min: 0, max: axis.max, stacked: true }}
         curve="cardinal"
         axisRight={{
           ...CHART_AXIS_PROPS,

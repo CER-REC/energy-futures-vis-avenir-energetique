@@ -8,12 +8,15 @@ const CandlestickLayer = ({ bars, data }) => {
 
   years.forEach((year) => {
     const filteredBars = bars.filter(bar => bar.data.indexValue === year);
+
+    if (filteredBars.length === 0) return;
+
     const { x } = filteredBars[0];
     const yMinMax = filteredBars
       .reduce((acc, curr) => [
         curr.y < acc[0].y ? curr : acc[0],
         curr.y > acc[1].y ? curr : acc[1],
-      ], [{ y: Number.MAX_VALUE }, { y: Number.MIN_VALUE }]);
+      ], [{ y: Number.MAX_VALUE }, { y: -Number.MAX_VALUE }]);
 
     barMinMax.push({
       year,

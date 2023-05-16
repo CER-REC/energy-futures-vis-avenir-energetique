@@ -6,8 +6,8 @@ import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
 import convertHexToRGB from '../../utilities/convertHexToRGB';
 import analytics from '../../analytics';
-import { getMaxTick } from '../../utilities/parseData';
-import { CHART_AXIS_PROPS, CHART_PROPS } from '../../constants';
+import { getTicks } from '../../utilities/parseData';
+import { CHART_PROPS } from '../../constants';
 import NetBarLineLayer from '../../components/NetBarLineLayer';
 import HistoricalLayer from '../../components/HistoricalLayer';
 import ForecastLayer from '../../components/ForecastLayer';
@@ -68,7 +68,13 @@ const Emissions = ({ data, year }) => {
   const axis = useMemo(() => {
     const highest = data && Math.max(...data
       .map(seg => Object.values(seg).reduce((a, b) => a + (typeof b === 'string' ? 0 : b), 0)));
-    return getMaxTick(highest);
+    const lowest = data && Math.min(...data
+      .map(seg => Object.values(seg).reduce((a, b) => {
+        if (typeof b === 'string' || b > 0) return a;
+        return a + b;
+      }, 0)));
+
+    return getTicks(highest, lowest);
   }, [data]);
 
   const xAxisGridLines = useMemo(() => {
@@ -89,16 +95,16 @@ const Emissions = ({ data, year }) => {
         layers={[HistoricalLayer, 'grid', 'axes', 'bars', 'markers', CandlestickLayer, ForecastLayer, NetBarLineLayer]}
         padding={0.6}
         indexBy="year"
-        maxValue={axis.highest}
+        maxValue={axis.max}
         // TODO: Replace with value from axis calculation
-        minValue={-200}
+        minValue={axis.min}
         colors={colors}
         axisBottom={{
           tickSize: 0,
           format: getYearLabel,
         }}
         axisRight={{
-          ...CHART_AXIS_PROPS,
+          tickSize: 0,
           tickValues: axis.ticks,
         }}
         enableGridX

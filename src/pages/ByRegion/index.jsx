@@ -6,7 +6,7 @@ import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
 import analytics from '../../analytics';
 import { CHART_PROPS, CHART_AXIS_PROPS } from '../../constants';
-import { getMaxTick } from '../../utilities/parseData';
+import { getTicks } from '../../utilities/parseData';
 import convertHexToRGB from '../../utilities/convertHexToRGB';
 import ForecastLayer from '../../components/ForecastLayer';
 import VizTooltip from '../../components/VizTooltip';
@@ -64,7 +64,7 @@ const ByRegion = ({ data, year }) => {
   const axis = useMemo(() => {
     const highest = data && Math.max(...data
       .map(seg => Object.values(seg).reduce((a, b) => a + (typeof b === 'string' ? 0 : b), 0)));
-    return getMaxTick(highest);
+    return getTicks(highest);
   }, [data]);
 
   if (!data) {
@@ -79,7 +79,7 @@ const ByRegion = ({ data, year }) => {
         keys={keys}
         layers={[HistoricalLayer, 'grid', 'axes', 'bars', 'markers', ForecastLayer]}
         indexBy="year"
-        maxValue={axis.highest}
+        maxValue={axis.max}
         colors={colors}
         borderColor={{ from: 'color', modifiers: [['darker', 1.6]] }}
         axisBottom={{

@@ -7,7 +7,7 @@ import useConfig from '../../hooks/useConfig';
 import analytics from '../../analytics';
 
 import { CHART_PROPS, CHART_AXIS_PROPS, SCENARIO_COLOR } from '../../constants';
-import { getMaxTick } from '../../utilities/parseData';
+import { getTicks } from '../../utilities/parseData';
 import { fillLayerScenario } from '../../components/FillLayer';
 import ForecastLayer from '../../components/ForecastLayer';
 import VizTooltip from '../../components/VizTooltip';
@@ -73,7 +73,7 @@ const Scenarios = ({ data, year }) => {
     const values = (data || []).map(source => source.data);
     const sums = (values[0] || [])
       .map((_, i) => Math.max(...values.map(source => source[i].y)));
-    return getMaxTick(Math.max(...sums), true);
+    return getTicks(Math.max(...sums), true);
   }, [data]);
 
   /**
@@ -120,7 +120,7 @@ const Scenarios = ({ data, year }) => {
         curve="cardinal"
         areaOpacity={0.15}
         xScale={{ type: 'point' }}
-        yScale={{ type: 'linear', min: 0, max: axis.highest, reverse: false }}
+        yScale={{ type: 'linear', min: 0, max: axis.max, reverse: false }}
         colors={d => SCENARIO_COLOR[d.id] || '#AAA'}
         pointSize={8}
         pointColor={{ theme: 'background' }}
