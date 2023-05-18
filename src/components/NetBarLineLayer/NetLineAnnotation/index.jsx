@@ -10,7 +10,7 @@ const NetLineAnnotation = ({ points }) => {
   const intl = useIntl();
 
   const midPoint = points[Math.ceil(points.length / 2)];
-  const xPosText = DIAGONAL_MOVE + HORIZONTAL_LENGTH;
+  const xPos = DIAGONAL_MOVE + HORIZONTAL_LENGTH;
   const yPos = -((DIAGONAL_MOVE + FONT_SIZE) / 2);
 
   return (
@@ -22,7 +22,7 @@ const NetLineAnnotation = ({ points }) => {
         strokeDasharray="4,4"
         d={`M 0,0 l ${DIAGONAL_MOVE},-${DIAGONAL_MOVE} h ${HORIZONTAL_LENGTH - 2}`}
       />
-      <text x={xPosText} y={yPos} style={{ fontSize: `${FONT_SIZE}px`, fontWeight: 'bold' }}>
+      <text x={xPos} y={yPos} style={{ fontSize: FONT_SIZE, fontWeight: 'bold' }}>
         {intl.formatMessage({ id: 'common.netEmissions' })}
       </text>
     </g>

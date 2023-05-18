@@ -72,6 +72,8 @@ const Emissions = ({ data, year }) => {
   }, [data]);
 
   const xAxisGridLines = useMemo(() => {
+    if (!data)
+      return [];
     const allYears = data.map(entry => entry.year);
     return allYears.filter(value => getYearLabel(value) !== '');
   }, [data]);
