@@ -28,7 +28,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const EmissionsTooltip = ({ nodes, year, unit }) => {
+const TooltipWithHeader = ({ nodes, year, unit }) => {
   const classes = useStyles();
   const { config } = useConfig();
   const intl = useIntl();
@@ -82,7 +82,7 @@ const EmissionsTooltip = ({ nodes, year, unit }) => {
   );
 };
 
-EmissionsTooltip.propTypes = {
+TooltipWithHeader.propTypes = {
   nodes: PropTypes.arrayOf(PropTypes.shape({
     name: PropTypes.string,
     value: PropTypes.number,
@@ -92,9 +92,9 @@ EmissionsTooltip.propTypes = {
   unit: PropTypes.string.isRequired,
 };
 
-EmissionsTooltip.defaultProps = {
+TooltipWithHeader.defaultProps = {
   year: undefined,
 };
 
-export default EmissionsTooltip;
+export default TooltipWithHeader;
 

@@ -116,7 +116,6 @@ const Scenarios = ({ data, year }) => {
         enableArea
         enablePoints={false}
         layers={[HistoricalLayer, 'grid', 'axes', 'areas', 'crosshair', 'points', 'slices', fill, 'lines', ForecastLayer, dots]}
-
         curve="cardinal"
         areaOpacity={0.15}
         xScale={{ type: 'point' }}

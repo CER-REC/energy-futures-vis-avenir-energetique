@@ -13,7 +13,7 @@ import HistoricalLayer from '../../components/HistoricalLayer';
 import ForecastLayer from '../../components/ForecastLayer';
 import CandlestickLayer from '../../components/CandlestickLayer';
 import getYearLabel from '../../utilities/getYearLabel';
-import EmissionsTooltip from '../../components/EmissionsTooltip';
+import TooltipWithHeader from '../../components/TooltipWithHeader';
 
 const useStyles = makeStyles(theme => ({
   chart: {
@@ -57,7 +57,7 @@ const Emissions = ({ data, year }) => {
     });
 
     return (
-      <EmissionsTooltip
+      <TooltipWithHeader
         nodes={nodes}
         year={entry.indexValue}
         unit={config.unit}
