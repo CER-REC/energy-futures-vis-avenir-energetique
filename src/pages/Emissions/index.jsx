@@ -65,9 +65,12 @@ const Emissions = ({ data, year }) => {
     );
   }, [config.page, config.unit, sources.colors, sources.order]);
 
-  const axis = useMemo(() => {
+  const ticks = useMemo(() => {
     const highest = data && Math.max(...data
-      .map(seg => Object.values(seg).reduce((a, b) => a + (typeof b === 'string' ? 0 : b), 0)));
+      .map(seg => Object.values(seg).reduce((a, b) => {
+        if (typeof b === 'string' || b < 0) return a;
+        return a + b;
+      }, 0)));
     const lowest = data && Math.min(...data
       .map(seg => Object.values(seg).reduce((a, b) => {
         if (typeof b === 'string' || b > 0) return a;
@@ -95,8 +98,8 @@ const Emissions = ({ data, year }) => {
         layers={[HistoricalLayer, 'grid', 'axes', 'bars', 'markers', CandlestickLayer, ForecastLayer, NetBarLineLayer]}
         padding={0.6}
         indexBy="year"
-        maxValue={axis.max}
-        minValue={axis.min}
+        maxValue={ticks[ticks.length - 1]}
+        minValue={ticks[0]}
         colors={colors}
         axisBottom={{
           tickSize: 0,
@@ -104,12 +107,12 @@ const Emissions = ({ data, year }) => {
         }}
         axisRight={{
           tickSize: 0,
-          tickValues: axis.ticks,
+          tickValues: ticks.ticks,
         }}
         enableGridX
         tooltip={getTooltip}
         gridXValues={xAxisGridLines}
-        gridYValues={axis.ticks}
+        gridYValues={ticks.ticks}
         motionStiffness={300}
         forecastStart={year.forecastStart}
         markers={[{

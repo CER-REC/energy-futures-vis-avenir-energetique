@@ -94,7 +94,7 @@ const BySector = ({ data, year }) => {
   /**
    * Calculate the max tick value on y-axis.
    */
-  const axis = useMemo(() => {
+  const ticks = useMemo(() => {
     const values = (data || []).map(source => source.data);
     const sums = (values[0] || [])
       .map((_, i) => values.map(source => source[i].y).reduce((a, b) => a + b, 0));
@@ -112,11 +112,11 @@ const BySector = ({ data, year }) => {
         data={orderedData}
         layers={[HistoricalLayer, 'grid', 'axes', 'crosshair', 'lines', 'points', 'slices', 'areas', fill, ForecastLayer]}
         xScale={{ type: 'point' }}
-        yScale={{ type: 'linear', min: 0, max: axis.max, stacked: true }}
+        yScale={{ type: 'linear', min: 0, max: ticks[ticks.length - 1], stacked: true }}
         curve="cardinal"
         axisRight={{
           ...CHART_AXIS_PROPS,
-          tickValues: axis.ticks,
+          tickValues: ticks.ticks,
         }}
         axisBottom={{
           ...CHART_AXIS_PROPS,
@@ -127,7 +127,7 @@ const BySector = ({ data, year }) => {
         enablePoints={false}
         enableSlices="x"
         sliceTooltip={getTooltip}
-        gridYValues={axis.ticks}
+        gridYValues={ticks.ticks}
         defs={CHART_PATTERNS}
         forecastStart={year.forecastStart}
       />

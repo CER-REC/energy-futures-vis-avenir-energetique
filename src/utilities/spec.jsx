@@ -213,24 +213,9 @@ describe('Component|Utilities', () => {
     });
 
     test('should run method getTicks', () => {
-      expect(getTicks(37500)).toEqual({
-        max: 40000,
-        min: 0,
-        step: 5000,
-        ticks: [0, 5000, 10000, 15000, 20000, 25000, 30000, 35000, 40000],
-      });
-      expect(getTicks(9000)).toEqual({
-        max: 9000,
-        min: 0,
-        step: 1000,
-        ticks: [0, 1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000],
-      });
-      expect(getTicks(9)).toEqual({
-        max: 9,
-        min: 0,
-        step: 1,
-        ticks: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
-      });
+      expect(getTicks(37500)).toEqual([0, 5000, 10000, 15000, 20000, 25000, 30000, 35000, 40000]);
+      expect(getTicks(9000)).toEqual([0, 1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000]);
+      expect(getTicks(9)).toEqual([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
     });
 
     test('should run method validYear', () => {

@@ -151,7 +151,7 @@ export const getTicks = (highest, lowest = 0) => {
     ticks.push(i);
   }
 
-  return { max, min, step, ticks: ticks || undefined };
+  return ticks;
 };
 
 /**
