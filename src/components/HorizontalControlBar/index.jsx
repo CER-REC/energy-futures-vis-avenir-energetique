@@ -69,8 +69,8 @@ const HorizontalControlBar = () => {
   );
   const selections = (appendices.length > 1) && (
     <Grid container alignItems="center" wrap="nowrap" spacing={1}>
-      <Grid item style={{ paddingRight: 0 }}>
-        <HintMainSelect />
+      <Grid item>
+        <Typography variant="body1" color="secondary">{intl.formatMessage({ id: 'components.viewSelect.name' })}</Typography>
       </Grid>
       {appendices.map(selection => (
         <Grid item key={`config-origin-${selection}`}>
@@ -90,6 +90,7 @@ const HorizontalControlBar = () => {
           </Tooltip>
         </Grid>
       ))}
+      <HintMainSelect />
     </Grid>
   );
 
@@ -98,10 +99,8 @@ const HorizontalControlBar = () => {
    */
   const sectorSelection = ['by-sector', 'demand'].includes(config.page) && (
     <Grid container alignItems="center" wrap="nowrap" spacing={1}>
-      <Grid item style={{ paddingRight: 0 }}>
-        <HintSectorSelect>
-          <Typography variant="body1" color="secondary">{intl.formatMessage({ id: 'components.sectorSelect.name' })}</Typography>
-        </HintSectorSelect>
+      <Grid item>
+        <Typography variant="body1" color="secondary">{intl.formatMessage({ id: 'components.sectorSelect.name' })}</Typography>
       </Grid>
       {SECTOR_ORDER.filter(sector => sectors.order.find(s => s === sector)).map((sector) => {
         const Icon = sectors.icons[sector];
@@ -126,6 +125,7 @@ const HorizontalControlBar = () => {
           </Grid>
         );
       })}
+      <HintSectorSelect />
     </Grid>
   );
 
@@ -133,10 +133,10 @@ const HorizontalControlBar = () => {
    * View by
    */
   const views = page.views && (
-    <Grid container alignItems="center" wrap="nowrap">
-      <HintViewSelect>
+    <Grid container alignItems="center" wrap="nowrap" spacing={1}>
+      <Grid item>
         <Typography variant="body1" color="secondary">{intl.formatMessage({ id: 'components.viewSelect.name' })}</Typography>
-      </HintViewSelect>
+      </Grid>
       {Object.keys(page.views).map(view => (
         <Tooltip
           key={`config-view-${view}`}
@@ -152,6 +152,7 @@ const HorizontalControlBar = () => {
           </Button>
         </Tooltip>
       ))}
+      <HintViewSelect />
     </Grid>
   );
 
