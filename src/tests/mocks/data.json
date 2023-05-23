@@ -93,6 +93,13 @@
         "source": "BIO",
         "value": 3.6129
       }
+    ],
+    "prices": [
+      {
+        "year": 2005,
+        "scenario": "Evolving",
+        "value": 5.5
+      }
     ]
   }
 }
