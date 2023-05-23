@@ -7,7 +7,7 @@ import { initialState, getReducer } from './reducer';
 import useAPI from './useAPI';
 import { NOOP } from '../utilities/parseData';
 
-const parameters = ['page', 'mainSelection', 'yearId', 'sector', 'unit', 'view', 'baseYear', 'compareYear', 'noCompare'];
+const parameters = ['page', 'mainSelection', 'yearId', 'sector', 'unit', 'view', 'baseYear', 'compareYear', 'noCompare', 'priceSource'];
 const delimitedParameters = ['scenarios', 'provinces', 'provinceOrder', 'sources', 'sourceOrder'];
 const history = createBrowserHistory();
 const ConfigContext = createContext();
@@ -37,6 +37,7 @@ export const ConfigProvider = ({ children, mockConfig, mockConfigDispatch }) => 
     configDispatch({ type: 'provinceOrder/changed', payload: query.provinceOrder?.split(',') });
     configDispatch({ type: 'sources/changed', payload: query.sources?.split(',') });
     configDispatch({ type: 'sourceOrder/changed', payload: query.sourceOrder?.split(',') });
+    configDispatch({ type: 'priceSource/changed', payload: query.priceSource });
     configDispatch({ type: 'baseYear/changed', payload: query.baseYear });
     configDispatch({ type: 'compareYear/changed', payload: query.compareYear });
     configDispatch({ type: 'noCompare/changed', payload: query.noCompare });

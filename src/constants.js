@@ -113,12 +113,14 @@ export const CONFIG_LAYOUT = {
     icon: IconOil,
     unit: ['kilobarrels', 'thousandCubicMetres'],
     pages: ['by-region', 'scenarios', 'oil-and-gas'],
+    priceSources: ['WTI', 'WCS', 'BRENT'],
   },
   gasProduction: {
     name: 'Gas Production',
     icon: IconGas,
     unit: ['cubicFeet', 'millionCubicMetres'],
     pages: ['by-region', 'scenarios', 'oil-and-gas'],
+    priceSources: ['HH', 'NIT'],
   },
   greenhouseGasEmission: {
     name: 'Emissions',
@@ -202,6 +204,7 @@ export const SOURCE_COLORS = {
     TRANSPORTATION: '#F2CB53',
     WASTE: '#4B5E5B',
   },
+  price: {},
   oil: {
     C5: '#96B6CF',
     CONDENSATE: '#9B938A',
@@ -250,6 +253,7 @@ export const SOURCE_ICONS = {
     WASTE: IconWaste,
   },
   oil: {},
+  price: {},
   transportation: {},
 };
 
