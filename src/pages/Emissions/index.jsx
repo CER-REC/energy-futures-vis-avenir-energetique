@@ -2,6 +2,7 @@ import React, { useCallback, useMemo, useRef } from 'react';
 import { ResponsiveBar } from '@nivo/bar';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core';
+import { useIntl } from 'react-intl';
 import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
 import convertHexToRGB from '../../utilities/convertHexToRGB';
@@ -25,6 +26,7 @@ const Emissions = ({ data, year }) => {
   const { sources: { greenhouseGas: sources } } = useAPI();
   const { config } = useConfig();
   const classes = useStyles();
+  const intl = useIntl();
 
   const customColorProp = useCallback(
     () => d => convertHexToRGB(sources.colors[d.id], 0.75), [sources.colors],
@@ -52,18 +54,21 @@ const Emissions = ({ data, year }) => {
           name: key,
           value: entry.data[key],
           color: sources.colors[key],
+          translation: intl.formatMessage({ id: `common.sources.greenhouseGas.${key}` }),
         });
       }
     });
 
     return (
       <TooltipWithHeader
+        title={config.scenarios[0]}
         nodes={nodes}
         year={entry.indexValue}
         unit={config.unit}
+        showTotal
       />
     );
-  }, [config.page, config.unit, sources.colors, sources.order]);
+  }, [config.page, config.scenarios, config.unit, intl, sources.colors, sources.order]);
 
   const axis = useMemo(() => {
     const highest = data && Math.max(...data

@@ -10,9 +10,9 @@ import { CHART_PROPS, CHART_AXIS_PROPS, SCENARIO_COLOR } from '../../constants';
 import { getMaxTick } from '../../utilities/parseData';
 import { fillLayerScenario } from '../../components/FillLayer';
 import ForecastLayer from '../../components/ForecastLayer';
-import VizTooltip from '../../components/VizTooltip';
 import HistoricalLayer from '../../components/HistoricalLayer';
 import getYearLabel from '../../utilities/getYearLabel';
+import TooltipWithHeader from '../../components/TooltipWithHeader';
 
 /**
  * Generate a custom dotted line layer for rendering the default scenario.
@@ -88,21 +88,31 @@ const Scenarios = ({ data, year }) => {
       timer.current = setTimeout(() => analytics.reportPoi(config.page, year.min + index), 500);
     }
 
+    let currYear = null;
+
+    const nodes = event.slice?.points.map((obj) => {
+      if (currYear === null) currYear = obj.data?.x.toString();
+
+      return {
+        name: obj.serieId,
+        value: obj.data?.y,
+        color: obj.serieColor,
+        translation: intl.formatMessage({ id: `common.scenarios.${obj.serieId}` }),
+      };
+    });
+
+    const title = intl.formatMessage({ id: `common.selections.${config.mainSelection}` });
+
     return (
-      <VizTooltip
-        nodes={event.slice?.points.map(value => ({
-          name: value.serieId,
-          translation: intl.formatMessage({ id: `common.scenarios.${value.serieId}` }),
-          value: value.data?.y,
-          color: value.serieColor,
-        }))}
+      <TooltipWithHeader
+        title={title}
+        nodes={nodes}
+        year={currYear}
         unit={config.unit}
-        paper
-        showTotal={false}
-        showPercentage={false}
+        isSliceTooltip
       />
     );
-  }, [timer, intl, config.unit, config.page, year]);
+  }, [year, intl, config.mainSelection, config.unit, config.page]);
 
   if (!data) {
     return null;
