@@ -1,7 +1,7 @@
 import convertHexToRGB from './convertHexToRGB';
 import { convertUnit, formatUnitAbbreviation } from './convertUnit';
 import getI18NMessages from './getI18NMessages';
-import { parseData, NOOP, getMaxTick, validYear } from './parseData';
+import { parseData, NOOP, getTicks, validYear } from './parseData';
 
 describe('Component|Utilities', () => {
   /**
@@ -212,33 +212,10 @@ describe('Component|Utilities', () => {
       expect(NOOP()).toEqual(undefined);
     });
 
-    test('should run method getMaxTick', () => {
-      expect(getMaxTick(37500)).toEqual({
-        highest: 37500,
-        max: 40000,
-        step: 5000,
-        ticks: [0, 5000, 10000, 15000, 20000, 25000, 30000, 37500],
-      });
-      expect(getMaxTick(9000)).toEqual({
-        highest: 9000,
-        max: 9000,
-        step: 1000,
-        ticks: [0, 1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000],
-      });
-      expect(getMaxTick(9)).toEqual({
-        highest: 9,
-        max: 9,
-        step: 1,
-        ticks: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
-      });
-
-      // invalid highest value; return default
-      expect(getMaxTick()).toEqual({
-        highest: undefined,
-        max: 'auto',
-        step: undefined,
-        ticks: [undefined],
-      });
+    test('should run method getTicks', () => {
+      expect(getTicks(37500)).toEqual([0, 5000, 10000, 15000, 20000, 25000, 30000, 35000, 40000]);
+      expect(getTicks(9000)).toEqual([0, 1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000]);
+      expect(getTicks(9)).toEqual([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
     });
 
     test('should run method validYear', () => {
