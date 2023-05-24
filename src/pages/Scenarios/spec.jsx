@@ -5,8 +5,8 @@ import { ResponsiveLine } from '@nivo/line';
 
 import Scenarios, { dottedLayer } from '.';
 import { TestContainer, getRendered } from '../../tests/utilities';
-import VizTooltip from '../../components/VizTooltip';
 import { DEFAULT_CONFIG, MOCK_DATA } from './stories';
+import TooltipWithHeader from "../../components/TooltipWithHeader";
 
 const getComponent = (data, year) => (
   <TestContainer mockConfig={{ ...DEFAULT_CONFIG }}>
@@ -46,7 +46,7 @@ describe('Page|Scenarios', () => {
             y: 80,
           }],
         },
-      })).toHaveProperty('type', VizTooltip);
+      })).toHaveProperty('type', TooltipWithHeader);
     });
   });
 
