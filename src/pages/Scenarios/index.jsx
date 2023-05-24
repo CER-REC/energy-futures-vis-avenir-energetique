@@ -13,7 +13,7 @@ import ForecastLayer from '../../components/ForecastLayer';
 import VizTooltip from '../../components/VizTooltip';
 import HistoricalLayer from '../../components/HistoricalLayer';
 import getYearLabel from '../../utilities/getYearLabel';
-import { getMaxTick, formatLineData } from '../../utilities/parseData';
+import { getTicks, formatLineData } from '../../utilities/parseData';
 
 /**
  * Generate a custom dotted line layer for rendering the default scenario.
