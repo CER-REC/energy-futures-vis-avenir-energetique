@@ -1,18 +1,27 @@
+export const formatLineData = (data, type, unitConversion = 1) => {
+  if (!data) {
+    return [];
+  }
+
+  const formattedData = data.reduce((lineData, resource) => ({
+    ...lineData,
+    [resource[type]]: [
+      ...lineData[resource[type]] || [],
+      { x: resource.year, y: resource.value * unitConversion },
+    ],
+  }), {});
+
+  return Object.keys(formattedData).map(key => ({
+    id: key,
+    data: formattedData[key],
+  }));
+};
+
 export const parseData = {
   'by-sector': (data, unitConversion) => {
     const sortedData = data.sort((a, b) => a.year - b.year);
-    const processed = sortedData
-      .reduce((result, entry) => ({
-        ...result,
-        [entry.source]: [
-          ...result[entry.source] || [],
-          { x: entry.year, y: entry.value * unitConversion },
-        ],
-      }), {});
-    return Object.keys(processed).map(source => ({
-      id: source,
-      data: processed[source],
-    }));
+
+    return formatLineData(sortedData, 'source', unitConversion);
   },
 
   'by-region': (data, unitConversion) => {
@@ -33,21 +42,7 @@ export const parseData = {
     return Object.keys(byYear).map(year => ({ year, ...byYear[year] }));
   },
 
-  scenarios: (data, unitConversion, regions) => {
-    const processed = data
-      .filter(entry => entry.province === regions[0]) // Scenarios chart only take single region
-      .reduce((result, entry) => ({
-        ...result,
-        [entry.scenario]: [
-          ...result[entry.scenario] || [],
-          { x: entry.year, y: entry.value * unitConversion },
-        ],
-      }), {});
-    return Object.keys(processed).map(scenario => ({
-      id: scenario,
-      data: processed[scenario],
-    }));
-  },
+  scenarios: (data, unitConversion) => formatLineData(data, 'scenario', unitConversion),
 
   electricity: (data, unitConversion, regions, sources, view) => {
     const dataByYear = (data || [])

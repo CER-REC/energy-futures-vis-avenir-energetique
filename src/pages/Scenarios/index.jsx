@@ -4,15 +4,16 @@ import { ResponsiveLine } from '@nivo/line';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core';
 import useConfig from '../../hooks/useConfig';
+import useEnergyFutureData from '../../hooks/useEnergyFutureData';
 import analytics from '../../analytics';
 
 import { CHART_PROPS, CHART_AXIS_PROPS, SCENARIO_COLOR } from '../../constants';
-import { getMaxTick } from '../../utilities/parseData';
 import { fillLayerScenario } from '../../components/FillLayer';
 import ForecastLayer from '../../components/ForecastLayer';
 import VizTooltip from '../../components/VizTooltip';
 import HistoricalLayer from '../../components/HistoricalLayer';
 import getYearLabel from '../../utilities/getYearLabel';
+import { getMaxTick, formatLineData } from '../../utilities/parseData';
 
 /**
  * Generate a custom dotted line layer for rendering the default scenario.
@@ -54,7 +55,12 @@ const useStyles = makeStyles(theme => ({
 const Scenarios = ({ data, year }) => {
   const intl = useIntl();
   const { config } = useConfig();
+  // TODO: Refactor useEnergyFutureData hook to use a standard data structure
+  const { prices } = useEnergyFutureData();
   const classes = useStyles();
+  // TODO: Remove ignore when benchmark price chart is implemented
+  // eslint-disable-next-line no-unused-vars
+  const priceData = formatLineData(prices, 'scenario');
 
   /**
    * The dotted line layer that represents the default scenario.
@@ -141,6 +147,7 @@ const Scenarios = ({ data, year }) => {
         gridYValues={axis.ticks}
         forecastStart={year.forecastStart}
       />
+      { prices && 'Benchmark Price Chart Here' }
     </div>
   );
 };
