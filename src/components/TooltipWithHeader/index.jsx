@@ -88,7 +88,7 @@ const TooltipWithHeader = ({
         <TableBody className={classes.gridContainer}>
           {
             nodes.map((node, i) => (
-              nodes.length >= 3 && i % 2 ? createRow(node, true) : createRow(node)))
+              nodes.length > 3 && i % 2 ? createRow(node, true) : createRow(node)))
           }
           {
             showTotal && (
@@ -124,7 +124,7 @@ const TooltipWithHeader = ({
               <TableBody className={classes.gridContainer}>
                 {
                   nodes2.map((node, i) => (
-                    nodes2.length >= 3 && i % 2 ? createRow(node, true) : createRow(node)))
+                    nodes2.length > 3 && i % 2 ? createRow(node, true) : createRow(node)))
                 }
               </TableBody>
             </>
