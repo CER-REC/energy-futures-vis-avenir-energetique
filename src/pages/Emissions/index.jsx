@@ -59,11 +59,11 @@ const Emissions = ({ data, year }) => {
     });
 
     const section = {
-      title: intl.formatMessage({ id: `common.scenarios.${config.scenarios[0]}`}),
-      nodes: nodes,
+      title: intl.formatMessage({ id: `common.scenarios.${config.scenarios[0]}` }),
+      nodes,
       unit: config.unit,
       hasTotal: true,
-    }
+    };
 
     return (
       <TooltipWithHeader

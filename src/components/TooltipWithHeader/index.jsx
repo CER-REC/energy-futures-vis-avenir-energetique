@@ -1,9 +1,8 @@
 import React from 'react';
-import { makeStyles, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@material-ui/core';
-import { useIntl } from 'react-intl';
+import { makeStyles, Table } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
-import NodeSection from "./NodeSection";
+import NodeSection from './NodeSection';
 
 const useStyles = makeStyles(theme => ({
   wrapper: {
@@ -12,20 +11,20 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const TooltipWithHeader = ({sections, year, isSliceTooltip = false}) => {
+const TooltipWithHeader = ({ sections, year, isSliceTooltip = false }) => {
   const classes = useStyles();
 
   return (
     <div className={clsx({ [classes.wrapper]: isSliceTooltip })}>
       <Table>
         {
-          sections.map((section, i) =>
+          sections.map((section, i) => (
             <NodeSection
               key={section.title}
               year={i === 0 ? year : null}
               section={section}
             />
-          )
+          ))
         }
       </Table>
     </div>
@@ -41,10 +40,10 @@ TooltipWithHeader.propTypes = {
       color: PropTypes.string,
     })).isRequired,
     unit: PropTypes.string.isRequired,
-    hasTotal: PropTypes.bool
+    hasTotal: PropTypes.bool,
   })).isRequired,
   year: PropTypes.string,
-  isSliceTooltip: PropTypes.bool
+  isSliceTooltip: PropTypes.bool,
 };
 
 TooltipWithHeader.defaultProps = {

@@ -1,20 +1,20 @@
-﻿import PropTypes from "prop-types";
-import {makeStyles, TableBody, TableCell, TableHead, TableRow, Typography} from "@material-ui/core";
-import React from "react";
-import clsx from "clsx";
-import {useIntl} from "react-intl";
-import {formatValue} from "../../../utilities/convertUnit";
+import PropTypes from 'prop-types';
+import { makeStyles, TableBody, TableCell, TableHead, TableRow, Typography } from '@material-ui/core';
+import React from 'react';
+import clsx from 'clsx';
+import { useIntl } from 'react-intl';
+import { formatValue } from '../../../utilities/convertUnit';
 
 const useStyles = makeStyles(theme => ({
   gridContainer: {
     '& > tr > td': { padding: theme.spacing(0.25, 0.75) },
   },
-  contrast : {
-    '& > tr:nth-child(even)': { backgroundColor: '#F5F2F2', }
+  contrast: {
+    '& > tr:nth-child(even)': { backgroundColor: '#F5F2F2' },
   },
   total: {
-    backgroundColor: 'white !important',
-    '& > td:first-child': {
+    '& > td:not(override)': {
+      backgroundColor: 'white',
       padding: theme.spacing(1, 0.75),
     },
   },
@@ -60,11 +60,12 @@ const NodeSection = ({ section, year = null }) => {
       </TableHead>
       <TableBody
         className={clsx({
-          [classes.gridContainer] : true,
-          [classes.contrast] : section.nodes.length > 3
-        })}>
+          [classes.gridContainer]: true,
+          [classes.contrast]: section.nodes.length > 3,
+        })}
+      >
         {
-          section.nodes.map((node) => (
+          section.nodes.map(node => (
             <TableRow key={node.name}>
               <TableCell size="small" style={{ display: 'flex' }}>
                 <div className={classes.color}>
@@ -89,15 +90,15 @@ const NodeSection = ({ section, year = null }) => {
                 </strong>
               </TableCell>
               <TableCell align="right">
-                {formatValue(sum, intl)};
+                {formatValue(sum, intl)}
               </TableCell>
             </TableRow>
           )
         }
       </TableBody>
     </>
-  )
-}
+  );
+};
 
 NodeSection.propTypes = {
   section: PropTypes.shape({
@@ -108,13 +109,13 @@ NodeSection.propTypes = {
       color: PropTypes.string,
     })),
     unit: PropTypes.string.isRequired,
-    hasTotal: PropTypes.bool
+    hasTotal: PropTypes.bool,
   }).isRequired,
-  year: PropTypes.string
+  year: PropTypes.string,
 };
 
 NodeSection.defaultProps = {
-  year: undefined
-}
+  year: undefined,
+};
 
 export default NodeSection;

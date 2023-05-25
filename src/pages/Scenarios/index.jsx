@@ -102,7 +102,7 @@ const Scenarios = ({ data, year }) => {
           hasTotal: false,
         };
       }),
-      unit: config.unit
+      unit: config.unit,
     };
 
     return (
