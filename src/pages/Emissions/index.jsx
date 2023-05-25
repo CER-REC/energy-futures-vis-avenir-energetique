@@ -51,21 +51,24 @@ const Emissions = ({ data, year }) => {
     sources.order.forEach((key) => {
       if (entry.data[key]) {
         nodes.push({
-          name: key,
+          name: intl.formatMessage({ id: `common.sources.greenhouseGas.${key}` }),
           value: entry.data[key],
           color: sources.colors[key],
-          translation: intl.formatMessage({ id: `common.sources.greenhouseGas.${key}` }),
         });
       }
     });
 
+    const section = {
+      title: intl.formatMessage({ id: `common.scenarios.${config.scenarios[0]}`}),
+      nodes: nodes,
+      unit: config.unit,
+      hasTotal: true,
+    }
+
     return (
       <TooltipWithHeader
-        title={config.scenarios[0]}
-        nodes={nodes}
+        sections={[section]}
         year={entry.indexValue}
-        unit={config.unit}
-        showTotal
       />
     );
   }, [config.page, config.scenarios, config.unit, intl, sources.colors, sources.order]);

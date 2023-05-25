@@ -88,27 +88,27 @@ const Scenarios = ({ data, year }) => {
       timer.current = setTimeout(() => analytics.reportPoi(config.page, year.min + index), 500);
     }
 
-    let currYear = null;
+    let currYear = '';
 
-    const nodes = event.slice?.points.map((obj) => {
-      if (currYear === null) currYear = obj.data?.x.toString();
+    const section = {
+      title: intl.formatMessage({ id: `common.selections.${config.mainSelection}` }),
+      nodes: event.slice?.points.map((obj) => {
+        if (!currYear) currYear = obj.data?.x.toString();
 
-      return {
-        name: obj.serieId,
-        value: obj.data?.y,
-        color: obj.serieColor,
-        translation: intl.formatMessage({ id: `common.scenarios.${obj.serieId}` }),
-      };
-    });
-
-    const title = intl.formatMessage({ id: `common.selections.${config.mainSelection}` });
+        return {
+          name: intl.formatMessage({ id: `common.scenarios.${obj.serieId}` }),
+          value: obj.data?.y,
+          color: obj.serieColor,
+          hasTotal: false,
+        };
+      }),
+      unit: config.unit
+    };
 
     return (
       <TooltipWithHeader
-        title={title}
-        nodes={nodes}
+        sections={[section]}
         year={currYear}
-        unit={config.unit}
         isSliceTooltip
       />
     );

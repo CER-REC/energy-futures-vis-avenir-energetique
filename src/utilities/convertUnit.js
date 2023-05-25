@@ -39,3 +39,7 @@ export const formatUnitAbbreviation = (value, unit, intl) => {
   }
   return `${Number(value.toFixed(2)).toLocaleString(intl.locale)} ${unit || ''}`.trim();
 };
+
+export const formatValue = (value, intl) => {
+  return `${Number(value.toFixed(2)).toLocaleString(intl.locale)}`.trim();
+};
