@@ -65,8 +65,6 @@ const Scenarios = ({ data, year }) => {
   // TODO: Refactor useEnergyFutureData hook to use a standard data structure
   const { prices } = useEnergyFutureData();
   const classes = useStyles();
-  // TODO: Remove ignore when benchmark price chart is implemented
-  // eslint-disable-next-line no-unused-vars
   const priceData = formatLineData(prices, 'scenario');
 
   /**
@@ -88,7 +86,7 @@ const Scenarios = ({ data, year }) => {
     const sums = (values[0] || [])
       .map((_, i) => Math.max(...values.map(source => source[i].y)));
     return getTicks(Math.max(...sums));
-  }, []);
+  }, [priceData]);
 
   const timer = useRef(null);
   const getTooltip = useCallback((event) => {
