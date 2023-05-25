@@ -134,7 +134,7 @@ describe('Component|hooks', () => {
 
         expect(wrapper.find('#years > span').map(node => node.text())).toEqual(expect.arrayContaining(['2016', '2017', '2018', '2019', '2020', '2016*']));
         expect(wrapper.find('#regions > span').map(node => node.text())).toEqual(BASE_STATE.provinceOrder);
-        expect(wrapper.find('#sources > span').map(node => node.text())).toEqual(['electricity', 'energy', 'gas', 'greenhouseGas', 'oil', 'transportation']);
+        expect(wrapper.find('#sources > span').map(node => node.text())).toEqual(['electricity', 'energy', 'gas', 'greenhouseGas', 'oil', 'price', 'transportation']);
         expect(wrapper.find('#sectors > span').map(node => node.text())).toEqual(['ALL', 'TRANSPORTATION', 'RESIDENTIAL', 'COMMERCIAL', 'INDUSTRIAL']);
       });
     });

@@ -101,6 +101,7 @@ export default () => {
       regions,
       sectors: config.sector,
       sources,
+      priceSource: config.priceSource,
     },
     // do nothing if the request is invalid
     skip: !query
@@ -154,6 +155,7 @@ export default () => {
     loading,
     error,
     data: processedData,
+    prices: data?.prices,
     disabledRegions: unavailability('province'),
     disabledSources: unavailability('source'),
     // TODO: Remove after refactoring to move processedData chart structure data
