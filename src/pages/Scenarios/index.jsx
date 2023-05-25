@@ -119,7 +119,7 @@ const Scenarios = ({ data, year }) => {
 
   return (
     <div className={classes.chart}>
-      <div className={prices ? classes.halvedChartSize : classes.fullChart}>
+      <div className={(prices && prices?.length !== 0) ? classes.halvedChartSize : classes.fullChart}>
         <ResponsiveLine
           {...CHART_PROPS}
           data={data}
@@ -152,7 +152,7 @@ const Scenarios = ({ data, year }) => {
         />
       </div>
       {
-        prices && (
+        prices && prices?.length !== 0 && (
           <div className={classes.halvedChartSize}>
             <ResponsiveLine
               {...CHART_PROPS}
