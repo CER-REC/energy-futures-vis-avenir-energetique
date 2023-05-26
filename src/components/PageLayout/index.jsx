@@ -21,6 +21,8 @@ import DropDown from '../Dropdown';
 import analytics from '../../analytics';
 import { HintUnitSelect } from '../Hint';
 
+const gutterWidth = 70;
+
 const useStyles = makeStyles(theme => ({
   root: {
     position: 'relative',
@@ -172,9 +174,33 @@ const PageLayout = ({
       <Grid item style={{ flex: 1, width: '100%' }}>
         <Grid container style={{ flex: 1 }}>
           <HorizontalControlBar />
+          <Grid container item>
+            <Grid
+              item
+              style={{
+                flex: 1,
+                paddingLeft: gutterWidth * (showSource && showRegion ? 2 : 1),
+              }}
+            >
+              <Typography variant="h6">
+                {chartTitle}
+              </Typography>
+            </Grid>
+            <Grid item style={{ display: 'flex', alignItems: 'center' }}>
+              <Typography variant="body1" color="secondary">{intl.formatMessage({ id: 'components.unitSelect.name' })}&nbsp;</Typography>
+              <DropDown
+                options={layout.unit.map(unit => [intl.formatMessage({ id: `common.units.${unit}` }), unit])}
+                value={config.unit}
+                onChange={handleUpdateUnit}
+                className={classes.dropDown}
+                menuClassName={classes.dropDownMenu}
+              />
+              <HintUnitSelect />
+            </Grid>
+          </Grid>
           <Grid container>
             {showSource && (
-              <Grid item style={{ width: 70 }}>
+              <Grid item style={{ width: gutterWidth }}>
                 <DraggableVerticalList
                   title="Source"
                   shape={config.page === 'emissions' ? 'hexagon' : 'circle'}
@@ -193,7 +219,7 @@ const PageLayout = ({
               </Grid>
             )}
             {showRegion && (
-              <Grid item style={{ width: 70 }}>
+              <Grid item style={{ width: gutterWidth }}>
                 <DraggableVerticalList
                   title="Region"
                   dense
@@ -211,24 +237,6 @@ const PageLayout = ({
               </Grid>
             )}
             <Grid container item direction="column" style={{ width: vizWidth }}>
-              <Grid container item>
-                <Grid item style={{ flex: 1 }}>
-                  <Typography variant="h6">
-                    {chartTitle}
-                  </Typography>
-                </Grid>
-                <Grid item style={{ display: 'flex', alignItems: 'center' }}>
-                  <Typography variant="body1" color="secondary">{intl.formatMessage({ id: 'components.unitSelect.name' })}&nbsp;</Typography>
-                  <DropDown
-                    options={layout.unit.map(unit => [intl.formatMessage({ id: `common.units.${unit}` }), unit])}
-                    value={config.unit}
-                    onChange={handleUpdateUnit}
-                    className={classes.dropDown}
-                    menuClassName={classes.dropDownMenu}
-                  />
-                  <HintUnitSelect />
-                </Grid>
-              </Grid>
               {vis?.length && vis?.length > 0 && (
                 <Grid item className={classes.graph}>
                   {loading && <CircularProgress color="primary" size={66} />}
