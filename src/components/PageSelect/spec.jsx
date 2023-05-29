@@ -55,7 +55,7 @@ describe('Component|PageSelect', () => {
 
   test('should select correct buttons', () => {
     const buttons = wrapper.find('.Mui-disabled');
-    expect(expect.arrayContaining(buttons.map(btn => btn.text()))).toEqual(['By Region']);
+    expect(expect.arrayContaining(buttons.map(btn => btn.text()))).toEqual(['Region']);
   });
 
   test('buttons should be clickable', () => {

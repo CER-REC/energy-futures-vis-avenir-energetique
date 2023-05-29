@@ -14,7 +14,7 @@
     "dataset": "Série de données",
     "energyUnits": "UNITÉS D’ÉNERGIE",
     "volumetricUnits": "UNITÉS VOLUMÉTRIQUES",
-    "netEmissions": "",
+    "netEmissions": "Émissions nettes",
     "units": {
       "petajoules": "PJ",
       "gigawattHours": "GWh",
@@ -689,6 +689,10 @@
     "By Sector": {
       "title": "Explorer par source d’énergie",
       "description": "Examinez l’évolution récente des sources énergétiques de différents secteurs et ce que projettent les scénarios du rapport sur l’avenir énergétique à cet égard"
+    },
+    "Emissions": {
+      "title": "",
+      "description": ""
     },
     "Electricity": {
       "title": "Explorer l’électricité",
