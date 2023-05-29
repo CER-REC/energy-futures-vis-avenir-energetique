@@ -17,6 +17,7 @@ export const initialState = {
   provinceOrder: null,
   sources: null,
   sourceOrder: null,
+  priceSource: null,
   // timeline
   baseYear: null,
   compareYear: null,
@@ -145,6 +146,11 @@ export const getReducer = (regions, sources, sectors, yearIdIterations) => {
 
     return (validatedSources.length === validSources.length) ? order : validSources;
   };
+  const getPriceSource = (selection, source) => {
+    const validSources = CONFIG_LAYOUT[selection]?.priceSources || [];
+
+    return validSources.includes(source) ? source : (validSources[0] || null);
+  };
   const getBaseYear = (page, baseYear) => {
     const value = parseInt(baseYear, 10);
 
@@ -187,6 +193,7 @@ export const getReducer = (regions, sources, sectors, yearIdIterations) => {
           // Always reset the sources on page change
           sources: getSources(action.payload, mainSelection, view, null),
           sourceOrder: getSourceOrder(action.payload, mainSelection, state.sourceOrder),
+          priceSource: getPriceSource(mainSelection, state.priceSource),
           baseYear: getBaseYear(action.payload, state.baseYear),
           compareYear: getCompareYear(action.payload, state.compareYear),
         };
@@ -200,6 +207,7 @@ export const getReducer = (regions, sources, sectors, yearIdIterations) => {
           // Always reset the sources on selection change
           sources: getSources(state.page, mainSelection, state.view, null),
           sourceOrder: getSourceOrder(state.page, mainSelection, state.sourceOrder),
+          priceSource: getPriceSource(mainSelection, state.priceSource),
         };
       case 'yearId/changed':
         yearId = getYearId(state.page, action.payload);
@@ -254,6 +262,11 @@ export const getReducer = (regions, sources, sectors, yearIdIterations) => {
         return {
           ...state,
           sourceOrder: getSourceOrder(state.page, state.mainSelection, action.payload),
+        };
+      case 'priceSource/changed':
+        return {
+          ...state,
+          priceSource: getPriceSource(state.mainSelection, action.payload),
         };
       case 'baseYear/changed':
         return {

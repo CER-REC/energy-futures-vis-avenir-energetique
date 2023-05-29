@@ -46,6 +46,7 @@ const getSources = (translations) => {
     gas: {},
     greenhouseGas: {},
     oil: {},
+    price: {},
     transportation: {},
   };
   const sourceTranslationGroupTypes = {
@@ -54,6 +55,7 @@ const getSources = (translations) => {
     GAS_SOURCE: 'gas',
     GREENHOUSE_GAS_SOURCE: 'greenhouseGas',
     OIL_SOURCE: 'oil',
+    PRICE_SOURCE: 'price',
     TRANSPORTATION_OIL_ENERGY_SOURCE: 'transportation',
   };
 
@@ -115,9 +117,15 @@ export default () => {
     [data],
   );
   const sources = useMemo(
-    () => (data
-      ? getSources(data.translations)
-      : { electricity: {}, energy: {}, oil: {}, gas: {}, greenhouseGas: {}, transportation: {} }),
+    () => (data ? getSources(data.translations) : {
+      electricity: {},
+      energy: {},
+      oil: {},
+      gas: {},
+      greenhouseGas: {},
+      price: {},
+      transportation: {},
+    }),
     [data],
   );
   const sectors = useMemo(
