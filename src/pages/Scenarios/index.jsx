@@ -3,7 +3,6 @@ import { useIntl } from 'react-intl';
 import { ResponsiveLine } from '@nivo/line';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core';
-import clsx from 'clsx';
 import useConfig from '../../hooks/useConfig';
 import useEnergyFutureData from '../../hooks/useEnergyFutureData';
 import analytics from '../../analytics';
@@ -119,7 +118,12 @@ const Scenarios = ({ data, year }) => {
 
   return (
     <div className={classes.chart}>
-      <div className={(prices && prices?.length !== 0) ? classes.halvedChartSize : classes.fullChart}>
+      <div className={
+        (prices && prices?.length !== 0)
+          ? classes.halvedChartSize
+          : classes.fullChart
+}
+      >
         <ResponsiveLine
           {...CHART_PROPS}
           data={data}
