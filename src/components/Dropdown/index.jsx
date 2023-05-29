@@ -24,7 +24,10 @@ const useStyles = makeStyles(theme => ({
   item: {
     fontSize: 'inherit',
     '&.Mui-selected': { backgroundColor: 'transparent' },
-    '&.Mui-focusVisible': { backgroundColor: theme.palette.action.hover },
+    '&:hover, &.Mui-selected:hover, &.Mui-focusVisible': {
+      backgroundColor: theme.palette.primary.main,
+      color: 'white',
+    },
   },
   menu: {
     background: '#F8F8F8',
@@ -33,7 +36,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const DropDown = ({ options, value, onChange, className, menuClassName }) => {
+const DropDown = ({ options, value, onChange, className, menuClassName, renderValue }) => {
   const classes = useStyles();
 
   return (
@@ -41,7 +44,8 @@ const DropDown = ({ options, value, onChange, className, menuClassName }) => {
       className={clsx(classes.selectContainer, className)}
       variant="outlined"
       value={value}
-      onChange={({ target: { value: yearId } }) => onChange(yearId)}
+      renderValue={renderValue}
+      onChange={({ target: { value: targetValue } }) => onChange(targetValue)}
       MenuProps={{
         classes: {
           paper: clsx(classes.menu, menuClassName),
@@ -79,12 +83,14 @@ DropDown.propTypes = {
   onChange: PropTypes.func.isRequired,
   className: PropTypes.string,
   menuClassName: PropTypes.string,
+  renderValue: PropTypes.func,
 };
 
 DropDown.defaultProps = {
   value: null,
   className: '',
   menuClassName: '',
+  renderValue: null,
 };
 
 export default DropDown;
