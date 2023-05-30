@@ -116,12 +116,12 @@ const Emissions = ({ data, year }) => {
         }}
         axisRight={{
           tickSize: 0,
-          tickValues: ticks.ticks,
+          tickValues: ticks,
         }}
         enableGridX
         tooltip={getTooltip}
         gridXValues={xAxisGridLines}
-        gridYValues={ticks.ticks}
+        gridYValues={ticks}
         motionStiffness={300}
         forecastStart={year.forecastStart}
         markers={[{
