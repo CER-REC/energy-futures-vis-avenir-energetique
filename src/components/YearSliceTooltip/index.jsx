@@ -11,7 +11,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const TooltipWithHeader = ({ sections, year, isSliceTooltip = false }) => {
+const Tooltip = ({ sections, year, isSliceTooltip = false }) => {
   const classes = useStyles();
 
   return (
@@ -31,7 +31,7 @@ const TooltipWithHeader = ({ sections, year, isSliceTooltip = false }) => {
   );
 };
 
-TooltipWithHeader.propTypes = {
+Tooltip.propTypes = {
   sections: PropTypes.arrayOf(PropTypes.shape({
     title: PropTypes.string.isRequired,
     nodes: PropTypes.arrayOf(PropTypes.shape({
@@ -46,10 +46,10 @@ TooltipWithHeader.propTypes = {
   isSliceTooltip: PropTypes.bool,
 };
 
-TooltipWithHeader.defaultProps = {
+Tooltip.defaultProps = {
   year: undefined,
   isSliceTooltip: false,
 };
 
-export default TooltipWithHeader;
+export default Tooltip;
 

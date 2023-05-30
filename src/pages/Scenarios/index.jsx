@@ -12,8 +12,8 @@ import { fillLayerScenario } from '../../components/FillLayer';
 import ForecastLayer from '../../components/ForecastLayer';
 import HistoricalLayer from '../../components/HistoricalLayer';
 import getYearLabel from '../../utilities/getYearLabel';
-import TooltipWithHeader from '../../components/TooltipWithHeader';
 import { getTicks, formatLineData } from '../../utilities/parseData';
+import YearSliceTooltip from "../../components/YearSliceTooltip";
 
 /**
  * Generate a custom dotted line layer for rendering the default scenario.
@@ -114,7 +114,7 @@ const Scenarios = ({ data, year }) => {
     };
 
     return (
-      <TooltipWithHeader
+      <YearSliceTooltip
         sections={[section]}
         year={currYear}
         isSliceTooltip

@@ -14,7 +14,7 @@ import HistoricalLayer from '../../components/HistoricalLayer';
 import ForecastLayer from '../../components/ForecastLayer';
 import CandlestickLayer from '../../components/CandlestickLayer';
 import getYearLabel from '../../utilities/getYearLabel';
-import TooltipWithHeader from '../../components/TooltipWithHeader';
+import YearSliceTooltip from "../../components/YearSliceTooltip";
 
 const useStyles = makeStyles(theme => ({
   chart: {
@@ -66,7 +66,7 @@ const Emissions = ({ data, year }) => {
     };
 
     return (
-      <TooltipWithHeader
+      <YearSliceTooltip
         sections={[section]}
         year={entry.indexValue}
       />
