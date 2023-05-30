@@ -1,8 +1,9 @@
 import React, { useCallback, useMemo, useRef } from 'react';
+import clsx from 'clsx';
 import { useIntl } from 'react-intl';
 import { ResponsiveLine } from '@nivo/line';
 import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/core';
+import { makeStyles, Typography } from '@material-ui/core';
 import useConfig from '../../hooks/useConfig';
 import useEnergyFutureData from '../../hooks/useEnergyFutureData';
 import analytics from '../../analytics';
@@ -12,6 +13,7 @@ import { fillLayerScenario } from '../../components/FillLayer';
 import ForecastLayer from '../../components/ForecastLayer';
 import VizTooltip from '../../components/VizTooltip';
 import HistoricalLayer from '../../components/HistoricalLayer';
+import PriceSelect from '../../components/PriceSelect';
 import getYearLabel from '../../utilities/getYearLabel';
 import { getTicks, formatLineData } from '../../utilities/parseData';
 
@@ -49,6 +51,7 @@ export const dottedLayer = scenarioYear => args => args.points
 const useStyles = makeStyles(theme => ({
   chart: {
     ...theme.mixins.chart,
+    '&.duo': { height: theme.mixins.chart.height / 2 },
   },
 }));
 
@@ -56,7 +59,7 @@ const Scenarios = ({ data, year }) => {
   const intl = useIntl();
   const { config } = useConfig();
   // TODO: Refactor useEnergyFutureData hook to use a standard data structure
-  const { prices } = useEnergyFutureData();
+  const { prices, priceYear } = useEnergyFutureData();
   const classes = useStyles();
   // TODO: Remove ignore when benchmark price chart is implemented
   // eslint-disable-next-line no-unused-vars
@@ -115,40 +118,54 @@ const Scenarios = ({ data, year }) => {
   }
 
   return (
-    <div className={classes.chart}>
-      <ResponsiveLine
-        {...CHART_PROPS}
-        data={data}
-        enableArea
-        enablePoints={false}
-        layers={[HistoricalLayer, 'grid', 'axes', 'areas', 'crosshair', 'points', 'slices', fill, 'lines', ForecastLayer, dots]}
-
-        curve="cardinal"
-        areaOpacity={0.15}
-        xScale={{ type: 'point' }}
-        yScale={{ type: 'linear', min: 0, max: ticks[ticks.length - 1], reverse: false }}
-        colors={d => SCENARIO_COLOR[d.id] || '#AAA'}
-        pointSize={8}
-        pointColor={{ theme: 'background' }}
-        pointBorderWidth={2}
-        pointBorderColor={{ from: 'serieColor' }}
-        pointLabel="y"
-        pointLabelYOffset={-12}
-        axisBottom={{
-          ...CHART_AXIS_PROPS,
-          format: getYearLabel,
-        }}
-        axisRight={{
-          ...CHART_AXIS_PROPS,
-          tickValues: ticks.ticks,
-        }}
-        enableSlices="x"
-        sliceTooltip={getTooltip}
-        gridYValues={ticks.ticks}
-        forecastStart={year.forecastStart}
-      />
-      { prices && 'Benchmark Price Chart Here' }
-    </div>
+    <>
+      <div className={clsx(classes.chart, { duo: prices })}>
+        <ResponsiveLine
+          {...CHART_PROPS}
+          data={data}
+          enableArea
+          enablePoints={false}
+          layers={[HistoricalLayer, 'grid', 'axes', 'areas', 'crosshair', 'points', 'slices', fill, 'lines', ForecastLayer, dots]}
+          curve="cardinal"
+          areaOpacity={0.15}
+          xScale={{ type: 'point' }}
+          yScale={{ type: 'linear', min: 0, max: ticks[ticks.length - 1], reverse: false }}
+          colors={d => SCENARIO_COLOR[d.id] || '#AAA'}
+          pointSize={8}
+          pointColor={{ theme: 'background' }}
+          pointBorderWidth={2}
+          pointBorderColor={{ from: 'serieColor' }}
+          pointLabel="y"
+          pointLabelYOffset={-12}
+          axisBottom={prices ? null : {
+            ...CHART_AXIS_PROPS,
+            format: getYearLabel,
+          }}
+          axisRight={{
+            ...CHART_AXIS_PROPS,
+            tickValues: ticks.ticks,
+          }}
+          enableSlices="x"
+          sliceTooltip={getTooltip}
+          gridYValues={ticks.ticks}
+          forecastStart={year.forecastStart}
+        />
+      </div>
+      { prices && (
+        <div style={{ display: 'flex' }}>
+          <Typography variant="h6" style={{ flex: 1 }}>
+            {
+              intl.formatMessage({
+                id: `containers.scenarios.benchmark.${config.mainSelection}`,
+              }, {
+                year: priceYear,
+              })
+            }
+          </Typography>
+          <PriceSelect />
+        </div>
+      )}
+    </>
   );
 };
 
