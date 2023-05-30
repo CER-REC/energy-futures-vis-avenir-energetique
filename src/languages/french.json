@@ -555,16 +555,16 @@
       "MB": "Exploitation alliant extraction et valorisation, dans laquelle les sables bitumineux sont extraits à ciel ouvert. Le bitume est ensuite séparé du sable et raffiné par cokéfaction ou hydrotraitement."
     },
     "greenhouseGas": {
-      "AGRI": "",
-      "AIR": "",
-      "BUILD": "",
-      "ELECTRICITY": "",
-      "FOSSIL": "",
-      "HEAVY": "",
-      "HYDROGEN": "",
-      "LAND": "",
-      "TRANSPORTATION": "",
-      "WASTE": ""
+      "AGRI": "Tous les GES associés à la production végétale, à la production animale et à la consommation d’énergie en agriculture.",
+      "AIR": "Tous les GES associés à l’industrie du captage direct dans l’air, qui extrait le CO2 de l’atmosphère et le stocke sous terre.",
+      "BUILD": "Tous les GES associés aux bâtiments des secteurs résidentiel et commercial.",
+      "ELECTRICITY": "Tous les GES associés à la production d’électricité.",
+      "FOSSIL": "Tous les GES associés au secteur pétrolier et gazier, y compris en amont et en aval, ainsi que les émissions liées au transport et à la distribution.",
+      "HEAVY": "Tous les GES associés à l’industrie lourde, y compris les émissions des mines, des fonderies et raffineries, de la production de pâtes et papiers, de celle de fer et d’acier, des cimenteries, du secteur du gypse et d’argile ainsi que des usines de produits chimiques ou d’engrais.",
+      "HYDROGEN": "Tous les GES associés à la production d’hydrogène.",
+      "LAND": "Tous les GES associés aux terres naturelles et aux activités humaines qui les modifient.",
+      "TRANSPORTATION": "Tous les GES associés au transport.",
+      "WASTE": "Tous les GES associés aux déchets, aux mines de charbon, à la fabrication légère et à la consommation d’énergie dans les activités forestières."
     }
   },
   "links": {
