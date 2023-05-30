@@ -36,8 +36,9 @@ const useStyles = makeStyles(theme => createStyles({
     height: 64,
     width: 64,
     '& > svg': {
-      height: 64,
-      width: 64,
+      height: '100%',
+      width: '100%',
+      padding: '0.3em',
       fill: theme.palette.secondary.light,
       transition: 'fill .35s ease-in-out',
     },

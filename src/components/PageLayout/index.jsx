@@ -238,9 +238,13 @@ const PageLayout = ({
               )}
             </Grid>
           </Grid>
+          { desktop && (
+            <Grid container justify='flex-end'>
+              <Grid item><Share direction="row" /></Grid>
+            </Grid>
+          )}
         </Grid>
       </Grid>
-
       {
         !desktop && (
           <Grid item xs={12}>

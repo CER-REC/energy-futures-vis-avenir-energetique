@@ -1,7 +1,7 @@
 import { useIntl } from 'react-intl';
 import { Grid, Link, makeStyles, Typography } from '@material-ui/core';
-import React, { useCallback, useMemo } from 'react';
-import Share from '../Share';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import clsx from 'clsx';
 import PageSelect from '../PageSelect';
 import ScenarioSelect from '../ScenarioSelect';
 import analytics from '../../analytics';
@@ -28,7 +28,7 @@ const useStyles = makeStyles(theme => ({
   controls: {
     height: '100%',
     width: '100%',
-    padding: theme.spacing(1, 0, 2, 2),
+    padding: theme.spacing(1, 0, 1, 1),
     backgroundColor: '#F3EFEF',
     [theme.breakpoints.down('sm')]: {
       margin: theme.spacing(0, 1),
@@ -36,11 +36,17 @@ const useStyles = makeStyles(theme => ({
     },
   },
   icon: {
+    lineHeight: 0,
     '& > svg': {
       height: '100%',
       maxHeight: 132,
       width: '100%',
       fill: '#CCC',
+    },
+  },
+  iconMinimized: {
+    '& > svg': {
+      maxHeight: 43,
     },
   },
   pageSelectContainer: {
@@ -58,11 +64,23 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
+const minimizedKey = 'ef.isScenarioSelectMinimized';
+
 const Header = () => {
   const classes = useStyles();
   const intl = useIntl();
   const isDesktop = useIsDesktop();
   const { yearIdIterations } = useAPI();
+
+  const [isMinimized, setIsMinimized] = useState(localStorage.getItem(minimizedKey));
+
+  useEffect(() => {
+    if (isMinimized) {
+      localStorage.setItem(minimizedKey, true);
+    } else {
+      localStorage.removeItem(minimizedKey);
+    }
+  }, [isMinimized]);
 
   const yearIds = useMemo(
     () => Object.keys(yearIdIterations).sort().reverse(),
@@ -117,18 +135,23 @@ const Header = () => {
           <Grid container className={classes.controls}>
             {
               isDesktop && (
-                <Grid item xs={1} className={classes.icon}>
+                <Grid
+                  item
+                  xs={1}
+                  className={clsx(classes.icon, { [classes.iconMinimized]: isMinimized })}
+                >
                   <PageIcon id={config.page} />
                 </Grid>
               )
             }
             <Grid item md={11} xs={12}>
-              <ScenarioSelect multiSelect={multiSelectScenario} />
+              <ScenarioSelect
+                multiSelect={multiSelectScenario}
+                isMinimized={isMinimized}
+                setIsMinimized={setIsMinimized}
+              />
             </Grid>
           </Grid>
-          { isDesktop && (
-            <Grid item style={{ marginLeft: '0.3em' }}><Share /></Grid>
-          )}
         </Grid>
       </Grid>
       <Grid item xs={12} md={1} className={classes.pageSelectContainer}>

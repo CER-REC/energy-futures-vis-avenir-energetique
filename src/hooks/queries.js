@@ -24,9 +24,14 @@ export const GAS_PRODUCTIONS = gql`
 `;
 
 export const GAS_PRODUCTIONS_ALL = gql`
-  query ($iteration: ID!, $regions: [Region!], $scenarios: [String!]) {
+  query ($iteration: ID!, $regions: [Region!], $scenarios: [String!], $priceSource: PriceSource!) {
     resources:gasProductions(iterationIds: [$iteration], regions: $regions, scenarios: $scenarios, sources: [ALL] ){
       province: region
+      year
+      scenario
+      value: quantity
+    }
+    prices:benchmarkPrices(iterationIds: [$iteration], scenarios: $scenarios, sources: [$priceSource]) {
       year
       scenario
       value: quantity
@@ -57,9 +62,14 @@ export const OIL_PRODUCTIONS = gql`
 `;
 
 export const OIL_PRODUCTIONS_ALL = gql`
-  query ($iteration: ID!, $regions: [Region!], $scenarios: [String!]) {
+  query ($iteration: ID!, $regions: [Region!], $scenarios: [String!], $priceSource: PriceSource!) {
     resources:oilProductions(iterationIds: [$iteration], regions: $regions, scenarios: $scenarios, sources: [ALL]) {
       province: region
+      year
+      scenario
+      value: quantity
+    }
+    prices:benchmarkPrices(iterationIds: [$iteration], scenarios: $scenarios, sources: [$priceSource]) {
       year
       scenario
       value: quantity

@@ -6,7 +6,7 @@ import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
 import analytics from '../../analytics';
 import { CHART_PROPS, CHART_AXIS_PROPS } from '../../constants';
-import { getMaxTick } from '../../utilities/parseData';
+import { getTicks } from '../../utilities/parseData';
 import convertHexToRGB from '../../utilities/convertHexToRGB';
 import ForecastLayer from '../../components/ForecastLayer';
 import VizTooltip from '../../components/VizTooltip';
@@ -61,10 +61,10 @@ const ByRegion = ({ data, year }) => {
   /**
    * Calculate the max tick value on y-axis and generate the all ticks accordingly.
    */
-  const axis = useMemo(() => {
+  const ticks = useMemo(() => {
     const highest = data && Math.max(...data
       .map(seg => Object.values(seg).reduce((a, b) => a + (typeof b === 'string' ? 0 : b), 0)));
-    return getMaxTick(highest);
+    return getTicks(highest);
   }, [data]);
 
   if (!data) {
@@ -79,7 +79,7 @@ const ByRegion = ({ data, year }) => {
         keys={keys}
         layers={[HistoricalLayer, 'grid', 'axes', 'bars', 'markers', ForecastLayer]}
         indexBy="year"
-        maxValue={axis.highest}
+        maxValue={ticks[ticks.length - 1]}
         colors={colors}
         borderColor={{ from: 'color', modifiers: [['darker', 1.6]] }}
         axisBottom={{
@@ -88,10 +88,10 @@ const ByRegion = ({ data, year }) => {
         }}
         axisRight={{
           ...CHART_AXIS_PROPS,
-          tickValues: axis.ticks,
+          tickValues: ticks.ticks,
         }}
         tooltip={getTooltip}
-        gridYValues={axis.ticks}
+        gridYValues={ticks.ticks}
         motionStiffness={300}
         forecastStart={year.forecastStart}
       />

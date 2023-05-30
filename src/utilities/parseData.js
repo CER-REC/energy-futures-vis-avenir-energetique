@@ -1,18 +1,27 @@
+export const formatLineData = (data, type, unitConversion = 1) => {
+  if (!data) {
+    return [];
+  }
+
+  const formattedData = data.reduce((lineData, resource) => ({
+    ...lineData,
+    [resource[type]]: [
+      ...lineData[resource[type]] || [],
+      { x: resource.year, y: resource.value * unitConversion },
+    ],
+  }), {});
+
+  return Object.keys(formattedData).map(key => ({
+    id: key,
+    data: formattedData[key],
+  }));
+};
+
 export const parseData = {
   'by-sector': (data, unitConversion) => {
     const sortedData = data.sort((a, b) => a.year - b.year);
-    const processed = sortedData
-      .reduce((result, entry) => ({
-        ...result,
-        [entry.source]: [
-          ...result[entry.source] || [],
-          { x: entry.year, y: entry.value * unitConversion },
-        ],
-      }), {});
-    return Object.keys(processed).map(source => ({
-      id: source,
-      data: processed[source],
-    }));
+
+    return formatLineData(sortedData, 'source', unitConversion);
   },
 
   'by-region': (data, unitConversion) => {
@@ -33,21 +42,7 @@ export const parseData = {
     return Object.keys(byYear).map(year => ({ year, ...byYear[year] }));
   },
 
-  scenarios: (data, unitConversion, regions) => {
-    const processed = data
-      .filter(entry => entry.province === regions[0]) // Scenarios chart only take single region
-      .reduce((result, entry) => ({
-        ...result,
-        [entry.scenario]: [
-          ...result[entry.scenario] || [],
-          { x: entry.year, y: entry.value * unitConversion },
-        ],
-      }), {});
-    return Object.keys(processed).map(scenario => ({
-      id: scenario,
-      data: processed[scenario],
-    }));
-  },
+  scenarios: (data, unitConversion) => formatLineData(data, 'scenario', unitConversion),
 
   electricity: (data, unitConversion, regions, sources, view) => {
     const dataByYear = (data || [])
@@ -130,14 +125,13 @@ export const NOOP = () => undefined;
 /**
  * Generate y-axis ticks using the given hightest value.
  */
-export const getMaxTick = (highest) => {
-  if (!highest || Number.isNaN(highest)) {
-    return { highest, max: 'auto', step: undefined, ticks: [highest] };
-  }
+export const getTicks = (highest, lowest = 0) => {
+  const difference = highest - lowest;
+
   // e.g. when highest = 37500
-  const exponent = Math.floor(Math.log(highest) / Math.LN10); // e.g. 4
+  const exponent = Math.floor(Math.log(difference) / Math.LN10); // e.g. 4
   const magnitude = 10 ** exponent; // e.g. 10000
-  const coefficient = highest / magnitude; // e.g. 3.75
+  const coefficient = difference / magnitude; // e.g. 3.75
 
   // calculate the interval size between adjacent ticks
   let step = magnitude / 10;
@@ -145,12 +139,14 @@ export const getMaxTick = (highest) => {
   if (coefficient > 8) step = magnitude;
 
   const max = Math.ceil(highest / step) * step;
-  const ticks = max > 0 && step && Array(parseInt(max / step, 10) + 1)
-    .fill(undefined)
-    .map((_, i) => Number((i * step).toFixed(2)))
-    .filter(tick => tick < highest && (highest - tick) > (step / 2));
-  const lastValue = highest > 100 ? Math.ceil(highest, 10) : Number(highest.toFixed(3));
-  return { highest, max, step, ticks: ticks ? [...new Set([...ticks, lastValue])] : undefined };
+  const min = lowest === 0 ? 0 : Math.floor(lowest / step) * step - step;
+
+  const ticks = [];
+  for (let i = min; i <= max; i += step) {
+    ticks.push(i);
+  }
+
+  return ticks;
 };
 
 /**

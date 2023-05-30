@@ -7,8 +7,8 @@ import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
 import convertHexToRGB from '../../utilities/convertHexToRGB';
 import analytics from '../../analytics';
-import { getMaxTick } from '../../utilities/parseData';
-import { CHART_AXIS_PROPS, CHART_PROPS } from '../../constants';
+import { getTicks } from '../../utilities/parseData';
+import { CHART_PROPS } from '../../constants';
 import NetBarLineLayer from '../../components/NetBarLineLayer';
 import HistoricalLayer from '../../components/HistoricalLayer';
 import ForecastLayer from '../../components/ForecastLayer';
@@ -73,13 +73,23 @@ const Emissions = ({ data, year }) => {
     );
   }, [config.page, config.scenarios, config.unit, intl, sources.colors, sources.order]);
 
-  const axis = useMemo(() => {
+  const ticks = useMemo(() => {
     const highest = data && Math.max(...data
-      .map(seg => Object.values(seg).reduce((a, b) => a + (typeof b === 'string' ? 0 : b), 0)));
-    return getMaxTick(highest);
+      .map(seg => Object.values(seg).reduce((a, b) => {
+        if (typeof b === 'string' || b < 0) return a;
+        return a + b;
+      }, 0)));
+    const lowest = data && Math.min(...data
+      .map(seg => Object.values(seg).reduce((a, b) => {
+        if (typeof b === 'string' || b > 0) return a;
+        return a + b;
+      }, 0)));
+
+    return getTicks(highest, lowest);
   }, [data]);
 
   const xAxisGridLines = useMemo(() => {
+    if (!data) return [];
     const allYears = data.map(entry => entry.year);
     return allYears.filter(value => getYearLabel(value) !== '');
   }, [data]);
@@ -97,22 +107,21 @@ const Emissions = ({ data, year }) => {
         layers={[HistoricalLayer, 'grid', 'axes', 'bars', 'markers', CandlestickLayer, ForecastLayer, NetBarLineLayer]}
         padding={0.6}
         indexBy="year"
-        maxValue={axis.highest}
-        // TODO: Replace with value from axis calculation
-        minValue={-200}
+        maxValue={ticks[ticks.length - 1]}
+        minValue={ticks[0]}
         colors={colors}
         axisBottom={{
           tickSize: 0,
           format: getYearLabel,
         }}
         axisRight={{
-          ...CHART_AXIS_PROPS,
-          tickValues: axis.ticks,
+          tickSize: 0,
+          tickValues: ticks.ticks,
         }}
         enableGridX
         tooltip={getTooltip}
         gridXValues={xAxisGridLines}
-        gridYValues={axis.ticks}
+        gridYValues={ticks.ticks}
         motionStiffness={300}
         forecastStart={year.forecastStart}
         markers={[{

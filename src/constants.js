@@ -113,12 +113,14 @@ export const CONFIG_LAYOUT = {
     icon: IconOil,
     unit: ['kilobarrels', 'thousandCubicMetres'],
     pages: ['by-region', 'scenarios', 'oil-and-gas'],
+    priceSources: ['WTI', 'WCS', 'BRENT'],
   },
   gasProduction: {
     name: 'Gas Production',
     icon: IconGas,
     unit: ['cubicFeet', 'millionCubicMetres'],
     pages: ['by-region', 'scenarios', 'oil-and-gas'],
+    priceSources: ['HH', 'NIT'],
   },
   greenhouseGasEmission: {
     name: 'Emissions',
@@ -136,6 +138,9 @@ export const GREENHOUSE_GAS_ORDER = ['WASTE', 'AGRI', 'BUILD', 'HEAVY', 'TRANSPO
  * TODO: replace it with real colors from UI designers.
  */
 export const SCENARIO_COLOR = {
+  'Global Net-zero': '#559B37',
+  'Canada Net-zero': '#376787',
+  'Current Measures': '#CEA53B',
   'Current Policies': '#AAA',
   Evolving: '#6D60E8',
   'Evolving Policies': '#6D60E8',
@@ -147,6 +152,13 @@ export const SCENARIO_COLOR = {
   Constrained: '#4EEB8D',
   'High LNG': '#06A458',
   'No LNG': '#56D3EE',
+};
+
+export const SCENARIO_LABEL_COLOR = {
+  Evolving: '#F4BE62',
+  Reference: '#BEC0C2',
+  netzero: '#8EC059',
+  history: '#CBDEF1',
 };
 
 export const REGION_COLORS = {
@@ -202,6 +214,7 @@ export const SOURCE_COLORS = {
     TRANSPORTATION: '#F2CB53',
     WASTE: '#4B5E5B',
   },
+  price: {},
   oil: {
     C5: '#96B6CF',
     CONDENSATE: '#9B938A',
@@ -250,6 +263,7 @@ export const SOURCE_ICONS = {
     WASTE: IconWaste,
   },
   oil: {},
+  price: {},
   transportation: {},
 };
 
