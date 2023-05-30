@@ -106,6 +106,9 @@
     "header": {
       "subtitle": "What does Canada's energy future look like if we followed these scenarios?"
     },
+    "yearSliceTooltip": {
+      "total": "Total"
+    },
     "draggableVerticalList": {
       "all": "All",
       "abbr": {

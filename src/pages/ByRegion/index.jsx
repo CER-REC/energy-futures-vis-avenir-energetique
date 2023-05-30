@@ -12,6 +12,8 @@ import ForecastLayer from '../../components/ForecastLayer';
 import VizTooltip from '../../components/VizTooltip';
 import HistoricalLayer from '../../components/HistoricalLayer';
 import getYearLabel from '../../utilities/getYearLabel';
+import YearSliceTooltip from "../../components/YearSliceTooltip";
+import {useIntl} from "react-intl";
 
 const useStyles = makeStyles(theme => ({
   chart: {
@@ -23,6 +25,7 @@ const ByRegion = ({ data, year }) => {
   const { regions } = useAPI();
   const { config } = useConfig();
   const classes = useStyles();
+  const intl = useIntl();
 
   /**
    * Calculate bar colors.
@@ -50,10 +53,29 @@ const ByRegion = ({ data, year }) => {
     const name = `${entry.id} - ${entry.indexValue}`;
     clearTimeout(timer.current);
     timer.current = setTimeout(() => analytics.reportPoi(config.page, name), 500);
+    const nodes = [];
+
+    regions.order.forEach((key) => {
+      if (entry.data[key]) {
+        nodes.push({
+          name: intl.formatMessage({ id: `common.regions.${key}` }),
+          value: entry.data[key],
+          color: regions.colors[key],
+        });
+      }
+    });
+
+    const section = {
+      title: intl.formatMessage({ id: `common.scenarios.${config.scenarios[0]}` }),
+      nodes,
+      unit: config.unit,
+      hasTotal: true,
+    };
+
     return (
-      <VizTooltip
-        nodes={[{ name, value: entry.value, color: entry.color }]}
-        unit={config.unit}
+      <YearSliceTooltip
+        sections={[section]}
+        year={entry.indexValue}
       />
     );
   }, [config.page, config.unit]);

@@ -98,7 +98,7 @@ const Scenarios = ({ data, year }) => {
 
     let currYear = '';
 
-    const section = {
+    const upperSection = {
       title: intl.formatMessage({ id: `common.selections.${config.mainSelection}` }),
       nodes: event.slice?.points.map((obj) => {
         if (!currYear) currYear = obj.data?.x.toString();
@@ -115,7 +115,7 @@ const Scenarios = ({ data, year }) => {
 
     return (
       <YearSliceTooltip
-        sections={[section]}
+        sections={[upperSection]}
         year={currYear}
         isSliceTooltip
       />
