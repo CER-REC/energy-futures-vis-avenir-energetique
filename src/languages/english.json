@@ -422,8 +422,10 @@
         "description": "The amount of marketable natural gas produced in Canada. Natural gas is produced from various areas using different technologies. This includes tight, shale, coal bed methane, conventional, and natural gas produced along with oil from oil wells (also termed associated or solution gas)."
       }
     },
-    "unitSelect": {
-      "name": "UNIT",
+    "pageLayout": {
+      "unit": "UNIT"
+    },
+    "hintUnit": {
       "petajoules": {
         "title": "Petajoule",
         "description": "A measure of energy that is a quadrillion (10¹⁵) joules."

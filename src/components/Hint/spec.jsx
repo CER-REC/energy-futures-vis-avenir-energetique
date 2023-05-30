@@ -6,7 +6,7 @@ import { IconButton, Dialog, Fab } from '@material-ui/core';
 
 import {
   HintMainSelect, HintYearSelect, HintSectorSelect,
-  HintViewSelect, HintUnitSelect, HintRegionList, HintSourceList,
+  HintViewSelect, HintRegionList, HintSourceList,
 } from '.';
 import { TestContainer, getRendered } from '../../tests/utilities';
 
@@ -61,17 +61,6 @@ describe('Component|Hint', () => {
         const wrapper = getRendered(HintViewSelect, dom);
         expect(wrapper.type()).not.toBeNull();
       });
-    });
-  });
-
-  /**
-   * HintUnitSelect
-   */
-  describe('Test HintUnitSelect', () => {
-    const wrapper = mount(<TestContainer><HintUnitSelect /></TestContainer>);
-
-    test('should render component', () => {
-      expect(wrapper.type()).not.toBeNull();
     });
   });
 

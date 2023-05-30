@@ -13,7 +13,6 @@ import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
 import { CONFIG_LAYOUT, PAGES } from '../../constants';
 import analytics from '../../analytics';
-import HintUnit from './HintUnit';
 
 const useStyles = makeStyles(theme => createStyles({
   root: { width: 'auto' },
@@ -213,14 +212,6 @@ ${intl.formatMessage({ id: `components.yearSelect.${year}.description` })}\
 
 HintYearSelect.propTypes = { children: PropTypes.node };
 HintYearSelect.defaultProps = { children: null };
-
-/**
- * Hint panel for the unit selection question mark, which contains 2 sections.
- */
-export const HintUnitSelect = ({ children }) => <Hint label="unit" content={[<HintUnit />]} maxWidth="md">{children}</Hint>;
-
-HintUnitSelect.propTypes = { children: PropTypes.node };
-HintUnitSelect.defaultProps = { children: null };
 
 /**
  * Hint panel for the sector selection question mark.

@@ -421,8 +421,10 @@
         "description": "Elle désigne la quantité de gaz naturel commercialisable produit au Canada. Plusieurs régions produisent du gaz naturel à partir de diverses techniques. La production de gaz naturel comprend le gaz de réservoirs étanches, le gaz de schiste, le méthane de houille, le gaz classique et le gaz tiré de l’exploitation des puits de pétrole (aussi appelé gaz associé ou gaz dissous)."
       }
     },
-    "unitSelect": {
-      "name": "UNITÉS",
+    "pageLayout": {
+      "unit": "UNITÉS"
+    },
+    "hintUnit": {
       "petajoules": {
         "title": "Pétajoule",
         "description": "Mesure d’énergie correspondant à un quadrillion (10¹⁵) de joules."
