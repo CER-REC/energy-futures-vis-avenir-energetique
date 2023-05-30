@@ -2,6 +2,7 @@
   "common": {
     "title": "Explorer l’avenir énergétique du Canada",
     "forecast": "Projections",
+    "prices": "",
     "selection": "Sélection",
     "region": "Région",
     "scenario": "Scénario",
@@ -261,6 +262,22 @@
         "description": "Explorer la production de pétrole et de gaz selon le type dans les provinces et les territoires canadiens pendant une année donnée."
       }
     },
+    "priceSelect": {
+      "options": {
+        "WTI": "",
+        "WCS": "",
+        "BRENT": "",
+        "HH": "",
+        "NIT": ""
+      },
+      "selected": {
+        "WTI": "",
+        "WCS": "",
+        "BRENT": "",
+        "HH": "",
+        "NIT": ""
+      }
+    },
     "scenarioSelect": {
       "name": "SCÉNARIOS",
       "description": {
@@ -504,6 +521,14 @@
     },
     "unsupportedWarning": {
       "browser": "Votre fureteur n’autorise pas les particularités propres à cette visualisation.\nVeuillez utiliser une version récente du logiciel de navigation Chrome, Firefox, Safari ou Edge.\nMerci!"
+    }
+  },
+  "containers": {
+    "scenarios": {
+      "benchmark": {
+        "oilProduction": "",
+        "gasProduction": ""
+      }
     }
   },
   "views": {},

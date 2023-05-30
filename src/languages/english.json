@@ -2,6 +2,7 @@
   "common": {
     "title": "Exploring Canada’s Energy Future",
     "forecast": "projection",
+    "prices": "Benchmark Prices",
     "selection": "Selection",
     "region": "Region",
     "scenario": "Scenario",
@@ -261,6 +262,22 @@
         "description": "Explore oil and gas production by type across Canada’s provinces and territories for a given year or compare production over time."
       }
     },
+    "priceSelect": {
+      "options": {
+        "WTI": "West Texas Intermediate (WTI) - {year} US$/bbl",
+        "WCS": "Western Canadian Select (WCS) - {year} US$/bbl",
+        "BRENT": "Brent - {year} US$/bbl",
+        "HH": "Henry Hub - {year} US$/MMBtu",
+        "NIT": "Nova Inventory Transfer (NIT) - {year} US$/MMBtu"
+      },
+      "selected": {
+        "WTI": "WTI - US$/Barrel",
+        "WCS": "WCS - US$/Barrel",
+        "BRENT": "Brent - US$/Barrel",
+        "HH": "Henry Hub - US$/MMBtu",
+        "NIT": "NIT - US$/MMBtu"
+      }
+    },
     "scenarioSelect": {
       "name": "SCENARIOS",
       "description": {
@@ -505,6 +522,14 @@
     },
     "unsupportedWarning": {
       "browser": "Your browser does not support the features required by this visualization.\nPlease use a recent version of Chrome, Firefox, Safari, or Edge.\nThank you!"
+    }
+  },
+  "containers": {
+    "scenarios": {
+      "benchmark": {
+        "oilProduction": "Oil Prices - {year} US$ / Barrel",
+        "gasProduction": "Gas Prices - {year} US$ / MMBtu"
+      }
     }
   },
   "views": {},
