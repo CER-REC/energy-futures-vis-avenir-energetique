@@ -28,7 +28,7 @@ const useStyles = makeStyles(theme => createStyles({
     padding: theme.spacing(0.5),
     color: theme.palette.secondary.light,
   },
-  senarios: {
+  scenarios: {
     '& img': {
       width: '100%',
       maxWidth: 500,
@@ -347,7 +347,7 @@ export const HintScenarioSelect = ({ children }) => {
     showGraph && <Divider />,
     showGraph && <HintSection section={sectionCaption} />,
   ].filter(Boolean);
-  return <Hint label="scenarios" content={sections} className={classes.senarios}>{children}</Hint>;
+  return <Hint label="scenarios" content={sections} className={classes.scenarios}>{children}</Hint>;
 };
 
 HintScenarioSelect.propTypes = { children: PropTypes.node };
