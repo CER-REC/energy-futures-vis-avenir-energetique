@@ -280,6 +280,8 @@
     },
     "scenarioSelect": {
       "name": "SCENARIOS",
+      "readMore": "Read more",
+      "readLess": "Read less",
       "description": {
         "2016": "The projections in EF2016 include a Reference Case, two price sensitivity cases and three supplemental sensitivity cases:",
         "2016*": "The projections in EF 2016 (Update) include a Reference Case and two price sensitivity cases:",
