@@ -132,7 +132,8 @@ const Scenarios = ({ data, year }) => {
         (prices && prices?.length !== 0)
           ? classes.halvedChartSize
           : classes.fullChart
-      }>
+      }
+      >
         <ResponsiveLine
           {...CHART_PROPS}
           data={data}
