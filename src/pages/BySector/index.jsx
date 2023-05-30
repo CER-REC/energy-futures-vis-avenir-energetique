@@ -116,7 +116,7 @@ const BySector = ({ data, year }) => {
         curve="cardinal"
         axisRight={{
           ...CHART_AXIS_PROPS,
-          tickValues: ticks.ticks,
+          tickValues: ticks,
         }}
         axisBottom={{
           ...CHART_AXIS_PROPS,
@@ -127,7 +127,7 @@ const BySector = ({ data, year }) => {
         enablePoints={false}
         enableSlices="x"
         sliceTooltip={getTooltip}
-        gridYValues={ticks.ticks}
+        gridYValues={ticks}
         defs={CHART_PATTERNS}
         forecastStart={year.forecastStart}
       />
