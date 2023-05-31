@@ -142,7 +142,7 @@
       "app": "veuillez patienter"
     },
     "yearSelect": {
-      "name": "RAPPORTS",
+      "name": "RAPPORT AE",
       "title": "RAPPORTS SUR L’AVENIR ÉNERGÉTIQUE",
       "2021": {
         "title": "AVENIR ÉNERGÉTIQUE DU CANADA EN 2021",
@@ -224,7 +224,7 @@
           "COMMERCIAL": "Demande pour utilisation finale, secteur commercial",
           "INDUSTRIAL": "Demande pour utilisation finale, secteur industriel",
           "TRANSPORTATION": "Demande pour utilisation finale, secteur des transports",
-          "default": "Par source d’énergie"
+          "default": "Source d’énergie"
         },
         "description": "Examiner la façon dont le bouquet énergétique pour divers secteurs a évolué récemment, et la projection de leur évolution selon les scénarios du rapport sur l’avenir énergétique."
       },
