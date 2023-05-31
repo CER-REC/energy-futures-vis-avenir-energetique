@@ -14,7 +14,7 @@
     "dataset": "Série de données",
     "energyUnits": "UNITÉS D’ÉNERGIE",
     "volumetricUnits": "UNITÉS VOLUMÉTRIQUES",
-    "netEmissions": "",
+    "netEmissions": "Émissions nettes",
     "units": {
       "petajoules": "PJ",
       "gigawattHours": "GWh",
@@ -142,7 +142,7 @@
       "app": "veuillez patienter"
     },
     "yearSelect": {
-      "name": "RAPPORTS",
+      "name": "RAPPORT AE",
       "title": "RAPPORTS SUR L’AVENIR ÉNERGÉTIQUE",
       "2021": {
         "title": "AVENIR ÉNERGÉTIQUE DU CANADA EN 2021",
@@ -224,7 +224,7 @@
           "COMMERCIAL": "Demande pour utilisation finale, secteur commercial",
           "INDUSTRIAL": "Demande pour utilisation finale, secteur industriel",
           "TRANSPORTATION": "Demande pour utilisation finale, secteur des transports",
-          "default": "Par source d’énergie"
+          "default": "Source d’énergie"
         },
         "description": "Examiner la façon dont le bouquet énergétique pour divers secteurs a évolué récemment, et la projection de leur évolution selon les scénarios du rapport sur l’avenir énergétique."
       },
@@ -555,16 +555,16 @@
       "MB": "Exploitation alliant extraction et valorisation, dans laquelle les sables bitumineux sont extraits à ciel ouvert. Le bitume est ensuite séparé du sable et raffiné par cokéfaction ou hydrotraitement."
     },
     "greenhouseGas": {
-      "AGRI": "",
-      "AIR": "",
-      "BUILD": "",
-      "ELECTRICITY": "",
-      "FOSSIL": "",
-      "HEAVY": "",
-      "HYDROGEN": "",
-      "LAND": "",
-      "TRANSPORTATION": "",
-      "WASTE": ""
+      "AGRI": "Tous les GES associés à la production végétale, à la production animale et à la consommation d’énergie en agriculture.",
+      "AIR": "Tous les GES associés à l’industrie du captage direct dans l’air, qui extrait le CO2 de l’atmosphère et le stocke sous terre.",
+      "BUILD": "Tous les GES associés aux bâtiments des secteurs résidentiel et commercial.",
+      "ELECTRICITY": "Tous les GES associés à la production d’électricité.",
+      "FOSSIL": "Tous les GES associés au secteur pétrolier et gazier, y compris en amont et en aval, ainsi que les émissions liées au transport et à la distribution.",
+      "HEAVY": "Tous les GES associés à l’industrie lourde, y compris les émissions des mines, des fonderies et raffineries, de la production de pâtes et papiers, de celle de fer et d’acier, des cimenteries, du secteur du gypse et d’argile ainsi que des usines de produits chimiques ou d’engrais.",
+      "HYDROGEN": "Tous les GES associés à la production d’hydrogène.",
+      "LAND": "Tous les GES associés aux terres naturelles et aux activités humaines qui les modifient.",
+      "TRANSPORTATION": "Tous les GES associés au transport.",
+      "WASTE": "Tous les GES associés aux déchets, aux mines de charbon, à la fabrication légère et à la consommation d’énergie dans les activités forestières."
     }
   },
   "links": {
@@ -689,6 +689,10 @@
     "By Sector": {
       "title": "Explorer par source d’énergie",
       "description": "Examinez l’évolution récente des sources énergétiques de différents secteurs et ce que projettent les scénarios du rapport sur l’avenir énergétique à cet égard"
+    },
+    "Emissions": {
+      "title": "",
+      "description": ""
     },
     "Electricity": {
       "title": "Explorer l’électricité",
