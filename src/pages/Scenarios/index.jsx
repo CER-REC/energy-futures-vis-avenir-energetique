@@ -103,9 +103,9 @@ const Scenarios = ({ data, year }) => {
           name: intl.formatMessage({ id: `common.scenarios.${obj.serieId}` }),
           value: obj.data?.y,
           color: obj.serieColor,
-          hasTotal: false,
         };
       }),
+      hasTotal: false,
       unit: config.unit,
     };
 
