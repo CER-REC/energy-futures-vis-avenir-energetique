@@ -33,7 +33,7 @@ const NodeSection = ({ section, year = null }) => {
   const intl = useIntl();
 
   const sum = section.hasTotal
-    ? section.nodes.map(node => node.value).reduce((a, b) => a + b, 0) : 0;
+    ? section.nodes.reduce((a, b) => a + b.value, 0) : 0;
 
   return (
     <>
@@ -59,10 +59,7 @@ const NodeSection = ({ section, year = null }) => {
         </TableRow>
       </TableHead>
       <TableBody
-        className={clsx({
-          [classes.gridContainer]: true,
-          [classes.contrast]: section.nodes.length > 3,
-        })}
+        className={clsx(classes.gridContainer, { [classes.contrast]: section.nodes.length > 3 })}
       >
         {
           section.nodes.map(node => (

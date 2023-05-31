@@ -73,19 +73,15 @@ const Scenarios = ({ data, year }) => {
 
   const fill = useMemo(() => fillLayerScenario({ year }), [year]);
 
-  const ticks = useMemo(() => {
-    const values = (data || []).map(source => source.data);
+  const getLineTicks = (pointData) => {
+    const values = (pointData || []).map(source => source.data);
     const sums = (values[0] || [])
       .map((_, i) => Math.max(...values.map(source => source[i].y)));
     return getTicks(Math.max(...sums));
-  }, [data]);
+  };
 
-  const benchmarkTicks = useMemo(() => {
-    const values = (priceData || []).map(source => source.data);
-    const sums = (values[0] || [])
-      .map((_, i) => Math.max(...values.map(source => source[i].y)));
-    return getTicks(Math.max(...sums));
-  }, [priceData]);
+  const ticks = getLineTicks(data);
+  const benchmarkTicks = getLineTicks(priceData);
 
   const timer = useRef(null);
   const getTooltip = useCallback((event) => {
@@ -107,9 +103,9 @@ const Scenarios = ({ data, year }) => {
           name: intl.formatMessage({ id: `common.scenarios.${obj.serieId}` }),
           value: obj.data?.y,
           color: obj.serieColor,
-          hasTotal: false,
         };
       }),
+      hasTotal: false,
       unit: config.unit,
     };
 
@@ -126,73 +122,65 @@ const Scenarios = ({ data, year }) => {
     return null;
   }
 
+  const lineProps = {
+    xScale: { type: 'point' },
+    enablePoints: false,
+    colors: d => SCENARIO_COLOR[d.id] || '#AAA',
+    pointSize: 8,
+    pointColor: { theme: 'background' },
+    pointBorderWidth: 2,
+    pointBorderColor: { from: 'serieColor' },
+    pointLabel: 'y',
+    pointLabelYOffset: -12,
+    axisBottom: {
+      ...CHART_AXIS_PROPS,
+      format: getYearLabel,
+    },
+    axisRight: {
+      ...CHART_AXIS_PROPS,
+      tickValues: benchmarkTicks,
+    },
+    enableSlices: 'x',
+    sliceTooltip: getTooltip,
+    forecastStart: year.forecastStart,
+  };
+
   return (
     <div className={classes.chart}>
       <div className={
-        (prices && prices?.length !== 0)
+        prices?.length
           ? classes.halvedChartSize
           : classes.fullChart
       }
       >
         <ResponsiveLine
           {...CHART_PROPS}
+          {...lineProps}
           data={data}
           enableArea
           enablePoints={false}
           layers={[HistoricalLayer, 'grid', 'axes', 'areas', 'crosshair', 'points', 'slices', fill, 'lines', ForecastLayer, dots]}
           curve="cardinal"
           areaOpacity={0.15}
-          xScale={{ type: 'point' }}
           yScale={{ type: 'linear', min: 0, max: ticks[ticks.length - 1], reverse: false }}
-          colors={d => SCENARIO_COLOR[d.id] || '#AAA'}
-          pointSize={8}
-          pointColor={{ theme: 'background' }}
-          pointBorderWidth={2}
-          pointBorderColor={{ from: 'serieColor' }}
-          pointLabel="y"
-          pointLabelYOffset={-12}
-          axisBottom={{
-            ...CHART_AXIS_PROPS,
-            format: getYearLabel,
-          }}
           axisRight={{
-            ...CHART_AXIS_PROPS,
             tickValues: ticks,
           }}
-          enableSlices="x"
-          sliceTooltip={getTooltip}
           gridYValues={ticks}
-          forecastStart={year.forecastStart}
         />
       </div>
       {
-        prices && prices?.length !== 0 && (
+        !!prices?.length && (
           <div className={classes.halvedChartSize}>
             <ResponsiveLine
               {...CHART_PROPS}
+              {...lineProps}
               data={priceData}
-              enablePoints={false}
               layers={[HistoricalLayer, 'grid', 'axes', 'crosshair', 'points', 'slices', 'lines', ForecastLayer, dots]}
-              curve="cardinal"
-              xScale={{ type: 'point' }}
               yScale={{ type: 'linear', min: 0, max: benchmarkTicks[benchmarkTicks.length - 1], reverse: false }}
-              colors={d => SCENARIO_COLOR[d.id] || '#AAA'}
-              pointSize={8}
-              pointColor={{ theme: 'background' }}
-              pointBorderWidth={2}
-              pointBorderColor={{ from: 'serieColor' }}
-              pointLabel="y"
-              pointLabelYOffset={-12}
-              axisBottom={{
-                ...CHART_AXIS_PROPS,
-                format: getYearLabel,
-              }}
               axisRight={{
-                ...CHART_AXIS_PROPS,
                 tickValues: benchmarkTicks,
               }}
-              enableSlices="x"
-              sliceTooltip={getTooltip}
               gridYValues={benchmarkTicks}
               forecastStart={year.forecastStart}
             />
