@@ -44,7 +44,7 @@ describe('Component|hooks', () => {
     const reducer = getReducer(
       { order: ['YT', 'SK', 'QC', 'PE', 'ON', 'NU', 'NT', 'NS', 'NL', 'NB', 'MB', 'BC', 'AB'] },
       {
-        electricity: { order: ['BIO', 'COAL', 'GAS', 'HYDRO', 'NUCLEAR', 'OIL', 'RENEWABLE'] },
+        electricity: { order: ['BIO', 'COAL', 'GAS', 'HYDRO', 'NUCLEAR', 'OIL', 'SOLAR', 'WIND'] },
         energy: { order: ['BIO', 'COAL', 'ELECTRICITY', 'GAS', 'OIL'] },
         gas: { order: ['CBM', 'NA', 'SHALE', 'SOLUTION', 'TIGHT'] },
         oil: { order: ['C5', 'CONDENSATE', 'HEAVY', 'ISB', 'LIGHT', 'MB'] },

@@ -124,7 +124,8 @@ const COORD = {
   AB: { top: '25%', left: '8%' },
 
   BIO: { top: '30%', left: '55%' },
-  RENEWABLE: { top: '65%', left: '60%' },
+  WIND: { top: '55%', left: '60%' },
+  SOLAR: { top: '75%', left: '85%' },
   GAS: { top: '15%', left: '70%' },
   HYDRO: { top: '40%', left: '15%' },
   NUCLEAR: { top: '8%', left: '30%' },
@@ -255,7 +256,7 @@ const Electricity = ({ data, year }) => {
     }
   }, [year, config.baseYear, config.page, prevEvent]);
 
-  if (!data || !processedData || processedData.length <= 0) {
+  if (!data) {
     return null;
   }
 
