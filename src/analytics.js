@@ -30,6 +30,7 @@ class Analytics {
       case 'electricity': return 'electricity generation';
       case 'oil-and-gas': return 'oil and gas';
       case 'demand': return 'demand';
+      case 'emissions': return 'emissions';
       default: return undefined;
     }
   }
