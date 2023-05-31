@@ -79,7 +79,11 @@ describe('Component|Hint', () => {
    * HintRegionList
    */
   describe('Test HintRegionList', () => {
-    const wrapper = mount(<TestContainer><HintRegionList /></TestContainer>);
+    const wrapper = mount((
+      <TestContainer>
+        <HintRegionList disableKeyboardNav={false} />
+      </TestContainer>
+    ));
 
     test('should render component', () => {
       expect(wrapper.type()).not.toBeNull();
@@ -114,12 +118,13 @@ describe('Component|Hint', () => {
       HYDRO: { color: '#5FBEE6', label: 'Hydro / Wave / Tidal' },
       NUCLEAR: { color: '#753B95', label: 'Nuclear' },
       OIL: { color: '#FF821E', label: 'Oil' },
-      RENEWABLE: { color: '#FFCC47', label: 'Solar / Wind' },
+      SOLAR: { color: '#FFCC47', label: 'Solar' },
+      WIND: { color: '#018571', label: 'Wind' },
     };
 
     const wrapper = mount(
       <TestContainer>
-        <HintSourceList sources={SOURCES} sourceType="electricity" />
+        <HintSourceList sources={SOURCES} sourceType="electricity" disableKeyboardNav={false} />
       </TestContainer>,
     );
 
