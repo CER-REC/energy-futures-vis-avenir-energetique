@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useRef } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import clsx from 'clsx';
 import { useIntl } from 'react-intl';
 import { ResponsiveLine } from '@nivo/line';
@@ -16,6 +16,7 @@ import PriceSelect from '../../components/PriceSelect';
 import getYearLabel from '../../utilities/getYearLabel';
 import TooltipWithHeader from '../../components/TooltipWithHeader';
 import { getTicks, formatLineData } from '../../utilities/parseData';
+import BenchmarkCrosshair from '../../components/BenchmarkCrosshair';
 
 /**
  * Generate a custom dotted line layer for rendering the default scenario.
@@ -58,6 +59,8 @@ const useStyles = makeStyles(theme => ({
 const Scenarios = ({ data, year }) => {
   const intl = useIntl();
   const { config } = useConfig();
+  const [upperCurrPoint, setUpperCurrPoint] = useState(null);
+  const [lowerCurrPoint, setLowerCurrPoint] = useState(null);
   // TODO: Refactor useEnergyFutureData hook to use a standard data structure
   const { prices, priceYear } = useEnergyFutureData();
   const classes = useStyles();
@@ -115,6 +118,13 @@ const Scenarios = ({ data, year }) => {
     );
   }, [year, intl, config.mainSelection, config.unit, config.page]);
 
+  const useHandleCrosshairPoint = (point, isUpper) => {
+    useEffect(() => {
+      if (isUpper) setLowerCurrPoint(point);
+      else setUpperCurrPoint(point);
+    });
+  };
+
   if (!data) {
     return null;
   }
@@ -147,7 +157,7 @@ const Scenarios = ({ data, year }) => {
           {...lineProps}
           data={data}
           enableArea
-          layers={[HistoricalLayer, 'grid', 'axes', 'areas', 'crosshair', 'points', 'slices', fill, 'lines', ForecastLayer, dots]}
+          layers={[HistoricalLayer, 'grid', 'axes', 'areas', BenchmarkCrosshair(useHandleCrosshairPoint, upperCurrPoint, true), 'points', 'slices', fill, 'lines', ForecastLayer, dots]}
           curve="cardinal"
           areaOpacity={0.15}
           yScale={{ type: 'linear', min: 0, max: ticks[ticks.length - 1], reverse: false }}
@@ -179,7 +189,7 @@ const Scenarios = ({ data, year }) => {
             {...CHART_PROPS}
             {...lineProps}
             data={priceData}
-            layers={[HistoricalLayer, 'grid', 'axes', 'crosshair', 'points', 'slices', 'lines', ForecastLayer, dots]}
+            layers={[HistoricalLayer, 'grid', 'axes', BenchmarkCrosshair(useHandleCrosshairPoint, lowerCurrPoint, false), 'points', 'slices', 'lines', ForecastLayer, dots]}
             yScale={{ type: 'linear', min: 0, max: benchmarkTicks[benchmarkTicks.length - 1], reverse: false }}
             axisRight={{
               ...CHART_AXIS_PROPS,
