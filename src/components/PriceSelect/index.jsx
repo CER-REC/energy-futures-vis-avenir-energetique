@@ -35,14 +35,14 @@ const PriceSelect = () => {
   const { priceYear } = useEnergyFutureData();
   const { priceSources } = CONFIG_LAYOUT[config.mainSelection];
   const options = priceSources.map(source => [
-    intl.formatMessage({ id: `components.priceSelect.options.${source}` }, { year: priceYear }),
+    intl.formatMessage({ id: `components.priceSelect.${source}` }, { year: priceYear }),
     source,
   ]);
 
   return (
     <div className={classes.root}>
       <Typography variant="body1" color="secondary" style={{ textTransform: 'uppercase' }}>
-        {intl.formatMessage({ id: 'common.prices' })}
+        {intl.formatMessage({ id: 'common.benchmarkPrices' })}
         &nbsp;
       </Typography>
       <DropDown
@@ -50,7 +50,7 @@ const PriceSelect = () => {
         menuClassName={classes.menu}
         options={options}
         value={config.priceSource}
-        renderValue={value => intl.formatMessage({ id: `components.priceSelect.selected.${value}` })}
+        renderValue={value => intl.formatMessage({ id: `common.prices.${value}` })}
         onChange={value => configDispatch({ type: 'priceSource/changed', payload: value })}
       />
       <HintPrice />

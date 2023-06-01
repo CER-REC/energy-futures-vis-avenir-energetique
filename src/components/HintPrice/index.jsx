@@ -15,7 +15,7 @@ const PriceContent = () => {
   return (
     <Grid container spacing={2}>
       <Grid item xs={12}>
-        <Typography variant="h4" style={{ textTransform: 'uppercase' }}>{intl.formatMessage({ id: 'common.prices' })}</Typography>
+        <Typography variant="h4" style={{ textTransform: 'uppercase' }}>{intl.formatMessage({ id: 'common.benchmarkPrices' })}</Typography>
         <Typography variant="body2" color="secondary">
           {intl.formatMessage({ id: 'components.hintPrice.description' })}
         </Typography>

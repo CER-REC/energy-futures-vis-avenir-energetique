@@ -2,7 +2,7 @@
   "common": {
     "title": "Explorer l’avenir énergétique du Canada",
     "forecast": "Projections",
-    "prices": "",
+    "benchmarkPrices": "",
     "selection": "Sélection",
     "region": "Région",
     "scenario": "Scénario",
@@ -25,6 +25,13 @@
       "kilobarrels": "kb/j",
       "cubicFeet": "Tpi³/j",
       "megatonnes": "Mt"
+    },
+    "prices": {
+      "WTI": "",
+      "WCS": "",
+      "BRENT": "",
+      "HH": "",
+      "NIT": ""
     },
     "datasets": {
       "2016*": "Mise à jour 2016"
@@ -263,20 +270,11 @@
       }
     },
     "priceSelect": {
-      "options": {
-        "WTI": "",
-        "WCS": "",
-        "BRENT": "",
-        "HH": "",
-        "NIT": ""
-      },
-      "selected": {
-        "WTI": "",
-        "WCS": "",
-        "BRENT": "",
-        "HH": "",
-        "NIT": ""
-      }
+      "WTI": "",
+      "WCS": "",
+      "BRENT": "",
+      "HH": "",
+      "NIT": ""
     },
     "scenarioSelect": {
       "name": "SCÉNARIOS",

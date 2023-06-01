@@ -2,7 +2,7 @@
   "common": {
     "title": "Exploring Canada’s Energy Future",
     "forecast": "projection",
-    "prices": "Benchmark Prices",
+    "benchmarkPrices": "Benchmark Prices",
     "selection": "Selection",
     "region": "Region",
     "scenario": "Scenario",
@@ -25,6 +25,13 @@
       "kilobarrels": "Mb/d",
       "cubicFeet": "Bcf/d",
       "megatonnes": "Mt"
+    },
+    "prices": {
+      "WTI": "WTI - US$/Barrel",
+      "WCS": "WCS - US$/Barrel",
+      "BRENT": "Brent - US$/Barrel",
+      "HH": "Henry Hub - US$/MMBtu",
+      "NIT": "NIT - US$/MMBtu"
     },
     "datasets": {
       "2016*": "2016 Update"
@@ -263,20 +270,11 @@
       }
     },
     "priceSelect": {
-      "options": {
-        "WTI": "West Texas Intermediate (WTI) - {year} US$/bbl",
-        "WCS": "Western Canadian Select (WCS) - {year} US$/bbl",
-        "BRENT": "Brent - {year} US$/bbl",
-        "HH": "Henry Hub - {year} US$/MMBtu",
-        "NIT": "Nova Inventory Transfer (NIT) - {year} US$/MMBtu"
-      },
-      "selected": {
-        "WTI": "WTI - US$/Barrel",
-        "WCS": "WCS - US$/Barrel",
-        "BRENT": "Brent - US$/Barrel",
-        "HH": "Henry Hub - US$/MMBtu",
-        "NIT": "NIT - US$/MMBtu"
-      }
+      "WTI": "West Texas Intermediate (WTI) - {year} US$/bbl",
+      "WCS": "Western Canadian Select (WCS) - {year} US$/bbl",
+      "BRENT": "Brent - {year} US$/bbl",
+      "HH": "Henry Hub - {year} US$/MMBtu",
+      "NIT": "Nova Inventory Transfer (NIT) - {year} US$/MMBtu"
     },
     "scenarioSelect": {
       "name": "SCENARIOS",
