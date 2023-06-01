@@ -11,10 +11,10 @@ import analytics from '../../analytics';
 import { CHART_PROPS, CHART_AXIS_PROPS, SCENARIO_COLOR } from '../../constants';
 import { fillLayerScenario } from '../../components/FillLayer';
 import ForecastLayer from '../../components/ForecastLayer';
-import VizTooltip from '../../components/VizTooltip';
 import HistoricalLayer from '../../components/HistoricalLayer';
 import PriceSelect from '../../components/PriceSelect';
 import getYearLabel from '../../utilities/getYearLabel';
+import TooltipWithHeader from '../../components/TooltipWithHeader';
 import { getTicks, formatLineData } from '../../utilities/parseData';
 
 /**
@@ -61,8 +61,6 @@ const Scenarios = ({ data, year }) => {
   // TODO: Refactor useEnergyFutureData hook to use a standard data structure
   const { prices, priceYear } = useEnergyFutureData();
   const classes = useStyles();
-  // TODO: Remove ignore when benchmark price chart is implemented
-  // eslint-disable-next-line no-unused-vars
   const priceData = formatLineData(prices, 'scenario');
 
   /**
@@ -70,24 +68,18 @@ const Scenarios = ({ data, year }) => {
    */
   const dots = useMemo(() => dottedLayer(config.yearId), [config.yearId]);
 
-  /**
-   * Fill over forecast years.
-   */
   const fill = useMemo(() => fillLayerScenario({ year }), [year]);
 
-  /**
-   * Calculate the max tick value on y-axis.
-   */
-  const ticks = useMemo(() => {
-    const values = (data || []).map(source => source.data);
+  const getLineTicks = (pointData) => {
+    const values = (pointData || []).map(source => source.data);
     const sums = (values[0] || [])
       .map((_, i) => Math.max(...values.map(source => source[i].y)));
     return getTicks(Math.max(...sums));
-  }, [data]);
+  };
 
-  /**
-   * Format tooltip.
-   */
+  const ticks = getLineTicks(data);
+  const benchmarkTicks = getLineTicks(priceData);
+
   const timer = useRef(null);
   const getTooltip = useCallback((event) => {
     // capture hover event and use a timer to avoid throttling
@@ -97,58 +89,74 @@ const Scenarios = ({ data, year }) => {
       timer.current = setTimeout(() => analytics.reportPoi(config.page, year.min + index), 500);
     }
 
+    let currYear = '';
+
+    const section = {
+      title: intl.formatMessage({ id: `common.selections.${config.mainSelection}` }),
+      nodes: event.slice?.points.map((obj) => {
+        if (!currYear) currYear = obj.data?.x.toString();
+
+        return {
+          name: intl.formatMessage({ id: `common.scenarios.${obj.serieId}` }),
+          value: obj.data?.y,
+          color: obj.serieColor,
+        };
+      }),
+      hasTotal: false,
+      unit: config.unit,
+    };
+
     return (
-      <VizTooltip
-        nodes={event.slice?.points.map(value => ({
-          name: value.serieId,
-          translation: intl.formatMessage({ id: `common.scenarios.${value.serieId}` }),
-          value: value.data?.y,
-          color: value.serieColor,
-        }))}
-        unit={config.unit}
-        paper
-        showTotal={false}
-        showPercentage={false}
+      <TooltipWithHeader
+        sections={[section]}
+        year={currYear}
+        isSliceTooltip
       />
     );
-  }, [timer, intl, config.unit, config.page, year]);
+  }, [year, intl, config.mainSelection, config.unit, config.page]);
 
   if (!data) {
     return null;
   }
 
+  const lineProps = {
+    xScale: { type: 'point' },
+    enablePoints: false,
+    colors: d => SCENARIO_COLOR[d.id] || '#AAA',
+    pointSize: 8,
+    pointColor: { theme: 'background' },
+    pointBorderWidth: 2,
+    pointBorderColor: { from: 'serieColor' },
+    pointLabel: 'y',
+    pointLabelYOffset: -12,
+    axisBottom: {
+      ...CHART_AXIS_PROPS,
+      format: getYearLabel,
+    },
+    enableSlices: 'x',
+    sliceTooltip: getTooltip,
+    forecastStart: year.forecastStart,
+  };
+  const chartContainerClass = clsx(classes.chart, { duo: prices });
+
   return (
     <>
-      <div className={clsx(classes.chart, { duo: prices })}>
+      <div className={chartContainerClass}>
         <ResponsiveLine
           {...CHART_PROPS}
+          {...lineProps}
           data={data}
           enableArea
-          enablePoints={false}
           layers={[HistoricalLayer, 'grid', 'axes', 'areas', 'crosshair', 'points', 'slices', fill, 'lines', ForecastLayer, dots]}
           curve="cardinal"
           areaOpacity={0.15}
-          xScale={{ type: 'point' }}
           yScale={{ type: 'linear', min: 0, max: ticks[ticks.length - 1], reverse: false }}
-          colors={d => SCENARIO_COLOR[d.id] || '#AAA'}
-          pointSize={8}
-          pointColor={{ theme: 'background' }}
-          pointBorderWidth={2}
-          pointBorderColor={{ from: 'serieColor' }}
-          pointLabel="y"
-          pointLabelYOffset={-12}
-          axisBottom={prices ? null : {
-            ...CHART_AXIS_PROPS,
-            format: getYearLabel,
-          }}
           axisRight={{
             ...CHART_AXIS_PROPS,
-            tickValues: ticks.ticks,
+            tickValues: ticks,
           }}
-          enableSlices="x"
-          sliceTooltip={getTooltip}
-          gridYValues={ticks.ticks}
-          forecastStart={year.forecastStart}
+          axisBottom={prices?.length ? null : lineProps.axisBottom}
+          gridYValues={ticks}
         />
       </div>
       { prices && (
@@ -163,6 +171,22 @@ const Scenarios = ({ data, year }) => {
             }
           </Typography>
           <PriceSelect />
+        </div>
+      )}
+      { !!prices?.length && (
+        <div className={chartContainerClass}>
+          <ResponsiveLine
+            {...CHART_PROPS}
+            {...lineProps}
+            data={priceData}
+            layers={[HistoricalLayer, 'grid', 'axes', 'crosshair', 'points', 'slices', 'lines', ForecastLayer, dots]}
+            yScale={{ type: 'linear', min: 0, max: benchmarkTicks[benchmarkTicks.length - 1], reverse: false }}
+            axisRight={{
+              ...CHART_AXIS_PROPS,
+              tickValues: benchmarkTicks,
+            }}
+            gridYValues={benchmarkTicks}
+          />
         </div>
       )}
     </>

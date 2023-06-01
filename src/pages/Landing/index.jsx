@@ -13,6 +13,7 @@ import analytics from '../../analytics';
 import { IconExternal } from '../../icons';
 import headerBg from './header.jpg';
 import portalByRegion from './portal_by_region.jpg';
+import portalEmissions from './portal_emissions.png';
 import portalBySector from './portal_by_sector.jpg';
 import portalElectricity from './portal_electricity.jpg';
 import portalScenarios from './portal_scenarios.jpg';
@@ -162,6 +163,7 @@ const useStyles = makeStyles(theme => ({
 const getBg = (page) => {
   switch (page) {
     case 'by-region': return portalByRegion;
+    case 'emissions': return portalEmissions;
     case 'by-sector': return portalBySector;
     case 'electricity': return portalElectricity;
     case 'scenarios': return portalScenarios;
