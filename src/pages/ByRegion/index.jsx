@@ -88,10 +88,10 @@ const ByRegion = ({ data, year }) => {
         }}
         axisRight={{
           ...CHART_AXIS_PROPS,
-          tickValues: ticks.ticks,
+          tickValues: ticks,
         }}
         tooltip={getTooltip}
-        gridYValues={ticks.ticks}
+        gridYValues={ticks}
         motionStiffness={300}
         forecastStart={year.forecastStart}
       />
