@@ -215,7 +215,6 @@ const OilAndGas = ({ data, year, vizDimension }) => {
         {(config.view === 'region' && source.percentage > 1 && showPercentages()) && `: ${source.percentage.toFixed(2)}%`}
       </Typography>
       <Tooltip
-        className={classes.tooltip}
         open={source.name === tooltip}
         title={getTooltip(source)}
         placement={getTooltipPos(source.children.length, size, isTopChart)}
@@ -224,7 +223,6 @@ const OilAndGas = ({ data, year, vizDimension }) => {
           handleEventUpdate(source);
         }}
         onClose={() => setTooltip(undefined)}
-        style={{ border: 'none' }}
       >
         <div
           className={classes.treeMapRectangle}
