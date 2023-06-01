@@ -2,6 +2,7 @@ import React, { useCallback, useMemo, useRef } from 'react';
 import { ResponsiveBar } from '@nivo/bar';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core';
+import { useIntl } from 'react-intl';
 import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
 import convertHexToRGB from '../../utilities/convertHexToRGB';
@@ -12,7 +13,7 @@ import NetBarLineLayer from '../../components/NetBarLineLayer';
 import HistoricalLayer from '../../components/HistoricalLayer';
 import ForecastLayer from '../../components/ForecastLayer';
 import getYearLabel from '../../utilities/getYearLabel';
-import EmissionsTooltip from '../../components/EmissionsTooltip';
+import TooltipWithHeader from '../../components/TooltipWithHeader';
 
 const useStyles = makeStyles(theme => ({
   chart: {
@@ -24,6 +25,7 @@ const Emissions = ({ data, year }) => {
   const { sources: { greenhouseGas: sources } } = useAPI();
   const { config } = useConfig();
   const classes = useStyles();
+  const intl = useIntl();
 
   const customColorProp = useCallback(
     () => d => convertHexToRGB(sources.colors[d.id], 0.75), [sources.colors],
@@ -48,21 +50,27 @@ const Emissions = ({ data, year }) => {
     sources.order.forEach((key) => {
       if (entry.data[key]) {
         nodes.push({
-          name: key,
+          name: intl.formatMessage({ id: `common.sources.greenhouseGas.${key}` }),
           value: entry.data[key],
           color: sources.colors[key],
         });
       }
     });
 
+    const section = {
+      title: intl.formatMessage({ id: `common.scenarios.${config.scenarios[0]}` }),
+      nodes,
+      unit: config.unit,
+      hasTotal: true,
+    };
+
     return (
-      <EmissionsTooltip
-        nodes={nodes}
+      <TooltipWithHeader
+        sections={[section]}
         year={entry.indexValue}
-        unit={config.unit}
       />
     );
-  }, [config.page, config.unit, sources.colors, sources.order]);
+  }, [config.page, config.scenarios, config.unit, intl, sources.colors, sources.order]);
 
   const ticks = useMemo(() => {
     const highest = data && Math.max(...data

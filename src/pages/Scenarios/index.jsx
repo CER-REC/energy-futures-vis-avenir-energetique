@@ -10,9 +10,9 @@ import analytics from '../../analytics';
 import { CHART_PROPS, CHART_AXIS_PROPS, SCENARIO_COLOR } from '../../constants';
 import { fillLayerScenario } from '../../components/FillLayer';
 import ForecastLayer from '../../components/ForecastLayer';
-import VizTooltip from '../../components/VizTooltip';
 import HistoricalLayer from '../../components/HistoricalLayer';
 import getYearLabel from '../../utilities/getYearLabel';
+import TooltipWithHeader from '../../components/TooltipWithHeader';
 import { getTicks, formatLineData } from '../../utilities/parseData';
 
 /**
@@ -92,21 +92,31 @@ const Scenarios = ({ data, year }) => {
       timer.current = setTimeout(() => analytics.reportPoi(config.page, year.min + index), 500);
     }
 
+    let currYear = '';
+
+    const section = {
+      title: intl.formatMessage({ id: `common.selections.${config.mainSelection}` }),
+      nodes: event.slice?.points.map((obj) => {
+        if (!currYear) currYear = obj.data?.x.toString();
+
+        return {
+          name: intl.formatMessage({ id: `common.scenarios.${obj.serieId}` }),
+          value: obj.data?.y,
+          color: obj.serieColor,
+        };
+      }),
+      hasTotal: false,
+      unit: config.unit,
+    };
+
     return (
-      <VizTooltip
-        nodes={event.slice?.points.map(value => ({
-          name: value.serieId,
-          translation: intl.formatMessage({ id: `common.scenarios.${value.serieId}` }),
-          value: value.data?.y,
-          color: value.serieColor,
-        }))}
-        unit={config.unit}
-        paper
-        showTotal={false}
-        showPercentage={false}
+      <TooltipWithHeader
+        sections={[section]}
+        year={currYear}
+        isSliceTooltip
       />
     );
-  }, [timer, intl, config.unit, config.page, year]);
+  }, [year, intl, config.mainSelection, config.unit, config.page]);
 
   if (!data) {
     return null;
@@ -141,7 +151,7 @@ const Scenarios = ({ data, year }) => {
         prices?.length
           ? classes.halvedChartSize
           : classes.fullChart
-}
+      }
       >
         <ResponsiveLine
           {...CHART_PROPS}
