@@ -2,10 +2,11 @@ import React from 'react';
 import { Crosshair } from '@nivo/tooltip';
 import PropTypes from 'prop-types';
 
-const BenchmarkCrosshair =
-  (handlePoint, point, isUpperChart) =>
-  ({ innerWidth, innerHeight, currentSlice }) =>
-{
+const BenchmarkCrosshair = (handlePoint, point, isUpperChart) => ({
+  innerWidth,
+  innerHeight,
+  currentSlice,
+}) => {
   let currPoint = null;
 
   if (point !== null) currPoint = point;
