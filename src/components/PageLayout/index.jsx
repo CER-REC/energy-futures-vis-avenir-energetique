@@ -19,7 +19,7 @@ import useChartTitle from '../../hooks/useChartTitle';
 import HorizontalControlBar from '../HorizontalControlBar';
 import DropDown from '../Dropdown';
 import analytics from '../../analytics';
-import { HintUnitSelect } from '../Hint';
+import HintUnit from '../HintUnit';
 
 const gutterWidth = 70;
 
@@ -187,7 +187,7 @@ const PageLayout = ({
               </Typography>
             </Grid>
             <Grid item style={{ display: 'flex', alignItems: 'center' }}>
-              <Typography variant="body1" color="secondary">{intl.formatMessage({ id: 'components.unitSelect.name' })}&nbsp;</Typography>
+              <Typography variant="body1" color="secondary">{intl.formatMessage({ id: 'components.pageLayout.unit' })}&nbsp;</Typography>
               <DropDown
                 options={layout.unit.map(unit => [intl.formatMessage({ id: `common.units.${unit}` }), unit])}
                 value={config.unit}
@@ -195,7 +195,7 @@ const PageLayout = ({
                 className={classes.dropDown}
                 menuClassName={classes.dropDownMenu}
               />
-              <HintUnitSelect />
+              <HintUnit />
             </Grid>
           </Grid>
           <Grid container>

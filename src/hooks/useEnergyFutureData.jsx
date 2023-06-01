@@ -56,6 +56,8 @@ const getDefaultUnit = (config) => {
   }
 };
 
+const getPriceYear = iterationYear => (iterationYear === 2018 ? 2016 : iterationYear - 1);
+
 export default () => {
   const { config } = useConfig();
   const query = getQuery(config);
@@ -156,6 +158,7 @@ export default () => {
     error,
     data: processedData,
     prices: data?.prices,
+    priceYear: getPriceYear(yearIdIterations[config.yearId].year),
     disabledRegions: unavailability('province'),
     disabledSources: unavailability('source'),
     // TODO: Remove after refactoring to move processedData chart structure data

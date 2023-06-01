@@ -13,7 +13,6 @@ import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
 import { CONFIG_LAYOUT, PAGES, SCENARIO_LABEL_COLOR } from '../../constants';
 import analytics from '../../analytics';
-import HintUnit from './HintUnit';
 import ScenarioHintImageEn from './scenario_hint_en.jpg';
 import ScenarioHintImageFr from './scenario_hint_fr.jpg';
 
@@ -29,7 +28,7 @@ const useStyles = makeStyles(theme => createStyles({
     padding: theme.spacing(0.5),
     color: theme.palette.secondary.light,
   },
-  senarios: {
+  scenarios: {
     '& img': {
       width: '100%',
       maxWidth: 500,
@@ -217,14 +216,6 @@ HintYearSelect.propTypes = { children: PropTypes.node };
 HintYearSelect.defaultProps = { children: null };
 
 /**
- * Hint panel for the unit selection question mark, which contains 2 sections.
- */
-export const HintUnitSelect = ({ children }) => <Hint label="unit" content={[<HintUnit />]} maxWidth="md">{children}</Hint>;
-
-HintUnitSelect.propTypes = { children: PropTypes.node };
-HintUnitSelect.defaultProps = { children: null };
-
-/**
  * Hint panel for the sector selection question mark.
  */
 export const HintSectorSelect = ({ children }) => {
@@ -356,7 +347,7 @@ export const HintScenarioSelect = ({ children }) => {
     showGraph && <Divider />,
     showGraph && <HintSection section={sectionCaption} />,
   ].filter(Boolean);
-  return <Hint label="scenarios" content={sections} className={classes.senarios}>{children}</Hint>;
+  return <Hint label="scenarios" content={sections} className={classes.scenarios}>{children}</Hint>;
 };
 
 HintScenarioSelect.propTypes = { children: PropTypes.node };

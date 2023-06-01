@@ -1,8 +1,9 @@
 import React, { useCallback, useMemo, useRef } from 'react';
+import clsx from 'clsx';
 import { useIntl } from 'react-intl';
 import { ResponsiveLine } from '@nivo/line';
 import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/core';
+import { makeStyles, Typography } from '@material-ui/core';
 import useConfig from '../../hooks/useConfig';
 import useEnergyFutureData from '../../hooks/useEnergyFutureData';
 import analytics from '../../analytics';
@@ -11,6 +12,7 @@ import { CHART_PROPS, CHART_AXIS_PROPS, SCENARIO_COLOR } from '../../constants';
 import { fillLayerScenario } from '../../components/FillLayer';
 import ForecastLayer from '../../components/ForecastLayer';
 import HistoricalLayer from '../../components/HistoricalLayer';
+import PriceSelect from '../../components/PriceSelect';
 import getYearLabel from '../../utilities/getYearLabel';
 import TooltipWithHeader from '../../components/TooltipWithHeader';
 import { getTicks, formatLineData } from '../../utilities/parseData';
@@ -49,12 +51,7 @@ export const dottedLayer = scenarioYear => args => args.points
 const useStyles = makeStyles(theme => ({
   chart: {
     ...theme.mixins.chart,
-  },
-  fullChart: {
-    height: '100%',
-  },
-  halvedChartSize: {
-    height: theme.mixins.chart.height / 2,
+    '&.duo': { height: theme.mixins.chart.height / 2 },
   },
 }));
 
@@ -62,7 +59,7 @@ const Scenarios = ({ data, year }) => {
   const intl = useIntl();
   const { config } = useConfig();
   // TODO: Refactor useEnergyFutureData hook to use a standard data structure
-  const { prices } = useEnergyFutureData();
+  const { prices, priceYear } = useEnergyFutureData();
   const classes = useStyles();
   const priceData = formatLineData(prices, 'scenario');
 
@@ -136,58 +133,63 @@ const Scenarios = ({ data, year }) => {
       ...CHART_AXIS_PROPS,
       format: getYearLabel,
     },
-    axisRight: {
-      ...CHART_AXIS_PROPS,
-      tickValues: benchmarkTicks,
-    },
     enableSlices: 'x',
     sliceTooltip: getTooltip,
     forecastStart: year.forecastStart,
   };
+  const chartContainerClass = clsx(classes.chart, { duo: prices });
 
   return (
-    <div className={classes.chart}>
-      <div className={
-        prices?.length
-          ? classes.halvedChartSize
-          : classes.fullChart
-      }
-      >
+    <>
+      <div className={chartContainerClass}>
         <ResponsiveLine
           {...CHART_PROPS}
           {...lineProps}
           data={data}
           enableArea
-          enablePoints={false}
           layers={[HistoricalLayer, 'grid', 'axes', 'areas', 'crosshair', 'points', 'slices', fill, 'lines', ForecastLayer, dots]}
           curve="cardinal"
           areaOpacity={0.15}
           yScale={{ type: 'linear', min: 0, max: ticks[ticks.length - 1], reverse: false }}
           axisRight={{
+            ...CHART_AXIS_PROPS,
             tickValues: ticks,
           }}
+          axisBottom={prices?.length ? null : lineProps.axisBottom}
           gridYValues={ticks}
         />
       </div>
-      {
-        !!prices?.length && (
-          <div className={classes.halvedChartSize}>
-            <ResponsiveLine
-              {...CHART_PROPS}
-              {...lineProps}
-              data={priceData}
-              layers={[HistoricalLayer, 'grid', 'axes', 'crosshair', 'points', 'slices', 'lines', ForecastLayer, dots]}
-              yScale={{ type: 'linear', min: 0, max: benchmarkTicks[benchmarkTicks.length - 1], reverse: false }}
-              axisRight={{
-                tickValues: benchmarkTicks,
-              }}
-              gridYValues={benchmarkTicks}
-              forecastStart={year.forecastStart}
-            />
-          </div>
-        )
-      }
-    </div>
+      { prices && (
+        <div style={{ display: 'flex' }}>
+          <Typography variant="h6" style={{ flex: 1 }}>
+            {
+              intl.formatMessage({
+                id: `containers.scenarios.benchmark.${config.mainSelection}`,
+              }, {
+                year: priceYear,
+              })
+            }
+          </Typography>
+          <PriceSelect />
+        </div>
+      )}
+      { !!prices?.length && (
+        <div className={chartContainerClass}>
+          <ResponsiveLine
+            {...CHART_PROPS}
+            {...lineProps}
+            data={priceData}
+            layers={[HistoricalLayer, 'grid', 'axes', 'crosshair', 'points', 'slices', 'lines', ForecastLayer, dots]}
+            yScale={{ type: 'linear', min: 0, max: benchmarkTicks[benchmarkTicks.length - 1], reverse: false }}
+            axisRight={{
+              ...CHART_AXIS_PROPS,
+              tickValues: benchmarkTicks,
+            }}
+            gridYValues={benchmarkTicks}
+          />
+        </div>
+      )}
+    </>
   );
 };
 

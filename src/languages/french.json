@@ -2,6 +2,7 @@
   "common": {
     "title": "Explorer l’avenir énergétique du Canada",
     "forecast": "Projections",
+    "benchmarkPrices": "",
     "selection": "Sélection",
     "region": "Région",
     "scenario": "Scénario",
@@ -24,6 +25,13 @@
       "kilobarrels": "kb/j",
       "cubicFeet": "Tpi³/j",
       "megatonnes": "Mt"
+    },
+    "prices": {
+      "WTI": "",
+      "WCS": "",
+      "BRENT": "",
+      "HH": "",
+      "NIT": ""
     },
     "datasets": {
       "2016*": "Mise à jour 2016"
@@ -261,6 +269,13 @@
         "description": "Explorer la production de pétrole et de gaz selon le type dans les provinces et les territoires canadiens pendant une année donnée."
       }
     },
+    "priceSelect": {
+      "WTI": "",
+      "WCS": "",
+      "BRENT": "",
+      "HH": "",
+      "NIT": ""
+    },
     "scenarioSelect": {
       "name": "SCÉNARIOS",
       "readMore": "En savoir plus",
@@ -406,8 +421,10 @@
         "description": "Elle désigne la quantité de gaz naturel commercialisable produit au Canada. Plusieurs régions produisent du gaz naturel à partir de diverses techniques. La production de gaz naturel comprend le gaz de réservoirs étanches, le gaz de schiste, le méthane de houille, le gaz classique et le gaz tiré de l’exploitation des puits de pétrole (aussi appelé gaz associé ou gaz dissous)."
       }
     },
-    "unitSelect": {
-      "name": "UNITÉS",
+    "pageLayout": {
+      "unit": "UNITÉS"
+    },
+    "hintUnit": {
       "petajoules": {
         "title": "Pétajoule",
         "description": "Mesure d’énergie correspondant à un quadrillion (10¹⁵) de joules."
@@ -506,6 +523,14 @@
     },
     "unsupportedWarning": {
       "browser": "Votre fureteur n’autorise pas les particularités propres à cette visualisation.\nVeuillez utiliser une version récente du logiciel de navigation Chrome, Firefox, Safari ou Edge.\nMerci!"
+    }
+  },
+  "containers": {
+    "scenarios": {
+      "benchmark": {
+        "oilProduction": "",
+        "gasProduction": ""
+      }
     }
   },
   "views": {},
