@@ -15,6 +15,7 @@
     "energyUnits": "ENERGY UNITS",
     "volumetricUnits": "VOLUMETRIC UNITS",
     "netEmissions": "Net Emissions",
+    "total": "Total",
     "units": {
       "petajoules": "PJ",
       "gigawattHours": "GW.h",
@@ -105,9 +106,6 @@
   "components": {
     "header": {
       "subtitle": "What does Canada's energy future look like if we followed these scenarios?"
-    },
-    "yearSliceTooltip": {
-      "total": "Total"
     },
     "draggableVerticalList": {
       "all": "All",
@@ -510,6 +508,16 @@
     },
     "unsupportedWarning": {
       "browser": "Your browser does not support the features required by this visualization.\nPlease use a recent version of Chrome, Firefox, Safari, or Edge.\nThank you!"
+    }
+  },
+  "containers": {
+    "scenarios": {
+      "benchmark": {
+        "oilProductionTooltipTitle": "Oil Prices",
+        "gasProductionTooltipTitle": "Gas Prices",
+        "oilProduction": "Oil Prices - {year} US$ / Barrel",
+        "gasProduction": "Gas Prices - {year} US$ / MMBtu"
+      }
     }
   },
   "views": {},

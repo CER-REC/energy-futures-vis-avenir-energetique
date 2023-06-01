@@ -14,7 +14,7 @@ import HistoricalLayer from '../../components/HistoricalLayer';
 import ForecastLayer from '../../components/ForecastLayer';
 import CandlestickLayer from '../../components/CandlestickLayer';
 import getYearLabel from '../../utilities/getYearLabel';
-import YearSliceTooltip from "../../components/YearSliceTooltip";
+import YearSliceTooltip from '../../components/YearSliceTooltip';
 
 const useStyles = makeStyles(theme => ({
   chart: {
@@ -62,7 +62,7 @@ const Emissions = ({ data, year }) => {
       title: intl.formatMessage({ id: `common.scenarios.${config.scenarios[0]}` }),
       nodes,
       unit: config.unit,
-      hasTotal: true,
+      totalLabel: intl.formatMessage({ id: 'common.netEmissions' }),
     };
 
     return (

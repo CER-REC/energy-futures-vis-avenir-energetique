@@ -11,8 +11,8 @@ import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
 import analytics from '../../analytics';
 import YearSlider from '../../components/YearSlider';
-import VizTooltip from '../../components/VizTooltip';
 import { IconOilAndGasGroup, IconOilAndGasRectangle } from '../../icons';
+import YearSliceTooltip from '../../components/YearSliceTooltip';
 
 const useStyles = makeStyles(theme => ({
   year: {
@@ -125,21 +125,30 @@ const OilAndGas = ({ data, year, vizDimension }) => {
   /**
    * Format tooltip.
    */
-  const getTooltip = useCallback(entry => (
-    <VizTooltip
-      nodes={(entry.children || []).map(value => ({
-        name: value.name,
-        translation: intl.formatMessage({
+  const getTooltip = useCallback((entry) => {
+    const section = {
+      title: intl.formatMessage({ id: `common.scenarios.${config.scenarios[0]}` }),
+      nodes: (entry.children || []).map(value => ({
+        name: intl.formatMessage({
           id: config.view === 'region'
             ? `common.sources.${type}.${value.name}`
             : `common.regions.${value.name}`,
         }),
         value: value.value,
         color: getColor(value),
-      }))}
-      unit={config.unit}
-    />
-  ), [config.view, config.unit, intl, type, getColor]);
+      })),
+      unit: config.unit,
+      totalLabel: intl.formatMessage({ id: 'common.total' }),
+      hasPercentage: true,
+    };
+
+    return (
+      <YearSliceTooltip
+        sections={[section]}
+        year={entry.year.toString()}
+      />
+    );
+  }, [intl, config.scenarios, config.unit, config.view, type, getColor]);
 
   /**
    * Determine the position of the tooltip based on the treemap size and the number of nodes.
@@ -206,6 +215,7 @@ const OilAndGas = ({ data, year, vizDimension }) => {
         {(config.view === 'region' && source.percentage > 1 && showPercentages()) && `: ${source.percentage.toFixed(2)}%`}
       </Typography>
       <Tooltip
+        className={classes.tooltip}
         open={source.name === tooltip}
         title={getTooltip(source)}
         placement={getTooltipPos(source.children.length, size, isTopChart)}
@@ -214,6 +224,7 @@ const OilAndGas = ({ data, year, vizDimension }) => {
           handleEventUpdate(source);
         }}
         onClose={() => setTooltip(undefined)}
+        style={{ border: 'none' }}
       >
         <div
           className={classes.treeMapRectangle}
@@ -238,19 +249,9 @@ const OilAndGas = ({ data, year, vizDimension }) => {
         </div>
       </Tooltip>
     </>
-  ), [
-    classes.label,
-    classes.treeMapRectangle,
-    config.view,
-    intl,
-    type,
-    showPercentages,
-    tooltip,
-    getTooltip,
-    getTooltipPos,
-    getColor,
-    handleEventUpdate,
-  ]);
+  ), [classes.label, classes.tooltip, classes.treeMapRectangle,
+    config.view, intl, type, showPercentages, tooltip, getTooltip, getTooltipPos,
+    getColor, handleEventUpdate]);
 
   /**
    * Update the state of the compare button and send the event to data analytics
@@ -280,7 +281,7 @@ const OilAndGas = ({ data, year, vizDimension }) => {
     biggestValue,
   } = sortDataSets(data[currentYear], data[compareYear]);
 
-  const treeMapCollection = (treeData, isTopChart) => {
+  const treeMapCollection = (treeData, treeYear, isTopChart) => {
     if (!vizDimension.width || biggestValue <= 0) {
       return [];
     }
@@ -296,6 +297,7 @@ const OilAndGas = ({ data, year, vizDimension }) => {
       // This is not very efficient however.
       const sortedSource = {
         name: source.name,
+        year: treeYear,
         total: source.total,
         children: source.children.sort((a, b) => b.value - a.value),
       };
@@ -395,8 +397,8 @@ const OilAndGas = ({ data, year, vizDimension }) => {
     );
   };
 
-  const currentTreeMapCollection = treeMapCollection(currentYearData || [], true);
-  const compareTreeMapCollection = treeMapCollection(compareYearData || [], false);
+  const currentTreeMapCollection = treeMapCollection(currentYearData || [], currentYear, true);
+  const compareTreeMapCollection = treeMapCollection(compareYearData || [], compareYear, false);
 
   if (!currentTreeMapCollection && !compareTreeMapCollection) {
     return null;

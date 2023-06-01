@@ -9,7 +9,7 @@ import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
 import analytics from '../../analytics';
 import YearSlider from '../../components/YearSlider';
-import VizTooltip from '../../components/VizTooltip';
+import YearSliceTooltip from '../../components/YearSliceTooltip';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -255,6 +255,26 @@ const Electricity = ({ data, year }) => {
     }
   }, [year, config.baseYear, config.page, prevEvent]);
 
+  const getTooltip = useCallback((entry) => {
+    const section = {
+      title: intl.formatMessage({ id: `common.scenarios.${config.scenarios[0]}` }),
+      nodes: entry.nodes.map(value => ({
+        ...value,
+        name: value.translation,
+      })),
+      unit: config.unit,
+      totalLabel: intl.formatMessage({ id: 'common.total' }),
+      hasPercentage: true,
+    };
+
+    return (
+      <YearSliceTooltip
+        sections={[section]}
+        year={currYear.toString()}
+      />
+    );
+  }, [config.scenarios, config.unit, currYear, intl]);
+
   if (!data || !processedData || processedData.length <= 0) {
     return null;
   }
@@ -280,7 +300,7 @@ const Electricity = ({ data, year }) => {
       {processedData.map(entry => (
         <Tooltip
           key={`bubble-${entry.name}`}
-          title={single ? '' : <VizTooltip nodes={entry.nodes} unit={config.unit} />}
+          title={single ? '' : getTooltip(entry)}
           onOpen={() => handleEventUpdate(entry)}
           classes={{ tooltip: classes.tooltip }}
         >
@@ -333,7 +353,7 @@ const Electricity = ({ data, year }) => {
             {/* static legend shown beside a single province */}
             {single && (
               <div className={classes.legend} style={{ right: `calc(-100% - ${desktop ? 100 : 200}px)` }}>
-                <VizTooltip nodes={entry.nodes} unit={config.unit} />
+                {getTooltip(entry)}
               </div>
             )}
           </div>

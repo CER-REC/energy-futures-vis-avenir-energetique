@@ -2,6 +2,7 @@ import React, { useMemo, useCallback, useRef } from 'react';
 import { ResponsiveBar } from '@nivo/bar';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core';
+import { useIntl } from 'react-intl';
 import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
 import analytics from '../../analytics';
@@ -9,11 +10,9 @@ import { CHART_PROPS, CHART_AXIS_PROPS } from '../../constants';
 import { getTicks } from '../../utilities/parseData';
 import convertHexToRGB from '../../utilities/convertHexToRGB';
 import ForecastLayer from '../../components/ForecastLayer';
-import VizTooltip from '../../components/VizTooltip';
 import HistoricalLayer from '../../components/HistoricalLayer';
 import getYearLabel from '../../utilities/getYearLabel';
-import YearSliceTooltip from "../../components/YearSliceTooltip";
-import {useIntl} from "react-intl";
+import YearSliceTooltip from '../../components/YearSliceTooltip';
 
 const useStyles = makeStyles(theme => ({
   chart: {
@@ -69,7 +68,7 @@ const ByRegion = ({ data, year }) => {
       title: intl.formatMessage({ id: `common.scenarios.${config.scenarios[0]}` }),
       nodes,
       unit: config.unit,
-      hasTotal: true,
+      totalLabel: intl.formatMessage({ id: 'common.total' }),
     };
 
     return (
@@ -78,7 +77,7 @@ const ByRegion = ({ data, year }) => {
         year={entry.indexValue}
       />
     );
-  }, [config.page, config.unit]);
+  }, [config.page, config.scenarios, config.unit, intl, regions.colors, regions.order]);
 
   /**
    * Calculate the max tick value on y-axis and generate the all ticks accordingly.

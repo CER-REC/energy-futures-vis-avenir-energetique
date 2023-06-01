@@ -8,6 +8,9 @@ import { formatValue } from '../../../utilities/convertUnit';
 const useStyles = makeStyles(theme => ({
   gridContainer: {
     '& > tr > td': { padding: theme.spacing(0.25, 0.75) },
+    '& > tr:last-child > td': {
+      paddingBottom: theme.spacing(1),
+    },
   },
   contrast: {
     '& > tr:nth-child(even)': { backgroundColor: '#F5F2F2' },
@@ -32,7 +35,7 @@ const NodeSection = ({ section, year = null }) => {
   const classes = useStyles();
   const intl = useIntl();
 
-  const sum = section.hasTotal
+  const sum = section.totalLabel
     ? section.nodes.reduce((a, b) => a + b.value, 0) : 0;
 
   return (
@@ -65,25 +68,35 @@ const NodeSection = ({ section, year = null }) => {
           section.nodes.map(node => (
             <TableRow key={node.name}>
               <TableCell size="small" style={{ display: 'flex' }}>
-                <div className={classes.color}>
-                  <svg height="100%" width="100%" viewBox="0 0 30 30">
-                    <rect height="100%" width="100%" fill={node.color || '#FFF'} />
-                  </svg>
+                <div className={classes.color} style={{ backgroundColor: node.mask ? 'transparent' : node.color }}>
+                  {node.mask && (
+                    <svg height="100%" width="100%" viewBox="0 0 30 30">
+                      <rect height="100%" width="100%" fill={node.color || '#FFF'} mask={node.mask} />
+                    </svg>
+                  )}
                 </div>
                 <strong>{node.name}</strong>
               </TableCell>
               <TableCell align="right">
-                {formatValue(node.value, intl)}
+                {
+                  section.isPrice && ('$')
+                }
+                {formatValue(node.value, intl, section.isPrice)}
+                {
+                  section.hasPercentage && (
+                    ` (${((node.value / sum) * 100).toLocaleString(intl.locale, { maximumFractionDigits: 2 })}${intl.formatMessage({ id: 'common.char.percent' })})`
+                  )
+                }
               </TableCell>
             </TableRow>
           ))
         }
         {
-          section.hasTotal && (
+          section.totalLabel && (
             <TableRow className={classes.total}>
               <TableCell>
                 <strong>
-                  {intl.formatMessage({ id: 'common.netEmissions' })}
+                  {section.totalLabel}
                 </strong>
               </TableCell>
               <TableCell align="right">
@@ -104,9 +117,12 @@ NodeSection.propTypes = {
       name: PropTypes.string,
       value: PropTypes.number,
       color: PropTypes.string,
+      mask: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
     })),
     unit: PropTypes.string.isRequired,
-    hasTotal: PropTypes.bool,
+    totalLabel: PropTypes.string,
+    isPrice: PropTypes.bool,
+    hasPercentage: PropTypes.bool,
   }).isRequired,
   year: PropTypes.string,
 };

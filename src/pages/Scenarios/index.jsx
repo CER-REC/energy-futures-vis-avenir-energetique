@@ -13,7 +13,7 @@ import ForecastLayer from '../../components/ForecastLayer';
 import HistoricalLayer from '../../components/HistoricalLayer';
 import getYearLabel from '../../utilities/getYearLabel';
 import { getTicks, formatLineData } from '../../utilities/parseData';
-import YearSliceTooltip from "../../components/YearSliceTooltip";
+import YearSliceTooltip from '../../components/YearSliceTooltip';
 
 /**
  * Generate a custom dotted line layer for rendering the default scenario.
@@ -84,7 +84,7 @@ const Scenarios = ({ data, year }) => {
   const benchmarkTicks = getLineTicks(priceData);
 
   const timer = useRef(null);
-  const getTooltip = useCallback((event) => {
+  const getTooltip = useCallback((event, isUpperChart) => {
     // capture hover event and use a timer to avoid throttling
     const index = Number((event?.slice?.points[0].id || '').split('.')[1]);
     if (!Number.isNaN(index) && year?.min) {
@@ -92,31 +92,57 @@ const Scenarios = ({ data, year }) => {
       timer.current = setTimeout(() => analytics.reportPoi(config.page, year.min + index), 500);
     }
 
-    let currYear = '';
+    let currYear = null;
+    const otherNodes = [];
+    let otherData = null;
 
-    const upperSection = {
-      title: intl.formatMessage({ id: `common.selections.${config.mainSelection}` }),
-      nodes: event.slice?.points.map((obj) => {
-        if (!currYear) currYear = obj.data?.x.toString();
+    if (isUpperChart && prices?.length) otherData = priceData;
+    else if (!isUpperChart) otherData = data;
 
-        return {
+    const currNodes = event.slice?.points.map((obj) => {
+      if (!currYear) currYear = obj.data?.x;
+
+      if (otherData) {
+        otherNodes.push({
           name: intl.formatMessage({ id: `common.scenarios.${obj.serieId}` }),
-          value: obj.data?.y,
+          value: otherData.find(scenario => scenario.id === obj.serieId)
+            .data.find(val => val.x === currYear).y,
           color: obj.serieColor,
-        };
-      }),
-      hasTotal: false,
+        });
+      }
+
+      return {
+        name: intl.formatMessage({ id: `common.scenarios.${obj.serieId}` }),
+        value: obj.data?.y,
+        color: obj.serieColor,
+      };
+    });
+
+    const sections = [];
+    sections.push({
+      title: intl.formatMessage({ id: `common.selections.${config.mainSelection}` }),
+      nodes: isUpperChart ? currNodes : otherNodes,
       unit: config.unit,
-    };
+    });
+
+    if (prices?.length) {
+      sections.push({
+        title: intl.formatMessage({ id: `containers.scenarios.benchmark.${config.mainSelection}TooltipTitle` }),
+        nodes: !isUpperChart ? currNodes : otherNodes,
+        unit: config.priceSource,
+        isPrice: true,
+      });
+    }
 
     return (
       <YearSliceTooltip
-        sections={[upperSection]}
-        year={currYear}
+        sections={sections}
+        year={currYear.toString()}
         isSliceTooltip
       />
     );
-  }, [year, intl, config.mainSelection, config.unit, config.page]);
+  }, [year, prices, priceData, data, intl, config.mainSelection,
+    config.unit, config.page, config.priceSource]);
 
   if (!data) {
     return null;
@@ -141,7 +167,6 @@ const Scenarios = ({ data, year }) => {
       tickValues: benchmarkTicks,
     },
     enableSlices: 'x',
-    sliceTooltip: getTooltip,
     forecastStart: year.forecastStart,
   };
 
@@ -166,6 +191,7 @@ const Scenarios = ({ data, year }) => {
           axisRight={{
             tickValues: ticks,
           }}
+          sliceTooltip={event => getTooltip(event, true)}
           gridYValues={ticks}
         />
       </div>
@@ -182,6 +208,7 @@ const Scenarios = ({ data, year }) => {
                 tickValues: benchmarkTicks,
               }}
               gridYValues={benchmarkTicks}
+              sliceTooltip={event => getTooltip(event, false)}
               forecastStart={year.forecastStart}
             />
           </div>

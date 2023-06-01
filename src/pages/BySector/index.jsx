@@ -12,9 +12,9 @@ import { getTicks } from '../../utilities/parseData';
 
 import { fillLayerBySector } from '../../components/FillLayer';
 import ForecastLayer from '../../components/ForecastLayer';
-import VizTooltip from '../../components/VizTooltip';
 import HistoricalLayer from '../../components/HistoricalLayer';
 import getYearLabel from '../../utilities/getYearLabel';
+import YearSliceTooltip from '../../components/YearSliceTooltip';
 
 const useStyles = makeStyles(theme => ({
   chart: {
@@ -74,22 +74,34 @@ const BySector = ({ data, year }) => {
       timer.current = setTimeout(() => analytics.reportPoi(config.page, year.min + index), 500);
     }
 
-    return (
-      <VizTooltip
-        nodes={event.slice?.points.map(value => ({
-          name: value.serieId,
-          translation: isTransportation && OIL_SUBGROUP.includes(value.serieId)
+    let currYear = null;
+
+    const section = {
+      title: intl.formatMessage({ id: `common.scenarios.${config.scenarios[0]}` }),
+      nodes: event.slice?.points.map((value) => {
+        if (!currYear) currYear = value.data?.x;
+
+        return {
+          name: isTransportation && OIL_SUBGROUP.includes(value.serieId)
             ? intl.formatMessage({ id: `common.sources.transportation.${value.serieId}` })
             : intl.formatMessage({ id: `common.sources.energy.${value.serieId}` }),
           value: value.data?.y,
           color: value.serieColor,
           mask: isTransportation && OIL_SUBGROUP.includes(value.serieId) && `url(#${value.serieId}-mask)`,
-        }))}
-        unit={config.unit}
-        paper
+        };
+      }),
+      unit: config.unit,
+      totalLabel: intl.formatMessage({ id: 'common.total' }),
+    };
+
+    return (
+      <YearSliceTooltip
+        sections={[section]}
+        year={currYear.toString()}
+        isSliceTooltip
       />
     );
-  }, [intl, isTransportation, config.unit, config.page, year]);
+  }, [year, intl, config.scenarios, config.unit, config.page, isTransportation]);
 
   /**
    * Calculate the max tick value on y-axis.

@@ -5,8 +5,8 @@ import { ResponsiveBar } from '@nivo/bar';
 
 import ByRegion from '.';
 import { TestContainer, getRendered } from '../../tests/utilities';
-import VizTooltip from '../../components/VizTooltip';
 import { BASE_DATA, DEFAULT_CONFIG } from './stories';
+import YearSliceTooltip from '../../components/YearSliceTooltip';
 
 const MOCK_DATA = [
   { year: '2005', ...BASE_DATA },
@@ -46,7 +46,7 @@ describe('Page|ByRegion', () => {
         id: 'ON',
         indexValue: '2005',
         value: 3045.0494,
-      })).toHaveProperty('type', VizTooltip);
+      })).toHaveProperty('type', YearSliceTooltip);
     });
   });
 

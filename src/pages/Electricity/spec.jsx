@@ -7,7 +7,7 @@ import Electricity from '.';
 import { TestContainer, getRendered } from '../../tests/utilities';
 import YearSlider from '../../components/YearSlider';
 import { DEFAULT_CONFIG, MOCK_DATA_REGION, MOCK_DATA_SINGLE, MOCK_DATA_SOURCE, MOCK_YEAR } from './stories';
-import VizTooltip from '../../components/VizTooltip';
+import YearSliceTooltip from '../../components/YearSliceTooltip';
 
 const SOURCE_TO_TEXT = {
   HYDRO: 'Hydro / Wave / Tidal',
@@ -139,8 +139,8 @@ describe('Page|Electricity', () => {
       expect(getRendered(Electricity, wrapper).exists()).toBeTruthy();
 
       // verify legend location
-      expect(wrapper.find(VizTooltip)).toHaveLength(1);
-      expect(wrapper.find(VizTooltip).parent().prop('style').right).toEqual('calc(-100% - 200px)');
+      expect(wrapper.find(YearSliceTooltip)).toHaveLength(1);
+      expect(wrapper.find(YearSliceTooltip).parent().prop('style').right).toEqual('calc(-100% - 200px)');
     });
 
     test('should render in desktop mode', async () => {
@@ -154,8 +154,8 @@ describe('Page|Electricity', () => {
       expect(getRendered(Electricity, wrapper).exists()).toBeTruthy();
 
       // verify legend location
-      expect(wrapper.find(VizTooltip)).toHaveLength(1);
-      expect(wrapper.find(VizTooltip).parent().prop('style').right).toEqual('calc(-100% - 100px)');
+      expect(wrapper.find(YearSliceTooltip)).toHaveLength(1);
+      expect(wrapper.find(YearSliceTooltip).parent().prop('style').right).toEqual('calc(-100% - 100px)');
     });
   });
 });

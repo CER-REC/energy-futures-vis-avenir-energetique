@@ -15,6 +15,7 @@
     "energyUnits": "UNITÉS D’ÉNERGIE",
     "volumetricUnits": "UNITÉS VOLUMÉTRIQUES",
     "netEmissions": "",
+    "total": "Totale",
     "units": {
       "petajoules": "PJ",
       "gigawattHours": "GWh",
@@ -105,9 +106,6 @@
   "components": {
     "header": {
       "subtitle": "À quoi ressemblerait l’avenir énergétique du Canada si nous suivions ces scénarios?"
-    },
-    "yearSliceTooltip": {
-      "total": ""
     },
     "draggableVerticalList": {
       "all": "Tous",
@@ -509,6 +507,16 @@
     },
     "unsupportedWarning": {
       "browser": "Votre fureteur n’autorise pas les particularités propres à cette visualisation.\nVeuillez utiliser une version récente du logiciel de navigation Chrome, Firefox, Safari ou Edge.\nMerci!"
+    }
+  },
+  "containers": {
+    "scenarios": {
+      "benchmark": {
+        "oilTitle": "",
+        "gasTitle": "",
+        "oilProduction": "",
+        "gasProduction": ""
+      }
     }
   },
   "views": {},
