@@ -92,6 +92,7 @@ const BySector = ({ data, year }) => {
       }),
       unit: config.unit,
       totalLabel: intl.formatMessage({ id: 'common.total' }),
+      hasPercentage: true
     };
 
     return (

@@ -12,7 +12,6 @@ import { CHART_PROPS } from '../../constants';
 import NetBarLineLayer from '../../components/NetBarLineLayer';
 import HistoricalLayer from '../../components/HistoricalLayer';
 import ForecastLayer from '../../components/ForecastLayer';
-import CandlestickLayer from '../../components/CandlestickLayer';
 import getYearLabel from '../../utilities/getYearLabel';
 import YearSliceTooltip from '../../components/YearSliceTooltip';
 
@@ -104,8 +103,8 @@ const Emissions = ({ data, year }) => {
         {...CHART_PROPS}
         data={data}
         keys={keys}
-        layers={[HistoricalLayer, 'grid', 'axes', 'bars', 'markers', CandlestickLayer, ForecastLayer, NetBarLineLayer]}
-        padding={0.6}
+        layers={[HistoricalLayer, 'grid', 'axes', 'bars', 'markers', ForecastLayer, NetBarLineLayer]}
+        padding={0.4}
         indexBy="year"
         maxValue={ticks[ticks.length - 1]}
         minValue={ticks[0]}

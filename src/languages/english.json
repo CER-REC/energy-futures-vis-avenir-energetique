@@ -143,7 +143,7 @@
       "app": "loading"
     },
     "yearSelect": {
-      "name": "REPORT",
+      "name": "EF REPORT",
       "title": "ENERGY FUTURES REPORTS",
       "2021": {
         "title": "CANADA’S ENERGY FUTURE 2021",
@@ -206,7 +206,7 @@
         "title": {
           "default": "Emissions"
         },
-        "description": "to be filled"
+        "description": "Compare greenhouse gas emissions by sector in all three scenarios."
       },
       "By Region": {
         "title": {
@@ -214,7 +214,7 @@
           "electricityGeneration": "Electricity Generation By Region",
           "oilProduction": "Oil Production By Region",
           "gasProduction": "Gas Production By Region",
-          "default": "By Region"
+          "default": "Region"
         },
         "description": "Compare historical and projected energy supply and demand data from across Canada’s provinces and territories."
       },
@@ -225,7 +225,7 @@
           "COMMERCIAL": "End-Use Demand For The Commercial Sector",
           "INDUSTRIAL": "End-Use Demand For The Industrial Sector",
           "TRANSPORTATION": "End-Use Demand For The Transportation Sector",
-          "default": "By Energy Source"
+          "default": "Energy Source"
         },
         "description": "Explore how energy source mixes from different sectors have evolved in recent history, and how they are projected to evolve in the Energy Futures scenarios."
       },
@@ -697,6 +697,10 @@
     "By Region": {
       "title": "Explore By Region",
       "description": "Compare historical and projected energy supply and demand data from across Canada’s provinces and territories"
+    },
+    "Emissions": {
+      "title": "Explore Net Emissions",
+      "description": "Compare greenhouse gas emissions by sector in all three scenarios"
     },
     "By Sector": {
       "title": "Explore By Energy Source",
