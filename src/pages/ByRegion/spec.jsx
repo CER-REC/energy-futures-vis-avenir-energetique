@@ -42,10 +42,12 @@ describe('Page|ByRegion', () => {
     test('should render viz properties', () => {
       expect(wrapper.find(ResponsiveBar).prop('colors')({ id: 'ON', indexValue: '2005' })).toEqual('rgba(255, 130, 30, 1)');
       expect(wrapper.find(ResponsiveBar).prop('tooltip')({
-        color: 'rgba(255, 130, 30, 1)',
-        id: 'ON',
-        indexValue: '2005',
-        value: 3045.0494,
+        data: {
+          color: 'rgba(255, 130, 30, 1)',
+          id: 'ON',
+          indexValue: '2005',
+          value: 3045.0494,
+        },
       })).toHaveProperty('type', YearSliceTooltip);
     });
   });

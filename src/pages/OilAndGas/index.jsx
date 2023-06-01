@@ -247,9 +247,19 @@ const OilAndGas = ({ data, year, vizDimension }) => {
         </div>
       </Tooltip>
     </>
-  ), [classes.label, classes.tooltip, classes.treeMapRectangle,
-    config.view, intl, type, showPercentages, tooltip, getTooltip, getTooltipPos,
-    getColor, handleEventUpdate]);
+  ), [
+    classes.label,
+    classes.treeMapRectangle,
+    config.view,
+    intl,
+    type,
+    showPercentages,
+    tooltip,
+    getTooltip,
+    getTooltipPos,
+    getColor,
+    handleEventUpdate,
+  ]);
 
   /**
    * Update the state of the compare button and send the event to data analytics

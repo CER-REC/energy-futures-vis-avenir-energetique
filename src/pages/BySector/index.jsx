@@ -92,13 +92,13 @@ const BySector = ({ data, year }) => {
       }),
       unit: config.unit,
       totalLabel: intl.formatMessage({ id: 'common.total' }),
-      hasPercentage: true
+      hasPercentage: true,
     };
 
     return (
       <YearSliceTooltip
         sections={[section]}
-        year={currYear.toString()}
+        year={currYear?.toString()}
         isSliceTooltip
       />
     );

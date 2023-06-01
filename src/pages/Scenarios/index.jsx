@@ -137,7 +137,7 @@ const Scenarios = ({ data, year }) => {
     return (
       <YearSliceTooltip
         sections={sections}
-        year={currYear.toString()}
+        year={currYear?.toString()}
         isSliceTooltip
       />
     );

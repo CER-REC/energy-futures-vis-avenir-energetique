@@ -12,6 +12,7 @@ export const DEFAULT_CONFIG = {
   unit: 'petajoules',
   provinces: ['YT', 'SK', 'QC', 'PE', 'ON', 'NU', 'NT', 'NS', 'NL', 'NB', 'MB', 'BC', 'AB'],
   sources: ['BIO', 'COAL', 'GAS', 'HYDRO', 'NUCLEAR', 'OIL', 'RENEWABLE'],
+  scenarios: ['Global Net-zero'],
 };
 
 export const MOCK_DATA_REGION = Array(46).fill(undefined).map((_, i) => i).reduce((data, year) => ({
