@@ -46,7 +46,7 @@ describe('Component|HorizontalControlBar', () => {
     });
 
     test('should render section buttons', () => {
-      // 2 'help' buttons
+      // 1 'help' buttons
       expect(wrapper.find(IconButton)).toHaveLength(1);
 
       expect(wrapper.find(HintMainSelect).exists()).toBeTruthy();
@@ -141,7 +141,7 @@ describe('Component|HorizontalControlBar', () => {
     });
 
     test('should render section buttons', () => {
-      // 2 'help' buttons
+      // 1 'help' buttons
       expect(wrapper.find(IconButton)).toHaveLength(1);
 
       expect(wrapper.find(HintViewSelect).exists()).toBeTruthy();
@@ -187,9 +187,9 @@ describe('Component|HorizontalControlBar', () => {
 
       expect(wrapper.find(HintMainSelect).exists()).toBeTruthy();
 
-      // 4 regular buttons
-      expect(wrapper.find(Button)).toHaveLength(4);
-      expect(wrapper.find(Button).map(btn => btn.text()).sort()).toEqual(['Total Demand', 'Electricity Generation', 'Oil Production', 'Gas Production'].sort());
+      // 5 regular buttons
+      expect(wrapper.find(Button)).toHaveLength(5);
+      expect(wrapper.find(Button).map(btn => btn.text()).sort()).toEqual(['Total Demand', 'Electricity Generation', 'Oil Production', 'Gas Production', 'Emissions'].sort());
     });
 
     test('should select correct buttons', () => {
