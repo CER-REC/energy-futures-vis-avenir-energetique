@@ -27,14 +27,14 @@ const fillLayer = ({
           <path
             {...props}
             fill={line.color}
-            fillOpacity={isTransparent ? 0.5 : 1}
+            fillOpacity={isTransparent ? 0.15 : 1}
             mask={isTransportation && SOURCE_PATTERNS[line.id] ? `url(#${line.id}-mask)` : undefined}
           />
         </g>
       );
     });
 
-  return <g opacity={0.7}>{areas}</g>;
+  return <g opacity={!isTransparent ? 0.7 : 1}>{areas}</g>;
 };
 
 export const fillLayerBySector = props => fillLayer(props /* { year, isTransportation } */);
