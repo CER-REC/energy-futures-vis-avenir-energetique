@@ -2,6 +2,7 @@
   "common": {
     "title": "Exploring Canada’s Energy Future",
     "forecast": "projection",
+    "benchmarkPrices": "Benchmark Prices",
     "selection": "Selection",
     "region": "Region",
     "scenario": "Scenario",
@@ -24,7 +25,14 @@
       "millionCubicMetres": "10⁶m³/d",
       "kilobarrels": "Mb/d",
       "cubicFeet": "Bcf/d",
-      "megatonnes": "Mt"
+      "megatonnes": "Mt",
+      "prices": {
+        "WTI": "WTI - US$/Barrel",
+        "WCS": "WCS - US$/Barrel",
+        "BRENT": "Brent - US$/Barrel",
+        "HH": "Henry Hub - US$/MMBtu",
+        "NIT": "NIT - US$/MMBtu"
+      }
     },
     "datasets": {
       "2016*": "2016 Update"
@@ -262,6 +270,13 @@
         "description": "Explore oil and gas production by type across Canada’s provinces and territories for a given year or compare production over time."
       }
     },
+    "priceSelect": {
+      "WTI": "West Texas Intermediate (WTI) - {year} US$/bbl",
+      "WCS": "Western Canadian Select (WCS) - {year} US$/bbl",
+      "BRENT": "Brent - {year} US$/bbl",
+      "HH": "Henry Hub - {year} US$/MMBtu",
+      "NIT": "Nova Inventory Transfer (NIT) - {year} US$/MMBtu"
+    },
     "scenarioSelect": {
       "name": "SCENARIOS",
       "readMore": "Read more",
@@ -408,8 +423,10 @@
         "description": "The amount of marketable natural gas produced in Canada. Natural gas is produced from various areas using different technologies. This includes tight, shale, coal bed methane, conventional, and natural gas produced along with oil from oil wells (also termed associated or solution gas)."
       }
     },
-    "unitSelect": {
-      "name": "UNIT",
+    "pageLayout": {
+      "unit": "UNIT"
+    },
+    "hintUnit": {
       "petajoules": {
         "title": "Petajoule",
         "description": "A measure of energy that is a quadrillion (10¹⁵) joules."
