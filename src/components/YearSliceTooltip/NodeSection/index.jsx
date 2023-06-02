@@ -57,7 +57,7 @@ const NodeSection = ({ section, year = null }) => {
             </Typography>
           </TableCell>
           <TableCell align="right">
-            <strong>{intl.formatMessage({ id: `common.units.${section.unit}` })}</strong>
+            <strong>{section.unit}</strong>
           </TableCell>
         </TableRow>
       </TableHead>

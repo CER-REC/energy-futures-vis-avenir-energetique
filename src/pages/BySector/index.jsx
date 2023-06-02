@@ -90,7 +90,7 @@ const BySector = ({ data, year }) => {
           mask: isTransportation && OIL_SUBGROUP.includes(value.serieId) && `url(#${value.serieId}-mask)`,
         };
       }),
-      unit: config.unit,
+      unit: intl.formatMessage({ id: `common.units.${config.unit}` }),
       totalLabel: intl.formatMessage({ id: 'common.total' }),
       hasPercentage: true,
     };

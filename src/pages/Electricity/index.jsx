@@ -262,7 +262,7 @@ const Electricity = ({ data, year }) => {
         ...value,
         name: value.translation,
       })),
-      unit: config.unit,
+      unit: intl.formatMessage({ id: `common.units.${config.unit}` }),
       totalLabel: intl.formatMessage({ id: 'common.total' }),
       hasPercentage: true,
     };

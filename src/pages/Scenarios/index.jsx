@@ -119,14 +119,14 @@ const Scenarios = ({ data, year }) => {
     sections.push({
       title: intl.formatMessage({ id: `common.selections.${config.mainSelection}` }),
       nodes: isUpperChart ? currNodes : otherNodes,
-      unit: config.unit,
+      unit: intl.formatMessage({ id: `common.units.${config.unit}` }),
     });
 
     if (prices?.length) {
       sections.push({
         title: intl.formatMessage({ id: `containers.scenarios.benchmark.${config.mainSelection}TooltipTitle` }),
         nodes: !isUpperChart ? currNodes : otherNodes,
-        unit: `prices.${config.priceSource}`,
+        unit: intl.formatMessage({ id: `common.prices.${config.priceSource}`}),
         isPrice: true,
       });
     }

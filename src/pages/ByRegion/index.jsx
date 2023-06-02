@@ -67,7 +67,7 @@ const ByRegion = ({ data, year }) => {
     const section = {
       title: intl.formatMessage({ id: `common.scenarios.${config.scenarios[0]}` }),
       nodes,
-      unit: config.unit,
+      unit: intl.formatMessage({ id: `common.units.${config.unit}` }),
       totalLabel: intl.formatMessage({ id: 'common.total' }),
     };
 

@@ -25,14 +25,14 @@
       "millionCubicMetres": "Mm³/j",
       "kilobarrels": "kb/j",
       "cubicFeet": "Tpi³/j",
-      "megatonnes": "Mt",
-      "prices": {
-        "WTI": "",
-        "WCS": "",
-        "BRENT": "",
-        "HH": "",
-        "NIT": ""
-      }
+      "megatonnes": "Mt"
+    },
+    "prices": {
+      "WTI": "",
+      "WCS": "",
+      "BRENT": "",
+      "HH": "",
+      "NIT": ""
     },
     "datasets": {
       "2016*": "Mise à jour 2016"

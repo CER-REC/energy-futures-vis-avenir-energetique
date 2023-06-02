@@ -50,7 +50,7 @@ const PriceSelect = () => {
         menuClassName={classes.menu}
         options={options}
         value={config.priceSource}
-        renderValue={value => intl.formatMessage({ id: `common.units.prices.${value}` })}
+        renderValue={value => intl.formatMessage({ id: `common.prices.${value}` })}
         onChange={value => configDispatch({ type: 'priceSource/changed', payload: value })}
       />
       <HintPrice />

@@ -25,14 +25,14 @@
       "millionCubicMetres": "10⁶m³/d",
       "kilobarrels": "Mb/d",
       "cubicFeet": "Bcf/d",
-      "megatonnes": "Mt",
-      "prices": {
-        "WTI": "WTI - US$/Barrel",
-        "WCS": "WCS - US$/Barrel",
-        "BRENT": "Brent - US$/Barrel",
-        "HH": "Henry Hub - US$/MMBtu",
-        "NIT": "NIT - US$/MMBtu"
-      }
+      "megatonnes": "Mt"
+    },
+    "prices": {
+      "WTI": "WTI - US$/Barrel",
+      "WCS": "WCS - US$/Barrel",
+      "BRENT": "Brent - US$/Barrel",
+      "HH": "Henry Hub - US$/MMBtu",
+      "NIT": "NIT - US$/MMBtu"
     },
     "datasets": {
       "2016*": "2016 Update"

@@ -137,7 +137,7 @@ const OilAndGas = ({ data, year, vizDimension }) => {
         value: value.value,
         color: getColor(value),
       })),
-      unit: config.unit,
+      unit: intl.formatMessage({ id: `common.units.${config.unit}` }),
       totalLabel: intl.formatMessage({ id: 'common.total' }),
       hasPercentage: true,
     };
