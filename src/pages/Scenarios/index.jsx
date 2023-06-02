@@ -126,7 +126,7 @@ const Scenarios = ({ data, year }) => {
       sections.push({
         title: intl.formatMessage({ id: `containers.scenarios.benchmark.${config.mainSelection}TooltipTitle` }),
         nodes: !isUpperChart ? currNodes : otherNodes,
-        unit: intl.formatMessage({ id: `common.prices.${config.priceSource}`}),
+        unit: intl.formatMessage({ id: `common.prices.${config.priceSource}` }),
         isPrice: true,
       });
     }
