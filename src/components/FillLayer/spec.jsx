@@ -36,7 +36,7 @@ describe('Component|FillLayer', () => {
 
     test('should render component', () => {
       expect(wrapper.type()).not.toBeNull();
-      expect(wrapper.findWhere(node => node.type() === 'g' && node.prop('opacity') === 0.7).exists()).toBeTruthy();
+      expect(wrapper.findWhere(node => node.type() === 'g' && node.prop('opacity') === 1).exists()).toBeTruthy();
     });
   });
 
