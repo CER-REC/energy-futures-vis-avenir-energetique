@@ -53,8 +53,7 @@ export const getReducer = (regions, sources, sectors, yearIdIterations) => {
       return null;
     }
 
-    const keys = Object.keys(validViews);
-    return keys.includes(view) ? view : keys[0];
+    return validViews.includes(view) ? view : validViews[0];
   };
   const getSector = (page, sector) => {
     if (page !== 'by-sector') {
