@@ -37,14 +37,6 @@ export const PAGES = [
     sourceTypes: {
       greenhouseGasEmission: 'greenhouseGas',
     },
-    views: {
-      source: {
-        labelTranslationKey: 'sector',
-      },
-      scenarios: {
-        labelTranslationKey: 'scenario',
-      },
-    },
   },
   {
     label: 'By Region',
@@ -63,14 +55,7 @@ export const PAGES = [
     sourceTypes: {
       electricityGeneration: 'electricity',
     },
-    views: {
-      region: {
-        labelTranslationKey: 'region',
-      },
-      source: {
-        labelTranslationKey: 'source',
-      },
-    },
+    views: ['region', 'source'],
   },
   {
     label: 'Oil-and-Gas',
@@ -79,14 +64,7 @@ export const PAGES = [
       oilProduction: 'oil',
       gasProduction: 'gas',
     },
-    views: {
-      region: {
-        labelTranslationKey: 'region',
-      },
-      source: {
-        labelTranslationKey: 'type',
-      },
-    },
+    views: ['region', 'source'],
   },
   // {
   //   label: 'Demand',
@@ -126,7 +104,7 @@ export const CONFIG_LAYOUT = {
     name: 'Emissions',
     icon: IconGas,
     unit: ['megatonnes'],
-    pages: ['emissions'],
+    pages: ['scenarios', 'emissions'],
   },
 };
 
