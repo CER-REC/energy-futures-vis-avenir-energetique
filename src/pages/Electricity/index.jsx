@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
+import React, { useState, useCallback, useMemo, useRef } from 'react';
 import { useIntl } from 'react-intl';
 import PropTypes from 'prop-types';
 import {
@@ -150,8 +150,6 @@ const Electricity = ({ data, year }) => {
   const desktop = useMediaQuery('(min-width: 992px)');
 
   const [currYear, setCurrYear] = useState(config.baseYear || iteration);
-
-  useEffect(() => setCurrYear(config.baseYear || year?.min), [config.baseYear, year]);
 
   /**
    * Coefficients for determining bubble sizes during the calculation.

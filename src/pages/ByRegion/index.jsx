@@ -54,7 +54,7 @@ const ByRegion = ({ data, year }) => {
     timer.current = setTimeout(() => analytics.reportPoi(config.page, name), 500);
     const nodes = [];
 
-    regions.order.forEach((key) => {
+    config.provinceOrder.forEach((key) => {
       if (entry.data[key]) {
         nodes.push({
           name: intl.formatMessage({ id: `common.regions.${key}` }),
@@ -77,7 +77,7 @@ const ByRegion = ({ data, year }) => {
         year={entry.indexValue}
       />
     );
-  }, [config.page, config.scenarios, config.unit, intl, regions.colors, regions.order]);
+  }, [config.page, config.scenarios, config.unit, intl, regions.colors, config.provinceOrder]);
 
   /**
    * Calculate the max tick value on y-axis and generate the all ticks accordingly.

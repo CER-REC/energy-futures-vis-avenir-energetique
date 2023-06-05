@@ -80,8 +80,17 @@ const Scenarios = ({ data, year }) => {
   const ticks = getLineTicks(data);
   const benchmarkTicks = getLineTicks(priceData);
 
+  const getNodesFromData = useCallback((currYear, nodeData) => nodeData.map((scenario) => {
+    const yearData = scenario.data.find(obj => obj.x === currYear);
+    return {
+      name: intl.formatMessage({ id: `common.scenarios.${scenario.id}` }),
+      value: yearData.y,
+      color: SCENARIO_COLOR[scenario.id],
+    };
+  }), [intl]);
+
   const timer = useRef(null);
-  const getTooltip = useCallback((event, isUpperChart) => {
+  const getTooltip = useCallback((event) => {
     // capture hover event and use a timer to avoid throttling
     const index = Number((event?.slice?.points[0].id || '').split('.')[1]);
     if (!Number.isNaN(index) && year?.min) {
@@ -89,43 +98,25 @@ const Scenarios = ({ data, year }) => {
       timer.current = setTimeout(() => analytics.reportPoi(config.page, year.min + index), 500);
     }
 
-    let currYear = null;
-    const otherNodes = [];
-    let otherData = null;
+    const currYear = event.slice?.points[0].data?.x;
+    const upperNodes = getNodesFromData(currYear, data).reverse();
+    let lowerNodes = [];
 
-    if (isUpperChart && prices?.length) otherData = priceData;
-    else if (!isUpperChart) otherData = data;
-
-    const currNodes = event.slice?.points.map((obj) => {
-      if (!currYear) currYear = obj.data?.x;
-
-      if (otherData) {
-        otherNodes.push({
-          name: intl.formatMessage({ id: `common.scenarios.${obj.serieId}` }),
-          value: otherData.find(scenario => scenario.id === obj.serieId)
-            .data.find(val => val.x === currYear).y,
-          color: obj.serieColor,
-        });
-      }
-
-      return {
-        name: intl.formatMessage({ id: `common.scenarios.${obj.serieId}` }),
-        value: obj.data?.y,
-        color: obj.serieColor,
-      };
-    });
+    if (prices?.length) {
+      lowerNodes = getNodesFromData(currYear, priceData).reverse();
+    }
 
     const sections = [];
     sections.push({
       title: intl.formatMessage({ id: `common.selections.${config.mainSelection}` }),
-      nodes: isUpperChart ? currNodes : otherNodes,
+      nodes: upperNodes,
       unit: intl.formatMessage({ id: `common.units.${config.unit}` }),
     });
 
     if (prices?.length) {
       sections.push({
         title: intl.formatMessage({ id: `containers.scenarios.benchmark.${config.mainSelection}TooltipTitle` }),
-        nodes: !isUpperChart ? currNodes : otherNodes,
+        nodes: lowerNodes,
         unit: intl.formatMessage({ id: `common.prices.${config.priceSource}` }),
         isPrice: true,
       });
@@ -138,8 +129,8 @@ const Scenarios = ({ data, year }) => {
         isSliceTooltip
       />
     );
-  }, [year, prices, priceData, data, intl, config.mainSelection,
-    config.unit, config.page, config.priceSource]);
+  }, [year, getNodesFromData, data, prices, intl,
+    config.mainSelection, config.unit, config.page, config.priceSource, priceData]);
 
   if (!data) {
     return null;
@@ -162,7 +153,7 @@ const Scenarios = ({ data, year }) => {
     enableSlices: 'x',
     forecastStart: year.forecastStart,
   };
-  const chartContainerClass = clsx(classes.chart, { duo: prices });
+  const chartContainerClass = clsx(classes.chart, { duo: !!prices?.length });
 
   return (
     <>
@@ -185,7 +176,7 @@ const Scenarios = ({ data, year }) => {
           gridYValues={ticks}
         />
       </div>
-      { prices && (
+      { !!prices?.length && (
         <div style={{ display: 'flex' }}>
           <Typography variant="h6" style={{ flex: 1 }}>
             {
@@ -199,25 +190,6 @@ const Scenarios = ({ data, year }) => {
           <PriceSelect />
         </div>
       )}
-      {
-        !!prices?.length && (
-          <div className={classes.halvedChartSize}>
-            <ResponsiveLine
-              {...CHART_PROPS}
-              {...lineProps}
-              data={priceData}
-              layers={[HistoricalLayer, 'grid', 'axes', 'crosshair', 'points', 'slices', 'lines', ForecastLayer, dots]}
-              yScale={{ type: 'linear', min: 0, max: benchmarkTicks[benchmarkTicks.length - 1], reverse: false }}
-              axisRight={{
-                tickValues: benchmarkTicks,
-              }}
-              gridYValues={benchmarkTicks}
-              sliceTooltip={event => getTooltip(event, false)}
-              forecastStart={year.forecastStart}
-            />
-          </div>
-        )
-      }
       { !!prices?.length && (
         <div className={chartContainerClass}>
           <ResponsiveLine
@@ -230,7 +202,7 @@ const Scenarios = ({ data, year }) => {
               ...CHART_AXIS_PROPS,
               tickValues: benchmarkTicks,
             }}
-            sliceTooltip={event => getTooltip(event, false)}
+            sliceTooltip={event => getTooltip(event)}
             gridYValues={benchmarkTicks}
           />
         </div>

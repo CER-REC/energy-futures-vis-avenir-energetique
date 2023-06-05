@@ -8,9 +8,6 @@ import { formatValue } from '../../../utilities/convertUnit';
 const useStyles = makeStyles(theme => ({
   gridContainer: {
     '& > tr > td': { padding: theme.spacing(0.25, 0.75) },
-    '& > tr:last-child > td': {
-      paddingBottom: theme.spacing(1),
-    },
   },
   contrast: {
     '& > tr:nth-child(even)': { backgroundColor: '#F5F2F2' },
@@ -51,7 +48,7 @@ const NodeSection = ({ section, year = null }) => {
           }
         </TableRow>
         <TableRow>
-          <TableCell style={{ paddingTop: 0 }}>
+          <TableCell style={{ paddingTop: year ? 0 : 10 }}>
             <Typography variant="h6" style={{ fontSize: year ? 18 : 16 }}>
               {section.title}
             </Typography>

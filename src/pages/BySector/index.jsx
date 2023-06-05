@@ -87,7 +87,7 @@ const BySector = ({ data, year }) => {
             : intl.formatMessage({ id: `common.sources.energy.${value.serieId}` }),
           value: value.data?.y,
           color: value.serieColor,
-          mask: isTransportation && OIL_SUBGROUP.includes(value.serieId) && `url(#${value.serieId}-mask)`,
+          mask: (isTransportation && OIL_SUBGROUP.includes(value.serieId)) ? `url(#${value.serieId}-mask)` : undefined,
         };
       }),
       unit: intl.formatMessage({ id: `common.units.${config.unit}` }),
