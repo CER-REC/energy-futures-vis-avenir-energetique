@@ -84,7 +84,7 @@ const Scenarios = ({ data, year }) => {
     const yearData = scenario.data.find(obj => obj.x === currYear);
     return {
       name: intl.formatMessage({ id: `common.scenarios.${scenario.id}` }),
-      value: yearData.y,
+      value: yearData?.y,
       color: SCENARIO_COLOR[scenario.id],
     };
   }), [intl]);
