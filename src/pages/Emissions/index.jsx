@@ -13,7 +13,7 @@ import NetBarLineLayer from '../../components/NetBarLineLayer';
 import HistoricalLayer from '../../components/HistoricalLayer';
 import ForecastLayer from '../../components/ForecastLayer';
 import getYearLabel from '../../utilities/getYearLabel';
-import TooltipWithHeader from '../../components/TooltipWithHeader';
+import YearSliceTooltip from '../../components/YearSliceTooltip';
 
 const useStyles = makeStyles(theme => ({
   chart: {
@@ -60,12 +60,12 @@ const Emissions = ({ data, year }) => {
     const section = {
       title: intl.formatMessage({ id: `common.scenarios.${config.scenarios[0]}` }),
       nodes,
-      unit: config.unit,
-      hasTotal: true,
+      unit: intl.formatMessage({ id: `common.units.${config.unit}` }),
+      totalLabel: intl.formatMessage({ id: 'common.netEmissions' }),
     };
 
     return (
-      <TooltipWithHeader
+      <YearSliceTooltip
         sections={[section]}
         year={entry.indexValue}
       />

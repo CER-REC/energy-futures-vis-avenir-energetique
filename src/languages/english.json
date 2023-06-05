@@ -16,6 +16,7 @@
     "energyUnits": "ENERGY UNITS",
     "volumetricUnits": "VOLUMETRIC UNITS",
     "netEmissions": "Net Emissions",
+    "total": "Total",
     "units": {
       "petajoules": "PJ",
       "gigawattHours": "GW.h",
@@ -534,6 +535,8 @@
   "containers": {
     "scenarios": {
       "benchmark": {
+        "oilProductionTooltipTitle": "Oil Prices",
+        "gasProductionTooltipTitle": "Gas Prices",
         "oilProduction": "Oil Prices - {year} US$ / Barrel",
         "gasProduction": "Gas Prices - {year} US$ / MMBtu"
       }

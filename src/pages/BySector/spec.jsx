@@ -5,8 +5,8 @@ import { ResponsiveLine } from '@nivo/line';
 
 import BySector from '.';
 import { TestContainer, getRendered } from '../../tests/utilities';
-import VizTooltip from '../../components/VizTooltip';
 import { DEFAULT_CONFIG, BASE_DATA, GENERATE_DATA } from './stories';
+import YearSliceTooltip from '../../components/YearSliceTooltip';
 
 const MOCK_DATA = [
   { id: 'BIO', data: GENERATE_DATA('BIO'), color: BASE_DATA.BIO.color },
@@ -52,7 +52,7 @@ describe('Page|BySector', () => {
       expect(wrapper.find(ResponsiveLine).prop('sliceTooltip')({
         points: [115, 152, 184, 220, 269, 461, 590]
           .map((y, i) => ({ serieId: MOCK_DATA[i].id, serieColor: MOCK_DATA[i].color, y })),
-      })).toHaveProperty('type', VizTooltip);
+      })).toHaveProperty('type', YearSliceTooltip);
     });
   });
 

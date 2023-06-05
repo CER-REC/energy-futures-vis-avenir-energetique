@@ -16,6 +16,7 @@
     "energyUnits": "UNITÉS D’ÉNERGIE",
     "volumetricUnits": "UNITÉS VOLUMÉTRIQUES",
     "netEmissions": "Émissions nettes",
+    "total": "Totale",
     "units": {
       "petajoules": "PJ",
       "gigawattHours": "GWh",
@@ -528,6 +529,8 @@
   "containers": {
     "scenarios": {
       "benchmark": {
+        "oilTitle": "",
+        "gasTitle": "",
         "oilProduction": "",
         "gasProduction": ""
       }

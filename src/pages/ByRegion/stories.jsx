@@ -10,6 +10,7 @@ export const DEFAULT_CONFIG = {
   yearId: '2020',
   unit: 'petajoules',
   provinceOrder: ['YT', 'SK', 'QC', 'PE', 'ON', 'NU', 'NT', 'NS', 'NL', 'NB', 'MB', 'BC', 'AB'],
+  scenarios: ['Global Net-zero'],
 };
 
 export const BASE_DATA = {
