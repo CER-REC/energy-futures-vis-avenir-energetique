@@ -72,7 +72,7 @@ const Header = () => {
   const isDesktop = useIsDesktop();
   const { yearIdIterations } = useAPI();
 
-  const [isMinimized, setIsMinimized] = useState(localStorage.getItem(minimizedKey));
+  const [isMinimized, setIsMinimized] = useState(!!localStorage.getItem(minimizedKey));
 
   useEffect(() => {
     if (isMinimized) {

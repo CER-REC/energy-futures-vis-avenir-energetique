@@ -162,7 +162,7 @@ describe('Component|Utilities', () => {
         data,
         0.0036,
         ['YT', 'SK', 'QC', 'PE', 'ON', 'NU', 'NT', 'NS', 'NL', 'NB', 'MB', 'BC', 'AB'],
-        ['BIO', 'COAL', 'GAS', 'HYDRO', 'NUCLEAR', 'OIL', 'RENEWABLE'],
+        ['BIO', 'COAL', 'GAS', 'HYDRO', 'NUCLEAR', 'OIL', 'SOLAR', 'WIND'],
         'region',
       )).toEqual({
         2005: { NL: [{ name: 'HYDRO', value: 146.668932 }, { name: 'GAS', value: 0.9614552399999999 }] },
@@ -174,7 +174,7 @@ describe('Component|Utilities', () => {
         data,
         0.0036,
         ['YT', 'SK', 'QC', 'PE', 'ON', 'NU', 'NT', 'NS', 'NL', 'NB', 'MB', 'BC', 'AB'],
-        ['BIO', 'COAL', 'GAS', 'HYDRO', 'NUCLEAR', 'OIL', 'RENEWABLE'],
+        ['BIO', 'COAL', 'GAS', 'HYDRO', 'NUCLEAR', 'OIL', 'SOLAR', 'WIND'],
         'source',
       )).toEqual({
         2005: { HYDRO: [{ name: 'NL', value: 146.668932 }], GAS: [{ name: 'NL', value: 0.9614552399999999 }] },

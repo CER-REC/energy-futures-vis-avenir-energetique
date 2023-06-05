@@ -96,9 +96,15 @@
       },
       {
         "group": "ELECTRICITY_SOURCE",
-        "key": "RENEWABLE",
-        "english": "Solar / Wind",
-        "french": "Énergies solaire et éolienne"
+        "key": "SOLAR",
+        "english": "Solar",
+        "french": "Solaire"
+      },
+      {
+        "group": "ELECTRICITY_SOURCE",
+        "key": "WIND",
+        "english": "Wind",
+        "french": "Éolien"
       },
       {
         "group": "ELECTRICITY_SOURCE",
