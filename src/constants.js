@@ -1,8 +1,8 @@
 import {
   IconDemand, IconTransportation, IconCommercial, IconResidential, IconIndustrial,
   IconElectricity, IconOil, IconGas, IconBiomass, IconBiofuel,
-  IconCoal, IconHydro, IconNuclear, IconRenewable, IconHydrogen, IconWaste,
-  IconAgriculture, IconOilGas, IconLand,
+  IconCoal, IconHydro, IconNuclear, IconHydrogen, IconWaste,
+  IconAgriculture, IconOilGas, IconLand, IconSolar, IconWind,
 } from './icons';
 
 export const applicationPath = {
@@ -162,8 +162,9 @@ export const SOURCE_COLORS = {
     HYDRO: '#5FBEE6',
     GAS: '#890038',
     OIL: '#FF821E',
-    RENEWABLE: '#FFCC47',
     NUCLEAR: '#753B95',
+    SOLAR: '#FFCC47',
+    WIND: '#018571',
   },
   energy: {
     BIO: '#1C7F24',
@@ -216,8 +217,9 @@ export const SOURCE_ICONS = {
     HYDRO: IconHydro,
     GAS: IconGas,
     OIL: IconOil,
-    RENEWABLE: IconRenewable,
     NUCLEAR: IconNuclear,
+    SOLAR: IconSolar,
+    WIND: IconWind,
   },
   energy: {
     BIO: IconBiofuel,
@@ -230,7 +232,7 @@ export const SOURCE_ICONS = {
   gas: {},
   greenhouseGas: {
     AGRI: IconAgriculture,
-    AIR: IconRenewable,
+    AIR: IconWind,
     BUILD: IconResidential,
     ELECTRICITY: IconElectricity,
     FOSSIL: IconOilGas,

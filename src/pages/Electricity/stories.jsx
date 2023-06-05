@@ -11,7 +11,7 @@ export const DEFAULT_CONFIG = {
   view: 'region',
   unit: 'petajoules',
   provinces: ['YT', 'SK', 'QC', 'PE', 'ON', 'NU', 'NT', 'NS', 'NL', 'NB', 'MB', 'BC', 'AB'],
-  sources: ['BIO', 'COAL', 'GAS', 'HYDRO', 'NUCLEAR', 'OIL', 'RENEWABLE'],
+  sources: ['BIO', 'COAL', 'GAS', 'HYDRO', 'NUCLEAR', 'OIL', 'SOLAR', 'WIND'],
   scenarios: ['Global Net-zero'],
 };
 
@@ -23,16 +23,18 @@ export const MOCK_DATA_REGION = Array(46).fill(undefined).map((_, i) => i).reduc
       { name: 'GAS', value: 19568.76 },
       { name: 'HYDRO', value: 2316 },
       { name: 'BIO', value: 1725.168 },
-      { name: 'RENEWABLE', value: 741 },
       { name: 'OIL', value: 509.4367 },
+      { name: 'SOLAR', value: 600 },
+      { name: 'WIND', value: 141 },
     ].map(type => ({ ...type, value: type.value * (1 + Math.random() / 5) })),
     NB: [
       { name: 'HYDRO', value: 36440 },
       { name: 'COAL', value: 413.2573 },
-      { name: 'RENEWABLE', value: 53 },
       { name: 'GAS', value: 41.6505 },
       { name: 'BIO', value: 27.33 },
       { name: 'OIL', value: 8.2922 },
+      { name: 'SOLAR', value: 39 },
+      { name: 'WIND', value: 14 },
     ].map(type => ({ ...type, value: type.value * (1 + Math.random() / 5) })),
   },
 }), {});
@@ -77,8 +79,9 @@ export const MOCK_DATA_SINGLE = Array(46).fill(undefined).map((_, i) => i).reduc
       { name: 'GAS', value: 19568.76 },
       { name: 'HYDRO', value: 2316 },
       { name: 'BIO', value: 1725.168 },
-      { name: 'RENEWABLE', value: 741 },
       { name: 'OIL', value: 509.4367 },
+      { name: 'SOLAR', value: 600 },
+      { name: 'WIND', value: 141 },
     ].map(type => ({ ...type, value: type.value * (1 + Math.random()) })),
   },
 }), {});
