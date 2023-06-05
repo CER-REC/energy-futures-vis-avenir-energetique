@@ -114,7 +114,7 @@ NodeSection.propTypes = {
       name: PropTypes.string,
       value: PropTypes.number,
       color: PropTypes.string,
-      mask: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+      mask: PropTypes.string,
     })),
     unit: PropTypes.string.isRequired,
     totalLabel: PropTypes.string,
