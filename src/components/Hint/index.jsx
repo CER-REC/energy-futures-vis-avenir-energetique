@@ -11,7 +11,7 @@ import Markdown from 'react-markdown';
 
 import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
-import { CONFIG_LAYOUT, PAGES, SCENARIO_LABEL_COLOR } from '../../constants';
+import { CONFIG_LAYOUT, SCENARIO_LABEL_COLOR } from '../../constants';
 import analytics from '../../analytics';
 import ScenarioHintImageEn from './scenario_hint_en.jpg';
 import ScenarioHintImageFr from './scenario_hint_fr.jpg';
@@ -236,12 +236,11 @@ HintSectorSelect.defaultProps = { children: null };
  */
 export const HintViewSelect = ({ children }) => {
   const intl = useIntl();
-  const { config } = useConfig();
-  const page = useMemo(() => PAGES.find(p => p.id === config.page), [config.page]);
-  const section = useMemo(() => (page.views ? Object.keys(page.views).map(view => ({
-    title: intl.formatMessage({ id: `common.${page.views[view].labelTranslationKey}` }),
-    text: intl.formatMessage({ id: `components.viewSelect.${page.views[view].labelTranslationKey}.description.${page.id}` }),
-  })) : []), [intl, page]);
+  const { page } = useConfig().config;
+  const section = useMemo(() => ['region', 'source'].map(view => ({
+    title: intl.formatMessage({ id: `common.${view === 'source' && page === 'oil-and-gas' ? 'type' : view}` }),
+    text: intl.formatMessage({ id: `components.viewSelect.${view}.description.${page}` }),
+  })), [intl, page]);
   return <Hint label="view by" content={[<HintSection title={intl.formatMessage({ id: 'components.viewSelect.name' })} section={section} />]}>{children}</Hint>;
 };
 

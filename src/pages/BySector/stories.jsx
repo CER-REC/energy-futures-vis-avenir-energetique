@@ -10,6 +10,7 @@ export const DEFAULT_CONFIG = {
   sector: 'TRANSPORTATION',
   unit: 'petajoules',
   sourceOrder: ['BIO', 'COAL', 'ELECTRICITY', 'GAS', 'OIL'],
+  scenarios: ['Global Net-zero'],
 };
 
 export const BASE_DATA = {

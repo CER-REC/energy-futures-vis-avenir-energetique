@@ -5,8 +5,8 @@ import { ResponsiveBar } from '@nivo/bar';
 
 import ByRegion from '.';
 import { TestContainer, getRendered } from '../../tests/utilities';
-import VizTooltip from '../../components/VizTooltip';
 import { BASE_DATA, DEFAULT_CONFIG } from './stories';
+import YearSliceTooltip from '../../components/YearSliceTooltip';
 
 const MOCK_DATA = [
   { year: '2005', ...BASE_DATA },
@@ -42,11 +42,13 @@ describe('Page|ByRegion', () => {
     test('should render viz properties', () => {
       expect(wrapper.find(ResponsiveBar).prop('colors')({ id: 'ON', indexValue: '2005' })).toEqual('rgba(255, 130, 30, 1)');
       expect(wrapper.find(ResponsiveBar).prop('tooltip')({
-        color: 'rgba(255, 130, 30, 1)',
-        id: 'ON',
-        indexValue: '2005',
-        value: 3045.0494,
-      })).toHaveProperty('type', VizTooltip);
+        data: {
+          color: 'rgba(255, 130, 30, 1)',
+          id: 'ON',
+          indexValue: '2005',
+          value: 3045.0494,
+        },
+      })).toHaveProperty('type', YearSliceTooltip);
     });
   });
 

@@ -15,14 +15,4 @@ storiesForComponent('Components|ScenarioSelect', module, ReadMe)
     },
   })
   .addDecorator(withConfigAndGQL)
-  .add('2020', () => <ScenarioSelect />)
-  .addParameters({ mockConfigExtra: { yearId: '2019' } })
-  .add('2019', () => <ScenarioSelect />)
-  .addParameters({ mockConfigExtra: { yearId: '2018' } })
-  .add('2018', () => <ScenarioSelect />)
-  .addParameters({ mockConfigExtra: { yearId: '2017' } })
-  .add('2017', () => <ScenarioSelect />)
-  .addParameters({ mockConfigExtra: { yearId: '2016*' } })
-  .add('2016 Adjusted', () => <ScenarioSelect />)
-  .addParameters({ mockConfigExtra: { yearId: '2016' } })
-  .add('2016', () => <ScenarioSelect />);
+  .add('default', () => <ScenarioSelect isMinimized={false} setIsMinimized={() => {}} />);

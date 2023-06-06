@@ -14,9 +14,9 @@ import ForecastLayer from '../../components/ForecastLayer';
 import HistoricalLayer from '../../components/HistoricalLayer';
 import PriceSelect from '../../components/PriceSelect';
 import getYearLabel from '../../utilities/getYearLabel';
-import TooltipWithHeader from '../../components/TooltipWithHeader';
 import { getTicks, formatLineData } from '../../utilities/parseData';
 import BenchmarkCrosshair from '../../components/BenchmarkCrosshair';
+import YearSliceTooltip from '../../components/YearSliceTooltip';
 
 /**
  * Generate a custom dotted line layer for rendering the default scenario.
@@ -83,6 +83,15 @@ const Scenarios = ({ data, year }) => {
   const ticks = getLineTicks(data);
   const benchmarkTicks = getLineTicks(priceData);
 
+  const getNodesFromData = useCallback((currYear, nodeData) => nodeData.map((scenario) => {
+    const yearData = scenario.data.find(obj => obj.x === currYear);
+    return {
+      name: intl.formatMessage({ id: `common.scenarios.${scenario.id}` }),
+      value: yearData?.y,
+      color: SCENARIO_COLOR[scenario.id],
+    };
+  }), [intl]);
+
   const timer = useRef(null);
   const getTooltip = useCallback((event) => {
     // capture hover event and use a timer to avoid throttling
@@ -92,31 +101,39 @@ const Scenarios = ({ data, year }) => {
       timer.current = setTimeout(() => analytics.reportPoi(config.page, year.min + index), 500);
     }
 
-    let currYear = '';
+    const currYear = event.slice?.points[0].data?.x;
+    const upperNodes = getNodesFromData(currYear, data).reverse();
+    let lowerNodes = [];
 
-    const section = {
+    if (prices?.length) {
+      lowerNodes = getNodesFromData(currYear, priceData).reverse();
+    }
+
+    const sections = [];
+    sections.push({
       title: intl.formatMessage({ id: `common.selections.${config.mainSelection}` }),
-      nodes: event.slice?.points.map((obj) => {
-        if (!currYear) currYear = obj.data?.x.toString();
+      nodes: upperNodes,
+      unit: intl.formatMessage({ id: `common.units.${config.unit}` }),
+    });
 
-        return {
-          name: intl.formatMessage({ id: `common.scenarios.${obj.serieId}` }),
-          value: obj.data?.y,
-          color: obj.serieColor,
-        };
-      }),
-      hasTotal: false,
-      unit: config.unit,
-    };
+    if (prices?.length) {
+      sections.push({
+        title: intl.formatMessage({ id: `containers.scenarios.benchmark.${config.mainSelection}TooltipTitle` }),
+        nodes: lowerNodes,
+        unit: intl.formatMessage({ id: `common.prices.${config.priceSource}` }),
+        isPrice: true,
+      });
+    }
 
     return (
-      <TooltipWithHeader
-        sections={[section]}
-        year={currYear}
+      <YearSliceTooltip
+        sections={sections}
+        year={currYear?.toString()}
         isSliceTooltip
       />
     );
-  }, [year, intl, config.mainSelection, config.unit, config.page]);
+  }, [year, getNodesFromData, data, prices, intl,
+    config.mainSelection, config.unit, config.page, config.priceSource, priceData]);
 
   if (!data) {
     return null;
@@ -137,10 +154,9 @@ const Scenarios = ({ data, year }) => {
       format: getYearLabel,
     },
     enableSlices: 'x',
-    sliceTooltip: getTooltip,
     forecastStart: year.forecastStart,
   };
-  const chartContainerClass = clsx(classes.chart, { duo: prices });
+  const chartContainerClass = clsx(classes.chart, { duo: !!prices?.length });
 
   return (
     <>
@@ -158,13 +174,14 @@ const Scenarios = ({ data, year }) => {
             ...CHART_AXIS_PROPS,
             tickValues: ticks,
           }}
+          sliceTooltip={event => getTooltip(event, true)}
           axisBottom={prices?.length ? null : lineProps.axisBottom}
           gridYValues={ticks}
           setSlice={setLowerSlice}
           slice={upperSlice}
         />
       </div>
-      { prices && (
+      { !!prices?.length && (
         <div style={{ display: 'flex' }}>
           <Typography variant="h6" style={{ flex: 1 }}>
             {
@@ -190,6 +207,7 @@ const Scenarios = ({ data, year }) => {
               ...CHART_AXIS_PROPS,
               tickValues: benchmarkTicks,
             }}
+            sliceTooltip={event => getTooltip(event)}
             gridYValues={benchmarkTicks}
             setSlice={setUpperSlice}
             slice={lowerSlice}

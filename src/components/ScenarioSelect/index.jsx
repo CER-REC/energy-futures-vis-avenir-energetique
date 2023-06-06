@@ -40,6 +40,11 @@ const useStyles = makeStyles(theme => ({
     padding: '0 1em',
     textTransform: 'unset',
   },
+  minimizeContainer: {
+    display: 'flex',
+    flexGrow: 1,
+    justifyContent: 'flex-end',
+  },
 }));
 
 const ScenarioSelect = ({ multiSelect, isMinimized, setIsMinimized }) => {
@@ -115,7 +120,7 @@ const ScenarioSelect = ({ multiSelect, isMinimized, setIsMinimized }) => {
       <Grid item>
         <HintScenarioSelect />
       </Grid>
-      <Grid item justify="flex-end" style={{ flexGrow: 1, display: 'flex' }}>
+      <Grid className={classes.minimizeContainer}>
         <Button
           variant="outlined"
           color="inherit"
@@ -154,7 +159,7 @@ const ScenarioSelect = ({ multiSelect, isMinimized, setIsMinimized }) => {
 
 ScenarioSelect.propTypes = {
   multiSelect: PropTypes.bool,
-  isMinimized: PropTypes.func.isRequired,
+  isMinimized: PropTypes.bool.isRequired,
   setIsMinimized: PropTypes.func.isRequired,
 };
 

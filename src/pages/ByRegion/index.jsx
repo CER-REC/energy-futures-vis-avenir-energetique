@@ -2,6 +2,7 @@ import React, { useMemo, useCallback, useRef } from 'react';
 import { ResponsiveBar } from '@nivo/bar';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core';
+import { useIntl } from 'react-intl';
 import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
 import analytics from '../../analytics';
@@ -9,9 +10,9 @@ import { CHART_PROPS, CHART_AXIS_PROPS } from '../../constants';
 import { getTicks } from '../../utilities/parseData';
 import convertHexToRGB from '../../utilities/convertHexToRGB';
 import ForecastLayer from '../../components/ForecastLayer';
-import VizTooltip from '../../components/VizTooltip';
 import HistoricalLayer from '../../components/HistoricalLayer';
 import getYearLabel from '../../utilities/getYearLabel';
+import YearSliceTooltip from '../../components/YearSliceTooltip';
 
 const useStyles = makeStyles(theme => ({
   chart: {
@@ -23,6 +24,7 @@ const ByRegion = ({ data, year }) => {
   const { regions } = useAPI();
   const { config } = useConfig();
   const classes = useStyles();
+  const intl = useIntl();
 
   /**
    * Calculate bar colors.
@@ -50,13 +52,32 @@ const ByRegion = ({ data, year }) => {
     const name = `${entry.id} - ${entry.indexValue}`;
     clearTimeout(timer.current);
     timer.current = setTimeout(() => analytics.reportPoi(config.page, name), 500);
+    const nodes = [];
+
+    config.provinceOrder.forEach((key) => {
+      if (entry.data[key]) {
+        nodes.push({
+          name: intl.formatMessage({ id: `common.regions.${key}` }),
+          value: entry.data[key],
+          color: regions.colors[key],
+        });
+      }
+    });
+
+    const section = {
+      title: intl.formatMessage({ id: `common.scenarios.${config.scenarios[0]}` }),
+      nodes,
+      unit: intl.formatMessage({ id: `common.units.${config.unit}` }),
+      totalLabel: intl.formatMessage({ id: 'common.total' }),
+    };
+
     return (
-      <VizTooltip
-        nodes={[{ name, value: entry.value, color: entry.color }]}
-        unit={config.unit}
+      <YearSliceTooltip
+        sections={[section]}
+        year={entry.indexValue}
       />
     );
-  }, [config.page, config.unit]);
+  }, [config.page, config.scenarios, config.unit, intl, regions.colors, config.provinceOrder]);
 
   /**
    * Calculate the max tick value on y-axis and generate the all ticks accordingly.

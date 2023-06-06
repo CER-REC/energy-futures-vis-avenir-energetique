@@ -14,6 +14,7 @@ describe('Component|ForecastLayer', () => {
         <svg>
           <ForecastLayer
             height={1000}
+            width={1200}
             innerHeight={600}
             innerWidth={800}
             margin={{ top: 50 }}
@@ -58,6 +59,7 @@ describe('Component|ForecastLayer', () => {
           <ForecastLayer
             bars={bars}
             height={800}
+            width={600}
             margin={{ top: 50 }}
             xScale={spy}
             forecastStart={2020}
@@ -80,6 +82,7 @@ describe('Component|ForecastLayer', () => {
         <svg>
           <ForecastLayer
             height={1000}
+            width={1200}
             innerHeight={600}
             innerWidth={800}
             margin={{ top: 50 }}
