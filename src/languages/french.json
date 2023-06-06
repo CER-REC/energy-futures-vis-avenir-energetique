@@ -411,7 +411,7 @@
           "by-region": "Consulter la demande totale pour utilisation finale selon la région",
           "scenarios": "Comparer des scénarios pour la demande totale pour utilisation finale"
         },
-        "description": "Il s’agit de la consommation totale d’énergie dans les quatre grands secteurs de l’économie canadienne : résidentiel, commercial, industriel et transports. Elle comprend la consommation d’électricité, de gaz naturel, de produits pétroliers comme l’essence, de charbon, et de carburants renouvelables. Aussi appelée demande pour utilisation finale ou demande secondaire, la demande totale n’inclut pas l’énergie utilisée pour produire de l’électricité."
+        "description": "Il s’agit de la consommation totale d’énergie dans les quatre grands secteurs de l’économie canadienne : résidentiel, commercial, industriel et transports. Elle comprend la consommation d’électricité, de gaz naturel, de produits pétroliers comme l’essence, de charbon, d’hydrogène et de carburants renouvelables. Aussi appelée demande pour utilisation finale ou demande secondaire, la demande totale n’inclut pas l’énergie utilisée pour produire de l’électricité."
       },
       "electricityGeneration": {
         "title": "Production d’électricité",
@@ -419,7 +419,7 @@
           "by-region": "Consulter la production d’électricité selon la région",
           "scenarios": "Comparer des scénarios pour la production d’électricité"
         },
-        "description": "Il s’agit de la quantité d’électricité produite en transformant d’autres formes d’énergie. Au Canada, l’électricité provient de diverses sources : l’hydroélectricité; les autres énergies renouvelables, comme l’énergie éolienne et l’énergie solaire; les sources thermiques, comme le gaz naturel et le charbon; l’énergie nucléaire."
+        "description": "Il s’agit de la quantité d’électricité produite en transformant d’autres formes d’énergie. Au Canada, l’électricité provient de diverses sources : l’hydroélectricité; les autres énergies renouvelables, comme l’énergie éolienne et l’énergie solaire et la biomasse, les sources thermiques, comme le gaz naturel et le charbon; l’énergie nucléaire."
       },
       "oilProduction": {
         "title": "Production de pétrole",
@@ -438,10 +438,23 @@
           "oil-and-gas": "Consulter la production de gaz naturel"
         },
         "description": "Elle désigne la quantité de gaz naturel commercialisable produit au Canada. Plusieurs régions produisent du gaz naturel à partir de diverses techniques. La production de gaz naturel comprend le gaz de réservoirs étanches, le gaz de schiste, le méthane de houille, le gaz classique et le gaz tiré de l’exploitation des puits de pétrole (aussi appelé gaz associé ou gaz dissous)."
+      },
+      "greenhouseGasEmission": {
+        "title": "Émissions",
+        "tooltip": {},
+        "description": "Émissions canadiennes totales de gaz à effet de serre (« GES ») pour les secteurs pétrole et gaz, production d’électricité, production d’hydrogène, transport, industrie lourde, bâtiments, agriculture, déchets et autres, utilisation de terres, modification de l’utilisation de terres et foresterie et captage direct dans l’air."
       }
     },
     "pageLayout": {
       "unit": "UNITÉS"
+    },
+    "hintPrice": {
+      "description": "",
+      "WTI": "Prix de référence de premier plan en Amérique du Nord pour le pétrole brut léger non corrosif produit principalement à partir de puits sur la terre ferme au Texas et établi à Cushing, en Oklahoma.",
+      "BRENT": "Prix de référence à l’échelle mondiale pour le pétrole brut léger non corrosif produit dans les champs de pétrole de la mer du Nord.",
+      "WCS": "Prix du bitume et du pétrole brut lourd corrosif mélangés à du condensat ou à du pétrole synthétique non corrosif produit dans l’Ouest canadien. Établi à Hardisty, en Alberta, il s’applique aux différents pétroles bruts lourds provenant de cette région.",
+      "HH": "Le carrefour Henry est le point d’établissement des prix de référence pour les contrats à terme de gaz naturel négociés au Canada et aux ÉtatsUnis, les autres prix se négociant habituellement en fonction d’un un écart par rapport à celui-ci. Le carrefour est situé en Louisiane, au point d’interconnexion de nombreux gazoducs.",
+      "NIT": "Le prix établi pour le gaz naturel au carrefour d’échanges gaziers sur le réseau de NOVA (NIT) est celui principalement utilisé pour le gaz naturel faisant l’objet d’un commerce dans l’Ouest canadien. Ce carrefour est virtuel et le prix peut donc servir partout sur le réseau pipelinier de NGTL."
     },
     "hintUnit": {
       "petajoules": {
@@ -450,7 +463,7 @@
       },
       "kilobarrelEquivalents": {
         "title": "Millier de barils d’équivalent pétrole brut par jour",
-        "description": "Mesure d’énergie normalisée à l’équivalent de la teneur en énergie d’un baril de pétrole brut léger. Un baril d’équivalent pétrole brut léger est égal à 6,123 gigajoules."
+        "description": "Mesure d’énergie normalisée à l’équivalent de la teneur en énergie d’un baril de pétrole brut. Un baril d’équivalent pétrole brut est égal à 6,123 gigajoules."
       },
       "gigawattHours": {
         "title": "Gigawattheure",
@@ -564,25 +577,25 @@
       "GAS": "Électricité produite au moyen de diverses technologies utilisant le gaz naturel, notamment des chaudières à vapeur, des turbines à gaz et des centrales à moteurs à combustion, ainsi que des centrales à cycle combiné.",
       "OIL": "Électricité produite au moyen de diverses technologies utilisant le mazout, comme des turbines à vapeur et des turbines à combustion.",
       "NUCLEAR": "Désigne l’électricité produite dans des centrales nucléaires.",
-      "SOLAR": "",
-      "WIND": ""
+      "SOLAR": "Comprend l’électricité produite au moyen de systèmes photovoltaïques ou de systèmes thermiques solaires concentrés.",
+      "WIND": "Comprend l’électricité générée par des éoliennes."
     },
     "energy": {
       "BIO": "Comprend la biomasse, l’hydrogène, l’éthanol et le biodiesel.",
-      "BIO_UPDATED": "Comprend la biomasse, l’éthanol et le biodiesel.",
+      "BIO_UPDATED": "Comprend la biomasse, l’éthanol, le biodiesel, le diesel renouvelable et le gaz naturel renouvelable.",
       "COAL": "Comprend le charbon, le coke et le gaz de cokerie.",
-      "ELECTRICITY": "Désigne l’électricité pour utilisation finale produite à partir de diverses sources et selon différentes techniques. Parmi les principales sources, on compte l’électricité issue de l’énergie nucléaire, de l’hydroélectricité, de l’éolien, du solaire, ainsi que la production thermique, qui utilise d’autres combustibles comme le gaz naturel, le charbon et le pétrole.",
+      "ELECTRICITY": "Désigne l’électricité pour utilisation finale produite à partir de diverses sources et selon différentes techniques. Parmi les principales sources, on compte l’électricité issue de l’énergie nucléaire, de l’hydroélectricité, de l’éolien, du solaire, et la biomasse, ainsi que la production thermique, qui utilise d’autres combustibles comme le gaz naturel, le charbon et le pétrole.",
       "GAS": "La consommation totale de gaz prend en compte une partie de la consommation non commercialisée qu’utilisent les producteurs.",
       "OIL": "Comprennent les produits raffinés et les liquides de gaz naturel, plus particulièrement, l’essence automobile, le carburant diesel, le carburéacteur, le mazout léger, le kérosène, le mazout lourd, le propane, le butane, l’éthane, le coke de pétrole, le gaz de distillation et les produits non énergétiques, comme les lubrifiants, l’asphalte et les charges d’alimentation pétrochimiques.",
-      "HYDROGEN": "Consommation d’hydrogène produit à partir de diverses sources et de différentes technologies."
+      "HYDROGEN": "Hydrogène d’utilisation finale produit à partir de diverses sources et de différentes technologies."
     },
     "transportation": {
-      "BIO": "Comprend l’éthanol, le biodiesel et le diesel renouvelable dérivé de l’hydrogénation.",
+      "BIO": "Comprend l’éthanol, le biodiesel et le diesel renouvelable le biocarburant d’aviation et le diesel renouvelable.",
       "COAL": "Includes coal, coke, and coke oven gas.",
-      "ELECTRICITY": "Désigne l’électricité pour utilisation finale produite à partir de diverses sources et selon différentes techniques. Parmi les principales sources, on compte l’électricité issue de l’énergie nucléaire, de l’hydroélectricité, de l’éolien, du solaire, ainsi que la production thermique, qui utilise d’autres combustibles comme le gaz naturel, le charbon et le pétrole.",
+      "ELECTRICITY": "Désigne l’électricité pour utilisation finale produite à partir de diverses sources et selon différentes techniques. Parmi les principales sources, on compte l’électricité issue de l’énergie nucléaire, de l’hydroélectricité, de l’éolien, du solaire, et la biomasse, ainsi que la production thermique, qui utilise d’autres combustibles comme le gaz naturel, le charbon et le pétrole.",
       "GAS": "Comprend le gaz naturel comprimé et le gaz naturel liquéfié utilisés dans les voitures, les autobus, les camions et les navires.",
       "OIL": "- **Carburéacteur :** Produit pétrolier raffiné servant à alimenter un aéronef.\n- **Essence :** Produit pétrolier raffiné destinés aux moteurs à combustion interne.\n- **Diesel :** Produit pétrolier raffiné servant à alimenter les moteurs diesel.\n- **Autres produits pétroliers :** Comprennent le mazout lourd, le gaz de pétrole liquéfié et les lubrifiants.",
-      "HYDROGEN": "Consommation d’hydrogène produit à partir de diverses sources et de différentes technologies."
+      "HYDROGEN": "Hydrogène d’utilisation finale produit à partir de diverses sources et de différentes technologies."
     },
     "gas": {
       "ALL": "Elle désigne la quantité de gaz naturel commercialisable produit au Canada. Plusieurs régions produisent du gaz naturel à partir de diverses techniques.",
@@ -746,8 +759,8 @@
       "description": "Examinez l’évolution récente des sources énergétiques de différents secteurs et ce que projettent les scénarios du rapport sur l’avenir énergétique à cet égard"
     },
     "Emissions": {
-      "title": "",
-      "description": ""
+      "title": "Explorer les émissions",
+      "description": "Comparez les émissions de gaz à effet de serre selon le secteur dans les trois scénarios."
     },
     "Electricity": {
       "title": "Explorer l’électricité",
