@@ -71,7 +71,7 @@ LinkButtonContentResults.propTypes = { yearId: PropTypes.string.isRequired };
 const LinkButtonContentSummary = ({ yearId }) => {
   const intl = useIntl();
   const text = useMemo(() => {
-    if (yearId === '2021') {
+    if (yearId === '2021' || yearId === '2023') {
       return intl.formatMessage({ id: `components.yearSelect.${yearId}.context` });
     }
     return intl.formatMessage({ id: `components.yearSelect.${yearId}.description` });
