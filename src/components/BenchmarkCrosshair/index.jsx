@@ -1,18 +1,20 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Crosshair } from '@nivo/tooltip';
 import PropTypes from 'prop-types';
 
-const BenchmarkCrosshair = (handlePoint, point, isUpperChart) => ({
+const BenchmarkCrosshair = ({
   innerWidth,
   innerHeight,
   currentSlice,
+  setSlice,
+  slice,
 }) => {
   let currPoint = null;
 
-  if (point !== null) currPoint = point;
-  if (currentSlice !== null) currPoint = currentSlice;
+  if (slice) currPoint = slice;
+  if (currentSlice) currPoint = currentSlice;
 
-  handlePoint(currentSlice, isUpperChart);
+  useEffect(() => setSlice(currentSlice));
 
   if (currPoint !== null) {
     return (
@@ -24,7 +26,7 @@ const BenchmarkCrosshair = (handlePoint, point, isUpperChart) => ({
         type='x'
       />
     );
-  } return <></>;
+  } return null;
 };
 
 BenchmarkCrosshair.propTypes = {
@@ -34,17 +36,16 @@ BenchmarkCrosshair.propTypes = {
     x: PropTypes.number.isRequired,
     y: PropTypes.number.isRequired,
   }),
-  handlePoint: PropTypes.func.isRequired,
-  point: PropTypes.shape({
+  setSlice: PropTypes.func.isRequired,
+  slice: PropTypes.shape({
     x: PropTypes.number.isRequired,
     y: PropTypes.number.isRequired,
   }),
-  isUpperChart: PropTypes.bool.isRequired,
 };
 
 BenchmarkCrosshair.defaultProps = {
   currentSlice: null,
-  point: null,
+  slice: null,
 };
 
 export default BenchmarkCrosshair;
