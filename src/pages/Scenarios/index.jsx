@@ -68,8 +68,6 @@ const Scenarios = ({ data, year }) => {
    */
   const dots = useMemo(() => dottedLayer(config.yearId), [config.yearId]);
 
-  const fill = useMemo(() => fillLayerScenario({ year }), [year]);
-
   const getLineTicks = (pointData) => {
     const values = (pointData || []).map(source => source.data);
     const sums = (values[0] || [])
@@ -121,7 +119,14 @@ const Scenarios = ({ data, year }) => {
 
   const lineProps = {
     colors: d => SCENARIO_COLOR[d.id] || '#AAA',
+    xScale: { type: 'point' },
+    enablePoints: false,
     lineWidth: 3,
+    pointColor: { theme: 'background' },
+    pointBorderWidth: 2,
+    pointBorderColor: { from: 'serieColor' },
+    pointLabel: 'y',
+    pointLabelYOffset: -12,
     axisBottom: {
       ...CHART_AXIS_PROPS,
       format: getYearLabel,
@@ -139,8 +144,10 @@ const Scenarios = ({ data, year }) => {
           {...CHART_PROPS}
           {...lineProps}
           data={data}
-          layers={[HistoricalLayer, 'grid', 'axes', 'crosshair', 'slices', fill, 'lines', ForecastLayer, dots]}
+          enableArea
+          layers={[HistoricalLayer, 'grid', 'axes', 'areas', 'crosshair', 'points', 'slices', 'lines', ForecastLayer, dots]}
           curve="cardinal"
+          areaOpacity={0.15}
           yScale={{ type: 'linear', min: 0, max: ticks[ticks.length - 1], reverse: false }}
           axisRight={{
             ...CHART_AXIS_PROPS,
@@ -170,7 +177,7 @@ const Scenarios = ({ data, year }) => {
             {...CHART_PROPS}
             {...lineProps}
             data={priceData}
-            layers={[HistoricalLayer, 'grid', 'axes', 'crosshair', 'slices', 'lines', ForecastLayer, dots]}
+            layers={[HistoricalLayer, 'grid', 'axes', 'crosshair', 'points', 'slices', 'lines', ForecastLayer, dots]}
             yScale={{ type: 'linear', min: 0, max: benchmarkTicks[benchmarkTicks.length - 1], reverse: false }}
             axisRight={{
               ...CHART_AXIS_PROPS,
