@@ -450,7 +450,7 @@
       "unit": "UNITÉS"
     },
     "hintPrice": {
-      "description": "",
+      "description": "Les prix de référence servent de repère pour les acheteurs et les vendeurs.",
       "WTI": "Prix de référence de premier plan en Amérique du Nord pour le pétrole brut léger non corrosif produit principalement à partir de puits sur la terre ferme au Texas et établi à Cushing, en Oklahoma.",
       "BRENT": "Prix de référence à l’échelle mondiale pour le pétrole brut léger non corrosif produit dans les champs de pétrole de la mer du Nord.",
       "WCS": "Prix du bitume et du pétrole brut lourd corrosif mélangés à du condensat ou à du pétrole synthétique non corrosif produit dans l’Ouest canadien. Établi à Hardisty, en Alberta, il s’applique aux différents pétroles bruts lourds provenant de cette région.",
@@ -551,7 +551,7 @@
       "download": "Téléchargement des données",
       "filename": "Avenir_énergétique",
       "copied": "Adresse URL copiée",
-      "emailMessage": "L’outil interactif en ligne Explorer l’avenir énergétique du Canada repose sur la publication phare de la Régie de l’énergie du Canada intitulée Avenir énergétique du Canada. Cette visualisation vous permet de prendre connaissance de l’évolution de la production et de la consommation d’énergie, et faire des prévisions pour l’avenir. Vous avez le loisir de vous en tenir au rapport le plus récent ou d’aller voir ce que disaient de précédents rapports.",
+      "emailMessage": "L’outil interactif en ligne Explorer l’avenir énergétique du Canada repose sur la publication phare de la Régie de l’énergie du Canada intitulée Avenir énergétique du Canada. Cette visualisation vous permet de prendre connaissance de l’évolution de la production et de la consommation d’énergie, et diverses possibilités qui pourraient s’offrir aux Canadiens à long terme en matière d’énergie. Vous avez le loisir de vous en tenir au rapport le plus récent ou d’aller voir ce que disaient de précédents rapports.",
       "dialog": {
         "description": "Copier le lien suivant dans le presse-papiers?",
         "btnCopy": "Copier",

@@ -451,7 +451,7 @@
       "unit": "UNIT"
     },
     "hintPrice": {
-      "description": "",
+      "description": "Benchmark prices are a reference point for buyers and sellers.",
       "WTI": "A key North American benchmark price for light, sweet crude oil produced primarily from inland Texas and priced at Cushing, Oklahoma.",
       "BRENT": "A key global benchmark price for light, sweet crude oil produced from oil fields in the North Sea.",
       "WCS": "A western Canadian price for bitumen and heavy sour crude oil blended with condensate or sweet synthetic oil. It is priced at Hardisty, Alberta, and is often used to represent prices for western Canadian heavy crude oils.",
@@ -552,7 +552,7 @@
       "download": "Download Data",
       "filename": "Energy_Future",
       "copied": "URL Copied",
-      "emailMessage": "Exploring Canada’s Energy Future interactive online tool is based on the Canada Energy Regulator’s (CER) flagship publication – Canada’s Energy Future. This visualization allows you to explore energy production and consumption trends and forecast them into the future. You can explore the data from the most recent report, or refer to previous reports.",
+      "emailMessage": "Exploring Canada’s Energy Future interactive online tool is based on the Canada Energy Regulator’s (CER) flagship publication – Canada’s Energy Future. This visualization allows you to explore energy production and consumption trends and how possible energy futures might unfold for Canadians over the long term. You can explore the data from the most recent report, or refer to previous reports.",
       "dialog": {
         "description": "Copy the following link to the clipboard?",
         "btnCopy": "Copy",
