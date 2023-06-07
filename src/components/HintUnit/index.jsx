@@ -35,6 +35,9 @@ const UnitContent = () => {
         oil={getContents(CONFIG_LAYOUT.oilProduction.unit)}
         gas={getContents(CONFIG_LAYOUT.gasProduction.unit)}
       />
+      <Grid item xs={12}><Divider /></Grid>
+      <Grid item xs={12}><Typography variant="h4">{intl.formatMessage({ id: 'common.emissionsUnits' })}</Typography></Grid>
+      <HintContent contents={getContents(CONFIG_LAYOUT.greenhouseGasEmission.unit)} />
     </Grid>
   );
 };

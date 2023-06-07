@@ -1,6 +1,6 @@
 #### ABOUT THIS TOOL
 
-Exploring Canada’s Energy Future interactive online tool is based on the Canada Energy Regulator’s (CER) flagship publication – [Canada’s Energy Future](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/). This visualization allows you to explore energy production and consumption trends and forecast them into the future. You can explore the data from the most recent report, or refer to previous reports.
+Exploring Canada’s Energy Future interactive online tool is based on the Canada Energy Regulator’s (CER) flagship publication – [Canada’s Energy Future](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/). This visualization allows you to explore energy production and consumption trends and how possible energy futures might unfold for Canadians over the long term. You can explore the data from the most recent report, or refer to previous reports.
 
 **Background:** Exploring Canada’s Energy Future was initially created in 2016 as a pilot project tha launched the CER’s Data Visualization Initiative (DVI). DVI was a three-year initiative to transform how the CER structures and shares data. The objective was to enable evidence-based decision making and remove barriers to understanding Canada’s energy and pipeline systems through the use of user-friendly interactive visualizations.
 
@@ -11,6 +11,20 @@ We hope we are hitting the mark. Your feedback is essential.
 Email us with your comments and ideas: [data.donnees@cer-rec.gc.ca](mailto:data.donnees@cer-rec.gc.ca). We look forward to hearing from you.
 
 ###### CONTRIBUTORS
+
+###### VERSION 2.x
+###### DATA SOURCE:
+Eranda Bartholameuz (Market Analyst), Gabi Diner (Market Analyst), Robert Dumeah (Market Analyst) and Michael Nadew (Market Analyst)
+
+###### COORDINATION:
+Amanda Harwood (Project Manager), Karen Ryhorchuk (Communications Officer), and Darcie Harding (A/Director, Digital Transformation)
+
+###### DATA VISUALIZATION:
+CER Design Team: Lien Quach, Navarjun Grewal and Annie Tat
+
+Technical Development Lead: VizworX
+
+Development: Alan Chen, Joshua Bellamy and Dianna Yim
 
 ###### VERSION 2
 ###### DATA SOURCE:
