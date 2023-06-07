@@ -9,7 +9,6 @@ import useEnergyFutureData from '../../hooks/useEnergyFutureData';
 import analytics from '../../analytics';
 
 import { CHART_PROPS, CHART_AXIS_PROPS, SCENARIO_COLOR } from '../../constants';
-import { fillLayerScenario } from '../../components/FillLayer';
 import ForecastLayer from '../../components/ForecastLayer';
 import HistoricalLayer from '../../components/HistoricalLayer';
 import PriceSelect from '../../components/PriceSelect';
@@ -67,8 +66,6 @@ const Scenarios = ({ data, year }) => {
    * The dotted line layer that represents the default scenario.
    */
   const dots = useMemo(() => dottedLayer(config.yearId), [config.yearId]);
-
-  const fill = useMemo(() => fillLayerScenario({ year }), [year]);
 
   const getLineTicks = (pointData) => {
     const values = (pointData || []).map(source => source.data);
@@ -137,10 +134,10 @@ const Scenarios = ({ data, year }) => {
   }
 
   const lineProps = {
+    colors: d => SCENARIO_COLOR[d.id] || '#AAA',
     xScale: { type: 'point' },
     enablePoints: false,
-    colors: d => SCENARIO_COLOR[d.id] || '#AAA',
-    pointSize: 8,
+    lineWidth: 3,
     pointColor: { theme: 'background' },
     pointBorderWidth: 2,
     pointBorderColor: { from: 'serieColor' },
@@ -163,7 +160,7 @@ const Scenarios = ({ data, year }) => {
           {...lineProps}
           data={data}
           enableArea
-          layers={[HistoricalLayer, 'grid', 'axes', 'areas', 'crosshair', 'points', 'slices', fill, 'lines', ForecastLayer, dots]}
+          layers={[HistoricalLayer, 'grid', 'axes', 'areas', 'crosshair', 'points', 'slices', 'lines', ForecastLayer, dots]}
           curve="cardinal"
           areaOpacity={0.15}
           yScale={{ type: 'linear', min: 0, max: ticks[ticks.length - 1], reverse: false }}

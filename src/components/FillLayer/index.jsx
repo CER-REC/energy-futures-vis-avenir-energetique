@@ -1,10 +1,8 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { SOURCE_PATTERNS } from '../../constants';
 
-const fillLayer = ({
-  isTransparent = false, /* boolean */
-  isTransportation, /* boolean */
-}) => ({ areaGenerator, series }) => {
+const FillLayer = isTransportation => ({ areaGenerator, series }) => {
   /**
    * Generate the areas for lines in the chart and apply a solid fill.
    * The slice and reverse part is taken directly from the way Nivo draws the areas,
@@ -21,13 +19,13 @@ const fillLayer = ({
       return (
         <g key={id}>
           {/* a white background for pattern masking */}
-          {!isTransparent && <path {...props} fill="#FFF" />}
+          <path {...props} fill="#FFF" />
 
           {/* apply the masking if it is a pattern, otherwise only render the colored gradient */}
           <path
             {...props}
             fill={line.color}
-            fillOpacity={isTransparent ? 0.5 : 1}
+            fillOpacity={1}
             mask={isTransportation && SOURCE_PATTERNS[line.id] ? `url(#${line.id}-mask)` : undefined}
           />
         </g>
@@ -37,6 +35,12 @@ const fillLayer = ({
   return <g opacity={0.7}>{areas}</g>;
 };
 
-export const fillLayerBySector = props => fillLayer(props /* { year, isTransportation } */);
+FillLayer.propTypes = {
+  isTransportation: PropTypes.bool,
+};
 
-export const fillLayerScenario = ({ year }) => fillLayer({ year, isTransparent: true });
+FillLayer.defaultProps = {
+  isTransportation: false,
+};
+
+export default FillLayer;
