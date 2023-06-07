@@ -26,7 +26,7 @@
       "millionCubicMetres": "10⁶m³/d",
       "kilobarrels": "Mb/d",
       "cubicFeet": "Bcf/d",
-      "megatonnes": "MtCO2e"
+      "megatonnes": "MTCO₂e"
     },
     "prices": {
       "WTI": "WTI - US$/Barrel",
@@ -488,8 +488,8 @@
         "description": "Number of cubic metres of natural gas produced per day. One cubic foot of natural gas is equal to 0.0283 cubic metres."
       },
       "megatonnes": {
-        "title": "",
-        "description": "A measure of emissions that is a million tons of carbon dioxide equivalent (CO2e). CO2e is a measure of how much GHGs contribute to global warming relative to carbon dioxide."
+        "title": "Megatonnes of carbon dioxide equivalent",
+        "description": "A measure of emissions that is a megatonnes of carbon dioxide equivalent (CO₂e). CO₂e is a measure of how much GHGs contribute to global warming relative to carbon dioxide."
       }
     },
     "viewSelect": {
