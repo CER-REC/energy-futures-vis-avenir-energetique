@@ -15,6 +15,7 @@
     "dataset": "Dataset",
     "energyUnits": "ENERGY UNITS",
     "volumetricUnits": "VOLUMETRIC UNITS",
+    "emissionsUnits": "EMISSIONS UNIT",
     "netEmissions": "Net Emissions",
     "total": "Total",
     "units": {
@@ -25,7 +26,7 @@
       "millionCubicMetres": "10⁶m³/d",
       "kilobarrels": "Mb/d",
       "cubicFeet": "Bcf/d",
-      "megatonnes": "Mt"
+      "megatonnes": "MtCO2e"
     },
     "prices": {
       "WTI": "WTI - US$/Barrel",
@@ -485,6 +486,10 @@
       "millionCubicMetres": {
         "title": "Million cubic metres per day",
         "description": "Number of cubic metres of natural gas produced per day. One cubic foot of natural gas is equal to 0.0283 cubic metres."
+      },
+      "megatonnes": {
+        "title": "",
+        "description": "A measure of emissions that is a million tons of carbon dioxide equivalent (CO2e). CO2e is a measure of how much GHGs contribute to global warming relative to carbon dioxide."
       }
     },
     "viewSelect": {

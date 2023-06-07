@@ -15,6 +15,7 @@
     "dataset": "Série de données",
     "energyUnits": "UNITÉS D’ÉNERGIE",
     "volumetricUnits": "UNITÉS VOLUMÉTRIQUES",
+    "emissionsUnits": "UNITÉS D’ÉMISSIONS",
     "netEmissions": "Émissions nettes",
     "total": "Totale",
     "units": {
@@ -462,7 +463,7 @@
         "description": "Mesure d’énergie correspondant à un quadrillion (10¹⁵) de joules."
       },
       "kilobarrelEquivalents": {
-        "title": "Millier de barils d’équivalent pétrole brut par jour",
+        "title": "Millier de barils d’équivalent pétrole par jour",
         "description": "Mesure d’énergie normalisée à l’équivalent de la teneur en énergie d’un baril de pétrole brut. Un baril d’équivalent pétrole brut est égal à 6,123 gigajoules."
       },
       "gigawattHours": {
@@ -484,6 +485,10 @@
       "millionCubicMetres": {
         "title": "Million de mètres cubes par jour",
         "description": "Mesure du nombre de mètres cubes de gaz naturel produits par jour. Un pied cube de gaz naturel équivaut à 0,0283 mètre cube."
+      },
+      "megatonnes": {
+        "title": "",
+        "description": "Mesure des émissions d’un million de tonnes d’équivalent en dioxyde de carbone (« éq. CO2 »). Éq. CO2 est une mesure de la contribution des GES au réchauffement de la planète par rapport au dioxyde de carbone."
       }
     },
     "viewSelect": {
