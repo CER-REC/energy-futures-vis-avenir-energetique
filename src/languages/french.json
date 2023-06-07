@@ -375,7 +375,7 @@
           "2023": "Le Canada et le monde parviennent à la carboneutralité d’ici 2050."
         },
         "description": {
-          "default": "Avenir énergétique 2023 propose trois scénarios : carboneutralité à l’échelle mondiale, carboneutralité du Canada et mesures actuelles."
+          "default": "Le scénario de carboneutralité à l’échelle mondiale suppose que le Canada atteint la neutralité carbone d’ici 2050 et que le reste du monde réduit ses émissions à un niveau qui permet de limiter le réchauffement climatique à 1,5 °C."
         }
       },
       "Canada Net-zero": {
@@ -412,7 +412,7 @@
           "by-region": "Consulter la demande totale pour utilisation finale selon la région",
           "scenarios": "Comparer des scénarios pour la demande totale pour utilisation finale"
         },
-        "description": "Il s’agit de la consommation totale d’énergie dans les quatre grands secteurs de l’économie canadienne : résidentiel, commercial, industriel et transports. Elle comprend la consommation d’électricité, de gaz naturel, de produits pétroliers comme l’essence, de charbon, d’hydrogène et de carburants renouvelables. Aussi appelée demande pour utilisation finale ou demande secondaire, la demande totale n’inclut pas l’énergie utilisée pour produire de l’électricité."
+        "description": "L’énergie totale consommée dans les quatre secteurs de l’économie canadienne : résidentiel, commercial, industriel et des transports. Elle comprend la consommation d’électricité, de gaz naturel, de produits pétroliers comme l’essence, de charbon, d’hydrogène et de carburants renouvelables. Aussi appelée demande pour utilisation finale ou demande secondaire, la demande totale n’inclut pas l’énergie utilisée pour produire de l’électricité."
       },
       "electricityGeneration": {
         "title": "Production d’électricité",
@@ -420,7 +420,7 @@
           "by-region": "Consulter la production d’électricité selon la région",
           "scenarios": "Comparer des scénarios pour la production d’électricité"
         },
-        "description": "Il s’agit de la quantité d’électricité produite en transformant d’autres formes d’énergie. Au Canada, l’électricité provient de diverses sources : l’hydroélectricité; les autres énergies renouvelables, comme l’énergie éolienne et l’énergie solaire et la biomasse, les sources thermiques, comme le gaz naturel et le charbon; l’énergie nucléaire."
+        "description": "Il s’agit de la quantité d’électricité produite en transformant d’autres formes d’énergie. Au Canada, l’électricité provient de diverses sources : l’hydroélectricité; les autres énergies renouvelables, comme l’énergie éolienne, l’énergie solaire et la biomasse, les sources thermiques, comme le gaz naturel et le charbon; l’énergie nucléaire."
       },
       "oilProduction": {
         "title": "Production de pétrole",

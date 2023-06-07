@@ -464,7 +464,7 @@
         "description": "A measure of energy that is a quadrillion (10¹⁵) joules."
       },
       "kilobarrelEquivalents": {
-        "title": "Thousand barrels of light oil equivalent per day",
+        "title": "Thousand barrels of oil equivalent per day",
         "description": "A measure of energy normalized to the equivalent energy content of a barrel of crude oil. One barrel of oil equivalent is equal to 6.123 gigajoules."
       },
       "gigawattHours": {
