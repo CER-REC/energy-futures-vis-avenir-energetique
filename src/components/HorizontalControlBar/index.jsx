@@ -15,7 +15,7 @@ import { HintMainSelect, HintViewSelect, HintSectorSelect } from '../Hint';
 
 const useStyles = makeStyles(theme => createStyles({
   root: {
-    padding: theme.spacing(0.5, 2),
+    padding: theme.spacing(0.5, 3, 0.5, 1),
     '& p': { fontWeight: 700 },
   },
   btnSector: {
@@ -71,6 +71,7 @@ const HorizontalControlBar = () => {
       <Grid item>
         <Typography variant="body1" color="secondary">{intl.formatMessage({ id: 'components.viewSelect.name' })}</Typography>
       </Grid>
+      <HintMainSelect />
       {appendices.map(selection => (
         <Grid item key={`config-origin-${selection}`}>
           <Tooltip
@@ -89,7 +90,6 @@ const HorizontalControlBar = () => {
           </Tooltip>
         </Grid>
       ))}
-      <HintMainSelect />
     </Grid>
   );
 

@@ -3,16 +3,12 @@ import React, { useCallback, useMemo } from 'react';
 import Papa from 'papaparse';
 import { Button, makeStyles } from '@material-ui/core';
 import { saveAs } from 'file-saver';
-import PropTypes from 'prop-types';
 import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
 import useEnergyFutureData from '../../hooks/useEnergyFutureData';
 import { convertUnit } from '../../utilities/convertUnit';
 import { PAGES } from '../../constants';
 import analytics from '../../analytics';
-import { IconDownload } from '../../icons';
-import useIsDesktop from '../../hooks/useIsDesktop';
-
 // TODO: Remove after refactoring into useEnergyFutureData to provide a uniform data structure
 const selectionUnits = {
   energyDemand: 'petajoules',
@@ -23,33 +19,17 @@ const selectionUnits = {
 
 const useStyles = makeStyles(theme => ({
   download: {
-    [theme.breakpoints.down('sm')]: {
-      maxWidth: 130,
-      textAlign: 'right',
-      height: '100%',
-      textTransform: 'none',
-    },
-    [theme.breakpoints.up('md')]: {
-      ...theme.mixins.contextButton,
-      width: '100%',
-    },
+    ...theme.mixins.contextButton,
   },
   label: {
-    [theme.breakpoints.down('sm')]: {
-      fontSize: 14,
-      lineHeight: 1.2,
-    },
-    [theme.breakpoints.up('md')]: {
-      fontSize: 13,
-    },
+    lineHeight: 1.2,
+    fontSize: 13,
   },
-  accent: { ...theme.mixins.contextAccent },
 }));
 
-const DownloadButton = ({ accent }) => {
+const DownloadButton = () => {
   const classes = useStyles();
   const intl = useIntl();
-  const isDesktop = useIsDesktop();
   const {
     regions: { order: regionOrder },
     sources: { electricity: { order: sourceOrder } },
@@ -172,17 +152,13 @@ const DownloadButton = ({ accent }) => {
     <Button
       variant="contained"
       color="secondary"
-      startIcon={!isDesktop ? <IconDownload /> : null}
       onClick={onClick}
       className={classes.download}
-      classes={{ root: `${accent ? classes.accent : ''}`, label: classes.label }}
+      classes={{ label: classes.label }}
     >
       {intl.formatMessage({ id: 'components.share.download' })}
     </Button>
   );
 };
-
-DownloadButton.propTypes = { accent: PropTypes.bool };
-DownloadButton.defaultProps = { accent: false };
 
 export default DownloadButton;

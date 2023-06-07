@@ -1,4 +1,4 @@
-import React, { useState, useMemo, Fragment, useCallback } from 'react';
+import React, { useState, useMemo, Fragment, useCallback, cloneElement } from 'react';
 import { useIntl } from 'react-intl';
 import PropTypes from 'prop-types';
 import {
@@ -112,7 +112,7 @@ HintSection.defaultProps = {
 /**
  * Construct and render the hint icon (question mark) and its dialog.
  */
-const Hint = ({ children, label, content, maxWidth = 'sm', className }) => {
+const Hint = ({ children, label, content, maxWidth = 'sm', className, isTextButton }) => {
   const classes = useStyles();
   const intl = useIntl();
   const { page } = useConfig().config;
@@ -128,10 +128,21 @@ const Hint = ({ children, label, content, maxWidth = 'sm', className }) => {
   return (
     <>
       <Grid container alignItems="center" wrap="nowrap" className={classes.root}>
-        {children}
-        <IconButton onClick={handleOpenDialog} aria-label={intl.formatMessage({ id: 'common.a11y.open' })} className={classes.hint}>
-          <HintIcon fontSize="small" />
-        </IconButton>
+        {
+          isTextButton && (
+            cloneElement(children, { onClick: handleOpenDialog })
+          )
+        }
+        {
+          !isTextButton && (
+            <>
+              {children}
+              <IconButton onClick={handleOpenDialog} aria-label={intl.formatMessage({ id: 'common.a11y.open' })} className={classes.hint}>
+                <HintIcon fontSize="small" />
+              </IconButton>
+            </>
+          )
+        }
       </Grid>
 
       <Dialog
@@ -164,6 +175,7 @@ Hint.propTypes = {
   ]),
   maxWidth: PropTypes.string,
   className: PropTypes.string, // inject extra className for additional styling in the dialog
+  isTextButton: PropTypes.bool,
 };
 
 Hint.defaultProps = {
@@ -172,6 +184,7 @@ Hint.defaultProps = {
   content: 'under construction',
   maxWidth: 'sm',
   className: '',
+  isTextButton: false,
 };
 
 export default Hint;
@@ -308,7 +321,7 @@ export const HintSourceList = ({ sources, sourceType, children, disableKeyboardN
   return <Hint label="source" content={sections}>{children}</Hint>;
 };
 
-export const HintScenarioSelect = ({ children }) => {
+export const HintScenarioSelect = ({ children, isTextButton }) => {
   const classes = useStyles();
   const intl = useIntl();
   const { yearIdIterations } = useAPI();
@@ -346,11 +359,11 @@ export const HintScenarioSelect = ({ children }) => {
     showGraph && <Divider />,
     showGraph && <HintSection section={sectionCaption} />,
   ].filter(Boolean);
-  return <Hint label="scenarios" content={sections} className={classes.scenarios}>{children}</Hint>;
+  return <Hint label="scenarios" content={sections} className={classes.scenarios} isTextButton={isTextButton}>{children}</Hint>;
 };
 
-HintScenarioSelect.propTypes = { children: PropTypes.node };
-HintScenarioSelect.defaultProps = { children: null };
+HintScenarioSelect.propTypes = { children: PropTypes.node, isTextButton: PropTypes.bool };
+HintScenarioSelect.defaultProps = { children: null, isTextButton: false };
 
 HintSourceList.propTypes = {
   sources: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types

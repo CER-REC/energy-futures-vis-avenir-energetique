@@ -441,11 +441,3 @@ export const IconExternal = props => (
     </g>
   </SvgIcon>
 );
-
-export const IconCaret = props => (
-  <SvgIcon {...props} width="10" height="6" viewBox="0 0 10 6">
-    <g>
-      <path d="M9.94971 5.06189L5.00012 0.112305L0.0505409 5.06189L0.875374 5.8873L5.00012 1.76197L9.12487 5.8873L9.94971 5.06189Z" fill="#5D5D5D" />
-    </g>
-  </SvgIcon>
-);

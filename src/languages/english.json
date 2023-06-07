@@ -113,7 +113,8 @@
   },
   "components": {
     "header": {
-      "subtitle": "What does Canada's energy future look like if we followed these scenarios?"
+      "subtitle": "What does Canada's energy future look like if we followed these scenarios?",
+      "learnMore": "Learn more about Scenarios"
     },
     "draggableVerticalList": {
       "all": "All",
@@ -151,7 +152,7 @@
       "app": "loading"
     },
     "yearSelect": {
-      "name": "EF REPORT",
+      "name": "Report",
       "title": "ENERGY FUTURES REPORTS",
       "2021": {
         "title": "CANADA’S ENERGY FUTURE 2021",
@@ -278,7 +279,7 @@
       "NIT": "Nova Inventory Transfer (NIT) - {year} US$/MMBtu"
     },
     "scenarioSelect": {
-      "name": "SCENARIOS",
+      "name": "Scenarios",
       "readMore": "Read more",
       "readLess": "Read less",
       "description": {
@@ -462,7 +463,7 @@
       }
     },
     "viewSelect": {
-      "name": "VIEW BY",
+      "name": "Data",
       "region": {
         "tooltip": {
           "electricity": {

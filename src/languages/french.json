@@ -151,7 +151,7 @@
       "app": "veuillez patienter"
     },
     "yearSelect": {
-      "name": "RAPPORT AE",
+      "name": "Rapport",
       "title": "RAPPORTS SUR L’AVENIR ÉNERGÉTIQUE",
       "2021": {
         "title": "AVENIR ÉNERGÉTIQUE DU CANADA EN 2021",
@@ -278,7 +278,7 @@
       "NIT": ""
     },
     "scenarioSelect": {
-      "name": "SCÉNARIOS",
+      "name": "Scénarios",
       "readMore": "En savoir plus",
       "readLess": "Réduire",
       "description": {
@@ -456,7 +456,7 @@
       }
     },
     "viewSelect": {
-      "name": "VISUALISER PAR",
+      "name": "",
       "region": {
         "tooltip": {
           "electricity": {

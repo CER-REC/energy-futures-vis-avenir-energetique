@@ -32,8 +32,8 @@ const theme = createMuiTheme({
     },
     contextButton: {
       height: 'auto',
-      minHeight: 26,
-      minWidth: 0,
+      minHeight: 30,
+      width: 100,
       padding: defaultTheme.spacing(0.25, 1),
       border: '1px solid transparent',
       fontSize: 13,
@@ -118,6 +118,20 @@ const theme = createMuiTheme({
       outlinedSizeSmall: {
         fontSize: 13,
         padding: defaultTheme.spacing(0, 0.25),
+      },
+      textPrimary: {
+        minWidth: 'unset',
+        padding: 0,
+        textAlign: 'left',
+        fontWeight: 'bold',
+        textTransform: 'inherit',
+        '&:hover': {
+          backgroundColor: 'inherit',
+          textDecoration: 'underline',
+        },
+        '&$focusVisible': {
+          backgroundColor: defaultTheme.palette.action.focus,
+        },
       },
     },
     MuiTooltip: {

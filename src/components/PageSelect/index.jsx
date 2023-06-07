@@ -1,7 +1,6 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
 import { useIntl } from 'react-intl';
-import PropTypes from 'prop-types';
 import {
   makeStyles, createStyles,
   Grid, ButtonBase, Typography, Tooltip,
@@ -16,14 +15,11 @@ const useStyles = makeStyles(theme => createStyles({
     height: 98,
     width: 72,
     backgroundColor: '#F3EFEF',
-    boxShadow: theme.shadows[4],
     zIndex: 9,
-    border: '2px solid transparent',
     transition: 'top .5s ease-in-out, padding .5s ease-in-out, border-color .25s ease-in-out',
     '&:hover': { border: `2px solid ${theme.palette.primary.main}` },
     '&:disabled': {
       backgroundColor: theme.palette.primary.main,
-      boxShadow: theme.shadows[0],
       '& svg': { fill: '#FEFEFE' },
       '& span': { color: '#FEFEFE' },
     },
@@ -59,13 +55,9 @@ const useStyles = makeStyles(theme => createStyles({
     borderRadius: 0,
     boxShadow: theme.shadows[1],
   },
-  shift: {
-    marginTop: -theme.spacing(1.5),
-    marginLeft: -theme.spacing(1),
-  },
 }));
 
-const PageSelect = ({ direction /* row, column */ }) => {
+const PageSelect = () => {
   const classes = useStyles();
   const intl = useIntl();
 
@@ -113,18 +105,12 @@ const PageSelect = ({ direction /* row, column */ }) => {
   return (
     <Grid
       container
-      direction={direction}
       alignItems="center"
       wrap="nowrap"
-      spacing={1}
-      className={direction === 'row' ? '' : classes.shift}
     >
       {pageButtons}
     </Grid>
   );
 };
-
-PageSelect.propTypes = { direction: PropTypes.string };
-PageSelect.defaultProps = { direction: 'column' };
 
 export default PageSelect;

@@ -139,8 +139,8 @@ const useStyles = makeStyles(theme => ({
     borderRight: 'none',
   },
   reportContent: {
-    height: 280,
-    overflowX: 'hidden',
+    height: 320,
+    overflow: 'hidden',
     '& div > p:nth-child(2)': {
       paddingTop: '1em',
     },
