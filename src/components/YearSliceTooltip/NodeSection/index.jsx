@@ -32,7 +32,7 @@ const NodeSection = ({ section, year = null }) => {
   const classes = useStyles();
   const intl = useIntl();
 
-  const sum = section.hasTotal
+  const sum = section.totalLabel
     ? section.nodes.reduce((a, b) => a + b.value, 0) : 0;
 
   return (
@@ -48,13 +48,13 @@ const NodeSection = ({ section, year = null }) => {
           }
         </TableRow>
         <TableRow>
-          <TableCell style={{ paddingTop: 0 }}>
+          <TableCell style={{ paddingTop: year ? 0 : 10 }}>
             <Typography variant="h6" style={{ fontSize: year ? 18 : 16 }}>
               {section.title}
             </Typography>
           </TableCell>
           <TableCell align="right">
-            <strong>{intl.formatMessage({ id: `common.units.${section.unit}` })}</strong>
+            <strong>{section.unit}</strong>
           </TableCell>
         </TableRow>
       </TableHead>
@@ -65,25 +65,35 @@ const NodeSection = ({ section, year = null }) => {
           section.nodes.map(node => (
             <TableRow key={node.name}>
               <TableCell size="small" style={{ display: 'flex' }}>
-                <div className={classes.color}>
-                  <svg height="100%" width="100%" viewBox="0 0 30 30">
-                    <rect height="100%" width="100%" fill={node.color || '#FFF'} />
-                  </svg>
+                <div className={classes.color} style={{ backgroundColor: node.mask ? 'transparent' : node.color }}>
+                  {node.mask && (
+                    <svg height="100%" width="100%" viewBox="0 0 30 30">
+                      <rect height="100%" width="100%" fill={node.color || '#FFF'} mask={node.mask} />
+                    </svg>
+                  )}
                 </div>
                 <strong>{node.name}</strong>
               </TableCell>
               <TableCell align="right">
-                {formatValue(node.value, intl)}
+                {
+                  section.isPrice && ('$')
+                }
+                {formatValue(node.value, intl, section.isPrice)}
+                {
+                  section.hasPercentage && (
+                    ` (${((node.value / sum) * 100).toLocaleString(intl.locale, { maximumFractionDigits: 2 })}${intl.formatMessage({ id: 'common.char.percent' })})`
+                  )
+                }
               </TableCell>
             </TableRow>
           ))
         }
         {
-          section.hasTotal && (
+          section.totalLabel && (
             <TableRow className={classes.total}>
               <TableCell>
                 <strong>
-                  {intl.formatMessage({ id: 'common.netEmissions' })}
+                  {section.totalLabel}
                 </strong>
               </TableCell>
               <TableCell align="right">
@@ -104,9 +114,12 @@ NodeSection.propTypes = {
       name: PropTypes.string,
       value: PropTypes.number,
       color: PropTypes.string,
+      mask: PropTypes.string,
     })),
     unit: PropTypes.string.isRequired,
-    hasTotal: PropTypes.bool,
+    totalLabel: PropTypes.string,
+    isPrice: PropTypes.bool,
+    hasPercentage: PropTypes.bool,
   }).isRequired,
   year: PropTypes.string,
 };

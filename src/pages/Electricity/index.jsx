@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
+import React, { useState, useCallback, useMemo, useRef } from 'react';
 import { useIntl } from 'react-intl';
 import PropTypes from 'prop-types';
 import {
@@ -9,7 +9,7 @@ import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
 import analytics from '../../analytics';
 import YearSlider from '../../components/YearSlider';
-import VizTooltip from '../../components/VizTooltip';
+import YearSliceTooltip from '../../components/YearSliceTooltip';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -124,7 +124,8 @@ const COORD = {
   AB: { top: '25%', left: '8%' },
 
   BIO: { top: '30%', left: '55%' },
-  RENEWABLE: { top: '65%', left: '60%' },
+  WIND: { top: '55%', left: '60%' },
+  SOLAR: { top: '75%', left: '85%' },
   GAS: { top: '15%', left: '70%' },
   HYDRO: { top: '40%', left: '15%' },
   NUCLEAR: { top: '8%', left: '30%' },
@@ -150,8 +151,6 @@ const Electricity = ({ data, year }) => {
   const desktop = useMediaQuery('(min-width: 992px)');
 
   const [currYear, setCurrYear] = useState(config.baseYear || iteration);
-
-  useEffect(() => setCurrYear(config.baseYear || year?.min), [config.baseYear, year]);
 
   /**
    * Coefficients for determining bubble sizes during the calculation.
@@ -255,7 +254,27 @@ const Electricity = ({ data, year }) => {
     }
   }, [year, config.baseYear, config.page, prevEvent]);
 
-  if (!data || !processedData || processedData.length <= 0) {
+  const getTooltip = useCallback((entry) => {
+    const section = {
+      title: intl.formatMessage({ id: `common.scenarios.${config.scenarios[0]}` }),
+      nodes: entry.nodes.map(value => ({
+        ...value,
+        name: value.translation,
+      })),
+      unit: intl.formatMessage({ id: `common.units.${config.unit}` }),
+      totalLabel: intl.formatMessage({ id: 'common.total' }),
+      hasPercentage: true,
+    };
+
+    return (
+      <YearSliceTooltip
+        sections={[section]}
+        year={currYear.toString()}
+      />
+    );
+  }, [config.scenarios, config.unit, currYear, intl]);
+
+  if (!data) {
     return null;
   }
 
@@ -280,7 +299,7 @@ const Electricity = ({ data, year }) => {
       {processedData.map(entry => (
         <Tooltip
           key={`bubble-${entry.name}`}
-          title={single ? '' : <VizTooltip nodes={entry.nodes} unit={config.unit} />}
+          title={single ? '' : getTooltip(entry)}
           onOpen={() => handleEventUpdate(entry)}
           classes={{ tooltip: classes.tooltip }}
         >
@@ -333,7 +352,7 @@ const Electricity = ({ data, year }) => {
             {/* static legend shown beside a single province */}
             {single && (
               <div className={classes.legend} style={{ right: `calc(-100% - ${desktop ? 100 : 200}px)` }}>
-                <VizTooltip nodes={entry.nodes} unit={config.unit} />
+                {getTooltip(entry)}
               </div>
             )}
           </div>

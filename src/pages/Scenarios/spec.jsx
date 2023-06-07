@@ -6,7 +6,7 @@ import { ResponsiveLine } from '@nivo/line';
 import Scenarios, { dottedLayer } from '.';
 import { TestContainer, getRendered } from '../../tests/utilities';
 import { DEFAULT_CONFIG, MOCK_DATA } from './stories';
-import TooltipWithHeader from '../../components/TooltipWithHeader';
+import YearSliceTooltip from '../../components/YearSliceTooltip';
 
 const getComponent = (data, year) => (
   <TestContainer mockConfig={{ ...DEFAULT_CONFIG }}>
@@ -46,7 +46,7 @@ describe('Page|Scenarios', () => {
             y: 80,
           }],
         },
-      })).toHaveProperty('type', TooltipWithHeader);
+      })).toHaveProperty('type', YearSliceTooltip);
     });
   });
 

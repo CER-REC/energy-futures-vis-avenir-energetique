@@ -16,6 +16,7 @@
     "energyUnits": "UNITÉS D’ÉNERGIE",
     "volumetricUnits": "UNITÉS VOLUMÉTRIQUES",
     "netEmissions": "Émissions nettes",
+    "total": "Totale",
     "units": {
       "petajoules": "PJ",
       "gigawattHours": "GWh",
@@ -528,6 +529,8 @@
   "containers": {
     "scenarios": {
       "benchmark": {
+        "oilTitle": "",
+        "gasTitle": "",
         "oilProduction": "",
         "gasProduction": ""
       }
@@ -542,8 +545,9 @@
       "HYDRO": "Électricité produite par les centrales hydroélectriques, ainsi que les contributions modestes des centrales houlomotrices et marémotrices.",
       "GAS": "Électricité produite au moyen de diverses technologies utilisant le gaz naturel, notamment des chaudières à vapeur, des turbines à gaz et des centrales à moteurs à combustion, ainsi que des centrales à cycle combiné.",
       "OIL": "Électricité produite au moyen de diverses technologies utilisant le mazout, comme des turbines à vapeur et des turbines à combustion.",
-      "RENEWABLE": "Comprend l’électricité produite au moyen de systèmes photovoltaïques ou de systèmes thermiques solaires concentrés et l’électricité générée par des éoliennes.",
-      "NUCLEAR": "Désigne l’électricité produite dans des centrales nucléaires."
+      "NUCLEAR": "Désigne l’électricité produite dans des centrales nucléaires.",
+      "SOLAR": "",
+      "WIND": ""
     },
     "energy": {
       "BIO": "Comprend la biomasse, l’hydrogène, l’éthanol et le biodiesel.",
