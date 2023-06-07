@@ -10,7 +10,7 @@ import analytics from '../../analytics';
 import { CHART_PROPS, CHART_AXIS_PROPS, CHART_PATTERNS, OIL_SUBGROUP } from '../../constants';
 import { getTicks } from '../../utilities/parseData';
 
-import { fillLayerBySector } from '../../components/FillLayer';
+import FillLayer from '../../components/FillLayer';
 import ForecastLayer from '../../components/ForecastLayer';
 import HistoricalLayer from '../../components/HistoricalLayer';
 import getYearLabel from '../../utilities/getYearLabel';
@@ -58,8 +58,8 @@ const BySector = ({ data, year }) => {
    * Fill over forecast years.
    */
   const fill = useMemo(
-    () => fillLayerBySector({ year, isTransportation }),
-    [year, isTransportation],
+    () => FillLayer(isTransportation),
+    [isTransportation],
   );
 
   /**

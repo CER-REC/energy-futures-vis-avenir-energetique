@@ -9,7 +9,6 @@ import useEnergyFutureData from '../../hooks/useEnergyFutureData';
 import analytics from '../../analytics';
 
 import { CHART_PROPS, CHART_AXIS_PROPS, SCENARIO_COLOR } from '../../constants';
-import { fillLayerScenario } from '../../components/FillLayer';
 import ForecastLayer from '../../components/ForecastLayer';
 import HistoricalLayer from '../../components/HistoricalLayer';
 import PriceSelect from '../../components/PriceSelect';

@@ -1,9 +1,8 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { SOURCE_PATTERNS } from '../../constants';
 
-const fillLayer = ({
-  isTransportation, /* boolean */
-}) => ({ areaGenerator, series }) => {
+const FillLayer = isTransportation => ({ areaGenerator, series }) => {
   /**
    * Generate the areas for lines in the chart and apply a solid fill.
    * The slice and reverse part is taken directly from the way Nivo draws the areas,
@@ -36,4 +35,12 @@ const fillLayer = ({
   return <g opacity={0.7}>{areas}</g>;
 };
 
-export const fillLayerBySector = props => fillLayer(props /* { year, isTransportation } */);
+FillLayer.propTypes = {
+  isTransportation: PropTypes.bool,
+};
+
+FillLayer.defaultProps = {
+  isTransportation: false,
+};
+
+export default FillLayer;
