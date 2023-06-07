@@ -1,6 +1,6 @@
 #### À PROPOS DE L’OUTIL
 
-L’outil interactif en ligne Explorer l’avenir énergétique du Canada repose sur la publication phare de la Régie de l’énergie du Canada intitulée [Avenir énergétique du Canada](https://www.cer-rec.gc.ca/fr/donnees-analyse/avenir-energetique-canada/index.html). Cette visualisation vous permet de prendre connaissance de l’évolution de la production et de la consommation d’énergie, et faire des prévisions pour l’avenir. Vous avez le loisir de vous en tenir au rapport le plus récent ou d’aller voir ce que disaient de précédents rapports.
+L’outil interactif en ligne Explorer l’avenir énergétique du Canada repose sur la publication phare de la Régie de l’énergie du Canada intitulée [Avenir énergétique du Canada](https://www.cer-rec.gc.ca/fr/donnees-analyse/avenir-energetique-canada/index.html). Cette visualisation vous permet de prendre connaissance de l’évolution de la production et de la consommation d’énergie, et diverses possibilités qui pourraient s’offrir aux Canadiens à long terme en matière d’énergie. Vous avez le loisir de vous en tenir au rapport le plus récent ou d’aller voir ce que disaient de précédents rapports.
 
 **Contexte:** Explorer l’avenir énergétique du Canada a vu le jour en 2016 dans le cadre d’un projet pilote qui a démarré l’initiative de visualisation des données de la Régie. Échelonnée sur trois ans, cette initiative visait à transformer la manière dont la Régie structure et diffuse ses données. Elle avait aussi comme objectif de favoriser un processus décisionnel fondé sur la preuve et de faciliter la compréhension des questions liées aux réseaux énergétiques et pipeliniers du Canada, grâce à des visualisations interactives, faciles à utiliser.
 
@@ -11,6 +11,20 @@ Nous espérons avoir atteint notre objectif. Votre rétroaction est essentielle.
 Vous pouvez nous la faire parvenir, ainsi que vos suggestions, à l’adresse [data.donnees@cer-rec.gc.ca](mailto:data.donnees@cer-rec.gc.ca). Votre opinion compte.
 
 ###### LES CONTRIBUTEURS
+
+###### VERSION 2.x
+###### SOURCE DES DONNÉES :
+Eranda Bartholameuz (analyste de marchés), Gabi Diner (analyste de marchés), Robert Dumeah (analyste de marchés) et Michael Nadew (analyste de marchés)
+
+###### COORDINATION :
+Amanda Harwood (gestionnaire de projet), Karen Ryhorchuk (agente de communications), Darcie Harding (Directrice par intérim, Transformation numérique)
+
+###### VISUALISATION DE DONNÉES :
+Équipe de conception de la Régie: Lien Quach, Navarjun Grewal et Annie Tat 
+
+Chef technique : VizworX
+
+Aspect technique : Alan Chen, Joshua Bellamy et Dianna Yim
 
 ###### VERSION 2
 ###### SOURCE DES DONNÉES :
