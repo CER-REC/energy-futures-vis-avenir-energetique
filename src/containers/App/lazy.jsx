@@ -15,6 +15,7 @@ import Emissions from '../../pages/Emissions';
 
 const Content = () => {
   const { config } = useConfig();
+  const isGreenhouseGasEmission = config.mainSelection === 'greenhouseGasEmission';
 
   if (config.page === 'landing') {
     return <Landing />;
@@ -22,11 +23,11 @@ const Content = () => {
 
   return (
     <PageLayout
-      showRegion={config.page !== 'emissions'}
+      showRegion={!isGreenhouseGasEmission}
       disableDraggableRegion={['by-sector', 'electricity', 'scenarios', 'oil-and-gas', 'demand'].includes(config.page)}
       singleSelectRegion={['by-sector', 'scenarios', 'demand'].includes(config.page) || (config.view === 'region')}
-      showSource={['by-sector', 'electricity', 'emissions', 'oil-and-gas'].includes(config.page)}
-      disableDraggableSource={['electricity', 'emissions', 'oil-and-gas'].includes(config.page)}
+      showSource={['by-sector', 'electricity', 'emissions', 'oil-and-gas'].includes(config.page) || isGreenhouseGasEmission}
+      disableDraggableSource={['electricity', 'emissions', 'oil-and-gas'].includes(config.page) || isGreenhouseGasEmission}
       singleSelectSource={config.view === 'source'}
     >
       {config.page === 'emissions' && <Emissions />}
