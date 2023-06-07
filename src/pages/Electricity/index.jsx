@@ -105,6 +105,9 @@ const useStyles = makeStyles(theme => ({
     bottom: '50%',
     maxWidth: 250,
     transform: 'translateY(50%)',
+    ...theme.overrides.MuiTooltip.tooltip,
+    boxShadow: 'none',
+    padding: theme.spacing(0.5),
   },
 }));
 

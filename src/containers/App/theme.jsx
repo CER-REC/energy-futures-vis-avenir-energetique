@@ -126,6 +126,7 @@ const theme = createMuiTheme({
         color: defaultTheme.palette.secondary.main,
         fontSize: 12,
         border: `1px solid ${defaultTheme.palette.secondary.main}`,
+        boxShadow: defaultTheme.shadows[2],
         borderRadius: 0,
       },
     },

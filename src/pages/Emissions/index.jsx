@@ -14,6 +14,7 @@ import HistoricalLayer from '../../components/HistoricalLayer';
 import ForecastLayer from '../../components/ForecastLayer';
 import getYearLabel from '../../utilities/getYearLabel';
 import YearSliceTooltip from '../../components/YearSliceTooltip';
+import Theme from '../../containers/App/theme';
 
 const useStyles = makeStyles(theme => ({
   chart: {
@@ -128,6 +129,11 @@ const Emissions = ({ data, year }) => {
           value: 0,
           lineStyle: { stroke: 'rgba(0,0,0,1)', strokeWidth: 3 },
         }]}
+        theme={{
+          tooltip: {
+            ...Theme.overrides.MuiTooltip.tooltip,
+          },
+        }}
       />
     </div>
   );

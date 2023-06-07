@@ -78,7 +78,7 @@ const NodeSection = ({ section, year = null }) => {
                 {
                   section.isPrice && ('$')
                 }
-                {formatValue(node.value, intl, section.isPrice)}
+                {formatValue(node.value, intl)}
                 {
                   section.hasPercentage && (
                     ` (${((node.value / sum) * 100).toLocaleString(intl.locale, { maximumFractionDigits: 2 })}${intl.formatMessage({ id: 'common.char.percent' })})`

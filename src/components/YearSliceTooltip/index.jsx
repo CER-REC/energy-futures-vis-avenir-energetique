@@ -8,6 +8,7 @@ const useStyles = makeStyles(theme => ({
   wrapper: {
     backgroundColor: 'white',
     padding: theme.spacing(1),
+    ...theme.overrides.MuiTooltip.tooltip,
   },
 }));
 
