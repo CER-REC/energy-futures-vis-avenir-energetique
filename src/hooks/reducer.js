@@ -120,7 +120,7 @@ export const getReducer = (regions, sources, sectors, yearIdIterations) => {
 
     const validatedSources = validSources.filter(source => selectedSources?.includes(source));
 
-    if ((page === 'by-sector') || (view === 'region') || (page === 'emissions')) {
+    if ((page === 'by-sector') || (view === 'region') || (selection === 'greenhouseGasEmission')) {
       return (selectedSources?.includes('ALL') || !selectedSources) ? validSources : validatedSources;
     }
 
@@ -167,6 +167,7 @@ export const getReducer = (regions, sources, sectors, yearIdIterations) => {
     let mainSelection;
     let yearId;
     let view;
+    let selectedSources;
 
     switch (action.type) {
       case 'page/changed':
@@ -177,6 +178,7 @@ export const getReducer = (regions, sources, sectors, yearIdIterations) => {
         mainSelection = getSelection(action.payload, state.mainSelection);
         yearId = getYearId(action.payload, state.yearId);
         view = getView(action.payload, state.view);
+        selectedSources = mainSelection === state.mainSelection ? state.sources : null;
 
         return {
           ...state,
@@ -189,8 +191,7 @@ export const getReducer = (regions, sources, sectors, yearIdIterations) => {
           scenarios: getScenarios(action.payload, yearId, state.scenarios),
           provinces: getProvinces(action.payload, view, state.provinces),
           provinceOrder: getProvinceOrder(action.payload, state.provinceOrder),
-          // Always reset the sources on page change
-          sources: getSources(action.payload, mainSelection, view, null),
+          sources: getSources(action.payload, mainSelection, view, selectedSources),
           sourceOrder: getSourceOrder(action.payload, mainSelection, state.sourceOrder),
           priceSource: getPriceSource(mainSelection, state.priceSource),
           baseYear: getBaseYear(action.payload, state.baseYear),

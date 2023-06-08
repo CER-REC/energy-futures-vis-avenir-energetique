@@ -1,3 +1,24 @@
+export const formatTotalLineData = (data) => {
+  if (!data?.length) {
+    return null;
+  }
+
+  const scenarioTotals = data?.reduce((scenarios, resource) => ({
+    ...scenarios,
+    [resource.scenario]: {
+      ...scenarios[resource.scenario],
+      [resource.year]: (scenarios[resource.scenario]?.[resource.year] || 0) + resource.value,
+    },
+  }), {});
+
+  return Object.keys(scenarioTotals).map(scenario => ({
+    id: scenario,
+    data: Object.keys(scenarioTotals[scenario]).map(
+      year => ({ x: parseInt(year, 10), y: scenarioTotals[scenario][year] }),
+    ),
+  }));
+};
+
 export const formatLineData = (data, type, unitConversion = 1) => {
   if (!data) {
     return [];

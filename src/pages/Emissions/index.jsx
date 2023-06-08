@@ -8,7 +8,7 @@ import useConfig from '../../hooks/useConfig';
 import convertHexToRGB from '../../utilities/convertHexToRGB';
 import analytics from '../../analytics';
 import { getTicks } from '../../utilities/parseData';
-import { CHART_PROPS } from '../../constants';
+import { CHART_PROPS, GREENHOUSE_GAS_MARKERS } from '../../constants';
 import NetBarLineLayer from '../../components/NetBarLineLayer';
 import HistoricalLayer from '../../components/HistoricalLayer';
 import ForecastLayer from '../../components/ForecastLayer';
@@ -124,11 +124,7 @@ const Emissions = ({ data, year }) => {
         gridYValues={ticks}
         motionStiffness={300}
         forecastStart={year.forecastStart}
-        markers={[{
-          axis: 'y',
-          value: 0,
-          lineStyle: { stroke: 'rgba(0,0,0,1)', strokeWidth: 3 },
-        }]}
+        markers={GREENHOUSE_GAS_MARKERS}
         theme={{
           tooltip: {
             ...defaultTheme.overrides.MuiTooltip.tooltip,

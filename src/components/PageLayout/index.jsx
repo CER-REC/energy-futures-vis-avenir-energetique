@@ -203,10 +203,10 @@ const PageLayout = ({
               <Grid item style={{ width: gutterWidth }}>
                 <DraggableVerticalList
                   title="Source"
-                  shape={config.page === 'emissions' ? 'hexagon' : 'circle'}
+                  shape={config.mainSelection === 'greenhouseGasEmission' ? 'hexagon' : 'circle'}
                   disabled={disableDraggableSource}
                   singleSelect={singleSelectSource}
-                  greyscale={singleSelectSource}
+                  greyscale={singleSelectSource || config.page === 'scenarios'}
                   sourceType={type}
                   items={config.sources}
                   itemOrder={config.sourceOrder}

@@ -50,7 +50,8 @@
       "energyDemand": "Total Demand",
       "electricityGeneration": "Electricity Generation",
       "oilProduction": "Oil Production",
-      "gasProduction": "Gas Production"
+      "gasProduction": "Gas Production",
+      "greenhouseGasEmission": "Emissions"
     },
     "char": {
       "colon": ":",
@@ -256,10 +257,11 @@
       },
       "Scenarios": {
         "title": {
-          "energyDemand": "Compare Scenarios For Total End-Use Demand",
-          "electricityGeneration": "Compare Scenarios For Electricity Generation",
-          "oilProduction": "Compare Scenarios For Oil Production",
-          "gasProduction": "Compare Scenarios For Gas Production",
+          "energyDemand": "Compare Scenarios for Total End-Use Demand",
+          "electricityGeneration": "Compare Scenarios for Electricity Generation",
+          "oilProduction": "Compare Scenarios for Oil Production",
+          "gasProduction": "Compare Scenarios for Gas Production",
+          "greenhouseGasEmission": "Compare Scenarios for Emissions",
           "default": "Scenarios"
         },
         "description": "Directly compare scenarios to see how projections change over time."
@@ -443,7 +445,9 @@
       },
       "greenhouseGasEmission": {
         "title": "Emissions",
-        "tooltip": {},
+        "tooltip": {
+          "scenarios": "Compare scenarios for emissions"
+        },
         "description": "Total Canadian greenhouse gas (GHG) emissions for Oil and Gas, Electricity Generation, Hydrogen Production, Transportation, Heavy Industry, Buildings, Agriculture, Waste and Others, Land Use, Land Use Change and Forestry and Direct Air Capture."
       }
     },
