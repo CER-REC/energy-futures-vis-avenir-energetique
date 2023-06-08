@@ -27,5 +27,5 @@ export const convertUnit = (prevUnit, newUnit) => {
   return 1;
 };
 
-export const formatValue = (value, intl, hasTwoDecimals) => Number(value.toFixed(2))
-  .toLocaleString(intl.locale, { minimumFractionDigits: hasTwoDecimals ? 2 : 0 });
+export const formatValue = (value, intl) => Number(value.toFixed(2))
+  .toLocaleString(intl.locale, { minimumFractionDigits: 2 });

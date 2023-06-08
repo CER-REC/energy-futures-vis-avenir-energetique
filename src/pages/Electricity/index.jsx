@@ -65,6 +65,7 @@ const useStyles = makeStyles(theme => ({
     padding: theme.spacing(0.5),
     border: `1px solid ${theme.palette.secondary.light}`,
     lineHeight: 1,
+    backgroundColor: 'white',
     '& span': {
       fontWeight: 700,
       lineHeight: 1,
@@ -103,8 +104,11 @@ const useStyles = makeStyles(theme => ({
   legend: {
     position: 'absolute',
     bottom: '50%',
-    maxWidth: 250,
+    maxWidth: 300,
     transform: 'translateY(50%)',
+    ...theme.overrides.MuiTooltip.tooltip,
+    boxShadow: 'none',
+    padding: theme.spacing(0.5),
   },
 }));
 

@@ -13,6 +13,7 @@ import ForecastLayer from '../../components/ForecastLayer';
 import HistoricalLayer from '../../components/HistoricalLayer';
 import getYearLabel from '../../utilities/getYearLabel';
 import YearSliceTooltip from '../../components/YearSliceTooltip';
+import defaultTheme from '../../containers/App/theme';
 
 const useStyles = makeStyles(theme => ({
   chart: {
@@ -115,6 +116,11 @@ const ByRegion = ({ data, year }) => {
         gridYValues={ticks}
         motionStiffness={300}
         forecastStart={year.forecastStart}
+        theme={{
+          tooltip: {
+            ...defaultTheme.overrides.MuiTooltip.tooltip,
+          },
+        }}
       />
     </div>
   );
