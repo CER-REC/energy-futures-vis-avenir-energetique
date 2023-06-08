@@ -5,10 +5,14 @@ import { PAGES } from '../constants';
 import useAPI from './useAPI';
 import useConfig from './useConfig';
 import { convertUnit } from '../utilities/convertUnit';
-import { parseData, NOOP } from '../utilities/parseData';
+import { formatTotalLineData, parseData, NOOP } from '../utilities/parseData';
 import * as queries from './queries';
 
 const getQuery = (config) => {
+  if (config.mainSelection === 'greenhouseGasEmission') {
+    return queries.GREENHOUSE_GAS_EMISSIONS_SOURCE;
+  }
+
   if (['by-region', 'scenarios'].includes(config.page)) {
     switch (config.mainSelection) {
       case 'oilProduction':
@@ -30,9 +34,8 @@ const getQuery = (config) => {
     return config.mainSelection === 'gasProduction'
       ? queries.GAS_PRODUCTIONS
       : queries.OIL_PRODUCTIONS;
-  } else if (config.page === 'emissions') {
-    return queries.GREENHOUSE_GAS_EMISSIONS_SOURCE;
   }
+
   return null;
 };
 
@@ -130,6 +133,11 @@ export default () => {
     if (!data || !data.resources) {
       return data;
     }
+
+    if ((config.page === 'scenarios') && (config.mainSelection === 'greenhouseGasEmission')) {
+      return formatTotalLineData(data.resources);
+    }
+
     return (parseData[config.page] || NOOP)(
       data.resources,
       unitConversion,
@@ -137,7 +145,7 @@ export default () => {
       sources,
       config.view,
     );
-  }, [config.page, config.view, data, regions, sources, unitConversion]);
+  }, [config.page, config.mainSelection, config.view, data, regions, sources, unitConversion]);
 
   /**
    * Determine all the unavailable / disabled items in the current data-set.
