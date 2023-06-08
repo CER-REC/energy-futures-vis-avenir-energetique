@@ -15,6 +15,7 @@
     "dataset": "Dataset",
     "energyUnits": "ENERGY UNITS",
     "volumetricUnits": "VOLUMETRIC UNITS",
+    "emissionsUnits": "EMISSIONS UNIT",
     "netEmissions": "Net Emissions",
     "total": "Total",
     "units": {
@@ -25,7 +26,7 @@
       "millionCubicMetres": "10⁶m³/d",
       "kilobarrels": "Mb/d",
       "cubicFeet": "Bcf/d",
-      "megatonnes": "Mt"
+      "megatonnes": "MTCO₂e"
     },
     "prices": {
       "WTI": "WTI - US$/Barrel",
@@ -154,6 +155,14 @@
     "yearSelect": {
       "name": "Report",
       "title": "ENERGY FUTURES REPORTS",
+      "2023": {
+        "title": "CANADA’S ENERGY FUTURE 2023",
+        "tooltip": "Explore data from the 2023 Energy Future Report",
+        "subtitle": "June 2023",
+        "description": "Canada’s Energy Future 2023: Energy Supply and Demand Projections to 2050 (EF2023) is the latest long-term energy outlook from the Canada Energy Regulator (CER). The Canada’s Energy Future series explores how possible energy futures might unfold for Canadians over the long term. EF2023 focuses on the challenge of achieving net-zero greenhouse gas (GHG) emissions by 2050. We explore net-zero scenarios to help Canadians and policy makers see what a net-zero world could look like, visualize the goal, and make informed decisions. Our scenarios cover all energy commodities and all Canadian provinces and territories. We use economic and energy models to do this analysis.\n\nEF2023 contains three scenarios. Two of these scenarios explore pathways where Canada achieves net-zero emissions by 2050. In the **Global Net-zero Scenario**, we assume Canada achieves net-zero emissions by 2050. We also assume the rest of the world reduces emissions enough to limit global warming to 1.5 Celsius (°C). In the **Canada Net-zero Scenario**, Canada also achieves net-zero emissions by 2050 but the rest of the world moves more slowly to reduce GHG emissions. The third scenario, the **Current Measures Scenario**, assumes limited action to reduce GHG emissions beyond measures in place today. In this scenario, we do not require our modeling results achieve net-zero GHG emissions in Canada by 2050. We also assume limited future global climate action.",
+        "context": "EF2023 contains three scenarios. Two of these scenarios explore pathways where Canada achieves net-zero emissions by 2050. In the Global Net-zero Scenario, we assume Canada achieves net-zero emissions by 2050. We also assume the rest of the world reduces emissions enough to limit global warming to 1.5 Celsius (°C). In the Canada Net-zero Scenario, Canada also achieves net-zero emissions by 2050 but the rest of the world moves more slowly to reduce GHG emissions. The third scenario, the Current Measures Scenario, assumes limited action to reduce GHG emissions beyond measures in place today. In this scenario, we do not require our modeling results achieve net-zero GHG emissions in Canada by 2050. We also assume limited future global climate action.\n\nIn addition to the three main scenarios in EF2023, you will find five cases in this report that ask: “What if?” There are many uncertainties on the pathway to net-zero. These cases explore some of them by changing some key assumptions in EF2023 and showing what it could mean for Canada’s pathway to net-zero.",
+        "link": "[View the report](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2023/index.html)"
+      },
       "2021": {
         "title": "CANADA’S ENERGY FUTURE 2021",
         "tooltip": "Explore data from the 2021 Energy Future Report",
@@ -290,6 +299,7 @@
         "2019": "EF2019 explores how possible energy futures might unfold for Canadians over the long term. It provides an update to the Reference Case.",
         "2020": "EF2020 includes two core scenarios that explore potential outcomes for the Canadian energy system over the next 30 years. These scenarios are the Evolving Energy System Scenario (Evolving Scenario) and the Reference Energy System Scenario (Reference Scenario).",
         "2021": "EF2021 includes two core scenarios that explore potential outcomes for the Canadian energy system over the next 30 years. These scenarios are the Evolving Policies Scenario and the Current Policies Scenario.",
+        "2023": "EF2023 contains three scenarios: Global Net-zero, Canada Net-zero, and Current Measures.",
         "default": "The projections in EF2016 include a Reference Case, two price sensitivity cases and three supplemental sensitivity cases:"
       },
       "Constrained": {
@@ -363,18 +373,27 @@
         }
       },
       "Global Net-zero": {
+        "tooltip": {
+          "2023": "Canada and the world achieves net-zero greenhouse gas (GHG) emissions by 2050."
+        },
         "description": {
-          "default": "Canada and the world achieves net-zero carbon emissions by 2050."
+          "default": "The Global Net-zero Scenario assumes Canada achieves net-zero emissions by 2050. We also assume the rest of the world reduces emissions enough to limit warming to 1.5°C."
         }
       },
       "Canada Net-zero": {
+        "tooltip": {
+          "2023": "Canada achieves net-zero greenhouse gas (GHG) emissions by 2050, but the rest of the world moves slower to reduce emissions."
+        },
         "description": {
-          "default": "Canada achieves net-zero carbon emissions by 2050, but the rest of the world moves slower to reduce emissions."
+          "default": "The Canada Net-zero Scenario assumes Canada also achieves net-zero emissions by 2050, but the rest of the world moves more slowly to reduce GHG emissions."
         }
       },
       "Current Measures": {
+        "tooltip": {
+          "2023": "Minimal action done globally and in Canada to reduce greenhouse gas (GHG) emissions, beyond policies existing today."
+        },
         "description": {
-          "default": "Minimal action done globally and in Canada to reduce carbon emissions, beyond policies existing today."
+          "default": "The Current Measures Scenario assumes limited action in Canada to reduce GHG emissions beyond measures in place today and does not require that Canada achieve net-zero emissions. In this scenario we also assume limited future global climate action."
         }
       },
       "caption": {
@@ -395,7 +414,7 @@
           "by-region": "View total end-use demand by region",
           "scenarios": "Compare scenarios for total end-use demand"
         },
-        "description": "The total energy used in the four sectors of Canada’s economy: residential, commercial, industrial and transportation. Includes the use of electricity, natural gas, petroleum products such as gasoline and coal, and renewable fuels. Also referred to as end-use or secondary demand, it does not include energy used to generate electricity."
+        "description": "The total energy used in the four sectors of Canada’s economy: residential, commercial, industrial and transportation. Includes the use of electricity, natural gas, petroleum products such as gasoline and coal, hydrogen, and renewable fuels. Also referred to as end-use or secondary demand, it does not include energy used to generate electricity."
       },
       "electricityGeneration": {
         "title": "Electricity Generation",
@@ -403,7 +422,7 @@
           "by-region": "View electricity generation by region",
           "scenarios": "Compare scenarios for electricity generation"
         },
-        "description": "The amount of electricity produced by transforming other forms of energy. In Canada, electricity is generated from a variety of sources, including hydro, other renewables like wind and solar, thermal sources like natural gas and coal, and nuclear power."
+        "description": "The amount of electricity produced by transforming other forms of energy. In Canada, electricity is generated from a variety of sources, including hydro, other renewables like wind, solar, and biomass, thermal sources like natural gas and coal, and nuclear power."
       },
       "oilProduction": {
         "title": "Oil Production",
@@ -426,11 +445,19 @@
       "greenhouseGasEmission": {
         "title": "Emissions",
         "tooltip": {},
-        "description": ""
+        "description": "Total Canadian greenhouse gas (GHG) emissions for Oil and Gas, Electricity Generation, Hydrogen Production, Transportation, Heavy Industry, Buildings, Agriculture, Waste and Others, Land Use, Land Use Change and Forestry and Direct Air Capture."
       }
     },
     "pageLayout": {
       "unit": "UNIT"
+    },
+    "hintPrice": {
+      "description": "Benchmark prices are a reference point for buyers and sellers.",
+      "WTI": "A key North American benchmark price for light, sweet crude oil produced primarily from inland Texas and priced at Cushing, Oklahoma.",
+      "BRENT": "A key global benchmark price for light, sweet crude oil produced from oil fields in the North Sea.",
+      "WCS": "A western Canadian price for bitumen and heavy sour crude oil blended with condensate or sweet synthetic oil. It is priced at Hardisty, Alberta, and is often used to represent prices for western Canadian heavy crude oils.",
+      "HH": "Henry Hub is the benchmark pricing point for natural gas futures traded within Canada and the United States, with other prices typically trading at a difference relative to Henry Hub. The hub is located in Louisiana at the interconnection of numerous natural gas pipelines.",
+      "NIT": "The Nova Inventory Transfer, or NIT, is the main price used for natural gas traded in western Canada. It is a virtual trading point, which means this price can be used to trade gas anywhere on the NGTL pipeline system."
     },
     "hintUnit": {
       "petajoules": {
@@ -438,8 +465,8 @@
         "description": "A measure of energy that is a quadrillion (10¹⁵) joules."
       },
       "kilobarrelEquivalents": {
-        "title": "Thousand barrels of light oil equivalent per day",
-        "description": "A measure of energy normalized to the equivalent energy content of a barrel of light crude oil. One barrel of light oil equivalent is equal to 6.123 gigajoules."
+        "title": "Thousand barrels of oil equivalent per day",
+        "description": "A measure of energy normalized to the equivalent energy content of a barrel of crude oil. One barrel of oil equivalent is equal to 6.123 gigajoules."
       },
       "gigawattHours": {
         "title": "Gigawatt hour",
@@ -460,6 +487,10 @@
       "millionCubicMetres": {
         "title": "Million cubic metres per day",
         "description": "Number of cubic metres of natural gas produced per day. One cubic foot of natural gas is equal to 0.0283 cubic metres."
+      },
+      "megatonnes": {
+        "title": "Megatonnes of carbon dioxide equivalent",
+        "description": "A measure of emissions that is a megatonnes of carbon dioxide equivalent (CO₂e). CO₂e is a measure of how much GHGs contribute to global warming relative to carbon dioxide."
       }
     },
     "viewSelect": {
@@ -522,7 +553,7 @@
       "download": "Download Data",
       "filename": "Energy_Future",
       "copied": "URL Copied",
-      "emailMessage": "Exploring Canada’s Energy Future interactive online tool is based on the Canada Energy Regulator’s (CER) flagship publication – Canada’s Energy Future. This visualization allows you to explore energy production and consumption trends and forecast them into the future. You can explore the data from the most recent report, or refer to previous reports.",
+      "emailMessage": "Exploring Canada’s Energy Future interactive online tool is based on the Canada Energy Regulator’s (CER) flagship publication – Canada’s Energy Future. This visualization allows you to explore energy production and consumption trends and how possible energy futures might unfold for Canadians over the long term. You can explore the data from the most recent report, or refer to previous reports.",
       "dialog": {
         "description": "Copy the following link to the clipboard?",
         "btnCopy": "Copy",
@@ -553,25 +584,25 @@
       "GAS": "Electricity generated by a variety of technologies using natural gas, including steam generation units, gas turbine and combustion engine plants, and combined cycle units.",
       "OIL": "Electricity generated by a variety of technologies using fuel oil, including steam turbines and combustion turbines.",
       "NUCLEAR": "Electricity generated by nuclear power plants.",
-      "SOLAR": "",
-      "WIND": ""
+      "SOLAR": "Includes electricity generated using photovoltaic systems or concentrated solar thermal systems.",
+      "WIND": "Includes electricity generated by wind turbines."
     },
     "energy": {
       "BIO": "Includes biomass, hydrogen, ethanol and biodiesel.",
-      "BIO_UPDATED": "Includes biomass, ethanol and biodiesel.",
+      "BIO_UPDATED": "Includes biomass, ethanol, biodiesel, renewable diesel, and renewable natural gas.",
       "COAL": "Includes coal, coke, and coke oven gas.",
-      "ELECTRICITY": "End-use electricity that is generated from a variety of sources and technologies. Includes electricity generation from primary sources such as nuclear, hydro, wind, and solar, and thermal generation from other fuels such as natural gas, coal, and oil.",
+      "ELECTRICITY": "End-use electricity that is generated from a variety of sources and technologies. Includes electricity generation from primary sources such as nuclear, hydro, wind, solar, and biomass, and thermal generation from other fuels such as natural gas, coal, and oil.",
       "GAS": "Total consumption of gas, including some non-marketed producer consumption.",
       "OIL": "Includes refined petroleum products and natural gas liquids. Specifically, this includes: motor gasoline, diesel fuel, aviation fuel, light fuel oil, kerosene, heavy fuel oil, propane, butane, ethane, petroleum coke, still gas, and non-energy products such as lubricants, asphalt, and petrochemical feedstocks.",
-      "HYDROGEN": "Consumption of hydrogen that is generated from a variety of sources and technologies."
+      "HYDROGEN": "End-use hydrogen that is generated from a variety of sources and technologies."
     },
     "transportation": {
-      "BIO": "Includes ethanol, biodiesel, and hydrogenation derived renewable diesel.",
+      "BIO": "Includes ethanol, biodiesel, bio aviation fuel, and renewable diesel.",
       "COAL": "Includes coal, coke, and coke oven gas.",
-      "ELECTRICITY": "End-use electricity that is generated from a variety of sources and technologies. Includes electricity generation from primary sources such as nuclear, hydro, wind, and solar, and thermal generation from other fuels such as natural gas, coal, and oil.",
+      "ELECTRICITY": "End-use electricity that is generated from a variety of sources and technologies. Includes electricity generation from primary sources such as nuclear, hydro, wind, solar, and biomass, and thermal generation from other fuels such as natural gas, coal, and oil.",
       "GAS": "Includes compressed natural gas and liquefied natural gas used in cars, buses, trucks, and ships.",
       "OIL": "- **Aviation Fuel:** A refined petroleum product used to power aircraft.\n- **Gasoline:** A refined petroleum product used in internal combustion engines.\n- **Diesel Fuel:** A refined petroleum product used in diesel engines.\n- **Other Oil Products:** Includes heavy fuel oil, liquefied petroleum gas, and lubricants.",
-      "HYDROGEN": "Consumption of hydrogen that is generated from a variety of sources and technologies."
+      "HYDROGEN": "End-use hydrogen that is generated from a variety of sources and technologies."
     },
     "gas": {
       "ALL": "The amount of marketable natural gas produced in Canada. Natural gas is produced from various areas using different technologies.",
@@ -615,6 +646,7 @@
         "2019": "EF2019 makes a variety of assumptions about future trends that are necessary to make long-term projections. These are factors such as included climate policies and regulations, rate of technological change, crude oil and natural gas markets (both domestic and global), infrastructure, major electricity projects and future costs of new generation capacity.",
         "2020": "EF2020 scenarios make a variety of assumptions about future trends necessary to make long-term projections. These include assumptions about climate policies and regulations, rate of technological change, crude oil and natural gas markets (both domestic and global), major energy infrastructure, and future costs of new electricity generation capacity.",
         "2021": "EF2021 scenarios make a variety of assumptions about future trends necessary to make long-term projections. These include assumptions about climate policies and regulations, rate of technological change, crude oil and natural gas markets (both domestic and global), major energy infrastructure, and future costs of new electricity generation capacity.",
+        "2023": "This chapter describes the premise of the three scenarios in EF2023. We also describe the assumptions of those scenarios. We developed these scenarios to explore questions that are relevant to the current Canadian energy dialogue, and to depict a range of potential outcomes for the future.\n\nThe premise of each scenario differs based on:\n1. The pace of climate action in Canada (including whether Canada must achieve net-zero emissions by 2050).\n2. The pace of climate action in the rest of the world.",
         "default": "The Canadian energy system is constantly changing. Factors like technology, economics, infrastructure, societal preferences, and government policy and programs continually influence how energy is produced, transported, and consumed in Canada."
       },
       "link": {
@@ -625,6 +657,7 @@
         "2019": "[EF2019 Assumptions](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2019/assumptions/index.html)",
         "2020": "[EF2020 Assumptions](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2020/assumptions/index.html)",
         "2021": "[EF2021 Assumptions](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2021/scenarios-and-assumptions.html#key-assumptions)",
+        "2023": "[EF2023 Scenarios and Assumptions](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2023/scenarios-and-assumptions.html)",
         "default": "[EF2016 Assumptions](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2016/index.html)"
       }
     },
@@ -638,6 +671,7 @@
         "2019": "The key findings of EF2019 are outlined below and summarized in the EF2019 Report:\n- Energy use grows slowly in the next 20 years. The mix of energy sources that Canadians use continues to change.\n- Oil and natural gas production grows steadily over the projection period. Assumptions on short-term infrastructure developments and long-term energy prices underlie this growth.\n- Technologies enabling Canada’s transition to a low carbon economy make inroads across the energy system.\n- Canada is making progress in transitioning towards a low carbon future.",
         "2020": "The key findings of EF2020 are outlined below and summarized in the EF2020 Report:\n- The COVID-19 pandemic has significantly impacted the Canadian energy system. We estimate that energy use in 2020 will fall by 6% from the year prior, larger than the decrease experienced during the 2009 financial crisis. We estimate that 2020 crude oil production will decrease by 7% or 335 thousand barrels per day (Mb/d) compared to 2019.\n- Canada’s domestic fossil fuel consumption remains below 2019 levels throughout the Evolving Scenario. By 2030, it is 12% lower, and 35% lower by 2050. At the same time, renewables and nuclear grow by 31% by 2050 and become a larger share of the energy mix.\n- Electricity becomes increasingly competitive with fossil fuels in many parts of the energy system, including for passenger vehicles. Electricity’s share of end-use demand increases from approximately 16% currently to over 27% in 2050 in the Evolving Scenario, when half of all passenger vehicles sales are electric vehicles. At the same time, renewable sources account for a larger share of electricity generation.\n- Under the assumptions of the Evolving Scenario, Canadian crude oil production increases steadily until peaking in 2039 at 5.8 million barrels per day (MMb/d). Driven by growing global demand for LNG, Canadian natural gas production increases and peaks at 18.4 billion cubic feet per day (Bcf/d) by 2040. Both crude oil and natural gas production decline slowly over the last decade of the projection period.\n- The major crude oil pipeline projects under construction will be able to accommodate all future production growth in both the Evolving and Reference Scenarios.\n- While fossil fuel consumption declines in the Evolving Scenario, it still makes up over 60% of Canada’s fuel mix in 2050. Achieving net-zero GHG emissions by 2050 will require an accelerated pace of transitioning away from fossil fuels.",
         "2021": "The key findings of EF2021 are outlined below and summarized in the EF2021 Report:\n1. In the Evolving Policies Scenario, combustion of fossil fuels whose emissions are not captured falls 60% from 2021 to 2050, while use of low and non-emitting energy sources increases. While this implies a significant reduction in emissions by 2050, achieving net-zero will likely require more action than is included in this scenario.\n2. Canadians use more electricity from increasingly low-carbon sources. Despite total energy use declining by 20%, electricity demand grows 40% from 2021 to 2050 in the Evolving Policies Scenario, driven by new areas such as electric vehicles and hydrogen production. At the same time, Canada’s electricity system gets greener, going from 82% non-emitting in 2021 to 96% in 2050.\n3. Wind, solar, and battery storage dominate electric capacity additions in all six net-zero electricity scenarios, making up between 82-85% of added capacity. With rising levels of wind and solar, all scenarios require flexible generation sources to balance supply and demand. There are large differences in the types and capacities of flexible generation sources adopted among scenarios.\n4. The net-zero electricity scenarios suggest that Canadians will continue to use a range of technologies across the country, even in a low carbon future. The ten provinces meet their electricity demands in diverse ways, with varying mixes of hydro, nuclear, fossil energy with carbon capture and storage, to complement rising levels of wind and solar.\n5. In the Evolving Policies Scenario, crude oil production grows much more slowly than in the past decade, growing 16% to a peak of 5.8 MMb/d in 2032. Afterwards, production declines slowly to 2050. Crude oil available for export from Western Canada grows over the next decade and remains below the total pipeline capacity provided by existing and under construction projects.\n6. Investment for natural gas production is spurred by assumed liquified natural gas (LNG) exports in both scenarios. In the Evolving Policies Scenario, nearly 40% of Canadian natural gas production is liquefied and exported to global markets by 2050.  Despite considerable LNG-related production growth, natural gas production remains relatively stable through much of the projection period before declining gradually to reach 13.1 bcf/d by 2050, 17% lower than current levels.\n7. As Canada’s energy system decarbonizes, we use less fossil fuels. Coal becomes a negligible part of the energy mix. Use of oil-derived fuels declines, especially gasoline and diesel for transportation. Total natural gas use declines, and our consumption of natural gas is increasingly tied to the future of carbon capture and storage (CCS). Natural gas with CCS for industrial uses, power generation, and hydrogen production are key demand growth areas.",
+        "2023": "The key findings of EF2023 are outlined below and summarized in the EF2023 Report:\n1. In our net-zero scenarios, the types of energy Canadians use changes dramatically, including using a lot more electricity.\n2. The electricity system, which decarbonizes by 2035 and achieves net-negative emissions thereafter, is the backbone of our net-zero scenarios.\n3. A portfolio of emerging technologies plays a key role in our net-zero scenarios, especially to address more difficult-to-reduce emissions.\n4. Canada’s oil and natural gas industry significantly reduces its emissions in our net-zero scenarios and, while production declines, the pace of global climate action determines by how much.\n5. Reaching net-zero in our scenarios is driven by increasingly strong climate policies, in Canada and abroad.",
         "default": "The key findings of EF2016 are outlined below and then summarized in the EF2016 Report:\n- Recent developments have highlighted numerous uncertainties for Canada’s long-term energy outlook.\n- In the Reference Case, energy production grows faster than energy use and net exports of energy increase.\n- The levels of future oil and natural gas production are highly dependent on future prices, which are subject to considerable uncertainty.\n- Without development of additional oil pipeline infrastructure, crude oil production grows less quickly but continues to grow at a moderate pace over the projection period.\n- The volume of liquefied natural gas exports is an important driver of Canadian natural gas production growth.\n- Total energy use in Canada, which includes energy use in the energy production sector, grows at similar rates in all EF 2016 cases, and GHG emissions related to that energy use will follow similar trends."
       },
       "link": {
@@ -648,6 +682,7 @@
         "2019": "[EF2019 Key Findings](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2019/executive-summary/index.html)",
         "2020": "[EF2020 Key Findings](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2020/executive-summary/index.html)",
         "2021": "[EF2021 Key Findings](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2021/key-findings.html)",
+        "2023": "[EF2023 Key Findings](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2023/key-findings.html)",
         "default": "[EF2016 Key Findings](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2016/index.html)"
       }
     },
@@ -661,6 +696,7 @@
         "2019": "Results of the EF2019 Reference Case projection includes analysis on macroeconomic growth, energy use, and energy production for various sources. This projection should not be viewed as a prediction, but as a possible future based on the assumptions described in the Assumptions section.",
         "2020": "The EF2020 Results section focuses on results of the EF2020 Evolving Scenario, and also includes results from the Reference Scenario. It includes analysis on macroeconomic growth, energy use, and energy production for various commodities. Projections for these two scenarios should not be viewed as predictions, but as two possible futures based on the assumptions described in the Assumptions section for each scenario.",
         "2021": "The Results section presents EF2021 projections, with a focus on the Evolving Policies Scenario. These projections are not a prediction, but instead present possible future outcomes based on the assumptions described in the previous section. There are many factors and uncertainties that will influence future trends. Key uncertainties are discussed in each section.\n\n For a description of the various ways to access the data supporting this discussion, including full data tables for both the Evolving and Current Policies scenarios, see the “Access and Explore Energy Futures Data” section.",
+        "2023": "This chapter presents results of the EF2023 projections. These projections are not a prediction, but instead illustrate possible futures based on the scenarios and assumptions described in the previous chapter. Many factors and uncertainties will influence future trends. Key uncertainties are discussed in each section of this chapter.\n\nThe data supporting this discussion, including full data tables for all three scenarios, is available in the “Access and Explore Energy Futures Data” chapter.",
         "default": "Results from the EF2016 Reference and sensitivity case projections highlight key changes in Canadian energy supply and demand trends. These projections should not be viewed as a prediction, but as a possible future based on the assumptions described in the Assumptions section."
       },
       "link": {
@@ -671,6 +707,7 @@
         "2019": "[EF2019 Results](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2019/results/index.html)",
         "2020": "[EF2020 Results](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2020/results/index.html)",
         "2021": "[EF2021 Results](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2021/results.html)",
+        "2023": "[EF2023 Results](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2023/results.html)",
         "default": "[EF2016 Results](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2016/index.html)"
       }
     },
@@ -687,6 +724,7 @@
         "2019": "EF2019 Report",
         "2020": "EF2020 Report",
         "2021": "EF2021 Report",
+        "2023": "EF2023 Report",
         "default": "EF2016 Report"
       }
     },
@@ -701,6 +739,7 @@
         "2019": "[View the EF2019 Report](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2019/index.html)",
         "2020": "[View the EF2020 Report](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2020/index.html)",
         "2021": "[View the EF2021 Report](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2021/executive-summary.html)",
+        "2023": "[View the EF2023 Report](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2023/executive-summary.html)",
         "default": "[View the EF2016 Report](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2020/index.html)"
       },
       "image": {
@@ -717,13 +756,13 @@
     }
   },
   "landing": {
-    "description": "Based on data from our Energy Futures reports, this interactive tool allows you to explore energy production and consumption trends and forecast them into the future. You can explore the data from the most recent report, or refer to previous reports.",
+    "description": "Based on data from our Energy Futures reports, this interactive tool allows you to explore energy production and consumption trends and how possible energy futures might unfold for Canadians over the long term. You can explore data from the most recent report, or refer to previous reports.",
     "By Region": {
       "title": "Explore By Region",
       "description": "Compare historical and projected energy supply and demand data from across Canada’s provinces and territories"
     },
     "Emissions": {
-      "title": "Explore Net Emissions",
+      "title": "Explore Emissions",
       "description": "Compare greenhouse gas emissions by sector in all three scenarios"
     },
     "By Sector": {

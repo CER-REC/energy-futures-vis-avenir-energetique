@@ -70,12 +70,10 @@ LinkButtonContentResults.propTypes = { yearId: PropTypes.string.isRequired };
 
 const LinkButtonContentSummary = ({ yearId }) => {
   const intl = useIntl();
-  const text = useMemo(() => {
-    if (yearId === '2021') {
-      return intl.formatMessage({ id: `components.yearSelect.${yearId}.context` });
-    }
-    return intl.formatMessage({ id: `components.yearSelect.${yearId}.description` });
-  }, [intl, yearId]);
+  const text = useMemo(() => intl.formatMessage({
+    id: `components.yearSelect.${yearId}.context`,
+    defaultMessage: intl.formatMessage({ id: `components.yearSelect.${yearId}.description` }),
+  }), [intl, yearId]);
 
   const src = () => {
     switch (yearId) {

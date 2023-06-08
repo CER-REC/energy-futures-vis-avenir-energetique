@@ -15,6 +15,7 @@
     "dataset": "Série de données",
     "energyUnits": "UNITÉS D’ÉNERGIE",
     "volumetricUnits": "UNITÉS VOLUMÉTRIQUES",
+    "emissionsUnits": "UNITÉS D’ÉMISSIONS",
     "netEmissions": "Émissions nettes",
     "total": "Totale",
     "units": {
@@ -153,6 +154,14 @@
     "yearSelect": {
       "name": "Rapport",
       "title": "RAPPORTS SUR L’AVENIR ÉNERGÉTIQUE",
+      "2023": {
+        "title": "AVENIR ÉNERGÉTIQUE DU CANADA EN 2023",
+        "tooltip": "Explorer les données du rapport Avenir énergétique 2023",
+        "subtitle": "Juin 2023",
+        "description": "waiting on translation",
+        "context": "Avenir énergétique 2023 propose trois scénarios. Deux de ceux-ci explorent des voies qui permettent au Canada d’atteindre la carboneutralité d’ici 2050. Dans le scénario de carboneutralité à l’échelle mondiale, l’analyse suppose que le Canada atteint la neutralité carbone d’ici 2050. Elle suppose également que le reste du monde réduit les émissions à un niveau qui permet de limiter le réchauffement climatique à 1,5 °C. Dans le scénario de carboneutralité du Canada, le pays atteint également la carboneutralité d’ici 2050, mais le reste du monde progresse plus lentement vers la réduction des émissions de GES. Le troisième scénario, celui des mesures actuelles, mise sur des mesures de réduction des émissions de GES qui ne vont guère au-delà de celles déjà en place. Dans ce scénario, les résultats de la modélisation n’ont pas à refléter l’atteinte de la carboneutralité au Canada d’ici 2050. Également, ce scénario suppose une action climatique mondiale limitée pour l’avenir.\n\nEn plus des trois principaux scénarios, Avenir énergétique 2023 comprend cinq simulations. En effet, la route vers la carboneutralité est jonchée de nombreuses incertitudes. Ces simulations explorent certaines d’entre elles en modifiant quelques hypothèses clés d’Avenir énergétique 2023 et en montrant l’incidence potentielle de ces changements sur la progression du Canada vers la carboneutralité.",
+        "link": "[Voir le rapport](https://www.cer-rec.gc.ca/fr/donnees-analyse/avenir-energetique-canada/2023/index.html)"
+      },
       "2021": {
         "title": "AVENIR ÉNERGÉTIQUE DU CANADA EN 2021",
         "tooltip": "Explorer les données du rapport Avenir énergétique 2021",
@@ -289,6 +298,7 @@
         "2019": "L’Avenir énergétique 2019 examine divers scénarios susceptibles de s’offrir aux Canadiens à long terme. Le rapport de 2019 actualise le scénario de référence.",
         "2020": "Le rapport Avenir énergétique 2020 propose deux scénarios principaux qui examinent les résultats possibles pour la filière énergétique canadienne au cours des 30 prochaines années. Il s’agit du scénario de la filière énergétique en évolution (« scénario Évolution ») et du scénario de la filière énergétique de référence (« scénario de référence »).",
         "2021": "Avenir énergétique 2021 propose deux grands scénarios de base qui examinent les résultats possibles pour la filière énergétique canadienne au cours des 30 prochaines années. Il s’agit du scénario d’évolution des politiques et du scénario des politiques actuelles.",
+        "2023": "Avenir énergétique 2023 propose trois scénarios : carboneutralité à l’échelle mondiale, carboneutralité du Canada et mesures actuelles.",
         "default": "Les projections du rapport AE 2016 comprennent un scénario de référence, cinq scénarios de sensibilité, dont deux liés au prix :"
       },
       "Constrained": {
@@ -361,18 +371,27 @@
         }
       },
       "Global Net-zero": {
+        "tooltip": {
+          "2023": "Le Canada et le monde parviennent à la carboneutralité d’ici 2050."
+        },
         "description": {
-          "default": ""
+          "default": "Le scénario de carboneutralité à l’échelle mondiale suppose que le Canada atteint la neutralité carbone d’ici 2050 et que le reste du monde réduit ses émissions à un niveau qui permet de limiter le réchauffement climatique à 1,5 °C."
         }
       },
       "Canada Net-zero": {
+        "tooltip": {
+          "2023": "Le Canada parvient à la carboneutralité d’ici 2050, mais la réduction des émissions ailleurs dans le monde est plus lente."
+        },
         "description": {
-          "default": ""
+          "default": "Le scénario de carboneutralité à l’échelle mondiale suppose que le Canada atteint la neutralité carbone d’ici 2050 et que le reste du monde réduit ses émissions à un niveau qui permet de limiter le réchauffement climatique à 1,5 °C."
         }
       },
       "Current Measures": {
+        "tooltip": {
+          "2023": "Les mesures prises à l’échelle mondiale et au Canada pour réduire les émissions de carbone sont minces, au-delà des politiques actuelles."
+        },
         "description": {
-          "default": ""
+          "default": "Le scénario des mesures actuelles mise sur une réduction des émissions de GES qui ne va guère au-delà de celle déjà en place et ne prévoit pas l’atteinte de la carboneutralité par le Canada. Également, ce scénario suppose une action climatique mondiale limitée pour l’avenir."
         }
       },
       "caption": {
@@ -393,7 +412,7 @@
           "by-region": "Consulter la demande totale pour utilisation finale selon la région",
           "scenarios": "Comparer des scénarios pour la demande totale pour utilisation finale"
         },
-        "description": "Il s’agit de la consommation totale d’énergie dans les quatre grands secteurs de l’économie canadienne : résidentiel, commercial, industriel et transports. Elle comprend la consommation d’électricité, de gaz naturel, de produits pétroliers comme l’essence, de charbon, et de carburants renouvelables. Aussi appelée demande pour utilisation finale ou demande secondaire, la demande totale n’inclut pas l’énergie utilisée pour produire de l’électricité."
+        "description": "L’énergie totale consommée dans les quatre secteurs de l’économie canadienne : résidentiel, commercial, industriel et des transports. Elle comprend la consommation d’électricité, de gaz naturel, de produits pétroliers comme l’essence, de charbon, d’hydrogène et de carburants renouvelables. Aussi appelée demande pour utilisation finale ou demande secondaire, la demande totale n’inclut pas l’énergie utilisée pour produire de l’électricité."
       },
       "electricityGeneration": {
         "title": "Production d’électricité",
@@ -401,7 +420,7 @@
           "by-region": "Consulter la production d’électricité selon la région",
           "scenarios": "Comparer des scénarios pour la production d’électricité"
         },
-        "description": "Il s’agit de la quantité d’électricité produite en transformant d’autres formes d’énergie. Au Canada, l’électricité provient de diverses sources : l’hydroélectricité; les autres énergies renouvelables, comme l’énergie éolienne et l’énergie solaire; les sources thermiques, comme le gaz naturel et le charbon; l’énergie nucléaire."
+        "description": "Il s’agit de la quantité d’électricité produite en transformant d’autres formes d’énergie. Au Canada, l’électricité provient de diverses sources : l’hydroélectricité; les autres énergies renouvelables, comme l’énergie éolienne, l’énergie solaire et la biomasse, les sources thermiques, comme le gaz naturel et le charbon; l’énergie nucléaire."
       },
       "oilProduction": {
         "title": "Production de pétrole",
@@ -420,10 +439,23 @@
           "oil-and-gas": "Consulter la production de gaz naturel"
         },
         "description": "Elle désigne la quantité de gaz naturel commercialisable produit au Canada. Plusieurs régions produisent du gaz naturel à partir de diverses techniques. La production de gaz naturel comprend le gaz de réservoirs étanches, le gaz de schiste, le méthane de houille, le gaz classique et le gaz tiré de l’exploitation des puits de pétrole (aussi appelé gaz associé ou gaz dissous)."
+      },
+      "greenhouseGasEmission": {
+        "title": "Émissions",
+        "tooltip": {},
+        "description": "Émissions canadiennes totales de gaz à effet de serre (« GES ») pour les secteurs pétrole et gaz, production d’électricité, production d’hydrogène, transport, industrie lourde, bâtiments, agriculture, déchets et autres, utilisation de terres, modification de l’utilisation de terres et foresterie et captage direct dans l’air."
       }
     },
     "pageLayout": {
       "unit": "UNITÉS"
+    },
+    "hintPrice": {
+      "description": "Les prix de référence servent de repère pour les acheteurs et les vendeurs.",
+      "WTI": "Prix de référence de premier plan en Amérique du Nord pour le pétrole brut léger non corrosif produit principalement à partir de puits sur la terre ferme au Texas et établi à Cushing, en Oklahoma.",
+      "BRENT": "Prix de référence à l’échelle mondiale pour le pétrole brut léger non corrosif produit dans les champs de pétrole de la mer du Nord.",
+      "WCS": "Prix du bitume et du pétrole brut lourd corrosif mélangés à du condensat ou à du pétrole synthétique non corrosif produit dans l’Ouest canadien. Établi à Hardisty, en Alberta, il s’applique aux différents pétroles bruts lourds provenant de cette région.",
+      "HH": "Le carrefour Henry est le point d’établissement des prix de référence pour les contrats à terme de gaz naturel négociés au Canada et aux ÉtatsUnis, les autres prix se négociant habituellement en fonction d’un un écart par rapport à celui-ci. Le carrefour est situé en Louisiane, au point d’interconnexion de nombreux gazoducs.",
+      "NIT": "Le prix établi pour le gaz naturel au carrefour d’échanges gaziers sur le réseau de NOVA (NIT) est celui principalement utilisé pour le gaz naturel faisant l’objet d’un commerce dans l’Ouest canadien. Ce carrefour est virtuel et le prix peut donc servir partout sur le réseau pipelinier de NGTL."
     },
     "hintUnit": {
       "petajoules": {
@@ -431,8 +463,8 @@
         "description": "Mesure d’énergie correspondant à un quadrillion (10¹⁵) de joules."
       },
       "kilobarrelEquivalents": {
-        "title": "Millier de barils d’équivalent pétrole brut par jour",
-        "description": "Mesure d’énergie normalisée à l’équivalent de la teneur en énergie d’un baril de pétrole brut léger. Un baril d’équivalent pétrole brut léger est égal à 6,123 gigajoules."
+        "title": "Millier de barils d’équivalent pétrole par jour",
+        "description": "Mesure d’énergie normalisée à l’équivalent de la teneur en énergie d’un baril de pétrole brut. Un baril d’équivalent pétrole brut est égal à 6,123 gigajoules."
       },
       "gigawattHours": {
         "title": "Gigawattheure",
@@ -453,6 +485,10 @@
       "millionCubicMetres": {
         "title": "Million de mètres cubes par jour",
         "description": "Mesure du nombre de mètres cubes de gaz naturel produits par jour. Un pied cube de gaz naturel équivaut à 0,0283 mètre cube."
+      },
+      "megatonnes": {
+        "title": "",
+        "description": "Mesure des émissions d’un million de tonnes d’équivalent en dioxyde de carbone (« éq. CO2 »). Éq. CO2 est une mesure de la contribution des GES au réchauffement de la planète par rapport au dioxyde de carbone."
       }
     },
     "viewSelect": {
@@ -515,7 +551,7 @@
       "download": "Téléchargement des données",
       "filename": "Avenir_énergétique",
       "copied": "Adresse URL copiée",
-      "emailMessage": "L’outil interactif en ligne Explorer l’avenir énergétique du Canada repose sur la publication phare de la Régie de l’énergie du Canada intitulée Avenir énergétique du Canada. Cette visualisation vous permet de prendre connaissance de l’évolution de la production et de la consommation d’énergie, et faire des prévisions pour l’avenir. Vous avez le loisir de vous en tenir au rapport le plus récent ou d’aller voir ce que disaient de précédents rapports.",
+      "emailMessage": "L’outil interactif en ligne Explorer l’avenir énergétique du Canada repose sur la publication phare de la Régie de l’énergie du Canada intitulée Avenir énergétique du Canada. Cette visualisation vous permet de prendre connaissance de l’évolution de la production et de la consommation d’énergie, et diverses possibilités qui pourraient s’offrir aux Canadiens à long terme en matière d’énergie. Vous avez le loisir de vous en tenir au rapport le plus récent ou d’aller voir ce que disaient de précédents rapports.",
       "dialog": {
         "description": "Copier le lien suivant dans le presse-papiers?",
         "btnCopy": "Copier",
@@ -546,25 +582,25 @@
       "GAS": "Électricité produite au moyen de diverses technologies utilisant le gaz naturel, notamment des chaudières à vapeur, des turbines à gaz et des centrales à moteurs à combustion, ainsi que des centrales à cycle combiné.",
       "OIL": "Électricité produite au moyen de diverses technologies utilisant le mazout, comme des turbines à vapeur et des turbines à combustion.",
       "NUCLEAR": "Désigne l’électricité produite dans des centrales nucléaires.",
-      "SOLAR": "",
-      "WIND": ""
+      "SOLAR": "Comprend l’électricité produite au moyen de systèmes photovoltaïques ou de systèmes thermiques solaires concentrés.",
+      "WIND": "Comprend l’électricité générée par des éoliennes."
     },
     "energy": {
       "BIO": "Comprend la biomasse, l’hydrogène, l’éthanol et le biodiesel.",
-      "BIO_UPDATED": "Comprend la biomasse, l’éthanol et le biodiesel.",
+      "BIO_UPDATED": "Comprend la biomasse, l’éthanol, le biodiesel, le diesel renouvelable et le gaz naturel renouvelable.",
       "COAL": "Comprend le charbon, le coke et le gaz de cokerie.",
-      "ELECTRICITY": "Désigne l’électricité pour utilisation finale produite à partir de diverses sources et selon différentes techniques. Parmi les principales sources, on compte l’électricité issue de l’énergie nucléaire, de l’hydroélectricité, de l’éolien, du solaire, ainsi que la production thermique, qui utilise d’autres combustibles comme le gaz naturel, le charbon et le pétrole.",
+      "ELECTRICITY": "Désigne l’électricité pour utilisation finale produite à partir de diverses sources et selon différentes techniques. Parmi les principales sources, on compte l’électricité issue de l’énergie nucléaire, de l’hydroélectricité, de l’éolien, du solaire, et la biomasse, ainsi que la production thermique, qui utilise d’autres combustibles comme le gaz naturel, le charbon et le pétrole.",
       "GAS": "La consommation totale de gaz prend en compte une partie de la consommation non commercialisée qu’utilisent les producteurs.",
       "OIL": "Comprennent les produits raffinés et les liquides de gaz naturel, plus particulièrement, l’essence automobile, le carburant diesel, le carburéacteur, le mazout léger, le kérosène, le mazout lourd, le propane, le butane, l’éthane, le coke de pétrole, le gaz de distillation et les produits non énergétiques, comme les lubrifiants, l’asphalte et les charges d’alimentation pétrochimiques.",
-      "HYDROGEN": "Consommation d’hydrogène produit à partir de diverses sources et de différentes technologies."
+      "HYDROGEN": "Hydrogène d’utilisation finale produit à partir de diverses sources et de différentes technologies."
     },
     "transportation": {
-      "BIO": "Comprend l’éthanol, le biodiesel et le diesel renouvelable dérivé de l’hydrogénation.",
+      "BIO": "Comprend l’éthanol, le biodiesel et le diesel renouvelable le biocarburant d’aviation et le diesel renouvelable.",
       "COAL": "Includes coal, coke, and coke oven gas.",
-      "ELECTRICITY": "Désigne l’électricité pour utilisation finale produite à partir de diverses sources et selon différentes techniques. Parmi les principales sources, on compte l’électricité issue de l’énergie nucléaire, de l’hydroélectricité, de l’éolien, du solaire, ainsi que la production thermique, qui utilise d’autres combustibles comme le gaz naturel, le charbon et le pétrole.",
+      "ELECTRICITY": "Désigne l’électricité pour utilisation finale produite à partir de diverses sources et selon différentes techniques. Parmi les principales sources, on compte l’électricité issue de l’énergie nucléaire, de l’hydroélectricité, de l’éolien, du solaire, et la biomasse, ainsi que la production thermique, qui utilise d’autres combustibles comme le gaz naturel, le charbon et le pétrole.",
       "GAS": "Comprend le gaz naturel comprimé et le gaz naturel liquéfié utilisés dans les voitures, les autobus, les camions et les navires.",
       "OIL": "- **Carburéacteur :** Produit pétrolier raffiné servant à alimenter un aéronef.\n- **Essence :** Produit pétrolier raffiné destinés aux moteurs à combustion interne.\n- **Diesel :** Produit pétrolier raffiné servant à alimenter les moteurs diesel.\n- **Autres produits pétroliers :** Comprennent le mazout lourd, le gaz de pétrole liquéfié et les lubrifiants.",
-      "HYDROGEN": "Consommation d’hydrogène produit à partir de diverses sources et de différentes technologies."
+      "HYDROGEN": "Hydrogène d’utilisation finale produit à partir de diverses sources et de différentes technologies."
     },
     "gas": {
       "ALL": "Elle désigne la quantité de gaz naturel commercialisable produit au Canada. Plusieurs régions produisent du gaz naturel à partir de diverses techniques.",
@@ -608,6 +644,7 @@
         "2019": "Les perspectives reposent sur une série d’hypothèses quant aux tendances futures, lesquelles sont nécessaires aux fins des projections à long terme. Il s’agit de facteurs, tels que les politiques et règlements sur les changements climatiques, le rythme de l’évolution des technologies, les marchés pétrolier et gazier (tant intérieurs qu’étrangers), l’infrastructure, les grands projets d’électricité et les coûts liés à la nouvelle capacité de production d’électricité.",
         "2020": "Les scénarios de l’Avenir énergétique 2020 reposent sur une série d’hypothèses quant aux tendances futures, lesquelles sont nécessaires aux fins des projections à long terme. Ces hypothèses ont trait aux politiques et à la réglementation en matière de changements climatiques, au rythme de l’évolution qu’étrangers), aux grands projets d’infrastructure énergétique et aux coûts futurs de la nouvelle capacité de production d’électricité.",
         "2021": "Les scénarios d’Avenir énergétique 2021 reposent sur une série d’hypothèses quant aux tendances futures, lesquelles hypothèses sont nécessaires pour produire des projections à long terme. Ces hypothèses ont trait aux politiques et à la réglementation en matière de climat, au rythme de l’évolution des technologies, aux marchés pétroliers et gaziers (tant intérieurs qu’étrangers), aux grands projets d’infrastructure énergétique et aux coûts futurs de la nouvelle capacité de production d’électricité.",
+        "2023": "Le présent chapitre décrit la prémisse des trois scénarios d’Avenir énergétique 2023. Il décrit également les hypothèses avancées dans ces scénarios. Ces scénarios ont été élaborés pour explorer des questions pertinentes à la conversation actuelle sur l’énergie au Canada et pour illustrer un éventail de résultats possibles pour l’avenir.\n\nLa prémisse de chaque scénario diffère selon ce qui suit :\n1. le rythme de l’action climatique au Canada (y compris la question de savoir si le Canada doit atteindre la carboneutralité d’ici 2050);\n2. le rythme de l’action climatique dans le reste du monde.",
         "default": "Les scénarios de base du rapport AE 2016 reposent sur quatre hypothèses clés :\n1. Les marchés seront en mesure d’absorber toute l’énergie produite, et l’infrastructure nécessaire sera mise en place en fonction des besoins.\n1. Seuls les politiques et les programmes en vigueur au moment de la rédaction du rapport sont pris en considération dans les projections. Donc, les politiques qui sont à l’étude ou qui seront élaborées après que les projections ont été faites, à l’été 2015, n’ont pas été incluses dans l’analyse.\n1. Les facteurs environnementaux et socioéconomiques qui vont au-delà de la portée des programmes et politiques retenus sont exclus de l’analyse.\n1. Les marchés de l’énergie sont en constante évolution."
       },
       "link": {
@@ -618,6 +655,7 @@
         "2019": "[Hypothèses d’AE 2019](https://www.cer-rec.gc.ca/fr/donnees-analyse/avenir-energetique-canada/2019/hypotheses/index.html)",
         "2020": "[Hypothèses d’AE 2020](https://www.cer-rec.gc.ca/fr/donnees-analyse/avenir-energetique-canada/2020/hypotheses/index.html)",
         "2021": "[Hypothèses d’AE 2021](https://www.cer-rec.gc.ca/fr/donnees-analyse/avenir-energetique-canada/2021/scenarios-et-hypotheses.html#principales-hypotheses)",
+        "2023": "[Scénarios et hypothèses d’Avenir énergétique 2023](https://www.cer-rec.gc.ca/fr/donnees-analyse/avenir-energetique-canada/2023/scenarios-et-hypotheses.html)",
         "default": "[Hypothèses d’AE 2016](https://www.cer-rec.gc.ca/fr/donnees-analyse/avenir-energetique-canada/2016/index.html)"
       }
     },
@@ -631,6 +669,7 @@
         "2019": "Les grandes conclusions de l’Avenir énergétique 2019 sont décrites ci-dessous et exposées brièvement dans le rapport :\n- La consommation d’énergie s’accroît lentement au fil des 20 prochaines années et le bouquet énergétique continue d’évoluer.\n- La production de pétrole et de gaz naturel augmente de façon constante au cours de la période de projection, augmentation qui prend appui sur les hypothèses relatives à l’aménagement d’infrastructures à court terme et les prix énergétiques à long terme.\n- Les technologies favorisant la transition du Canada à une économie à faibles émissions de carbone font une percée dans la filière énergétique.\n- Le Canada progresse dans la transition à un avenir sobre en carbone.",
         "2020": "Les grandes conclusions de l’Avenir énergétique 2020 sont décrites ci-dessous et exposées brièvement dans le rapport :\n- La pandémie de la COVID-19 a eu des répercussions considérables sur la filière énergétique canadienne. Nous estimons que la consommation d’énergie en 2020 diminuera de 6 % par rapport à l’année précédente, une baisse plus marquée que celle enregistrée durant la crise financière de 2009. Nous nous attendons à ce que la production de pétrole brut en 2020 recule de 7 % ou 335 milliers de barils par jour (kb/j) par rapport à 2019.\n- La consommation intérieure de combustibles fossiles au Canada demeure inférieure aux niveaux de 2019 tout au long du scénario Évolution. D’ici 2030, elle fléchit de 12 %, et de 35 % à l’horizon 2050. Parallèlement, les énergies renouvelables et le nucléaire connaissent une croissance de 31 % d’ici 2050 et occupent une plus grande partie du bouquet énergétique.\n- L’électricité devient de plus en plus concurrentielle par rapport aux combustibles fossiles dans de nombreuses parties de la filière énergétique, y compris pour les véhicules de tourisme. La part de l’électricité dans la demande pour utilisation finale passe d’environ 16 % actuellement à plus de 27 % en 2050, selon le scénario Évolution, alors que la moitié des véhicules de tourisme vendus sont électriques. Parallèlement, les sources d’énergie renouvelable comptent pour une plus grande part de la production d’électricité.\n- Selon les hypothèses avancées dans le scénario Évolution, la production canadienne de pétrole brut augmente de façon constante jusqu’à atteindre un sommet de 5,8 millions de barils par jour (« Mb/j ») en 2039. Propulsée par la croissance de la demande mondiale de GNL, la production canadienne de gaz naturel augmente pour atteindre un sommet de 18,4 milliards de pieds cubes par jour (« Gpi³/j ») en 2040. La production de pétrole brut et celle de gaz naturel diminuent lentement durant la dernière décennie de la période de projection.\n- Les grands projets pipeliniers en construction visant à transporter le pétrole brut pourront absorber toute croissance future de la production dans les scénarios Évolution et de référence.\n- Bien que la consommation de combustibles fossiles diminue dans le scénario Évolution, elle représente tout de même plus de 60 % du bouquet énergétique du Canada en 2050. L’atteinte de l’objectif de zéro émissions nettes de GES à cette date exigera que s’accélère l’abandon de ces combustibles.",
         "2021": "Les grandes conclusions d’Avenir énergétique 2021 sont décrites ci-dessous et exposées brièvement dans le rapport :\n1. Dans le scénario d’évolution des politiques, la consommation de combustibles fossiles dont les émissions ne sont pas captées diminue de 60% de 2021 à 2050, tandis que celle des énergies à faibles émissions et à émissions nulles augmente. Malgré la forte réduction des émissions d’ici 2050, on peut supposer que l’atteinte de la carboneutralité exigera plus d’actions que celles envisagées dans ce scénario.\n2. Les Canadiens consomment davantage d’électricité, qui provient de sources de plus en plus sobres en carbone. Malgré la diminution de 20 % de la consommation totale d’énergie, la demande d’électricité augmente de 40 % de 2021 à 2050 dans le scénario d’évolution des politiques, en raison de secteurs qui émergent, comme les véhicules électriques et la production d’hydrogène. Durant la même période, le réseau électrique du Canada devient également plus vert : les sources non émettrices, qui fournissent 82 % de la production en 2021, représentent 96 % de celle-ci en 2050.\n3. L’éolien, le solaire et le stockage dans des batteries dominent les ajouts de capacité électrique dans les six scénarios de carboneutralité de l’électricité et représentant entre 82 % et 85 % de la capacité supplémentaire. L’éolien et le solaire prennent toujours plus de place, et tous les scénarios misent sur des sources de production flexibles pour que l’offre et la demande s’équilibrent. Selon les scénarios, on constate de grandes différences entre le type et la capacité des sources de production flexibles.\n4. Les scénarios de production d’électricité à zéro émission nette continuent de miser sur un large éventail de technologies partout au pays, même dans un avenir sobre en carbone. Les dix provinces satisfont leur demande d’électricité de diverses façons en combinant hydroélectricité, nucléaire et combustibles fossiles avec captage de CO2, pour suppléer la production croissante provenant des énergies éolienne et solaire.\n5. Dans le scénario d’évolution des politiques, la production de pétrole brut croît beaucoup plus lentement qu’au cours de la dernière décennie, augmentant de 16 % pour atteindre un sommet de 5,8 Mb/j en 2032. Par la suite, elle diminue lentement jusqu’en 2050. La disponibilité de pétrole brut pour l’exportation à partir de l’Ouest canadien augmente durant la prochaine décennie et demeure inférieure à la capacité pipelinière totale des projets existants et en construction.\n6. Les investissements dans la production de gaz naturel sont stimulés par les exportations présumées de gaz naturel liquéfié (« GNL ») dans les deux scénarios. Dans le scénario d’évolution des politiques, près de 40 % de la production canadienne de gaz naturel est liquéfiée et exportée vers les marchés internationaux d’ici 2050. Malgré la croissance marquée de la production de GNL, celle de gaz naturel demeure relativement stable pendant la majeure partie de la période de projection, puis diminue graduellement pour s’établir à 13,1 Gpi³/j vers 2050, c’est-à-dire une baisse de 17 % par rapport à la situation actuelle.\n7. À mesure que se décarbone de la filière énergétique du Canada, la consommation de combustibles fossiles diminue. Le charbon devient une composante négligeable du bouquet énergétique, et l’utilisation des combustibles dérivés du pétrole diminue, en particulier l’essence et le diesel pour le transport. La consommation totale de gaz naturel fléchit, et au fil du temps, elle est de plus en plus associée à la technologie de captage et stockage de carbone (« CSC »). Les usages industriels, la production d’électricité et la production d’hydrogène provenant du gaz naturel exploité avec le CSC sont des secteurs clés de croissance de la demande.",
+        "2023": "Les grandes conclusions d’Avenir énergétique 2023 sont décrites ci-dessous et exposées brièvement dans le rapport.\n1. Dans les scénarios de carboneutralité, les Canadiens modifient radicalement les types d’énergie qu’ils consomment, notamment en utilisant considérablement plus d’électricité.\n2. Le réseau électrique, qui se décarbone d’ici 2035 et atteint un bilan négatif par la suite, est à la base des scénarios de carboneutralité.\n3. Diverses technologies émergentes jouent un rôle clé dans les scénarios de carboneutralité, notamment en ce qui concerne les émissions plus difficiles à réduire.\n4. L’industrie canadienne du pétrole et du gaz naturel réduit considérablement ses émissions dans les deux scénarios de carboneutralité, et si la production diminue, c’est le rythme de l’action climatique mondiale qui détermine l’ampleur de cette réduction.\n5. L’atteinte de la carboneutralité dans les scénarios est stimulée par des politiques climatiques de plus en plus strictes, au Canada et à l’étranger.",
         "default": "Les principales conclusions du rapport AE 2016 sont décrites brièvement ci-dessous, puis font l’objet d’un exposé succinct dans le rapport AE 2016 :\n- Les événements récents ont mis en lumière les nombreuses incertitudes entourant les perspectives énergétiques à long terme du Canada.\n- Dans le scénario de référence, la production énergétique croît plus rapidement que la consommation d’énergie; les exportations nettes d’énergie sont en hausse.\n- La production future de pétrole et de gaz naturel dépend énormément des prix du moment, qui sont empreints d’une grande incertitude.\n- Faute d’ajout de nouveaux oléoducs à l’infrastructure pipelinière actuelle, la croissance de la production de pétrole brut est freinée, mais demeure modérée durant la période de projection.\n- Le volume des exportations de gaz naturel liquéfié est un facteur important dans la croissance de la production de gaz naturel au Canada.\n- La consommation totale d’énergie au Canada, incluant celle du secteur de la production énergétique, est uniforme dans tous les scénarios envisagés dans le rapport AE 2016, et les émissions de GES résultant de l’utilisation de l’énergie suivront la même courbe."
       },
       "link": {
@@ -641,6 +680,7 @@
         "2019": "[Grandes conclusions d’AE 2019](https://www.cer-rec.gc.ca/fr/donnees-analyse/avenir-energetique-canada/2019/resume/index.html)",
         "2020": "[Grandes conclusions d’AE 2020](https://www.cer-rec.gc.ca/fr/donnees-analyse/avenir-energetique-canada/2020/resume/index.html)",
         "2021": "[Grandes conclusions d’AE 2021](https://www.cer-rec.gc.ca/fr/donnees-analyse/avenir-energetique-canada/2021/grandes-conclusions.html)",
+        "2023": "[Grandes conclusions d’AE 2023](https://www.cer-rec.gc.ca/fr/donnees-analyse/avenir-energetique-canada/2023/grandes-conclusions.html)",
         "default": "[Principales conclusions d’AE 2016](https://www.cer-rec.gc.ca/fr/donnees-analyse/avenir-energetique-canada/2016/index.html)"
       }
     },
@@ -654,6 +694,7 @@
         "2019": "Dans les résultats de la projection du scénario de référence d’Avenir énergétique 2019, on trouve des analyses de la croissance macroéconomique, de la consommation d’énergie et de la production d’énergie pour diverses sources. Cette projection ne constitue pas une prévision, mais bien une possibilité future fondée sur les hypothèses décrites dans la section « Hypothèses ».",
         "2020": "La section « Résultats » d’Avenir énergétique 2020 traite principalement des résultats du scénario Évolution du rapport, mais comprend aussi ceux du scénario de référence. On y trouve des analyses de la croissance macroéconomique, de la consommation d’énergie et de la production d’énergie pour divers produits. Les projections issues de ces scénarios ne constituent pas des prévisions, mais bien deux possibilités futures fondées sur les hypothèses décrites dans la section « Hypothèses » de chaque scénario.",
         "2021": "La section Résultats renferme les projections d’Avenir énergétique 2021, en mettant à l’avant-plan le scénario des politiques en évolution. Ces projections ne font pas office de prédictions, mais bien de  possibilités pour l’avenir fondé sur les hypothèses décrites dans la section précédente. De nombreux facteurs et incertitudes influeront sur les tendances futures. Les principales incertitudes sont exposées dans chaque section.\n\nPour une description des diverses manières d’accéder aux données sur lesquelles repose la présente analyse, y compris les tableaux de données des scénarios d’évolution des politiques et des politiques actuelles, le lecteur est invité à consulter la section « Explorer les données liées à l’avenir énergétique ».",
+        "2023": "Ce chapitre présente les résultats des projections d’Avenir énergétique 2023. Ces projections ne font pas office de prédictions, mais illustrent plutôt des avenirs possibles fondés sur les hypothèses décrites dans la section précédente. De nombreux facteurs et incertitudes influeront sur les tendances futures. Les principales incertitudes sont exposées dans chaque section de ce chapitre.\n\nLes données à l’appui de cette discussion, y compris les tableaux de données complets pour les trois scénarios, sont disponibles dans le chapitre « Explorer les données liées à l’avenir énergétique ».",
         "default": "Les résultats des projections du scénario de référence et des scénarios de sensibilité et mettent en évidence les principaux changements observés en ce qui a trait à l’offre et à la demande énergétiques au Canada. Ces projections ne constituent pas des prévisions, mais bien des possibilités futures fondées sur les hypothèses décrites dans la section « Hypothèses »."
       },
       "link": {
@@ -664,6 +705,7 @@
         "2019": "[Résultats d’AE 2019](https://www.cer-rec.gc.ca/fr/donnees-analyse/avenir-energetique-canada/2019/resultats/index.html)",
         "2020": "[Résultats d’AE 2020](https://www.cer-rec.gc.ca/fr/donnees-analyse/avenir-energetique-canada/2020/resultats/index.html)",
         "2021": "[Résultats d’AE 2021](https://www.cer-rec.gc.ca/fr/donnees-analyse/avenir-energetique-canada/2021/resultats.html)",
+        "2023": "[Résultats d’AE 2023](https://www.cer-rec.gc.ca/fr/donnees-analyse/avenir-energetique-canada/2023/resultats.html)",
         "default": "[Résultats d’AE 2016](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2016/index.html)"
       }
     },
@@ -680,6 +722,7 @@
         "2019": "Rapport AE 2019",
         "2020": "Rapport AE 2020",
         "2021": "Rapport AE 2021",
+        "2023": "Rapport AE 2023",
         "default": "Rapport AE 2016"
       }
     },
@@ -694,6 +737,7 @@
         "2019": "[Voir le rapport AE 2019](https://www.cer-rec.gc.ca/fr/donnees-analyse/avenir-energetique-canada/2019/index.html)",
         "2020": "[Voir le rapport AE 2020](https://www.cer-rec.gc.ca/fr/donnees-analyse/avenir-energetique-canada/2020/index.html)",
         "2021": "[Voir le rapport AE 2021](https://www.cer-rec.gc.ca/fr/donnees-analyse/avenir-energetique-canada/2021/sommaire.html)",
+        "2023": "[Voir le rapport AE 2023](https://www.cer-rec.gc.ca/fr/donnees-analyse/avenir-energetique-canada/2023/sommaire.html)",
         "default": "[Voir le rapport AE 2016](https://www.cer-rec.gc.ca/fr/donnees-analyse/avenir-energetique-canada/2016/index.html)"
       },
       "image": {
@@ -710,7 +754,7 @@
     }
   },
   "landing": {
-    "description": "Mettant à profit les données associées à nos rapports sur l’avenir énergétique, cet outil interactif vous permet d’explorer l’évolution de la production et de la consommation d’énergie, même de faire des prévisions. Vous avez le loisir de vous en tenir au rapport le plus récent ou d’aller voir ce que disaient de précédents rapports.",
+    "description": "À partir des données de nos rapports sur l’avenir énergétique, cet outil interactif vous permet d’explorer les tendances de la production et de la consommation d’énergie et de voir à quoi pourrait ressembler l’avenir énergétique à long terme pour les Canadiens. Vous pouvez explorer les données du plus récent rapport ou vous consulter des rapports antérieurs.",
     "By Region": {
       "title": "Explorer par région",
       "description": "Comparez les données passées et faites des projections de l’offre et de la demande d’énergie pour les provinces et les territoires au Canada"
@@ -720,8 +764,8 @@
       "description": "Examinez l’évolution récente des sources énergétiques de différents secteurs et ce que projettent les scénarios du rapport sur l’avenir énergétique à cet égard"
     },
     "Emissions": {
-      "title": "",
-      "description": ""
+      "title": "Explorer les émissions",
+      "description": "Comparez les émissions de gaz à effet de serre selon le secteur dans les trois scénarios."
     },
     "Electricity": {
       "title": "Explorer l’électricité",
