@@ -22,7 +22,6 @@ const useStyles = makeStyles(theme => ({
     ...theme.mixins.contextButton,
   },
   label: {
-    lineHeight: 1.2,
     fontSize: 13,
   },
 }));
