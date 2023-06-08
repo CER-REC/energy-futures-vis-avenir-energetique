@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useRef } from 'react';
+import React, { useCallback, useMemo, useRef, useState } from 'react';
 import clsx from 'clsx';
 import { useIntl } from 'react-intl';
 import { ResponsiveLine } from '@nivo/line';
@@ -19,6 +19,7 @@ import HistoricalLayer from '../../components/HistoricalLayer';
 import PriceSelect from '../../components/PriceSelect';
 import getYearLabel from '../../utilities/getYearLabel';
 import { getTicks, formatLineData } from '../../utilities/parseData';
+import BenchmarkCrosshair from '../../components/BenchmarkCrosshair';
 import YearSliceTooltip from '../../components/YearSliceTooltip';
 
 /**
@@ -68,6 +69,8 @@ const useStyles = makeStyles(theme => ({
 const Scenarios = ({ data, year }) => {
   const intl = useIntl();
   const { config } = useConfig();
+  const [upperSlice, setUpperSlice] = useState(null);
+  const [lowerSlice, setLowerSlice] = useState(null);
   // TODO: Refactor useEnergyFutureData hook to use a standard data structure
   const { prices, priceYear } = useEnergyFutureData();
   const classes = useStyles();
@@ -163,7 +166,7 @@ const Scenarios = ({ data, year }) => {
           {...lineProps}
           data={data}
           enableArea
-          layers={[HistoricalLayer, 'grid', 'axes', 'areas', 'crosshair', 'points', 'slices', 'lines', 'markers', ForecastLayer, dots]}
+          layers={[HistoricalLayer, 'grid', 'axes', 'areas', BenchmarkCrosshair, 'points', 'slices', 'lines', 'markers', ForecastLayer, dots]}
           curve="cardinal"
           areaOpacity={0.15}
           yScale={{ type: 'linear', min: ticks[0], max: ticks[ticks.length - 1], reverse: false }}
@@ -175,6 +178,8 @@ const Scenarios = ({ data, year }) => {
           axisBottom={prices?.length ? null : lineProps.axisBottom}
           gridYValues={ticks}
           markers={config.mainSelection === 'greenhouseGasEmission' ? GREENHOUSE_GAS_MARKERS : null}
+          setSlice={setLowerSlice}
+          slice={upperSlice}
         />
       </div>
       { !!prices?.length && (
@@ -197,7 +202,7 @@ const Scenarios = ({ data, year }) => {
             {...CHART_PROPS}
             {...lineProps}
             data={priceData}
-            layers={[HistoricalLayer, 'grid', 'axes', 'crosshair', 'points', 'slices', 'lines', ForecastLayer, dots]}
+            layers={[HistoricalLayer, 'grid', 'axes', BenchmarkCrosshair, 'points', 'slices', 'lines', ForecastLayer, dots]}
             yScale={{ type: 'linear', min: 0, max: benchmarkTicks[benchmarkTicks.length - 1], reverse: false }}
             axisRight={{
               ...CHART_AXIS_PROPS,
@@ -205,6 +210,8 @@ const Scenarios = ({ data, year }) => {
             }}
             sliceTooltip={event => getTooltip(event)}
             gridYValues={benchmarkTicks}
+            setSlice={setUpperSlice}
+            slice={lowerSlice}
           />
         </div>
       )}

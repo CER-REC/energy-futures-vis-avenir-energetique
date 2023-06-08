@@ -14,6 +14,7 @@ import HistoricalLayer from '../../components/HistoricalLayer';
 import ForecastLayer from '../../components/ForecastLayer';
 import getYearLabel from '../../utilities/getYearLabel';
 import YearSliceTooltip from '../../components/YearSliceTooltip';
+import defaultTheme from '../../containers/App/theme';
 
 const useStyles = makeStyles(theme => ({
   chart: {
@@ -124,6 +125,11 @@ const Emissions = ({ data, year }) => {
         motionStiffness={300}
         forecastStart={year.forecastStart}
         markers={GREENHOUSE_GAS_MARKERS}
+        theme={{
+          tooltip: {
+            ...defaultTheme.overrides.MuiTooltip.tooltip,
+          },
+        }}
       />
     </div>
   );
