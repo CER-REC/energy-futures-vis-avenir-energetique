@@ -216,6 +216,8 @@ export const getReducer = (regions, sources, sectors, yearIdIterations) => {
           yearId,
           // Reset the scenarios to the default
           scenarios: getScenarios(state.page, yearId, null),
+          baseYear: getBaseYear(action.payload, null),
+          compareYear: getCompareYear(action.payload, null),
         };
       case 'unit/changed':
         return {
