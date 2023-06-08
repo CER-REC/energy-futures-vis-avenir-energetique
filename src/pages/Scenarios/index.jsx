@@ -8,7 +8,12 @@ import useConfig from '../../hooks/useConfig';
 import useEnergyFutureData from '../../hooks/useEnergyFutureData';
 import analytics from '../../analytics';
 
-import { CHART_PROPS, CHART_AXIS_PROPS, SCENARIO_COLOR } from '../../constants';
+import {
+  CHART_PROPS,
+  CHART_AXIS_PROPS,
+  SCENARIO_COLOR,
+  GREENHOUSE_GAS_MARKERS,
+} from '../../constants';
 import ForecastLayer from '../../components/ForecastLayer';
 import HistoricalLayer from '../../components/HistoricalLayer';
 import PriceSelect from '../../components/PriceSelect';
@@ -158,7 +163,7 @@ const Scenarios = ({ data, year }) => {
           {...lineProps}
           data={data}
           enableArea
-          layers={[HistoricalLayer, 'grid', 'axes', 'areas', 'crosshair', 'points', 'slices', 'lines', ForecastLayer, dots]}
+          layers={[HistoricalLayer, 'grid', 'axes', 'areas', 'crosshair', 'points', 'slices', 'lines', 'markers', ForecastLayer, dots]}
           curve="cardinal"
           areaOpacity={0.15}
           yScale={{ type: 'linear', min: ticks[0], max: ticks[ticks.length - 1], reverse: false }}
@@ -169,6 +174,7 @@ const Scenarios = ({ data, year }) => {
           sliceTooltip={event => getTooltip(event, true)}
           axisBottom={prices?.length ? null : lineProps.axisBottom}
           gridYValues={ticks}
+          markers={config.mainSelection === 'greenhouseGasEmission' ? GREENHOUSE_GAS_MARKERS : null}
         />
       </div>
       { !!prices?.length && (

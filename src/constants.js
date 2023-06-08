@@ -310,3 +310,12 @@ export const SOURCE_PATTERNS = {
   DIESEL: 'squares',
   OIL: 'lines-vertical',
 };
+
+export const GREENHOUSE_GAS_MARKERS = [{
+  axis: 'y',
+  value: 0,
+  lineStyle: {
+    stroke: 'black',
+    strokeWidth: 3,
+  },
+}];
