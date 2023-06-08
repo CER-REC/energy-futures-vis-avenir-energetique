@@ -106,7 +106,7 @@ const Header = () => {
       <Grid item xs={12} style={{ marginBottom: '0.3em', padding: 0 }}>
         <Grid container alignItems="center" wrap="nowrap" className={classes.row}>
           <Grid container className={classes.controls}>
-            <Grid xs={12}>
+            <Grid item xs={12}>
               <ScenarioSelect
                 multiSelect={multiSelectScenario}
               />

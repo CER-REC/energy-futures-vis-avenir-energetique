@@ -2,7 +2,7 @@
   "common": {
     "title": "Explorer l’avenir énergétique du Canada",
     "forecast": "Projections",
-    "benchmarkPrices": "",
+    "benchmarkPrices": "Prix de référence",
     "selection": "Sélection",
     "region": "Région",
     "scenario": "Scénario",
@@ -29,11 +29,11 @@
       "megatonnes": "Mt"
     },
     "prices": {
-      "WTI": "",
-      "WCS": "",
-      "BRENT": "",
-      "HH": "",
-      "NIT": ""
+      "WTI": "WTI - $ US 2022/b",
+      "WCS": "WCS - $ US 2022/b",
+      "BRENT": "Brent - $ US 2022/b",
+      "HH": "Carrefour Henry - $ US 2022/MBTU",
+      "NIT": "NIT - $ US 2022/MBTU"
     },
     "datasets": {
       "2016*": "Mise à jour 2016"
@@ -223,7 +223,7 @@
         "title": {
           "default": "Émissions"
         },
-        "description": "to be filled"
+        "description": "Comparez les émissions de gaz à effet de serre selon le secteur dans les trois scénarios."
       },
       "By Region": {
         "title": {
@@ -280,11 +280,11 @@
       }
     },
     "priceSelect": {
-      "WTI": "",
-      "WCS": "",
-      "BRENT": "",
-      "HH": "",
-      "NIT": ""
+      "WTI": "West Texas Intermediate (WTI) - $ US 2022/b",
+      "WCS": "Western Canadian Select (WCS) - $ US 2022/b",
+      "BRENT": "Brent - $ US 2022/b",
+      "HH": "Carrefour Henry - $ US 2022/MBTU",
+      "NIT": "Carrefour d’échanges gaziers sur le réseau de NOVA (NIT) - $ US 2022/MBTU"
     },
     "scenarioSelect": {
       "name": "Scénarios",
@@ -567,10 +567,10 @@
   "containers": {
     "scenarios": {
       "benchmark": {
-        "oilTitle": "",
-        "gasTitle": "",
-        "oilProduction": "",
-        "gasProduction": ""
+        "oilProductionTooltipTitle": "Prix du pétrole",
+        "gasProductionTooltipTitle": "Prix du gaz",
+        "oilProduction": "Prix du pétrole – $ US 2022/b",
+        "gasProduction": "Prix du gaz – $ US 2022/MBTU"
       }
     }
   },
