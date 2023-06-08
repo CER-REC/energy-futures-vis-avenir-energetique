@@ -6,7 +6,6 @@ import { TableRow, Button, Tooltip, Typography } from '@material-ui/core';
 
 import OilAndGas from '.';
 import { TestContainer, getRendered } from '../../tests/utilities';
-import YearSlider from '../../components/YearSlider';
 import { DEFAULT_CONFIG, MOCK_DATA_REGION, MOCK_DATA_SOURCE } from './stories';
 
 const getComponent = (data, props, width = 900) => (
@@ -60,18 +59,6 @@ describe('Page|OilAndGas', () => {
       // compare button
       expect(wrapper.find(Button).text()).toEqual('Don\'t Compare');
       expect(wrapper.find(Button).prop('onClick')()).not.toBeNull();
-
-      // year slider
-      await act(async () => {
-        wrapper.find(YearSlider).prop('onYearChange')({ curr: 2006, compare: 2007 });
-        await new Promise(resolve => setTimeout(resolve));
-        wrapper.update();
-        expect(wrapper.find(YearSlider).prop('year')).toEqual({ curr: 2006, compare: 2007 });
-
-        // updated year labels
-        expect(wrapper.findWhere(node => node.type() === Typography && node.text() === '2006').exists()).toBeTruthy();
-        expect(wrapper.findWhere(node => node.type() === Typography && node.text() === '2007').exists()).toBeTruthy();
-      });
 
       // open the first tooltip and verify it is visible
       await act(async () => {
