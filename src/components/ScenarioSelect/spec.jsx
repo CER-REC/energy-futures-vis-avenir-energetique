@@ -42,8 +42,8 @@ describe('Component|PageSelect', () => {
 
       // scenario buttons for 2020 report year
       const buttons = wrapper.find(Button);
-      expect(buttons.length).toBe(4);
-      expect(expect.arrayContaining(buttons.map(btn => btn.text()))).toEqual(['Reference', 'Higher Carbon Price', 'Technology', 'Read less']);
+      expect(buttons.length).toBe(3);
+      expect(expect.arrayContaining(buttons.map(btn => btn.text()))).toEqual(['Reference', 'Higher Carbon Price', 'Technology']);
     });
 
     test('buttons should be clickable', () => {
