@@ -45,6 +45,7 @@ const PriceSelect = () => {
         {intl.formatMessage({ id: 'common.benchmarkPrices' })}
         &nbsp;
       </Typography>
+      <HintPrice />
       <DropDown
         className={classes.select}
         menuClassName={classes.menu}
@@ -53,7 +54,6 @@ const PriceSelect = () => {
         renderValue={value => intl.formatMessage({ id: `common.prices.${value}` })}
         onChange={value => configDispatch({ type: 'priceSource/changed', payload: value })}
       />
-      <HintPrice />
     </div>
   );
 };

@@ -447,7 +447,7 @@
       }
     },
     "pageLayout": {
-      "unit": "UNITÉS"
+      "unit": "Unité"
     },
     "hintPrice": {
       "description": "Les prix de référence servent de repère pour les acheteurs et les vendeurs.",
@@ -492,7 +492,9 @@
       }
     },
     "viewSelect": {
-      "name": "Données",
+      "data": "Données",
+      "viewBy": "Visualiser Par",
+      "production": "Production",
       "region": {
         "tooltip": {
           "electricity": {
@@ -525,7 +527,7 @@
       }
     },
     "sectorSelect": {
-      "name": "SECTEUR",
+      "name": "Secteur",
       "ALL": {
         "tooltip": "Consulter la demande totale pour utilisation finale pour tous les secteurs",
         "description": "Il s’agit de la consommation totale d’énergie dans les quatre grands secteurs de l’économie canadienne : résidentiel, commercial, industriel et transports. Elle comprend la consommation d’électricité, de gaz naturel, de produits pétroliers comme l’essence, de charbon, et de carburants renouvelables. Aussi appelée demande pour utilisation finale ou demande secondaire, la demande totale n’inclut pas l’énergie utilisée pour produire de l’électricité."

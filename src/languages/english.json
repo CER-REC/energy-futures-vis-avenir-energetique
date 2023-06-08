@@ -449,7 +449,7 @@
       }
     },
     "pageLayout": {
-      "unit": "UNIT"
+      "unit": "Unit"
     },
     "hintPrice": {
       "description": "Benchmark prices are a reference point for buyers and sellers.",
@@ -494,7 +494,9 @@
       }
     },
     "viewSelect": {
-      "name": "Data",
+      "data": "Data",
+      "viewBy": "View By",
+      "production": "Production",
       "region": {
         "tooltip": {
           "electricity": {
@@ -527,7 +529,7 @@
       }
     },
     "sectorSelect": {
-      "name": "SECTOR",
+      "name": "Sector",
       "ALL": {
         "tooltip": "View total end-use demand for all sectors",
         "description": "The total energy used in the four sectors of Canada’s economy: residential, commercial, industrial and transportation. Includes the use of electricity, natural gas, petroleum products such as gasoline and coal, and renewable fuels. Also referred to as end-use or secondary demand, it does not include energy used to generate electricity."
