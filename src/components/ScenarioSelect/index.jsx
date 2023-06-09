@@ -12,12 +12,14 @@ import { HintScenarioSelect } from '../Hint';
 const useStyles = makeStyles(theme => ({
   root: {
     padding: theme.spacing(0.5, 3, 0.5, 1),
-    '& p': { fontWeight: 700 },
   },
   scenarioButton: {
     padding: '0 1.5em',
     boxShadow: '2px 2px 4px 0px #00000040',
     textTransform: 'unset',
+  },
+  labelContainer: {
+    ...theme.mixins.labelContainer,
   },
 }));
 
@@ -71,8 +73,8 @@ const ScenarioSelect = ({ multiSelect }) => {
 
   return (
     <Grid container alignItems="center" spacing={1} className={classes.root}>
-      <Grid item>
-        <Typography variant="body1" color="secondary">{intl.formatMessage({ id: 'components.scenarioSelect.name' })}</Typography>
+      <Grid item className={classes.labelContainer}>
+        <Typography variant="subtitle1">{intl.formatMessage({ id: 'components.scenarioSelect.name' })}</Typography>
       </Grid>
       <HintScenarioSelect />
       {scenarios.map(scenario => (

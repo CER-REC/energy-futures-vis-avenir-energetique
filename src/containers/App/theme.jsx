@@ -50,6 +50,11 @@ const theme = createMuiTheme({
     selectBorder: {
       border: '1px solid #A6A6A6',
     },
+    labelContainer: {
+      '&:first-child:not(override)': {
+        paddingRight: 0,
+      },
+    },
   },
   typography: {
     fontFamily: '"FiraSansCondensed", "Roboto", "Helvetica", "Arial", sans-serif',
@@ -70,6 +75,11 @@ const theme = createMuiTheme({
         '& > p': { margin: 0 },
       },
       overline: { fontSize: 12 },
+      subtitle1: {
+        fontSize: 16,
+        color: defaultTheme.palette.secondary.main,
+        fontWeight: 700,
+      },
     },
     MuiButton: {
       root: {

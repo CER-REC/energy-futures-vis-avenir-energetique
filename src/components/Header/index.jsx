@@ -76,7 +76,7 @@ const Header = () => {
       <Grid container item xs={12}>
         <Grid item style={{ flex: 1 }}>{title}</Grid>
         <Grid item className={classes.yearSelectContainer}>
-          <Typography variant="body1" color="secondary">{intl.formatMessage({ id: 'components.yearSelect.name' })}</Typography>
+          <Typography variant="subtitle1">{intl.formatMessage({ id: 'components.yearSelect.name' })}</Typography>
           <HintYearSelect />
           <DropDown
             options={yearIds.map(yearId => [intl.formatMessage({ id: `components.yearSelect.${yearId}.dropdown`, defaultMessage: yearId }), yearId])}

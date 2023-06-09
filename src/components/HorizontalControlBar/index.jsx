@@ -16,7 +16,6 @@ import { HintMainSelect, HintViewSelect, HintSectorSelect } from '../Hint';
 const useStyles = makeStyles(theme => createStyles({
   root: {
     padding: theme.spacing(0.5, 3, 0.5, 1),
-    '& p': { fontWeight: 700 },
   },
   btnSector: {
     height: 30,
@@ -30,6 +29,9 @@ const useStyles = makeStyles(theme => createStyles({
     maxWidth: 220,
     border: `1px solid ${theme.palette.secondary.main}`,
     borderRadius: 0,
+  },
+  labelContainer: {
+    ...theme.mixins.labelContainer,
   },
 }));
 
@@ -73,8 +75,8 @@ const HorizontalControlBar = () => {
 
   const selections = (appendices.length > 1) && (
     <Grid container alignItems="center" wrap="nowrap" spacing={1}>
-      <Grid item>
-        <Typography variant="body1" color="secondary">{selectionLabel}</Typography>
+      <Grid item className={classes.labelContainer}>
+        <Typography variant="subtitle1">{selectionLabel}</Typography>
       </Grid>
       <HintMainSelect />
       {appendices.map(selection => (
@@ -103,8 +105,8 @@ const HorizontalControlBar = () => {
    */
   const sectorSelection = ['by-sector', 'demand'].includes(config.page) && (
     <Grid container alignItems="center" wrap="nowrap" spacing={1}>
-      <Grid item>
-        <Typography variant="body1" color="secondary">{intl.formatMessage({ id: 'components.sectorSelect.name' })}</Typography>
+      <Grid item className={classes.labelContainer}>
+        <Typography variant="subtitle1">{intl.formatMessage({ id: 'components.sectorSelect.name' })}</Typography>
       </Grid>
       <HintSectorSelect />
       {SECTOR_ORDER.filter(sector => sectors.order.find(s => s === sector)).map((sector) => {
@@ -138,8 +140,8 @@ const HorizontalControlBar = () => {
    */
   const views = ['electricity', 'oil-and-gas'].includes(config.page) && (
     <Grid container alignItems="center" wrap="nowrap" spacing={1}>
-      <Grid item>
-        <Typography variant="body1" color="secondary">{intl.formatMessage({ id: 'components.viewSelect.viewBy' })}</Typography>
+      <Grid item className={classes.labelContainer}>
+        <Typography variant="subtitle1">{intl.formatMessage({ id: 'components.viewSelect.viewBy' })}</Typography>
       </Grid>
       <HintViewSelect />
       {['region', 'source'].map(view => (
