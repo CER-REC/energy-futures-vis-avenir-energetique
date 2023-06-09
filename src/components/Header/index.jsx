@@ -11,10 +11,11 @@ import { HintScenarioSelect, HintYearSelect } from '../Hint';
 import useAPI from '../../hooks/useAPI';
 import HorizontalControlBar from '../HorizontalControlBar';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
   row: {
     marginBottom: '0.3em',
     backgroundColor: '#F3EFEF',
+    borderTop: `3px solid ${theme.palette.secondary.light}`,
   },
   title: {
     'a&:hover': { textDecoration: 'none' },
@@ -37,7 +38,7 @@ const useStyles = makeStyles({
     justifyContent: 'flex-end',
     alignItems: 'center',
   },
-});
+}));
 
 const Header = () => {
   const classes = useStyles();

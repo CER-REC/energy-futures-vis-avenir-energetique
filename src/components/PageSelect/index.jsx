@@ -10,27 +10,35 @@ import useConfig from '../../hooks/useConfig';
 import analytics from '../../analytics';
 import PageIcon from '../PageIcon';
 
+const DESKTOP_ICON_SIZE = 55;
+const TABLET_ICON_SIZE = 35;
+
 const useStyles = makeStyles(theme => createStyles({
   box: {
-    height: 98,
-    width: 72,
-    backgroundColor: '#F3EFEF',
+    width: '100%',
     zIndex: 9,
-    transition: 'top .5s ease-in-out, padding .5s ease-in-out, border-color .25s ease-in-out',
-    '&:hover': { border: `2px solid ${theme.palette.primary.main}` },
+    border: `2px solid ${theme.palette.secondary.light}`,
+    borderRadius: '8px 8px 0 0',
+    borderBottom: 'none',
+    '&:hover': {
+      borderColor: theme.palette.primary.main,
+    },
     '&:disabled': {
+      borderColor: theme.palette.primary.main,
       backgroundColor: theme.palette.primary.main,
       '& svg': { fill: '#FEFEFE' },
       '& span': { color: '#FEFEFE' },
     },
-
-    '& > div': {
-      width: 'auto',
-    },
   },
   icon: {
-    height: 64,
-    width: 64,
+    [theme.breakpoints.up('md')]: {
+      height: DESKTOP_ICON_SIZE,
+      width: DESKTOP_ICON_SIZE,
+    },
+    [theme.breakpoints.down('md')]: {
+      height: TABLET_ICON_SIZE,
+      width: TABLET_ICON_SIZE,
+    },
     '& > svg': {
       height: '100%',
       width: '100%',
@@ -39,7 +47,6 @@ const useStyles = makeStyles(theme => createStyles({
       transition: 'fill .35s ease-in-out',
     },
     '& + span': {
-      width: 64,
       fontWeight: 700,
       color: theme.palette.secondary.light,
       transition: 'color .35s ease-in-out',
@@ -54,6 +61,12 @@ const useStyles = makeStyles(theme => createStyles({
     border: '1px solid #AAA',
     borderRadius: 0,
     boxShadow: theme.shadows[1],
+  },
+  label: {
+    textTransform: 'uppercase',
+    [theme.breakpoints.up('md')]: {
+      paddingLeft: '0.5em',
+    },
   },
 }));
 
@@ -71,7 +84,7 @@ const PageSelect = () => {
   const pageButtons = PAGES.filter(page => page.id !== 'landing').map((page) => {
     const subtitle = intl.formatMessage({ id: `components.pageSelect.${page.label}.title.default` });
     return (
-      <Grid item key={`page-${page.id}`}>
+      <Grid item key={`page-${page.id}`} style={{ width: '100%' }}>
         <Tooltip
           title={(
             <>
@@ -91,9 +104,9 @@ const PageSelect = () => {
               onClick={handlePageUpdate(page.id)}
               classes={{ root: classes.box }}
             >
-              <Grid container direction="column" wrap="nowrap">
+              <Grid container wrap="nowrap" alignItems="center" justify="center">
                 <div className={classes.icon}><PageIcon id={page.id} /></div>
-                <Typography variant="caption">{subtitle}</Typography>
+                <Typography variant="caption" className={classes.label}>{subtitle}</Typography>
               </Grid>
             </ButtonBase>
           </span>
@@ -107,6 +120,9 @@ const PageSelect = () => {
       container
       alignItems="center"
       wrap="nowrap"
+      spacing={1}
+      justify="space-around"
+      style={{ padding: '0 10px 0 10px' }}
     >
       {pageButtons}
     </Grid>

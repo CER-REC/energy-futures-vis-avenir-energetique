@@ -44,7 +44,6 @@ const useStyles = makeStyles(theme => ({
     '&.circle, &.hexagon': {
       '&.disabled > p, &.disabled > svg': { backgroundColor: 'transparent' },
     },
-    textTransform: 'uppercase',
     '& > p, & > svg:first-of-type': {
       margin: props.attachment ? 4 : 'auto',
       color: props.color || theme.palette.secondary.main,
