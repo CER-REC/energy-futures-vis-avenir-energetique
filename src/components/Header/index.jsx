@@ -103,6 +103,7 @@ const Header = () => {
         xs={12}
         wrap="nowrap"
         className={classes.row}
+        style={{ paddingLeft: 0, paddingRight: 0 }}
         direction="column"
       >
         <Grid item xs={12}>

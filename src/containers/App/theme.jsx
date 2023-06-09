@@ -52,7 +52,7 @@ const theme = createMuiTheme({
     },
     selectionContainer: {
       width: 'auto',
-      margin: defaultTheme.spacing(0.5, 3, 0.5, 1),
+      margin: defaultTheme.spacing(0, 3, 0, 1),
     },
     labelContainer: {
       '&:first-child:not(override)': {
