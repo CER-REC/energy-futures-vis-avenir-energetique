@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useMemo, useRef } from 'react';
+import React, { useCallback, useMemo, useRef } from 'react';
 import { useIntl } from 'react-intl';
 import PropTypes from 'prop-types';
 import {
@@ -154,7 +154,7 @@ const Electricity = ({ data, year }) => {
    */
   const desktop = useMediaQuery('(min-width: 992px)');
 
-  const [currYear, setCurrYear] = useState(config.baseYear || iteration);
+  const currYear = config.baseYear || iteration;
 
   /**
    * Coefficients for determining bubble sizes during the calculation.
@@ -366,7 +366,6 @@ const Electricity = ({ data, year }) => {
       {/* below are the controls for the year playback */}
       <YearSlider
         year={currYear}
-        onYearChange={value => setCurrYear(value)}
         min={year.min}
         max={year.max}
         forecast={year.forecastStart}

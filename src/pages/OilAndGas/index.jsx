@@ -92,8 +92,8 @@ const OilAndGas = ({ data, year, vizDimension }) => {
 
   const legendTranslationPath = `common.oilandgas.legend.${config.mainSelection}.${config.view}`;
 
-  const [currentYear, setCurrentYear] = useState(config.baseYear || iteration);
-  const [compareYear, setCompareYear] = useState(config.compareYear || iteration);
+  const currentYear = config.baseYear || iteration;
+  const compareYear = config.compareYear || year.max;
 
   const {
     regions: { colors: regionColors },
@@ -462,14 +462,6 @@ const OilAndGas = ({ data, year, vizDimension }) => {
               <TableCell colSpan="100%" style={{ height: 51 }}>
                 <YearSlider
                   year={compare ? { curr: currentYear, compare: compareYear } : currentYear}
-                  onYearChange={(value) => {
-                    if ((value.curr || value) !== currentYear) {
-                      setCurrentYear(value.curr || value);
-                    }
-                    if (compare && value.compare !== compareYear) {
-                      setCompareYear(value.compare);
-                    }
-                  }}
                   min={year.min}
                   max={year.max}
                   forecast={year.forecastStart}
