@@ -242,7 +242,7 @@ const YearSlider = ({ year, onYearChange, min, max, forecast }) => {
         {/* forecast bar */}
         {forecast && (
           <div className={classes.forecast} style={{ left: `${((forecast - min) / (max - min)) * 100}%` }}>
-            <Typography variant="overline">{intl.formatMessage({ id: 'common.forecast' })}</Typography>
+            <Typography variant="overline" style={{ textTransform: 'uppercase' }}>{intl.formatMessage({ id: 'common.forecast' })}</Typography>
           </div>
         )}
       </Grid>

@@ -78,7 +78,10 @@ const theme = createMuiTheme({
         lineHeight: 1.3,
         '& > p': { margin: 0 },
       },
-      overline: { fontSize: 12 },
+      overline: {
+        textTransform: 'unset',
+        fontSize: 12,
+      },
       subtitle1: {
         fontSize: 16,
         color: defaultTheme.palette.secondary.main,
