@@ -392,7 +392,7 @@ const OilAndGas = ({ data, year, vizDimension }) => {
               style={isTopChart ? { bottom: compare ? 414 : 99 } : { top: 410 }}
             >
               <Grid item xs={12}>
-                <Typography variant="overline" align="center" component="div" style={{ lineHeight: 1.25 }}>
+                <Typography variant="overline" align="center" component="div" style={{ lineHeight: 1.25, textTransform: 'uppercase' }}>
                   {intl.formatMessage({ id: 'common.oilandgas.groupLabel' })}
                 </Typography>
               </Grid>
