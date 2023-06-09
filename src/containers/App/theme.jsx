@@ -51,7 +51,8 @@ const theme = createMuiTheme({
       border: '1px solid #A6A6A6',
     },
     selectionContainer: {
-      padding: defaultTheme.spacing(0.5, 3, 0.5, 1),
+      width: 'auto',
+      margin: defaultTheme.spacing(0.5, 3, 0.5, 1),
     },
     labelContainer: {
       '&:first-child:not(override)': {

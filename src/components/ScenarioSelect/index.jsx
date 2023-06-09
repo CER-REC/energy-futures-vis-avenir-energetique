@@ -73,7 +73,7 @@ const ScenarioSelect = ({ multiSelect }) => {
       </Grid>
       <HintScenarioSelect />
       {scenarios.map(scenario => (
-        <Grid item key={`config-scenario-${scenario}`} style={{ lineHeight: '1em' }}>
+        <Grid item key={`config-scenario-${scenario}`}>
           <Tooltip title={getTooltip(scenario)}>
             <Button
               variant={config.scenarios.indexOf(scenario) > -1 ? 'contained' : 'outlined'}

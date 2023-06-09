@@ -68,7 +68,7 @@ const HorizontalControlBar = () => {
     : intl.formatMessage({ id: 'components.viewSelect.data' });
 
   const selections = (appendices.length > 1) && (
-    <Grid container alignItems="center" wrap="nowrap" spacing={1}>
+    <Grid container alignItems="center" spacing={1}>
       <Grid item className={classes.labelContainer}>
         <Typography variant="subtitle1">{selectionLabel}</Typography>
       </Grid>
@@ -83,6 +83,7 @@ const HorizontalControlBar = () => {
               variant={config.mainSelection === selection ? 'contained' : 'outlined'}
               color="primary"
               size="small"
+              fullWidth
               onClick={() => handleUpdateAppendix(selection)}
             >
               {intl.formatMessage({ id: `components.mainSelect.${selection}.title` })}
@@ -97,7 +98,7 @@ const HorizontalControlBar = () => {
    * Sector
    */
   const sectorSelection = ['by-sector', 'demand'].includes(config.page) && (
-    <Grid container alignItems="center" wrap="nowrap" spacing={1}>
+    <Grid container alignItems="center" spacing={1}>
       <Grid item className={classes.labelContainer}>
         <Typography variant="subtitle1">{intl.formatMessage({ id: 'components.sectorSelect.name' })}</Typography>
       </Grid>
@@ -115,6 +116,7 @@ const HorizontalControlBar = () => {
                 variant={config.sector === sector ? 'contained' : 'outlined'}
                 color="primary"
                 size="small"
+                fullWidth
                 onClick={() => handleUpdateSector(sector)}
               >
                 {Icon && <Icon /> }
@@ -131,7 +133,7 @@ const HorizontalControlBar = () => {
    * View by
    */
   const views = ['electricity', 'oil-and-gas'].includes(config.page) && (
-    <Grid container alignItems="center" wrap="nowrap" spacing={1}>
+    <Grid container alignItems="center" spacing={1}>
       <Grid item className={classes.labelContainer}>
         <Typography variant="subtitle1">{intl.formatMessage({ id: 'components.viewSelect.viewBy' })}</Typography>
       </Grid>
@@ -145,6 +147,7 @@ const HorizontalControlBar = () => {
               variant={config.view === view ? 'contained' : 'outlined'}
               color="primary"
               size="small"
+              fullWidth
               onClick={() => handleUpdateView(view)}
             >
               {intl.formatMessage({ id: `common.${view === 'source' && config.page === 'oil-and-gas' ? 'type' : view}` })}

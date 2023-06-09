@@ -11,10 +11,10 @@ import { HintScenarioSelect, HintYearSelect } from '../Hint';
 import useAPI from '../../hooks/useAPI';
 import HorizontalControlBar from '../HorizontalControlBar';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles({
   row: {
-    width: '100%',
-    '& > div': { height: '100%' },
+    marginBottom: '0.3em',
+    backgroundColor: '#F3EFEF',
   },
   title: {
     'a&:hover': { textDecoration: 'none' },
@@ -22,12 +22,6 @@ const useStyles = makeStyles(theme => ({
       fontWeight: 700,
       textTransform: 'uppercase',
     },
-  },
-  controls: {
-    height: '100%',
-    width: '100%',
-    padding: theme.spacing(1),
-    backgroundColor: '#F3EFEF',
   },
   icon: {
     lineHeight: 0,
@@ -43,7 +37,7 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'flex-end',
     alignItems: 'center',
   },
-}));
+});
 
 const Header = () => {
   const classes = useStyles();
@@ -103,16 +97,21 @@ const Header = () => {
 
       <PageSelect />
 
-      <Grid item xs={12} style={{ marginBottom: '0.3em', padding: 0 }}>
-        <Grid container alignItems="center" wrap="nowrap" className={classes.row}>
-          <Grid container className={classes.controls}>
-            <Grid item xs={12}>
-              <ScenarioSelect
-                multiSelect={multiSelectScenario}
-              />
-              <HorizontalControlBar />
-            </Grid>
-          </Grid>
+      <Grid
+        container
+        item
+        xs={12}
+        wrap="nowrap"
+        className={classes.row}
+        direction="column"
+      >
+        <Grid item xs={12}>
+          <ScenarioSelect
+            multiSelect={multiSelectScenario}
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <HorizontalControlBar />
         </Grid>
       </Grid>
     </>
