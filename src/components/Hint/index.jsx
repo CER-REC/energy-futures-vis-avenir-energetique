@@ -332,6 +332,14 @@ export const HintSourceList = ({ sources, sourceType, children, disableKeyboardN
   return <Hint label="source" content={sections} isStandaloneButton>{children}</Hint>;
 };
 
+HintSourceList.propTypes = {
+  sources: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+  sourceType: PropTypes.string.isRequired,
+  disableKeyboardNav: PropTypes.bool.isRequired,
+  children: PropTypes.node,
+};
+HintSourceList.defaultProps = { children: null };
+
 export const HintScenarioSelect = ({ children, isTextButton }) => {
   const classes = useStyles();
   const intl = useIntl();
@@ -375,11 +383,3 @@ export const HintScenarioSelect = ({ children, isTextButton }) => {
 
 HintScenarioSelect.propTypes = { children: PropTypes.node, isTextButton: PropTypes.bool };
 HintScenarioSelect.defaultProps = { children: null, isTextButton: false };
-
-HintSourceList.propTypes = {
-  sources: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
-  sourceType: PropTypes.string.isRequired,
-  disableKeyboardNav: PropTypes.bool.isRequired,
-  children: PropTypes.node,
-};
-HintSourceList.defaultProps = { children: null };

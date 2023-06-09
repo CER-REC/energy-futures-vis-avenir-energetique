@@ -11,12 +11,7 @@ import { HintScenarioSelect } from '../Hint';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    padding: theme.spacing(0.5, 3, 0.5, 1),
-  },
-  scenarioButton: {
-    padding: '0 1.5em',
-    boxShadow: '2px 2px 4px 0px #00000040',
-    textTransform: 'unset',
+    ...theme.mixins.selectionContainer,
   },
   labelContainer: {
     ...theme.mixins.labelContainer,
@@ -81,7 +76,6 @@ const ScenarioSelect = ({ multiSelect }) => {
         <Grid item key={`config-scenario-${scenario}`} style={{ lineHeight: '1em' }}>
           <Tooltip title={getTooltip(scenario)}>
             <Button
-              className={classes.scenarioButton}
               variant={config.scenarios.indexOf(scenario) > -1 ? 'contained' : 'outlined'}
               color="primary"
               size="small"

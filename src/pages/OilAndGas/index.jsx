@@ -79,6 +79,10 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: '#F3EFEF',
     '& svg': { verticalAlign: 'middle' },
   },
+  compareBtn: {
+    textTransform: 'uppercase',
+    padding: '0px 2px',
+  },
 }));
 
 const MAX_SIZE = 250;
@@ -445,7 +449,13 @@ const OilAndGas = ({ data, year, vizDimension }) => {
           </Grid>
         )}
         <Grid item>
-          <Button variant="outlined" color="primary" size="small" onClick={handleCompareUpdate}>
+          <Button
+            variant="outlined"
+            color="primary"
+            size="small"
+            onClick={handleCompareUpdate}
+            className={classes.compareBtn}
+          >
             {intl.formatMessage({ id: `common.oilandgas.button.${compare ? 'noCompare' : 'compare'}` })}
           </Button>
         </Grid>

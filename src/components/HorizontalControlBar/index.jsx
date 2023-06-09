@@ -15,13 +15,7 @@ import { HintMainSelect, HintViewSelect, HintSectorSelect } from '../Hint';
 
 const useStyles = makeStyles(theme => createStyles({
   root: {
-    padding: theme.spacing(0.5, 3, 0.5, 1),
-  },
-  btnSector: {
-    height: 30,
-    minWidth: 45,
-    textTransform: 'none',
-    '& > span': { lineHeight: 1 },
+    ...theme.mixins.selectionContainer,
   },
   tooltip: {
     backgroundColor: theme.palette.common.white,
@@ -90,7 +84,6 @@ const HorizontalControlBar = () => {
               color="primary"
               size="small"
               onClick={() => handleUpdateAppendix(selection)}
-              className={classes.btnSector}
             >
               {intl.formatMessage({ id: `components.mainSelect.${selection}.title` })}
             </Button>
@@ -123,7 +116,6 @@ const HorizontalControlBar = () => {
                 color="primary"
                 size="small"
                 onClick={() => handleUpdateSector(sector)}
-                className={classes.btnSector}
               >
                 {Icon && <Icon /> }
                 {intl.formatMessage({ id: `common.sectors.${sector}` })}
@@ -154,7 +146,6 @@ const HorizontalControlBar = () => {
               color="primary"
               size="small"
               onClick={() => handleUpdateView(view)}
-              className={classes.btnSector}
             >
               {intl.formatMessage({ id: `common.${view === 'source' && config.page === 'oil-and-gas' ? 'type' : view}` })}
             </Button>

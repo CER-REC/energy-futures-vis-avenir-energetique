@@ -50,6 +50,9 @@ const theme = createMuiTheme({
     selectBorder: {
       border: '1px solid #A6A6A6',
     },
+    selectionContainer: {
+      padding: defaultTheme.spacing(0.5, 3, 0.5, 1),
+    },
     labelContainer: {
       '&:first-child:not(override)': {
         paddingRight: 0,
@@ -111,7 +114,8 @@ const theme = createMuiTheme({
       },
       containedSizeSmall: {
         fontSize: 13,
-        padding: defaultTheme.spacing(0, 0.25),
+        padding: '0 1.5em',
+        textTransform: 'unset',
       },
       outlinedPrimary: {
         fontWeight: 500,
@@ -127,7 +131,8 @@ const theme = createMuiTheme({
       },
       outlinedSizeSmall: {
         fontSize: 13,
-        padding: defaultTheme.spacing(0, 0.25),
+        padding: '0 1.5em',
+        textTransform: 'unset',
       },
       textPrimary: {
         minWidth: 'unset',
