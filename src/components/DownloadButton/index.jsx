@@ -21,9 +21,6 @@ const useStyles = makeStyles(theme => ({
   download: {
     ...theme.mixins.contextButton,
   },
-  label: {
-    fontSize: 13,
-  },
 }));
 
 const DownloadButton = () => {
@@ -153,7 +150,6 @@ const DownloadButton = () => {
       color="secondary"
       onClick={onClick}
       className={classes.download}
-      classes={{ label: classes.label }}
     >
       {intl.formatMessage({ id: 'components.share.download' })}
     </Button>

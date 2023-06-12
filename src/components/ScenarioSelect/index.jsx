@@ -67,7 +67,7 @@ const ScenarioSelect = ({ multiSelect }) => {
   }), [intl, config.yearId]);
 
   return (
-    <Grid container alignItems="center" spacing={1} className={classes.root}>
+    <Grid container alignItems="center" className={classes.root}>
       <Grid item className={classes.labelContainer}>
         <Typography variant="subtitle1">{intl.formatMessage({ id: 'components.scenarioSelect.name' })}</Typography>
       </Grid>
@@ -79,7 +79,6 @@ const ScenarioSelect = ({ multiSelect }) => {
               variant={config.scenarios.indexOf(scenario) > -1 ? 'contained' : 'outlined'}
               color="primary"
               size="small"
-              fullWidth
               onClick={() => handleScenarioSelect(scenario)}
               style={multiSelect && config.scenarios.indexOf(scenario) > -1 ? {
                 backgroundColor: SCENARIO_COLOR[scenario],

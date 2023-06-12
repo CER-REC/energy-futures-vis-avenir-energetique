@@ -491,10 +491,12 @@
         "description": "Mesure des émissions d’un million de tonnes d’équivalent en dioxyde de carbone (« éq. CO2 »). Éq. CO2 est une mesure de la contribution des GES au réchauffement de la planète par rapport au dioxyde de carbone."
       }
     },
+    "horizontalControlBar": {
+      "viewBy": "Visualiser Par",
+      "production": "Production"
+    },
     "viewSelect": {
       "data": "Données",
-      "viewBy": "Visualiser Par",
-      "production": "Production",
       "region": {
         "tooltip": {
           "electricity": {

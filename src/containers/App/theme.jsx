@@ -5,10 +5,15 @@ import { createMuiTheme } from '@material-ui/core';
  */
 const defaultTheme = createMuiTheme({
   palette: {
-    primary: { main: '#4A93C7' },
+    primary: {
+      main: '#4A93C7',
+    },
     secondary: {
       main: '#5D5D5D',
       light: '#83868E',
+    },
+    background: {
+      light: '#F3EFEF',
     },
   },
 });
@@ -18,6 +23,9 @@ const theme = createMuiTheme({
     secondary: {
       main: defaultTheme.palette.secondary.main,
       light: defaultTheme.palette.secondary.light,
+    },
+    background: {
+      light: defaultTheme.palette.background.light,
     },
   },
   mixins: {
@@ -31,21 +39,10 @@ const theme = createMuiTheme({
       height: 700,
     },
     contextButton: {
-      height: 'auto',
       minHeight: 30,
-      width: 100,
       padding: defaultTheme.spacing(0.25, 1),
-      border: '1px solid transparent',
       fontSize: 13,
-      letterSpacing: -0.25,
-      textAlign: 'left',
       textTransform: 'initial',
-      justifyContent: 'left',
-    },
-    contextAccent: {
-      borderLeftWidth: 8,
-      borderLeftStyle: 'solid',
-      borderLeftColor: defaultTheme.palette.primary.main,
     },
     selectBorder: {
       border: '1px solid #A6A6A6',
@@ -53,11 +50,10 @@ const theme = createMuiTheme({
     selectionContainer: {
       width: 'auto',
       margin: defaultTheme.spacing(0, 3, 0, 1),
+      lineHeight: '1em',
     },
     labelContainer: {
-      '&:first-child:not(override)': {
-        paddingRight: 0,
-      },
+      paddingRight: 0,
     },
   },
   typography: {
@@ -79,7 +75,6 @@ const theme = createMuiTheme({
         '& > p': { margin: 0 },
       },
       overline: {
-        textTransform: 'unset',
         fontSize: 12,
       },
       subtitle1: {
@@ -116,8 +111,9 @@ const theme = createMuiTheme({
           boxShadow: defaultTheme.shadows[2],
         },
       },
-      containedSizeSmall: {
+      sizeSmall: {
         fontSize: 13,
+        margin: defaultTheme.spacing(0, 0.5),
         padding: '0 1.5em',
         textTransform: 'unset',
       },
@@ -133,15 +129,9 @@ const theme = createMuiTheme({
           boxShadow: defaultTheme.shadows[2],
         },
       },
-      outlinedSizeSmall: {
-        fontSize: 13,
-        padding: '0 1.5em',
-        textTransform: 'unset',
-      },
       textPrimary: {
         minWidth: 'unset',
         padding: 0,
-        textAlign: 'left',
         fontWeight: 'bold',
         textTransform: 'inherit',
         '&:hover': {

@@ -14,7 +14,7 @@ const useStyles = makeStyles(theme => createStyles({
   box: {
     height: 98,
     width: 72,
-    backgroundColor: '#F3EFEF',
+    backgroundColor: theme.palette.background.light,
     zIndex: 9,
     transition: 'top .5s ease-in-out, padding .5s ease-in-out, border-color .25s ease-in-out',
     '&:hover': { border: `2px solid ${theme.palette.primary.main}` },
@@ -105,8 +105,6 @@ const PageSelect = () => {
   return (
     <Grid
       container
-      alignItems="center"
-      wrap="nowrap"
     >
       {pageButtons}
     </Grid>

@@ -11,10 +11,10 @@ import { HintScenarioSelect, HintYearSelect } from '../Hint';
 import useAPI from '../../hooks/useAPI';
 import HorizontalControlBar from '../HorizontalControlBar';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
   row: {
-    marginBottom: '0.3em',
-    backgroundColor: '#F3EFEF',
+    padding: theme.spacing(1),
+    backgroundColor: theme.palette.background.light,
   },
   title: {
     'a&:hover': { textDecoration: 'none' },
@@ -23,21 +23,12 @@ const useStyles = makeStyles({
       textTransform: 'uppercase',
     },
   },
-  icon: {
-    lineHeight: 0,
-    '& > svg': {
-      height: '100%',
-      maxHeight: 132,
-      width: '100%',
-      fill: '#CCC',
-    },
-  },
   yearSelectContainer: {
     display: 'flex',
     justifyContent: 'flex-end',
     alignItems: 'center',
   },
-});
+}));
 
 const Header = () => {
   const classes = useStyles();
@@ -67,7 +58,7 @@ const Header = () => {
   // Note: CER template uses custom breakpoints.
   return (
     <>
-      <Grid container item xs={12}>
+      <Grid container>
         <Grid item style={{ flex: 1 }}>{title}</Grid>
         <Grid item className={classes.yearSelectContainer}>
           <Typography variant="subtitle1">{intl.formatMessage({ id: 'components.yearSelect.name' })}</Typography>
@@ -79,7 +70,7 @@ const Header = () => {
           />
         </Grid>
       </Grid>
-      <Grid container item xs={12}>
+      <Grid container>
         <Grid item style={{ flex: 1 }}>
           <Typography variant="h6" style={{ fontWeight: 'bold' }}>{intl.formatMessage({ id: 'components.header.subtitle' })}</Typography>
           {
@@ -99,12 +90,7 @@ const Header = () => {
 
       <Grid
         container
-        item
-        xs={12}
-        wrap="nowrap"
         className={classes.row}
-        style={{ paddingLeft: 0, paddingRight: 0 }}
-        direction="column"
       >
         <Grid item xs={12}>
           <ScenarioSelect

@@ -76,7 +76,7 @@ const useStyles = makeStyles(theme => ({
     width: 'max-content',
     margin: theme.spacing(1.5),
     padding: theme.spacing(1),
-    backgroundColor: '#F3EFEF',
+    backgroundColor: theme.palette.background.light,
     '& svg': { verticalAlign: 'middle' },
   },
   compareBtn: {
