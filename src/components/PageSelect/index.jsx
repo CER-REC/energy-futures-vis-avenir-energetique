@@ -118,9 +118,7 @@ const PageSelect = () => {
   return (
     <Grid
       container
-      alignItems="center"
       wrap="nowrap"
-      justify="space-around"
       spacing={1}
       style={{ padding: '10px 10px 0 10px' }}
     >

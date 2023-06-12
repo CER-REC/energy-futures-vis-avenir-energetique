@@ -14,7 +14,7 @@ import HorizontalControlBar from '../HorizontalControlBar';
 const useStyles = makeStyles(theme => ({
   row: {
     marginBottom: '0.3em',
-    backgroundColor: '#F3EFEF',
+    backgroundColor: theme.palette.background.light,
     borderTop: `3px solid ${theme.palette.secondary.light}`,
     padding: theme.spacing(1),
   },
