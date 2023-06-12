@@ -493,10 +493,12 @@
         "description": "A measure of emissions that is a megatonnes of carbon dioxide equivalent (CO₂e). CO₂e is a measure of how much GHGs contribute to global warming relative to carbon dioxide."
       }
     },
+    "horizontalControlBar": {
+      "viewBy": "View By",
+      "production": "Production"
+    },
     "viewSelect": {
       "data": "Data",
-      "viewBy": "View By",
-      "production": "Production",
       "region": {
         "tooltip": {
           "electricity": {

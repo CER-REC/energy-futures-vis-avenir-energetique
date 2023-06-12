@@ -30,7 +30,7 @@ const useStyles = makeStyles(theme => createStyles({
     zIndex: theme.zIndex.modal,
     border: `1px solid ${theme.palette.secondary.light}`,
     color: theme.palette.secondary.main,
-    backgroundColor: '#F3EFEF',
+    backgroundColor: theme.palette.background.light,
     overflow: 'auto',
     bottom: 'calc(100% + 24px)',
     left: -16,
@@ -52,7 +52,7 @@ const useStyles = makeStyles(theme => createStyles({
   tip: {
     position: 'absolute',
     border: `1px solid ${theme.palette.secondary.light}`,
-    backgroundColor: '#F3EFEF',
+    backgroundColor: theme.palette.background.light,
     zIndex: theme.zIndex.modal + 1,
     bottom: 'calc(100% + 4px)',
     left: 0,
@@ -60,7 +60,6 @@ const useStyles = makeStyles(theme => createStyles({
     height: 22,
     borderTop: 'none',
   },
-  accent: { ...theme.mixins.contextAccent },
 }));
 
 const LinkButtonGroup = () => {
@@ -131,7 +130,6 @@ const LinkButtonGroup = () => {
     <ClickAwayListener onClickAway={() => setSelect(undefined)}>
       <Grid
         container
-        alignItems="flex-start"
         spacing={1}
       >
         <Grid item>{generateButton(link.report)}</Grid>

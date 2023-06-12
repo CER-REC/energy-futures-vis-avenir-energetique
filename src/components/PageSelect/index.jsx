@@ -120,9 +120,9 @@ const PageSelect = () => {
       container
       alignItems="center"
       wrap="nowrap"
-      spacing={1}
       justify="space-around"
-      style={{ padding: '0 10px 0 10px' }}
+      spacing={1}
+      style={{ padding: '10px 10px 0 10px' }}
     >
       {pageButtons}
     </Grid>

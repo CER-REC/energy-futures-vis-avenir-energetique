@@ -115,7 +115,7 @@ const useStyles = makeStyles(theme => ({
     top: 0,
     minHeight: 28,
     width: '100%',
-    backgroundColor: '#F3EFEF',
+    backgroundColor: theme.palette.background.light,
     textAlign: 'right',
   },
   tab: {
