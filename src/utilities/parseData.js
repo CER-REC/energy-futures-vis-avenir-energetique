@@ -165,7 +165,7 @@ export const getTicks = (highest, lowest = 0) => {
   const ticks = [];
   for (let i = min; i <= max;) {
     ticks.push(i);
-    i = Math.round((i + step) * 1000) / 1000;
+    i = parseFloat((i + step).toFixed(3));
   }
 
   return ticks;
