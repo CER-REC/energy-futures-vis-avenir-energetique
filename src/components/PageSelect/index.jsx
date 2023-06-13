@@ -15,7 +15,7 @@ const TABLET_ICON_SIZE = 35;
 
 const useStyles = makeStyles(theme => createStyles({
   box: {
-    width: '100%',
+    padding: theme.spacing(0, 2, 0, 2),
     zIndex: 9,
     border: `2px solid ${theme.palette.secondary.light}`,
     borderRadius: '8px 8px 0 0',
@@ -84,7 +84,7 @@ const PageSelect = () => {
   const pageButtons = PAGES.filter(page => page.id !== 'landing').map((page) => {
     const subtitle = intl.formatMessage({ id: `components.pageSelect.${page.label}.title.default` });
     return (
-      <Grid item key={`page-${page.id}`} style={{ width: '100%' }}>
+      <Grid item key={`page-${page.id}`} style={{ marginTop: 'auto' }}>
         <Tooltip
           title={(
             <>
@@ -120,7 +120,7 @@ const PageSelect = () => {
       container
       wrap="nowrap"
       spacing={1}
-      style={{ padding: '10px 10px 0 10px' }}
+      style={{ padding: 10, paddingBottom: 0 }}
     >
       {pageButtons}
     </Grid>
