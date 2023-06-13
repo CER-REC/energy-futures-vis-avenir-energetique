@@ -73,6 +73,7 @@
         "LIGHT": "Conv. Light",
         "HEAVY": "Conv. Heavy"
       },
+      "groupLabelSingular": "Value less than 1%",
       "groupLabel": "Values less than 1%",
       "legend": {
         "oilProduction": {

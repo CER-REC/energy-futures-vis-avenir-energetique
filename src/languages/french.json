@@ -73,6 +73,7 @@
         "LIGHT": "Léger classique",
         "HEAVY": "Lourd classique"
       },
+      "groupLabelSingular": "MOINS DE 1 %",
       "groupLabel": "MOINS DE 1 %",
       "legend": {
         "oilProduction": {
