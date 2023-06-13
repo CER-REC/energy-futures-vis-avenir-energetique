@@ -26,6 +26,9 @@ export const PAGES = [
   {
     label: 'Scenarios',
     id: 'scenarios',
+    sourceTypes: {
+      greenhouseGasEmission: 'greenhouseGas',
+    },
   },
   {
     label: 'Landing',
@@ -118,7 +121,7 @@ export const GREENHOUSE_GAS_ORDER = ['WASTE', 'AGRI', 'BUILD', 'HEAVY', 'TRANSPO
 export const SCENARIO_COLOR = {
   'Global Net-zero': '#559B37',
   'Canada Net-zero': '#376787',
-  'Current Measures': '#CEA53B',
+  'Current Measures': '#F0852D',
   'Current Policies': '#AAA',
   Evolving: '#6D60E8',
   'Evolving Policies': '#6D60E8',
@@ -307,3 +310,12 @@ export const SOURCE_PATTERNS = {
   DIESEL: 'squares',
   OIL: 'lines-vertical',
 };
+
+export const GREENHOUSE_GAS_MARKERS = [{
+  axis: 'y',
+  value: 0,
+  lineStyle: {
+    stroke: 'black',
+    strokeWidth: 3,
+  },
+}];

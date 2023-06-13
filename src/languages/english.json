@@ -50,7 +50,8 @@
       "energyDemand": "Total Demand",
       "electricityGeneration": "Electricity Generation",
       "oilProduction": "Oil Production",
-      "gasProduction": "Gas Production"
+      "gasProduction": "Gas Production",
+      "greenhouseGasEmission": "Emissions"
     },
     "char": {
       "colon": ":",
@@ -261,6 +262,7 @@
           "electricityGeneration": "Compare Scenarios for Electricity Generation",
           "oilProduction": "Compare Scenarios for Oil Production",
           "gasProduction": "Compare Scenarios for Gas Production",
+          "greenhouseGasEmission": "Compare Scenarios for Emissions",
           "default": "Scenarios"
         },
         "description": "Directly compare scenarios to see how projections change over time."
@@ -444,7 +446,9 @@
       },
       "greenhouseGasEmission": {
         "title": "Emissions",
-        "tooltip": {},
+        "tooltip": {
+          "scenarios": "Compare scenarios for emissions"
+        },
         "description": "Total Canadian greenhouse gas (GHG) emissions for Oil and Gas, Electricity Generation, Hydrogen Production, Transportation, Heavy Industry, Buildings, Agriculture, Waste and Others, Land Use, Land Use Change and Forestry and Direct Air Capture."
       }
     },
@@ -493,10 +497,12 @@
         "description": "A measure of emissions for megatonnes of carbon dioxide equivalent (CO₂e). CO₂e is a measure of how much GHGs contribute to global warming relative to carbon dioxide."
       }
     },
+    "horizontalControlBar": {
+      "viewBy": "View By",
+      "production": "Production"
+    },
     "viewSelect": {
       "data": "Data",
-      "viewBy": "View By",
-      "production": "Production",
       "region": {
         "tooltip": {
           "electricity": {

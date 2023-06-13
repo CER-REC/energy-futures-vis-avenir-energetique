@@ -13,29 +13,14 @@ import HorizontalControlBar from '../HorizontalControlBar';
 
 const useStyles = makeStyles(theme => ({
   row: {
-    width: '100%',
-    '& > div': { height: '100%' },
+    padding: theme.spacing(1),
+    backgroundColor: theme.palette.background.light,
   },
   title: {
     'a&:hover': { textDecoration: 'none' },
     '& > h4': {
       fontWeight: 700,
       textTransform: 'uppercase',
-    },
-  },
-  controls: {
-    height: '100%',
-    width: '100%',
-    padding: theme.spacing(1),
-    backgroundColor: '#F3EFEF',
-  },
-  icon: {
-    lineHeight: 0,
-    '& > svg': {
-      height: '100%',
-      maxHeight: 132,
-      width: '100%',
-      fill: '#CCC',
     },
   },
   yearSelectContainer: {
@@ -73,10 +58,10 @@ const Header = () => {
   // Note: CER template uses custom breakpoints.
   return (
     <>
-      <Grid container item xs={12}>
+      <Grid container>
         <Grid item style={{ flex: 1 }}>{title}</Grid>
         <Grid item className={classes.yearSelectContainer}>
-          <Typography variant="body1" color="secondary">{intl.formatMessage({ id: 'components.yearSelect.name' })}</Typography>
+          <Typography variant="subtitle1">{intl.formatMessage({ id: 'components.yearSelect.name' })}</Typography>
           <HintYearSelect />
           <DropDown
             options={yearIds.map(yearId => [intl.formatMessage({ id: `components.yearSelect.${yearId}.dropdown`, defaultMessage: yearId }), yearId])}
@@ -85,7 +70,7 @@ const Header = () => {
           />
         </Grid>
       </Grid>
-      <Grid container item xs={12}>
+      <Grid container>
         <Grid item style={{ flex: 1 }}>
           <Typography variant="h6" style={{ fontWeight: 'bold' }}>{intl.formatMessage({ id: 'components.header.subtitle' })}</Typography>
           {
@@ -103,16 +88,17 @@ const Header = () => {
 
       <PageSelect />
 
-      <Grid item xs={12} style={{ marginBottom: '0.3em', padding: 0 }}>
-        <Grid container alignItems="center" wrap="nowrap" className={classes.row}>
-          <Grid container className={classes.controls}>
-            <Grid item xs={12}>
-              <ScenarioSelect
-                multiSelect={multiSelectScenario}
-              />
-              <HorizontalControlBar />
-            </Grid>
-          </Grid>
+      <Grid
+        container
+        className={classes.row}
+      >
+        <Grid item xs={12}>
+          <ScenarioSelect
+            multiSelect={multiSelectScenario}
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <HorizontalControlBar />
         </Grid>
       </Grid>
     </>

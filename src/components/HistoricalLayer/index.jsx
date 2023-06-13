@@ -12,8 +12,6 @@ const useStyles = makeStyles(theme => ({
 
 const HistoricalLayer = ({
   bars,
-  height,
-  innerHeight,
   margin,
   xScale,
   forecastStart,
@@ -25,7 +23,6 @@ const HistoricalLayer = ({
     [forecastStart, xScale, bars, margin.left],
   );
   const y = -margin.top;
-  const lineHeight = (innerHeight || height) + margin.top;
 
   if (!forecastStart) {
     return null;
@@ -33,11 +30,6 @@ const HistoricalLayer = ({
 
   return (
     <g transform={`translate(${-margin.left}, ${y})`}>
-      <rect
-        height={lineHeight}
-        width={historicalWidth}
-        fill="#E6E6E8"
-      />
       <rect
         height={20}
         width={historicalWidth}
@@ -56,11 +48,6 @@ HistoricalLayer.propTypes = {
     data: PropTypes.shape({ indexValue: PropTypes.string.isRequired }),
     width: PropTypes.number.isRequired,
   })),
-  /** The height of the bar chart (provided by nivo) */
-  height: PropTypes.number.isRequired,
-  /** The height of the line chart (provided by nivo) */
-  innerHeight: PropTypes.number,
-  /** The margins of the chart (provided by nivo) */
   margin: PropTypes.shape({
     top: PropTypes.number.isRequired,
     left: PropTypes.number.isRequired,
@@ -73,7 +60,6 @@ HistoricalLayer.propTypes = {
 
 HistoricalLayer.defaultProps = {
   bars: null,
-  innerHeight: null,
   forecastStart: null,
 };
 

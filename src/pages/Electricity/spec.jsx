@@ -5,7 +5,6 @@ import { Tooltip, Typography, Paper } from '@material-ui/core';
 
 import Electricity from '.';
 import { TestContainer, getRendered } from '../../tests/utilities';
-import YearSlider from '../../components/YearSlider';
 import { DEFAULT_CONFIG, MOCK_DATA_REGION, MOCK_DATA_SINGLE, MOCK_DATA_SOURCE, MOCK_YEAR } from './stories';
 import YearSliceTooltip from '../../components/YearSliceTooltip';
 
@@ -52,7 +51,6 @@ describe('Page|Electricity', () => {
     test('should render viz properties', async () => {
       await act(async () => {
         wrapper.find(Tooltip).at(0).prop('onOpen')();
-        wrapper.find(YearSlider).prop('onYearChange')(2006);
       });
 
       // verify each bubble group

@@ -112,8 +112,8 @@ export const ELECTRICITY_GENERATIONS_SOURCE = gql`
 export const GREENHOUSE_GAS_EMISSIONS_SOURCE = gql`
   query ($iteration: ID!, $sources: [GreenhouseGasSource!], $scenarios: [String!]) {
     resources:greenhouseGasEmissions(iterationIds: [$iteration], scenarios: $scenarios, sources: $sources) {
-      province: region
       year
+      scenario
       source
       value: quantity
     }

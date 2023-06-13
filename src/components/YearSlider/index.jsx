@@ -104,7 +104,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const YearSlider = ({ year, onYearChange, min, max, forecast }) => {
+const YearSlider = ({ year, min, max, forecast }) => {
   const classes = useStyles();
   const intl = useIntl();
 
@@ -123,33 +123,31 @@ const YearSlider = ({ year, onYearChange, min, max, forecast }) => {
     const value = validYear(newValue || min, { min, max });
     setCurrYear(value);
     configDispatch({ type: 'baseYear/changed', payload: value });
-    onYearChange(year?.curr ? { ...year, curr: value } : value);
 
     /*
     * If only one slider is changed, the other needs a value otherwise
     * it will reset on iteration change
     */
     if (!compareYear) {
-      configDispatch({ type: 'compareYear/changed', payload: value });
-      setCompYear(iteration);
+      configDispatch({ type: 'compareYear/changed', payload: max });
+      setCompYear(max);
     }
-  }, [min, max, configDispatch, onYearChange, year, compareYear, iteration]);
+  }, [min, max, configDispatch, compareYear]);
 
   const onCompareYearChange = useCallback((newValue) => {
     const value = validYear(newValue || min, { min, max });
     setCompYear(value);
     configDispatch({ type: 'compareYear/changed', payload: value });
-    onYearChange({ ...year, compare: value });
 
     /*
     * If only one slider is changed, the other needs a value otherwise
     * it will reset on iteration change
     */
     if (!baseYear) {
-      configDispatch({ type: 'baseYear/changed', payload: value });
+      configDispatch({ type: 'baseYear/changed', payload: iteration });
       setCurrYear(iteration);
     }
-  }, [min, max, configDispatch, onYearChange, year, baseYear, iteration]);
+  }, [min, max, configDispatch, baseYear, iteration]);
 
   /**
    * A timer for auto-play.
@@ -193,16 +191,12 @@ const YearSlider = ({ year, onYearChange, min, max, forecast }) => {
     analytics.reportMedia(page, play ? 'pause' : 'play');
   }, [play, setPlay, page]);
 
-  /*
-  * Makes sure that the default slider years are the iteration year
-  * if they arent specified.
-  */
-  if (!baseYear && !compareYear && iteration) {
+  if (!baseYear && !compareYear && iteration && max) {
     if (currYear !== iteration) {
       setCurrYear(iteration);
     }
-    if (compYear !== iteration) {
-      setCompYear(iteration);
+    if (compYear !== max) {
+      setCompYear(max);
     }
   }
 
@@ -242,7 +236,7 @@ const YearSlider = ({ year, onYearChange, min, max, forecast }) => {
         {/* forecast bar */}
         {forecast && (
           <div className={classes.forecast} style={{ left: `${((forecast - min) / (max - min)) * 100}%` }}>
-            <Typography variant="overline">{intl.formatMessage({ id: 'common.forecast' })}</Typography>
+            <Typography variant="overline" style={{ textTransform: 'uppercase' }}>{intl.formatMessage({ id: 'common.forecast' })}</Typography>
           </div>
         )}
       </Grid>
@@ -258,14 +252,12 @@ YearSlider.propTypes = {
     }),
     PropTypes.number, // for a single year slider
   ]).isRequired,
-  onYearChange: PropTypes.func,
   min: PropTypes.number,
   max: PropTypes.number,
   forecast: PropTypes.number,
 };
 
 YearSlider.defaultProps = {
-  onYearChange: () => {},
   min: 2005,
   max: 2020,
   forecast: undefined,

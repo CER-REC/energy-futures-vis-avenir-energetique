@@ -54,6 +54,9 @@ const useStyles = makeStyles(theme => ({
       justifyContent: 'center',
     },
   },
+  labelContainer: {
+    ...theme.mixins.labelContainer,
+  },
 }));
 
 const PageLayout = ({
@@ -182,8 +185,8 @@ const PageLayout = ({
                 {chartTitle}
               </Typography>
             </Grid>
-            <Grid item style={{ display: 'flex', alignItems: 'center' }}>
-              <Typography variant="body1" color="secondary">{intl.formatMessage({ id: 'components.pageLayout.unit' })}&nbsp;</Typography>
+            <Grid item className={classes.labelContainer} style={{ display: 'flex', alignItems: 'center' }}>
+              <Typography variant="subtitle1">{intl.formatMessage({ id: 'components.pageLayout.unit' })}</Typography>
               <HintUnit />
               <DropDown
                 options={layout.unit.map(unit => [intl.formatMessage({ id: `common.units.${unit}` }), unit])}
@@ -199,10 +202,10 @@ const PageLayout = ({
               <Grid item style={{ width: gutterWidth }}>
                 <DraggableVerticalList
                   title="Source"
-                  shape={config.page === 'emissions' ? 'hexagon' : 'circle'}
+                  shape={config.mainSelection === 'greenhouseGasEmission' ? 'hexagon' : 'circle'}
                   disabled={disableDraggableSource}
                   singleSelect={singleSelectSource}
-                  greyscale={singleSelectSource}
+                  greyscale={singleSelectSource || config.page === 'scenarios'}
                   sourceType={type}
                   items={config.sources}
                   itemOrder={config.sourceOrder}

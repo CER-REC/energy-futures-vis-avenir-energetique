@@ -11,13 +11,10 @@ import { HintScenarioSelect } from '../Hint';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    padding: theme.spacing(0.5, 3, 0.5, 1),
-    '& p': { fontWeight: 700 },
+    ...theme.mixins.selectionContainer,
   },
-  scenarioButton: {
-    padding: '0 1.5em',
-    boxShadow: '2px 2px 4px 0px #00000040',
-    textTransform: 'unset',
+  labelContainer: {
+    ...theme.mixins.labelContainer,
   },
 }));
 
@@ -70,20 +67,18 @@ const ScenarioSelect = ({ multiSelect }) => {
   }), [intl, config.yearId]);
 
   return (
-    <Grid container alignItems="center" spacing={1} className={classes.root}>
-      <Grid item>
-        <Typography variant="body1" color="secondary">{intl.formatMessage({ id: 'components.scenarioSelect.name' })}</Typography>
+    <Grid container alignItems="center" className={classes.root}>
+      <Grid item className={classes.labelContainer}>
+        <Typography variant="subtitle1">{intl.formatMessage({ id: 'components.scenarioSelect.name' })}</Typography>
       </Grid>
       <HintScenarioSelect />
       {scenarios.map(scenario => (
-        <Grid item key={`config-scenario-${scenario}`} style={{ lineHeight: '1em' }}>
+        <Grid item key={`config-scenario-${scenario}`}>
           <Tooltip title={getTooltip(scenario)}>
             <Button
-              className={classes.scenarioButton}
               variant={config.scenarios.indexOf(scenario) > -1 ? 'contained' : 'outlined'}
               color="primary"
               size="small"
-              fullWidth
               onClick={() => handleScenarioSelect(scenario)}
               style={multiSelect && config.scenarios.indexOf(scenario) > -1 ? {
                 backgroundColor: SCENARIO_COLOR[scenario],

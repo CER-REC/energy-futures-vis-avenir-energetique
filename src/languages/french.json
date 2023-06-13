@@ -50,7 +50,8 @@
       "energyDemand": "Demande totale",
       "electricityGeneration": "Production d’électricité",
       "oilProduction": "Production de pétrole",
-      "gasProduction": "Production de gaz"
+      "gasProduction": "Production de gaz",
+      "greenhouseGasEmission": ""
     },
     "char": {
       "colon": " :",
@@ -261,6 +262,7 @@
           "electricityGeneration": "Comparer des scénarios pour la production d’électricité",
           "oilProduction": "Comparer des scénarios pour la production de pétrole",
           "gasProduction": "Comparer des scénarios pour la production de gaz",
+          "greenhouseGasEmission": "",
           "default": "Scénarios"
         },
         "description": "Comparer directement les scénarios pour illustrer comment les projections changent au fil du temps."
@@ -443,7 +445,9 @@
       },
       "greenhouseGasEmission": {
         "title": "Émissions",
-        "tooltip": {},
+        "tooltip": {
+          "scenarios": ""
+        },
         "description": "Émissions canadiennes totales de gaz à effet de serre (« GES ») pour les secteurs pétrole et gaz, production d’électricité, production d’hydrogène, transport, industrie lourde, bâtiments, agriculture, déchets et autres, utilisation de terres, modification de l’utilisation de terres et foresterie et captage direct dans l’air."
       }
     },
@@ -492,10 +496,12 @@
         "description": "Mesure des émissions en mégatonnes d’équivalent dioxyde de carbone (« éq. CO₂ »). Éq. CO₂ est une mesure de la contribution des GES au réchauffement de la planète par rapport au dioxyde de carbone."
       }
     },
+    "horizontalControlBar": {
+      "viewBy": "Visualiser Par",
+      "production": "Production"
+    },
     "viewSelect": {
       "data": "Données",
-      "viewBy": "Visualiser Par",
-      "production": "Production",
       "region": {
         "tooltip": {
           "electricity": {

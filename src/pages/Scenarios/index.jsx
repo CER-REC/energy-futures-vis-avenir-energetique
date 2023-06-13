@@ -8,7 +8,12 @@ import useConfig from '../../hooks/useConfig';
 import useEnergyFutureData from '../../hooks/useEnergyFutureData';
 import analytics from '../../analytics';
 
-import { CHART_PROPS, CHART_AXIS_PROPS, SCENARIO_COLOR } from '../../constants';
+import {
+  CHART_PROPS,
+  CHART_AXIS_PROPS,
+  SCENARIO_COLOR,
+  GREENHOUSE_GAS_MARKERS,
+} from '../../constants';
 import ForecastLayer from '../../components/ForecastLayer';
 import HistoricalLayer from '../../components/HistoricalLayer';
 import PriceSelect from '../../components/PriceSelect';
@@ -48,6 +53,12 @@ export const dottedLayer = scenarioYear => args => args.points
     />
   ));
 
+const getLineTicks = (lineData) => {
+  const values = lineData.map(scenarios => scenarios.data).flat().map(point => point.y);
+
+  return getTicks(Math.max(...values), Math.min(0, ...values));
+};
+
 const useStyles = makeStyles(theme => ({
   chart: {
     ...theme.mixins.chart,
@@ -69,16 +80,6 @@ const Scenarios = ({ data, year }) => {
    * The dotted line layer that represents the default scenario.
    */
   const dots = useMemo(() => dottedLayer(config.yearId), [config.yearId]);
-
-  const getLineTicks = (pointData) => {
-    const values = (pointData || []).map(source => source.data);
-    const sums = (values[0] || [])
-      .map((_, i) => Math.max(...values.map(source => source[i].y)));
-    return getTicks(Math.max(...sums));
-  };
-
-  const ticks = getLineTicks(data);
-  const benchmarkTicks = getLineTicks(priceData);
 
   const getNodesFromData = useCallback((currYear, nodeData) => nodeData.map((scenario) => {
     const yearData = scenario.data.find(obj => obj.x === currYear);
@@ -136,6 +137,8 @@ const Scenarios = ({ data, year }) => {
     return null;
   }
 
+  const ticks = getLineTicks(data);
+  const benchmarkTicks = getLineTicks(priceData);
   const lineProps = {
     colors: d => SCENARIO_COLOR[d.id] || '#AAA',
     xScale: { type: 'point' },
@@ -163,10 +166,10 @@ const Scenarios = ({ data, year }) => {
           {...lineProps}
           data={data}
           enableArea
-          layers={[HistoricalLayer, 'grid', 'axes', 'areas', BenchmarkCrosshair, 'points', 'slices', 'lines', ForecastLayer, dots]}
+          layers={[HistoricalLayer, 'grid', 'axes', 'areas', BenchmarkCrosshair, 'points', 'slices', 'lines', 'markers', ForecastLayer, dots]}
           curve="cardinal"
           areaOpacity={0.15}
-          yScale={{ type: 'linear', min: 0, max: ticks[ticks.length - 1], reverse: false }}
+          yScale={{ type: 'linear', min: ticks[0], max: ticks[ticks.length - 1], reverse: false }}
           axisRight={{
             ...CHART_AXIS_PROPS,
             tickValues: ticks,
@@ -174,6 +177,7 @@ const Scenarios = ({ data, year }) => {
           sliceTooltip={event => getTooltip(event, true)}
           axisBottom={prices?.length ? null : lineProps.axisBottom}
           gridYValues={ticks}
+          markers={config.mainSelection === 'greenhouseGasEmission' ? GREENHOUSE_GAS_MARKERS : null}
           setSlice={setLowerSlice}
           slice={upperSlice}
         />

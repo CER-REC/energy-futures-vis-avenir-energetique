@@ -15,14 +15,7 @@ import { HintMainSelect, HintViewSelect, HintSectorSelect } from '../Hint';
 
 const useStyles = makeStyles(theme => createStyles({
   root: {
-    padding: theme.spacing(0.5, 3, 0.5, 1),
-    '& p': { fontWeight: 700 },
-  },
-  btnSector: {
-    height: 30,
-    minWidth: 45,
-    textTransform: 'none',
-    '& > span': { lineHeight: 1 },
+    ...theme.mixins.selectionContainer,
   },
   tooltip: {
     backgroundColor: theme.palette.common.white,
@@ -30,6 +23,9 @@ const useStyles = makeStyles(theme => createStyles({
     maxWidth: 220,
     border: `1px solid ${theme.palette.secondary.main}`,
     borderRadius: 0,
+  },
+  labelContainer: {
+    ...theme.mixins.labelContainer,
   },
 }));
 
@@ -68,13 +64,13 @@ const HorizontalControlBar = () => {
   );
 
   const selectionLabel = config.page === 'oil-and-gas'
-    ? intl.formatMessage({ id: 'components.viewSelect.production' })
+    ? intl.formatMessage({ id: 'components.horizontalControlBar.production' })
     : intl.formatMessage({ id: 'components.viewSelect.data' });
 
   const selections = (appendices.length > 1) && (
-    <Grid container alignItems="center" wrap="nowrap" spacing={1}>
-      <Grid item>
-        <Typography variant="body1" color="secondary">{selectionLabel}</Typography>
+    <Grid container alignItems="center">
+      <Grid item className={classes.labelContainer}>
+        <Typography variant="subtitle1">{selectionLabel}</Typography>
       </Grid>
       <HintMainSelect />
       {appendices.map(selection => (
@@ -88,7 +84,6 @@ const HorizontalControlBar = () => {
               color="primary"
               size="small"
               onClick={() => handleUpdateAppendix(selection)}
-              className={classes.btnSector}
             >
               {intl.formatMessage({ id: `components.mainSelect.${selection}.title` })}
             </Button>
@@ -102,9 +97,9 @@ const HorizontalControlBar = () => {
    * Sector
    */
   const sectorSelection = ['by-sector', 'demand'].includes(config.page) && (
-    <Grid container alignItems="center" wrap="nowrap" spacing={1}>
-      <Grid item>
-        <Typography variant="body1" color="secondary">{intl.formatMessage({ id: 'components.sectorSelect.name' })}</Typography>
+    <Grid container alignItems="center">
+      <Grid item className={classes.labelContainer}>
+        <Typography variant="subtitle1">{intl.formatMessage({ id: 'components.sectorSelect.name' })}</Typography>
       </Grid>
       <HintSectorSelect />
       {SECTOR_ORDER.filter(sector => sectors.order.find(s => s === sector)).map((sector) => {
@@ -121,7 +116,6 @@ const HorizontalControlBar = () => {
                 color="primary"
                 size="small"
                 onClick={() => handleUpdateSector(sector)}
-                className={classes.btnSector}
               >
                 {Icon && <Icon /> }
                 {intl.formatMessage({ id: `common.sectors.${sector}` })}
@@ -137,9 +131,9 @@ const HorizontalControlBar = () => {
    * View by
    */
   const views = ['electricity', 'oil-and-gas'].includes(config.page) && (
-    <Grid container alignItems="center" wrap="nowrap" spacing={1}>
-      <Grid item>
-        <Typography variant="body1" color="secondary">{intl.formatMessage({ id: 'components.viewSelect.viewBy' })}</Typography>
+    <Grid container alignItems="center">
+      <Grid item className={classes.labelContainer}>
+        <Typography variant="subtitle1">{intl.formatMessage({ id: 'components.horizontalControlBar.viewBy' })}</Typography>
       </Grid>
       <HintViewSelect />
       {['region', 'source'].map(view => (
@@ -152,7 +146,6 @@ const HorizontalControlBar = () => {
               color="primary"
               size="small"
               onClick={() => handleUpdateView(view)}
-              className={classes.btnSector}
             >
               {intl.formatMessage({ id: `common.${view === 'source' && config.page === 'oil-and-gas' ? 'type' : view}` })}
             </Button>
@@ -163,7 +156,7 @@ const HorizontalControlBar = () => {
   );
 
   return (
-    <Grid container justify={config.page === 'electricity' ? 'flex-start' : 'space-between'} alignItems="center" spacing={1} className={classes.root}>
+    <Grid container justify={config.page === 'electricity' ? 'flex-start' : 'space-between'} alignItems="center" className={classes.root}>
       { selections && (<Grid item>{selections}</Grid>) }
       <Grid item style={{ display: config.page === 'electricity' ? 'none' : 'block' }}>{sectorSelection}</Grid>
       <Grid item>{views}</Grid>

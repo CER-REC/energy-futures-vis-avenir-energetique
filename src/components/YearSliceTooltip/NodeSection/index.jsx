@@ -81,7 +81,7 @@ const NodeSection = ({ section, year = null }) => {
                 {formatValue(node.value, intl)}
                 {
                   section.hasPercentage && (
-                    ` (${((node.value / sum) * 100).toLocaleString(intl.locale, { maximumFractionDigits: 2 })}${intl.formatMessage({ id: 'common.char.percent' })})`
+                    ` (${formatValue(sum ? (node.value / sum) * 100 : 0, intl)}${intl.formatMessage({ id: 'common.char.percent' })})`
                   )
                 }
               </TableCell>
