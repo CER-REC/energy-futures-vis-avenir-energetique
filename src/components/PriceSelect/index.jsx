@@ -9,7 +9,7 @@ import HintPrice from '../HintPrice';
 
 const selectWidth = 200;
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
   root: {
     alignItems: 'center',
     display: 'flex',
@@ -26,7 +26,10 @@ const useStyles = makeStyles({
       width: selectWidth,
     },
   },
-});
+  labelContainer: {
+    ...theme.mixins.labelContainer,
+  },
+}));
 
 const PriceSelect = () => {
   const classes = useStyles();
@@ -40,11 +43,11 @@ const PriceSelect = () => {
   ]);
 
   return (
-    <div className={classes.root}>
-      <Typography variant="body1" color="secondary" style={{ textTransform: 'uppercase' }}>
+    <div className={`${classes.root} ${classes.labelContainer}`}>
+      <Typography variant="subtitle1">
         {intl.formatMessage({ id: 'common.benchmarkPrices' })}
-        &nbsp;
       </Typography>
+      <HintPrice />
       <DropDown
         className={classes.select}
         menuClassName={classes.menu}
@@ -53,7 +56,6 @@ const PriceSelect = () => {
         renderValue={value => intl.formatMessage({ id: `common.prices.${value}` })}
         onChange={value => configDispatch({ type: 'priceSource/changed', payload: value })}
       />
-      <HintPrice />
     </div>
   );
 };

@@ -115,7 +115,8 @@
   },
   "components": {
     "header": {
-      "subtitle": "What does Canada's energy future look like if we followed these scenarios?"
+      "subtitle": "What does Canada's energy future look like if we followed these scenarios?",
+      "learnMore": "Learn more about Scenarios"
     },
     "draggableVerticalList": {
       "all": "All",
@@ -153,7 +154,7 @@
       "app": "loading"
     },
     "yearSelect": {
-      "name": "EF REPORT",
+      "name": "Report",
       "title": "ENERGY FUTURES REPORTS",
       "2023": {
         "title": "CANADA’S ENERGY FUTURE 2023",
@@ -289,7 +290,7 @@
       "NIT": "Nova Inventory Transfer (NIT) - {year} US$/MMBtu"
     },
     "scenarioSelect": {
-      "name": "SCENARIOS",
+      "name": "Scenarios",
       "readMore": "Read more",
       "readLess": "Read less",
       "description": {
@@ -452,7 +453,7 @@
       }
     },
     "pageLayout": {
-      "unit": "UNIT"
+      "unit": "Unit"
     },
     "hintPrice": {
       "description": "Benchmark prices are a reference point for buyers and sellers.",
@@ -496,8 +497,12 @@
         "description": "A measure of emissions that is a megatonnes of carbon dioxide equivalent (CO₂e). CO₂e is a measure of how much GHGs contribute to global warming relative to carbon dioxide."
       }
     },
+    "horizontalControlBar": {
+      "viewBy": "View By",
+      "production": "Production"
+    },
     "viewSelect": {
-      "name": "VIEW BY",
+      "data": "Data",
       "region": {
         "tooltip": {
           "electricity": {
@@ -530,7 +535,7 @@
       }
     },
     "sectorSelect": {
-      "name": "SECTOR",
+      "name": "Sector",
       "ALL": {
         "tooltip": "View total end-use demand for all sectors",
         "description": "The total energy used in the four sectors of Canada’s economy: residential, commercial, industrial and transportation. Includes the use of electricity, natural gas, petroleum products such as gasoline and coal, and renewable fuels. Also referred to as end-use or secondary demand, it does not include energy used to generate electricity."

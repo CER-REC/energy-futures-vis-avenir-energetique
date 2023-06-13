@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo, useCallback, Children, cloneElement } from 'react';
 import PropTypes from 'prop-types';
-import { makeStyles, useMediaQuery, Grid, Typography, CircularProgress } from '@material-ui/core';
+import { makeStyles, Grid, Typography, CircularProgress } from '@material-ui/core';
 import Alert from '@material-ui/lab/Alert';
 import AlertTitle from '@material-ui/lab/AlertTitle';
 import { useIntl } from 'react-intl';
@@ -13,10 +13,8 @@ import { CONFIG_LAYOUT, PAGES } from '../../constants';
 import DraggableVerticalList from '../DraggableVerticalList';
 import LinkButtonGroup from '../LinkButtonGroup';
 import Share from '../Share';
-import DownloadButton from '../DownloadButton';
 import Header from '../Header';
 import useChartTitle from '../../hooks/useChartTitle';
-import HorizontalControlBar from '../HorizontalControlBar';
 import DropDown from '../Dropdown';
 import analytics from '../../analytics';
 import HintUnit from '../HintUnit';
@@ -56,6 +54,9 @@ const useStyles = makeStyles(theme => ({
       justifyContent: 'center',
     },
   },
+  labelContainer: {
+    ...theme.mixins.labelContainer,
+  },
 }));
 
 const PageLayout = ({
@@ -69,7 +70,6 @@ const PageLayout = ({
 }) => {
   const classes = useStyles();
   const intl = useIntl();
-  const desktop = useMediaQuery('(min-width: 992px)');
 
   const { regions, sources } = useAPI();
   const { config, configDispatch } = useConfig();
@@ -173,7 +173,6 @@ const PageLayout = ({
       <Header />
       <Grid item style={{ flex: 1, width: '100%' }}>
         <Grid container style={{ flex: 1 }}>
-          <HorizontalControlBar />
           <Grid container item>
             <Grid
               item
@@ -186,8 +185,9 @@ const PageLayout = ({
                 {chartTitle}
               </Typography>
             </Grid>
-            <Grid item style={{ display: 'flex', alignItems: 'center' }}>
-              <Typography variant="body1" color="secondary">{intl.formatMessage({ id: 'components.pageLayout.unit' })}&nbsp;</Typography>
+            <Grid item className={classes.labelContainer} style={{ display: 'flex', alignItems: 'center' }}>
+              <Typography variant="subtitle1">{intl.formatMessage({ id: 'components.pageLayout.unit' })}</Typography>
+              <HintUnit />
               <DropDown
                 options={layout.unit.map(unit => [intl.formatMessage({ id: `common.units.${unit}` }), unit])}
                 value={config.unit}
@@ -195,7 +195,6 @@ const PageLayout = ({
                 className={classes.dropDown}
                 menuClassName={classes.dropDownMenu}
               />
-              <HintUnit />
             </Grid>
           </Grid>
           <Grid container>
@@ -246,25 +245,15 @@ const PageLayout = ({
               )}
             </Grid>
           </Grid>
-          { desktop && (
-            <Grid container justify='flex-end'>
-              <Grid item><Share direction="row" /></Grid>
-            </Grid>
-          )}
         </Grid>
       </Grid>
-      {
-        !desktop && (
-          <Grid item xs={12}>
-            <Grid container alignItems="flex-start" wrap="nowrap" spacing={2}>
-              <Grid item><LinkButtonGroup direction='row' /></Grid>
-              <Grid item style={{ flexGrow: 1 }} />
-              <Grid item><DownloadButton /></Grid>
-              <Grid item><Share direction="row" /></Grid>
-            </Grid>
-          </Grid>
-        )
-      }
+      <Grid item xs={12}>
+        <Grid container alignItems="flex-start" wrap="nowrap" spacing={2}>
+          <Grid item><LinkButtonGroup /></Grid>
+          <Grid item style={{ flexGrow: 1 }} />
+          <Grid item><Share direction="row" /></Grid>
+        </Grid>
+      </Grid>
     </Grid>
   );
 };

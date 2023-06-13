@@ -1,8 +1,7 @@
 import React, { useState, useCallback, useMemo } from 'react';
 import { useIntl } from 'react-intl';
-import PropTypes from 'prop-types';
 import {
-  makeStyles, createStyles, Grid, Button, Typography,
+  makeStyles, createStyles, Grid, Button,
 } from '@material-ui/core';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import analytics from '../../analytics';
@@ -12,16 +11,8 @@ import {
   LinkButtonContentReport, LinkButtonContentMethodology, LinkButtonContentAbout,
 } from './contents';
 import DownloadButton from '../DownloadButton';
-import useIsDesktop from '../../hooks/useIsDesktop';
-
-const BTN_WIDTH = 92;
 
 const useStyles = makeStyles(theme => createStyles({
-  root: {
-    [theme.breakpoints.up('md')]: {
-      marginTop: '1em',
-    },
-  },
   title: {
     color: theme.palette.primary.main,
     fontWeight: 700,
@@ -29,23 +20,22 @@ const useStyles = makeStyles(theme => createStyles({
   },
   btnContainer: {
     position: 'relative',
-    width: '100%',
     lineHeight: 0,
   },
   btn: {
     ...theme.mixins.contextButton,
-    width: BTN_WIDTH,
-  },
-  downloadBtnContainer: {
-    width: `calc(${BTN_WIDTH}px + ${theme.mixins.contextAccent.borderLeftWidth}px)`,
   },
   popUp: {
     position: 'absolute',
     zIndex: theme.zIndex.modal,
     border: `1px solid ${theme.palette.secondary.light}`,
     color: theme.palette.secondary.main,
-    backgroundColor: '#F3EFEF',
+    backgroundColor: theme.palette.background.light,
     overflow: 'auto',
+    bottom: 'calc(100% + 24px)',
+    left: -16,
+    maxHeight: 250,
+    minWidth: 350,
     '& *': { fontFamily: '"FiraSansCondensed", "Roboto", "Helvetica", "Arial", sans-serif' },
     '& h4': { marginTop: 0 },
     '& p, & li': {
@@ -59,46 +49,22 @@ const useStyles = makeStyles(theme => createStyles({
       border: `1px solid ${theme.palette.secondary.light}`,
     },
   },
-  popUpRight: {
-    top: 0,
-    left: 'calc(100% + 20px)',
-    transform: `translateY(calc(-100% + ${theme.spacing(8)}px))`,
-    maxHeight: 350,
-    minWidth: 350,
-  },
-  popUpTop: {
-    bottom: 'calc(100% + 24px)',
-    left: -16,
-    maxHeight: 300,
-    minWidth: 350,
-  },
   tip: {
     position: 'absolute',
     border: `1px solid ${theme.palette.secondary.light}`,
-    backgroundColor: '#F3EFEF',
+    backgroundColor: theme.palette.background.light,
     zIndex: theme.zIndex.modal + 1,
-  },
-  tipRight: {
-    top: 0,
-    bottom: 0,
-    left: 'calc(100% + 4px)',
-    width: 17,
-    borderRight: 'none',
-  },
-  tipTop: {
     bottom: 'calc(100% + 4px)',
     left: 0,
     right: 0,
     height: 22,
     borderTop: 'none',
   },
-  accent: { ...theme.mixins.contextAccent },
 }));
 
-const LinkButtonGroup = ({ direction }) => {
+const LinkButtonGroup = () => {
   const classes = useStyles();
   const intl = useIntl();
-  const isDesktop = useIsDesktop();
 
   const { config } = useConfig();
   const [select, setSelect] = useState(undefined);
@@ -152,10 +118,10 @@ const LinkButtonGroup = ({ direction }) => {
       </Button>
 
       <span id={`panel-button-${label.tag}`} style={{ display: select === label.name ? 'block' : 'none' }}>
-        <div className={`${classes.popUp} ${direction === 'row' ? classes.popUpTop : classes.popUpRight}`}>
+        <div className={classes.popUp}>
           {label.content}
         </div>
-        <div className={`${classes.tip} ${direction === 'row' ? classes.tipTop : classes.tipRight}`} />
+        <div className={classes.tip} />
       </span>
     </Grid>
   );
@@ -164,31 +130,15 @@ const LinkButtonGroup = ({ direction }) => {
     <ClickAwayListener onClickAway={() => setSelect(undefined)}>
       <Grid
         container
-        direction={direction}
-        alignItems="flex-start"
-        spacing={direction === 'row' ? 1 : 0}
-        className={classes.root}
+        spacing={1}
       >
-        {direction === 'column' && (
-          <Grid item xs={12} style={{ marginBottom: 8 }}>
-            <Typography variant="body1" color="primary" className={classes.title}>{intl.formatMessage({ id: 'links.title' })}</Typography>
-          </Grid>
-        )}
-        <Grid item className={direction === 'row' ? '' : classes.accent}>{generateButton(link.report)}</Grid>
-        {direction === 'column' && <Grid item style={{ height: 8 }} />}
-        {isDesktop && (
-          <Grid item className={classes.downloadBtnContainer}><DownloadButton accent /></Grid>
-        )}
-        {direction === 'column' && <Grid item style={{ height: 8 }} />}
-        <Grid item className={direction === 'row' ? '' : classes.accent}>{generateButton(link.methodology)}</Grid>
-        {direction === 'column' && <Grid item className={direction === 'row' ? '' : classes.accent} style={{ height: 8 }} />}
-        <Grid item className={direction === 'row' ? '' : classes.accent}>{generateButton(link.about)}</Grid>
+        <Grid item>{generateButton(link.report)}</Grid>
+        <Grid item className={classes.btnContainer}><DownloadButton /></Grid>
+        <Grid item>{generateButton(link.methodology)}</Grid>
+        <Grid item>{generateButton(link.about)}</Grid>
       </Grid>
     </ClickAwayListener>
   );
 };
-
-LinkButtonGroup.propTypes = { direction: PropTypes.string }; // 'row' or 'column'
-LinkButtonGroup.defaultProps = { direction: 'column' };
 
 export default LinkButtonGroup;

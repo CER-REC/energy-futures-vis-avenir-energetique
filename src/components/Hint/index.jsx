@@ -1,4 +1,4 @@
-import React, { useState, useMemo, Fragment, useCallback } from 'react';
+import React, { useState, useMemo, Fragment, useCallback, cloneElement } from 'react';
 import { useIntl } from 'react-intl';
 import PropTypes from 'prop-types';
 import {
@@ -9,6 +9,7 @@ import HintIcon from '@material-ui/icons/HelpOutline';
 import CloseIcon from '@material-ui/icons/Close';
 import Markdown from 'react-markdown';
 
+import clsx from 'clsx';
 import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
 import { CONFIG_LAYOUT, SCENARIO_LABEL_COLOR } from '../../constants';
@@ -24,9 +25,13 @@ const useStyles = makeStyles(theme => createStyles({
   },
   hint: {
     height: 28,
-    margin: 'auto',
-    padding: theme.spacing(0.5),
+    margin: '4px 10px 4px 2px',
+    padding: 0,
     color: theme.palette.secondary.light,
+    '&.standalone': {
+      margin: 'auto',
+      padding: theme.spacing(0.5),
+    },
   },
   scenarios: {
     '& img': {
@@ -112,7 +117,7 @@ HintSection.defaultProps = {
 /**
  * Construct and render the hint icon (question mark) and its dialog.
  */
-const Hint = ({ children, label, content, maxWidth = 'sm', className }) => {
+const Hint = ({ children, label, content, maxWidth = 'sm', className, isTextButton, isStandaloneButton = false }) => {
   const classes = useStyles();
   const intl = useIntl();
   const { page } = useConfig().config;
@@ -128,10 +133,25 @@ const Hint = ({ children, label, content, maxWidth = 'sm', className }) => {
   return (
     <>
       <Grid container alignItems="center" wrap="nowrap" className={classes.root}>
-        {children}
-        <IconButton onClick={handleOpenDialog} aria-label={intl.formatMessage({ id: 'common.a11y.open' })} className={classes.hint}>
-          <HintIcon fontSize="small" />
-        </IconButton>
+        {
+          isTextButton && (
+            cloneElement(children, { onClick: handleOpenDialog })
+          )
+        }
+        {
+          !isTextButton && (
+            <>
+              {children}
+              <IconButton
+                onClick={handleOpenDialog}
+                aria-label={intl.formatMessage({ id: 'common.a11y.open' })}
+                className={clsx(classes.hint, { standalone: isStandaloneButton })}
+              >
+                <HintIcon fontSize="small" />
+              </IconButton>
+            </>
+          )
+        }
       </Grid>
 
       <Dialog
@@ -164,6 +184,8 @@ Hint.propTypes = {
   ]),
   maxWidth: PropTypes.string,
   className: PropTypes.string, // inject extra className for additional styling in the dialog
+  isTextButton: PropTypes.bool,
+  isStandaloneButton: PropTypes.bool,
 };
 
 Hint.defaultProps = {
@@ -172,6 +194,8 @@ Hint.defaultProps = {
   content: 'under construction',
   maxWidth: 'sm',
   className: '',
+  isTextButton: false,
+  isStandaloneButton: false,
 };
 
 export default Hint;
@@ -241,7 +265,7 @@ export const HintViewSelect = ({ children }) => {
     title: intl.formatMessage({ id: `common.${view === 'source' && page === 'oil-and-gas' ? 'type' : view}` }),
     text: intl.formatMessage({ id: `components.viewSelect.${view}.description.${page}` }),
   })), [intl, page]);
-  return <Hint label="view by" content={[<HintSection title={intl.formatMessage({ id: 'components.viewSelect.name' })} section={section} />]}>{children}</Hint>;
+  return <Hint label="view by" content={[<HintSection title={intl.formatMessage({ id: 'components.viewSelect.viewBy' })} section={section} />]}>{children}</Hint>;
 };
 
 HintViewSelect.propTypes = { children: PropTypes.node };
@@ -273,7 +297,7 @@ export const HintRegionList = ({ children, disableKeyboardNav }) => {
     !disableKeyboardNav && <Divider style={{ margin: '16px 0' }} />,
     !disableKeyboardNav && <HintSectionNav />,
   ];
-  return <Hint label="region" content={sections} maxWidth="xs">{children}</Hint>;
+  return <Hint label="region" content={sections} maxWidth="xs" isStandaloneButton>{children}</Hint>;
 };
 
 HintRegionList.propTypes = {
@@ -305,10 +329,18 @@ export const HintSourceList = ({ sources, sourceType, children, disableKeyboardN
     !disableKeyboardNav && <Divider style={{ margin: '16px 0' }} />,
     !disableKeyboardNav && <HintSectionNav />,
   ];
-  return <Hint label="source" content={sections}>{children}</Hint>;
+  return <Hint label="source" content={sections} isStandaloneButton>{children}</Hint>;
 };
 
-export const HintScenarioSelect = ({ children }) => {
+HintSourceList.propTypes = {
+  sources: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+  sourceType: PropTypes.string.isRequired,
+  disableKeyboardNav: PropTypes.bool.isRequired,
+  children: PropTypes.node,
+};
+HintSourceList.defaultProps = { children: null };
+
+export const HintScenarioSelect = ({ children, isTextButton }) => {
   const classes = useStyles();
   const intl = useIntl();
   const { yearIdIterations } = useAPI();
@@ -346,16 +378,8 @@ export const HintScenarioSelect = ({ children }) => {
     showGraph && <Divider />,
     showGraph && <HintSection section={sectionCaption} />,
   ].filter(Boolean);
-  return <Hint label="scenarios" content={sections} className={classes.scenarios}>{children}</Hint>;
+  return <Hint label="scenarios" content={sections} className={classes.scenarios} isTextButton={isTextButton}>{children}</Hint>;
 };
 
-HintScenarioSelect.propTypes = { children: PropTypes.node };
-HintScenarioSelect.defaultProps = { children: null };
-
-HintSourceList.propTypes = {
-  sources: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
-  sourceType: PropTypes.string.isRequired,
-  disableKeyboardNav: PropTypes.bool.isRequired,
-  children: PropTypes.node,
-};
-HintSourceList.defaultProps = { children: null };
+HintScenarioSelect.propTypes = { children: PropTypes.node, isTextButton: PropTypes.bool };
+HintScenarioSelect.defaultProps = { children: null, isTextButton: false };

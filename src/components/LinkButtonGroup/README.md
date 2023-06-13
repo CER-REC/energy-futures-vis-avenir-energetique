@@ -16,7 +16,7 @@ in which the `EF2020 Report` button opens a tabbed panel that has the following 
 Component `LinkButtonGroup` renders based on the `yearId` stored in the `useConfig` hook.
 
 ```jsx
-<LinkButtonGroup direction="row" />
+<LinkButtonGroup />
 ```
 
 ## Requirements

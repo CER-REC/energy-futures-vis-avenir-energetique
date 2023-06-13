@@ -15,14 +15,7 @@ import { HintMainSelect, HintViewSelect, HintSectorSelect } from '../Hint';
 
 const useStyles = makeStyles(theme => createStyles({
   root: {
-    padding: theme.spacing(0.5, 2),
-    '& p': { fontWeight: 700 },
-  },
-  btnSector: {
-    height: 30,
-    minWidth: 45,
-    textTransform: 'none',
-    '& > span': { lineHeight: 1 },
+    ...theme.mixins.selectionContainer,
   },
   tooltip: {
     backgroundColor: theme.palette.common.white,
@@ -30,6 +23,9 @@ const useStyles = makeStyles(theme => createStyles({
     maxWidth: 220,
     border: `1px solid ${theme.palette.secondary.main}`,
     borderRadius: 0,
+  },
+  labelContainer: {
+    ...theme.mixins.labelContainer,
   },
 }));
 
@@ -66,11 +62,17 @@ const HorizontalControlBar = () => {
   const appendices = Object.keys(CONFIG_LAYOUT).filter(
     selection => CONFIG_LAYOUT[selection].pages.includes(config.page),
   );
+
+  const selectionLabel = config.page === 'oil-and-gas'
+    ? intl.formatMessage({ id: 'components.horizontalControlBar.production' })
+    : intl.formatMessage({ id: 'components.viewSelect.data' });
+
   const selections = (appendices.length > 1) && (
-    <Grid container alignItems="center" wrap="nowrap" spacing={1}>
-      <Grid item>
-        <Typography variant="body1" color="secondary">{intl.formatMessage({ id: 'components.viewSelect.name' })}</Typography>
+    <Grid container alignItems="center">
+      <Grid item className={classes.labelContainer}>
+        <Typography variant="subtitle1">{selectionLabel}</Typography>
       </Grid>
+      <HintMainSelect />
       {appendices.map(selection => (
         <Grid item key={`config-origin-${selection}`}>
           <Tooltip
@@ -82,14 +84,12 @@ const HorizontalControlBar = () => {
               color="primary"
               size="small"
               onClick={() => handleUpdateAppendix(selection)}
-              className={classes.btnSector}
             >
               {intl.formatMessage({ id: `components.mainSelect.${selection}.title` })}
             </Button>
           </Tooltip>
         </Grid>
       ))}
-      <HintMainSelect />
     </Grid>
   );
 
@@ -97,10 +97,11 @@ const HorizontalControlBar = () => {
    * Sector
    */
   const sectorSelection = ['by-sector', 'demand'].includes(config.page) && (
-    <Grid container alignItems="center" wrap="nowrap" spacing={1}>
-      <Grid item>
-        <Typography variant="body1" color="secondary">{intl.formatMessage({ id: 'components.sectorSelect.name' })}</Typography>
+    <Grid container alignItems="center">
+      <Grid item className={classes.labelContainer}>
+        <Typography variant="subtitle1">{intl.formatMessage({ id: 'components.sectorSelect.name' })}</Typography>
       </Grid>
+      <HintSectorSelect />
       {SECTOR_ORDER.filter(sector => sectors.order.find(s => s === sector)).map((sector) => {
         const Icon = sectors.icons[sector];
 
@@ -115,7 +116,6 @@ const HorizontalControlBar = () => {
                 color="primary"
                 size="small"
                 onClick={() => handleUpdateSector(sector)}
-                className={classes.btnSector}
               >
                 {Icon && <Icon /> }
                 {intl.formatMessage({ id: `common.sectors.${sector}` })}
@@ -124,7 +124,6 @@ const HorizontalControlBar = () => {
           </Grid>
         );
       })}
-      <HintSectorSelect />
     </Grid>
   );
 
@@ -132,14 +131,14 @@ const HorizontalControlBar = () => {
    * View by
    */
   const views = ['electricity', 'oil-and-gas'].includes(config.page) && (
-    <Grid container alignItems="center" wrap="nowrap" spacing={1}>
-      <Grid item>
-        <Typography variant="body1" color="secondary">{intl.formatMessage({ id: 'components.viewSelect.name' })}</Typography>
+    <Grid container alignItems="center">
+      <Grid item className={classes.labelContainer}>
+        <Typography variant="subtitle1">{intl.formatMessage({ id: 'components.horizontalControlBar.viewBy' })}</Typography>
       </Grid>
-      <Grid item>
-        {['region', 'source'].map(view => (
+      <HintViewSelect />
+      {['region', 'source'].map(view => (
+        <Grid item key={`config-view-${view}`}>
           <Tooltip
-            key={`config-view-${view}`}
             title={intl.formatMessage({ id: `components.viewSelect.${view}.tooltip.${config.page}.${config.mainSelection}` })}
           >
             <Button
@@ -151,18 +150,15 @@ const HorizontalControlBar = () => {
               {intl.formatMessage({ id: `common.${view === 'source' && config.page === 'oil-and-gas' ? 'type' : view}` })}
             </Button>
           </Tooltip>
-        ))}
-      </Grid>
-      <Grid item>
-        <HintViewSelect />
-      </Grid>
+        </Grid>
+      ))}
     </Grid>
   );
 
   return (
-    <Grid container justify={config.page === 'electricity' ? 'flex-start' : 'space-between'} alignItems="center" spacing={1} className={classes.root}>
+    <Grid container justify={config.page === 'electricity' ? 'flex-start' : 'space-between'} alignItems="center" className={classes.root}>
       { selections && (<Grid item>{selections}</Grid>) }
-      <Grid item>{sectorSelection}</Grid>
+      <Grid item style={{ display: config.page === 'electricity' ? 'none' : 'block' }}>{sectorSelection}</Grid>
       <Grid item>{views}</Grid>
     </Grid>
   );

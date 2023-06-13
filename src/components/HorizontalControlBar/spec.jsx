@@ -87,7 +87,7 @@ describe('Component|HorizontalControlBar', () => {
     });
 
     test('should render section titles', () => {
-      expect(wrapper.findWhere(node => node.type() === Typography && node.text() === 'SECTOR').exists()).toBeTruthy();
+      expect(wrapper.findWhere(node => node.type() === Typography && node.text() === 'Sector').exists()).toBeTruthy();
     });
 
     test('should render section buttons', () => {
@@ -137,7 +137,7 @@ describe('Component|HorizontalControlBar', () => {
     });
 
     test('should render section titles', () => {
-      expect(wrapper.findWhere(node => node.type() === Typography && node.text() === 'VIEW BY').exists()).toBeTruthy();
+      expect(wrapper.findWhere(node => node.type() === Typography && node.text() === 'View By').exists()).toBeTruthy();
     });
 
     test('should render section buttons', () => {
@@ -214,7 +214,7 @@ describe('Component|HorizontalControlBar', () => {
     });
 
     test('should render section titles', () => {
-      expect(wrapper.findWhere(node => node.type() === Typography && node.text() === 'VIEW BY').exists()).toBeTruthy();
+      expect(wrapper.findWhere(node => node.type() === Typography && node.text() === 'Production').exists()).toBeTruthy();
     });
 
     test('should render section buttons', () => {
