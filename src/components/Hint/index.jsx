@@ -265,7 +265,7 @@ export const HintViewSelect = ({ children }) => {
     title: intl.formatMessage({ id: `common.${view === 'source' && page === 'oil-and-gas' ? 'type' : view}` }),
     text: intl.formatMessage({ id: `components.viewSelect.${view}.description.${page}` }),
   })), [intl, page]);
-  return <Hint label="view by" content={[<HintSection title={intl.formatMessage({ id: 'components.viewSelect.viewBy' })} section={section} />]}>{children}</Hint>;
+  return <Hint label="view by" content={[<HintSection title={intl.formatMessage({ id: 'components.horizontalControlBar.viewBy' })} section={section} />]}>{children}</Hint>;
 };
 
 HintViewSelect.propTypes = { children: PropTypes.node };
