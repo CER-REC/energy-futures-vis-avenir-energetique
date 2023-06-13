@@ -13,8 +13,10 @@ import HorizontalControlBar from '../HorizontalControlBar';
 
 const useStyles = makeStyles(theme => ({
   row: {
-    padding: theme.spacing(1),
+    marginBottom: '0.3em',
     backgroundColor: theme.palette.background.light,
+    borderTop: `3px solid ${theme.palette.secondary.light}`,
+    padding: theme.spacing(1),
   },
   title: {
     'a&:hover': { textDecoration: 'none' },
