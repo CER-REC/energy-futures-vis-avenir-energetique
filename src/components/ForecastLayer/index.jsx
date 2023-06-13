@@ -17,14 +17,16 @@ const ForecastLayer = ({
   innerHeight,
   innerWidth,
   margin,
+  padding,
   xScale,
   forecastStart,
+  hasCenteredProjectionLine = false,
 }) => {
   const intl = useIntl();
   const classes = useStyles();
   const x = useMemo(
-    () => getYearX(forecastStart, xScale, bars),
-    [forecastStart, xScale, bars],
+    () => getYearX(forecastStart, xScale, bars, padding, hasCenteredProjectionLine),
+    [forecastStart, xScale, bars, padding, hasCenteredProjectionLine],
   );
   const y = -margin.top;
   const lineHeight = (innerHeight || height) + margin.top;
@@ -73,10 +75,12 @@ ForecastLayer.propTypes = {
   innerWidth: PropTypes.number,
   /** The margins of the chart (provided by nivo) */
   margin: PropTypes.shape({ top: PropTypes.number.isRequired }).isRequired,
+  padding: PropTypes.number.isRequired,
   /** The function to get the x coordinate of the index (provided by nivo) */
   xScale: PropTypes.func.isRequired,
   /** The year the forecast starts (set in nivo component) */
   forecastStart: PropTypes.number,
+  hasCenteredProjectionLine: PropTypes.bool,
 };
 
 ForecastLayer.defaultProps = {
@@ -84,6 +88,7 @@ ForecastLayer.defaultProps = {
   innerHeight: null,
   innerWidth: null,
   forecastStart: null,
+  hasCenteredProjectionLine: false,
 };
 
 export default ForecastLayer;

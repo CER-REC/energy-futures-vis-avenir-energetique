@@ -1,4 +1,4 @@
-export default (year, xScale, bars) => {
+export default (year, xScale, bars, padding, hasCenteredProjectionLine) => {
   let x = xScale(year);
 
   if (bars) {
@@ -7,8 +7,8 @@ export default (year, xScale, bars) => {
       .map(bar => bar.width);
     const maxWidth = Math.max(...widths);
 
-    // xScale returns the starting x for bars
-    x += Math.round(maxWidth / 2);
+    if (!hasCenteredProjectionLine) x += Math.round(maxWidth / 2);
+    else x -= Math.round((maxWidth * padding) / 2);
   }
 
   return x;
