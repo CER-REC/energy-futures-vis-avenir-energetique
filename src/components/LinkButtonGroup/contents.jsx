@@ -10,6 +10,8 @@ import reportCoverEn2021 from '../../pages/Landing/report_cover_en_2021.png';
 import reportCoverFr2021 from '../../pages/Landing/report_cover_fr_2021.png';
 import reportCoverEn2020 from '../../pages/Landing/report_cover_en_2020.png';
 import reportCoverFr2020 from '../../pages/Landing/report_cover_fr_2020.png';
+import reportCoverEn2023 from '../../pages/Landing/report_cover_en_2023.png';
+import reportCoverFr2023 from '../../pages/Landing/report_cover_fr_2023.png';
 
 const LinkButtonContentAssumptions = ({ yearId }) => {
   const intl = useIntl();
@@ -81,6 +83,8 @@ const LinkButtonContentSummary = ({ yearId }) => {
         return intl.locale === 'fr' ? reportCoverFr2020 : reportCoverEn2020;
       case '2021':
         return intl.locale === 'fr' ? reportCoverFr2021 : reportCoverEn2021;
+      case '2023':
+        return intl.locale === 'fr' ? reportCoverFr2023 : reportCoverEn2023;
       default:
         return intl.formatMessage({ id: `links.Summary.image.${yearId}` });
     }
@@ -137,7 +141,6 @@ const useStyles = makeStyles(theme => ({
     borderRight: 'none',
   },
   reportContent: {
-    height: 320,
     overflow: 'hidden',
     '& div > p:nth-child(2)': {
       paddingTop: '1em',

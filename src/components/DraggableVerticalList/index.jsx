@@ -125,15 +125,25 @@ const DraggableVerticalList = ({
   /**
    * Generate translated tooltip text, if available.
    */
-  const getTooltip = useCallback((item) => {
-    const type = isTransportation ? 'transportation' : sourceType;
+  const getSectorText = useCallback((item) => {
+    let type;
+
+    if (config.sector?.toLowerCase() === 'transportation' || config.sector?.toLowerCase() === 'industrial')
+      type = config.sector.toLowerCase();
+    else
+      type = sourceType;
 
     if ((type === 'energy') && (item === 'BIO') && (config.yearId > 2020)) {
       return intl.formatMessage({ id: 'sources.energy.BIO_UPDATED' });
     }
 
-    return sourceType && intl.formatMessage({ id: `sources.${type}.${item}` });
-  }, [config.yearId, intl, isTransportation, sourceType]);
+    let text = intl.messages[`sources.${type}.${item}`];
+    if (text && sourceType)
+      return text;
+    else if (sourceType)
+      return intl.formatMessage({ id: `sources.energy.${item}`});
+    return null;
+  }, [config.sector, config.yearId, intl, isTransportation, sourceType]);
 
   const handleToggleItem = toggledItem => () => {
     // capture the event for data analytics
@@ -165,7 +175,7 @@ const DraggableVerticalList = ({
 
   return (
     <DragDropContext onDragEnd={handleDragEnd}>
-      {title === 'Region' ? <HintRegionList items={defaultItems} disableKeyboardNav={disabled} /> : <HintSourceList sources={defaultItems} sourceType={sourceType} disableKeyboardNav={disabled} />}
+      {title === 'Region' ? <HintRegionList items={defaultItems} disableKeyboardNav={disabled} /> : <HintSourceList sources={defaultItems} sourceType={sourceType} getSectorText={getSectorText} disableKeyboardNav={disabled} />}
       <Droppable droppableId="droppable" isDropDisabled={disabled}>
         {(provided, snapshot) => (
           <Grid
@@ -201,14 +211,14 @@ const DraggableVerticalList = ({
               return (
                 <Draggable key={`region-btn-${item}`} draggableId={item} index={index} isDragDisabled={disabled}>
                   {(providedItem) => {
-                    const tooltip = getTooltip(item);
+                    const tooltip = getSectorText(item);
                     return (
                       <Tooltip
                         title={defaultItems[item]?.label && (
                           <Grid container alignItems="center" wrap="nowrap" spacing={1}>
                             {!disabled && <Grid item><DragIcon fontSize="small" /></Grid>}
                             <Grid item>
-                              <Typography variant="overline" component="div" style={{ lineHeight: tooltip ? 1.5 : 2.66 }}>
+                              <Typography variant="caption" component="div" style={{ lineHeight: tooltip ? 1.5 : 2.66 }}>
                                 <strong>{defaultItems[item].label}</strong>
                               </Typography>
                               {tooltip && <Typography variant="caption" color="secondary"><Markdown>{tooltip}</Markdown></Typography>}

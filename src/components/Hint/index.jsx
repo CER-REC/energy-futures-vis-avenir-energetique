@@ -299,15 +299,10 @@ HintRegionList.defaultProps = { children: null };
 /**
  * Hint panel for the question mark on top of the draggable source list.
  */
-export const HintSourceList = ({ sources, sourceType, children, disableKeyboardNav }) => {
-  const intl = useIntl();
-  const { config: { yearId } } = useConfig();
+export const HintSourceList = ({ sources, children, getSectorText, disableKeyboardNav }) => {
   const getText = useCallback((source) => {
-    if ((sourceType === 'energy') && (source === 'BIO') && (parseInt(yearId, 10) > 2020)) {
-      return intl.formatMessage({ id: 'sources.energy.BIO_UPDATED' });
-    }
-    return intl.formatMessage({ id: `sources.${sourceType}.${source}` });
-  }, [intl, sourceType, yearId]);
+    return getSectorText(source);
+  },[getSectorText]);
 
   const list = useMemo(() => Object.keys(sources).map(source => ({
     title: sources[source].label,
@@ -368,7 +363,6 @@ HintScenarioSelect.defaultProps = { children: null, isTextButton: false };
 
 HintSourceList.propTypes = {
   sources: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
-  sourceType: PropTypes.string.isRequired,
   disableKeyboardNav: PropTypes.bool.isRequired,
   children: PropTypes.node,
 };
