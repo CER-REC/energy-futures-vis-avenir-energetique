@@ -9,7 +9,6 @@ import { TestContainer, getRendered } from '../../tests/utilities';
 import Share from '../Share';
 import ScenarioSelect from '../ScenarioSelect';
 import DraggableVerticalList from '../DraggableVerticalList';
-import LinkButtonGroup from '../LinkButtonGroup';
 import PageSelect from '../PageSelect';
 
 const DEFAULT_CONFIG = {
@@ -150,8 +149,6 @@ describe('Component|PageLayout', () => {
       expect(getRendered(PageLayout, wrapper).type()).not.toBeNull();
 
       // verify the shape of different components
-      expect(wrapper.find(PageSelect).prop('direction')).toBe('row');
-      expect(wrapper.find(LinkButtonGroup).prop('direction')).toBe('row');
       expect(wrapper.find(Share).prop('direction')).toBe('row');
     });
 

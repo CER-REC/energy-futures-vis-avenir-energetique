@@ -76,8 +76,12 @@ const useStyles = makeStyles(theme => ({
     width: 'max-content',
     margin: theme.spacing(1.5),
     padding: theme.spacing(1),
-    backgroundColor: '#F3EFEF',
+    backgroundColor: theme.palette.background.light,
     '& svg': { verticalAlign: 'middle' },
+  },
+  compareBtn: {
+    textTransform: 'uppercase',
+    padding: '0px 2px',
   },
 }));
 
@@ -388,7 +392,7 @@ const OilAndGas = ({ data, year, vizDimension }) => {
               style={isTopChart ? { bottom: compare ? 414 : 99 } : { top: 410 }}
             >
               <Grid item xs={12}>
-                <Typography variant="overline" align="center" component="div" style={{ lineHeight: 1.25 }}>
+                <Typography variant="overline" align="center" component="div" style={{ lineHeight: 1.25, textTransform: 'uppercase' }}>
                   {intl.formatMessage({ id: 'common.oilandgas.groupLabel' })}
                 </Typography>
               </Grid>
@@ -445,7 +449,13 @@ const OilAndGas = ({ data, year, vizDimension }) => {
           </Grid>
         )}
         <Grid item>
-          <Button variant="outlined" color="primary" size="small" onClick={handleCompareUpdate}>
+          <Button
+            variant="outlined"
+            color="primary"
+            size="small"
+            onClick={handleCompareUpdate}
+            className={classes.compareBtn}
+          >
             {intl.formatMessage({ id: `common.oilandgas.button.${compare ? 'noCompare' : 'compare'}` })}
           </Button>
         </Grid>

@@ -115,7 +115,7 @@ const useStyles = makeStyles(theme => ({
     top: 0,
     minHeight: 28,
     width: '100%',
-    backgroundColor: '#F3EFEF',
+    backgroundColor: theme.palette.background.light,
     textAlign: 'right',
   },
   tab: {
@@ -137,8 +137,8 @@ const useStyles = makeStyles(theme => ({
     borderRight: 'none',
   },
   reportContent: {
-    height: 280,
-    overflowX: 'hidden',
+    height: 320,
+    overflow: 'hidden',
     '& div > p:nth-child(2)': {
       paddingTop: '1em',
     },

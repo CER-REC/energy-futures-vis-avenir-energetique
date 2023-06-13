@@ -14,6 +14,7 @@ const DEFAULT_CONFIG = {
   yearId: '2020',
   scenarios: ['Evolving'],
   view: 'region',
+  provinces: [],
 };
 
 const BUTTONS = [
@@ -22,6 +23,7 @@ const BUTTONS = [
   'Key Findings',
   'Assumptions',
   'Results',
+  'Download Data',
   'Methodology',
   'About',
 ];
@@ -36,9 +38,9 @@ describe('Component|LinkButtonGroup', () => {
   let wrapper;
 
   /**
-   * Vertical layout
+   * Horizontal layout
    */
-  describe('Test vertical button layout', () => {
+  describe('Test horizontal button layout', () => {
     beforeEach(async () => {
       wrapper = mount(getComponent(<LinkButtonGroup />));
       await act(async () => {
@@ -51,12 +53,12 @@ describe('Component|LinkButtonGroup', () => {
       expect(getRendered(LinkButtonGroup, wrapper).type()).not.toBeNull();
     });
 
-    test('should render vertical layout', () => {
-      // column
-      expect(wrapper.find('.MuiGrid-container').at(0).hasClass('MuiGrid-direction-xs-column')).toBeTruthy();
+    test('should render horizontal layout', () => {
+      // row
+      expect(wrapper.find('.MuiGrid-container').at(0).hasClass('MuiGrid-direction-xs-column')).toBeFalsy();
 
-      // title shows in the vertical layout
-      expect(wrapper.findWhere(node => node.type() === Typography && node.text() === 'Context').exists()).toBeTruthy();
+      // title does not show in the horizontal layout
+      expect(wrapper.findWhere(node => node.type() === Typography && node.text() === 'Context').exists()).toBeFalsy();
 
       // verify all buttons
       expect(wrapper.find(Button).map(btn => btn.text()).filter(Boolean)).toEqual(BUTTONS);
@@ -98,31 +100,6 @@ describe('Component|LinkButtonGroup', () => {
         wrapper.update();
         expect(wrapper.find('#panel-button-about').prop('style')).toEqual({ display: 'none' });
       });
-    });
-  });
-
-  /**
-   * Horizontal layout
-   */
-  describe('Test horizontal button layout', () => {
-    beforeEach(async () => {
-      wrapper = mount(getComponent(<LinkButtonGroup direction="row" />));
-      await act(async () => {
-        await new Promise(resolve => setTimeout(resolve));
-        wrapper.update();
-      });
-    });
-
-    test('should render component', () => {
-      expect(getRendered(LinkButtonGroup, wrapper).type()).not.toBeNull();
-    });
-
-    test('should render horizontal layout', () => {
-      // row
-      expect(wrapper.find('.MuiGrid-container').at(0).hasClass('MuiGrid-direction-xs-column')).toBeFalsy();
-
-      // title does not show in the horizontal layout
-      expect(wrapper.findWhere(node => node.type() === Typography && node.text() === 'Context').exists()).toBeFalsy();
     });
   });
 

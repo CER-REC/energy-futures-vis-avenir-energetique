@@ -1,60 +1,26 @@
 import { useIntl } from 'react-intl';
-import { Grid, Link, makeStyles, Typography } from '@material-ui/core';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import clsx from 'clsx';
+import { Button, Grid, Link, makeStyles, Typography } from '@material-ui/core';
+import React, { useCallback, useMemo } from 'react';
 import PageSelect from '../PageSelect';
 import ScenarioSelect from '../ScenarioSelect';
 import analytics from '../../analytics';
 import useConfig from '../../hooks/useConfig';
 import useIsDesktop from '../../hooks/useIsDesktop';
-import PageIcon from '../PageIcon';
-import LinkButtonGroup from '../LinkButtonGroup';
 import DropDown from '../Dropdown';
-import { HintYearSelect } from '../Hint';
+import { HintScenarioSelect, HintYearSelect } from '../Hint';
 import useAPI from '../../hooks/useAPI';
+import HorizontalControlBar from '../HorizontalControlBar';
 
 const useStyles = makeStyles(theme => ({
   row: {
-    width: '100%',
-    '& > div': { height: '100%' },
+    padding: theme.spacing(1),
+    backgroundColor: theme.palette.background.light,
   },
   title: {
     'a&:hover': { textDecoration: 'none' },
     '& > h4': {
       fontWeight: 700,
       textTransform: 'uppercase',
-    },
-  },
-  controls: {
-    height: '100%',
-    width: '100%',
-    padding: theme.spacing(1, 0, 1, 1),
-    backgroundColor: '#F3EFEF',
-    [theme.breakpoints.down('sm')]: {
-      margin: theme.spacing(0, 1),
-      padding: theme.spacing(0, 1, 1, 1),
-    },
-  },
-  icon: {
-    lineHeight: 0,
-    '& > svg': {
-      height: '100%',
-      maxHeight: 132,
-      width: '100%',
-      fill: '#CCC',
-    },
-  },
-  iconMinimized: {
-    '& > svg': {
-      maxHeight: 43,
-    },
-  },
-  pageSelectContainer: {
-    [theme.breakpoints.down('sm')]: {
-      margin: theme.spacing(0, 1),
-    },
-    [theme.breakpoints.up('md')]: {
-      marginRight: '0.15em',
     },
   },
   yearSelectContainer: {
@@ -64,23 +30,11 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const minimizedKey = 'ef.isScenarioSelectMinimized';
-
 const Header = () => {
   const classes = useStyles();
   const intl = useIntl();
   const isDesktop = useIsDesktop();
   const { yearIdIterations } = useAPI();
-
-  const [isMinimized, setIsMinimized] = useState(!!localStorage.getItem(minimizedKey));
-
-  useEffect(() => {
-    if (isMinimized) {
-      localStorage.setItem(minimizedKey, true);
-    } else {
-      localStorage.removeItem(minimizedKey);
-    }
-  }, [isMinimized]);
 
   const yearIds = useMemo(
     () => Object.keys(yearIdIterations).sort().reverse(),
@@ -100,67 +54,52 @@ const Header = () => {
       <Typography variant="h4" color="primary">{intl.formatMessage({ id: 'common.title' })}</Typography>
     </Link>
   );
-  const yearSelect = (
-    <Grid item className={classes.yearSelectContainer}>
-      <Typography variant="body1" color="secondary">{intl.formatMessage({ id: 'components.yearSelect.name' })}</Typography>
-      <DropDown
-        options={yearIds.map(yearId => [intl.formatMessage({ id: `components.yearSelect.${yearId}.dropdown`, defaultMessage: yearId }), yearId])}
-        value={config.yearId}
-        onChange={handleYear}
-      />
-      <HintYearSelect />
-    </Grid>
-  );
 
   // Note: CER template uses custom breakpoints.
   return (
     <>
-      <Grid container item xs={12}>
+      <Grid container>
         <Grid item style={{ flex: 1 }}>{title}</Grid>
-        {
-          isDesktop && yearSelect
-        }
+        <Grid item className={classes.yearSelectContainer}>
+          <Typography variant="subtitle1">{intl.formatMessage({ id: 'components.yearSelect.name' })}</Typography>
+          <HintYearSelect />
+          <DropDown
+            options={yearIds.map(yearId => [intl.formatMessage({ id: `components.yearSelect.${yearId}.dropdown`, defaultMessage: yearId }), yearId])}
+            value={config.yearId}
+            onChange={handleYear}
+          />
+        </Grid>
       </Grid>
-      <Grid container item xs={12}>
+      <Grid container>
         <Grid item style={{ flex: 1 }}>
           <Typography variant="h6" style={{ fontWeight: 'bold' }}>{intl.formatMessage({ id: 'components.header.subtitle' })}</Typography>
+          {
+            isDesktop && (
+              <>
+                <Typography>{intl.formatMessage({ id: `components.scenarioSelect.description.${config.yearId}` })}</Typography>
+                <HintScenarioSelect isTextButton>
+                  <Button variant="text" color="primary">{intl.formatMessage({ id: 'components.header.learnMore' })}</Button>
+                </HintScenarioSelect>
+              </>
+            )
+          }
         </Grid>
-        {
-          !isDesktop && yearSelect
-        }
       </Grid>
 
-      <Grid item xs={12} style={{ marginBottom: '0.3em' }}>
-        <Grid container alignItems="center" wrap="nowrap" className={classes.row}>
-          <Grid container className={classes.controls}>
-            {
-              isDesktop && (
-                <Grid
-                  item
-                  xs={1}
-                  className={clsx(classes.icon, { [classes.iconMinimized]: isMinimized })}
-                >
-                  <PageIcon id={config.page} />
-                </Grid>
-              )
-            }
-            <Grid item md={11} xs={12}>
-              <ScenarioSelect
-                multiSelect={multiSelectScenario}
-                isMinimized={isMinimized}
-                setIsMinimized={setIsMinimized}
-              />
-            </Grid>
-          </Grid>
+      <PageSelect />
+
+      <Grid
+        container
+        className={classes.row}
+      >
+        <Grid item xs={12}>
+          <ScenarioSelect
+            multiSelect={multiSelectScenario}
+          />
         </Grid>
-      </Grid>
-      <Grid item xs={12} md={1} className={classes.pageSelectContainer}>
-        <PageSelect direction={isDesktop ? 'column' : 'row'} />
-        {
-          isDesktop && (
-            <LinkButtonGroup direction='column' />
-          )
-        }
+        <Grid item xs={12}>
+          <HorizontalControlBar />
+        </Grid>
       </Grid>
     </>
   );

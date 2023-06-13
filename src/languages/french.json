@@ -153,7 +153,7 @@
       "app": "veuillez patienter"
     },
     "yearSelect": {
-      "name": "RAPPORT AE",
+      "name": "Rapport",
       "title": "RAPPORTS SUR L’AVENIR ÉNERGÉTIQUE",
       "2023": {
         "title": "AVENIR ÉNERGÉTIQUE DU CANADA EN 2023",
@@ -289,7 +289,7 @@
       "NIT": ""
     },
     "scenarioSelect": {
-      "name": "SCÉNARIOS",
+      "name": "Scénarios",
       "readMore": "En savoir plus",
       "readLess": "Réduire",
       "description": {
@@ -451,7 +451,7 @@
       }
     },
     "pageLayout": {
-      "unit": "UNITÉS"
+      "unit": "Unité"
     },
     "hintPrice": {
       "description": "Les prix de référence servent de repère pour les acheteurs et les vendeurs.",
@@ -495,8 +495,12 @@
         "description": "Mesure des émissions d’un million de tonnes d’équivalent en dioxyde de carbone (« éq. CO2 »). Éq. CO2 est une mesure de la contribution des GES au réchauffement de la planète par rapport au dioxyde de carbone."
       }
     },
+    "horizontalControlBar": {
+      "viewBy": "Visualiser Par",
+      "production": "Production"
+    },
     "viewSelect": {
-      "name": "VISUALISER PAR",
+      "data": "Données",
       "region": {
         "tooltip": {
           "electricity": {
@@ -529,7 +533,7 @@
       }
     },
     "sectorSelect": {
-      "name": "SECTEUR",
+      "name": "Secteur",
       "ALL": {
         "tooltip": "Consulter la demande totale pour utilisation finale pour tous les secteurs",
         "description": "Il s’agit de la consommation totale d’énergie dans les quatre grands secteurs de l’économie canadienne : résidentiel, commercial, industriel et transports. Elle comprend la consommation d’électricité, de gaz naturel, de produits pétroliers comme l’essence, de charbon, et de carburants renouvelables. Aussi appelée demande pour utilisation finale ou demande secondaire, la demande totale n’inclut pas l’énergie utilisée pour produire de l’électricité."
