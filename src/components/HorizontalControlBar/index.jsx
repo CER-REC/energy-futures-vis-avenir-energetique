@@ -65,7 +65,7 @@ const HorizontalControlBar = () => {
 
   const selectionLabel = config.page === 'oil-and-gas'
     ? intl.formatMessage({ id: 'components.horizontalControlBar.production' })
-    : intl.formatMessage({ id: 'components.viewSelect.data' });
+    : intl.formatMessage({ id: 'components.viewSelect.categories' });
 
   const selections = (appendices.length > 1) && (
     <Grid container alignItems="center">

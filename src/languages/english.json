@@ -502,7 +502,7 @@
       "production": "Production"
     },
     "viewSelect": {
-      "data": "Data",
+      "categories": "Categories",
       "region": {
         "tooltip": {
           "electricity": {
