@@ -220,7 +220,7 @@
       "historical": "historical"
     },
     "pageSelect": {
-      "defaultTitle": "{title} Modelled with {scenario}",
+      "defaultTitle": "{title} Modelled in {scenario}",
       "Emissions": {
         "title": {
           "default": "Emissions"
