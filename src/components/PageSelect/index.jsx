@@ -20,6 +20,9 @@ const useStyles = makeStyles(theme => createStyles({
     border: `2px solid ${theme.palette.secondary.light}`,
     borderRadius: '8px 8px 0 0',
     borderBottom: 'none',
+    [theme.breakpoints.down('md')]: {
+      padding: theme.spacing(0, 1, 0, 1),
+    },
     '&:hover': {
       borderColor: theme.palette.primary.main,
     },
@@ -64,7 +67,9 @@ const useStyles = makeStyles(theme => createStyles({
   },
   label: {
     textTransform: 'uppercase',
+    fontSize: 12,
     [theme.breakpoints.up('md')]: {
+      fontSize: 14,
       paddingLeft: '0.5em',
     },
   },
