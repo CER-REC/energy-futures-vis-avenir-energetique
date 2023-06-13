@@ -310,9 +310,7 @@ HintRegionList.defaultProps = { children: null };
  * Hint panel for the question mark on top of the draggable source list.
  */
 export const HintSourceList = ({ sources, children, getSectorText, disableKeyboardNav }) => {
-  const getText = useCallback((source) => {
-    return getSectorText(source);
-  },[getSectorText]);
+  const getText = useCallback(source => getSectorText(source), [getSectorText]);
 
   const list = useMemo(() => Object.keys(sources).map(source => ({
     title: sources[source].label,
@@ -329,7 +327,7 @@ export const HintSourceList = ({ sources, children, getSectorText, disableKeyboa
 
 HintSourceList.propTypes = {
   sources: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
-  sourceType: PropTypes.string.isRequired,
+  getSectorText: PropTypes.func.isRequired,
   disableKeyboardNav: PropTypes.bool.isRequired,
   children: PropTypes.node,
 };

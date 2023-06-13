@@ -220,38 +220,95 @@
       "historical": "Données historiques"
     },
     "pageSelect": {
-      "defaultTitle": "{title} modelled with {scenario}",
       "Emissions": {
         "title": {
+          "Global Net-zero": "Émissions modélisées dans le scénario de la carboneutralité à l’échelle mondiale",
+          "Canada Net-zero": "Émissions modélisées dans le scénario de la carboneutralité du Canada",
+          "Current Measures": "Émissions modélisées dans le scénario des mesures actuelles",
           "default": "Émissions"
         },
         "description": "Comparez les émissions de gaz à effet de serre selon le secteur dans les trois scénarios."
       },
       "By Region": {
         "title": {
-          "energyDemand": "Demande totale pour utilisation finale selon la région",
-          "electricityGeneration": "Production d’électricité selon la région",
-          "oilProduction": "Production de pétrole selon la région",
-          "gasProduction": "Production de gaz selon la région",
+          "energyDemand": {
+            "Global Net-zero": "Demande totale pour utilisation finale par région modélisée dans le scénario de la carboneutralité à l’échelle mondiale",
+            "Canada Net-zero": "Demande totale pour utilisation finale par région modélisée dans le scénario de la carboneutralité du Canada",
+            "Current Measures": "Demande totale pour utilisation finale pour tous les secteurs modélisée dans le scénario des mesures actuelles",
+            "default": "Demande totale pour utilisation finale selon la région"
+          },
+          "electricityGeneration": {
+            "Global Net-zero": "Production d’électricité par région modélisée dans le scénario de la carboneutralité à l’échelle mondiale",
+            "Canada Net-zero": "Production d’électricité par région modélisée dans le scénario de la carboneutralité du Canada",
+            "Current Measures": "Production d’électricité par région modélisée dans le scénario des mesures actuelles",
+            "default": "Production d’électricité selon la région"
+          },
+          "oilProduction": {
+            "Global Net-zero": "Production de pétrole par région modélisée dans le scénario de la carboneutralité à l’échelle mondiale ",
+            "Canada Net-zero": "Production de pétrole par région modélisée dans le scénario de la carboneutralité du Canada",
+            "Current Measures": "Production de pétrole par région modélisée dans le scénario des mesures actuelles",
+            "default": "Production de pétrole selon la région"
+          },
+          "gasProduction": {
+            "Global Net-zero": "Production de gaz selon la région modélisée dans le scénario de la carboneutralité à l’échelle mondiale",
+            "Canada Net-zero": "Production de gaz selon la région modélisée dans le scénario de la carboneutralité du Canada",
+            "Current Measures": "Production de gaz selon la région modélisée dans le scénario des mesures actuelles",
+            "default": "Production de gaz selon la région"
+          },
           "default": "Région"
         },
         "description": "Comparer les données passées et faire des projections de l’offre et de la demande d’énergie pour les provinces et les territoires au Canada."
       },
       "By Sector": {
         "title": {
-          "ALL": "Demande totale pour utilisation finale pour tous les secteurs",
-          "RESIDENTIAL": "Demande pour utilisation finale, secteur résidentiel",
-          "COMMERCIAL": "Demande pour utilisation finale, secteur commercial",
-          "INDUSTRIAL": "Demande pour utilisation finale, secteur industriel",
-          "TRANSPORTATION": "Demande pour utilisation finale, secteur des transports",
+          "ALL": {
+            "Global Net-zero": "Demande totale pour utilisation finale modélisée dans le scénario de la carboneutralité à l’échelle mondiale",
+            "Canada Net-zero": "Demande totale pour utilisation finale modélisée dans le scénario de la carboneutralité du Canada",
+            "Current Measures": "Demande totale pour utilisation finale pour tous les secteurs modélisée dans le scénario des mesures actuelles",
+            "default": "Demande totale pour utilisation finale pour tous les secteurs"
+          },
+          "RESIDENTIAL": {
+            "Global Net-zero": "Demande pour utilisation finale dans le secteur résidentiel modélisée dans le scénario de la carboneutralité à l’échelle mondiale",
+            "Canada Net-zero": "Demande pour utilisation finale dans le secteur résidentiel modélisée dans le scénario de la carboneutralité du Canada",
+            "Current Measures": "Demande totale pour utilisation finale pour tous les secteurs modélisée dans le scénario des mesures actuelles",
+            "default": "Demande pour utilisation finale, secteur résidentiel"
+          },
+          "COMMERCIAL": {
+            "Global Net-zero": "Demande pour utilisation finale dans le secteur commercial modélisée dans le scénario de la carboneutralité à l’échelle mondiale",
+            "Canada Net-zero": "Demande pour utilisation finale dans le secteur commercial modélisée dans le scénario de la carboneutralité du Canada",
+            "Current Measures": "Demande totale pour utilisation finale pour tous les secteurs modélisée dans le scénario des mesures actuelles",
+            "default": "Demande pour utilisation finale, secteur commercial"
+          },
+          "INDUSTRIAL": {
+            "Global Net-zero": "Demande pour utilisation finale dans le secteur industriel modélisée dans le scénario de la carboneutralité à l’échelle mondiale",
+            "Canada Net-zero": "Demande pour utilisation finale dans le secteur industriel modélisée dans le scénario de la carboneutralité du Canada",
+            "Current Measures": "Demande pour utilisation finale dans le secteur industriel modélisée dans le scénario des mesures actuelles",
+            "default": "Demande pour utilisation finale, secteur industriel"
+          },
+          "TRANSPORTATION": {
+            "Global Net-zero": "Demande pour utilisation finale dans le secteur des transports modélisée dans le scénario de la carboneutralité à l’échelle mondiale",
+            "Canada Net-zero": "Demande pour utilisation finale dans le secteur des transports modélisée dans le scénario de la carboneutralité du Canada",
+            "Current Measures": "Demande pour utilisation finale dans le secteur des transports modélisée dans le scénario des mesures actuelles",
+            "default": "Demande pour utilisation finale, secteur des transports"
+          },
           "default": "Source d’énergie"
         },
         "description": "Examiner la façon dont le bouquet énergétique pour divers secteurs a évolué récemment, et la projection de leur évolution selon les scénarios du rapport sur l’avenir énergétique."
       },
       "Electricity": {
         "title": {
-          "region": "Production d’électricité selon la région",
-          "source": "Production d’électricité selon la source",
+          "region": {
+            "Global Net-zero": "Production d’électricité par région modélisée dans le scénario de la carboneutralité à l’échelle mondiale",
+            "Canada Net-zero": "Production d’électricité par région modélisée dans le scénario de la carboneutralité du Canada",
+            "Current Measures": "Production d’électricité par région modélisée dans le scénario des mesures actuelles",
+            "default": "Production d’électricité selon la région"
+          },
+          "source": {
+            "Global Net-zero": "Production d’électricité selon la source modélisée dans le scénario des mesures actuelles",
+            "Canada Net-zero": "Production d’électricité selon la source modélisée dans le scénario de la carboneutralité du Canada",
+            "Current Measures": "Production d’électricité par source modélisée dans le scénario des mesures actuelles",
+            "default": "Production d’électricité selon la source"
+          },
           "default": "Électricité"
         },
         "description": "Comparer la quantité relative d’électricité produite à partir de diverses sources d’énergie dans les provinces et les territoires canadiens durant une année donnée."
@@ -262,7 +319,7 @@
           "electricityGeneration": "Comparer des scénarios pour la production d’électricité",
           "oilProduction": "Comparer des scénarios pour la production de pétrole",
           "gasProduction": "Comparer des scénarios pour la production de gaz",
-          "greenhouseGasEmission": "",
+          "greenhouseGasEmission": "Comparer les scénarios pour les émissions",
           "default": "Scénarios"
         },
         "description": "Comparer directement les scénarios pour illustrer comment les projections changent au fil du temps."
@@ -270,12 +327,32 @@
       "Oil-and-Gas": {
         "title": {
           "oilProduction": {
-            "region": "Production de pétrole selon la région",
-            "source": "Production de pétrole selon le type"
+            "region": {
+              "Global Net-zero": "Production de pétrole par région modélisée dans le scénario de la carboneutralité à l’échelle mondiale",
+              "Canada Net-zero": "Production de pétrole par région modélisée dans le scénario de la carboneutralité du Canada",
+              "Current Measures": "Production de pétrole par région modélisée dans le scénario des mesures actuelles",
+              "default": "Production de pétrole selon la région"
+            },
+            "source": {
+              "Global Net-zero": "Production de pétrole par type modélisée dans le scénario de la carboneutralité à l’échelle mondiale",
+              "Canada Net-zero": "Production de pétrole par type modélisée dans le scénario de la carboneutralité du Canada",
+              "Current Measures": "Production de pétrole selon le type modélisée dans le scénario des mesures actuelles",
+              "default": "Production de pétrole selon le type"
+            }
           },
           "gasProduction": {
-            "region": "Production de gaz selon la région",
-            "source": "Production de gaz selon le type"
+            "region": {
+              "Global Net-zero": "Production de gaz selon la région modélisée dans le scénario de la carboneutralité à l’échelle mondiale",
+              "Canada Net-zero": "Production de gaz selon la région modélisée dans le scénario de la carboneutralité du Canada",
+              "Current Measures": "Production de gaz selon la région modélisée dans le scénario des mesures actuelles",
+              "default": "Production de gaz selon la région"
+            },
+            "source": {
+              "Global Net-zero": "Production de gaz selon le type modélisée dans le scénario de la carboneutralité à l’échelle mondiale",
+              "Canada Net-zero": "Production de gaz selon le type modélisée dans le scénario de la carboneutralité du Canada",
+              "Current Measures": "Production de gaz selon le type modélisée dans le scénario des mesures actuelles",
+              "default": "Production de gaz selon le type"
+            }
           },
           "default": "Pétrole et gaz"
         },
@@ -446,7 +523,7 @@
       "greenhouseGasEmission": {
         "title": "Émissions",
         "tooltip": {
-          "scenarios": ""
+          "scenarios": "Comparer les scénarios pour les émissions"
         },
         "description": "Émissions canadiennes totales de gaz à effet de serre (« GES ») pour les secteurs pétrole et gaz, production d’électricité, production d’hydrogène, transport, industrie lourde, bâtiments, agriculture, déchets et autres, utilisation de terres, modification de l’utilisation de terres et foresterie et captage direct dans l’air."
       }

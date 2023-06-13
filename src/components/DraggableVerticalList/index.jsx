@@ -126,24 +126,19 @@ const DraggableVerticalList = ({
    * Generate translated tooltip text, if available.
    */
   const getSectorText = useCallback((item) => {
-    let type;
+    let type = config.sector?.toLowerCase();
 
-    if (config.sector?.toLowerCase() === 'transportation' || config.sector?.toLowerCase() === 'industrial')
-      type = config.sector.toLowerCase();
-    else
-      type = sourceType;
+    if (type !== 'transportation' && type !== 'industrial') type = sourceType;
 
     if ((type === 'energy') && (item === 'BIO') && (config.yearId > 2020)) {
       return intl.formatMessage({ id: 'sources.energy.BIO_UPDATED' });
     }
 
-    let text = intl.messages[`sources.${type}.${item}`];
-    if (text && sourceType)
-      return text;
-    else if (sourceType)
-      return intl.formatMessage({ id: `sources.energy.${item}`});
+    const text = intl.messages[`sources.${type}.${item}`];
+    if (text && sourceType) return text;
+    if (sourceType) return intl.formatMessage({ id: `sources.energy.${item}` });
     return null;
-  }, [config.sector, config.yearId, intl, isTransportation, sourceType]);
+  }, [config.sector, config.yearId, intl, sourceType]);
 
   const handleToggleItem = toggledItem => () => {
     // capture the event for data analytics
