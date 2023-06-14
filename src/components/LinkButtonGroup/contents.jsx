@@ -151,7 +151,11 @@ const useStyles = makeStyles(theme => ({
 export const LinkButtonContentMethodology = ({ onClose }) => {
   const classes = useStyles();
   const intl = useIntl();
-  const text = useMemo(() => intl.formatMessage({ id: 'links.Methodology.description' }), [intl]);
+  const { config: { yearId } } = useConfig();
+  const text = useMemo(() => {
+    const year = parseInt(yearId.replace(/\D/g, ''), 10);
+    return intl.formatMessage({ id: 'links.Methodology.description' }, { year: year <= 2020 ? 2020 : year });
+  }, [intl, yearId]);
   return (
     <Grid container direction="column" wrap="nowrap">
       <Grid item className={classes.header}>
