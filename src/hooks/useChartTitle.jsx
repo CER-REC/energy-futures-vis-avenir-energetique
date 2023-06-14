@@ -13,7 +13,7 @@ export default () => {
 
   switch (currPage?.id) {
     case 'emissions':
-      title = `components.pageSelect.${currPage.label}.title.default`;
+      title = `components.pageSelect.${currPage.label}.title`;
       break;
     case 'by-region':
       title = `components.pageSelect.${currPage.label}.title.${config.mainSelection}`;
@@ -36,10 +36,5 @@ export default () => {
       return currPage?.label;
   }
 
-  return intl.formatMessage({ id: 'components.pageSelect.defaultTitle' },
-    {
-      title: intl.formatMessage({ id: title }),
-      scenario,
-      defaultMessage,
-    });
+  return intl.formatMessage({ id: `${title}.${scenario}`, defaultMessage: intl.formatMessage({ id: `${title}.default` }) });
 };
