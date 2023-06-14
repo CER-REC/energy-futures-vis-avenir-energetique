@@ -26,7 +26,7 @@
       "millionCubicMetres": "Mm³/j",
       "kilobarrels": "kb/j",
       "cubicFeet": "Tpi³/j",
-      "megatonnes": "Mt"
+      "megatonnes": "Mt d’éq. CO₂"
     },
     "prices": {
       "WTI": "WTI - $ US 2022/b",
@@ -244,7 +244,7 @@
             "default": "Production d’électricité selon la région"
           },
           "oilProduction": {
-            "Global Net-zero": "Production de pétrole par région modélisée dans le scénario de la carboneutralité à l’échelle mondiale ",
+            "Global Net-zero": "Production de pétrole par région modélisée dans le scénario de la carboneutralité à l’échelle mondiale",
             "Canada Net-zero": "Production de pétrole par région modélisée dans le scénario de la carboneutralité du Canada",
             "Current Measures": "Production de pétrole par région modélisée dans le scénario des mesures actuelles",
             "default": "Production de pétrole selon la région"
@@ -531,6 +531,13 @@
     "pageLayout": {
       "unit": "Unité"
     },
+    "hintTitle": {
+      "greenhouseGas": "Émissions de GES - Secteurs",
+      "energy": "Sources d’énergie",
+      "region": "Régions - Provinces et territoires du Canada",
+      "oil": "Production de pétrole",
+      "gas": "Production de gaz"
+    },
     "hintPrice": {
       "description": "Les prix de référence servent de repère pour les acheteurs et les vendeurs.",
       "WTI": "Prix de référence de premier plan en Amérique du Nord pour le pétrole brut léger non corrosif produit principalement à partir de puits sur la terre ferme au Texas et établi à Cushing, en Oklahoma.",
@@ -569,16 +576,16 @@
         "description": "Mesure du nombre de mètres cubes de gaz naturel produits par jour. Un pied cube de gaz naturel équivaut à 0,0283 mètre cube."
       },
       "megatonnes": {
-        "title": "Mégatonnes d’équivalent en dioxyde de carbone (Mt d’éq. CO₂)",
+        "title": "Mégatonnes d’équivalent en dioxyde de carbone",
         "description": "Mesure des émissions en mégatonnes d’équivalent dioxyde de carbone (« éq. CO₂ »). Éq. CO₂ est une mesure de la contribution des GES au réchauffement de la planète par rapport au dioxyde de carbone."
       }
     },
     "horizontalControlBar": {
       "viewBy": "Visualiser Par",
-      "production": "Production"
+      "production": "Production",
+      "categories": "Catégories"
     },
     "viewSelect": {
-      "categories": "Catégories",
       "region": {
         "tooltip": {
           "electricity": {
@@ -802,7 +809,7 @@
     },
     "Methodology": {
       "title": "Méthodologie",
-      "description": "Consultez notre [document sur la méthodologie](/energy-future/pdf/avenir-energetique-visualisation-methodologie-2020.pdf) pour en savoir plus sur le système de modélisation de l’avenir énergétique, les définitions et les indicateurs, les sources de données et plus encore."
+      "description": "#### Méthodologie de visualization\nConsultez notre [document sur la méthodologie](/energy-future/pdf/avenir-energetique-visualisation-methodologie-2020.pdf) pour en savoir plus sur le système de modélisation de l’avenir énergétique, les définitions et les indicateurs, les sources de données et plus encore."
     },
     "Report": {
       "title": {
