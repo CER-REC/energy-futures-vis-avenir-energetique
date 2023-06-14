@@ -1,4 +1,4 @@
-import React, { useState, useMemo, Fragment, useCallback, cloneElement } from 'react';
+import React, { useState, useMemo, Fragment, cloneElement } from 'react';
 import { useIntl } from 'react-intl';
 import PropTypes from 'prop-types';
 import {
@@ -293,7 +293,7 @@ export const HintRegionList = ({ children, disableKeyboardNav }) => {
     text: intl.formatMessage({ id: `common.regions.${region}` }),
   })), [intl, regions]);
   const sections = [
-    <HintSection section={list} singleColumn />,
+    <HintSection title={intl.formatMessage({ id: 'components.hintTitle.region' })} section={list} singleColumn />,
     !disableKeyboardNav && <Divider style={{ margin: '16px 0' }} />,
     !disableKeyboardNav && <HintSectionNav />,
   ];
@@ -309,16 +309,18 @@ HintRegionList.defaultProps = { children: null };
 /**
  * Hint panel for the question mark on top of the draggable source list.
  */
-export const HintSourceList = ({ sources, children, getSectorText, disableKeyboardNav }) => {
-  const getText = useCallback(source => getSectorText(source), [getSectorText]);
+export const HintSourceList = ({
+  sources, children, sourceType, getSourceText, disableKeyboardNav,
+}) => {
+  const intl = useIntl();
 
   const list = useMemo(() => Object.keys(sources).map(source => ({
     title: sources[source].label,
     icon: sources[source].icon,
-    text: getText(source),
-  })), [sources, getText]);
+    text: getSourceText(source),
+  })), [sources, getSourceText]);
   const sections = [
-    <HintSection section={list} singleColumn />,
+    <HintSection title={intl.formatMessage({ id: `components.hintTitle.${sourceType}` })} section={list} singleColumn />,
     !disableKeyboardNav && <Divider style={{ margin: '16px 0' }} />,
     !disableKeyboardNav && <HintSectionNav />,
   ];
@@ -327,7 +329,8 @@ export const HintSourceList = ({ sources, children, getSectorText, disableKeyboa
 
 HintSourceList.propTypes = {
   sources: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
-  getSectorText: PropTypes.func.isRequired,
+  sourceType: PropTypes.string.isRequired,
+  getSourceText: PropTypes.func.isRequired,
   disableKeyboardNav: PropTypes.bool.isRequired,
   children: PropTypes.node,
 };

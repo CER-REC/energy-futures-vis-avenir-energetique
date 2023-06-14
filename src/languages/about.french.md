@@ -12,7 +12,7 @@ Vous pouvez nous la faire parvenir, ainsi que vos suggestions, à l’adresse [d
 
 ###### LES CONTRIBUTEURS
 
-###### VERSION 2.x
+###### VERSION 2.6
 ###### SOURCE DES DONNÉES :
 Eranda Bartholameuz (analyste de marchés), Gabi Diner (analyste de marchés), Robert Dumeah (analyste de marchés) et Michael Nadew (analyste de marchés)
 

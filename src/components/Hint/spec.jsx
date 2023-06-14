@@ -113,7 +113,7 @@ describe('Component|Hint', () => {
 
     const wrapper = mount(
       <TestContainer>
-        <HintSourceList sources={SOURCES} sourceType="electricity" getSectorText={() => {}} disableKeyboardNav={false} />
+        <HintSourceList sources={SOURCES} sourceType="electricity" getSourceText={() => {}} disableKeyboardNav={false} />
       </TestContainer>,
     );
 

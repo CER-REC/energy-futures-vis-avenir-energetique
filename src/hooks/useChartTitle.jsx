@@ -36,20 +36,5 @@ export default () => {
       return currPage?.label;
   }
 
-  if (intl.locale === 'en') {
-    return config.yearId === '2023'
-      ? intl.formatMessage({ id: 'components.pageSelect.defaultTitle' },
-        {
-          title: intl.formatMessage({
-            id: title,
-            defaultMessage,
-          }),
-          scenario,
-        })
-      : intl.formatMessage({ id: title });
-  }
-
-  return config.yearId === '2023'
-    ? intl.formatMessage({ id: `${title}.${scenario}` })
-    : intl.formatMessage({ id: `${title}.default` });
+  return intl.formatMessage({ id: `${title}.${scenario}`, defaultMessage: intl.formatMessage({ id: `${title}.default` }) });
 };
