@@ -8,6 +8,16 @@ import { convertUnit } from '../utilities/convertUnit';
 import { formatTotalLineData, parseData, NOOP } from '../utilities/parseData';
 import * as queries from './queries';
 
+const FORECAST_START = {
+  2023: {
+    energyDemand: 2022,
+    oilProduction: 2021,
+    gasProduction: 2022,
+    greenhouseGasEmission: 2021,
+    electricityGeneration: 2021,
+  },
+};
+
 const getQuery = (config) => {
   if (config.mainSelection === 'greenhouseGasEmission') {
     return queries.GREENHOUSE_GAS_EMISSIONS_SOURCE;
@@ -117,15 +127,15 @@ export default () => {
 
   const years = useMemo(() => data?.resources?.map(entry => entry.year), [data]);
 
-  // Where to draw the forecast line.
-  // 0 years before the current year for oil-and-gas.
-  // 1 year before the current year for all others.
   const forecastStart = useMemo(() => {
-    if (!['gasProduction', 'oilProduction']
-      .includes(config.mainSelection)) {
-      return parseInt(config.yearId, 10) - 1;
+    const defaultStart = parseInt(config.yearId, 10);
+    if (FORECAST_START[config.yearId]?.[config.mainSelection]) {
+      return FORECAST_START[config.yearId][config.mainSelection];
     }
-    return parseInt(config.yearId, 10);
+    if (!['gasProduction', 'oilProduction'].includes(config.mainSelection)) {
+      return defaultStart - 1;
+    }
+    return defaultStart;
   },
   [config.yearId, config.mainSelection]);
 
