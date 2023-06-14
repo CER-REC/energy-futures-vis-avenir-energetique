@@ -127,7 +127,7 @@ const PageSelect = () => {
       container
       wrap="nowrap"
       spacing={1}
-      justify={!isDesktop ? 'space-around' : 'flex-start'}
+      justify={!isDesktop ? 'space-between' : 'flex-start'}
       style={{ paddingTop: 10 }}
     >
       {pageButtons}
