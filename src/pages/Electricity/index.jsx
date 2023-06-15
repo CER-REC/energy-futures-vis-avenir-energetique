@@ -140,6 +140,8 @@ const COORD = {
 const Electricity = ({ data, year }) => {
   const classes = useStyles();
 
+  console.log(data)
+
   const intl = useIntl();
   const {
     sources: { electricity: { colors: colorSources } },

@@ -153,6 +153,10 @@
       "api": "connecting",
       "app": "loading"
     },
+    "noDataMessage": {
+      "noDataForSelection": "There is no {product} for {province}",
+      "visualizationNotAvailable": "This visualization is only available for EF**2023** and after.\n\n[View the EF **2023** Emissions visualization.](LINK HERE)"
+    },
     "yearSelect": {
       "name": "Report",
       "title": "ENERGY FUTURES REPORTS",

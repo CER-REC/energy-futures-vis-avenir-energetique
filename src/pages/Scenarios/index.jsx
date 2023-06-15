@@ -21,6 +21,7 @@ import getYearLabel from '../../utilities/getYearLabel';
 import { getTicks, formatLineData } from '../../utilities/parseData';
 import BenchmarkCrosshair from '../../components/BenchmarkCrosshair';
 import YearSliceTooltip from '../../components/YearSliceTooltip';
+import hasNoData from "../../utilities/hasNoData";
 
 /**
  * Generate a custom dotted line layer for rendering the default scenario.
@@ -161,27 +162,36 @@ const Scenarios = ({ data, year }) => {
   return (
     <>
       <div className={chartContainerClass}>
-        <ResponsiveLine
-          {...CHART_PROPS}
-          {...lineProps}
-          data={data}
-          enableArea
-          layers={[HistoricalLayer, 'grid', 'axes', 'areas', BenchmarkCrosshair, 'points', 'slices', 'lines', 'markers', ForecastLayer, dots]}
-          curve="cardinal"
-          areaOpacity={0.15}
-          yScale={{ type: 'linear', min: ticks[0], max: ticks[ticks.length - 1], reverse: false }}
-          axisRight={{
-            ...CHART_AXIS_PROPS,
-            tickValues: ticks,
-          }}
-          sliceTooltip={event => getTooltip(event, true)}
-          axisBottom={prices?.length ? null : lineProps.axisBottom}
-          gridYValues={ticks}
-          markers={config.mainSelection === 'greenhouseGasEmission' ? GREENHOUSE_GAS_MARKERS : null}
-          setSlice={setLowerSlice}
-          slice={upperSlice}
-        />
+        {
+          !hasNoData(data) ? (
+              <ResponsiveLine
+                {...CHART_PROPS}
+                {...lineProps}
+                data={data}
+                enableArea
+                layers={[HistoricalLayer, 'grid', 'axes', 'areas', BenchmarkCrosshair, 'points', 'slices', 'lines', 'markers', ForecastLayer, dots]}
+                curve="cardinal"
+                areaOpacity={0.15}
+                yScale={{ type: 'linear', min: ticks[0], max: ticks[ticks.length - 1], reverse: false }}
+                axisRight={{
+                  ...CHART_AXIS_PROPS,
+                  tickValues: ticks,
+                }}
+                sliceTooltip={event => getTooltip(event, true)}
+                axisBottom={prices?.length ? null : lineProps.axisBottom}
+                gridYValues={ticks}
+                markers={config.mainSelection === 'greenhouseGasEmission' ? GREENHOUSE_GAS_MARKERS : null}
+                setSlice={setLowerSlice}
+                slice={upperSlice}
+              />
+          ) : (
+            <div style={{ width: '100%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+              <Typography>asdfasfa</Typography>
+            </div>
+          )
+        }
       </div>
+
       { !!prices?.length && (
         <div style={{ display: 'flex' }}>
           <Typography variant="h6" style={{ flex: 1 }}>
