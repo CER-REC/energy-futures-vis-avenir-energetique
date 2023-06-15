@@ -125,15 +125,26 @@ const DraggableVerticalList = ({
   /**
    * Generate translated tooltip text, if available.
    */
-  const getTooltip = useCallback((item) => {
-    const type = isTransportation ? 'transportation' : sourceType;
+  const getSourceText = useCallback((item) => {
+    const type = sourceType;
 
-    if ((type === 'energy') && (item === 'BIO') && (config.yearId > 2020)) {
-      return intl.formatMessage({ id: 'sources.energy.BIO_UPDATED' });
+    if (type === 'energy') {
+      if (item === 'BIO' && config.yearId > 2020 && !isTransportation) {
+        return intl.formatMessage({ id: 'sources.energy.BIO_UPDATED' });
+      }
+
+      if (config.sector === 'TRANSPORTATION' || config.sector === 'INDUSTRIAL') {
+        const sector = config.sector.toLowerCase();
+
+        return sourceType && intl.formatMessage({
+          id: `sources.${sector}.${item}`,
+          defaultMessage: intl.formatMessage({ id: `sources.energy.${item}` }),
+        });
+      }
     }
 
     return sourceType && intl.formatMessage({ id: `sources.${type}.${item}` });
-  }, [config.yearId, intl, isTransportation, sourceType]);
+  }, [config.sector, config.yearId, intl, isTransportation, sourceType]);
 
   const handleToggleItem = toggledItem => () => {
     // capture the event for data analytics
@@ -165,7 +176,7 @@ const DraggableVerticalList = ({
 
   return (
     <DragDropContext onDragEnd={handleDragEnd}>
-      {title === 'Region' ? <HintRegionList items={defaultItems} disableKeyboardNav={disabled} /> : <HintSourceList sources={defaultItems} sourceType={sourceType} disableKeyboardNav={disabled} />}
+      {title === 'Region' ? <HintRegionList items={defaultItems} disableKeyboardNav={disabled} /> : <HintSourceList sources={defaultItems} sourceType={sourceType} getSourceText={getSourceText} disableKeyboardNav={disabled} />}
       <Droppable droppableId="droppable" isDropDisabled={disabled}>
         {(provided, snapshot) => (
           <Grid
@@ -201,7 +212,7 @@ const DraggableVerticalList = ({
               return (
                 <Draggable key={`region-btn-${item}`} draggableId={item} index={index} isDragDisabled={disabled}>
                   {(providedItem) => {
-                    const tooltip = getTooltip(item);
+                    const tooltip = getSourceText(item);
                     return (
                       <Tooltip
                         title={defaultItems[item]?.label && (

@@ -17,14 +17,15 @@ const ForecastLayer = ({
   innerHeight,
   innerWidth,
   margin,
+  padding,
   xScale,
   forecastStart,
 }) => {
   const intl = useIntl();
   const classes = useStyles();
   const x = useMemo(
-    () => getYearX(forecastStart, xScale, bars),
-    [forecastStart, xScale, bars],
+    () => getYearX(forecastStart, xScale, bars, padding),
+    [forecastStart, xScale, bars, padding],
   );
   const y = -margin.top;
   const lineHeight = (innerHeight || height) + margin.top;
@@ -73,6 +74,7 @@ ForecastLayer.propTypes = {
   innerWidth: PropTypes.number,
   /** The margins of the chart (provided by nivo) */
   margin: PropTypes.shape({ top: PropTypes.number.isRequired }).isRequired,
+  padding: PropTypes.number.isRequired,
   /** The function to get the x coordinate of the index (provided by nivo) */
   xScale: PropTypes.func.isRequired,
   /** The year the forecast starts (set in nivo component) */

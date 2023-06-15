@@ -19,8 +19,8 @@ import portalElectricity from './portal_electricity.jpg';
 import portalScenarios from './portal_scenarios.jpg';
 import portalOilAndGas from './portal_oil_and_gas.jpg';
 // import portalDemand from './portal_demand.jpg';
-import reportCoverEn from './report_cover_en_2021.png';
-import reportCoverFr from './report_cover_fr_2021.png';
+import reportCoverEn from './report_cover_en_2023.png';
+import reportCoverFr from './report_cover_fr_2023.png';
 
 const useStyles = makeStyles(theme => ({
   header: {

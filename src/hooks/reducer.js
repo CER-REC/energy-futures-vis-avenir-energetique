@@ -167,6 +167,7 @@ export const getReducer = (regions, sources, sectors, yearIdIterations) => {
     let mainSelection;
     let yearId;
     let view;
+    let scenarios;
     let selectedSources;
 
     switch (action.type) {
@@ -178,6 +179,7 @@ export const getReducer = (regions, sources, sectors, yearIdIterations) => {
         mainSelection = getSelection(action.payload, state.mainSelection);
         yearId = getYearId(action.payload, state.yearId);
         view = getView(action.payload, state.view);
+        scenarios = action.payload !== 'scenarios' ? state.scenarios : null;
         selectedSources = mainSelection === state.mainSelection ? state.sources : null;
 
         return {
@@ -188,7 +190,7 @@ export const getReducer = (regions, sources, sectors, yearIdIterations) => {
           unit: getUnit(mainSelection, state.unit),
           view,
           sector: getSector(action.payload, state.sector),
-          scenarios: getScenarios(action.payload, yearId, state.scenarios),
+          scenarios: getScenarios(action.payload, yearId, scenarios),
           provinces: getProvinces(action.payload, view, state.provinces),
           provinceOrder: getProvinceOrder(action.payload, state.provinceOrder),
           sources: getSources(action.payload, mainSelection, view, selectedSources),

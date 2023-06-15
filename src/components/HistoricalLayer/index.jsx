@@ -13,14 +13,16 @@ const useStyles = makeStyles(theme => ({
 const HistoricalLayer = ({
   bars,
   margin,
+  padding,
   xScale,
   forecastStart,
 }) => {
   const intl = useIntl();
   const classes = useStyles();
+
   const historicalWidth = useMemo(
-    () => getYearX(forecastStart, xScale, bars) + margin.left,
-    [forecastStart, xScale, bars, margin.left],
+    () => getYearX(forecastStart, xScale, bars, padding) + margin.left,
+    [forecastStart, xScale, bars, padding, margin.left],
   );
   const y = -margin.top;
 
@@ -52,6 +54,7 @@ HistoricalLayer.propTypes = {
     top: PropTypes.number.isRequired,
     left: PropTypes.number.isRequired,
   }).isRequired,
+  padding: PropTypes.number.isRequired,
   /** The function to get the x coordinate of the index (provided by nivo) */
   xScale: PropTypes.func.isRequired,
   /** The year the forecast starts (set in nivo component) */
