@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { useQuery } from '@apollo/react-hooks';
 
-import { GREENHOUSE_GAS_ORDER, REGION_COLORS, SOURCE_COLORS, SOURCE_ICONS, SECTOR_ICONS } from '../constants';
+import { GREENHOUSE_GAS_ORDER, REGION_COLORS, SOURCE_COLORS, SOURCE_ICONS } from '../constants';
 import getI18NMessages from '../utilities/getI18NMessages';
 import { ITERATIONS_TRANSLATIONS } from './queries';
 
@@ -88,7 +88,6 @@ const getSources = (translations) => {
 };
 
 const getSectors = (translations) => {
-  const icons = {};
   const sectorEnums = translations.filter(
     translation => translation.group === 'SECTOR',
   ).map(
@@ -98,11 +97,7 @@ const getSectors = (translations) => {
 
   order.unshift('ALL');
 
-  sectorEnums.forEach((sector) => {
-    icons[sector] = SECTOR_ICONS[sector];
-  });
-
-  return { icons, order };
+  return order;
 };
 
 export default () => {
@@ -129,7 +124,7 @@ export default () => {
     [data],
   );
   const sectors = useMemo(
-    () => (data ? getSectors(data.translations) : { icons: {}, order: [] }),
+    () => (data ? getSectors(data.translations) : []),
     [data],
   );
   const translations = useMemo(

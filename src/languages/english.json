@@ -73,6 +73,7 @@
         "LIGHT": "Conv. Light",
         "HEAVY": "Conv. Heavy"
       },
+      "groupLabelSingular": "Value less than 1%",
       "groupLabel": "Values less than 1%",
       "legend": {
         "oilProduction": {
@@ -220,38 +221,97 @@
       "historical": "historical"
     },
     "pageSelect": {
-      "defaultTitle": "{title} modelled with {scenario}",
       "Emissions": {
         "title": {
+          "Global Net-zero": "Emissions Modelled in Global Net-zero",
+          "Canada Net-zero": "Emissions Modelled in Canada Net-zero",
+          "Current Measures": "Emissions Modelled in Current Measures",
           "default": "Emissions"
         },
         "description": "Compare greenhouse gas emissions by sector in all three scenarios."
       },
       "By Region": {
         "title": {
-          "energyDemand": "Total End-Use Demand By Region",
-          "electricityGeneration": "Electricity Generation By Region",
-          "oilProduction": "Oil Production By Region",
-          "gasProduction": "Gas Production By Region",
+          "energyDemand": {
+            "Global Net-zero": "Total End-Use Demand by Region Modelled in Global Net-zero",
+            "Canada Net-zero": "Total End-Use Demand by Region Modelled in Global Net-zero",
+            "Current Measures": "Total End-Use Demand by Region Modelled in Global Net-zero",
+            "default": "Total End-Use Demand by Region"
+          },
+          "electricityGeneration": {
+            "Global Net-zero": "Electricity Generation by Region Modelled in Global Net-zero",
+            "Canada Net-zero": "Electricity Generation by Region Modelled in Canada Net-zero",
+            "Current Measures": "Electricity Generation by Region Modelled in Current Measures",
+            "default": "Electricity Generation by Region"
+          },
+          "oilProduction": {
+            "Global Net-zero": "Oil Production by Region Modelled in Global Net-zero",
+            "Canada Net-zero": "Oil Production by Region Modelled in Canada Net-zero",
+            "Current Measures": "Oil Production by Region Modelled in Current Measures",
+            "default": "Oil Production by Region"
+          },
+          "gasProduction": {
+            "Global Net-zero": "Gas Production by Region Modelled in Global Net-zero",
+            "Canada Net-zero": "Gas Production by Region Modelled in Canada Net-zero",
+            "Current Measures": "Gas Production by Region Modelled in Current Measures",
+            "default": "Gas Production by Region"
+          },
           "default": "Region"
         },
         "description": "Compare historical and projected energy supply and demand data from across Canada’s provinces and territories."
       },
       "By Sector": {
         "title": {
-          "ALL": "Total End-Use Demand For All Sectors",
-          "RESIDENTIAL": "End-Use Demand For The Residential Sector",
-          "COMMERCIAL": "End-Use Demand For The Commercial Sector",
-          "INDUSTRIAL": "End-Use Demand For The Industrial Sector",
-          "TRANSPORTATION": "End-Use Demand For The Transportation Sector",
+          "ALL": {
+            "Global Net-zero": "Total End-Use Demand for All Sectors Modelled in Global Net-zero",
+            "Canada Net-zero": "Total End-Use Demand for All Sectors Modelled in Canada Net-zero",
+            "Current Measures": "Total End-Use Demand for All Sectors Modelled in Current Measures",
+            "default": "Total End-Use Demand for All Sectors"
+          },
+          "RESIDENTIAL": {
+            "Global Net-zero": "End-Use Demand for the Residential Sector Modelled in Global Net-zero",
+            "Canada Net-zero": "End-Use Demand for the Residential Sector Modelled in Canada Net-zero",
+            "Current Measures": "End-Use Demand for the Residential Sector Modelled in Current Measures",
+            "default": "End-Use Demand for the Residential Sector"
+          },
+          "COMMERCIAL": {
+            "Global Net-zero": "End-Use Demand for the Commercial Sector Modelled in Global Net-zero",
+            "Canada Net-zero": "End-Use Demand for the Commercial Sector Modelled in Canada Net-zero",
+            "Current Measures": "End-Use Demand for the Commercial Sector Modelled in Current Measures",
+            "default": "End-Use Demand for the Commercial Sector"
+          },
+          "INDUSTRIAL": {
+            "Global Net-zero": "End-Use Demand for the Industrial Sector Modelled in Global Net-zero",
+            "Canada Net-zero": "End-Use Demand for the Industrial Sector Modelled in Canada Net-zero",
+            "Current Measures": "End-Use Demand for the Industrial Sector Modelled in Current Measures",
+            "default": "End-Use Demand for The Industrial Sector"
+          },
+          "TRANSPORTATION": {
+            "Global Net-zero": "End-Use Demand for the Transportation Sector Modelled in Global Net-zero",
+            "Canada Net-zero": "End-Use Demand for the Transportation Sector Modelled in Canada Net-zero",
+            "Current Measures": "End-Use Demand for the Transportation Sector Modelled in Current Measures",
+            "default": "End-Use Demand for the Transportation Sector"
+          },
           "default": "Energy Source"
         },
         "description": "Explore how energy source mixes from different sectors have evolved in recent history, and how they are projected to evolve in the Energy Futures scenarios."
       },
       "Electricity": {
         "title": {
-          "region": "Electricity Generation By Region",
-          "source": "Electricity Generation By Source",
+          "region": "Electricity Generation by Region",
+          "source": "Electricity Generation by Source",
+          "region": {
+            "Global Net-zero": "Electricity Generation by Region Modelled in Global Net-zero",
+            "Canada Net-zero": "Electricity Generation by Region Modelled in Canada Net-zero",
+            "Current Measures": "Electricity Generation by Region Modelled in Current Measures",
+            "default": "Electricity Generation by Region"
+          },
+          "source": {
+            "Global Net-zero": "Electricity Generation by Source Modelled in Global Net-zero",
+            "Canada Net-zero": "Electricity Generation by Source Modelled in Canada Net-zero",
+            "Current Measures": "Electricity Generation by Source Modelled in Current Measures",
+            "default": "Electricity Generation by Source"
+          },
           "default": "Electricity"
         },
         "description": "Compare the relative amount of electricity generated by various energy sources across the provinces and territories for a given year."
@@ -270,12 +330,40 @@
       "Oil-and-Gas": {
         "title": {
           "oilProduction": {
-            "region": "Oil Production By Region",
-            "source": "Oil Production By Type"
+            "region": "Oil Production by Region",
+            "source": "Oil Production by Type"
           },
           "gasProduction": {
-            "region": "Gas Production By Region",
-            "source": "Gas Production By Type"
+            "region": "Gas Production by Region",
+            "source": "Gas Production by Type"
+          },
+          "oilProduction": {
+            "region": {
+              "Global Net-zero": "Oil Production by Region Modelled in Global Net-zero",
+              "Canada Net-zero": "Oil Production by Region Modelled in Canada Net-zero",
+              "Current Measures": "Oil Production by Region Modelled in Current Measures",
+              "default": "Oil Production by Region"
+            },
+            "source": {
+              "Global Net-zero": "Oil Production by Type Modelled in Global Net-zero",
+              "Canada Net-zero": "Oil Production by Type Modelled in Canada Net-zero",
+              "Current Measures": "Oil Production by Type Modelled in Current Measures",
+              "default": "Oil Production by Type"
+            }
+          },
+          "gasProduction": {
+            "region": {
+              "Global Net-zero": "Gas Production by Region Modelled in Global Net-zero",
+              "Canada Net-zero": "Gas Production by Region Modelled in Canada Net-zero",
+              "Current Measures": "Gas Production by Region Modelled in Current Measures",
+              "default": "Gas Production by Region"
+            },
+            "source": {
+              "Global Net-zero": "Gas Production by Type Modelled in Global Net-zero",
+              "Canada Net-zero": "Gas Production by Type Modelled in Canada Net-zero",
+              "Current Measures": "Gas Production by Type Modelled in Current Measures",
+              "default": "Gas Production by Type"
+            }
           },
           "default": "Oil and Gas"
         },
@@ -455,6 +543,13 @@
     "pageLayout": {
       "unit": "Unit"
     },
+    "hintTitle": {
+      "greenhouseGas": "GHG Emissions - Sectors",
+      "energy": "Energy Sources",
+      "region": "Regions - Canada's Provinces and Territories",
+      "oil": "Oil Production",
+      "gas": "Gas Production"
+    },
     "hintPrice": {
       "description": "Benchmark prices are a reference point for buyers and sellers.",
       "WTI": "A key North American benchmark price for light, sweet crude oil produced primarily from inland Texas and priced at Cushing, Oklahoma.",
@@ -494,15 +589,15 @@
       },
       "megatonnes": {
         "title": "Megatonnes of carbon dioxide equivalent",
-        "description": "A measure of emissions that is a megatonnes of carbon dioxide equivalent (CO₂e). CO₂e is a measure of how much GHGs contribute to global warming relative to carbon dioxide."
+        "description": "A measure of emissions for megatonnes of carbon dioxide equivalent (CO₂e). CO₂e is a measure of how much GHGs contribute to global warming relative to carbon dioxide."
       }
     },
     "horizontalControlBar": {
       "viewBy": "View By",
-      "production": "Production"
+      "production": "Production",
+      "categories": "Categories"
     },
     "viewSelect": {
-      "data": "Data",
       "region": {
         "tooltip": {
           "electricity": {
@@ -550,7 +645,7 @@
       },
       "INDUSTRIAL": {
         "tooltip": "Industrial – View end-use demand for the industrial sector",
-        "description": "This sector includes manufacturing, forestry, fisheries, agriculture, construction, mining, and oil and natural gas extraction. In 2013, 81 per cent of industrial energy was consumed by a number of energy-intensive industries like iron and steel, aluminum, cement, chemicals and fertilizers, pulp and paper, petroleum refining, mining, and oil and natural gas extraction."
+        "description": "This sector includes heavy industry, oil and gas, light manufacturing, forestry, fisheries, agriculture, construction, mining, waste, and others."
       },
       "TRANSPORTATION": {
         "tooltip": "Transportation – View end-use demand for the transportation sector",
@@ -586,10 +681,10 @@
   "regions": {},
   "sources": {
     "electricity": {
-      "BIO": "Includes solid biomass fuels such as wood pellets, as well as geothermal sources.",
-      "COAL": "Electricity generated by coal-fired power plants.",
+      "BIO": "Includes solid biomass fuels with and without CCUS such as wood pellets, as well as geothermal sources.",
+      "COAL": "Electricity generated by coal-fired power plants with and without CCUS.",
       "HYDRO": "Electricity generated by hydro power plants, in addition to minor contributions from wave and tidal power stations.",
-      "GAS": "Electricity generated by a variety of technologies using natural gas, including steam generation units, gas turbine and combustion engine plants, and combined cycle units.",
+      "GAS": "Electricity generated by a variety of technologies using natural gas with and without CCUS, including steam generation units, gas turbine and combustion engine plants, and combined cycle units.",
       "OIL": "Electricity generated by a variety of technologies using fuel oil, including steam turbines and combustion turbines.",
       "NUCLEAR": "Electricity generated by nuclear power plants.",
       "SOLAR": "Includes electricity generated using photovoltaic systems or concentrated solar thermal systems.",
@@ -603,6 +698,11 @@
       "GAS": "Total consumption of gas, including some non-marketed producer consumption.",
       "OIL": "Includes refined petroleum products and natural gas liquids. Specifically, this includes: motor gasoline, diesel fuel, aviation fuel, light fuel oil, kerosene, heavy fuel oil, propane, butane, ethane, petroleum coke, still gas, and non-energy products such as lubricants, asphalt, and petrochemical feedstocks.",
       "HYDROGEN": "End-use hydrogen that is generated from a variety of sources and technologies."
+    },
+    "industrial": {
+      "COAL": "Includes coal, coke, and coke oven gas with and without carbon capture, utilization and storage (CCUS).",
+      "GAS": "Total consumption of gas with and without CCUS, including some non-marketed producer consumption.",
+      "OIL": "Includes refined petroleum products and natural gas liquids with and without CCUS. Specifically, this includes: motor gasoline, diesel fuel, aviation fuel, light fuel oil, kerosene, heavy fuel oil, propane, butane, ethane, petroleum coke, still gas, and non-energy products such as lubricants, asphalt, and petrochemical feedstocks."
     },
     "transportation": {
       "BIO": "Includes ethanol, biodiesel, bio aviation fuel, and renewable diesel.",
@@ -631,7 +731,7 @@
     },
     "greenhouseGas": {
       "AGRI": "All GHGs associated with crop production, animal production, and energy use in agriculture.",
-      "AIR": "All GHGs associated with the direct air capture industry which removes CO2 from the atmosphere and stores it underground.",
+      "AIR": "All GHGs associated with the direct air capture industry which removes CO₂ from the atmosphere and stores it underground.",
       "BUILD": "All GHGs associated with buildings in the residential and commercial sectors.",
       "ELECTRICITY": "All GHGs associated with electricity generation.",
       "FOSSIL": "All GHGs associated with the oil and gas sector including upstream, downstream, and transmissions and distribution emissions.",
@@ -721,7 +821,7 @@
     },
     "Methodology": {
       "title": "Methodology",
-      "description": "Access our [Methodology document](/energy-future/pdf/energy-future-visualization-methodology-2020.pdf) to find out about the Energy Futures modeling system, definitions and indicators, data sources and more."
+      "description": "#### Visualization Methodology\nAccess our [Methodology document](/energy-future/pdf/energy-future-visualization-methodology-{year}.pdf) to find out about the Energy Futures modeling system, definitions and indicators, data sources and more."
     },
     "Report": {
       "title": {
@@ -793,7 +893,7 @@
       "title": "Canada's Energy Future Report",
       "methodology": {
         "title": "Methodology",
-        "link": "/energy-future/pdf/energy-future-visualization-methodology-2021.pdf"
+        "link": "/energy-future/pdf/energy-future-visualization-methodology-2023.pdf"
       },
       "resources": {
         "title": "Student Resources",

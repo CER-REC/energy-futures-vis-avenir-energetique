@@ -12,7 +12,7 @@ Email us with your comments and ideas: [data.donnees@cer-rec.gc.ca](mailto:data.
 
 ###### CONTRIBUTORS
 
-###### VERSION 2.x
+###### VERSION 2.6
 ###### DATA SOURCE:
 Eranda Bartholameuz (Market Analyst), Gabi Diner (Market Analyst), Robert Dumeah (Market Analyst) and Michael Nadew (Market Analyst)
 

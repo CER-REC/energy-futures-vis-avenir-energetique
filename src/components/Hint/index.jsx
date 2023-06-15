@@ -1,4 +1,4 @@
-import React, { useState, useMemo, Fragment, useCallback, cloneElement } from 'react';
+import React, { useState, useMemo, Fragment, cloneElement } from 'react';
 import { useIntl } from 'react-intl';
 import PropTypes from 'prop-types';
 import {
@@ -245,7 +245,7 @@ HintYearSelect.defaultProps = { children: null };
 export const HintSectorSelect = ({ children }) => {
   const intl = useIntl();
   const { sectors } = useAPI();
-  const section = useMemo(() => sectors.order.map(sector => ({
+  const section = useMemo(() => sectors.map(sector => ({
     title: intl.formatMessage({ id: `common.sectors.${sector}` }),
     text: intl.formatMessage({ id: `components.sectorSelect.${sector}.description` }),
   })).filter(Boolean), [intl, sectors]);
@@ -265,7 +265,7 @@ export const HintViewSelect = ({ children }) => {
     title: intl.formatMessage({ id: `common.${view === 'source' && page === 'oil-and-gas' ? 'type' : view}` }),
     text: intl.formatMessage({ id: `components.viewSelect.${view}.description.${page}` }),
   })), [intl, page]);
-  return <Hint label="view by" content={[<HintSection title={intl.formatMessage({ id: 'components.viewSelect.viewBy' })} section={section} />]}>{children}</Hint>;
+  return <Hint label="view by" content={[<HintSection title={intl.formatMessage({ id: 'components.horizontalControlBar.viewBy' })} section={section} />]}>{children}</Hint>;
 };
 
 HintViewSelect.propTypes = { children: PropTypes.node };
@@ -293,7 +293,7 @@ export const HintRegionList = ({ children, disableKeyboardNav }) => {
     text: intl.formatMessage({ id: `common.regions.${region}` }),
   })), [intl, regions]);
   const sections = [
-    <HintSection section={list} singleColumn />,
+    <HintSection title={intl.formatMessage({ id: 'components.hintTitle.region' })} section={list} singleColumn />,
     !disableKeyboardNav && <Divider style={{ margin: '16px 0' }} />,
     !disableKeyboardNav && <HintSectionNav />,
   ];
@@ -309,23 +309,18 @@ HintRegionList.defaultProps = { children: null };
 /**
  * Hint panel for the question mark on top of the draggable source list.
  */
-export const HintSourceList = ({ sources, sourceType, children, disableKeyboardNav }) => {
+export const HintSourceList = ({
+  sources, children, sourceType, getSourceText, disableKeyboardNav,
+}) => {
   const intl = useIntl();
-  const { config: { yearId } } = useConfig();
-  const getText = useCallback((source) => {
-    if ((sourceType === 'energy') && (source === 'BIO') && (parseInt(yearId, 10) > 2020)) {
-      return intl.formatMessage({ id: 'sources.energy.BIO_UPDATED' });
-    }
-    return intl.formatMessage({ id: `sources.${sourceType}.${source}` });
-  }, [intl, sourceType, yearId]);
 
   const list = useMemo(() => Object.keys(sources).map(source => ({
     title: sources[source].label,
     icon: sources[source].icon,
-    text: getText(source),
-  })), [sources, getText]);
+    text: getSourceText(source),
+  })), [sources, getSourceText]);
   const sections = [
-    <HintSection section={list} singleColumn />,
+    <HintSection title={intl.formatMessage({ id: `components.hintTitle.${sourceType}` })} section={list} singleColumn />,
     !disableKeyboardNav && <Divider style={{ margin: '16px 0' }} />,
     !disableKeyboardNav && <HintSectionNav />,
   ];
@@ -335,6 +330,7 @@ export const HintSourceList = ({ sources, sourceType, children, disableKeyboardN
 HintSourceList.propTypes = {
   sources: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   sourceType: PropTypes.string.isRequired,
+  getSourceText: PropTypes.func.isRequired,
   disableKeyboardNav: PropTypes.bool.isRequired,
   children: PropTypes.node,
 };

@@ -65,7 +65,7 @@ const HorizontalControlBar = () => {
 
   const selectionLabel = config.page === 'oil-and-gas'
     ? intl.formatMessage({ id: 'components.horizontalControlBar.production' })
-    : intl.formatMessage({ id: 'components.viewSelect.data' });
+    : intl.formatMessage({ id: 'components.horizontalControlBar.categories' });
 
   const selections = (appendices.length > 1) && (
     <Grid container alignItems="center">
@@ -102,28 +102,23 @@ const HorizontalControlBar = () => {
         <Typography variant="subtitle1">{intl.formatMessage({ id: 'components.sectorSelect.name' })}</Typography>
       </Grid>
       <HintSectorSelect />
-      {SECTOR_ORDER.filter(sector => sectors.order.find(s => s === sector)).map((sector) => {
-        const Icon = sectors.icons[sector];
-
-        return (
-          <Grid item key={`config-sector-${sector}`}>
-            <Tooltip
-              title={intl.formatMessage({ id: `components.sectorSelect.${sector}.tooltip` })}
-              classes={{ tooltip: classes.tooltip }}
+      {SECTOR_ORDER.filter(sector => sectors.find(s => s === sector)).map(sector => (
+        <Grid item key={`config-sector-${sector}`}>
+          <Tooltip
+            title={intl.formatMessage({ id: `components.sectorSelect.${sector}.tooltip` })}
+            classes={{ tooltip: classes.tooltip }}
+          >
+            <Button
+              variant={config.sector === sector ? 'contained' : 'outlined'}
+              color="primary"
+              size="small"
+              onClick={() => handleUpdateSector(sector)}
             >
-              <Button
-                variant={config.sector === sector ? 'contained' : 'outlined'}
-                color="primary"
-                size="small"
-                onClick={() => handleUpdateSector(sector)}
-              >
-                {Icon && <Icon /> }
-                {intl.formatMessage({ id: `common.sectors.${sector}` })}
-              </Button>
-            </Tooltip>
-          </Grid>
-        );
-      })}
+              {intl.formatMessage({ id: `common.sectors.${sector}` })}
+            </Button>
+          </Tooltip>
+        </Grid>
+      ))}
     </Grid>
   );
 

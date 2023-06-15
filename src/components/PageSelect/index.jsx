@@ -9,13 +9,14 @@ import { PAGES } from '../../constants';
 import useConfig from '../../hooks/useConfig';
 import analytics from '../../analytics';
 import PageIcon from '../PageIcon';
+import useIsDesktop from '../../hooks/useIsDesktop';
 
 const DESKTOP_ICON_SIZE = 55;
 const TABLET_ICON_SIZE = 35;
 
 const useStyles = makeStyles(theme => createStyles({
   box: {
-    padding: theme.spacing(0, 2, 0, 2),
+    padding: theme.spacing(0, 1.5, 0, 1.5),
     zIndex: 9,
     border: `2px solid ${theme.palette.secondary.light}`,
     borderRadius: '8px 8px 0 0',
@@ -45,7 +46,7 @@ const useStyles = makeStyles(theme => createStyles({
     '& > svg': {
       height: '100%',
       width: '100%',
-      padding: '0.3em',
+      padding: '0.3em 0',
       fill: theme.palette.secondary.light,
       transition: 'fill .35s ease-in-out',
     },
@@ -78,6 +79,7 @@ const useStyles = makeStyles(theme => createStyles({
 const PageSelect = () => {
   const classes = useStyles();
   const intl = useIntl();
+  const isDesktop = useIsDesktop();
 
   const { config, configDispatch } = useConfig();
 
@@ -125,7 +127,8 @@ const PageSelect = () => {
       container
       wrap="nowrap"
       spacing={1}
-      style={{ padding: 10, paddingBottom: 0 }}
+      justify={!isDesktop ? 'space-between' : 'flex-start'}
+      style={{ paddingTop: 10 }}
     >
       {pageButtons}
     </Grid>
