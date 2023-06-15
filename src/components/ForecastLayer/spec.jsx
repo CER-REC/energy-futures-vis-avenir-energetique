@@ -17,6 +17,7 @@ describe('Component|ForecastLayer', () => {
             width={1200}
             innerHeight={600}
             innerWidth={800}
+            padding={0}
             margin={{ top: 50 }}
             xScale={spy}
             forecastStart={2000}
@@ -60,6 +61,7 @@ describe('Component|ForecastLayer', () => {
             bars={bars}
             height={800}
             width={600}
+            padding={0}
             margin={{ top: 50 }}
             xScale={spy}
             forecastStart={2020}
@@ -71,7 +73,7 @@ describe('Component|ForecastLayer', () => {
 
     test('should render the x position using the xScale function and bar width', () => {
       expect(spy).toHaveBeenCalledWith(2020);
-      expect(wrapper.prop('transform')).toContain('translate(21,');
+      expect(wrapper.prop('transform')).toContain('translate(11,');
     });
   });
 
@@ -86,6 +88,7 @@ describe('Component|ForecastLayer', () => {
             innerHeight={600}
             innerWidth={800}
             margin={{ top: 50 }}
+            padding={0}
             xScale={spy}
           />
         </svg>

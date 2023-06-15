@@ -1,14 +1,15 @@
-export default (year, xScale, bars) => {
+export default (year, xScale, bars, padding) => {
   let x = xScale(year);
 
-  if (bars) {
+  if (bars && padding) {
     const widths = bars
       .filter(bar => bar.data.indexValue === year.toString())
       .map(bar => bar.width);
     const maxWidth = Math.max(...widths);
 
-    // xScale returns the starting x for bars
-    x += Math.round(maxWidth / 2);
+    const unpaddedWidth = maxWidth / (1 - padding);
+
+    x -= (unpaddedWidth * padding) / 2;
   }
 
   return x;

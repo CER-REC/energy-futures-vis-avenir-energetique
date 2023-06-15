@@ -319,8 +319,16 @@ export const HintSourceList = ({
     icon: sources[source].icon,
     text: getSourceText(source),
   })), [sources, getSourceText]);
+
   const sections = [
-    <HintSection title={intl.formatMessage({ id: `components.hintTitle.${sourceType}` })} section={list} singleColumn />,
+    <HintSection
+      title={intl.formatMessage({
+        id: `components.hintTitle.${sourceType}`,
+        defaultMessage: intl.formatMessage({ id: 'components.hintTitle.energy' }),
+      })}
+      section={list}
+      singleColumn
+    />,
     !disableKeyboardNav && <Divider style={{ margin: '16px 0' }} />,
     !disableKeyboardNav && <HintSectionNav />,
   ];
