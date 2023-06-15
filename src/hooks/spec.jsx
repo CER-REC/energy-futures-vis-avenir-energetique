@@ -50,7 +50,7 @@ describe('Component|hooks', () => {
         oil: { order: ['C5', 'CONDENSATE', 'HEAVY', 'ISB', 'LIGHT', 'MB'] },
         transportation: { order: ['AVIATION', 'DIESEL', 'GASOLINE', 'OIL'] },
       },
-      { order: ['ALL', 'TRANSPORTATION', 'RESIDENTIAL', 'COMMERCIAL', 'INDUSTRIAL'] },
+      ['ALL', 'TRANSPORTATION', 'RESIDENTIAL', 'COMMERCIAL', 'INDUSTRIAL'],
       {
         2016: { id: '1', year: 2016, scenarios: ['Reference', 'High Price', 'Low Price', 'Constrained', 'High LNG', 'No LNG'] },
         '2016*': { id: '2', year: 2016, scenarios: ['Reference', 'High Price', 'Low Price'] },
@@ -122,7 +122,7 @@ describe('Component|hooks', () => {
           <div id="years">{Object.keys(yearIdIterations).map(year => <span key={`year-${year}`}>{year}</span>)}</div>
           <div id="regions">{regions.order.map(region => <span key={`region-${region}`}>{region}</span>)}</div>
           <div id="sources">{Object.keys(sources).map(source => <span key={`source-${source}`}>{source}</span>)}</div>
-          <div id="sectors">{sectors.order.map(sector => <span key={`sector-${sector}`}>{sector}</span>)}</div>
+          <div id="sectors">{sectors.map(sector => <span key={`sector-${sector}`}>{sector}</span>)}</div>
         </>
       );
     };

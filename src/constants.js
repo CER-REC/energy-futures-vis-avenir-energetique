@@ -1,5 +1,5 @@
 import {
-  IconDemand, IconTransportation, IconCommercial, IconResidential, IconIndustrial,
+  IconDemand, IconTransportation, IconResidential, IconIndustrial,
   IconElectricity, IconOil, IconGas, IconBiomass, IconBiofuel,
   IconCoal, IconHydro, IconNuclear, IconHydrogen, IconWaste,
   IconAgriculture, IconOilGas, IconLand, IconSolar, IconWind,
@@ -248,13 +248,6 @@ export const SOURCE_ICONS = {
   oil: {},
   price: {},
   transportation: {},
-};
-
-export const SECTOR_ICONS = {
-  RESIDENTIAL: IconResidential,
-  COMMERCIAL: IconCommercial,
-  INDUSTRIAL: IconIndustrial,
-  TRANSPORTATION: IconTransportation,
 };
 
 export const CHART_PROPS = {
