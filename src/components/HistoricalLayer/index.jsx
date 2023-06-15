@@ -16,14 +16,13 @@ const HistoricalLayer = ({
   padding,
   xScale,
   forecastStart,
-  hasCenteredProjectionLine = false,
 }) => {
   const intl = useIntl();
   const classes = useStyles();
 
   const historicalWidth = useMemo(
-    () => getYearX(forecastStart, xScale, bars, padding, hasCenteredProjectionLine) + margin.left,
-    [forecastStart, xScale, bars, padding, hasCenteredProjectionLine, margin.left],
+    () => getYearX(forecastStart, xScale, bars, padding) + margin.left,
+    [forecastStart, xScale, bars, padding, margin.left],
   );
   const y = -margin.top;
 
@@ -60,13 +59,11 @@ HistoricalLayer.propTypes = {
   xScale: PropTypes.func.isRequired,
   /** The year the forecast starts (set in nivo component) */
   forecastStart: PropTypes.number,
-  hasCenteredProjectionLine: PropTypes.bool,
 };
 
 HistoricalLayer.defaultProps = {
   bars: null,
   forecastStart: null,
-  hasCenteredProjectionLine: false,
 };
 
 export default HistoricalLayer;

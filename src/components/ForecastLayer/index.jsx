@@ -20,13 +20,12 @@ const ForecastLayer = ({
   padding,
   xScale,
   forecastStart,
-  hasCenteredProjectionLine = false,
 }) => {
   const intl = useIntl();
   const classes = useStyles();
   const x = useMemo(
-    () => getYearX(forecastStart, xScale, bars, padding, hasCenteredProjectionLine),
-    [forecastStart, xScale, bars, padding, hasCenteredProjectionLine],
+    () => getYearX(forecastStart, xScale, bars, padding),
+    [forecastStart, xScale, bars, padding],
   );
   const y = -margin.top;
   const lineHeight = (innerHeight || height) + margin.top;
@@ -80,7 +79,6 @@ ForecastLayer.propTypes = {
   xScale: PropTypes.func.isRequired,
   /** The year the forecast starts (set in nivo component) */
   forecastStart: PropTypes.number,
-  hasCenteredProjectionLine: PropTypes.bool,
 };
 
 ForecastLayer.defaultProps = {
@@ -88,7 +86,6 @@ ForecastLayer.defaultProps = {
   innerHeight: null,
   innerWidth: null,
   forecastStart: null,
-  hasCenteredProjectionLine: false,
 };
 
 export default ForecastLayer;
