@@ -214,7 +214,7 @@ const DraggableVerticalList = ({
                   {(providedItem) => {
                     const tooltip = getSourceText(item);
 
-                    let coloredItem = title !== "Region"
+                    const coloredItem = title !== 'Region'
                       ? intl.formatMessage({ id: `components.draggableVerticalList.abbr.${item}`, defaultMessage: item })
                       : item;
 
