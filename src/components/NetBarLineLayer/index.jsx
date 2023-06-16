@@ -25,7 +25,7 @@ const NetBarLineLayer = ({
     () => {
       const years = data.map(item => item.year);
 
-      return getYearX(Math.min(...years), xScale, bars);
+      return getYearX(Math.min(...years), xScale, bars, -1);
     },
     [data, bars, xScale],
   );
