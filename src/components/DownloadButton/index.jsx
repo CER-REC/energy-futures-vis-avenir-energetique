@@ -31,7 +31,7 @@ const DownloadButton = () => {
     sources: { electricity: { order: sourceOrder } },
   } = useAPI();
   const { config } = useConfig();
-  const { rawData: data } = useEnergyFutureData();
+  const { rawData: data, prices } = useEnergyFutureData();
 
   const headers = useMemo(() => ({
     selection: intl.formatMessage({ id: 'common.selection' }).toLowerCase(),
@@ -53,7 +53,7 @@ const DownloadButton = () => {
     const sector = config.page === 'by-sector' && intl.formatMessage({ id: `common.sectors.${config.sector}` }).toUpperCase();
     const scenario = intl.formatMessage({ id: `common.scenarios.${config.scenarios[0]}` }).toUpperCase();
     const unit = intl.formatMessage({ id: `common.units.${config.unit}` });
-    const dataset = intl.formatMessage({ id: `common.dataset.${config.yearId}`, defaultMessage: config.yearId }).toUpperCase();
+    const dataset = intl.formatMessage({ id: `common.datasets.${config.yearId}`, defaultMessage: config.yearId }).toUpperCase();
     const sourceType = PAGES.find(
       page => page.id === config.page,
     ).sourceTypes?.[config.mainSelection];
@@ -76,6 +76,18 @@ const DownloadButton = () => {
       return true;
     });
     const csvData = filteredData.map((resource) => {
+      if (config.mainSelection === 'greenhouseGasEmission') {
+        return {
+          [headers.region]: intl.formatMessage({ id: 'common.regions.ALL' }).toUpperCase(),
+          [headers.sector]: intl.formatMessage({ id: `common.sources.${sourceType}.${resource.source}` }),
+          [headers.scenario]: intl.formatMessage({ id: `common.scenarios.${resource.scenario}` }).toUpperCase(),
+          [headers.year]: resource.year,
+          [headers.value]: resource.value,
+          [headers.unit]: intl.formatMessage({ id: 'components.downloadButton.units.greenhouseGasEmission' }),
+          [headers.dataset]: dataset,
+        };
+      }
+
       switch (config.page) {
         case 'by-region':
           return {
@@ -133,11 +145,28 @@ const DownloadButton = () => {
           throw new Error('Invalid data download.');
       }
     });
+
+    if (config.page === 'scenarios') {
+      for (let i = 0; i < prices?.length; i++) {
+        const price = prices[i];
+
+        csvData.push({
+          [headers.selection]: intl.formatMessage({ id: `common.sources.price.${config.priceSource}` }),
+          [headers.region]: intl.formatMessage({ id: 'common.regions.ALL' }).toUpperCase(),
+          [headers.scenario]: intl.formatMessage({ id: `common.scenarios.${price.scenario}` }).toUpperCase(),
+          [headers.year]: price.year,
+          [headers.value]: price.value,
+          [headers.unit]: intl.formatMessage({ id: `components.downloadButton.units.${config.mainSelection}` }),
+          [headers.dataset]: dataset,
+        });
+      }
+    }
+
     const blob = new Blob(['\uFEFF', Papa.unparse(csvData)], { type: 'text/csv;charset=utf-8;' });
-    const name = `${intl.formatMessage({ id: 'components.share.filename' })}.csv`;
+    const name = `${intl.formatMessage({ id: 'components.downloadButton.filename' })}.csv`;
 
     saveAs(blob, name);
-  }, [config, intl, regionOrder, sourceOrder, data, headers]);
+  }, [config, intl, regionOrder, sourceOrder, data, prices, headers]);
 
   const onClick = () => {
     analytics.reportMisc(config.page, 'click', 'download');
@@ -150,8 +179,9 @@ const DownloadButton = () => {
       color="secondary"
       onClick={onClick}
       className={classes.download}
+      disabled={!data?.length}
     >
-      {intl.formatMessage({ id: 'components.share.download' })}
+      {intl.formatMessage({ id: 'components.downloadButton.label' })}
     </Button>
   );
 };
