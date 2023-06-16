@@ -3,13 +3,23 @@ import { getRendered, mountWithIntl } from '../../tests/utilities';
 
 import ForecastLayer from '.';
 
+const mockXScale = (xPosition) => {
+  const xScale = jest.fn(() => xPosition);
+
+  xScale.step = jest.fn(() => 1);
+  xScale.padding = jest.fn(() => 0);
+
+  return xScale;
+};
+
 describe('Component|ForecastLayer', () => {
   let spy;
   let wrapper;
 
-  describe('with no bar prop', () => {
+  describe('with forecastStart prop', () => {
     beforeEach(() => {
-      spy = jest.fn(year => (year === 2000 ? 100 : 500));
+      spy = mockXScale(100);
+
       wrapper = mountWithIntl((
         <svg>
           <ForecastLayer
@@ -41,45 +51,9 @@ describe('Component|ForecastLayer', () => {
     });
   });
 
-  describe('with bar prop', () => {
-    beforeEach(() => {
-      const bars = [{
-        data: { indexValue: '2019' },
-        width: 10,
-      }, {
-        data: { indexValue: '2020' },
-        width: 20,
-      }, {
-        data: { indexValue: '2021' },
-        width: 30,
-      }];
-
-      spy = jest.fn(year => (year === 2020 ? 11 : 555));
-      wrapper = mountWithIntl((
-        <svg>
-          <ForecastLayer
-            bars={bars}
-            height={800}
-            width={600}
-            padding={0}
-            margin={{ top: 50 }}
-            xScale={spy}
-            forecastStart={2020}
-          />
-        </svg>
-      ));
-      wrapper = getRendered(ForecastLayer, wrapper);
-    });
-
-    test('should render the x position using the xScale function and bar width', () => {
-      expect(spy).toHaveBeenCalledWith(2020);
-      expect(wrapper.prop('transform')).toContain('translate(11,');
-    });
-  });
-
   describe('with no forecastStart prop', () => {
     beforeEach(() => {
-      spy = jest.fn();
+      spy = mockXScale();
       wrapper = mountWithIntl((
         <svg>
           <ForecastLayer
