@@ -828,7 +828,7 @@
     },
     "Methodology": {
       "title": "Methodology",
-      "description": "#### Visualization Methodology\nAccess our [Methodology document](/energy-future/pdf/energy-future-visualization-methodology-2020.pdf) to find out about the Energy Futures modeling system, definitions and indicators, data sources and more."
+      "description": "#### Visualization Methodology\nAccess our [Methodology document](/energy-future/pdf/energy-future-visualization-methodology-{year}.pdf) to find out about the Energy Futures modeling system, definitions and indicators, data sources and more."
     },
     "Report": {
       "title": {
@@ -900,7 +900,7 @@
       "title": "Canada's Energy Future Report",
       "methodology": {
         "title": "Methodology",
-        "link": "/energy-future/pdf/energy-future-visualization-methodology-2021.pdf"
+        "link": "/energy-future/pdf/energy-future-visualization-methodology-2023.pdf"
       },
       "resources": {
         "title": "Student Resources",

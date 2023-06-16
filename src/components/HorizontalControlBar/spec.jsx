@@ -6,7 +6,6 @@ import { Typography, IconButton, Button } from '@material-ui/core';
 import analytics from '../../analytics';
 
 import HorizontalControlBar from '.';
-import { IconTransportation, IconResidential, IconCommercial, IconIndustrial } from '../../icons';
 import { HintMainSelect, HintSectorSelect, HintViewSelect } from '../Hint';
 import { TestContainer, getRendered } from '../../tests/utilities';
 
@@ -98,11 +97,6 @@ describe('Component|HorizontalControlBar', () => {
 
       // 5 regular buttons
       expect(wrapper.find(Button)).toHaveLength(5);
-
-      expect(wrapper.find(IconTransportation).exists()).toBeTruthy();
-      expect(wrapper.find(IconResidential).exists()).toBeTruthy();
-      expect(wrapper.find(IconCommercial).exists()).toBeTruthy();
-      expect(wrapper.find(IconIndustrial).exists()).toBeTruthy();
       expect(wrapper.find(Button).map(btn => btn.text()).filter(Boolean).sort()).toEqual(['Total Demand', 'Commercial', 'Industrial', 'Residential', 'Transportation'].sort());
     });
 

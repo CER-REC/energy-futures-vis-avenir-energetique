@@ -121,6 +121,7 @@ const ByRegion = ({ data, year }) => {
             ...defaultTheme.overrides.MuiTooltip.tooltip,
           },
         }}
+        hasCenteredProjectionLine
       />
     </div>
   );

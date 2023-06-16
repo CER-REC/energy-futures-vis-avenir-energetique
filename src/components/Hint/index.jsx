@@ -245,7 +245,7 @@ HintYearSelect.defaultProps = { children: null };
 export const HintSectorSelect = ({ children }) => {
   const intl = useIntl();
   const { sectors } = useAPI();
-  const section = useMemo(() => sectors.order.map(sector => ({
+  const section = useMemo(() => sectors.map(sector => ({
     title: intl.formatMessage({ id: `common.sectors.${sector}` }),
     text: intl.formatMessage({ id: `components.sectorSelect.${sector}.description` }),
   })).filter(Boolean), [intl, sectors]);
@@ -319,8 +319,16 @@ export const HintSourceList = ({
     icon: sources[source].icon,
     text: getSourceText(source),
   })), [sources, getSourceText]);
+
   const sections = [
-    <HintSection title={intl.formatMessage({ id: `components.hintTitle.${sourceType}` })} section={list} singleColumn />,
+    <HintSection
+      title={intl.formatMessage({
+        id: `components.hintTitle.${sourceType}`,
+        defaultMessage: intl.formatMessage({ id: 'components.hintTitle.energy' }),
+      })}
+      section={list}
+      singleColumn
+    />,
     !disableKeyboardNav && <Divider style={{ margin: '16px 0' }} />,
     !disableKeyboardNav && <HintSectionNav />,
   ];

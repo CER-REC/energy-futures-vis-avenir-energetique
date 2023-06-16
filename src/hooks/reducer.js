@@ -60,7 +60,7 @@ export const getReducer = (regions, sources, sectors, yearIdIterations) => {
       return null;
     }
 
-    return sectors.order.includes(sector) ? sector : sectors.order[0];
+    return sectors.includes(sector) ? sector : sectors[0];
   };
   const getScenarios = (page, yearId, scenarios) => {
     if (page === initialState.page) {
