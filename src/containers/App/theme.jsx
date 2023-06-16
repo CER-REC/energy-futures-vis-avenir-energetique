@@ -39,9 +39,17 @@ const theme = createMuiTheme({
       height: 700,
     },
     contextButton: {
-      minHeight: 30,
-      padding: defaultTheme.spacing(0.25, 1),
+      '&:hover,': { border: 'none' },
+      '&.Mui-disabled': {
+        backgroundColor: defaultTheme.palette.background.light,
+        color: defaultTheme.palette.secondary.light,
+        opacity: 0.5,
+      },
       fontSize: 13,
+      fontWeight: 700,
+      height: 'auto',
+      lineHeight: 'normal',
+      padding: defaultTheme.spacing(1, 1.5),
       textTransform: 'initial',
     },
     selectBorder: {
@@ -104,10 +112,10 @@ const theme = createMuiTheme({
       containedSecondary: {
         minWidth: 0,
         color: defaultTheme.palette.secondary.light,
-        backgroundColor: '#F3EFEF',
+        backgroundColor: defaultTheme.palette.background.light,
         boxShadow: defaultTheme.shadows[0],
         '&:hover': {
-          backgroundColor: '#F3EFEF',
+          backgroundColor: defaultTheme.palette.background.light,
           boxShadow: defaultTheme.shadows[2],
         },
       },
