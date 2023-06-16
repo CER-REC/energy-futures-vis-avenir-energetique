@@ -154,9 +154,28 @@
       "api": "connecting",
       "app": "loading"
     },
-    "noDataMessage": {
-      "noDataForSelection": "There is no {product} for {province}",
-      "visualizationNotAvailable": "This visualization is only available for EF**2023** and after.\n\n[View the EF **2023** Emissions visualization.](LINK HERE)"
+    "unavailableData": {
+      "oilProduction": {
+        "PE": "There is no oil production for Prince Edward Island.",
+        "NB": "There is no oil production for New Brunswick.",
+        "YT": "There is no oil production for Yukon.",
+        "NU": "There is no oil production for Nunavut.",
+        "QC": "There is no oil production for Quebec.",
+        "default": "There is no data for your selection."
+      },
+      "gasProduction": {
+        "QC": "There is no gas production for Quebec.",
+        "NU": "There is no gas production for Nunavut.",
+        "NL": "There is no gas production for Newfoundland and Labrador.",
+        "MB": "There is no gas production for Manitoba",
+        "PE": "There is no gas production for Prince Edward Island.",
+        "default": "There is no data for your selection."
+      },
+      "emissionsUnavailable": "This visualization is only available for EF**2023** and after.",
+      "emissionsLinkText": "View the EF 2023 Emissions visualization.",
+      "greenhouseGasEmission": {
+        "default": "There are no emissions for your current selection."
+      }
     },
     "yearSelect": {
       "name": "Report",

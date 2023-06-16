@@ -22,6 +22,7 @@ import { getTicks, formatLineData } from '../../utilities/parseData';
 import BenchmarkCrosshair from '../../components/BenchmarkCrosshair';
 import YearSliceTooltip from '../../components/YearSliceTooltip';
 import hasNoData from "../../utilities/hasNoData";
+import UnavailableDataMessage from "../../components/UnavailableDataMessage";
 
 /**
  * Generate a custom dotted line layer for rendering the default scenario.
@@ -134,11 +135,15 @@ const Scenarios = ({ data, year }) => {
   }, [year, getNodesFromData, data, prices, intl,
     config.mainSelection, config.unit, config.page, config.priceSource, priceData]);
 
-  if (!data) {
-    return null;
-  }
+  if (config.mainSelection === "greenhouseGasEmission" && config.yearId < 2023)
+    return (
+      <UnavailableDataMessage
+        message={intl.formatMessage({ id:`components.unavailableData.emissionsUnavailable`})}
+        hasEmissionsLink={true}
+      />
+    );
 
-  const ticks = getLineTicks(data);
+  const ticks = getLineTicks(data || []);
   const benchmarkTicks = getLineTicks(priceData);
   const lineProps = {
     colors: d => SCENARIO_COLOR[d.id] || '#AAA',
@@ -159,6 +164,8 @@ const Scenarios = ({ data, year }) => {
   };
   const chartContainerClass = clsx(classes.chart, { duo: !!prices?.length });
 
+  console.log(config)
+
   return (
     <>
       <div className={chartContainerClass}>
@@ -170,7 +177,7 @@ const Scenarios = ({ data, year }) => {
                 data={data}
                 enableArea
                 layers={[HistoricalLayer, 'grid', 'axes', 'areas', BenchmarkCrosshair, 'points', 'slices', 'lines', 'markers', ForecastLayer, dots]}
-                curve="cardinal"
+                curve="catmullRom"
                 areaOpacity={0.15}
                 yScale={{ type: 'linear', min: ticks[0], max: ticks[ticks.length - 1], reverse: false }}
                 axisRight={{
@@ -185,9 +192,10 @@ const Scenarios = ({ data, year }) => {
                 slice={upperSlice}
               />
           ) : (
-            <div style={{ width: '100%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-              <Typography>asdfasfa</Typography>
-            </div>
+            <UnavailableDataMessage message={intl.formatMessage({
+              id: `components.unavailableData.${config.mainSelection}.${config.provinces[0]}`,
+              defaultMessage: intl.formatMessage({ id: `components.unavailableData.${config.mainSelection}.default`})
+            })} />
           )
         }
       </div>

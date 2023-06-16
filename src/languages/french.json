@@ -154,6 +154,24 @@
       "api": "veuillez patienter",
       "app": "veuillez patienter"
     },
+    "unavailableData": {
+      "noDataForSelection": {
+        "oilProduction": {
+          "PE": "Il n’y a pas de production de pétrole pour l'Île-du-Prince-Édouard.",
+          "NB": "Il n’y a pas de production de pétrole pour le Nouveau-Brunswick.",
+          "YT": "Il n’y a pas de production de pétrole pour le Yukon.",
+          "NU": "Il n’y a pas de production de pétrole pour le Nunavut.",
+          "QC": "Il n’y a pas de production de pétrole pour le Québec."
+        },
+        "gasProduction": {
+          "QC": "Il n’y a pas de production de gaz pour le Québec.",
+          "NU": "Il n’y a pas de production de gaz pour le Nunavut.",
+          "NL": "Il n’y a pas de production de gaz pour Terre-Neuve et Labrador.",
+          "MB": "Il n’y a pas de production de gaz pour le Manitoba.",
+          "PE": "Il n’y a pas de production de gaz pour l'Île-du-Prince-Édouard."
+        }
+      }
+    },
     "yearSelect": {
       "name": "Rapport",
       "title": "RAPPORTS SUR L’AVENIR ÉNERGÉTIQUE",
