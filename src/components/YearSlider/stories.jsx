@@ -1,6 +1,5 @@
 import React from 'react';
 import { withKnobs, number } from '@storybook/addon-knobs';
-import { getInteractionProps } from 'storybook-addon-interaction';
 import withConfigAndGQL from '../../../.storybook/addon-config-and-gql';
 
 import { storiesForComponent } from '../../../.storybook/utils';
@@ -12,7 +11,7 @@ storiesForComponent('Components|YearSlider', module, ReadMe)
   .addDecorator(withConfigAndGQL)
   .add('default', () => (
     <YearSlider
-      {...getInteractionProps()}
+      year={2020}
       min={number('Start', 2000)}
       max={number('End', 2050)}
       forecast={number('Forecast Year', 2020)}
