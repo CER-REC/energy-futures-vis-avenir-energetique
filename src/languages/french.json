@@ -51,7 +51,7 @@
       "electricityGeneration": "Production d’électricité",
       "oilProduction": "Production de pétrole",
       "gasProduction": "Production de gaz",
-      "greenhouseGasEmission": ""
+      "greenhouseGasEmission": "Émissions"
     },
     "char": {
       "colon": " :",
