@@ -2,7 +2,7 @@ import {
   IconDemand, IconTransportation, IconResidential, IconIndustrial,
   IconElectricity, IconOil, IconGas, IconBiomass, IconBiofuel,
   IconCoal, IconHydro, IconNuclear, IconHydrogen, IconWaste,
-  IconAgriculture, IconOilGas, IconLand, IconSolar, IconWind,
+  IconAgriculture, IconOilGas, IconLand, IconSolar, IconWind, IconAir,
 } from './icons';
 
 export const applicationPath = {
@@ -235,7 +235,7 @@ export const SOURCE_ICONS = {
   gas: {},
   greenhouseGas: {
     AGRI: IconAgriculture,
-    AIR: IconWind,
+    AIR: IconAir,
     BUILD: IconResidential,
     ELECTRICITY: IconElectricity,
     FOSSIL: IconOilGas,
