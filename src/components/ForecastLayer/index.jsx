@@ -11,28 +11,27 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const ForecastLayer = ({
-  bars,
   width,
   height,
   innerHeight,
   innerWidth,
   margin,
-  padding,
   xScale,
   forecastStart,
 }) => {
   const intl = useIntl();
   const classes = useStyles();
   const x = useMemo(
-    () => getYearX(forecastStart, xScale, bars, padding),
-    [forecastStart, xScale, bars, padding],
+    () => getYearX(forecastStart, xScale),
+    [forecastStart, xScale],
   );
   const y = -margin.top;
   const lineHeight = (innerHeight || height) + margin.top;
-  const forecastWidth = useMemo(
-    () => (bars ? width - x : innerWidth - x),
-    [bars, innerWidth, width, x],
-  );
+  const forecastWidth = useMemo(() => {
+    const chartWidth = innerWidth || width;
+
+    return chartWidth - x;
+  }, [innerWidth, width, x]);
 
   if (!forecastStart) {
     return null;
@@ -59,11 +58,6 @@ const ForecastLayer = ({
 };
 
 ForecastLayer.propTypes = {
-  /** The bar data (provided by nivo) */
-  bars: PropTypes.arrayOf(PropTypes.shape({
-    data: PropTypes.shape({ indexValue: PropTypes.string.isRequired }),
-    width: PropTypes.number.isRequired,
-  })),
   /** The width of the bar chart (provided by nivo) */
   width: PropTypes.number.isRequired,
   /** The height of the bar chart (provided by nivo) */
@@ -74,7 +68,6 @@ ForecastLayer.propTypes = {
   innerWidth: PropTypes.number,
   /** The margins of the chart (provided by nivo) */
   margin: PropTypes.shape({ top: PropTypes.number.isRequired }).isRequired,
-  padding: PropTypes.number.isRequired,
   /** The function to get the x coordinate of the index (provided by nivo) */
   xScale: PropTypes.func.isRequired,
   /** The year the forecast starts (set in nivo component) */
@@ -82,7 +75,6 @@ ForecastLayer.propTypes = {
 };
 
 ForecastLayer.defaultProps = {
-  bars: null,
   innerHeight: null,
   innerWidth: null,
   forecastStart: null,
