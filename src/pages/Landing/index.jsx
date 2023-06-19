@@ -184,7 +184,7 @@ const Landing = () => {
    * CER template uses a custom breakpoint.
    */
   const desktop = useMediaQuery('(min-width: 992px)');
-  const reportName = '2021 report';
+  const reportName = '2023 report';
 
   const handleLinkButton = (name, openDialog /* boolean */) => () => {
     analytics.reportLanding('landing', name);
