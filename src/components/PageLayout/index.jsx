@@ -201,7 +201,6 @@ const PageLayout = ({
             {showSource && (
               <Grid item style={{ width: gutterWidth }}>
                 <DraggableVerticalList
-                  title="Source"
                   shape={config.mainSelection === 'greenhouseGasEmission' ? 'hexagon' : 'circle'}
                   disabled={disableDraggableSource}
                   singleSelect={singleSelectSource}
@@ -220,7 +219,6 @@ const PageLayout = ({
             {showRegion && (
               <Grid item style={{ width: gutterWidth }}>
                 <DraggableVerticalList
-                  title="Region"
                   dense
                   disabled={disableDraggableRegion}
                   singleSelect={singleSelectRegion}
