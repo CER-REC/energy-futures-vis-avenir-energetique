@@ -1,11 +1,9 @@
 import React, { useMemo } from 'react';
 import { Line } from '@nivo/line';
 import PropTypes from 'prop-types';
-import getYearX from '../../utilities/getYearX';
 import NetLineAnnotation from './NetLineAnnotation';
 
 const NetBarLineLayer = ({
-  bars,
   keys,
   data,
   height,
@@ -21,14 +19,12 @@ const NetBarLineLayer = ({
     })),
     [data, keys],
   );
-  const barOffset = useMemo(
-    () => {
-      const years = data.map(item => item.year);
+  const barOffset = useMemo(() => {
+    const firstBarX = xScale(xScale.domain()[0]);
+    const barWidth = xScale.bandwidth();
 
-      return getYearX(Math.min(...years), xScale, bars);
-    },
-    [data, bars, xScale],
-  );
+    return firstBarX + barWidth / 2;
+  }, [xScale]);
 
   return (
     <g style={{ pointerEvents: 'none' }}>
@@ -58,10 +54,6 @@ const NetBarLineLayer = ({
 };
 
 NetBarLineLayer.propTypes = {
-  bars: PropTypes.arrayOf(PropTypes.shape({
-    data: PropTypes.shape({ indexValue: PropTypes.string.isRequired }),
-    width: PropTypes.number.isRequired,
-  })).isRequired,
   keys: PropTypes.arrayOf(PropTypes.string).isRequired,
   data: PropTypes.arrayOf(PropTypes.shape({
     year: PropTypes.string.isRequired,

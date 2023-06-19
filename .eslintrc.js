@@ -1,6 +1,9 @@
 module.exports = {
   parser: 'babel-eslint',
   extends: '@vizworx/eslint-config-react',
+  rules: {
+    'no-plusplus': 0,
+  },
   overrides: [
     {
       files: [

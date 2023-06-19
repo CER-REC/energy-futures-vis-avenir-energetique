@@ -130,7 +130,6 @@ const Emissions = ({ data, year }) => {
             ...defaultTheme.overrides.MuiTooltip.tooltip,
           },
         }}
-        hasCenteredProjectionLine
       />
     </div>
   );

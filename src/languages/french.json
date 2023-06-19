@@ -51,7 +51,7 @@
       "electricityGeneration": "Production d’électricité",
       "oilProduction": "Production de pétrole",
       "gasProduction": "Production de gaz",
-      "greenhouseGasEmission": ""
+      "greenhouseGasEmission": "Émissions"
     },
     "char": {
       "colon": " :",
@@ -118,6 +118,14 @@
     "header": {
       "subtitle": "À quoi ressemblerait l’avenir énergétique du Canada si nous suivions ces scénarios?",
       "learnMore": "Pour en savoir plus sur les scénarios"
+    },
+    "downloadButton": {
+      "label": "Téléchargement des données",
+      "filename": "Avenir_énergétique",
+      "units": {
+        "oilProduction": "US$/baril",
+        "gasProduction": "US$/MMBtu"
+      }
     },
     "draggableVerticalList": {
       "all": "Tous",
@@ -642,8 +650,6 @@
       }
     },
     "share": {
-      "download": "Téléchargement des données",
-      "filename": "Avenir_énergétique",
       "copied": "Adresse URL copiée",
       "emailMessage": "L’outil interactif en ligne Explorer l’avenir énergétique du Canada repose sur la publication phare de la Régie de l’énergie du Canada intitulée Avenir énergétique du Canada. Cette visualisation vous permet de prendre connaissance de l’évolution de la production et de la consommation d’énergie, et diverses possibilités qui pourraient s’offrir aux Canadiens à long terme en matière d’énergie. Vous avez le loisir de vous en tenir au rapport le plus récent ou d’aller voir ce que disaient de précédents rapports.",
       "dialog": {

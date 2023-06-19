@@ -50,8 +50,10 @@ describe('Page|BySector', () => {
       });
 
       expect(wrapper.find(ResponsiveLine).prop('sliceTooltip')({
-        points: [115, 152, 184, 220, 269, 461, 590]
-          .map((y, i) => ({ serieId: MOCK_DATA[i].id, serieColor: MOCK_DATA[i].color, y })),
+        slice: {
+          points: [115, 152, 184, 220, 269, 461, 590]
+            .map((y, i) => ({ serieId: MOCK_DATA[i].id, serieColor: MOCK_DATA[i].color, y })),
+        },
       })).toHaveProperty('type', YearSliceTooltip);
     });
   });

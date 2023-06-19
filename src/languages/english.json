@@ -119,6 +119,14 @@
       "subtitle": "What does Canada's energy future look like if we followed these scenarios?",
       "learnMore": "Learn more about Scenarios"
     },
+    "downloadButton": {
+      "label": "Download Data",
+      "filename": "Energy_Future",
+      "units": {
+        "oilProduction": "US$/bbl",
+        "gasProduction": "US$/MMBtu"
+      }
+    },
     "draggableVerticalList": {
       "all": "All",
       "abbr": {
@@ -653,8 +661,6 @@
       }
     },
     "share": {
-      "download": "Download Data",
-      "filename": "Energy_Future",
       "copied": "URL Copied",
       "emailMessage": "Exploring Canada’s Energy Future interactive online tool is based on the Canada Energy Regulator’s (CER) flagship publication – Canada’s Energy Future. This visualization allows you to explore energy production and consumption trends and how possible energy futures might unfold for Canadians over the long term. You can explore the data from the most recent report, or refer to previous reports.",
       "dialog": {

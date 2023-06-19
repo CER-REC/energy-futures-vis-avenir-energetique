@@ -55,6 +55,23 @@
           "Reference",
           "Evolving"
         ]
+      },
+      {
+        "id": "7",
+        "year": 2021,
+        "scenarios": [
+          "Evolving Policies",
+          "Current Policies"
+        ]
+      },
+      {
+        "id": "8",
+        "year": 2023,
+        "scenarios": [
+          "Global Net-zero",
+          "Canada Net-zero",
+          "Current Measures"
+        ]
       }
     ],
     "translations": [
@@ -98,19 +115,19 @@
         "group": "ELECTRICITY_SOURCE",
         "key": "SOLAR",
         "english": "Solar",
-        "french": "Solaire"
-      },
-      {
-        "group": "ELECTRICITY_SOURCE",
-        "key": "WIND",
-        "english": "Wind",
-        "french": "Éolien"
+        "french": "Énergie solaire"
       },
       {
         "group": "ELECTRICITY_SOURCE",
         "key": "NUCLEAR",
         "english": "Nuclear",
         "french": "Énergie nucléaire"
+      },
+      {
+        "group": "ELECTRICITY_SOURCE",
+        "key": "WIND",
+        "english": "Wind",
+        "french": "Énergie éolienne"
       },
       {
         "group": "ENERGY_SOURCE",
@@ -147,6 +164,12 @@
         "key": "OIL",
         "english": "Oil Products",
         "french": "Produits pétroliers"
+      },
+      {
+        "group": "ENERGY_SOURCE",
+        "key": "HYDROGEN",
+        "english": "Hydrogen",
+        "french": "Hydrogène"
       },
       {
         "group": "GAS_SOURCE",
@@ -251,6 +274,102 @@
         "french": "Essence"
       },
       {
+        "group": "GREENHOUSE_GAS_SOURCE",
+        "key": "ALL",
+        "english": "Total",
+        "french": "Totale"
+      },
+      {
+        "group": "GREENHOUSE_GAS_SOURCE",
+        "key": "AGRI",
+        "english": "Agriculture",
+        "french": "Agriculture"
+      },
+      {
+        "group": "GREENHOUSE_GAS_SOURCE",
+        "key": "AIR",
+        "english": "Direct Air Capture",
+        "french": "Captage direct dans l’air"
+      },
+      {
+        "group": "GREENHOUSE_GAS_SOURCE",
+        "key": "BUILD",
+        "english": "Buildings",
+        "french": "Bâtiments"
+      },
+      {
+        "group": "GREENHOUSE_GAS_SOURCE",
+        "key": "ELECTRICITY",
+        "english": "Electricity",
+        "french": "Électricité"
+      },
+      {
+        "group": "GREENHOUSE_GAS_SOURCE",
+        "key": "HEAVY",
+        "english": "Heavy Industry",
+        "french": "Industrie lourde"
+      },
+      {
+        "group": "GREENHOUSE_GAS_SOURCE",
+        "key": "HYDROGEN",
+        "english": "Low or Non-emitting Hydrogen Production",
+        "french": "Production d’hydrogène à émissions faibles ou nulles"
+      },
+      {
+        "group": "GREENHOUSE_GAS_SOURCE",
+        "key": "LAND",
+        "english": "Land Use, Land Use Change and Forestry",
+        "french": "Affectation des terres, changement d'affectation des terres et foresterie"
+      },
+      {
+        "group": "GREENHOUSE_GAS_SOURCE",
+        "key": "FOSSIL",
+        "english": "Oil and Gas",
+        "french": "Pétrole et gaz"
+      },
+      {
+        "group": "GREENHOUSE_GAS_SOURCE",
+        "key": "TRANSPORTATION",
+        "english": "Transportation",
+        "french": "Transport"
+      },
+      {
+        "group": "GREENHOUSE_GAS_SOURCE",
+        "key": "WASTE",
+        "english": "Waste and Others",
+        "french": "Déchets et autres"
+      },
+      {
+        "group": "PRICE_SOURCE",
+        "key": "BRENT",
+        "english": "Brent",
+        "french": "Brent"
+      },
+      {
+        "group": "PRICE_SOURCE",
+        "key": "HH",
+        "english": "Henry Hub",
+        "french": "Carrefour Henry"
+      },
+      {
+        "group": "PRICE_SOURCE",
+        "key": "NIT",
+        "english": "Nova Inventory Transfer (NIT)",
+        "french": "Carrefour d’échanges gaziers sur le réseau de NOVA"
+      },
+      {
+        "group": "PRICE_SOURCE",
+        "key": "WTI",
+        "english": "West Texas Intermediate (WTI)",
+        "french": "West Texas Intermediate (WTI)"
+      },
+      {
+        "group": "PRICE_SOURCE",
+        "key": "WCS",
+        "english": "Western Canadian Select (WCS)",
+        "french": "Western Canadian Select (WCS)"
+      },
+      {
         "group": "SECTOR",
         "key": "ALL",
         "english": "Total Demand",
@@ -297,6 +416,18 @@
         "key": "6",
         "english": "Canada’s Energy Future 2020",
         "french": "Avenir énergétique du Canada en 2020"
+      },
+      {
+        "group": "ITERATION",
+        "key": "7",
+        "english": "Canada’s Energy Future 2021",
+        "french": "Avenir énergétique du Canada en 2021"
+      },
+      {
+        "group": "ITERATION",
+        "key": "8",
+        "english": "Canada’s Energy Future 2023",
+        "french": "Avenir énergétique du Canada en 2023"
       },
       {
         "group": "REGION",
@@ -384,15 +515,45 @@
       },
       {
         "group": "SCENARIO",
+        "key": "Canada Net-zero",
+        "english": "Canada Net-zero",
+        "french": "Bilan zéro au Canada"
+      },
+      {
+        "group": "SCENARIO",
         "key": "Constrained",
         "english": "Constrained",
         "french": "Contraint"
       },
       {
         "group": "SCENARIO",
+        "key": "Current Measures",
+        "english": "Current Measures",
+        "french": "Mesures actuelles"
+      },
+      {
+        "group": "SCENARIO",
+        "key": "Current Policies",
+        "english": "Current Policies",
+        "french": "Politiques Actuelles"
+      },
+      {
+        "group": "SCENARIO",
         "key": "Evolving",
         "english": "Evolving",
         "french": "Évolution"
+      },
+      {
+        "group": "SCENARIO",
+        "key": "Evolving Policies",
+        "english": "Evolving Policies",
+        "french": "Évolution des Politiques"
+      },
+      {
+        "group": "SCENARIO",
+        "key": "Global Net-zero",
+        "english": "Global Net-zero",
+        "french": "Bilan zéro à l'échelle mondiale"
       },
       {
         "group": "SCENARIO",
