@@ -9,7 +9,7 @@ import { formatTotalLineData, parseData, NOOP } from '../utilities/parseData';
 import * as queries from './queries';
 
 const priceStartYear = 2023;
-const forecastStart = {
+const iterationMainSelectionForecast = {
   2023: {
     energyDemand: 2022,
     oilProduction: 2021,
@@ -138,10 +138,8 @@ export default () => {
   const years = useMemo(() => data?.resources?.map(entry => entry.year), [data]);
 
   const forecastStart = useMemo(() => {
-    const defaultStart = parseInt(config.yearId, 10);
-
-    if (forecastStart[config.yearId]?.[config.mainSelection]) {
-      return forecastStart[config.yearId][config.mainSelection];
+    if (iterationMainSelectionForecast[config.yearId]?.[config.mainSelection]) {
+      return iterationMainSelectionForecast[config.yearId][config.mainSelection];
     }
 
     if (!['gasProduction', 'oilProduction'].includes(config.mainSelection)) {
