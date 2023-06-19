@@ -2,5 +2,5 @@ export default (year, xScale) => {
   const unpaddedWidth = xScale.step();
   const paddingWidth = unpaddedWidth * xScale.padding();
 
-  return xScale(year) - paddingWidth / 2;
+  return xScale(year) + xScale.bandwidth() + paddingWidth / 2;
 };
