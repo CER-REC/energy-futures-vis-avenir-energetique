@@ -123,7 +123,6 @@
       "label": "Téléchargement des données",
       "filename": "Avenir_énergétique",
       "units": {
-        "greenhouseGasEmission": "Mégatonnes",
         "oilProduction": "US$/baril",
         "gasProduction": "US$/MMBtu"
       }

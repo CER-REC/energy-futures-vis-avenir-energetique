@@ -83,7 +83,7 @@ const DownloadButton = () => {
           [headers.scenario]: intl.formatMessage({ id: `common.scenarios.${resource.scenario}` }).toUpperCase(),
           [headers.year]: resource.year,
           [headers.value]: resource.value,
-          [headers.unit]: intl.formatMessage({ id: 'components.downloadButton.units.greenhouseGasEmission' }),
+          [headers.unit]: unit,
           [headers.dataset]: dataset,
         };
       }
