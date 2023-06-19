@@ -224,7 +224,7 @@ const DraggableVerticalList = ({
                   {(providedItem) => {
                     const tooltip = getSourceText(item);
 
-                    const itemLabel = !sourceType
+                    const itemLabel = sourceType
                       ? intl.formatMessage({ id: `components.draggableVerticalList.abbr.${item}`, defaultMessage: item })
                       : item;
 
