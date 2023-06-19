@@ -147,7 +147,7 @@ export default () => {
     }
 
     return interationYear;
-  }, [interationYear, config.mainSelection]);
+  }, [interationYear, config.mainSelection, config.yearId]);
 
   const processedData = useMemo(() => {
     if (!data || !data.resources) {
