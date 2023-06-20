@@ -181,9 +181,13 @@ describe('Component|HorizontalControlBar', () => {
 
       expect(wrapper.find(HintMainSelect).exists()).toBeTruthy();
 
-      // 4 regular buttons
-      expect(wrapper.find(Button)).toHaveLength(4);
-      expect(wrapper.find(Button).map(btn => btn.text()).sort()).toEqual(['Electricity Generation', 'Oil Production', 'Gas Production', 'Emissions'].sort());
+      // 5 regular buttons
+      expect(wrapper.find(Button)).toHaveLength(5);
+      expect(wrapper.find(Button).map(btn => btn.text()).sort()).toEqual(['Total Demand', 'Electricity Generation', 'Oil Production', 'Gas Production', 'Emissions'].sort());
+    });
+
+    test('should select correct buttons', () => {
+      expect(wrapper.findWhere(node => node.type() === Button && node.text() === 'Total Demand').at(0).prop('variant')).toEqual('contained');
     });
   });
 

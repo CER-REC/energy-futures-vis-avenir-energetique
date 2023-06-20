@@ -81,7 +81,7 @@ export const CONFIG_LAYOUT = {
     name: 'Total Demand',
     icon: IconDemand,
     unit: ['petajoules', 'kilobarrelEquivalents'],
-    pages: ['by-region', 'by-sector'],
+    pages: ['by-region', 'by-sector', 'scenarios'],
   },
   electricityGeneration: {
     name: 'Electricity Generation',
