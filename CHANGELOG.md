@@ -1,3 +1,8 @@
+## [2.6.1](http://neb-energy-futures-devdoc.s3-website.us-west-2.amazonaws.com/v2.6.1) (2023-06-20)
+
+
+* **Features:** Removed total demand selection from scenarios (3cca889)
+
 # [2.6.0](http://neb-energy-futures-devdoc.s3-website.us-west-2.amazonaws.com/v2.6.0) (2023-06-20)
 
 
