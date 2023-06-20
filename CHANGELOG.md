@@ -1,3 +1,8 @@
+## [2.6.3](http://neb-energy-futures-devdoc.s3-website.us-west-2.amazonaws.com/v2.6.3) (2023-06-20)
+
+
+* **Bug Fixes:** Sorted all line data so the x data is sequential by year (b9e5514)
+
 ## [2.6.2](http://neb-energy-futures-devdoc.s3-website.us-west-2.amazonaws.com/v2.6.2) (2023-06-20)
 
 
