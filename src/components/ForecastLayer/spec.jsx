@@ -6,9 +6,8 @@ import ForecastLayer from '.';
 const mockXScale = (xPosition) => {
   const xScale = jest.fn(() => xPosition);
 
-  xScale.step = jest.fn(() => 0);
+  xScale.step = jest.fn(() => 1);
   xScale.padding = jest.fn(() => 0);
-  xScale.bandwidth = jest.fn(() => 0);
 
   return xScale;
 };

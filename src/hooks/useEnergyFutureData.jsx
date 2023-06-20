@@ -130,7 +130,7 @@ export default () => {
 
   const forecastStart = useMemo(() => {
     if (config.yearId === '2023') {
-      return 2021;
+      return 2022;
     }
 
     if (!['gasProduction', 'oilProduction'].includes(config.mainSelection)) {
