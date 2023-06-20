@@ -1,3 +1,471 @@
+# [2.6.0](http://neb-energy-futures-devdoc.s3-website.us-west-2.amazonaws.com/v2.6.0) (2023-06-20)
+
+
+* **Features:** Reverted forecast bar position changes and updated 2023 forecast year (9499abe)
+* **Features:** Updated 2023 report's forecast year to be 2021 (09e94df)
+* **Features:** Updated forecast line position to be after the bar (fbf00ab)
+* **Features:** Fixed linting (d0444e3)
+* **Features:** Forecast rename cleanup (1b14ca5)
+* **Features:** Updated 2023 French PDF (660053e)
+* **Features:** Extended unit select width (0138202)
+* **Features:** Added 2023 PDFs (6c22382)
+* **Features:** Updated forecast and historical layer calculations to not used bars in cases where no bars are rendered (32cbf24)
+* **Features:** Changed icon for electricity's wind source (2ed2a9b)
+* **Features:** Added missing French tool tip emissions message (0c6feea)
+* **Features:** Updated the context button styles (527994a)
+* **Features:** Added and move messages for data download (9ce1e38)
+* **Features:** Reset the scenarios only when loading into the scenarios page (ef74b2f)
+* **Features:** Added emissions 0 axis marker for the emissions scenarios chart (99c393e)
+* **Features:** Reset base and compare years to default on report change (f388a9f)
+* **Features:** Updated year slider compare year to default to the max value and fixed issue with year rendering in electricity and oil and gas pages (f4f0752)
+* **Features:** Updated axes for scenario emissions (9949fd0)
+* **Features:** Formatted net line data for scenario emissions (e6d78b0)
+* **Features:** Updated the reducer to maintain emission sources between the pages (dfaeee6)
+* **Features:** Set the source vertical list in the emissions scenarios chart (96d697e)
+* **Features:** Added messages for emissions scenarios chart (bd480b3)
+* **Features:** Remove Emissions View By and Add Emissions to Scenarios (80d6f62)
+* **Features:** Fixed prop checks (80a54ff)
+* **Features:** Added in emissions page for analytics (2fbc2ec)
+* **Features:** Change RENEWABLE source enum to SOLAR and WIND and added in icons and colors for new sources (c27f01f)
+* **Features:** Added messages for benchmark header, select and hint (5234565)
+* **Features:** Update header to reflect new design requirements (2b5d8e6)
+* **Features:** Add new unit and scenario messages as well as French messages for previous changes (fd45761)
+* **Features:** Added greenhouse gas source type to the API and config hooks (f818e94)
+* **Features:** Added English source descriptions (0911826)
+* **Features:** Added new icons required in the greenhouse gas source list (616ea4b)
+* **Features:** Set emissions chart to only show the source list (d779403)
+* **Features:** Added new greenhouse gas sources to the useAPI sources and translations (8f50d54)
+* **Features:** Show the scenario option first, adjust reducer logic to pre-select all scenarios (1b89670)
+* **Features:** Remove MaxTick component (5e765c5)
+* **Features:** Rename forecast label to projection (0ebd5b6)
+* **Tests:** Cleaned up prop type warnings (ec71690)
+* **Tests:** Updated test mocks for translation messages (178358b)
+* **Tests:** Updated tests and mocks for new price queries (753588a)
+* **Tests:** Added the app theme provider to the test container (8330e3b)
+* **Code Refactoring:** Moved selected price labels (3fb2b46)
+* **Project Maintenance:** Changed wet template in app story to our current modified one served in development (9e82f0c)
+* **Project Maintenance:** Fixed development page title as the raw loader for HTML files was interfering with the html-webpack-plugin injections (7d13597)
+* **Project Maintenance:** Fixed styles for default app story (05281e1)
+* **Project Maintenance:** Removed unneeded WET files (d9b53f5)
+* **Project Maintenance:** Replicated React root node for app story (c0a7308)
+* **Project Maintenance:** Updated local development WET Toolkit scripts and made local development template generic (dae18ad)
+
+
+### App
+
+* **Features:** Remove unsupported resolution warning (73de7fd)
+
+
+### BenchmarkCrosshair
+
+* **Features:** updated how benchmark crosshair was implemented (be001f5)
+* **Features:** finished adding in benchmark crosshair (f1a17a4)
+* **Features:** added crosshair for two charts simultaneously (aea5db9)
+
+
+### ChartTitle
+
+* **Features:** updated chart title in english (6962c12)
+
+
+### DownloadButton
+
+* **Features:** Updated emissions CSV to use the common units (a74fc19)
+* **Features:** Added emissions data structure and appended the price data for oil and gas (384b8ba)
+* **Features:** removed unused icon (bbab94b)
+* **Features:** fixed styling changes (d7d726b)
+* **Features:** removed empty div from startIcon (ad2019d)
+* **Features:** fixed linting and tests (fb50c70)
+* **Features:** creating download button in the bottom section (6385dd7)
+
+
+### DraggableVerticalList
+
+* **Features:** updated linting (0a442d3)
+* **Features:** updated manitoba abbr for french (57ca6f5)
+* **Features:** changed tooltips to title case (c868df1)
+* **Features:** Added hexagon shape option (09e3963)
+* **Bug Fixes:** updated manitoba fix (1733f45)
+* **Bug Fixes:** refactored some code (46f6143)
+
+
+### Dropdown
+
+* **Features:** Updated drop down highlight and added render value function prop (e9f74e6)
+* **Features:** Create dropdown component and re-implement unit/year select (82e3ea9)
+
+
+### Emissions
+
+* **Features:** renamed theme to lowercase (2dd1607)
+* **Features:** fixed bug with x axis in emissions (911b84f)
+* **Features:** updated emissions line (3098e4c)
+* **Features:** removed comment (187e4af)
+* **Features:** fixed linting (bb8ae7d)
+* **Features:** fixed linting (f8646e9)
+* **Features:** added grid x axis and removed ticks (bb0d1f5)
+* **Features:** Added net line layer and hooked up the data and sources (dc5a75e)
+* **Features:** updated required variable (d5b6ec7)
+* **Features:** updated formatting for label and lines (34c1233)
+* **Features:** updated formatting for some code (2437439)
+* **Features:** added candlestick layer (d5ec504)
+* **Features:** adds candlestick effect on bar (1e27bdf)
+* **Features:** increased padding between bars (a4037b2)
+* **Features:** removed unused annotation (10a7cfa)
+* **Features:** added emissions bar chart with stubbed data (3f624c7)
+* **Features:** added emissions page (22465d5)
+* **Features:** added emissions page (5ad15bb)
+
+
+### EmissionsTooltip
+
+* **Features:** updated some styling for emissions tooltip (b963bbd)
+* **Features:** added emissions tooltip (15cf8e5)
+
+
+### FillLayer
+
+* **Features:** updated test (92b80cd)
+* **Features:** Remove gradient feature and rename component (0d2cd7c)
+
+
+### ForecastLayer
+
+* **Features:** fixed test (d1695e0)
+* **Features:** Remove gradient fadeout (b0cfcb1)
+* **Tests:** Update tests to run with using the Intl hook (dedb0e5)
+
+
+### French
+
+* **Features:** updated french translations (c9047e4)
+* **Features:** updated french translations (517d4c5)
+
+
+### getTicks
+
+* **Features:** updated y ticks (18dcd19)
+
+
+### getYearX
+
+* **Features:** updated location of projection line for bar charts (7a66990)
+
+
+### Header
+
+* **Features:** restyled header (5d33ee6)
+* **Features:** updated header (0c086b4)
+* **Features:** updated styling (0c35e55)
+* **Features:** updated styling (bb7439c)
+* **Features:** updated some translations (88bb597)
+* **Features:** updated margin style. (10a0857)
+* **Features:** fixed linting (484924d)
+* **Features:** updated context to not move with graphs (a0649d0)
+* **Features:** added page select for tablet (f47a361)
+* **Features:** fixed small changes to header (cd7bbc7)
+* **Features:** created tablet header (f1c6e5c)
+* **Features:** working on tablet header (5753db3)
+* **Features:** updated header styling (301f065)
+* **Features:** updated header to new design specs (a3ea473)
+* **Features:** updated header and removed unneeded comments (2e75495)
+* **Features:** created new header component (27f47ed)
+* **Code Formatting:** adjusting margin for description box (fd5c98c)
+
+
+### Hint
+
+* **Features:** added hint titles (4beba4f)
+* **Features:** updated text (07413c2)
+* **Features:** updated sector hint (a68b240)
+* **Features:** updated all hints padding and styling to be unified (4cd9669)
+* **Code Refactoring:** Fixed class naming (493f3fc)
+
+
+### HintContent
+
+* **Features:** Moved hint unit structure into a component (2a56b05)
+
+
+### HintPrice
+
+* **Features:** Created the price hint component (b80adb5)
+
+
+### HintUnit
+
+* **Code Refactoring:** Moved hint unit select into it's own component using the refactored out content structures (a503126)
+
+
+### HistoricalLayer
+
+* **Features:** moved projection line between bars (7c53b2a)
+* **Features:** Remove grey background to match design (a6304e3)
+* **Features:** fixed linting (cef0a51)
+* **Features:** moved styling changes into theme and historical layer starts at beginning of (ced6c6e)
+* **Features:** added historical layer to by regions, by sector and scenario vizs (060b3db)
+
+
+### HistoryLayer
+
+* **Features:** moved history layer back to start point of graph. (3739ee6)
+
+
+### hook/useEnergyFutureData
+
+* **Features:** Added price year to the data hook (2962169)
+
+
+### hooks/useAPI
+
+* **Features:** Added new price sources to the useAPI sources and translations (bf08caa)
+
+
+### hooks/useConfig
+
+* **Features:** Added price source as a config state (b39e5a1)
+
+
+### hooks/useEnergyFutureData
+
+* **Features:** Update data hook to only request price data iterations on or after 2023 (39e13b9)
+* **Features:** Added new price state to the data hook and update the queries to include the prices (98c59cd)
+* **Features:** Added and formatted new emissions data (4dcd82f)
+
+
+### HorizontalControlBar
+
+* **Features:** removed sector icons (e0edb58)
+* **Features:** updated scenarios and region label to categories (7bf524e)
+* **Features:** updated labels for different scenarios (83b10d2)
+* **Features:** Move the hints in the control bar to the right, add "view by" to some views (bff0d51)
+* **Features:** Adapt so that views are configurable (d964d58)
+* **Features:** Adapt control bar for new styling updates (3309872)
+
+
+### Landing
+
+* **Features:** updated landing link for report (57595ec)
+* **Features:** updated french translations (1a8dcb4)
+* **Features:** updated emissions landing image (55443be)
+* **Features:** added emissions background image (ed04422)
+* **Features:** updated emissions title and description (a8502de)
+
+
+### Languages
+
+* **Features:** updated greenhouse gas tooltips (f2079b4)
+* **Features:** updated text from "By Sector" to "By Energy Source" (45b44e8)
+
+
+### LinkButtonGroup
+
+* **Features:** Adapt methodology link so that it points to correct link cooresponding to year (607b5f6)
+* **Features:** updated content summary (6dd1b42)
+* **Features:** refactored download button container width (bceff02)
+
+
+### MaxTick
+
+* **Features:** Adjust order and alignment of max tick values (4cd2b98)
+
+
+### NetBarLineLayer
+
+* **Features:** Aligned points to bar centers (59611f0)
+* **Features:** Turned off pointer events so mouse events over the layer cascade through (500bc1f)
+* **Features:** Created layer to show the net emissions line (c1ab2ad)
+
+
+### NetLineAnnotation
+
+* **Features:** added intl (79952b5)
+* **Features:** added net line annotation (71dd8db)
+
+
+### OilAndGas
+
+* **Features:** removed unused styling (c66e750)
+
+
+### OilGasContent
+
+* **Features:** Moved oil and gas content from the unit hint into a component (c1952d2)
+
+
+### PageLayout
+
+* **Features:** restructured page layout and fixed tests (226ada0)
+* **Features:** rearranged page layout (aed2958)
+* **Features:** Align dropdown components with top of graph (4aa58df)
+* **Features:** Set emissions list to be hexagon shaped (6650f77)
+* **Features:** Updated visualization container width so it fills the remaining space (98cd51b)
+* **Features:** Set width for resizing graph responsiveness (3bc74d9)
+* **Features:** fixed chart title (1bc6e57)
+* **Features:** fixed chart title (6fc74d8)
+* **Features:** fixed loading and error position (0330727)
+* **Features:** moved chart title to above viz (42e0f68)
+* **Features:** updated test (30ccf19)
+* **Tests:** added PageSelect back into tablet tests (3d036c7)
+* **Code Refactoring:** Remove unneeded memo dependency (41e228f)
+
+
+### pages/Electricity
+
+* **Features:** Adjust locations of bubble charts so that the don't overlap in all scenarios (a352778)
+
+
+### pages/OilAndGass
+
+* **Features:** Add less than 1% labels and alignment things (916034a)
+
+
+### pages/Scenarios
+
+* **Features:** Added the benchmark price header (cdfcafb)
+* **Features:** Added and formatted new price data (4a760c1)
+
+
+### PageSelect
+
+* **Features:** updated tablet styling (fa42fe6)
+* **Features:** fixed justify style for desktop (020cd37)
+* **Features:** small style changes to tabs (b27595c)
+* **Features:** updated header to fit content (8ddac01)
+* **Features:** updated tabs (fcfcbfb)
+* **Features:** restyled page select to tabs (5a9d3ad)
+* **Features:** updated test (353a5e8)
+* **Code Formatting:** updated style change for caption. (2115de9)
+
+
+### parseData
+
+* **Bug Fixes:** updated logic for rounding (933b429)
+* **Bug Fixes:** fix trailing decimals on axis (b9681f9)
+
+
+### PriceSelect
+
+* **Features:** Created the price select component (b29c4bf)
+
+
+### Scenarios
+
+* **Features:** updated scenario chart styles (85e9171)
+* **Features:** removed fill layer and used default nivo area layer (f91fd7d)
+* **Features:** fixed test (879ea60)
+* **Features:** updated scenarios chart style (1f986cb)
+* **Features:** fixed tooltips (a785417)
+* **Features:** updated benchmark chart (ea7c7ac)
+* **Features:** refactored graphs (f4b2e52)
+* **Features:** fixed linting (d272e37)
+* **Features:** fixed linting (be462cd)
+* **Features:** updated previous year cases (8d8949f)
+* **Features:** updated benchmark ticks (b9d7231)
+* **Features:** added oil and gas chart (64b83ab)
+* **Features:** added oil and gas benchmark graph (a45ed23)
+* **Features:** fixed linting (17a22e0)
+* **Features:** updated test (7049c8f)
+
+
+### ScenarioSelect
+
+* **Features:** reversed scenario description list (87bc21e)
+
+
+### SelectionButtons
+
+* **Features:** unified all selection buttons (94e2fc8)
+
+
+### Tests
+
+* **Features:** fixed testing (f248821)
+
+
+### text
+
+* **Features:** updated EF 2023 text (90880aa)
+* **Features:** updated 2023 EF text (013539f)
+
+
+### Text
+
+* **Features:** updated emissions unit text (5079ad6)
+* **Features:** updated 2023 text (4ee1188)
+* **Features:** updated email messgae and benchmark description (f3b920a)
+* **Features:** updated 2023 text (b67cc34)
+
+
+### Tooltip
+
+* **Features:** unified box shadow on tooltips (7252ebd)
+* **Bug Fixes:** added message for hydrogen tooltip in transportation (85850d7)
+
+
+### Tooltips
+
+* **Features:** added shadows and borders on all tooltips (f09a301)
+
+
+### TooltipWithHeader
+
+* **Features:** fixed styling issues (a002c5e)
+* **Features:** fixed linting (1397a46)
+* **Features:** refactored sections for tooltip (e4c681d)
+* **Features:** updated highlight number of elements (a9d9460)
+* **Features:** updated scenarios tooltip (9afc71b)
+* **Features:** renmaed EmissionsTooltip to TooltipWithHeader (1d7371f)
+
+
+### UnsupportedWarning
+
+* **Features:** added line breaks for browser warning. (8ffd890)
+
+
+### useChartTitle
+
+* **Features:** updated chart titles for french (b442650)
+* **Features:** updated variable for scenario (cf12a06)
+
+
+### useEnergyFutureData
+
+* **Features:** Add special case forecastStart for 2023 yearId and oil-and-gas scenarios (c8304ca)
+
+
+### utlitlies/parseData
+
+* **Features:** updated ticks for all graphs (a5ed698)
+
+
+### YearSliceTooltip
+
+* **Features:** updated PR comments (8357f89)
+* **Features:** updated unit config (ebf4551)
+* **Features:** updated YearSliceTooltip name (5ef039a)
+* **Features:** updated all tooltips to the same style (49eeaf4)
+* **Features:** working on unifying tooltips (0bf8783)
+* **Features:** renamed tooltip (b0b7bb5)
+
+
+### YearSliceTooltip/NodeSection
+
+* **Features:** updated tooltip percentages (b3534f4)
+* **Features:** updated props (6db0dfa)
+
+
+### YearSLider
+
+* **Features:** keeping labels as uppercase (2cb49da)
+
+
+### BREAKING CHANGES
+
+* **Landing:** 14183
+
+Issues Affected: y
+
 ## [2.5.1](http://neb-energy-futures-devdoc.s3-website.us-west-2.amazonaws.com/v2.5.1) (2022-11-01)
 
 
