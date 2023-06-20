@@ -760,7 +760,7 @@
         "2019": "[Hypothèses d’AE 2019](https://www.cer-rec.gc.ca/fr/donnees-analyse/avenir-energetique-canada/2019/hypotheses/index.html)",
         "2020": "[Hypothèses d’AE 2020](https://www.cer-rec.gc.ca/fr/donnees-analyse/avenir-energetique-canada/2020/hypotheses/index.html)",
         "2021": "[Hypothèses d’AE 2021](https://www.cer-rec.gc.ca/fr/donnees-analyse/avenir-energetique-canada/2021/scenarios-et-hypotheses.html#principales-hypotheses)",
-        "2023": "[Scénarios et hypothèses d’Avenir énergétique 2023](https://www.cer-rec.gc.ca/fr/donnees-analyse/avenir-energetique-canada/2023/scenarios-et-hypotheses.html)",
+        "2023": "[Scénarios et hypothèses d’Avenir énergétique 2023](https://www.cer-rec.gc.ca/fr/donnees-analyse/avenir-energetique-canada/2023/scenarios-et-hypotheses/)",
         "default": "[Hypothèses d’AE 2016](https://www.cer-rec.gc.ca/fr/donnees-analyse/avenir-energetique-canada/2016/index.html)"
       }
     },
@@ -785,7 +785,7 @@
         "2019": "[Grandes conclusions d’AE 2019](https://www.cer-rec.gc.ca/fr/donnees-analyse/avenir-energetique-canada/2019/resume/index.html)",
         "2020": "[Grandes conclusions d’AE 2020](https://www.cer-rec.gc.ca/fr/donnees-analyse/avenir-energetique-canada/2020/resume/index.html)",
         "2021": "[Grandes conclusions d’AE 2021](https://www.cer-rec.gc.ca/fr/donnees-analyse/avenir-energetique-canada/2021/grandes-conclusions.html)",
-        "2023": "[Grandes conclusions d’AE 2023](https://www.cer-rec.gc.ca/fr/donnees-analyse/avenir-energetique-canada/2023/grandes-conclusions.html)",
+        "2023": "[Grandes conclusions d’AE 2023](https://www.cer-rec.gc.ca/fr/donnees-analyse/avenir-energetique-canada/2023/resume/index.html#a1)",
         "default": "[Principales conclusions d’AE 2016](https://www.cer-rec.gc.ca/fr/donnees-analyse/avenir-energetique-canada/2016/index.html)"
       }
     },
@@ -810,7 +810,7 @@
         "2019": "[Résultats d’AE 2019](https://www.cer-rec.gc.ca/fr/donnees-analyse/avenir-energetique-canada/2019/resultats/index.html)",
         "2020": "[Résultats d’AE 2020](https://www.cer-rec.gc.ca/fr/donnees-analyse/avenir-energetique-canada/2020/resultats/index.html)",
         "2021": "[Résultats d’AE 2021](https://www.cer-rec.gc.ca/fr/donnees-analyse/avenir-energetique-canada/2021/resultats.html)",
-        "2023": "[Résultats d’AE 2023](https://www.cer-rec.gc.ca/fr/donnees-analyse/avenir-energetique-canada/2023/resultats.html)",
+        "2023": "[Résultats d’AE 2023](https://www.cer-rec.gc.ca/fr/donnees-analyse/avenir-energetique-canada/2023/resultats/)",
         "default": "[Résultats d’AE 2016](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2016/index.html)"
       }
     },
@@ -842,7 +842,7 @@
         "2019": "[Voir le rapport AE 2019](https://www.cer-rec.gc.ca/fr/donnees-analyse/avenir-energetique-canada/2019/index.html)",
         "2020": "[Voir le rapport AE 2020](https://www.cer-rec.gc.ca/fr/donnees-analyse/avenir-energetique-canada/2020/index.html)",
         "2021": "[Voir le rapport AE 2021](https://www.cer-rec.gc.ca/fr/donnees-analyse/avenir-energetique-canada/2021/sommaire.html)",
-        "2023": "[Voir le rapport AE 2023](https://www.cer-rec.gc.ca/fr/donnees-analyse/avenir-energetique-canada/2023/sommaire.html)",
+        "2023": "[Voir le rapport AE 2023](https://www.cer-rec.gc.ca/fr/donnees-analyse/avenir-energetique-canada/2023/resume/)",
         "default": "[Voir le rapport AE 2016](https://www.cer-rec.gc.ca/fr/donnees-analyse/avenir-energetique-canada/2016/index.html)"
       },
       "image": {
