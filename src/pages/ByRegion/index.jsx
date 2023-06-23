@@ -1,11 +1,10 @@
-import React, { useMemo, useCallback, useRef } from 'react';
+import React, { useMemo, useCallback } from 'react';
 import { ResponsiveBar } from '@nivo/bar';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core';
 import { useIntl } from 'react-intl';
 import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
-import analytics from '../../analytics';
 import { CHART_PROPS, CHART_AXIS_PROPS } from '../../constants';
 import { getTicks } from '../../utilities/parseData';
 import convertHexToRGB from '../../utilities/convertHexToRGB';
@@ -43,16 +42,7 @@ const ByRegion = ({ data, year }) => {
    * Determine the region order shown in the stacked bar chart.
    */
   const keys = useMemo(() => config.provinceOrder?.slice().reverse(), [config.provinceOrder]);
-
-  /**
-   * Format tooltip.
-   */
-  const timer = useRef(null);
   const getTooltip = useCallback((entry) => {
-    // capture hover event and use a timer to avoid throttling
-    const name = `${entry.id} - ${entry.indexValue}`;
-    clearTimeout(timer.current);
-    timer.current = setTimeout(() => analytics.reportPoi(config.page, name), 500);
     const nodes = [];
 
     config.provinceOrder.forEach((key) => {
@@ -78,7 +68,7 @@ const ByRegion = ({ data, year }) => {
         year={entry.indexValue}
       />
     );
-  }, [config.page, config.scenarios, config.unit, intl, regions.colors, config.provinceOrder]);
+  }, [config.scenarios, config.unit, intl, regions.colors, config.provinceOrder]);
 
   /**
    * Calculate the max tick value on y-axis and generate the all ticks accordingly.

@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useCallback, useRef } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import { useIntl } from 'react-intl';
 import PropTypes from 'prop-types';
 import {
@@ -166,18 +166,6 @@ const OilAndGas = ({ data, year, vizDimension }) => {
   }, [compare]);
 
   /**
-   * Capture hover event but don't send repeated records.
-   */
-  const prevEvent = useRef(null);
-  const handleEventUpdate = useCallback((source) => {
-    const event = `${source.name} - ${config.baseYear || year?.min}`;
-    if (event !== prevEvent.current) {
-      analytics.reportPoi(config.page, event);
-      prevEvent.current = event;
-    }
-  }, [year, config.baseYear, config.page, prevEvent]);
-
-  /**
    * Sort both data based on the current year values in the descending order.
    */
   const sortDataSets = useCallback((curr, comp) => {
@@ -229,10 +217,7 @@ const OilAndGas = ({ data, year, vizDimension }) => {
           open={source.name === tooltip}
           title={getTooltip(source)}
           placement={getTooltipPos(source.children.length, size, isTopChart)}
-          onOpen={() => {
-            setTooltip(source.name);
-            handleEventUpdate(source);
-          }}
+          onOpen={() => setTooltip(source.name)}
           onClose={() => setTooltip()}
         >
           <div
@@ -274,7 +259,6 @@ const OilAndGas = ({ data, year, vizDimension }) => {
     getTooltip,
     getTooltipPos,
     getColor,
-    handleEventUpdate,
   ]);
 
   /**

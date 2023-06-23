@@ -1,5 +1,6 @@
 import Cookies from 'js-cookie';
 import { v1 } from 'uuid';
+import { lang } from './constants';
 
 /* eslint-disable no-console */
 class Analytics {
@@ -35,58 +36,49 @@ class Analytics {
     }
   }
 
-  report(page, { category, action, label, value }, disableSubVisualization /* boolean */) {
-    const subVisualization = this.getVisualization(page);
-    if (!subVisualization) {
-      console.warn('Incorrect page');
-      return;
-    }
-
+  report(page, category, action, value, data) {
     if (!category || !action) {
       console.warn('Missing analytics category or action');
       return;
     }
 
     const event = {
-      event: 'visualization interaction',
-      category,
-      action,
-      userID: this.userId,
-      visualization: 'energy future',
-      subVisualization: disableSubVisualization ? 'none' : subVisualization,
-      ...(label ? { label } : {}),
-      ...(value ? { value } : {}),
+      event: 'visualization event',
+      event_visualization: 'energy future interaction',
+      event_subvisualization: this.getVisualization(page),
+      event_category: category,
+      event_action: action,
+      event_value: value,
+      event_language: lang,
+      event_userID: this.userId,
+      ...(data || {}),
     };
 
     this.dataLayer.push(event);
   }
 
-  reportLanding(page, value) {
-    this.report(page, { category: 'menu', action: 'click', label: 'landing', value }, true);
+  reportLanding(value) {
+    this.report(null, 'landing', 'click', this.getVisualization(value) || value);
   }
 
   reportNav(page, target) {
-    this.report(page, { category: 'menu', action: 'click', label: 'visualization', value: target ? this.getVisualization(target) : page }, !target);
+    this.report(page, 'menu', 'click', this.getVisualization(target));
   }
 
-  reportMisc(page, action, value) {
-    this.report(page, { category: 'menu', action, label: 'misc', value });
+  reportFooter(page, action, value) {
+    this.report(page, 'footer', action, value);
   }
 
   reportFeature(page, label, value) {
-    this.report(page, { category: 'feature', action: 'click', label, value });
+    this.report(page, 'feature', 'click', value, { event_label: label });
   }
 
-  reportMedia(page, action) {
-    this.report(page, { category: 'media', action /* 'pause' or 'play' */, label: 'media' });
+  reportMedia(page, type) {
+    this.report(page, 'media', 'click', type);
   }
 
   reportHelp(page, label) {
-    this.report(page, { category: 'help', action: 'click', label });
-  }
-
-  reportPoi(page, value) {
-    this.report(page, { category: 'graph poi', action: 'hover', value, label: 'graph poi' });
+    this.report(page, 'help', 'click', 'tooltip', { event_label: label });
   }
 }
 

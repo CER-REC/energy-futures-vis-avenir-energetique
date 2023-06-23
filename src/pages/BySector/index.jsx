@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useRef } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { ResponsiveLine } from '@nivo/line';
 import PropTypes from 'prop-types';
 import { useIntl } from 'react-intl';
@@ -6,7 +6,6 @@ import { useIntl } from 'react-intl';
 import { makeStyles } from '@material-ui/core';
 import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
-import analytics from '../../analytics';
 import { CHART_PROPS, CHART_AXIS_PROPS, CHART_PATTERNS, OIL_SUBGROUP } from '../../constants';
 import { getTicks } from '../../utilities/parseData';
 
@@ -61,19 +60,7 @@ const BySector = ({ data, year }) => {
     () => FillLayer(isTransportation),
     [isTransportation],
   );
-
-  /**
-   * Format tooltip.
-   */
-  const timer = useRef(null);
   const getTooltip = useCallback((event) => {
-    // capture hover event and use a timer to avoid throttling
-    const index = Number((event?.slice?.points[0].id || '').split('.')[1]);
-    if (!Number.isNaN(index) && year?.min) {
-      clearTimeout(timer.current);
-      timer.current = setTimeout(() => analytics.reportPoi(config.page, year.min + index), 500);
-    }
-
     let currYear = null;
 
     const section = {
@@ -102,7 +89,7 @@ const BySector = ({ data, year }) => {
         isSliceTooltip
       />
     );
-  }, [year, intl, config.scenarios, config.unit, config.page, isTransportation]);
+  }, [intl, config.scenarios, config.unit, isTransportation]);
 
   /**
    * Calculate the max tick value on y-axis.

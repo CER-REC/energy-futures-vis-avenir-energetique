@@ -169,7 +169,7 @@ const DownloadButton = () => {
   }, [config, intl, regionOrder, sourceOrder, data, prices, headers]);
 
   const onClick = () => {
-    analytics.reportMisc(config.page, 'click', 'download');
+    analytics.reportFooter(config.page, 'download', 'download data');
     downloadCSV();
   };
 
