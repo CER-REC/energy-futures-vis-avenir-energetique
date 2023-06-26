@@ -79,18 +79,13 @@ const useStyles = makeStyles(theme => ({
       borderBottom: `8px solid ${theme.palette.secondary.main}`,
     },
   },
+  historical: {
+    ...theme.mixins.yearSliderLabels,
+    backgroundColor: theme.palette.historical,
+  },
   forecast: {
-    display: 'flex',
-    position: 'absolute',
-    top: 12,
-    right: 0,
-    zIndex: -1,
-    padding: theme.spacing(0.25, 0.5),
-    backgroundImage: 'linear-gradient(to right, rgba(243, 239, 239, 1), rgba(243, 239, 239, 1) 30%, rgba(243, 239, 239, .25))',
-    '& > span': {
-      color: '#666',
-      lineHeight: 1,
-    },
+    ...theme.mixins.yearSliderLabels,
+    backgroundColor: theme.palette.background.light,
     '&:after': {
       content: '""',
       position: 'absolute',
@@ -232,6 +227,10 @@ const YearSlider = ({ year, min, max, forecast }) => {
           {...DEFAULT_PROPS}
           classes={getClasses()}
         />
+
+        <div className={classes.historical}>
+          <Typography variant="overline" style={{ textTransform: 'uppercase' }}>{intl.formatMessage({ id: 'components.historicalLayer.historical' })}</Typography>
+        </div>
 
         {/* forecast bar */}
         {forecast && (
