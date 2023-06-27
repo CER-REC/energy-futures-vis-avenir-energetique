@@ -11,6 +11,7 @@ export const DEFAULT_CONFIG = {
   unit: 'petajoules',
   provinceOrder: ['YT', 'SK', 'QC', 'PE', 'ON', 'NU', 'NT', 'NS', 'NL', 'NB', 'MB', 'BC', 'AB'],
   scenarios: ['Global Net-zero'],
+  provinces: ['ON'],
 };
 
 export const BASE_DATA = {

@@ -93,7 +93,7 @@ const ByRegion = ({ data, year }) => {
     return getTicks(highest);
   }, [data]);
 
-  if (hasNoData(rawData, config.provinces)) {
+  if (!data && hasNoData(rawData)) {
     let noDataMessageId = `components.unavailableData.${config.mainSelection}.${config.provinces[0]}`;
     if (config.provinces.length > 1) noDataMessageId = 'components.unavailableData.default';
     else if (config.provinces.length <= 0) noDataMessageId = 'components.unavailableData.noRegionSelected';

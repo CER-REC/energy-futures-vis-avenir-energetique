@@ -169,7 +169,7 @@ const Scenarios = ({ data, year }) => {
     <>
       <div className={chartContainerClass}>
         {
-          !hasNoData(rawData) ? (
+          data && !hasNoData(rawData) ? (
             <ResponsiveLine
               {...CHART_PROPS}
               {...lineProps}

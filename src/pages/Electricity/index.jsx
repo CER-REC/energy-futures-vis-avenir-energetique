@@ -281,6 +281,10 @@ const Electricity = ({ data, year }) => {
   if (config.view === 'region' && config.sources.length === 0) return <UnavailableDataMessage message={intl.formatMessage({ id: 'components.unavailableData.noSourceSelected' })} />;
   if (config.view === 'source' && config.provinces.length === 0) return <UnavailableDataMessage message={intl.formatMessage({ id: 'components.unavailableData.noRegionSelected' })} />;
 
+  if (!data) {
+    return null;
+  }
+
   return (
     <div className={classes.root}>
       {/* current year number at the top-right corner */}

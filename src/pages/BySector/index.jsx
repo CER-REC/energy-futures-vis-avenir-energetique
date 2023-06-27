@@ -122,7 +122,7 @@ const BySector = ({ data, year }) => {
     return null;
   }
 
-  if (hasNoData(rawData, config.sources)) {
+  if (!data && hasNoData(rawData, config.sources)) {
     const noDataMessageId = config.sources.length === 0
       ? 'components.unavailableData.noSourceSelected'
       : 'components.unavailableData.default';

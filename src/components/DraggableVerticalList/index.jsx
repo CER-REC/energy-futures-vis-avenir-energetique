@@ -214,7 +214,7 @@ const DraggableVerticalList = ({
                   {(providedItem) => {
                     const tooltip = getSourceText(item);
 
-                    const coloredItem = title !== 'Region'
+                    const itemLabel = sourceType
                       ? intl.formatMessage({ id: `components.draggableVerticalList.abbr.${item}`, defaultMessage: item })
                       : item;
 
@@ -245,7 +245,7 @@ const DraggableVerticalList = ({
                           className={`${classes.item} ${isTransportation && item === 'OIL' && 'oil-sub-group'}`}
                         >
                           <ColoredItemBox
-                            item={coloredItem}
+                            item={itemLabel}
                             shape={shape}
                             icon={defaultItems[item].icon}
                             color={greyscale ? undefined : defaultItems[item].color}

@@ -9,6 +9,8 @@ export const DEFAULT_CONFIG = {
   yearId: '2020',
   scenarios: ['Evolving'],
   unit: 'petajoules',
+  mainSelection: 'oilProduction',
+  provinces: ['ON'],
 };
 
 export const MOCK_DATA = [{

@@ -107,7 +107,7 @@ const Emissions = ({ data, year }) => {
     );
   }
 
-  return !hasNoData(rawData)
+  return data && !hasNoData(rawData)
     ? (
       <div className={classes.chart}>
         <ResponsiveBar
