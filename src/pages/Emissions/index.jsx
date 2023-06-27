@@ -15,7 +15,9 @@ import ForecastLayer from '../../components/ForecastLayer';
 import getYearLabel from '../../utilities/getYearLabel';
 import YearSliceTooltip from '../../components/YearSliceTooltip';
 import defaultTheme from '../../containers/App/theme';
-import UnavailableDataMessage from "../../components/UnavailableDataMessage";
+import UnavailableDataMessage from '../../components/UnavailableDataMessage';
+import useEnergyFutureData from '../../hooks/useEnergyFutureData';
+import hasNoData from '../../utilities/hasNoData';
 
 const useStyles = makeStyles(theme => ({
   chart: {
@@ -25,6 +27,7 @@ const useStyles = makeStyles(theme => ({
 
 const Emissions = ({ data, year }) => {
   const { sources: { greenhouseGas: sources } } = useAPI();
+  const { rawData } = useEnergyFutureData();
   const { config } = useConfig();
   const classes = useStyles();
   const intl = useIntl();
@@ -95,8 +98,17 @@ const Emissions = ({ data, year }) => {
     return allYears.filter(value => getYearLabel(value) !== '');
   }, [data]);
 
-  return config.yearId < 2023 ?
-    (
+  if (config.yearId < 2023) {
+    return (
+      <UnavailableDataMessage
+        message={intl.formatMessage({ id: 'components.unavailableData.emissionsUnavailable' })}
+        hasEmissionsLink
+      />
+    );
+  }
+
+  return !hasNoData(rawData)
+    ? (
       <div className={classes.chart}>
         <ResponsiveBar
           {...CHART_PROPS}
@@ -133,10 +145,9 @@ const Emissions = ({ data, year }) => {
       </div>
     ) : (
       <UnavailableDataMessage
-        message={intl.formatMessage({ id:`components.unavailableData.emissionsUnavailable`})}
-        hasEmissionsLink={true}
+        message={intl.formatMessage({ id: 'components.unavailableData.noSourceSelected' })}
       />
-    )
+    );
 };
 
 Emissions.propTypes = {

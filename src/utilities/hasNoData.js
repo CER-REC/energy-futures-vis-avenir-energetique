@@ -1,17 +1,7 @@
-﻿export default (data) => {
-  if (!data)
-    return true;
+export default (rawData) => {
+  if (!rawData) return true;
 
-  let zeroData = true;
+  const checkZeroedData = rawData.filter(row => row.value !== 0);
 
-  data.forEach(scenario => {
-    let checkZeroedData = scenario.data.filter(info => info.y !== 0);
-
-    if (checkZeroedData.length > 0) {
-      zeroData = false;
-      return false;
-    }
-  })
-
-  return zeroData;
-}
+  return checkZeroedData.length <= 0;
+};

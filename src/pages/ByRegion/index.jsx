@@ -14,8 +14,9 @@ import HistoricalLayer from '../../components/HistoricalLayer';
 import getYearLabel from '../../utilities/getYearLabel';
 import YearSliceTooltip from '../../components/YearSliceTooltip';
 import defaultTheme from '../../containers/App/theme';
-import hasNoData from "../../utilities/hasNoData";
-import UnavailableDataMessage from "../../components/UnavailableDataMessage";
+import hasNoData from '../../utilities/hasNoData';
+import UnavailableDataMessage from '../../components/UnavailableDataMessage';
+import useEnergyFutureData from '../../hooks/useEnergyFutureData';
 
 const useStyles = makeStyles(theme => ({
   chart: {
@@ -26,6 +27,7 @@ const useStyles = makeStyles(theme => ({
 const ByRegion = ({ data, year }) => {
   const { regions } = useAPI();
   const { config } = useConfig();
+  const { rawData } = useEnergyFutureData();
   const classes = useStyles();
   const intl = useIntl();
 
@@ -91,49 +93,48 @@ const ByRegion = ({ data, year }) => {
     return getTicks(highest);
   }, [data]);
 
-  if (config.provinces.length === 0)
-    console.log("asfdasdasd");
+  if (hasNoData(rawData, config.provinces)) {
+    let noDataMessageId = `components.unavailableData.${config.mainSelection}.${config.provinces[0]}`;
+    if (config.provinces.length > 1) noDataMessageId = 'components.unavailableData.default';
+    else if (config.provinces.length <= 0) noDataMessageId = 'components.unavailableData.noRegionSelected';
 
-  console.log(config)
-
-  return !hasNoData(data) ?
-    (
-      <div className={classes.chart}>
-        <ResponsiveBar
-          {...CHART_PROPS}
-          data={data}
-          keys={keys}
-          layers={[HistoricalLayer, 'grid', 'axes', 'bars', 'markers', ForecastLayer]}
-          indexBy="year"
-          maxValue={ticks[ticks.length - 1]}
-          colors={colors}
-          borderColor={{ from: 'color', modifiers: [['darker', 1.6]] }}
-          axisBottom={{
-            ...CHART_AXIS_PROPS,
-            format: getYearLabel,
-          }}
-          axisRight={{
-            ...CHART_AXIS_PROPS,
-            tickValues: ticks,
-          }}
-          tooltip={getTooltip}
-          gridYValues={ticks}
-          motionStiffness={300}
-          forecastStart={year.forecastStart}
-          theme={{
-            tooltip: {
-              ...defaultTheme.overrides.MuiTooltip.tooltip,
-            },
-          }}
-          hasCenteredProjectionLine
-        />
-      </div>
-    ) : (
-      <UnavailableDataMessage message={intl.formatMessage({
-        id: `components.unavailableData.${config.mainSelection}.${config.provinces[0]}`,
-        defaultMessage: intl.formatMessage({ id: `components.unavailableData.${config.mainSelection}.default`})
-      })} />
+    return (
+      <UnavailableDataMessage message={intl.formatMessage({ id: noDataMessageId })} />
     );
+  }
+
+  return (
+    <div className={classes.chart}>
+      <ResponsiveBar
+        {...CHART_PROPS}
+        data={data}
+        keys={keys}
+        layers={[HistoricalLayer, 'grid', 'axes', 'bars', 'markers', ForecastLayer]}
+        indexBy="year"
+        maxValue={ticks[ticks.length - 1]}
+        colors={colors}
+        borderColor={{ from: 'color', modifiers: [['darker', 1.6]] }}
+        axisBottom={{
+          ...CHART_AXIS_PROPS,
+          format: getYearLabel,
+        }}
+        axisRight={{
+          ...CHART_AXIS_PROPS,
+          tickValues: ticks,
+        }}
+        tooltip={getTooltip}
+        gridYValues={ticks}
+        motionStiffness={300}
+        forecastStart={year.forecastStart}
+        theme={{
+          tooltip: {
+            ...defaultTheme.overrides.MuiTooltip.tooltip,
+          },
+        }}
+        hasCenteredProjectionLine
+      />
+    </div>
+  );
 };
 
 ByRegion.propTypes = {

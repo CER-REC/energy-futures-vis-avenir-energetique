@@ -21,8 +21,8 @@ import getYearLabel from '../../utilities/getYearLabel';
 import { getTicks, formatLineData } from '../../utilities/parseData';
 import BenchmarkCrosshair from '../../components/BenchmarkCrosshair';
 import YearSliceTooltip from '../../components/YearSliceTooltip';
-import hasNoData from "../../utilities/hasNoData";
-import UnavailableDataMessage from "../../components/UnavailableDataMessage";
+import hasNoData from '../../utilities/hasNoData';
+import UnavailableDataMessage from '../../components/UnavailableDataMessage';
 
 /**
  * Generate a custom dotted line layer for rendering the default scenario.
@@ -74,7 +74,7 @@ const Scenarios = ({ data, year }) => {
   const [upperSlice, setUpperSlice] = useState(null);
   const [lowerSlice, setLowerSlice] = useState(null);
   // TODO: Refactor useEnergyFutureData hook to use a standard data structure
-  const { prices, priceYear } = useEnergyFutureData();
+  const { prices, priceYear, rawData } = useEnergyFutureData();
   const classes = useStyles();
   const priceData = formatLineData(prices, 'scenario');
 
@@ -135,13 +135,14 @@ const Scenarios = ({ data, year }) => {
   }, [year, getNodesFromData, data, prices, intl,
     config.mainSelection, config.unit, config.page, config.priceSource, priceData]);
 
-  if (config.mainSelection === "greenhouseGasEmission" && config.yearId < 2023)
+  if (config.mainSelection === 'greenhouseGasEmission' && config.yearId < 2023) {
     return (
       <UnavailableDataMessage
-        message={intl.formatMessage({ id:`components.unavailableData.emissionsUnavailable`})}
-        hasEmissionsLink={true}
+        message={intl.formatMessage({ id: 'components.unavailableData.emissionsUnavailable' })}
+        hasEmissionsLink
       />
     );
+  }
 
   const ticks = getLineTicks(data || []);
   const benchmarkTicks = getLineTicks(priceData);
@@ -164,38 +165,37 @@ const Scenarios = ({ data, year }) => {
   };
   const chartContainerClass = clsx(classes.chart, { duo: !!prices?.length });
 
-  console.log(config)
-
   return (
     <>
       <div className={chartContainerClass}>
         {
-          !hasNoData(data) ? (
-              <ResponsiveLine
-                {...CHART_PROPS}
-                {...lineProps}
-                data={data}
-                enableArea
-                layers={[HistoricalLayer, 'grid', 'axes', 'areas', BenchmarkCrosshair, 'points', 'slices', 'lines', 'markers', ForecastLayer, dots]}
-                curve="catmullRom"
-                areaOpacity={0.15}
-                yScale={{ type: 'linear', min: ticks[0], max: ticks[ticks.length - 1], reverse: false }}
-                axisRight={{
-                  ...CHART_AXIS_PROPS,
-                  tickValues: ticks,
-                }}
-                sliceTooltip={event => getTooltip(event, true)}
-                axisBottom={prices?.length ? null : lineProps.axisBottom}
-                gridYValues={ticks}
-                markers={config.mainSelection === 'greenhouseGasEmission' ? GREENHOUSE_GAS_MARKERS : null}
-                setSlice={setLowerSlice}
-                slice={upperSlice}
-              />
+          !hasNoData(rawData) ? (
+            <ResponsiveLine
+              {...CHART_PROPS}
+              {...lineProps}
+              data={data}
+              enableArea
+              layers={[HistoricalLayer, 'grid', 'axes', 'areas', BenchmarkCrosshair, 'points', 'slices', 'lines', 'markers', ForecastLayer, dots]}
+              curve="catmullRom"
+              areaOpacity={0.15}
+              yScale={{ type: 'linear', min: ticks[0], max: ticks[ticks.length - 1], reverse: false }}
+              axisRight={{
+                ...CHART_AXIS_PROPS,
+                tickValues: ticks,
+              }}
+              sliceTooltip={event => getTooltip(event, true)}
+              axisBottom={prices?.length ? null : lineProps.axisBottom}
+              gridYValues={ticks}
+              markers={config.mainSelection === 'greenhouseGasEmission' ? GREENHOUSE_GAS_MARKERS : null}
+              setSlice={setLowerSlice}
+              slice={upperSlice}
+            />
           ) : (
             <UnavailableDataMessage message={intl.formatMessage({
               id: `components.unavailableData.${config.mainSelection}.${config.provinces[0]}`,
-              defaultMessage: intl.formatMessage({ id: `components.unavailableData.${config.mainSelection}.default`})
-            })} />
+              defaultMessage: intl.formatMessage({ id: 'components.unavailableData.noSourceSelected' }),
+            })}
+            />
           )
         }
       </div>

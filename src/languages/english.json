@@ -160,22 +160,23 @@
         "NB": "There is no oil production for New Brunswick.",
         "YT": "There is no oil production for Yukon.",
         "NU": "There is no oil production for Nunavut.",
-        "QC": "There is no oil production for Quebec.",
-        "default": "There is no data for your selection."
+        "QC": "There is no oil production for Quebec."
       },
       "gasProduction": {
         "QC": "There is no gas production for Quebec.",
         "NU": "There is no gas production for Nunavut.",
         "NL": "There is no gas production for Newfoundland and Labrador.",
         "MB": "There is no gas production for Manitoba",
-        "PE": "There is no gas production for Prince Edward Island.",
-        "default": "There is no data for your selection."
+        "PE": "There is no gas production for Prince Edward Island."
       },
       "emissionsUnavailable": "This visualization is only available for EF**2023** and after.",
       "emissionsLinkText": "View the EF 2023 Emissions visualization.",
       "greenhouseGasEmission": {
         "default": "There are no emissions for your current selection."
-      }
+      },
+      "noRegionSelected": "There is no region selected.",
+      "noSourceSelected": "There is no source selected.",
+      "default": "There is no data for your selection."
     },
     "yearSelect": {
       "name": "Report",

@@ -10,6 +10,7 @@ import useConfig from '../../hooks/useConfig';
 import analytics from '../../analytics';
 import YearSlider from '../../components/YearSlider';
 import YearSliceTooltip from '../../components/YearSliceTooltip';
+import UnavailableDataMessage from '../../components/UnavailableDataMessage';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -139,9 +140,6 @@ const COORD = {
 
 const Electricity = ({ data, year }) => {
   const classes = useStyles();
-
-  console.log(data)
-
   const intl = useIntl();
   const {
     sources: { electricity: { colors: colorSources } },
@@ -280,9 +278,8 @@ const Electricity = ({ data, year }) => {
     );
   }, [config.scenarios, config.unit, currYear, intl]);
 
-  if (!data) {
-    return null;
-  }
+  if (config.view === 'region' && config.sources.length === 0) return <UnavailableDataMessage message={intl.formatMessage({ id: 'components.unavailableData.noSourceSelected' })} />;
+  if (config.view === 'source' && config.provinces.length === 0) return <UnavailableDataMessage message={intl.formatMessage({ id: 'components.unavailableData.noRegionSelected' })} />;
 
   return (
     <div className={classes.root}>

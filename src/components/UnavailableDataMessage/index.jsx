@@ -1,8 +1,9 @@
-﻿import {Button, makeStyles, Typography} from "@material-ui/core";
-import React from "react";
-import Markdown from "react-markdown";
-import useConfig from "../../hooks/useConfig";
-import {useIntl} from "react-intl";
+import { Button, makeStyles, Typography } from '@material-ui/core';
+import React from 'react';
+import Markdown from 'react-markdown';
+import { useIntl } from 'react-intl';
+import PropTypes from 'prop-types';
+import useConfig from '../../hooks/useConfig';
 
 const useStyles = makeStyles({
   root: {
@@ -11,8 +12,8 @@ const useStyles = makeStyles({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    textAlign: 'center'
-  }
+    textAlign: 'center',
+  },
 });
 
 const UnavailableDataMessage = ({ message, hasEmissionsLink = false }) => {
@@ -31,13 +32,22 @@ const UnavailableDataMessage = ({ message, hasEmissionsLink = false }) => {
               color="primary"
               onClick={() => configDispatch({ type: 'yearId/changed', payload: 2023 })}
             >
-              {intl.formatMessage({ id: `components.unavailableData.emissionsLinkText`})}
+              {intl.formatMessage({ id: 'components.unavailableData.emissionsLinkText' })}
             </Button>
           )
         }
       </div>
     </div>
-  )
-}
+  );
+};
+
+UnavailableDataMessage.propTypes = {
+  message: PropTypes.string.isRequired,
+  hasEmissionsLink: PropTypes.bool,
+};
+
+UnavailableDataMessage.defaultProps = {
+  hasEmissionsLink: false,
+};
 
 export default UnavailableDataMessage;

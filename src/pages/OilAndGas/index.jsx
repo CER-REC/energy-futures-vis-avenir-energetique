@@ -13,6 +13,7 @@ import analytics from '../../analytics';
 import YearSlider from '../../components/YearSlider';
 import { IconOilAndGasGroup, IconOilAndGasRectangle } from '../../icons';
 import YearSliceTooltip from '../../components/YearSliceTooltip';
+import UnavailableDataMessage from '../../components/UnavailableDataMessage';
 
 const useStyles = makeStyles(theme => ({
   year: {
@@ -285,6 +286,9 @@ const OilAndGas = ({ data, year, vizDimension }) => {
     analytics.reportMedia(config.page, compare ? 'don\'t compare' : 'compare');
   }, [configDispatch, compare, config.page]);
 
+  if (config.view === 'region' && config.sources.length === 0) return <UnavailableDataMessage message={intl.formatMessage({ id: 'components.unavailableData.noSourceSelected' })} />;
+  if (config.view === 'source' && config.provinces.length === 0) return <UnavailableDataMessage message={intl.formatMessage({ id: 'components.unavailableData.noRegionSelected' })} />;
+
   // data not ready; render nothing
   if (!data || !data[currentYear] || !data[compareYear]) {
     return null;
@@ -449,8 +453,8 @@ const OilAndGas = ({ data, year, vizDimension }) => {
           <Grid container alignItems="center" wrap="nowrap" spacing={1}>
             {/* This may be re-implemented in the future */}
             {/* <Grid item className={classes.yearBox}>
-              <div style={{ border: '3px solid black' }} />
-            </Grid> */}
+                <div style={{ border: '3px solid black' }} />
+              </Grid> */}
             <Grid item>
               <Typography color='primary' variant='h4' style={{ padding: '0px 20px' }}>
                 {currentYear}
@@ -463,8 +467,8 @@ const OilAndGas = ({ data, year, vizDimension }) => {
             <Grid container alignItems="center" wrap="nowrap" spacing={1}>
               {/* This may be re-implemented in the future */}
               {/* <Grid item className={classes.yearBox}>
-                <div style={{ border: '3px dotted grey' }} />
-              </Grid> */}
+                  <div style={{ border: '3px dotted grey' }} />
+                </Grid> */}
               <Grid item>
                 <Typography color='secondary' variant='h4' style={{ padding: '0px 20px' }}>
                   {compareYear}

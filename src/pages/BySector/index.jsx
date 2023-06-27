@@ -15,6 +15,9 @@ import ForecastLayer from '../../components/ForecastLayer';
 import HistoricalLayer from '../../components/HistoricalLayer';
 import getYearLabel from '../../utilities/getYearLabel';
 import YearSliceTooltip from '../../components/YearSliceTooltip';
+import useEnergyFutureData from '../../hooks/useEnergyFutureData';
+import hasNoData from '../../utilities/hasNoData';
+import UnavailableDataMessage from '../../components/UnavailableDataMessage';
 
 const useStyles = makeStyles(theme => ({
   chart: {
@@ -31,6 +34,7 @@ const BySector = ({ data, year }) => {
       transportation: { colors: transportationColors },
     },
   } = useAPI();
+  const { rawData } = useEnergyFutureData();
   const { config } = useConfig();
 
   /**
@@ -114,8 +118,17 @@ const BySector = ({ data, year }) => {
     return getTicks(Math.max(...sums));
   }, [data]);
 
-  if (!data || !year) {
+  if (!year) {
     return null;
+  }
+
+  if (hasNoData(rawData, config.sources)) {
+    const noDataMessageId = config.sources.length === 0
+      ? 'components.unavailableData.noSourceSelected'
+      : 'components.unavailableData.default';
+    return (
+      <UnavailableDataMessage message={intl.formatMessage({ id: noDataMessageId })} />
+    );
   }
 
   return (
