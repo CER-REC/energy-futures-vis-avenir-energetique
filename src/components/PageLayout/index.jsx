@@ -46,7 +46,7 @@ const useStyles = makeStyles(theme => ({
     right: -8,
   },
   dropDown: {
-    width: 120,
+    width: 100,
     textAlign: 'center',
   },
   dropDownMenu: {

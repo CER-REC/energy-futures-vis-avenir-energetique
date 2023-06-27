@@ -11,7 +11,8 @@ import clsx from 'clsx';
 const useStyles = makeStyles(theme => ({
   selectContainer: {
     margin: '0 0.25em',
-    fontSize: '1.5rem',
+    fontSize: '13px',
+    height: '26px',
     '& .MuiOutlinedInput-notchedOutline': {
       borderRadius: 0,
       top: 0,
@@ -19,10 +20,10 @@ const useStyles = makeStyles(theme => ({
     },
   },
   root: {
-    padding: '0.5em',
+    padding: '0.2em 0.5em',
   },
   item: {
-    fontSize: 'inherit',
+    fontSize: '13px',
     '&.Mui-selected': { backgroundColor: 'transparent' },
     '&:hover, &.Mui-selected:hover, &.Mui-focusVisible': {
       backgroundColor: theme.palette.primary.main,
