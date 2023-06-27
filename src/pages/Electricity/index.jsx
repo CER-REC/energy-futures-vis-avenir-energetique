@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useRef } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { useIntl } from 'react-intl';
 import PropTypes from 'prop-types';
 import {
@@ -7,7 +7,6 @@ import {
 
 import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
-import analytics from '../../analytics';
 import YearSlider from '../../components/YearSlider';
 import YearSliceTooltip from '../../components/YearSliceTooltip';
 import UnavailableDataMessage from '../../components/UnavailableDataMessage';
@@ -129,13 +128,13 @@ const COORD = {
   AB: { top: '25%', left: '8%' },
 
   BIO: { top: '30%', left: '55%' },
-  WIND: { top: '55%', left: '60%' },
-  SOLAR: { top: '75%', left: '85%' },
+  WIND: { top: '55%', left: '59%' },
+  SOLAR: { top: '40%', left: '85%' },
   GAS: { top: '15%', left: '70%' },
   HYDRO: { top: '40%', left: '15%' },
   NUCLEAR: { top: '8%', left: '30%' },
   OIL: { top: '20%', left: '10%' },
-  COAL: { top: '45%', left: '75%' },
+  COAL: { top: '45%', left: '72%' },
 };
 
 const Electricity = ({ data, year }) => {
@@ -246,18 +245,6 @@ const Electricity = ({ data, year }) => {
     return dataWithPosition;
   }, [data, config.view, intl, colorSources, colorRegions, currYear, getSize, single, totals]);
 
-  /**
-   * Capture hover event but don't send repeated records.
-   */
-  const prevEvent = useRef(null);
-  const handleEventUpdate = useCallback((entry) => {
-    const event = `${entry.name} - ${config.baseYear || year?.min}`;
-    if (event !== prevEvent.current) {
-      analytics.reportPoi(config.page, event);
-      prevEvent.current = event;
-    }
-  }, [year, config.baseYear, config.page, prevEvent]);
-
   const getTooltip = useCallback((entry) => {
     const section = {
       title: intl.formatMessage({ id: `common.scenarios.${config.scenarios[0]}` }),
@@ -307,7 +294,6 @@ const Electricity = ({ data, year }) => {
         <Tooltip
           key={`bubble-${entry.name}`}
           title={single ? '' : getTooltip(entry)}
-          onOpen={() => handleEventUpdate(entry)}
           classes={{ tooltip: classes.tooltip }}
         >
           <div className={classes.region} style={entry.style}>

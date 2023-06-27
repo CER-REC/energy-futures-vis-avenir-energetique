@@ -3,7 +3,8 @@ export const formatTotalLineData = (data) => {
     return null;
   }
 
-  const scenarioTotals = data?.reduce((scenarios, resource) => ({
+  const sortedData = data.sort((a, b) => a.year - b.year);
+  const scenarioTotals = sortedData.reduce((scenarios, resource) => ({
     ...scenarios,
     [resource.scenario]: {
       ...scenarios[resource.scenario],
@@ -24,7 +25,8 @@ export const formatLineData = (data, type, unitConversion = 1) => {
     return [];
   }
 
-  const formattedData = data.reduce((lineData, resource) => ({
+  const sortedData = data.sort((a, b) => a.year - b.year);
+  const formattedData = sortedData.reduce((lineData, resource) => ({
     ...lineData,
     [resource[type]]: [
       ...lineData[resource[type]] || [],
@@ -39,11 +41,7 @@ export const formatLineData = (data, type, unitConversion = 1) => {
 };
 
 export const parseData = {
-  'by-sector': (data, unitConversion) => {
-    const sortedData = data.sort((a, b) => a.year - b.year);
-
-    return formatLineData(sortedData, 'source', unitConversion);
-  },
+  'by-sector': (data, unitConversion) => formatLineData(data, 'source', unitConversion),
 
   'by-region': (data, unitConversion) => {
     const byYear = data

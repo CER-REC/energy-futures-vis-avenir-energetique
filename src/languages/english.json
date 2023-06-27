@@ -119,6 +119,14 @@
       "subtitle": "What does Canada's energy future look like if we followed these scenarios?",
       "learnMore": "Learn more about Scenarios"
     },
+    "downloadButton": {
+      "label": "Download Data",
+      "filename": "Energy_Future",
+      "units": {
+        "oilProduction": "US$/bbl",
+        "gasProduction": "US$/MMBtu"
+      }
+    },
     "draggableVerticalList": {
       "all": "All",
       "abbr": {
@@ -677,8 +685,6 @@
       }
     },
     "share": {
-      "download": "Download Data",
-      "filename": "Energy_Future",
       "copied": "URL Copied",
       "emailMessage": "Exploring Canada’s Energy Future interactive online tool is based on the Canada Energy Regulator’s (CER) flagship publication – Canada’s Energy Future. This visualization allows you to explore energy production and consumption trends and how possible energy futures might unfold for Canadians over the long term. You can explore the data from the most recent report, or refer to previous reports.",
       "dialog": {
@@ -789,7 +795,7 @@
         "2019": "[EF2019 Assumptions](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2019/assumptions/index.html)",
         "2020": "[EF2020 Assumptions](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2020/assumptions/index.html)",
         "2021": "[EF2021 Assumptions](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2021/scenarios-and-assumptions.html#key-assumptions)",
-        "2023": "[EF2023 Scenarios and Assumptions](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2023/scenarios-and-assumptions.html)",
+        "2023": "[EF2023 Scenarios and Assumptions](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2023/scenarios-and-assumptions)",
         "default": "[EF2016 Assumptions](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2016/index.html)"
       }
     },
@@ -814,7 +820,7 @@
         "2019": "[EF2019 Key Findings](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2019/executive-summary/index.html)",
         "2020": "[EF2020 Key Findings](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2020/executive-summary/index.html)",
         "2021": "[EF2021 Key Findings](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2021/key-findings.html)",
-        "2023": "[EF2023 Key Findings](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2023/key-findings.html)",
+        "2023": "[EF2023 Key Findings](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2023/executive-summary/index.html#a1)",
         "default": "[EF2016 Key Findings](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2016/index.html)"
       }
     },
@@ -839,7 +845,7 @@
         "2019": "[EF2019 Results](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2019/results/index.html)",
         "2020": "[EF2020 Results](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2020/results/index.html)",
         "2021": "[EF2021 Results](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2021/results.html)",
-        "2023": "[EF2023 Results](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2023/results.html)",
+        "2023": "[EF2023 Results](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2023/results/)",
         "default": "[EF2016 Results](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2016/index.html)"
       }
     },
@@ -871,7 +877,7 @@
         "2019": "[View the EF2019 Report](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2019/index.html)",
         "2020": "[View the EF2020 Report](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2020/index.html)",
         "2021": "[View the EF2021 Report](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2021/executive-summary.html)",
-        "2023": "[View the EF2023 Report](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2023/executive-summary.html)",
+        "2023": "[View the EF2023 Report](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2023/executive-summary/)",
         "default": "[View the EF2016 Report](https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2020/index.html)"
       },
       "image": {
@@ -924,8 +930,8 @@
         "link": "https://www.cer-rec.gc.ca/en/data-analysis/student-resources/index.html"
       },
       "download": {
-        "title": "Download the EF2021 Report",
-        "link": "https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2021/index.html"
+        "title": "Download the EF2023 Report",
+        "link": "https://www.cer-rec.gc.ca/en/data-analysis/canada-energy-future/2023/index.html"
       },
       "view": {
         "title": "View Past Reports",

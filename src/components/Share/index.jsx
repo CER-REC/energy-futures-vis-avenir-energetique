@@ -132,7 +132,7 @@ const Share = ({ direction, keepMounted }) => {
   const onClose = useCallback(() => setOpenToast(false), [setOpenToast]);
 
   const onClick = (name, content) => {
-    analytics.reportMisc(page, 'click', name);
+    analytics.reportFooter(page, 'share', name);
     content();
   };
 

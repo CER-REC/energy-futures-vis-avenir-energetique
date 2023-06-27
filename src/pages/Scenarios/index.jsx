@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import clsx from 'clsx';
 import { useIntl } from 'react-intl';
 import { ResponsiveLine } from '@nivo/line';
@@ -6,7 +6,6 @@ import PropTypes from 'prop-types';
 import { makeStyles, Typography } from '@material-ui/core';
 import useConfig from '../../hooks/useConfig';
 import useEnergyFutureData from '../../hooks/useEnergyFutureData';
-import analytics from '../../analytics';
 
 import {
   CHART_PROPS,
@@ -92,15 +91,7 @@ const Scenarios = ({ data, year }) => {
     };
   }), [intl]);
 
-  const timer = useRef(null);
   const getTooltip = useCallback((event) => {
-    // capture hover event and use a timer to avoid throttling
-    const index = Number((event?.slice?.points[0].id || '').split('.')[1]);
-    if (!Number.isNaN(index) && year?.min) {
-      clearTimeout(timer.current);
-      timer.current = setTimeout(() => analytics.reportPoi(config.page, year.min + index), 500);
-    }
-
     const currYear = event.slice?.points[0].data?.x;
     const upperNodes = getNodesFromData(currYear, data).reverse();
     let lowerNodes = [];
@@ -132,8 +123,10 @@ const Scenarios = ({ data, year }) => {
         isSliceTooltip
       />
     );
-  }, [year, getNodesFromData, data, prices, intl,
-    config.mainSelection, config.unit, config.page, config.priceSource, priceData]);
+  }, [
+    getNodesFromData, data, prices, intl,
+    config.mainSelection, config.unit, config.priceSource, priceData,
+  ]);
 
   if (config.mainSelection === 'greenhouseGasEmission' && config.yearId < 2023) {
     return (

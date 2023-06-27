@@ -8,7 +8,9 @@ import { convertUnit } from '../utilities/convertUnit';
 import { formatTotalLineData, parseData, NOOP } from '../utilities/parseData';
 import * as queries from './queries';
 
-const getQuery = (config) => {
+const priceStartYear = 2023;
+
+const getQuery = (config, interationYear) => {
   if (config.mainSelection === 'greenhouseGasEmission') {
     return queries.GREENHOUSE_GAS_EMISSIONS_SOURCE;
   }
@@ -16,10 +18,18 @@ const getQuery = (config) => {
   if (['by-region', 'scenarios'].includes(config.page)) {
     switch (config.mainSelection) {
       case 'oilProduction':
+        if (interationYear >= priceStartYear) {
+          return queries.OIL_PRODUCTIONS_ALL_WITH_PRICES;
+        }
+
         return queries.OIL_PRODUCTIONS_ALL;
       case 'energyDemand':
         return queries.ENERGY_DEMAND;
       case 'gasProduction':
+        if (interationYear >= priceStartYear) {
+          return queries.GAS_PRODUCTIONS_ALL_WITH_PRICES;
+        }
+
         return queries.GAS_PRODUCTIONS_ALL;
       case 'electricityGeneration':
         return queries.ELECTRICITY_GENERATIONS;
@@ -63,7 +73,8 @@ const getPriceYear = iterationYear => (iterationYear === 2018 ? 2016 : iteration
 
 export default () => {
   const { config } = useConfig();
-  const query = getQuery(config);
+  const interationYear = useMemo(() => parseInt(config.yearId, 10), [config.yearId]);
+  const query = getQuery(config, interationYear);
   const unitConversion = convertUnit(getDefaultUnit(config), config.unit);
   const sourceType = useMemo(
     () => PAGES.find(page => page.id === config.page).sourceTypes?.[config.mainSelection],
@@ -117,17 +128,17 @@ export default () => {
 
   const years = useMemo(() => data?.resources?.map(entry => entry.year), [data]);
 
-  // Where to draw the forecast line.
-  // 0 years before the current year for oil-and-gas.
-  // 1 year before the current year for all others.
   const forecastStart = useMemo(() => {
-    if (!['gasProduction', 'oilProduction']
-      .includes(config.mainSelection)) {
-      return parseInt(config.yearId, 10) - 1;
+    if (config.yearId === '2023') {
+      return 2022;
     }
-    return parseInt(config.yearId, 10);
-  },
-  [config.yearId, config.mainSelection]);
+
+    if (!['gasProduction', 'oilProduction'].includes(config.mainSelection)) {
+      return interationYear - 1;
+    }
+
+    return interationYear;
+  }, [interationYear, config.mainSelection, config.yearId]);
 
   const processedData = useMemo(() => {
     if (!data || !data.resources) {

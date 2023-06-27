@@ -103,20 +103,3 @@ describe('Component|Download Button|Electricity', () => {
     expect(saveAs).toBeCalled();
   });
 });
-
-describe('Component|DownloadButton|Oil-and-Gas', () => {
-  let wrapper;
-
-  test('should call saveAs', async () => {
-    const dom = mount(getDownloadComponent({ page: 'oil-and-gas', mainSelection: 'oilProduction', view: 'region' }));
-    await act(async () => {
-      await new Promise(resolve => setTimeout(resolve));
-      dom.update();
-      wrapper = getRendered(DownloadButton, dom);
-    });
-
-    const downloadButton = wrapper.find(Button);
-    downloadButton.simulate('click');
-    expect(saveAs).toBeCalled();
-  });
-});

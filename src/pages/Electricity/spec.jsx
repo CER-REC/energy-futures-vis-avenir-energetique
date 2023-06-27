@@ -1,7 +1,7 @@
 import React from 'react';
 import { mount } from 'enzyme';
 import { act } from 'react-dom/test-utils';
-import { Tooltip, Typography, Paper } from '@material-ui/core';
+import { Typography, Paper } from '@material-ui/core';
 
 import Electricity from '.';
 import { TestContainer, getRendered } from '../../tests/utilities';
@@ -49,10 +49,6 @@ describe('Page|Electricity', () => {
     });
 
     test('should render viz properties', async () => {
-      await act(async () => {
-        wrapper.find(Tooltip).at(0).prop('onOpen')();
-      });
-
       // verify each bubble group
       Object.keys(MOCK_DATA_REGION[2005]).forEach((region) => {
         // use the region label to locate the bubble

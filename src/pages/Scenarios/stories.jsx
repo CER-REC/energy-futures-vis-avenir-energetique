@@ -5,11 +5,11 @@ import ReadMe from './README.md';
 import withConfigAndGQL from '../../../.storybook/addon-config-and-gql';
 
 export const DEFAULT_CONFIG = {
+  mainSelection: 'energyDemand',
   page: 'by-region',
   yearId: '2020',
   scenarios: ['Evolving'],
   unit: 'petajoules',
-  mainSelection: 'oilProduction',
   provinces: ['ON'],
 };
 

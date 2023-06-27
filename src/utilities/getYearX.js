@@ -1,16 +1,6 @@
-export default (year, xScale, bars, padding) => {
-  let x = xScale(year);
+export default (year, xScale) => {
+  const unpaddedWidth = xScale.step();
+  const paddingWidth = unpaddedWidth * xScale.padding();
 
-  if (bars && padding) {
-    const widths = bars
-      .filter(bar => bar.data.indexValue === year.toString())
-      .map(bar => bar.width);
-    const maxWidth = Math.max(...widths);
-
-    const unpaddedWidth = maxWidth / (1 - padding);
-
-    x -= (unpaddedWidth * padding) / 2;
-  }
-
-  return x;
+  return xScale(year) - paddingWidth / 2;
 };

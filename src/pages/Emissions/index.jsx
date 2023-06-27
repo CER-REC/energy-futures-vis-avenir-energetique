@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useRef } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { ResponsiveBar } from '@nivo/bar';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core';
@@ -6,7 +6,6 @@ import { useIntl } from 'react-intl';
 import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
 import convertHexToRGB from '../../utilities/convertHexToRGB';
-import analytics from '../../analytics';
 import { getTicks } from '../../utilities/parseData';
 import { CHART_PROPS, GREENHOUSE_GAS_MARKERS } from '../../constants';
 import NetBarLineLayer from '../../components/NetBarLineLayer';
@@ -42,14 +41,7 @@ const Emissions = ({ data, year }) => {
   );
 
   const keys = sources.order.slice().reverse();
-
-  const timer = useRef(null);
   const getTooltip = useCallback((entry) => {
-    // capture hover event and use a timer to avoid throttling
-    const name = `${entry.id} - ${entry.indexValue}`;
-    clearTimeout(timer.current);
-    timer.current = setTimeout(() => analytics.reportPoi(config.page, name), 500);
-
     const nodes = [];
 
     sources.order.forEach((key) => {
@@ -75,7 +67,7 @@ const Emissions = ({ data, year }) => {
         year={entry.indexValue}
       />
     );
-  }, [config.page, config.scenarios, config.unit, intl, sources.colors, sources.order]);
+  }, [config.scenarios, config.unit, intl, sources.colors, sources.order]);
 
   const ticks = useMemo(() => {
     const highest = data && Math.max(...data
@@ -140,7 +132,6 @@ const Emissions = ({ data, year }) => {
               ...defaultTheme.overrides.MuiTooltip.tooltip,
             },
           }}
-          hasCenteredProjectionLine
         />
       </div>
     ) : (

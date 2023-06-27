@@ -38,7 +38,6 @@ const useStyles = makeStyles(theme => ({
       borderLeft: `2px solid ${theme.palette.secondary.main}`,
     },
   }),
-  title: { fontSize: 13 },
   item: props => ({
     position: 'relative',
     height: props.dense ? 44 : 52,
@@ -63,7 +62,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const DraggableVerticalList = ({
-  title, width, shape, dense,
+  width, shape, dense,
   singleSelect = false, /* multi-select or single select */
   greyscale = false, /* ignore button colors */
   disabled = false, /* disable drag-n-drop */
@@ -147,8 +146,7 @@ const DraggableVerticalList = ({
   }, [config.sector, config.yearId, intl, isTransportation, sourceType]);
 
   const handleToggleItem = toggledItem => () => {
-    // capture the event for data analytics
-    analytics.reportFeature(config.page, title === 'Region' ? 'region' : 'source', toggledItem.toLowerCase());
+    analytics.reportFeature(config.page, sourceType || 'region', toggledItem.toLowerCase());
 
     if (singleSelect) {
       setLocalItems([toggledItem]);
@@ -176,7 +174,18 @@ const DraggableVerticalList = ({
 
   return (
     <DragDropContext onDragEnd={handleDragEnd}>
-      {title === 'Region' ? <HintRegionList items={defaultItems} disableKeyboardNav={disabled} /> : <HintSourceList sources={defaultItems} sourceType={sourceType} getSourceText={getSourceText} disableKeyboardNav={disabled} />}
+      {
+        !sourceType
+          ? <HintRegionList items={defaultItems} disableKeyboardNav={disabled} />
+          : (
+            <HintSourceList
+              sources={defaultItems}
+              sourceType={sourceType}
+              getSourceText={getSourceText}
+              disableKeyboardNav={disabled}
+            />
+          )
+      }
       <Droppable droppableId="droppable" isDropDisabled={disabled}>
         {(provided, snapshot) => (
           <Grid
@@ -270,7 +279,6 @@ const DraggableVerticalList = ({
 };
 
 DraggableVerticalList.propTypes = {
-  title: PropTypes.string,
   width: PropTypes.number,
   shape: PropTypes.oneOf(['square', 'circle', 'hexagon']),
   dense: PropTypes.bool,
@@ -288,7 +296,6 @@ DraggableVerticalList.propTypes = {
 };
 
 DraggableVerticalList.defaultProps = {
-  title: '',
   width: undefined,
   shape: 'square',
   dense: false,
