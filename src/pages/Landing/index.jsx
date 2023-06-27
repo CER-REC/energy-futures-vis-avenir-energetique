@@ -187,7 +187,7 @@ const Landing = () => {
   const reportName = '2023 report';
 
   const handleLinkButton = (name, openDialog /* boolean */) => () => {
-    analytics.reportLanding('landing', name);
+    analytics.reportLanding(name);
     if (openDialog) {
       setDialog(true);
     }
@@ -195,7 +195,7 @@ const Landing = () => {
 
   const handleRedirect = page => () => {
     configDispatch({ type: 'page/changed', payload: page });
-    analytics.reportNav(page);
+    analytics.reportLanding(page);
   };
 
   const handleCloseDialog = () => setDialog(false);

@@ -201,7 +201,7 @@ export const LinkButtonContentReport = ({ yearId, onClose }) => {
 
   const onTabClick = (tab) => {
     setSelect(tab);
-    analytics.reportMisc(page, 'click', tab.tag);
+    analytics.reportFooter(page, 'click', tab.tag);
   };
 
   return (

@@ -72,13 +72,13 @@ const LinkButtonGroup = () => {
   const handleSelect = useCallback(label => () => {
     if (select !== label.name) {
       setSelect(label.name);
-      analytics.reportMisc(config.page, 'click', label.tag);
+      analytics.reportFooter(config.page, 'click', label.tag);
     }
   }, [config.page, select]);
 
   const handleClose = useCallback(tag => () => {
     setSelect(undefined);
-    analytics.reportMisc(config.page, 'click', `close ${tag}`);
+    analytics.reportFooter(config.page, 'click', `close ${tag}`);
   }, [setSelect, config.page]);
 
   const link = useMemo(() => ({

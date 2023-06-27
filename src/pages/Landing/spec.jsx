@@ -13,7 +13,7 @@ const DEFAULT_CONFIG = {
   yearId: '2020',
 };
 
-const spyAnalytics = jest.spyOn(analytics, 'reportNav');
+const spyAnalytics = jest.spyOn(analytics, 'reportLanding');
 
 const getComponent = (desktop /* boolean */) => {
   global.matchMedia = media => ({

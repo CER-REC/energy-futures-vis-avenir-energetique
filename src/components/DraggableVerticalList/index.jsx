@@ -146,8 +146,7 @@ const DraggableVerticalList = ({
   }, [config.sector, config.yearId, intl, isTransportation, sourceType]);
 
   const handleToggleItem = toggledItem => () => {
-    // capture the event for data analytics
-    analytics.reportFeature(config.page, !sourceType ? 'region' : 'source', toggledItem.toLowerCase());
+    analytics.reportFeature(config.page, sourceType || 'region', toggledItem.toLowerCase());
 
     if (singleSelect) {
       setLocalItems([toggledItem]);

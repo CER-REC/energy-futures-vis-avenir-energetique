@@ -52,7 +52,7 @@ const Header = () => {
   }, [configDispatch, config.page]);
 
   const title = (
-    <Link href="./" underline="none" onClick={() => analytics.reportNav('landing')} className={classes.title}>
+    <Link href="./" underline="none" onClick={() => analytics.reportNav(config.page, 'landing')} className={classes.title}>
       <Typography variant="h4" color="primary">{intl.formatMessage({ id: 'common.title' })}</Typography>
     </Link>
   );
