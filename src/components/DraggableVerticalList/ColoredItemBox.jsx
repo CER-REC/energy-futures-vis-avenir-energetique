@@ -6,7 +6,7 @@ import {
 import ClearIcon from '@material-ui/icons/Clear';
 import DotsIcon from '@material-ui/icons/MoreHoriz';
 
-const hexagon = 'polygon(50% 0%, 95% 20%, 95% 80%, 50% 100%, 5% 80%, 5% 20%)';
+const hexagon = 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)';
 
 const useStyles = makeStyles(theme => ({
   shadow: {
@@ -37,6 +37,10 @@ const useStyles = makeStyles(theme => ({
         position: 'absolute',
         width: '100%',
         zIndex: -1,
+      },
+      '& > svg': {
+        height: 20,
+        width: 20
       },
       '&.selected:after': { content: 'none' },
       '&.disabled': { backgroundColor: theme.palette.secondary.main },
