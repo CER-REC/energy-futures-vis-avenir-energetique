@@ -40,7 +40,7 @@ const useStyles = makeStyles(theme => ({
       },
       '& > svg': {
         height: 20,
-        width: 20
+        width: 20,
       },
       '&.selected:after': { content: 'none' },
       '&.disabled': { backgroundColor: theme.palette.secondary.main },

@@ -67,7 +67,7 @@ const theme = createMuiTheme({
       alignItems: 'center',
       display: 'flex',
       paddingBottom: 5,
-    }
+    },
   },
   typography: {
     fontFamily: '"FiraSansCondensed", "Roboto", "Helvetica", "Arial", sans-serif',
