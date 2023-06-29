@@ -86,7 +86,7 @@ export const parseData = {
     return dataByYear;
   },
 
-  'oil-and-gas': (data, unitConversion, regions, sources, view) => {
+  'oil-and-gas': (data, unitConversion, view) => {
     /*
     The data structure between the two views is very similar.
     To take advantage of this, the structure can be easily re arranged

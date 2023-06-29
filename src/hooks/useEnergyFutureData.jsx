@@ -92,8 +92,12 @@ export default () => {
   const regions = useMemo(() => {
     if ((config.view === 'region') && (config.provinces[0] === 'ALL')) {
       return regionOrder;
+    } else if (config.view === 'region' || config.page === 'by-sector') {
+      return config.provinces;
     }
-    return config.provinces;
+
+    regionOrder.push('ALL');
+    return regionOrder;
   }, [config.view, config.provinces, regionOrder]);
 
   const sources = useMemo(() => {
@@ -145,18 +149,25 @@ export default () => {
       return data;
     }
 
+    let selectedData = data.resources;
+    console.log(config)
+
+    if (!['electricity', 'oil-and-gas'].includes(config.page)) {
+      selectedData = data.resources.filter(item => !item.province || config.provinces.includes(item.province));
+    }
+
     if ((config.page === 'scenarios') && (config.mainSelection === 'greenhouseGasEmission')) {
-      return formatTotalLineData(data.resources);
+      return formatTotalLineData(selectedData);
     }
 
     return (parseData[config.page] || NOOP)(
-      data.resources,
+      selectedData,
       unitConversion,
       regions,
       sources,
       config.view,
     );
-  }, [config.page, config.mainSelection, config.view, data, regions, sources, unitConversion]);
+  }, [config.page, config.mainSelection, config.provinces, config.view, data, regions, sources, unitConversion]);
 
   /**
    * Determine all the unavailable / disabled items in the current data-set.
