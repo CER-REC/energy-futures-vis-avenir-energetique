@@ -15,7 +15,6 @@ import HistoricalLayer from '../../components/HistoricalLayer';
 import getYearLabel from '../../utilities/getYearLabel';
 import YearSliceTooltip from '../../components/YearSliceTooltip';
 import useEnergyFutureData from '../../hooks/useEnergyFutureData';
-import hasNoData from '../../utilities/hasNoData';
 import UnavailableDataMessage from '../../components/UnavailableDataMessage';
 
 const useStyles = makeStyles(theme => ({
@@ -109,10 +108,10 @@ const BySector = ({ data, year }) => {
     return null;
   }
 
-  if (!data && hasNoData(rawData, config.sources)) {
+  if (!data || !rawData) {
     const noDataMessageId = config.sources.length === 0
-      ? 'components.unavailableData.noSourceSelected'
-      : 'components.unavailableData.default';
+      ? 'common.unavailableData.noSourceSelected'
+      : 'common.unavailableData.default';
     return (
       <UnavailableDataMessage message={intl.formatMessage({ id: noDataMessageId })} />
     );

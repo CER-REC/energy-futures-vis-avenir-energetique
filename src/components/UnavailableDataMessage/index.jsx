@@ -4,48 +4,67 @@ import Markdown from 'react-markdown';
 import { useIntl } from 'react-intl';
 import PropTypes from 'prop-types';
 import useConfig from '../../hooks/useConfig';
+import useAPI from "../../hooks/useAPI";
 
 const useStyles = makeStyles({
   root: {
     height: '100%',
     display: 'flex',
+    flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
     textAlign: 'center',
   },
 });
 
-const UnavailableDataMessage = ({ message, hasEmissionsLink = false }) => {
+const UnavailableDataMessage = ({ message, hasEmissionsLink}) => {
   const classes = useStyles();
   const intl = useIntl();
   const { configDispatch } = useConfig();
+  const { yearIdIterations } = useAPI();
+
+  let emissionsLinkMessage = null;
+
+  if (hasEmissionsLink) {
+    let values = Object.values(yearIdIterations);
+    const latestYear = values.find(year => parseInt(year.id) === values.length).year;
+
+    message = intl.formatMessage(
+      { id: 'common.unavailableData.emissionsUnavailable' },
+      { year: latestYear }
+    );
+
+    emissionsLinkMessage = intl.formatMessage(
+      { id: 'common.unavailableData.emissionsLinkText' },
+      { year: latestYear }
+    );
+  }
 
   return (
     <div className={classes.root}>
-      <div>
-        <Typography component="div"><Markdown>{message}</Markdown></Typography>
-        {
-          hasEmissionsLink && (
-            <Button
-              variant="text"
-              color="primary"
-              onClick={() => configDispatch({ type: 'yearId/changed', payload: 2023 })}
-            >
-              {intl.formatMessage({ id: 'components.unavailableData.emissionsLinkText' })}
-            </Button>
-          )
-        }
-      </div>
+      <Typography component="div"><Markdown>{message}</Markdown></Typography>
+      {
+        hasEmissionsLink && (
+          <Button
+            variant="text"
+            color="primary"
+            onClick={() => configDispatch({type: 'yearId/changed'})}
+          >
+            {emissionsLinkMessage}
+          </Button>
+        )
+      }
     </div>
   );
 };
 
 UnavailableDataMessage.propTypes = {
-  message: PropTypes.string.isRequired,
+  message: PropTypes.string,
   hasEmissionsLink: PropTypes.bool,
 };
 
 UnavailableDataMessage.defaultProps = {
+  message: null,
   hasEmissionsLink: false,
 };
 

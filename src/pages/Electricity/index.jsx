@@ -265,8 +265,8 @@ const Electricity = ({ data, year }) => {
     );
   }, [config.scenarios, config.unit, currYear, intl]);
 
-  if (config.view === 'region' && config.sources.length === 0) return <UnavailableDataMessage message={intl.formatMessage({ id: 'components.unavailableData.noSourceSelected' })} />;
-  if (config.view === 'source' && config.provinces.length === 0) return <UnavailableDataMessage message={intl.formatMessage({ id: 'components.unavailableData.noRegionSelected' })} />;
+  if (config.view === 'region' && config.sources.length === 0) return <UnavailableDataMessage message={intl.formatMessage({ id: 'common.unavailableData.noSourceSelected' })} />;
+  if (config.view === 'source' && config.provinces.length === 0) return <UnavailableDataMessage message={intl.formatMessage({ id: 'common.unavailableData.noRegionSelected' })} />;
 
   if (!data) {
     return null;

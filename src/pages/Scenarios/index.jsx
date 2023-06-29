@@ -20,7 +20,6 @@ import getYearLabel from '../../utilities/getYearLabel';
 import { getTicks, formatLineData } from '../../utilities/parseData';
 import BenchmarkCrosshair from '../../components/BenchmarkCrosshair';
 import YearSliceTooltip from '../../components/YearSliceTooltip';
-import hasNoData from '../../utilities/hasNoData';
 import UnavailableDataMessage from '../../components/UnavailableDataMessage';
 
 /**
@@ -131,7 +130,6 @@ const Scenarios = ({ data, year }) => {
   if (config.mainSelection === 'greenhouseGasEmission' && config.yearId < 2023) {
     return (
       <UnavailableDataMessage
-        message={intl.formatMessage({ id: 'components.unavailableData.emissionsUnavailable' })}
         hasEmissionsLink
       />
     );
@@ -162,7 +160,7 @@ const Scenarios = ({ data, year }) => {
     <>
       <div className={chartContainerClass}>
         {
-          data && !hasNoData(rawData) ? (
+          data && rawData ? (
             <ResponsiveLine
               {...CHART_PROPS}
               {...lineProps}
@@ -185,9 +183,9 @@ const Scenarios = ({ data, year }) => {
             />
           ) : (
             <UnavailableDataMessage message={intl.formatMessage({
-              id: `components.unavailableData.${config.mainSelection}.${config.provinces[0]}`,
-              defaultMessage: intl.formatMessage({ id: 'components.unavailableData.noSourceSelected' }),
-            })}
+                id: `common.unavailableData.${config.mainSelection}.${config.provinces[0]}`,
+                defaultMessage: intl.formatMessage({ id: 'common.unavailableData.noSourceSelected' }),
+              })}
             />
           )
         }

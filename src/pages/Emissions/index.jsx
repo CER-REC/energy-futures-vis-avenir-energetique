@@ -16,7 +16,6 @@ import YearSliceTooltip from '../../components/YearSliceTooltip';
 import defaultTheme from '../../containers/App/theme';
 import UnavailableDataMessage from '../../components/UnavailableDataMessage';
 import useEnergyFutureData from '../../hooks/useEnergyFutureData';
-import hasNoData from '../../utilities/hasNoData';
 
 const useStyles = makeStyles(theme => ({
   chart: {
@@ -93,13 +92,12 @@ const Emissions = ({ data, year }) => {
   if (config.yearId < 2023) {
     return (
       <UnavailableDataMessage
-        message={intl.formatMessage({ id: 'components.unavailableData.emissionsUnavailable' })}
         hasEmissionsLink
       />
     );
   }
 
-  return data && !hasNoData(rawData)
+  return data && rawData
     ? (
       <div className={classes.chart}>
         <ResponsiveBar
@@ -136,7 +134,7 @@ const Emissions = ({ data, year }) => {
       </div>
     ) : (
       <UnavailableDataMessage
-        message={intl.formatMessage({ id: 'components.unavailableData.noSourceSelected' })}
+        message={intl.formatMessage({ id: 'common.unavailableData.noSourceSelected' })}
       />
     );
 };

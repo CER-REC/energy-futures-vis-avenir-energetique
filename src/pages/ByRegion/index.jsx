@@ -13,7 +13,6 @@ import HistoricalLayer from '../../components/HistoricalLayer';
 import getYearLabel from '../../utilities/getYearLabel';
 import YearSliceTooltip from '../../components/YearSliceTooltip';
 import defaultTheme from '../../containers/App/theme';
-import hasNoData from '../../utilities/hasNoData';
 import UnavailableDataMessage from '../../components/UnavailableDataMessage';
 import useEnergyFutureData from '../../hooks/useEnergyFutureData';
 
@@ -83,13 +82,18 @@ const ByRegion = ({ data, year }) => {
     return getTicks(highest);
   }, [data]);
 
-  if (!data && hasNoData(rawData)) {
-    let noDataMessageId = `components.unavailableData.${config.mainSelection}.${config.provinces[0]}`;
-    if (config.provinces.length > 1) noDataMessageId = 'components.unavailableData.default';
-    else if (config.provinces.length <= 0) noDataMessageId = 'components.unavailableData.noRegionSelected';
+  if (!data || !rawData) {
+    let noDataMessageId = `common.unavailableData.${config.mainSelection}.${config.provinces.join()}`;
+
+    if (config.provinces.length <= 0) noDataMessageId = 'common.unavailableData.noRegionSelected';
 
     return (
-      <UnavailableDataMessage message={intl.formatMessage({ id: noDataMessageId })} />
+      <UnavailableDataMessage message={
+        intl.formatMessage({
+          id: noDataMessageId,
+          defaultMessage: intl.formatMessage({ id: 'common.unavailableData.default'}) }
+        )}
+      />
     );
   }
 
