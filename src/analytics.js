@@ -2,11 +2,6 @@ import Cookies from 'js-cookie';
 import { v1 } from 'uuid';
 import { lang } from './constants';
 
-
-
-
-
-
 /* eslint-disable no-console */
 class Analytics {
   constructor() {
