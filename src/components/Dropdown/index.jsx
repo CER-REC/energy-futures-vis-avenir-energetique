@@ -8,11 +8,12 @@ import { KeyboardArrowDown } from '@material-ui/icons';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 
+const DROPDOWN_FONT_SIZE = 13;
+
 const useStyles = makeStyles(theme => ({
   selectContainer: {
     margin: '0 0.25em',
-    fontSize: '13px',
-    height: '26px',
+    fontSize: DROPDOWN_FONT_SIZE,
     '& .MuiOutlinedInput-notchedOutline': {
       borderRadius: 0,
       top: 0,
@@ -20,10 +21,10 @@ const useStyles = makeStyles(theme => ({
     },
   },
   root: {
-    padding: '0.2em 0.5em',
+    padding: '0.41em 0.5em',
   },
   item: {
-    fontSize: '13px',
+    fontSize: DROPDOWN_FONT_SIZE,
     '&.Mui-selected': { backgroundColor: 'transparent' },
     '&:hover, &.Mui-selected:hover, &.Mui-focusVisible': {
       backgroundColor: theme.palette.primary.main,
