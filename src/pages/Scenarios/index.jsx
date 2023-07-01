@@ -182,7 +182,8 @@ const Scenarios = ({ data, year }) => {
               slice={upperSlice}
             />
           ) : (
-            <UnavailableDataMessage message={intl.formatMessage({
+            <UnavailableDataMessage
+              message={intl.formatMessage({
                 id: `common.unavailableData.${config.mainSelection}.${config.provinces[0]}`,
                 defaultMessage: intl.formatMessage({ id: 'common.unavailableData.noSourceSelected' }),
               })}

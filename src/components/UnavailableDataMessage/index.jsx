@@ -4,7 +4,7 @@ import Markdown from 'react-markdown';
 import { useIntl } from 'react-intl';
 import PropTypes from 'prop-types';
 import useConfig from '../../hooks/useConfig';
-import useAPI from "../../hooks/useAPI";
+import useAPI from '../../hooks/useAPI';
 
 const useStyles = makeStyles({
   root: {
@@ -17,38 +17,39 @@ const useStyles = makeStyles({
   },
 });
 
-const UnavailableDataMessage = ({ message, hasEmissionsLink}) => {
+const UnavailableDataMessage = ({ message, hasEmissionsLink }) => {
   const classes = useStyles();
   const intl = useIntl();
   const { configDispatch } = useConfig();
   const { yearIdIterations } = useAPI();
 
+  let currMessage = message;
   let emissionsLinkMessage = null;
 
   if (hasEmissionsLink) {
-    let values = Object.values(yearIdIterations);
-    const latestYear = values.find(year => parseInt(year.id) === values.length).year;
+    const values = Object.values(yearIdIterations);
+    const latestYear = values.find(year => year.id === values.length.toString()).year;
 
-    message = intl.formatMessage(
+    currMessage = intl.formatMessage(
       { id: 'common.unavailableData.emissionsUnavailable' },
-      { year: latestYear }
+      { year: latestYear },
     );
 
     emissionsLinkMessage = intl.formatMessage(
       { id: 'common.unavailableData.emissionsLinkText' },
-      { year: latestYear }
+      { year: latestYear },
     );
   }
 
   return (
     <div className={classes.root}>
-      <Typography component="div"><Markdown>{message}</Markdown></Typography>
+      <Typography component="div"><Markdown>{currMessage}</Markdown></Typography>
       {
         hasEmissionsLink && (
           <Button
             variant="text"
             color="primary"
-            onClick={() => configDispatch({type: 'yearId/changed'})}
+            onClick={() => configDispatch({ type: 'yearId/changed' })}
           >
             {emissionsLinkMessage}
           </Button>

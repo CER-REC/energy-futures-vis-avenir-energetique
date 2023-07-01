@@ -7,6 +7,7 @@ import ReadMe from './README.md';
 
 export const DEFAULT_CONFIG = {
   page: 'by-region',
+  mainSelection: 'energyDemand',
   yearId: '2020',
   unit: 'petajoules',
   provinceOrder: ['YT', 'SK', 'QC', 'PE', 'ON', 'NU', 'NT', 'NS', 'NL', 'NB', 'MB', 'BC', 'AB'],
