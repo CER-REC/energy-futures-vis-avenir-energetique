@@ -10,6 +10,7 @@ export const DEFAULT_CONFIG = {
   yearId: '2020',
   scenarios: ['Evolving'],
   unit: 'petajoules',
+  provinces: ['ON'],
 };
 
 export const MOCK_DATA = [{

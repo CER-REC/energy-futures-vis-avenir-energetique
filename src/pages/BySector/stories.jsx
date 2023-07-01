@@ -11,6 +11,8 @@ export const DEFAULT_CONFIG = {
   unit: 'petajoules',
   sourceOrder: ['BIO', 'COAL', 'ELECTRICITY', 'GAS', 'OIL'],
   scenarios: ['Global Net-zero'],
+  sources: ['BIO'],
+  provinces: ['ON'],
 };
 
 export const BASE_DATA = {

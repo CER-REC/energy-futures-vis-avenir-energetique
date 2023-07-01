@@ -13,6 +13,8 @@ import HistoricalLayer from '../../components/HistoricalLayer';
 import getYearLabel from '../../utilities/getYearLabel';
 import YearSliceTooltip from '../../components/YearSliceTooltip';
 import defaultTheme from '../../containers/App/theme';
+import UnavailableDataMessage from '../../components/UnavailableDataMessage';
+import useEnergyFutureData from '../../hooks/useEnergyFutureData';
 
 const useStyles = makeStyles(theme => ({
   chart: {
@@ -23,6 +25,7 @@ const useStyles = makeStyles(theme => ({
 const ByRegion = ({ data, year }) => {
   const { regions } = useAPI();
   const { config } = useConfig();
+  const { rawData } = useEnergyFutureData();
   const classes = useStyles();
   const intl = useIntl();
 
@@ -79,8 +82,20 @@ const ByRegion = ({ data, year }) => {
     return getTicks(highest);
   }, [data]);
 
-  if (!data) {
-    return null;
+  if (!data || !rawData) {
+    let noDataMessageId = `common.unavailableData.${config.mainSelection}.${config.provinces.join()}`;
+
+    if (config.provinces.length <= 0) noDataMessageId = 'common.unavailableData.noRegionSelected';
+
+    return (
+      <UnavailableDataMessage message={
+        intl.formatMessage({
+          id: noDataMessageId,
+          defaultMessage: intl.formatMessage({ id: 'common.unavailableData.default' }),
+        })
+}
+      />
+    );
   }
 
   return (

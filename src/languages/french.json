@@ -35,6 +35,30 @@
       "HH": "Carrefour Henry - $ US 2022/MBTU",
       "NIT": "NIT - $ US 2022/MBTU"
     },
+    "unavailableData": {
+      "oilProduction": {
+        "PE": "Il n’y a pas de production de pétrole pour l'Île-du-Prince-Édouard.",
+        "NB": "Il n’y a pas de production de pétrole pour le Nouveau-Brunswick.",
+        "YT": "Il n’y a pas de production de pétrole pour le Yukon.",
+        "NU": "Il n’y a pas de production de pétrole pour le Nunavut.",
+        "QC": "Il n’y a pas de production de pétrole pour le Québec."
+      },
+      "gasProduction": {
+        "QC": "Il n’y a pas de production de gaz pour le Québec.",
+        "NU": "Il n’y a pas de production de gaz pour le Nunavut.",
+        "NL": "Il n’y a pas de production de gaz pour Terre-Neuve et Labrador.",
+        "MB": "Il n’y a pas de production de gaz pour le Manitoba.",
+        "PE": "Il n’y a pas de production de gaz pour l'Île-du-Prince-Édouard."
+      },
+      "emissionsUnavailable": "Cette visualisation n’est disponible que pour l’Avenir énergétique **{year}** et les années suivantes.",
+      "emissionsLinkText": "Voir la visualisation sur les émissions d’Avenir énergétique {year}.",
+      "greenhouseGasEmission": {
+        "default": "Il n’y a pas d’émissions pour votre sélection actuelle."
+      },
+      "noRegionSelected": "Aucune région n’est sélectionnée.",
+      "noSourceSelected": "Aucune source n’est sélectionnée.",
+      "default": "Il n’y a pas de données pour votre sélection."
+    },
     "datasets": {
       "2016*": "Mise à jour 2016"
     },

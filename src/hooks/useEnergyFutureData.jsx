@@ -193,7 +193,9 @@ export default () => {
     disabledSources: unavailability('source'),
     // TODO: Remove after refactoring to move processedData chart structure data
     // into individual chart components
-    rawData: data?.resources,
+    rawData: data?.resources && data?.resources.find(row => row.value !== 0)
+      ? data.resources
+      : null,
     year: years && {
       min: Math.min(...years),
       forecastStart,
