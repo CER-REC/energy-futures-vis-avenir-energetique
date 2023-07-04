@@ -1,3 +1,15 @@
+## [2.6.4](http://neb-energy-futures-devdoc.s3-website.us-west-2.amazonaws.com/v2.6.4) (2023-07-04)
+
+
+* **Features:** Added undefined props for analytics events so they will not be sent to GA (78caca5)
+* **Features:** Updated analytics data structure and removed the graph hover tooltip analtyics events (0e10e77)
+* **Code Formatting:** Removed added line breaks (ed1e181)
+
+
+### YearSlider
+
+* **Features:** Add historical bar to year slider (3182189)
+
 ## [2.6.3](http://neb-energy-futures-devdoc.s3-website.us-west-2.amazonaws.com/v2.6.3) (2023-06-20)
 
 
