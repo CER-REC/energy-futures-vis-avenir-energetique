@@ -34,9 +34,10 @@ const useStyles = makeStyles(theme => ({
   //   '& + * h4': { fontWeight: 700 },
   // },
   table: {
-    overflow: 'hidden',
     marginTop: theme.spacing(8),
     '& > table': { position: 'relative' },
+    '& tr:first-child td': { verticalAlign: 'bottom' },
+    '& tr:nth-child(3) td': { verticalAlign: 'top' },
   },
   cell: {
     height: 300,
@@ -49,8 +50,7 @@ const useStyles = makeStyles(theme => ({
     '& > div > div > div:last-of-type': { display: 'none' }, // hide the default Nivo tooltip
   },
   group: {
-    position: 'absolute',
-    right: theme.spacing(2.5),
+    margin: 'auto',
     width: 88,
     border: `1px solid ${theme.palette.secondary.main}`,
     '& span': { lineHeight: 1.2 },
@@ -369,7 +369,6 @@ const OilAndGas = ({ data, year, vizDimension }) => {
           <TableCell
             key={`treemap-${tree.name}`}
             className={classes.cell}
-            style={{ verticalAlign: isTopChart ? 'bottom' : 'top' }}
           >
             <Grid container direction="column" wrap="nowrap" style={{ position: 'relative' }}>
               {!isTopChart && <Grid item className={classes.tick} />}
@@ -388,7 +387,6 @@ const OilAndGas = ({ data, year, vizDimension }) => {
               container
               spacing={1}
               className={classes.group}
-              style={isTopChart ? { bottom: compare ? 414 : 99 } : { top: 410 }}
             >
               <Grid item xs={12}>
                 <Typography variant="overline" align="center" component="div" style={{ lineHeight: 1.25, textTransform: 'uppercase' }}>
