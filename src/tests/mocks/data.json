@@ -97,6 +97,54 @@
       ]
     }
   },
+  "electricity": {
+    "data": {
+      "resources": [
+        {
+          "province": "ON",
+          "year": 2005,
+          "scenario": "Evolving",
+          "source": "COAL",
+          "value": 28734.08
+        },
+        {
+          "province": "ON",
+          "year": 2005,
+          "scenario": "Evolving",
+          "source": "HYDRO",
+          "value": 2316
+        },
+        {
+          "province": "ON",
+          "year": 2005,
+          "scenario": "Evolving",
+          "source": "NUCLEAR",
+          "value": 35480
+        },
+        {
+          "province": "NB",
+          "year": 2005,
+          "scenario": "Evolving",
+          "source": "COAL",
+          "value": 43581.072
+        },
+        {
+          "province": "NB",
+          "year": 2005,
+          "scenario": "Evolving",
+          "source": "HYDRO",
+          "value": 3875
+        },
+        {
+          "province": "NB",
+          "year": 2005,
+          "scenario": "Evolving",
+          "source": "NUCLEAR",
+          "value": 13157.72
+        }
+      ]
+    }
+  },
   "oilProduction": {
     "data": {
       "resources": [

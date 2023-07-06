@@ -15,14 +15,24 @@ const mocks = [
     request: { query: queries.ITERATIONS_TRANSLATIONS },
     result: iterationsTranslations,
   },
-  ...Object.keys(queries).map(query => !['ITERATIONS_TRANSLATIONS', 'NULL_QUERY', 'OIL_PRODUCTIONS'].includes(query) && ({
-    request: { query: queries[query], variables: MATCH_ANY_PARAMETERS },
-    result: mockData.baseData,
-  })).filter(Boolean),
+  ...Object.keys(queries).map(query =>
+    !['ITERATIONS_TRANSLATIONS', 'NULL_QUERY', 'OIL_PRODUCTIONS',
+      'ELECTRICITY_GENERATIONS_REGION', 'ELECTRICITY_GENERATIONS_SOURCE'].includes(query) && ({
+      request: {query: queries[query], variables: MATCH_ANY_PARAMETERS},
+      result: mockData.baseData,
+    })).filter(Boolean),
   {
-    request: { query: queries.OIL_PRODUCTIONS },
+    request: { query: queries.OIL_PRODUCTIONS, variables: MATCH_ANY_PARAMETERS },
     result: mockData.oilProduction,
   },
+  {
+    request: { query: queries.ELECTRICITY_GENERATIONS_REGION, variables: MATCH_ANY_PARAMETERS},
+    result: mockData.electricity
+  },
+  {
+    request: { query: queries.ELECTRICITY_GENERATIONS_SOURCE, variables: MATCH_ANY_PARAMETERS },
+    result: mockData.electricity
+  }
 ];
 const link = new WildcardMockLink(mocks, false);
 const client = new ApolloClient({ cache, link });

@@ -5,7 +5,7 @@ import { ResponsiveLine } from '@nivo/line';
 
 import BySector from '.';
 import { TestContainer, getRendered } from '../../tests/utilities';
-import {DEFAULT_CONFIG, BASE_DATA, GENERATE_DATA, NULL_CONFIG} from './stories';
+import {DEFAULT_CONFIG, BASE_DATA, GENERATE_DATA} from './stories';
 import YearSliceTooltip from '../../components/YearSliceTooltip';
 import UnavailableDataMessage from '../../components/UnavailableDataMessage';
 
@@ -19,14 +19,8 @@ const MOCK_DATA = [
   { id: 'GASOLINE', data: GENERATE_DATA('GASOLINE'), color: BASE_DATA.GASOLINE.color },
 ];
 
-const getComponent = () => (
-  <TestContainer mockConfig={{ ...DEFAULT_CONFIG }}>
-    <BySector />
-  </TestContainer>
-);
-
-const getNullComponent = () => (
-  <TestContainer mockConfig={{ ...NULL_CONFIG }}>
+const getComponent = (props) => (
+  <TestContainer mockConfig={{ ...DEFAULT_CONFIG, ...props }}>
     <BySector />
   </TestContainer>
 );
@@ -70,7 +64,7 @@ describe('Page|BySector', () => {
    */
   describe('Test with invalid data structure', () => {
     test('should render UnavailableDataMessage component', async () => {
-      const dom = mount(getNullComponent());
+      const dom = mount(getComponent({ sources: [] }));
       await act(async () => {
         await new Promise(resolve => setTimeout(resolve));
         dom.update();

@@ -7,6 +7,7 @@ import Electricity from '.';
 import { TestContainer, getRendered } from '../../tests/utilities';
 import { DEFAULT_CONFIG, MOCK_DATA_REGION, MOCK_DATA_SINGLE, MOCK_DATA_SOURCE, MOCK_YEAR } from './stories';
 import YearSliceTooltip from '../../components/YearSliceTooltip';
+import UnavailableDataMessage from "../../components/UnavailableDataMessage";
 
 const SOURCE_TO_TEXT = {
   HYDRO: 'Hydro / Wave / Tidal',
@@ -14,7 +15,7 @@ const SOURCE_TO_TEXT = {
   COAL: 'Coal & Coke',
 };
 
-const getComponent = (data, props, desktop) => {
+const getComponent = (props, desktop) => {
   global.matchMedia = media => ({
     addListener: () => {},
     removeListener: () => {},
@@ -22,7 +23,7 @@ const getComponent = (data, props, desktop) => {
   });
   return (
     <TestContainer mockConfig={{ ...DEFAULT_CONFIG, ...props }}>
-      <Electricity data={data} year={MOCK_YEAR} />
+      <Electricity />
     </TestContainer>
   );
 };
@@ -37,7 +38,7 @@ describe('Page|Electricity', () => {
    */
   describe('Test view by region', () => {
     beforeEach(async () => {
-      wrapper = mount(getComponent(MOCK_DATA_REGION, { baseYear: 2005 }));
+      wrapper = mount(getComponent({ baseYear: 2005 }));
       await act(async () => {
         await new Promise(resolve => setTimeout(resolve));
         wrapper.update();
@@ -74,7 +75,7 @@ describe('Page|Electricity', () => {
    */
   describe('Test view by source', () => {
     beforeEach(async () => {
-      wrapper = mount(getComponent(MOCK_DATA_SOURCE, { view: 'source' }));
+      wrapper = mount(getComponent({ view: 'source', baseYear: 2005 }));
       await act(async () => {
         await new Promise(resolve => setTimeout(resolve));
         wrapper.update();
@@ -107,13 +108,13 @@ describe('Page|Electricity', () => {
    * data === null
    */
   describe('Test with invalid data structure', () => {
-    test('should NOT render component', async () => {
-      wrapper = mount(getComponent(null));
+    test('should render UnavailableDataMessage component', async () => {
+      wrapper = mount(getComponent());
       await act(async () => {
         await new Promise(resolve => setTimeout(resolve));
         wrapper.update();
 
-        expect(getRendered(Electricity, wrapper).exists()).toBeFalsy();
+        expect(getRendered(UnavailableDataMessage, wrapper).exists());
       });
     });
   });
@@ -123,7 +124,7 @@ describe('Page|Electricity', () => {
    */
   describe('Test responsiveness and single bubble', () => {
     test('should render in tablet mode', async () => {
-      wrapper = mount(getComponent(MOCK_DATA_SINGLE));
+      wrapper = mount(getComponent({ provinces: [ 'ON' ], baseYear: 2005 }));
       await act(async () => {
         await new Promise(resolve => setTimeout(resolve));
         wrapper.update();
@@ -138,7 +139,7 @@ describe('Page|Electricity', () => {
     });
 
     test('should render in desktop mode', async () => {
-      wrapper = mount(getComponent(MOCK_DATA_SINGLE, {}, true));
+      wrapper = mount(getComponent({ provinces: [ 'ON' ], baseYear: 2005 }, true));
       await act(async () => {
         await new Promise(resolve => setTimeout(resolve));
         wrapper.update();
