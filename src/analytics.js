@@ -51,6 +51,13 @@ class Analytics {
       event_value: value,
       event_language: lang,
       event_userID: this.userId,
+      // Declared undefined values will not be sent to GA
+      event_label: undefined,
+      event_path: undefined,
+      event_count: undefined,
+      event_doccount: undefined,
+      event_hittimestamp: undefined,
+      event_hitcount: undefined,
       ...(data || {}),
     };
 
