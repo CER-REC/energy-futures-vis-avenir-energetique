@@ -88,12 +88,11 @@ const ByRegion = ({ data, year }) => {
     if (config.provinces.length <= 0) noDataMessageId = 'common.unavailableData.noRegionSelected';
 
     return (
-      <UnavailableDataMessage message={
-        intl.formatMessage({
+      <UnavailableDataMessage
+        message={intl.formatMessage({
           id: noDataMessageId,
-          defaultMessage: intl.formatMessage({ id: 'common.unavailableData.default' }),
-        })
-}
+          defaultMessage: intl.formatMessage({id: 'common.unavailableData.default'}),
+        })}
       />
     );
   }
