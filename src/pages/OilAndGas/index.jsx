@@ -13,6 +13,7 @@ import analytics from '../../analytics';
 import YearSlider from '../../components/YearSlider';
 import { IconOilAndGasGroup, IconOilAndGasRectangle } from '../../icons';
 import YearSliceTooltip from '../../components/YearSliceTooltip';
+import { formatValue } from '../../utilities/convertUnit';
 
 const useStyles = makeStyles(theme => ({
   year: {
@@ -104,6 +105,11 @@ const OilAndGas = ({ data, year, vizDimension }) => {
     regions: { colors: regionColors },
     sources: { oil: { colors: oilColors }, gas: { colors: gasColors } },
   } = useAPI();
+
+  const formatPercentage = useCallback(
+    percentage => `${intl.formatMessage({ id: 'common.char.colon' })} ${formatValue(percentage, intl)}${intl.formatMessage({ id: 'common.char.percent' })}`,
+    [intl],
+  );
 
   // Compare button toggle
   const compare = useMemo(() => !config.noCompare, [config.noCompare]);
@@ -205,7 +211,7 @@ const OilAndGas = ({ data, year, vizDimension }) => {
           id: `common.oilandgas.displayName.${source.name}`,
           defaultMessage: intl.formatMessage({ id: `common.sources.${type}.${source.name}` }),
         }) : source.name}
-        {(config.view === 'region' && showPercentages()) && `: ${source.percentage.toFixed(2)}%`}
+        {(config.view === 'region' && showPercentages()) && formatPercentage(source.percentage)}
       </Typography>
       { !isSmall && source.percentage > 0 && source.percentage < 1 && (
         <Typography variant="overline" align="center" component="div" style={{ lineHeight: 1.25 }}>
@@ -259,6 +265,7 @@ const OilAndGas = ({ data, year, vizDimension }) => {
     getTooltip,
     getTooltipPos,
     getColor,
+    formatPercentage,
   ]);
 
   /**
