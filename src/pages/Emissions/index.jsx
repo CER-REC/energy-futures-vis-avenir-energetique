@@ -14,6 +14,8 @@ import ForecastLayer from '../../components/ForecastLayer';
 import getYearLabel from '../../utilities/getYearLabel';
 import YearSliceTooltip from '../../components/YearSliceTooltip';
 import defaultTheme from '../../containers/App/theme';
+import UnavailableDataMessage from '../../components/UnavailableDataMessage';
+import useEnergyFutureData from '../../hooks/useEnergyFutureData';
 
 const useStyles = makeStyles(theme => ({
   chart: {
@@ -23,6 +25,7 @@ const useStyles = makeStyles(theme => ({
 
 const Emissions = ({ data, year }) => {
   const { sources: { greenhouseGas: sources } } = useAPI();
+  const { rawData } = useEnergyFutureData();
   const { config } = useConfig();
   const classes = useStyles();
   const intl = useIntl();
@@ -86,45 +89,54 @@ const Emissions = ({ data, year }) => {
     return allYears.filter(value => getYearLabel(value) !== '');
   }, [data]);
 
-  if (!data?.length) {
-    return null;
+  if (config.yearId < 2023) {
+    return (
+      <UnavailableDataMessage
+        hasEmissionsLink
+      />
+    );
   }
 
-  return (
-    <div className={classes.chart}>
-      <ResponsiveBar
-        {...CHART_PROPS}
-        data={data}
-        keys={keys}
-        layers={[HistoricalLayer, 'grid', 'axes', 'bars', 'markers', ForecastLayer, NetBarLineLayer]}
-        padding={0.4}
-        indexBy="year"
-        maxValue={ticks[ticks.length - 1]}
-        minValue={ticks[0]}
-        colors={colors}
-        axisBottom={{
-          tickSize: 0,
-          format: getYearLabel,
-        }}
-        axisRight={{
-          tickSize: 0,
-          tickValues: ticks,
-        }}
-        enableGridX
-        tooltip={getTooltip}
-        gridXValues={xAxisGridLines}
-        gridYValues={ticks}
-        motionStiffness={300}
-        forecastStart={year.forecastStart}
-        markers={GREENHOUSE_GAS_MARKERS}
-        theme={{
-          tooltip: {
-            ...defaultTheme.overrides.MuiTooltip.tooltip,
-          },
-        }}
+  return data && rawData
+    ? (
+      <div className={classes.chart}>
+        <ResponsiveBar
+          {...CHART_PROPS}
+          data={data}
+          keys={keys}
+          layers={[HistoricalLayer, 'grid', 'axes', 'bars', 'markers', ForecastLayer, NetBarLineLayer]}
+          padding={0.4}
+          indexBy="year"
+          maxValue={ticks[ticks.length - 1]}
+          minValue={ticks[0]}
+          colors={colors}
+          axisBottom={{
+            tickSize: 0,
+            format: getYearLabel,
+          }}
+          axisRight={{
+            tickSize: 0,
+            tickValues: ticks,
+          }}
+          enableGridX
+          tooltip={getTooltip}
+          gridXValues={xAxisGridLines}
+          gridYValues={ticks}
+          motionStiffness={300}
+          forecastStart={year.forecastStart}
+          markers={GREENHOUSE_GAS_MARKERS}
+          theme={{
+            tooltip: {
+              ...defaultTheme.overrides.MuiTooltip.tooltip,
+            },
+          }}
+        />
+      </div>
+    ) : (
+      <UnavailableDataMessage
+        message={intl.formatMessage({ id: 'common.unavailableData.noSourceSelected' })}
       />
-    </div>
-  );
+    );
 };
 
 Emissions.propTypes = {

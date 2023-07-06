@@ -7,6 +7,7 @@ import Scenarios, { dottedLayer } from '.';
 import { TestContainer, getRendered } from '../../tests/utilities';
 import { DEFAULT_CONFIG, MOCK_DATA } from './stories';
 import YearSliceTooltip from '../../components/YearSliceTooltip';
+import UnavailableDataMessage from '../../components/UnavailableDataMessage';
 
 const getComponent = (data, year) => (
   <TestContainer mockConfig={{ ...DEFAULT_CONFIG }}>
@@ -54,13 +55,13 @@ describe('Page|Scenarios', () => {
    * data === null
    */
   describe('Test with invalid data structure', () => {
-    test('should NOT render component', async () => {
+    test('should render UnavailableDataMessage component', async () => {
       const dom = mount(getComponent(null));
       await act(async () => {
         await new Promise(resolve => setTimeout(resolve));
         dom.update();
 
-        expect(getRendered(Scenarios, dom).exists()).toBeFalsy();
+        expect(getRendered(UnavailableDataMessage, dom).exists());
       });
     });
   });
