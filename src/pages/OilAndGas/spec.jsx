@@ -7,6 +7,7 @@ import { TableRow, Button, Tooltip, Typography } from '@material-ui/core';
 import OilAndGas from '.';
 import { TestContainer, getRendered } from '../../tests/utilities';
 import { DEFAULT_CONFIG, MOCK_DATA_REGION, MOCK_DATA_SOURCE } from './stories';
+import UnavailableDataMessage from '../../components/UnavailableDataMessage';
 
 const getComponent = (data, props, width = 900) => (
   <TestContainer mockConfig={{ ...DEFAULT_CONFIG, ...props }}>
@@ -154,7 +155,7 @@ describe('Page|OilAndGas', () => {
    * corrupted data
    */
   describe('Test with invalid data structure', () => {
-    test('should NOT render component', async () => {
+    test('should render UnavailableDataMessage component', async () => {
       wrapper = mount(getComponent({
         2005: [{ total: 'invalid', children: [] }],
         2006: [{ total: 'invalid', children: [] }],
@@ -163,7 +164,7 @@ describe('Page|OilAndGas', () => {
         await new Promise(resolve => setTimeout(resolve));
         wrapper.update();
 
-        expect(getRendered(OilAndGas, wrapper).exists()).toBeFalsy();
+        expect(getRendered(UnavailableDataMessage, wrapper).exists());
       });
     });
   });
@@ -172,13 +173,13 @@ describe('Page|OilAndGas', () => {
    * data === null
    */
   describe('Test with missing data', () => {
-    test('should NOT render component', async () => {
+    test('should render UnavailableDataMessage component', async () => {
       wrapper = mount(getComponent());
       await act(async () => {
         await new Promise(resolve => setTimeout(resolve));
         wrapper.update();
 
-        expect(getRendered(OilAndGas, wrapper).exists()).toBeFalsy();
+        expect(getRendered(UnavailableDataMessage, wrapper).exists());
       });
     });
   });

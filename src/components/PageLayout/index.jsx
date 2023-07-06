@@ -74,7 +74,7 @@ const PageLayout = ({
 
   const { regions, sources } = useAPI();
   const { config, configDispatch } = useConfig();
-  const { loading, error, data, disabledRegions, disabledSources, year } = useEnergyFutureData();
+  const { loading, error, disabledRegions, disabledSources, year } = useEnergyFutureData();
 
   // Dimension of the viz bounding box
   const [vizDimension, setVizDimension] = useState(undefined);
@@ -103,8 +103,8 @@ const PageLayout = ({
    * Genenate the DOM node which contains the visualization.
    */
   const vis = useMemo(
-    () => Children.map(children, c => c && cloneElement(c, { data, year, vizDimension })),
-    [children, data, year, vizDimension],
+    () => Children.map(children, c => c && cloneElement(c, { vizDimension })),
+    [children, vizDimension],
   );
 
   /**

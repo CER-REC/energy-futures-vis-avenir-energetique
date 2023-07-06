@@ -2,7 +2,6 @@ import React, { useCallback, useMemo, useState } from 'react';
 import clsx from 'clsx';
 import { useIntl } from 'react-intl';
 import { ResponsiveLine } from '@nivo/line';
-import PropTypes from 'prop-types';
 import { makeStyles, Typography } from '@material-ui/core';
 import useConfig from '../../hooks/useConfig';
 import useEnergyFutureData from '../../hooks/useEnergyFutureData';
@@ -17,7 +16,7 @@ import ForecastLayer from '../../components/ForecastLayer';
 import HistoricalLayer from '../../components/HistoricalLayer';
 import PriceSelect from '../../components/PriceSelect';
 import getYearLabel from '../../utilities/getYearLabel';
-import { getTicks, formatLineData } from '../../utilities/parseData';
+import { getTicks, formatLineData, formatTotalLineData } from '../../utilities/parseData';
 import BenchmarkCrosshair from '../../components/BenchmarkCrosshair';
 import YearSliceTooltip from '../../components/YearSliceTooltip';
 import UnavailableDataMessage from '../../components/UnavailableDataMessage';
@@ -66,15 +65,17 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const Scenarios = ({ data, year }) => {
+const Scenarios = () => {
   const intl = useIntl();
   const { config } = useConfig();
   const [upperSlice, setUpperSlice] = useState(null);
   const [lowerSlice, setLowerSlice] = useState(null);
   // TODO: Refactor useEnergyFutureData hook to use a standard data structure
-  const { prices, priceYear, rawData } = useEnergyFutureData();
+  const { data, year, unitConversion, prices, priceYear } = useEnergyFutureData();
   const classes = useStyles();
   const priceData = formatLineData(prices, 'scenario');
+  let processedData = formatLineData(data, 'scenario', unitConversion);
+  if (config.mainSelection === 'greenhouseGasEmission') processedData = formatTotalLineData(data);
 
   /**
    * The dotted line layer that represents the default scenario.
@@ -92,7 +93,7 @@ const Scenarios = ({ data, year }) => {
 
   const getTooltip = useCallback((event) => {
     const currYear = event.slice?.points[0].data?.x;
-    const upperNodes = getNodesFromData(currYear, data).reverse();
+    const upperNodes = getNodesFromData(currYear, processedData).reverse();
     let lowerNodes = [];
 
     if (prices?.length) {
@@ -123,7 +124,7 @@ const Scenarios = ({ data, year }) => {
       />
     );
   }, [
-    getNodesFromData, data, prices, intl,
+    getNodesFromData, processedData, prices, intl,
     config.mainSelection, config.unit, config.priceSource, priceData,
   ]);
 
@@ -135,7 +136,7 @@ const Scenarios = ({ data, year }) => {
     );
   }
 
-  const ticks = getLineTicks(data || []);
+  const ticks = getLineTicks(processedData || []);
   const benchmarkTicks = getLineTicks(priceData);
   const lineProps = {
     colors: d => SCENARIO_COLOR[d.id] || '#AAA',
@@ -160,11 +161,11 @@ const Scenarios = ({ data, year }) => {
     <>
       <div className={chartContainerClass}>
         {
-          data && rawData ? (
+          processedData?.length ? (
             <ResponsiveLine
               {...CHART_PROPS}
               {...lineProps}
-              data={data}
+              data={processedData}
               enableArea
               layers={[HistoricalLayer, 'grid', 'axes', 'areas', BenchmarkCrosshair, 'points', 'slices', 'lines', 'markers', ForecastLayer, dots]}
               curve="catmullRom"
@@ -192,59 +193,41 @@ const Scenarios = ({ data, year }) => {
         }
       </div>
 
-      { !!prices?.length && (
-        <div style={{ display: 'flex' }}>
-          <Typography variant="h6" style={{ flex: 1 }}>
-            {
-              intl.formatMessage({
-                id: `containers.scenarios.benchmark.${config.mainSelection}`,
-              }, {
-                year: priceYear,
-              })
-            }
-          </Typography>
-          <PriceSelect />
-        </div>
-      )}
-      { !!prices?.length && (
-        <div className={chartContainerClass}>
-          <ResponsiveLine
-            {...CHART_PROPS}
-            {...lineProps}
-            data={priceData}
-            layers={[HistoricalLayer, 'grid', 'axes', BenchmarkCrosshair, 'points', 'slices', 'lines', ForecastLayer, dots]}
-            yScale={{ type: 'linear', min: 0, max: benchmarkTicks[benchmarkTicks.length - 1], reverse: false }}
-            axisRight={{
-              ...CHART_AXIS_PROPS,
-              tickValues: benchmarkTicks,
-            }}
-            sliceTooltip={event => getTooltip(event)}
-            gridYValues={benchmarkTicks}
-            setSlice={setUpperSlice}
-            slice={lowerSlice}
-          />
-        </div>
+      {!!prices?.length && (
+        <>
+          <div style={{ display: 'flex' }}>
+            <Typography variant="h6" style={{ flex: 1 }}>
+              {
+                intl.formatMessage({
+                  id: `containers.scenarios.benchmark.${config.mainSelection}`,
+                }, {
+                  year: priceYear,
+                })
+              }
+            </Typography>
+            <PriceSelect />
+          </div>
+          <div className={chartContainerClass}>
+            <ResponsiveLine
+              {...CHART_PROPS}
+              {...lineProps}
+              data={priceData}
+              layers={[HistoricalLayer, 'grid', 'axes', BenchmarkCrosshair, 'points', 'slices', 'lines', ForecastLayer, dots]}
+              yScale={{ type: 'linear', min: 0, max: benchmarkTicks[benchmarkTicks.length - 1], reverse: false }}
+              axisRight={{
+                ...CHART_AXIS_PROPS,
+                tickValues: benchmarkTicks,
+              }}
+              sliceTooltip={event => getTooltip(event)}
+              gridYValues={benchmarkTicks}
+              setSlice={setUpperSlice}
+              slice={lowerSlice}
+            />
+          </div>
+        </>
       )}
     </>
   );
-};
-
-Scenarios.propTypes = {
-  data: PropTypes.oneOfType([PropTypes.object, PropTypes.arrayOf(PropTypes.object)]),
-  year: PropTypes.shape({
-    min: PropTypes.number,
-    max: PropTypes.number,
-    forecastStart: PropTypes.number,
-  }),
-};
-
-Scenarios.defaultProps = {
-  data: undefined,
-  year: {
-    min: 0,
-    max: 0,
-    forecastStart: 0,
-  },
 };
 
 export default Scenarios;

@@ -10,7 +10,7 @@ export const DEFAULT_CONFIG = {
   yearId: '2020',
   view: 'region',
   unit: 'petajoules',
-  provinces: ['YT', 'SK', 'QC', 'PE', 'ON', 'NU', 'NT', 'NS', 'NL', 'NB', 'MB', 'BC', 'AB'],
+  provinces: ['YT', 'SK', 'QC', 'PE', 'ON', 'NU', 'NT', 'NS', 'NL', 'NB', 'MB', 'BC'],
   sources: ['BIO', 'COAL', 'GAS', 'HYDRO', 'NUCLEAR', 'OIL', 'SOLAR', 'WIND'],
   scenarios: ['Global Net-zero'],
 };

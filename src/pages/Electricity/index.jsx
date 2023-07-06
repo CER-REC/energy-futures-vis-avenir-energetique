@@ -1,6 +1,5 @@
 import React, { useCallback, useMemo } from 'react';
 import { useIntl } from 'react-intl';
-import PropTypes from 'prop-types';
 import {
   makeStyles, useMediaQuery, Paper, Grid, Typography, Tooltip,
 } from '@material-ui/core';
@@ -10,6 +9,7 @@ import useConfig from '../../hooks/useConfig';
 import YearSlider from '../../components/YearSlider';
 import YearSliceTooltip from '../../components/YearSliceTooltip';
 import UnavailableDataMessage from '../../components/UnavailableDataMessage';
+import useEnergyFutureData from '../../hooks/useEnergyFutureData';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -137,13 +137,14 @@ const COORD = {
   COAL: { top: '45%', left: '72%' },
 };
 
-const Electricity = ({ data, year }) => {
+const Electricity = () => {
   const classes = useStyles();
   const intl = useIntl();
   const {
     sources: { electricity: { colors: colorSources } },
     regions: { colors: colorRegions },
   } = useAPI();
+  const { data, year, unitConversion } = useEnergyFutureData();
   const { config } = useConfig();
 
   const iteration = useMemo(() => parseInt(config.yearId, 10), [config.yearId]);
@@ -155,26 +156,47 @@ const Electricity = ({ data, year }) => {
 
   const currYear = config.baseYear || iteration;
 
-  /**
-   * Coefficients for determining bubble sizes during the calculation.
-   */
   const BUBBLE_SIZE = useMemo(() => ({
     region: { MAX: desktop ? 20 : 10, MIN: 0.5 },
     source: { MAX: desktop ? 30 : 15, MIN: 0 },
     single: desktop ? 20 : 10,
   }), [desktop]);
 
-  /**
-   * Looking for the min and max value and the total volumns in each group (region or source).
-   */
+  const dataByYear = useMemo(() => {
+    const provinces = config.provinces[0] === 'ALL' ? config.provinceOrder : config.provinces;
+    const sources = config.sources[0] === 'ALL' ? config.sourceOrder : config.sources;
+
+    const filteredData = (data || [])
+      .filter(entry => (config.view === 'source'
+        ? sources.includes(entry.source) && entry.province !== 'ALL' && entry.source !== 'ALL'
+        : provinces.includes(entry.province) && entry.province !== 'ALL' && entry.source !== 'ALL'))
+      .reduce((result, entry) => ({
+        ...result,
+        [entry.year]: [...(result[entry.year] || []), entry],
+      }), {});
+    Object.keys(filteredData).forEach((yearKey) => {
+      filteredData[yearKey] = [...filteredData[yearKey]].reduce((result, entry) => (entry.value ? ({
+        ...result,
+        [config.view === 'source' ? entry.source : entry.province]: [
+          ...(result[config.view === 'source' ? entry.source : entry.province] || []), {
+            name: config.view === 'source' ? entry.province : entry.source,
+            value: entry.value * unitConversion,
+          },
+        ],
+      }) : result), {});
+    });
+    return filteredData;
+  }, [config.provinces, config.provinceOrder, config.sources,
+    config.sourceOrder, config.view, data, unitConversion]);
+
   const { totals, max, min } = useMemo(() => {
-    if (!data || !data[currYear]) {
+    if (!dataByYear || !dataByYear[currYear]) {
       return { totals: undefined, max: Number.POSITIVE_INFINITY, min: Number.NEGATIVE_INFINITY };
     }
 
-    const allValues = Object.keys(data[currYear]).reduce((result, view) => ({
+    const allValues = Object.keys(dataByYear[currYear]).reduce((result, view) => ({
       ...result,
-      [view]: Object.values(data[currYear][view]) // 'view' can be 'region' or 'source'
+      [view]: Object.values(dataByYear[currYear][view]) // 'view' can be 'region' or 'source'
         .map(entry => entry.value)
         .reduce((a, b) => a + b),
     }), {});
@@ -184,7 +206,7 @@ const Electricity = ({ data, year }) => {
       max: Math.max(...Object.values(allValues)),
       min: Math.min(...Object.values(allValues)),
     };
-  }, [data, currYear]);
+  }, [dataByYear, currYear]);
 
   /**
    * Determine whether not not a single bubble group is shown.
@@ -220,13 +242,13 @@ const Electricity = ({ data, year }) => {
    * Post-process for determining each bubble sizes and positions.
    */
   const processedData = useMemo(() => {
-    const dataWithPosition = totals ? Object.keys(data[currYear]).map((entry) => {
+    const dataWithPosition = totals ? Object.keys(dataByYear[currYear]).map((entry) => {
       const size = getSize(totals[entry]);
       return {
         name: entry, // entry can be 'region' or 'source' depending on the view selection
         size,
         value: totals[entry],
-        nodes: data[currYear][entry].sort((a, b) => b.value - a.value).map(node => ({
+        nodes: dataByYear[currYear][entry].sort((a, b) => b.value - a.value).map(node => ({
           ...node,
           size: getSize(node.value),
           color: { ...colorSources, ...colorRegions }[node.name],
@@ -243,7 +265,8 @@ const Electricity = ({ data, year }) => {
       };
     }) : [];
     return dataWithPosition;
-  }, [data, config.view, intl, colorSources, colorRegions, currYear, getSize, single, totals]);
+  }, [dataByYear, config.view, intl, colorSources,
+    colorRegions, currYear, getSize, single, totals]);
 
   const getTooltip = useCallback((entry) => {
     const section = {
@@ -268,11 +291,7 @@ const Electricity = ({ data, year }) => {
   if (config.view === 'region' && config.sources.length === 0) return <UnavailableDataMessage message={intl.formatMessage({ id: 'common.unavailableData.noSourceSelected' })} />;
   if (config.view === 'source' && config.provinces.length === 0) return <UnavailableDataMessage message={intl.formatMessage({ id: 'common.unavailableData.noRegionSelected' })} />;
 
-  if (!data) {
-    return null;
-  }
-
-  return (
+  return processedData.length ? (
     <div className={classes.root}>
       {/* current year number at the top-right corner */}
       <Typography variant="h5" color="primary" className={classes.year}>{currYear}</Typography>
@@ -360,21 +379,9 @@ const Electricity = ({ data, year }) => {
         forecast={year.forecastStart}
       />
     </div>
+  ) : (
+    <UnavailableDataMessage message={intl.formatMessage({ id: 'common.unavailableData.default' })} />
   );
-};
-
-Electricity.propTypes = {
-  data: PropTypes.oneOfType([PropTypes.object, PropTypes.arrayOf(PropTypes.object)]),
-  year: PropTypes.shape({
-    min: PropTypes.number,
-    max: PropTypes.number,
-    forecastStart: PropTypes.number,
-  }),
-};
-
-Electricity.defaultProps = {
-  data: undefined,
-  year: undefined,
 };
 
 export default Electricity;

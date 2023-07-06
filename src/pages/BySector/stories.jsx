@@ -15,6 +15,17 @@ export const DEFAULT_CONFIG = {
   provinces: ['ON'],
 };
 
+export const NULL_CONFIG = {
+  page: 'by-sector',
+  yearId: '2020',
+  sector: 'TRANSPORTATION',
+  unit: 'petajoules',
+  sourceOrder: ['BIO', 'COAL', 'ELECTRICITY', 'GAS', 'OIL'],
+  scenarios: ['Global Net-zero'],
+  sources: [],
+  provinces: ['ON'],
+};
+
 export const BASE_DATA = {
   BIO: { value: 11.08, color: '#1C7F24' },
   ELECTRICITY: { value: 3.53, color: '#7ACBCB' },

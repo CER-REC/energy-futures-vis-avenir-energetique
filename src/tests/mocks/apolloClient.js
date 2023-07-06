@@ -15,10 +15,14 @@ const mocks = [
     request: { query: queries.ITERATIONS_TRANSLATIONS },
     result: iterationsTranslations,
   },
-  ...Object.keys(queries).map(query => !['ITERATIONS_TRANSLATIONS', 'NULL_QUERY'].includes(query) && ({
+  ...Object.keys(queries).map(query => !['ITERATIONS_TRANSLATIONS', 'NULL_QUERY', 'OIL_PRODUCTIONS'].includes(query) && ({
     request: { query: queries[query], variables: MATCH_ANY_PARAMETERS },
-    result: mockData,
+    result: mockData.baseData,
   })).filter(Boolean),
+  {
+    request: { query: queries.OIL_PRODUCTIONS },
+    result: mockData.oilProduction,
+  },
 ];
 const link = new WildcardMockLink(mocks, false);
 const client = new ApolloClient({ cache, link });

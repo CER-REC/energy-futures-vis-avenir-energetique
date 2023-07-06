@@ -12,6 +12,7 @@ export const DEFAULT_CONFIG = {
   unit: 'kilobarrels',
   view: 'region',
   provinces: ['ALL'],
+  provinceOrder: ['YT', 'SK', 'QC', 'PE', 'ON', 'NU', 'NT', 'NS', 'NL', 'NB', 'MB', 'BC', 'AB'],
   sources: ['C5', 'CONDENSATE', 'HEAVY', 'ISB', 'LIGHT', 'MB'],
   baseYear: 2005,
   compareYear: 2006,

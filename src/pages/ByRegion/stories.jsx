@@ -15,6 +15,16 @@ export const DEFAULT_CONFIG = {
   provinces: ['ON'],
 };
 
+export const NULL_CONFIG = {
+  page: 'by-region',
+  mainSelection: 'energyDemand',
+  yearId: '2020',
+  unit: 'petajoules',
+  provinceOrder: ['YT', 'SK', 'QC', 'PE', 'ON', 'NU', 'NT', 'NS', 'NL', 'NB', 'MB', 'BC', 'AB'],
+  scenarios: ['Global Net-zero'],
+  provinces: ['AB'],
+};
+
 export const BASE_DATA = {
   AB: 2818.1722,
   BC: 1259.11,

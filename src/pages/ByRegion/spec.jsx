@@ -5,7 +5,7 @@ import { ResponsiveBar } from '@nivo/bar';
 
 import ByRegion from '.';
 import { TestContainer, getRendered } from '../../tests/utilities';
-import { BASE_DATA, DEFAULT_CONFIG } from './stories';
+import { BASE_DATA, DEFAULT_CONFIG, NULL_CONFIG } from './stories';
 import YearSliceTooltip from '../../components/YearSliceTooltip';
 import UnavailableDataMessage from '../../components/UnavailableDataMessage';
 
@@ -14,9 +14,15 @@ const MOCK_DATA = [
   { year: '2050', ...BASE_DATA },
 ];
 
-const getComponent = (data, year) => (
+const getComponent = () => (
   <TestContainer mockConfig={{ ...DEFAULT_CONFIG }}>
-    <ByRegion data={data} year={year} />
+    <ByRegion />
+  </TestContainer>
+);
+
+const getNullComponent = () => (
+  <TestContainer mockConfig={{ ...NULL_CONFIG }}>
+    <ByRegion />
   </TestContainer>
 );
 
@@ -56,9 +62,9 @@ describe('Page|ByRegion', () => {
   /**
    * data === null
    */
-  describe('Test with invalid data structure', () => {
+  describe('Test with no data', () => {
     test('should render UnavailableDataMessage component', async () => {
-      const dom = mount(getComponent(null));
+      const dom = mount(getNullComponent());
       await act(async () => {
         await new Promise(resolve => setTimeout(resolve));
         dom.update();

@@ -14,6 +14,7 @@ import YearSlider from '../../components/YearSlider';
 import { IconOilAndGasGroup, IconOilAndGasRectangle } from '../../icons';
 import YearSliceTooltip from '../../components/YearSliceTooltip';
 import UnavailableDataMessage from '../../components/UnavailableDataMessage';
+import useEnergyFutureData from '../../hooks/useEnergyFutureData';
 
 const useStyles = makeStyles(theme => ({
   year: {
@@ -82,9 +83,10 @@ const useStyles = makeStyles(theme => ({
 const MAX_SIZE = 250;
 const TREE_MAP_MARGIN = 4;
 
-const OilAndGas = ({ data, year, vizDimension }) => {
+const OilAndGas = ({ vizDimension }) => {
   const classes = useStyles();
   const { config, configDispatch } = useConfig();
+  const { data, year, unitConversion } = useEnergyFutureData();
   const intl = useIntl();
 
   const iteration = useMemo(() => parseInt(config.yearId, 10), [config.yearId]);
@@ -99,18 +101,12 @@ const OilAndGas = ({ data, year, vizDimension }) => {
     sources: { oil: { colors: oilColors }, gas: { colors: gasColors } },
   } = useAPI();
 
-  // Compare button toggle
   const compare = useMemo(() => !config.noCompare, [config.noCompare]);
 
-  // Determine which tooltip is currently open
   const [tooltip, setTooltip] = useState();
 
-  // 'oil' or 'gas' which is used for generating translation text
   const type = useMemo(() => (config.mainSelection === 'oilProduction' ? 'oil' : 'gas'), [config.mainSelection]);
 
-  /**
-   * Determine the block colors in treemaps.
-   */
   const getColor = useCallback((d) => {
     let color;
     if (config.view === 'source') {
@@ -121,9 +117,6 @@ const OilAndGas = ({ data, year, vizDimension }) => {
     return color;
   }, [config.mainSelection, config.view, gasColors, oilColors, regionColors]);
 
-  /**
-   * Format tooltip.
-   */
   const getTooltip = useCallback((entry) => {
     const section = {
       title: intl.formatMessage({ id: `common.scenarios.${config.scenarios[0]}` }),
@@ -149,9 +142,6 @@ const OilAndGas = ({ data, year, vizDimension }) => {
     );
   }, [intl, config.scenarios, config.unit, config.view, type, getColor]);
 
-  /**
-   * Determine the position of the tooltip based on the treemap size and the number of nodes.
-   */
   const getTooltipPos = useCallback((length, size, isTopChart) => {
     if (length > 3 && size > 120) {
       return (compare && isTopChart) ? 'left' : 'right';
@@ -159,20 +149,11 @@ const OilAndGas = ({ data, year, vizDimension }) => {
     return (compare && isTopChart) ? 'top' : 'bottom';
   }, [compare]);
 
-  /**
-   * Sort both data based on the current year values in the descending order.
-   */
   const sortDataSets = useCallback((curr, comp) => {
-    // sort the current data in decending order
     const currentYearData = (curr || []).sort((a, b) => b.total - a.total);
-
-    // set the sort order to be the current year order
     const sortOrder = currentYearData.map(item => item.name);
-
-    // re-arrange the compare year data to match current year data
     const compareYearData = (sortOrder || []).map(item => comp.find(x => x.name === item));
 
-    // removing entries that are zeros in both current and compare data
     const currentZeros = new Set(currentYearData.filter(d => d.total <= 0).map(d => d.name));
     const compareZeros = new Set(compareYearData.filter(d => d.total <= 0).map(d => d.name));
 
@@ -189,9 +170,6 @@ const OilAndGas = ({ data, year, vizDimension }) => {
   const showPercentages = useCallback(() => !(config.provinces.length === 1 && config.provinces[0] !== 'ALL'),
     [config.provinces]);
 
-  /**
-   * Generate the treemap component based on the source values, size and location (top or bottom).
-   */
   const createTreeMap = useCallback((source, isTopChart, size, isSmall) => (
     <>
       <Typography align='center' varient="body2" className={classes.label}>
@@ -255,39 +233,62 @@ const OilAndGas = ({ data, year, vizDimension }) => {
     getColor,
   ]);
 
-  /**
-   * Update the state of the compare button and send the event to data analytics
-   */
   const handleCompareUpdate = useCallback(() => {
     configDispatch({ type: 'noCompare/changed', payload: compare });
     analytics.reportMedia(config.page, compare ? 'don\'t compare' : 'compare');
   }, [configDispatch, compare, config.page]);
 
+  const processedData = useMemo(() => {
+    const outer = config.view === 'source' ? 'source' : 'province';
+    const inner = config.view === 'source' ? 'province' : 'source';
+
+    let baseStructure = data?.reduce((acc, val) => {
+      if (!acc[val.year]) {
+        acc[val.year] = [];
+      }
+      if (!acc[val.year].find(element => element.name === val[outer])) {
+        acc[val.year].push({ name: val[outer], total: 0, children: [] });
+      }
+      return acc;
+    }, {});
+
+    // I am not super happy with the way this logic mutates the baseStructure
+    baseStructure = data?.reduce((acc, val) => {
+      if (val.source !== 'ALL' && val.value > 0) {
+        const entry = acc[val.year].find(e => e.name === val[outer]);
+        entry.children.push({
+          name: val[inner],
+          value: val.value * unitConversion,
+        });
+        entry.total += (val.value * unitConversion);
+      }
+      return acc;
+    }, baseStructure);
+    return baseStructure;
+  }, [data, unitConversion, config.view]);
+
   if (config.view === 'region' && config.sources.length === 0) return <UnavailableDataMessage message={intl.formatMessage({ id: 'common.unavailableData.noSourceSelected' })} />;
   if (config.view === 'source' && config.provinces.length === 0) return <UnavailableDataMessage message={intl.formatMessage({ id: 'common.unavailableData.noRegionSelected' })} />;
 
-  // data not ready; render nothing
-  if (!data || !data[currentYear] || !data[compareYear]) {
-    return null;
+  if (!processedData || !processedData[currentYear] || !processedData[compareYear]) {
+    return (<UnavailableDataMessage message={intl.formatMessage({ id: 'common.unavailableData.default' })} />);
   }
 
-  // data content not valid; render nothing
   if (
-    Number.isNaN(Number(data[currentYear][0].total))
-    || Number.isNaN(Number(data[compareYear][0].total))
+    Number.isNaN(Number(processedData[currentYear][0].total))
+    || Number.isNaN(Number(processedData[compareYear][0].total))
   ) {
     return null;
   }
 
-  // Sorted datasets
   const {
     currentYearData,
     compareYearData,
     biggestValue,
-  } = sortDataSets(data[currentYear], data[compareYear]);
+  } = sortDataSets(processedData[currentYear], processedData[compareYear]);
 
   const treeMapCollection = (treeData, treeDataCompanion = [], treeYear, isTopChart) => {
-    if (!vizDimension.width || biggestValue <= 0) {
+    if (!vizDimension?.width || biggestValue <= 0) {
       return [];
     }
 
@@ -331,7 +332,7 @@ const OilAndGas = ({ data, year, vizDimension }) => {
       smallTreeMaps.pop();
     }
 
-    if (regularTreeMaps.length === 0 || !vizDimension.width) {
+    if (regularTreeMaps.length === 0 || !vizDimension?.width) {
       return (
         <TableRow>
           <TableCell colSpan="100%" className={classes.cell}>
@@ -345,7 +346,7 @@ const OilAndGas = ({ data, year, vizDimension }) => {
     }
 
     // size of the rendering area
-    const canvasWidth = vizDimension.width * 0.7;
+    const canvasWidth = vizDimension?.width * 0.7;
 
     // sum up the total width among the treemaps
     const totalWidth = regularTreeMaps.reduce((acc, val) => acc + (val.width || 0), 0);
@@ -516,12 +517,6 @@ const OilAndGas = ({ data, year, vizDimension }) => {
 };
 
 OilAndGas.propTypes = {
-  data: PropTypes.oneOfType([PropTypes.object, PropTypes.arrayOf(PropTypes.object)]),
-  year: PropTypes.shape({
-    min: PropTypes.number,
-    max: PropTypes.number,
-    forecastStart: PropTypes.number,
-  }),
   vizDimension: PropTypes.shape({
     height: PropTypes.number,
     width: PropTypes.number,
@@ -529,8 +524,7 @@ OilAndGas.propTypes = {
 };
 
 OilAndGas.defaultProps = {
-  data: undefined,
-  year: { min: 0, max: 0, forecastStart: 0 },
   vizDimension: { height: 0, width: 0 },
 };
+
 export default OilAndGas;
