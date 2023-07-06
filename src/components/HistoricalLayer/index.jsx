@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { makeStyles } from '@material-ui/core';
+import { makeStyles, useTheme } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import { useIntl } from 'react-intl';
 import getYearX from '../../utilities/getYearX';
@@ -17,6 +17,7 @@ const HistoricalLayer = ({
 }) => {
   const intl = useIntl();
   const classes = useStyles();
+  const theme = useTheme();
 
   const historicalWidth = useMemo(
     () => getYearX(forecastStart, xScale) + margin.left,
@@ -33,7 +34,7 @@ const HistoricalLayer = ({
       <rect
         height={20}
         width={historicalWidth}
-        fill="#DEDEE1"
+        fill={theme.palette.historical}
       />
       <text className={classes.label} x={5} y={14}>
         {intl.formatMessage({ id: 'components.historicalLayer.historical' })}
