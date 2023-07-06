@@ -162,16 +162,6 @@ const OilAndGas = ({ data, year, vizDimension }) => {
   }, [intl, config.scenarios, config.unit, config.view, type, getColor]);
 
   /**
-   * Determine the position of the tooltip based on the treemap size and the number of nodes.
-   */
-  const getTooltipPos = useCallback((length, size, isTopChart) => {
-    if (length > 3 && size > 120) {
-      return (compare && isTopChart) ? 'left' : 'right';
-    }
-    return (compare && isTopChart) ? 'top' : 'bottom';
-  }, [compare]);
-
-  /**
    * Sort both data based on the current year values in the descending order.
    */
   const sortDataSets = useCallback((curr, comp) => {
@@ -222,7 +212,7 @@ const OilAndGas = ({ data, year, vizDimension }) => {
         <Tooltip
           open={source.name === tooltip}
           title={getTooltip(source)}
-          placement={getTooltipPos(source.children.length, size, isTopChart)}
+          placement={isTopChart ? 'right-end' : 'right-start'}
           onOpen={() => setTooltip(source.name)}
           onClose={() => setTooltip()}
         >
@@ -263,7 +253,6 @@ const OilAndGas = ({ data, year, vizDimension }) => {
     showPercentages,
     tooltip,
     getTooltip,
-    getTooltipPos,
     getColor,
     formatPercentage,
   ]);
