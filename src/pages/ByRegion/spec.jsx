@@ -7,6 +7,7 @@ import ByRegion from '.';
 import { TestContainer, getRendered } from '../../tests/utilities';
 import { BASE_DATA, DEFAULT_CONFIG } from './stories';
 import YearSliceTooltip from '../../components/YearSliceTooltip';
+import UnavailableDataMessage from '../../components/UnavailableDataMessage';
 
 const MOCK_DATA = [
   { year: '2005', ...BASE_DATA },
@@ -56,13 +57,13 @@ describe('Page|ByRegion', () => {
    * data === null
    */
   describe('Test with invalid data structure', () => {
-    test('should NOT render component', async () => {
+    test('should render UnavailableDataMessage component', async () => {
       const dom = mount(getComponent(null));
       await act(async () => {
         await new Promise(resolve => setTimeout(resolve));
         dom.update();
 
-        expect(getRendered(ByRegion, dom).exists()).toBeFalsy();
+        expect(getRendered(UnavailableDataMessage, dom).exists());
       });
     });
   });

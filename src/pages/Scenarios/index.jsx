@@ -20,6 +20,7 @@ import getYearLabel from '../../utilities/getYearLabel';
 import { getTicks, formatLineData } from '../../utilities/parseData';
 import BenchmarkCrosshair from '../../components/BenchmarkCrosshair';
 import YearSliceTooltip from '../../components/YearSliceTooltip';
+import UnavailableDataMessage from '../../components/UnavailableDataMessage';
 
 /**
  * Generate a custom dotted line layer for rendering the default scenario.
@@ -71,7 +72,7 @@ const Scenarios = ({ data, year }) => {
   const [upperSlice, setUpperSlice] = useState(null);
   const [lowerSlice, setLowerSlice] = useState(null);
   // TODO: Refactor useEnergyFutureData hook to use a standard data structure
-  const { prices, priceYear } = useEnergyFutureData();
+  const { prices, priceYear, rawData } = useEnergyFutureData();
   const classes = useStyles();
   const priceData = formatLineData(prices, 'scenario');
 
@@ -126,11 +127,15 @@ const Scenarios = ({ data, year }) => {
     config.mainSelection, config.unit, config.priceSource, priceData,
   ]);
 
-  if (!data) {
-    return null;
+  if (config.mainSelection === 'greenhouseGasEmission' && config.yearId < 2023) {
+    return (
+      <UnavailableDataMessage
+        hasEmissionsLink
+      />
+    );
   }
 
-  const ticks = getLineTicks(data);
+  const ticks = getLineTicks(data || []);
   const benchmarkTicks = getLineTicks(priceData);
   const lineProps = {
     colors: d => SCENARIO_COLOR[d.id] || '#AAA',
@@ -154,27 +159,39 @@ const Scenarios = ({ data, year }) => {
   return (
     <>
       <div className={chartContainerClass}>
-        <ResponsiveLine
-          {...CHART_PROPS}
-          {...lineProps}
-          data={data}
-          enableArea
-          layers={[HistoricalLayer, 'grid', 'axes', 'areas', BenchmarkCrosshair, 'points', 'slices', 'lines', 'markers', ForecastLayer, dots]}
-          curve="cardinal"
-          areaOpacity={0.15}
-          yScale={{ type: 'linear', min: ticks[0], max: ticks[ticks.length - 1], reverse: false }}
-          axisRight={{
-            ...CHART_AXIS_PROPS,
-            tickValues: ticks,
-          }}
-          sliceTooltip={event => getTooltip(event, true)}
-          axisBottom={prices?.length ? null : lineProps.axisBottom}
-          gridYValues={ticks}
-          markers={config.mainSelection === 'greenhouseGasEmission' ? GREENHOUSE_GAS_MARKERS : null}
-          setSlice={setLowerSlice}
-          slice={upperSlice}
-        />
+        {
+          data && rawData ? (
+            <ResponsiveLine
+              {...CHART_PROPS}
+              {...lineProps}
+              data={data}
+              enableArea
+              layers={[HistoricalLayer, 'grid', 'axes', 'areas', BenchmarkCrosshair, 'points', 'slices', 'lines', 'markers', ForecastLayer, dots]}
+              curve="catmullRom"
+              areaOpacity={0.15}
+              yScale={{ type: 'linear', min: ticks[0], max: ticks[ticks.length - 1], reverse: false }}
+              axisRight={{
+                ...CHART_AXIS_PROPS,
+                tickValues: ticks,
+              }}
+              sliceTooltip={event => getTooltip(event, true)}
+              axisBottom={prices?.length ? null : lineProps.axisBottom}
+              gridYValues={ticks}
+              markers={config.mainSelection === 'greenhouseGasEmission' ? GREENHOUSE_GAS_MARKERS : null}
+              setSlice={setLowerSlice}
+              slice={upperSlice}
+            />
+          ) : (
+            <UnavailableDataMessage
+              message={intl.formatMessage({
+                id: `common.unavailableData.${config.mainSelection}.${config.provinces[0]}`,
+                defaultMessage: intl.formatMessage({ id: 'common.unavailableData.noSourceSelected' }),
+              })}
+            />
+          )
+        }
       </div>
+
       { !!prices?.length && (
         <div style={{ display: 'flex' }}>
           <Typography variant="h6" style={{ flex: 1 }}>

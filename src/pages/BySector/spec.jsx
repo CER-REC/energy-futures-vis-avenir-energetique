@@ -7,6 +7,7 @@ import BySector from '.';
 import { TestContainer, getRendered } from '../../tests/utilities';
 import { DEFAULT_CONFIG, BASE_DATA, GENERATE_DATA } from './stories';
 import YearSliceTooltip from '../../components/YearSliceTooltip';
+import UnavailableDataMessage from '../../components/UnavailableDataMessage';
 
 const MOCK_DATA = [
   { id: 'BIO', data: GENERATE_DATA('BIO'), color: BASE_DATA.BIO.color },
@@ -62,13 +63,13 @@ describe('Page|BySector', () => {
    * data === null
    */
   describe('Test with invalid data structure', () => {
-    test('should NOT render component', async () => {
+    test('should render UnavailableDataMessage component', async () => {
       const dom = mount(getComponent(null));
       await act(async () => {
         await new Promise(resolve => setTimeout(resolve));
         dom.update();
 
-        expect(getRendered(BySector, dom).exists()).toBeFalsy();
+        expect(getRendered(UnavailableDataMessage, dom).exists());
       });
     });
   });
