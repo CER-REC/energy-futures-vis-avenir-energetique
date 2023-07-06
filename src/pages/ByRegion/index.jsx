@@ -91,7 +91,7 @@ const ByRegion = ({ data, year }) => {
       <UnavailableDataMessage
         message={intl.formatMessage({
           id: noDataMessageId,
-          defaultMessage: intl.formatMessage({id: 'common.unavailableData.default'}),
+          defaultMessage: intl.formatMessage({ id: 'common.unavailableData.default' }),
         })}
       />
     );
