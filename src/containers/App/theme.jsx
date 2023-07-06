@@ -27,6 +27,7 @@ const theme = createMuiTheme({
     background: {
       light: defaultTheme.palette.background.light,
     },
+    historical: '#DEDEE1',
   },
   mixins: {
     zoneLabel: {
@@ -67,6 +68,19 @@ const theme = createMuiTheme({
       alignItems: 'center',
       display: 'flex',
       paddingBottom: 5,
+    },
+    yearSliderLabels: {
+      display: 'flex',
+      position: 'absolute',
+      top: 12,
+      right: 0,
+      left: 0,
+      zIndex: -1,
+      padding: defaultTheme.spacing(0.25, 0.5),
+      '& > span': {
+        color: '#666',
+        lineHeight: 1,
+      },
     },
   },
   typography: {
