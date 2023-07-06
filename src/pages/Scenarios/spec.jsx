@@ -9,9 +9,9 @@ import { DEFAULT_CONFIG, MOCK_DATA } from './stories';
 import YearSliceTooltip from '../../components/YearSliceTooltip';
 import UnavailableDataMessage from '../../components/UnavailableDataMessage';
 
-const getComponent = (data, year) => (
-  <TestContainer mockConfig={{ ...DEFAULT_CONFIG }}>
-    <Scenarios data={data} year={year} />
+const getComponent = props => (
+  <TestContainer mockConfig={{ ...DEFAULT_CONFIG, ...props }}>
+    <Scenarios />
   </TestContainer>
 );
 
@@ -23,7 +23,7 @@ describe('Page|Scenarios', () => {
    */
   describe('Test with valid data structure', () => {
     beforeEach(async () => {
-      const dom = mount(getComponent(MOCK_DATA, { min: 2005, max: 2050, forecastStart: 2020 }));
+      const dom = mount(getComponent());
       await act(async () => {
         await new Promise(resolve => setTimeout(resolve));
         dom.update();
@@ -56,7 +56,7 @@ describe('Page|Scenarios', () => {
    */
   describe('Test with invalid data structure', () => {
     test('should render UnavailableDataMessage component', async () => {
-      const dom = mount(getComponent(null));
+      const dom = mount(getComponent({ mainSelection: null }));
       await act(async () => {
         await new Promise(resolve => setTimeout(resolve));
         dom.update();

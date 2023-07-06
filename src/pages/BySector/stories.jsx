@@ -6,7 +6,7 @@ import ReadMe from './README.md';
 
 export const DEFAULT_CONFIG = {
   page: 'by-sector',
-  yearId: '2020',
+  yearId: '2023',
   sector: 'TRANSPORTATION',
   unit: 'petajoules',
   sourceOrder: ['BIO', 'COAL', 'ELECTRICITY', 'GAS', 'OIL'],
@@ -32,18 +32,13 @@ export const GENERATE_DATA = (id, randomness /* boolean */) => Array(46)
     y: (BASE_DATA[id]?.value || 0) * (1 + (randomness ? (Math.random() / 5) : 0)),
   }));
 
-/**
- * Add some randomness in the mock data to generate
- * fluctuation in the graph so that it is not monotone.
- */
-const MOCK_DATA = [
-  { id: 'BIO', data: GENERATE_DATA('BIO', true) },
-  { id: 'ELECTRICITY', data: GENERATE_DATA('ELECTRICITY', true) },
-  { id: 'GAS', data: GENERATE_DATA('GAS', true) },
-  { id: 'OIL', data: GENERATE_DATA('OIL', true) },
-];
-
 storiesForComponent('Pages|BySector', module, ReadMe)
   .addDecorator(withConfigAndGQL)
   .addParameters({ mockConfigBasic: DEFAULT_CONFIG })
-  .add('default', () => <BySector data={MOCK_DATA} year={{ min: 2005, max: 2050, forecastStart: 2020 }} />);
+  .addParameters({
+    mockConfigExtra: {
+      sources: ['BIO', 'COAL', 'ELECTRICITY', 'GAS', 'OIL'],
+      provinces: ['ALL'],
+    },
+  })
+  .add('default', () => <BySector />);

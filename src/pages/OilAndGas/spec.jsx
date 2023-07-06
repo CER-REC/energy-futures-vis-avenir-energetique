@@ -9,11 +9,9 @@ import { TestContainer, getRendered } from '../../tests/utilities';
 import { DEFAULT_CONFIG, MOCK_DATA_REGION, MOCK_DATA_SOURCE } from './stories';
 import UnavailableDataMessage from '../../components/UnavailableDataMessage';
 
-const getComponent = (data, props, width = 900) => (
+const getComponent = (props, width = 900) => (
   <TestContainer mockConfig={{ ...DEFAULT_CONFIG, ...props }}>
     <OilAndGas
-      data={data}
-      year={{ min: 2005, max: 2050, forecastStart: 2020 }}
       vizDimension={{ height: 800, width }}
     />
   </TestContainer>
@@ -27,7 +25,7 @@ describe('Page|OilAndGas', () => {
    */
   describe('Test view by region', () => {
     beforeEach(async () => {
-      wrapper = mount(getComponent(MOCK_DATA_REGION, { view: 'region' }));
+      wrapper = mount(getComponent());
       await act(async () => {
         await new Promise(resolve => setTimeout(resolve));
         wrapper.update();
@@ -86,7 +84,7 @@ describe('Page|OilAndGas', () => {
    */
   describe('Test view by source', () => {
     beforeEach(async () => {
-      wrapper = mount(getComponent(MOCK_DATA_SOURCE, { view: 'source' }));
+      wrapper = mount(getComponent({ view: 'source' }));
       await act(async () => {
         await new Promise(resolve => setTimeout(resolve));
         wrapper.update();
@@ -116,7 +114,7 @@ describe('Page|OilAndGas', () => {
    */
   describe('Test no compare', () => {
     beforeEach(async () => {
-      wrapper = mount(getComponent(MOCK_DATA_REGION, { view: 'region', noCompare: true }));
+      wrapper = mount(getComponent({ view: 'region', noCompare: true }));
       await act(async () => {
         await new Promise(resolve => setTimeout(resolve));
         wrapper.update();
@@ -141,7 +139,7 @@ describe('Page|OilAndGas', () => {
    */
   describe('Test with invalid canvas size', () => {
     test('should NOT render component', async () => {
-      wrapper = mount(getComponent(MOCK_DATA_REGION, { view: 'region' }, 0));
+      wrapper = mount(getComponent({ view: 'region' }, 0));
       await act(async () => {
         await new Promise(resolve => setTimeout(resolve));
         wrapper.update();
@@ -156,25 +154,7 @@ describe('Page|OilAndGas', () => {
    */
   describe('Test with invalid data structure', () => {
     test('should render UnavailableDataMessage component', async () => {
-      wrapper = mount(getComponent({
-        2005: [{ total: 'invalid', children: [] }],
-        2006: [{ total: 'invalid', children: [] }],
-      }));
-      await act(async () => {
-        await new Promise(resolve => setTimeout(resolve));
-        wrapper.update();
-
-        expect(getRendered(UnavailableDataMessage, wrapper).exists());
-      });
-    });
-  });
-
-  /**
-   * data === null
-   */
-  describe('Test with missing data', () => {
-    test('should render UnavailableDataMessage component', async () => {
-      wrapper = mount(getComponent());
+      wrapper = mount(getComponent({ provinces: ['AB'] }));
       await act(async () => {
         await new Promise(resolve => setTimeout(resolve));
         wrapper.update();

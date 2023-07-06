@@ -190,7 +190,6 @@ const Electricity = () => {
     config.sourceOrder, config.view, data, unitConversion]);
 
   const { totals, max, min } = useMemo(() => {
-    console.log(dataByYear);
     if (!dataByYear || !dataByYear[currYear]) {
       return { totals: undefined, max: Number.POSITIVE_INFINITY, min: Number.NEGATIVE_INFINITY };
     }

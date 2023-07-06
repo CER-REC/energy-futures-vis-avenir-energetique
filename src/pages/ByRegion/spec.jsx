@@ -5,16 +5,11 @@ import { ResponsiveBar } from '@nivo/bar';
 
 import ByRegion from '.';
 import { TestContainer, getRendered } from '../../tests/utilities';
-import { BASE_DATA, DEFAULT_CONFIG } from './stories';
+import DEFAULT_CONFIG from './stories';
 import YearSliceTooltip from '../../components/YearSliceTooltip';
 import UnavailableDataMessage from '../../components/UnavailableDataMessage';
 
-const MOCK_DATA = [
-  { year: '2005', ...BASE_DATA },
-  { year: '2050', ...BASE_DATA },
-];
-
-const getComponent = (props) => (
+const getComponent = props => (
   <TestContainer mockConfig={{ ...DEFAULT_CONFIG, ...props }}>
     <ByRegion />
   </TestContainer>
@@ -28,7 +23,7 @@ describe('Page|ByRegion', () => {
    */
   describe('Test with valid data structure', () => {
     beforeEach(async () => {
-      const dom = mount(getComponent(MOCK_DATA, { min: 2005, max: 2050, forecastStart: 2020 }));
+      const dom = mount(getComponent());
       await act(async () => {
         await new Promise(resolve => setTimeout(resolve));
         dom.update();

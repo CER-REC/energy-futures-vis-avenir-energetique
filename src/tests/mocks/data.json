@@ -151,87 +151,866 @@
         {
           "province": "NL",
           "year": 2005,
-          "scenario": "Evolving",
-          "source": "FC",
-          "value": 161.7068
+          "source": "C5",
+          "value": 0
+        },
+        {
+          "province": "NL",
+          "year": 2005,
+          "source": "CONDENSATE",
+          "value": 0
+        },
+        {
+          "province": "NL",
+          "year": 2005,
+          "source": "HEAVY",
+          "value": 0
+        },
+        {
+          "province": "NL",
+          "year": 2005,
+          "source": "ISB",
+          "value": 0
+        },
+        {
+          "province": "NL",
+          "year": 2005,
+          "source": "LIGHT",
+          "value": 48.4649
+        },
+        {
+          "province": "NL",
+          "year": 2005,
+          "source": "MB",
+          "value": 0
+        },
+        {
+          "province": "NL",
+          "year": 2006,
+          "source": "C5",
+          "value": 0
+        },
+        {
+          "province": "NL",
+          "year": 2006,
+          "source": "CONDENSATE",
+          "value": 0
+        },
+        {
+          "province": "NL",
+          "year": 2006,
+          "source": "HEAVY",
+          "value": 0
+        },
+        {
+          "province": "NL",
+          "year": 2006,
+          "source": "ISB",
+          "value": 0
+        },
+        {
+          "province": "NL",
+          "year": 2006,
+          "source": "LIGHT",
+          "value": 48.2778
+        },
+        {
+          "province": "NL",
+          "year": 2006,
+          "source": "MB",
+          "value": 0
         },
         {
           "province": "PE",
           "year": 2005,
-          "scenario": "Evolving",
-          "source": "FC",
-          "value": 26.5185
+          "source": "C5",
+          "value": 0
+        },
+        {
+          "province": "PE",
+          "year": 2005,
+          "source": "CONDENSATE",
+          "value": 0
+        },
+        {
+          "province": "PE",
+          "year": 2005,
+          "source": "HEAVY",
+          "value": 0
+        },
+        {
+          "province": "PE",
+          "year": 2005,
+          "source": "ISB",
+          "value": 0
+        },
+        {
+          "province": "PE",
+          "year": 2005,
+          "source": "LIGHT",
+          "value": 0
+        },
+        {
+          "province": "PE",
+          "year": 2005,
+          "source": "MB",
+          "value": 0
+        },
+        {
+          "province": "PE",
+          "year": 2006,
+          "source": "C5",
+          "value": 0
+        },
+        {
+          "province": "PE",
+          "year": 2006,
+          "source": "CONDENSATE",
+          "value": 0
+        },
+        {
+          "province": "PE",
+          "year": 2006,
+          "source": "HEAVY",
+          "value": 0
+        },
+        {
+          "province": "PE",
+          "year": 2006,
+          "source": "ISB",
+          "value": 0
+        },
+        {
+          "province": "PE",
+          "year": 2006,
+          "source": "LIGHT",
+          "value": 0
+        },
+        {
+          "province": "PE",
+          "year": 2006,
+          "source": "MB",
+          "value": 0
         },
         {
           "province": "NS",
           "year": 2005,
-          "scenario": "Evolving",
-          "source": "FC",
-          "value": 229.9022
+          "source": "C5",
+          "value": 2.05
+        },
+        {
+          "province": "NS",
+          "year": 2005,
+          "source": "CONDENSATE",
+          "value": 0
+        },
+        {
+          "province": "NS",
+          "year": 2005,
+          "source": "HEAVY",
+          "value": 0
+        },
+        {
+          "province": "NS",
+          "year": 2005,
+          "source": "ISB",
+          "value": 0
+        },
+        {
+          "province": "NS",
+          "year": 2005,
+          "source": "LIGHT",
+          "value": 0
+        },
+        {
+          "province": "NS",
+          "year": 2005,
+          "source": "MB",
+          "value": 0
+        },
+        {
+          "province": "NS",
+          "year": 2006,
+          "source": "C5",
+          "value": 1.91
+        },
+        {
+          "province": "NS",
+          "year": 2006,
+          "source": "CONDENSATE",
+          "value": 0
+        },
+        {
+          "province": "NS",
+          "year": 2006,
+          "source": "HEAVY",
+          "value": 0
+        },
+        {
+          "province": "NS",
+          "year": 2006,
+          "source": "ISB",
+          "value": 0
+        },
+        {
+          "province": "NS",
+          "year": 2006,
+          "source": "LIGHT",
+          "value": 0
+        },
+        {
+          "province": "NS",
+          "year": 2006,
+          "source": "MB",
+          "value": 0
         },
         {
           "province": "NB",
           "year": 2005,
-          "scenario": "Evolving",
-          "source": "FC",
-          "value": 253.0975
+          "source": "C5",
+          "value": 0
+        },
+        {
+          "province": "NB",
+          "year": 2005,
+          "source": "CONDENSATE",
+          "value": 0
+        },
+        {
+          "province": "NB",
+          "year": 2005,
+          "source": "HEAVY",
+          "value": 0
+        },
+        {
+          "province": "NB",
+          "year": 2005,
+          "source": "ISB",
+          "value": 0
+        },
+        {
+          "province": "NB",
+          "year": 2005,
+          "source": "LIGHT",
+          "value": 0
+        },
+        {
+          "province": "NB",
+          "year": 2005,
+          "source": "MB",
+          "value": 0
+        },
+        {
+          "province": "NB",
+          "year": 2006,
+          "source": "C5",
+          "value": 0
+        },
+        {
+          "province": "NB",
+          "year": 2006,
+          "source": "CONDENSATE",
+          "value": 0
+        },
+        {
+          "province": "NB",
+          "year": 2006,
+          "source": "HEAVY",
+          "value": 0
+        },
+        {
+          "province": "NB",
+          "year": 2006,
+          "source": "ISB",
+          "value": 0
+        },
+        {
+          "province": "NB",
+          "year": 2006,
+          "source": "LIGHT",
+          "value": 0
+        },
+        {
+          "province": "NB",
+          "year": 2006,
+          "source": "MB",
+          "value": 0
         },
         {
           "province": "QC",
           "year": 2005,
-          "scenario": "Evolving",
-          "source": "FC",
-          "value": 1848.2299
+          "source": "C5",
+          "value": 0
+        },
+        {
+          "province": "QC",
+          "year": 2005,
+          "source": "CONDENSATE",
+          "value": 0
+        },
+        {
+          "province": "QC",
+          "year": 2005,
+          "source": "HEAVY",
+          "value": 0
+        },
+        {
+          "province": "QC",
+          "year": 2005,
+          "source": "ISB",
+          "value": 0
+        },
+        {
+          "province": "QC",
+          "year": 2005,
+          "source": "LIGHT",
+          "value": 0
+        },
+        {
+          "province": "QC",
+          "year": 2005,
+          "source": "MB",
+          "value": 0
+        },
+        {
+          "province": "QC",
+          "year": 2006,
+          "source": "C5",
+          "value": 0
+        },
+        {
+          "province": "QC",
+          "year": 2006,
+          "source": "CONDENSATE",
+          "value": 0
+        },
+        {
+          "province": "QC",
+          "year": 2006,
+          "source": "HEAVY",
+          "value": 0
+        },
+        {
+          "province": "QC",
+          "year": 2006,
+          "source": "ISB",
+          "value": 0
+        },
+        {
+          "province": "QC",
+          "year": 2006,
+          "source": "LIGHT",
+          "value": 0
+        },
+        {
+          "province": "QC",
+          "year": 2006,
+          "source": "MB",
+          "value": 0
         },
         {
           "province": "ON",
           "year": 2005,
-          "scenario": "Evolving",
-          "source": "FC",
-          "value": 3045.0494
+          "source": "C5",
+          "value": 0
+        },
+        {
+          "province": "ON",
+          "year": 2005,
+          "source": "CONDENSATE",
+          "value": 0
+        },
+        {
+          "province": "ON",
+          "year": 2005,
+          "source": "HEAVY",
+          "value": 0
+        },
+        {
+          "province": "ON",
+          "year": 2005,
+          "source": "ISB",
+          "value": 0
+        },
+        {
+          "province": "ON",
+          "year": 2005,
+          "source": "LIGHT",
+          "value": 0.38
+        },
+        {
+          "province": "ON",
+          "year": 2005,
+          "source": "MB",
+          "value": 0
+        },
+        {
+          "province": "ON",
+          "year": 2006,
+          "source": "C5",
+          "value": 0
+        },
+        {
+          "province": "ON",
+          "year": 2006,
+          "source": "CONDENSATE",
+          "value": 0
+        },
+        {
+          "province": "ON",
+          "year": 2006,
+          "source": "HEAVY",
+          "value": 0
+        },
+        {
+          "province": "ON",
+          "year": 2006,
+          "source": "ISB",
+          "value": 0
+        },
+        {
+          "province": "ON",
+          "year": 2006,
+          "source": "LIGHT",
+          "value": 0.34
+        },
+        {
+          "province": "ON",
+          "year": 2006,
+          "source": "MB",
+          "value": 0
         },
         {
           "province": "MB",
           "year": 2005,
-          "scenario": "Evolving",
-          "source": "FC",
-          "value": 288.9049
+          "source": "C5",
+          "value": 0
+        },
+        {
+          "province": "MB",
+          "year": 2005,
+          "source": "CONDENSATE",
+          "value": 0
+        },
+        {
+          "province": "MB",
+          "year": 2005,
+          "source": "HEAVY",
+          "value": 0
+        },
+        {
+          "province": "MB",
+          "year": 2005,
+          "source": "ISB",
+          "value": 0
+        },
+        {
+          "province": "MB",
+          "year": 2005,
+          "source": "LIGHT",
+          "value": 2.203485
+        },
+        {
+          "province": "MB",
+          "year": 2005,
+          "source": "MB",
+          "value": 0
+        },
+        {
+          "province": "MB",
+          "year": 2006,
+          "source": "C5",
+          "value": 0
+        },
+        {
+          "province": "MB",
+          "year": 2006,
+          "source": "CONDENSATE",
+          "value": 0
+        },
+        {
+          "province": "MB",
+          "year": 2006,
+          "source": "HEAVY",
+          "value": 0
+        },
+        {
+          "province": "MB",
+          "year": 2006,
+          "source": "ISB",
+          "value": 0
+        },
+        {
+          "province": "MB",
+          "year": 2006,
+          "source": "LIGHT",
+          "value": 3.398162
+        },
+        {
+          "province": "MB",
+          "year": 2006,
+          "source": "MB",
+          "value": 0
         },
         {
           "province": "SK",
           "year": 2005,
-          "scenario": "Evolving",
-          "source": "FC",
-          "value": 534.421
+          "source": "C5",
+          "value": 0.09
+        },
+        {
+          "province": "SK",
+          "year": 2005,
+          "source": "CONDENSATE",
+          "value": 0
+        },
+        {
+          "province": "SK",
+          "year": 2005,
+          "source": "HEAVY",
+          "value": 66.520778
+        },
+        {
+          "province": "SK",
+          "year": 2005,
+          "source": "ISB",
+          "value": 0
+        },
+        {
+          "province": "SK",
+          "year": 2005,
+          "source": "LIGHT",
+          "value": 0.096492
+        },
+        {
+          "province": "SK",
+          "year": 2005,
+          "source": "MB",
+          "value": 0
+        },
+        {
+          "province": "SK",
+          "year": 2006,
+          "source": "C5",
+          "value": 0.1
+        },
+        {
+          "province": "SK",
+          "year": 2006,
+          "source": "CONDENSATE",
+          "value": 0
+        },
+        {
+          "province": "SK",
+          "year": 2006,
+          "source": "HEAVY",
+          "value": 67.372373
+        },
+        {
+          "province": "SK",
+          "year": 2006,
+          "source": "ISB",
+          "value": 0
+        },
+        {
+          "province": "SK",
+          "year": 2006,
+          "source": "LIGHT",
+          "value": 0.679748
+        },
+        {
+          "province": "SK",
+          "year": 2006,
+          "source": "MB",
+          "value": 0
         },
         {
           "province": "BC",
           "year": 2005,
-          "scenario": "Evolving",
-          "source": "FC",
-          "value": 1259.11
-
+          "source": "C5",
+          "value": 1.21
+        },
+        {
+          "province": "BC",
+          "year": 2005,
+          "source": "CONDENSATE",
+          "value": 0.77
+        },
+        {
+          "province": "BC",
+          "year": 2005,
+          "source": "HEAVY",
+          "value": 0
+        },
+        {
+          "province": "BC",
+          "year": 2005,
+          "source": "ISB",
+          "value": 0
+        },
+        {
+          "province": "BC",
+          "year": 2005,
+          "source": "LIGHT",
+          "value": 4.645081
+        },
+        {
+          "province": "BC",
+          "year": 2005,
+          "source": "MB",
+          "value": 0
+        },
+        {
+          "province": "BC",
+          "year": 2006,
+          "source": "C5",
+          "value": 1.25
+        },
+        {
+          "province": "BC",
+          "year": 2006,
+          "source": "CONDENSATE",
+          "value": 0.79
+        },
+        {
+          "province": "BC",
+          "year": 2006,
+          "source": "HEAVY",
+          "value": 0
+        },
+        {
+          "province": "BC",
+          "year": 2006,
+          "source": "ISB",
+          "value": 0
+        },
+        {
+          "province": "BC",
+          "year": 2006,
+          "source": "LIGHT",
+          "value": 4.506633
+        },
+        {
+          "province": "BC",
+          "year": 2006,
+          "source": "MB",
+          "value": 0
         },
         {
           "province": "YT",
           "year": 2005,
-          "scenario": "Evolving",
-          "source": "FC",
-          "value": 8.1578
+          "source": "C5",
+          "value": 0
+        },
+        {
+          "province": "YT",
+          "year": 2005,
+          "source": "CONDENSATE",
+          "value": 0
+        },
+        {
+          "province": "YT",
+          "year": 2005,
+          "source": "HEAVY",
+          "value": 0
+        },
+        {
+          "province": "YT",
+          "year": 2005,
+          "source": "ISB",
+          "value": 0
+        },
+        {
+          "province": "YT",
+          "year": 2005,
+          "source": "LIGHT",
+          "value": 0
+        },
+        {
+          "province": "YT",
+          "year": 2005,
+          "source": "MB",
+          "value": 0
+        },
+        {
+          "province": "YT",
+          "year": 2006,
+          "source": "C5",
+          "value": 0
+        },
+        {
+          "province": "YT",
+          "year": 2006,
+          "source": "CONDENSATE",
+          "value": 0
+        },
+        {
+          "province": "YT",
+          "year": 2006,
+          "source": "HEAVY",
+          "value": 0
+        },
+        {
+          "province": "YT",
+          "year": 2006,
+          "source": "ISB",
+          "value": 0
+        },
+        {
+          "province": "YT",
+          "year": 2006,
+          "source": "LIGHT",
+          "value": 0
+        },
+        {
+          "province": "YT",
+          "year": 2006,
+          "source": "MB",
+          "value": 0
         },
         {
           "province": "NT",
           "year": 2005,
-          "scenario": "Evolving",
-          "source": "FC",
-          "value": 18.7046
+          "source": "C5",
+          "value": 0
+        },
+        {
+          "province": "NT",
+          "year": 2005,
+          "source": "CONDENSATE",
+          "value": 0
+        },
+        {
+          "province": "NT",
+          "year": 2005,
+          "source": "HEAVY",
+          "value": 0
+        },
+        {
+          "province": "NT",
+          "year": 2005,
+          "source": "ISB",
+          "value": 0
+        },
+        {
+          "province": "NT",
+          "year": 2005,
+          "source": "LIGHT",
+          "value": 2.988
+        },
+        {
+          "province": "NT",
+          "year": 2005,
+          "source": "MB",
+          "value": 0
+        },
+        {
+          "province": "NT",
+          "year": 2006,
+          "source": "C5",
+          "value": 0
+        },
+        {
+          "province": "NT",
+          "year": 2006,
+          "source": "CONDENSATE",
+          "value": 0
+        },
+        {
+          "province": "NT",
+          "year": 2006,
+          "source": "HEAVY",
+          "value": 0
+        },
+        {
+          "province": "NT",
+          "year": 2006,
+          "source": "ISB",
+          "value": 0
+        },
+        {
+          "province": "NT",
+          "year": 2006,
+          "source": "LIGHT",
+          "value": 2.966
+        },
+        {
+          "province": "NT",
+          "year": 2006,
+          "source": "MB",
+          "value": 0
         },
         {
           "province": "NU",
           "year": 2005,
-          "scenario": "Evolving",
-          "source": "FC",
-          "value": 3.6129
+          "source": "C5",
+          "value": 0
+        },
+        {
+          "province": "NU",
+          "year": 2005,
+          "source": "CONDENSATE",
+          "value": 0
+        },
+        {
+          "province": "NU",
+          "year": 2005,
+          "source": "HEAVY",
+          "value": 0
+        },
+        {
+          "province": "NU",
+          "year": 2005,
+          "source": "ISB",
+          "value": 0
+        },
+        {
+          "province": "NU",
+          "year": 2005,
+          "source": "LIGHT",
+          "value": 0
+        },
+        {
+          "province": "NU",
+          "year": 2005,
+          "source": "MB",
+          "value": 0
+        },
+        {
+          "province": "NU",
+          "year": 2006,
+          "source": "C5",
+          "value": 0
+        },
+        {
+          "province": "NU",
+          "year": 2006,
+          "source": "CONDENSATE",
+          "value": 0
+        },
+        {
+          "province": "NU",
+          "year": 2006,
+          "source": "HEAVY",
+          "value": 0
+        },
+        {
+          "province": "NU",
+          "year": 2006,
+          "source": "ISB",
+          "value": 0
+        },
+        {
+          "province": "NU",
+          "year": 2006,
+          "source": "LIGHT",
+          "value": 0
+        },
+        {
+          "province": "NU",
+          "year": 2006,
+          "source": "MB",
+          "value": 0
         }
       ],
       "prices": [

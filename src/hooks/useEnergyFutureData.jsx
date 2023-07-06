@@ -89,9 +89,10 @@ export default () => {
    * FIXME: these are temporary special cases for the Electricity and Oil and Gas pages.
    */
   const regions = useMemo(() => {
-    if ((config.view === 'region') && (config.provinces[0] === 'ALL')) {
+    if (config.view === 'region' && config.provinces[0] === 'ALL') {
       return regionOrder;
-    } if (config.view === 'region' || config.page === 'by-sector') {
+    }
+    if (config.view === 'region' || config.page === 'by-sector') {
       return config.provinces;
     }
 
@@ -178,6 +179,7 @@ export default () => {
     disabledSources: unavailability('source'),
     // TODO: Remove after refactoring to move processedData chart structure data
     // into individual chart components
+    rawData: data?.resources,
     data: filteredData && filteredData.find(row => row.value !== 0)
       ? filteredData
       : null,

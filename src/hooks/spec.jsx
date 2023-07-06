@@ -18,7 +18,7 @@ const BASE_STATE = {
   noCompare: false,
   page: 'by-sector',
   provinceOrder: ['YT', 'SK', 'QC', 'PE', 'ON', 'NU', 'NT', 'NS', 'NL', 'NB', 'MB', 'BC', 'AB'],
-  provinces: ['ALL'],
+  provinces: ['YT', 'SK', 'QC', 'PE', 'ON', 'NU', 'NT', 'NS', 'NL', 'NB', 'MB', 'BC', 'AB'],
   scenarios: ['Reference'],
   sector: 'ALL',
   sourceOrder: ['BIO', 'COAL', 'ELECTRICITY', 'GAS', 'OIL'],
@@ -172,7 +172,7 @@ describe('Component|hooks', () => {
     };
 
     test('should load hook content', async () => {
-      const parseRegions = content => Object.keys(JSON.parse(content).data[0]).filter(key => key !== 'year');
+      const parseRegions = content => JSON.parse(content).data;
       const expectedYear = { min: 2005, forecastStart: 2019, max: 2005 };
 
       // by-region page
@@ -180,27 +180,27 @@ describe('Component|hooks', () => {
         wrapper = mount(getComponent({ page: 'by-region' }));
         await new Promise(resolve => setTimeout(resolve, 100));
         wrapper.update();
-        expect(parseRegions(wrapper.text())).toHaveLength(mockData.data.resources.length);
+        expect(parseRegions(wrapper.text())).toHaveLength(mockData.baseData.data.resources.length);
 
         wrapper = mount(getComponent({ page: 'by-region', mainSelection: 'oilProduction' }));
         await new Promise(resolve => setTimeout(resolve));
         wrapper.update();
-        expect(parseRegions(wrapper.text())).toHaveLength(mockData.data.resources.length);
+        expect(parseRegions(wrapper.text())).toHaveLength(mockData.baseData.data.resources.length);
 
         wrapper = mount(getComponent({ page: 'by-region', mainSelection: 'gasProduction' }));
         await new Promise(resolve => setTimeout(resolve));
         wrapper.update();
-        expect(parseRegions(wrapper.text())).toHaveLength(mockData.data.resources.length);
+        expect(parseRegions(wrapper.text())).toHaveLength(mockData.baseData.data.resources.length);
 
         wrapper = mount(getComponent({ page: 'by-region', mainSelection: 'electricityGeneration' }));
         await new Promise(resolve => setTimeout(resolve));
         wrapper.update();
-        expect(parseRegions(wrapper.text())).toHaveLength(mockData.data.resources.length);
+        expect(parseRegions(wrapper.text())).toHaveLength(mockData.baseData.data.resources.length);
 
         wrapper = mount(getComponent({ page: 'by-region', mainSelection: 'invalid' }));
         await new Promise(resolve => setTimeout(resolve));
         wrapper.update();
-        expect(JSON.parse(wrapper.text()).data).toBeUndefined();
+        expect(JSON.parse(wrapper.text()).data).toBeNull();
       });
 
       // by-sector page and other settings
@@ -209,15 +209,15 @@ describe('Component|hooks', () => {
         await new Promise(resolve => setTimeout(resolve));
         wrapper.update();
 
-        expect(JSON.parse(wrapper.text()).data[0].id).toEqual('BIO');
-        expect(JSON.parse(wrapper.text()).data[0].data).toBeDefined();
+        expect(JSON.parse(wrapper.text()).data[0].source).toEqual('BIO');
+        expect(JSON.parse(wrapper.text()).data[0].value).toBeDefined();
 
         wrapper = mount(getComponent({ sources: ['ALL'] }));
         await new Promise(resolve => setTimeout(resolve));
         wrapper.update();
 
-        expect(JSON.parse(wrapper.text()).data[0].id).toEqual('BIO');
-        expect(JSON.parse(wrapper.text()).data[0].data).toBeDefined();
+        expect(JSON.parse(wrapper.text()).data[0].source).toEqual('BIO');
+        expect(JSON.parse(wrapper.text()).data[0].value).toBeDefined();
       });
 
       // scenarios page
@@ -236,25 +236,24 @@ describe('Component|hooks', () => {
         await new Promise(resolve => setTimeout(resolve));
         wrapper.update();
 
-        expect(JSON.parse(wrapper.text()).data[2005]).toBeDefined();
+        expect(JSON.parse(wrapper.text()).data[0].year).toBeDefined();
         expect(JSON.parse(wrapper.text()).year).toEqual(expectedYear);
 
         wrapper = mount(getComponent({ ...SOURCE_STATE, view: 'region' }));
         await new Promise(resolve => setTimeout(resolve));
         wrapper.update();
 
-        expect(JSON.parse(wrapper.text()).data[2005]).toBeDefined();
+        expect(JSON.parse(wrapper.text()).data[0].year).toBeDefined();
         expect(JSON.parse(wrapper.text()).year).toEqual(expectedYear);
       });
 
       // oil-and-gas page
       await act(async () => {
-        wrapper = mount(getComponent({ page: 'oil-and-gas' }));
+        wrapper = mount(getComponent({ page: 'oil-and-gas', sources: ['LIGHT'] }));
         await new Promise(resolve => setTimeout(resolve));
         wrapper.update();
 
-        expect(JSON.parse(wrapper.text()).data[2005]).toBeDefined();
-        expect(JSON.parse(wrapper.text()).year).toEqual(expectedYear);
+        expect(JSON.parse(wrapper.text()).data[0].year).toBeDefined();
       });
 
       // landing page
@@ -263,7 +262,7 @@ describe('Component|hooks', () => {
         await new Promise(resolve => setTimeout(resolve));
         wrapper.update();
 
-        expect(JSON.parse(wrapper.text()).data).toBeUndefined();
+        expect(JSON.parse(wrapper.text()).data).toBeNull();
       });
     });
   });

@@ -7,10 +7,10 @@ import ReadMe from './README.md';
 
 export const DEFAULT_CONFIG = {
   page: 'electricity',
-  yearId: '2020',
+  yearId: '2023',
   view: 'region',
   unit: 'petajoules',
-  provinces: ['ON', 'NB',],
+  provinces: ['ON', 'NB'],
   provinceOrder: ['YT', 'SK', 'QC', 'PE', 'ON', 'NU', 'NT', 'NS', 'NL', 'NB', 'MB', 'BC', 'AB'],
   sources: ['COAL', 'HYDRO', 'NUCLEAR'],
   sourceOrder: ['COAL', 'HYDRO', 'NUCLEAR'],
@@ -66,14 +66,20 @@ export const MOCK_DATA_SINGLE = Array(46).fill(undefined).map((_, i) => i).reduc
   },
 }), {});
 
-const getComponent = (
+const getComponent = () => (
   <div style={{ height: 500, width: '100%' }}>
     <Electricity />
   </div>
 );
 
+const STORYBOOK_CONFIG_MULTIPLE = {
+  ...DEFAULT_CONFIG,
+  provinces: ['YT', 'SK', 'QC', 'PE', 'ON', 'NU', 'NT', 'NS', 'NL', 'NB', 'MB', 'BC', 'AB'],
+};
+
 storiesForComponent('Pages|Electricity', module, ReadMe)
   .addDecorator(withConfigAndGQL)
-  .addParameters({ mockConfigBasic: DEFAULT_CONFIG })
-  .add('multiple bubbles', () => getComponent(MOCK_DATA_REGION))
-  .add('single bubble', () => getComponent(MOCK_DATA_SINGLE));
+  .addParameters({ mockConfigBasic: STORYBOOK_CONFIG_MULTIPLE })
+  .add('multiple bubbles', () => getComponent())
+  .addParameters({ mockConfigExtra: { provinces: ['ON'] } })
+  .add('single bubble', () => getComponent());

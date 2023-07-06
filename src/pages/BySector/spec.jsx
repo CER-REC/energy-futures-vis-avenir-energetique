@@ -5,7 +5,7 @@ import { ResponsiveLine } from '@nivo/line';
 
 import BySector from '.';
 import { TestContainer, getRendered } from '../../tests/utilities';
-import {DEFAULT_CONFIG, BASE_DATA, GENERATE_DATA} from './stories';
+import { DEFAULT_CONFIG, BASE_DATA, GENERATE_DATA } from './stories';
 import YearSliceTooltip from '../../components/YearSliceTooltip';
 import UnavailableDataMessage from '../../components/UnavailableDataMessage';
 
@@ -19,7 +19,7 @@ const MOCK_DATA = [
   { id: 'GASOLINE', data: GENERATE_DATA('GASOLINE'), color: BASE_DATA.GASOLINE.color },
 ];
 
-const getComponent = (props) => (
+const getComponent = props => (
   <TestContainer mockConfig={{ ...DEFAULT_CONFIG, ...props }}>
     <BySector />
   </TestContainer>

@@ -68,4 +68,4 @@ export const MOCK_DATA = [{
 storiesForComponent('Pages|Scenarios', module, ReadMe)
   .addDecorator(withConfigAndGQL)
   .addParameters({ mockConfigBasic: DEFAULT_CONFIG })
-  .add('default', () => <Scenarios data={MOCK_DATA} year={{ min: 2005, max: 2050, forecastStart: 2020 }} />);
+  .add('default', () => <Scenarios />);

@@ -5,9 +5,9 @@ import { Typography, Paper } from '@material-ui/core';
 
 import Electricity from '.';
 import { TestContainer, getRendered } from '../../tests/utilities';
-import { DEFAULT_CONFIG, MOCK_DATA_REGION, MOCK_DATA_SINGLE, MOCK_DATA_SOURCE, MOCK_YEAR } from './stories';
+import { DEFAULT_CONFIG, MOCK_DATA_REGION, MOCK_DATA_SOURCE } from './stories';
 import YearSliceTooltip from '../../components/YearSliceTooltip';
-import UnavailableDataMessage from "../../components/UnavailableDataMessage";
+import UnavailableDataMessage from '../../components/UnavailableDataMessage';
 
 const SOURCE_TO_TEXT = {
   HYDRO: 'Hydro / Wave / Tidal',
@@ -124,7 +124,7 @@ describe('Page|Electricity', () => {
    */
   describe('Test responsiveness and single bubble', () => {
     test('should render in tablet mode', async () => {
-      wrapper = mount(getComponent({ provinces: [ 'ON' ], baseYear: 2005 }));
+      wrapper = mount(getComponent({ provinces: ['ON'], baseYear: 2005 }));
       await act(async () => {
         await new Promise(resolve => setTimeout(resolve));
         wrapper.update();
@@ -139,7 +139,7 @@ describe('Page|Electricity', () => {
     });
 
     test('should render in desktop mode', async () => {
-      wrapper = mount(getComponent({ provinces: [ 'ON' ], baseYear: 2005 }, true));
+      wrapper = mount(getComponent({ provinces: ['ON'], baseYear: 2005 }, true));
       await act(async () => {
         await new Promise(resolve => setTimeout(resolve));
         wrapper.update();
