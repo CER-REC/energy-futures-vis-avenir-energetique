@@ -25,10 +25,13 @@ const useStyles = makeStyles(theme => ({
   },
   item: {
     fontSize: DROPDOWN_FONT_SIZE,
-    '&.Mui-selected': { backgroundColor: 'transparent' },
-    '&:hover, &.Mui-selected:hover, &.Mui-focusVisible': {
+    '&.Mui-selected': {
       backgroundColor: theme.palette.primary.main,
       color: 'white',
+    },
+    '&:hover, &.Mui-selected:hover, &.Mui-focusVisible': {
+      backgroundColor: '#F2EFEF',
+      color: '#5D5D5D',
     },
   },
   menu: {
