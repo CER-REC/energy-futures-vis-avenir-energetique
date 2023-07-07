@@ -56,6 +56,7 @@ const useStyles = makeStyles(theme => ({
   },
   labelContainer: {
     ...theme.mixins.labelContainer,
+    ...theme.mixins.unitContainer,
   },
 }));
 
@@ -185,7 +186,7 @@ const PageLayout = ({
                 {chartTitle}
               </Typography>
             </Grid>
-            <Grid item className={classes.labelContainer} style={{ display: 'flex', alignItems: 'center' }}>
+            <Grid item className={classes.labelContainer}>
               <Typography variant="subtitle1">{intl.formatMessage({ id: 'components.pageLayout.unit' })}</Typography>
               <HintUnit />
               <DropDown

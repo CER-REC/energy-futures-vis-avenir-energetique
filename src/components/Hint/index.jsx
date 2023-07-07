@@ -25,7 +25,7 @@ const useStyles = makeStyles(theme => createStyles({
   },
   hint: {
     height: 28,
-    margin: '4px 10px 4px 2px',
+    margin: '4px 5px 4px 2px',
     padding: 0,
     color: theme.palette.secondary.light,
     '&.standalone': {

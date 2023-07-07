@@ -10,10 +10,6 @@ import HintPrice from '../HintPrice';
 const selectWidth = 200;
 
 const useStyles = makeStyles(theme => ({
-  root: {
-    alignItems: 'center',
-    display: 'flex',
-  },
   select: {
     width: selectWidth,
     textAlign: 'center',
@@ -28,6 +24,7 @@ const useStyles = makeStyles(theme => ({
   },
   labelContainer: {
     ...theme.mixins.labelContainer,
+    ...theme.mixins.unitContainer,
   },
 }));
 
@@ -43,7 +40,7 @@ const PriceSelect = () => {
   ]);
 
   return (
-    <div className={`${classes.root} ${classes.labelContainer}`}>
+    <div className={classes.labelContainer}>
       <Typography variant="subtitle1">
         {intl.formatMessage({ id: 'common.benchmarkPrices' })}
       </Typography>

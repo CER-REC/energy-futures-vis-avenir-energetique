@@ -64,6 +64,11 @@ const theme = createMuiTheme({
     labelContainer: {
       paddingRight: 0,
     },
+    unitContainer: {
+      alignItems: 'center',
+      display: 'flex',
+      paddingBottom: 5,
+    },
     yearSliderLabels: {
       display: 'flex',
       position: 'absolute',
