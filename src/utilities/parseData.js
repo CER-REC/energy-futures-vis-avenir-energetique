@@ -160,10 +160,20 @@ export const getTicks = (highest, lowest = 0) => {
   const max = Math.ceil(highest / step) * step;
   const min = lowest === 0 ? 0 : Math.floor(lowest / step) * step - step;
 
+  let fixedVal = 0;
+
+  if (step < 1 && step !== 0) {
+    let incrementer = step;
+    while (incrementer < 1) {
+      incrementer *= 10;
+      fixedVal += 1;
+    }
+  }
+
   const ticks = [];
   for (let i = min; i <= max;) {
     ticks.push(i);
-    i = parseFloat((i + step).toFixed(3));
+    i = parseFloat((i + step).toFixed(fixedVal));
   }
 
   return ticks;
