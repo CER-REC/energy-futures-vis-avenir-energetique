@@ -90,7 +90,7 @@ const Scenarios = ({ data, year }) => {
       const scenario = nodeData.find(item => item.id === key);
       const yearData = scenario.data.find(obj => obj.x === currYear);
       currYearData.push({
-        name: intl.formatMessage({id: `common.scenarios.${scenario.id}`}),
+        name: intl.formatMessage({ id: `common.scenarios.${scenario.id}` }),
         value: yearData?.y,
         color: SCENARIO_COLOR[scenario.id],
       });
