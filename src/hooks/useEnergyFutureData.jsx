@@ -81,24 +81,8 @@ export default () => {
   );
   const {
     yearIdIterations,
-    regions: { order: regionOrder },
     sources: { [sourceType]: source },
   } = useAPI();
-
-  /**
-   * FIXME: these are temporary special cases for the Electricity and Oil and Gas pages.
-   */
-  const regions = useMemo(() => {
-    if (config.view === 'region' && config.provinces[0] === 'ALL') {
-      return regionOrder;
-    }
-    if (config.view === 'region' || config.page === 'by-sector') {
-      return config.provinces;
-    }
-
-    regionOrder.push('ALL');
-    return regionOrder;
-  }, [config.view, config.provinces, config.page, regionOrder]);
 
   const sources = useMemo(() => {
     if ((config.view === 'source') && (config.sources[0] === 'ALL')) {
@@ -118,14 +102,12 @@ export default () => {
     variables: {
       scenarios: config.scenarios,
       iteration: yearIdIterations[config.yearId]?.id || '',
-      regions,
       sectors: config.sector,
       sources,
       priceSource: config.priceSource,
     },
     // do nothing if the request is invalid
     skip: !query
-      || !regions || regions.length === 0
       || (sourceType && (!config.sources || config.sources.length === 0))
       || !config.scenarios || config.scenarios.length === 0,
   });
@@ -148,8 +130,22 @@ export default () => {
     let selectedProvinces = config.provinces;
     let selectedSources = config.sources;
 
-    if (config.page === 'electricity' || (config.view === 'region' && config.provinces[0] === 'ALL')) selectedProvinces = config.provinceOrder;
-    if (config.page === 'electricity' || (config.view === 'source' && config.sources[0] === 'ALL')) selectedSources = config.sourceOrder;
+    if (config.page === 'electricity') {
+      if (config.view === 'region') {
+        selectedProvinces = config.provinces[0] === 'ALL'
+          ? config.provinceOrder
+          : config.provinces;
+        selectedSources = config.sourceOrder;
+      } else if (config.view === 'source') {
+        selectedSources = config.sources[0] === 'ALL'
+          ? config.sourceOrder
+          : config.sources;
+        selectedProvinces = config.provinceOrder;
+      }
+    } else {
+      if (config.view === 'region' && config.provinces[0] === 'ALL') selectedProvinces = config.provinceOrder;
+      if (config.view === 'source' && config.sources[0] === 'ALL') selectedSources = config.sourceOrder;
+    }
 
     return data?.resources
       .filter(item => !item.province || selectedProvinces?.includes(item.province))
@@ -179,7 +175,6 @@ export default () => {
     disabledSources: unavailability('source'),
     // TODO: Remove after refactoring to move processedData chart structure data
     // into individual chart components
-    rawData: data?.resources,
     data: filteredData && filteredData.find(row => row.value !== 0)
       ? filteredData
       : null,

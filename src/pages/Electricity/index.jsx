@@ -137,6 +137,26 @@ const COORD = {
   COAL: { top: '45%', left: '72%' },
 };
 
+const processData = (data, view, unitConversion) => {
+  const filteredData = (data || [])
+    .reduce((result, entry) => ({
+      ...result,
+      [entry.year]: [...(result[entry.year] || []), entry],
+    }), {});
+  Object.keys(filteredData).forEach((yearKey) => {
+    filteredData[yearKey] = [...filteredData[yearKey]].reduce((result, entry) => (entry.value ? ({
+      ...result,
+      [view === 'source' ? entry.source : entry.province]: [
+        ...(result[view === 'source' ? entry.source : entry.province] || []), {
+          name: view === 'source' ? entry.province : entry.source,
+          value: entry.value * unitConversion,
+        },
+      ],
+    }) : result), {});
+  });
+  return filteredData;
+};
+
 const Electricity = () => {
   const classes = useStyles();
   const intl = useIntl();
@@ -162,32 +182,7 @@ const Electricity = () => {
     single: desktop ? 20 : 10,
   }), [desktop]);
 
-  const dataByYear = useMemo(() => {
-    const provinces = config.provinces[0] === 'ALL' ? config.provinceOrder : config.provinces;
-    const sources = config.sources[0] === 'ALL' ? config.sourceOrder : config.sources;
-
-    const filteredData = (data || [])
-      .filter(entry => (config.view === 'source'
-        ? sources.includes(entry.source) && entry.province !== 'ALL' && entry.source !== 'ALL'
-        : provinces.includes(entry.province) && entry.province !== 'ALL' && entry.source !== 'ALL'))
-      .reduce((result, entry) => ({
-        ...result,
-        [entry.year]: [...(result[entry.year] || []), entry],
-      }), {});
-    Object.keys(filteredData).forEach((yearKey) => {
-      filteredData[yearKey] = [...filteredData[yearKey]].reduce((result, entry) => (entry.value ? ({
-        ...result,
-        [config.view === 'source' ? entry.source : entry.province]: [
-          ...(result[config.view === 'source' ? entry.source : entry.province] || []), {
-            name: config.view === 'source' ? entry.province : entry.source,
-            value: entry.value * unitConversion,
-          },
-        ],
-      }) : result), {});
-    });
-    return filteredData;
-  }, [config.provinces, config.provinceOrder, config.sources,
-    config.sourceOrder, config.view, data, unitConversion]);
+  const dataByYear = processData(data, config.view, unitConversion);
 
   const { totals, max, min } = useMemo(() => {
     if (!dataByYear || !dataByYear[currYear]) {

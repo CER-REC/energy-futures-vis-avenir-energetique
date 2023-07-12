@@ -22,6 +22,24 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
+const processData = (data) => {
+  if (!data) return null;
+
+  const byYear = data.reduce((yearEmissions, emission) => {
+    const yearSources = { ...yearEmissions };
+    const yearKey = emission.year;
+    const { source } = emission;
+
+    yearSources[yearKey] = yearSources[yearKey] || {};
+    yearSources[yearKey][source] = yearSources[yearKey][source] || 0;
+    yearSources[yearKey][source] += emission.value;
+
+    return yearSources;
+  }, {});
+
+  return Object.keys(byYear).map(yearKey => ({ year: yearKey, ...byYear[yearKey] }));
+};
+
 const Emissions = () => {
   const { sources: { greenhouseGas: sources } } = useAPI();
   const { data, year } = useEnergyFutureData();
@@ -67,23 +85,7 @@ const Emissions = () => {
     );
   }, [config.scenarios, config.unit, intl, sources.colors, sources.order]);
 
-  const processedData = useMemo(() => {
-    if (!data) return null;
-
-    const byYear = data.reduce((yearEmissions, emission) => {
-      const yearSources = { ...yearEmissions };
-      const yearKey = emission.year;
-      const { source } = emission;
-
-      yearSources[yearKey] = yearSources[yearKey] || {};
-      yearSources[yearKey][source] = yearSources[yearKey][source] || 0;
-      yearSources[yearKey][source] += emission.value;
-
-      return yearSources;
-    }, {});
-
-    return Object.keys(byYear).map(yearKey => ({ year: yearKey, ...byYear[yearKey] }));
-  }, [data]);
+  const processedData = processData(data);
 
   const ticks = useMemo(() => {
     const highest = processedData && Math.max(...processedData

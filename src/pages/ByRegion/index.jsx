@@ -21,6 +21,26 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
+const processData = (data, unitConversion) => {
+  if (!data) return null;
+
+  const byYear = data?.reduce((accu, curr) => {
+    const result = { ...accu };
+    if (!result[curr.year]) {
+      result[curr.year] = {};
+    }
+    if (!result[curr.year][curr.province]) {
+      result[curr.year][curr.province] = 0;
+    }
+    result[curr.year][curr.province] += (
+      curr.value * unitConversion
+    );
+    return result;
+  }, {});
+
+  return Object.keys(byYear).map(yearKey => ({ year: yearKey, ...byYear[yearKey] }));
+};
+
 const ByRegion = () => {
   const { regions } = useAPI();
   const { config } = useConfig();
@@ -66,25 +86,7 @@ const ByRegion = () => {
     );
   }, [config.scenarios, config.unit, intl, regions.colors, config.provinceOrder]);
 
-  const processedData = useMemo(() => {
-    if (!data) return null;
-
-    const byYear = data?.reduce((accu, curr) => {
-      const result = { ...accu };
-      if (!result[curr.year]) {
-        result[curr.year] = {};
-      }
-      if (!result[curr.year][curr.province]) {
-        result[curr.year][curr.province] = 0;
-      }
-      result[curr.year][curr.province] += (
-        curr.value * unitConversion
-      );
-      return result;
-    }, {});
-
-    return Object.keys(byYear).map(yearKey => ({ year: yearKey, ...byYear[yearKey] }));
-  }, [data, unitConversion]);
+  const processedData = processData(data, unitConversion);
 
   const ticks = useMemo(() => {
     const highest = processedData && Math.max(...processedData

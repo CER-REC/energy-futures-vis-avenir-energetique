@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useCallback, Children, cloneElement } from 'react';
+import React, { useEffect, useMemo, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles, Grid, Typography, CircularProgress } from '@material-ui/core';
 import Alert from '@material-ui/lab/Alert';
@@ -76,9 +76,6 @@ const PageLayout = ({
   const { config, configDispatch } = useConfig();
   const { loading, error, disabledRegions, disabledSources, year } = useEnergyFutureData();
 
-  // Dimension of the viz bounding box
-  const [vizDimension, setVizDimension] = useState(undefined);
-
   /**
    * Update baseYear and compareYear if they are not valid.
    * TODO: this can be move into the reducer if it has year min / max values.
@@ -97,14 +94,6 @@ const PageLayout = ({
   const type = useMemo(
     () => PAGES.find(page => page.id === config.page).sourceTypes?.[config.mainSelection],
     [config.page, config.mainSelection],
-  );
-
-  /**
-   * Genenate the DOM node which contains the visualization.
-   */
-  const vis = useMemo(
-    () => Children.map(children, c => c && cloneElement(c, { vizDimension })),
-    [children, vizDimension],
   );
 
   /**
@@ -136,15 +125,6 @@ const PageLayout = ({
     () => `calc(100% - ${((showSource ? 1 : 0) + (showRegion ? 1 : 0)) * 70}px`,
     [showSource, showRegion],
   );
-
-  /**
-   * A ref used to record the bounding box dimension of the visualization container in pixels.
-   */
-  const vizRef = useCallback((node) => {
-    if (node !== null) {
-      setVizDimension(node.getBoundingClientRect());
-    }
-  }, []);
 
   const chartTitle = useChartTitle();
 
@@ -235,11 +215,11 @@ const PageLayout = ({
               </Grid>
             )}
             <Grid container item direction="column" style={{ width: vizWidth }}>
-              {vis?.length && vis?.length > 0 && (
+              {children?.length && children?.length > 0 && (
                 <Grid item className={classes.graph}>
                   {loading && <CircularProgress color="primary" size={66} />}
                   {error && <Alert severity="error"><AlertTitle>Error</AlertTitle>{error}</Alert>}
-                  {!loading && !error && <div ref={vizRef} className={classes.vis}>{vis}</div>}
+                  {!loading && !error && <div className={classes.vis}>{children}</div>}
                 </Grid>
               )}
             </Grid>

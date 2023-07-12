@@ -5,7 +5,7 @@ import { Typography, Paper } from '@material-ui/core';
 
 import Electricity from '.';
 import { TestContainer, getRendered } from '../../tests/utilities';
-import { DEFAULT_CONFIG, MOCK_DATA_REGION, MOCK_DATA_SOURCE } from './stories';
+import DEFAULT_CONFIG from './stories';
 import YearSliceTooltip from '../../components/YearSliceTooltip';
 import UnavailableDataMessage from '../../components/UnavailableDataMessage';
 
@@ -14,6 +14,40 @@ const SOURCE_TO_TEXT = {
   NUCLEAR: 'Nuclear',
   COAL: 'Coal & Coke',
 };
+
+const MOCK_DATA_REGION = Array(46).fill(undefined).map((_, i) => i).reduce((data, year) => ({
+  ...data,
+  [2005 + year]: {
+    ON: [
+      { name: 'COAL', value: 28734.08 },
+      { name: 'HYDRO', value: 2316 },
+      { name: 'NUCLEAR', value: 35480 },
+    ].map(type => ({ ...type, value: type.value * (1 + Math.random() / 5) })),
+    NB: [
+      { name: 'HYDRO', value: 3875 },
+      { name: 'COAL', value: 43581.072 },
+      { name: 'NUCLEAR', value: 13157.72 },
+    ].map(type => ({ ...type, value: type.value * (1 + Math.random() / 5) })),
+  },
+}), {});
+
+const MOCK_DATA_SOURCE = Array(46).fill(undefined).map((_, i) => i).reduce((data, year) => ({
+  ...data,
+  [2005 + year]: {
+    HYDRO: [
+      { name: 'ON', value: 2316 },
+      { name: 'NB', value: 3875 },
+    ],
+    NUCLEAR: [
+      { name: 'ON', value: 35480 },
+      { name: 'NB', value: 13157.72 },
+    ],
+    COAL: [
+      { name: 'ON', value: 28734.08 },
+      { name: 'NB', value: 43581.072 },
+    ],
+  },
+}), {});
 
 const getComponent = (props, desktop) => {
   global.matchMedia = media => ({

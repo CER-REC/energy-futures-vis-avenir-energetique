@@ -180,22 +180,22 @@ describe('Component|hooks', () => {
         wrapper = mount(getComponent({ page: 'by-region' }));
         await new Promise(resolve => setTimeout(resolve, 100));
         wrapper.update();
-        expect(parseRegions(wrapper.text())).toHaveLength(mockData.baseData.data.resources.length);
+        expect(parseRegions(wrapper.text())).toHaveLength(mockData.data.resources.length);
 
         wrapper = mount(getComponent({ page: 'by-region', mainSelection: 'oilProduction' }));
         await new Promise(resolve => setTimeout(resolve));
         wrapper.update();
-        expect(parseRegions(wrapper.text())).toHaveLength(mockData.baseData.data.resources.length);
+        expect(parseRegions(wrapper.text())).toHaveLength(mockData.data.resources.length);
 
         wrapper = mount(getComponent({ page: 'by-region', mainSelection: 'gasProduction' }));
         await new Promise(resolve => setTimeout(resolve));
         wrapper.update();
-        expect(parseRegions(wrapper.text())).toHaveLength(mockData.baseData.data.resources.length);
+        expect(parseRegions(wrapper.text())).toHaveLength(mockData.data.resources.length);
 
         wrapper = mount(getComponent({ page: 'by-region', mainSelection: 'electricityGeneration' }));
         await new Promise(resolve => setTimeout(resolve));
         wrapper.update();
-        expect(parseRegions(wrapper.text())).toHaveLength(mockData.baseData.data.resources.length);
+        expect(parseRegions(wrapper.text())).toHaveLength(mockData.data.resources.length);
 
         wrapper = mount(getComponent({ page: 'by-region', mainSelection: 'invalid' }));
         await new Promise(resolve => setTimeout(resolve));

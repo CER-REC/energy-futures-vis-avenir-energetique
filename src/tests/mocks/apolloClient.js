@@ -4,7 +4,9 @@ import { MATCH_ANY_PARAMETERS, WildcardMockLink } from 'wildcard-mock-link';
 
 import * as queries from '../../hooks/queries';
 import iterationsTranslations from './iterationsTranslations.json';
-import mockData from './data.json';
+import baseData from './data.json';
+import electricityData from './electricityData.json';
+import oilProductionData from './oilProductionData.json';
 
 /**
  * mock the query that takes wild cards for testing the useEnergyFutureData hook
@@ -18,19 +20,19 @@ const mocks = [
   ...Object.keys(queries).map(query => !['ITERATIONS_TRANSLATIONS', 'NULL_QUERY', 'OIL_PRODUCTIONS',
     'ELECTRICITY_GENERATIONS_REGION', 'ELECTRICITY_GENERATIONS_SOURCE'].includes(query) && ({
     request: { query: queries[query], variables: MATCH_ANY_PARAMETERS },
-    result: mockData.baseData,
+    result: baseData,
   })).filter(Boolean),
   {
     request: { query: queries.OIL_PRODUCTIONS, variables: MATCH_ANY_PARAMETERS },
-    result: mockData.oilProduction,
+    result: oilProductionData,
   },
   {
     request: { query: queries.ELECTRICITY_GENERATIONS_REGION, variables: MATCH_ANY_PARAMETERS },
-    result: mockData.electricity,
+    result: electricityData,
   },
   {
     request: { query: queries.ELECTRICITY_GENERATIONS_SOURCE, variables: MATCH_ANY_PARAMETERS },
-    result: mockData.electricity,
+    result: electricityData,
   },
 ];
 const link = new WildcardMockLink(mocks, false);

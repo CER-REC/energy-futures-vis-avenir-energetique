@@ -70,7 +70,6 @@ const Scenarios = () => {
   const { config } = useConfig();
   const [upperSlice, setUpperSlice] = useState(null);
   const [lowerSlice, setLowerSlice] = useState(null);
-  // TODO: Refactor useEnergyFutureData hook to use a standard data structure
   const { data, year, unitConversion, prices, priceYear } = useEnergyFutureData();
   const classes = useStyles();
   const priceData = formatLineData(prices, 'scenario');

@@ -31,7 +31,7 @@ const DownloadButton = () => {
     sources: { electricity: { order: sourceOrder } },
   } = useAPI();
   const { config } = useConfig();
-  const { rawData: data, prices } = useEnergyFutureData();
+  const { data, prices } = useEnergyFutureData();
 
   const headers = useMemo(() => ({
     selection: intl.formatMessage({ id: 'common.selection' }).toLowerCase(),

@@ -1,6 +1,5 @@
 import React, { useState, useMemo, useCallback } from 'react';
 import { useIntl } from 'react-intl';
-import PropTypes from 'prop-types';
 import {
   makeStyles, Grid, Typography, Button, Tooltip,
   TableContainer, Table, TableBody, TableRow, TableCell,
@@ -84,11 +83,42 @@ const useStyles = makeStyles(theme => ({
 const MAX_SIZE = 250;
 const TREE_MAP_MARGIN = 4;
 
-const OilAndGas = ({ vizDimension }) => {
+const processData = (data, view, unitConversion) => {
+  const outer = view === 'source' ? 'source' : 'province';
+  const inner = view === 'source' ? 'province' : 'source';
+
+  let baseStructure = data?.reduce((acc, val) => {
+    if (!acc[val.year]) {
+      acc[val.year] = [];
+    }
+    if (!acc[val.year].find(element => element.name === val[outer])) {
+      acc[val.year].push({ name: val[outer], total: 0, children: [] });
+    }
+    return acc;
+  }, {});
+
+  // I am not super happy with the way this logic mutates the baseStructure
+  baseStructure = data?.reduce((acc, val) => {
+    if (val.source !== 'ALL' && val.value > 0) {
+      const entry = acc[val.year].find(e => e.name === val[outer]);
+      entry.children.push({
+        name: val[inner],
+        value: val.value * unitConversion,
+      });
+      entry.total += (val.value * unitConversion);
+    }
+    return acc;
+  }, baseStructure);
+  return baseStructure;
+};
+
+const OilAndGas = () => {
   const classes = useStyles();
   const { config, configDispatch } = useConfig();
   const { data, year, unitConversion } = useEnergyFutureData();
   const intl = useIntl();
+
+  const [vizDimension, setVizDimension] = useState({ height: 0, width: 0 });
 
   const iteration = useMemo(() => parseInt(config.yearId, 10), [config.yearId]);
 
@@ -236,34 +266,11 @@ const OilAndGas = ({ vizDimension }) => {
     analytics.reportMedia(config.page, compare ? 'don\'t compare' : 'compare');
   }, [configDispatch, compare, config.page]);
 
-  const processedData = useMemo(() => {
-    const outer = config.view === 'source' ? 'source' : 'province';
-    const inner = config.view === 'source' ? 'province' : 'source';
+  const processedData = processData(data, config.view, unitConversion);
 
-    let baseStructure = data?.reduce((acc, val) => {
-      if (!acc[val.year]) {
-        acc[val.year] = [];
-      }
-      if (!acc[val.year].find(element => element.name === val[outer])) {
-        acc[val.year].push({ name: val[outer], total: 0, children: [] });
-      }
-      return acc;
-    }, {});
-
-    // I am not super happy with the way this logic mutates the baseStructure
-    baseStructure = data?.reduce((acc, val) => {
-      if (val.source !== 'ALL' && val.value > 0) {
-        const entry = acc[val.year].find(e => e.name === val[outer]);
-        entry.children.push({
-          name: val[inner],
-          value: val.value * unitConversion,
-        });
-        entry.total += (val.value * unitConversion);
-      }
-      return acc;
-    }, baseStructure);
-    return baseStructure;
-  }, [data, unitConversion, config.view]);
+  const vizRef = useCallback((node) => {
+    if (node) setVizDimension(node.getBoundingClientRect());
+  }, []);
 
   if (config.view === 'region' && config.sources.length === 0) return <UnavailableDataMessage message={intl.formatMessage({ id: 'common.unavailableData.noSourceSelected' })} />;
   if (config.view === 'source' && config.provinces.length === 0) return <UnavailableDataMessage message={intl.formatMessage({ id: 'common.unavailableData.noRegionSelected' })} />;
@@ -286,7 +293,7 @@ const OilAndGas = ({ vizDimension }) => {
   } = sortDataSets(processedData[currentYear], processedData[compareYear]);
 
   const treeMapCollection = (treeData, treeDataCompanion = [], treeYear, isTopChart) => {
-    if (!vizDimension?.width || biggestValue <= 0) {
+    if (!vizDimension.width || biggestValue <= 0) {
       return [];
     }
 
@@ -330,7 +337,7 @@ const OilAndGas = ({ vizDimension }) => {
       smallTreeMaps.pop();
     }
 
-    if (regularTreeMaps.length === 0 || !vizDimension?.width) {
+    if (regularTreeMaps.length === 0 || !vizDimension.width) {
       return (
         <TableRow>
           <TableCell colSpan="100%" className={classes.cell}>
@@ -344,7 +351,7 @@ const OilAndGas = ({ vizDimension }) => {
     }
 
     // size of the rendering area
-    const canvasWidth = vizDimension?.width * 0.7;
+    const canvasWidth = vizDimension.width * 0.7;
 
     // sum up the total width among the treemaps
     const totalWidth = regularTreeMaps.reduce((acc, val) => acc + (val.width || 0), 0);
@@ -422,7 +429,7 @@ const OilAndGas = ({ vizDimension }) => {
   }
 
   return (
-    <>
+    <div ref={vizRef}>
       {/* year numbers and the compare button (top-right) */}
       <Grid container direction="column" className={classes.year}>
         <Grid item>
@@ -510,19 +517,8 @@ const OilAndGas = ({ vizDimension }) => {
           </Grid>
         </Grid>
       </Grid>
-    </>
+    </div>
   );
-};
-
-OilAndGas.propTypes = {
-  vizDimension: PropTypes.shape({
-    height: PropTypes.number,
-    width: PropTypes.number,
-  }),
-};
-
-OilAndGas.defaultProps = {
-  vizDimension: { height: 0, width: 0 },
 };
 
 export default OilAndGas;

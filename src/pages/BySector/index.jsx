@@ -22,6 +22,14 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
+const processData = (data, unitConversion, sourceOrder, isTransportation) => {
+  const formattedData = formatLineData(data, 'source', unitConversion);
+  return formattedData && sourceOrder
+    .map(id => ((isTransportation && id === 'OIL') ? OIL_SUBGROUP : id)).flat()
+    .map(source => formattedData.find(o => o.id === source)).filter(Boolean)
+    .reverse();
+};
+
 const BySector = () => {
   const intl = useIntl();
   const classes = useStyles();
@@ -76,13 +84,7 @@ const BySector = () => {
     );
   }, [intl, config.scenarios, config.unit, isTransportation]);
 
-  const processedData = useMemo(() => {
-    const formattedData = formatLineData(data, 'source', unitConversion);
-    return formattedData && config.sourceOrder
-      .map(id => ((isTransportation && id === 'OIL') ? OIL_SUBGROUP : id)).flat()
-      .map(source => formattedData.find(o => o.id === source)).filter(Boolean)
-      .reverse();
-  }, [data, config.sourceOrder, isTransportation, unitConversion]);
+  const processedData = processData(data, unitConversion, config.sourceOrder, isTransportation);
 
   const ticks = useMemo(() => {
     const values = (processedData || []).map(source => source.data);
