@@ -81,21 +81,19 @@ const Scenarios = ({ data, year }) => {
    */
   const dots = useMemo(() => dottedLayer(config.yearId), [config.yearId]);
 
-  const getNodesFromData = useCallback((currYear, nodeData, upperNodeOrder = null) => {
+  const getNodesFromData = useCallback((currYear, nodeData, upperNodeOrder) => {
     const currYearData = [];
 
-    const order = upperNodeOrder !== null ? upperNodeOrder : config.scenarios;
+    const order = upperNodeOrder || config.scenarios;
 
     order.forEach((key) => {
       const scenario = nodeData.find(item => item.id === key);
-      if (scenario) {
-        const yearData = scenario.data.find(obj => obj.x === currYear);
-        currYearData.push({
-          name: intl.formatMessage({ id: `common.scenarios.${scenario.id}` }),
-          value: yearData?.y,
-          color: SCENARIO_COLOR[scenario.id],
-        });
-      }
+      const yearData = scenario.data.find(obj => obj.x === currYear);
+      currYearData.push({
+        name: intl.formatMessage({id: `common.scenarios.${scenario.id}`}),
+        value: yearData?.y,
+        color: SCENARIO_COLOR[scenario.id],
+      });
     });
 
     if (!upperNodeOrder) {
