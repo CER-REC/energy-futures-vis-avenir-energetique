@@ -48,8 +48,8 @@ const useStyles = makeStyles(theme => ({
     '& svg': { transform: 'rotate(270deg) scaleX(-1)' },
     '& > div > div > div:last-of-type': { display: 'none' }, // hide the default Nivo tooltip
     '&:hover': {
-      border:"black 1px solid"
-    }
+      border: 'black 1px solid',
+    },
   },
   group: {
     position: 'absolute',
