@@ -81,22 +81,36 @@ const Scenarios = ({ data, year }) => {
    */
   const dots = useMemo(() => dottedLayer(config.yearId), [config.yearId]);
 
-  const getNodesFromData = useCallback((currYear, nodeData) => nodeData.map((scenario) => {
-    const yearData = scenario.data.find(obj => obj.x === currYear);
-    return {
-      name: intl.formatMessage({ id: `common.scenarios.${scenario.id}` }),
-      value: yearData?.y,
-      color: SCENARIO_COLOR[scenario.id],
-    };
-  }), [intl]);
+  const getNodesFromData = useCallback((currYear, nodeData, upperNodeOrder) => {
+    const currYearData = [];
+
+    const order = upperNodeOrder || config.scenarios;
+
+    order.forEach((key) => {
+      const scenario = nodeData.find(item => item.id === key);
+      const yearData = scenario.data.find(obj => obj.x === currYear);
+      currYearData.push({
+        name: intl.formatMessage({ id: `common.scenarios.${scenario.id}` }),
+        value: yearData?.y,
+        color: SCENARIO_COLOR[scenario.id],
+      });
+    });
+
+    if (!upperNodeOrder) {
+      currYearData.sort((a, b) => b.value - a.value);
+    }
+
+    return currYearData;
+  }, [config.scenarios, intl]);
 
   const getTooltip = useCallback((event) => {
     const currYear = event.slice?.points[0].data?.x;
-    const upperNodes = getNodesFromData(currYear, data).reverse();
+    const upperNodes = getNodesFromData(currYear, data);
     let lowerNodes = [];
 
     if (prices?.length) {
-      lowerNodes = getNodesFromData(currYear, priceData).reverse();
+      const order = upperNodes.map(item => item.name);
+      lowerNodes = getNodesFromData(currYear, priceData, order);
     }
 
     const sections = [];
@@ -123,8 +137,8 @@ const Scenarios = ({ data, year }) => {
       />
     );
   }, [
-    getNodesFromData, data, prices, intl,
-    config.mainSelection, config.unit, config.priceSource, priceData,
+    getNodesFromData, data, prices, intl, config.mainSelection,
+    config.unit, config.priceSource, priceData,
   ]);
 
   if (config.mainSelection === 'greenhouseGasEmission' && config.yearId < 2023) {
