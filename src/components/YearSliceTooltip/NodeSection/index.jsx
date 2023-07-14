@@ -41,10 +41,8 @@ const NodeSection = ({ section, year = null }) => {
         <TableRow>
           {
             year && (
-              <TableCell>
-                <Typography variant="h7" style={{ fontSize: 16 }}>
-                  {year}
-                </Typography>
+              <TableCell style={{ fontSize: 16 }}>
+                {year}
               </TableCell>
             )
           }
