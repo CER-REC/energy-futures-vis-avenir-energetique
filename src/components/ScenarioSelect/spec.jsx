@@ -43,11 +43,11 @@ describe('Component|PageSelect', () => {
       // scenario buttons for 2020 report year
       const buttons = wrapper.find(Button);
       expect(buttons.length).toBe(3);
-      expect(expect.arrayContaining(buttons.map(btn => btn.text()))).toEqual(['Reference', 'Higher Carbon Price', 'Technology']);
+      expect(expect.arrayContaining(buttons.map(btn => btn.text()))).toEqual(['Reference ', 'Higher Carbon Price ', 'Technology ']);
     });
 
     test('buttons should be clickable', () => {
-      const button = wrapper.findWhere(node => node.type() === 'button' && node.text() === 'Reference');
+      const button = wrapper.findWhere(node => node.type() === 'button' && node.text().search('Reference') !== -1);
       button.simulate('click');
     });
   });
@@ -74,11 +74,11 @@ describe('Component|PageSelect', () => {
 
     test('should include evolving', () => {
       const buttons = wrapper.find(Button);
-      expect(buttons.map(btn => btn.text())).toContain('Evolving');
+      expect(buttons.map(btn => btn.text())).toEqual(['Evolving ', 'Reference ']);
     });
 
     test('buttons should be clickable', () => {
-      const button = wrapper.findWhere(node => node.type() === 'button' && node.text() === 'Evolving');
+      const button = wrapper.findWhere(node => node.type() === 'button' && node.text().search('Evolving') !== -1);
       button.simulate('click');
     });
 

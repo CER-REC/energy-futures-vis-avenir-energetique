@@ -8,6 +8,7 @@ import useConfig from '../../hooks/useConfig';
 import { SCENARIO_COLOR } from '../../constants';
 import analytics from '../../analytics';
 import { HintScenarioSelect } from '../Hint';
+import { IconCheckbox } from '../../icons';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -76,16 +77,17 @@ const ScenarioSelect = ({ multiSelect }) => {
         <Grid item key={`config-scenario-${scenario}`}>
           <Tooltip title={getTooltip(scenario)}>
             <Button
-              variant={config.scenarios.indexOf(scenario) > -1 ? 'contained' : 'outlined'}
+              variant={(multiSelect && 'contained') || (config.scenarios.indexOf(scenario) > -1 ? 'contained' : 'outlined')}
               color="primary"
               size="small"
               onClick={() => handleScenarioSelect(scenario)}
-              style={multiSelect && config.scenarios.indexOf(scenario) > -1 ? {
+              style={multiSelect ? {
                 backgroundColor: SCENARIO_COLOR[scenario],
                 borderColor: SCENARIO_COLOR[scenario],
               } : {}}
             >
-              {intl.formatMessage({ id: `common.scenarios.${scenario}` })}
+              {intl.formatMessage({ id: `common.scenarios.${scenario}` })}&nbsp;
+              <IconCheckbox style={{ width: '14px', height: '14px' }} checked={config.scenarios.indexOf(scenario) > -1} />
             </Button>
           </Tooltip>
         </Grid>
@@ -95,11 +97,7 @@ const ScenarioSelect = ({ multiSelect }) => {
 };
 
 ScenarioSelect.propTypes = {
-  multiSelect: PropTypes.bool,
-};
-
-ScenarioSelect.defaultProps = {
-  multiSelect: false,
+  multiSelect: PropTypes.bool.isRequired,
 };
 
 export default ScenarioSelect;
