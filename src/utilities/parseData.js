@@ -158,14 +158,12 @@ export const getTicks = (highest, lowest = 0) => {
   if (coefficient > 8) step = magnitude;
 
   let max = Math.ceil(highest / step) * step;
-  if (max === highest)
-    max += step;
+  if (max === highest) max += step;
   const min = lowest === 0 ? 0 : Math.floor(lowest / step) * step - step;
 
   let fixedVal = Math.ceil(Math.log10(1 / step));
 
-  if (fixedVal < 0)
-    fixedVal = 0;
+  if (fixedVal < 0) fixedVal = 0;
 
   const ticks = [];
   for (let i = min; i <= max;) {
