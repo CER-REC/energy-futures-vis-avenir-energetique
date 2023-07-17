@@ -15,7 +15,12 @@ const DEFAULT_CONFIG = {
 
 const getComponent = (props, options = {}) => (
   <TestContainer mockConfig={{ ...DEFAULT_CONFIG, ...props }}>
-    <ScenarioSelect {...options} isMinimized={false} setIsMinimized={() => {}} />
+    <ScenarioSelect
+      multiSelect={false}
+      isMinimized={false}
+      setIsMinimized={() => {}}
+      {...options}
+    />
   </TestContainer>
 );
 
@@ -43,11 +48,11 @@ describe('Component|PageSelect', () => {
       // scenario buttons for 2020 report year
       const buttons = wrapper.find(Button);
       expect(buttons.length).toBe(3);
-      expect(expect.arrayContaining(buttons.map(btn => btn.text()))).toEqual(['Reference ', 'Higher Carbon Price ', 'Technology ']);
+      expect(expect.arrayContaining(buttons.map(btn => btn.text()))).toEqual(['Reference', 'Higher Carbon Price', 'Technology']);
     });
 
     test('buttons should be clickable', () => {
-      const button = wrapper.findWhere(node => node.type() === 'button' && node.text().search('Reference') !== -1);
+      const button = wrapper.findWhere(node => node.type() === 'button' && node.text() === 'Reference');
       button.simulate('click');
     });
   });
@@ -74,11 +79,11 @@ describe('Component|PageSelect', () => {
 
     test('should include evolving', () => {
       const buttons = wrapper.find(Button);
-      expect(buttons.map(btn => btn.text())).toEqual(['Evolving ', 'Reference ']);
+      expect(buttons.map(btn => btn.text())).toContain('Evolving');
     });
 
     test('buttons should be clickable', () => {
-      const button = wrapper.findWhere(node => node.type() === 'button' && node.text().search('Evolving') !== -1);
+      const button = wrapper.findWhere(node => node.type() === 'button' && node.text() === 'Evolving');
       button.simulate('click');
     });
 

@@ -10,12 +10,20 @@ import analytics from '../../analytics';
 import { HintScenarioSelect } from '../Hint';
 import { IconCheckbox } from '../../icons';
 
+const checkboxSize = 14;
+
 const useStyles = makeStyles(theme => ({
   root: {
     ...theme.mixins.selectionContainer,
   },
   labelContainer: {
     ...theme.mixins.labelContainer,
+  },
+  button: { lineHeight: 'normal' },
+  checkbox: {
+    marginLeft: '0.2em',
+    height: checkboxSize,
+    width: checkboxSize,
   },
 }));
 
@@ -77,7 +85,8 @@ const ScenarioSelect = ({ multiSelect }) => {
         <Grid item key={`config-scenario-${scenario}`}>
           <Tooltip title={getTooltip(scenario)}>
             <Button
-              variant={(multiSelect && 'contained') || (config.scenarios.indexOf(scenario) > -1 ? 'contained' : 'outlined')}
+              className={classes.button}
+              variant={multiSelect || (config.scenarios.indexOf(scenario) > -1) ? 'contained' : 'outlined'}
               color="primary"
               size="small"
               onClick={() => handleScenarioSelect(scenario)}
@@ -86,8 +95,13 @@ const ScenarioSelect = ({ multiSelect }) => {
                 borderColor: SCENARIO_COLOR[scenario],
               } : {}}
             >
-              {intl.formatMessage({ id: `common.scenarios.${scenario}` })}&nbsp;
-              <IconCheckbox style={{ width: '14px', height: '14px' }} checked={config.scenarios.indexOf(scenario) > -1} />
+              {intl.formatMessage({ id: `common.scenarios.${scenario}` })}
+              {multiSelect && (
+                <IconCheckbox
+                  className={classes.checkbox}
+                  checked={config.scenarios.indexOf(scenario) > -1}
+                />
+              )}
             </Button>
           </Tooltip>
         </Grid>
