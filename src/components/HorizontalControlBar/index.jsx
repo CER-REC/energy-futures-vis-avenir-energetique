@@ -63,7 +63,7 @@ const HorizontalControlBar = () => {
     selection => CONFIG_LAYOUT[selection].pages.includes(config.page),
   );
   const appendiceGroups = appendices.reduce((acc, key, index) => {
-    if (index === appendices.length - 1) {
+    if ((index === appendices.length - 1) && (index > 1)) {
       const group = acc.splice(acc.length - 1, 1)[0] || [];
       return [...acc, [...group, key]];
     }
@@ -80,9 +80,9 @@ const HorizontalControlBar = () => {
         <Typography variant="subtitle1">{selectionLabel}</Typography>
       </Grid>
       <HintMainSelect />
-      {appendiceGroups.map(app => (
-        <Grid item style={{ display: 'flex' }}>
-          {app.map(selection => (
+      {appendiceGroups.map(group => (
+        <Grid item key={group.join()} style={{ display: 'flex' }}>
+          {group.map(selection => (
             <Grid item key={`config-origin-${selection}`}>
               <Tooltip
                 title={intl.formatMessage({ id: `components.mainSelect.${selection}.tooltip.${config.page}` })}
