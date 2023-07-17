@@ -24,7 +24,7 @@ const useStyles = makeStyles(theme => ({
   color: {
     height: theme.spacing(2),
     width: theme.spacing(2),
-    marginRight: theme.spacing(2),
+    marginRight: theme.spacing(1),
   },
 }));
 
@@ -41,7 +41,7 @@ const NodeSection = ({ section, year = null }) => {
         <TableRow>
           {
             year && (
-              <TableCell>
+              <TableCell style={{ fontSize: 16 }}>
                 {year}
               </TableCell>
             )
@@ -72,18 +72,20 @@ const NodeSection = ({ section, year = null }) => {
                     </svg>
                   )}
                 </div>
-                <strong>{node.name}</strong>
+                {node.name}
               </TableCell>
               <TableCell align="right">
-                {
-                  section.isPrice && ('$')
-                }
-                {formatValue(node.value, intl)}
-                {
-                  section.hasPercentage && (
-                    ` (${formatValue(sum ? (node.value / sum) * 100 : 0, intl)}${intl.formatMessage({ id: 'common.char.percent' })})`
-                  )
-                }
+                <strong>
+                  {
+                    section.isPrice && ('$')
+                  }
+                  {formatValue(node.value, intl)}
+                  {
+                    section.hasPercentage && (
+                      ` (${formatValue(sum ? (node.value / sum) * 100 : 0, intl)}${intl.formatMessage({ id: 'common.char.percent' })})`
+                    )
+                  }
+                </strong>
               </TableCell>
             </TableRow>
           ))
@@ -92,12 +94,12 @@ const NodeSection = ({ section, year = null }) => {
           section.totalLabel && (
             <TableRow className={classes.total}>
               <TableCell>
-                <strong>
-                  {section.totalLabel}
-                </strong>
+                {section.totalLabel}
               </TableCell>
               <TableCell align="right">
-                {formatValue(sum, intl)}
+                <strong>
+                  {formatValue(sum, intl)}
+                </strong>
               </TableCell>
             </TableRow>
           )
