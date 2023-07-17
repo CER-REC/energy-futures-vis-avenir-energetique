@@ -47,9 +47,6 @@ const useStyles = makeStyles(theme => ({
     margin: 'auto',
     '& svg': { transform: 'rotate(270deg) scaleX(-1)' },
     '& > div > div > div:last-of-type': { display: 'none' }, // hide the default Nivo tooltip
-    '&:hover': {
-      border: 'black 1px solid',
-    },
   },
   group: {
     position: 'absolute',
@@ -89,7 +86,6 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const MAX_SIZE = 250;
-const TREE_MAP_MARGIN = 4;
 
 const OilAndGas = ({ data, year, vizDimension }) => {
   const classes = useStyles();
@@ -227,23 +223,20 @@ const OilAndGas = ({ data, year, vizDimension }) => {
         >
           <div
             className={classes.treeMapRectangle}
-            style={{ height: size, width: size }}
+            style={
+              // check if tooltip is selected
+              (!(tooltip === null || tooltip === undefined) && (tooltip === source.name))
+                ? { height: size, width: size, border: 'black 2px solid' }
+                : { height: size, width: size }
+            }
           >
             <ResponsiveTreeMap
               root={source}
               tile="binary"
               identity="name"
               value="value"
-              margin={{
-                top: TREE_MAP_MARGIN,
-                right: TREE_MAP_MARGIN,
-                bottom: TREE_MAP_MARGIN,
-                left: TREE_MAP_MARGIN,
-              }}
               enableLabel={false}
               colors={getColor}
-              borderWidth={1}
-              borderColor="white"
               animate
               motionStiffness={90}
               motionDamping={11}
