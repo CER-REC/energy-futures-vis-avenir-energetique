@@ -130,21 +130,15 @@ export default () => {
     let selectedProvinces = config.provinces;
     let selectedSources = config.sources;
 
+    if (config.view === 'region' && config.provinces[0] === 'ALL') selectedProvinces = config.provinceOrder;
+    if (config.view === 'source' && config.sources[0] === 'ALL') selectedSources = config.sourceOrder;
+
     if (config.page === 'electricity') {
       if (config.view === 'region') {
-        selectedProvinces = config.provinces[0] === 'ALL'
-          ? config.provinceOrder
-          : config.provinces;
         selectedSources = config.sourceOrder;
       } else if (config.view === 'source') {
-        selectedSources = config.sources[0] === 'ALL'
-          ? config.sourceOrder
-          : config.sources;
         selectedProvinces = config.provinceOrder;
       }
-    } else {
-      if (config.view === 'region' && config.provinces[0] === 'ALL') selectedProvinces = config.provinceOrder;
-      if (config.view === 'source' && config.sources[0] === 'ALL') selectedSources = config.sourceOrder;
     }
 
     return data?.resources
@@ -173,7 +167,6 @@ export default () => {
     priceYear: getPriceYear(yearIdIterations[config.yearId].year),
     disabledRegions: unavailability('province'),
     disabledSources: unavailability('source'),
-    // TODO: Remove after refactoring to move processedData chart structure data
     // into individual chart components
     data: filteredData && filteredData.find(row => row.value !== 0)
       ? filteredData
