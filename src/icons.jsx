@@ -1,5 +1,6 @@
 import React from 'react';
 import { SvgIcon } from '@material-ui/core';
+import PropTypes from 'prop-types';
 
 /**
  * Social media
@@ -426,3 +427,23 @@ export const IconExternal = props => (
     </g>
   </SvgIcon>
 );
+
+export const IconCheckbox = ({ checked, ...props }) => (
+  <SvgIcon {...props} viewBox="0 0 14 14">
+    { !checked && <rect x="1" y="1" width="12" height="12" rx="1" fill="white" stroke="white" strokeWidth="0.5" /> }
+    { checked && (
+      <g>
+        <path d="m12.6,14H1.4c-.77,0-1.4-.63-1.4-1.4V1.4C0,.63.63,0,1.4,0h11.2c.77,0,1.4.63,1.4,1.4v11.2c0,.77-.63,1.4-1.4,1.4ZM1.4.56c-.46,0-.84.38-.84.84v11.2c0,.46.38.84.84.84h11.2c.46,0,.84-.38.84-.84V1.4c0-.46-.38-.84-.84-.84H1.4Z" />
+        <path d="M2.89471 7.63001L5.48634 10.0078L11.1052 4.8525L10.1689 3.99277L5.48634 8.28958L3.83109 6.77028L2.89471 7.63001Z" fill="white" />
+      </g>
+    )}
+  </SvgIcon>
+);
+
+IconCheckbox.defaultProps = {
+  checked: false,
+};
+
+IconCheckbox.propTypes = {
+  checked: PropTypes.bool,
+};

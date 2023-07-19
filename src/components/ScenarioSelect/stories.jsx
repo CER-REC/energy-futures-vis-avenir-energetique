@@ -15,4 +15,4 @@ storiesForComponent('Components|ScenarioSelect', module, ReadMe)
     },
   })
   .addDecorator(withConfigAndGQL)
-  .add('default', () => <ScenarioSelect isMinimized={false} setIsMinimized={() => {}} />);
+  .add('default', () => <ScenarioSelect multiSelect={false} isMinimized={false} setIsMinimized={() => {}} />);

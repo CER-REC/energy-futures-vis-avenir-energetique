@@ -8,6 +8,9 @@ import useConfig from '../../hooks/useConfig';
 import { SCENARIO_COLOR } from '../../constants';
 import analytics from '../../analytics';
 import { HintScenarioSelect } from '../Hint';
+import { IconCheckbox } from '../../icons';
+
+const checkboxSize = 14;
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -15,6 +18,12 @@ const useStyles = makeStyles(theme => ({
   },
   labelContainer: {
     ...theme.mixins.labelContainer,
+  },
+  button: { lineHeight: 'normal' },
+  checkbox: {
+    marginLeft: '0.2em',
+    height: checkboxSize,
+    width: checkboxSize,
   },
 }));
 
@@ -76,16 +85,23 @@ const ScenarioSelect = ({ multiSelect }) => {
         <Grid item key={`config-scenario-${scenario}`}>
           <Tooltip title={getTooltip(scenario)}>
             <Button
-              variant={config.scenarios.indexOf(scenario) > -1 ? 'contained' : 'outlined'}
+              className={classes.button}
+              variant={multiSelect || (config.scenarios.indexOf(scenario) > -1) ? 'contained' : 'outlined'}
               color="primary"
               size="small"
               onClick={() => handleScenarioSelect(scenario)}
-              style={multiSelect && config.scenarios.indexOf(scenario) > -1 ? {
+              style={multiSelect ? {
                 backgroundColor: SCENARIO_COLOR[scenario],
                 borderColor: SCENARIO_COLOR[scenario],
               } : {}}
             >
               {intl.formatMessage({ id: `common.scenarios.${scenario}` })}
+              {multiSelect && (
+                <IconCheckbox
+                  className={classes.checkbox}
+                  checked={config.scenarios.indexOf(scenario) > -1}
+                />
+              )}
             </Button>
           </Tooltip>
         </Grid>
@@ -95,11 +111,7 @@ const ScenarioSelect = ({ multiSelect }) => {
 };
 
 ScenarioSelect.propTypes = {
-  multiSelect: PropTypes.bool,
-};
-
-ScenarioSelect.defaultProps = {
-  multiSelect: false,
+  multiSelect: PropTypes.bool.isRequired,
 };
 
 export default ScenarioSelect;

@@ -15,7 +15,12 @@ const DEFAULT_CONFIG = {
 
 const getComponent = (props, options = {}) => (
   <TestContainer mockConfig={{ ...DEFAULT_CONFIG, ...props }}>
-    <ScenarioSelect {...options} isMinimized={false} setIsMinimized={() => {}} />
+    <ScenarioSelect
+      multiSelect={false}
+      isMinimized={false}
+      setIsMinimized={() => {}}
+      {...options}
+    />
   </TestContainer>
 );
 
