@@ -13,8 +13,9 @@ const DEFAULT_CONFIG = {
   scenarios: ['Evolving'],
   view: 'region',
   unit: 'petajoules',
-  provinces: ['AB'],
+  provinces: ['ON'],
   provinceOrder: ['YT', 'SK', 'QC', 'PE', 'ON', 'NU', 'NT', 'NS', 'NL', 'NB', 'MB', 'BC', 'AB'],
+  sourceOrder: ['COAL', 'HYDRO', 'NUCLEAR'],
 };
 
 const getDownloadComponent = (props, options = {}) => (

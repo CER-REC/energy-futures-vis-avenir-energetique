@@ -5,7 +5,6 @@ import { PAGES } from '../constants';
 import useAPI from './useAPI';
 import useConfig from './useConfig';
 import { convertUnit } from '../utilities/convertUnit';
-import { formatTotalLineData, parseData, NOOP } from '../utilities/parseData';
 import * as queries from './queries';
 
 const priceStartYear = 2023;
@@ -82,19 +81,8 @@ export default () => {
   );
   const {
     yearIdIterations,
-    regions: { order: regionOrder },
     sources: { [sourceType]: source },
   } = useAPI();
-
-  /**
-   * FIXME: these are temporary special cases for the Electricity and Oil and Gas pages.
-   */
-  const regions = useMemo(() => {
-    if ((config.view === 'region') && (config.provinces[0] === 'ALL')) {
-      return regionOrder;
-    }
-    return config.provinces;
-  }, [config.view, config.provinces, regionOrder]);
 
   const sources = useMemo(() => {
     if ((config.view === 'source') && (config.sources[0] === 'ALL')) {
@@ -114,14 +102,12 @@ export default () => {
     variables: {
       scenarios: config.scenarios,
       iteration: yearIdIterations[config.yearId]?.id || '',
-      regions,
       sectors: config.sector,
       sources,
       priceSource: config.priceSource,
     },
     // do nothing if the request is invalid
     skip: !query
-      || !regions || regions.length === 0
       || (sourceType && (!config.sources || config.sources.length === 0))
       || !config.scenarios || config.scenarios.length === 0,
   });
@@ -140,23 +126,25 @@ export default () => {
     return interationYear;
   }, [interationYear, config.mainSelection, config.yearId]);
 
-  const processedData = useMemo(() => {
-    if (!data || !data.resources) {
-      return data;
+  const filteredData = useMemo(() => {
+    let selectedProvinces = config.provinces;
+    let selectedSources = config.sources;
+
+    if (config.view === 'region' && config.provinces[0] === 'ALL') selectedProvinces = config.provinceOrder;
+    if (config.view === 'source' && config.sources[0] === 'ALL') selectedSources = config.sourceOrder;
+
+    if (config.page === 'electricity') {
+      if (config.view === 'region') {
+        selectedSources = config.sourceOrder;
+      } else if (config.view === 'source') {
+        selectedProvinces = config.provinceOrder;
+      }
     }
 
-    if ((config.page === 'scenarios') && (config.mainSelection === 'greenhouseGasEmission')) {
-      return formatTotalLineData(data.resources);
-    }
-
-    return (parseData[config.page] || NOOP)(
-      data.resources,
-      unitConversion,
-      regions,
-      sources,
-      config.view,
-    );
-  }, [config.page, config.mainSelection, config.view, data, regions, sources, unitConversion]);
+    return data?.resources
+      .filter(item => !item.province || selectedProvinces?.includes(item.province))
+      .filter(item => !item.source || selectedSources?.includes(item.source));
+  }, [data, config]);
 
   /**
    * Determine all the unavailable / disabled items in the current data-set.
@@ -175,20 +163,19 @@ export default () => {
   return {
     loading,
     error,
-    data: processedData,
     prices: data?.prices,
     priceYear: getPriceYear(yearIdIterations[config.yearId].year),
     disabledRegions: unavailability('province'),
     disabledSources: unavailability('source'),
-    // TODO: Remove after refactoring to move processedData chart structure data
     // into individual chart components
-    rawData: data?.resources && data?.resources.find(row => row.value !== 0)
-      ? data.resources
+    data: filteredData && filteredData.find(row => row.value !== 0)
+      ? filteredData
       : null,
-    year: years && {
+    unitConversion,
+    year: years ? {
       min: Math.min(...years),
       forecastStart,
       max: Math.max(...years),
-    },
+    } : { min: 0, forecastStart: 0, max: 0 },
   };
 };

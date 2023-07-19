@@ -1,6 +1,5 @@
 import React, { useMemo, useCallback } from 'react';
 import { ResponsiveBar } from '@nivo/bar';
-import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core';
 import { useIntl } from 'react-intl';
 import useAPI from '../../hooks/useAPI';
@@ -22,16 +21,33 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const ByRegion = ({ data, year }) => {
+const processData = (data, unitConversion) => {
+  if (!data) return null;
+
+  const byYear = data?.reduce((accu, curr) => {
+    const result = { ...accu };
+    if (!result[curr.year]) {
+      result[curr.year] = {};
+    }
+    if (!result[curr.year][curr.province]) {
+      result[curr.year][curr.province] = 0;
+    }
+    result[curr.year][curr.province] += (
+      curr.value * unitConversion
+    );
+    return result;
+  }, {});
+
+  return Object.keys(byYear).map(yearKey => ({ year: yearKey, ...byYear[yearKey] }));
+};
+
+const ByRegion = () => {
   const { regions } = useAPI();
   const { config } = useConfig();
-  const { rawData } = useEnergyFutureData();
+  const { data, year, unitConversion } = useEnergyFutureData();
   const classes = useStyles();
   const intl = useIntl();
 
-  /**
-   * Calculate bar colors.
-   */
   const customColorProp = useCallback(
     () => d => convertHexToRGB(regions.colors[d.id], 1), [regions.colors],
   );
@@ -41,9 +57,6 @@ const ByRegion = ({ data, year }) => {
     [customColorProp, year],
   );
 
-  /**
-   * Determine the region order shown in the stacked bar chart.
-   */
   const keys = useMemo(() => config.provinceOrder?.slice().reverse(), [config.provinceOrder]);
   const getTooltip = useCallback((entry) => {
     const nodes = [];
@@ -73,16 +86,15 @@ const ByRegion = ({ data, year }) => {
     );
   }, [config.scenarios, config.unit, intl, regions.colors, config.provinceOrder]);
 
-  /**
-   * Calculate the max tick value on y-axis and generate the all ticks accordingly.
-   */
+  const processedData = processData(data, unitConversion);
+
   const ticks = useMemo(() => {
-    const highest = data && Math.max(...data
+    const highest = processedData && Math.max(...processedData
       .map(seg => Object.values(seg).reduce((a, b) => a + (typeof b === 'string' ? 0 : b), 0)));
     return getTicks(highest);
-  }, [data]);
+  }, [processedData]);
 
-  if (!data || !rawData) {
+  if (!processedData) {
     let noDataMessageId = `common.unavailableData.${config.mainSelection}.${config.provinces.join()}`;
 
     if (config.provinces.length <= 0) noDataMessageId = 'common.unavailableData.noRegionSelected';
@@ -101,7 +113,7 @@ const ByRegion = ({ data, year }) => {
     <div className={classes.chart}>
       <ResponsiveBar
         {...CHART_PROPS}
-        data={data}
+        data={processedData}
         keys={keys}
         layers={[HistoricalLayer, 'grid', 'axes', 'bars', 'markers', ForecastLayer]}
         indexBy="year"
@@ -128,25 +140,6 @@ const ByRegion = ({ data, year }) => {
       />
     </div>
   );
-};
-
-ByRegion.propTypes = {
-  data: PropTypes.oneOfType([PropTypes.object, PropTypes.arrayOf(PropTypes.object)]),
-  year: PropTypes.shape({
-    min: PropTypes.number,
-    max: PropTypes.number,
-    forecastStart: PropTypes.number,
-  }),
-
-};
-
-ByRegion.defaultProps = {
-  data: undefined,
-  year: {
-    min: 0,
-    max: 0,
-    forecastStart: 0,
-  },
 };
 
 export default ByRegion;

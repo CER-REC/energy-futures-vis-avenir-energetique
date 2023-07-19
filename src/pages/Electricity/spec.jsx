@@ -5,8 +5,9 @@ import { Typography, Paper } from '@material-ui/core';
 
 import Electricity from '.';
 import { TestContainer, getRendered } from '../../tests/utilities';
-import { DEFAULT_CONFIG, MOCK_DATA_REGION, MOCK_DATA_SINGLE, MOCK_DATA_SOURCE, MOCK_YEAR } from './stories';
+import DEFAULT_CONFIG from './stories';
 import YearSliceTooltip from '../../components/YearSliceTooltip';
+import UnavailableDataMessage from '../../components/UnavailableDataMessage';
 
 const SOURCE_TO_TEXT = {
   HYDRO: 'Hydro / Wave / Tidal',
@@ -14,7 +15,41 @@ const SOURCE_TO_TEXT = {
   COAL: 'Coal & Coke',
 };
 
-const getComponent = (data, props, desktop) => {
+const MOCK_DATA_REGION = Array(46).fill(undefined).map((_, i) => i).reduce((data, year) => ({
+  ...data,
+  [2005 + year]: {
+    ON: [
+      { name: 'COAL', value: 28734.08 },
+      { name: 'HYDRO', value: 2316 },
+      { name: 'NUCLEAR', value: 35480 },
+    ].map(type => ({ ...type, value: type.value * (1 + Math.random() / 5) })),
+    NB: [
+      { name: 'HYDRO', value: 3875 },
+      { name: 'COAL', value: 43581.072 },
+      { name: 'NUCLEAR', value: 13157.72 },
+    ].map(type => ({ ...type, value: type.value * (1 + Math.random() / 5) })),
+  },
+}), {});
+
+const MOCK_DATA_SOURCE = Array(46).fill(undefined).map((_, i) => i).reduce((data, year) => ({
+  ...data,
+  [2005 + year]: {
+    HYDRO: [
+      { name: 'ON', value: 2316 },
+      { name: 'NB', value: 3875 },
+    ],
+    NUCLEAR: [
+      { name: 'ON', value: 35480 },
+      { name: 'NB', value: 13157.72 },
+    ],
+    COAL: [
+      { name: 'ON', value: 28734.08 },
+      { name: 'NB', value: 43581.072 },
+    ],
+  },
+}), {});
+
+const getComponent = (props, desktop) => {
   global.matchMedia = media => ({
     addListener: () => {},
     removeListener: () => {},
@@ -22,7 +57,7 @@ const getComponent = (data, props, desktop) => {
   });
   return (
     <TestContainer mockConfig={{ ...DEFAULT_CONFIG, ...props }}>
-      <Electricity data={data} year={MOCK_YEAR} />
+      <Electricity />
     </TestContainer>
   );
 };
@@ -37,7 +72,7 @@ describe('Page|Electricity', () => {
    */
   describe('Test view by region', () => {
     beforeEach(async () => {
-      wrapper = mount(getComponent(MOCK_DATA_REGION, { baseYear: 2005 }));
+      wrapper = mount(getComponent({ baseYear: 2005 }));
       await act(async () => {
         await new Promise(resolve => setTimeout(resolve));
         wrapper.update();
@@ -74,7 +109,7 @@ describe('Page|Electricity', () => {
    */
   describe('Test view by source', () => {
     beforeEach(async () => {
-      wrapper = mount(getComponent(MOCK_DATA_SOURCE, { view: 'source' }));
+      wrapper = mount(getComponent({ view: 'source', baseYear: 2005 }));
       await act(async () => {
         await new Promise(resolve => setTimeout(resolve));
         wrapper.update();
@@ -107,13 +142,13 @@ describe('Page|Electricity', () => {
    * data === null
    */
   describe('Test with invalid data structure', () => {
-    test('should NOT render component', async () => {
-      wrapper = mount(getComponent(null));
+    test('should render UnavailableDataMessage component', async () => {
+      wrapper = mount(getComponent());
       await act(async () => {
         await new Promise(resolve => setTimeout(resolve));
         wrapper.update();
 
-        expect(getRendered(Electricity, wrapper).exists()).toBeFalsy();
+        expect(getRendered(UnavailableDataMessage, wrapper).exists());
       });
     });
   });
@@ -123,7 +158,7 @@ describe('Page|Electricity', () => {
    */
   describe('Test responsiveness and single bubble', () => {
     test('should render in tablet mode', async () => {
-      wrapper = mount(getComponent(MOCK_DATA_SINGLE));
+      wrapper = mount(getComponent({ provinces: ['ON'], baseYear: 2005 }));
       await act(async () => {
         await new Promise(resolve => setTimeout(resolve));
         wrapper.update();
@@ -138,7 +173,7 @@ describe('Page|Electricity', () => {
     });
 
     test('should render in desktop mode', async () => {
-      wrapper = mount(getComponent(MOCK_DATA_SINGLE, {}, true));
+      wrapper = mount(getComponent({ provinces: ['ON'], baseYear: 2005 }, true));
       await act(async () => {
         await new Promise(resolve => setTimeout(resolve));
         wrapper.update();

@@ -1,6 +1,5 @@
 import React, { useState, useMemo, useCallback } from 'react';
 import { useIntl } from 'react-intl';
-import PropTypes from 'prop-types';
 import {
   makeStyles, Grid, Typography, Button, Tooltip,
   TableContainer, Table, TableBody, TableRow, TableCell,
@@ -14,6 +13,7 @@ import YearSlider from '../../components/YearSlider';
 import { IconOilAndGasGroup, IconOilAndGasRectangle } from '../../icons';
 import YearSliceTooltip from '../../components/YearSliceTooltip';
 import UnavailableDataMessage from '../../components/UnavailableDataMessage';
+import useEnergyFutureData from '../../hooks/useEnergyFutureData';
 import { formatValue } from '../../utilities/convertUnit';
 
 const useStyles = makeStyles(theme => ({
@@ -83,10 +83,42 @@ const useStyles = makeStyles(theme => ({
 const MAX_SIZE = 250;
 const TREE_MAP_MARGIN = 4;
 
-const OilAndGas = ({ data, year, vizDimension }) => {
+const processData = (data, view, unitConversion) => {
+  const outer = view === 'source' ? 'source' : 'province';
+  const inner = view === 'source' ? 'province' : 'source';
+
+  let baseStructure = data?.reduce((acc, val) => {
+    if (!acc[val.year]) {
+      acc[val.year] = [];
+    }
+    if (!acc[val.year].find(element => element.name === val[outer])) {
+      acc[val.year].push({ name: val[outer], total: 0, children: [] });
+    }
+    return acc;
+  }, {});
+
+  // I am not super happy with the way this logic mutates the baseStructure
+  baseStructure = data?.reduce((acc, val) => {
+    if (val.source !== 'ALL' && val.value > 0) {
+      const entry = acc[val.year].find(e => e.name === val[outer]);
+      entry.children.push({
+        name: val[inner],
+        value: val.value * unitConversion,
+      });
+      entry.total += (val.value * unitConversion);
+    }
+    return acc;
+  }, baseStructure);
+  return baseStructure;
+};
+
+const OilAndGas = () => {
   const classes = useStyles();
   const { config, configDispatch } = useConfig();
+  const { data, year, unitConversion } = useEnergyFutureData();
   const intl = useIntl();
+
+  const [vizDimension, setVizDimension] = useState({ height: 0, width: 0 });
 
   const iteration = useMemo(() => parseInt(config.yearId, 10), [config.yearId]);
 
@@ -104,19 +136,12 @@ const OilAndGas = ({ data, year, vizDimension }) => {
     percentage => `${intl.formatMessage({ id: 'common.char.colon' })} ${formatValue(percentage, intl)}${intl.formatMessage({ id: 'common.char.percent' })}`,
     [intl],
   );
-
-  // Compare button toggle
   const compare = useMemo(() => !config.noCompare, [config.noCompare]);
 
-  // Determine which tooltip is currently open
   const [tooltip, setTooltip] = useState();
 
-  // 'oil' or 'gas' which is used for generating translation text
   const type = useMemo(() => (config.mainSelection === 'oilProduction' ? 'oil' : 'gas'), [config.mainSelection]);
 
-  /**
-   * Determine the block colors in treemaps.
-   */
   const getColor = useCallback((d) => {
     let color;
     if (config.view === 'source') {
@@ -127,9 +152,6 @@ const OilAndGas = ({ data, year, vizDimension }) => {
     return color;
   }, [config.mainSelection, config.view, gasColors, oilColors, regionColors]);
 
-  /**
-   * Format tooltip.
-   */
   const getTooltip = useCallback((entry) => {
     const section = {
       title: intl.formatMessage({ id: `common.scenarios.${config.scenarios[0]}` }),
@@ -155,20 +177,11 @@ const OilAndGas = ({ data, year, vizDimension }) => {
     );
   }, [intl, config.scenarios, config.unit, config.view, type, getColor]);
 
-  /**
-   * Sort both data based on the current year values in the descending order.
-   */
   const sortDataSets = useCallback((curr, comp) => {
-    // sort the current data in decending order
     const currentYearData = (curr || []).sort((a, b) => b.total - a.total);
-
-    // set the sort order to be the current year order
     const sortOrder = currentYearData.map(item => item.name);
-
-    // re-arrange the compare year data to match current year data
     const compareYearData = (sortOrder || []).map(item => comp.find(x => x.name === item));
 
-    // removing entries that are zeros in both current and compare data
     const currentZeros = new Set(currentYearData.filter(d => d.total <= 0).map(d => d.name));
     const compareZeros = new Set(compareYearData.filter(d => d.total <= 0).map(d => d.name));
 
@@ -185,9 +198,6 @@ const OilAndGas = ({ data, year, vizDimension }) => {
   const showPercentages = useCallback(() => !(config.provinces.length === 1 && config.provinces[0] !== 'ALL'),
     [config.provinces]);
 
-  /**
-   * Generate the treemap component based on the source values, size and location (top or bottom).
-   */
   const createTreeMap = useCallback((source, isTopChart, size, isSmall) => (
     <>
       <Typography align='center' varient="body2" className={classes.label}>
@@ -251,36 +261,36 @@ const OilAndGas = ({ data, year, vizDimension }) => {
     formatPercentage,
   ]);
 
-  /**
-   * Update the state of the compare button and send the event to data analytics
-   */
   const handleCompareUpdate = useCallback(() => {
     configDispatch({ type: 'noCompare/changed', payload: compare });
     analytics.reportMedia(config.page, compare ? 'don\'t compare' : 'compare');
   }, [configDispatch, compare, config.page]);
 
+  const processedData = processData(data, config.view, unitConversion);
+
+  const vizRef = useCallback((node) => {
+    if (node) setVizDimension(node.getBoundingClientRect());
+  }, []);
+
   if (config.view === 'region' && config.sources.length === 0) return <UnavailableDataMessage message={intl.formatMessage({ id: 'common.unavailableData.noSourceSelected' })} />;
   if (config.view === 'source' && config.provinces.length === 0) return <UnavailableDataMessage message={intl.formatMessage({ id: 'common.unavailableData.noRegionSelected' })} />;
 
-  // data not ready; render nothing
-  if (!data || !data[currentYear] || !data[compareYear]) {
-    return null;
+  if (!processedData || !processedData[currentYear] || !processedData[compareYear]) {
+    return (<UnavailableDataMessage message={intl.formatMessage({ id: 'common.unavailableData.default' })} />);
   }
 
-  // data content not valid; render nothing
   if (
-    Number.isNaN(Number(data[currentYear][0].total))
-    || Number.isNaN(Number(data[compareYear][0].total))
+    Number.isNaN(Number(processedData[currentYear][0].total))
+    || Number.isNaN(Number(processedData[compareYear][0].total))
   ) {
     return null;
   }
 
-  // Sorted datasets
   const {
     currentYearData,
     compareYearData,
     biggestValue,
-  } = sortDataSets(data[currentYear], data[compareYear]);
+  } = sortDataSets(processedData[currentYear], processedData[compareYear]);
 
   const treeMapCollection = (treeData, treeDataCompanion = [], treeYear, isTopChart) => {
     if (!vizDimension.width || biggestValue <= 0) {
@@ -417,7 +427,7 @@ const OilAndGas = ({ data, year, vizDimension }) => {
   }
 
   return (
-    <>
+    <div ref={vizRef}>
       {/* year numbers and the compare button (top-right) */}
       <Grid container direction="column" className={classes.year}>
         <Grid item>
@@ -505,26 +515,8 @@ const OilAndGas = ({ data, year, vizDimension }) => {
           </Grid>
         </Grid>
       </Grid>
-    </>
+    </div>
   );
 };
 
-OilAndGas.propTypes = {
-  data: PropTypes.oneOfType([PropTypes.object, PropTypes.arrayOf(PropTypes.object)]),
-  year: PropTypes.shape({
-    min: PropTypes.number,
-    max: PropTypes.number,
-    forecastStart: PropTypes.number,
-  }),
-  vizDimension: PropTypes.shape({
-    height: PropTypes.number,
-    width: PropTypes.number,
-  }),
-};
-
-OilAndGas.defaultProps = {
-  data: undefined,
-  year: { min: 0, max: 0, forecastStart: 0 },
-  vizDimension: { height: 0, width: 0 },
-};
 export default OilAndGas;

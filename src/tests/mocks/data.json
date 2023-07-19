@@ -58,19 +58,11 @@
         "value": 534.421
       },
       {
-        "province": "AB",
-        "year": 2005,
-        "scenario": "Evolving",
-        "source": "BIO",
-        "value": 2818.1722
-      },
-      {
         "province": "BC",
         "year": 2005,
         "scenario": "Evolving",
         "source": "BIO",
         "value": 1259.11
-
       },
       {
         "province": "YT",

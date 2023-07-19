@@ -1,13 +1,12 @@
 import React, { useCallback, useMemo } from 'react';
 import { ResponsiveLine } from '@nivo/line';
-import PropTypes from 'prop-types';
 import { useIntl } from 'react-intl';
 
 import { makeStyles } from '@material-ui/core';
 import useAPI from '../../hooks/useAPI';
 import useConfig from '../../hooks/useConfig';
 import { CHART_PROPS, CHART_AXIS_PROPS, CHART_PATTERNS, OIL_SUBGROUP } from '../../constants';
-import { getTicks } from '../../utilities/parseData';
+import { formatLineData, getTicks } from '../../utilities/parseData';
 
 import FillLayer from '../../components/FillLayer';
 import ForecastLayer from '../../components/ForecastLayer';
@@ -23,7 +22,15 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const BySector = ({ data, year }) => {
+const processData = (data, unitConversion, sourceOrder, isTransportation) => {
+  const formattedData = formatLineData(data, 'source', unitConversion);
+  return formattedData && sourceOrder
+    .map(id => ((isTransportation && id === 'OIL') ? OIL_SUBGROUP : id)).flat()
+    .map(source => formattedData.find(o => o.id === source)).filter(Boolean)
+    .reverse();
+};
+
+const BySector = () => {
   const intl = useIntl();
   const classes = useStyles();
   const {
@@ -32,33 +39,16 @@ const BySector = ({ data, year }) => {
       transportation: { colors: transportationColors },
     },
   } = useAPI();
-  const { rawData } = useEnergyFutureData();
+  const { data, year, unitConversion } = useEnergyFutureData();
   const { config } = useConfig();
 
-  /**
-   * Determine whether or not 'transportation' is the current selected sector.
-   */
   const isTransportation = useMemo(() => config.sector === 'TRANSPORTATION', [config.sector]);
 
-  /**
-   * Prepare the color palette, which is a combination of energy colors and transportation colors.
-   */
   const colors = useMemo(
     () => ({ ...energyColors, ...transportationColors }),
     [energyColors, transportationColors],
   );
 
-  const orderedData = useMemo(
-    () => data && config.sourceOrder
-      .map(id => ((isTransportation && id === 'OIL') ? OIL_SUBGROUP : id)).flat() // expand extra oil options
-      .map(source => data.find(o => o.id === source)).filter(Boolean) // place sources in order
-      .reverse(),
-    [data, config.sourceOrder, isTransportation],
-  );
-
-  /**
-   * Fill over forecast years.
-   */
   const fill = useMemo(
     () => FillLayer(isTransportation),
     [isTransportation],
@@ -94,21 +84,20 @@ const BySector = ({ data, year }) => {
     );
   }, [intl, config.scenarios, config.unit, isTransportation]);
 
-  /**
-   * Calculate the max tick value on y-axis.
-   */
+  const processedData = processData(data, unitConversion, config.sourceOrder, isTransportation);
+
   const ticks = useMemo(() => {
-    const values = (data || []).map(source => source.data);
+    const values = (processedData || []).map(source => source.data);
     const sums = (values[0] || [])
       .map((_, i) => values.map(source => source[i].y).reduce((a, b) => a + b, 0));
     return getTicks(Math.max(...sums));
-  }, [data]);
+  }, [processedData]);
 
   if (!year) {
     return null;
   }
 
-  if (!data || !rawData) {
+  if (!processedData?.length) {
     const noDataMessageId = config.sources.length === 0
       ? 'common.unavailableData.noSourceSelected'
       : 'common.unavailableData.default';
@@ -121,7 +110,7 @@ const BySector = ({ data, year }) => {
     <div className={classes.chart}>
       <ResponsiveLine
         {...CHART_PROPS}
-        data={orderedData}
+        data={processedData}
         layers={[HistoricalLayer, 'grid', 'axes', 'crosshair', 'lines', 'points', 'slices', 'areas', fill, ForecastLayer]}
         xScale={{ type: 'point' }}
         yScale={{ type: 'linear', min: 0, max: ticks[ticks.length - 1], stacked: true }}
@@ -145,24 +134,6 @@ const BySector = ({ data, year }) => {
       />
     </div>
   );
-};
-
-BySector.propTypes = {
-  data: PropTypes.oneOfType([PropTypes.object, PropTypes.arrayOf(PropTypes.object)]),
-  year: PropTypes.shape({
-    min: PropTypes.number,
-    max: PropTypes.number,
-    forecastStart: PropTypes.number,
-  }),
-};
-
-BySector.defaultProps = {
-  data: undefined,
-  year: {
-    min: 0,
-    max: 0,
-    forecastStart: 0,
-  },
 };
 
 export default BySector;

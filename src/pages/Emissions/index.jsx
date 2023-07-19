@@ -1,6 +1,5 @@
 import React, { useCallback, useMemo } from 'react';
 import { ResponsiveBar } from '@nivo/bar';
-import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core';
 import { useIntl } from 'react-intl';
 import useAPI from '../../hooks/useAPI';
@@ -23,9 +22,27 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const Emissions = ({ data, year }) => {
+const processData = (data) => {
+  if (!data) return null;
+
+  const byYear = data.reduce((yearEmissions, emission) => {
+    const yearSources = { ...yearEmissions };
+    const yearKey = emission.year;
+    const { source } = emission;
+
+    yearSources[yearKey] = yearSources[yearKey] || {};
+    yearSources[yearKey][source] = yearSources[yearKey][source] || 0;
+    yearSources[yearKey][source] += emission.value;
+
+    return yearSources;
+  }, {});
+
+  return Object.keys(byYear).map(yearKey => ({ year: yearKey, ...byYear[yearKey] }));
+};
+
+const Emissions = () => {
   const { sources: { greenhouseGas: sources } } = useAPI();
-  const { rawData } = useEnergyFutureData();
+  const { data, year } = useEnergyFutureData();
   const { config } = useConfig();
   const classes = useStyles();
   const intl = useIntl();
@@ -68,26 +85,28 @@ const Emissions = ({ data, year }) => {
     );
   }, [config.scenarios, config.unit, intl, sources.colors, sources.order]);
 
+  const processedData = processData(data);
+
   const ticks = useMemo(() => {
-    const highest = data && Math.max(...data
+    const highest = processedData && Math.max(...processedData
       .map(seg => Object.values(seg).reduce((a, b) => {
         if (typeof b === 'string' || b < 0) return a;
         return a + b;
       }, 0)));
-    const lowest = data && Math.min(...data
+    const lowest = processedData && Math.min(...processedData
       .map(seg => Object.values(seg).reduce((a, b) => {
         if (typeof b === 'string' || b > 0) return a;
         return a + b;
       }, 0)));
 
     return getTicks(highest, lowest);
-  }, [data]);
+  }, [processedData]);
 
   const xAxisGridLines = useMemo(() => {
-    if (!data) return [];
-    const allYears = data.map(entry => entry.year);
+    if (!processedData) return [];
+    const allYears = processedData.map(entry => entry.year);
     return allYears.filter(value => getYearLabel(value) !== '');
-  }, [data]);
+  }, [processedData]);
 
   if (config.yearId < 2023) {
     return (
@@ -97,64 +116,45 @@ const Emissions = ({ data, year }) => {
     );
   }
 
-  return data && rawData
-    ? (
-      <div className={classes.chart}>
-        <ResponsiveBar
-          {...CHART_PROPS}
-          data={data}
-          keys={keys}
-          layers={[HistoricalLayer, 'grid', 'axes', 'bars', 'markers', ForecastLayer, NetBarLineLayer]}
-          padding={0.4}
-          indexBy="year"
-          maxValue={ticks[ticks.length - 1]}
-          minValue={ticks[0]}
-          colors={colors}
-          axisBottom={{
-            tickSize: 0,
-            format: getYearLabel,
-          }}
-          axisRight={{
-            tickSize: 0,
-            tickValues: ticks,
-          }}
-          enableGridX
-          tooltip={getTooltip}
-          gridXValues={xAxisGridLines}
-          gridYValues={ticks}
-          motionStiffness={300}
-          forecastStart={year.forecastStart}
-          markers={GREENHOUSE_GAS_MARKERS}
-          theme={{
-            tooltip: {
-              ...defaultTheme.overrides.MuiTooltip.tooltip,
-            },
-          }}
-        />
-      </div>
-    ) : (
-      <UnavailableDataMessage
-        message={intl.formatMessage({ id: 'common.unavailableData.noSourceSelected' })}
+  return processedData ? (
+    <div className={classes.chart}>
+      <ResponsiveBar
+        {...CHART_PROPS}
+        data={processedData}
+        keys={keys}
+        layers={[HistoricalLayer, 'grid', 'axes', 'bars', 'markers', ForecastLayer, NetBarLineLayer]}
+        padding={0.4}
+        indexBy="year"
+        maxValue={ticks[ticks.length - 1]}
+        minValue={ticks[0]}
+        colors={colors}
+        axisBottom={{
+          tickSize: 0,
+          format: getYearLabel,
+        }}
+        axisRight={{
+          tickSize: 0,
+          tickValues: ticks,
+        }}
+        enableGridX
+        tooltip={getTooltip}
+        gridXValues={xAxisGridLines}
+        gridYValues={ticks}
+        motionStiffness={300}
+        forecastStart={year.forecastStart}
+        markers={GREENHOUSE_GAS_MARKERS}
+        theme={{
+          tooltip: {
+            ...defaultTheme.overrides.MuiTooltip.tooltip,
+          },
+        }}
       />
-    );
-};
-
-Emissions.propTypes = {
-  data: PropTypes.oneOfType([PropTypes.object, PropTypes.arrayOf(PropTypes.object)]),
-  year: PropTypes.shape({
-    min: PropTypes.number,
-    max: PropTypes.number,
-    forecastStart: PropTypes.number,
-  }),
-};
-
-Emissions.defaultProps = {
-  data: undefined,
-  year: {
-    min: 0,
-    max: 0,
-    forecastStart: 0,
-  },
+    </div>
+  ) : (
+    <UnavailableDataMessage
+      message={intl.formatMessage({ id: 'common.unavailableData.noSourceSelected' })}
+    />
+  );
 };
 
 export default Emissions;
