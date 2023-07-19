@@ -114,7 +114,7 @@ const BySector = () => {
         layers={[HistoricalLayer, 'grid', 'axes', 'crosshair', 'lines', 'points', 'slices', 'areas', fill, ForecastLayer]}
         xScale={{ type: 'point' }}
         yScale={{ type: 'linear', min: 0, max: ticks[ticks.length - 1], stacked: true }}
-        curve="cardinal"
+        curve="monotoneX"
         axisRight={{
           ...CHART_AXIS_PROPS,
           tickValues: ticks,
