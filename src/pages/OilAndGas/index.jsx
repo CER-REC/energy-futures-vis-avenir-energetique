@@ -222,10 +222,9 @@ const OilAndGas = ({ data, year, vizDimension }) => {
           <div
             className={classes.treeMapRectangle}
             style={
-              // check if tooltip is selected
-              tooltip === source.name
+              source.name === tooltip
                 ? { height: size, width: size, border: 'black 2px solid' }
-                : { height: size, width: size, border: 'transparent 2px solid'  }
+                : { height: size, width: size, border: 'transparent 2px solid' }
             }
           >
             <ResponsiveTreeMap
