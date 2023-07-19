@@ -216,18 +216,16 @@ const OilAndGas = ({ data, year, vizDimension }) => {
           open={source.name === tooltip}
           title={getTooltip(source)}
           placement={getTooltipPos(source.children.length, size, isTopChart)}
-          onOpen={() => {
-            setTooltip(source.name);
-          }}
+          onOpen={() => setTooltip(source.name)}
           onClose={() => setTooltip()}
         >
           <div
             className={classes.treeMapRectangle}
             style={
               // check if tooltip is selected
-              (!(tooltip === null || tooltip === undefined) && (tooltip === source.name))
+              tooltip === source.name
                 ? { height: size, width: size, border: 'black 2px solid' }
-                : { height: size, width: size }
+                : { height: size, width: size, border: 'transparent 2px solid'  }
             }
           >
             <ResponsiveTreeMap
