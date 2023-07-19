@@ -1,5 +1,5 @@
 import {
-  IconDemand, IconTransportation, IconResidential, IconIndustrial,
+  IconTransportation, IconResidential, IconIndustrial,
   IconElectricity, IconOil, IconGas, IconBiomass, IconBiofuel,
   IconCoal, IconHydro, IconNuclear, IconHydrogen, IconWaste,
   IconAgriculture, IconOilGas, IconLand, IconSolar, IconWind, IconAir,
@@ -79,33 +79,28 @@ export const PAGES = [
 export const CONFIG_LAYOUT = {
   energyDemand: {
     name: 'Total Demand',
-    icon: IconDemand,
     unit: ['petajoules', 'kilobarrelEquivalents'],
     pages: ['by-region', 'by-sector', 'scenarios'],
   },
   electricityGeneration: {
     name: 'Electricity Generation',
-    icon: IconElectricity,
     unit: ['gigawattHours', 'petajoules', 'kilobarrelEquivalents'],
     pages: ['by-region', 'electricity', 'scenarios'],
   },
   oilProduction: {
     name: 'Oil Production',
-    icon: IconOil,
     unit: ['kilobarrels', 'thousandCubicMetres'],
     pages: ['by-region', 'scenarios', 'oil-and-gas'],
     priceSources: ['WTI', 'WCS', 'BRENT'],
   },
   gasProduction: {
     name: 'Gas Production',
-    icon: IconGas,
     unit: ['cubicFeet', 'millionCubicMetres'],
     pages: ['by-region', 'scenarios', 'oil-and-gas'],
     priceSources: ['HH', 'NIT'],
   },
   greenhouseGasEmission: {
     name: 'Emissions',
-    icon: IconGas,
     unit: ['megatonnes'],
     pages: ['scenarios', 'emissions'],
   },

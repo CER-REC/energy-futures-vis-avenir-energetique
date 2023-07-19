@@ -62,32 +62,43 @@ const HorizontalControlBar = () => {
   const appendices = Object.keys(CONFIG_LAYOUT).filter(
     selection => CONFIG_LAYOUT[selection].pages.includes(config.page),
   );
+  const appendiceGroups = appendices.reduce((acc, key, index) => {
+    if ((index === appendices.length - 1) && (index > 1)) {
+      const group = acc.splice(acc.length - 1, 1)[0] || [];
+      return [...acc, [...group, key]];
+    }
+    return [...acc, [key]];
+  }, []);
 
   const selectionLabel = config.page === 'oil-and-gas'
     ? intl.formatMessage({ id: 'components.horizontalControlBar.production' })
     : intl.formatMessage({ id: 'components.horizontalControlBar.categories' });
 
-  const selections = (appendices.length > 1) && (
+  const selections = (appendiceGroups.length > 1) && (
     <Grid container alignItems="center">
       <Grid item className={classes.labelContainer}>
         <Typography variant="subtitle1">{selectionLabel}</Typography>
       </Grid>
       <HintMainSelect />
-      {appendices.map(selection => (
-        <Grid item key={`config-origin-${selection}`}>
-          <Tooltip
-            title={intl.formatMessage({ id: `components.mainSelect.${selection}.tooltip.${config.page}` })}
-            classes={{ tooltip: classes.tooltip }}
-          >
-            <Button
-              variant={config.mainSelection === selection ? 'contained' : 'outlined'}
-              color="primary"
-              size="small"
-              onClick={() => handleUpdateAppendix(selection)}
-            >
-              {intl.formatMessage({ id: `components.mainSelect.${selection}.title` })}
-            </Button>
-          </Tooltip>
+      {appendiceGroups.map(group => (
+        <Grid item key={group.join()} style={{ display: 'flex' }}>
+          {group.map(selection => (
+            <Grid item key={`config-origin-${selection}`}>
+              <Tooltip
+                title={intl.formatMessage({ id: `components.mainSelect.${selection}.tooltip.${config.page}` })}
+                classes={{ tooltip: classes.tooltip }}
+              >
+                <Button
+                  variant={config.mainSelection === selection ? 'contained' : 'outlined'}
+                  color="primary"
+                  size="small"
+                  onClick={() => handleUpdateAppendix(selection)}
+                >
+                  {intl.formatMessage({ id: `components.mainSelect.${selection}.title` })}
+                </Button>
+              </Tooltip>
+            </Grid>
+          ))}
         </Grid>
       ))}
     </Grid>
