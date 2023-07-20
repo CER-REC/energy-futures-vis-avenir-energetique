@@ -44,6 +44,7 @@ const useStyles = makeStyles(theme => ({
     padding: theme.spacing(1),
   },
   treeMapRectangle: {
+    border: '2px solid transparent',
     margin: 'auto',
     '& svg': { transform: 'rotate(270deg) scaleX(-1)' },
     '& > div > div > div:last-of-type': { display: 'none' }, // hide the default Nivo tooltip
@@ -221,11 +222,11 @@ const OilAndGas = ({ data, year, vizDimension }) => {
         >
           <div
             className={classes.treeMapRectangle}
-            style={
-              source.name === tooltip
-                ? { height: size, width: size, border: 'black 2px solid' }
-                : { height: size, width: size, border: 'transparent 2px solid' }
-            }
+            style={{
+              borderColor: (source.name === tooltip) && 'black',
+              height: size,
+              width: size,
+            }}
           >
             <ResponsiveTreeMap
               root={source}
