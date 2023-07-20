@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { makeStyles, Paper, Grid, Button } from '@material-ui/core';
+import { makeStyles, Paper, Grid, Button, Typography } from '@material-ui/core';
 import { useIntl } from 'react-intl';
 import InfoIcon from "@material-ui/icons/Info";
 import useIsMobile from '../../hooks/useIsMobile';
@@ -25,6 +25,7 @@ const useStyles = makeStyles((theme) => ({
   button: {
     height: 'auto',
     width: '80%',
+    marginLeft: '10%',
     backgroundColor: theme.palette.blue.tealBlue,
   },
 }));
@@ -44,11 +45,11 @@ const Disclaimer = () => {
         </Grid>
         <Grid item container direction='column' spacing={1}>
           <Grid item>
-            <span className={classes.message}>
+            <Typography variant='body1' className={classes.message}>
               <b>{intl.formatMessage({ id: 'components.disclaimer.title' })}</b>
               &nbsp;-&nbsp;
               {intl.formatMessage({ id: 'components.disclaimer.body1' })}
-            </span>
+            </Typography>
           </Grid>
           <Grid item>
             <Button 
