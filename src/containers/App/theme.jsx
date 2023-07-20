@@ -1,5 +1,9 @@
 import { createMuiTheme } from '@material-ui/core';
 
+const darkBluePurple = '#222546';
+const tealBlue = '#07456B';
+const lightBlue = '#EDF1F4';
+
 /**
  * Customize the look-and-feel of UI components here.
  */
@@ -28,6 +32,11 @@ const theme = createMuiTheme({
       light: defaultTheme.palette.background.light,
     },
     historical: '#DEDEE1',
+    blue: {
+      light: lightBlue,
+      darkBluePurple,
+      tealBlue,
+    },
   },
   mixins: {
     zoneLabel: {
