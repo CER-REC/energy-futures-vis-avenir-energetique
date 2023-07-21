@@ -11,13 +11,9 @@ const useStyles = makeStyles((theme) => ({
     padding: '0.5em 0.5em',
     marginBottom: '1.5rem',
   },
-  root: {
-    display: 'flex',
-    alignItems: 'center',
-  },
   icon: {
     color: theme.palette.blue.tealBlue,
-    margin: '1.5rem',
+    margin: '0.5rem',
   },
   message: {
     color: theme.palette.blue.darkBluePurple,
@@ -25,6 +21,7 @@ const useStyles = makeStyles((theme) => ({
   button: {
     height: 'auto',
     width: '80%',
+    maxWidth: '450px',
     marginLeft: '10%',
     backgroundColor: theme.palette.blue.tealBlue,
   },
@@ -39,7 +36,7 @@ const Disclaimer = () => {
 
   return isMobile && showDisclaimer && (
     <Paper className={classes.paper} elevation={0}>
-      <Grid contianer className={classes.root}>
+      <Grid container spacing={1} wrap='nowrap' alignItems='center'>
         <Grid item>
           <InfoIcon className={classes.icon}/>
         </Grid>

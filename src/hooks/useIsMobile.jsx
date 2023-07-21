@@ -1,3 +1,3 @@
-import { useMediaQuery, useTheme } from '@material-ui/core';
+import { useMediaQuery } from '@material-ui/core';
 
-export default () => useMediaQuery(useTheme().breakpoints.down('md'));
+export default () => useMediaQuery('(max-width:768px)');
