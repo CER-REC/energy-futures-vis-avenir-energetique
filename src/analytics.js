@@ -84,8 +84,8 @@ class Analytics {
     this.report(page, 'media', 'click', type);
   }
 
-  reportHelp(page, label) {
-    this.report(page, 'help', 'click', 'tooltip', { event_label: label });
+  reportHelp(page, type, label) {
+    this.report(page, 'help', 'click', type, { event_label: label });
   }
 }
 
