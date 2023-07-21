@@ -3,6 +3,7 @@ import { makeStyles, Typography } from '@material-ui/core';
 import { useIntl } from 'react-intl';
 import useConfig from '../../hooks/useConfig';
 import useEnergyFutureData from '../../hooks/useEnergyFutureData';
+import analytics from '../../analytics';
 import { CONFIG_LAYOUT } from '../../constants';
 import DropDown from '../Dropdown';
 import HintPrice from '../HintPrice';
@@ -38,6 +39,10 @@ const PriceSelect = () => {
     intl.formatMessage({ id: `components.priceSelect.${source}` }, { year: priceYear }),
     source,
   ]);
+  const onChange = (value) => {
+    configDispatch({ type: 'priceSource/changed', payload: value });
+    analytics.reportFeature(config.page, 'benchmark price', value);
+  };
 
   return (
     <div className={classes.labelContainer}>
@@ -51,7 +56,7 @@ const PriceSelect = () => {
         options={options}
         value={config.priceSource}
         renderValue={value => intl.formatMessage({ id: `common.prices.${value}` })}
-        onChange={value => configDispatch({ type: 'priceSource/changed', payload: value })}
+        onChange={onChange}
       />
     </div>
   );
