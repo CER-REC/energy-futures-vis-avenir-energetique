@@ -77,8 +77,8 @@ class Analytics {
   }
 
   reportNav(page, target) {
-    this.reportPageView();
     this.report(page, 'menu', 'click', this.getVisualization(target));
+    this.reportPageView();
   }
 
   reportFooter(page, action, value) {
