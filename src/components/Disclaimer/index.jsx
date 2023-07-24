@@ -1,19 +1,19 @@
 import React, { useState } from 'react';
 import { makeStyles, Paper, Grid, Button, Typography } from '@material-ui/core';
 import { useIntl } from 'react-intl';
-import InfoIcon from "@material-ui/icons/Info";
+import InfoIcon from '@material-ui/icons/Info';
 import useIsMobile from '../../hooks/useIsMobile';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   paper: {
     backgroundColor: theme.palette.blue.light,
     borderRadius: 10,
-    padding: '0.5em 0.5em',
-    marginBottom: '1.5rem',
+    padding: '8px',
+    marginBottom: '24px',
   },
   icon: {
     color: theme.palette.blue.tealBlue,
-    margin: '0.5rem',
+    margin: '8px',
   },
   message: {
     color: theme.palette.blue.darkBluePurple,
@@ -38,7 +38,7 @@ const Disclaimer = () => {
     <Paper className={classes.paper} elevation={0}>
       <Grid container spacing={1} wrap='nowrap' alignItems='center'>
         <Grid item>
-          <InfoIcon className={classes.icon}/>
+          <InfoIcon className={classes.icon} />
         </Grid>
         <Grid item container direction='column' spacing={1}>
           <Grid item>
@@ -49,10 +49,10 @@ const Disclaimer = () => {
             </Typography>
           </Grid>
           <Grid item>
-            <Button 
-              variant='contained' 
-              color="primary" 
-              disableRipple 
+            <Button
+              variant='contained'
+              color="primary"
+              disableRipple
               className={classes.button}
               onClick={handleClickCloseButton}
             >
@@ -62,7 +62,7 @@ const Disclaimer = () => {
         </Grid>
       </Grid>
     </Paper>
-  )
+  );
 };
 
 export default Disclaimer;
