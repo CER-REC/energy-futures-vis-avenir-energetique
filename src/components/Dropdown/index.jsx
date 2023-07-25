@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   MenuItem,
   Select,
@@ -25,8 +25,7 @@ const useStyles = makeStyles(theme => ({
   },
   item: {
     fontSize: DROPDOWN_FONT_SIZE,
-    '&.Mui-selected': { backgroundColor: 'transparent' },
-    '&:hover, &.Mui-selected:hover, &.Mui-focusVisible': {
+    '&:hover, &.Mui-selected:hover, &.Mui-focusVisible, &.initialSelected': {
       backgroundColor: theme.palette.primary.main,
       color: 'white',
     },
@@ -40,6 +39,7 @@ const useStyles = makeStyles(theme => ({
 
 const DropDown = ({ options, value, onChange, className, menuClassName, renderValue }) => {
   const classes = useStyles();
+  const [hasHovered, setHasHovered] = useState(false);
 
   return (
     <Select
@@ -63,18 +63,23 @@ const DropDown = ({ options, value, onChange, className, menuClassName, renderVa
         root: classes.root,
       }}
       IconComponent={KeyboardArrowDown}
+      onOpen={() => setHasHovered(false)}
     >
       {
-          options.map(([label, optionValue]) => (
-            <MenuItem
-              classes={{ root: classes.item }}
-              key={optionValue}
-              value={optionValue}
-            >
-              {label}
-            </MenuItem>
-          ))
-        }
+        options.map(([label, optionValue]) => (
+          <MenuItem
+            classes={{
+              root: clsx(classes.item, { initialSelected: (value === optionValue) && !hasHovered }),
+            }}
+            key={optionValue}
+            value={optionValue}
+            onMouseEnter={() => setHasHovered(true)}
+            onFocus={() => setHasHovered(true)}
+          >
+            {label}
+          </MenuItem>
+        ))
+      }
     </Select>
   );
 };
