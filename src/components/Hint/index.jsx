@@ -125,7 +125,7 @@ const Hint = ({ children, label, content, maxWidth = 'sm', className, isTextButt
 
   const handleOpenDialog = () => {
     if (label) {
-      analytics.reportHelp(page, label);
+      analytics.reportHelp(page, 'tooltip', label);
     }
     setOpen(true);
   };

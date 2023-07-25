@@ -64,12 +64,21 @@ class Analytics {
     this.dataLayer.push(event);
   }
 
+  reportPageView() {
+    this.dataLayer.push({
+      event: 'virtualPageview',
+      pageURL: window.location.href,
+      pageTitle: window.document.title,
+    });
+  }
+
   reportLanding(value) {
     this.report(null, 'landing', 'click', this.getVisualization(value) || value);
   }
 
   reportNav(page, target) {
     this.report(page, 'menu', 'click', this.getVisualization(target));
+    this.reportPageView();
   }
 
   reportFooter(page, action, value) {
@@ -84,8 +93,8 @@ class Analytics {
     this.report(page, 'media', 'click', type);
   }
 
-  reportHelp(page, label) {
-    this.report(page, 'help', 'click', 'tooltip', { event_label: label });
+  reportHelp(page, type, label) {
+    this.report(page, 'help', 'click', type, { event_label: label });
   }
 }
 

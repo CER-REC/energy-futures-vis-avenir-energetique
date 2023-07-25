@@ -3,6 +3,7 @@ import React from 'react';
 import Markdown from 'react-markdown';
 import { useIntl } from 'react-intl';
 import PropTypes from 'prop-types';
+import analytics from '../../analytics';
 import useConfig from '../../hooks/useConfig';
 import useAPI from '../../hooks/useAPI';
 
@@ -20,8 +21,12 @@ const useStyles = makeStyles({
 const UnavailableDataMessage = ({ message, hasEmissionsLink }) => {
   const classes = useStyles();
   const intl = useIntl();
-  const { configDispatch } = useConfig();
+  const { config, configDispatch } = useConfig();
   const { yearIdIterations } = useAPI();
+  const onClick = () => {
+    configDispatch({ type: 'yearId/changed' });
+    analytics.reportHelp(config.page, 'view latest', 'no data');
+  };
 
   let currMessage = message;
   let emissionsLinkMessage = null;
@@ -49,7 +54,7 @@ const UnavailableDataMessage = ({ message, hasEmissionsLink }) => {
           <Button
             variant="text"
             color="primary"
-            onClick={() => configDispatch({ type: 'yearId/changed' })}
+            onClick={onClick}
           >
             {emissionsLinkMessage}
           </Button>
