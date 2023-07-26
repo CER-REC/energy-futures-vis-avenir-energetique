@@ -44,8 +44,8 @@ const Content = () => {
 
 export default () => (
   <ThemeProvider theme={theme}>
-    <Disclaimer />
     <ConfigProvider>
+      <Disclaimer />
       <Content />
     </ConfigProvider>
   </ThemeProvider>

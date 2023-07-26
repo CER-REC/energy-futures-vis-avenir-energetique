@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { makeStyles, Paper, Grid, Button, Typography } from '@material-ui/core';
 import { useIntl } from 'react-intl';
 import InfoIcon from '@material-ui/icons/Info';
 import useIsMobile from '../../hooks/useIsMobile';
+import { EXPIRY_MS } from '../../constants';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -21,20 +22,30 @@ const useStyles = makeStyles(theme => ({
   button: {
     height: 'auto',
     width: '80%',
-    maxWidth: '450px',
-    marginLeft: '10%',
+    maxWidth: '400px',
     backgroundColor: theme.palette.blue.tealBlue,
   },
 }));
 
+const expiryKey = 'ef.mobileDisclaimerSeenExpiryDate';
+const remainderMS = localStorage.getItem(expiryKey) - new Date().getTime();
+
 const Disclaimer = () => {
   const classes = useStyles();
   const intl = useIntl();
-  const [showDisclaimer, setShowDisclaimer] = useState(true);
   const isMobile = useIsMobile();
-  const handleClickCloseButton = () => setShowDisclaimer(false);
+  const [hasSeenDisclaimer, setHasSeenDisclaimer] = useState(remainderMS > 0);
+  const handleClick = () => { setHasSeenDisclaimer(true); };
 
-  return isMobile && showDisclaimer && (
+  useEffect(() => {
+    if (hasSeenDisclaimer) {
+      localStorage.setItem(expiryKey, new Date().getTime() + EXPIRY_MS);
+    } else {
+      localStorage.removeItem(expiryKey);
+    }
+  }, [hasSeenDisclaimer]);
+
+  return isMobile && !hasSeenDisclaimer && (
     <Paper className={classes.paper} elevation={0}>
       <Grid container spacing={1} wrap='nowrap' alignItems='center'>
         <Grid item>
@@ -48,15 +59,15 @@ const Disclaimer = () => {
               {intl.formatMessage({ id: 'components.disclaimer.body1' })}
             </Typography>
           </Grid>
-          <Grid item>
+          <Grid item style={{ textAlign: 'center' }}>
             <Button
               variant='contained'
               color="primary"
               disableRipple
               className={classes.button}
-              onClick={handleClickCloseButton}
+              onClick={handleClick}
             >
-              Close
+              {intl.formatMessage({ id: 'components.disclaimer.buttonClose' })}
             </Button>
           </Grid>
         </Grid>

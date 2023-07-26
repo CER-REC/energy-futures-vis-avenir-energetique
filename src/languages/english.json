@@ -698,7 +698,8 @@
     },
     "disclaimer": {
       "title": "DISCLAIMER",
-      "body1": "Please note this visualization tool was designed for a screen width of at least 768 pixels."
+      "body1": "Please note this visualization tool was designed for a screen width of at least 768 pixels.",
+      "buttonClose": "Close"
     }
   },
   "containers": {

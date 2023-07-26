@@ -687,7 +687,8 @@
     },
     "disclaimer": {
       "title": "AVIS DE NON-RESPONSABILITÉ",
-      "body1": "Veuillez noter que cet outil de visualisation a été conçu pour un écran d'une largeur minimale de 768 pixels."
+      "body1": "Veuillez noter que cet outil de visualisation a été conçu pour un écran d'une largeur minimale de 768 pixels.",
+      "buttonClose": "Fermer"
     }
   },
   "containers": {
