@@ -71,7 +71,7 @@ class Analytics {
         pageURL: window.location.href,
         pageTitle: window.document.title,
       });
-    }, 0)
+    }, 0);
   }
 
   reportLanding(value) {
