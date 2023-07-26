@@ -72,7 +72,7 @@ const theme = createMuiTheme({
     yearSliderLabels: {
       display: 'flex',
       position: 'absolute',
-      top: 12,
+      top: '50%',
       right: 0,
       left: 0,
       zIndex: -1,

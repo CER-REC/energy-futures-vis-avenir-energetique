@@ -17,7 +17,7 @@ const useStyles = makeStyles(theme => ({
   slides: {
     position: 'relative',
     flexGrow: 1,
-    padding: theme.spacing(1.5, 1),
+    padding: theme.spacing(2, 1),
     borderLeft: `1px solid ${theme.palette.secondary.light}`,
     borderRight: `1px solid ${theme.palette.secondary.light}`,
     zIndex: 1,
