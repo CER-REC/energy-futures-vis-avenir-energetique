@@ -65,11 +65,13 @@ class Analytics {
   }
 
   reportPageView() {
-    this.dataLayer.push({
-      event: 'virtualPageview',
-      pageURL: window.location.href,
-      pageTitle: window.document.title,
-    });
+    setTimeout(() => {
+      this.dataLayer.push({
+        event: 'virtualPageview',
+        pageURL: window.location.href,
+        pageTitle: window.document.title,
+      });
+    }, 0)
   }
 
   reportLanding(value) {
