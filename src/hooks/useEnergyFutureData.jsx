@@ -130,6 +130,10 @@ export default () => {
     let selectedProvinces = config.provinces;
     let selectedSources = config.sources;
 
+    if (config.page === 'by-sector' && config.sector === 'TRANSPORTATION') {
+      selectedSources = [...config.sources, ...(config.sources.includes('OIL') ? ['AVIATION', 'DIESEL', 'GASOLINE'] : [])];
+    }
+
     if (config.view === 'region' && config.provinces[0] === 'ALL') selectedProvinces = config.provinceOrder;
     if (config.view === 'source' && config.sources[0] === 'ALL') selectedSources = config.sourceOrder;
 
