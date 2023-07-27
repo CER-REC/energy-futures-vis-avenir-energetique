@@ -196,7 +196,7 @@ const Landing = () => {
   const handleRedirect = page => () => {
     configDispatch({ type: 'page/changed', payload: page });
     analytics.reportLanding(page);
-    analytics.reportPageView();
+    analytics.reportPageView(page);
   };
 
   const handleCloseDialog = () => setDialog(false);

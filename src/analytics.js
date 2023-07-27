@@ -64,12 +64,12 @@ class Analytics {
     this.dataLayer.push(event);
   }
 
-  reportPageView() {
+  reportPageView(value) {
     setTimeout(() => {
       this.dataLayer.push({
         event: 'virtualPageview',
         pageURL: window.location.href,
-        pageTitle: window.document.title,
+        pageTitle: this.getVisualization(value),
       });
     }, 0);
   }
@@ -80,7 +80,7 @@ class Analytics {
 
   reportNav(page, target) {
     this.report(page, 'menu', 'click', this.getVisualization(target));
-    this.reportPageView();
+    this.reportPageView(target);
   }
 
   reportFooter(page, action, value) {
