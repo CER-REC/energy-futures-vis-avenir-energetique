@@ -307,3 +307,5 @@ export const GREENHOUSE_GAS_MARKERS = [{
     strokeWidth: 3,
   },
 }];
+
+export const EXPIRY_MS = 259200000; // three days in milliseconds

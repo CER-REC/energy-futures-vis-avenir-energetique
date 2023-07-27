@@ -684,6 +684,11 @@
     },
     "unsupportedWarning": {
       "browser": "Votre fureteur n’autorise pas les particularités propres à cette visualisation.\nVeuillez utiliser une version récente du logiciel de navigation Chrome, Firefox, Safari ou Edge.\nMerci!"
+    },
+    "disclaimer": {
+      "title": "AVIS DE NON-RESPONSABILITÉ",
+      "body1": "Veuillez noter que cet outil de visualisation a été conçu pour un écran d'une largeur minimale de 768 pixels.",
+      "buttonClose": "Fermer"
     }
   },
   "containers": {

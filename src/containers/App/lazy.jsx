@@ -12,6 +12,7 @@ import Demand from '../../pages/Demand';
 import OilAndGas from '../../pages/OilAndGas';
 import useConfig, { ConfigProvider } from '../../hooks/useConfig';
 import Emissions from '../../pages/Emissions';
+import Disclaimer from '../../components/Disclaimer';
 
 const Content = () => {
   const { config } = useConfig();
@@ -44,6 +45,7 @@ const Content = () => {
 export default () => (
   <ThemeProvider theme={theme}>
     <ConfigProvider>
+      <Disclaimer />
       <Content />
     </ConfigProvider>
   </ThemeProvider>
