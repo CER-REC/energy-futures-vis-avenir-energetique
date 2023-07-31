@@ -1,4 +1,4 @@
-## [2.6.4](http://neb-energy-futures-devdoc.s3-website.us-west-2.amazonaws.com/v2.6.4) (2023-07-04)
+## 2.6.4 (2023-07-04)
 
 
 * **Features:** Added undefined props for analytics events so they will not be sent to GA (78caca5)
@@ -10,22 +10,22 @@
 
 * **Features:** Add historical bar to year slider (3182189)
 
-## [2.6.3](http://neb-energy-futures-devdoc.s3-website.us-west-2.amazonaws.com/v2.6.3) (2023-06-20)
+## 2.6.3 (2023-06-20)
 
 
 * **Bug Fixes:** Sorted all line data so the x data is sequential by year (b9e5514)
 
-## [2.6.2](http://neb-energy-futures-devdoc.s3-website.us-west-2.amazonaws.com/v2.6.2) (2023-06-20)
+## 2.6.2 (2023-06-20)
 
 
 * **Features:** Updated 2023 context links (21525f6)
 
-## [2.6.1](http://neb-energy-futures-devdoc.s3-website.us-west-2.amazonaws.com/v2.6.1) (2023-06-20)
+## 2.6.1 (2023-06-20)
 
 
 * **Features:** Removed total demand selection from scenarios (3cca889)
 
-# [2.6.0](http://neb-energy-futures-devdoc.s3-website.us-west-2.amazonaws.com/v2.6.0) (2023-06-20)
+# 2.6.0 (2023-06-20)
 
 
 * **Features:** Reverted forecast bar position changes and updated 2023 forecast year (9499abe)
@@ -493,29 +493,29 @@
 
 Issues Affected: y
 
-## [2.5.1](http://neb-energy-futures-devdoc.s3-website.us-west-2.amazonaws.com/v2.5.1) (2022-11-01)
+## 2.5.1 (2022-11-01)
 
 
 ### Share
 
 * **Bug Fixes:** Include year in CSV export (9800591)
 
-# [2.5.0](http://neb-energy-futures-devdoc.s3-website.us-west-2.amazonaws.com/v2.5.0) (2022-03-03)
+# 2.5.0 (2022-03-03)
 
 
 * **Features:** Added 2021 methodology PDFs (a771df7)
 * **Documentation:** Noted external PDF file references so we don't removed PDFs (3c104ab)
 
-## [2.4.2](http://neb-energy-futures-devdoc.s3-website.us-west-2.amazonaws.com/v2.4.2) (2021-12-09)
+## 2.4.2 (2021-12-09)
 
-## [2.4.1](http://neb-energy-futures-devdoc.s3-website.us-west-2.amazonaws.com/v2.4.1) (2021-12-08)
+## 2.4.1 (2021-12-08)
 
 
 ### english
 
 * **Bug Fixes:** updates methodology link to 2020 (a0245ef)
 
-# [2.4.0](http://neb-energy-futures-devdoc.s3-website.us-west-2.amazonaws.com/v2.4.0) (2021-12-08)
+# 2.4.0 (2021-12-08)
 
 
 ### ForecastLine
@@ -523,7 +523,7 @@ Issues Affected: y
 * **Features:** updates logic to move forecast year back 1 year (44574ef)
 * **Bug Fixes:** fixes tests (e39c44e)
 
-# [2.3.0](http://neb-energy-futures-devdoc.s3-website.us-west-2.amazonaws.com/v2.3.0) (2021-11-24)
+# 2.3.0 (2021-11-24)
 
 
 ### constants
@@ -600,7 +600,7 @@ Issues Affected: y
 
 * **Features:** adds default year functionality to year slider (a91bc10)
 
-## [2.2.1](http://neb-energy-futures-devdoc.s3-website.us-west-2.amazonaws.com/v2.2.1) (2021-02-04)
+## 2.2.1 (2021-02-04)
 
 
 ### DataAnalytics
@@ -623,7 +623,7 @@ Issues Affected: y
 * **Documentation:** Added a story for the forecast layer component (c7f9c81)
 * **Documentation:** Updated story for the forecast layer component to be used in a nivo chart (63154a3)
 
-# [2.2.0](http://neb-energy-futures-devdoc.s3-website.us-west-2.amazonaws.com/v2.2.0) (2021-01-17)
+# 2.2.0 (2021-01-17)
 
 
 ### DraggableVerticalList
@@ -737,7 +737,7 @@ Issues Affected: y
 * **Features:** adds testing logic for verifying the year auto-play function (13c8eab)
 * **Features:** adds testing scripts, README, and stories for the component (13f7339)
 
-# [2.1.0](http://neb-energy-futures-devdoc.s3-website.us-west-2.amazonaws.com/v2.1.0) (2020-12-14)
+# 2.1.0 (2020-12-14)
 
 
 * **Features:** Added a blank array as a dataLayer fallback and remove console logs for GTM events (4495201)
@@ -844,7 +844,7 @@ Issues Affected: y
 * **Tests:** adds storybook setup (f61fcce)
 * **Tests:** adds tests for yearSelect (fba0494)
 
-# [2.0.0](http://neb-energy-futures-devdoc.s3-website.us-west-2.amazonaws.com/v2.0.0) (2020-11-25)
+# 2.0.0 (2020-11-25)
 
 
 * **Features:** Fixed corrupted PDF file (8359793)
