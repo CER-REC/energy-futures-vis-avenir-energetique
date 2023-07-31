@@ -1,3 +1,146 @@
+# 2.7.0 (2023-07-31)
+
+
+* **Features:** Updated page title for virtual page view event (ae426ea)
+* **Features:** Added page view event to navigation reports (fdceb40)
+* **Features:** Added page view event to navigation reports (4f7ef35)
+* **Features:** Updated hint analytics to include the emissions no data link (454ba83)
+* **Bug Fixes:** Updated < 1% treemap group positioning to avoid overlapping (ac5b10d)
+* **Project Maintenance:** Removed storybook hosting and updated readme (846a9ff)
+
+
+### analytics
+
+* **Features:** fixed linting (14bd51b)
+* **Features:** updated landing page analytics and fixed page view analytics (8aabcda)
+
+
+### App/theme
+
+* **Features:** updated year slider (1c350ee)
+
+
+### ByRegion
+
+* **Features:** fixed linting (e194bf5)
+* **Features:** fixed linting (34700ab)
+
+
+### BySector
+
+* **Features:** fixed oil sources in transportation sector (cfcaf33)
+
+
+### ContextLinks
+
+* **Features:** updated archived links (6b48cb2)
+
+
+### DraggableVerticalList
+
+* **Features:** fixed hexagons (2c4b448)
+
+
+### Dropdown
+
+* **Features:** Updating styles and added unique initial style state (932569a)
+* **Features:** Adjust dropdown styles to be more consistent with other CER applications (883523f)
+* **Features:** moved values to variables (b3abeb6)
+
+
+### DropDown
+
+* **Features:** fixed some styling updates (0d83e02)
+
+
+### Hint
+
+* **Features:** fixed hint spacing (2b2e2c7)
+
+
+### HorizontalControlBar
+
+* **Features:** Added key and handled two selection case (8b7f3fc)
+* **Features:** Group selections by Icon so they wrap together (ccd4bab)
+
+
+### NetLineAnnotation
+
+* **Features:** Move text + add stroke so easier to see in some cases (4ff8552)
+
+
+### NoDataMessage
+
+* **Features:** handling no data for charts (d247635)
+
+
+### pages/OilAndGas
+
+* **Features:** Format percentages for french locale (23bedad)
+* **Features:** Updated tooltip positions for oil and gas tree maps (4c04035)
+* **Code Refactoring:** Moved treemap border styles into class (eff7a14)
+
+
+### parseData
+
+* **Bug Fixes:** fixed tests (74ccc34)
+* **Bug Fixes:** updated ticks parser and also curve on BySector chart (ad315f5)
+* **Bug Fixes:** fixed ticks for small values (8cd0b89)
+
+
+### PriceSelect
+
+* **Features:** Added analytics event (ecca1fb)
+
+
+### Scenarios
+
+* **Features:** fixed lilnting (cbeb43e)
+* **Features:** simplified check logic for sorting tooltip (5711974)
+* **Features:** updated tooltip to sort by value when applicable (fa0a954)
+
+
+### ScenarioSelect
+
+* **Features:** Limited checkbox to multi-select and updated the unchecked icon (8aac1f1)
+* **Features:** Add checkbox for multi-select and adjust styling (1d2e9ef)
+
+
+### tests
+
+* **Features:** updated all tests and storybook (f2f44cc)
+
+
+### Tests
+
+* **Features:** updated tests (2bd5709)
+* **Features:** fixed tests with new component (19cb605)
+
+
+### UnavailableDataMessage
+
+* **Features:** updated tests (497e819)
+* **Features:** updated some messages and logic changes (3f72c31)
+* **Features:** updated all charts to use unavailable data message (3c54e80)
+
+
+### UnavailableMessage
+
+* **Features:** updated unavialbe message for some visualizations (7b9c747)
+
+
+### useEnergyFutureData
+
+* **Features:** refactored code (71103df)
+* **Features:** updated logic and fixed OilAndGas (d79a460)
+* **Features:** updated data to be parsed in chart components (825192d)
+* **Features:** parsed regions so all regions are included for specific queries (3e67c4d)
+
+
+### YearSlider
+
+* **Features:** extended year slider bar to match (48c361a)
+
 ## 2.6.4 (2023-07-04)
 
 
